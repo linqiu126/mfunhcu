@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>BXXH分享及图形界面测试</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0">
+    <link rel="stylesheet" href="http://demo.open.weixin.qq.com/jssdk/css/style.css?ts=1420774989">
+</head>
+
+<!-- Test for Cavans  -->
+
+<style type="text/css">
+    canvas{border:dashed 2px #CCC}
+</style>
+<script type="text/javascript">
+
+    function pageLoad(id){
+        var mpWidth = document.documentElement.clientWidth;
+        if (mpWidth > 400) {mpWidth = 400;}
+        var mpHeight = 500;
+        var workHeight = 1000;
+        var can = document.getElementById(id);
+        var cans = can.getContext('2d');
+
+        //数据显示区初始化
+        cans.strokeStyle = 'red';
+        cans.strokeRect(0,0,mpWidth,workHeight);
+        cans.fillStyle = 'white';
+        cans.fillRect(0,0,mpWidth,workHeight);
+        cans.textAlign = 'left';
+        cans.textBaseline = 'top';
+        cans.font = 'bold 12px arial';
+        cans.fillStyle = "green";
+        cans.fillText("你还没有绑定设备", mpWidth/2, 20);
+
+        //圆形数据显示框
+        cans.beginPath();
+        cans.arc(mpWidth/2,mpWidth/2,mpWidth/4,0,Math.PI*2,false);
+        cans.closePath();
+        cans.lineWidth = 5;
+        cans.strokeStyle = 'green';
+        cans.stroke();
+        cans.textAlign = 'left';
+        cans.textBaseline = 'top';
+        cans.font = 'bold 80px arial';
+        cans.fillStyle = "blue";
+        var fillFigure = 36;
+        cans.fillText(fillFigure, mpWidth/2-45, mpWidth/2-45);
+        cans.textAlign = 'left';
+        cans.textBaseline = 'top';
+        cans.font = 'bold 20px arial';
+        cans.fillStyle = "green";
+        cans.fillText("刷新历史数据", mpWidth/3, mpWidth*3/4+20);
+
+        //日周月的图标
+        var y1 = mpHeight*3/4;
+        var y2 = 20;
+        cans.fillStyle  = 'grey';
+        cans.fillRect(0,y1,mpWidth,y2);
+        var xDay = 0;
+        var xWidth = mpWidth/3;
+        var xWeek = xDay + xWidth;
+        var xMonth = xWeek + xWidth;
+        var yStart = y1+y2;
+        var yHeight = 40;
+        cans.textAlign = 'left';
+        cans.textBaseline = 'top';
+        cans.font = 'bold 16px arial';
+        cans.fillStyle = "blue";
+        cans.fillRect(xDay,yStart,xWidth,yHeight); //日
+        cans.fillStyle  = 'black';
+        cans.fillText("日", xDay+xWidth/2-10, yStart+yHeight/2-10);
+        cans.fillStyle  = 'yellow';
+        cans.fillRect(xWeek,yStart,xWidth,yHeight); //周
+        cans.fillStyle  = 'black';
+        cans.fillText("周", xWeek+xWidth/2-10, yStart+yHeight/2-10);
+        cans.fillStyle  = 'red';
+        cans.fillRect(xMonth,yStart,xWidth,yHeight); //月
+        cans.fillStyle  = 'black';
+        cans.fillText("月", xMonth+xWidth/2-10, yStart+yHeight/2-10);
+
+        //累计辐射图形背景
+        var y3 = yStart + yHeight + 40;
+        yHeight = 150;
+        var y4 = y3 + yHeight;
+        var y5 = y4 + yHeight;
+        var xStart = 20;
+        cans.fillStyle  = "rgb(255,100,100)";
+        cans.fillRect(xStart,y3,mpWidth-xStart,yHeight); //超标部分
+        cans.fillStyle  = 'yellow';
+        cans.fillRect(xStart,y4,mpWidth-xStart,yHeight); //不安全部分
+        cans.fillStyle  = 'green';
+        cans.fillRect(xStart,y5,mpWidth-xStart,yHeight); //安全部分
+        cans.textAlign = 'left';
+        cans.textBaseline = 'top';
+        cans.font = 'bold 14px arial';
+        cans.fillStyle = "blue";
+        cans.fillText("历史累计测试数据", mpWidth/4, y3-20);
+
+        //画Y轴坐标
+        cans.lineWidth=1;
+        cans.strokeStyle = 'grey';
+        cans.textAlign = 'left';
+        cans.textBaseline = 'top';
+        cans.font = 'bold 12px arial';
+        cans.fillStyle = "red";
+        cans.fillText("mV", 0, y3-20);
+        cans.fillStyle = "green";
+        for (i=0; i<15; i++)
+        {
+            cans.moveTo(xStart,y3+i*30);
+            cans.lineTo(mpWidth,y3+i*30);
+            cans.fillText(150-i*10, 0,y3+i*30+10);
+        }
+        cans.stroke();
+
+        //画X轴坐标
+        cans.lineWidth=1;
+        cans.strokeStyle = 'grey';
+        y6 = y5+yHeight;
+        xLength = (mpWidth-xStart)/12;
+        yLength = 10;
+        cans.font = 'bold 144px consolas';
+        cans.textAlign = 'left';
+        cans.textBaseline = 'top';
+        cans.font = 'bold 12px arial';
+        cans.fillStyle = "blue";
+        for (i=0; i<12; i++)
+        {
+            cans.moveTo(xStart+i*xLength,y6);
+            cans.lineTo(xStart+i*xLength,y6+yLength);
+            cans.fillText((i+1)*2, xStart+(i+0.4)*xLength,y6+yLength);
+        }
+        cans.stroke();
+    }
+
+    function clientWidth()
+    {
+        return document.documentElement.clientWidth;
+    }
+
+    //获取事件的坐标
+    function getEventPosition(ev){
+        var x, y;
+        if (ev.layerX || ev.layerX == 0) {
+            x = ev.layerX;
+            y = ev.layerY;
+        } else if (ev.offsetX || ev.offsetX == 0) { // Opera
+            x = ev.offsetX;
+            y = ev.offsetY;
+        }
+        return {x: x, y: y};
+    }
+
+    //判断坐标是否在“刷新历史数据”的范畴内，然后执行AJAX的Php处理
+    function historyButtonClick(id){
+        var mpWidth = document.documentElement.clientWidth;
+        if (mpWidth > 400) {mpWidth = 400;}
+        var mpHeight = 500;
+        var workHeight = 1000;
+        var can = document.getElementById(id);
+        var cans = can.getContext('2d');
+        var position = getEventPosition(cans);
+        var x0 = mpWidth/3 - 10;
+        var y0 = mpWidth*3/4+20 - 10;
+        var x1 = x0+100;
+        var y1 = y0+50;
+        if ((position.x > x0) && (position.x < x1) && (position.y > y0) && (position.y <y1))
+        {//在矩形范围类
+            var xmlHttp=null;
+            xmlHttp=new XMLHttpRequest();
+            var url="tool.ajaxhisdata.php";
+            var localWxUser = "";  //未来需要仔细设计这个信息
+            url=url+"?q="+localWxUser;
+            //url=url+"&sid="+Math.random();  //W3C官方例子，再探究其用意
+            xmlhttp.onreadystatechange=function()
+            {
+                if (xmlhttp.readyState==4 && xmlhttp.status==200)
+                {
+                    var result = xmlhttp.responseText;
+                    cans.textAlign = 'left';
+                    cans.textBaseline = 'top';
+                    cans.font = 'bold 12px arial';
+                    cans.fillStyle = "green";
+                    cans.fillText(result, mpWidth/3+50, mpWidth*3/4+20);
+                }
+            }
+            xmlHttp.open("GET",url,true);
+            xmlHttp.send(null);
+        }
+    }
+
+</script>
+
+<body onload="pageLoad('can1');" onclick="historyButtonClick('can1');">
+<canvas id="can1" width="355px" height="1000px">4</canvas>
+<!--到底是再放置一个新的canvas，实现历史查询功能，还是增加一个按钮功能，实现历史记录查询？
+    canvas的好处是：文字及按钮的位置可以自定义，但相应的事件采用哪一个？
+    Button很难精确放置其位置，但onclick事件非常明确-->
+</body>
+
+</html>

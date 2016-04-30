@@ -1,0 +1,9 @@
+name: mfunhcu
+version: 6
+accesskey: Pakistan@4
+cron:
+    - description: update t_hourreport very hour
+      url: http://mfunhcu.sinaapp.com/wechat/bi/bi_service.class.php
+      schedule: every 180 mins 
+      timezone: Beijing
+      
