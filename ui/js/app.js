@@ -90,6 +90,8 @@ var alarm_array = null;
 var export_table_name = null;
 var if_table_initialize = false;
 
+var FUNC_CALL_TIMEOUT = 1000; //need adapt the timer to different environment 500->1000
+
 var lineChartData = {
     labels : ["January","February","March","April","May","June","July"],
     datasets : [
@@ -854,7 +856,7 @@ function user_intialize(start) {
     user_table = null;
     get_user_table(start, table_row * 5);
     get_project_pg_list();
-    window.setTimeout("draw_user_table_head()", 500);
+    window.setTimeout("draw_user_table_head()", FUNC_CALL_TIMEOUT);
 }
 function draw_user_table_head(){
     var page_number = Math.ceil((user_table.length-1)/table_row);
@@ -960,7 +962,7 @@ function draw_user_table(data){
 }
 function Initialize_user_detail(){
     get_user_proj(user_selected.id);
-    window.setTimeout("draw_user_detail_panel()", 50);
+    window.setTimeout("draw_user_detail_panel()", FUNC_CALL_TIMEOUT);
 }
 function clear_user_detail_panel(){
     user_selected = null;
@@ -1314,7 +1316,7 @@ function pg_intialize(start) {
     get_pg_table(start, table_row * 5);
     clear_pg_detail_panel();
     get_project_list();
-    window.setTimeout("draw_pg_table_head()", 500);
+    window.setTimeout("draw_pg_table_head()", FUNC_CALL_TIMEOUT);
 }
 function draw_pg_table_head(){
     var page_number = Math.ceil((pg_table.length-1)/table_row);
@@ -1417,7 +1419,7 @@ function draw_pg_table(data){
 }
 function Initialize_pg_detail(){
     get_pg_proj(pg_selected.PGCode);
-    window.setTimeout("draw_pg_detail_panel()", 50);
+    window.setTimeout("draw_pg_detail_panel()", FUNC_CALL_TIMEOUT);
 }
 function clear_pg_detail_panel(){
     pg_selected = null;
@@ -1746,7 +1748,7 @@ function proj_intialize(start) {
     project_initial = true;
     project_table = null;
     get_proj_table(start, table_row * 5);
-    window.setTimeout("draw_proj_table_head()", 500);
+    window.setTimeout("draw_proj_table_head()", FUNC_CALL_TIMEOUT);
 }
 function draw_proj_table_head(){
     var page_number = Math.ceil((project_table.length-1)/table_row);
@@ -1849,7 +1851,7 @@ function draw_proj_table(data){
 
 function Initialize_proj_detail(){
     get_proj_point(project_selected.ProjCode);
-    window.setTimeout("draw_proj_detail_panel()", 50);
+    window.setTimeout("draw_proj_detail_panel()", FUNC_CALL_TIMEOUT);
 }
 function clear_proj_detail_panel(){
     project_selected = null;
@@ -2172,7 +2174,7 @@ function point_intialize(start) {
     point_table = null;
     get_project_list();
     get_point_table(start, table_row * 5);
-    window.setTimeout("draw_point_table_head()", 500);
+    window.setTimeout("draw_point_table_head()", FUNC_CALL_TIMEOUT);
 }
 function draw_point_table_head(){
     var page_number = Math.ceil((point_table.length-1)/table_row);
@@ -2280,7 +2282,7 @@ function draw_point_table(data){
 
 function Initialize_point_detail(){
     get_point_device(point_selected.StatCode);
-    window.setTimeout("draw_point_detail_panel()", 50);
+    window.setTimeout("draw_point_detail_panel()", FUNC_CALL_TIMEOUT);
 }
 function clear_point_detail_panel(){
     point_selected = null;
@@ -2694,7 +2696,7 @@ function dev_intialize(start) {
     get_dev_table(start, table_row * 5);
     get_project_list();
     get_proj_point_list();
-    window.setTimeout("draw_dev_table_head()", 500);
+    window.setTimeout("draw_dev_table_head()", FUNC_CALL_TIMEOUT);
 }
 function draw_dev_table_head(){
     var page_number = Math.ceil((device_table.length-1)/table_row);
@@ -2800,7 +2802,7 @@ function draw_dev_table(data){
 
 function Initialize_dev_detail(){
     //get_dev_device(device_selected.StatCode);
-    window.setTimeout("draw_dev_detail_panel()", 50);
+    window.setTimeout("draw_dev_detail_panel()", FUNC_CALL_TIMEOUT);
 }
 function clear_dev_detail_panel(){
     project_selected = null;
@@ -3082,7 +3084,7 @@ function initializeMap(){
     //map_MPMonitor.addControl(new BMap.ScaleControl());
     map_MPMonitor.enableScrollWheelZoom();
     map_MPMonitor.centerAndZoom(usr.city,15);
-    window.setTimeout("addMarker()", 500);
+    window.setTimeout("addMarker()", FUNC_CALL_TIMEOUT);
     //addMarker();
     map_initialized=true;
 
@@ -3103,7 +3105,7 @@ function get_select_monitor(title){
 
 function addMarker(point){
     // 创建图标对象
-    var myIcon = new BMap.Icon("/image/map-marker-ball-azure-small.png", new BMap.Size(32, 32),{
+    var myIcon = new BMap.Icon("/xhzn/mfunhcu/ui/image/map-marker-ball-azure-small.png", new BMap.Size(32, 32),{
         anchor: new BMap.Size(16, 30)
     });
     for(var i=0;i<monitor_map_list.length;i++){
@@ -3347,8 +3349,8 @@ function initializeAlarmMap(){
     //map_MPMonitor.addControl(new BMap.ScaleControl());
     map_MPMonitor.enableScrollWheelZoom();
     map_MPMonitor.centerAndZoom(usr.city,15);
-    window.setTimeout("alarm_addMarker()", 500);
-    window.setTimeout("build_alarm_tabs()", 500);
+    window.setTimeout("alarm_addMarker()", FUNC_CALL_TIMEOUT);
+    window.setTimeout("build_alarm_tabs()", FUNC_CALL_TIMEOUT);
     //alarm_addMarker();
     alarm_map_initialized=true;
 }
@@ -3448,7 +3450,7 @@ function get_alarmpointinfo_on_map(){
 }
 function alarm_addMarker(point){
     // 创建图标对象
-    var myIcon = new BMap.Icon("/image/map-marker-ball-azure-small.png", new BMap.Size(32, 32),{
+    var myIcon = new BMap.Icon("/xhzn/mfunhcu/ui/image/map-marker-ball-azure-small.png", new BMap.Size(32, 32),{
         anchor: new BMap.Size(16, 30)
     });
     for(var i=0;i<monitor_map_list.length;i++){
