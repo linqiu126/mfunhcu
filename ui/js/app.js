@@ -90,7 +90,7 @@ var alarm_array = null;
 var export_table_name = null;
 var if_table_initialize = false;
 
-var FUNC_CALL_TIMEOUT = 1000; //need adapt the timer to different environment 500->1000
+var FUNC_CALL_TIMEOUT = 1500; //need adapt the timer to different environment 500->1500
 
 var lineChartData = {
     labels : ["January","February","March","April","May","June","July"],
@@ -171,7 +171,7 @@ function on_collapse(data){
 
 function PageInitialize(){
     get_user_information();
-    window.setTimeout("nav_check()", 100);
+    window.setTimeout("nav_check()", FUNC_CALL_TIMEOUT);
 }
 
 function get_user_information(){
