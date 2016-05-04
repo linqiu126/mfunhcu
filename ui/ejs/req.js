@@ -434,13 +434,15 @@
             var alarmlist= new Array();
             var map1 = {
                 AlarmName: "噪声",
+                AlarmEName: "Noise",
                 AlarmValue:GetRandomNum(10,110),
                 AlarmUnit:"DB",
                 WarningTarget:65
             };
             alarmlist.push(map1);
             var map2 = {
-                AlarmName: "扬尘",
+                AlarmName: "风向",
+                AlarmEName: "WD",
                 AlarmValue:GetRandomNum(1,100),
                 AlarmUnit:"mg/m3",
                 WarningTarget:65
@@ -448,34 +450,39 @@
             alarmlist.push(map2);
             var map3 = {
             AlarmName: "湿度",
-            AlarmValue:GetRandomNum(0,100),
+                AlarmEName: "Wet",
+                AlarmValue:GetRandomNum(0,100),
             AlarmUnit:"%",
             WarningTarget:65
             };
             alarmlist.push(map3);
             var map4 = {
             AlarmName: "温度",
-            AlarmValue:GetRandomNum(10,50),
+                AlarmEName: "Temperature",
+                AlarmValue:GetRandomNum(10,50),
             AlarmUnit:"C",
             WarningTarget:37
             };
             alarmlist.push(map4);
            var map5 = {
                 AlarmName: "细颗粒物",
-                AlarmValue:GetRandomNum(10,400),
+               AlarmEName: "PM",
+               AlarmValue:GetRandomNum(10,400),
                 AlarmUnit:"ug/m3",
                 WarningTarget:300
             };
             alarmlist.push(map5);
             var map6 = {
-                AlarmName: "水质",
+                AlarmName: "录像",
+                AlarmEName: "VCR",
                 AlarmValue:GetRandomNum(10,150),
                 AlarmUnit:"菌群",
                 WarningTarget:100
             };
             alarmlist.push(map6);
             var map7 = {
-                AlarmName: "SO2",
+                AlarmName: "GPS",
+                AlarmEName: "GPS",
                 AlarmValue:GetRandomNum(10,30),
                 AlarmUnit:"ug/L",
                 WarningTarget:20
@@ -483,6 +490,7 @@
             alarmlist.push(map7);
             var map8 = {
                 AlarmName: "风速",
+                AlarmEName: "WS",
                 AlarmValue:GetRandomNum(10,150),
                 AlarmUnit:"km/h",
                 WarningTarget:60

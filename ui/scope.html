@@ -8,10 +8,12 @@
     <link href="/xhzn/mfunhcu/ui/css/bootstrap-duallistbox.min.css" rel="stylesheet" />
     <link href="/xhzn/mfunhcu/ui/css/jquery.dataTables.min.css" rel="stylesheet">
     <link href="/xhzn/mfunhcu/ui/css/buttons.dataTables.min.css" rel="stylesheet">
-    <link href="/xhzn/mfunhcu/ui/css/dataTables.tableTools.min.css" rel="stylesheet">
+    <!--link href="./css/dataTables.tableTools.min.css" rel="stylesheet"-->
     <link href="/xhzn/mfunhcu/ui/css/scope.css" rel="stylesheet">
+
     <script src="/xhzn/mfunhcu/ui/js/jquery.min.js"></script>
     <script src="/xhzn/mfunhcu/ui/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=2Pcn24FAWGTcyW4jsC8O38IyPd0pDZYX"></script>
     <script src="/xhzn/mfunhcu/ui/js/Chart.min.js"></script>
     <script src="/xhzn/mfunhcu/ui/js/jquery.bootstrap-duallistbox.min.js"></script>
     <script src="/xhzn/mfunhcu/ui/js/bootstrap-datetimepicker.min.js"></script>
@@ -20,51 +22,23 @@
     <script src="/xhzn/mfunhcu/ui/js/table/jquery.dataTables.min.js"></script>
     <script src="/xhzn/mfunhcu/ui/js/table/dataTables.buttons.min.js"></script>
     <script src="/xhzn/mfunhcu/ui/js/table/jszip.min.js"></script>
-    <script src="/xhzn/mfunhcu/ui/js/table/pdfmake.min.js"></script>
-    <script src="/xhzn/mfunhcu/ui/js/table/vfs_fonts.js"></script>
+    <!--script src="/js/table/pdfmake.min.js"></script-->
+    <!--script src="/js/table/vfs_fonts.js"></script-->
     <script src="/xhzn/mfunhcu/ui/js/table/buttons.html5.min.js"></script>
     <script src="/xhzn/mfunhcu/ui/js/table/buttons.flash.min.js"></script>
-    <script src="/xhzn/mfunhcu/ui/js/table/dataTables.tableTools.min.js" type="text/javascript" chartset="utf8" ></script>
+    <!--script src="/js/table/dataTables.tableTools.min.js" type="text/javascript" chartset="utf8" ></script-->
+    <script src="/xhzn/mfunhcu/ui/js/hcu_util.js"></script>
     <script src="/xhzn/mfunhcu/ui/js/app.js"></script>
-    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=2Pcn24FAWGTcyW4jsC8O38IyPd0pDZYX"></script>
+
 </head>
 <body>
 <nav class="navbar navbar-default" role="navigation">
     <div class="navbar-header">
-        <a class="navbar-brand" href="#">上海爱启 环保监测信息平台</a>
+        <a class="navbar-brand" href="#">欢迎登录</a>
     </div>
     <div>
         <ul class="nav navbar-nav">
-            <!--li class="dropdown" id="View_menu">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                    View
-                    <b class="caret"></b>
-                </a>
-                <ul class="dropdown-menu" >
-                    <li><a href="#" id="WarningView">Warning View</a></li>
-                    <li><a href="#" id="LocationView">location View</a></li>
-                </ul>
-            </li>
-            <li class="dropdown" id="Export_menu">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                    Export
-                    <b class="caret"></b>
-                </a>
-                <ul class="dropdown-menu">
-                    <li><a href="#">EXCEL</a></li>
-                </ul>
 
-            </li>
-            <li class="dropdown" id="Admin_menu">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                    Manage
-                    <b class="caret"></b>
-                </a>
-                <ul class="dropdown-menu">
-                    <li><a href="#">UserManage</a></li>
-                </ul>
-
-            </li-->
         </ul>
         <ul class="nav navbar-nav navbar-right">
             <li class="dropdown">
@@ -80,10 +54,10 @@
     </div>
 </nav>
 
-<div class="container">
+<div class="container bodystyle" >
     <div class="row clearfix">
-        <div class="col-md-3 column">
-            <div class="panel-group" id="Accordion_menu">
+        <div class="col-sm-4 col-md-3 col-lg-2 column ">
+            <div class="panel-group" id="Accordion_menu" >
                 <div class="panel panel-info">
                     <div class="panel-heading">
                         <h4 class="panel-title">
@@ -101,7 +75,7 @@
                         </ul>
                     </div>
                 </div>
-                <div class="panel panel-default">
+                <div class="panel panel-info">
                     <div class="panel-heading">
                         <h4 class="panel-title">
                             <a data-toggle="collapse" data-parent="#Accordion_menu"
@@ -132,7 +106,7 @@
                         </ul>
                     </div>
                 </div>
-                <div class="panel panel-default">
+                <div class="panel panel-info">
                     <div class="panel-heading">
                         <h4 class="panel-title">
                             <a data-toggle="collapse" data-parent="#Accordion_menu"
@@ -150,7 +124,9 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-9 column" >
+        <div class="col-sm-8 col-md-9 col-lg-10 column"  >
+            <div class="desktop" id="Desktop">
+            </div>
             <div class="row clearfix" id="UserManageView">
                 <div class="col-md-6 column" id="RightWindow1">
                     <ul class="pagination" id="User_Page_control">
@@ -1408,12 +1384,11 @@
                     </div>
 
                 </div>
-                <div class="col-md-2 column" >
+                <div class="col-md-4 column" >
                     <button type="button" class="btn btn-primary pull-right" id="AlarmQueryCommit">确认</button>
-                </div>
-                <div class="col-md-2 column" >
+                    <label class="pull-right" style="min-width: 20px"></label>
                     <button type="button" class="btn btn-primary pull-right" id="AlarmExport">导出</button>
-                    </div>
+                </div>
                 <div class="col-md-12 column" id="Alarm_chart_view">
                     <ul class="nav nav-tabs" id = "Alarm_chart_view_nav">
                         <!--li role="presentation" class="active" id="Warning_Noise_tab"><a href="#Warning_Noise" data-toggle="tab">噪声</a></li-->

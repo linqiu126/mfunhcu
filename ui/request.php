@@ -1,6 +1,6 @@
 ﻿<?php
 header("Content-type:text/html;charset=utf-8");
-require './php/req.php';
+#require '/php/req.php';
 function _encode($arr)
 {
   $na = array();
@@ -1009,6 +1009,7 @@ var map={
 //return data structure:
 var map1 = {
                 AlarmName: "扬尘",
+                AlarmEName: "Dust",  <= 图标映射
                 AlarmValue:GetRandomNum(10,110),
                 AlarmUnit:"DB",
                 WarningTarget:65
@@ -1022,13 +1023,15 @@ var map1 = {
 	$alarmlist= array();
 	$map1 = array(
 		'AlarmName'=>"噪声",
+		'AlarmEName'=> "Noise",
 		'AlarmValue'=>(string)rand(10,110),
 		'AlarmUnit'=>"DB",
 		'WarningTarget'=>'65'
 	);
 	array_push($alarmlist,$map1);
 	$map2 = array(
-		'AlarmName'=>"扬尘",
+		'AlarmName'=>"风向",
+		'AlarmEName'=> "WD",
 		'AlarmValue'=>(string)rand(1,100),
 		'AlarmUnit'=>"mg/m3",
 		'WarningTarget'=>'65'
@@ -1036,6 +1039,7 @@ var map1 = {
 	array_push($alarmlist,$map2);
 	$map3 = array(
 		'AlarmName'=>"湿度",
+		'AlarmEName'=> "Wet",
 		'AlarmValue'=>(string)rand(1,100),
 		'AlarmUnit'=>"%",
 		'WarningTarget'=>'65'
@@ -1043,6 +1047,7 @@ var map1 = {
 	array_push($alarmlist,$map3);
 	$map4 = array(
 		'AlarmName'=>"温度",
+		'AlarmEName'=> "Temperature",
 		'AlarmValue'=>(string)rand(10,50),
 		'AlarmUnit'=>"C",
 		'WarningTarget'=>'37'
@@ -1050,20 +1055,23 @@ var map1 = {
 	array_push($alarmlist,$map4);
 	$map5 = array(
 		'AlarmName'=>"细颗粒物",
+		'AlarmEName'=> "PM",
 		'AlarmValue'=>(string)rand(10,400),
 		'AlarmUnit'=>"ug/m3",
 		'WarningTarget'=>'300'
 	);
 	array_push($alarmlist,$map5);
 	$map6 = array(
-		'AlarmName'=>"水质",
+		'AlarmName'=>"录像",
+		'AlarmEName'=> "VCR",
 		'AlarmValue'=>(string)rand(10,150),
 		'AlarmUnit'=>"菌群",
 		'WarningTarget'=>'100'
 	);
 	array_push($alarmlist,$map6);
 	$map7 = array(
-		'AlarmName'=>"SO2",
+		'AlarmName'=>"GPS",
+		'AlarmEName'=> "GPS",
 		'AlarmValue'=>(string)rand(10,30),
 		'AlarmUnit'=>"ug/L",
 		'WarningTarget'=>'20'
@@ -1071,6 +1079,7 @@ var map1 = {
 	array_push($alarmlist,$map7);
 	$map8 = array(
 		'AlarmName'=>"风速",
+		'AlarmEName'=> "WS",
 		'AlarmValue'=>(string)rand(10,150),
 		'AlarmUnit'=>"km/h",
 		'WarningTarget'=>'60'
@@ -1623,7 +1632,7 @@ case "TableQuery":
 				array_push($one_row,(string)($i+1));
 				array_push($one_row,"备注".(string)($i+1));
                 for($j=0;$j<($column-6);$j++) array_push($one_row,rand(10,110));
-				//array_push($one_row,"备注".(string)($i+1));
+				
                 //one_row.push("地址"+(i+1)+"xxxxx路"+(i+1)+"xxxxx号");
 				array_push($one_row,"地址".((string)($i+1))."xxxxx路".((string)($i+1))."xxxxx号");
                 //one_row.push("测试");

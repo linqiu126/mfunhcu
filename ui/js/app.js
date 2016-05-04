@@ -3,15 +3,37 @@
 //var request_head= ".request";
 //var jump_url = ".jump";
 
-var request_head= "/xhzn/mfunhcu/ui/request.php";
+
+//切换生产环境要更新以下数据，包括logout函数
+var wait_time_long =1000;
+var wait_time_middle = 500;
+var wait_time_short= 200;
+var cycle_time = 60000;
+var request_head= "request.php";
 var jump_url = "/xhzn/mfunhcu/ui/jump.php";
+
+function logout(){
+    delCookie("Environmental.inspection.session");
+    window.location="http://"+window.location.host;
+
+    /*
+     delCookie("Environmental.inspection.session");
+     var txt = window.location.href;
+     var index =txt.lastIndexOf("/");
+     window.location=txt.substr(0,index)+"/Login.html";
+     */
+}
+
+
+
+
 
 var usr;
 usr = "";
 var admin="";
 var keystr="";
 var table_row=5;
-var randomScalingFactor = function(){ return Math.round(Math.random()*100)};
+//var randomScalingFactor = function(){ return Math.round(Math.random()*100)};
 var current_table;
 var table_head;
 var map_MPMonitor;
@@ -89,9 +111,7 @@ var alarm_array = null;
 //Export Control
 var export_table_name = null;
 var if_table_initialize = false;
-
-var FUNC_CALL_TIMEOUT = 1500; //need adapt the timer to different environment 500->1500
-
+/*
 var lineChartData = {
     labels : ["January","February","March","April","May","June","July"],
     datasets : [
@@ -118,16 +138,16 @@ var lineChartData = {
     ]
 
 }
-
+*/
 window.onload = function(){
     //initialize();
 
 
-
+/*
     var ctx = document.getElementById("canvas").getContext("2d");
     window.myLine = new Chart(ctx).Line(lineChartData, {
         responsive: true
-    });
+    });*/
 }
 function nav_check(){
     if(usr.admin == "true"){
@@ -156,13 +176,9 @@ function modal_middle(modal){
     setTimeout(function () {
         var _modal = $(modal).find(".modal-dialog")
         _modal.animate({'margin-top': parseInt(($(window).height() - _modal.height())/2)}, 300 )
-    },200)
+    },wait_time_short);
 }
-function getQueryString(name) {
-    var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
-    var r = window.location.search.substr(1).match(reg);
-    if (r != null) return unescape(r[2]); return null;
-}
+
 
 function on_collapse(data){
     //alert(data.html());
@@ -171,7 +187,7 @@ function on_collapse(data){
 
 function PageInitialize(){
     get_user_information();
-    window.setTimeout("nav_check()", FUNC_CALL_TIMEOUT);
+    window.setTimeout("nav_check()", wait_time_short);
 }
 
 function get_user_information(){
@@ -193,57 +209,7 @@ function get_user_information(){
 }
 
 
-function log(str){
-    console.log(str);
-}
-function getsec(str)
-{
-    var str1=Number(str.substring(1,str.length));
-    var str2=str.substring(0,1);
-    if (str2=="s")
-    {
-        return str1*1000;
-    }
-    else if (str2=="m")
-    {
-        return str1*60*1000;
-    }
-    else if (str2=="h")
-    {
-        return str1*60*60*1000;
-    }
-    else if (str2=="d")
-    {
-        return str1*24*60*60*1000;
-    }
-}
-function setCookie(name,value,time)
-{
-    var strsec = getsec(time);
-    var exp = new Date();
-    var expires = exp.getTime() + Number(strsec);
-    exp.setTime(exp.getTime() + Number(strsec));
-    document.cookie = name + "="+ escape (value) + ";expires=" + exp.toGMTString();
-}
-function getCookie(name)
-{
-    var arr,reg=new RegExp("(^| )"+name+"=([^;]*)(;|$)");
-    if(arr=document.cookie.match(reg))
-        return unescape(arr[2]);
-    else
-        return null;
-}
-function delCookie(name)
-{
-    var exp = new Date();
-    exp.setTime(exp.getTime() - 1);
-    var cval=getCookie(name);
-    if(cval!=null)
-        document.cookie= name + "="+cval+";expires="+exp.toGMTString();
-}
-function touchcookie(){
-    setCookie("Environmental.inspection.session",keystr,"m10");
-}
+
 $(document).ready(function() {
 
     //$.ajaxSetup({
@@ -255,7 +221,7 @@ $(document).ready(function() {
         t=setTimeout(function () {
             var _modal = $(_target).find(".modal-dialog")
             _modal.animate({'margin-top': parseInt(($(window).height() - _modal.height())/2)}, 300 )
-        },200)
+        },wait_time_short)
     });
 
     $('.form_date').datetimepicker({
@@ -281,11 +247,11 @@ $(document).ready(function() {
     // $("#showValue").click(function () { alert($('[name="duallistbox_demo1"]').val());});
     //$('.user_auth_dual').showFilterInputs=false;
 
-    var monitor_handle= setInterval("get_monitor_warning_on_map()", 10000);
+    var monitor_handle= setInterval("get_monitor_warning_on_map()", cycle_time);
     PageInitialize();
     $("#menu_logout").on('click',function(){
-        delCookie("Environmental.inspection.session");
-        window.location="http://"+window.location.host;
+        logout();
+
     });
     //LEFT menu
     $("#UserManage").on('click',function(){
@@ -645,7 +611,7 @@ $(document).ready(function() {
                 query_alarm($("#Alarm_query_Input").val(),alarm_type_list[i].id,alarm_type_list[i].name);
             }
         }
-        window.setTimeout("$('#Warning_'+alarm_type_list[0].id+'_day').css('display','block')", 2500);
+        window.setTimeout("$('#Warning_'+alarm_type_list[0].id+'_day').css('display','block')", wait_time_long);
 
 
     });
@@ -655,10 +621,28 @@ $(document).ready(function() {
     $("#AlarmQuery_Commit").on('click',function() {
         submit_alarm_query();
     });
+
+
+    $("#QueryStartTime_Input").change(function(){
+        $("#QueryStartTime_Input").val(date_compare_today($("#QueryStartTime_Input").val()));
+        if( $("#QueryEndTime_Input").val()==""){
+            $("#QueryEndTime_Input").val($("#QueryStartTime_Input").val());
+        }else{
+            $("#QueryEndTime_Input").val(date_compare($("#QueryEndTime_Input").val(),$("#QueryStartTime_Input").val()));
+        }
+    });
+    $("#QueryEndTime_Input").change(function(){
+        if( $("#QueryStartTime_Input").val()=="") {
+            $("#QueryEndTime_Input").val(date_compare_today($("#QueryEndTime_Input").val()));
+            $("#QueryStartTime_Input").val($("#QueryStartTime_Input").val());
+        }else{
+            $("#QueryEndTime_Input").val(date_compare($("#QueryEndTime_Input").val(),$("#QueryStartTime_Input").val()));
+        }
+    });
     //alert($(window).height());
     //alert($(window).width());
     clear_window();
-    warning_handle();
+    desktop();
     calculate_row();
     clear_user_detail_panel();
     clear_proj_detail_panel();
@@ -720,7 +704,10 @@ function warning_handle(){
     clear_window();
     $("#WarningHandleView").css("display","block");
 }
-
+function desktop(){
+    clear_window();
+    $("#Desktop").css("display","block");
+}
 
 function clear_window(){
     $("#UserManageView").css("display","none");
@@ -732,6 +719,7 @@ function clear_window(){
     $("#MPMonitorView").css("display","none");
     $("#WarningCheckView").css("display","none");
     $("#WarningHandleView").css("display","none");
+    $("#Desktop").css("display","none");
 }
 
 
@@ -856,7 +844,7 @@ function user_intialize(start) {
     user_table = null;
     get_user_table(start, table_row * 5);
     get_project_pg_list();
-    window.setTimeout("draw_user_table_head()", FUNC_CALL_TIMEOUT);
+    window.setTimeout("draw_user_table_head()", wait_time_middle);
 }
 function draw_user_table_head(){
     var page_number = Math.ceil((user_table.length-1)/table_row);
@@ -962,7 +950,7 @@ function draw_user_table(data){
 }
 function Initialize_user_detail(){
     get_user_proj(user_selected.id);
-    window.setTimeout("draw_user_detail_panel()", FUNC_CALL_TIMEOUT);
+    window.setTimeout("draw_user_detail_panel()", wait_time_short);
 }
 function clear_user_detail_panel(){
     user_selected = null;
@@ -1316,7 +1304,7 @@ function pg_intialize(start) {
     get_pg_table(start, table_row * 5);
     clear_pg_detail_panel();
     get_project_list();
-    window.setTimeout("draw_pg_table_head()", FUNC_CALL_TIMEOUT);
+    window.setTimeout("draw_pg_table_head()", wait_time_middle);
 }
 function draw_pg_table_head(){
     var page_number = Math.ceil((pg_table.length-1)/table_row);
@@ -1419,7 +1407,7 @@ function draw_pg_table(data){
 }
 function Initialize_pg_detail(){
     get_pg_proj(pg_selected.PGCode);
-    window.setTimeout("draw_pg_detail_panel()", FUNC_CALL_TIMEOUT);
+    window.setTimeout("draw_pg_detail_panel()", wait_time_short);
 }
 function clear_pg_detail_panel(){
     pg_selected = null;
@@ -1748,7 +1736,7 @@ function proj_intialize(start) {
     project_initial = true;
     project_table = null;
     get_proj_table(start, table_row * 5);
-    window.setTimeout("draw_proj_table_head()", FUNC_CALL_TIMEOUT);
+    window.setTimeout("draw_proj_table_head()", wait_time_middle);
 }
 function draw_proj_table_head(){
     var page_number = Math.ceil((project_table.length-1)/table_row);
@@ -1851,7 +1839,7 @@ function draw_proj_table(data){
 
 function Initialize_proj_detail(){
     get_proj_point(project_selected.ProjCode);
-    window.setTimeout("draw_proj_detail_panel()", FUNC_CALL_TIMEOUT);
+    window.setTimeout("draw_proj_detail_panel()", wait_time_short);
 }
 function clear_proj_detail_panel(){
     project_selected = null;
@@ -2174,7 +2162,7 @@ function point_intialize(start) {
     point_table = null;
     get_project_list();
     get_point_table(start, table_row * 5);
-    window.setTimeout("draw_point_table_head()", FUNC_CALL_TIMEOUT);
+    window.setTimeout("draw_point_table_head()", wait_time_middle);
 }
 function draw_point_table_head(){
     var page_number = Math.ceil((point_table.length-1)/table_row);
@@ -2282,7 +2270,7 @@ function draw_point_table(data){
 
 function Initialize_point_detail(){
     get_point_device(point_selected.StatCode);
-    window.setTimeout("draw_point_detail_panel()", FUNC_CALL_TIMEOUT);
+    window.setTimeout("draw_point_detail_panel()", wait_time_short);
 }
 function clear_point_detail_panel(){
     point_selected = null;
@@ -2696,7 +2684,7 @@ function dev_intialize(start) {
     get_dev_table(start, table_row * 5);
     get_project_list();
     get_proj_point_list();
-    window.setTimeout("draw_dev_table_head()", FUNC_CALL_TIMEOUT);
+    window.setTimeout("draw_dev_table_head()", wait_time_middle);
 }
 function draw_dev_table_head(){
     var page_number = Math.ceil((device_table.length-1)/table_row);
@@ -2802,7 +2790,7 @@ function draw_dev_table(data){
 
 function Initialize_dev_detail(){
     //get_dev_device(device_selected.StatCode);
-    window.setTimeout("draw_dev_detail_panel()", FUNC_CALL_TIMEOUT);
+    window.setTimeout("draw_dev_detail_panel()", wait_time_short);
 }
 function clear_dev_detail_panel(){
     project_selected = null;
@@ -3053,21 +3041,25 @@ function get_monitor_warning_on_map(){
             }else{
                 txt = "<div id ='Element_card_floating'><p style='font-size:14px;' >"+"站点名称："+monitor_selected.StatName+"</p>"+
                     "<HR style='FILTER: alpha(opacity=100,finishopacity=0,style=3)' width='80%' color=#987cb9 SIZE=3/>" +
-                    "<div style='font-size:10px;' >" ;
+                    "<div style='font-size:10px; min-height: 300px; min-width:420px' >" ;
+                txt = txt + " <div class='col-md-6 column'>";
                 for(var i=0;i<ret.length;i++){
-                    txt = txt + "<label style='max-width: 150px;min-width: 150px'>"+ret[i].AlarmName+":";
+                    var nickname = ret[i].AlarmEName;
+                    txt = txt + "<img src='/xhzn/mfunhcu/ui/image/"+ret[i].AlarmEName+".png'></img><label style='max-width: 150px;min-width: 150px'>&nbsp&nbsp&nbsp&nbsp"+ret[i].AlarmName+":";
                     var value = parseInt(ret[i].AlarmValue);
                     var warning = parseInt(ret[i].WarningTarget);
+
                     if(value>=warning){
                         txt = txt +"<Strong style='color:red'>"+value+"</Strong>"+ret[i].AlarmUnit+"</label>";
                     }else{
                         txt = txt +"<Strong>"+value+"</Strong>"+ret[i].AlarmUnit+"</label>";
                     }
-                    if((i+1)%4==0 && 0!=i){
-                        txt = txt +"<p></p>";
+                    txt = txt +"<p></p>";
+                    if(i==ret.length/2-1){
+                        txt = txt +"</div><div class='col-md-6 column'>";
                     }
                 }
-                txt = txt+"</div>"
+                txt = txt+"</div></div>"
             }
             if(monitor_map_handle!=null){
                 monitor_map_handle.setContent(txt);
@@ -3084,7 +3076,7 @@ function initializeMap(){
     //map_MPMonitor.addControl(new BMap.ScaleControl());
     map_MPMonitor.enableScrollWheelZoom();
     map_MPMonitor.centerAndZoom(usr.city,15);
-    window.setTimeout("addMarker()", FUNC_CALL_TIMEOUT);
+    window.setTimeout("addMarker()", wait_time_middle);
     //addMarker();
     map_initialized=true;
 
@@ -3349,8 +3341,8 @@ function initializeAlarmMap(){
     //map_MPMonitor.addControl(new BMap.ScaleControl());
     map_MPMonitor.enableScrollWheelZoom();
     map_MPMonitor.centerAndZoom(usr.city,15);
-    window.setTimeout("alarm_addMarker()", FUNC_CALL_TIMEOUT);
-    window.setTimeout("build_alarm_tabs()", FUNC_CALL_TIMEOUT);
+    window.setTimeout("alarm_addMarker()", wait_time_middle);
+    window.setTimeout("build_alarm_tabs()", wait_time_middle);
     //alarm_addMarker();
     alarm_map_initialized=true;
 }
@@ -3478,84 +3470,8 @@ function alarm_addMarker(point){
 }
 
 
-function get_minute_list(date){
-    var input = date.split("-");
-    var myDate=new Date();
-    myDate.setDate(parseInt(input[2]));
-    myDate.setMonth(parseInt(input[1])-1);	//设置 Date 对象中月份 (0 ~ 11)。
-    myDate.setFullYear(parseInt(input[0]));	//设置 Date 对象中的年份（四位数字）。
-    myDate.setHours(0);	//设置 Date 对象中的小时 (0 ~ 23)。
-    myDate.setMinutes(0);	//设置 Date 对象中的分钟 (0 ~ 59)。
-    myDate.setSeconds(0);
 
-    var ret = new Array();
-
-    for(var i=0;i<(24*60);i++){
-        if(i>0) myDate.setTime(myDate.getTime()+60000);
-        ret.push(myDate.Format("hh:mm"));
-    }
-    return ret;
-}
-function get_hour_list(date){
-    var input = date.split("-");
-    var myDate=new Date();
-    myDate.setDate(parseInt(input[2]));
-    myDate.setMonth(parseInt(input[1])-1);	//设置 Date 对象中月份 (0 ~ 11)。
-    myDate.setFullYear(parseInt(input[0]));	//设置 Date 对象中的年份（四位数字）。
-    myDate.setHours(0);	//设置 Date 对象中的小时 (0 ~ 23)。
-    myDate.setMinutes(0);	//设置 Date 对象中的分钟 (0 ~ 59)。
-    myDate.setSeconds(0);
-    //console.log(myDate.Format("yyyy-MM-dd hh:mm:ss"));
-    myDate.setTime(myDate.getTime()-1000*60*60*24*6);
-    //console.log(myDate.Format("yyyy-MM-dd hh:mm:ss"));
-    var ret = new Array();
-
-    for(var i=0;i<(24*7);i++){
-        if(i>0) myDate.setTime(myDate.getTime()+60000*60);
-        //var temp = myDate.toTimeString().split(":")
-        ret.push(myDate.Format("MM-dd hh:mm"));
-    }
-    return ret;
-}
-function get_day_list(date){
-    var input = date.split("-");
-    var myDate=new Date();
-    myDate.setDate(parseInt(input[2]));
-    myDate.setMonth(parseInt(input[1])-1);	//设置 Date 对象中月份 (0 ~ 11)。
-    myDate.setFullYear(parseInt(input[0]));	//设置 Date 对象中的年份（四位数字）。
-    myDate.setHours(0);	//设置 Date 对象中的小时 (0 ~ 23)。
-    myDate.setMinutes(0);	//设置 Date 对象中的分钟 (0 ~ 59)。
-    myDate.setSeconds(0);
-    myDate.setTime(myDate.getTime()-1000*60*60*24*29);
-    var ret = new Array();
-    for(var i=0;i<(30);i++){
-        if(i>0) myDate.setTime(myDate.getTime()+60000*60*24);
-        //var temp = myDate.toTimeString().split(":")
-        ret.push(myDate.Format("MM-dd"));
-    }
-    return ret;
-}
-Date.prototype.Format = function (fmt) { //author: meizz
-    var o = {
-        "M+": this.getMonth() + 1, //月份
-        "d+": this.getDate(), //日
-        "h+": this.getHours(), //小时
-        "m+": this.getMinutes(), //分
-        "s+": this.getSeconds(), //秒
-        "q+": Math.floor((this.getMonth() + 3) / 3), //季度
-        "S": this.getMilliseconds() //毫秒
-    };
-    if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
-    for (var k in o)
-        if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
-    return fmt;
-}
-function get_yesterday(){
-    var myDate=new Date();
-    myDate.setTime(myDate.getTime()-60000*60*24);
-    return myDate.Format("yyyy-MM-dd");
-}
-
+//Data Export
 
 function Data_export_Normal(title,tablename,condition,filter){
     $("#TableQueryCondition").css("display","none");
@@ -3705,6 +3621,7 @@ function submit_alarm_query(){
         var result=JSON.parse(data);
         ColumnName = result.ColumnName;
         TableData = result.TableData;
+		$("#ExportTable").empty();
         var txt = "<thead> <tr>";
         for(var i=0;i<ColumnName.length;i++){
             txt = txt +"<th>"+ColumnName[i]+"</th>";
@@ -3756,3 +3673,6 @@ function submit_alarm_query(){
         $('#TableExportModule').modal('show');
     });
 }
+
+
+
