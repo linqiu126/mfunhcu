@@ -223,7 +223,7 @@ if ($_SERVER['SERVER_NAME'] == "mfuncard.sinaapp.com") //LZH微信公号服务�
     define("CLOUD_WX", "AQ_WX"); //微信后台云应用
 
     //define("WX_DBHOST", "h5.aiqiworld.com/myAdmin");    //连接的服务器地址
-    define("WX_DBHOST", "localhost");    //连接的服务器地址
+    define("WX_DBHOST", "127.0.0.1");    //连接的服务器地址
     define("WX_DBUSER","root");     //连接数据库的用户名
     define("WX_DBPSW", "smoon");        //连接数据库的密码
     define("WX_DBNAME","bxxh");         //连接的数据库名称BXXH
@@ -242,8 +242,8 @@ if ($_SERVER['SERVER_NAME'] == "mfuncard.sinaapp.com") //LZH微信公号服务�
 
 }else   //本地配置数据库信息,需要根据个人配置修改
 {
-    define("CLOUD_HCU", "LOCAL_HCU"); //HCU后台云应用
-    define("CLOUD_WX", "LOCAL_WX"); //微信后台云应用
+    define("CLOUD_HCU", "AQ_HCU"); //HCU后台云应用
+    define("CLOUD_WX", "AQ_WX"); //微信后台云应用
 
     define("WX_DBHOST", "localhost");    //连接的服务器地址
     define("WX_DBUSER","TestUser");     //连接数据库的用户名

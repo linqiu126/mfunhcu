@@ -44,7 +44,7 @@ class class_hcu_IOT_sdk
             $statCode = $result;
         }
 
-        if ($toUser !=CLOUD_NAME){
+        if ($toUser !=CLOUD_HCU){
             return "HCU_IOT: XML message invalid ToUserName";
         }
 

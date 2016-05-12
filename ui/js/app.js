@@ -203,7 +203,7 @@ function get_user_information(){
         if(ret == "false"){
             show_alarm_module(true,"获取用户失败，请联系管理员");
         }else{
-            usr = result.ret;
+            usr = result;
         }
     });
 }

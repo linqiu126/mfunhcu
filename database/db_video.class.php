@@ -39,7 +39,7 @@ class class_video_db
         }
 
         //更新HCU设备信息表（t_hcudevice）中最新的视频链接，使之永远保存最后一次更新
-        $mysqli->query("UPDATE `t_hcudevice` SET `videourl` = '$url' WHERE (`devcode` = '$deviceid')");
+        $mysqli->query("UPDATE `t_siteinfo` SET `videourl` = '$url' WHERE (`devcode` = '$deviceid')");
 
         //存储新记录，如果发现是已经存在的数据，则覆盖，否则新增
         $result = $mysqli->query("SELECT * FROM `t_videodata` WHERE (`deviceid` = '$deviceid' AND `sensorid` = '$sensorid'

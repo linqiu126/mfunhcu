@@ -4452,6 +4452,7 @@ class class_wechat_sdk
     //日志记录
     public function logger($project,$fromUser,$createTime,$log_content)
     {
+        /*
         if(isset($_SERVER['HTTP_APPNAME'])){   //SAE
             sae_set_display_errors(false);
             sae_debug($log_content);
@@ -4462,9 +4463,11 @@ class class_wechat_sdk
             if(file_exists($log_filename) and (abs(filesize($log_filename)) > $max_size)){unlink($log_filename);}
             file_put_contents($log_filename, date('H:i:s')." ".$log_content."\r\n", FILE_APPEND);
         }
+        */
         //存储log在数据库中
         $cDbObj = new class_common_db();
         $result = $cDbObj->db_log_process($project,$fromUser,$createTime,$log_content);
+
         return $result;
     }
 
@@ -4476,9 +4479,11 @@ class class_wechat_sdk
     {
         //$postStr = $GLOBALS["HTTP_RAW_POST_DATA"];
         $postStr = file_get_contents('php://input','r');
+
         if (!empty($postStr))
         {
             //判断收到的消息类型
+
             $format = substr(trim($postStr), 0, 2);
             switch ($format)
             {
@@ -4500,6 +4505,7 @@ class class_wechat_sdk
                     $log_content = "R:".trim($postStr);
 
                     $RX_TYPE = trim($postObj->MsgType);
+
                     //消息类型分离
                     switch ($RX_TYPE)
                     {
@@ -4563,14 +4569,14 @@ class class_wechat_sdk
                             break;
                         case "hcu_text":
                             $project = "HCU";
-                            $this->logger($project,$fromUser,$log_time,$log_content);
+                            $result = $this->logger($project,$fromUser,$log_time,$log_content);
                             $log_from = CLOUD_HCU;
                             $hcuDevObj = new class_hcu_IOT_sdk();
                             $result = $hcuDevObj->receive_hcu_xmlMessage($postObj);
                             break;
                         case "hcu_heart_beat":
                             $project = "HCU";
-                            $this->logger($project,$fromUser,$log_time,$log_content);
+                            $result = $this->logger($project,$fromUser,$log_time,$log_content);
                             $log_from = CLOUD_HCU;
                             $hcuDevObj = new class_hcu_IOT_sdk();
                             $result = $hcuDevObj->receive_hcu_xmlMessage($postObj);

@@ -29,7 +29,7 @@ if ($opt_type == "HCU_VIDEO_INQUIRY")
 elseif ($opt_type == "HCU_URL_INQUIRY")
 {
     $cDbObj = new class_common_db();
-    $result = $cDbObj->db_hcuDevice_inquiry_url($deviceid);
+    $result = $cDbObj->db_siteinfo_inquiry_url($deviceid);
 
     if ($result != false)
         echo json_encode($result);

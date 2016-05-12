@@ -43,6 +43,7 @@ class class_common_db
         {
             die('Could not connect: ' . mysqli_error($mysqli));
         }
+
         $result = $mysqli->query("SELECT `statcode` FROM `t_hcudevice` WHERE (`devcode` = '$devcode')");
 
         if ($result->num_rows>0){
@@ -85,14 +86,14 @@ class class_common_db
         }
 
         //因为devcode和statcode已经检查存在,所以直接更新状态
-        $result = $mysqli->query("UPDATE `t_hcudevice` SET `devstatus` = '$status' WHERE `devcode` = '$deviceid' AND `statcode` = '$statcode'");
+        $result = $mysqli->query("UPDATE `t_hcudevice` SET `status` = '$status' WHERE `devcode` = '$deviceid' AND `statcode` = '$statcode'");
 
         $mysqli->close();
         return $result;
     }
 
     //查询该HCU设备的视频地址link
-    public function db_hcuDevice_inquiry_url($deviceid)
+    public function db_siteinfo_inquiry_url($deviceid)
     {
         //建立连接
         $mysqli=new mysqli(WX_DBHOST, WX_DBUSER, WX_DBPSW, WX_DBNAME, WX_DBPORT);
@@ -100,7 +101,7 @@ class class_common_db
         {
             die('Could not connect: ' . mysqli_error($mysqli));
         }
-        $result = $mysqli->query("SELECT * FROM `t_hcudevice` WHERE `devcode` = '$deviceid'");
+        $result = $mysqli->query("SELECT * FROM `t_siteinfo` WHERE `devcode` = '$deviceid'");
         if ($result->num_rows>0)
         {
             $row = $result->fetch_array();
@@ -383,7 +384,10 @@ class class_common_db
         {
             die('Could not connect: ' . mysqli_error($mysqli));
         }
-        $result=$mysqli->query("INSERT INTO `t_cmdbuf` (deviceid, cmd) VALUES ('$deviceid', '$cmd')");
+
+        $timestamp = time();
+        $cmdtime = date("Y-m-d H:m:s",$timestamp);
+        $result=$mysqli->query("INSERT INTO `t_cmdbuf` (deviceid, cmd, cmdtime) VALUES ('$deviceid', '$cmd', '$cmdtime')");
 
         $mysqli->close();
         return $result;
@@ -493,7 +497,7 @@ class class_common_db
         }
 
         //存储新记录
-        $mysqli->query("INSERT INTO `t_loginfo` (project,fromuser,createtime, logdata) VALUES ('$project','$fromuser','$createtime','$log_content')");
+        $result = $mysqli->query("INSERT INTO `t_loginfo` (project,fromuser,createtime, logdata) VALUES ('$project','$fromuser','$createtime','$log_content')");
 
         //查找最大SID
         $result = $mysqli->query("SELECT  MAX(`sid`)  FROM `t_loginfo` WHERE 1 ");

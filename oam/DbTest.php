@@ -10,10 +10,24 @@
 include_once "../config/config.php";
 include_once "../sdk/wechat.class.php";
 include_once "../sdk/hcu_iot.class.php";
+include_once "../database/db_ui.class.php";
 
 //header("Content-type:text/html;charset=utf-8");
 
-$time = time();
+
+$timestamp = time();
+$a = date("Y-m-d H:m:s",$timestamp);
+$b = date("hms",$timestamp);
+
+
+/*
+$uiDbObj = new class_ui_db();
+//$result = $uiDbObj->db_userinfo_req(rpPBfXqv);
+
+$result = $uiDbObj->db_usertable_req(1, 3);
+
+$result = $uiDbObj->db_login_req("user_01", "user01");
+
 
 /*
 class testObj
@@ -62,7 +76,7 @@ $resp = $Obj->responseMsg();*/
 
 
 //EMC 20
-$postStr = "<xml><ToUserName><![CDATA[SAE_MFUNHCU]]></ToUserName><FromUserName><![CDATA[HCU_SH_0301]]></FromUserName><CreateTime>1460296114</CreateTime><MsgType><![CDATA[hcu_text]]></MsgType><Content><![CDATA[20188105020113DB45000000004E0000000000000000570A59B2]]></Content><FuncFlag>0</FuncFlag></xml>";
+$postStr = "<xml><ToUserName><![CDATA[AQ_HCU]]></ToUserName><FromUserName><![CDATA[HCU_SH_0301]]></FromUserName><CreateTime>1463066438</CreateTime><MsgType><![CDATA[hcu_text]]></MsgType><Content><![CDATA[20188105020113DB45000000004E0000000000000000570A59B2]]></Content><FuncFlag>0</FuncFlag></xml>";
 //$postStr = "<xml><ToUserName><![CDATA[SAE_MFUNHCU]]></ToUserName><FromUserName><![CDATA[HCU_SH_0302]]></FromUserName><CreateTime>1460039152</CreateTime><MsgType><![CDATA[hcu_text]]></MsgType><Content><![CDATA[201881050201124945000000004E000000000000000057066DF0]]></Content><FuncFlag>0</FuncFlag></xml>";
 //PM 25
 //$postStr = "<xml><ToUserName><![CDATA[SAE_MFUNHCU]]></ToUserName><FromUserName><![CDATA[HCU_SH_0301]]></FromUserName><CreateTime>1457872404</CreateTime><MsgType><![CDATA[hcu_text]]></MsgType><Content><![CDATA[252281010201000001120000011200000492000000000000000000000000000056E55E14]]></Content><FuncFlag>0</FuncFlag></xml>";
@@ -80,6 +94,8 @@ $postStr = "<xml><ToUserName><![CDATA[SAE_MFUNHCU]]></ToUserName><FromUserName><
 //$postStr = "<xml><ToUserName><![CDATA[SAE_MFUNHCU]]></ToUserName><FromUserName><![CDATA[HCU_SH_0301]]></FromUserName><CreateTime>1457872409</CreateTime><MsgType><![CDATA[hcu_heart_beat]]></MsgType><Content><![CDATA[FE00]]></Content><FuncFlag>0</FuncFlag></xml>";
 //CMD pooling
 //$postStr = "<xml><ToUserName><![CDATA[SAE_MFUNHCU]]></ToUserName><FromUserName><![CDATA[HCU_SH_0301]]></FromUserName><CreateTime>1457872559</CreateTime><MsgType><![CDATA[hcu_command]]></MsgType><Content><![CDATA[FD00]]></Content><FuncFlag>0</FuncFlag></xml>";
+
+$postStr = "<xml><ToUserName><![CDATA[AQ_HCU]]></ToUserName><FromUserName><![CDATA[HCU_SH_0305]]></FromUserName><CreateTime>1463066586</CreateTime><MsgType><![CDATA[hcu_text]]></MsgType><Content><![CDATA[201881050201130345000000004E000000000000000057318D70]]></Content><FuncFlag>0</FuncFlag></xml>";
 
 libxml_disable_entity_loader(true);
 $postObj = simplexml_load_string($postStr, 'SimpleXMLElement');

@@ -1,4 +1,6 @@
 ﻿<?php
+
+include_once "../database/db_ui.class.php";
 header("Content-type:text/html;charset=utf-8");
 #require '/php/req.php';
 function _encode($arr)
@@ -40,7 +42,13 @@ case "login":
         //  admin: "true"
         //};
 $usr = $_GET["name"];
-$usrinfo;
+$pwd = $_GET["password"];
+
+$uiDbObj = new class_ui_db();
+$usrinfo =$uiDbObj->db_login_req($usr, $pwd);
+
+/*
+
 	if($usr == "admin"){
 		$usrinfo=array(
         'status'=>'true',
@@ -63,6 +71,7 @@ $usrinfo;
         'admin'=> ''
 		);
     }
+*/
     $jsonencode = json_encode($usrinfo);
 	echo $jsonencode; break;
 
@@ -83,6 +92,9 @@ case "UserInfo":
                 }*/
 				//echo $key;
 	$session = $_GET["session"];
+        $uiDbObj = new class_ui_db();
+        $retval =$uiDbObj->db_userinfo_req($session);
+ /*
     $user=null;
     if($session == "1234567"){
         $user = array(
@@ -106,6 +118,7 @@ case "UserInfo":
 		'status'=>$retstatus,
 		'ret'=>($user)
 	);
+ */
     $jsonencode = (_encode($retval));
 	echo $jsonencode; 
 	break;
@@ -280,10 +293,17 @@ case "UserTable":
                                           length:query_length,
                                           ret: usertable
                                       };*/
-	$total = 94;
+    $uiDbObj = new class_ui_db();
+    $total = $uiDbObj->db_userunm_inqury();
     $query_length = (int)($_GET['length']);
     $start = (int)($_GET['startseq']);
-    if($query_length> $total-$start){$query_length = $total-$start;}
+    if($query_length> $total-$start)
+        {$query_length = $total-$start;}
+
+
+    $usertable = $uiDbObj->db_usertable_req($start, $query_length);
+
+    /*
     $usertable = array();
     for($i=0;$i<$query_length;$i++){
         $type=FALSE;
@@ -300,6 +320,8 @@ case "UserTable":
 		);
 		array_push($usertable,$temp);
     }
+    */
+
 	$retval=array(
 		'status'=>'true',
 		'start'=> (string)$start,

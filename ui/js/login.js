@@ -58,6 +58,7 @@ $(document).ready(function() {
             password:$("#Password_Input").val()
         };
         jQuery.get(request_head, map, function (data) {
+            log(data);
             var result=JSON.parse(data);
             if(result.status!="true"){
                 $("#UserAlertModalLabel").text = "警告";
