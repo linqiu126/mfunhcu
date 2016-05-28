@@ -1,6 +1,7 @@
 ﻿<?php
 
 include_once "../database/db_ui.class.php";
+
 function check_session($s){
 
     $uiDbObj = new class_ui_db();

@@ -2,7 +2,7 @@
 var http = require("http");
 var fs = require('fs');
 var url = require('url');
-var req = require('./ejs/req');
+var req = require('/xhzn/mfunhcu/ui/ejs/req');
 
 
 http.createServer(function(request, response) {

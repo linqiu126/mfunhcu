@@ -2,8 +2,8 @@
 //var request_head= ".request";
 //var jump_url = ".jump";
 
-var request_head= "/xhzn/mfunhcu/ui/request.php";
-var jump_url = "/xhzn/mfunhcu/ui/jump.php";
+var request_head= "xhzn/mfunhcu/ui/request.php";
+var jump_url = "xhzn/mfunhcu/ui/jump.php";
 function log(str){
     console.log(str);
 }
@@ -49,6 +49,10 @@ function jump(str){
     window.location="http://"+window.location.host+"/"+jump_url+"?session="+str;
 }
 $(document).ready(function() {
+    var basic_min_height = parseInt(($(".leaderboard").css("padding-top")).replace(/[^0-9]/ig,""));
+    if((window.screen.availHeight -600)/2>basic_min_height) basic_min_height = (window.screen.availHeight -600)/2;
+    $(".leaderboard").css("padding-top",basic_min_height+"px");
+    console.log( $(".leaderboard").css("padding-top"));
     $("#Login_Comfirm").on('click',function(){
 
         setCookie("Environmental.inspection.usrname",$("#Username_Input").val(),"d30");
@@ -58,7 +62,6 @@ $(document).ready(function() {
             password:$("#Password_Input").val()
         };
         jQuery.get(request_head, map, function (data) {
-            log(data);
             var result=JSON.parse(data);
             if(result.status!="true"){
                 $("#UserAlertModalLabel").text = "警告";

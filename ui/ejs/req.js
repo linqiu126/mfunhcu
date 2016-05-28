@@ -19,6 +19,13 @@
                     key: "7654321",
                     admin: "false"
                 };
+            }else if(usr=="黄"){
+            usrinfo={
+                status:"true",
+                text:"login successfully",
+                key: "1111111",
+                admin: "false"
+            };
             }else{
                 usrinfo={
                     status:"false",
@@ -32,18 +39,26 @@
             var session = data.session;
             var user=null;
             if(session == "1234567"){
-                var user = {
+                 user = {
                     id:1234567,
                     name:"admin",
-                    admin:true,
+                    admin:"true",
                     city: "上海"
                 }
             }
             if(session == "7654321"){
-                var user = {
+                 user = {
                     id:7654321,
                     name:"user",
-                    admin:false,
+                    admin:"false",
+                    city: "上海"
+                }
+            }
+            if(session == "1111111"){
+                 user = {
+                    id:1111111,
+                    name:"黄",
+                    admin:"false",
                     city: "上海"
                 }
             }
@@ -275,8 +290,16 @@
             };
             return JSON.stringify(retval);
         case "PointProj":
-            var statcode = parseInt(data.StatCode);
-            var projcode = (statcode-1)%14;
+            var ProjPoint = new Array();
+            for(var i=0;i<4;i++){
+                var projcode = (i)%14;
+                var temp = {
+                    id: i+1,
+                    name: "观测点"+(i+1),
+                    ProjCode: projcode
+                }
+                ProjPoint.push(temp);
+            }
             var retval={
                 status:"true",
                 ret: ProjPoint
@@ -399,7 +422,9 @@
                     PreEndTime:"2017-01-01",
                     EndTime:"2099-12-31",
                     DevStatus:true,
-                    VideoURL:"www.tokoyhot.com"
+                    VideoURL:"www.tokoyhot.com",
+                    MAC:"mac",
+                    IP:"127.0.0.1"
                 };
                 projtable.push(temp);
             }
@@ -437,7 +462,7 @@
                 AlarmEName: "Noise",
                 AlarmValue:GetRandomNum(10,110),
                 AlarmUnit:"DB",
-                WarningTarget:65
+                WarningTarget:"false"
             };
             alarmlist.push(map1);
             var map2 = {
@@ -445,7 +470,7 @@
                 AlarmEName: "WD",
                 AlarmValue:GetRandomNum(1,100),
                 AlarmUnit:"mg/m3",
-                WarningTarget:65
+                WarningTarget:"false"
             };
             alarmlist.push(map2);
             var map3 = {
@@ -453,7 +478,7 @@
                 AlarmEName: "Wet",
                 AlarmValue:GetRandomNum(0,100),
             AlarmUnit:"%",
-            WarningTarget:65
+            WarningTarget:"false"
             };
             alarmlist.push(map3);
             var map4 = {
@@ -461,7 +486,7 @@
                 AlarmEName: "Temperature",
                 AlarmValue:GetRandomNum(10,50),
             AlarmUnit:"C",
-            WarningTarget:37
+            WarningTarget:"false"
             };
             alarmlist.push(map4);
            var map5 = {
@@ -469,7 +494,7 @@
                AlarmEName: "PM",
                AlarmValue:GetRandomNum(10,400),
                 AlarmUnit:"ug/m3",
-                WarningTarget:300
+                WarningTarget:"false"
             };
             alarmlist.push(map5);
             var map6 = {
@@ -477,7 +502,7 @@
                 AlarmEName: "VCR",
                 AlarmValue:GetRandomNum(10,150),
                 AlarmUnit:"菌群",
-                WarningTarget:100
+                WarningTarget:"false"
             };
             alarmlist.push(map6);
             var map7 = {
@@ -485,7 +510,7 @@
                 AlarmEName: "GPS",
                 AlarmValue:GetRandomNum(10,30),
                 AlarmUnit:"ug/L",
-                WarningTarget:20
+                WarningTarget:"false"
             };
             alarmlist.push(map7);
             var map8 = {
@@ -493,15 +518,23 @@
                 AlarmEName: "WS",
                 AlarmValue:GetRandomNum(10,150),
                 AlarmUnit:"km/h",
-                WarningTarget:60
+                WarningTarget:"false"
             };
             alarmlist.push(map8);
 
-
+            var vcr_list= new Array();
+            for(var i=0;i<10;i++){
+                var map={
+                    vcrname: "录像"+i,
+                    vcraddress: "127.0.0.1:8888/"
+                };
+                vcr_list.push(map);
+            }
 
             var retval={
                 status:"true",
-                ret:alarmlist
+                ret:alarmlist,
+                vcr:vcr_list
             };
 
             return JSON.stringify(retval);
@@ -864,15 +897,21 @@
             var AlarmUnit="DB";
             var WarningTarget=65;
             var minute_alarm = new Array();
+            var minute_head = new Array();
             for(var i=0;i<(60*24);i++){
+                minute_head.push(i.toString());
                 minute_alarm.push(GetRandomNum(10,110));
             }
             var hour_alarm = new Array();
+            var hour_head = new Array();
             for(var i=0;i<(7*24);i++){
+                hour_head.push(i.toString());
                 hour_alarm.push(GetRandomNum(10,110));
             }
             var day_alarm = new Array();
+            var day_head = new Array();
             for(var i=0;i<30;i++){
+                day_head.push(i.toString());
                 day_alarm.push(GetRandomNum(10,110));
             }
 
@@ -883,8 +922,11 @@
                 AlarmName: AlarmName,
                 AlarmUnit: AlarmUnit,
                 WarningTarget:WarningTarget,
+                minute_head:minute_head,
                 minute_alarm: minute_alarm,
+                hour_head:hour_head,
                 hour_alarm: hour_alarm,
+                day_head:day_head,
                 day_alarm: day_alarm
             };
             return JSON.stringify(retval);
@@ -972,6 +1014,158 @@
                 TableData:row_content
             };
             return JSON.stringify(retval);
+        case "SensorList":
+            //var DevCode = data.DevCode;
+            var ret = new Array();
+            /* sensor name
+            is_pm25
+            is_temperature
+            is_humidity
+            is_windspeed
+            is_winddir
+            is_noise
+            is_emc
+            is_airpressure
+            is_rain
+            */
+            var map = {
+                id:"101",
+                name:"PM2.5",
+                nickname:"PM2.5",
+                memo:"PM2.5传感器",
+                code:""
+            };
+            ret.push(map);
+            map = {
+                id:"201",
+                name:"temperature",
+                nickname:"温度",
+                memo:"温度传感器",
+                code:""
+            };
+            ret.push(map);
+            map = {
+                id:"301",
+                name:"humidity",
+                nickname:"湿度",
+                memo:"湿度传感器",
+                code:""
+            };
+            ret.push(map);
+            map = {
+                id:"401",
+                name:"windspeed",
+                nickname:"风速",
+                memo:"风速传感器",
+                code:""
+            };
+            ret.push(map);
+            map = {
+                id:"501",
+                name:"winddir",
+                nickname:"风向",
+                memo:"风向传感器",
+                code:""
+            };
+            ret.push(map);
+            map = {
+                id:"601",
+                name:"PM2.5",
+                nickname:"PM2.5",
+                memo:"PM2.5传感器",
+                code:""
+            };
+            ret.push(map);
+            map = {
+                id:"701",
+                name:"noise",
+                nickname:"噪声",
+                memo:"噪声传感器",
+                code:""
+            };
+            ret.push(map);
+            map = {
+                id:"901",
+                name:"emc",
+                nickname:"emc",
+                memo:"EMC传感器"
+            };
+            ret.push(map);
+            map = {
+                id:"901",
+                name:"emc",
+                nickname:"emc",
+                memo:"EMC传感器",
+                code:""
+            };
+            ret.push(map);
+            map = {
+                id:"a01",
+                name:"airpressure",
+                nickname:"气压",
+                memo:"气压传感器",
+                code:""
+            };
+            ret.push(map);
+            map = {
+                id:"b01",
+                name:"rain",
+                nickname:"降雨",
+                memo:"降雨传感器",
+                code:""
+            };
+            ret.push(map);
+
+            var retval={
+                status:"true",
+                SensorList:ret
+            };
+            return JSON.stringify(retval);
+        case "DevSensor":
+            var DevCode = data.DevCode;
+            var paralist = new Array();
+            for (var i=0;i<10;i++){
+                var temp = {
+                    name: "Parameter_"+i,
+                    memo: "Parameter"+i,
+                    value: "10"
+                }
+                paralist.push(temp)
+            }
+            var ret= new Array();
+            var map = {
+                id:"101",
+                status:"true",
+                para:paralist
+            }
+            ret.push(map);
+            map = {
+                id:"201",
+                status:"true",
+                para:new Array()
+            }
+            ret.push(map);
+            map = {
+                id:"a01",
+                status:"false",
+                para:new Array()
+            }
+            ret.push(map);
+            var retval={
+                status:"true",
+                ret:ret
+            };
+            return JSON.stringify(retval);
+        case "SensorUpdate":
+            var DevCode = data.DevCode;
+            var SensorCode = data.SensorCode;
+            var status = data.status;
+            var ParaList  = data.ParaList;
+            var retval={
+                status:"true",
+                msg:""
+            };
+            return JSON.stringify(retval);
         case "list":
             var query_key = data.key;
             var ret_number = GetRandomNum(10,50);
@@ -1023,6 +1217,9 @@ function check_usr(data){
         return "admin"
     }
     if(data.session == "7654321"){
+        return "user"
+    }
+    if(data.session == "1111111"){
         return "user"
     }
     return ""

@@ -15,14 +15,13 @@ include_once "../database/db_ui.class.php";
 //header("Content-type:text/html;charset=utf-8");
 
 
-$timestamp = time();
-$a = date("Y-m-d H:m:s",$timestamp);
-$b = date("hms",$timestamp);
-
-
-/*
 $uiDbObj = new class_ui_db();
-//$result = $uiDbObj->db_userinfo_req(rpPBfXqv);
+
+$temp = $uiDbObj-> db_login_req("张三", zhang3);
+
+$result = $uiDbObj->db_site_devlist_req("120101003");
+
+$pgtable = $uiDbObj->db_pgtable_req(0, 8, "user_01");
 
 $result = $uiDbObj->db_usertable_req(1, 3);
 

@@ -2,7 +2,7 @@
 <html>
 <head lang="en">
     <meta charset="utf-8">
-    <title>Scope</title>
+    <title>环境监测系统</title>
     <!-- Bootstrap core CSS -->
     <link href="/xhzn/mfunhcu/ui/css/bootstrap.min.css" rel="stylesheet">
     <link href="/xhzn/mfunhcu/ui/css/bootstrap-duallistbox.min.css" rel="stylesheet" />
@@ -68,10 +68,10 @@
                     </div>
                     <div id="collapseOne" class="panel-collapse collapse in">
                         <ul class="list-group">
-                            <li class="list-group-item" href="#" id="UserManage">用户设置</li>
-                            <li class="list-group-item" href="#" id="PGManage">项目组管理</li>
-                            <li class="list-group-item" href="#" id="ProjManage">项目信息</li>
-                            <li class="list-group-item" href="#" id="ParaManage">参数管理</li>
+                            <li class="list-group-item li_menu" href="#" id="UserManage">用户设置</li>
+                            <li class="list-group-item li_menu" href="#" id="PGManage">项目组管理</li>
+                            <li class="list-group-item li_menu" href="#" id="ProjManage">项目信息</li>
+                            <li class="list-group-item li_menu" href="#" id="ParaManage">参数管理</li>
                         </ul>
                     </div>
                 </div>
@@ -86,8 +86,8 @@
                     </div>
                     <div id="collapseTwo" class="panel-collapse collapse">
                         <ul class="list-group">
-                            <li class="list-group-item" href="#" id="MPManage">测量点管理</li>
-                            <li class="list-group-item" href="#" id="DevManage">设备管理</li>
+                            <li class="list-group-item li_menu" href="#" id="MPManage">测量点管理</li>
+                            <li class="list-group-item li_menu" href="#" id="DevManage">设备管理</li>
                         </ul>
                     </div>
                 </div>
@@ -102,7 +102,7 @@
                     </div>
                     <div id="collapseThree" class="panel-collapse collapse">
                         <ul class="list-group">
-                            <li class="list-group-item" href="#" id="MPMonitor">站点监控</li>
+                            <li class="list-group-item li_menu" href="#" id="MPMonitor">站点监控</li>
                         </ul>
                     </div>
                 </div>
@@ -117,8 +117,8 @@
                     </div>
                     <div id="collapseFour" class="panel-collapse collapse">
                         <ul class="list-group">
-                            <li class="list-group-item" href="#" id="WarningCheck">告警查看</li>
-                            <li class="list-group-item" href="#" id="WarningHandle">告警处理</li>
+                            <li class="list-group-item li_menu" href="#" id="WarningCheck">告警查看</li>
+                            <li class="list-group-item li_menu" href="#" id="WarningHandle">告警处理</li>
                         </ul>
                     </div>
                 </div>
@@ -1346,9 +1346,14 @@
                                 <h3 class="panel-title">项目信息</h3>
                             </div>
                             <!--div class="panel-body"-->
-                            <div class="col-md-12 column">
+                            <div class="col-md-6 column">
                                 <div style="max-height: 210px;overflow:scroll;overflow-x:hidden" id="Label_dev_detail">
                                 </div>
+                            </div>
+                            <div style="max-height: 210px;overflow:scroll;overflow-x:hidden">
+                                <table data-toggle="table" class="table table-hover table-bordered" id="Table_device_sensor" data-click-to-select="true" >
+
+                                </table>
                             </div>
                             <!--/div-->
                         </div>
@@ -1360,7 +1365,18 @@
                 <!--div id="MPMonitorViewMap" class="baidu-maps" style="min-width:535px;min-height:535px;max-width: none;max-height: none;overflow:"></div-->
                 <div class="col-md-12 column" >
                 <div id="MPMonitorViewMap" class="baidu-maps"></div>
+                </div>
+                <HR class="HR-map" SIZE=3/>
+                <div class="col-md-4 column" >
+                    <div class="input-group ">
+                        <span class="input-group-addon" id="VCRStatus" style="min-width: 100px">选择视频</span>
+                        <select class="form-control" placeholder="传感器状态" aria-describedby="basic-addon1" id="VCRStatus_choice">
+                        </select>
                     </div>
+                </div>
+                <div class="col-md-4 column" >
+                    <button type="button" class="btn btn-primary" id="VCRshow">导出</button>
+                </div>
             </div>
             <div class="row clearfix" id="WarningCheckView">
                 <div class="col-md-12 column" >
@@ -1506,12 +1522,12 @@
                         <p></p>
                         <div class="input-group ">
                             <span class="input-group-addon" id="QueryAlarm_type" style="min-width: 100px">日志种类</span>
-                        <select class="form-control" placeholder="导出日志种类" aria-describedby="basic-addon1" id="QueryAlarm_choice">
-                            <option value="minutes">分钟</option>
-                            <option value="hour">小时</option>
-                            <option value="day">天</option>
-                        </select>
-                            </div>
+                            <select class="form-control" placeholder="导出日志种类" aria-describedby="basic-addon1" id="QueryAlarm_choice">
+                                <option value="minutes">分钟</option>
+                                <option value="hour">小时</option>
+                                <option value="day">天</option>
+                            </select>
+                        </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group " style="height:29px">
@@ -1542,6 +1558,62 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="SensorModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="SensorModalLabel">传感器详细信息</h4>
+            </div>
+            <div class="modal-body" style="min-height:230px;max-height:500px;overflow:scroll;overflow-x:hidden">
+                <div class="col-md-12">
+                    <div class="input-group ">
+                        <span class="input-group-addon" id="SensorDevCode" style="min-width: 100px">设备编号</span>
+                        <input type="text" class="form-control" placeholder="设备编号" aria-describedby="basic-addon1" id="SensorDevCode_Input" disabled="true"/>
+                    </div>
+                    <p></p>
+                    <div class="input-group ">
+                        <span class="input-group-addon" id="SensorName" style="min-width: 100px">传感器名称</span>
+                        <input type="text" class="form-control" placeholder="传感器名称" aria-describedby="basic-addon1" id="SensorName_Input" disabled="true"/>
+                    </div>
+                    <p></p>
+                    <div class="input-group ">
+                        <span class="input-group-addon" id="SensorStatus" style="min-width: 100px">传感器状态</span>
+                        <select class="form-control" placeholder="传感器状态" aria-describedby="basic-addon1" id="SensorStatus_choice">
+                            <option value="true">启动</option>
+                            <option value="false">关闭</option>
+                        </select>
+                    </div>
+                    <p></p>
+                </div>
+                <div class="col-md-12" id="SensorExtraInfo">
+                </div>
+
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">放弃</button>
+                <button type="button" class="btn btn-primary" id="SensorUpdateCommit">修改</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="ExpiredAlarm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" >
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="ExpiredAlertModalLabel">网页过期</h4>
+            </div>
+            <div class="modal-body" id="ExpiredAlertModalContent">
+                <strong>警告！</strong>您的网页已经过期，请刷新页面并重新登陆！
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" id="ExpiredConfirm">确认</button>
             </div>
         </div>
     </div>

@@ -61,6 +61,10 @@ class class_hcu_IOT_sdk
                 $hcuObj = new class_common_service();
                 $resp = $hcuObj->func_timeSync_process();
                 break;
+            case CMDID_INVENTORY_DATA:
+                $hcuObj = new class_common_service();
+                $resp = $hcuObj->func_inventory_data_process(PLTF_HCU,$deviceId, $content);
+                break;
             case CMDID_HEART_BEAT:
                 $hcuObj = new class_common_service();
                 $resp = $hcuObj->func_heartBeat_process();
@@ -95,7 +99,7 @@ class class_hcu_IOT_sdk
                 break;
             case CMDID_VIDEO_DATA:
                 if (empty($funcFlag)){
-                    return "HCU_IOT: video link empty";
+                    //return "HCU_IOT: video link empty";
                 }
                 $hcuObj = new class_video_service();
                 $resp = $hcuObj->func_video_process(PLTF_HCU, $deviceId, $content,$funcFlag);
@@ -104,8 +108,12 @@ class class_hcu_IOT_sdk
                 $hcuObj = new class_noise_service();
                 $resp = $hcuObj->func_noise_process(PLTF_HCU, $deviceId, $statCode, $content);
                 break;
+            case CMDID_SW_UPDATE:
+
+                $resp ="";
+                break;
             default:
-                $resp ="HCU_IOT: invalid service type";
+                $resp ="HCU_IOT: invalid command type";
                 break;
         }
         return $resp;

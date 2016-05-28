@@ -45,6 +45,8 @@ body {
     max-width: none;
     max-height: none;
     overflow:visible;
+    border:3px inset;
+    box-shadow: 10px 10px 5px #888888;
 }
 .baidu-maps{
     min-width:535px;
@@ -52,6 +54,8 @@ body {
     max-width: none;
     max-height: none;
     overflow:visible;
+    border:3px inset;
+    box-shadow: 10px 10px 5px #888888;
 }
 .baidu-maps img {
     max-width: inherit;
@@ -97,4 +101,8 @@ body {
     margin-right:0px;
     margin:auto;
     width:95%
+}
+
+.li_menu{
+    cursor:pointer;
 }

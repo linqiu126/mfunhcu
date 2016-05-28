@@ -10,18 +10,19 @@ var wait_time_middle = 500;
 var wait_time_short= 200;
 var cycle_time = 60000;
 var request_head= "request.php";
-var jump_url = "/xhzn/mfunhcu/ui/jump.php";
+var jump_url = "jump.php";
 
 function logout(){
+    /*
     delCookie("Environmental.inspection.session");
     window.location="http://"+window.location.host;
+    */
 
-    /*
      delCookie("Environmental.inspection.session");
      var txt = window.location.href;
      var index =txt.lastIndexOf("/");
      window.location=txt.substr(0,index)+"/Login.html";
-     */
+
 }
 
 
@@ -89,7 +90,7 @@ var device_start=0;
 var device_total=0;
 var device_table=null;
 var device_selected;
-var device_selected_device;
+var device_selected_sensor;
 var device_module_status;
 
 //warning Control
@@ -111,6 +112,12 @@ var alarm_array = null;
 //Export Control
 var export_table_name = null;
 var if_table_initialize = false;
+
+
+//Sensor Control
+var sensor_list=null;
+var select_sensor_devcode=null;
+var select_sensor = null;
 /*
 var lineChartData = {
     labels : ["January","February","March","April","May","June","July"],
@@ -155,6 +162,7 @@ function nav_check(){
     }else{
         $("#Admin_menu").css("display","none");
     }
+    //console.log(usr);
     $("#Hello_label").text("用户:"+usr.name);
     var $b_label = $(+" <b class='caret'></b>");
     $("#Hello_label").append("<b class='caret'></b>");
@@ -187,6 +195,7 @@ function on_collapse(data){
 
 function PageInitialize(){
     get_user_information();
+    get_sensor_list();
     window.setTimeout("nav_check()", wait_time_short);
 }
 
@@ -203,13 +212,16 @@ function get_user_information(){
         if(ret == "false"){
             show_alarm_module(true,"获取用户失败，请联系管理员");
         }else{
-            usr = result;
+            usr = result.ret;
         }
     });
 }
 
 
-
+function show_expiredModule(){
+    modal_middle($('#ExpiredAlarm'));
+    $('#ExpiredAlarm').modal('show') ;
+}
 $(document).ready(function() {
 
     //$.ajaxSetup({
@@ -595,7 +607,7 @@ $(document).ready(function() {
     });
     $("#AlarmQueryCommit").on('click',function(){
 
-
+        touchcookie();
         if(alarm_selected == null){
             $("#WCStatCode_Input").attr("placeholder","请先在地图上选择一个点");
             return;
@@ -616,13 +628,20 @@ $(document).ready(function() {
 
     });
     $("#AlarmExport").on('click',function() {
+        touchcookie();
         Data_export_alarm();
     });
     $("#AlarmQuery_Commit").on('click',function() {
+        touchcookie();
         submit_alarm_query();
     });
-
-
+    $("#SensorUpdateCommit").on('click',function() {
+        touchcookie();
+        submit_sensor_module();
+    });
+    $("#ExpiredConfirm").on('click',function() {
+        logout();
+    });
     $("#QueryStartTime_Input").change(function(){
         $("#QueryStartTime_Input").val(date_compare_today($("#QueryStartTime_Input").val()));
         if( $("#QueryEndTime_Input").val()==""){
@@ -639,6 +658,7 @@ $(document).ready(function() {
             $("#QueryEndTime_Input").val(date_compare($("#QueryEndTime_Input").val(),$("#QueryStartTime_Input").val()));
         }
     });
+
     //alert($(window).height());
     //alert($(window).width());
     clear_window();
@@ -734,6 +754,10 @@ function get_project_pg_list(){
     jQuery.get(request_head, map, function (data) {
         log(data);
         var result=JSON.parse(data);
+        if(result.status == "false"){
+            show_expiredModule();
+            return;
+        }
         project_pg_list = result.ret;
     });
 }
@@ -746,6 +770,10 @@ function get_user_table(start,length){
     jQuery.get(request_head, map, function (data) {
         log(data);
         var result=JSON.parse(data);
+        if(result.status == "false"){
+            show_expiredModule();
+            return;
+        }
         user_table = result.ret;
 
         user_start = parseInt(result.start);
@@ -766,7 +794,7 @@ function del_user(id){
             clear_user_detail_panel();
             user_intialize(0);
         }else{
-            show_alarm_module(true,"删除失败！");
+            show_alarm_module(true,"删除失败！"+result.msg);
         }
     });
     $("#UserDelAlarm").modal('hide');
@@ -794,7 +822,7 @@ function new_user(user,auth){
             clear_user_detail_panel();
             user_intialize(0);
         }else{
-            show_alarm_module(true,"创建失败！");
+            show_alarm_module(true,"创建失败！"+result.msg);
         }
     });
 }
@@ -821,7 +849,7 @@ function modify_user(user,auth){
             clear_user_detail_panel();
             user_intialize(0);
         }else{
-            show_alarm_module(true,"修改失败！");
+            show_alarm_module(true,"修改失败！"+result.msg);
         }
     });
 }
@@ -836,6 +864,10 @@ function get_user_proj(user){
     jQuery.get(request_head, map, function (data) {
         log(data);
         var result=JSON.parse(data);
+        if(result.status == "false"){
+            show_expiredModule();
+            return;
+        }
         user_selected_auth = result.ret;
     });
 }
@@ -847,6 +879,7 @@ function user_intialize(start) {
     window.setTimeout("draw_user_table_head()", wait_time_middle);
 }
 function draw_user_table_head(){
+    if(null == user_table)return;
     var page_number = Math.ceil((user_table.length-1)/table_row);
 
     $("#User_Page_control").empty();
@@ -896,14 +929,15 @@ function draw_user_table_head(){
 function draw_user_table(data){
 
     $("#Table_user").empty();
+    if(null == user_table) return;
     var sequence = (parseInt(data.html())-1)*table_row-user_start;
     var txt = table_head;
     txt = txt +"<tbody>";
     for(var i=0;i<table_row;i++){
         if((sequence+i)<user_table.length){
             if(0!=i%2){
-                txt =txt+ "<tr class='success' id='table_cell"+i+"' userid='"+user_table[sequence+i].id+"'>";
-            }else{ txt =txt+ "<tr  id='table_cell"+i+"' userid='"+user_table[sequence+i].id+"'>";}
+                txt =txt+ "<tr class='success li_menu' id='table_cell"+i+"' userid='"+user_table[sequence+i].id+"'>";
+            }else{ txt =txt+ "<tr class='li_menu' id='table_cell"+i+"' userid='"+user_table[sequence+i].id+"'>";}
             txt = txt +"<td>" + user_table[sequence+i].id+"</td>"
                 +"<td>" + user_table[sequence+i].name+"</td>"
                 +"<td>" + user_table[sequence+i].nickname+"</td>"
@@ -942,11 +976,12 @@ function draw_user_table(data){
                 }
 
                 Initialize_user_detail();
+                touchcookie();
             }
 
         });
     }
-    touchcookie();
+
 }
 function Initialize_user_detail(){
     get_user_proj(user_selected.id);
@@ -971,6 +1006,7 @@ function clear_user_detail_panel(){
 }
 function draw_user_detail_panel(){
     $("#Label_user_detail").empty();
+    if(user_selected_auth == null) return;
     var usertype="用户";
     if(true==user_selected.type) usertype="管理员";
     var txt = "<p></p><p></p>"+
@@ -1190,6 +1226,10 @@ function get_project_list(){
     jQuery.get(request_head, map, function (data) {
         log(data);
         var result=JSON.parse(data);
+        if(result.status == "false"){
+            show_expiredModule();
+            return;
+        }
         project_list = result.ret;
     });
 }
@@ -1203,6 +1243,10 @@ function get_pg_table(start,length){
     jQuery.get(request_head, map, function (data) {
         log(data);
         var result=JSON.parse(data);
+        if(result.status == "false"){
+            show_expiredModule();
+            return;
+        }
         pg_table = result.ret;
 
         pg_start = parseInt(result.start);
@@ -1224,7 +1268,7 @@ function del_pg(id){
             clear_pg_detail_panel();
             pg_intialize(0);
         }else{
-            show_alarm_module(true,"删除失败！");
+            show_alarm_module(true,"删除失败！"+result.msg);
         }
     });
     $("#PGDelAlarm").modal('hide');
@@ -1253,7 +1297,7 @@ function new_pg(pg,projlist){
             clear_pg_detail_panel();
             pg_intialize(0);
         }else{
-            show_alarm_module(true,"创建失败！");
+            show_alarm_module(true,"创建失败！"+result.msg);
         }
     });
 }
@@ -1280,7 +1324,7 @@ function modify_pg(pg,projlist){
             clear_pg_detail_panel();
             pg_intialize(0);
         }else{
-            show_alarm_module(true,"修改失败！");
+            show_alarm_module(true,"修改失败！"+result.msg);
         }
     });
 }
@@ -1295,6 +1339,10 @@ function get_pg_proj(pgid){
     jQuery.get(request_head, map, function (data) {
         log(data);
         var result=JSON.parse(data);
+        if(result.status == "false"){
+            show_expiredModule();
+            return;
+        }
         pg_selected_proj = result.ret;
     });
 }
@@ -1307,6 +1355,7 @@ function pg_intialize(start) {
     window.setTimeout("draw_pg_table_head()", wait_time_middle);
 }
 function draw_pg_table_head(){
+    if(null == pg_table)return;
     var page_number = Math.ceil((pg_table.length-1)/table_row);
 
     $("#PG_Page_control").empty();
@@ -1356,14 +1405,15 @@ function draw_pg_table_head(){
 function draw_pg_table(data){
 
     $("#Table_pg").empty();
+    if(null == pg_table) return;
     var sequence = (parseInt(data.html())-1)*table_row-pg_start;
     var txt = table_head;
     txt = txt +"<tbody>";
     for(var i=0;i<table_row;i++){
         if((sequence+i)<pg_table.length){
             if(0!=i%2){
-                txt =txt+ "<tr class='success' id='pg_table_cell"+i+"' PGCode='"+pg_table[sequence+i].PGCode+"'>";
-            }else{ txt =txt+ "<tr  id='pg_table_cell"+i+"' PGCode='"+pg_table[sequence+i].PGCode+"'>";}
+                txt =txt+ "<tr class='success  li_menu' id='pg_table_cell"+i+"' PGCode='"+pg_table[sequence+i].PGCode+"'>";
+            }else{ txt =txt+ "<tr class=' li_menu' id='pg_table_cell"+i+"' PGCode='"+pg_table[sequence+i].PGCode+"'>";}
             txt = txt +"<td>" + pg_table[sequence+i].PGCode+"</td>"
                 +"<td>" + pg_table[sequence+i].PGName+"</td>"
                 +"<td>" + pg_table[sequence+i].ChargeMan+"</td>"
@@ -1399,6 +1449,7 @@ function draw_pg_table(data){
                 }
 
                 Initialize_pg_detail();
+                touchcookie();
             }
 
         });
@@ -1429,7 +1480,7 @@ function clear_pg_detail_panel(){
 }
 function draw_pg_detail_panel(){
     $("#Label_pg_detail").empty();
-
+    if(pg_selected_proj == null) return;
 
     var txt = "<p></p><p></p>"+
         "<label style='min-width: 150px'>项目组编号："+pg_selected.PGCode+"</label><label style='min-width: 150px'>项目组名称："+pg_selected.PGName+"</label>"+
@@ -1637,16 +1688,20 @@ function get_proj_table(start,length){
     jQuery.get(request_head, map, function (data) {
         log(data);
         var result=JSON.parse(data);
+        if(result.status == "false"){
+            show_expiredModule();
+            return;
+        }
         project_table = result.ret;
 
         project_start = parseInt(result.start);
         project_total = parseInt(result.total);
     });
 }
-function del_proj(StatCode){
+function del_proj(ProjCode){
     var map={
         action:"ProjDel",
-        StatCode: StatCode,
+        ProjCode: ProjCode,
         user:usr.id
     };
     jQuery.get(request_head, map, function (data) {
@@ -1658,7 +1713,7 @@ function del_proj(StatCode){
             clear_proj_detail_panel();
             proj_intialize(0);
         }else{
-            show_alarm_module(true,"删除失败！");
+            show_alarm_module(true,"删除失败！"+result.msg);
         }
     });
     $("#ProjDelAlarm").modal('hide');
@@ -1687,7 +1742,7 @@ function new_proj(project){
             clear_proj_detail_panel();
             proj_intialize(0);
         }else{
-            show_alarm_module(true,"创建失败！");
+            show_alarm_module(true,"创建失败！"+result.msg);
         }
     });
 }
@@ -1714,7 +1769,7 @@ function modify_proj(project){
             clear_proj_detail_panel();
             proj_intialize(0);
         }else{
-            show_alarm_module(true,"修改失败！");
+            show_alarm_module(true,"修改失败！"+result.msg);
         }
     });
 }
@@ -1723,12 +1778,16 @@ function modify_proj(project){
 
 function get_proj_point(ProjCode){
     var map={
-        action:"ProjPoint",
+        action:"PointProj",
         ProjCode: ProjCode
     };
     jQuery.get(request_head, map, function (data) {
         log(data);
         var result=JSON.parse(data);
+        if(result.status == "false"){
+            show_expiredModule();
+            return;
+        }
         project_selected_point = result.ret;
     });
 }
@@ -1739,6 +1798,7 @@ function proj_intialize(start) {
     window.setTimeout("draw_proj_table_head()", wait_time_middle);
 }
 function draw_proj_table_head(){
+    if(null == project_table)return;
     var page_number = Math.ceil((project_table.length-1)/table_row);
 
     $("#Proj_Page_control").empty();
@@ -1788,14 +1848,15 @@ function draw_proj_table_head(){
 function draw_proj_table(data){
 
     $("#Table_proj").empty();
+    if(null == project_table) return;
     var sequence = (parseInt(data.html())-1)*table_row-project_start;
     var txt = table_head;
     txt = txt +"<tbody>";
     for(var i=0;i<table_row;i++){
         if((sequence+i)<project_table.length){
             if(0!=i%2){
-                txt =txt+ "<tr class='success' id='proj_table_cell"+i+"' ProjCode='"+project_table[sequence+i].ProjCode+"'>";
-            }else{ txt =txt+ "<tr  id='proj_table_cell"+i+"' ProjCode='"+project_table[sequence+i].ProjCode+"'>";}
+                txt =txt+ "<tr class='success li_menu' id='proj_table_cell"+i+"' ProjCode='"+project_table[sequence+i].ProjCode+"'>";
+            }else{ txt =txt+ "<tr class=' li_menu' id='proj_table_cell"+i+"' ProjCode='"+project_table[sequence+i].ProjCode+"'>";}
             txt = txt +"<td>" + project_table[sequence+i].ProjCode+"</td>"
                 +"<td>" + project_table[sequence+i].ProjName+"</td>"
                 +"<td>" + project_table[sequence+i].ChargeMan+"</td>"
@@ -1830,6 +1891,7 @@ function draw_proj_table(data){
                 }
 
                 Initialize_proj_detail();
+                touchcookie();
             }
 
         });
@@ -1863,7 +1925,7 @@ function clear_proj_detail_panel(){
 }
 function draw_proj_detail_panel(){
     $("#Label_proj_detail").empty();
-
+    if(project_selected_point == null) return;
 
     var txt = "<p></p><p></p>"+
         "<label style='min-width: 150px'>项目编号："+project_selected.ProjCode+"</label><label style='min-width: 150px'>项目名称："+project_selected.ProjName+"</label>"+
@@ -2050,6 +2112,10 @@ function get_point_table(start,length){
     jQuery.get(request_head, map, function (data) {
         log(data);
         var result=JSON.parse(data);
+        if(result.status == "false"){
+            show_expiredModule();
+            return;
+        }
         point_table = result.ret;
 
         point_start = parseInt(result.start);
@@ -2071,7 +2137,7 @@ function del_point(StatCode){
             clear_point_detail_panel();
             point_intialize(0);
         }else{
-            show_alarm_module(true,"删除失败！");
+            show_alarm_module(true,"删除失败！"+result.msg);
         }
     });
     $("#PointDelAlarm").modal('hide');
@@ -2106,7 +2172,7 @@ function new_point(point){
             clear_point_detail_panel();
             point_intialize(0);
         }else{
-            show_alarm_module(true,"创建失败！");
+            show_alarm_module(true,"创建失败！"+result.msg);
         }
     });
 }
@@ -2139,7 +2205,7 @@ function modify_point(point){
             clear_point_detail_panel();
             point_intialize(0);
         }else{
-            show_alarm_module(true,"修改失败！");
+            show_alarm_module(true,"修改失败！"+result.msg);
         }
     });
 }
@@ -2154,6 +2220,10 @@ function get_point_device(StatCode){
     jQuery.get(request_head, map, function (data) {
         log(data);
         var result=JSON.parse(data);
+        if(result.status == "false"){
+            show_expiredModule();
+            return;
+        }
         point_selected_device = result.ret;
     });
 }
@@ -2165,6 +2235,7 @@ function point_intialize(start) {
     window.setTimeout("draw_point_table_head()", wait_time_middle);
 }
 function draw_point_table_head(){
+    if(null == point_table)return;
     var page_number = Math.ceil((point_table.length-1)/table_row);
 
     $("#Point_Page_control").empty();
@@ -2214,6 +2285,7 @@ function draw_point_table_head(){
 function draw_point_table(data){
 
     $("#Table_point").empty();
+    if(null == point_table) return;
     var sequence = (parseInt(data.html())-1)*table_row-point_start;
     var txt = table_head;
     txt = txt +"<tbody>";
@@ -2226,8 +2298,8 @@ function draw_point_table(data){
                 }
             }
             if(0!=i%2){
-                txt =txt+ "<tr class='success' id='point_table_cell"+i+"' StatCode='"+point_table[sequence+i].StatCode+"'>";
-            }else{ txt =txt+ "<tr  id='point_table_cell"+i+"' StatCode='"+point_table[sequence+i].StatCode+"'>";}
+                txt =txt+ "<tr class='success li_menu' id='point_table_cell"+i+"' StatCode='"+point_table[sequence+i].StatCode+"'>";
+            }else{ txt =txt+ "<tr class=' li_menu' id='point_table_cell"+i+"' StatCode='"+point_table[sequence+i].StatCode+"'>";}
             txt = txt +"<td>" + point_table[sequence+i].StatCode+"</td>"
                 +"<td>" + point_table[sequence+i].StatName+"</td>"
                 +"<td>" + projname+"</td>"
@@ -2262,6 +2334,7 @@ function draw_point_table(data){
                     }
                 }
                 Initialize_point_detail();
+                touchcookie();
             }
         });
     }
@@ -2300,6 +2373,7 @@ function clear_point_detail_panel(){
 }
 function draw_point_detail_panel(){
     $("#Label_point_detail").empty();
+    if(point_selected_device == null) return;
 
     var projname ="";
     for(var j=0;j<project_list.length;j++){
@@ -2583,7 +2657,12 @@ function get_proj_point_list(){
     jQuery.get(request_head, map, function (data) {
         log(data);
         var result=JSON.parse(data);
+        if(result.status == "false"){
+            show_expiredModule();
+            return;
+        }
         point_list = result.ret;
+
     });
 }
 function get_dev_table(start,length){
@@ -2596,6 +2675,10 @@ function get_dev_table(start,length){
     jQuery.get(request_head, map, function (data) {
         log(data);
         var result=JSON.parse(data);
+        if(result.status == "false"){
+            show_expiredModule();
+            return;
+        }
         device_table = result.ret;
 
         device_start = parseInt(result.start);
@@ -2605,7 +2688,7 @@ function get_dev_table(start,length){
 function del_dev(DevCode){
     var map={
         action:"DevDel",
-        StatCode: DevCode,
+        DevCode: DevCode,
         user:usr.id
     };
     jQuery.get(request_head, map, function (data) {
@@ -2617,7 +2700,7 @@ function del_dev(DevCode){
             clear_dev_detail_panel();
             dev_intialize(0);
         }else{
-            show_alarm_module(true,"删除失败！");
+            show_alarm_module(true,"删除失败！"+result.msg);
         }
     });
     $("#DevDelAlarm").modal('hide');
@@ -2645,7 +2728,7 @@ function new_dev(device){
             clear_dev_detail_panel();
             dev_intialize(0);
         }else{
-            show_alarm_module(true,"创建失败！");
+            show_alarm_module(true,"创建失败！"+result.msg);
         }
     });
 }
@@ -2671,7 +2754,7 @@ function modify_dev(device){
             clear_dev_detail_panel();
             dev_intialize(0);
         }else{
-            show_alarm_module(true,"修改失败！");
+            show_alarm_module(true,"修改失败！"+result.msg);
         }
     });
 }
@@ -2687,6 +2770,7 @@ function dev_intialize(start) {
     window.setTimeout("draw_dev_table_head()", wait_time_middle);
 }
 function draw_dev_table_head(){
+    if(null == device_table)return;
     var page_number = Math.ceil((device_table.length-1)/table_row);
 
     $("#Dev_Page_control").empty();
@@ -2736,6 +2820,7 @@ function draw_dev_table_head(){
 function draw_dev_table(data){
 
     $("#Table_dev").empty();
+    if(null == device_table) return;
     var sequence = (parseInt(data.html())-1)*table_row-device_start;
     var txt = table_head;
     txt = txt +"<tbody>";
@@ -2743,8 +2828,8 @@ function draw_dev_table(data){
         if((sequence+i)<device_table.length){
             //console.log(sequence+i);
             if(0!=i%2){
-                txt =txt+ "<tr class='success' id='dev_table_cell"+i+"' DevCode='"+device_table[sequence+i].DevCode+"'>";
-            }else{ txt =txt+ "<tr  id='dev_table_cell"+i+"' DevCode='"+device_table[sequence+i].DevCode+"'>";}
+                txt =txt+ "<tr class='success li_menu' id='dev_table_cell"+i+"' DevCode='"+device_table[sequence+i].DevCode+"'>";
+            }else{ txt =txt+ "<tr class=' li_menu' id='dev_table_cell"+i+"' DevCode='"+device_table[sequence+i].DevCode+"'>";}
 
             var type = "开启";
             if(device_table[sequence+i].DevStatus == false) type = "关闭";
@@ -2781,6 +2866,7 @@ function draw_dev_table(data){
                 }
 
                 Initialize_dev_detail();
+                touchcookie();
             }
 
         });
@@ -2790,6 +2876,7 @@ function draw_dev_table(data){
 
 function Initialize_dev_detail(){
     //get_dev_device(device_selected.StatCode);
+    get_device_sensor(device_selected.DevCode)
     window.setTimeout("draw_dev_detail_panel()", wait_time_short);
 }
 function clear_dev_detail_panel(){
@@ -2803,15 +2890,19 @@ function clear_dev_detail_panel(){
         "<p></p>"+
         "<label style='min-width: 150px'>安装时间：</label>"+"<p></p>"+"<label style='min-width: 150px'>预计结束时间：</label>"+
         "<p></p>"+
+        "<label style='min-width: 150px'>MAC地址：</label>"+"<p></p>"+"<label style='min-width: 150px'>IP地址：</label>"+
+        "<p></p>"+
         "<label style='min-width: 150px'>实际结束时间：</label>"+"<p></p>"+"<label style='min-width: 150px'>设备是否启动：</label>"+
         "<p></p>"+
         "<label style='min-width: 300px'>视频地址：</label>";
 
     $("#Label_dev_detail").empty();
     $("#Label_dev_detail").append(txt);
+    $("#Table_device_sensor").empty();
 }
 function draw_dev_detail_panel(){
     $("#Label_dev_detail").empty();
+    if(device_selected_sensor == null) return;
     var type = "开启";
     if(device_selected.DevStatus == false) type = "关闭";
 
@@ -2822,11 +2913,29 @@ function draw_dev_detail_panel(){
         "<p></p>"+
         "<label style='min-width: 150px'>安装时间："+device_selected.StartTime+"</label>"+"<p></p>"+"<label style='min-width: 150px'>预计结束时间："+device_selected.PreEndTime+"</label>"+
         "<p></p>"+
+        "<label style='min-width: 150px'>MAC地址："+device_selected.MAC+"</label>"+"<p></p>"+"<label style='min-width: 150px'>IP地址："+device_selected.IP+"</label>"+
+        "<p></p>"+
         "<label style='min-width: 150px'>实际结束时间："+device_selected.EndTime+"</label>"+"<p></p>"+"<label style='min-width: 150px'>设备是否启动："+type+"</label>"+
         "<p></p>"+
         "<label style='min-width: 300px'>视频地址："+device_selected.VideoURL+"</label>";
     $("#Label_dev_detail").append(txt);
+    $("#Table_device_sensor").empty();
+    txt ="<thead> <tr> <th>传感器 </th><th>状态 </th> </tr> </thead> <tbody >";
+    for(var i=0;i<device_selected_sensor.length;i++){
+        var temp = "开启";
+        if(device_selected_sensor[i].status == "false") temp = "关闭";
+        txt = txt + "<tr class=' li_menu' id='sensor_table_cell"+i+"' sequence='"+i+"'> <td>"+ get_sensor_name(device_selected_sensor[i].id)+"</td><td>"+temp+"</td> </tr>";
+    }
+    $("#Table_device_sensor").append(txt);
+    for(var i=0;i<device_selected_sensor.length;i++){
+        $("#sensor_table_cell"+i).on('click',function(){
+            if($(this).attr("sequence") !="null"){
+                select_sensor = device_selected_sensor[parseInt($(this).attr("sequence") )];
+                show_sensor_module();
+            }
 
+        });
+    }
 }
 function show_new_dev_module(){
 
@@ -3015,9 +3124,14 @@ function get_monitor_list(){
         action:"MonitorList",
         id: usr.id
     };
+    //console.log(map);
     jQuery.get(request_head, map, function (data) {
         log(data);
         var result=JSON.parse(data);
+        if(result.status == "false"){
+            show_expiredModule();
+            return;
+        }
         monitor_map_list = result.ret;
 
         //console.log(monitor_map_list);
@@ -3034,27 +3148,32 @@ function get_monitor_warning_on_map(){
         jQuery.get(request_head, map, function (data) {
             log(data);
             var result=JSON.parse(data);
+            if(result.status == "false"){
+                show_expiredModule();
+                return;
+            }
             var ret = result.ret;
             var txt = "";
             if(ret == "false"){
                 txt= "<Strong>获取告警失败</Strong>"
             }else{
-                txt = "<div id ='Element_card_floating'><p style='font-size:14px;' >"+"站点名称："+monitor_selected.StatName+"</p>"+
+                txt = "<div id ='Element_card_floating' align='center' ><p style='font-size:14px;font-weight: bold' >"+"站点名称："+monitor_selected.StatName+"</p>"+
                     "<HR style='FILTER: alpha(opacity=100,finishopacity=0,style=3)' width='80%' color=#987cb9 SIZE=3/>" +
-                    "<div style='font-size:10px; min-height: 300px; min-width:420px' >" ;
+                    "<div style='font-size:10px; min-height: 350px; min-width:420px' >" ;
                 txt = txt + " <div class='col-md-6 column'>";
                 for(var i=0;i<ret.length;i++){
                     var nickname = ret[i].AlarmEName;
                     txt = txt + "<img src='/xhzn/mfunhcu/ui/image/"+ret[i].AlarmEName+".png'></img><label style='max-width: 150px;min-width: 150px'>&nbsp&nbsp&nbsp&nbsp"+ret[i].AlarmName+":";
                     var value = parseInt(ret[i].AlarmValue);
-                    var warning = parseInt(ret[i].WarningTarget);
+                    var warning = ret[i].WarningTarget;
 
-                    if(value>=warning){
+                    if(warning == "true"){
                         txt = txt +"<Strong style='color:red'>"+value+"</Strong>"+ret[i].AlarmUnit+"</label>";
                     }else{
                         txt = txt +"<Strong>"+value+"</Strong>"+ret[i].AlarmUnit+"</label>";
                     }
-                    txt = txt +"<p></p>";
+                    //txt = txt +"<p></p>";
+                    txt = txt +"<HR style='FILTER: alpha(opacity=100,finishopacity=0,style=3)' width='80%' color=#987cb9 SIZE=3/>" ;
                     if(i==ret.length/2-1){
                         txt = txt +"</div><div class='col-md-6 column'>";
                     }
@@ -3070,7 +3189,12 @@ function get_monitor_warning_on_map(){
 }
 function initializeMap(){
     get_monitor_list();
-
+    var basic_min_height = parseInt(($("#MPMonitorViewMap").css("min-height")).replace(/[^0-9]/ig,""));
+    //console.log(basic_min_height);
+    //console.log(window.screen.availHeight-275);
+    if((window.screen.availHeight-275)>basic_min_height)basic_min_height =window.screen.availHeight-275;
+    //console.log(basic_min_height);
+    $("#MPMonitorViewMap").css("min-height",basic_min_height+"px");
     map_MPMonitor = new BMap.Map("MPMonitorViewMap");  // 创建点坐标
     map_MPMonitor.addControl(new BMap.NavigationControl());
     //map_MPMonitor.addControl(new BMap.ScaleControl());
@@ -3097,6 +3221,7 @@ function get_select_monitor(title){
 
 function addMarker(point){
     // 创建图标对象
+    if(monitor_map_list == null) return;
     var myIcon = new BMap.Icon("/xhzn/mfunhcu/ui/image/map-marker-ball-azure-small.png", new BMap.Size(32, 32),{
         anchor: new BMap.Size(16, 30)
     });
@@ -3133,6 +3258,10 @@ function get_alarm_type_list(){
     jQuery.get(request_head, map, function (data) {
         log(data);
         var result=JSON.parse(data);
+        if(result.status == "false"){
+            show_expiredModule();
+            return;
+        }
         alarm_type_list= result.typelist;
     });
 }
@@ -3148,11 +3277,15 @@ function query_alarm(date,type,name){
     jQuery.get(request_head, map, function (data) {
         log(data);
         var result=JSON.parse(data);
+        if(result.status == "false"){
+            show_expiredModule();
+            return;
+        }/*
         var ret = result.status;
         if(ret == "false"){
             show_alarm_module(true,"获取详细日志信息失败！");
             return;
-        }
+        }*/
         var StatCode = result.StatCode;
         var date = result.date;
         var AlarmName = result.AlarmName;
@@ -3336,6 +3469,9 @@ function initializeAlarmMap(){
     get_proj_point_list();
     get_monitor_list();
     get_alarm_type_list();
+    var basic_min_height = parseInt(($("#WCMonitorViewMap").css("min-height")).replace(/[^0-9]/ig,""));
+    if(window.screen.availHeight/2 > basic_min_height) basic_min_height=window.screen.availHeight/2;
+    $("#WCMonitorViewMap").css("min-height",basic_min_height+"px");
     map_MPMonitor = new BMap.Map("WCMonitorViewMap");  // 创建点坐标
     map_MPMonitor.addControl(new BMap.NavigationControl());
     //map_MPMonitor.addControl(new BMap.ScaleControl());
@@ -3347,6 +3483,7 @@ function initializeAlarmMap(){
     alarm_map_initialized=true;
 }
 function build_alarm_tabs(){
+    if(alarm_type_list == null) return;
     $("#Alarm_chart_view_nav").empty();
     $("#Alarm_Chart_content").empty();
     var txt1 = "";
@@ -3441,6 +3578,7 @@ function get_alarmpointinfo_on_map(){
 
 }
 function alarm_addMarker(point){
+    if(monitor_map_list == null)return;
     // 创建图标对象
     var myIcon = new BMap.Icon("/xhzn/mfunhcu/ui/image/map-marker-ball-azure-small.png", new BMap.Size(32, 32),{
         anchor: new BMap.Size(16, 30)
@@ -3486,6 +3624,10 @@ function Data_export_Normal(title,tablename,condition,filter){
     jQuery.get(request_head, map, function (data) {
         log(data);
         var result=JSON.parse(data);
+        if(result.status == "false"){
+            show_expiredModule();
+            return;
+        }
         ColumnName = result.ColumnName;
         TableData = result.TableData;
         var txt = "<thead> <tr>";
@@ -3619,6 +3761,10 @@ function submit_alarm_query(){
     jQuery.get(request_head, map, function (data) {
         log(data);
         var result=JSON.parse(data);
+        if(result.status == "false"){
+            show_expiredModule();
+            return;
+        }
         ColumnName = result.ColumnName;
         TableData = result.TableData;
 		$("#ExportTable").empty();
@@ -3674,5 +3820,103 @@ function submit_alarm_query(){
     });
 }
 
+//Sensor Manager
+function get_sensor_list(){
+    var map={
+        action:"SensorList"
+    };
+    jQuery.get(request_head, map, function (data) {
+        log(data);
+        var result=JSON.parse(data);
+        if(result.status == "false"){
+            show_expiredModule();
+            return;
+        }
+        sensor_list= result.SensorList;
+    });
+}
 
+function get_device_sensor(DevCode){
+    var map={
+        action:"DevSensor",
+        DevCode: DevCode
+    };
+    jQuery.get(request_head, map, function (data) {
+        log(data);
+        var result=JSON.parse(data);
+        if(result.status == "false"){
+            show_expiredModule();
+            return;
+        }
+        device_selected_sensor = result.ret;
+    });
+}
+function get_sensor_name(sensorid){
+    var ret = "未知传感器";
+    for(var i=0;i<sensor_list.length;i++){
+        if(sensorid == sensor_list[i].id){
+            ret = sensor_list[i].nickname;
+        }
+    }
+    return ret;
+}
 
+function show_sensor_module(){
+    if(null == select_sensor) {
+        return;
+    }
+    $("#SensorExtraInfo").empty();
+    $("#SensorDevCode_Input").val(device_selected.DevCode);
+    $("#SensorName_Input").val(get_sensor_name(select_sensor.id));
+    $("#SensorStatus_choice").val(select_sensor.status);
+    if(select_sensor.para.length!=0){
+        var txt = "";
+        for(var i=0;i<select_sensor.para.length;i++){
+            txt = txt +"<div class='input-group '>"+
+            "<span class='input-group-addon' style='min-width: 100px'>"+select_sensor.para[i].name+"</span>"+
+                "<input type='text' class='form-control' placeholder='"+select_sensor.para[i].memo+"' aria-describedby='basic-addon1' id='SensorPara_"+select_sensor.para[i].name+"'/>"+
+                "</div><p></p>";
+        }
+        $("#SensorExtraInfo").append(txt);
+        for(var i=0;i<select_sensor.para.length;i++){
+            $("#SensorPara_"+select_sensor.para[i].name).val(select_sensor.para[i].value);
+        }
+    }
+    modal_middle($('#SensorModal'));
+
+    $('#SensorModal').modal('show');
+}
+
+function submit_sensor_module(){
+    if(null == select_sensor) {
+        return;
+    }
+    var paramlist = new Array();
+    for(var i=0;i<select_sensor.para.length;i++){
+        var temp = {
+            name : select_sensor.para[i].name,
+            value : $("#SensorPara_"+select_sensor.para[i].name).val()
+
+        }
+    paramlist.push(temp);
+    }
+    var map = {
+        action: "SensorUpdate",
+        DevCode: device_selected.DevCode,
+        SensorCode: select_sensor.id,
+        status:$("#SensorStatus_choice").val(),
+        ParaList :paramlist
+    }
+    jQuery.get(request_head, map, function (data) {
+        log(data);
+        var result=JSON.parse(data);
+        var ret = result.status;
+        if(ret == "true"){
+            show_alarm_module(false,"传感器修改成功！");
+            $('#SensorModal').modal('hide');
+            Initialize_dev_detail();
+        }else{
+            show_alarm_module(true,"传感器修改失败！"+result.msg);
+        }
+    });
+}

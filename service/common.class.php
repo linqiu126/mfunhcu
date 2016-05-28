@@ -84,6 +84,60 @@ class class_common_service
         return $resp;
     }
 
+    public function func_inventory_data_process($platform,$deviceId, $content)
+    {
+        //$format = "A2Key/A2Len/A2Opt/A2Type/A6Uuid/A2HW_Tpye/A4HW_Ver/A2SW_Rel/A4SW_Drop";
+        $format = "A2Key/A2Len/A2Opt/A2Type/A2HW_Tpye/A4HW_Ver/A2SW_Rel/A4SW_Drop";
+        $data = unpack($format, $content);
+
+        $length = hexdec($data['Len']) & 0xFF;
+        $length = ($length + 2)*2; //消息总长度等于length＋1B 控制字＋1B长度本身
+        if ($length != strlen($content)){
+            return "COMMON_SERVICE[HCU]: Inventory message length invalid";  //消息长度不合法，直接返回
+        }
+
+        $mac = hexdec($data['Uuid']) & 0xFFFFFFFFFFFF;
+        $hw_type = hexdec($data['HW_Tpye']) & 0xFF;
+        $hw_ver = hexdec($data['HW_Ver']) & 0xFFFF;
+        $sw_rel = hexdec($data['SW_Rel']) & 0xFF;
+        $sw_drop = hexdec($data['SW_Drop']) & 0xFFFF;
+
+        $cDbObj = new class_common_db();
+        $cDbObj->db_deviceVersion_update($deviceId,$hw_type,$hw_ver,$sw_rel,$sw_drop);
+
+        /*
+        switch($platform)
+        {
+            case PLTF_WX:  //说明版本更新请求来自微信，验证IHU设备信息表（t_deviceqrcode）中MAC地址合法性
+                $wDbObj = new class_wx_db();
+                $result = $wDbObj->db_deviceQrcode_valid_mac($deviceId, $mac);
+                if ($result == ture)
+                    $resp = ""; //暂时没有resp msg，后面可以考虑如果版本不是最新，强制下载最新软件
+                else
+                    $resp = "COMMON_SERVICE: IHU invalid MAC address";
+                break;
+            case PLTF_HCU:  //说明版本更新请求来自HCU，验证HCU设备信息表（t_hcudevice）中MAC地址合法性
+                $cDbObj = new class_common_db();
+                $result = $cDbObj->db_hcuDevice_valid_mac($deviceId, $mac);
+                if ($result == ture)
+                    $resp = ""; //暂时没有resp msg，后面可以考虑如果版本不是最新，强制下载最新软件
+                else
+                    $resp = "COMMON_SERVICE: HCU invalid MAC address";
+                break;
+            case PLTF_JD:
+                $resp = "";
+                break;
+            default:
+                $resp = "COMMON_SERVICE: PLTF invalid";
+                break;
+        }
+        */
+
+        $resp = "";
+        return $resp;
+
+    }
+
     public function func_version_push_process()
     {
         $cmdid = $this->byte2string(CMDID_VERSION_SYNC);

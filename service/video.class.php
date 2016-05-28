@@ -23,9 +23,13 @@ class class_video_service
                 $sub_key = hexdec(substr($content, 4, 2)) & 0xFF;
                 switch ($sub_key) //MODBUS操作字处理
                 {
-                    case MODBUS_DATA_REPORT:
+                    case OPT_VEDIOLINK_RESP:
                         $resp = $this->wx_video_req_process($deviceId, $content,$funcFlag);
                         break;
+                    case OPT_VEDIOFILE_RESP:
+                        $resp = "";
+                        break;
+
                     default:
                         $resp = "";
                         break;

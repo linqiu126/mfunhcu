@@ -267,7 +267,7 @@ class class_common_db
             case "T_airpressure":
                 $airpressure = $data["value"];
                 //存储新记录，如果发现是已经存在的数据，则覆盖，否则新增
-                $result = $mysqli->query("SELECT * FROM `t_currentreport` WHERE (`deviceid` = '$deviceid' AND `statcode` = '$statcode')");
+                $result = $mysqli->query("SELECT * FROM `t_currentreport` WHERE (`deviceid` = '$deviceid' ");
                 if (($result->num_rows)>0) {
                     $result = $mysqli->query("UPDATE `t_currentreport` SET  `airpressure` = '$airpressure', `createtime` = '$currenttime' WHERE (`deviceid` = '$deviceid')");
                 }
@@ -278,7 +278,7 @@ class class_common_db
             case "T_emcdata":
                 $emc = $data["value"];
                 //存储新记录，如果发现是已经存在的数据，则覆盖，否则新增
-                $result = $mysqli->query("SELECT * FROM `t_currentreport` WHERE (`deviceid` = '$deviceid' AND `statcode` = '$statcode')");
+                $result = $mysqli->query("SELECT * FROM `t_currentreport` WHERE (`deviceid` = '$deviceid')");
                 if (($result->num_rows)>0) {
                     $result = $mysqli->query("UPDATE `t_currentreport` SET  `emcvalue` = '$emc', `createtime` = '$currenttime' WHERE (`deviceid` = '$deviceid')");
                 }
@@ -289,7 +289,7 @@ class class_common_db
             case "T_humidity":
                 $humidity = $data["value"];
                 //存储新记录，如果发现是已经存在的数据，则覆盖，否则新增
-                $result = $mysqli->query("SELECT * FROM `t_currentreport` WHERE (`deviceid` = '$deviceid' AND `statcode` = '$statcode')");
+                $result = $mysqli->query("SELECT * FROM `t_currentreport` WHERE (`deviceid` = '$deviceid' )");
                 if (($result->num_rows)>0) {
                     $result = $mysqli->query("UPDATE `t_currentreport` SET  `humidity` = '$humidity', `createtime` = '$currenttime' WHERE (`deviceid` = '$deviceid')");
                 }
@@ -300,7 +300,7 @@ class class_common_db
             case "T_noise":
                 $noise = $data["value"];
                 //存储新记录，如果发现是已经存在的数据，则覆盖，否则新增
-                $result = $mysqli->query("SELECT * FROM `t_currentreport` WHERE (`deviceid` = '$deviceid' AND `statcode` = '$statcode')");
+                $result = $mysqli->query("SELECT * FROM `t_currentreport` WHERE (`deviceid` = '$deviceid' )");
                 if (($result->num_rows)>0) {
                     $result = $mysqli->query("UPDATE `t_currentreport` SET  `noise` = '$noise', `createtime` = '$currenttime' WHERE (`deviceid` = '$deviceid')");
                 }
@@ -325,7 +325,7 @@ class class_common_db
             case "T_rain":
                 $rain = $data["value"];
                 //存储新记录，如果发现是已经存在的数据，则覆盖，否则新增
-                $result = $mysqli->query("SELECT * FROM `t_currentreport` WHERE (`deviceid` = '$deviceid' AND `statcode` = '$statcode')");
+                $result = $mysqli->query("SELECT * FROM `t_currentreport` WHERE (`deviceid` = '$deviceid' )");
                 if (($result->num_rows)>0) {
                     $result = $mysqli->query("UPDATE `t_currentreport` SET  `rain` = '$rain', `createtime` = '$currenttime' WHERE (`deviceid` = '$deviceid')");
                 }
@@ -336,7 +336,7 @@ class class_common_db
             case "T_temperature":
                 $temperature = $data["value"];
                 //存储新记录，如果发现是已经存在的数据，则覆盖，否则新增
-                $result = $mysqli->query("SELECT * FROM `t_currentreport` WHERE (`deviceid` = '$deviceid' AND `statcode` = '$statcode')");
+                $result = $mysqli->query("SELECT * FROM `t_currentreport` WHERE (`deviceid` = '$deviceid' )");
                 if (($result->num_rows)>0) {
                     $result = $mysqli->query("UPDATE `t_currentreport` SET  `temperature` = '$temperature', `createtime` = '$currenttime' WHERE (`deviceid` = '$deviceid')");
                 }
@@ -347,7 +347,7 @@ class class_common_db
             case "T_winddirection":
                 $winddirection = $data["value"];
                 //存储新记录，如果发现是已经存在的数据，则覆盖，否则新增
-                $result = $mysqli->query("SELECT * FROM `t_currentreport` WHERE (`deviceid` = '$deviceid' AND `statcode` = '$statcode')");
+                $result = $mysqli->query("SELECT * FROM `t_currentreport` WHERE (`deviceid` = '$deviceid' )");
                 if (($result->num_rows)>0) {
                     $result = $mysqli->query("UPDATE `t_currentreport` SET  `winddirection` = '$winddirection', `createtime` = '$currenttime' WHERE (`deviceid` = '$deviceid')");
                 }
@@ -358,7 +358,7 @@ class class_common_db
             case "T_windspeed":
                 $windspeed = $data["value"];
                 //存储新记录，如果发现是已经存在的数据，则覆盖，否则新增
-                $result = $mysqli->query("SELECT * FROM `t_currentreport` WHERE (`deviceid` = '$deviceid' AND `statcode` = '$statcode')");
+                $result = $mysqli->query("SELECT * FROM `t_currentreport` WHERE (`deviceid` = '$deviceid' )");
                 if (($result->num_rows)>0) {
                     $result = $mysqli->query("UPDATE `t_currentreport` SET  `windspeed` = '$windspeed', `createtime` = '$currenttime' WHERE (`deviceid` = '$deviceid')");
                 }
