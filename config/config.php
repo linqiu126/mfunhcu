@@ -42,11 +42,11 @@ define("SESSION_ID_LEN", 8); //UI界面session id字符串长度
 define("USER_ID_LEN", 6); //UI界面user id字符串长度
 
 //定义各测量值告警门限
-define("TH_ALARM_NOISE", 800);
-define("TH_ALARM_HUMIDITY", 500);
-define("TH_ALARM_TEMPERATURE", 450);
-define("TH_ALARM_PM25", 250);
-define("TH_ALARM_WINDSPEED", 50);
+define("TH_ALARM_NOISE", 80);
+define("TH_ALARM_HUMIDITY", 50);
+define("TH_ALARM_TEMPERATURE", 45);
+define("TH_ALARM_PM25", 100);
+define("TH_ALARM_WINDSPEED", 20);
 
 //定义传感器类型
 define("S_TYPE_PM", "S_0001");
@@ -141,7 +141,7 @@ define ("ID_EQUIP_NOISE", 0x0A);
  *                             微信相关配置参数                                       *
  *************************************************************************************/
 //正式测试公号/服务公号的配置参数
-date_default_timezone_set('prc');  //设置时区为北京时间
+//date_default_timezone_set('prc');  //设置时区为北京时间
 define("WX_TOKEN", "weixin");  //TOKEN，必须和微信绑定的URL使用的TOKEN一致
 define("WX_DEBUG", false);
 define("WX_LOGCALLBACK", false);

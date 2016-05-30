@@ -10,7 +10,7 @@ var wait_time_middle = 500;
 var wait_time_short= 200;
 var cycle_time = 60000;
 var request_head= "request.php";
-var jump_url = "jump.php";
+var jump_url = "xhzn/mfunhcu/ui/jump.php";
 
 function logout(){
     /*

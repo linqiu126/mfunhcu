@@ -2,7 +2,7 @@
 //var request_head= ".request";
 //var jump_url = ".jump";
 
-var request_head= "xhzn/mfunhcu/ui/request.php";
+var request_head= "request.php";
 var jump_url = "xhzn/mfunhcu/ui/jump.php";
 function log(str){
     console.log(str);
@@ -61,6 +61,7 @@ $(document).ready(function() {
             name:$("#Username_Input").val(),
             password:$("#Password_Input").val()
         };
+
         jQuery.get(request_head, map, function (data) {
             var result=JSON.parse(data);
             if(result.status!="true"){

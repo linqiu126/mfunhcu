@@ -723,6 +723,7 @@ class class_ui_db
             die('Could not connect: ' . mysqli_error($mysqli));
         }
         $mysqli->query("set character_set_results = utf8");
+        $mysqli->query("SET NAMES utf8");
 
         //$session = $pginfo["user"];
         $pgcode = $pginfo["PGCode"];
@@ -1336,12 +1337,12 @@ class class_ui_db
         if (($result->num_rows)>0)
         {
             $row = $result->fetch_array();
-            $noise = $row['noise'];
-            $winddir = $row['winddirection'];
-            $humidity = $row['humidity'];
-            $temperature = $row['temperature'];
-            $pm25 = $row['pm25'];
-            $windspeed = $row['windspeed'];
+            $noise = $row['noise']/100;
+            $winddir = $row['winddirection']/10;
+            $humidity = $row['humidity']/10;
+            $temperature = $row['temperature']/10;
+            $pm25 = $row['pm25']/10;
+            $windspeed = $row['windspeed']/10;
 
             $currentvalue = array();
             if ($noise != NULL){
