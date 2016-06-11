@@ -15,11 +15,24 @@ include_once "../database/db_ui.class.php";
 //header("Content-type:text/html;charset=utf-8");
 
 
+
+$mysqli = new mysqli(WX_DBHOST, WX_DBUSER, WX_DBPSW, WX_DBNAME, WX_DBPORT);
+$query_str = "SELECT `auth_code` FROM `t_authlist` WHERE `uid` = 'UID003'";
+$result = $mysqli->query($query_str);
+
+$temp = array();
+while($row = $result->fetch_array())
+{
+    $p_code = $row["auth_code"];
+    array_push($temp,$p_code);
+}
+
+
 $uiDbObj = new class_ui_db();
 
 $temp = $uiDbObj-> db_login_req("张三", zhang3);
 
-$result = $uiDbObj->db_site_devlist_req("120101003");
+$result = $uiDbObj->db_dev_alarmhistory_req("120101001", "2016-02-27", "S_0001");
 
 $pgtable = $uiDbObj->db_pgtable_req(0, 8, "user_01");
 

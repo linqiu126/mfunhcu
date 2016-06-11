@@ -7,22 +7,22 @@ header("Content-type:text/html;charset=utf-8");
 
 function _encode($arr)
 {
-  $na = array();
-  foreach ( $arr as $k => $value ) {   
-    $na[_urlencode($k)] = _urlencode ($value);   
-  }
-  return addcslashes(urldecode(json_encode($na)),"\r\n");
+    $na = array();
+    foreach ( $arr as $k => $value ) {
+        $na[_urlencode($k)] = _urlencode ($value);
+    }
+    return addcslashes(urldecode(json_encode($na)),"\r\n");
 }
- 
+
 function _urlencode($elem)
 {
-  if(is_array($elem)){
-    foreach($elem as $k=>$v){
-      $na[_urlencode($k)] = _urlencode($v);
+    if(is_array($elem)){
+        foreach($elem as $k=>$v){
+            $na[_urlencode($k)] = _urlencode($v);
+        }
+        return $na;
     }
-    return $na;
-  }
-  return urlencode($elem);
+    return urlencode($elem);
 }
 
 $key=$_GET["action"];
@@ -33,18 +33,18 @@ switch ($key)
 {
     case "login":  //login message:
         //require data structure:
-            //var map={
-            //    action:"login",
-            //    name:$("#Username_Input").val(),
-            //    password:$("#Password_Input").val()
-            //};
+        //var map={
+        //    action:"login",
+        //    name:$("#Username_Input").val(),
+        //    password:$("#Password_Input").val()
+        //};
         //return data structure:
-            //usrinfo={
-            //  status:"true",
-            //  text:"login successfully",
-            //  key: "1234567",
-            //  admin: "true"
-            //};
+        //usrinfo={
+        //  status:"true",
+        //  text:"login successfully",
+        //  key: "1234567",
+        //  admin: "true"
+        //};
         $user = trim($_GET["name"]);
         $pwd = trim($_GET["password"]);
 
@@ -56,18 +56,18 @@ switch ($key)
 
     case "UserInfo":    // get User Information after login
         //require data structure:
-            /*var map={
-                    action:"UserInfo",
-                    session: session
-                    };*/
+        /*var map={
+                action:"UserInfo",
+                session: session
+                };*/
         //return data structure:
-            /*var user = {
-                        id:1234567,
-                        name:"admin",
-                        admin:true,
-                        city: "上海"
-                    }*/
-                    //echo $key;
+        /*var user = {
+                    id:1234567,
+                    name:"admin",
+                    admin:true,
+                    city: "上海"
+                }*/
+        //echo $key;
         $session = $_GET["session"];
         $userinfo =$uiDbObj->db_userinfo_req($session);
 
@@ -87,21 +87,21 @@ switch ($key)
 
     case "ProjectPGList":  //Get the Project & Project Group list which will be use in user auth
         //require data structure:
-            /*var map={
-                      action:"ProjectPGList",
-                      user:usr.id
-                  };*/
+        /*var map={
+                  action:"ProjectPGList",
+                  user:usr.id
+              };*/
         //return data structure:
-            /*var temp = {
-              id: (i),
-              name: "��Ŀ��"+i
-              }
-              proj_pg_list.push(temp);
-              var retval={
-              status:"true",
-              ret: proj_pg_list
-              };
-              */
+        /*var temp = {
+          id: (i),
+          name: "��Ŀ��"+i
+          }
+          proj_pg_list.push(temp);
+          var retval={
+          status:"true",
+          ret: proj_pg_list
+          };
+          */
         $user = $_GET["user"];
         $proj_pg_list = $uiDbObj->db_all_projpglist_req();
 
@@ -121,10 +121,10 @@ switch ($key)
 
     case "ProjectList":   //Get the Project list
         //require data structure:
-            /*var map={
-                      action:"ProjectList",
-                      user:usr.id
-                  };*/
+        /*var map={
+                  action:"ProjectList",
+                  user:usr.id
+              };*/
         //return data structure:
         /*          var temp = {
                     id: (i),
@@ -261,9 +261,9 @@ switch ($key)
         $result = $uiDbObj->db_userinfo_delete($uid);
         if($result == true)
             $retval=array(
-                        'status'=>'true',
-                        'msg'=>'用户删除成功'
-                    );
+                'status'=>'true',
+                'msg'=>'用户删除成功'
+            );
         else
             $retval=array(
                 'status'=>'false',
@@ -305,7 +305,7 @@ switch ($key)
         $query_length = (int)($_GET['length']);
         $start = (int)($_GET['startseq']);
         if($query_length> $total-$start)
-            {$query_length = $total-$start;}
+        {$query_length = $total-$start;}
 
         $usertable = $uiDbObj->db_usertable_req($start, $query_length);
         if (!empty($usertable))
@@ -392,7 +392,7 @@ switch ($key)
         $query_length = (int)($_GET['length']);
         $start = (int)($_GET['startseq']);
         if($query_length> $total-$start)
-            {$query_length = $total-$start;}
+        {$query_length = $total-$start;}
 
         $pgtable = $uiDbObj->db_all_pgtable_req($start, $query_length);
 
@@ -454,12 +454,12 @@ switch ($key)
             $retval=array(
                 'status'=>'true',
                 'msg'=>'新建项目组成功'
-                );
+            );
         else
             $retval=array(
                 'status'=>'false',
                 'msg'=>'新建项目组失败'
-                );
+            );
         $jsonencode = _encode($retval);
         echo $jsonencode;
         break;
@@ -501,29 +501,29 @@ switch ($key)
             $retval=array(
                 'status'=>'true',
                 'msg'=>'项目组信息修改成功'
-                );
+            );
         else
             $retval=array(
                 'status'=>'false',
                 'msg'=>'项目组信息修改失败'
-                );
+            );
         $jsonencode = _encode($retval);
         echo $jsonencode;
         break;
 
     case "PGDel":  //删除项目组信息
         //require data structure:
-                 /*
-        var map={
-            action:"PGDel",
-            id: id,
-            user:usr.id
-        };
-         //return data structure:
-        var retval={
-                        status:"true",
-                        msg:""
-                    };*/
+        /*
+var map={
+   action:"PGDel",
+   id: id,
+   user:usr.id
+};
+//return data structure:
+var retval={
+               status:"true",
+               msg:""
+           };*/
         $pgcode = $_GET["id"];
         $result = $uiDbObj->db_pginfo_delete($pgcode);
         if ($result)
@@ -607,7 +607,7 @@ switch ($key)
         $query_length = (int)($_GET['length']);
         $start = (int)($_GET['startseq']);
         if($query_length> $total-$start)
-            {$query_length = $total-$start;}
+        {$query_length = $total-$start;}
 
         $projtable = $uiDbObj->db_all_projtable_req($start, $query_length);
         if(!empty($projtable))
@@ -631,73 +631,73 @@ switch ($key)
         break;
 
     case "ProjNew":
-    // create a new project
-    //require data structure:
-    /*
-    var map={
-        action:"ProjNew",
-        ProjCode: project.ProjCode,
-        ProjName:project.ProjName,
-        ChargeMan:project.ChargeMan,
-        Telephone:project.Telephone,
-        Department:project.Department,
-        Address:project.Address,
-        ProStartTime:project.ProStartTime,
-        Stage:project.Stage,
-        user:usr.id
-    };
-    //return data structure:
-    var retval={
-                status:"true",
-                msg:""
-            };*/
-    $retval=array(
-        'status'=>'true',
-        'msg'=>''
-    );
-    $jsonencode = _encode($retval);
-    echo $jsonencode; break;
-    case "ProjMod":
-    // modify project
-    //require data structure:
-    /*
-    var map={
-        action:"ProjMod",
-        ProjCode: project.ProjCode,
-        ProjName:project.ProjName,
-        ChargeMan:project.ChargeMan,
-        Telephone:project.Telephone,
-        Department:project.Department,
-        Address:project.Address,
-        ProStartTime:project.ProStartTime,
-        Stage:project.Stage,
-        user:usr.id
-    };
-    //return data structure:
-    var retval={
-                status:"true",
-                msg:""
-            };*/
-    $retval=array(
-        'status'=>'true',
-        'msg'=>''
-    );
-    $jsonencode = _encode($retval);
-    echo $jsonencode; break;
-
-    case "ProjDel":  //删除一个项目
-         //require data structure:
-         /*
+        // create a new project
+        //require data structure:
+        /*
         var map={
-            action:"ProjDel",
-            StatCode: StatCode,
+            action:"ProjNew",
+            ProjCode: project.ProjCode,
+            ProjName:project.ProjName,
+            ChargeMan:project.ChargeMan,
+            Telephone:project.Telephone,
+            Department:project.Department,
+            Address:project.Address,
+            ProStartTime:project.ProStartTime,
+            Stage:project.Stage,
             user:usr.id
         };
         //return data structure:
         var retval={
-                        status:"true",
-                        msg:""
-                    };*/
+                    status:"true",
+                    msg:""
+                };*/
+        $retval=array(
+            'status'=>'true',
+            'msg'=>''
+        );
+        $jsonencode = _encode($retval);
+        echo $jsonencode; break;
+    case "ProjMod":
+        // modify project
+        //require data structure:
+        /*
+        var map={
+            action:"ProjMod",
+            ProjCode: project.ProjCode,
+            ProjName:project.ProjName,
+            ChargeMan:project.ChargeMan,
+            Telephone:project.Telephone,
+            Department:project.Department,
+            Address:project.Address,
+            ProStartTime:project.ProStartTime,
+            Stage:project.Stage,
+            user:usr.id
+        };
+        //return data structure:
+        var retval={
+                    status:"true",
+                    msg:""
+                };*/
+        $retval=array(
+            'status'=>'true',
+            'msg'=>''
+        );
+        $jsonencode = _encode($retval);
+        echo $jsonencode; break;
+
+    case "ProjDel":  //删除一个项目
+        //require data structure:
+        /*
+       var map={
+           action:"ProjDel",
+           StatCode: StatCode,
+           user:usr.id
+       };
+       //return data structure:
+       var retval={
+                       status:"true",
+                       msg:""
+                   };*/
         $projcode = $_GET["ProjCode"];
         $result = $uiDbObj->db_projinfo_delete($projcode);
         if ($result)
@@ -810,7 +810,7 @@ switch ($key)
         $query_length = (int)($_GET['length']);
         $start = (int)($_GET['startseq']);
         if($query_length> $total-$start)
-            {$query_length = $total-$start;}
+        {$query_length = $total-$start;}
         $sitetable = $uiDbObj->db_all_sitetable_req($start, $query_length);
         if(!empty($sitetable))
             $retval=array(
@@ -836,69 +836,69 @@ switch ($key)
         //abandon
         break;
     case "PointNew":
-    // create a new monitor point
-    //require data structure:
-    /*var map={
-          action:"PointNew",
-          StatCode: point.StatCode,
-          StatName:point.StatName,
-          ProjCode: point.ProjCode,
-          ChargeMan:point.ChargeMan,
-          Telephone:point.Telephone,
-          Longitude:point.Longitude,
-          Latitude:point.Latitude,
-          Department:point.Department,
-          Address:point.Address,
-          Country:point.Country,
-          Street:point.Street,
-          Square:point.Square,
-          ProStartTime:point.ProStartTime,
-          Stage:point.Stage,
-          user:usr.id
-      };
-    //return data structure:
-    var retval={
-                status:"true",
-                msg:""
-            };*/
-    $retval=array(
-        'status'=>'true',
-        'msg'=>''
-    );
-    $jsonencode = _encode($retval);
-    echo $jsonencode; break;
+        // create a new monitor point
+        //require data structure:
+        /*var map={
+              action:"PointNew",
+              StatCode: point.StatCode,
+              StatName:point.StatName,
+              ProjCode: point.ProjCode,
+              ChargeMan:point.ChargeMan,
+              Telephone:point.Telephone,
+              Longitude:point.Longitude,
+              Latitude:point.Latitude,
+              Department:point.Department,
+              Address:point.Address,
+              Country:point.Country,
+              Street:point.Street,
+              Square:point.Square,
+              ProStartTime:point.ProStartTime,
+              Stage:point.Stage,
+              user:usr.id
+          };
+        //return data structure:
+        var retval={
+                    status:"true",
+                    msg:""
+                };*/
+        $retval=array(
+            'status'=>'true',
+            'msg'=>''
+        );
+        $jsonencode = _encode($retval);
+        echo $jsonencode; break;
     case "PointMod":
-    // modify a new monitor point
-    //require data structure:
-    /*var map={
-          action:"PointMod",
-          StatCode: point.StatCode,
-          StatName:point.StatName,
-          ProjCode: point.ProjCode,
-          ChargeMan:point.ChargeMan,
-          Telephone:point.Telephone,
-          Longitude:point.Longitude,
-          Latitude:point.Latitude,
-          Department:point.Department,
-          Address:point.Address,
-          Country:point.Country,
-          Street:point.Street,
-          Square:point.Square,
-          ProStartTime:point.ProStartTime,
-          Stage:point.Stage,
-          user:usr.id
-      };
-    //return data structure:
-    var retval={
-                status:"true",
-                msg:""
-            };*/
-    $retval=array(
-        'status'=>'true',
-        'msg'=>''
-    );
-    $jsonencode = _encode($retval);
-    echo $jsonencode; break;
+        // modify a new monitor point
+        //require data structure:
+        /*var map={
+              action:"PointMod",
+              StatCode: point.StatCode,
+              StatName:point.StatName,
+              ProjCode: point.ProjCode,
+              ChargeMan:point.ChargeMan,
+              Telephone:point.Telephone,
+              Longitude:point.Longitude,
+              Latitude:point.Latitude,
+              Department:point.Department,
+              Address:point.Address,
+              Country:point.Country,
+              Street:point.Street,
+              Square:point.Square,
+              ProStartTime:point.ProStartTime,
+              Stage:point.Stage,
+              user:usr.id
+          };
+        //return data structure:
+        var retval={
+                    status:"true",
+                    msg:""
+                };*/
+        $retval=array(
+            'status'=>'true',
+            'msg'=>''
+        );
+        $jsonencode = _encode($retval);
+        echo $jsonencode; break;
 
     case "PointDel":  //删除一个监测点
         //require data structure:
@@ -1004,7 +1004,7 @@ switch ($key)
         $query_length = (int)($_GET["length"]);
         $start = (int)($_GET["startseq"]);
         if($query_length> $total-$start)
-            {$query_length = $total-$start;}
+        {$query_length = $total-$start;}
         $devtable = $uiDbObj->db_all_hcutable_req($start,$query_length);
         if(!empty($devtable))
             $retval=array(
@@ -1028,55 +1028,55 @@ switch ($key)
         break;
 
     case "DevNew":
-    // create a new device
-    //require data structure:
-    /*var map={
-          action:"DevNew",
-          DevCode: device.DevCode,
-          StatCode:device.StatCode,
-          StartTime:device.StartTime,
-          PreEndTime:device.PreEndTime,
-          EndTime:device.EndTime,
-          DevStatus:device.DevStatus,
-          VideoURL:device.VideoURL,
-          user:usr.id
-      };
-    //return data structure:
-            var retval={
-                            status:"true",
-                            msg:""
-                        };*/
-    $retval=array(
-        'status'=>'true',
-        'msg'=>''
-    );
-    $jsonencode = _encode($retval);
-    echo $jsonencode; break;
+        // create a new device
+        //require data structure:
+        /*var map={
+              action:"DevNew",
+              DevCode: device.DevCode,
+              StatCode:device.StatCode,
+              StartTime:device.StartTime,
+              PreEndTime:device.PreEndTime,
+              EndTime:device.EndTime,
+              DevStatus:device.DevStatus,
+              VideoURL:device.VideoURL,
+              user:usr.id
+          };
+        //return data structure:
+                var retval={
+                                status:"true",
+                                msg:""
+                            };*/
+        $retval=array(
+            'status'=>'true',
+            'msg'=>''
+        );
+        $jsonencode = _encode($retval);
+        echo $jsonencode; break;
     case "DevMod":
-    // modify a  device
-    //require data structure:
-    /*var map={
-          action:"DevMod",
-          DevCode: device.DevCode,
-          StatCode:device.StatCode,
-          StartTime:device.StartTime,
-          PreEndTime:device.PreEndTime,
-          EndTime:device.EndTime,
-          DevStatus:device.DevStatus,
-          VideoURL:device.VideoURL,
-          user:usr.id
-      };
-    //return data structure:
-            var retval={
-                            status:"true",
-                            msg:""
-                        };*/
-    $retval=array(
-        'status'=>'true',
-        'msg'=>''
-    );
-    $jsonencode = _encode($retval);
-    echo $jsonencode; break;
+        // modify a  device
+        //require data structure:
+        /*var map={
+              action:"DevMod",
+              DevCode: device.DevCode,
+              StatCode:device.StatCode,
+              StartTime:device.StartTime,
+              PreEndTime:device.PreEndTime,
+              EndTime:device.EndTime,
+              DevStatus:device.DevStatus,
+              VideoURL:device.VideoURL,
+              user:usr.id
+          };
+        //return data structure:
+                var retval={
+                                status:"true",
+                                msg:""
+                            };*/
+        $retval=array(
+            'status'=>'true',
+            'msg'=>''
+        );
+        $jsonencode = _encode($retval);
+        echo $jsonencode; break;
 
     case "DevDel":  //删除HCU设备
         //require data structure:
@@ -1127,73 +1127,73 @@ switch ($key)
                                     status:"true",
                                     ret:alarmlist
                                 };*/
-/*
-        $alarmlist= array();
-        $map1 = array(
-            'AlarmName'=>"噪声",
-            'AlarmEName'=> "Noise",
-            'AlarmValue'=>(string)rand(10,110),
-            'AlarmUnit'=>"DB",
-            'WarningTarget'=>"false"
-        );
-        array_push($alarmlist,$map1);
-        $map2 = array(
-            'AlarmName'=>"风向",
-            'AlarmEName'=> "WD",
-            'AlarmValue'=>(string)rand(1,100),
-            'AlarmUnit'=>"mg/m3",
-            'WarningTarget'=>"false"
-        );
-        array_push($alarmlist,$map2);
-        $map3 = array(
-            'AlarmName'=>"湿度",
-            'AlarmEName'=> "Wet",
-            'AlarmValue'=>(string)rand(1,100),
-            'AlarmUnit'=>"%",
-            'WarningTarget'=>"false"
-        );
-        array_push($alarmlist,$map3);
-        $map4 = array(
-            'AlarmName'=>"温度",
-            'AlarmEName'=> "Temperature",
-            'AlarmValue'=>(string)rand(10,50),
-            'AlarmUnit'=>"C",
-            'WarningTarget'=>"false"
-        );
-        array_push($alarmlist,$map4);
-        $map5 = array(
-            'AlarmName'=>"细颗粒物",
-            'AlarmEName'=> "PM",
-            'AlarmValue'=>(string)rand(10,400),
-            'AlarmUnit'=>"ug/m3",
-            'WarningTarget'=>"false"
-        );
-        array_push($alarmlist,$map5);
-        $map6 = array(
-            'AlarmName'=>"录像",
-            'AlarmEName'=> "VCR",
-            'AlarmValue'=>(string)rand(10,150),
-            'AlarmUnit'=>"菌群",
-            'WarningTarget'=>"false"
-        );
-        array_push($alarmlist,$map6);
-        $map7 = array(
-            'AlarmName'=>"GPS",
-            'AlarmEName'=> "GPS",
-            'AlarmValue'=>(string)rand(10,30),
-            'AlarmUnit'=>"ug/L",
-            'WarningTarget'=>"false"
-        );
-        array_push($alarmlist,$map7);
-        $map8 = array(
-            'AlarmName'=>"风速",
-            'AlarmEName'=> "WS",
-            'AlarmValue'=>(string)rand(10,150),
-            'AlarmUnit'=>"km/h",
-            'WarningTarget'=>"false"
-        );
-        array_push($alarmlist,$map8);
-*/
+        /*
+                $alarmlist= array();
+                $map1 = array(
+                    'AlarmName'=>"噪声",
+                    'AlarmEName'=> "Noise",
+                    'AlarmValue'=>(string)rand(10,110),
+                    'AlarmUnit'=>"DB",
+                    'WarningTarget'=>"false"
+                );
+                array_push($alarmlist,$map1);
+                $map2 = array(
+                    'AlarmName'=>"风向",
+                    'AlarmEName'=> "WD",
+                    'AlarmValue'=>(string)rand(1,100),
+                    'AlarmUnit'=>"mg/m3",
+                    'WarningTarget'=>"false"
+                );
+                array_push($alarmlist,$map2);
+                $map3 = array(
+                    'AlarmName'=>"湿度",
+                    'AlarmEName'=> "Wet",
+                    'AlarmValue'=>(string)rand(1,100),
+                    'AlarmUnit'=>"%",
+                    'WarningTarget'=>"false"
+                );
+                array_push($alarmlist,$map3);
+                $map4 = array(
+                    'AlarmName'=>"温度",
+                    'AlarmEName'=> "Temperature",
+                    'AlarmValue'=>(string)rand(10,50),
+                    'AlarmUnit'=>"C",
+                    'WarningTarget'=>"false"
+                );
+                array_push($alarmlist,$map4);
+                $map5 = array(
+                    'AlarmName'=>"细颗粒物",
+                    'AlarmEName'=> "PM",
+                    'AlarmValue'=>(string)rand(10,400),
+                    'AlarmUnit'=>"ug/m3",
+                    'WarningTarget'=>"false"
+                );
+                array_push($alarmlist,$map5);
+                $map6 = array(
+                    'AlarmName'=>"录像",
+                    'AlarmEName'=> "VCR",
+                    'AlarmValue'=>(string)rand(10,150),
+                    'AlarmUnit'=>"菌群",
+                    'WarningTarget'=>"false"
+                );
+                array_push($alarmlist,$map6);
+                $map7 = array(
+                    'AlarmName'=>"GPS",
+                    'AlarmEName'=> "GPS",
+                    'AlarmValue'=>(string)rand(10,30),
+                    'AlarmUnit'=>"ug/L",
+                    'WarningTarget'=>"false"
+                );
+                array_push($alarmlist,$map7);
+                $map8 = array(
+                    'AlarmName'=>"风速",
+                    'AlarmEName'=> "WS",
+                    'AlarmValue'=>(string)rand(10,150),
+                    'AlarmUnit'=>"km/h",
+                    'WarningTarget'=>"false"
+                );
+                array_push($alarmlist,$map8);
+        */
 
         $statcode =$_GET["StatCode"];
 
@@ -1261,76 +1261,88 @@ switch ($key)
         echo $jsonencode;
         break;
 
-    case "AlarmQuery":
-        // query one point one date alarm by minute/hour/day
+    case "AlarmQuery": //查询一个监测点历史告警数据 minute/hour/day
         //require data structure:
         /*
         var map={
-            action:"AlarmQuery",
-            id: usr.id,
-            StatCode: alarm_selected.StatCode,
-            date: date,
-            type:type
-        };
-        //return data structure:
-        var minute_alarm = new Array();
-        for(var i=0;i<(60*24);i++){
-            minute_alarm.push(GetRandomNum(10,110));
-        }
-        var hour_alarm = new Array();
-        for(var i=0;i<(7*24);i++){
-            hour_alarm.push(GetRandomNum(10,110));
-        }
-        var day_alarm = new Array();
-        for(var i=0;i<30;i++){
-            day_alarm.push(GetRandomNum(10,110));
-        }
+                action:"AlarmQuery",
+                id: usr.id,
+                StatCode: alarm_selected.StatCode,
+                date: date,
+                type:type
+            };
+           //return data structure:
+            var minute_alarm = new Array();
+             var minute_head = new Array();
+                        for(var i=0;i<(60*24);i++){
+                            minute_alarm.push(GetRandomNum(10,110));
+                            minute_head.push((string)i);
+                        }
+                        var hour_alarm = new Array();
+                        var hour_head = new Array();
+                        for(var i=0;i<(7*24);i++){
+                            hour_alarm.push(GetRandomNum(10,110));
+                            hour_head.push((string)i);
+                        }
+                        var day_alarm = new Array();
+                        var day_head = new Array();
+                        for(var i=0;i<30;i++){
+                            day_alarm.push(GetRandomNum(10,110));
+                            day_head.push((string)i);
+                        }
 
-        var retval={
-            status:"true",
-            StatCode: StatCode,
-            date: date,
-            AlarmName: AlarmName,
-            AlarmUnit: AlarmUnit,
-            WarningTarget:WarningTarget,
-            minute_alarm: minute_alarm,
-            hour_alarm: hour_alarm,
-            day_alarm: day_alarm
-        };*/
+                        var retval={
+                            status:"true",
+                            StatCode: StatCode,
+                            date: date,
+                            AlarmName: AlarmName,
+                            AlarmUnit: AlarmUnit,
+                            WarningTarget:WarningTarget,
+                            minute_alarm: minute_alarm,
+                            hour_alarm: hour_alarm,
+                            day_alarm: day_alarm
+                        };*/
         $user = $_GET["id"];
-        $StatCode = $_GET["StatCode"];
+        $statcode = $_GET["StatCode"];
         $query_date = $_GET["date"];
         $query_type = $_GET["type"];
 
-        $AlarmName= "噪声";
-        $AlarmUnit="DB";
-        $WarningTarget='65';
-        $minute_alarm = array();
-        for($i=0;$i<(60*24);$i++){
-            array_push($minute_alarm,rand(10,110));
-        }
-        $hour_alarm = array();
-        for($i=0;$i<(7*24);$i++){
-            array_push($hour_alarm,rand(10,110));
-        }
-        $day_alarm = array();
-        for($i=0;$i<30;$i++){
-            array_push($day_alarm,rand(10,110));
-        }
+        $result = $uiDbObj->db_dev_alarmhistory_req($statcode, $query_date, "S_0001");
 
-        $retval= array(
-            'status'=>"true",
-            'StatCode'=> $StatCode,
-            'date'=> $query_date,
-            'AlarmName'=> $AlarmName,
-            'AlarmUnit'=> $AlarmUnit,
-            'WarningTarget'=>$WarningTarget,
-            'minute_alarm'=> $minute_alarm,
-            'hour_alarm'=> $hour_alarm,
-            'day_alarm'=> $day_alarm
-        );
+        if(!empty($result))
+            $retval= array(
+                'status'=>"true",
+                'StatCode'=> $statcode,
+                'date'=> $query_date,
+                'AlarmName'=> $result["alarm_name"],
+                'AlarmUnit'=> $result["alarm_unit"],
+                'WarningTarget'=>$result["warning"],
+                'minute_head'=>$result["minute_head"],
+                'minute_alarm'=> $result["minute_alarm"],
+                'hour_head'=>$result["hour_head"],
+                'hour_alarm'=> $result["hour_alarm"],
+                'day_head'=>$result["day_head"],
+                'day_alarm'=> $result["day_alarm"]
+            );
+        else
+            $retval= array(
+                'status'=>"false",
+                'StatCode'=> $statcode,
+                'date'=> $query_date,
+                'AlarmName'=> $query_type,
+                'AlarmUnit'=> null,
+                'WarningTarget'=> null,
+                'minute_head'=> null,
+                'minute_alarm'=> null,
+                'hour_head'=> null,
+                'hour_alarm'=> null,
+                'day_head'=> null,
+                'day_alarm'=> null
+            );
+
         $jsonencode = json_encode($retval,JSON_UNESCAPED_UNICODE);
-        echo $jsonencode; break;
+        echo $jsonencode;
+        break;
 
     case "AlarmType":  //获取所有传感器类型
         //require data structure:
@@ -1365,46 +1377,46 @@ switch ($key)
         break;
 
     case "TableQuery":
-        // input tablename =>string
-        // condition =>array
-        // every condition
+// input tablename =>string
+// condition =>array
+// every condition
         /*
-            ConditonName: "AlarmDate",
-            Equal:"",
-            GEQ:end_date,
-            LEQ:start_date*/
-                $TableName = $_GET["TableName"];
-                $Condition = $_GET["Condition"];
-                //$Filter = $_GET["Filter"];
-                $column = 16;
-                $row = 40;
-                $column_name = array();
-                $row_content = array();
-                for( $i=0;$i<$column;$i++){
-                    array_push($column_name,"第".(string)($i+1)."列");
-                }
-                for($i=0;$i<$row;$i++){
-                    $one_row = array();
-                    array_push($one_row,(string)($i+1));
-                    array_push($one_row,"备注".(string)($i+1));
-                    for($j=0;$j<($column-6);$j++) array_push($one_row,rand(10,110));
+                ConditonName: "AlarmDate",
+                Equal:"",
+                GEQ:end_date,
+                LEQ:start_date*/
+        $TableName = $_GET["TableName"];
+        $Condition = $_GET["Condition"];
+        //$Filter = $_GET["Filter"];
+        $column = 16;
+        $row = 40;
+        $column_name = array();
+        $row_content = array();
+        for( $i=0;$i<$column;$i++){
+            array_push($column_name,"第".(string)($i+1)."列");
+        }
+        for($i=0;$i<$row;$i++){
+            $one_row = array();
+            array_push($one_row,(string)($i+1));
+            array_push($one_row,"备注".(string)($i+1));
+            for($j=0;$j<($column-6);$j++) array_push($one_row,rand(10,110));
 
-                    //one_row.push("地址"+(i+1)+"xxxxx路"+(i+1)+"xxxxx号");
-                    array_push($one_row,"地址".((string)($i+1))."xxxxx路".((string)($i+1))."xxxxx号");
-                    //one_row.push("测试");
-                    array_push($one_row,"测试");
-                    //one_row.push("名称");
-                    array_push($one_row,"名称");
-                    //one_row.push("长数据长数据长数据"+(i+1)+"xxxxx路"+(i+1)+"xxxxx号");
-                    array_push($one_row,"长数据长数据长数据".((string)($i+1))."xxxxx路".((string)($i+1))."xxxxx号");
-                    array_push($row_content,$one_row);
-                    //row_content.push(one_row);
-                }
-                $retval=array(
-                    'status'=>'true',
-                    'ColumnName'=> $column_name,
-                    'TableData'=>$row_content
-                );
+            //one_row.push("地址"+(i+1)+"xxxxx路"+(i+1)+"xxxxx号");
+            array_push($one_row,"地址".((string)($i+1))."xxxxx路".((string)($i+1))."xxxxx号");
+            //one_row.push("测试");
+            array_push($one_row,"测试");
+            //one_row.push("名称");
+            array_push($one_row,"名称");
+            //one_row.push("长数据长数据长数据"+(i+1)+"xxxxx路"+(i+1)+"xxxxx号");
+            array_push($one_row,"长数据长数据长数据".((string)($i+1))."xxxxx路".((string)($i+1))."xxxxx号");
+            array_push($row_content,$one_row);
+            //row_content.push(one_row);
+        }
+        $retval=array(
+            'status'=>'true',
+            'ColumnName'=> $column_name,
+            'TableData'=>$row_content
+        );
         $jsonencode = _encode($retval);
         echo $jsonencode; break;
 
@@ -1430,9 +1442,9 @@ switch ($key)
 
         if(!empty($sensorinfo))
             $retval=array(
-                    'status'=>'true',
-                    'ret'=>$sensorinfo
-                );
+                'status'=>'true',
+                'ret'=>$sensorinfo
+            );
         else
             $retval=array(
                 'status'=>'false',
@@ -1455,8 +1467,129 @@ switch ($key)
         $jsonencode = _encode($retval);
         echo $jsonencode; break;
 
+    case "SetUserMsg":
+        /*
+                var usr = data.id;
+                var Msg = data.msg;
+                var ifdev = data.ifdev;
+                var retval={
+                    status:"true",
+                    msg:""
+                };*/
+        $usr = $_GET["id"];
+        $msg = $_GET["msg"];
+        $ifdev = $_GET["ifdev"];
+        $retval=array(
+            'status'=>'true',
+            'msg'=>''
+        );
+        $jsonencode = _encode($retval);
+        echo $jsonencode; break;
+    case "GetUserMsg":
+        /*
+            var usr = data.id;
+            var retval={
+                status:"true",
+                msg:"您好，今天是xxxx号，欢迎领导前来视察，今天的气温是 今天的PM2.5是....",
+                ifdev:"true"
+            };*/
+        $usr = $_GET["id"];
+        $retval=array(
+            'status'=>'true',
+            'msg'=>'您好，今天是xxxx号，欢迎领导前来视察，今天的气温是 今天的PM2.5是....',
+            'ifdev'=>"true"
+        );
+        $jsonencode = _encode($retval);
+        echo $jsonencode; break;
+    case "ShowUserMsg":
+        /*
+            var usr = data.id;
+            var temp = GetRandomNum(1000,9999);
+            var retval={
+                    status:"true",
+                    msg:temp+"您好，今天是"+temp+"号，欢迎领导前来视察，今天的气温是 今天的PM2.5是.xxx.yyy.zzz."
+                };*/
+        $usr = $_GET["id"];
+        $StatCode = $_GET["StatCode"];
+        $temp =(string)rand(1000,9999);
+        $retval=array(
+            'status'=>'true',
+            'msg'=>$temp.'您好，今天是'.$temp.'号，欢迎领导前来视察，今天的气温是 今天的PM2.5是....'
+        );
+
+        $jsonencode = _encode($retval);
+        echo $jsonencode; break;
+    case "GetUserImg":
+        /*
+                    var usr = data.id;
+                    var ImgList= new Array();
+                    for(var i=1;i<6;i++){
+                        var map={
+                            name :"test"+i+".jpg",
+                            url:"assets/img/test"+i+".jpg"
+                        };
+                        ImgList.push(map);
+                    }
+                    var retval={
+                        status:"true",
+                        img: ImgList
+                    };*/
+        $usr = $_GET["id"];
+        $ImgList = array();
+        for ($i=1;$i<6;$i++){
+            $map = array(
+                'name'=>"test".(string)$i.".jpg",
+                'url'=>"assets/img/test".(string)$i.".jpg"
+            );
+            array_push($ImgList,$map);
+        }
+        $retval=array(
+            'status'=>'true',
+            'img'=>$ImgList
+        );
+        $jsonencode = _encode($retval);
+        echo $jsonencode; break;
+    case "ClearUserImg":
+        /*
+            var usr = data.id;
+            var retval={
+                status:"true"
+            };*/
+        $usr = $_GET["id"];
+        $retval=array(
+            'status'=>'true'
+        );
+        $jsonencode = _encode($retval);
+        echo $jsonencode; break;
+    case "GetStaticMonitorTable":  //查询测量点聚合信息
+        /*
+        var retval={
+            status:"true",
+            ColumnName: column_name,
+            TableData:row_content
+        };*/
+        $usr = $_GET["id"];
+        $result = $uiDbObj->db_user_dataaggregate_req("UID001");
+
+        if(!empty($result))
+            $retval=array(
+                'status'=>'true',
+                'ColumnName' => $result["column"],
+                'TableData' => $result["data"]
+            );
+        else
+            $retval=array(
+                'status'=>'false',
+                'ColumnName' => null,
+                'TableData' => null
+            );
+
+        $jsonencode = _encode($retval);
+        echo $jsonencode;
+        break;
+
     default:
-    break;
+        break;
 }
 
 

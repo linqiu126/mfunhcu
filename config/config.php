@@ -17,8 +17,9 @@ define("TIME_GRID_SIZE", 1); //定义用于数据存储的时间网格为。单�
 define("XML_FORMAT", "<x"); //XML数据格式，消息以<xml开头
 define("ZHB_FORMAT", "##"); //中环保数据格式，消息以##开头
 
-define("PG_CODE", "PG");   //定义项目组code的特征字，项目组code必须以“PG”开头
-define("PROJ_CODE", "P_");  //定义项目code的特征字，项目code必须以“P_”开头
+define("PG_CODE_PREFIX", "PG");   //定义项目组code的特征字，项目组code必须以“PG”开头
+define("PROJ_CODE_PREFIX", "P_");  //定义项目code的特征字，项目code必须以“P_”开头
+define("UID_PREFIX", "UID");
 define("CODE_FORMAT_LEN", 2); //定义项目code和项目组code的特征字长度
 
 define("IHU_MSG_HEAD_FORMAT", "A4MagicCode/A4Version/A4Length/A4CmdId/A4Seq/A4ErrCode");

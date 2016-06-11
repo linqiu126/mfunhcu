@@ -455,7 +455,7 @@
             };
             return JSON.stringify(retval);
         case "DevAlarm":
-            var devcode = parseInt(data.DevCode);
+            var StatCode = parseInt(data.StatCode);
             var alarmlist= new Array();
             var map1 = {
                 AlarmName: "噪声",
@@ -518,7 +518,7 @@
                 AlarmEName: "WS",
                 AlarmValue:GetRandomNum(10,150),
                 AlarmUnit:"km/h",
-                WarningTarget:"false"
+                WarningTarget:"true"
             };
             alarmlist.push(map8);
 
@@ -533,6 +533,7 @@
 
             var retval={
                 status:"true",
+				StatCode:StatCode,
                 ret:alarmlist,
                 vcr:vcr_list
             };
@@ -1164,6 +1165,88 @@
             var retval={
                 status:"true",
                 msg:""
+            };
+            return JSON.stringify(retval);
+        case "SetUserMsg":
+            var usr = data.id;
+            var Msg = data.msg;
+            var ifdev = data.ifdev;
+            var retval={
+                status:"true",
+                msg:""
+            };
+            return JSON.stringify(retval);
+        case "GetUserMsg":
+            var usr = data.id;
+            var retval={
+                status:"true",
+                msg:"您好，今天是xxxx号，欢迎领导前来视察，今天的气温是 今天的PM2.5是....",
+                ifdev:"true"
+            };
+            return JSON.stringify(retval);
+        case "ShowUserMsg":
+            var usr = data.id;
+            var temp = GetRandomNum(1000,9999);
+            var retval={
+                status:"true",
+                msg:temp+"您好，今天是"+temp+"号，欢迎领导前来视察，今天的气温是 今天的PM2.5是.xxx.yyy.zzz."
+            };
+            return JSON.stringify(retval);
+        case "GetUserImg":
+            var usr = data.id;
+            var ImgList= new Array();
+            for(var i=1;i<6;i++){
+                var map={
+                    name :"test"+i+".jpg",
+                    url:"assets/img/test"+i+".jpg"
+                };
+                ImgList.push(map);
+            }
+            var retval={
+                status:"true",
+                img: ImgList
+            };
+            return JSON.stringify(retval);
+        case "ClearUserImg":
+            var usr = data.id;
+            var StatCode = data.StatCode;
+            var retval={
+                status:"true"
+            };
+            return JSON.stringify(retval);
+        case "GetStaticMonitorTable":
+            var usr = data.id;
+            var column = 16;
+            var row = 400;
+            var column_name = new Array();
+            var row_content = new Array();
+            for( var i=0;i<column;i++){
+                column_name.push("第"+(i+1)+"列");
+                //column_name.push(""+(i+1)+"");
+            }
+            for(var i=0;i<row;i++){
+                var one_row = new Array();
+                one_row.push((i+1));
+
+                one_row.push("备注"+(i+1));
+                for(var j=0;j<(column-6);j++) one_row.push(GetRandomNum(10,110));
+                one_row.push("地址"+(i+1)+"xxxxx路"+(i+1)+"xxxxx号");
+                one_row.push("测试");
+                one_row.push("名称");
+                one_row.push("长数据长数据长数据"+(i+1)+"xxxxx路"+(i+1)+"xxxxx号");
+                /*
+                 one_row.push(""+(i+1));
+                 for(var j=0;j<(column-6);j++) one_row.push(GetRandomNum(10,110));
+                 one_row.push(""+(i+1)+"xxxxx"+(i+1)+"xxxxx");
+                 one_row.push("");
+                 one_row.push("");
+                 one_row.push(""+(i+1)+"xxxxx"+(i+1)+"xxxxx");*/
+                row_content.push(one_row);
+            }
+            var retval={
+                status:"true",
+                ColumnName: column_name,
+                TableData:row_content
             };
             return JSON.stringify(retval);
         case "list":

@@ -14,6 +14,9 @@ function check_session($s){
     if($s == "7654321"){
         return "user";
     }
+    if($s == "1111111"){
+            return "黄";
+        }
     return "";
     */
 }

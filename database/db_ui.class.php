@@ -564,7 +564,7 @@ class class_ui_db
             $pgcode = "";
             $authcode = $row['auth_code'];
             $fromat = substr($authcode, 0, CODE_FORMAT_LEN);
-            if ($fromat == PG_CODE)
+            if ($fromat == PG_CODE_PREFIX)
                 $pgcode = $authcode;
 
             $query_str = "SELECT * FROM `t_projgroup` WHERE `pg_code` = '$pgcode'";
@@ -603,7 +603,7 @@ class class_ui_db
             $pcode = "";
             $authcode = $row['auth_code'];
             $fromat = substr($authcode, 0, CODE_FORMAT_LEN);
-            if($fromat == PROJ_CODE)
+            if($fromat == PROJ_CODE_PREFIX)
                 $pcode = $authcode;
 
             $query_str = "SELECT * FROM `t_projinfo` WHERE `p_code` = '$pcode'";
@@ -645,9 +645,9 @@ class class_ui_db
             $pcode = "";
             $authcode = $row['auth_code'];
             $fromat = substr($authcode, 0, CODE_FORMAT_LEN);
-            if ($fromat == PG_CODE)
+            if ($fromat == PG_CODE_PREFIX)
                 $pgcode = $authcode;
-            elseif($fromat == PROJ_CODE)
+            elseif($fromat == PROJ_CODE_PREFIX)
                 $pcode = $authcode;
 
             $query_str = "SELECT * FROM `t_projgroup` WHERE `pg_code` = '$pgcode'";
@@ -823,6 +823,63 @@ class class_ui_db
     /**********************************************************************************************************************
      *                                          监测点及HCU设备相关操作DB API                                               *
      *********************************************************************************************************************/
+    //查询用户授权的stat_code和proj_code list
+    private function db_user_statproj_inqury($uid)
+    {
+        //建立连接
+        $mysqli = new mysqli(WX_DBHOST, WX_DBUSER, WX_DBPSW, WX_DBNAME, WX_DBPORT);
+        if (!$mysqli) {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $mysqli->query("set character_set_results = utf8");
+
+        //查询该用户授权的项目和项目组列表
+        $query_str = "SELECT `auth_code` FROM `t_authlist` WHERE `uid` = '$uid'";
+        $result = $mysqli->query($query_str);
+        $p_list = array();
+        $pg_list = array();
+        while($row = $result->fetch_array())
+        {
+            $temp = $row["auth_code"];
+            $fromat = substr($temp, 0, CODE_FORMAT_LEN);
+            if($fromat == PROJ_CODE_PREFIX)
+                array_push($p_list,$temp);
+            elseif ($fromat == PG_CODE_PREFIX)
+                array_push($pg_list,$temp);
+        }
+
+        //把授权的项目组列表里对应的项目号也取出来追加到项目列表，获得该用户授权的完整项目列表
+        for($i=0; $i<count($pg_list); $i++)
+        {
+            $query_str = "SELECT `p_code` FROM `t_projmapping` WHERE `pg_code` = '$pg_list[$i]'";
+            $result = $mysqli->query($query_str);
+            while($row = $result->fetch_array())
+            {
+                $temp = $row["p_code"];
+                array_push($p_list,$temp);
+            }
+        }
+
+        //查询授权项目号下对应的所有监测点code
+        $auth_list["p_code"] = array();
+        $auth_list["stat_code"] = array();
+        for($i=0; $i<count($p_list); $i++)
+        {
+            $query_str = "SELECT `statcode` FROM `t_sitemapping` WHERE `p_code` = '$p_list[$i]'";
+            $result = $mysqli->query($query_str);
+            while($row = $result->fetch_array())
+            {
+                $temp = $row["statcode"];
+                array_push($auth_list["stat_code"] ,$temp);
+                array_push($auth_list["p_code"] ,$p_list[$i]);
+            }
+        }
+
+        $mysqli->close();
+        return $auth_list;
+    }
+
+
 
     //查询监控点表中记录总数
     public function db_all_sitenum_inqury()
@@ -1336,7 +1393,7 @@ class class_ui_db
         $result = $mysqli->query($query_str);
         if (($result->num_rows)>0)
         {
-            $row = $result->fetch_array();
+            $row = $result->fetch_array();  //暂时先这样处理，此处测量值计算要根据上报精度进行修改。。。。。
             $noise = $row['noise']/100;
             $winddir = $row['winddirection']/10;
             $humidity = $row['humidity']/10;
@@ -1354,7 +1411,7 @@ class class_ui_db
                 $temp = array(
                     'AlarmName'=>"噪声",
                     'AlarmEName'=> "Noise",
-                    'AlarmValue'=>$noise,
+                    'AlarmValue'=>(string)$noise,
                     'AlarmUnit'=>" 分贝",
                     'WarningTarget'=>$alarm
                 );
@@ -1365,7 +1422,7 @@ class class_ui_db
                 $temp = array(
                     'AlarmName'=>"风向",
                     'AlarmEName'=> "WD",
-                    'AlarmValue'=>$winddir,
+                    'AlarmValue'=>(string)$winddir,
                     'AlarmUnit'=>" 度",
                     'WarningTarget'=>"false"
                 );
@@ -1380,7 +1437,7 @@ class class_ui_db
                 $temp = array(
                     'AlarmName'=>"湿度",
                     'AlarmEName'=> "Wet",
-                    'AlarmValue'=>$humidity,
+                    'AlarmValue'=>(string)$humidity,
                     'AlarmUnit'=>" %",
                     'WarningTarget'=>$alarm
                 );
@@ -1395,7 +1452,7 @@ class class_ui_db
                 $temp = array(
                     'AlarmName'=>"温度",
                     'AlarmEName'=> "Temperature",
-                    'AlarmValue'=>$temperature,
+                    'AlarmValue'=>(string)$temperature,
                     'AlarmUnit'=>" 摄氏度",
                     'WarningTarget'=>$alarm
                 );
@@ -1410,7 +1467,7 @@ class class_ui_db
                 $temp = array(
                     'AlarmName'=>"细颗粒物",
                     'AlarmEName'=> "PM",
-                    'AlarmValue'=>$pm25,
+                    'AlarmValue'=>(string)$pm25,
                     'AlarmUnit'=>" 毫克/立方米",
                     'WarningTarget'=>$alarm
                 );
@@ -1425,7 +1482,7 @@ class class_ui_db
                 $temp = array(
                     'AlarmName'=>"风速",
                     'AlarmEName'=> "WS",
-                    'AlarmValue'=>$windspeed,
+                    'AlarmValue'=>(string)$windspeed,
                     'AlarmUnit'=>" 公里/小时",
                     'WarningTarget'=>$alarm
                 );
@@ -1458,40 +1515,144 @@ class class_ui_db
         }
 
         switch($alarm_type) {
-            case "S_TYPE_PM":
+            case S_TYPE_PM:
+                $resp["alarm_name"] = "细颗粒物";
+                $resp["alarm_unit"] = "毫克每立方米";
+                $resp["warning"] = TH_ALARM_PM25;
+
+                $resp["minute_alarm"] = array();
+                $resp["minute_head"] = array();
+                $resp["hour_alarm"] = array();
+                $resp["hour_head"] = array();
+                $resp["day_alarm"] = array();
+                $resp["day_head"] = array();
+
                 $query_str = "SELECT * FROM `t_pmdata` WHERE `deviceid` = '$devcode' AND `reportdate` = '$date'";
                 $result = $mysqli->query($query_str);
-                if (($result->num_rows) > 0) {
+                for($i=0; $i<$result->num_rows; $i++)
+                {
+                    $row = $result->fetch_array();
+                    $data = $row["pm25"]/10;
+                    $huorminindex = $row["hourminindex"];
+                    $hour = floor($huorminindex/60) ;
+                    $min = $huorminindex - $hour*60;
+                    $head = $hour.":".$min;
+                    array_push($resp["minute_alarm"],$data);
+                    array_push($resp["minute_head"],$head);
 
+                    //临时填的随机数
+                    array_push($resp["hour_alarm"],rand(10,110));
+                    array_push($resp["hour_head"],(string)$i);
+                    array_push($resp["day_alarm"],rand(10,110));
+                    array_push($resp["day_head"],(string)$i);
                 }
-                break;
-            case "S_TYPE_WINDSPEED":
-                break;
-
-            case "S_TYPE_WINDDIR":
-                break;
-
-            case "S_TYPE_EMC":
-                break;
-
-            case "S_TYPE_TEMPERATURE":
 
                 break;
-
-            case "S_TYPE_HUMIDITY":
+            case S_TYPE_WINDSPEED:
                 break;
-            case "S_TYPE_NOISE":
+
+            case S_TYPE_WINDDIR:
+                break;
+
+            case S_TYPE_EMC:
+                break;
+
+            case S_TYPE_TEMPERATURE:
+
+                break;
+
+            case S_TYPE_HUMIDITY:
+                break;
+            case S_TYPE_NOISE:
                 break;
 
             default:
                 break;
         }
 
-
+        $mysqli->close();
+        return $resp;
 
     }
 
+//UI GetStaticMonitorTable Request, 获取用户聚合数据
+    public function db_user_dataaggregate_req($uid)
+    {
+        //初始化返回值
+        $resp["column"] = array();
+        $resp['data'] = array();
 
+        //建立连接
+        $mysqli = new mysqli(WX_DBHOST, WX_DBUSER, WX_DBPSW, WX_DBNAME, WX_DBPORT);
+        if (!$mysqli) {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $mysqli->query("set character_set_results = utf8");
+
+        $auth_list["stat_code"] = array();
+        $auth_list["p_code"] = array();
+        $auth_list = $this->db_user_statproj_inqury($uid);
+
+        array_push($resp["column"], "监测点编号");
+        array_push($resp["column"], "项目单位");
+        array_push($resp["column"], "区县");
+        array_push($resp["column"], "地址");
+        array_push($resp["column"], "负责人");
+        array_push($resp["column"], "联系电话");
+        array_push($resp["column"], "PM2.5");
+        array_push($resp["column"], "温度");
+        array_push($resp["column"], "湿度");
+        array_push($resp["column"], "噪音");
+        array_push($resp["column"], "风速");
+        array_push($resp["column"], "风向");
+        array_push($resp["column"], "状态");
+
+        for($i=0; $i<count($auth_list["stat_code"]); $i++)
+        {
+            $one_row = array();
+            $pcode = $auth_list["p_code"][$i];
+            $statcode = $auth_list["stat_code"][$i];
+            $query_str = "SELECT * FROM `t_projinfo` WHERE `p_code` = '$pcode'";
+            $result = $mysqli->query($query_str);
+            if (($result->num_rows) > 0)
+            {
+                $row = $result->fetch_array();
+                array_push($one_row, $statcode);
+                array_push($one_row, $row["p_name"]);
+                array_push($one_row, $row["country"]);
+                array_push($one_row, $row["address"]);
+                array_push($one_row, $row["chargeman"]);
+                array_push($one_row, $row["telephone"]);
+            }
+            $query_str = "SELECT * FROM `t_currentreport` WHERE `statcode` = '$statcode'";
+            $result = $mysqli->query($query_str);
+            if (($result->num_rows) > 0)
+            {
+                $row = $result->fetch_array();
+                array_push($one_row, $row["pm25"]);
+                array_push($one_row, $row["temperature"]);
+                array_push($one_row, $row["humidity"]);
+                array_push($one_row, $row["noise"]);
+                array_push($one_row, $row["windspeed"]);
+                array_push($one_row, $row["winddirection"]);
+            }
+
+            $query_str = "SELECT * FROM `t_hcudevice` WHERE `statcode` = '$statcode'";
+            $result = $mysqli->query($query_str);
+            if (($result->num_rows) > 0) {
+                $row = $result->fetch_array();
+                if ($row["switch"] == "on")
+                    array_push($one_row, "运行");
+                elseif ($row["switch"] == "off")
+                    array_push($one_row, "停止");
+            }
+
+            array_push($resp['data'], $one_row);
+        }
+
+        $mysqli->close();
+        return $resp;
+    }
 
 
 }//End of class_ui_db

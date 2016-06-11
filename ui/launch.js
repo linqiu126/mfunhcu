@@ -2,8 +2,8 @@
 var http = require("http");
 var fs = require('fs');
 var url = require('url');
-var req = require('/xhzn/mfunhcu/ui/ejs/req');
-
+var req = require('./ejs/req');
+var Save_path = "./usr_img";
 
 http.createServer(function(request, response) {
     console.log(request.url);
@@ -65,8 +65,36 @@ http.createServer(function(request, response) {
             });
             break;
         case ".jpg":
+            console.log("Client require :"+pathname);
+            //Data = fs.readFileSync("."+pathname,'binary');
+            response.writeHead(200, {"Content-Type": "image/jpg"});
+
+            //fs.createReadStream("."+pathname, 'utf-8').pipe(response);
+            //response.write(Data);
+            //response.end();
+            var file = "."+pathname;
+            fs.stat(file, function (err, stat) {
+                var img = fs.readFileSync(file);
+                response.contentType = 'image/jpg';
+                response.contentLength = stat.size;
+                response.end(img, 'binary');
+            });
             break;
         case ".gif":
+            console.log("Client require :"+pathname);
+            //Data = fs.readFileSync("."+pathname,'binary');
+            response.writeHead(200, {"Content-Type": "image/gif"});
+
+            //fs.createReadStream("."+pathname, 'utf-8').pipe(response);
+            //response.write(Data);
+            //response.end();
+            var file = "."+pathname;
+            fs.stat(file, function (err, stat) {
+                var img = fs.readFileSync(file);
+                response.contentType = 'image/gif';
+                response.contentLength = stat.size;
+                response.end(img, 'binary');
+            });
             break;
         case ".swf":
             console.log("Client require :"+pathname);
@@ -128,7 +156,7 @@ http.createServer(function(request, response) {
             break;
         case ".html":
             console.log("Client require :"+pathname);
-            Data = fs.readFileSync('./RFTP.html','utf-8');
+            Data = fs.readFileSync("."+pathname,'utf-8');
             response.writeHead(200, {"Content-Type": "text/html"});
             response.write(Data);
             response.end();
@@ -162,6 +190,81 @@ http.createServer(function(request, response) {
                     response.write(Data);
                     response.end();
                 }
+            }else if(filename = "upload"){
+                var para_name = "id";
+                var reg = new RegExp("(^|&)" + para_name + "=([^&]*)(&|$)", "i");
+                var id = request.url.substring(request.url.indexOf("=")+1);
+
+                console.log("User want to upload file: usr id="+id);
+                var chunks = [];
+                var size = 0;
+                request.on('data' , function(chunk){
+                    chunks.push(chunk);
+                    size+=chunk.length;
+                });
+
+                request.on("end",function(){
+                    var buffer = Buffer.concat(chunks , size);
+                    if(!size){
+                        res.writeHead(404);
+                        res.end('');
+                        return;
+                    }
+
+                    var rems = [];
+
+                    var files_head=[];
+                    for(var i=0;i<buffer.length-1;i++){
+                        var v = buffer[i];
+                        var v2 = buffer[i+1];
+                        if(v==13 && v2==10){
+                            rems.push(i);
+                        }
+                    }
+                    // first we need to get first line as seed
+                    var first_line = buffer.slice(0,rems[0]).toString();
+
+                    files_head.push(0);//First file's start is at 0
+                    for(var i=0;i<rems.length;i++){
+                        if(rems[i+1]-rems[i]-2 == first_line.length){
+                            if(first_line == buffer.slice(rems[i]+2,rems[i+1]).toString()){
+                                files_head.push(rems[i]+2);
+                                console.log("Push "+rems[i]+" into file_head");
+                            }
+                        }
+                    }// we get every file head here
+                    console.log('Upload ['+(files_head.length-1)+"] files.");
+                    for(var i=0;i<files_head.length-1;i++){
+                        var nbuf;
+                        var web_head;
+                        var filename;
+                        var j=0
+                        for(;j<rems.length;j++){
+                            if(rems[j]>files_head[i]) break;
+                        }
+                        if(i<files_head.length-1){
+                            nbuf = buffer.slice(rems[j+3]+2,files_head[i+1]-2);
+                        }else{
+                            nbuf = buffer.slice(rems[j+3]+2,rems[rems.length-2]);
+                        }
+                        web_head = buffer.slice(rems[j]+2,rems[j+1]).toString();
+
+                        filename = web_head.match(/filename=".*"/g)[0].split('"')[1];
+                        console.log("Save file:"+filename);
+                        var path = Save_path+"/"+filename;
+                        fs.writeFileSync(path , nbuf);
+                    }
+
+                    response.writeHead(200, { 'Content-Type': 'text/plain;charset=utf-8'});
+                    response.end(JSON.stringify('Upload ['+(files_head.length-1)+'] successfully!'));
+
+                    //response.writeHead(200, { 'Content-Type': 'text/plain;charset=utf-8'});
+                    //response.end('Upload ['+files_head.length+"] files successfully!");
+                });
+
+                var file_obj = request.form;
+                console.log(file_obj);
+
             }
             break;
         case ".request":

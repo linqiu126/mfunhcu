@@ -5,12 +5,14 @@
 
 
 //切换生产环境要更新以下数据，包括logout函数
-var wait_time_long =1000;
-var wait_time_middle = 500;
-var wait_time_short= 200;
+var wait_time_long =1500;
+var wait_time_middle = 1000;
+var wait_time_short= 500;
 var cycle_time = 60000;
 var request_head= "request.php";
-var jump_url = "xhzn/mfunhcu/ui/jump.php";
+var jump_url = "/xhzn/mfunhcu/ui/jump.php";
+var upload_url="upload.php";
+var screen_saver_address="screensaver/screen.html";
 
 function logout(){
     /*
@@ -26,14 +28,14 @@ function logout(){
 }
 
 
-
-
-
 var usr;
 usr = "";
 var admin="";
 var keystr="";
 var table_row=5;
+var usr_msg = "";
+var usr_ifdev = "true";
+var usr_img=new Array();
 //var randomScalingFactor = function(){ return Math.round(Math.random()*100)};
 var current_table;
 var table_head;
@@ -101,6 +103,13 @@ var monitor_list = null;
 var monitor_string="";
 var monitor_map_handle=null;
 
+//warning table Control
+var Monitor_table_initialized = false;
+var Monitor_table_start=0;
+var Monitor_table_total=0;
+//warning Static table Control
+var Monitor_Static_table_initialized = true;
+var  if_static_table_initialize = false;
 //alarm Control
 var alarm_type_list = null;
 var alarm_map_initialized = false;
@@ -196,6 +205,7 @@ function on_collapse(data){
 function PageInitialize(){
     get_user_information();
     get_sensor_list();
+    window.setTimeout("get_monitor_list()", wait_time_middle);
     window.setTimeout("nav_check()", wait_time_short);
 }
 
@@ -213,6 +223,8 @@ function get_user_information(){
             show_alarm_module(true,"获取用户失败，请联系管理员");
         }else{
             usr = result.ret;
+            get_user_message();
+            get_user_image();
         }
     });
 }
@@ -260,6 +272,7 @@ $(document).ready(function() {
     //$('.user_auth_dual').showFilterInputs=false;
 
     var monitor_handle= setInterval("get_monitor_warning_on_map()", cycle_time);
+    var monitor_table_handle= setInterval("query_warning()", cycle_time);
     PageInitialize();
     $("#menu_logout").on('click',function(){
         logout();
@@ -294,6 +307,15 @@ $(document).ready(function() {
         touchcookie();
         mp_monitor();
     });
+    $("#MPMonitorTable").on('click',function(){
+        touchcookie();
+        mp_monitor_table();
+    });
+    $("#MPStaticMonitorTable").on('click',function(){
+        touchcookie();
+        mp_static_monitor_table();
+    });
+
     $("#WarningCheck").on('click',function(){
         touchcookie();
         warning_check();
@@ -658,6 +680,37 @@ $(document).ready(function() {
             $("#QueryEndTime_Input").val(date_compare($("#QueryEndTime_Input").val(),$("#QueryStartTime_Input").val()));
         }
     });
+    $("#VCRshow").on('click',function() {
+        var vcraddress = $("#VCRStatus_choice").val();
+        if(vcraddress == "") return;
+        window.open("http://"+vcraddress,'监控录像',"height=480, width=640, top=0, left=400,toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no")
+    });
+    $("#MonitorTableFlash").on('click',function() {
+        query_static_warning();
+    });
+
+
+    $("#menu_user_profile").on('click',function() {
+        touchcookie();
+        show_usr_msg_module();
+    });
+    $("#ScreenSaver").on('click',function() {
+        if(monitor_selected == null) return;
+        window.open("http://"+window.location.host+"/"+screen_saver_address+"?id="+usr.id+"&StatCode="+monitor_selected.StatCode,'屏幕保护',"height=auto, width=auto");
+    });
+    $("#UsrMsgCommit").on('click',function() {
+        touchcookie();
+        user_message_update();
+    });
+
+    $("#UsrImgClean").on('click',function() {
+        touchcookie();
+        clear_user_image();
+    });
+    $("#UsrImgFlash").on('click',function() {
+        touchcookie();
+        get_user_image()
+    });
 
     //alert($(window).height());
     //alert($(window).width());
@@ -715,6 +768,19 @@ function mp_monitor(){
     $("#MPMonitorView").css("display","block");
     if(!map_initialized)initializeMap();
 }
+function mp_monitor_table(){
+    clear_window();
+    $("#MPMonitorTableView").css("display","block");
+    if(!Monitor_table_initialized)initialize_warning_table();
+
+}
+function mp_static_monitor_table(){
+    clear_window();
+    $("#MPMonitorStaticTableView").css("display","block");
+    query_static_warning();
+    //if(!Monitor_table_initialized)initialize_warning_table();
+
+}
 function warning_check(){
     clear_window();
     $("#WarningCheckView").css("display","block");
@@ -737,6 +803,8 @@ function clear_window(){
     $("#MPManageView").css("display","none");
     $("#DevManageView").css("display","none");
     $("#MPMonitorView").css("display","none");
+    $("#MPMonitorTableView").css("display","none");
+    $("#MPMonitorStaticTableView").css("display","none");
     $("#WarningCheckView").css("display","none");
     $("#WarningHandleView").css("display","none");
     $("#Desktop").css("display","none");
@@ -1022,7 +1090,7 @@ function draw_user_detail_panel(){
     $("#Label_user_detail").append(txt);
 
 
-    user_selected_auth
+    //user_selected_auth
 
 
     $("#Table_user_authed").empty();
@@ -3163,7 +3231,7 @@ function get_monitor_warning_on_map(){
                 txt = txt + " <div class='col-md-6 column'>";
                 for(var i=0;i<ret.length;i++){
                     var nickname = ret[i].AlarmEName;
-                    txt = txt + "<img src='/xhzn/mfunhcu/ui/image/"+ret[i].AlarmEName+".png'></img><label style='max-width: 150px;min-width: 150px'>&nbsp&nbsp&nbsp&nbsp"+ret[i].AlarmName+":";
+                    txt = txt + "<img src='/image/"+ret[i].AlarmEName+".png'></img><label style='max-width: 150px;min-width: 150px'>&nbsp&nbsp&nbsp&nbsp"+ret[i].AlarmName+":";
                     var value = parseInt(ret[i].AlarmValue);
                     var warning = ret[i].WarningTarget;
 
@@ -3183,6 +3251,13 @@ function get_monitor_warning_on_map(){
             if(monitor_map_handle!=null){
                 monitor_map_handle.setContent(txt);
             }
+
+            $("#VCRStatus_choice").empty();
+            txt = "";
+            for(var i =0;i<result.vcr.length;i++){
+                txt = txt +"<option value='"+result.vcr[i].vcraddress+"'>"+result.vcr[i].vcrname+"</option>"
+            }
+            $("#VCRStatus_choice").append(txt);
         });
     }
 
@@ -3248,6 +3323,213 @@ function addMarker(point){
 
 }
 
+//warning_table
+function initialize_warning_table(){
+    $("#Monitor_Page_control").empty();
+    $("#Table_Monitor").empty();
+    var txt = "<li>"+
+        "<a href='#' id='monitor_page_prev'>Prev</a>"+
+        "</li>";
+    var page_number  = Math.ceil(monitor_map_list.length/(table_row*2));
+    for(var i=0;i<page_number;i++){
+        txt=txt+ "<li>"+
+            "<a href='#' id='monitor_page_"+i+"' number='"+i+"'>"+(i+1)+"</a>"+
+            "</li>";
+    }
+    txt=txt+"<li>"+
+        "<a href='#' id='monitor_page_next'>Next</a>"+
+        "</li>";
+    $("#Monitor_Page_control").append(txt);
+	Monitor_table_start=0;
+	Monitor_table_total=page_number;
+    //console.log(Monitor_table_start+"  "+Monitor_table_total);
+	if(Monitor_table_start == 0){ $("#monitor_page_prev").css("display","none");}
+	else {$("#monitor_page_prev").css("display","block");}
+	if((Monitor_table_start+5 )>=Monitor_table_total) {$("#monitor_page_next").css("display","none");}
+	else{$("#monitor_page_next").css("display","block");}
+	for(var i=0;i<page_number;i++){
+		if(i<5) $("#monitor_page_"+i).css("display","block");
+		else $("#monitor_page_"+i).css("display","none");
+	}
+
+	$("#monitor_page_next").on('click',function(){
+		if((Monitor_table_start+5 )>=Monitor_table_total)  return;
+
+		Monitor_table_start = Monitor_table_start+5;
+		for(var i=0;i<Monitor_table_total;i++){
+			$("#monitor_page_"+i).css("display","none");
+			if(i>=Monitor_table_start && i<(Monitor_table_start+5)) $("#monitor_page_"+i).css("display","block");
+		}
+		if(Monitor_table_start == 0){ $("#monitor_page_prev").css("display","none");}
+		else {$("#monitor_page_prev").css("display","block");}
+		if((Monitor_table_start+5 )>=Monitor_table_total) {$("#monitor_page_next").css("display","none");}
+		else{$("#monitor_page_next").css("display","block");}
+		show_monitor_page(Monitor_table_start);
+	});
+	$("#monitor_page_prev").on('click',function(){
+		if((Monitor_table_start )==0)  return;
+
+		Monitor_table_start = Monitor_table_start-5;
+		if(Monitor_table_start<0) Monitor_table_start =0;
+		for(var i=0;i<Monitor_table_total;i++){
+			$("#monitor_page_"+i).css("display","none");
+			if(i>=Monitor_table_start && i<(Monitor_table_start+5)) $("#monitor_page_"+i).css("display","block");
+		}
+		if(Monitor_table_start == 0){ $("#monitor_page_prev").css("display","none");}
+		else {$("#monitor_page_prev").css("display","block");}
+		if((Monitor_table_start+5 )>=Monitor_table_total) {$("#monitor_page_next").css("display","none");}
+		else{$("#monitor_page_next").css("display","block");}
+		show_monitor_page(Monitor_table_start);
+	});
+	for(var i=0;i<page_number;i++){
+		$("#monitor_page_"+i).on('click',function(){
+			show_monitor_page(parseInt($(this).attr("number")));
+		});
+
+    }
+    Monitor_table_initialized = true;
+	show_monitor_page(0);
+
+}
+function show_monitor_page(page_number){
+	$("#Table_Monitor").empty();
+    table_head="<thead>"+
+        "<tr>"+"<th>站点名称 </th> <th>监控信息 </th></tr></thread>";
+	var txt = table_head;
+    txt = txt +"<tbody>";
+
+    sequence = (page_number*table_row*2);
+    for(var i=0;i<(table_row*2);i++){
+        if((sequence+i)<monitor_map_list.length){
+            //console.log(sequence+i);
+            if(0!=i%2){
+                txt =txt+ "<tr class='success' >";
+            }else{ txt =txt+ "<tr >";}
+
+            txt = txt +"<td>" + monitor_map_list[sequence+i].StatName+"</td>"
+                +"<td id='Monitor_table_cell"+i+"' StatCode='"+monitor_map_list[sequence+i].StatCode+"'></td>";
+            txt = txt +"</tr>"
+        }else{
+            if(0!=i%2){
+                txt =txt+ "<tr class='success'>";
+            }else{ txt =txt+ "<tr  >";}
+            txt = txt +"<td>--</td>"
+                +"<td id='Monitor_table_cell"+i+"' DevCode='null'>--</td>"
+            txt = txt +"</tr>"
+        }
+
+    }
+    txt = txt+"</tbody>";
+	$("#Table_Monitor").append(txt);
+    query_warning();
+}
+function build_monitor_message(alarmlist){
+	var txt = "";
+	
+	if(alarmlist == null || alarmlist ==undefined) return txt;
+	for(var i=0;i<alarmlist.length;i++){
+		txt = txt + alarmlist[i].AlarmName+":";
+		if(alarmlist[i].WarningTarget == "true") {txt = txt + "<Strong style='color:red'>";}
+		txt = txt + alarmlist[i].AlarmValue+" ";
+		if(alarmlist[i].WarningTarget == "true") {txt = txt + "</Strong>";}
+		txt = txt + alarmlist[i].AlarmUnit+";";
+	}
+	return txt;
+}
+function query_warning(){
+    if(Monitor_table_initialized != true) return;
+	for(var i=0;i<(table_row*2);i++){
+		if($("#Monitor_table_cell"+i).attr('StatCode') == null) break;
+		var map={
+            action:"DevAlarm",
+            StatCode: $("#Monitor_table_cell"+i).attr('StatCode')
+        };
+        jQuery.get(request_head, map, function (data) {
+            log(data);
+            var result=JSON.parse(data);
+			var txt = "";
+			var StatCode = result.StatCode;
+            if(result.status == "false"){
+                txt = "<Strong style='color:red'>未找到对应监控信息</Strong>";
+            }else{
+				txt = build_monitor_message(result.ret);
+			}
+			for(var i=0;i<(table_row*2);i++){
+				if($("#Monitor_table_cell"+i).attr('StatCode') == StatCode){
+                    $("#Monitor_table_cell"+i).empty();
+					$("#Monitor_table_cell"+i).append(txt);
+					break;
+				}
+			}
+            
+        });
+	}
+}
+
+function query_static_warning(){
+    if(Monitor_Static_table_initialized != true) return;
+    var map={
+        action:"GetStaticMonitorTable",
+        id:usr.id
+    };
+    jQuery.get(request_head, map, function (data) {
+        log(data);
+        var result=JSON.parse(data);
+        if(result.status == "false"){
+            show_expiredModule();
+            return;
+        }
+        var Last_update_date=(new Date()).Format("yyyy-MM-dd_hhmmss");
+        $("#MonitorFlashTime").empty();
+        $("#MonitorFlashTime").append("最后刷新时间："+Last_update_date);
+        var ColumnName = result.ColumnName;
+        var TableData = result.TableData;
+        var txt = "<thead> <tr>";
+        for(var i=0;i<ColumnName.length;i++){
+            txt = txt +"<th>"+ColumnName[i]+"</th>";
+        }
+        txt = txt +"</tr></thead>";
+        txt = txt +"<tbody>";
+        for(var i=0;i<TableData.length;i++){
+            txt = txt +"<tr>";
+            for(var j=0;j<TableData[i].length;j++){
+                txt = txt +"<td>"+TableData[i][j]+"</td>";
+            }
+            txt = txt +"</tr>";
+        }
+        txt = txt+"</tbody>";
+        $("#MonitorQueryTable").empty();
+        $("#MonitorQueryTable").append(txt);
+        if(if_static_table_initialize) $("#MonitorQueryTable").DataTable().destroy();
+
+        //console.log(monitor_map_list);
+
+        var show_table  = $("#MonitorQueryTable").DataTable( {
+            //dom: 'T<"clear">lfrtip',
+            "scrollY": false,
+            "scrollCollapse": true,
+
+            "scrollX": true,
+            "searching": false,
+            "autoWidth": true,
+            "lengthChange":false,
+            //bSort: false,
+            //aoColumns: [ { sWidth: "45%" }, { sWidth: "45%" }, { sWidth: "10%", bSearchable: false, bSortable: false } ],
+            dom: 'Bfrtip',
+            buttons: [
+                {
+                    extend: 'excel',
+                    text: '导出到excel',
+                    filename: "MonitorData"+Last_update_date
+                }
+            ]
+
+        } );
+        if_static_table_initialize = true;
+
+
+    });
+}
 
 
 //Alarm
@@ -3275,7 +3557,7 @@ function query_alarm(date,type,name){
         type:type
     };
     jQuery.get(request_head, map, function (data) {
-        log(data);
+        console.log(data);
         var result=JSON.parse(data);
         if(result.status == "false"){
             show_expiredModule();
@@ -3294,6 +3576,9 @@ function query_alarm(date,type,name){
         var minute_alarm = result.minute_alarm;
         var hour_alarm = result.hour_alarm;
         var day_alarm = result.day_alarm;
+        var minute_head = result.minute_head;
+        var hour_head = result.hour_head;
+        var day_head = result.day_head;
 
 
         //console.log(("#"+type+"_canvas_day"));
@@ -3320,7 +3605,7 @@ function query_alarm(date,type,name){
                 backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'
             },
             xAxis: {
-                categories: get_minute_list(date),
+                categories:minute_head ,
                 max: 120
             },
 
@@ -3374,7 +3659,7 @@ function query_alarm(date,type,name){
                 backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'
             },
             xAxis: {
-                categories: get_hour_list(date),
+                categories: hour_head,
                 max: 120
             },
 
@@ -3428,7 +3713,7 @@ function query_alarm(date,type,name){
                 backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'
             },
             xAxis: {
-                categories: get_day_list(date),
+                categories: day_head,
                 //max: 30
             },
 
@@ -3917,6 +4202,117 @@ function submit_sensor_module(){
             Initialize_dev_detail();
         }else{
             show_alarm_module(true,"传感器修改失败！"+result.msg);
+        }
+    });
+}
+
+function get_user_message(){
+    var map = {
+        action: "GetUserMsg",
+        id: usr.id
+    };
+    jQuery.get(request_head, map, function (data) {
+        log(data);
+        var result=JSON.parse(data);
+        var ret = result.status;
+        if(ret == "true"){
+            usr_msg = result.msg;
+            usr_ifdev = result.ifdev;
+        }else{
+            show_alarm_module(true,"获取用户信息失败，请重新登录！"+result.msg);
+        }
+    });
+}
+function get_user_image(){
+    var map = {
+        action: "GetUserImg",
+        id: usr.id
+    };
+    jQuery.get(request_head, map, function (data) {
+        log(data);
+        var result=JSON.parse(data);
+        var ret = result.status;
+        if(ret == "true"){
+            usr_img = result.img;
+            reflash_usr_img_table();
+        }else{
+            show_alarm_module(true,"获取用户信息失败，请重新登录！"+result.msg);
+        }
+    });
+}
+function clear_user_image(){
+    var map = {
+        action: "ClearUserImg",
+        id: usr.id
+    };
+    jQuery.get(request_head, map, function (data) {
+        log(data);
+        var result=JSON.parse(data);
+        var ret = result.status;
+        if(ret == "true"){
+            usr_img = new Array();
+            reflash_usr_img_table()
+        }else{
+            show_alarm_module(true,"获取用户信息失败，请重新登录！"+result.msg);
+        }
+    });
+}
+function set_user_message(msg,ifdev){
+    var map = {
+        action: "SetUserMsg",
+        id: usr.id,
+        msg: msg,
+        ifdev: ifdev
+    };
+    jQuery.get(request_head, map, function (data) {
+        log(data);
+        var result=JSON.parse(data);
+        var ret = result.status;
+        if(ret == "true"){
+            show_alarm_module(true,"屏保欢迎语设置成功！"+result.msg);
+        }else{
+            show_alarm_module(true,"获取用户信息失败，请重新登录！"+result.msg);
+        }
+    });
+}
+function show_usr_msg_module(){
+    $("#UsrMsg_Input").val(usr_msg);
+    $("#UsrDev_choice").val(usr_ifdev);
+    reflash_usr_img_table();
+    $('#file-zh').fileinput({
+        language: 'zh',
+        uploadUrl: upload_url+"?id="+usr.id,
+        allowedFileExtensions : ['jpg', 'png','gif'],
+        'showPreview' : true,
+    });
+    modal_middle($('#UsrMsgModal'));
+    $('#UsrMsgModal').modal('show');
+}
+
+function reflash_usr_img_table(){
+    $("#UsrImgTable").empty();
+    var txt = "<thead> <tr> <th> 已上传文件</th> </tr> </thead> <tbody >";
+    for(var i =0;i<usr_img.length;i++){
+        txt = txt + "<tr> <td>"+ usr_img[i].name+"</td></tr>";
+    }
+    $("#UsrImgTable").append(txt);
+}
+function user_message_update(){
+    var map = {
+        action: "SetUserMsg",
+        id: usr.id,
+        msg: $("#UsrMsg_Input").val(),
+        ifdev: $("#UsrDev_choice").val()
+    };
+    jQuery.get(request_head, map, function (data) {
+        log(data);
+        var result=JSON.parse(data);
+        var ret = result.status;
+        if(ret == "true"){
+            $('#UsrMsgModal').modal('hide');
+            show_alarm_module(true,"屏保欢迎语设置成功！"+result.msg);
+        }else{
+            show_alarm_module(true,"获取用户信息失败，请重新登录！"+result.msg);
         }
     });
 }
