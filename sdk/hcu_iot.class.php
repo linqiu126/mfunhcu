@@ -123,40 +123,55 @@ class class_hcu_IOT_sdk
     //处理环保局要求格式的消息
     public function receive_hcu_zhbMessage($pdu)
     {
-        $pduLen = intval(substr($pdu, 2, 4));  //数据段长度
+        $pdu_format = "A2Header/A4Len";
+        $temp = unpack($pdu_format, $pdu);
 
-        $qn = trim(substr($pdu, 6, 20),"_");  //请求编号
-        $st = trim(substr($pdu, 26, 5), "_");  //系统编号
-        $cn = trim(substr($pdu, 31, 7), "_");  //命令编号
-        $mn =trim(substr($pdu, 38, 12),"_");  //设备编号
-        $pw = substr($pdu, 50, 6);   //访问密码
+        $header = $temp['Header'];  //通信包包头
+        //$pduLen = hexdec($temp['Len'])& 0xFFFF;//数据段长度
+        $pduLen = $temp['Len']& 0xFFFF;//数据段长度
+
+        $sdu_body = substr($pdu, 6, $pduLen); //数据段,变长，0～1024
+        $crc = substr($pdu, 6+$pduLen, 4);  //CRC
+        //$tail = substr($pdu, 6+$pduLen+4, 2);  //包尾
+
+        //先进行CRC校验，如果失败直接返回
+        $result = $this->crc_check($sdu_body,$crc);  //数据段CRC校验
+        if ($result == false)
+            return "HCU_IOT: ZHB message CRC error";  //CRC校验失败直接返回
+
+        //数据段解码
+        $sdu_format = "A20QN/A5ST/A7CN/A12MN/A6PW";
+        $fix_len = 20+5+7+12+6;
+
+        $temp = unpack($sdu_format, $sdu_body);
+
+
+        $qn = trim($temp['QN'], '_');  //请求编号
+        $st = trim($temp['ST'], '_');  //系统编号
+        $cn = trim($temp['CN'], '_');  //命令编号
+        $mn = trim($temp['MN'], '_');  //设备编号
+        $pw = trim($temp['PW'], '_');   //访问密码
 
         switch($cn)
         {
-            case "ZHB_NOM":
-                $pnum = substr($pdu, 56, 4);
-                $pno = substr($pdu, 60, 4);
-                $headerLen = 58; //=20+5+7+12+6+4+4
-                $dataLen =$pduLen - $headerLen;
-                $data =substr($pdu, 64, $dataLen);  //数据区的处理等规范业务逻辑明确后再处理
-
-                $crc = substr($pdu, 6+$pduLen, 4);
-                $pdu = substr($pdu, 6, $pduLen);
-                $result = $this->crc_check($pdu,$crc);  //数据段CRC校验
-                if ($result == false)
-                    return "HCU_IOT: ZHB_NOM message CRC error";  //CRC校验失败直接返回
+            case ZHB_NOM_FRAME:
+                $sdu_format = "A20QN/A5ST/A7CN/A12MN/A6PW/A4PNUM/A4PNO";
+                $temp = unpack($sdu_format, $sdu_body);
+                $pnum = $temp['PNUM']; //总包号
+                $pno = $temp['PNO']; //包号
+                $fix_len = $fix_len + 4 + 4; //=20+5+7+12+6+4+4
+                $dataLen =$pduLen - $fix_len;
+                $data = substr($sdu_body, $fix_len, $dataLen);  //数据区的处理等规范业务逻辑明确后再处理
 
                 $resp = $this->dummy_data_response($mn);
                 break;
-            case "ZHB_HRB":
-                $pnum = substr($pdu, 56, 4);
-                $pno = substr($pdu, 60, 4);
-
-                $crc = substr($pdu, 6+$pduLen, 4);
-                $pdu = substr($pdu, 6, $pduLen);
-                $result = $this->crc_check($pdu,$crc);  //数据段CRC校验
-                if ($result == false)
-                    return "HCU_IOT: ZHB_HRB message CRC error";  //CRC校验失败直接返回
+            case ZHB_HRB_FRAME:
+                $sdu_format = "A20QN/A5ST/A7CN/A12MN/A6PW/A3FLAG";
+                $temp = unpack($sdu_format, $sdu_body);
+                $flag = $temp['FLAG']; //数据是否拆分及应答标志
+                $fix_len = $fix_len + 4 ; //=20+5+7+12+6+3
+                $cp_len = $pduLen - $fix_len;
+                $cp = substr($sdu_body, $fix_len, $cp_len);
 
                 $resp = $this->dummy_data_response($mn);
                 break;

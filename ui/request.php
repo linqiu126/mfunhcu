@@ -16,11 +16,14 @@ function _encode($arr)
 
 function _urlencode($elem)
 {
-    if(is_array($elem)){
+    if(is_array($elem)&&(!empty($elem))){
         foreach($elem as $k=>$v){
             $na[_urlencode($k)] = _urlencode($v);
         }
         return $na;
+    }
+    if(is_array($elem)&&empty($elem)){
+        return $elem;
     }
     return urlencode($elem);
 }
@@ -47,9 +50,7 @@ switch ($key)
         //};
         $user = trim($_GET["name"]);
         $pwd = trim($_GET["password"]);
-
         $userinfo =$uiDbObj->db_login_req($user, $pwd);
-
         $jsonencode = json_encode($userinfo);
         echo $jsonencode;
         break;
@@ -171,6 +172,10 @@ switch ($key)
            msg:""
         };*/
 
+        $auth = array();
+        if(isset($_GET["auth"]))
+            $auth = $_GET["auth"];
+
         $userinfo =array(
             'name' => $_GET["name"],
             'nickname' => $_GET["nickname"],
@@ -179,7 +184,7 @@ switch ($key)
             'mail' => $_GET["mail"],
             'type' => $_GET["type"],
             'memo' => $_GET["memo"],
-            'auth' => $_GET["auth"]
+            'auth' => $auth
         );
 
         $result = $uiDbObj->db_userinfo_new($userinfo);
@@ -219,6 +224,10 @@ switch ($key)
            msg:""
         };*/
 
+        $auth = array();
+        if(isset($_GET["auth"]))
+            $auth = $_GET["auth"];
+
         $userinfo =array(
             'id' =>$_GET["id"],
             'name' => $_GET["name"],
@@ -228,7 +237,7 @@ switch ($key)
             'mail' => $_GET["mail"],
             'type' => $_GET["type"],
             'memo' => $_GET["memo"],
-            'auth' => $_GET["auth"]
+            'auth' => $auth
         );
 
         $result = $uiDbObj->db_userinfo_update($userinfo);
@@ -246,6 +255,7 @@ switch ($key)
         $jsonencode = _encode($retval);
         echo $jsonencode;
         break;
+
     case "UserDel": //Delete the user
         //require data structure:
         /*var map={
@@ -346,8 +356,7 @@ switch ($key)
                                  };*/
 
         $uid = $_GET["userid"];
-        $userproj = $uiDbObj->db_user_projlist_req($uid);
-
+        $userproj = $uiDbObj->db_user_projpglist_req($uid);
         if(!empty($userproj))
             $retval= array(
                 'status'=>"true",
@@ -355,8 +364,8 @@ switch ($key)
             );
         else
             $retval= array(
-                'status'=>"false",
-                'ret'=>null
+                'status'=>"true",
+                'ret'=>""
             );
         $jsonencode = _encode($retval);
         echo $jsonencode;
@@ -437,6 +446,10 @@ switch ($key)
                     msg:""
                 };*/
 
+        $projlist = array();
+        if(isset($_GET["Projlist"]))
+            $projlist = $_GET["Projlist"];
+
         $pginfo =array(
             'PGCode' => $_GET["PGCode"],
             'PGName' => $_GET["PGName"],
@@ -445,10 +458,10 @@ switch ($key)
             'Department' => $_GET["Department"],
             'Address' => $_GET["Address"],
             'Stage' => $_GET["Stage"],
-            'Projlist' => $_GET["Projlist"],
+            'Projlist' => $projlist,
             'user' => $_GET["user"]
         );
-        $pginfo = _encode($pginfo);
+
         $result = $uiDbObj->db_pginfo_update($pginfo);
         if($result)
             $retval=array(
@@ -484,6 +497,10 @@ switch ($key)
                     status:"true",
                     msg:""
                 };*/
+        $projlist = array();
+        if(isset($_GET["Projlist"]))
+            $projlist = $_GET["Projlist"];
+
         $pginfo =array(
             'PGCode' => $_GET["PGCode"],
             'PGName' => $_GET["PGName"],
@@ -492,9 +509,10 @@ switch ($key)
             'Department' => $_GET["Department"],
             'Address' => $_GET["Address"],
             'Stage' => $_GET["Stage"],
-            'Projlist' => $_GET["Projlist"],
+            'Projlist' => $projlist,
             'user' => $_GET["user"]
         );
+
 
         $result = $uiDbObj->db_pginfo_update($pginfo);
         if($result)
@@ -514,16 +532,16 @@ switch ($key)
     case "PGDel":  //删除项目组信息
         //require data structure:
         /*
-var map={
-   action:"PGDel",
-   id: id,
-   user:usr.id
-};
-//return data structure:
-var retval={
-               status:"true",
-               msg:""
-           };*/
+        var map={
+           action:"PGDel",
+           id: id,
+           user:usr.id
+        };
+        //return data structure:
+        var retval={
+           status:"true",
+           msg:""
+        };*/
         $pgcode = $_GET["id"];
         $result = $uiDbObj->db_pginfo_delete($pgcode);
         if ($result)
@@ -540,7 +558,7 @@ var retval={
         echo $jsonencode;
         break;
 
-    case "PGProj":    // query project list belong to one project group
+    case "PGProj":    // 查询属于项目组的所有项目列表
         //require data structure:
         /*var map={
             action:"PGProj",
@@ -566,8 +584,8 @@ var retval={
             );
         else
             $retval=array(
-                'status'=>'false',
-                'ret'=> null
+                'status'=>'true',
+                'ret'=> ""
             );
         $jsonencode = _encode($retval);
         echo $jsonencode;
@@ -581,7 +599,6 @@ var retval={
             length:length,
             user:usr.id
         };
-
         //return data structure:
         var temp = {
         ProjCode: (start+(i+1)),
@@ -630,8 +647,7 @@ var retval={
         echo $jsonencode;
         break;
 
-    case "ProjNew":
-        // create a new project
+    case "ProjNew": //创建新的项目信息
         //require data structure:
         /*
         var map={
@@ -651,14 +667,35 @@ var retval={
                     status:"true",
                     msg:""
                 };*/
-        $retval=array(
-            'status'=>'true',
-            'msg'=>''
+
+        $sessionid = $_GET["user"];
+        $projinfo =array(
+            'ProjCode' => $_GET["ProjCode"],
+            'ProjName' => $_GET["ProjName"],
+            'ChargeMan' => $_GET["ChargeMan"],
+            'Telephone' => $_GET["Telephone"],
+            'Department' => $_GET["Department"],
+            'Address' => $_GET["Address"],
+            'ProStartTime' => $_GET["ProStartTime"],
+            'Stage' => $_GET["Stage"]
         );
+
+        $result = $uiDbObj->db_projinfo_update($projinfo);
+        if ($result == true)
+            $retval=array(
+                'status'=>'true',
+                'msg'=>'新项目创建成功'
+            );
+        else
+            $retval=array(
+                'status'=>'true',
+                'msg'=>'新项目创建失败'
+            );
         $jsonencode = _encode($retval);
-        echo $jsonencode; break;
-    case "ProjMod":
-        // modify project
+        echo $jsonencode;
+        break;
+
+    case "ProjMod": //修改项目信息
         //require data structure:
         /*
         var map={
@@ -678,12 +715,32 @@ var retval={
                     status:"true",
                     msg:""
                 };*/
-        $retval=array(
-            'status'=>'true',
-            'msg'=>''
+        $sessionid = $_GET["user"];
+        $projinfo =array(
+            'ProjCode' => $_GET["ProjCode"],
+            'ProjName' => $_GET["ProjName"],
+            'ChargeMan' => $_GET["ChargeMan"],
+            'Telephone' => $_GET["Telephone"],
+            'Department' => $_GET["Department"],
+            'Address' => $_GET["Address"],
+            'ProStartTime' => $_GET["ProStartTime"],
+            'Stage' => $_GET["Stage"]
         );
+
+        $result = $uiDbObj->db_projinfo_update($projinfo);
+        if ($result == true)
+            $retval=array(
+                'status'=>'true',
+                'msg'=>'项目信息修改成功'
+            );
+        else
+            $retval=array(
+                'status'=>'true',
+                'msg'=>'项目信息修改失败'
+            );
         $jsonencode = _encode($retval);
-        echo $jsonencode; break;
+        echo $jsonencode;
+        break;
 
     case "ProjDel":  //删除一个项目
         //require data structure:
@@ -699,8 +756,9 @@ var retval={
                        msg:""
                    };*/
         $projcode = $_GET["ProjCode"];
+
         $result = $uiDbObj->db_projinfo_delete($projcode);
-        if ($result)
+        if ($result == true)
             $retval=array(
                 'status'=>'true',
                 'msg'=>'成功删除一个项目'
@@ -762,8 +820,8 @@ var retval={
             );
         else
             $retval=array(
-                'status'=>'false',
-                'ret'=> null
+                'status'=>'true',
+                'ret'=> ""
             );
         $jsonencode = _encode($retval);
         echo $jsonencode;
@@ -835,8 +893,7 @@ var retval={
     case "PointDetail":
         //abandon
         break;
-    case "PointNew":
-        // create a new monitor point
+    case "PointNew":  //新建监测点
         //require data structure:
         /*var map={
               action:"PointNew",
@@ -861,14 +918,40 @@ var retval={
                     status:"true",
                     msg:""
                 };*/
-        $retval=array(
-            'status'=>'true',
-            'msg'=>''
+
+        $sessionid = $_GET["user"];
+        $siteinfo =array(
+            'StatCode' => $_GET["StatCode"],
+            'StatName' => $_GET["StatName"],
+            'ProjCode' => $_GET["ProjCode"],
+            'ChargeMan' => $_GET["ChargeMan"],
+            'Telephone' => $_GET["Telephone"],
+            'Longitude' => $_GET["Longitude"],
+            'Latitude' => $_GET["Latitude"],
+            'Department' => $_GET["Department"],
+            'Address' => $_GET["Address"],
+            'Country' => $_GET["Country"],
+            'Street' => $_GET["Street"],
+            'Square' => $_GET["Square"],
+            'ProStartTime' => $_GET["ProStartTime"],
+            'Stage' => $_GET["Stage"]
         );
+        $result = $uiDbObj->db_siteinfo_update($siteinfo);
+        if ($result == true)
+            $retval=array(
+                'status'=>'true',
+                'msg'=>'新建监测点成功'
+            );
+        else
+            $retval=array(
+                'status'=>'false',
+                'msg'=>'新建监测点失败'
+            );
+
         $jsonencode = _encode($retval);
-        echo $jsonencode; break;
-    case "PointMod":
-        // modify a new monitor point
+        echo $jsonencode;
+        break;
+    case "PointMod"://修改监测点信息
         //require data structure:
         /*var map={
               action:"PointMod",
@@ -893,12 +976,37 @@ var retval={
                     status:"true",
                     msg:""
                 };*/
-        $retval=array(
-            'status'=>'true',
-            'msg'=>''
+        $sessionid = $_GET["user"];
+        $siteinfo =array(
+            'StatCode' => $_GET["StatCode"],
+            'StatName' => $_GET["StatName"],
+            'ProjCode' => $_GET["ProjCode"],
+            'ChargeMan' => $_GET["ChargeMan"],
+            'Telephone' => $_GET["Telephone"],
+            'Longitude' => $_GET["Longitude"],
+            'Latitude' => $_GET["Latitude"],
+            'Department' => $_GET["Department"],
+            'Address' => $_GET["Address"],
+            'Country' => $_GET["Country"],
+            'Street' => $_GET["Street"],
+            'Square' => $_GET["Square"],
+            'ProStartTime' => $_GET["ProStartTime"],
+            'Stage' => $_GET["Stage"]
         );
+        $result = $uiDbObj->db_siteinfo_update($siteinfo);
+        if ($result == true)
+            $retval=array(
+                'status'=>'true',
+                'msg'=>'新修改监测点成功'
+            );
+        else
+            $retval=array(
+                'status'=>'false',
+                'msg'=>'修改监测点失败'
+            );
         $jsonencode = _encode($retval);
-        echo $jsonencode; break;
+        echo $jsonencode;
+        break;
 
     case "PointDel":  //删除一个监测点
         //require data structure:
@@ -956,8 +1064,8 @@ var retval={
             );
         else
             $retval=array(
-                'status'=>"false",
-                'ret'=> null
+                'status'=>"true",
+                'ret'=> ""
             );
         $jsonencode = _encode($retval);
         echo $jsonencode;
@@ -1027,8 +1135,7 @@ var retval={
         echo $jsonencode;
         break;
 
-    case "DevNew":
-        // create a new device
+    case "DevNew":  //创建新的HCU信息
         //require data structure:
         /*var map={
               action:"DevNew",
@@ -1046,14 +1153,37 @@ var retval={
                                 status:"true",
                                 msg:""
                             };*/
+        $sessionid = $_GET["user"];
+        $devinfo =array(
+            'DevCode' => $_GET["DevCode"],
+            'StatCode' => $_GET["StatCode"],
+            'StartTime' => $_GET["StartTime"],
+            'PreEndTime' => $_GET["PreEndTime"],
+            'EndTime' => $_GET["EndTime"],
+            'DevStatus' => $_GET["DevStatus"],
+            'VideoURL' => $_GET["VideoURL"]
+        );
+        $result = $uiDbObj->db_devinfo_update($devinfo);
+        if ($result == true)
+            $retval=array(
+                'status'=>'true',
+                'msg'=>'新增监测设备成功'
+            );
+        else
+            $retval=array(
+                'status'=>'false',
+                'msg'=>'新增监测设备失败'
+            );
+
         $retval=array(
             'status'=>'true',
             'msg'=>''
         );
         $jsonencode = _encode($retval);
-        echo $jsonencode; break;
-    case "DevMod":
-        // modify a  device
+        echo $jsonencode;
+        break;
+
+    case "DevMod": //修改监测设备信息
         //require data structure:
         /*var map={
               action:"DevMod",
@@ -1071,12 +1201,30 @@ var retval={
                                 status:"true",
                                 msg:""
                             };*/
-        $retval=array(
-            'status'=>'true',
-            'msg'=>''
+        $sessionid = $_GET["user"];
+        $devinfo =array(
+            'DevCode' => $_GET["DevCode"],
+            'StatCode' => $_GET["StatCode"],
+            'StartTime' => $_GET["StartTime"],
+            'PreEndTime' => $_GET["PreEndTime"],
+            'EndTime' => $_GET["EndTime"],
+            'DevStatus' => $_GET["DevStatus"],
+            'VideoURL' => $_GET["VideoURL"]
         );
+        $result = $uiDbObj->db_devinfo_update($devinfo);
+        if ($result == true)
+            $retval=array(
+                'status'=>'true',
+                'msg'=>'修改监测设备信息成功'
+            );
+        else
+            $retval=array(
+                'status'=>'false',
+                'msg'=>'修改监测设备信息失败'
+            );
         $jsonencode = _encode($retval);
-        echo $jsonencode; break;
+        echo $jsonencode;
+        break;
 
     case "DevDel":  //删除HCU设备
         //require data structure:
@@ -1263,8 +1411,7 @@ var retval={
 
     case "AlarmQuery": //查询一个监测点历史告警数据 minute/hour/day
         //require data structure:
-        /*
-        var map={
+        /*var map={
                 action:"AlarmQuery",
                 id: usr.id,
                 StatCode: alarm_selected.StatCode,
@@ -1306,8 +1453,7 @@ var retval={
         $statcode = $_GET["StatCode"];
         $query_date = $_GET["date"];
         $query_type = $_GET["type"];
-
-        $result = $uiDbObj->db_dev_alarmhistory_req($statcode, $query_date, "S_0001");
+        $result = $uiDbObj->db_dev_alarmhistory_req($statcode, $query_date, $query_type);
 
         if(!empty($result))
             $retval= array(
@@ -1377,17 +1523,24 @@ var retval={
         break;
 
     case "TableQuery":
-// input tablename =>string
-// condition =>array
-// every condition
+        // input tablename =>string
+        // condition =>array
+        // every condition
         /*
                 ConditonName: "AlarmDate",
                 Equal:"",
                 GEQ:end_date,
                 LEQ:start_date*/
-        $TableName = $_GET["TableName"];
-        $Condition = $_GET["Condition"];
+
+        //$Condition = $_GET["Condition"];
         //$Filter = $_GET["Filter"];
+
+        $tablename = $_GET["TableName"];
+        $condition = array();
+        if(isset($_GET["Condition"]))
+            $condition = $_GET["Condition"];
+
+/*
         $column = 16;
         $row = 40;
         $column_name = array();
@@ -1412,13 +1565,23 @@ var retval={
             array_push($row_content,$one_row);
             //row_content.push(one_row);
         }
-        $retval=array(
-            'status'=>'true',
-            'ColumnName'=> $column_name,
-            'TableData'=>$row_content
-        );
+*/
+        $result = $uiDbObj->db_excel_historydata_req($condition);
+        if(!empty($result))
+            $retval=array(
+                'status'=>'true',
+                'ColumnName' => $result["column"],
+                'TableData' => $result["data"]
+            );
+        else
+            $retval=array(
+                'status'=>'false',
+                'ColumnName' => null,
+                'TableData' => null
+            );
         $jsonencode = _encode($retval);
-        echo $jsonencode; break;
+        echo $jsonencode;
+        break;
 
     case "SensorList":
         $sensor_list = $uiDbObj->db_all_sensorlist_req();
@@ -1568,9 +1731,10 @@ var retval={
             ColumnName: column_name,
             TableData:row_content
         };*/
-        $usr = $_GET["id"];
-        $result = $uiDbObj->db_user_dataaggregate_req("UID001");
+        $sessionid = $_GET["id"];
+        $uid = $uiDbObj->db_session_check($sessionid);
 
+        $result = $uiDbObj->db_user_dataaggregate_req($uid);
         if(!empty($result))
             $retval=array(
                 'status'=>'true',

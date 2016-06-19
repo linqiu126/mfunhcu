@@ -26,8 +26,21 @@ class class_ui_db
         return $str;
     }
 
+
+    private function getRandomUid($strlen)
+    {
+
+        $str = "";
+        $str_pol = "0123456789";
+        $max = strlen($str_pol) - 1;
+        for ($i = 0; $i < $strlen; $i++) {
+            $str .= $str_pol[mt_rand(0, $max)];
+        }
+        return $str;
+    }
+
     //更新UI用户session ID
-    private function updateSession ($name, $sessionid)
+    private function updateSession ($uid, $sessionid)
     {
         //建立连接
         $mysqli=new mysqli(WX_DBHOST, WX_DBUSER, WX_DBPSW, WX_DBNAME, WX_DBPORT);
@@ -38,22 +51,22 @@ class class_ui_db
 
         $timestamp = time();
         //先检查用户名是否存在
-        $result = $mysqli->query("SELECT * FROM `t_session` WHERE `user` = '$name'");
+        $result = $mysqli->query("SELECT * FROM `t_session` WHERE `uid` = '$uid'");
         if (($result->num_rows)>0)
         {
-            $query_str = "UPDATE `t_session` SET `sessionid` = '$sessionid', `lastupdate` = '$timestamp' WHERE (`user` = '$name')";
+            $query_str = "UPDATE `t_session` SET `sessionid` = '$sessionid', `lastupdate` = '$timestamp' WHERE (`uid` = '$uid')";
             $result=$mysqli->query($query_str);
         }
         else    //否则插入一条新记录
         {
-            $result=$mysqli->query("INSERT INTO `t_session` (user, sessionid, lastupdate) VALUES ('$name', '$sessionid', '$timestamp')");
+            $result=$mysqli->query("INSERT INTO `t_session` (uid, sessionid, lastupdate) VALUES ('$uid', '$sessionid', '$timestamp')");
         }
 
         $mysqli->close();
         return $result;
     }
 
-    //当前登录用户session id查询
+    //当前登录用户session id检查,如果session id对应UID不存在或者session id的更新时间超过有效时间，则返回false，否则返回UID
     public function db_session_check($sessionid)
     {
         //建立连接
@@ -68,14 +81,18 @@ class class_ui_db
         $result = $mysqli->query($query_str);
         if (($result->num_rows)>0) {
             $row = $result->fetch_array();
-            $result = $row['user'];
-
+            $lastupdate = $row['lastupdate'];
+            $currenttime = time();
+            if($currenttime < ($lastupdate + SESSIONID_VALID_TIME))
+                $uid = $row['uid'];
+            else
+                $uid = "";
         }
         else
-            $result = "";
+            $uid = "";
 
         $mysqli->close();
-        return $result;
+        return $uid;
     }
 
     //UI login request  用户登录请求
@@ -97,6 +114,7 @@ class class_ui_db
         {
             $row = $result->fetch_array();
             $pwd = $row['pwd'];
+            $uid = $row['uid'];
             $attribute = $row['attribute'];
             if ($attribute == 'admin' or  $attribute == '管理员')
                 $admin = "true";
@@ -105,18 +123,18 @@ class class_ui_db
 
             if ($pwd == $password) {
                 $strlen = SESSION_ID_LEN;
-                $session = $this->getRandomSid($strlen);
+                $sessionid = $this->getRandomSid($strlen);
                 $userinfo = array(
                     'status' => "true",
-                    'text' => "login successfully",
-                    'key' => $session,
+                    'text' => "login success",
+                    'key' => $sessionid,
                     'admin' => $admin);
-                $this->updateSession($name, $session);
+                $this->updateSession($uid, $sessionid);
             }
             else {
                 $userinfo = array(
                     'status' => "false",
-                    'text' => "password invaild",
+                    'text' => "password invalid",
                     'key' => null,
                     'admin' => null);
             }
@@ -124,7 +142,7 @@ class class_ui_db
         else {
             $userinfo = array(
                 'status' => "false",
-                'text' => "user not exist",
+                'text' => "user name not exist",
                 'key' => null,
                 'admin' => null);
         }
@@ -151,12 +169,12 @@ class class_ui_db
         if (($result->num_rows)>0)
         {
             $row = $result->fetch_array();
-            $user = $row['user'];
+            $uid = $row['uid'];
             $lastupdate = $row['lastupdate'];
             $now= time();
-            if ($lastupdate < $now + 7200) //sessionid 超过2小时
+            if ($lastupdate < $now + SESSIONID_VALID_TIME) //sessionid 在有效时间内
             {
-                $query_str = "SELECT * FROM `t_account` WHERE `user` = '$user'";
+                $query_str = "SELECT * FROM `t_account` WHERE `uid` = '$uid'";
                 $result = $mysqli->query($query_str);
                 if (($result->num_rows)>0)
                 {
@@ -169,7 +187,7 @@ class class_ui_db
 
                     $userinfo = array(
                         'id' => $sessionid,
-                        'name' => $user,
+                        'name' => $row['user'],
                         'admin' => $admin,
                         'city' => $row['city'] );
                 }
@@ -247,7 +265,7 @@ class class_ui_db
         //$mysqli->query("set character_set_connection = utf8");
         $mysqli->query("SET NAMES utf8");
 
-        $uid = $userinfo["id"];
+        $uid = UID_PREFIX.$this->getRandomUid(3);  //UID的分配机制将来要重新考虑，避免重复
         $user = $userinfo["name"];
         $nick = $userinfo["nickname"];
         $pwd = $userinfo["password"];
@@ -256,6 +274,7 @@ class class_ui_db
         $email = $userinfo["mail"];
         $regdate = date("Y-m-d", time());
         $backup = $userinfo["memo"];
+        $city = "上海"; //暂定用户所在城市，将来需要修改
 
         $auth = array();
         $auth = $userinfo["auth"];
@@ -266,13 +285,13 @@ class class_ui_db
         if (($result->num_rows)>0) //重复，则覆盖
         {
             $query_str = "UPDATE `t_account` SET `nick` = '$nick',`pwd` = '$pwd',`attribute` = '$attribute',`phone` = '$phone',`email` = '$email',
-                          `regdate` = '$regdate', `backup` = '$backup' WHERE (`user` = '$user' )";
+                          `regdate` = '$regdate', `city` = '$city',`backup` = '$backup' WHERE (`user` = '$user' )";
             $result = $mysqli->query($query_str);
         }
         else //不存在，新增
         {
-            $query_str = "INSERT INTO `t_account` (user,nick,pwd,attribute,phone,email,regdate,backup)
-                                  VALUES ('$user','$nick','$pwd','$attribute','$phone','$email', '$regdate','$backup')";
+            $query_str = "INSERT INTO `t_account` (uid,user,nick,pwd,attribute,phone,email,regdate,city,backup)
+                                  VALUES ('$uid','$user','$nick','$pwd','$attribute','$phone','$email', '$regdate','$city','$backup')";
 
             $result = $mysqli->query($query_str);
         }
@@ -381,6 +400,7 @@ class class_ui_db
     /**********************************************************************************************************************
      *                          项目Project和项目组ProjectGroup相关操作DB API                                               *
      *********************************************************************************************************************/
+
     //查询项目表中记录总数
     public function db_all_projnum_inqury()
     {
@@ -546,7 +566,7 @@ class class_ui_db
     }
 
     //UI PGlist request, 获取该用户授权的全部项目组列表
-    public function db_user_pglist_req($user)
+    public function db_user_pglist_req($uid)
     {
         //建立连接
         $mysqli = new mysqli(WX_DBHOST, WX_DBUSER, WX_DBPSW, WX_DBNAME, WX_DBPORT);
@@ -555,7 +575,7 @@ class class_ui_db
         }
         $mysqli->query("set character_set_results = utf8");
 
-        $query_str = "SELECT * FROM `t_authlist` WHERE `user` = '$user' ";
+        $query_str = "SELECT * FROM `t_authlist` WHERE `uid` = '$uid' ";
         $result = $mysqli->query($query_str);
 
         $pglist = array();
@@ -584,7 +604,7 @@ class class_ui_db
         return $pglist;
     }
 
-    //UI ProjList request, 获取该用户授权的全部项目列表
+    //UI ProjList request, 获取该用户授权的全部项目列表,包括授权项目组下面的项目list
     public function db_user_projlist_req($uid)
     {
         //建立连接
@@ -598,24 +618,33 @@ class class_ui_db
         $result = $mysqli->query($query_str);
 
         $projlist = array();
-        while($row = $result->fetch_array())
+        if($result->num_rows>0)
         {
-            $pcode = "";
-            $authcode = $row['auth_code'];
-            $fromat = substr($authcode, 0, CODE_FORMAT_LEN);
-            if($fromat == PROJ_CODE_PREFIX)
-                $pcode = $authcode;
-
-            $query_str = "SELECT * FROM `t_projinfo` WHERE `p_code` = '$pcode'";
-            $resp = $mysqli->query($query_str);
-
-            if (($resp->num_rows)>0) {
-                $list = $resp->fetch_array();
-                $temp = array(
-                    'id' => $list['p_code'],
-                    'name' => $list['p_name']
-                );
-                array_push($projlist, $temp);
+            while($row = $result->fetch_array())
+            {
+                $authcode = $row['auth_code'];
+                $fromat = substr($authcode, 0, CODE_FORMAT_LEN);
+                if($fromat == PROJ_CODE_PREFIX)  //取得code为项目号
+                {
+                    $pcode = $authcode;
+                    $query_str = "SELECT * FROM `t_projinfo` WHERE `p_code` = '$pcode'";
+                    $resp = $mysqli->query($query_str);
+                    if (($resp->num_rows)>0) {
+                        $list = $resp->fetch_array();
+                        $temp = array(
+                            'id' => $list['p_code'],
+                            'name' => $list['p_name']
+                        );
+                        array_push($projlist, $temp);
+                    }
+                }
+                elseif($fromat == PG_CODE_PREFIX)  //取得的code为项目组号
+                {
+                    $pgcode = $authcode;
+                    $temp = $this->db_pg_projlist_req($pgcode);
+                    for($i=0; $i<count($temp); $i++)
+                        array_push($projlist, $temp[$i]);
+                }
             }
         }
 
@@ -747,14 +776,14 @@ class class_ui_db
         else //不存在，新增
         {
             $query_str = "INSERT INTO `t_projgroup` (pg_code,pg_name,owner,phone,department,addr,backup)
-                                  VALUES ('$pgcode','$pgname','$owner','$phone','$phone','$department', '$addr','$stage')";
+                                  VALUES ('$pgcode','$pgname','$owner','$phone','$department', '$addr','$stage')";
 
             $result1 = $mysqli->query($query_str);
         }
 
         //如果存在，先删除项目组所有当前授权的项目list
         $query_str = "DELETE FROM `t_projmapping` WHERE `pg_code` = '$pgcode' ";
-        $result = $mysqli->query($query_str);
+        $result2 = $mysqli->query($query_str);
 
         //添加授权的项目list到该项目组
         if(!empty($projlist)){
@@ -763,12 +792,54 @@ class class_ui_db
             {
                 $pcode = $projlist[$i]["id"];
                 $query_str = "INSERT INTO `t_projmapping` (p_code, pg_code) VALUE ('$pcode', '$pgcode')";
-                $result2 = $mysqli->query($query_str);
+                $result3 = $mysqli->query($query_str);
                 $i++;
             }
         }
 
-        //$result = $result1 and $result2;
+        $result = $result1 and $result2;
+        $mysqli->close();
+        return $result;
+    }
+
+    //UI ProjNew & ProjMod request,添加新项目信息或者修改项目信息
+    public function db_projinfo_update($projinfo)
+    {
+        //建立连接
+        $mysqli = new mysqli(WX_DBHOST, WX_DBUSER, WX_DBPSW, WX_DBNAME, WX_DBPORT);
+        if (!$mysqli) {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $mysqli->query("set character_set_results = utf8");
+        $mysqli->query("SET NAMES utf8");
+
+        //$session = $projinfo["user"];
+        $pcode = $projinfo["ProjCode"];
+        $pname = $projinfo["ProjName"];
+        $chargeman = $projinfo["ChargeMan"];
+        $telephone = $projinfo["Telephone"];
+        $department = $projinfo["Department"];
+        $addr = $projinfo["Address"];
+        $starttime = $projinfo["ProStartTime"];
+        $stage = $projinfo["Stage"];
+
+        $query_str = "SELECT * FROM `t_projinfo` WHERE `p_code` = '$pcode'";
+        $result = $mysqli->query($query_str);
+
+        if (($result->num_rows)>0) //重复，则覆盖
+        {
+            $query_str = "UPDATE `t_projinfo` SET `p_name` = '$pname',`chargeman` = '$chargeman',`telephone` = '$telephone',`department` = '$department',
+                          `address` = '$addr', `starttime` = '$starttime', `stage` = '$stage' WHERE (`p_code` = '$pcode' )";
+            $result = $mysqli->query($query_str);
+        }
+        else //不存在，新增
+        {
+            $query_str = "INSERT INTO `t_projinfo` (p_code,p_name,chargeman,telephone,department,address,starttime,stage)
+                                  VALUES ('$pcode','$pname','$chargeman','$telephone','$department', '$addr','$starttime','$stage')";
+
+            $result = $mysqli->query($query_str);
+        }
+
         $mysqli->close();
         return $result;
     }
@@ -1021,6 +1092,58 @@ class class_ui_db
         return $sitetable;
     }
 
+
+    //UI PointNew & PointMod request,添加监测点信息或者修改监测点信息
+    public function db_siteinfo_update($siteinfo)
+    {
+        //建立连接
+        $mysqli = new mysqli(WX_DBHOST, WX_DBUSER, WX_DBPSW, WX_DBNAME, WX_DBPORT);
+        if (!$mysqli) {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $mysqli->query("set character_set_results = utf8");
+        $mysqli->query("SET NAMES utf8");
+
+        $statcode = $siteinfo["StatCode"];
+        $statname = $siteinfo["StatName"];
+        $pcode = $siteinfo["ProjCode"];
+        $chargeman = $siteinfo["ChargeMan"];
+        $telephone = $siteinfo["Telephone"];
+        $longitude = $siteinfo["Longitude"];
+        $latitude = $siteinfo["Latitude"];
+        $department = $siteinfo["Department"];
+        $addr = $siteinfo["Address"];
+        $country = $siteinfo["Country"];
+        $street = $siteinfo["Street"];
+        $square = $siteinfo["Square"];
+        $starttime = $siteinfo["ProStartTime"];
+        $stage = $siteinfo["Stage"];
+
+        $query_str = "SELECT * FROM `t_siteinfo` WHERE `statcode` = '$statcode'";
+        $result = $mysqli->query($query_str);
+
+        if (($result->num_rows)>0) //重复，则覆盖
+        {
+            $query_str = "UPDATE `t_siteinfo` SET `name` = '$statname',`p_code` = '$pcode',`starttime` = '$starttime',
+                          `latitude` = '$latitude',`longitude` = '$longitude' WHERE (`statcode` = '$statcode' )";
+            $result1 = $mysqli->query($query_str);
+        }
+        else //不存在，新增
+        {
+            $query_str = "INSERT INTO `t_siteinfo` (statcode,name,p_code,starttime,latitude,longitude)
+                                  VALUES ('$statcode','$statname','$pcode','$starttime','$latitude', '$longitude')";
+
+            $result1 = $mysqli->query($query_str);
+        }
+
+        $query_str = "UPDATE `t_projinfo` SET `country` = '$country',`street` = '$street',`square` = '$square' WHERE (`p_code` = '$pcode' )";
+        $result2 = $mysqli->query($query_str);
+
+        $result = $result1 AND $result2;
+        $mysqli->close();
+        return $result;
+    }
+
     //UI DevTable request, 获取全部HCU设备列表信息
     public function db_all_hcutable_req($start, $total)
     {
@@ -1097,6 +1220,45 @@ class class_ui_db
 
         $mysqli->close();
         return $devlist;
+    }
+
+
+    //UI DevNew & DevMod request,添加HCU设备信息或者修改HCU设备信息
+    public function db_devinfo_update($devinfo)
+    {
+        //建立连接
+        $mysqli = new mysqli(WX_DBHOST, WX_DBUSER, WX_DBPSW, WX_DBNAME, WX_DBPORT);
+        if (!$mysqli) {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $mysqli->query("set character_set_results = utf8");
+        $mysqli->query("SET NAMES utf8");
+
+        $devcode = $devinfo["DevCode"];
+        $statcode = $devinfo["StatCode"];
+        $starttime = $devinfo["StartTime"];
+        $preendtime = $devinfo["PreEndTime"];
+        $endtime = $devinfo["EndTime"];
+        $devstatue = $devinfo["DevStatus"];
+        $videourl = $devinfo["VideoURL"];
+        $default_sensor = S_TYPE_EMC.";";
+
+        $query_str = "SELECT * FROM `t_hcudevice` WHERE `devcode` = '$devcode'";
+        $result = $mysqli->query($query_str);
+
+        if (($result->num_rows)>0) //重复，则覆盖
+        {
+            $query_str = "UPDATE `t_hcudevice` SET `statcode` = '$statcode',`switch` = '$devstatue',`videourl` = '$videourl' WHERE (`devcode` = '$devcode' )";
+            $result = $mysqli->query($query_str);
+        }
+        else //不存在，新增
+        {
+            $query_str = "INSERT INTO `t_hcudevice` (devcode,statcode,switch,videourl,sensorlist) VALUES ('$devcode','$statcode','$devstatue','$videourl','$default_sensor')";
+            $result = $mysqli->query($query_str);
+        }
+
+        $mysqli->close();
+        return $result;
     }
 
     //UI PointDel request，删除一个监测点
@@ -1206,6 +1368,61 @@ class class_ui_db
 
         $mysqli->close();
         return $sitelist;
+    }
+
+    public function db_excel_historydata_req($condition)
+    {
+        //建立连接
+        $mysqli = new mysqli(WX_DBHOST, WX_DBUSER, WX_DBPSW, WX_DBNAME, WX_DBPORT);
+        if (!$mysqli) {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $mysqli->query("set character_set_results = utf8");
+
+        if($condition[0]["ConditonName"] == "UserId")
+            $session = $condition[0]["Equal"];
+        if($condition[1]["ConditonName"] == "StatCode")
+            $statcode = $condition[1]["Equal"];
+        if($condition[2]["ConditonName"] == "AlarmType")
+            $type = $condition[2]["Equal"];
+        if($condition[3]["ConditonName"] == "AlarmDate"){
+            $start = $condition[3]["GEQ"];
+            $end = $condition[3]["LEQ"];
+        }
+
+        $resp["column"] = array();
+        $resp['data'] = array();
+
+        array_push($resp["column"],"监测点编号");
+        array_push($resp["column"],"设备编号");
+        array_push($resp["column"],"报告日期");
+        array_push($resp["column"],"PM2.5");
+        array_push($resp["column"],"风速");
+        array_push($resp["column"],"风向");
+        array_push($resp["column"],"温度");
+        array_push($resp["column"],"湿度");
+        array_push($resp["column"],"噪声");
+
+        $query_str = "SELECT * FROM `t_minreport` WHERE `statcode` = '$statcode'AND `reportdate`>= '$start' AND `reportdate`<= '$end'";
+        $result = $mysqli->query($query_str);
+        while($info = $result->fetch_array())
+        {
+            $one_row = array();
+            array_push($one_row, $statcode);
+            array_push($one_row, $info["devcode"]);
+            array_push($one_row, $info["reportdate"]);
+            array_push($one_row, $info["pm25"]/10);
+            array_push($one_row, $info["windspeed"]/10);
+            array_push($one_row, $info["winddirection"]);
+            array_push($one_row, $info["temperature"]/10);
+            array_push($one_row, $info["humidity"]/10);
+            array_push($one_row, $info["noise"]/100);
+
+            array_push($resp['data'],$one_row);
+        }
+
+        $mysqli->close();
+        return $resp;
     }
 
 
@@ -1517,7 +1734,7 @@ class class_ui_db
         switch($alarm_type) {
             case S_TYPE_PM:
                 $resp["alarm_name"] = "细颗粒物";
-                $resp["alarm_unit"] = "毫克每立方米";
+                $resp["alarm_unit"] = "毫克/立方米";
                 $resp["warning"] = TH_ALARM_PM25;
 
                 $resp["minute_alarm"] = array();
@@ -1529,44 +1746,380 @@ class class_ui_db
 
                 $query_str = "SELECT * FROM `t_pmdata` WHERE `deviceid` = '$devcode' AND `reportdate` = '$date'";
                 $result = $mysqli->query($query_str);
-                for($i=0; $i<$result->num_rows; $i++)
+                if ($result->num_rows > 0)
                 {
-                    $row = $result->fetch_array();
-                    $data = $row["pm25"]/10;
-                    $huorminindex = $row["hourminindex"];
-                    $hour = floor($huorminindex/60) ;
-                    $min = $huorminindex - $hour*60;
-                    $head = $hour.":".$min;
-                    array_push($resp["minute_alarm"],$data);
-                    array_push($resp["minute_head"],$head);
+                    for($i=0; $i<$result->num_rows; $i++)
+                    {
+                        $row = $result->fetch_array();
+                        $data = $row["pm25"]/10;
+                        $huorminindex = $row["hourminindex"];
+                        $hour = floor($huorminindex/60) ;
+                        $min = $huorminindex - $hour*60;
+                        $head = $hour.":".$min;
+                        array_push($resp["minute_alarm"],$data);
+                        array_push($resp["minute_head"],$head);
+                    }
 
                     //临时填的随机数
-                    array_push($resp["hour_alarm"],rand(10,110));
-                    array_push($resp["hour_head"],(string)$i);
-                    array_push($resp["day_alarm"],rand(10,110));
-                    array_push($resp["day_head"],(string)$i);
+                    for ($i=0; $i<(7*24); $i++){
+                        array_push($resp["hour_alarm"],0);
+                        array_push($resp["hour_head"],(string)$i);
+                    }
+                    for ($i=0; $i<30; $i++){
+                        array_push($resp["day_alarm"],0);
+                        array_push($resp["day_head"],(string)$i);
+                    }
                 }
-
+                else
+                {
+                    //临时填的随机数
+                    for ($i=0; $i<(60*24); $i++){
+                        array_push($resp["minute_alarm"],0);
+                        array_push($resp["minute_head"],(string)$i);
+                    }
+                    for ($i=0; $i<(7*24); $i++){
+                        array_push($resp["hour_alarm"],0);
+                        array_push($resp["hour_head"],(string)$i);
+                    }
+                    for ($i=0; $i<30; $i++){
+                        array_push($resp["day_alarm"],0);
+                        array_push($resp["day_head"],(string)$i);
+                    }
+                }
                 break;
+
             case S_TYPE_WINDSPEED:
+                $resp["alarm_name"] = "风速";
+                $resp["alarm_unit"] = "千米/小时";
+                $resp["warning"] = TH_ALARM_WINDSPEED;
+
+                $resp["minute_alarm"] = array();
+                $resp["minute_head"] = array();
+                $resp["hour_alarm"] = array();
+                $resp["hour_head"] = array();
+                $resp["day_alarm"] = array();
+                $resp["day_head"] = array();
+
+                $query_str = "SELECT * FROM `t_windspeed` WHERE `deviceid` = '$devcode' AND `reportdate` = '$date'";
+                $result = $mysqli->query($query_str);
+                if ($result->num_rows > 0)
+                {
+                    for($i=0; $i<$result->num_rows; $i++)
+                    {
+                        $row = $result->fetch_array();
+                        $data = $row["windspeed"]/10;
+                        $huorminindex = $row["hourminindex"];
+                        $hour = floor($huorminindex/60) ;
+                        $min = $huorminindex - $hour*60;
+                        $head = $hour.":".$min;
+                        array_push($resp["minute_alarm"],$data);
+                        array_push($resp["minute_head"],$head);
+                    }
+                    //临时填的随机数
+                    for ($i=0; $i<(7*24); $i++){
+                        array_push($resp["hour_alarm"],0);
+                        array_push($resp["hour_head"],(string)$i);
+                    }
+                    for ($i=0; $i<30; $i++){
+                        array_push($resp["day_alarm"],0);
+                        array_push($resp["day_head"],(string)$i);
+                    }
+                }
+                else
+                {
+                    //临时填的随机数
+                    for ($i=0; $i<(60*24); $i++){
+                        array_push($resp["minute_alarm"],0);
+                        array_push($resp["minute_head"],(string)$i);
+                    }
+                    for ($i=0; $i<(7*24); $i++){
+                        array_push($resp["hour_alarm"],0);
+                        array_push($resp["hour_head"],(string)$i);
+                    }
+                    for ($i=0; $i<30; $i++){
+                        array_push($resp["day_alarm"],0);
+                        array_push($resp["day_head"],(string)$i);
+                    }
+                }
                 break;
 
             case S_TYPE_WINDDIR:
+                $resp["alarm_name"] = "风向";
+                $resp["alarm_unit"] = "度";
+                $resp["warning"] = TH_ALARM_WINDDIR;
+
+                $resp["minute_alarm"] = array();
+                $resp["minute_head"] = array();
+                $resp["hour_alarm"] = array();
+                $resp["hour_head"] = array();
+                $resp["day_alarm"] = array();
+                $resp["day_head"] = array();
+
+                $query_str = "SELECT * FROM `t_winddirection` WHERE `deviceid` = '$devcode' AND `reportdate` = '$date'";
+                $result = $mysqli->query($query_str);
+                if ($result->num_rows > 0)
+                {
+                    for($i=0; $i<$result->num_rows; $i++)
+                    {
+                        $row = $result->fetch_array();
+                        $data = $row["winddirection"];
+                        $huorminindex = $row["hourminindex"];
+                        $hour = floor($huorminindex/60) ;
+                        $min = $huorminindex - $hour*60;
+                        $head = $hour.":".$min;
+                        array_push($resp["minute_alarm"], $data);
+                        array_push($resp["minute_head"], $head);
+                    }
+                    //临时填的随机数
+                    for ($i=0; $i<(7*24); $i++){
+                        array_push($resp["hour_alarm"],0);
+                        array_push($resp["hour_head"],(string)$i);
+                    }
+                    for ($i=0; $i<30; $i++){
+                        array_push($resp["day_alarm"],0);
+                        array_push($resp["day_head"],(string)$i);
+                    }
+                }
+                else
+                {
+                    //临时填的随机数
+                    for ($i=0; $i<(60*24); $i++){
+                        array_push($resp["minute_alarm"],0);
+                        array_push($resp["minute_head"],(string)$i);
+                    }
+                    for ($i=0; $i<(7*24); $i++){
+                        array_push($resp["hour_alarm"],0);
+                        array_push($resp["hour_head"],(string)$i);
+                    }
+                    for ($i=0; $i<30; $i++){
+                        array_push($resp["day_alarm"],0);
+                        array_push($resp["day_head"],(string)$i);
+                    }
+                }
                 break;
 
             case S_TYPE_EMC:
+                $resp["alarm_name"] = "电磁辐射";
+                $resp["alarm_unit"] = "毫瓦/平方毫米";
+                $resp["warning"] = TH_ALARM_EMC;
+
+                $resp["minute_alarm"] = array();
+                $resp["minute_head"] = array();
+                $resp["hour_alarm"] = array();
+                $resp["hour_head"] = array();
+                $resp["day_alarm"] = array();
+                $resp["day_head"] = array();
+
+                $query_str = "SELECT * FROM `t_emcdata` WHERE `deviceid` = '$devcode' AND `reportdate` = '$date'";
+                $result = $mysqli->query($query_str);
+                if ($result->num_rows > 0)
+                {
+                    for($i=0; $i<$result->num_rows; $i++)
+                    {
+                        $row = $result->fetch_array();
+                        $data = $row["emcvalue"]/100;
+                        $huorminindex = $row["hourminindex"];
+                        $hour = floor($huorminindex/60) ;
+                        $min = $huorminindex - $hour*60;
+                        $head = $hour.":".$min;
+                        array_push($resp["minute_alarm"], $data);
+                        array_push($resp["minute_head"], $head);
+                    }
+                    //临时填的随机数
+                    for ($i=0; $i<(7*24); $i++){
+                        array_push($resp["hour_alarm"],0);
+                        array_push($resp["hour_head"],(string)$i);
+                    }
+                    for ($i=0; $i<30; $i++){
+                        array_push($resp["day_alarm"],0);
+                        array_push($resp["day_head"],(string)$i);
+                    }
+                }
+                else
+                {
+                    //临时填的随机数
+                    for ($i=0; $i<(60*24); $i++){
+                        array_push($resp["minute_alarm"],0);
+                        array_push($resp["minute_head"],(string)$i);
+                    }
+                    for ($i=0; $i<(7*24); $i++){
+                        array_push($resp["hour_alarm"],0);
+                        array_push($resp["hour_head"],(string)$i);
+                    }
+                    for ($i=0; $i<30; $i++){
+                        array_push($resp["day_alarm"],0);
+                        array_push($resp["day_head"],(string)$i);
+                    }
+                }
                 break;
 
             case S_TYPE_TEMPERATURE:
+                $resp["alarm_name"] = "温度";
+                $resp["alarm_unit"] = "摄氏度";
+                $resp["warning"] = TH_ALARM_TEMPERATURE;
 
+                $resp["minute_alarm"] = array();
+                $resp["minute_head"] = array();
+                $resp["hour_alarm"] = array();
+                $resp["hour_head"] = array();
+                $resp["day_alarm"] = array();
+                $resp["day_head"] = array();
+
+                $query_str = "SELECT * FROM `t_temperature` WHERE `deviceid` = '$devcode' AND `reportdate` = '$date'";
+                $result = $mysqli->query($query_str);
+                if ($result->num_rows > 0)
+                {
+                    for($i=0; $i<$result->num_rows; $i++)
+                    {
+                        $row = $result->fetch_array();
+                        $data = $row["temperature"]/10;
+                        $huorminindex = $row["hourminindex"];
+                        $hour = floor($huorminindex/60) ;
+                        $min = $huorminindex - $hour*60;
+                        $head = $hour.":".$min;
+                        array_push($resp["minute_alarm"], $data);
+                        array_push($resp["minute_head"], $head);
+                    }
+                    //临时填的随机数
+                    for ($i=0; $i<(7*24); $i++){
+                        array_push($resp["hour_alarm"],0);
+                        array_push($resp["hour_head"],(string)$i);
+                    }
+                    for ($i=0; $i<30; $i++){
+                        array_push($resp["day_alarm"],0);
+                        array_push($resp["day_head"],(string)$i);
+                    }
+                }
+                else
+                {
+                    //临时填的随机数
+                    for ($i=0; $i<(60*24); $i++){
+                        array_push($resp["minute_alarm"],0);
+                        array_push($resp["minute_head"],(string)$i);
+                    }
+                    for ($i=0; $i<(7*24); $i++){
+                        array_push($resp["hour_alarm"],0);
+                        array_push($resp["hour_head"],(string)$i);
+                    }
+                    for ($i=0; $i<30; $i++){
+                        array_push($resp["day_alarm"],0);
+                        array_push($resp["day_head"],(string)$i);
+                    }
+                }
                 break;
 
             case S_TYPE_HUMIDITY:
+                $resp["alarm_name"] = "湿度";
+                $resp["alarm_unit"] = "%";
+                $resp["warning"] = TH_ALARM_HUMIDITY;
+
+                $resp["minute_alarm"] = array();
+                $resp["minute_head"] = array();
+                $resp["hour_alarm"] = array();
+                $resp["hour_head"] = array();
+                $resp["day_alarm"] = array();
+                $resp["day_head"] = array();
+
+                $query_str = "SELECT * FROM `t_humidity` WHERE `deviceid` = '$devcode' AND `reportdate` = '$date'";
+                $result = $mysqli->query($query_str);
+                if ($result->num_rows > 0)
+                {
+                    for($i=0; $i<$result->num_rows; $i++)
+                    {
+                        $row = $result->fetch_array();
+                        $data = $row["humidity"]/10;
+                        $huorminindex = $row["hourminindex"];
+                        $hour = floor($huorminindex/60) ;
+                        $min = $huorminindex - $hour*60;
+                        $head = $hour.":".$min;
+                        array_push($resp["minute_alarm"], $data);
+                        array_push($resp["minute_head"], $head);
+                    }
+                    //临时填的随机数
+                    for ($i=0; $i<(7*24); $i++){
+                        array_push($resp["hour_alarm"],0);
+                        array_push($resp["hour_head"],(string)$i);
+                    }
+                    for ($i=0; $i<30; $i++){
+                        array_push($resp["day_alarm"],0);
+                        array_push($resp["day_head"],(string)$i);
+                    }
+                }
+                else
+                {
+                    //临时填的随机数
+                    for ($i=0; $i<(60*24); $i++){
+                        array_push($resp["minute_alarm"],0);
+                        array_push($resp["minute_head"],(string)$i);
+                    }
+                    for ($i=0; $i<(7*24); $i++){
+                        array_push($resp["hour_alarm"],0);
+                        array_push($resp["hour_head"],(string)$i);
+                    }
+                    for ($i=0; $i<30; $i++){
+                        array_push($resp["day_alarm"],0);
+                        array_push($resp["day_head"],(string)$i);
+                    }
+                }
                 break;
+
             case S_TYPE_NOISE:
+                $resp["alarm_name"] = "噪声";
+                $resp["alarm_unit"] = "分贝";
+                $resp["warning"] = TH_ALARM_NOISE;
+
+                $resp["minute_alarm"] = array();
+                $resp["minute_head"] = array();
+                $resp["hour_alarm"] = array();
+                $resp["hour_head"] = array();
+                $resp["day_alarm"] = array();
+                $resp["day_head"] = array();
+
+                $query_str = "SELECT * FROM `t_noisedata` WHERE `deviceid` = '$devcode' AND `reportdate` = '$date'";
+                $result = $mysqli->query($query_str);
+                if ($result->num_rows > 0)
+                {
+                    for($i=0; $i<$result->num_rows; $i++)
+                    {
+                        $row = $result->fetch_array();
+                        $data = $row["noise"]/100;
+                        $huorminindex = $row["hourminindex"];
+                        $hour = floor($huorminindex/60) ;
+                        $min = $huorminindex - $hour*60;
+                        $head = $hour.":".$min;
+                        array_push($resp["minute_alarm"], $data);
+                        array_push($resp["minute_head"], $head);
+                    }
+                    //临时填的随机数
+                    for ($i=0; $i<(7*24); $i++){
+                        array_push($resp["hour_alarm"],0);
+                        array_push($resp["hour_head"],(string)$i);
+                    }
+                    for ($i=0; $i<30; $i++){
+                        array_push($resp["day_alarm"],0);
+                        array_push($resp["day_head"],(string)$i);
+                    }
+                }
+                else
+                {
+                    //临时填的随机数
+                    for ($i=0; $i<(60*24); $i++){
+                        array_push($resp["minute_alarm"],0);
+                        array_push($resp["minute_head"],(string)$i);
+                    }
+                    for ($i=0; $i<(7*24); $i++){
+                        array_push($resp["hour_alarm"],0);
+                        array_push($resp["hour_head"],(string)$i);
+                    }
+                    for ($i=0; $i<30; $i++){
+                        array_push($resp["day_alarm"],0);
+                        array_push($resp["day_head"],(string)$i);
+                    }
+                }
                 break;
 
             default:
+                $resp = "";
                 break;
         }
 
@@ -1605,7 +2158,7 @@ class class_ui_db
         array_push($resp["column"], "噪音");
         array_push($resp["column"], "风速");
         array_push($resp["column"], "风向");
-        array_push($resp["column"], "状态");
+        array_push($resp["column"], "设备状态");
 
         for($i=0; $i<count($auth_list["stat_code"]); $i++)
         {
@@ -1629,14 +2182,23 @@ class class_ui_db
             if (($result->num_rows) > 0)
             {
                 $row = $result->fetch_array();
-                array_push($one_row, $row["pm25"]);
-                array_push($one_row, $row["temperature"]);
-                array_push($one_row, $row["humidity"]);
-                array_push($one_row, $row["noise"]);
-                array_push($one_row, $row["windspeed"]);
+                array_push($one_row, $row["pm25"]/10);
+                array_push($one_row, $row["temperature"]/10);
+                array_push($one_row, $row["humidity"]/10);
+                array_push($one_row, $row["noise"]/100);
+                array_push($one_row, $row["windspeed"]/10);
                 array_push($one_row, $row["winddirection"]);
+
+                $timestamp = strtotime($row["createtime"]);
+                $currenttime = time();
+                if ($currenttime > ($timestamp+180))  //如果最后一次测量报告距离现在已经超过3分钟
+                    array_push($one_row, "停止");
+                else
+                    array_push($one_row, "运行");
+
             }
 
+/*
             $query_str = "SELECT * FROM `t_hcudevice` WHERE `statcode` = '$statcode'";
             $result = $mysqli->query($query_str);
             if (($result->num_rows) > 0) {
@@ -1646,6 +2208,7 @@ class class_ui_db
                 elseif ($row["switch"] == "off")
                     array_push($one_row, "停止");
             }
+*/
 
             array_push($resp['data'], $one_row);
         }

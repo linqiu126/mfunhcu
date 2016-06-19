@@ -19,8 +19,9 @@ define("ZHB_FORMAT", "##"); //中环保数据格式，消息以##开头
 
 define("PG_CODE_PREFIX", "PG");   //定义项目组code的特征字，项目组code必须以“PG”开头
 define("PROJ_CODE_PREFIX", "P_");  //定义项目code的特征字，项目code必须以“P_”开头
-define("UID_PREFIX", "UID");
+define("UID_PREFIX", "UID");  //定义用户ID的特征字，用户ID必须以UID开头
 define("CODE_FORMAT_LEN", 2); //定义项目code和项目组code的特征字长度
+define("SESSIONID_VALID_TIME", 1800);  //Session ID有效时间为30分钟
 
 define("IHU_MSG_HEAD_FORMAT", "A4MagicCode/A4Version/A4Length/A4CmdId/A4Seq/A4ErrCode");
 define("IHU_MSG_HEAD_LENGTH", 24); //12 Byte
@@ -48,6 +49,8 @@ define("TH_ALARM_HUMIDITY", 50);
 define("TH_ALARM_TEMPERATURE", 45);
 define("TH_ALARM_PM25", 100);
 define("TH_ALARM_WINDSPEED", 20);
+define("TH_ALARM_EMC", 100);
+define("TH_ALARM_WINDDIR", 360);
 
 //定义传感器类型
 define("S_TYPE_PM", "S_0001");
@@ -142,7 +145,7 @@ define ("ID_EQUIP_NOISE", 0x0A);
  *                             微信相关配置参数                                       *
  *************************************************************************************/
 //正式测试公号/服务公号的配置参数
-//date_default_timezone_set('prc');  //设置时区为北京时间
+date_default_timezone_set('prc');  //设置时区为北京时间
 define("WX_TOKEN", "weixin");  //TOKEN，必须和微信绑定的URL使用的TOKEN一致
 define("WX_DEBUG", false);
 define("WX_LOGCALLBACK", false);

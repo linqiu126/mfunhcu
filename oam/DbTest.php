@@ -14,7 +14,14 @@ include_once "../database/db_ui.class.php";
 
 //header("Content-type:text/html;charset=utf-8");
 
+/*
+$a = "2016-06-12 21:06:00";
 
+$b = strtotime($a);
+$stamp = strtotime("2016-06-12 21:07:50");
+
+$d = date("Y-m-d H:m:s", time());
+$c = $stamp - $b;
 
 $mysqli = new mysqli(WX_DBHOST, WX_DBUSER, WX_DBPSW, WX_DBNAME, WX_DBPORT);
 $query_str = "SELECT `auth_code` FROM `t_authlist` WHERE `uid` = 'UID003'";
@@ -26,20 +33,56 @@ while($row = $result->fetch_array())
     $p_code = $row["auth_code"];
     array_push($temp,$p_code);
 }
-
+*/
 
 $uiDbObj = new class_ui_db();
+/*
+$plist[0] = array(
+    'id'=>"P_0001",
+    'name'=>"万宝国际广场1"
+);
+$plist[1] = array(
+    'id'=>"P_0002",
+    'name'=>"万宝国际广场2"
+);
+$pginfo =array(
+    'PGCode' => "PG_9999",
+    'PGName' => "Test",
+    'ChargeMan' => "Test",
+    'Telephone' => "123",
+    'Department' => "D",
+    'Address' => "A",
+    'Stage' => "S",
+    'Projlist' => $plist,
+    'user' => "UID001"
+);
 
-$temp = $uiDbObj-> db_login_req("张三", zhang3);
 
-$result = $uiDbObj->db_dev_alarmhistory_req("120101001", "2016-02-27", "S_0001");
+$siteinfo =array(
+    'StatCode' => "123",
+    'StatName' => "测试监测点",
+    'ProjCode' => "P_9999",
+    'ChargeMan' => "123",
+    'Telephone' => "123",
+    'Longitude' => "123",
+    'Latitude' => "321",
+    'Department' =>"123",
+    'Address' => "123",
+    'Country' => "浦东",
+    'Street' => "街道",
+    'Square' => "9999",
+    'ProStartTime' => "2016-06-16",
+    'Stage' => "开工"
+);
+
+$result = $uiDbObj->db_user_projlist_req("UID001");
 
 $pgtable = $uiDbObj->db_pgtable_req(0, 8, "user_01");
 
 $result = $uiDbObj->db_usertable_req(1, 3);
 
 $result = $uiDbObj->db_login_req("user_01", "user01");
-
+*/
 
 /*
 class testObj
@@ -88,7 +131,7 @@ $resp = $Obj->responseMsg();*/
 
 
 //EMC 20
-$postStr = "<xml><ToUserName><![CDATA[AQ_HCU]]></ToUserName><FromUserName><![CDATA[HCU_SH_0301]]></FromUserName><CreateTime>1463066438</CreateTime><MsgType><![CDATA[hcu_text]]></MsgType><Content><![CDATA[20188105020113DB45000000004E0000000000000000570A59B2]]></Content><FuncFlag>0</FuncFlag></xml>";
+//$postStr = "<xml><ToUserName><![CDATA[AQ_HCU]]></ToUserName><FromUserName><![CDATA[HCU_SH_0301]]></FromUserName><CreateTime>1463066438</CreateTime><MsgType><![CDATA[hcu_text]]></MsgType><Content><![CDATA[20188105020113DB45000000004E0000000000000000570A59B2]]></Content><FuncFlag>0</FuncFlag></xml>";
 //$postStr = "<xml><ToUserName><![CDATA[SAE_MFUNHCU]]></ToUserName><FromUserName><![CDATA[HCU_SH_0302]]></FromUserName><CreateTime>1460039152</CreateTime><MsgType><![CDATA[hcu_text]]></MsgType><Content><![CDATA[201881050201124945000000004E000000000000000057066DF0]]></Content><FuncFlag>0</FuncFlag></xml>";
 //PM 25
 //$postStr = "<xml><ToUserName><![CDATA[SAE_MFUNHCU]]></ToUserName><FromUserName><![CDATA[HCU_SH_0301]]></FromUserName><CreateTime>1457872404</CreateTime><MsgType><![CDATA[hcu_text]]></MsgType><Content><![CDATA[252281010201000001120000011200000492000000000000000000000000000056E55E14]]></Content><FuncFlag>0</FuncFlag></xml>";
@@ -107,13 +150,17 @@ $postStr = "<xml><ToUserName><![CDATA[AQ_HCU]]></ToUserName><FromUserName><![CDA
 //CMD pooling
 //$postStr = "<xml><ToUserName><![CDATA[SAE_MFUNHCU]]></ToUserName><FromUserName><![CDATA[HCU_SH_0301]]></FromUserName><CreateTime>1457872559</CreateTime><MsgType><![CDATA[hcu_command]]></MsgType><Content><![CDATA[FD00]]></Content><FuncFlag>0</FuncFlag></xml>";
 
-$postStr = "<xml><ToUserName><![CDATA[AQ_HCU]]></ToUserName><FromUserName><![CDATA[HCU_SH_0305]]></FromUserName><CreateTime>1463066586</CreateTime><MsgType><![CDATA[hcu_text]]></MsgType><Content><![CDATA[201881050201130345000000004E000000000000000057318D70]]></Content><FuncFlag>0</FuncFlag></xml>";
+//$postStr = "<xml><ToUserName><![CDATA[AQ_HCU]]></ToUserName><FromUserName><![CDATA[HCU_SH_0305]]></FromUserName><CreateTime>1463066586</CreateTime><MsgType><![CDATA[hcu_text]]></MsgType><Content><![CDATA[201881050201130345000000004E000000000000000057318D70]]></Content><FuncFlag>0</FuncFlag></xml>";
+
+//中环保格式
+$postStr = "##007020160619033803000___11111ZHB_NOMHCU_SH_0304_44444405556666a01000=139A,68BE";
 
 libxml_disable_entity_loader(true);
 $postObj = simplexml_load_string($postStr, 'SimpleXMLElement');
 
 $hcuDevObj = new class_hcu_IOT_sdk();
-$result = $hcuDevObj->receive_hcu_xmlMessage($postObj);
+//$result = $hcuDevObj->receive_hcu_xmlMessage($postObj);
+$result = $hcuDevObj->receive_hcu_zhbMessage($postStr);
 
 
 

@@ -484,7 +484,7 @@ $(document).ready(function() {
     $("#delProjCommit").on('click',function(){
         //发送请求并且告知成功失败
         //刷新表格
-        del_proj(project_selected.StatCode);
+        del_proj(project_selected.ProjCode);
         touchcookie();
     });
     $("#newProjCommit").on('click',function(){
@@ -603,7 +603,7 @@ $(document).ready(function() {
     $("#delDevCommit").on('click',function(){
         //发送请求并且告知成功失败
         //刷新表格
-        del_dev(device_selected.StatCode);
+        del_dev(device_selected.DevCode);
         touchcookie();
     });
     $("#newDevCommit").on('click',function(){
@@ -948,7 +948,7 @@ function user_intialize(start) {
 }
 function draw_user_table_head(){
     if(null == user_table)return;
-    var page_number = Math.ceil((user_table.length-1)/table_row);
+    var page_number = Math.ceil((user_table.length)/table_row);
 
     $("#User_Page_control").empty();
     var txt = "<li>"+
@@ -1010,7 +1010,7 @@ function draw_user_table(data){
                 +"<td>" + user_table[sequence+i].name+"</td>"
                 +"<td>" + user_table[sequence+i].nickname+"</td>"
                 +"<td>" + user_table[sequence+i].mobile+"</td>";
-            if(true == user_table[sequence+i].type)
+            if("true" == user_table[sequence+i].type)
                 txt = txt+"<td>管理员</td>";
             else txt = txt+"<td>用户</td>";
             txt = txt +"<td>" + user_table[sequence+i].date+"</td>";
@@ -1424,7 +1424,7 @@ function pg_intialize(start) {
 }
 function draw_pg_table_head(){
     if(null == pg_table)return;
-    var page_number = Math.ceil((pg_table.length-1)/table_row);
+    var page_number = Math.ceil((pg_table.length)/table_row);
 
     $("#PG_Page_control").empty();
     var txt = "<li>"+
@@ -1772,6 +1772,7 @@ function del_proj(ProjCode){
         ProjCode: ProjCode,
         user:usr.id
     };
+    console.log("ProjCode="+ProjCode);
     jQuery.get(request_head, map, function (data) {
         log(data);
         var result=JSON.parse(data);
@@ -1867,7 +1868,7 @@ function proj_intialize(start) {
 }
 function draw_proj_table_head(){
     if(null == project_table)return;
-    var page_number = Math.ceil((project_table.length-1)/table_row);
+    var page_number = Math.ceil((project_table.length)/table_row);
 
     $("#Proj_Page_control").empty();
     var txt = "<li>"+
@@ -1939,7 +1940,7 @@ function draw_proj_table(data){
                 +"<td>--</td>"
                 +"<td>--</td>"
                 +"<td>--</td>"
-                +"<td>--</td>"
+            //    +"<td>--</td>"
                 +"<td>--</td>";
             txt = txt +"</tr>"
         }
@@ -2304,7 +2305,7 @@ function point_intialize(start) {
 }
 function draw_point_table_head(){
     if(null == point_table)return;
-    var page_number = Math.ceil((point_table.length-1)/table_row);
+    var page_number = Math.ceil((point_table.length)/table_row);
 
     $("#Point_Page_control").empty();
     var txt = "<li>"+
@@ -2839,7 +2840,7 @@ function dev_intialize(start) {
 }
 function draw_dev_table_head(){
     if(null == device_table)return;
-    var page_number = Math.ceil((device_table.length-1)/table_row);
+    var page_number = Math.ceil((device_table.length)/table_row);
 
     $("#Dev_Page_control").empty();
     var txt = "<li>"+
@@ -3231,7 +3232,7 @@ function get_monitor_warning_on_map(){
                 txt = txt + " <div class='col-md-6 column'>";
                 for(var i=0;i<ret.length;i++){
                     var nickname = ret[i].AlarmEName;
-                    txt = txt + "<img src='/image/"+ret[i].AlarmEName+".png'></img><label style='max-width: 150px;min-width: 150px'>&nbsp&nbsp&nbsp&nbsp"+ret[i].AlarmName+":";
+                    txt = txt + "<img src='/xhzn/mfunhcu/ui/image/"+ret[i].AlarmEName+".png'></img><label style='max-width: 150px;min-width: 150px'>&nbsp&nbsp&nbsp&nbsp"+ret[i].AlarmName+":";
                     var value = parseInt(ret[i].AlarmValue);
                     var warning = ret[i].WarningTarget;
 
@@ -3548,7 +3549,7 @@ function get_alarm_type_list(){
     });
 }
 function query_alarm(date,type,name){
-
+    console.log("Query:"+type);
     var map={
         action:"AlarmQuery",
         id: usr.id,
@@ -3585,6 +3586,8 @@ function query_alarm(date,type,name){
         //console.log(("#"+type+"_canvas_week"));
         //console.log(("#"+type+"_canvas_month"));
         $("#Warning_"+type+"_day").css("display","block");
+        var max = minute_head.length-1;
+        if(max >120) max = 120;
         $("#"+type+"_canvas_day").highcharts({
 
             chart: {
@@ -3606,7 +3609,7 @@ function query_alarm(date,type,name){
             },
             xAxis: {
                 categories:minute_head ,
-                max: 120
+                max: max
             },
 
             scrollbar: {
@@ -3639,6 +3642,8 @@ function query_alarm(date,type,name){
         });
         $("#Warning_"+type+"_day").css("display","none");
         $("#Warning_"+type+"_week").css("display","block");
+        var max = hour_head.length-1;
+        if(max >120) max = 120;
         $("#"+type+"_canvas_week").highcharts({
 
             chart: {
@@ -3693,6 +3698,8 @@ function query_alarm(date,type,name){
         });
         $("#Warning_"+type+"_week").css("display","none");
         $("#Warning_"+type+"_month").css("display","block");
+        var max = day_head.length-1;
+        if(max >30) max = 30;
         $("#"+type+"_canvas_month").highcharts({
 
             chart: {
@@ -3714,7 +3721,7 @@ function query_alarm(date,type,name){
             },
             xAxis: {
                 categories: day_head,
-                //max: 30
+                max: max
             },
 
             scrollbar: {
@@ -3778,12 +3785,12 @@ function build_alarm_tabs(){
         var temp2 = ""
         if(i ==0) {temp = "class='active'"; temp2 = " in active";}
         txt1=txt1+"<li class='dropdown'>"+
-            "<a href='#' id='Warning_"+i+"_tab' class='dropdown-toggle' data-toggle='dropdown'>"+alarm_type_list[i].name+" <b class='caret'></b>"+
+            "<a href='#' id='Warning_"+alarm_type_list[i].id+"_tab' class='dropdown-toggle' data-toggle='dropdown'>"+alarm_type_list[i].name+" <b class='caret'></b>"+
             "</a>"+
-            "<ul class='dropdown-menu' role='menu' aria-labelledby='Warning_"+i+"_tab''>"+
-            "<li><a href='#Warning_"+i+"_day' "+temp+" tabindex='-1' data-toggle='tab' id='Warning_"+i+"_tab_day' alarmid='"+i+"'>分钟报表（日）</a> </li>"+
-            "<li><a href='#Warning_"+i+"_week' tabindex='-1' data-toggle='tab'  id='Warning_"+i+"_tab_week' alarmid='"+i+"'>小时报表（周）</a> </li>"+
-            "<li><a href='#Warning_"+i+"_month' tabindex='-1' data-toggle='tab'  id='Warning_"+i+"_tab_month' alarmid='"+i+"'> 日报表（30天）</a> </li> </ul> </li>";
+            "<ul class='dropdown-menu' role='menu' aria-labelledby='Warning_"+alarm_type_list[i].id+"_tab''>"+
+            "<li><a href='#Warning_"+alarm_type_list[i].id+"_day' "+temp+" tabindex='-1' data-toggle='tab' id='Warning_"+alarm_type_list[i].id+"_tab_day' alarmid='"+alarm_type_list[i].id+"'>分钟报表（日）</a> </li>"+
+            "<li><a href='#Warning_"+alarm_type_list[i].id+"_week' tabindex='-1' data-toggle='tab'  id='Warning_"+alarm_type_list[i].id+"_tab_week' alarmid='"+alarm_type_list[i].id+"'>小时报表（周）</a> </li>"+
+            "<li><a href='#Warning_"+alarm_type_list[i].id+"_month' tabindex='-1' data-toggle='tab'  id='Warning_"+alarm_type_list[i].id+"_tab_month' alarmid='"+alarm_type_list[i].id+"'> 日报表（30天）</a> </li> </ul> </li>";
         /*
          txt2 = txt2+
          "<div class='tab-pane fade"+temp2+" Alarm_Canvas' id='Warning_"+i+"_tab_day' >"+
@@ -3795,13 +3802,13 @@ function build_alarm_tabs(){
          "<div id='"+i+"_canvas_month' class='Alarm_Canvas' ></div></div>";
          */
         txt2 = txt2+
-            "<div class='Alarm_Canvas' id='Warning_"+i+"_day' >"+
+            "<div class='Alarm_Canvas' id='Warning_"+alarm_type_list[i].id+"_day' >"+
                 //"<div class='tab-pane fade ' id='Warning_"+i+"_tab_day' >"+
-            "<div id='"+i+"_canvas_day' class='Alarm_Canvas'></div></div>"+
-            "<div class='Alarm_Canvas' id='Warning_"+i+"_week' >"+
-            "<div id='"+i+"_canvas_week' class='Alarm_Canvas' ></div></div>"+
-            "<div class='Alarm_Canvas' id='Warning_"+i+"_month' >"+
-            "<div id='"+i+"_canvas_month' class='Alarm_Canvas' ></div></div>";
+            "<div id='"+alarm_type_list[i].id+"_canvas_day' class='Alarm_Canvas'></div></div>"+
+            "<div class='Alarm_Canvas' id='Warning_"+alarm_type_list[i].id+"_week' >"+
+            "<div id='"+alarm_type_list[i].id+"_canvas_week' class='Alarm_Canvas' ></div></div>"+
+            "<div class='Alarm_Canvas' id='Warning_"+alarm_type_list[i].id+"_month' >"+
+            "<div id='"+alarm_type_list[i].id+"_canvas_month' class='Alarm_Canvas' ></div></div>";
 
     }
     //console.log(txt1+txt2);
@@ -3809,17 +3816,17 @@ function build_alarm_tabs(){
     $("#Alarm_Chart_content").append(txt2);
 
     for(var i=0;i<alarm_type_list.length;i++){
-        $("#Warning_"+i+"_tab_day").on('click',function(){
+        $("#Warning_"+alarm_type_list[i].id+"_tab_day").on('click',function(){
             hide_all_chart();
             //console.log("click"+"#Warning_"+$(this).attr('alarmid')+"_day");
             $("#Warning_"+$(this).attr('alarmid')+"_day").css("display","block");
         });
-        $("#Warning_"+i+"_tab_week").on('click',function(){
+        $("#Warning_"+alarm_type_list[i].id+"_tab_week").on('click',function(){
             hide_all_chart();
             //console.log("click"+"#Warning_"+$(this).attr('alarmid')+"_week");
             $("#Warning_"+$(this).attr('alarmid')+"_week").css("display","block");
         });
-        $("#Warning_"+i+"_tab_month").on('click',function(){
+        $("#Warning_"+alarm_type_list[i].id+"_tab_month").on('click',function(){
             hide_all_chart();
             //console.log("click"+"#Warning_"+$(this).attr('alarmid')+"_month");
             $("#Warning_"+$(this).attr('alarmid')+"_month").css("display","block");
@@ -3829,9 +3836,9 @@ function build_alarm_tabs(){
 }
 function hide_all_chart(){
     for(var i=0;i<alarm_type_list.length;i++){
-        $("#Warning_"+i+"_day").css("display","none");
-        $("#Warning_"+i+"_week").css("display","none");
-        $("#Warning_"+i+"_month").css("display","none");
+        $("#Warning_"+alarm_type_list[i].id+"_day").css("display","none");
+        $("#Warning_"+alarm_type_list[i].id+"_week").css("display","none");
+        $("#Warning_"+alarm_type_list[i].id+"_month").css("display","none");
     }
 }
 function get_select_alarm(title){
