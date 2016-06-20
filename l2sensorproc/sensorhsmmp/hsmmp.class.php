@@ -6,7 +6,7 @@
  * Time: 12:24
  */
 include_once "../../l1comvm/vmlayer.php";
-include_once "./dbi_l2snr_hsmmp.class.php";
+include_once "dbi_l2snr_hsmmp.class.php";
 
 class class_video_service
 {

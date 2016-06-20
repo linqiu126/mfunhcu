@@ -1,5 +1,5 @@
 ﻿<?php
-require_once "../l4aqycui/dbi_ui.class.php";
+require_once "../l4aqycui/dbi_l4aqyc_ui.class.php";
 header("Content-type:text/html;charset=utf-8");
 #require '/php/req.php';
 

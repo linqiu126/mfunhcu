@@ -6,7 +6,7 @@
  * Time: 12:22
  */
 include_once "../../l1comvm/vmlayer.php";
-include_once "./dbi_l2snr_humid.class.php";
+include_once "dbi_l2snr_humid.class.php";
 
 class class_humidity_service
 {

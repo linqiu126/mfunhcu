@@ -40,9 +40,10 @@ if (MFUN_CURRENT_WORKING_PROJECT_NAME_UNIQUE == "HCU_PRJ_AQYC")
     define("MFUN_MOD_L3APPL_FUM8PSM", true);
     define("MFUN_MOD_L3APPL_FUM9GISM", true);
     define("MFUN_MOD_L3APPL_FUMXPRCM", true);
-    define("MFUN_MOD_L4AQYC", true);
-    define("MFUN_MOD_L4EMCWX", true);
-    define("MFUN_MOD_L4TBSWR", false);
+    define("MFUN_MOD_L3WXPRC_EMC", true);
+    define("MFUN_MOD_L4AQYC_UI", true);
+    define("MFUN_MOD_L4EMCWX_UI", true);
+    define("MFUN_MOD_L4TBSWR_UI", false);
     define("MFUN_MOD_L4OAMTOOLS", true);
     define("MFUN_MOD_L5BI", true);
 }
@@ -79,9 +80,10 @@ elseif (MFUN_CURRENT_WORKING_PROJECT_NAME_UNIQUE == "HCU_PRJ_EMCWX")
     define("MFUN_MOD_L3APPL_FUM8PSM", false);
     define("MFUN_MOD_L3APPL_FUM9GISM", false);
     define("MFUN_MOD_L3APPL_FUMXPRCM", false);
-    define("MFUN_MOD_L4AQYC", false);
-    define("MFUN_MOD_L4EMCWX", true);
-    define("MFUN_MOD_L4TBSWR", false);
+    define("MFUN_MOD_L3WXPRC_EMC", true);
+    define("MFUN_MOD_L4AQYC_UI", false);
+    define("MFUN_MOD_L4EMCWX_UI", true);
+    define("MFUN_MOD_L4TBSWR_UI", false);
     define("MFUN_MOD_L4OAMTOOLS", true);
     define("MFUN_MOD_L5BI", true);
 }
@@ -118,9 +120,10 @@ elseif (MFUN_CURRENT_WORKING_PROJECT_NAME_UNIQUE == "HCU_PRJ_TBSWR")
     define("MFUN_MOD_L3APPL_FUM8PSM", true);
     define("MFUN_MOD_L3APPL_FUM9GISM", true);
     define("MFUN_MOD_L3APPL_FUMXPRCM", true);
-    define("MFUN_MOD_L4AQYC", false);
-    define("MFUN_MOD_L4EMCWX", true);
-    define("MFUN_MOD_L4TBSWR", true);
+    define("MFUN_MOD_L3WXPRC_EMC", true);
+    define("MFUN_MOD_L4AQYC_UI", false);
+    define("MFUN_MOD_L4EMCWX_UI", true);
+    define("MFUN_MOD_L4TBSWR_UI", true);
     define("MFUN_MOD_L4OAMTOOLS", true);
     define("MFUN_MOD_L5BI", true);
 }
@@ -158,9 +161,10 @@ else
     define("MFUN_MOD_L3APPL_FUM8PSM", true);
     define("MFUN_MOD_L3APPL_FUM9GISM", true);
     define("MFUN_MOD_L3APPL_FUMXPRCM", true);
-    define("MFUN_MOD_L4AQYC", true);
-    define("MFUN_MOD_L4EMCWX", true);
-    define("MFUN_MOD_L4TBSWR", false);
+    define("MFUN_MOD_L3WXPRC_EMC", true);
+    define("MFUN_MOD_L4AQYC_UI", true);
+    define("MFUN_MOD_L4EMCWX_UI", true);
+    define("MFUN_MOD_L4TBSWR_UI", false);
     define("MFUN_MOD_L4OAMTOOLS", true);
     define("MFUN_MOD_L5BI", true);
 }

@@ -6,7 +6,7 @@
  * Time: 12:22
  */
 include_once "../../l1comvm/vmlayer.php";
-include_once "./dbi_l2snr_temp.class.php";
+include_once "dbi_l2snr_temp.class.php";
 
 class class_temperature_service
 {

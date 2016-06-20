@@ -6,7 +6,7 @@
  * Time: 13:40
  */
 
-include_once "../l5bi/bi_db.class.php";
+include_once "../l5bi/dbi_l5bi.class.php";
 
 
 $biObj = new class_bi_db();
