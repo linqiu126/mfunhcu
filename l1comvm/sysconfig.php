@@ -12,7 +12,7 @@
  */
 
 //项目名称，每个项目均为唯一用于本项目选择启动配置数据库中的工参信息
-define (MFUN_CURRENT_WORKING_PROJECT_NAME_UNIQUE, "HCU_PRJ_AQYC");
+define ("MFUN_CURRENT_WORKING_PROJECT_NAME_UNIQUE", "HCU_PRJ_AQYC");
 
 //不同的方式来确定本机运行环境，还是服务器运行环境，本来想获取Localhost来进行判断，但没成功
 //实验了不同的方式，包括$_SERVER['LOCAL_ADDR']， $_SERVER['SERVER_ADDR']， getenv('SERVER_ADDR')等方式
@@ -21,6 +21,7 @@ define (MFUN_CURRENT_WORKING_PROJECT_NAME_UNIQUE, "HCU_PRJ_AQYC");
 //也可以使用云服务器的名字来反向匹配，因为服务器的名字是唯一的
 //SAE官方的说法：可以使用isset(SAE_TMP_PATH)来判断是不是在SAE云上
 //
+if (isset($_SERVER['SERVER_NAME'])){
 if ($_SERVER['SERVER_NAME'] == "mfuncard.sinaapp.com") //LZH微信公号服务器数据库配置信息
 {
     define("CLOUD_HCU", "SAE_HCU"); //HCU后台云应用
@@ -132,7 +133,8 @@ if ($_SERVER['SERVER_NAME'] == "mfuncard.sinaapp.com") //LZH微信公号服务�
     define("WX_TOOL_APPSECRET", "d52a63064ed543c5eecae6c3df35be55");
     define("WX_TOOL_BLEMAC", "D03972A5EF27");
 
-}else   //本地配置数据库信息,需要根据个人配置修改
+}}
+else   //本地配置数据库信息,需要根据个人配置修改
 {
     define("CLOUD_HCU", "AQ_HCU"); //HCU后台云应用
     define("CLOUD_WX", "AQ_WX"); //微信后台云应用

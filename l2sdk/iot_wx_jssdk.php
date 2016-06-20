@@ -5,7 +5,7 @@
  * Date: 2015/9/8
  * Time: 13:08
  */
-include_once "../l1comvm/l1comvm.php";
+include_once "../l1comvm/vmlayer.php";
 include_once "../l2sdk/dbi_wx.class.php";
 
 class JSSDK {

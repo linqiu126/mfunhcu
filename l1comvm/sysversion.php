@@ -7,8 +7,8 @@
  */
 
 //SW version control, for internal usage
-define (CURRENT_SW_RELEASE, "02");  //R01 = 0x01 (MFUN.SW.R01.456)
-define (CURRENT_SW_DELIVERY,"D12"); //001 = 0x01 (XQ.HCU.SW.R01.456), starting from 100 as 2015/11/02
+define ("CURRENT_SW_RELEASE", "02");  //R01 = 0x01 (MFUN.SW.R01.456)
+define ("CURRENT_SW_DELIVERY","D12"); //001 = 0x01 (XQ.HCU.SW.R01.456), starting from 100 as 2015/11/02
 define("CURRENT_VERSION", "R0" . CURRENT_SW_RELEASE . "_" . CURRENT_SW_DELIVERY);  //当前SAE应用版本号
 
 /*
