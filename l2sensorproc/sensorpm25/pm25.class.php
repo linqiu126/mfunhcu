@@ -6,7 +6,7 @@
  * Time: 12:23
  */
 include_once "../../l1comvm/vmlayer.php";
-include_once "./dbi_pmdata.class.php";
+include_once "./dbi_l2snr_pm25.class.php";
 
 
 class class_pmData_service

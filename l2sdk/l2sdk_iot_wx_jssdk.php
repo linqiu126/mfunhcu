@@ -6,7 +6,7 @@
  * Time: 13:08
  */
 include_once "../l1comvm/vmlayer.php";
-include_once "../l2sdk/dbi_wx.class.php";
+include_once "../l2sdk/dbi_l2sdk_wx.class.php";
 
 class JSSDK {
     private $appId;

@@ -20,7 +20,7 @@
  *
 **/
 include_once "../l1comvm/vmlayer.php";
-include_once "../l2sdk/sdk_wechat.class.php";
+include_once "../l2sdk/l2sdk_wechat.class.php";
 header("Content-type:text/html;charset=utf-8");
 //如果运行在本地，以下地址存放二维码图片
 static $imagePath = dirname(__File__);

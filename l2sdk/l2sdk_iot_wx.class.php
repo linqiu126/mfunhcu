@@ -6,8 +6,8 @@
  * Time: 20:12
  */
 include_once "../l1comvm/vmlayer.php";
-include_once "../l2sdk/dbi_wx.class.php";
-include_once "../l2sdk/iot_wx_jssdk.php";
+include_once "../l2sdk/dbi_l2sdk_wx.class.php";
+include_once "../l2sdk/l2sdk_iot_wx_jssdk.php";
 
 //该文件的处理，将成为标准的WEIXIN Layer3处理，而非SDK层面的L2处理，等待移动到L3层面
 

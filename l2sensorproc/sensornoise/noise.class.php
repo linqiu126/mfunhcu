@@ -6,7 +6,7 @@
  * Time: 12:26
  */
 include_once "../../l1comvm/vmlayer.php";
-include_once "./dbi_noise.class.php";
+include_once "./dbi_l2snr_noise.class.php";
 
 
 class class_noise_service

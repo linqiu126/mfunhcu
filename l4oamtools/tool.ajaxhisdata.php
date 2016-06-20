@@ -7,7 +7,7 @@
  */
 
 include_once "../l1comvm/vmlayer.php";
-include_once "../l2sdk/iot_wx.class.php";
+include_once "../l2sdk/l2sdk_iot_wx.class.php";
 header("Content-type:text/html;charset=utf-8");
 
 //访问数据库数据

@@ -8,7 +8,7 @@
  */
 
 include_once "../../l1comvm/vmlayer.php";
-include_once "../../l1comdbi/dbi_wx.class.php";
+include_once "../../l1comdbi/dbi_l2sdk_wx.class.php";
 //header("Content-type:text/html;charset=utf-8");
 
 

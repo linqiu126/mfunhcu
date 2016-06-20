@@ -6,8 +6,8 @@
  * Time: 11:33
  */
 include_once "../l1comvm/vmlayer.php";
-include_once "../l2sdk/sdk_wechat.class.php";
-include_once "../l2sdk/iot_hcu.class.php";
+include_once "../l2sdk/l2sdk_wechat.class.php";
+include_once "../l2sdk/l2sdk_iot_hcu.class.php";
 include_once "../l4aqycui/dbi_ui.class.php";
 
 //header("Content-type:text/html;charset=utf-8");

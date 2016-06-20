@@ -6,7 +6,7 @@
  * Time: 12:19
  */
 include_once "../../l1comvm/vmlayer.php";
-include_once "./dbi_emc.class.php";
+include_once "./dbi_l2snr_emc.class.php";
 
 class class_emc_service
 {

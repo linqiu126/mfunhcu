@@ -6,7 +6,7 @@
  * Time: 23:09
  */
 include_once "../l1comvm/vmlayer.php";
-include_once "../l2sdk/dbi_hcu.class.php";
+include_once "../l2sdk/dbi_l2sdk_hcu.class.php";
 
 //HCU硬件设备级 Layer 2 SDK
 class class_hcu_IOT_sdk
