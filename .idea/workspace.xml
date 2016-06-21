@@ -1,23 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="d3a3b27e-7f7e-4a45-924e-4891ca42c087" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/.name" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/Typical.iml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/copyright/profiles_settings.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/dictionaries/Administrator.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/dictionaries/zehongli.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/encodings.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/modules.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/php.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/scopes/scope_settings.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/vcs.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/www.iml" afterPath="" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/l3wxprc/dbi_l3wxprc.class.php" afterPath="$PROJECT_DIR$/l3wxctrl/dbi_l3wxprc.class.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/l1comvm/sysdim.php" afterPath="$PROJECT_DIR$/l1comvm/sysdim.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/l1comvm/sysmodule.php" afterPath="$PROJECT_DIR$/l1comvm/sysmodule.php" />
-    </list>
+    <list default="true" id="d3a3b27e-7f7e-4a45-924e-4891ca42c087" name="Default" comment="" />
     <ignored path="Typical.iws" />
     <ignored path=".idea/workspace.xml" />
     <ignored path=".idea/dataSources.local.xml" />
@@ -43,11 +27,11 @@
     <favorites_list name="Typical" />
   </component>
   <component name="FileEditorManager">
-    <leaf>
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file leaf-file-name="sysmodule.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/l1comvm/sysmodule.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.55308217">
+            <state vertical-scroll-proportion="0.55348045">
               <caret line="73" column="70" selection-start-line="73" selection-start-column="70" selection-end-line="73" selection-end-column="70" />
               <folding>
                 <element signature="e#6#89#0#PHP" expanded="false" />
@@ -59,7 +43,7 @@
       <file leaf-file-name="sysdim.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/l1comvm/sysdim.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-2.7142856">
+            <state vertical-scroll-proportion="0.0">
               <caret line="9" column="32" selection-start-line="9" selection-start-column="8" selection-end-line="9" selection-end-column="32" />
               <folding />
             </state>
@@ -195,70 +179,28 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
             <PATH_ELEMENT>
-              <option name="myItemId" value="Typical" />
+              <option name="myItemId" value="mfunhcu" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
           </PATH>
           <PATH>
             <PATH_ELEMENT>
-              <option name="myItemId" value="Typical" />
+              <option name="myItemId" value="mfunhcu" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="mfunhcu" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Typical" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="mfunhcu" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="l2sdk" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Typical" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="mfunhcu" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="l1comvm" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Typical" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="mfunhcu" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="l1comdbi" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -382,18 +324,16 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="754" extended-state="6" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.16617863" sideWeight="0.5" order="1" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.16617863" sideWeight="0.5" order="1" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32994652" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32868218" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.007751938" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -401,9 +341,11 @@
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="3" side_tool="false" content_ui="combo" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.63624513" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.007751938" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="Vcs.Log.UiProperties">
@@ -488,9 +430,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="1.0169014">
           <caret line="58" column="24" selection-start-line="58" selection-start-column="22" selection-end-line="58" selection-end-column="24" />
-          <folding>
-            <element signature="e#6#90#0#PHP" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -617,7 +556,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.2140845">
           <caret line="8" column="14" selection-start-line="8" selection-start-column="14" selection-end-line="8" selection-end-column="14" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -625,7 +563,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.2140845">
           <caret line="8" column="14" selection-start-line="8" selection-start-column="14" selection-end-line="8" selection-end-column="14" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -647,9 +584,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.08028169">
           <caret line="8" column="14" selection-start-line="8" selection-start-column="14" selection-end-line="8" selection-end-column="14" />
-          <folding>
-            <element signature="e#6#90#0#PHP" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -657,9 +591,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.08028169">
           <caret line="8" column="14" selection-start-line="8" selection-start-column="14" selection-end-line="8" selection-end-column="14" />
-          <folding>
-            <element signature="e#6#90#0#PHP" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -667,9 +598,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.07887324">
           <caret line="8" column="14" selection-start-line="8" selection-start-column="14" selection-end-line="8" selection-end-column="14" />
-          <folding>
-            <element signature="e#6#90#0#PHP" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -677,9 +605,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.08028169">
           <caret line="8" column="14" selection-start-line="8" selection-start-column="14" selection-end-line="8" selection-end-column="14" />
-          <folding>
-            <element signature="e#6#90#0#PHP" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -687,7 +612,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.09677419">
           <caret line="8" column="2" selection-start-line="8" selection-start-column="2" selection-end-line="8" selection-end-column="2" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -695,9 +619,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.09677419">
           <caret line="8" column="0" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
-          <folding>
-            <element signature="e#6#89#0#PHP" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -705,9 +626,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-5.428571">
           <caret line="13" column="0" selection-start-line="13" selection-start-column="0" selection-end-line="13" selection-end-column="0" />
-          <folding>
-            <element signature="e#6#89#0#PHP" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -715,7 +633,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.19694397">
           <caret line="12" column="0" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -723,9 +640,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.06451613">
           <caret line="7" column="0" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="40" />
-          <folding>
-            <element signature="e#6#89#0#PHP" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -733,82 +647,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="4.870968">
           <caret line="151" column="9" selection-start-line="151" selection-start-column="9" selection-end-line="151" selection-end-column="9" />
-          <folding>
-            <marker date="1466412416780" expanded="true" signature="552:614" placeholder="SELECT * FRO... t_deviceversion" />
-            <marker date="1466412416780" expanded="true" signature="699:874" placeholder="UPDATE `t_de... " />
-            <marker date="1466412416780" expanded="true" signature="947:1111" placeholder="INSERT INTO `t_deviceversion`... " />
-            <marker date="1466412416780" expanded="true" signature="1528:1595" placeholder="SELECT `stat... t_hcudevice" />
-            <marker date="1466412416780" expanded="true" signature="2171:2252" placeholder="SELECT * FRO... t_hcudevice" />
-            <marker date="1466412416780" expanded="true" signature="2794:2898" placeholder="UPDATE `t_hc... " />
-            <marker date="1466412416780" expanded="true" signature="3292:3348" placeholder="SELECT * FRO... t_siteinfo" />
-            <marker date="1466412416780" expanded="true" signature="3934:3977" placeholder="SELECT `devc... t_hcudevice" />
-            <marker date="1466412416780" expanded="true" signature="4694:4755" placeholder="SELECT * FRO... t_dataformat" />
-            <marker date="1466412416780" expanded="true" signature="4850:4937" placeholder="UPDATE `t_da... " />
-            <marker date="1466412416780" expanded="true" signature="5028:5110" placeholder="INSERT INTO `t_dataformat`... " />
-            <marker date="1466412416780" expanded="true" signature="5273:5334" placeholder="SELECT * FRO... t_dataformat" />
-            <marker date="1466412416780" expanded="true" signature="5429:5512" placeholder="UPDATE `t_da... " />
-            <marker date="1466412416780" expanded="true" signature="5603:5681" placeholder="INSERT INTO `t_dataformat`... " />
-            <marker date="1466412416780" expanded="true" signature="5845:5906" placeholder="SELECT * FRO... t_dataformat" />
-            <marker date="1466412416780" expanded="true" signature="6001:6085" placeholder="UPDATE `t_da... " />
-            <marker date="1466412416780" expanded="true" signature="6176:6255" placeholder="INSERT INTO `t_dataformat`... " />
-            <marker date="1466412416780" expanded="true" signature="6416:6477" placeholder="SELECT * FRO... t_dataformat" />
-            <marker date="1466412416780" expanded="true" signature="6572:6653" placeholder="UPDATE `t_da... " />
-            <marker date="1466412416780" expanded="true" signature="6744:6820" placeholder="INSERT INTO `t_dataformat`... " />
-            <marker date="1466412416780" expanded="true" signature="6982:7043" placeholder="SELECT * FRO... t_dataformat" />
-            <marker date="1466412416780" expanded="true" signature="7138:7220" placeholder="UPDATE `t_da... " />
-            <marker date="1466412416780" expanded="true" signature="7311:7388" placeholder="INSERT INTO `t_dataformat`... " />
-            <marker date="1466412416780" expanded="true" signature="7548:7609" placeholder="SELECT * FRO... t_dataformat" />
-            <marker date="1466412416780" expanded="true" signature="7704:7784" placeholder="UPDATE `t_da... " />
-            <marker date="1466412416780" expanded="true" signature="7875:7950" placeholder="INSERT INTO `t_dataformat`... " />
-            <marker date="1466412416780" expanded="true" signature="8117:8178" placeholder="SELECT * FRO... t_dataformat" />
-            <marker date="1466412416780" expanded="true" signature="8273:8360" placeholder="UPDATE `t_da... " />
-            <marker date="1466412416780" expanded="true" signature="8451:8533" placeholder="INSERT INTO `t_dataformat`... " />
-            <marker date="1466412416780" expanded="true" signature="8702:8763" placeholder="SELECT * FRO... t_dataformat" />
-            <marker date="1466412416780" expanded="true" signature="8858:8947" placeholder="UPDATE `t_da... " />
-            <marker date="1466412416780" expanded="true" signature="9038:9122" placeholder="INSERT INTO `t_dataformat`... " />
-            <marker date="1466412416780" expanded="true" signature="9287:9348" placeholder="SELECT * FRO... t_dataformat" />
-            <marker date="1466412416780" expanded="true" signature="9443:9528" placeholder="UPDATE `t_da... " />
-            <marker date="1466412416780" expanded="true" signature="9619:9699" placeholder="INSERT INTO `t_dataformat`... " />
-            <marker date="1466412416780" expanded="true" signature="10517:10580" placeholder="SELECT * FRO... t_currentreport" />
-            <marker date="1466412416780" expanded="true" signature="10676:10800" placeholder="UPDATE `t_cu... " />
-            <marker date="1466412416780" expanded="true" signature="10891:11026" placeholder="INSERT INTO `t_currentreport`... " />
-            <marker date="1466412416780" expanded="true" signature="11228:11292" placeholder="SELECT * FRO... t_currentreport" />
-            <marker date="1466412416780" expanded="true" signature="11387:11500" placeholder="UPDATE `t_cu... " />
-            <marker date="1466412416780" expanded="true" signature="11591:11715" placeholder="INSERT INTO `t_currentreport`... " />
-            <marker date="1466412416780" expanded="true" signature="11923:11988" placeholder="SELECT * FRO... t_currentreport" />
-            <marker date="1466412416780" expanded="true" signature="12083:12201" placeholder="UPDATE `t_cu... " />
-            <marker date="1466412416780" expanded="true" signature="12292:12421" placeholder="INSERT INTO `t_currentreport`... " />
-            <marker date="1466412416780" expanded="true" signature="12623:12688" placeholder="SELECT * FRO... t_currentreport" />
-            <marker date="1466412416780" expanded="true" signature="12783:12895" placeholder="UPDATE `t_cu... " />
-            <marker date="1466412416780" expanded="true" signature="12986:13109" placeholder="INSERT INTO `t_currentreport`... " />
-            <marker date="1466412416780" expanded="true" signature="13389:13453" placeholder="SELECT * FRO... t_currentreport" />
-            <marker date="1466412416780" expanded="true" signature="13548:13692" placeholder="UPDATE `t_cu... " />
-            <marker date="1466412416780" expanded="true" signature="13783:13930" placeholder="INSERT INTO `t_currentreport`... " />
-            <marker date="1466412416780" expanded="true" signature="14130:14195" placeholder="SELECT * FRO... t_currentreport" />
-            <marker date="1466412416780" expanded="true" signature="14290:14400" placeholder="UPDATE `t_cu... " />
-            <marker date="1466412416780" expanded="true" signature="14491:14612" placeholder="INSERT INTO `t_currentreport`... " />
-            <marker date="1466412416780" expanded="true" signature="14826:14891" placeholder="SELECT * FRO... t_currentreport" />
-            <marker date="1466412416780" expanded="true" signature="14986:15110" placeholder="UPDATE `t_cu... " />
-            <marker date="1466412416780" expanded="true" signature="15201:15336" placeholder="INSERT INTO `t_currentreport`... " />
-            <marker date="1466412416780" expanded="true" signature="15554:15619" placeholder="SELECT * FRO... t_currentreport" />
-            <marker date="1466412416780" expanded="true" signature="15714:15842" placeholder="UPDATE `t_cu... " />
-            <marker date="1466412416780" expanded="true" signature="15933:16072" placeholder="INSERT INTO `t_currentreport`... " />
-            <marker date="1466412416780" expanded="true" signature="16282:16347" placeholder="SELECT * FRO... t_currentreport" />
-            <marker date="1466412416780" expanded="true" signature="16442:16562" placeholder="UPDATE `t_cu... " />
-            <marker date="1466412416780" expanded="true" signature="16653:16784" placeholder="INSERT INTO `t_currentreport`... " />
-            <marker date="1466412416780" expanded="true" signature="17403:17491" placeholder="INSERT INTO `t_cmdbuf`... " />
-            <marker date="1466412416780" expanded="true" signature="17875:17930" placeholder="SELECT * FRO... t_cmdbuf" />
-            <marker date="1466412416780" expanded="true" signature="18139:18182" placeholder="DELETE FROM " />
-            <marker date="1466412416780" expanded="true" signature="18640:18698" placeholder="SELECT * FRO... t_videodata" />
-            <marker date="1466412416780" expanded="true" signature="19322:19372" placeholder="SELECT * FRO... t_logswitch" />
-            <marker date="1466412416780" expanded="true" signature="19481:19555" placeholder="UPDATE `t_lo... " />
-            <marker date="1466412416780" expanded="true" signature="19643:19715" placeholder="INSERT INTO `t_logswitch`... " />
-            <marker date="1466412416780" expanded="true" signature="20122:20172" placeholder="SELECT * FRO... t_logswitch" />
-            <marker date="1466412416780" expanded="true" signature="20714:20837" placeholder="INSERT INTO `t_loginfo`... " />
-            <marker date="1466412416780" expanded="true" signature="20894:20938" placeholder="SELECT MAX(`... t_loginfo" />
-            <marker date="1466412416780" expanded="true" signature="21134:21178" placeholder="SELECT MIN(`... t_loginfo" />
-            <marker date="1466412416780" expanded="true" signature="21506:21564" placeholder="DELETE FROM " />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -816,9 +654,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.5483871">
           <caret line="22" column="25" selection-start-line="22" selection-start-column="25" selection-end-line="22" selection-end-column="25" />
-          <folding>
-            <element signature="e#6#93#0#PHP" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -826,7 +661,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -834,7 +668,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -842,9 +675,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-9.5">
           <caret line="19" column="0" selection-start-line="19" selection-start-column="0" selection-end-line="19" selection-end-column="0" />
-          <folding>
-            <element signature="e#6#87#0#PHP" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -852,7 +682,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-47.5">
           <caret line="141" column="0" selection-start-line="141" selection-start-column="0" selection-end-line="141" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -860,7 +689,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.2928082">
           <caret line="9" column="0" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -868,7 +696,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.55308217">
           <caret line="25" column="1" selection-start-line="25" selection-start-column="1" selection-end-line="25" selection-end-column="1" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -886,7 +713,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.4229452">
           <caret line="13" column="0" selection-start-line="13" selection-start-column="0" selection-end-line="13" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -894,7 +720,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-95.67857">
           <caret line="141" column="1" selection-start-line="13" selection-start-column="0" selection-end-line="141" selection-end-column="1" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -902,11 +727,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.2846847">
           <caret line="906" column="0" selection-start-line="906" selection-start-column="0" selection-end-line="906" selection-end-column="0" />
-          <folding>
-            <marker date="1466482200841" expanded="true" signature="10281:10661" placeholder="..." />
-            <marker date="1466482200841" expanded="true" signature="10983:11406" placeholder="..." />
-            <marker date="1466482200841" expanded="true" signature="11676:11911" placeholder="..." />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -914,28 +734,12 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="4.201802">
           <caret line="4771" column="55" selection-start-line="4771" selection-start-column="55" selection-end-line="4771" selection-end-column="55" />
-          <folding>
-            <marker date="1466482200841" expanded="true" signature="32202:32343" placeholder="..." />
-            <marker date="1466482200841" expanded="true" signature="131495:131756" placeholder="..." />
-            <marker date="1466482200841" expanded="true" signature="132124:132336" placeholder="..." />
-            <marker date="1466482200841" expanded="true" signature="132695:132907" placeholder="..." />
-            <marker date="1466482200841" expanded="true" signature="133133:133339" placeholder="..." />
-            <marker date="1466482200841" expanded="true" signature="133510:133722" placeholder="..." />
-            <marker date="1466482200841" expanded="true" signature="134014:134199" placeholder="..." />
-            <marker date="1466482200841" expanded="true" signature="134412:134701" placeholder="..." />
-            <marker date="1466482200841" expanded="true" signature="134946:135150" placeholder="..." />
-            <marker date="1466482200841" expanded="true" signature="135320:135532" placeholder="..." />
-            <marker date="1466482200841" expanded="true" signature="135745:135968" placeholder="..." />
-            <marker date="1466482200841" expanded="true" signature="136192:136638" placeholder="..." />
-            <marker date="1466482200841" expanded="true" signature="136415:136584" placeholder="..." />
-            <marker date="1466482200841" expanded="true" signature="146657:147010" placeholder="..." />
-          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/l1comvm/sysdim.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-2.7142856">
+        <state vertical-scroll-proportion="0.0">
           <caret line="9" column="32" selection-start-line="9" selection-start-column="8" selection-end-line="9" selection-end-column="32" />
           <folding />
         </state>
@@ -943,7 +747,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/l1comvm/sysmodule.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.55308217">
+        <state vertical-scroll-proportion="0.55348045">
           <caret line="73" column="70" selection-start-line="73" selection-start-column="70" selection-end-line="73" selection-end-column="70" />
           <folding>
             <element signature="e#6#89#0#PHP" expanded="false" />
