@@ -3,7 +3,7 @@
     方倍工作室原创，ZJL修改
 */
 include_once "../l1comvm/vmlayer.php";
-include_once "../l2sdk/l2sdk_wechat.class.php";
+include_once "../l2sdk/task_l2sdk_wechat.class.php";
 //header("Content-type:text/html;charset=utf-8");
 
 // 主程序MAIN()
@@ -27,3 +27,4 @@ else{
     $wxObj->responseMsg();
 }
 
+?>

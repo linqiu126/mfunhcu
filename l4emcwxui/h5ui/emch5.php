@@ -6,7 +6,7 @@
  * Time: 15:50
  */
 include_once "../../l1comvm/vmlayer.php";
-include_once "../../l2sdk/l2sdk_iot_wx_jssdk.php";
+include_once "../../l2sdk/task_l2sdk_iot_wx_jssdk.php";
 
 $jssdk = new JSSDK(WX_APPID, WX_APPSECRET);
 $signPackage = $jssdk->GetSignPackage();

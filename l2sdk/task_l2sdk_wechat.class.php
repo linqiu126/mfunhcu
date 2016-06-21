@@ -42,8 +42,8 @@
  *   $result = $weObj->createMenu($newmenu);
  */
 include_once "../l1comvm/vmlayer.php";
-include_once "../l2sdk/l2sdk_iot_wx.class.php";
-include_once "../l2sdk/l2sdk_iot_hcu.class.php";
+include_once "../l2sdk/task_l2sdk_iot_wx.class.php";
+include_once "../l2sdk/task_l2sdk_iot_hcu.class.php";
 
 
 //Layer 2.1.1 SDK01.1，完整的公号SDK，正在跟轻量级SDK01进行合并

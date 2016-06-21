@@ -17,7 +17,29 @@ include_once "../l1comvm/sysversion.php";
 include_once "../l1comvm/sysmodule.php";
 include_once "../l1comdbi/dbi_common.class.php";
 
+class classTaskL1vmCoreRouter
+{
+    //构造函数
+    public function __construct()
+    {
+    }
 
+    public function mfun_l1vm_message_send($msg)
+    {
+
+    }
+
+    public function mfun_l1vm_message_rcv()
+    {
+
+    }
+
+    public function mfun_l1vm_message_dispatch()
+    {
+
+    }
+
+}
 
 ?>
 

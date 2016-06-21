@@ -7,7 +7,7 @@
  */
 header("Content-type:text/html;charset=utf-8");
 include_once "../l1comvm/vmlayer.php";
-require_once "../l2sdk/l2sdk_iot_wx_jssdk.php";
+require_once "../l2sdk/task_l2sdk_iot_wx_jssdk.php";
 
 
 $jssdk = new JSSDK(WX_APPID, WX_APPSECRET);
@@ -64,7 +64,7 @@ $signPackage = $jssdk->GetSignPackage();
         cans.fillStyle = "blue";
         var fillFigure = <?php
             include_once "../l1comvm/vmlayer.php";
-            include_once "../l2sdk/l2sdk_iot_wx.class.php";
+            include_once "../l2sdk/task_l2sdk_iot_wx.class.php";
             //访问数据库数据
             $db = new class_wx_db();
             $tmp = 36;
