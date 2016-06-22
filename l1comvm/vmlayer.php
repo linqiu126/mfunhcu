@@ -19,107 +19,197 @@ include_once "../l1comdbi/dbi_common.class.php";
 
 class classTaskL1vmCoreRouter
 {
+    public $msgBufferList = array();
+        //0 => array("valid" => "false", "srcId" => 0, "destId" => 0, "msgId" => 0, "msgName" => "", "msgBody" => ""));
+    public $msgBufferReadCnt;
+    public $msgBufferWriteCnt;
+    public $msgBufferUsedCnt;
+
     //构造函数
     public function __construct()
     {
+        for ($i=0; $i<MFUN_MSG_BUFFER_NBR_MAX; $i++){
+            $this->msgBufferList[$i] = array("valid" => "false", "srcId" => 0, "destId" => 0, "msgId" => 0, "msgName" => "", "msgBody" => "");
+        }
+        $this->msgBufferReadCnt = 0;
+        $this->msgBufferWriteCnt = 0;
+        $this->msgBufferUsedCnt = 0;
     }
 
-    public function mfun_l1vm_msg_send($msg)
+    //核心API：发送消息的函数
+    public function mfun_l1vm_msg_send($srcId, $destId, $msgId, $msgName, $msgBody)
     {
-        //配置信息
-        $conn_args = array(
-            'host' => MFUN_MQ_RABBIT_HOST,
-            'port' => MFUN_MQ_RABBIT_PORT,
-            'login' => MFUN_MQ_RABBIT_LOGIN,
-            'password' => MFUN_MQ_RABBIT_PSWD,
-            'vhost'=> MFUN_MQ_RABBIT_VHOST);
-        //$e_name = 'e_linvo'; //交换机名
-        //$q_name = 'q_linvo'; //无需队列名
-        //$k_route = 'key_1'; //路由key
-
-        //创建连接和channel
-        $conn = new AMQPConnection($conn_args);
-        if (!$conn->connect()) {
-            die("Cannot connect to the broker!\n");
+        //判断是否越界
+        if ($this->msgBufferUsedCnt >= MFUN_MSG_BUFFER_NBR_MAX){
+            $this->msgBufferUsedCnt = MFUN_MSG_BUFFER_NBR_MAX;
+            return false;
         }
-        $channel = new AMQPChannel($conn);
-
-        //消息内容
-        //$message = "TEST MESSAGE! 测试消息！";
-        $message = $msg;
-
-        //创建交换机对象
-        $ex = new AMQPExchange($channel);
-        $ex->setName(MFUN_MQ_RABBIT_EXCHANGE);
-
-        //发送消息
-        $channel->startTransaction(); //开始事务
-        for($i=0; $i<5; ++$i){
-            echo "Send Message:".$ex->publish($message, MFUN_MQ_RABBIT_EXCHANGE)."\n";
+        if ($this->msgBufferUsedCnt < 0){
+            $this->msgBufferUsedCnt = 0;
+            return false;
         }
-        $channel->commitTransaction(); //提交事务
-        $conn->disconnect();
+        if (($this->msgBufferWriteCnt < 0) || ($this->msgBufferWriteCnt >= MFUN_MSG_BUFFER_NBR_MAX)){
+            $this->msgBufferWriteCnt = 0;
+            return false;
+        }
+
+        //直接在msgBufferWriteCnt指示的地方写入
+        if ($this->msgBufferList[$this->msgBufferWriteCnt]["valid"] != false){
+            $this->msgBufferList[$this->msgBufferWriteCnt]["valid"] = false;
+            return false;
+        }
+        $this->msgBufferList[$this->msgBufferWriteCnt] = array("valid" => "true",
+            "srcId" => $srcId,
+            "destId" => $destId,
+            "msgId" => $msgId,
+            "msgName" => $msgName,
+            "msgBody" => $msgBody);
+
+        //写完之后，更新计数器
+        $this->msgBufferUsedCnt++;
+        $this->msgBufferWriteCnt = ($this->msgBufferWriteCnt+1) % MFUN_MSG_BUFFER_NBR_MAX;
+
+        return true;
     }
 
-    public function mfun_l1vm_msg_rcv()
+    public function mfun_l1vm_msg_rcv($srcId, $destId, $msgId, $msgName, $msgBody)
     {
-        //配置信息
-        $conn_args = array(
-            'host' => MFUN_MQ_RABBIT_HOST,
-            'port' => MFUN_MQ_RABBIT_PORT,
-            'login' => MFUN_MQ_RABBIT_LOGIN,
-            'password' => MFUN_MQ_RABBIT_PSWD,
-            'vhost'=> MFUN_MQ_RABBIT_VHOST);
-        //$e_name = 'e_linvo'; //交换机名
-        //$q_name = 'q_linvo'; //队列名
-        //$k_route = 'key_1'; //路由key
-
-        //创建连接和channel
-        $conn = new AMQPConnection($conn_args);
-        if (!$conn->connect()) {
-            die("Cannot connect to the broker!\n");
+        //判断是否越界
+        if ($this->msgBufferUsedCnt > MFUN_MSG_BUFFER_NBR_MAX){
+            $this->msgBufferUsedCnt = MFUN_MSG_BUFFER_NBR_MAX;
+            return false;
         }
-        $channel = new AMQPChannel($conn);
-
-        //创建交换机
-        $ex = new AMQPExchange($channel);
-        $ex->setName(MFUN_MQ_RABBIT_EXCHANGE);
-        $ex->setType(AMQP_EX_TYPE_DIRECT); //direct类型
-        $ex->setFlags(AMQP_DURABLE); //持久化
-        echo "Exchange Status:".$ex->declare()."\n";
-
-        //创建队列
-        $msgQue = new AMQPQueue($channel);
-        $msgQue->setName(MFUN_MQ_RABBIT_QUEUE);
-        $msgQue->setFlags(AMQP_DURABLE); //持久化
-        echo "Message Total:".$msgQue->declare()."\n";
-
-        //绑定交换机与队列，并指定路由键
-        echo 'Queue Bind: '.$msgQue->bind(MFUN_MQ_RABBIT_EXCHANGE, MFUN_MQ_RABBIT_ROUTE_KEY)."\n";
-
-        //阻塞模式接收消息
-        echo "Message:\n";
-        while(True){
-            $msgQue->consume('processMessage');
-            $msgQue->consume('processMessage', AMQP_AUTOACK); //自动ACK应答
+        if ($this->msgBufferUsedCnt <= 0){
+            $this->msgBufferUsedCnt = 0;
+            return false;
         }
-        $conn->disconnect();
+        if (($this->msgBufferReadCnt < 0) || ($this->msgBufferReadCnt >= MFUN_MSG_BUFFER_NBR_MAX)){
+            $this->msgBufferReadCnt = 0;
+            return false;
+        }
+
+        //读取数据
+        if ($this->msgBufferList[$this->msgBufferReadCnt]["valid"] != true){
+            $this->msgBufferList[$this->msgBufferWriteCnt]["valid"] = false;
+            return false;
+        }
+        $tmp = $this->msgBufferList[$this->msgBufferReadCnt];
+        //是否可以采用这种方式输出参数和结果？
+        if (isset($tmp["srcId"])) $srcId = $tmp["srcId"];
+        if (isset($tmp["destId"])) $destId = $tmp["destId"];
+        if (isset($tmp["msgId"])) $msgId = $tmp["msgId"];
+        if (isset($tmp["msgName"])) $msgName = $tmp["msgName"];
+        if (isset($tmp["msgBody"])) $msgBody = $tmp["msgBody"];
+
+        //写完之后，更新计数器
+        $this->msgBufferUsedCnt--;
+        $this->msgBufferReadCnt = ($this->msgBufferReadCnt+1) % MFUN_MSG_BUFFER_NBR_MAX;
+        return true;
     }
 
-    /**
-     * 消费回调函数
-     * 处理消息
-     */
-    function processMessage($envelope, $queue) {
-        var_dump($envelope->getRoutingKey);
-        $msg = $envelope->getBody();
-        echo $msg."\n"; //处理消息
-        $queue->ack($envelope->getDeliveryTag()); //手动发送ACK应答
-    }
-
-    public function mfun_l1vm_task_entry($msg)
+    public function mfun_l1vm_task_main_entry($msg)
     {
+        //先处理接收到的消息的基本情况
 
+        //然后发送消息到缓冲区中
+        if ($this->mfun_l1vm_msg_send(MFUN_TASK_ID_L1VM,
+            MFUN_TASK_ID_L2SDK_IOT_HCU,
+            MSG_ID_L1VM_L2SDK_IOT_HCU_INCOMING,
+            "MSG_ID_L1VM_L2SDK_IOT_HCU_INCOMING",
+            $msg) == false){
+            //logsave
+            return false;
+        };
+        //最后进入循环读取阶段
+        $srcId = 0;
+        $destId = 0;
+        $msgId = 0;
+        $msgName ="";
+        $msgBody ="";
+        while(mfun_l1vm_msg_rcv($srcId, $destId, $msgId, $msgName, $msgBody) == true){
+            switch($destId){
+                case MFUN_TASK_ID_L1VM:
+                    $obj = new classTaskL1vmCoreRouter;
+                    $obj->mfun_l1vm_task_main_entry($msgBody);
+                    break;
+                case MFUN_TASK_ID_L2SDK_IOT_APPLE:
+                    break;
+                case MFUN_TASK_ID_L2SDK_IOT_JD:
+                    break;
+                case MFUN_TASK_ID_L2SDK_WECHAT:
+                    break;
+                case MFUN_TASK_ID_L2SDK_IOT_WX:
+                    break;
+                case MFUN_TASK_ID_L2SDK_IOT_WX_JSSDK:
+                    break;
+                case MFUN_TASK_ID_L2SDK_IOT_HCU:
+                    break;
+                case MFUN_TASK_ID_L2SENSOR_EMC:
+                    break;
+                case MFUN_TASK_ID_L2SENSOR_HSMMP:
+                    break;
+                case MFUN_TASK_ID_L2SENSOR_HUMID:
+                    break;
+                case MFUN_TASK_ID_L2SENSOR_NOISE:
+                    break;
+                case MFUN_TASK_ID_L2SENSOR_PM25:
+                    break;
+                case MFUN_TASK_ID_L2SENSOR_TEMP:
+                    break;
+                case MFUN_TASK_ID_L2SENSOR_WINDDIR:
+                    break;
+                case MFUN_TASK_ID_L2SENSOR_WINDSPD:
+                    break;
+                case MFUN_TASK_ID_L2SENSOR_AIRPRS:
+                    break;
+                case MFUN_TASK_ID_L2SENSOR_ALCOHOL:
+                    break;
+                case MFUN_TASK_ID_L2SENSOR_CO1:
+                    break;
+                case MFUN_TASK_ID_L2SENSOR_HCHO:
+                    break;
+                case MFUN_TASK_ID_L2SENSOR_TOXICGAS:
+                    break;
+                case MFUN_TASK_ID_L2SENSOR_LIGHTSTR:
+                    break;
+                case MFUN_TASK_ID_L3APPL_FUM1SYM:
+                    break;
+                case MFUN_TASK_ID_L3APPL_FUM2CM:
+                    break;
+                case MFUN_TASK_ID_L3APPL_FUM3DM:
+                    break;
+                case MFUN_TASK_ID_L3APPL_FUM4ICM:
+                    break;
+                case MFUN_TASK_ID_L3APPL_FUM5FM:
+                    break;
+                case MFUN_TASK_ID_L3APPL_FUM6PM:
+                    break;
+                case MFUN_TASK_ID_L3APPL_FUM7ADS:
+                    break;
+                case MFUN_TASK_ID_L3APPL_FUM8PSM:
+                    break;
+                case MFUN_TASK_ID_L3APPL_FUM9GISM:
+                    break;
+                case MFUN_TASK_ID_L3APPL_FUMXPRCM:
+                    break;
+                case MFUN_TASK_ID_L3WXPRC_EMC:
+                    break;
+                case MFUN_TASK_ID_L4AQYC_UI:
+                    break;
+                case MFUN_TASK_ID_L4EMCWX_UI:
+                    break;
+                case MFUN_TASK_ID_L4TBSWR_UI:
+                    break;
+                case MFUN_TASK_ID_L4OAMTOOLS:
+                    break;
+                case MFUN_TASK_ID_L5BI:
+                    break;
+                default:
+                    break;
+            }//End of switch
+        }
+        //最终结束
+        return true;
     }
 
 }
@@ -145,6 +235,99 @@ B，阻塞。用 $q->consum( callback, [...] ) 程序会进入持续侦听状态
 注意： routingkey = 'key_1' 与 routingkey = 'key_2' 是两个不同的队列。假设： client1 与 client2 都连接到 key_1 的队列上，一个消息被client1处理之后，就不会被client2处理。而 routingkey = '' 是另类，client_all绑定到 '' 上，将消息全都处理后，client1和client2上也就没有消息了。
 在程序设计上，需要规划好exchange的名称，以及如何使用key区分开不同类型的标记，在消息产生的地方插入发送消息代码。后端处理，可以针对每一个key启动一个或多个client，以提高消息处理的实时性。如何使用PHP进行多线程的消息处理，将在下一节中讲述。
 更多消息模型，可以参考： http://www.rabbitmq.com/tutorials/tutorial-two-python.html
+
+public function mfun_l1vm_msg_send($msg)
+{
+//配置信息
+$conn_args = array(
+'host' => MFUN_MQ_RABBIT_HOST,
+'port' => MFUN_MQ_RABBIT_PORT,
+'login' => MFUN_MQ_RABBIT_LOGIN,
+'password' => MFUN_MQ_RABBIT_PSWD,
+'vhost'=> MFUN_MQ_RABBIT_VHOST);
+//$e_name = 'e_linvo'; //交换机名
+//$q_name = 'q_linvo'; //无需队列名
+//$k_route = 'key_1'; //路由key
+
+//创建连接和channel
+$conn = new AMQPConnection($conn_args);
+if (!$conn->connect()) {
+die("Cannot connect to the broker!\n");
+}
+$channel = new AMQPChannel($conn);
+
+//消息内容
+//$message = "TEST MESSAGE! 测试消息！";
+$message = $msg;
+
+//创建交换机对象
+$ex = new AMQPExchange($channel);
+$ex->setName(MFUN_MQ_RABBIT_EXCHANGE);
+
+//发送消息
+$channel->startTransaction(); //开始事务
+for($i=0; $i<5; ++$i){
+echo "Send Message:".$ex->publish($message, MFUN_MQ_RABBIT_EXCHANGE)."\n";
+}
+$channel->commitTransaction(); //提交事务
+$conn->disconnect();
+}
+
+public function mfun_l1vm_msg_rcv()
+{
+//配置信息
+$conn_args = array(
+'host' => MFUN_MQ_RABBIT_HOST,
+'port' => MFUN_MQ_RABBIT_PORT,
+'login' => MFUN_MQ_RABBIT_LOGIN,
+'password' => MFUN_MQ_RABBIT_PSWD,
+'vhost'=> MFUN_MQ_RABBIT_VHOST);
+//$e_name = 'e_linvo'; //交换机名
+//$q_name = 'q_linvo'; //队列名
+//$k_route = 'key_1'; //路由key
+
+//创建连接和channel
+$conn = new AMQPConnection($conn_args);
+if (!$conn->connect()) {
+die("Cannot connect to the broker!\n");
+}
+$channel = new AMQPChannel($conn);
+
+//创建交换机
+$ex = new AMQPExchange($channel);
+$ex->setName(MFUN_MQ_RABBIT_EXCHANGE);
+$ex->setType(AMQP_EX_TYPE_DIRECT); //direct类型
+$ex->setFlags(AMQP_DURABLE); //持久化
+echo "Exchange Status:".$ex->declare()."\n";
+
+//创建队列
+$msgQue = new AMQPQueue($channel);
+$msgQue->setName(MFUN_MQ_RABBIT_QUEUE);
+$msgQue->setFlags(AMQP_DURABLE); //持久化
+echo "Message Total:".$msgQue->declare()."\n";
+
+//绑定交换机与队列，并指定路由键
+echo 'Queue Bind: '.$msgQue->bind(MFUN_MQ_RABBIT_EXCHANGE, MFUN_MQ_RABBIT_ROUTE_KEY)."\n";
+
+//阻塞模式接收消息
+echo "Message:\n";
+while(True){
+$msgQue->consume('processMessage');
+$msgQue->consume('processMessage', AMQP_AUTOACK); //自动ACK应答
+}
+$conn->disconnect();
+}
+
+/**
+* 消费回调函数
+* 处理消息
+*/
+function processMessage($envelope, $queue) {
+var_dump($envelope->getRoutingKey);
+$msg = $envelope->getBody();
+echo $msg."\n"; //处理消息
+$queue->ack($envelope->getDeliveryTag()); //手动发送ACK应答
+}
 
 
 */
