@@ -70,7 +70,7 @@ class class_wx_IOT_sdk
         //原则上，同一个Appid/Appsecrete的逻辑功能，包括不同Subscriber的操作，都
         $wxDbObj = new class_wx_db();
         // $result = $wxDbObj->db_accesstoken_inqury($appid, $appsecret);
-        $result = $wxDbObj->db_accesstoken_inqury(WX_APPID, WX_APPSECRET);
+        $result = $wxDbObj->db_accesstoken_inqury(MFUN_WX_APPID, MFUN_WX_APPSECRET);
         //2小时=7200秒为最长限度，考虑到余量，少放点
         if (($result == "NOTEXIST") || (time() > $result["lasttime"] + 6500))
         {
@@ -1184,7 +1184,7 @@ class class_wx_IOT_sdk
 
     public function generateDeviceId()
     {
-        $tmpArr = array(WX_APPID, $this->generateRandomString(10));
+        $tmpArr = array(MFUN_WX_APPID, $this->generateRandomString(10));
         return implode($tmpArr);
     }
 

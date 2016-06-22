@@ -4512,25 +4512,25 @@ class class_wechat_sdk
                         case "event":
                             $project = "IHU";
                             $this->logger($project,$fromUser,$log_time,$log_content);
-                            $log_from = CLOUD_WX;
+                            $log_from = MFUN_CLOUD_WX;
                             $result = $this->receiveEvent($postObj);
                             break;
                         case "text":
                             $project = "IHU";
                             $this->logger($project,$fromUser,$log_time,$log_content);
-                            $log_from = CLOUD_WX;
+                            $log_from = MFUN_CLOUD_WX;
                             $result = $this->receiveText($postObj);
                             break;
                         case "image":
                             $project = "IHU";
                             $this->logger($project,$fromUser,$log_time,$log_content);
-                            $log_from = CLOUD_WX;
+                            $log_from = MFUN_CLOUD_WX;
                             $result = $this->receiveImage($postObj);
                             break;
                         case "location":
                             $project = "IHU";
                             $this->logger($project,$fromUser,$log_time,$log_content);
-                            $log_from = CLOUD_WX;
+                            $log_from = MFUN_CLOUD_WX;
                             $result = $this->receiveLocation($postObj);
                             //$wxDevObj = new class_wx_IOT_sdk($this->appid, $this->appsecret);
                             //$result = $wxDevObj->receive_locationEvent($postObj);
@@ -4538,60 +4538,60 @@ class class_wechat_sdk
                         case "voice":
                             $project = "IHU";
                             $this->logger($project,$fromUser,$log_time,$log_content);
-                            $log_from = CLOUD_WX;
+                            $log_from = MFUN_CLOUD_WX;
                             $result = $this->receiveVoice($postObj);
                             break;
                         case "video":
                             $project = "IHU";
                             $this->logger($project,$fromUser,$log_time,$log_content);
-                            $log_from = CLOUD_WX;
+                            $log_from = MFUN_CLOUD_WX;
                             $result = $this->receiveVideo($postObj);
                             break;
                         case "link":
                             $project = "IHU";
                             $this->logger($project,$fromUser,$log_time,$log_content);
-                            $log_from = CLOUD_WX;
+                            $log_from = MFUN_CLOUD_WX;
                             $result = $this->receiveLink($postObj);
                             break;
                         case "device_text":  //智能硬件设备text消息，都转到IOT相关的CLASS中
                             $project = "IHU";
                             $this->logger($project,$fromUser,$log_time,$log_content);
                             $wxDevObj = new class_wx_IOT_sdk($this->appid, $this->appsecret);
-                            $log_from = CLOUD_WX;
+                            $log_from = MFUN_CLOUD_WX;
                             $result = $wxDevObj->receive_wx_deviceMessage($postObj);
                             break;
                         case "device_event":
                             $project = "IHU";
                             $this->logger($project,$fromUser,$log_time,$log_content);
-                            $log_from = CLOUD_WX;
+                            $log_from = MFUN_CLOUD_WX;
                             $wxDevObj = new class_wx_IOT_sdk($this->appid, $this->appsecret);
                             $result = $wxDevObj->receive_wx_deviceEvent($postObj);
                             break;
                         case "hcu_text":
                             $project = "HCU";
                             $result = $this->logger($project,$fromUser,$log_time,$log_content);
-                            $log_from = CLOUD_HCU;
+                            $log_from = MFUN_CLOUD_HCU;
                             $hcuDevObj = new class_hcu_IOT_sdk();
                             $result = $hcuDevObj->receive_hcu_xmlMessage($postObj);
                             break;
                         case "hcu_heart_beat":
                             $project = "HCU";
                             $result = $this->logger($project,$fromUser,$log_time,$log_content);
-                            $log_from = CLOUD_HCU;
+                            $log_from = MFUN_CLOUD_HCU;
                             $hcuDevObj = new class_hcu_IOT_sdk();
                             $result = $hcuDevObj->receive_hcu_xmlMessage($postObj);
                             break;
                         case "hcu_command":
                             $project = "HCU";
                             $this->logger($project,$fromUser,$log_time,$log_content);
-                            $log_from = CLOUD_HCU;
+                            $log_from = MFUN_CLOUD_HCU;
                             $hcuDevObj = new class_hcu_IOT_sdk();
                             $result = $hcuDevObj->receive_hcu_xmlMessage($postObj);
                             break;
                         case "hcu_polling":
                             $project = "HCU";
                             $this->logger($project,$fromUser,$log_time,$log_content);
-                            $log_from = CLOUD_HCU;
+                            $log_from = MFUN_CLOUD_HCU;
                             $hcuDevObj = new class_hcu_IOT_sdk();
                             $result = $hcuDevObj->receive_hcu_xmlMessage($postObj);
                             break;
@@ -4610,7 +4610,7 @@ class class_wechat_sdk
                     $log_time = date("Y-m-d H:i:s",$timestamp);
                     $log_content = "R:".trim($postStr);
                     $this->logger($project,$fromUser,$log_time,$log_content); //ZHB接收消息log保存
-                    $log_from = CLOUD_HCU;
+                    $log_from = MFUN_CLOUD_HCU;
                     $hcuDevObj = new class_hcu_IOT_sdk();
                     $result = $hcuDevObj->receive_hcu_zhbMessage($postStr);
                     break;

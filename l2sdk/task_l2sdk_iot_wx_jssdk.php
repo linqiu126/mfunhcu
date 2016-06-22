@@ -148,7 +148,7 @@ class JSSDK {
         // access_token 应该全局存储与更新
         $wxDbObj = new class_wx_db();
         $result = $wxDbObj->db_accesstoken_inqury($this->appId, $this->appSecret);
-        //$result = $wxDbObj->db_AccessTokenInfo_inqury(WX_APPID, WX_APPSECRET);
+        //$result = $wxDbObj->db_AccessTokenInfo_inqury(MFUN_WX_APPID, MFUN_WX_APPSECRET);
 
         if (($result == "NOTEXIST") || (time() > $result["lasttime"] + 6500))
         {

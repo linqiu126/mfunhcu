@@ -12,12 +12,12 @@ include_once "../l1comvm/sysconfig.php";
  *************************************************************************************/
 //正式测试公号/服务公号的配置参数
 date_default_timezone_set('prc');  //设置时区为北京时间
-define("WX_TOKEN", "weixin");  //TOKEN，必须和微信绑定的URL使用的TOKEN一致
-define("WX_DEBUG", false);
-define("WX_LOGCALLBACK", false);
+define("MFUN_WX_TOKEN", "weixin");  //TOKEN，必须和微信绑定的URL使用的TOKEN一致
+define("MFUN_WX_DEBUG", false);
+define("MFUN_WX_LOGCALLBACK", false);
 
 //用于bind/unbind临时处理功能
-if (WX_APPID =="wx1183be5c8f6a24b4")  //用于LZH的订阅号
+if (MFUN_WX_APPID =="wx1183be5c8f6a24b4")  //用于LZH的订阅号
 {
     define("device_type","gh_70c714952b02");
 
@@ -56,7 +56,7 @@ if (WX_APPID =="wx1183be5c8f6a24b4")  //用于LZH的订阅号
     define("JT_qrcode","http://we.qq.com/d/AQBLQKG-ksL4ZB14plxy0_pppMVsW9i96e6PzgSJ");
     define("JT_mac","D03972A5EFF4");
 }
-elseif(WX_APPID =="wx32f73ab219f56efb") //用于ZJL的服务号
+elseif(MFUN_WX_APPID =="wx32f73ab219f56efb") //用于ZJL的服务号
 {
     define("device_type","gh_9b450bb63282");
 
