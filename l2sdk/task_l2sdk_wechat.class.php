@@ -4465,7 +4465,7 @@ class class_wechat_sdk
         }
         */
         //存储log在数据库中
-        $cDbObj = new class_common_db();
+        $cDbObj = new classL1vmCommonDbi();
         $result = $cDbObj->db_log_process($project,$fromUser,$createTime,$log_content);
 
         return $result;

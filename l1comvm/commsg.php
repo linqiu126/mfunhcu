@@ -6,8 +6,10 @@
  * Time: 13:16
  */
 
+define("MSG_ID_MFUN_MIN", 0);
 define("MSG_ID_L1VM_L2SDK_IOT_HCU_INCOMING", 1);
-
+define("MSG_ID_L1VM_L2SDK_IOT_WX_INCOMING", 2);
+define("MSG_ID_MFUN_MAX", 100);
 
 /**************************************************************************************
  *                             公共消息全局量定义                                     *

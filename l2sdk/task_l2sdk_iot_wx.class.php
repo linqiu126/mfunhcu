@@ -9,6 +9,24 @@ include_once "../l1comvm/vmlayer.php";
 include_once "../l2sdk/dbi_l2sdk_wx.class.php";
 include_once "../l2sdk/task_l2sdk_iot_wx_jssdk.php";
 
+
+class classTaskL2sdkIotWx
+{
+    //构造函数
+    public function __construct()
+    {
+
+    }
+
+    //任务入口函数
+    public function mfun_l2sdk_iot_wx_task_main_entry($parObj, $msg)
+    {
+
+    }
+
+}
+
+
 //该文件的处理，将成为标准的WEIXIN Layer3处理，而非SDK层面的L2处理，等待移动到L3层面
 
 //BXXH硬件设备级 Layer 2.2 SDK02，用户设备级接入到微信系统中

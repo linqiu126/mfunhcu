@@ -5,7 +5,7 @@
  * Date: 2015/7/5
  * Time: 9:26
  */
-include_once "../l1comvm/comapi.php";
+include_once "../l1comvm/func_comapi.class.php";
 include_once "../l1comvm/commsg.php";
 include_once "../l1comvm/errCode.php";
 include_once "../l1comvm/sysconfig.php";
@@ -72,7 +72,7 @@ class classTaskL1vmCoreRouter
         return true;
     }
 
-    public function mfun_l1vm_msg_rcv($srcId, $destId, $msgId, $msgName, $msgBody)
+    public function mfun_l1vm_msg_rcv()
     {
         //判断是否越界
         if ($this->msgBufferUsedCnt > MFUN_MSG_BUFFER_NBR_MAX){
@@ -100,37 +100,97 @@ class classTaskL1vmCoreRouter
         if (isset($tmp["msgId"])) $msgId = $tmp["msgId"];
         if (isset($tmp["msgName"])) $msgName = $tmp["msgName"];
         if (isset($tmp["msgBody"])) $msgBody = $tmp["msgBody"];
+        $result = array(
+            "srcId" => $srcId,
+            "destId" => $destId,
+            "msgId" => $msgId,
+            "msgName" => $msgName,
+            "msgBody" => $msgBody);
 
         //写完之后，更新计数器
         $this->msgBufferUsedCnt--;
         $this->msgBufferReadCnt = ($this->msgBufferReadCnt+1) % MFUN_MSG_BUFFER_NBR_MAX;
-        return true;
+        return $result;
     }
 
-    public function mfun_l1vm_task_main_entry($msg)
+    //任务入口函数
+    public function mfun_l1vm_task_main_entry($parObj, $msg)
     {
         //先处理接收到的消息的基本情况
+        if (empty($msg) == true){
+            $obj = new classL1vmFuncComApi();
+            $log_time = date("Y-m-d H:i:s", time());
+            $obj->logger("NULL", "mfun_l1vm_task_main_entry", $log_time, "P: Nothing received");
+            echo "";
+            return false;
+            //exit;
+        }
 
         //然后发送消息到缓冲区中
-        if ($this->mfun_l1vm_msg_send(MFUN_TASK_ID_L1VM,
-            MFUN_TASK_ID_L2SDK_IOT_HCU,
-            MSG_ID_L1VM_L2SDK_IOT_HCU_INCOMING,
-            "MSG_ID_L1VM_L2SDK_IOT_HCU_INCOMING",
-            $msg) == false){
-            //logsave
-            return false;
-        };
+        if ($parObj == MFUN_MAIN_ENTRY_HCU_IOT){
+            if ($this->mfun_l1vm_msg_send(MFUN_TASK_ID_L1VM,
+                    MFUN_TASK_ID_L2SDK_IOT_HCU,
+                    MSG_ID_L1VM_L2SDK_IOT_HCU_INCOMING,
+                    "MSG_ID_L1VM_L2SDK_IOT_HCU_INCOMING",
+                    $msg) == false){
+                //logsave
+                $obj = new classL1vmFuncComApi();
+                $log_time = date("Y-m-d H:i:s", time());
+                $obj->logger("MFUN_MAIN_ENTRY_HCU_IOT", "mfun_l1vm_task_main_entry", $log_time, "P: Send to message buffer error.");
+                echo "Cloud internal error.";
+                return false;
+            };
+        }elseif($parObj == MFUN_MAIN_ENTRY_EMC_WX){
+            if ($this->mfun_l1vm_msg_send(MFUN_TASK_ID_L1VM,
+                    MFUN_TASK_ID_L2SDK_IOT_WX,
+                    MSG_ID_L1VM_L2SDK_IOT_WX_INCOMING,
+                    "MSG_ID_L1VM_L2SDK_IOT_WX_INCOMING",
+                    $msg) == false) {
+                //logsave
+                $obj = new classL1vmFuncComApi();
+                $log_time = date("Y-m-d H:i:s", time());
+                $obj->logger("MFUN_MAIN_ENTRY_EMC_WX", "mfun_l1vm_task_main_entry", $log_time, "P: Send to message buffer error.");
+                echo "Cloud internal error.";
+                return false;
+            };
+        }elseif($parObj == MFUN_MAIN_ENTRY_CRON){
+
+        }elseif($parObj == $this){
+
+        }else{
+
+        }
+
         //最后进入循环读取阶段
-        $srcId = 0;
-        $destId = 0;
-        $msgId = 0;
-        $msgName ="";
-        $msgBody ="";
-        while(mfun_l1vm_msg_rcv($srcId, $destId, $msgId, $msgName, $msgBody) == true){
-            switch($destId){
+        //$this做为父CLASS的指针传到被调用任务的CLASS的主入口中去，是为了调用本CLASS的HCU_MSG_SEND函数及其空间，不然无法
+        //将消息发送到这个任务L1VM模块中来
+        //echo的最终返回，现在暂时假设在最后一条处理消息中完成
+        //每个不同任务模块之间的消息结构，由发送者和接收者自行商量结构，因为PHP下是无法定义结构的。同一个CLASS内部可以使
+        //用ARRAY进行传递，不同CLASS任务之间则只能采用JSON进行传递，因为不同空间内显然无法将数组传递过去
+        $modObj = new classConstL1vmSysTaskList();
+        while(($result = mfun_l1vm_msg_rcv()) == true){
+            //语法差错检查
+            if (isset($result["srcId"]) != true) continue;
+            if (isset($result["destId"]) != true) continue;
+            if (isset($result["msgId"]) != true) continue;
+            if (isset($result["msgName"]) != true) continue;
+            if (isset($result["msgBody"]) != true) continue;
+            if (($result["srcId"] <= MFUN_TASK_ID_MIN) || ($result["srcId"] >=MFUN_TASK_ID_MAX)) continue;
+            if (($result["destId"] <= MFUN_TASK_ID_MIN) || ($result["destId"] >=MFUN_TASK_ID_MAX)) continue;
+            if (($result["msgId"] <= MSG_ID_MFUN_MIN) || ($result["msgId"] >=MSG_ID_MFUN_MAX)) continue;
+            //检查目标任务模块是否激活
+            if ($modObj->mfun_vm_getTaskPresent($result["destId"]) != true){
+                $obj = new classL1vmFuncComApi();
+                $log_time = date("Y-m-d H:i:s", time());
+                $obj->logger("NULL", "mfun_l1vm_task_main_entry", $log_time, "P: Target module is not actived.");
+                echo "Cloud internal error.";
+                continue;
+            }
+            //具体开始处理目标消息的大循环
+            switch($result["destId"]){
                 case MFUN_TASK_ID_L1VM:
-                    $obj = new classTaskL1vmCoreRouter;
-                    $obj->mfun_l1vm_task_main_entry($msgBody);
+                    $obj = new classTaskL1vmCoreRouter();
+                    $obj->mfun_l1vm_task_main_entry($this, ["msgBody"]);
                     break;
                 case MFUN_TASK_ID_L2SDK_IOT_APPLE:
                     break;
@@ -139,10 +199,14 @@ class classTaskL1vmCoreRouter
                 case MFUN_TASK_ID_L2SDK_WECHAT:
                     break;
                 case MFUN_TASK_ID_L2SDK_IOT_WX:
+                    $obj = new classTaskL2sdkIotWx();
+                    $obj->mfun_l2sdk_iot_wx_task_main_entry($this, $result["msgBody"]);
                     break;
                 case MFUN_TASK_ID_L2SDK_IOT_WX_JSSDK:
                     break;
                 case MFUN_TASK_ID_L2SDK_IOT_HCU:
+                    $obj = new classTaskL2sdkIotHcu();
+                    $obj->mfun_l2sdk_iot_hcu_task_main_entry($this, $result["msgBody"]);
                     break;
                 case MFUN_TASK_ID_L2SENSOR_EMC:
                     break;
@@ -207,7 +271,7 @@ class classTaskL1vmCoreRouter
                 default:
                     break;
             }//End of switch
-        }
+        }//End of while
         //最终结束
         return true;
     }

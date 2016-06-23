@@ -7,7 +7,7 @@
  */
 include_once "../l1comvm/sysconfig.php";
 
-class class_common_db
+class classL1vmCommonDbi
 {
     //更新设备软,硬件版本
     public function db_deviceVersion_update($deviceid, $hw_type, $hw_ver, $sw_rel, $sw_drop)

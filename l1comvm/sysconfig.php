@@ -14,6 +14,11 @@
 //项目名称，每个项目均为唯一用于本项目选择启动配置数据库中的工参信息
 define ("MFUN_CURRENT_WORKING_PROJECT_NAME_UNIQUE", "HCU_PRJ_AQYC");
 
+//定义系统消息入口
+define ("MFUN_MAIN_ENTRY_HCU_IOT", "MFUN_HCU_IOT");
+define ("MFUN_MAIN_ENTRY_EMC_WX", "MFUN_EMC_WX");
+define ("MFUN_MAIN_ENTRY_CRON", "MFUN_CRON");
+
 //不同的方式来确定本机运行环境，还是服务器运行环境，本来想获取Localhost来进行判断，但没成功
 //实验了不同的方式，包括$_SERVER['LOCAL_ADDR']， $_SERVER['SERVER_ADDR']， getenv('SERVER_ADDR')等方式
 //GetHostByName($_SERVER['SERVER_NAME'])只能获取IP地址，也不稳定
