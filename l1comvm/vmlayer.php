@@ -15,7 +15,7 @@ include_once "../l1comvm/pj_aqyc_engpar.php";
 include_once "../l1comvm/pj_tbswr_engpar.php";
 include_once "../l1comvm/sysversion.php";
 include_once "../l1comvm/sysmodule.php";
-include_once "../l1comdbi/dbi_common.class.php";
+include_once "../l1comvm/dbi_common.class.php";
 
 class classTaskL1vmCoreRouter
 {
@@ -278,7 +278,7 @@ class classTaskL1vmCoreRouter
 
 }
 
-?>
+
 
 
 
@@ -386,6 +386,7 @@ $conn->disconnect();
 * 消费回调函数
 * 处理消息
 */
+/*
 function processMessage($envelope, $queue) {
 var_dump($envelope->getRoutingKey);
 $msg = $envelope->getBody();
@@ -395,3 +396,5 @@ $queue->ack($envelope->getDeliveryTag()); //手动发送ACK应答
 
 
 */
+
+?>

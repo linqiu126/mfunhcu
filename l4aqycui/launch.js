@@ -161,6 +161,13 @@ http.createServer(function(request, response) {
             response.write(Data);
             response.end();
             break;
+        case ".svg":
+            console.log("Client require :"+pathname);
+            Data = fs.readFileSync("."+pathname,'utf-8');
+            response.writeHead(200, {"Content-Type": "image/svg+xml"});
+            response.write(Data);
+            response.end();
+            break;
         case ".php":
             //2 different PHP file:dump.php&request.php
             var filename = pathname.replace(/^.*\/|\..*$/g, "");

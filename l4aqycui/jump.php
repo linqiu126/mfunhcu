@@ -1,5 +1,5 @@
 ﻿<?php
-include_once "../l4aqycui/dbi_l4aqyc_ui.class.php";
+include_once "./dbi_l4aqyc_ui.class.php";
 
 function check_session($s){
 

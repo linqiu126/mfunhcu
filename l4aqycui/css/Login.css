@@ -1,16 +1,27 @@
 body {
-    padding-top: 60px;
+    padding-top: 0px;
     padding-bottom: 40px;
     background-size:100%;
-    background-image: url('/xhzn/mfunhcu/ui/image/login.png');
+    background: url("/xhzn/mfunhcu/l4aqycui/svg/backround.svg");
+    /*background-image: url('/xhzn/mfunhcu/l4aqycui/svg/big_backround.svg');*/
     background-repeat:no-repeat;
 }
+/*
 .nav li {
     padding-top: 5px;
 }
-
 .sidebar-nav {
     padding: 9px 0;
+}*/
+.logo-header{
+    position:relative;
+    margin-top:0px;
+    height:110px;
+}
+.logo{
+    position:relative;
+    top:0px;
+    height:100px;
 }
 .leaderboard {
     padding: 60px;
@@ -36,7 +47,7 @@ body {
     font-weight: 200;
     line-height: 27px;
 }
-
+/*
 .well {
     -webkit-border-radius: 6px;
     -moz-border-radius: 6px;
@@ -46,4 +57,4 @@ body {
 .nav .nav-header {
     font-size: 18px;
     color:#FF9900;
-}
+}*/

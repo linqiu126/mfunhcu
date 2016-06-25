@@ -131,8 +131,8 @@
             var usertable = new Array();
             console.log("query start:"+start +"query length:"+query_length);
             for(var i=0;i<query_length;i++){
-                var type=false;
-                if(0==i%7) type= true;
+                var type="false";
+                if(0==i%7) type= "true";
                 var temp = {
                     id: (start+(i+1)),
                     name: "username"+(start+i),
@@ -155,7 +155,7 @@
             return JSON.stringify(retval);
         case "UserProj":
             var userproj = new Array();
-            for(var i=0;i<4;i++){
+            for(var i=0;i<3;i++){
                 var temp = {
                     id: (i+1),
                     name: "项目名"+i
@@ -227,7 +227,7 @@
             };
             return JSON.stringify(retval);
         case "ProjTable":
-            var total = 14;
+            var total = 15;
             var query_length = parseInt(data.length);
             var start = parseInt(data.startseq);
             if(query_length> total-start) {query_length = total-start;}
@@ -934,42 +934,42 @@
         case "AlarmType":
             var ret = new Array();
             var map = {
-                id:0,
+                id:"0001",
                 name:"噪音"
             }
             ret.push(map);
             map = {
-                id:1,
+                id:"0002",
                 name:"扬尘"
             }
             ret.push(map);
             map = {
-                id:2,
+                id:"0003",
                 name:"湿度"
             }
             ret.push(map);
             map = {
-                id:3,
+                id:"0004",
                 name:"温度"
             }
             ret.push(map);
             map = {
-                id:4,
+                id:"000z",
                 name:"细颗粒物"
             }
             ret.push(map);
             map = {
-                id:5,
+                id:"000t",
                 name:"水质"
             }
             ret.push(map);
             map = {
-                id:6,
+                id:"000b",
                 name:"SO2"
             }
             ret.push(map);
             map = {
-                id:7,
+                id:"000v",
                 name:"风速"
             }
             ret.push(map);

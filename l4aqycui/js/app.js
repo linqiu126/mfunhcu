@@ -11,21 +11,23 @@ var wait_time_short= 500;
 var cycle_time = 60000;
 var request_head= "request.php";
 var jump_url = "/xhzn/mfunhcu/l4aqycui/jump.php";
-var upload_url="upload.php";
-var screen_saver_address="screensaver/screen.html";
+var upload_url="/xhzn/mfunhcu/l4aqycui/upload.php";
+var screen_saver_address="/xhzn/mfunhcu/l4aqycui/screensaver/screen.html";
 
 function logout(){
     /*
     delCookie("Environmental.inspection.session");
     window.location="http://"+window.location.host;
-    */
+     */
 
      delCookie("Environmental.inspection.session");
      var txt = window.location.href;
      var index =txt.lastIndexOf("/");
      window.location=txt.substr(0,index)+"/Login.html";
-
 }
+
+
+
 
 
 var usr;
@@ -880,6 +882,8 @@ function new_user(user,auth){
         memo: user.memo,
         auth: auth
     };
+    //console.log(map);
+    //console.log(JSON.stringify(map));
     jQuery.get(request_head, map, function (data) {
         log(data);
         var result=JSON.parse(data);
@@ -1197,6 +1201,7 @@ function submit_new_user_module(){
         }
         auth.push(temp);
     });
+    console.log(auth);
     new_user(user,auth);
 }
 function show_mod_user_module(user,user_auth){
@@ -1772,7 +1777,6 @@ function del_proj(ProjCode){
         ProjCode: ProjCode,
         user:usr.id
     };
-    console.log("ProjCode="+ProjCode);
     jQuery.get(request_head, map, function (data) {
         log(data);
         var result=JSON.parse(data);
@@ -1940,7 +1944,7 @@ function draw_proj_table(data){
                 +"<td>--</td>"
                 +"<td>--</td>"
                 +"<td>--</td>"
-            //    +"<td>--</td>"
+                //+"<td>--</td>"
                 +"<td>--</td>";
             txt = txt +"</tr>"
         }
@@ -3232,7 +3236,7 @@ function get_monitor_warning_on_map(){
                 txt = txt + " <div class='col-md-6 column'>";
                 for(var i=0;i<ret.length;i++){
                     var nickname = ret[i].AlarmEName;
-                    txt = txt + "<img src='/xhzn/mfunhcu/l4aqycui/image/"+ret[i].AlarmEName+".png'></img><label style='max-width: 150px;min-width: 150px'>&nbsp&nbsp&nbsp&nbsp"+ret[i].AlarmName+":";
+                    txt = txt + "<img src='/xhzn/mfunhcu/l4aqycui/svg/icon/"+ret[i].AlarmEName+".svg' style='width:36px;hight:36px'></img><label style='max-width: 150px;min-width: 150px'>&nbsp&nbsp&nbsp&nbsp"+ret[i].AlarmName+":";
                     var value = parseInt(ret[i].AlarmValue);
                     var warning = ret[i].WarningTarget;
 
@@ -3549,7 +3553,7 @@ function get_alarm_type_list(){
     });
 }
 function query_alarm(date,type,name){
-    console.log("Query:"+type);
+
     var map={
         action:"AlarmQuery",
         id: usr.id,
@@ -3558,7 +3562,7 @@ function query_alarm(date,type,name){
         type:type
     };
     jQuery.get(request_head, map, function (data) {
-        console.log(data);
+        log(data);
         var result=JSON.parse(data);
         if(result.status == "false"){
             show_expiredModule();
@@ -3587,7 +3591,8 @@ function query_alarm(date,type,name){
         //console.log(("#"+type+"_canvas_month"));
         $("#Warning_"+type+"_day").css("display","block");
         var max = minute_head.length-1;
-        if(max >120) max = 120;
+        if(max > 120) max = 120;
+
         $("#"+type+"_canvas_day").highcharts({
 
             chart: {
@@ -3643,7 +3648,7 @@ function query_alarm(date,type,name){
         $("#Warning_"+type+"_day").css("display","none");
         $("#Warning_"+type+"_week").css("display","block");
         var max = hour_head.length-1;
-        if(max >120) max = 120;
+        if(max > 120) max = 120;
         $("#"+type+"_canvas_week").highcharts({
 
             chart: {
@@ -3665,7 +3670,7 @@ function query_alarm(date,type,name){
             },
             xAxis: {
                 categories: hour_head,
-                max: 120
+                max: max
             },
 
             scrollbar: {
@@ -3699,7 +3704,7 @@ function query_alarm(date,type,name){
         $("#Warning_"+type+"_week").css("display","none");
         $("#Warning_"+type+"_month").css("display","block");
         var max = day_head.length-1;
-        if(max >30) max = 30;
+        if(max > 30) max = 30;
         $("#"+type+"_canvas_month").highcharts({
 
             chart: {
@@ -3789,7 +3794,7 @@ function build_alarm_tabs(){
             "</a>"+
             "<ul class='dropdown-menu' role='menu' aria-labelledby='Warning_"+alarm_type_list[i].id+"_tab''>"+
             "<li><a href='#Warning_"+alarm_type_list[i].id+"_day' "+temp+" tabindex='-1' data-toggle='tab' id='Warning_"+alarm_type_list[i].id+"_tab_day' alarmid='"+alarm_type_list[i].id+"'>分钟报表（日）</a> </li>"+
-            "<li><a href='#Warning_"+alarm_type_list[i].id+"_week' tabindex='-1' data-toggle='tab'  id='Warning_"+alarm_type_list[i].id+"_tab_week' alarmid='"+alarm_type_list[i].id+"'>小时报表（周）</a> </li>"+
+            "<li><a href='#Warning_"+alarm_type_list[i].id+"_week' tabindex='-1' data-toggle='tab'  id='Warning_"+alarm_type_list[i].id+"_tab_week' alarmid='"+ alarm_type_list[i].id+"'>小时报表（周）</a> </li>"+
             "<li><a href='#Warning_"+alarm_type_list[i].id+"_month' tabindex='-1' data-toggle='tab'  id='Warning_"+alarm_type_list[i].id+"_tab_month' alarmid='"+alarm_type_list[i].id+"'> 日报表（30天）</a> </li> </ul> </li>";
         /*
          txt2 = txt2+

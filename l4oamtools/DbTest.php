@@ -148,17 +148,17 @@ $resp = $Obj->responseMsg();*/
 //CMD pooling
 //$postStr = "<xml><ToUserName><![CDATA[SAE_MFUNHCU]]></ToUserName><FromUserName><![CDATA[HCU_SH_0301]]></FromUserName><CreateTime>1457872559</CreateTime><MsgType><![CDATA[hcu_command]]></MsgType><Content><![CDATA[FD00]]></Content><FuncFlag>0</FuncFlag></xml>";
 
-//$postStr = "<xml><ToUserName><![CDATA[AQ_HCU]]></ToUserName><FromUserName><![CDATA[HCU_SH_0305]]></FromUserName><CreateTime>1463066586</CreateTime><MsgType><![CDATA[hcu_text]]></MsgType><Content><![CDATA[201881050201130345000000004E000000000000000057318D70]]></Content><FuncFlag>0</FuncFlag></xml>";
+$postStr = "<xml><ToUserName><![CDATA[AQ_HCU]]></ToUserName><FromUserName><![CDATA[HCU_SH_0305]]></FromUserName><CreateTime>1463066586</CreateTime><MsgType><![CDATA[hcu_text]]></MsgType><Content><![CDATA[201881050201130345000000004E000000000000000057318D70]]></Content><FuncFlag>0</FuncFlag></xml>";
 
 //中环保格式
-$postStr = "##007020160619033803000___11111ZHB_NOMHCU_SH_0304_44444405556666a01000=139A,68BE";
+//$postStr = "##007020160619033803000___11111ZHB_NOMHCU_SH_0304_44444405556666a01000=139A,68BE";
 
 libxml_disable_entity_loader(true);
 $postObj = simplexml_load_string($postStr, 'SimpleXMLElement');
 
 $hcuDevObj = new class_hcu_IOT_sdk();
-//$result = $hcuDevObj->receive_hcu_xmlMessage($postObj);
-$result = $hcuDevObj->receive_hcu_zhbMessage($postStr);
+$result = $hcuDevObj->receive_hcu_xmlMessage($postObj);
+//$result = $hcuDevObj->receive_hcu_zhbMessage($postStr);
 
 
 

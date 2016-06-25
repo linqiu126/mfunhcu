@@ -26,196 +26,195 @@ define ("MFUN_MAIN_ENTRY_CRON", "MFUN_CRON");
 //也可以使用云服务器的名字来反向匹配，因为服务器的名字是唯一的
 //SAE官方的说法：可以使用isset(SAE_TMP_PATH)来判断是不是在SAE云上
 //
-if (isset($_SERVER['SERVER_NAME'])){
-if ($_SERVER['SERVER_NAME'] == "mfuncard.sinaapp.com") //LZH微信公号服务器数据库配置信息
+if (isset($_SERVER['SERVER_NAME']))
 {
-    //云后台定义
-    define("MFUN_CLOUD_HCU", "SAE_HCU"); //HCU后台云应用
-    define("MFUN_CLOUD_WX", "SAE_WX"); //微信后台云应用
-    //主数据库定义
-    define("MFUN_CLOUD_DBHOST", SAE_MYSQL_HOST_M);    //连接的服务器地址 w.rdc.sae.sina.com.cn
-    define("MFUN_CLOUD_DBUSER",SAE_MYSQL_USER);     //连接数据库的用户名
-    define("MFUN_CLOUD_DBPSW", SAE_MYSQL_PASS);        //连接数据库的密码
-    define("MFUN_CLOUD_DBNAME","app_mfuncard");         //连接的数据库名称
-    define("MFUN_CLOUD_DBPORT", SAE_MYSQL_PORT);
-    define("MFUN_CLOUD_DBHOST_S", SAE_MYSQL_DB);
-    //EMCWX应用定义
-    define("MFUN_WX_APPID", "wx32f73ab219f56efb");  //微信测试号AppID
-    define("MFUN_WX_APPSECRET", "eca20c2a26a5ec5b64a89d15ba92a781");  //填写高级调用功能的app id, 请在微信开发模式后台查询
-    define("MFUN_WX_ENCODINGAESKEY", "7Tp1NIUzUa0JBezeJUjG8O61Kdjcu2ce6BQVukZlv3u");   //填写加密用的EncodingAESKey，如接口为明文模式可忽略
-    //测试公号的后台运行配置参数
-    define("MFUN_WX_TOOL_SERVICENUM", "gh_9b450bb63282");
-    define("MFUN_WX_TOOL_APPID", "wx32f73ab219f56efb");
-    define("MFUN_WX_TOOL_APPSECRET", "eca20c2a26a5ec5b64a89d15ba92a781");
-    define("MFUN_WX_TOOL_BLEMAC", "D03972A5EF25");
-    //RabbitMQ消息队列定义
-    define("MFUN_MQ_RABBIT_HOST", SAE_MYSQL_HOST_M);
-    define("MFUN_MQ_RABBIT_PORT", "5672");
-    define("MFUN_MQ_RABBIT_LOGIN", "guest");
-    define("MFUN_MQ_RABBIT_PSWD", "guest");
-    define("MFUN_MQ_RABBIT_VHOST", "/");
-    define("MFUN_MQ_RABBIT_EXCHANGE", "e_linvo");
-    define("MFUN_MQ_RABBIT_QUEUE", "q_linvo");
-    define("MFUN_MQ_RABBIT_ROUTE_KEY", "key_1");
+    if ($_SERVER['SERVER_NAME'] == "mfuncard.sinaapp.com") //LZH微信公号服务器数据库配置信息
+    {
+        //云后台定义
+        define("MFUN_CLOUD_HCU", "SAE_HCU"); //HCU后台云应用
+        define("MFUN_CLOUD_WX", "SAE_WX"); //微信后台云应用
+        //主数据库定义
+        define("MFUN_CLOUD_DBHOST", SAE_MYSQL_HOST_M);    //连接的服务器地址 w.rdc.sae.sina.com.cn
+        define("MFUN_CLOUD_DBUSER", SAE_MYSQL_USER);     //连接数据库的用户名
+        define("MFUN_CLOUD_DBPSW", SAE_MYSQL_PASS);        //连接数据库的密码
+        define("MFUN_CLOUD_DBNAME", "app_mfuncard");         //连接的数据库名称
+        define("MFUN_CLOUD_DBPORT", SAE_MYSQL_PORT);
+        define("MFUN_CLOUD_DBHOST_S", SAE_MYSQL_DB);
+        //EMCWX应用定义
+        define("MFUN_WX_APPID", "wx32f73ab219f56efb");  //微信测试号AppID
+        define("MFUN_WX_APPSECRET", "eca20c2a26a5ec5b64a89d15ba92a781");  //填写高级调用功能的app id, 请在微信开发模式后台查询
+        define("MFUN_WX_ENCODINGAESKEY", "7Tp1NIUzUa0JBezeJUjG8O61Kdjcu2ce6BQVukZlv3u");   //填写加密用的EncodingAESKey，如接口为明文模式可忽略
+        //测试公号的后台运行配置参数
+        define("MFUN_WX_TOOL_SERVICENUM", "gh_9b450bb63282");
+        define("MFUN_WX_TOOL_APPID", "wx32f73ab219f56efb");
+        define("MFUN_WX_TOOL_APPSECRET", "eca20c2a26a5ec5b64a89d15ba92a781");
+        define("MFUN_WX_TOOL_BLEMAC", "D03972A5EF25");
+        //RabbitMQ消息队列定义
+        define("MFUN_MQ_RABBIT_HOST", SAE_MYSQL_HOST_M);
+        define("MFUN_MQ_RABBIT_PORT", "5672");
+        define("MFUN_MQ_RABBIT_LOGIN", "guest");
+        define("MFUN_MQ_RABBIT_PSWD", "guest");
+        define("MFUN_MQ_RABBIT_VHOST", "/");
+        define("MFUN_MQ_RABBIT_EXCHANGE", "e_linvo");
+        define("MFUN_MQ_RABBIT_QUEUE", "q_linvo");
+        define("MFUN_MQ_RABBIT_ROUTE_KEY", "key_1");
 
-}elseif ($_SERVER['SERVER_NAME'] == "mfunhcu.sinaapp.com")
-{
-    //云后台定义
-    define("MFUN_CLOUD_HCU", "SAE_HCU"); //HCU后台云应用
-    define("MFUN_CLOUD_WX", "SAE_WX"); //微信后台云应用
-    //主数据库定义
-    define("MFUN_CLOUD_DBHOST", SAE_MYSQL_HOST_M);    //连接的服务器地址 w.rdc.sae.sina.com.cn
-    define("MFUN_CLOUD_DBUSER",SAE_MYSQL_USER);     //连接数据库的用户名
-    define("MFUN_CLOUD_DBPSW", SAE_MYSQL_PASS);        //连接数据库的密码
-    define("MFUN_CLOUD_DBNAME","app_mfunhcu");         //连接的数据库名称
-    define("MFUN_CLOUD_DBPORT", SAE_MYSQL_PORT);
-    define("MFUN_CLOUD_DBHOST_S", SAE_MYSQL_DB);
-    //EMCWX应用定义
-    define("MFUN_WX_APPID", "wx1183be5c8f6a24b4");  //微信测试号AppID
-    define("MFUN_WX_APPSECRET", "d52a63064ed543c5eecae6c3df35be55");  //填写高级调用功能的app id, 请在微信开发模式后台查询
-    define("MFUN_WX_ENCODINGAESKEY", "ihIyvJ8LLAnOHpHzKTG0yIJxlzl1Fzw5ygRgHO96ieW");   //填写加密用的EncodingAESKey，如接口为明文模式可忽略
-    //测试公号的后台运行配置参数
-    define("MFUN_WX_TOOL_SERVICENUM", "gh_70c714952b02");
-    define("MFUN_WX_TOOL_APPID", "wx1183be5c8f6a24b4");
-    define("MFUN_WX_TOOL_APPSECRET", "d52a63064ed543c5eecae6c3df35be55");
-    define("MFUN_WX_TOOL_BLEMAC", "D03972A5EF27");
-    //RabbitMQ消息队列定义
-    define("MFUN_MQ_RABBIT_HOST", SAE_MYSQL_HOST_M);
-    define("MFUN_MQ_RABBIT_PORT", "5672");
-    define("MFUN_MQ_RABBIT_LOGIN", "guest");
-    define("MFUN_MQ_RABBIT_PSWD", "guest");
-    define("MFUN_MQ_RABBIT_VHOST", "/");
-    define("MFUN_MQ_RABBIT_EXCHANGE", "e_linvo");
-    define("MFUN_MQ_RABBIT_QUEUE", "q_linvo");
-    define("MFUN_MQ_RABBIT_ROUTE_KEY", "key_1");
+    } elseif ($_SERVER['SERVER_NAME'] == "mfunhcu.sinaapp.com") {
+        //云后台定义
+        define("MFUN_CLOUD_HCU", "SAE_HCU"); //HCU后台云应用
+        define("MFUN_CLOUD_WX", "SAE_WX"); //微信后台云应用
+        //主数据库定义
+        define("MFUN_CLOUD_DBHOST", SAE_MYSQL_HOST_M);    //连接的服务器地址 w.rdc.sae.sina.com.cn
+        define("MFUN_CLOUD_DBUSER", SAE_MYSQL_USER);     //连接数据库的用户名
+        define("MFUN_CLOUD_DBPSW", SAE_MYSQL_PASS);        //连接数据库的密码
+        define("MFUN_CLOUD_DBNAME", "app_mfunhcu");         //连接的数据库名称
+        define("MFUN_CLOUD_DBPORT", SAE_MYSQL_PORT);
+        define("MFUN_CLOUD_DBHOST_S", SAE_MYSQL_DB);
+        //EMCWX应用定义
+        define("MFUN_WX_APPID", "wx1183be5c8f6a24b4");  //微信测试号AppID
+        define("MFUN_WX_APPSECRET", "d52a63064ed543c5eecae6c3df35be55");  //填写高级调用功能的app id, 请在微信开发模式后台查询
+        define("MFUN_WX_ENCODINGAESKEY", "ihIyvJ8LLAnOHpHzKTG0yIJxlzl1Fzw5ygRgHO96ieW");   //填写加密用的EncodingAESKey，如接口为明文模式可忽略
+        //测试公号的后台运行配置参数
+        define("MFUN_WX_TOOL_SERVICENUM", "gh_70c714952b02");
+        define("MFUN_WX_TOOL_APPID", "wx1183be5c8f6a24b4");
+        define("MFUN_WX_TOOL_APPSECRET", "d52a63064ed543c5eecae6c3df35be55");
+        define("MFUN_WX_TOOL_BLEMAC", "D03972A5EF27");
+        //RabbitMQ消息队列定义
+        define("MFUN_MQ_RABBIT_HOST", SAE_MYSQL_HOST_M);
+        define("MFUN_MQ_RABBIT_PORT", "5672");
+        define("MFUN_MQ_RABBIT_LOGIN", "guest");
+        define("MFUN_MQ_RABBIT_PSWD", "guest");
+        define("MFUN_MQ_RABBIT_VHOST", "/");
+        define("MFUN_MQ_RABBIT_EXCHANGE", "e_linvo");
+        define("MFUN_MQ_RABBIT_QUEUE", "q_linvo");
+        define("MFUN_MQ_RABBIT_ROUTE_KEY", "key_1");
 
-}elseif ($_SERVER['SERVER_NAME'] == "smdzjl.sinaapp.com") //ZJL微信公号服务器数据库配置信息
-{
-    //云后台定义
-    define("MFUN_CLOUD_HCU", "SAE_HCU"); //HCU后台云应用
-    define("MFUN_CLOUD_WX", "SAE_WX"); //微信后台云应用
-    //主数据库定义
-    define("MFUN_CLOUD_DBHOST", SAE_MYSQL_HOST_M);    //连接的服务器地址 w.rdc.sae.sina.com.cn
-    define("MFUN_CLOUD_DBUSER",SAE_MYSQL_USER);     //连接数据库的用户名
-    define("MFUN_CLOUD_DBPSW", SAE_MYSQL_PASS);        //连接数据库的密码
-    define("MFUN_CLOUD_DBNAME","app_smdzjl");         //连接的数据库名称
-    define("MFUN_CLOUD_DBPORT", SAE_MYSQL_PORT);
-    define("MFUN_CLOUD_DBHOST_S", SAE_MYSQL_DB);
-    //EMCWX应用定义
-    define("MFUN_WX_APPID", "wx32f73ab219f56efb");  //微信测试号AppID
-    define("MFUN_WX_APPSECRET", "eca20c2a26a5ec5b64a89d15ba92a781");  //填写高级调用功能的app id, 请在微信开发模式后台查询
-    define("MFUN_WX_ENCODINGAESKEY", "7Tp1NIUzUa0JBezeJUjG8O61Kdjcu2ce6BQVukZlv3u");   //填写加密用的EncodingAESKey，如接口为明文模式可忽略
-    //测试公号的后台运行配置参数
-    define("MFUN_WX_TOOL_SERVICENUM", "gh_9b450bb63282");
-    define("MFUN_WX_TOOL_APPID", "wx32f73ab219f56efb");
-    define("MFUN_WX_TOOL_APPSECRET", "eca20c2a26a5ec5b64a89d15ba92a781");
-    define("MFUN_WX_TOOL_BLEMAC", "D03972A5EF24");
-    //RabbitMQ消息队列定义
-    define("MFUN_MQ_RABBIT_HOST", SAE_MYSQL_HOST_M);
-    define("MFUN_MQ_RABBIT_PORT", "5672");
-    define("MFUN_MQ_RABBIT_LOGIN", "guest");
-    define("MFUN_MQ_RABBIT_PSWD", "guest");
-    define("MFUN_MQ_RABBIT_VHOST", "/");
-    define("MFUN_MQ_RABBIT_EXCHANGE", "e_linvo");
-    define("MFUN_MQ_RABBIT_QUEUE", "q_linvo");
-    define("MFUN_MQ_RABBIT_ROUTE_KEY", "key_1");
+    } elseif ($_SERVER['SERVER_NAME'] == "smdzjl.sinaapp.com") //ZJL微信公号服务器数据库配置信息
+    {
+        //云后台定义
+        define("MFUN_CLOUD_HCU", "SAE_HCU"); //HCU后台云应用
+        define("MFUN_CLOUD_WX", "SAE_WX"); //微信后台云应用
+        //主数据库定义
+        define("MFUN_CLOUD_DBHOST", SAE_MYSQL_HOST_M);    //连接的服务器地址 w.rdc.sae.sina.com.cn
+        define("MFUN_CLOUD_DBUSER", SAE_MYSQL_USER);     //连接数据库的用户名
+        define("MFUN_CLOUD_DBPSW", SAE_MYSQL_PASS);        //连接数据库的密码
+        define("MFUN_CLOUD_DBNAME", "app_smdzjl");         //连接的数据库名称
+        define("MFUN_CLOUD_DBPORT", SAE_MYSQL_PORT);
+        define("MFUN_CLOUD_DBHOST_S", SAE_MYSQL_DB);
+        //EMCWX应用定义
+        define("MFUN_WX_APPID", "wx32f73ab219f56efb");  //微信测试号AppID
+        define("MFUN_WX_APPSECRET", "eca20c2a26a5ec5b64a89d15ba92a781");  //填写高级调用功能的app id, 请在微信开发模式后台查询
+        define("MFUN_WX_ENCODINGAESKEY", "7Tp1NIUzUa0JBezeJUjG8O61Kdjcu2ce6BQVukZlv3u");   //填写加密用的EncodingAESKey，如接口为明文模式可忽略
+        //测试公号的后台运行配置参数
+        define("MFUN_WX_TOOL_SERVICENUM", "gh_9b450bb63282");
+        define("MFUN_WX_TOOL_APPID", "wx32f73ab219f56efb");
+        define("MFUN_WX_TOOL_APPSECRET", "eca20c2a26a5ec5b64a89d15ba92a781");
+        define("MFUN_WX_TOOL_BLEMAC", "D03972A5EF24");
+        //RabbitMQ消息队列定义
+        define("MFUN_MQ_RABBIT_HOST", SAE_MYSQL_HOST_M);
+        define("MFUN_MQ_RABBIT_PORT", "5672");
+        define("MFUN_MQ_RABBIT_LOGIN", "guest");
+        define("MFUN_MQ_RABBIT_PSWD", "guest");
+        define("MFUN_MQ_RABBIT_VHOST", "/");
+        define("MFUN_MQ_RABBIT_EXCHANGE", "e_linvo");
+        define("MFUN_MQ_RABBIT_QUEUE", "q_linvo");
+        define("MFUN_MQ_RABBIT_ROUTE_KEY", "key_1");
 
-}elseif ($_SERVER['SERVER_NAME'] == "zscble.sinaapp.com") //ZSC微信公号服务器数据库配置信息
-{
-    //云后台定义
-    define("MFUN_CLOUD_HCU", "SAE_HCU"); //HCU后台云应用
-    define("MFUN_CLOUD_WX", "SAE_WX"); //微信后台云应用
-    //主数据库定义
-    define("MFUN_CLOUD_DBHOST", SAE_MYSQL_HOST_M);    //连接的服务器地址 w.rdc.sae.sina.com.cn
-    define("MFUN_CLOUD_DBUSER",SAE_MYSQL_USER);     //连接数据库的用户名
-    define("MFUN_CLOUD_DBPSW", SAE_MYSQL_PASS);        //连接数据库的密码
-    define("MFUN_CLOUD_DBNAME","app_zscble");         //连接的数据库名称
-    define("MFUN_CLOUD_DBPORT", SAE_MYSQL_PORT);
-    define("MFUN_CLOUD_DBHOST_S", SAE_MYSQL_DB);
-    //EMCWX应用定义
-    define("MFUN_WX_APPID", "wx6b0e904f5e91a404");  //微信测试号AppID
-    define("MFUN_WX_APPSECRET", "aeb0cf36a1aa37b0180711304f3f3131");  //填写高级调用功能的app id, 请在微信开发模式后台查询
-    define("MFUN_WX_ENCODINGAESKEY", "p1zUNVmJAOWX7QsnArWIbuAEYaqtRNFY6Rz1JcqEklu");   //填写加密用的EncodingAESKey，如接口为明文模式可忽略
-    //测试公号的后台运行配置参数
-    define("MFUN_WX_TOOL_SERVICENUM", "gh_b6df3b7c56eb");
-    define("MFUN_WX_TOOL_APPID", "wx6b0e904f5e91a404");
-    define("MFUN_WX_TOOL_APPSECRET", "aeb0cf36a1aa37b0180711304f3f3131");
-    define("MFUN_WX_TOOL_BLEMAC", "D03972A5EF12");
-    //RabbitMQ消息队列定义
-    define("MFUN_MQ_RABBIT_HOST", SAE_MYSQL_HOST_M);
-    define("MFUN_MQ_RABBIT_PORT", "5672");
-    define("MFUN_MQ_RABBIT_LOGIN", "guest");
-    define("MFUN_MQ_RABBIT_PSWD", "guest");
-    define("MFUN_MQ_RABBIT_VHOST", "/");
-    define("MFUN_MQ_RABBIT_EXCHANGE", "e_linvo");
-    define("MFUN_MQ_RABBIT_QUEUE", "q_linvo");
-    define("MFUN_MQ_RABBIT_ROUTE_KEY", "key_1");
+    } elseif ($_SERVER['SERVER_NAME'] == "zscble.sinaapp.com") //ZSC微信公号服务器数据库配置信息
+    {
+        //云后台定义
+        define("MFUN_CLOUD_HCU", "SAE_HCU"); //HCU后台云应用
+        define("MFUN_CLOUD_WX", "SAE_WX"); //微信后台云应用
+        //主数据库定义
+        define("MFUN_CLOUD_DBHOST", SAE_MYSQL_HOST_M);    //连接的服务器地址 w.rdc.sae.sina.com.cn
+        define("MFUN_CLOUD_DBUSER", SAE_MYSQL_USER);     //连接数据库的用户名
+        define("MFUN_CLOUD_DBPSW", SAE_MYSQL_PASS);        //连接数据库的密码
+        define("MFUN_CLOUD_DBNAME", "app_zscble");         //连接的数据库名称
+        define("MFUN_CLOUD_DBPORT", SAE_MYSQL_PORT);
+        define("MFUN_CLOUD_DBHOST_S", SAE_MYSQL_DB);
+        //EMCWX应用定义
+        define("MFUN_WX_APPID", "wx6b0e904f5e91a404");  //微信测试号AppID
+        define("MFUN_WX_APPSECRET", "aeb0cf36a1aa37b0180711304f3f3131");  //填写高级调用功能的app id, 请在微信开发模式后台查询
+        define("MFUN_WX_ENCODINGAESKEY", "p1zUNVmJAOWX7QsnArWIbuAEYaqtRNFY6Rz1JcqEklu");   //填写加密用的EncodingAESKey，如接口为明文模式可忽略
+        //测试公号的后台运行配置参数
+        define("MFUN_WX_TOOL_SERVICENUM", "gh_b6df3b7c56eb");
+        define("MFUN_WX_TOOL_APPID", "wx6b0e904f5e91a404");
+        define("MFUN_WX_TOOL_APPSECRET", "aeb0cf36a1aa37b0180711304f3f3131");
+        define("MFUN_WX_TOOL_BLEMAC", "D03972A5EF12");
+        //RabbitMQ消息队列定义
+        define("MFUN_MQ_RABBIT_HOST", SAE_MYSQL_HOST_M);
+        define("MFUN_MQ_RABBIT_PORT", "5672");
+        define("MFUN_MQ_RABBIT_LOGIN", "guest");
+        define("MFUN_MQ_RABBIT_PSWD", "guest");
+        define("MFUN_MQ_RABBIT_VHOST", "/");
+        define("MFUN_MQ_RABBIT_EXCHANGE", "e_linvo");
+        define("MFUN_MQ_RABBIT_QUEUE", "q_linvo");
+        define("MFUN_MQ_RABBIT_ROUTE_KEY", "key_1");
 
-}elseif ($_SERVER['SERVER_NAME'] == "121.40.185.177") //爱启云
-{
-    //云后台定义
-    define("MFUN_CLOUD_HCU", "AQ_HCU"); //HCU后台云应用
-    define("MFUN_CLOUD_WX", "AQ_WX"); //微信后台云应用
-    //主数据库定义
-    //define("MFUN_CLOUD_DBHOST", "h5.aiqiworld.com/myAdmin");    //连接的服务器地址
-    define("MFUN_CLOUD_DBHOST", "127.0.0.1");    //连接的服务器地址
-    define("MFUN_CLOUD_DBUSER","root");     //连接数据库的用户名
-    define("MFUN_CLOUD_DBPSW", "smoon");        //连接数据库的密码
-    define("MFUN_CLOUD_DBNAME","bxxh");         //连接的数据库名称BXXH
-    define("MFUN_CLOUD_DBPORT", 3306);           //缺省设置
-    define("MFUN_CLOUD_DBHOST_S", "");          //无效
-    //EMCWX应用定义
-    define("MFUN_WX_APPID", "wx1183be5c8f6a24b4");  //微信测试号AppID
-    define("MFUN_WX_APPSECRET", "d52a63064ed543c5eecae6c3df35be55");  //填写高级调用功能的app id, 请在微信开发模式后台查询
-    define("MFUN_WX_ENCODINGAESKEY", "ihIyvJ8LLAnOHpHzKTG0yIJxlzl1Fzw5ygRgHO96ieW");   //填写加密用的EncodingAESKey，如接口为明文模式可忽略
-    //测试公号的后台运行配置参数
-    define("MFUN_WX_TOOL_SERVICENUM", "gh_70c714952b02");
-    define("MFUN_WX_TOOL_APPID", "wx1183be5c8f6a24b4");
-    define("MFUN_WX_TOOL_APPSECRET", "d52a63064ed543c5eecae6c3df35be55");
-    define("MFUN_WX_TOOL_BLEMAC", "D03972A5EF27");
-    //RabbitMQ消息队列定义
-    define("MFUN_MQ_RABBIT_HOST", "127.0.0.1");
-    define("MFUN_MQ_RABBIT_PORT", "5672");
-    define("MFUN_MQ_RABBIT_LOGIN", "guest");
-    define("MFUN_MQ_RABBIT_PSWD", "guest");
-    define("MFUN_MQ_RABBIT_VHOST", "/");
-    define("MFUN_MQ_RABBIT_EXCHANGE", "e_linvo");
-    define("MFUN_MQ_RABBIT_QUEUE", "q_linvo");
-    define("MFUN_MQ_RABBIT_ROUTE_KEY", "key_1");
+    } elseif ($_SERVER['SERVER_NAME'] == "121.40.185.177") //爱启云
+    {
+        //云后台定义
+        define("MFUN_CLOUD_HCU", "AQ_HCU"); //HCU后台云应用
+        define("MFUN_CLOUD_WX", "AQ_WX"); //微信后台云应用
+        //主数据库定义
+        //define("MFUN_CLOUD_DBHOST", "h5.aiqiworld.com/myAdmin");    //连接的服务器地址
+        define("MFUN_CLOUD_DBHOST", "127.0.0.1");    //连接的服务器地址
+        define("MFUN_CLOUD_DBUSER", "root");     //连接数据库的用户名
+        define("MFUN_CLOUD_DBPSW", "smoon");        //连接数据库的密码
+        define("MFUN_CLOUD_DBNAME", "bxxh");         //连接的数据库名称BXXH
+        define("MFUN_CLOUD_DBPORT", 3306);           //缺省设置
+        define("MFUN_CLOUD_DBHOST_S", "");          //无效
+        //EMCWX应用定义
+        define("MFUN_WX_APPID", "wx1183be5c8f6a24b4");  //微信测试号AppID
+        define("MFUN_WX_APPSECRET", "d52a63064ed543c5eecae6c3df35be55");  //填写高级调用功能的app id, 请在微信开发模式后台查询
+        define("MFUN_WX_ENCODINGAESKEY", "ihIyvJ8LLAnOHpHzKTG0yIJxlzl1Fzw5ygRgHO96ieW");   //填写加密用的EncodingAESKey，如接口为明文模式可忽略
+        //测试公号的后台运行配置参数
+        define("MFUN_WX_TOOL_SERVICENUM", "gh_70c714952b02");
+        define("MFUN_WX_TOOL_APPID", "wx1183be5c8f6a24b4");
+        define("MFUN_WX_TOOL_APPSECRET", "d52a63064ed543c5eecae6c3df35be55");
+        define("MFUN_WX_TOOL_BLEMAC", "D03972A5EF27");
+        //RabbitMQ消息队列定义
+        define("MFUN_MQ_RABBIT_HOST", "127.0.0.1");
+        define("MFUN_MQ_RABBIT_PORT", "5672");
+        define("MFUN_MQ_RABBIT_LOGIN", "guest");
+        define("MFUN_MQ_RABBIT_PSWD", "guest");
+        define("MFUN_MQ_RABBIT_VHOST", "/");
+        define("MFUN_MQ_RABBIT_EXCHANGE", "e_linvo");
+        define("MFUN_MQ_RABBIT_QUEUE", "q_linvo");
+        define("MFUN_MQ_RABBIT_ROUTE_KEY", "key_1");
 
-}}
-else   //本地配置数据库信息,需要根据个人配置修改
-{
-    //云后台定义
-    define("MFUN_CLOUD_HCU", "AQ_HCU"); //HCU后台云应用
-    define("MFUN_CLOUD_WX", "AQ_WX"); //微信后台云应用
-    //主数据库定义
-    define("MFUN_CLOUD_DBHOST", "localhost");    //连接的服务器地址
-    define("MFUN_CLOUD_DBUSER","TestUser");     //连接数据库的用户名
-    define("MFUN_CLOUD_DBPSW", "123456");        //连接数据库的密码
-    define("MFUN_CLOUD_DBNAME","BXXH");         //连接的数据库名称BXXH
-    define("MFUN_CLOUD_DBPORT", 3306);           //缺省设置
-    define("MFUN_CLOUD_DBHOST_S", "");          //无效
-    //EMCWX应用定义
-    define("MFUN_WX_APPID", "wx1183be5c8f6a24b4");  //微信测试号AppID
-    define("MFUN_WX_APPSECRET", "d52a63064ed543c5eecae6c3df35be55");  //填写高级调用功能的app id, 请在微信开发模式后台查询
-    define("MFUN_WX_ENCODINGAESKEY", "ihIyvJ8LLAnOHpHzKTG0yIJxlzl1Fzw5ygRgHO96ieW");   //填写加密用的EncodingAESKey，如接口为明文模式可忽略
-    //测试公号的后台运行配置参数
-    define("MFUN_WX_TOOL_SERVICENUM", "gh_70c714952b02");//微信号
-    define("MFUN_WX_TOOL_APPID", "wx1183be5c8f6a24b4");//微信测试号信息
-    define("MFUN_WX_TOOL_APPSECRET", "d52a63064ed543c5eecae6c3df35be55");
-    define("MFUN_WX_TOOL_BLEMAC", "D03972A5EF11");
-    //RabbitMQ消息队列定义
-    define("MFUN_MQ_RABBIT_HOST", "127.0.0.1");
-    define("MFUN_MQ_RABBIT_PORT", "5672");
-    define("MFUN_MQ_RABBIT_LOGIN", "guest");
-    define("MFUN_MQ_RABBIT_PSWD", "guest");
-    define("MFUN_MQ_RABBIT_VHOST", "/");
-    define("MFUN_MQ_RABBIT_EXCHANGE", "e_linvo");
-    define("MFUN_MQ_RABBIT_QUEUE", "q_linvo");
-    define("MFUN_MQ_RABBIT_ROUTE_KEY", "key_1");
+    } else   //本地配置数据库信息,需要根据个人配置修改
+    {
+        //云后台定义
+        define("MFUN_CLOUD_HCU", "AQ_HCU"); //HCU后台云应用
+        define("MFUN_CLOUD_WX", "AQ_WX"); //微信后台云应用
+        //主数据库定义
+        define("MFUN_CLOUD_DBHOST", "localhost");    //连接的服务器地址
+        define("MFUN_CLOUD_DBUSER", "TestUser");     //连接数据库的用户名
+        define("MFUN_CLOUD_DBPSW", "123456");        //连接数据库的密码
+        define("MFUN_CLOUD_DBNAME", "BXXH");         //连接的数据库名称BXXH
+        define("MFUN_CLOUD_DBPORT", 3306);           //缺省设置
+        define("MFUN_CLOUD_DBHOST_S", "");          //无效
+        //EMCWX应用定义
+        define("MFUN_WX_APPID", "wx1183be5c8f6a24b4");  //微信测试号AppID
+        define("MFUN_WX_APPSECRET", "d52a63064ed543c5eecae6c3df35be55");  //填写高级调用功能的app id, 请在微信开发模式后台查询
+        define("MFUN_WX_ENCODINGAESKEY", "ihIyvJ8LLAnOHpHzKTG0yIJxlzl1Fzw5ygRgHO96ieW");   //填写加密用的EncodingAESKey，如接口为明文模式可忽略
+        //测试公号的后台运行配置参数
+        define("MFUN_WX_TOOL_SERVICENUM", "gh_70c714952b02");//微信号
+        define("MFUN_WX_TOOL_APPID", "wx1183be5c8f6a24b4");//微信测试号信息
+        define("MFUN_WX_TOOL_APPSECRET", "d52a63064ed543c5eecae6c3df35be55");
+        define("MFUN_WX_TOOL_BLEMAC", "D03972A5EF11");
+        //RabbitMQ消息队列定义
+        define("MFUN_MQ_RABBIT_HOST", "127.0.0.1");
+        define("MFUN_MQ_RABBIT_PORT", "5672");
+        define("MFUN_MQ_RABBIT_LOGIN", "guest");
+        define("MFUN_MQ_RABBIT_PSWD", "guest");
+        define("MFUN_MQ_RABBIT_VHOST", "/");
+        define("MFUN_MQ_RABBIT_EXCHANGE", "e_linvo");
+        define("MFUN_MQ_RABBIT_QUEUE", "q_linvo");
+        define("MFUN_MQ_RABBIT_ROUTE_KEY", "key_1");
 
+    }
 }
-
 
 ?>
