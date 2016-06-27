@@ -5,7 +5,8 @@
  * Date: 2016/6/20
  * Time: 13:43
  */
-require_once "../l1comvm/sysconfig.php";
+include_once "../l1comvm/sysconfig.php";
+//require_once "../l1comvm/sysconfig.php";
 
 /**************************************************************************************
  * EMCWX: 电磁辐射微信项目相关缺省配置参数                                                   *

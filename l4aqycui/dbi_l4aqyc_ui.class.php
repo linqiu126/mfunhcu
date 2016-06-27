@@ -6,7 +6,7 @@
  * Time: 16:25
  */
 include_once "../l1comvm/vmlayer.php";
-header("Content-type:text/html;charset=utf-8");
+//header("Content-type:text/html;charset=utf-8");
 
 class classDbiL4aqycUi
 {

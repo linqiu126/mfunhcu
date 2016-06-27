@@ -7,6 +7,7 @@
  */
 include_once "../l1comvm/vmlayer.php";
 include_once "../l2sdk/dbi_l2sdk_iot_hcu.class.php";
+include_once "../l2sensorproc/sensoremc/task_l2snr_emc.class.php";  //To be removed
 
 //HCU硬件设备级 Layer 2 SDK
 //TASK_ID = MFUN_TASK_ID_L2SDK_IOT_HCU
@@ -32,7 +33,7 @@ class classTaskL2sdkIotHcu
         $funcFlag = trim($data->FuncFlag);
 
         //取DB中的硬件信息，判断基本信息
-        $cDbObj = new classL1vmCommonDbi();
+        $cDbObj = new classDbiL1vmCommon();
         $result = $cDbObj->dbi_hcuDevice_valid_device($deviceId); //FromUserName对应每个HCU硬件的设备编号
         if (empty($result)){
             return "HCU_IOT: invalid device ID";
@@ -69,38 +70,38 @@ class classTaskL2sdkIotHcu
                 $resp = $hcuObj->func_hcuPolling_process($deviceId);
                 break;
             case CMDID_EMC_DATA:  //定时辐射强度处理
-                $hcuObj = new class_emc_service();
+                $hcuObj = new classTaskL2snrEmc();
                 $resp = $hcuObj->func_emc_process(PLTF_HCU, $deviceId, $statCode, $content);
                 break;
             case CMDID_PM_DATA:
-                $hcuObj = new class_pmData_service();
+                $hcuObj = new classTaskL2snrPm25();
                 $resp = $hcuObj->func_pmData_process(PLTF_HCU, $deviceId, $statCode, $content);
                 break;
             case CMDID_WINDSPEED_DATA:
-                $hcuObj = new class_windSpeed_service();
+                $hcuObj = new classTaskL2snrWindspd();
                 $resp = $hcuObj->func_windSpeed_process(PLTF_HCU, $deviceId, $statCode, $content);
                 break;
             case CMDID_WINDDIR_DATA:
-                $hcuObj = new class_windDirection_service();
+                $hcuObj = new classTaskL2snrWinddir();
                 $resp = $hcuObj->func_windDirection_process(PLTF_HCU, $deviceId,  $statCode, $content);
                 break;
             case CMDID_TEMPERATURE_DATA:
-                $hcuObj = new class_temperature_service();
+                $hcuObj = new classTaskL2snrTemp();
                 $resp = $hcuObj->func_temperature_process(PLTF_HCU, $deviceId, $statCode, $content);
                 break;
             case CMDID_HUMIDITY_DATA:
-                $hcuObj = new class_humidity_service();
+                $hcuObj = new classTaskL2snrHumid();
                 $resp = $hcuObj->func_humidity_process(PLTF_HCU, $deviceId, $statCode, $content);
                 break;
             case CMDID_VIDEO_DATA:
                 if (empty($funcFlag)){
                     //return "HCU_IOT: video link empty";
                 }
-                $hcuObj = new class_video_service();
+                $hcuObj = new classTaskL2snrHsmmp();
                 $resp = $hcuObj->func_video_process(PLTF_HCU, $deviceId, $content,$funcFlag);
                 break;
             case CMDID_NOISE_DATA:
-                $hcuObj = new class_noise_service();
+                $hcuObj = new classTaskL2snrNoise();
                 $resp = $hcuObj->func_noise_process(PLTF_HCU, $deviceId, $statCode, $content);
                 break;
             case CMDID_SW_UPDATE:

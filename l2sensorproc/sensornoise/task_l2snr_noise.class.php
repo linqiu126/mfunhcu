@@ -9,7 +9,7 @@ include_once "../../l1comvm/vmlayer.php";
 include_once "dbi_l2snr_noise.class.php";
 
 
-class class_noise_service
+class classTaskL2snrNoise
 {
     public function func_noise_process($platform, $deviceId, $statCode, $content)
     {
@@ -113,6 +113,13 @@ class class_noise_service
         $resp = ""; //no response message
         return $resp;
     }
+
+    //任务入口函数
+    public function mfun_l2snr_noise_task_main_entry($parObj, $msg)
+    {
+
+    }
+
 
 }
 

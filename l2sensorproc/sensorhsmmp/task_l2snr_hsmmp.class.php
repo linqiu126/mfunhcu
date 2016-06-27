@@ -8,7 +8,7 @@
 include_once "../../l1comvm/vmlayer.php";
 include_once "dbi_l2snr_hsmmp.class.php";
 
-class class_video_service
+class classTaskL2snrHsmmp
 {
     //构造函数
     public function __construct()
@@ -98,6 +98,12 @@ class class_video_service
 
         $resp = ""; //no response message
         return $resp;
+    }
+
+    //任务入口函数
+    public function mfun_l2snr_hsmmp_task_main_entry($parObj, $msg)
+    {
+
     }
 
 }
