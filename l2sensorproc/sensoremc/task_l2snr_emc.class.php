@@ -8,7 +8,7 @@
 include_once "../../l1comvm/vmlayer.php";
 include_once "dbi_l2snr_emc.class.php";
 
-class class_emc_service
+class classTaskL2snrEmc
 {
     //构造函数
     public function __construct()
@@ -140,6 +140,12 @@ class class_emc_service
         $out = "0000";
         $a1 = strtoupper(dechex($n & 0xFFFF));
         return substr_replace($out, $a1, strlen($out)-strlen($a1), strlen($a1));
+    }
+
+    //任务入口函数
+    public function mfun_l2snr_emc_task_main_entry($parObj, $msg)
+    {
+
     }
 
 }//End of class_emc_service

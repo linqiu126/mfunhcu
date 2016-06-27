@@ -219,11 +219,7 @@ class classTaskL1vmCoreRouter
                     $obj->mfun_l2sdk_iot_wx_task_main_entry($this, $result["msgBody"]);
                     break;
                 case MFUN_TASK_ID_L2SDK_IOT_WX_JSSDK:
-                    $wx_options = array(
-                        'appId'=>MFUN_WX_APPID,
-                        'appSecret'=>MFUN_WX_APPSECRET //填写高级调用功能的密钥
-                    );
-                    $obj = new classTaskL2sdkIotWxJssdk($wx_options);
+                    $obj = new classTaskL2sdkIotWxJssdk(MFUN_WX_APPID, MFUN_WX_APPSECRET);
                     $obj->mfun_l2sdk_iot_wx_jssdk_task_main_entry($this, $result["msgBody"]);
                     break;
                 case MFUN_TASK_ID_L2SDK_IOT_HCU:
@@ -231,6 +227,9 @@ class classTaskL1vmCoreRouter
                     $obj->mfun_l2sdk_iot_hcu_task_main_entry($this, $result["msgBody"]);
                     break;
                 case MFUN_TASK_ID_L2SENSOR_EMC:
+                    $obj = new classTaskL2snrEmc();
+                    $obj->mfun_l2snr_emc_task_main_entry($this, $result["msgBody"]);
+                    break;
                     break;
                 case MFUN_TASK_ID_L2SENSOR_HSMMP:
                     break;
