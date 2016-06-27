@@ -23,22 +23,19 @@ include_once "../l1comvm/vmlayer.php";
 include_once "../l2sdk/task_l2sdk_wechat.class.php";
 header("Content-type:text/html;charset=utf-8");
 //如果运行在本地，以下地址存放二维码图片
-static $imagePath = dirname(__File__);
+static $imagePath = ""; //dirname(__File__);
 
 $wx_options = array(
-    'token'=>WX_TOKEN, //填写你设定的key
-    'encodingaeskey'=>WX_ENCODINGAESKEY, //填写加密用的EncodingAESKey，如接口为明文模式可忽略
-    'appid'=>WX_APPID,
-    'appsecret'=>WX_APPSECRET, //填写高级调用功能的密钥
-    'debug'=> WX_DEBUG,
-    'logcallback' => WX_LOGCALLBACK
+    'token'=>MFUN_WX_TOKEN, //填写你设定的key
+    'encodingaeskey'=>MFUN_WX_ENCODINGAESKEY, //填写加密用的EncodingAESKey，如接口为明文模式可忽略
+    'appid'=>MFUN_WX_APPID,
+    'appsecret'=>MFUN_WX_APPSECRET, //填写高级调用功能的密钥
+    'debug'=> MFUN_WX_DEBUG,
+    'logcallback' => MFUN_WX_LOGCALLBACK
 );
-$wxObj = new class_wechat_sdk($wx_options);
+$wxObj = new classTaskL2sdkWechat($wx_options);
 echo "<br><H2>微信硬件工作环境即将开始......<br></H2>";
-$wxDevObj = new class_wx_IOT_sdk(WX_APPID, WX_APPSECRET);
-
-
-
+$wxDevObj = new classTaskL2sdkIotWx(MFUN_WX_APPID, MFUN_WX_APPSECRET);
 
 /* 暂时不需要的功能，已经分解到不同的功能组件，放入后台管理工具之中了
 ** 留在这儿，只是为了测试目的
@@ -130,11 +127,11 @@ var_dump($result);
 // Step9 数据库测试
     ///echo "<br>数据库删除结果  <br>";
     //$wxDbObj = new class_mysql_db();
-    //var_dump($wxDbObj->db_BleBoundInfo_delete("oAjc8uKl-QS9EGIfRGb81kc9fdJE"));
+    //var_dump($wxDbObj->dbi_BleBoundInfo_delete("oAjc8uKl-QS9EGIfRGb81kc9fdJE"));
     //
 $wxDbObj = new class_mysql_db();
-var_dump($wxDbObj->db_BleBoundInfo_delete("oAjc8uKl-QS9EGIfRGb81kc9fdJE"));
-var_dump($wxDbObj->db_BleBoundInfo_save("oAjc8uKl-QS9EGIfRGb81kc9fdJE", $deviceIdBLE, "oAjc8uKl-QS9EGIfRGb81kc9fdJE", "gh_9b450bb63282"));
+var_dump($wxDbObj->dbi_BleBoundInfo_delete("oAjc8uKl-QS9EGIfRGb81kc9fdJE"));
+var_dump($wxDbObj->dbi_BleBoundInfo_save("oAjc8uKl-QS9EGIfRGb81kc9fdJE", $deviceIdBLE, "oAjc8uKl-QS9EGIfRGb81kc9fdJE", "gh_9b450bb63282"));
 
 //end of tool_main();
 

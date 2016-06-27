@@ -6,6 +6,7 @@ include_once "../l1comvm/vmlayer.php";
 include_once "../l2sdk/task_l2sdk_wechat.class.php";
 //header("Content-type:text/html;charset=utf-8");
 
+/*
 // 主程序MAIN()
 $wx_options = array(
     'token'=>MFUN_WX_TOKEN, //填写你设定的key
@@ -16,7 +17,7 @@ $wx_options = array(
     'logcallback' => MFUN_WX_LOGCALLBACK
 );
 
-$wxObj = new class_wechat_sdk($wx_options);
+$wxObj = new classTaskL2sdkWechat($wx_options);
 
 //$wxObj->responseMsg();
 
@@ -26,5 +27,10 @@ if (isset($_GET['echostr'])) {
 else{
     $wxObj->responseMsg();
 }
+*/
+
+// 主程序MAIN()
+$obj = new classTaskL1vmCoreRouter();
+$obj->mfun_l1vm_task_main_entry(MFUN_MAIN_ENTRY_WECHAT, file_get_contents('php://input','r'));
 
 ?>

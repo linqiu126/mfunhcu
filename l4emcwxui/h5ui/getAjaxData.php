@@ -8,7 +8,7 @@
  */
 
 include_once "../../l1comvm/vmlayer.php";
-include_once "../../l1comdbi/dbi_l2sdk_wx.class.php";
+include_once "../../l2sdk/dbi_l2sdk_iot_wx.class.php";
 //header("Content-type:text/html;charset=utf-8");
 
 
@@ -24,7 +24,7 @@ if(isset($_GET["deviceid"])) {
 
 
 //访问数据库数据
-$db = new class_emc_db();
+$db = new classL2snrEmcDbi();
 
 //临时注销，需要根据新架构调整
 //$deviceid = $db->db_deviceid_inqury($wxuser);

@@ -17,14 +17,14 @@ header("Content-type:text/html;charset=utf-8");
 static $imagePath = "D:/work/image/";
 
 $wx_options = array(
-    'token'=>WX_TOKEN, //填写你设定的key
-    'encodingaeskey'=>WX_ENCODINGAESKEY, //填写加密用的EncodingAESKey，如接口为明文模式可忽略
-    'appid'=>WX_APPID,
-    'appsecret'=>WX_APPSECRET, //填写高级调用功能的密钥
-    'debug'=> WX_DEBUG,
-    'logcallback' => WX_LOGCALLBACK
+    'token'=>MFUN_WX_TOKEN, //填写你设定的key
+    'encodingaeskey'=>MFUN_WX_ENCODINGAESKEY, //填写加密用的EncodingAESKey，如接口为明文模式可忽略
+    'appid'=>MFUN_WX_APPID,
+    'appsecret'=>MFUN_WX_APPSECRET, //填写高级调用功能的密钥
+    'debug'=> MFUN_WX_DEBUG,
+    'logcallback' => MFUN_WX_LOGCALLBACK
 );
-$wxObj0 = new class_wechat_sdk($wx_options);
+$wxObj0 = new classTaskL2sdkWechat($wx_options);
 
 
 $deviceid = $_POST["deviceid"];
@@ -40,18 +40,18 @@ echo "Input User ID = " . $openid ."<br>";
 
 //Step1:刷新Token
 echo "<br><H2>微信硬件工作环境即将开始......<br></H2>";
-$wxObj = new class_wx_IOT_sdk(WX_APPID, WX_APPSECRET);
+$wxObj = new classTaskL2sdkIotWx(MFUN_WX_APPID, MFUN_WX_APPSECRET);
 //实验Token是否已经被刷新
 echo "<br>Step1：测试最新刷新的Token=<br>"."$wxObj->access_token"."<br>";
 
 
 // Step2 设备用户绑定状态查询
 echo "<br>Step2：设备和用户后台数据库绑定： <br>";
-$wxDbObj = new class_wx_db();
-$result = $wxDbObj->db_blebound_duplicate($openid, $deviceid, $openid, $devicetype);
+$wxDbObj = new classDbiL2sdkIotWx();
+$result = $wxDbObj->dbi_blebound_duplicate($openid, $deviceid, $openid, $devicetype);
 if ($result == false)
 {
-    $result = $wxDbObj->db_blebound_save($openid, $deviceid, $openid, $devicetype);
+    $result = $wxDbObj->dbi_blebound_save($openid, $deviceid, $openid, $devicetype);
     echo "后台数据库绑定该设备和用户："."Result=".json_encode($result)."<br>";
 }
 else
@@ -59,7 +59,7 @@ else
 
 //Step3 设备MAC地址绑定状态查询
 echo "<br>Step3：设备和MAC地址后台数据库绑定： <br>";
-$result = $wxDbObj->db_deviceqrcode_save($deviceid, $qrcode, $devicetype, $mac);
+$result = $wxDbObj->dbi_deviceqrcode_save($deviceid, $qrcode, $devicetype, $mac);
 echo "后台数据库绑定该设备和指定MAC地址："."Result=".json_encode($result)."<br>";
 
 //Step4 微信云绑定状态查询

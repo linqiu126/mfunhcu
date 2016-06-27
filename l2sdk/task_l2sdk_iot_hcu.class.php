@@ -6,8 +6,10 @@
  * Time: 23:09
  */
 include_once "../l1comvm/vmlayer.php";
-include_once "../l2sdk/dbi_l2sdk_hcu.class.php";
+include_once "../l2sdk/dbi_l2sdk_iot_hcu.class.php";
 
+//HCU硬件设备级 Layer 2 SDK
+//TASK_ID = MFUN_TASK_ID_L2SDK_IOT_HCU
 class classTaskL2sdkIotHcu
 {
     //构造函数
@@ -16,19 +18,8 @@ class classTaskL2sdkIotHcu
 
     }
 
-    //任务入口函数
-    public function mfun_l2sdk_iot_hcu_task_main_entry($parObj, $msg)
-    {
-
-    }
-}
-
-
-//HCU硬件设备级 Layer 2 SDK
-class class_hcu_IOT_sdk
-{
-    //Layer3 业务消息“XML格式”的处理函数，跳转到对应的业务处理模块
-    public function receive_hcu_xmlMessage($data)
+    //业务消息“XML格式”的处理函数，跳转到对应的业务处理模块
+    public function receive_hcu_xmlMessage($parObj, $data)
     {
         //目前HCU发送的数据已经是ASCII码，不需要再进行解码
         //$content = base64_decode($data->Content);
@@ -40,42 +31,41 @@ class class_hcu_IOT_sdk
         $content = trim($data->Content);
         $funcFlag = trim($data->FuncFlag);
 
-        $cDbObj = new class_common_db();
-        $result = $cDbObj->db_hcuDevice_valid_device($deviceId); //FromUserName对应每个HCU硬件的设备编号
+        //取DB中的硬件信息，判断基本信息
+        $cDbObj = new classL1vmCommonDbi();
+        $result = $cDbObj->dbi_hcuDevice_valid_device($deviceId); //FromUserName对应每个HCU硬件的设备编号
         if (empty($result)){
             return "HCU_IOT: invalid device ID";
         }
         else{
             $statCode = $result;
         }
-
-        if ($toUser !=CLOUD_HCU){
+        if ($toUser != MFUN_CLOUD_HCU){
             return "HCU_IOT: XML message invalid ToUserName";
         }
-
+        //解开key，处理CMDID
         $key = unpack('A2Key', $content);
         $ctrl_key = hexdec($key['Key'])& 0xFF;
         switch ($ctrl_key)
         {
             case CMDID_VERSION_SYNC:
-                //定时辐射强度处理
-                $hcuObj = new class_common_service();
+                $hcuObj = new classApiL2snrCommonService();
                 $resp = $hcuObj->func_version_update_process(PLTF_HCU, $deviceId, $content);
                 break;
             case CMDID_TIME_SYNC:
-                $hcuObj = new class_common_service();
+                $hcuObj = new classApiL2snrCommonService();
                 $resp = $hcuObj->func_timeSync_process();
                 break;
             case CMDID_INVENTORY_DATA:
-                $hcuObj = new class_common_service();
+                $hcuObj = new classApiL2snrCommonService();
                 $resp = $hcuObj->func_inventory_data_process(PLTF_HCU,$deviceId, $content);
                 break;
             case CMDID_HEART_BEAT:
-                $hcuObj = new class_common_service();
+                $hcuObj = new classApiL2snrCommonService();
                 $resp = $hcuObj->func_heartBeat_process();
                 break;
             case CMDID_HCU_POLLING:
-                $hcuObj = new class_common_service();
+                $hcuObj = new classApiL2snrCommonService();
                 $resp = $hcuObj->func_hcuPolling_process($deviceId);
                 break;
             case CMDID_EMC_DATA:  //定时辐射强度处理
@@ -114,7 +104,6 @@ class class_hcu_IOT_sdk
                 $resp = $hcuObj->func_noise_process(PLTF_HCU, $deviceId, $statCode, $content);
                 break;
             case CMDID_SW_UPDATE:
-
                 $resp ="";
                 break;
             default:
@@ -126,7 +115,7 @@ class class_hcu_IOT_sdk
 
 
     //处理环保局要求格式的消息
-    public function receive_hcu_zhbMessage($pdu)
+    public function receive_hcu_zhbMessage($parObj, $pdu)
     {
         $pdu_format = "A2Header/A4Len";
         $temp = unpack($pdu_format, $pdu);
@@ -251,6 +240,106 @@ class class_hcu_IOT_sdk
             return false;
     }
 
-}// End of class_hcu_IOT_sdk
+    //任务入口函数
+    public function mfun_l2sdk_iot_hcu_task_main_entry($parObj, $msg)
+    {
+        //定义本入口函数的logger处理对象及函数
+        $loggerObj = new classL1vmFuncComApi();
+        $log_time = date("Y-m-d H:i:s", time());
+
+        //入口消息内容判断
+        if (empty($msg) == true) {
+            echo "";
+            $loggerObj->logger("MFUN_TASK_ID_L2SDK_IOT_HCU", "mfun_l2sdk_iot_hcu_task_main_entry", $log_time, "R: Received null message body.");
+            return false;
+            //exit; //是否需要采用EXIT过程，待定
+        }
+
+        //正式处理消息格式和消息内容的过程
+        $format = substr(trim($msg), 0, 2);
+        switch ($format) {
+            case XML_FORMAT:
+                libxml_disable_entity_loader(true);  //prevent XML entity injection
+                $postObj = simplexml_load_string($msg, 'SimpleXMLElement');  //防止破坏CDATA的内容，进而影响智能硬件L3消息体
+                //$postObj = simplexml_load_string($postStr, 'SimpleXMLElement', LIBXML_NOCDATA);
+                $textTpl = "<xml>
+                        <ToUserName><![CDATA[%s]]></ToUserName>
+                        <FromUserName><![CDATA[%s]]></FromUserName>
+                        <CreateTime>%s</CreateTime>
+                        <MsgType><![CDATA[%s]]></MsgType>
+                        <Content><![CDATA[%s]]></Content>
+                        <FuncFlag>0</FuncFlag></xml>";
+
+                $fromUser = trim($postObj->FromUserName);
+                $createTime = trim($postObj->CreateTime);
+                $log_time = date("Y-m-d H:i:s", $createTime);
+                $log_content = "R:" . trim($msg);
+                $RX_TYPE = trim($postObj->MsgType);
+
+                //消息或者说帧类型分离
+                switch ($RX_TYPE) {
+                    case "hcu_text":
+                        $project = "HCU";
+                        $loggerObj->logger($project, $fromUser, $log_time, $log_content);
+                        $log_from = MFUN_CLOUD_HCU;
+                        $result = $this->receive_hcu_xmlMessage($parObj, $postObj);
+                        break;
+                    case "hcu_heart_beat":
+                        $project = "HCU";
+                        $loggerObj->logger($project, $fromUser, $log_time, $log_content);
+                        $log_from = MFUN_CLOUD_HCU;
+                        $result = $this->receive_hcu_xmlMessage($parObj, $postObj);
+                        break;
+                    case "hcu_command":
+                        $project = "HCU";
+                        $loggerObj->logger($project, $fromUser, $log_time, $log_content);
+                        $log_from = MFUN_CLOUD_HCU;
+                        $result = $this->receive_hcu_xmlMessage($parObj, $postObj);
+                        break;
+                    case "hcu_polling":
+                        $project = "HCU";
+                        $loggerObj->logger($project, $fromUser, $log_time, $log_content);
+                        $log_from = MFUN_CLOUD_HCU;
+                        $result = $this->receive_hcu_xmlMessage($parObj, $postObj);
+                        break;
+                    default:
+                        $project = "NULL";
+                        $loggerObj->logger($project, $fromUser, $log_time, $log_content);
+                        $log_from = "CLOUD_NONE";
+                        $result = "[XML_FORMAT]unknown message type: " . $RX_TYPE;
+                        break;
+                }
+                break;
+            case ZHB_FORMAT:
+                $project = "HCU";
+                $fromUser = "ZHBMSG";
+                $timestamp = time();
+                $log_time = date("Y-m-d H:i:s", $timestamp);
+                $log_content = "R:" . trim($msg);
+                $loggerObj->logger($project, $fromUser, $log_time, $log_content); //ZHB接收消息log保存
+                $log_from = MFUN_CLOUD_HCU;
+                $result = $this->receive_hcu_zhbMessage($parObj, $msg);
+                break;
+            default:
+                $result = "Unknown message format";
+                $project = "NULL";
+                $log_from = "CLOUD_NONE";
+                break;
+        }
+
+        //处理结果
+        if (!empty($result)) {
+            $timestamp = time();
+            $log_time = date("Y-m-d H:i:s", $timestamp);
+            $log_content = "T:" . json_encode($result);
+            $loggerObj->logger($project, $log_from, $log_time, $log_content);
+            echo trim($result);
+        }
+
+        //结束，返回
+        return true;
+    }//End of 任务入口函数
+
+}
 
 ?>

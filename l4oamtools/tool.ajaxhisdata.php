@@ -11,7 +11,7 @@ include_once "../l2sdk/task_l2sdk_iot_wx.class.php";
 header("Content-type:text/html;charset=utf-8");
 
 //访问数据库数据
-$db = new class_wx_db();
+$db = new classDbiL2sdkIotWx();
 
 $tmp = 234;
 echo $tmp;

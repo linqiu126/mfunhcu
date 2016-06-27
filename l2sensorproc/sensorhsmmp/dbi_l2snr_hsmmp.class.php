@@ -5,11 +5,17 @@
  * Date: 2016/1/2
  * Time: 16:06
  */
-include_once "../l1comvm/vmlayer.php";
+include_once "../../l1comvm/vmlayer.php";
 
-class class_video_db
+class classDbiL2snrHsmmp
 {
-    public function db_video_data_save($deviceid,$sensorid,$timestamp,$url,$gps)
+    //构造函数
+    public function __construct()
+    {
+
+    }
+
+    public function dbi_video_data_save($deviceid,$sensorid,$timestamp,$url,$gps)
     {
         //建立连接
         $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME, MFUN_CLOUD_DBPORT);

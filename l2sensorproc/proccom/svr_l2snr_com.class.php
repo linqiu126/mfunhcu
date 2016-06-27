@@ -7,8 +7,14 @@
  */
 include_once "../../l1comvm/vmlayer.php";
 
-class class_common_service
+class classApiL2snrCommonService
 {
+    //构造函数
+    public function __construct()
+    {
+
+    }
+
     public function func_timeSync_process()  //时间同步消息处理，返回当前时间戳
     {
         $cmdid = $this->byte2string(CMDID_TIME_SYNC);
@@ -31,8 +37,8 @@ class class_common_service
 
     public function func_hcuPolling_process($deviceId)
     {
-        $cDbObj = new class_common_db();
-        $resp = $cDbObj->db_cmdbuf_inquiry_cmd($deviceId);
+        $cDbObj = new classDbiL1vmCommon();
+        $resp = $cDbObj->dbi_cmdbuf_inquiry_cmd($deviceId);
         if (empty($resp))
         {
             $cmdid = $this->byte2string(CMDID_HCU_POLLING);
@@ -51,23 +57,23 @@ class class_common_service
         $sw_rel = hexdec(substr($content, 22, 2)) & 0xFF;
         $sw_drop = hexdec(substr($content, 24, 4)) & 0xFFFF;
 
-        $cDbObj = new class_common_db();
-        $cDbObj->db_deviceVersion_update($deviceId,$hw_type,$hw_ver,$sw_rel,$sw_drop);
+        $cDbObj = new classDbiL1vmCommon();
+        $cDbObj->dbi_deviceVersion_update($deviceId,$hw_type,$hw_ver,$sw_rel,$sw_drop);
 
         switch($platform)
         {
             case PLTF_WX:  //说明版本更新请求来自微信，验证IHU设备信息表（t_deviceqrcode）中MAC地址合法性
-                $wDbObj = new class_wx_db();
-                $result = $wDbObj->db_deviceQrcode_valid_mac($deviceId, $mac);
-                if ($result == ture)
+                $wDbObj = new classDbiL2sdkIotWx();
+                $result = $wDbObj->dbi_deviceQrcode_valid_mac($deviceId, $mac);
+                if ($result == true)
                     $resp = ""; //暂时没有resp msg，后面可以考虑如果版本不是最新，强制下载最新软件
                 else
                     $resp = "COMMON_SERVICE: IHU invalid MAC address";
                 break;
             case PLTF_HCU:  //说明版本更新请求来自HCU，验证HCU设备信息表（t_hcudevice）中MAC地址合法性
-                $cDbObj = new class_common_db();
-                $result = $cDbObj->db_hcuDevice_valid_mac($deviceId, $mac);
-                if ($result == ture)
+                $cDbObj = new classDbiL1vmCommon();
+                $result = $cDbObj->dbi_hcuDevice_valid_mac($deviceId, $mac);
+                if ($result == true)
                     $resp = ""; //暂时没有resp msg，后面可以考虑如果版本不是最新，强制下载最新软件
                 else
                     $resp = "COMMON_SERVICE: HCU invalid MAC address";
@@ -100,23 +106,23 @@ class class_common_service
         $sw_rel = hexdec($data['SW_Rel']) & 0xFF;
         $sw_drop = hexdec($data['SW_Drop']) & 0xFFFF;
 
-        $cDbObj = new class_common_db();
-        $cDbObj->db_deviceVersion_update($deviceId,$hw_type,$hw_ver,$sw_rel,$sw_drop);
+        $cDbObj = new classDbiL1vmCommon();
+        $cDbObj->dbi_deviceVersion_update($deviceId,$hw_type,$hw_ver,$sw_rel,$sw_drop);
 
         /*
         switch($platform)
         {
             case PLTF_WX:  //说明版本更新请求来自微信，验证IHU设备信息表（t_deviceqrcode）中MAC地址合法性
-                $wDbObj = new class_wx_db();
-                $result = $wDbObj->db_deviceQrcode_valid_mac($deviceId, $mac);
+                $wDbObj = new classDbiL2sdkIotWx();
+                $result = $wDbObj->dbi_deviceQrcode_valid_mac($deviceId, $mac);
                 if ($result == ture)
                     $resp = ""; //暂时没有resp msg，后面可以考虑如果版本不是最新，强制下载最新软件
                 else
                     $resp = "COMMON_SERVICE: IHU invalid MAC address";
                 break;
             case PLTF_HCU:  //说明版本更新请求来自HCU，验证HCU设备信息表（t_hcudevice）中MAC地址合法性
-                $cDbObj = new class_common_db();
-                $result = $cDbObj->db_hcuDevice_valid_mac($deviceId, $mac);
+                $cDbObj = new classDbiL1vmCommon();
+                $result = $cDbObj->dbi_hcuDevice_valid_mac($deviceId, $mac);
                 if ($result == ture)
                     $resp = ""; //暂时没有resp msg，后面可以考虑如果版本不是最新，强制下载最新软件
                 else

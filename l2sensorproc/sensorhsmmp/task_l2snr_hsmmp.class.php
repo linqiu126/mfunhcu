@@ -10,6 +10,12 @@ include_once "dbi_l2snr_hsmmp.class.php";
 
 class class_video_service
 {
+    //构造函数
+    public function __construct()
+    {
+
+    }
+
     public function func_video_process($platform, $deviceId, $content,$funcFlag)
     {
         switch($platform)
@@ -87,8 +93,8 @@ class class_video_service
         $gps["altitude"] = hexdec($data['Altitude']) & 0xFFFFFFFF;
         $timeStamp = hexdec($data['Time']) & 0xFFFFFFFF;
 
-        $sDbObj = new class_video_db();
-        $sDbObj->db_video_data_save($deviceId, $sensorId, $timeStamp, $funcFlag,$gps);
+        $sDbObj = new classDbiL2snrHsmmp();
+        $sDbObj->dbi_video_data_save($deviceId, $sensorId, $timeStamp, $funcFlag,$gps);
 
         $resp = ""; //no response message
         return $resp;

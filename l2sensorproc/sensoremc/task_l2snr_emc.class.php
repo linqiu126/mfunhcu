@@ -10,6 +10,12 @@ include_once "dbi_l2snr_emc.class.php";
 
 class class_emc_service
 {
+    //构造函数
+    public function __construct()
+    {
+
+    }
+
     public function func_emc_process($platform, $deviceId, $statCode, $content)
     {
         switch($platform)
@@ -60,10 +66,10 @@ class class_emc_service
         $sensorId = "";
         $gps = "";
 
-        $sDbObj = new class_emc_db();
-        $sDbObj->db_emcData_save($deviceId, $sensorId, $emc_time, $emc_value,$gps);
-        $sDbObj->db_emcData_delete_3monold($deviceId, $sensorId, 90);  //remove 90 days old data.
-        $sDbObj->db_emcAccumulation_save($deviceId); //累计值计算，如果不是初次接收数据，而且日期没有改变，则该过程将非常快
+        $sDbObj = new classDbiL2snrEmc();
+        $sDbObj->dbi_emcData_save($deviceId, $sensorId, $emc_time, $emc_value,$gps);
+        $sDbObj->dbi_emcData_delete_3monold($deviceId, $sensorId, 90);  //remove 90 days old data.
+        $sDbObj->dbi_emcAccumulation_save($deviceId); //累计值计算，如果不是初次接收数据，而且日期没有改变，则该过程将非常快
 
         $resp = ""; //no response message
         return $resp;
@@ -85,20 +91,20 @@ class class_emc_service
         $timeStamp = hexdec($data['Time']) & 0xFFFFFFFF;
 
         //存入数据库中
-        $sDbObj = new class_emc_db();
-        $sDbObj->db_emcData_save($deviceId, $sensorId, $timeStamp, $report, $gps);
-        $sDbObj->db_emcData_delete_3monold($deviceId, $sensorId, 90);  //remove 90 days old data.
-        $sDbObj->db_emcAccumulation_save($deviceId); //累计值计算，如果不是初次接收数据，而且日期没有改变，则该过程将非常快
+        $sDbObj = new classDbiL2snrEmc();
+        $sDbObj->dbi_emcData_save($deviceId, $sensorId, $timeStamp, $report, $gps);
+        $sDbObj->dbi_emcData_delete_3monold($deviceId, $sensorId, 90);  //remove 90 days old data.
+        $sDbObj->dbi_emcAccumulation_save($deviceId); //累计值计算，如果不是初次接收数据，而且日期没有改变，则该过程将非常快
 
         //更新分钟测量报告聚合表
-        $sDbObj->db_minreport_update_emc($deviceId,$statCode,$timeStamp,$report);
+        $sDbObj->dbi_minreport_update_emc($deviceId,$statCode,$timeStamp,$report);
 
         //更新数据精度格式表
         $format = $report["format"];
-        $cDbObj = new class_common_db();
-        $cDbObj->db_dataformat_update_format($deviceId,"T_emcdata",$format);
+        $cDbObj = new classDbiL1vmCommon();
+        $cDbObj->dbi_dataformat_update_format($deviceId,"T_emcdata",$format);
         //更新瞬时测量值聚合表
-        $cDbObj->db_currentreport_update_value($deviceId, $statCode, $timeStamp,"T_emcdata", $report);
+        $cDbObj->dbi_currentreport_update_value($deviceId, $statCode, $timeStamp,"T_emcdata", $report);
 
         $resp = "";
         return $resp;

@@ -33,7 +33,7 @@ while($row = $result->fetch_array())
 }
 */
 
-$uiDbObj = new class_ui_db();
+$uiDbObj = new classDbiL4aqycUi();
 /*
 $plist[0] = array(
     'id'=>"P_0001",
@@ -156,13 +156,13 @@ $postStr = "<xml><ToUserName><![CDATA[AQ_HCU]]></ToUserName><FromUserName><![CDA
 libxml_disable_entity_loader(true);
 $postObj = simplexml_load_string($postStr, 'SimpleXMLElement');
 
-$hcuDevObj = new class_hcu_IOT_sdk();
-$result = $hcuDevObj->receive_hcu_xmlMessage($postObj);
+$hcuDevObj = new classTaskL2sdkIotHcu();
+$result = $hcuDevObj->receive_hcu_xmlMessage(null, $postObj);
 //$result = $hcuDevObj->receive_hcu_zhbMessage($postStr);
 
 
 
-$wxObj = new class_wx_IOT_sdk(WX_APPID,WX_APPSECRET);
+$wxObj = new classTaskL2sdkIotWx(MFUN_WX_APPID, MFUN_WX_APPSECRET);
 $result = $wxObj->receive_wx_deviceMessage($postObj);
 
 

@@ -5,11 +5,17 @@
  * Date: 2016/1/2
  * Time: 16:05
  */
-include_once "../l1comvm/vmlayer.php";
+include_once "../../l1comvm/vmlayer.php";
 
-class class_temperature_db
+class classDbiL2snrTemp
 {
-    public function db_temperature_data_save($deviceid,$sensorid,$timestamp,$data,$gps)
+    //构造函数
+    public function __construct()
+    {
+
+    }
+
+    public function dbi_temperature_data_save($deviceid,$sensorid,$timestamp,$data,$gps)
     {
         //建立连接
         $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME, MFUN_CLOUD_DBPORT);
@@ -56,7 +62,7 @@ class class_temperature_db
         return $result;
     }
 
-    public function db_minreport_update_temperature($devcode,$statcode,$timestamp,$data)
+    public function dbi_minreport_update_temperature($devcode,$statcode,$timestamp,$data)
     {
         //建立连接
         $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME, MFUN_CLOUD_DBPORT);

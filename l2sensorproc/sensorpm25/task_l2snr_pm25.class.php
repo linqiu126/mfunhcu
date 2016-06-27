@@ -11,6 +11,12 @@ include_once "dbi_l2snr_pm25.class.php";
 
 class class_pmData_service
 {
+    //构造函数
+    public function __construct()
+    {
+
+    }
+
     public function func_pmData_process($platform, $deviceId, $statCode, $content)
     {
         switch($platform)
@@ -90,9 +96,9 @@ class class_pmData_service
         $ntimes =time();
         $gps = "";
 
-        $sDbObj = new class_pmdata_db();
-        $sDbObj->db_pmData_save($deviceId, $devCode,$ntimes, $pmdata,$gps);
-        $sDbObj->db_pmdata_delete_3monold($deviceId, $devCode,90);  //remove 90 days old data.
+        $sDbObj = new classDbiL2snrPm25();
+        $sDbObj->dbi_pmData_save($deviceId, $devCode,$ntimes, $pmdata,$gps);
+        $sDbObj->dbi_pmdata_delete_3monold($deviceId, $devCode,90);  //remove 90 days old data.
 
         $resp = ""; //no response message
         return $resp;
@@ -115,19 +121,19 @@ class class_pmData_service
         $gps["altitude"] = hexdec($data['Altitude']) & 0xFFFFFFFF;
         $timeStamp = hexdec($data['Time']) & 0xFFFFFFFF;
 
-        $sDbObj = new class_pmdata_db();
-        $sDbObj->db_pmData_save($deviceId, $sensorId, $timeStamp, $report,$gps);
-        $sDbObj->db_pmdata_delete_3monold($deviceId, $sensorId,90);  //remove 90 days old data.
+        $sDbObj = new classDbiL2snrPm25();
+        $sDbObj->dbi_pmData_save($deviceId, $sensorId, $timeStamp, $report,$gps);
+        $sDbObj->dbi_pmdata_delete_3monold($deviceId, $sensorId,90);  //remove 90 days old data.
 
         //更新分钟测量报告聚合表
-        $sDbObj->db_minreport_update_pmdata($deviceId,$statCode,$timeStamp,$report);
+        $sDbObj->dbi_minreport_update_pmdata($deviceId,$statCode,$timeStamp,$report);
 
         //更新数据精度格式表
         $format = $report["format"];
-        $cDbObj = new class_common_db();
-        $cDbObj->db_dataformat_update_format($deviceId,"T_pmdata",$format);
+        $cDbObj = new classDbiL1vmCommon();
+        $cDbObj->dbi_dataformat_update_format($deviceId,"T_pmdata",$format);
         //更新瞬时测量值聚合表
-        $cDbObj->db_currentreport_update_value($deviceId, $statCode, $timeStamp,"T_pmdata", $report);
+        $cDbObj->dbi_currentreport_update_value($deviceId, $statCode, $timeStamp,"T_pmdata", $report);
 
         $resp = ""; //no response message
         return $resp;
@@ -141,8 +147,8 @@ class class_pmData_service
         $sensorId = hexdec($data['Equ']) & 0xFF;
         $status = hexdec($data['Status']) & 0xFF;
 
-        $cDbObj = new class_common_db();
-        $cDbObj->db_hcuDevice_update_status($deviceId,$statCode,$status);
+        $cDbObj = new classDbiL1vmCommon();
+        $cDbObj->dbi_hcuDevice_update_status($deviceId,$statCode,$status);
 
         $resp = ""; //no response message
         return $resp;

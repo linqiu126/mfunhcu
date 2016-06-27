@@ -5,15 +5,20 @@
  * Date: 2016/1/2
  * Time: 16:03
  */
-include_once "../l1comvm/vmlayer.php";
+include_once "../../l1comvm/vmlayer.php";
 
-class class_pmdata_db
+class classDbiL2snrPm25
 {
+    //构造函数
+    public function __construct()
+    {
+
+    }
 
     //以下为处理空气污染物颗粒数据表单（t_pmdata）相关函数
     //存储空气污染物颗粒数据，每一次存储，都是新增一条记录
     //记录存储是以TIME_GRID_SIZE分钟为网格化的，保证每一个时间网格只有一条记录
-    public function db_pmData_save($deviceid, $sensorid,$timestamp,$data,$gps)
+    public function dbi_pmData_save($deviceid, $sensorid,$timestamp,$data,$gps)
     {
         //建立连接
         $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME, MFUN_CLOUD_DBPORT);
@@ -64,7 +69,7 @@ class class_pmdata_db
 
     //删除对应用户所有超过90天的数据
     //缺省做成90天，如果参数错误，导致90天以内的数据强行删除，则不被认可
-    public function db_pmdata_delete_3monold($deviceid, $sensorid,$days)
+    public function dbi_pmdata_delete_3monold($deviceid, $sensorid,$days)
     {
         if ($days <90) $days = 90;  //不允许删除90天以内的数据
         //建立连接
@@ -78,7 +83,7 @@ class class_pmdata_db
         return $result;
     }
 
-    public function db_minreport_update_pmdata($devcode,$statcode,$timestamp,$data)
+    public function dbi_minreport_update_pmdata($devcode,$statcode,$timestamp,$data)
     {
         //建立连接
         $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME, MFUN_CLOUD_DBPORT);

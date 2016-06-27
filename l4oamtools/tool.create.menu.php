@@ -11,29 +11,28 @@
  *
  **/
 include_once "../l1comvm/vmlayer.php";
-//include_once "../l2sdk/l2sdk_iot_wx.class.php";
 include_once "../l2sdk/task_l2sdk_wechat.class.php";
 
 header("Content-type:text/html;charset=utf-8");
 
 $wx_options = array(
-    'token'=>WX_TOKEN, //填写你设定的key
-    'encodingaeskey'=>WX_ENCODINGAESKEY, //填写加密用的EncodingAESKey，如接口为明文模式可忽略
-    'appid'=>WX_APPID,
-    'appsecret'=>WX_APPSECRET, //填写高级调用功能的密钥
-    'debug'=> WX_DEBUG,
-    'logcallback' => WX_LOGCALLBACK
+    'token'=>MFUN_WX_TOKEN, //填写你设定的key
+    'encodingaeskey'=>MFUN_WX_ENCODINGAESKEY, //填写加密用的EncodingAESKey，如接口为明文模式可忽略
+    'appid'=>MFUN_WX_APPID,
+    'appsecret'=>MFUN_WX_APPSECRET, //填写高级调用功能的密钥
+    'debug'=> MFUN_WX_DEBUG,
+    'logcallback' => MFUN_WX_LOGCALLBACK
 );
-$wxObj = new class_wechat_sdk($wx_options);
+$wxObj = new classTaskL2sdkWechat($wx_options);
 
 
 //Step1:刷新Token
 echo "<br><H2>微信硬件工作环境即将开始......<br></H2>";
-echo "WX_APPID = " . WX_APPID . "<br>";
-echo "WX_APPSECRET = " . WX_APPSECRET .  "<br>";
+echo "WX_APPID = " . MFUN_WX_APPID . "<br>";
+echo "WX_APPSECRET = " . MFUN_WX_APPSECRET .  "<br>";
 
 
-$wxDevObj = new class_wx_IOT_sdk(WX_APPID, WX_APPSECRET);
+$wxDevObj = new classTaskL2sdkIotWx(MFUN_WX_APPID, MFUN_WX_APPSECRET);
 
 
 //实验Token是否已经被刷新

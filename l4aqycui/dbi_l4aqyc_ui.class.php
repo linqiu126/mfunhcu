@@ -8,8 +8,14 @@
 include_once "../l1comvm/vmlayer.php";
 header("Content-type:text/html;charset=utf-8");
 
-class class_ui_db
+class classDbiL4aqycUi
 {
+    //构造函数
+    public function __construct()
+    {
+
+    }
+
     /**********************************************************************************************************************
      *                                         UI用户相关操作DB API                                                        *
      *********************************************************************************************************************/
@@ -68,7 +74,7 @@ class class_ui_db
     }
 
     //当前登录用户session id检查,如果session id对应UID不存在或者session id的更新时间超过有效时间，则返回false，否则返回UID
-    public function db_session_check($sessionid)
+    public function dbi_session_check($sessionid)
     {
         //建立连接
         $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME, MFUN_CLOUD_DBPORT);
@@ -97,7 +103,7 @@ class class_ui_db
     }
 
     //UI login request  用户登录请求
-    public function db_login_req($name, $password)
+    public function dbi_login_req($name, $password)
     {
         //建立连接
         $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME, MFUN_CLOUD_DBPORT);
@@ -153,7 +159,7 @@ class class_ui_db
     }
 
     //UI UserInfo request  获取当前登录用户信息
-    public function db_userinfo_req($sessionid)
+    public function dbi_userinfo_req($sessionid)
     {
         //建立连接
         $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME, MFUN_CLOUD_DBPORT);
@@ -200,7 +206,7 @@ class class_ui_db
     }
 
     //查询用户表中记录总数
-    public function db_usernum_inqury()
+    public function dbi_usernum_inqury()
     {
         //建立连接
         $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME, MFUN_CLOUD_DBPORT);
@@ -217,7 +223,7 @@ class class_ui_db
     }
 
     //UI UserTable request, 获取所有用户信息表
-    public function db_usertable_req($uid_start, $uid_total)
+    public function dbi_usertable_req($uid_start, $uid_total)
     {
         //建立连接
         $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME, MFUN_CLOUD_DBPORT);
@@ -255,7 +261,7 @@ class class_ui_db
     }
 
     //UI UserNew request,添加新用户信息
-    public function db_userinfo_new($userinfo)
+    public function dbi_userinfo_new($userinfo)
     {
         //建立连接
         $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME, MFUN_CLOUD_DBPORT);
@@ -316,7 +322,7 @@ class class_ui_db
     }
 
     //UI UserMod request,添加新用户信息
-    public function db_userinfo_update($userinfo)
+    public function dbi_userinfo_update($userinfo)
     {
         //建立连接
         $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME, MFUN_CLOUD_DBPORT);
@@ -378,7 +384,7 @@ class class_ui_db
     }
 
     //UI UserDel request
-    public function db_userinfo_delete($uid)
+    public function dbi_userinfo_delete($uid)
     {
         //建立连接
         $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME, MFUN_CLOUD_DBPORT);
@@ -403,7 +409,7 @@ class class_ui_db
      *********************************************************************************************************************/
 
     //查询项目表中记录总数
-    public function db_all_projnum_inqury()
+    public function dbi_all_projnum_inqury()
     {
         //建立连接
         $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME, MFUN_CLOUD_DBPORT);
@@ -420,7 +426,7 @@ class class_ui_db
     }
 
     //查询项目组表中记录总数
-    public function db_all_pgnum_inqury()
+    public function dbi_all_pgnum_inqury()
     {
         //建立连接
         $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME, MFUN_CLOUD_DBPORT);
@@ -437,7 +443,7 @@ class class_ui_db
     }
 
     //UI PGTable request, 获取全部项目组列表信息
-    public function db_all_pgtable_req($start, $total)
+    public function dbi_all_pgtable_req($start, $total)
     {
         //建立连接
         $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME, MFUN_CLOUD_DBPORT);
@@ -469,7 +475,7 @@ class class_ui_db
     }
 
     //UI ProjTable request, 获取全部项目列表信息
-    public function db_all_projtable_req($start, $total)
+    public function dbi_all_projtable_req($start, $total)
     {
         //建立连接
         $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME, MFUN_CLOUD_DBPORT);
@@ -503,7 +509,7 @@ class class_ui_db
     }
 
     //UI ProjectPGList request, 获取所有项目及项目组列表
-    public function db_all_projpglist_req()
+    public function dbi_all_projpglist_req()
     {
         //建立连接
         $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME, MFUN_CLOUD_DBPORT);
@@ -540,7 +546,7 @@ class class_ui_db
     }
 
     //UI ProjectList request, 获取所有项目列表
-    public function db_all_projlist_req()
+    public function dbi_all_projlist_req()
     {
         //建立连接
         $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME, MFUN_CLOUD_DBPORT);
@@ -567,7 +573,7 @@ class class_ui_db
     }
 
     //UI PGlist request, 获取该用户授权的全部项目组列表
-    public function db_user_pglist_req($uid)
+    public function dbi_user_pglist_req($uid)
     {
         //建立连接
         $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME, MFUN_CLOUD_DBPORT);
@@ -606,7 +612,7 @@ class class_ui_db
     }
 
     //UI ProjList request, 获取该用户授权的全部项目列表,包括授权项目组下面的项目list
-    public function db_user_projlist_req($uid)
+    public function dbi_user_projlist_req($uid)
     {
         //建立连接
         $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME, MFUN_CLOUD_DBPORT);
@@ -642,7 +648,7 @@ class class_ui_db
                 elseif($fromat == PG_CODE_PREFIX)  //取得的code为项目组号
                 {
                     $pgcode = $authcode;
-                    $temp = $this->db_pg_projlist_req($pgcode);
+                    $temp = $this->dbi_pg_projlist_req($pgcode);
                     for($i=0; $i<count($temp); $i++)
                         array_push($projlist, $temp[$i]);
                 }
@@ -655,7 +661,7 @@ class class_ui_db
 
 
     //UI ProjectPGList request, 获取该用户授权的项目及项目组列表
-    public function db_user_projpglist_req($uid)
+    public function dbi_user_projpglist_req($uid)
     {
         //建立连接
         $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME, MFUN_CLOUD_DBPORT);
@@ -711,7 +717,7 @@ class class_ui_db
     }
 
     //查询项目组下面包含的项目列表
-    public function db_pg_projlist_req($pg_code)
+    public function dbi_pg_projlist_req($pg_code)
     {
         //建立连接
         $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME, MFUN_CLOUD_DBPORT);
@@ -745,7 +751,7 @@ class class_ui_db
     }
 
     //UI PGNew & PGMod request,添加新项目组信息或者修改项目组信息
-    public function db_pginfo_update($pginfo)
+    public function dbi_pginfo_update($pginfo)
     {
         //建立连接
         $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME, MFUN_CLOUD_DBPORT);
@@ -804,7 +810,7 @@ class class_ui_db
     }
 
     //UI ProjNew & ProjMod request,添加新项目信息或者修改项目信息
-    public function db_projinfo_update($projinfo)
+    public function dbi_projinfo_update($projinfo)
     {
         //建立连接
         $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME, MFUN_CLOUD_DBPORT);
@@ -846,7 +852,7 @@ class class_ui_db
     }
 
     //UI ProjDel request，项目信息删除
-    public function db_projinfo_delete($pcode)
+    public function dbi_projinfo_delete($pcode)
     {
         //建立连接
         $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME, MFUN_CLOUD_DBPORT);
@@ -870,7 +876,7 @@ class class_ui_db
     }
 
     //UI PGDel request，项目组信息删除
-    public function db_pginfo_delete($pgcode)
+    public function dbi_pginfo_delete($pgcode)
     {
         //建立连接
         $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME, MFUN_CLOUD_DBPORT);
@@ -896,7 +902,7 @@ class class_ui_db
      *                                          监测点及HCU设备相关操作DB API                                               *
      *********************************************************************************************************************/
     //查询用户授权的stat_code和proj_code list
-    private function db_user_statproj_inqury($uid)
+    private function dbi_user_statproj_inqury($uid)
     {
         //建立连接
         $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME, MFUN_CLOUD_DBPORT);
@@ -954,7 +960,7 @@ class class_ui_db
 
 
     //查询监控点表中记录总数
-    public function db_all_sitenum_inqury()
+    public function dbi_all_sitenum_inqury()
     {
         //建立连接
         $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME, MFUN_CLOUD_DBPORT);
@@ -971,7 +977,7 @@ class class_ui_db
     }
 
     //查询HCU设备表中记录总数
-    public function db_all_hcunum_inqury()
+    public function dbi_all_hcunum_inqury()
     {
         //建立连接
         $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME, MFUN_CLOUD_DBPORT);
@@ -988,7 +994,7 @@ class class_ui_db
     }
 
     //UI ProjPoint request,查询所有项目监测点列表
-    public function db_all_sitelist_req()
+    public function dbi_all_sitelist_req()
     {
         //建立连接
         $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME, MFUN_CLOUD_DBPORT);
@@ -1016,7 +1022,7 @@ class class_ui_db
     }
 
     //UI ProjPoint request,查询项目下面包含的监测点列表
-    public function db_proj_sitelist_req($p_code)
+    public function dbi_proj_sitelist_req($p_code)
     {
         //建立连接
         $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME, MFUN_CLOUD_DBPORT);
@@ -1044,7 +1050,7 @@ class class_ui_db
     }
 
     //UI ProjTable request, 获取全部监测点列表信息
-    public function db_all_sitetable_req($start, $total)
+    public function dbi_all_sitetable_req($start, $total)
     {
         //建立连接
         $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME, MFUN_CLOUD_DBPORT);
@@ -1095,7 +1101,7 @@ class class_ui_db
 
 
     //UI PointNew & PointMod request,添加监测点信息或者修改监测点信息
-    public function db_siteinfo_update($siteinfo)
+    public function dbi_siteinfo_update($siteinfo)
     {
         //建立连接
         $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME, MFUN_CLOUD_DBPORT);
@@ -1146,7 +1152,7 @@ class class_ui_db
     }
 
     //UI DevTable request, 获取全部HCU设备列表信息
-    public function db_all_hcutable_req($start, $total)
+    public function dbi_all_hcutable_req($start, $total)
     {
         //建立连接
         $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME, MFUN_CLOUD_DBPORT);
@@ -1197,7 +1203,7 @@ class class_ui_db
     }
 
     //UI PointDev Request，查询监测点下面HCU列表
-    public function db_site_devlist_req($statcode)
+    public function dbi_site_devlist_req($statcode)
     {
         //建立连接
         $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME, MFUN_CLOUD_DBPORT);
@@ -1225,7 +1231,7 @@ class class_ui_db
 
 
     //UI DevNew & DevMod request,添加HCU设备信息或者修改HCU设备信息
-    public function db_devinfo_update($devinfo)
+    public function dbi_devinfo_update($devinfo)
     {
         //建立连接
         $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME, MFUN_CLOUD_DBPORT);
@@ -1263,7 +1269,7 @@ class class_ui_db
     }
 
     //UI PointDel request，删除一个监测点
-    public function db_siteinfo_delete($statcode)
+    public function dbi_siteinfo_delete($statcode)
     {
         //建立连接
         $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME, MFUN_CLOUD_DBPORT);
@@ -1287,7 +1293,7 @@ class class_ui_db
     }
 
     //UI DevDel request，删除一个监测点
-    public function db_deviceinfo_delete($devcode)
+    public function dbi_deviceinfo_delete($devcode)
     {
         //建立连接
         $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME, MFUN_CLOUD_DBPORT);
@@ -1313,7 +1319,7 @@ class class_ui_db
 
 
     //UI MonitorList request, 获取该用户地图显示的所有监测点信息
-    public function db_map_sitetinfo_req($uid)
+    public function dbi_map_sitetinfo_req($uid)
     {
         //建立连接
         $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME, MFUN_CLOUD_DBPORT);
@@ -1371,7 +1377,7 @@ class class_ui_db
         return $sitelist;
     }
 
-    public function db_excel_historydata_req($condition)
+    public function dbi_excel_historydata_req($condition)
     {
         //建立连接
         $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME, MFUN_CLOUD_DBPORT);
@@ -1431,7 +1437,7 @@ class class_ui_db
      *                                                 传感器相关操作DB API                                                 *
      *********************************************************************************************************************/
     //UI AlarmType request, 获取所有需要生成告警数据表的传感器类型信息
-    public function db_all_alarmtype_req()
+    public function dbi_all_alarmtype_req()
     {
         //建立连接
         $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME, MFUN_CLOUD_DBPORT);
@@ -1458,7 +1464,7 @@ class class_ui_db
     }
 
     //UI SensorList request, 获取所有传感器类型信息
-    public function db_all_sensorlist_req()
+    public function dbi_all_sensorlist_req()
     {
         //建立连接
         $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME, MFUN_CLOUD_DBPORT);
@@ -1489,7 +1495,7 @@ class class_ui_db
 
 
     //UI DevSensor request, 获取所有传感器类型信息
-    public function db_dev_sensorinfo_req($devcode)
+    public function dbi_dev_sensorinfo_req($devcode)
     {
         //建立连接
         $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME, MFUN_CLOUD_DBPORT);
@@ -1598,7 +1604,7 @@ class class_ui_db
     }
 
     //UI DevAlarm Request, 获取当前的测量值，如果测量值超出范围，提示告警
-    public function db_dev_currentvalue_req($statcode)
+    public function dbi_dev_currentvalue_req($statcode)
     {
         //建立连接
         $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME, MFUN_CLOUD_DBPORT);
@@ -1715,7 +1721,7 @@ class class_ui_db
     }
 
     //UI AlarmQuery Request, 获取告警历史数据
-    public function db_dev_alarmhistory_req($statcode, $date, $alarm_type)
+    public function dbi_dev_alarmhistory_req($statcode, $date, $alarm_type)
     {
         //建立连接
         $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME, MFUN_CLOUD_DBPORT);
@@ -2130,7 +2136,7 @@ class class_ui_db
     }
 
 //UI GetStaticMonitorTable Request, 获取用户聚合数据
-    public function db_user_dataaggregate_req($uid)
+    public function dbi_user_dataaggregate_req($uid)
     {
         //初始化返回值
         $resp["column"] = array();
@@ -2145,7 +2151,7 @@ class class_ui_db
 
         $auth_list["stat_code"] = array();
         $auth_list["p_code"] = array();
-        $auth_list = $this->db_user_statproj_inqury($uid);
+        $auth_list = $this->dbi_user_statproj_inqury($uid);
 
         array_push($resp["column"], "监测点编号");
         array_push($resp["column"], "项目单位");

@@ -16,7 +16,7 @@ echo "<H2>扬尘项目HCU操作维护工具<br>";
 <html>
 <head>
 
-    <script type="text/javascript" src="../l4emcwxui/jquery.min.js"></script>
+    <script type="text/javascript" src="../../l4emcwxui/h5ui/jquery.min.js"></script>
     <script type="text/javascript">
         
         //暂时没有使用，输入框有输入是对应提示框txtHint显示对应的提示信息

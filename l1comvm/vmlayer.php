@@ -72,6 +72,7 @@ class classTaskL1vmCoreRouter
         return true;
     }
 
+    //接收消息，$result可以是false，也可以是真正的结果
     public function mfun_l1vm_msg_rcv()
     {
         //判断是否越界
@@ -83,6 +84,7 @@ class classTaskL1vmCoreRouter
             $this->msgBufferUsedCnt = 0;
             return false;
         }
+        //MFUN_MSG_BUFFER_NBR_MAX是最大消息缓冲区+1，所以不可能达到
         if (($this->msgBufferReadCnt < 0) || ($this->msgBufferReadCnt >= MFUN_MSG_BUFFER_NBR_MAX)){
             $this->msgBufferReadCnt = 0;
             return false;
@@ -95,6 +97,7 @@ class classTaskL1vmCoreRouter
         }
         $tmp = $this->msgBufferList[$this->msgBufferReadCnt];
         //是否可以采用这种方式输出参数和结果？
+        $srcId =0; $destId=0; $msgId=0; $msgName = ""; $msgBody = "";
         if (isset($tmp["srcId"])) $srcId = $tmp["srcId"];
         if (isset($tmp["destId"])) $destId = $tmp["destId"];
         if (isset($tmp["msgId"])) $msgId = $tmp["msgId"];
@@ -168,7 +171,7 @@ class classTaskL1vmCoreRouter
         //每个不同任务模块之间的消息结构，由发送者和接收者自行商量结构，因为PHP下是无法定义结构的。同一个CLASS内部可以使
         //用ARRAY进行传递，不同CLASS任务之间则只能采用JSON进行传递，因为不同空间内显然无法将数组传递过去
         $modObj = new classConstL1vmSysTaskList();
-        while(($result = mfun_l1vm_msg_rcv()) == true){
+        while(($result = $this->mfun_l1vm_msg_rcv()) != false){
             //语法差错检查
             if (isset($result["srcId"]) != true) continue;
             if (isset($result["destId"]) != true) continue;
@@ -193,16 +196,35 @@ class classTaskL1vmCoreRouter
                     $obj->mfun_l1vm_task_main_entry($this, ["msgBody"]);
                     break;
                 case MFUN_TASK_ID_L2SDK_IOT_APPLE:
+                    $obj = new classTaskL2sdkIotApple();
+                    $obj->mfun_l2sdk_iot_apple_task_main_entry($this, $result["msgBody"]);
                     break;
                 case MFUN_TASK_ID_L2SDK_IOT_JD:
+                    $obj = new classTaskL2sdkIotJd();
+                    $obj->mfun_l2sdk_iot_jd_task_main_entry($this, $result["msgBody"]);
                     break;
                 case MFUN_TASK_ID_L2SDK_WECHAT:
+                    $wx_options = array(
+                        'token'=>MFUN_WX_TOKEN, //填写你设定的key
+                        'encodingaeskey'=>MFUN_WX_ENCODINGAESKEY, //填写加密用的EncodingAESKey，如接口为明文模式可忽略
+                        'appid'=>MFUN_WX_APPID,
+                        'appsecret'=>MFUN_WX_APPSECRET, //填写高级调用功能的密钥
+                        'debug'=> MFUN_WX_DEBUG,
+                        'logcallback' => MFUN_WX_LOGCALLBACK);
+                    $obj = new classTaskL2sdkWechat($wx_options);
+                    $obj->mfun_l2sdk_wechat_task_main_entry($this, $result["msgBody"]);
                     break;
                 case MFUN_TASK_ID_L2SDK_IOT_WX:
                     $obj = new classTaskL2sdkIotWx();
                     $obj->mfun_l2sdk_iot_wx_task_main_entry($this, $result["msgBody"]);
                     break;
                 case MFUN_TASK_ID_L2SDK_IOT_WX_JSSDK:
+                    $wx_options = array(
+                        'appId'=>MFUN_WX_APPID,
+                        'appSecret'=>MFUN_WX_APPSECRET //填写高级调用功能的密钥
+                    );
+                    $obj = new classTaskL2sdkIotWxJssdk($wx_options);
+                    $obj->mfun_l2sdk_iot_wx_jssdk_task_main_entry($this, $result["msgBody"]);
                     break;
                 case MFUN_TASK_ID_L2SDK_IOT_HCU:
                     $obj = new classTaskL2sdkIotHcu();
@@ -279,7 +301,7 @@ class classTaskL1vmCoreRouter
 }
 
 
-
+?>
 
 
 /*
@@ -397,4 +419,4 @@ $queue->ack($envelope->getDeliveryTag()); //手动发送ACK应答
 
 */
 
-?>
+

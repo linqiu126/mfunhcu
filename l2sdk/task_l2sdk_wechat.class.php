@@ -45,9 +45,8 @@ include_once "../l1comvm/vmlayer.php";
 include_once "../l2sdk/task_l2sdk_iot_wx.class.php";
 include_once "../l2sdk/task_l2sdk_iot_hcu.class.php";
 
-
 //Layer 2.1.1 SDK01.1，完整的公号SDK，正在跟轻量级SDK01进行合并
-class class_wechat_sdk
+class classTaskL2sdkWechat
 {
 	const MSGTYPE_TEXT = 'text';
 	const MSGTYPE_IMAGE = 'image';
@@ -4202,7 +4201,7 @@ class class_wechat_sdk
     private function transmitNews($object, $newsArray)
     {
         if(!is_array($newsArray)){
-            return;
+            return false;
         }
         $itemTpl = "    <item>
             <Title><![CDATA[%s]]></Title>
@@ -4402,7 +4401,7 @@ class class_wechat_sdk
                     //Shanchun end
                     default:    //转到智能硬件菜单部分，这里的结构保持完整性
                         $click = 2;
-                        $wxDevObj = new class_wx_IOT_sdk($this->appid, $this->appsecret);
+                        $wxDevObj = new classTaskL2sdkIotWx($this->appid, $this->appsecret);
                         $content = $wxDevObj->receive_wx_deviceClick($object);
                         //$content = "点击菜单：".$object->EventKey;
                         break;
@@ -4415,7 +4414,7 @@ class class_wechat_sdk
                 // $this->transmitText($object, $content);
 
                 $click = 2;
-                $wxDevObj = new class_wx_IOT_sdk($this->appid, $this->appsecret);
+                $wxDevObj = new classTaskL2sdkIotWx($this->appid, $this->appsecret);
                 $content = $wxDevObj->receive_locationEvent($object); //网格化存储GPS信息
                 break;
             case "VIEW":
@@ -4465,8 +4464,8 @@ class class_wechat_sdk
         }
         */
         //存储log在数据库中
-        $cDbObj = new classL1vmCommonDbi();
-        $result = $cDbObj->db_log_process($project,$fromUser,$createTime,$log_content);
+        $cDbObj = new classDbiL1vmCommon();
+        $result = $cDbObj->dbi_log_process($project,$fromUser,$createTime,$log_content);
 
         return $result;
     }
@@ -4475,7 +4474,7 @@ class class_wechat_sdk
  *                                               总入口Response函数                                                   *
  *********************************************************************************************************************/
     //响应消息
-    public function responseMsg()
+    public function mfun_l2sdk_wechat_task_main_entry($parObj, $msg)
     {
         //$postStr = $GLOBALS["HTTP_RAW_POST_DATA"];
         $postStr = file_get_contents('php://input','r');
@@ -4556,7 +4555,7 @@ class class_wechat_sdk
                         case "device_text":  //智能硬件设备text消息，都转到IOT相关的CLASS中
                             $project = "IHU";
                             $this->logger($project,$fromUser,$log_time,$log_content);
-                            $wxDevObj = new class_wx_IOT_sdk($this->appid, $this->appsecret);
+                            $wxDevObj = new classTaskL2sdkIotWx($this->appid, $this->appsecret);
                             $log_from = MFUN_CLOUD_WX;
                             $result = $wxDevObj->receive_wx_deviceMessage($postObj);
                             break;
@@ -4564,36 +4563,8 @@ class class_wechat_sdk
                             $project = "IHU";
                             $this->logger($project,$fromUser,$log_time,$log_content);
                             $log_from = MFUN_CLOUD_WX;
-                            $wxDevObj = new class_wx_IOT_sdk($this->appid, $this->appsecret);
+                            $wxDevObj = new classTaskL2sdkIotWx($this->appid, $this->appsecret);
                             $result = $wxDevObj->receive_wx_deviceEvent($postObj);
-                            break;
-                        case "hcu_text":
-                            $project = "HCU";
-                            $result = $this->logger($project,$fromUser,$log_time,$log_content);
-                            $log_from = MFUN_CLOUD_HCU;
-                            $hcuDevObj = new class_hcu_IOT_sdk();
-                            $result = $hcuDevObj->receive_hcu_xmlMessage($postObj);
-                            break;
-                        case "hcu_heart_beat":
-                            $project = "HCU";
-                            $result = $this->logger($project,$fromUser,$log_time,$log_content);
-                            $log_from = MFUN_CLOUD_HCU;
-                            $hcuDevObj = new class_hcu_IOT_sdk();
-                            $result = $hcuDevObj->receive_hcu_xmlMessage($postObj);
-                            break;
-                        case "hcu_command":
-                            $project = "HCU";
-                            $this->logger($project,$fromUser,$log_time,$log_content);
-                            $log_from = MFUN_CLOUD_HCU;
-                            $hcuDevObj = new class_hcu_IOT_sdk();
-                            $result = $hcuDevObj->receive_hcu_xmlMessage($postObj);
-                            break;
-                        case "hcu_polling":
-                            $project = "HCU";
-                            $this->logger($project,$fromUser,$log_time,$log_content);
-                            $log_from = MFUN_CLOUD_HCU;
-                            $hcuDevObj = new class_hcu_IOT_sdk();
-                            $result = $hcuDevObj->receive_hcu_xmlMessage($postObj);
                             break;
                         default:
                             $project = "NULL";
@@ -4602,17 +4573,6 @@ class class_wechat_sdk
                             $result = "[XML_FORMAT]unknown message type: ".$RX_TYPE;
                             break;
                     }
-                    break;
-                case ZHB_FORMAT:
-                    $project = "HCU";
-                    $fromUser = "ZHBMSG";
-                    $timestamp = time();
-                    $log_time = date("Y-m-d H:i:s",$timestamp);
-                    $log_content = "R:".trim($postStr);
-                    $this->logger($project,$fromUser,$log_time,$log_content); //ZHB接收消息log保存
-                    $log_from = MFUN_CLOUD_HCU;
-                    $hcuDevObj = new class_hcu_IOT_sdk();
-                    $result = $hcuDevObj->receive_hcu_zhbMessage($postStr);
                     break;
                 default:
                     $result = "Unknown message format";
@@ -4636,6 +4596,7 @@ class class_wechat_sdk
             exit;
         }
     }
+
 } //end of Class class_wechat_sdk
 
 

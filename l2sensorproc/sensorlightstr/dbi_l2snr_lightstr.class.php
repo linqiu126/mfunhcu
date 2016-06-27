@@ -7,5 +7,14 @@
  */
 include_once "../../l1comvm/vmlayer.php";
 
+class classDbiL2snrLightstr
+{
+    //构造函数
+    public function __construct()
+    {
+
+    }
+}
+
 ?>
 

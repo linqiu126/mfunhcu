@@ -14,6 +14,7 @@ function _encode($arr)
 
 function _urlencode($elem)
 {
+    $na = 0;
     if(is_array($elem)&&(!empty($elem))){
         foreach($elem as $k=>$v){
             $na[_urlencode($k)] = _urlencode($v);
@@ -27,7 +28,7 @@ function _urlencode($elem)
 }
 
 $key=$_GET["action"];
-$uiDbObj = new class_ui_db(); //初始化一个UI DB对象
+$uiDbObj = new classDbiL4aqycUi(); //初始化一个UI DB对象
 
 //echo $key;
 switch ($key)
@@ -48,7 +49,7 @@ switch ($key)
         //};
         $user = trim($_GET["name"]);
         $pwd = trim($_GET["password"]);
-        $userinfo =$uiDbObj->db_login_req($user, $pwd);
+        $userinfo =$uiDbObj->dbi_login_req($user, $pwd);
         $jsonencode = json_encode($userinfo);
         echo $jsonencode;
         break;
@@ -68,7 +69,7 @@ switch ($key)
                 }*/
         //echo $key;
         $session = $_GET["session"];
-        $userinfo =$uiDbObj->db_userinfo_req($session);
+        $userinfo =$uiDbObj->dbi_userinfo_req($session);
 
         if(!empty($userinfo))
             $retval=array(
@@ -102,7 +103,7 @@ switch ($key)
           };
           */
         $user = $_GET["user"];
-        $proj_pg_list = $uiDbObj->db_all_projpglist_req();
+        $proj_pg_list = $uiDbObj->dbi_all_projpglist_req();
 
         if(!empty($proj_pg_list))
             $retval=array(
@@ -135,7 +136,7 @@ switch ($key)
                     ret: projlist
                 };*/
         $user = $_GET["user"];
-        $projlist = $uiDbObj->db_all_projlist_req();
+        $projlist = $uiDbObj->dbi_all_projlist_req();
 
         if(!empty($projlist))
             $retval=array(
@@ -185,7 +186,7 @@ switch ($key)
             'auth' => $auth
         );
 
-        $result = $uiDbObj->db_userinfo_new($userinfo);
+        $result = $uiDbObj->dbi_userinfo_new($userinfo);
 
         if($result == true){
             $retval=array(
@@ -238,7 +239,7 @@ switch ($key)
             'auth' => $auth
         );
 
-        $result = $uiDbObj->db_userinfo_update($userinfo);
+        $result = $uiDbObj->dbi_userinfo_update($userinfo);
 
         if($result)
             $retval=array(
@@ -266,7 +267,7 @@ switch ($key)
            msg:""
         };*/
         $uid = $_GET["id"];
-        $result = $uiDbObj->db_userinfo_delete($uid);
+        $result = $uiDbObj->dbi_userinfo_delete($uid);
         if($result == true)
             $retval=array(
                 'status'=>'true',
@@ -309,13 +310,13 @@ switch ($key)
                                               ret: usertable
                                           };*/
 
-        $total = $uiDbObj->db_usernum_inqury();
+        $total = $uiDbObj->dbi_usernum_inqury();
         $query_length = (int)($_GET['length']);
         $start = (int)($_GET['startseq']);
         if($query_length> $total-$start)
         {$query_length = $total-$start;}
 
-        $usertable = $uiDbObj->db_usertable_req($start, $query_length);
+        $usertable = $uiDbObj->dbi_usertable_req($start, $query_length);
         if (!empty($usertable))
             $retval=array(
                 'status'=>'true',
@@ -354,7 +355,7 @@ switch ($key)
                                  };*/
 
         $uid = $_GET["userid"];
-        $userproj = $uiDbObj->db_user_projpglist_req($uid);
+        $userproj = $uiDbObj->dbi_user_projpglist_req($uid);
         if(!empty($userproj))
             $retval= array(
                 'status'=>"true",
@@ -395,13 +396,13 @@ switch ($key)
                                      length:query_length,
                                      ret: pgtable
                                  };*/
-        $total = $uiDbObj->db_all_pgnum_inqury();
+        $total = $uiDbObj->dbi_all_pgnum_inqury();
         $query_length = (int)($_GET['length']);
         $start = (int)($_GET['startseq']);
         if($query_length> $total-$start)
         {$query_length = $total-$start;}
 
-        $pgtable = $uiDbObj->db_all_pgtable_req($start, $query_length);
+        $pgtable = $uiDbObj->dbi_all_pgtable_req($start, $query_length);
 
         if(!empty($pgtable))
             $retval=array(
@@ -460,7 +461,7 @@ switch ($key)
             'user' => $_GET["user"]
         );
 
-        $result = $uiDbObj->db_pginfo_update($pginfo);
+        $result = $uiDbObj->dbi_pginfo_update($pginfo);
         if($result)
             $retval=array(
                 'status'=>'true',
@@ -512,7 +513,7 @@ switch ($key)
         );
 
 
-        $result = $uiDbObj->db_pginfo_update($pginfo);
+        $result = $uiDbObj->dbi_pginfo_update($pginfo);
         if($result)
             $retval=array(
                 'status'=>'true',
@@ -541,7 +542,7 @@ switch ($key)
            msg:""
         };*/
         $pgcode = $_GET["id"];
-        $result = $uiDbObj->db_pginfo_delete($pgcode);
+        $result = $uiDbObj->dbi_pginfo_delete($pgcode);
         if ($result)
             $retval=array(
                 'status'=>'true',
@@ -573,7 +574,7 @@ switch ($key)
         ret: PGProj
         }*/
         $pgcode = $_GET['id'];
-        $projlist = $uiDbObj->db_pg_projlist_req($pgcode);
+        $projlist = $uiDbObj->dbi_pg_projlist_req($pgcode);
 
         if(!empty($projlist))
             $retval=array(
@@ -618,13 +619,13 @@ switch ($key)
                         ret: projtable
                     };*/
 
-        $total = $uiDbObj->db_all_projnum_inqury();
+        $total = $uiDbObj->dbi_all_projnum_inqury();
         $query_length = (int)($_GET['length']);
         $start = (int)($_GET['startseq']);
         if($query_length> $total-$start)
         {$query_length = $total-$start;}
 
-        $projtable = $uiDbObj->db_all_projtable_req($start, $query_length);
+        $projtable = $uiDbObj->dbi_all_projtable_req($start, $query_length);
         if(!empty($projtable))
             $retval=array(
                 'status'=>'true',
@@ -678,7 +679,7 @@ switch ($key)
             'Stage' => $_GET["Stage"]
         );
 
-        $result = $uiDbObj->db_projinfo_update($projinfo);
+        $result = $uiDbObj->dbi_projinfo_update($projinfo);
         if ($result == true)
             $retval=array(
                 'status'=>'true',
@@ -725,7 +726,7 @@ switch ($key)
             'Stage' => $_GET["Stage"]
         );
 
-        $result = $uiDbObj->db_projinfo_update($projinfo);
+        $result = $uiDbObj->dbi_projinfo_update($projinfo);
         if ($result == true)
             $retval=array(
                 'status'=>'true',
@@ -755,7 +756,7 @@ switch ($key)
                    };*/
         $projcode = $_GET["ProjCode"];
 
-        $result = $uiDbObj->db_projinfo_delete($projcode);
+        $result = $uiDbObj->dbi_projinfo_delete($projcode);
         if ($result == true)
             $retval=array(
                 'status'=>'true',
@@ -788,7 +789,7 @@ switch ($key)
                    ret: ProjPoint
                };    */
 
-        $sitelist = $uiDbObj->db_all_sitelist_req();
+        $sitelist = $uiDbObj->dbi_all_sitelist_req();
         if(!empty($sitelist))
             $retval=array(
                 'status'=>'true',
@@ -810,7 +811,7 @@ switch ($key)
                 ProjCode: ProjCode
             };*/
         $projcode = $_GET["ProjCode"];
-        $sitelist = $uiDbObj->db_proj_sitelist_req($projcode);
+        $sitelist = $uiDbObj->dbi_proj_sitelist_req($projcode);
         if(!empty($sitelist))
             $retval=array(
                 'status'=>'true',
@@ -862,12 +863,12 @@ switch ($key)
                 };*/
 
 
-        $total = $uiDbObj->db_all_sitenum_inqury();
+        $total = $uiDbObj->dbi_all_sitenum_inqury();
         $query_length = (int)($_GET['length']);
         $start = (int)($_GET['startseq']);
         if($query_length> $total-$start)
         {$query_length = $total-$start;}
-        $sitetable = $uiDbObj->db_all_sitetable_req($start, $query_length);
+        $sitetable = $uiDbObj->dbi_all_sitetable_req($start, $query_length);
         if(!empty($sitetable))
             $retval=array(
                 'status'=>'true',
@@ -934,7 +935,7 @@ switch ($key)
             'ProStartTime' => $_GET["ProStartTime"],
             'Stage' => $_GET["Stage"]
         );
-        $result = $uiDbObj->db_siteinfo_update($siteinfo);
+        $result = $uiDbObj->dbi_siteinfo_update($siteinfo);
         if ($result == true)
             $retval=array(
                 'status'=>'true',
@@ -991,7 +992,7 @@ switch ($key)
             'ProStartTime' => $_GET["ProStartTime"],
             'Stage' => $_GET["Stage"]
         );
-        $result = $uiDbObj->db_siteinfo_update($siteinfo);
+        $result = $uiDbObj->dbi_siteinfo_update($siteinfo);
         if ($result == true)
             $retval=array(
                 'status'=>'true',
@@ -1020,7 +1021,7 @@ switch ($key)
                         msg:""
                     };*/
         $statcode = $_GET["StatCode"];
-        $result = $uiDbObj->db_siteinfo_delete($statcode);
+        $result = $uiDbObj->dbi_siteinfo_delete($statcode);
         if ($result)
             $retval=array(
                 'status'=>'true',
@@ -1054,7 +1055,7 @@ switch ($key)
                     ret: projdev
                 };*/
         $statcode = $_GET['StatCode'];
-        $devlist = $uiDbObj->db_site_devlist_req($statcode);
+        $devlist = $uiDbObj->dbi_site_devlist_req($statcode);
         if(!empty($devlist))
             $retval=array(
                 'status'=>"true",
@@ -1106,12 +1107,12 @@ switch ($key)
                                 };*/
 
 
-        $total = $uiDbObj->db_all_hcunum_inqury();
+        $total = $uiDbObj->dbi_all_hcunum_inqury();
         $query_length = (int)($_GET["length"]);
         $start = (int)($_GET["startseq"]);
         if($query_length> $total-$start)
         {$query_length = $total-$start;}
-        $devtable = $uiDbObj->db_all_hcutable_req($start,$query_length);
+        $devtable = $uiDbObj->dbi_all_hcutable_req($start,$query_length);
         if(!empty($devtable))
             $retval=array(
                 'status'=>'true',
@@ -1161,7 +1162,7 @@ switch ($key)
             'DevStatus' => $_GET["DevStatus"],
             'VideoURL' => $_GET["VideoURL"]
         );
-        $result = $uiDbObj->db_devinfo_update($devinfo);
+        $result = $uiDbObj->dbi_devinfo_update($devinfo);
         if ($result == true)
             $retval=array(
                 'status'=>'true',
@@ -1209,7 +1210,7 @@ switch ($key)
             'DevStatus' => $_GET["DevStatus"],
             'VideoURL' => $_GET["VideoURL"]
         );
-        $result = $uiDbObj->db_devinfo_update($devinfo);
+        $result = $uiDbObj->dbi_devinfo_update($devinfo);
         if ($result == true)
             $retval=array(
                 'status'=>'true',
@@ -1238,7 +1239,7 @@ switch ($key)
                         msg:""
                     };*/
         $devcode = $_GET["DevCode"];
-        $result = $uiDbObj->db_deviceinfo_delete($devcode);
+        $result = $uiDbObj->dbi_deviceinfo_delete($devcode);
         if ($result)
             $retval=array(
                 'status'=>'true',
@@ -1343,7 +1344,7 @@ switch ($key)
 
         $statcode =$_GET["StatCode"];
 
-        $alarmlist = $uiDbObj->db_dev_currentvalue_req($statcode);
+        $alarmlist = $uiDbObj->dbi_dev_currentvalue_req($statcode);
         if(!empty($alarmlist))
             $retval=array(
                 'status'=>'true',
@@ -1390,7 +1391,7 @@ switch ($key)
                         ret: stat_list
                     };*/
         $uid = $_GET["id"];
-        $stat_list = $uiDbObj->db_map_sitetinfo_req($uid);
+        $stat_list = $uiDbObj->dbi_map_sitetinfo_req($uid);
         if(!empty($stat_list))
             $retval=array(
                 'status'=>'true',
@@ -1451,7 +1452,7 @@ switch ($key)
         $statcode = $_GET["StatCode"];
         $query_date = $_GET["date"];
         $query_type = $_GET["type"];
-        $result = $uiDbObj->db_dev_alarmhistory_req($statcode, $query_date, $query_type);
+        $result = $uiDbObj->dbi_dev_alarmhistory_req($statcode, $query_date, $query_type);
 
         if(!empty($result))
             $retval= array(
@@ -1505,7 +1506,7 @@ switch ($key)
                         status:"true",
                         typelist: ret
                     };*/
-        $alarm_type = $uiDbObj->db_all_alarmtype_req();
+        $alarm_type = $uiDbObj->dbi_all_alarmtype_req();
         if(!empty($alarm_type))
             $retval=array(
                 'status'=>'true',
@@ -1564,7 +1565,7 @@ switch ($key)
             //row_content.push(one_row);
         }
 */
-        $result = $uiDbObj->db_excel_historydata_req($condition);
+        $result = $uiDbObj->dbi_excel_historydata_req($condition);
         if(!empty($result))
             $retval=array(
                 'status'=>'true',
@@ -1582,7 +1583,7 @@ switch ($key)
         break;
 
     case "SensorList":
-        $sensor_list = $uiDbObj->db_all_sensorlist_req();
+        $sensor_list = $uiDbObj->dbi_all_sensorlist_req();
         if(!empty($sensor_list))
             $retval=array(
                 'status'=>'true',
@@ -1599,7 +1600,7 @@ switch ($key)
 
     case "DevSensor":
         $devcode = $_GET["DevCode"];
-        $sensorinfo = $uiDbObj->db_dev_sensorinfo_req($devcode);
+        $sensorinfo = $uiDbObj->dbi_dev_sensorinfo_req($devcode);
 
         if(!empty($sensorinfo))
             $retval=array(
@@ -1730,9 +1731,9 @@ switch ($key)
             TableData:row_content
         };*/
         $sessionid = $_GET["id"];
-        $uid = $uiDbObj->db_session_check($sessionid);
+        $uid = $uiDbObj->dbi_session_check($sessionid);
 
-        $result = $uiDbObj->db_user_dataaggregate_req($uid);
+        $result = $uiDbObj->dbi_user_dataaggregate_req($uid);
         if(!empty($result))
             $retval=array(
                 'status'=>'true',

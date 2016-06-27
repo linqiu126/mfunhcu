@@ -6,12 +6,18 @@
  * Time: 20:14
  */
 include_once "../l1comvm/vmlayer.php";
-include_once "../l2sdk/dbi_l2sdk_wx.class.php";
+include_once "../l2sdk/dbi_l2sdk_iot_wx.class.php";
 
-class class_wx_db
+class classDbiL2sdkIotWx
 {
+    //构造函数
+    public function __construct()
+    {
+
+    }
+
     //验证微信蓝牙设备条码信息表中DeviceID对应的MAC地址的合法性
-    public function db_deviceqrcode_valid_mac($deviceId, $mac)
+    public function dbi_deviceqrcode_valid_mac($deviceId, $mac)
     {
         //建立连接
         $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME, MFUN_CLOUD_DBPORT);
@@ -30,7 +36,7 @@ class class_wx_db
     }
 
     //存储BLE绑定数据
-    public function db_blebound_save($fromUserName, $deviceID, $openID, $deviceType)
+    public function dbi_blebound_save($fromUserName, $deviceID, $openID, $deviceType)
     {
         //建立连接
         $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME, MFUN_CLOUD_DBPORT);
@@ -47,7 +53,7 @@ class class_wx_db
     }
 
     //查询绑定数据
-    public function db_blebound_query($fromUserName)
+    public function dbi_blebound_query($fromUserName)
     {
         //建立连接
         $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME, MFUN_CLOUD_DBPORT);
@@ -75,7 +81,7 @@ class class_wx_db
 
     //查询绑定数据是否已经有了相同的记录，否则就不应该重新绑定并增加一条记录
     //测试的过程中还有些问题，需要再行测试！！！
-    public function db_blebound_duplicate($fromUserName, $deviceID, $openID, $deviceType)
+    public function dbi_blebound_duplicate($fromUserName, $deviceID, $openID, $deviceType)
     {
         //建立连接
         $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME, MFUN_CLOUD_DBPORT);
@@ -92,7 +98,7 @@ class class_wx_db
     }
 
     //删除绑定数据
-    public function db_blebound_delete($fromUserName)
+    public function dbi_blebound_delete($fromUserName)
     {
         //建立连接
         $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME, MFUN_CLOUD_DBPORT);
@@ -107,7 +113,7 @@ class class_wx_db
     }
 
     //存储更新Token信息
-    public function db_accesstoken_save($appid, $appsecret, $lasttime, $access_token, $js_ticket)
+    public function dbi_accesstoken_save($appid, $appsecret, $lasttime, $access_token, $js_ticket)
     {
         //建立连接
         $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME, MFUN_CLOUD_DBPORT);
@@ -132,7 +138,7 @@ class class_wx_db
     }
 
     //判断是否有已经存在的Token
-    public function db_accesstoken_inqury($appid, $appsecret)
+    public function dbi_accesstoken_inqury($appid, $appsecret)
     {
         //建立连接
         $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME, MFUN_CLOUD_DBPORT);
@@ -152,7 +158,7 @@ class class_wx_db
     }
 
     //寻找一个空的DEVICE_ID
-    public function db_deviceqrcode_query_mac()
+    public function dbi_deviceqrcode_query_mac()
     {
         //建立连接
         $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME, MFUN_CLOUD_DBPORT);
@@ -176,7 +182,7 @@ class class_wx_db
     }
 
     //回写MAC属性
-    public function db_deviceqrcode_update_mac($deviceid, $mac)
+    public function dbi_deviceqrcode_update_mac($deviceid, $mac)
     {
         //建立连接
         $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME, MFUN_CLOUD_DBPORT);
@@ -191,7 +197,7 @@ class class_wx_db
     }
 
     //查询device ID， 二维码和MAC地址的绑定状态
-    public function db_deviceqrcode_query($deviceid, $devicetype)
+    public function dbi_deviceqrcode_query($deviceid, $devicetype)
     {
         //建立连接
         $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME, MFUN_CLOUD_DBPORT);
@@ -218,7 +224,7 @@ class class_wx_db
         return $res;
     }
 
-    public function db_deviceqrcode_save($deviceid, $qrcode, $devicetype, $mac)
+    public function dbi_deviceqrcode_save($deviceid, $qrcode, $devicetype, $mac)
     {
         //建立连接
         $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME, MFUN_CLOUD_DBPORT);
@@ -242,7 +248,7 @@ class class_wx_db
         return $result;
     }
 
-    public function db_deviceqrcode_delete($deviceid,$qrcode,$mac)
+    public function dbi_deviceqrcode_delete($deviceid,$qrcode,$mac)
     {
         //建立连接
         $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME, MFUN_CLOUD_DBPORT);
@@ -256,7 +262,7 @@ class class_wx_db
         return $result;
     }
 
-    public function db_emcdata_save_gps($deviceid,$timestamp,$latitude,$longitude)
+    public function dbi_emcdata_save_gps($deviceid,$timestamp,$latitude,$longitude)
     {
         //建立连接
         $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME, MFUN_CLOUD_DBPORT);
@@ -287,7 +293,7 @@ class class_wx_db
     }
 
     //Shanchun Start 通过FromUserName查询DeviceID
-    public function db_deviceid_inqury($user)
+    public function dbi_deviceid_inqury($user)
     {
         $DeviceID = 0;
         $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME, MFUN_CLOUD_DBPORT);
@@ -308,7 +314,7 @@ class class_wx_db
     }
 
     /*  to be checked with Shanchun how to modify this function
-    public function db_wxuser_inqury($sid)
+    public function dbi_wxuser_inqury($sid)
     {
         //$wxuser = 0;
         $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME, MFUN_CLOUD_DBPORT);

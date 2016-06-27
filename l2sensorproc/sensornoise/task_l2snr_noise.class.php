@@ -75,7 +75,7 @@ class class_noise_service
         $gps = "";
 
         $sDbObj = new class_service_db();
-        $sDbObj->db_noise_data_save($deviceId,$devCode,$ntimes,$noise,$gps);
+        $sDbObj->dbi_noise_data_save($deviceId,$devCode,$ntimes,$noise,$gps);
         */
         $resp = ""; //no response message
         return $resp;
@@ -96,19 +96,19 @@ class class_noise_service
         $gps["altitude"] = hexdec($data['Altitude']) & 0xFFFFFFFF;
         $timeStamp = hexdec($data['Time']) & 0xFFFFFFFF;
 
-        $sDbObj = new class_noise_db();
-        $sDbObj->db_noise_data_save($deviceId, $sensorId, $timeStamp, $report,$gps);
-        //$wxDbObj->db_AirPmDataInfo_delete_3monold($fromuser, $deviceid, $boxid,90);  //remove 90 days old data.
+        $sDbObj = new classDbiL2snrNoise();
+        $sDbObj->dbi_noise_data_save($deviceId, $sensorId, $timeStamp, $report,$gps);
+        //$wxDbObj->dbi_AirPmDataInfo_delete_3monold($fromuser, $deviceid, $boxid,90);  //remove 90 days old data.
 
         //更新分钟测量报告聚合表
-        $sDbObj->db_minreport_update_noise($deviceId,$statCode,$timeStamp,$report);
+        $sDbObj->dbi_minreport_update_noise($deviceId,$statCode,$timeStamp,$report);
 
         //更新数据精度格式表
         $format = $report["format"];
-        $cDbObj = new class_common_db();
-        $cDbObj->db_dataformat_update_format($deviceId,"T_noise",$format);
+        $cDbObj = new classDbiL1vmCommon();
+        $cDbObj->dbi_dataformat_update_format($deviceId,"T_noise",$format);
         //更新瞬时测量值聚合表
-        $cDbObj->db_currentreport_update_value($deviceId, $statCode, $timeStamp,"T_noise", $report);
+        $cDbObj->dbi_currentreport_update_value($deviceId, $statCode, $timeStamp,"T_noise", $report);
 
         $resp = ""; //no response message
         return $resp;

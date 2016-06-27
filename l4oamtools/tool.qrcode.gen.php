@@ -17,28 +17,28 @@ static $imagePath = "D:/work/image/";
 
 
 $wx_options = array(
-    'token'=>WX_TOKEN, //填写你设定的key
-    'encodingaeskey'=>WX_ENCODINGAESKEY, //填写加密用的EncodingAESKey，如接口为明文模式可忽略
-    'appid'=>WX_APPID,
-    'appsecret'=>WX_APPSECRET, //填写高级调用功能的密钥
-    'debug'=> WX_DEBUG,
-    'logcallback' => WX_LOGCALLBACK
+    'token'=>MFUN_WX_TOKEN, //填写你设定的key
+    'encodingaeskey'=>MFUN_WX_ENCODINGAESKEY, //填写加密用的EncodingAESKey，如接口为明文模式可忽略
+    'appid'=>MFUN_WX_APPID,
+    'appsecret'=>MFUN_WX_APPSECRET, //填写高级调用功能的密钥
+    'debug'=> MFUN_WX_DEBUG,
+    'logcallback' => MFUN_WX_LOGCALLBACK
 );
 
 $mac = $_POST["mac_address"];
 echo "Input MAC ADDRESS = " . $mac ."<br>";
 
-$wxObj = new class_wechat_sdk($wx_options);
+$wxObj = new classTaskL2sdkWechat($wx_options);
 //Step1:刷新Token
 echo "<br><H2>微信硬件工作环境即将开始......<br></H2>";
-$wxDevObj = new class_wx_IOT_sdk(WX_APPID, WX_APPSECRET);
+$wxDevObj = new classTaskL2sdkIotWx(MFUN_WX_APPID, MFUN_WX_APPSECRET);
 
 //实验Token是否已经被刷新
 echo "<br>测试最新刷新的Token=<br>"."$wxDevObj->access_token"."<br>";
 
 //Step2: 从数据库中取得有效的DEVICE_ID
-$wxDbObj = new class_wx_db();
-$result = $wxDbObj->db_deviceqrcode_query_mac();
+$wxDbObj = new classDbiL2sdkIotWx();
+$result = $wxDbObj->dbi_deviceqrcode_query_mac();
 if ($result ==null)
 {
     echo "<br>没有空的MAC地址了，请联系管理员! <br>";
@@ -56,7 +56,7 @@ if ($result ==null)
 //将二维码使用图像方式显示出来
     var_dump($wxDevObj->create_qrcodeDisplay($qrcode));
 //Update MAC地址到系统中
-    var_dump($wxDbObj->db_deviceqrcode_update_mac($deviceIdBLE, $mac));
+    var_dump($wxDbObj->dbi_deviceqrcode_update_mac($deviceIdBLE, $mac));
 
     // Step3 设备授权
 // 设备授权后才能进行扫码绑定

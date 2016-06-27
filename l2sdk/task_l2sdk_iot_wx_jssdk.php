@@ -6,9 +6,9 @@
  * Time: 13:08
  */
 include_once "../l1comvm/vmlayer.php";
-include_once "../l2sdk/dbi_l2sdk_wx.class.php";
+include_once "../l2sdk/dbi_l2sdk_iot_wx.class.php";
 
-class JSSDK {
+class classTaskL2sdkIotWxJssdk {
     private $appId;
     private $appSecret;
     private $access_token;
@@ -19,7 +19,7 @@ class JSSDK {
         
         /*        
         $wxDbObj = new class_mysql_db();
-        $result = $wxDbObj->db_AccessTokenInfo_inqury($appId, $appSecret);
+        $result = $wxDbObj->dbi_AccessTokenInfo_inqury($appId, $appSecret);
 
         if (($result == "NOTEXIST") || (time() > $result["lasttime"] + 6500))
         {
@@ -29,7 +29,7 @@ class JSSDK {
             //下一步存在当前临时变量和数据库中
             $this->lasttime = time();
             $this->access_token = $result["access_token"];
-            $wxDbObj->db_AccessTokenInfo_save($appId, $appSecret, $this->lasttime, $this->access_token);
+            $wxDbObj->dbi_AccessTokenInfo_save($appId, $appSecret, $this->lasttime, $this->access_token);
         }
         else{
             $this->lasttime = $result["lasttime"];
@@ -44,17 +44,11 @@ class JSSDK {
             // 注意 URL 一定要动态获取，不能 hardcode
         $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
         $url = "$protocol$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
-        
-        //$url = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";   
-        
-        
-        
+        //$url = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
         $timestamp = time();
         $nonceStr = $this->createNonceStr();
-
         // 这里参数的顺序要按照 key 值 ASCII 码升序排序
         $string = "jsapi_ticket=$jsapiTicket&noncestr=$nonceStr&timestamp=$timestamp&url=$url";
-
         $signature = sha1($string);
 
         $signPackage = array(
@@ -111,10 +105,8 @@ class JSSDK {
   
     private function getJsApiTicket() {
         // jsapi_ticket 应该全局存储与更新
-        
-        $wxDbObj = new class_wx_db();
-        $result = $wxDbObj->db_accesstoken_inqury($this->appId, $this->appSecret);
-
+        $wxDbObj = new classDbiL2sdkIotWx();
+        $result = $wxDbObj->dbi_accesstoken_inqury($this->appId, $this->appSecret);
 
         if (($result == "NOTEXIST") || (time() > $result["lasttime"] + 6500))
             {           
@@ -126,14 +118,11 @@ class JSSDK {
             $this->lasttime = time();
             $this->js_ticket = $res->ticket;
             if ($this->js_ticket) {
-                $wxDbObj->db_accesstoken_save($this->appId, $this->appSecret, $this->lasttime, $this->access_token, $this->js_ticket);
+                $wxDbObj->dbi_accesstoken_save($this->appId, $this->appSecret, $this->lasttime, $this->access_token, $this->js_ticket);
             
             }
         }
-            
-            
         else{           
-            
             $this->lasttime = $result["lasttime"];
             $this->js_ticket = $result["js_ticket"];
             }
@@ -141,14 +130,11 @@ class JSSDK {
         
         }
 
-    
-   
-
     private function getAccessToken() {
         // access_token 应该全局存储与更新
-        $wxDbObj = new class_wx_db();
-        $result = $wxDbObj->db_accesstoken_inqury($this->appId, $this->appSecret);
-        //$result = $wxDbObj->db_AccessTokenInfo_inqury(MFUN_WX_APPID, MFUN_WX_APPSECRET);
+        $wxDbObj = new classDbiL2sdkIotWx();
+        $result = $wxDbObj->dbi_accesstoken_inqury($this->appId, $this->appSecret);
+        //$result = $wxDbObj->dbi_AccessTokenInfo_inqury(MFUN_WX_APPID, MFUN_WX_APPSECRET);
 
         if (($result == "NOTEXIST") || (time() > $result["lasttime"] + 6500))
         {
@@ -158,7 +144,7 @@ class JSSDK {
             $result = json_decode($res, true);
             $this->lasttime = time();
             $this->access_token = $result["access_token"];
-            //$wxDbObj->db_AccessTokenInfo_save($this->appId, $this->appSecret, $this->lasttime, $this->access_token);
+            //$wxDbObj->dbi_AccessTokenInfo_save($this->appId, $this->appSecret, $this->lasttime, $this->access_token);
             //remove this line when save access_token & JsApiTicket in function getJsApiTicket();
         }
         else{
@@ -180,6 +166,13 @@ class JSSDK {
 
         return $res;
     }
+
+    //任务入口函数
+    public function mfun_l2sdk_iot_wx_jssdk_task_main_entry($parObj, $msg)
+    {
+
+    }
+
 }
 
 

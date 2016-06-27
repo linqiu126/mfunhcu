@@ -3,8 +3,8 @@ include_once "./dbi_l4aqyc_ui.class.php";
 
 function check_session($s){
 
-    $uiDbObj = new class_ui_db();
-    $usrinfo =$uiDbObj->db_session_check($s);
+    $uiDbObj = new classDbiL4aqycUi();
+    $usrinfo =$uiDbObj->dbi_session_check($s);
     return $usrinfo;
     /*
 	if($s == "1234567"){

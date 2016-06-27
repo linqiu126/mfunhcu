@@ -26,7 +26,7 @@ if (empty($opt_type)){
     exit(0);
 }
 
-$cObj = new class_common_service();
+$cObj = new classApiL2snrCommonService();
 switch($sensorType)
 {
     case "temperature":
@@ -170,8 +170,8 @@ switch($opt_type)
 
 if ($respCmd != NULL)
 {
-    $cDbObj = new class_common_db();    
-    $result = $cDbObj->db_cmdbuf_save_cmd(trim($devCode), trim($respCmd));
+    $cDbObj = new classDbiL1vmCommon();
+    $result = $cDbObj->dbi_cmdbuf_save_cmd(trim($devCode), trim($respCmd));
     if ($result == TRUE){
         //echo "Command = " . $respCmd . " has been submitted successfully!";
         echo "<script type='text/javascript'> alert('操作命令= $respCmd 已经被成功发送!'); history.back();</script>";

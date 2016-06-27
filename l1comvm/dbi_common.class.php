@@ -7,10 +7,10 @@
  */
 include_once "../l1comvm/sysconfig.php";
 
-class classL1vmCommonDbi
+class classDbiL1vmCommon
 {
     //更新设备软,硬件版本
-    public function db_deviceVersion_update($deviceid, $hw_type, $hw_ver, $sw_rel, $sw_drop)
+    public function dbi_deviceVersion_update($deviceid, $hw_type, $hw_ver, $sw_rel, $sw_drop)
     {
         //建立连接
         $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME, MFUN_CLOUD_DBPORT);
@@ -35,7 +35,7 @@ class classL1vmCommonDbi
     }
 
     //验证设备的合法性，输入的设备编号是否在HCU设备信息表（t_hcudevice）中有记录
-    public function db_hcuDevice_valid_device($devcode)
+    public function dbi_hcuDevice_valid_device($devcode)
     {
         $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME, MFUN_CLOUD_DBPORT);
         if (!$mysqli)
@@ -57,7 +57,7 @@ class classL1vmCommonDbi
     }
 
     //验证HCU设备信息表中设备编号对应的MAC地址的合法性
-    public function db_hcuDevice_valid_mac($deviceid, $mac)
+    public function dbi_hcuDevice_valid_mac($deviceid, $mac)
     {
         //建立连接
         $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME, MFUN_CLOUD_DBPORT);
@@ -75,7 +75,7 @@ class classL1vmCommonDbi
         return $result;
     }
 
-    public function db_hcuDevice_update_status($deviceid, $statcode, $status)
+    public function dbi_hcuDevice_update_status($deviceid, $statcode, $status)
     {
         //建立连接
         $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME, MFUN_CLOUD_DBPORT);
@@ -92,7 +92,7 @@ class classL1vmCommonDbi
     }
 
     //查询该HCU设备的视频地址link
-    public function db_siteinfo_inquiry_url($deviceid)
+    public function dbi_siteinfo_inquiry_url($deviceid)
     {
         //建立连接
         $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME, MFUN_CLOUD_DBPORT);
@@ -115,7 +115,7 @@ class classL1vmCommonDbi
     }
 
     //查询所有HCU list
-    public function db_hcuDevice_inquiry_device()
+    public function dbi_hcuDevice_inquiry_device()
     {
         //建立连接
         $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME, MFUN_CLOUD_DBPORT);
@@ -139,7 +139,7 @@ class classL1vmCommonDbi
 
 
     //更新各测量数据对应的精度信息
-    public function db_dataformat_update_format($deviceid, $type, $format)
+    public function dbi_dataformat_update_format($deviceid, $type, $format)
     {
         //建立连接
         $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME, MFUN_CLOUD_DBPORT);
@@ -250,7 +250,7 @@ class classL1vmCommonDbi
     }
 
     //更新测量数据当前瞬时值聚合表
-    public function db_currentreport_update_value($deviceid, $statcode, $timestamp, $type, $data)
+    public function dbi_currentreport_update_value($deviceid, $statcode, $timestamp, $type, $data)
     {
         //建立连接
         $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME, MFUN_CLOUD_DBPORT);
@@ -375,7 +375,7 @@ class classL1vmCommonDbi
     }
 
     //HCU控制命令缓存
-    public function db_cmdbuf_save_cmd($deviceid, $cmd)
+    public function dbi_cmdbuf_save_cmd($deviceid, $cmd)
     {
         //建立连接
         $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME, MFUN_CLOUD_DBPORT);
@@ -393,7 +393,7 @@ class classL1vmCommonDbi
     }
 
     //HCU控制命令查询
-    public function db_cmdbuf_inquiry_cmd($deviceid)
+    public function dbi_cmdbuf_inquiry_cmd($deviceid)
     {
         //建立连接
         $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME, MFUN_CLOUD_DBPORT);
@@ -420,7 +420,7 @@ class classL1vmCommonDbi
     }
 
     //HCU历史视频查询
-    public function db_videodata_inquiry_url($deviceid)
+    public function dbi_videodata_inquiry_url($deviceid)
     {
         //建立连接
         $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME, MFUN_CLOUD_DBPORT);
@@ -444,7 +444,7 @@ class classL1vmCommonDbi
     }
 
     //设置数据库中该用户微信log开关状态
-    public function db_LogSwitchInfo_set($user,$switch_set)
+    public function dbi_LogSwitchInfo_set($user,$switch_set)
     {
         $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME, MFUN_CLOUD_DBPORT);
         if (!$mysqli) {
@@ -467,7 +467,7 @@ class classL1vmCommonDbi
     }
 
     //查询数据库中该用户微信log开关状态
-    public function db_LogSwitchInfo_inqury($user)
+    public function dbi_LogSwitchInfo_inqury($user)
     {
         $switch_info = 0;
         $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME, MFUN_CLOUD_DBPORT);
@@ -487,7 +487,7 @@ class classL1vmCommonDbi
         return $switch_info;
     }
 
-    public function db_log_process($project,$fromuser,$createtime,$log_content)
+    public function dbi_log_process($project,$fromuser,$createtime,$log_content)
     {
         $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME, MFUN_CLOUD_DBPORT);
         if (!$mysqli)

@@ -6,31 +6,12 @@
  * Time: 20:12
  */
 include_once "../l1comvm/vmlayer.php";
-include_once "../l2sdk/dbi_l2sdk_wx.class.php";
+include_once "../l2sdk/dbi_l2sdk_iot_wx.class.php";
 include_once "../l2sdk/task_l2sdk_iot_wx_jssdk.php";
 
-
-class classTaskL2sdkIotWx
-{
-    //构造函数
-    public function __construct()
-    {
-
-    }
-
-    //任务入口函数
-    public function mfun_l2sdk_iot_wx_task_main_entry($parObj, $msg)
-    {
-
-    }
-
-}
-
-
-//该文件的处理，将成为标准的WEIXIN Layer3处理，而非SDK层面的L2处理，等待移动到L3层面
-
 //BXXH硬件设备级 Layer 2.2 SDK02，用户设备级接入到微信系统中
-class class_wx_IOT_sdk
+//该文件的处理，将成为标准的WEIXIN Layer3处理，而非SDK层面的L2处理，等待移动到L3层面
+class classTaskL2sdkIotWx
 {
     var $appid = "";
     var $appsecret = "";
@@ -86,9 +67,9 @@ class class_wx_IOT_sdk
         //这里的Token刷的太快，会出现超过微信设置的每天API刷新的上限问题
         //解决了Token的心病问题：官方程序使用定时器+共享中控服务器的方式，咱们这里完全采用数据库+用户业务逻辑触发，一样可靠
         //原则上，同一个Appid/Appsecrete的逻辑功能，包括不同Subscriber的操作，都
-        $wxDbObj = new class_wx_db();
-        // $result = $wxDbObj->db_accesstoken_inqury($appid, $appsecret);
-        $result = $wxDbObj->db_accesstoken_inqury(MFUN_WX_APPID, MFUN_WX_APPSECRET);
+        $wxDbObj = new classDbiL2sdkIotWx();
+        // $result = $wxDbObj->dbi_accesstoken_inqury($appid, $appsecret);
+        $result = $wxDbObj->dbi_accesstoken_inqury(MFUN_WX_APPID, MFUN_WX_APPSECRET);
         //2小时=7200秒为最长限度，考虑到余量，少放点
         if (($result == "NOTEXIST") || (time() > $result["lasttime"] + 6500))
         {
@@ -105,7 +86,7 @@ class class_wx_IOT_sdk
             $result = json_decode($res, true);
             $this->js_ticket = $result["ticket"];
 
-            $wxDbObj->db_accesstoken_save($appid, $appsecret, $this->lasttime, $this->access_token,$this->js_ticket);
+            $wxDbObj->dbi_accesstoken_save($appid, $appsecret, $this->lasttime, $this->access_token,$this->js_ticket);
         }
         else
         {
@@ -118,8 +99,8 @@ class class_wx_IOT_sdk
     //强制刷微信token, 由于一天最多2000次，所以强制刷新间隔不能超过45 （24x60x60)/2000=43.2
     public function compel_get_token($appid, $appsecret)
     {
-        $wxDbObj = new class_wx_db();
-        $result = $wxDbObj->db_accesstoken_inqury($appid, $appsecret);
+        $wxDbObj = new classDbiL2sdkIotWx();
+        $result = $wxDbObj->dbi_accesstoken_inqury($appid, $appsecret);
         if (($result == "NOTEXIST") || (time() > $result["lasttime"] + 60))
         {
             $url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=" . $this->appid . "&secret=" . $this->appsecret;
@@ -134,7 +115,7 @@ class class_wx_IOT_sdk
             $result = json_decode($res, true);
             $this->js_ticket = $result["ticket"];
 
-            $wxDbObj->db_accesstoken_save($appid, $appsecret, $this->lasttime, $this->access_token,$this->js_ticket);
+            $wxDbObj->dbi_accesstoken_save($appid, $appsecret, $this->lasttime, $this->access_token,$this->js_ticket);
         }
         else
         {
@@ -527,8 +508,8 @@ class class_wx_IOT_sdk
     }
 
     /******************************************************************************************************************
-    *                                               自定义API部分                                                     *
-    ******************************************************************************************************************/
+     *                                               自定义API部分                                                     *
+     ******************************************************************************************************************/
     //接收微信消息类型为“device_text”的处理函数，传入data为下位机发送的16进制码流
     public function receive_wx_deviceMessage($data)
     {
@@ -540,8 +521,8 @@ class class_wx_IOT_sdk
         $fromUser = trim($data->FromUserName);
         $deviceId = trim($data->DeviceID);
 
-        $logDbObj = new class_common_db();
-        $wx_trace = $logDbObj->db_LogSwitchInfo_inqury($fromUser);
+        $logDbObj = new classDbiL1vmCommon();
+        $wx_trace = $logDbObj->dbi_LogSwitchInfo_inqury($fromUser);
         if ($wx_trace == 1) //打印收到的device消息
         {
             $msgContent = "R:DEVICE_TEXT= " . $strContent;
@@ -550,18 +531,18 @@ class class_wx_IOT_sdk
         //调用统一的deviceTask处理入口函数
         $resp_msg = $this->ihu_deviceTaskProcess("device_text", $strContent, $fromUser, $deviceId);
 
-        $wxDbObj = new class_wx_db();
-        $db_info = $wxDbObj->db_blebound_query($data->FromUserName);  //查询该用户是否是绑定用户
-        if ($db_info == true && !empty($resp_msg) )
+        $wxDbObj = new classDbiL2sdkIotWx();
+        $dbi_info = $wxDbObj->dbi_blebound_query($data->FromUserName);  //查询该用户是否是绑定用户
+        if ($dbi_info == true && !empty($resp_msg) )
         {
             $check = unpack('A5Hint', $resp_msg);
             if($check['Hint'] == "ERROR")
                 return $resp_msg;
 
             $i = 0;
-            while ($i<count($db_info)) //考虑同一个用户绑定多个设备的情况,循环发送response给该用户绑定的所有设备
+            while ($i<count($dbi_info)) //考虑同一个用户绑定多个设备的情况,循环发送response给该用户绑定的所有设备
             {
-                $dev_table = $db_info[$i];
+                $dev_table = $dbi_info[$i];
                 $result = $this->trans_msgtodevice($dev_table["deviceType"], $dev_table["deviceID"], $dev_table["openID"], $resp_msg);
                 /*
                 if ($result["errcode"] ==40001)  //防止偶然未知原因导致token失效，强制刷新token并再次发送
@@ -599,26 +580,26 @@ class class_wx_IOT_sdk
         $strContent = strtoupper($content["1"]);//转换成16进制格式的字符串
 
         //这里有个假设：解绑来自于用户的操作，Event/Ubscribe和Event_device/Ubind是分离的
-        $wxDbObj = new class_wx_db();
+        $wxDbObj = new classDbiL2sdkIotWx();
         switch ($data->Event)
         {
             case "bind":
                 $resp1 = "R:DEVICE_EVENT=bind\n";
-                $result = $wxDbObj->db_blebound_duplicate($data->FromUserName, $data->DeviceID, $data->OpenID, $data->DeviceType);
+                $result = $wxDbObj->dbi_blebound_duplicate($data->FromUserName, $data->DeviceID, $data->OpenID, $data->DeviceType);
                 if ($result == true)
                     $resp2 = "Result= BLE device user bind duplicate, ";
                 else
                 {
-                    $wxDbObj->db_blebound_save($data->FromUserName, $data->DeviceID, $data->OpenID, $data->DeviceType);
+                    $wxDbObj->dbi_blebound_save($data->FromUserName, $data->DeviceID, $data->OpenID, $data->DeviceType);
                     $resp2 = "Result= BLE device user bind OK,";
                 }
-                $db_table = $wxDbObj->db_deviceqrcode_query($data->DeviceID,$data->DeviceType);
-                if ($db_table == true)
+                $dbi_table = $wxDbObj->dbi_deviceqrcode_query($data->DeviceID,$data->DeviceType);
+                if ($dbi_table == true)
                 {
-                    if (!empty($db_table["mac"]))
+                    if (!empty($dbi_table["mac"]))
                     {
 
-                        $this->device_AuthBLE($db_table["deviceid"], $db_table["mac"]);
+                        $this->device_AuthBLE($dbi_table["deviceid"], $dbi_table["mac"]);
                         $this->compel_bind($data->DeviceID, $data->OpenID);
                         $resp3 = "Weixin device MAC bind OK";
                     }
@@ -632,7 +613,7 @@ class class_wx_IOT_sdk
                 break;
 
             case "unbind":
-                $result = $wxDbObj->db_blebound_delete($data->FromUserName);
+                $result = $wxDbObj->dbi_blebound_delete($data->FromUserName);
                 $respMsg = "R:DEVICE_EVENT=unbind, Result= " . $result;
                 break;
             default:
@@ -643,8 +624,8 @@ class class_wx_IOT_sdk
         //因为是DEVICE_EVENT事件，设备内传输的L3信息应该是空的，这里保留设备L3消息相关处理
         $event_resp = $this->ihu_deviceTaskProcess("device_text", $strContent, $data->FromUserName, $data->DeviceID);
 
-        $logDbObj = new class_common_db();
-        $wx_trace = $logDbObj->db_LogSwitchInfo_inqury($data->FromUserName);
+        $logDbObj = new classDbiL1vmCommon();
+        $wx_trace = $logDbObj->dbi_LogSwitchInfo_inqury($data->FromUserName);
         if ($wx_trace == 1)
             $transMsg = $this->send_custom_message(trim($data->FromUserName), "text", $respMsg . "\n" . json_encode($event_resp));
         else
@@ -661,10 +642,10 @@ class class_wx_IOT_sdk
                 $transMsg = $this->xms_responseText($data->FromUserName, $data->ToUserName, "Appid = " . $this->appid . "\nTokenID = " . $this->access_token ."\nJS_ticket =" . $this->js_ticket);
                 break;
             case "CLICK_VERSION":
-                $wxDbObj = new class_wx_db();
-                $db_info = $wxDbObj->db_blebound_query($data->FromUserName);
+                $wxDbObj = new classDbiL2sdkIotWx();
+                $dbi_info = $wxDbObj->dbi_blebound_query($data->FromUserName);
 
-                if ($db_info == false)
+                if ($dbi_info == false)
                 {
                     $transMsg = $this->xms_responseText($data->FromUserName, $data->ToUserName, "No device bind for this user in database");
                 }
@@ -676,9 +657,9 @@ class class_wx_IOT_sdk
                     if (!empty($msg_body))
                     {
                         $i = 0;
-                        while ($i<count($db_info)) //考虑同一个用户绑定多个设备的情况,循环发送命令给该用户绑定的所有设备
+                        while ($i<count($dbi_info)) //考虑同一个用户绑定多个设备的情况,循环发送命令给该用户绑定的所有设备
                         {
-                            $dev_table = $db_info[$i];
+                            $dev_table = $dbi_info[$i];
                             //BYTE系列化处理在L3消息处理过程中已完成，推送数据到硬件设备
                             $result = $this->trans_msgtodevice($dev_table["deviceType"], $dev_table["deviceID"], $dev_table["openID"], $msg_body);
                             /*
@@ -692,8 +673,8 @@ class class_wx_IOT_sdk
                         }
                     }
                     //推送回复消息给微信界面
-                    $logDbObj = new class_common_db();
-                    $wx_trace = $logDbObj->db_LogSwitchInfo_inqury($data->FromUserName);
+                    $logDbObj = new classDbiL1vmCommon();
+                    $wx_trace = $logDbObj->dbi_LogSwitchInfo_inqury($data->FromUserName);
                     if ($wx_trace ==1)
                     {
                         $str_body = unpack('H*',$msg_body);
@@ -709,8 +690,8 @@ class class_wx_IOT_sdk
                 break;
             case "CLICK_BIND_INQ":
                 //增加第三方后台云的绑定状态
-                $wxDbObj = new class_wx_db();
-                $result = $wxDbObj->db_blebound_query($data->FromUserName);
+                $wxDbObj = new classDbiL2sdkIotWx();
+                $result = $wxDbObj->dbi_blebound_query($data->FromUserName);
                 if ($result == false)
                 {
                     $dbResp = "DB User-Device bind: None";
@@ -718,7 +699,7 @@ class class_wx_IOT_sdk
                 else
                 {
                     $dev_table = $result[0];
-                    $res = $wxDbObj->db_deviceqrcode_query($dev_table["deviceID"], $dev_table["deviceType"]);
+                    $res = $wxDbObj->dbi_deviceqrcode_query($dev_table["deviceID"], $dev_table["deviceType"]);
                     $dbResp = "DB User-Device bind: Yes, MAC=" . json_encode($res["mac"]);
                 }
                 //再查微信云上的绑定状态
@@ -760,25 +741,25 @@ class class_wx_IOT_sdk
                     $wxResp = "No device bind for this user in Weixin, result=" . json_encode($result["resp_msg"]);
                 }
                 //再解绑第三方数据库的绑定状态
-                $wxDbObj = new class_wx_db();
-                $db_info = $wxDbObj->db_blebound_query($data->FromUserName);
-                if ($db_info == false)
+                $wxDbObj = new classDbiL2sdkIotWx();
+                $dbi_info = $wxDbObj->dbi_blebound_query($data->FromUserName);
+                if ($dbi_info == false)
                 {
                     $dbResp = "No device bind for this user in database";
                 }
                 else
                 {
-                    $wxDbObj->db_blebound_delete($data->FromUserName); //解绑用户和device
+                    $wxDbObj->dbi_blebound_delete($data->FromUserName); //解绑用户和device
                     $dbResp = "All device unbind for this user in database";
                 }
                 $transMsg = $this->xms_responseText($data->FromUserName, $data->ToUserName, $dbResp . " \n" . $wxResp);
                 break;
 
             case "CLICK_EMC_READ":
-                $wxDbObj = new class_wx_db();
-                $db_info = $wxDbObj->db_blebound_query($data->FromUserName);
+                $wxDbObj = new classDbiL2sdkIotWx();
+                $dbi_info = $wxDbObj->dbi_blebound_query($data->FromUserName);
 
-                if ($db_info == false)
+                if ($dbi_info == false)
                 {
                     $transMsg = $this->xms_responseText($data->FromUserName, $data->ToUserName, "No device bind for this user in database");
                 }
@@ -790,9 +771,9 @@ class class_wx_IOT_sdk
                     if (!empty($msg_body))
                     {
                         $i = 0;
-                        while ($i<count($db_info)) //考虑同一个用户绑定多个设备的情况,循环发送命令给该用户绑定的所有设备
+                        while ($i<count($dbi_info)) //考虑同一个用户绑定多个设备的情况,循环发送命令给该用户绑定的所有设备
                         {
-                            $dev_table = $db_info[$i];
+                            $dev_table = $dbi_info[$i];
                             //BYTE系列化处理在L3消息处理过程中已完成,推送数据到硬件设备
                             $result = $this->trans_msgtodevice($dev_table["deviceType"], $dev_table["deviceID"], $dev_table["openID"], $msg_body);
                             /*
@@ -807,8 +788,8 @@ class class_wx_IOT_sdk
                     }
 
                     //推送回复消息给微信界面
-                    $logDbObj = new class_common_db();
-                    $wx_trace = $logDbObj->db_LogSwitchInfo_inqury($data->FromUserName);
+                    $logDbObj = new classDbiL1vmCommon();
+                    $wx_trace = $logDbObj->dbi_LogSwitchInfo_inqury($data->FromUserName);
                     if ($wx_trace ==1)
                     {
                         $str_body = unpack('H*',$msg_body);
@@ -822,10 +803,10 @@ class class_wx_IOT_sdk
                 }
                 break;
             case "CLICK_PM25_READ":
-                $wxDbObj = new class_wx_db();
-                $db_info = $wxDbObj->db_blebound_query($data->FromUserName);
+                $wxDbObj = new classDbiL2sdkIotWx();
+                $dbi_info = $wxDbObj->dbi_blebound_query($data->FromUserName);
 
-                if ($db_info == false)
+                if ($dbi_info == false)
                 {
                     $transMsg = $this->xms_responseText($data->FromUserName, $data->ToUserName, "No device bind for this user in database");
                 }
@@ -837,9 +818,9 @@ class class_wx_IOT_sdk
                     if (!empty($msg_body))
                     {
                         $i = 0;
-                        while ($i<count($db_info)) //考虑同一个用户绑定多个设备的情况,循环发送命令给该用户绑定的所有设备
+                        while ($i<count($dbi_info)) //考虑同一个用户绑定多个设备的情况,循环发送命令给该用户绑定的所有设备
                         {
-                            $dev_table = $db_info[$i];
+                            $dev_table = $dbi_info[$i];
                             //BYTE系列化处理在L3消息处理过程中已完成,推送数据到硬件设备
                             $result = $this->trans_msgtodevice($dev_table["deviceType"], $dev_table["deviceID"], $dev_table["openID"], $msg_body);
 
@@ -855,8 +836,8 @@ class class_wx_IOT_sdk
                     }
 
                     //推送回复消息给微信界面
-                    $logDbObj = new class_common_db();
-                    $wx_trace = $logDbObj->db_LogSwitchInfo_inqury($data->FromUserName);
+                    $logDbObj = new classDbiL1vmCommon();
+                    $wx_trace = $logDbObj->dbi_LogSwitchInfo_inqury($data->FromUserName);
                     if ($wx_trace ==1)
                     {
                         $str_body = unpack('H*',$msg_body);
@@ -871,15 +852,15 @@ class class_wx_IOT_sdk
                 break;
             case "CLICK_TRACE_ON":
                 $trace_set = 1;
-                $logDbObj = new class_common_db();
-                $result = $logDbObj->db_LogSwitchInfo_set($data->FromUserName,$trace_set);
+                $logDbObj = new classDbiL1vmCommon();
+                $result = $logDbObj->dbi_LogSwitchInfo_set($data->FromUserName,$trace_set);
                 $transMsg = $this->xms_responseText($data->FromUserName, $data->ToUserName, "设置微信log打印开关ON，Result=" . json_encode($result));
                 break;
 
             case "CLICK_TRACE_OFF":
                 $trace_set = 0;
-                $logDbObj = new class_common_db();
-                $result = $logDbObj->db_LogSwitchInfo_set($data->FromUserName,$trace_set);
+                $logDbObj = new classDbiL1vmCommon();
+                $result = $logDbObj->dbi_LogSwitchInfo_set($data->FromUserName,$trace_set);
                 $transMsg = $this->xms_responseText($data->FromUserName, $data->ToUserName, "设置微信log打印开关OFF，Result=" . json_encode($result));
                 break;
 
@@ -913,7 +894,7 @@ class class_wx_IOT_sdk
                 $respContent = $ihuObj->func_pm_data_push_process();
                 break;
             case "CLICK_VERSION":
-                $ihuObj = new class_common_service();
+                $ihuObj = new classApiL2snrCommonService();
                 $respContent = $ihuObj->func_version_push_process();
                 break;
             default:
@@ -946,11 +927,11 @@ class class_wx_IOT_sdk
         {
             case CMDID_VERSION_SYNC:
                 //定时辐射强度处理
-                $ihuObj = new class_common_service();
+                $ihuObj = new classApiL2snrCommonService();
                 $resp = $ihuObj->func_version_update_process(PLTF_WX, $deviceId, $data);
                 break;
             case CMDID_TIME_SYNC:
-                $ihuObj = new class_common_service();
+                $ihuObj = new classApiL2snrCommonService();
                 $msg_body = $ihuObj->func_timeSync_process(PLTF_WX, $deviceId, $data);
                 if(!empty($msg_body))
                     $resp = pack('H*',$msg_body);
@@ -1006,19 +987,19 @@ class class_wx_IOT_sdk
     //强制绑定菜单处理函数，主要用于调试目的
     public function click_bindCommand ($data)
     {
-        $wxDbObj = new class_wx_db();
+        $wxDbObj = new classDbiL2sdkIotWx();
         switch ($data->FromUserName){
             case LZH_openid:
-                $result = $wxDbObj->db_blebound_duplicate(LZH_openid, LZH_deviceid, LZH_openid, device_type);
+                $result = $wxDbObj->dbi_blebound_duplicate(LZH_openid, LZH_deviceid, LZH_openid, device_type);
                 if ($result == false)
                 {
-                    $result = $wxDbObj->db_blebound_save(LZH_openid, LZH_deviceid, LZH_openid, device_type);
+                    $result = $wxDbObj->dbi_blebound_save(LZH_openid, LZH_deviceid, LZH_openid, device_type);
                     $this->send_custom_message(trim($data->FromUserName), "text","User-Device DB bind, Result= ".json_encode($result) );
                 }
                 else
                     $this->send_custom_message(trim($data->FromUserName), "text","User-Device DB duplicated, no action");
 
-                $result = $wxDbObj->db_deviceqrcode_save(LZH_deviceid, LZH_qrcode, device_type, LZH_mac);
+                $result = $wxDbObj->dbi_deviceqrcode_save(LZH_deviceid, LZH_qrcode, device_type, LZH_mac);
                 $this->send_custom_message(trim($data->FromUserName), "text","Qrcode-MAC DB bind, Result= " .json_encode($result));
 
                 $this->device_AuthBLE(LZH_deviceid, LZH_mac);
@@ -1030,17 +1011,17 @@ class class_wx_IOT_sdk
 
                 break;
             case ZJL_openid:
-                $result = $wxDbObj->db_blebound_duplicate(ZJL_openid, ZJL_deviceid, ZJL_openid, device_type);
+                $result = $wxDbObj->dbi_blebound_duplicate(ZJL_openid, ZJL_deviceid, ZJL_openid, device_type);
                 if ($result == false)
                 {
-                    $result = $wxDbObj->db_blebound_save(ZJL_openid, ZJL_deviceid, ZJL_openid, device_type);
+                    $result = $wxDbObj->dbi_blebound_save(ZJL_openid, ZJL_deviceid, ZJL_openid, device_type);
                     $this->send_custom_message(trim($data->FromUserName), "text","User-Device DB bind, Result= ".json_encode($result) );
                 }
                 else
                     $this->send_custom_message(trim($data->FromUserName), "text","User-Device DB duplicated, no action");
 
                 $this->device_AuthBLE(ZJL_deviceid, ZJL_mac);
-                $result = $wxDbObj->db_deviceqrcode_save(ZJL_deviceid, ZJL_qrcode, device_type, ZJL_mac);
+                $result = $wxDbObj->dbi_deviceqrcode_save(ZJL_deviceid, ZJL_qrcode, device_type, ZJL_mac);
                 $this->send_custom_message(trim($data->FromUserName), "text","Qrcode-MAC DB bind, Result= " .json_encode($result));
 
                 $result = $this->compel_bind(ZJL_deviceid, ZJL_openid);
@@ -1051,16 +1032,16 @@ class class_wx_IOT_sdk
                 break;
 
             case MYC_openid:
-                $result = $wxDbObj->db_blebound_duplicate(MYC_openid, MYC_deviceid, MYC_openid, device_type);
+                $result = $wxDbObj->dbi_blebound_duplicate(MYC_openid, MYC_deviceid, MYC_openid, device_type);
                 if ($result == false)
                 {
-                    $result = $wxDbObj->db_blebound_save(MYC_openid, MYC_deviceid, MYC_openid, device_type);
+                    $result = $wxDbObj->dbi_blebound_save(MYC_openid, MYC_deviceid, MYC_openid, device_type);
                     $this->send_custom_message(trim($data->FromUserName), "text","User-Device DB bind, Result= ".json_encode($result) );
                 }
                 else
                     $this->send_custom_message(trim($data->FromUserName), "text","User-Device DB duplicated, no action");
 
-                $result = $wxDbObj->db_deviceqrcode_save(MYC_deviceid, MYC_qrcode, device_type, MYC_mac);
+                $result = $wxDbObj->dbi_deviceqrcode_save(MYC_deviceid, MYC_qrcode, device_type, MYC_mac);
                 $this->send_custom_message(trim($data->FromUserName), "text","Qrcode-MAC DB bind, Result= " .json_encode($result));
 
                 $this->device_AuthBLE(MYC_deviceid, MYC_mac);
@@ -1071,16 +1052,16 @@ class class_wx_IOT_sdk
                 $transMsg = $this->xms_responseText($data->FromUserName, $data->ToUserName,"Weixin get_bind_device , Result= " .json_encode($result));
                 break;
             case CZ_openid:
-                $result = $wxDbObj->db_blebound_duplicate(CZ_openid, CZ_deviceid, CZ_openid, device_type);
+                $result = $wxDbObj->dbi_blebound_duplicate(CZ_openid, CZ_deviceid, CZ_openid, device_type);
                 if ($result == false)
                 {
-                    $result = $wxDbObj->db_blebound_save(CZ_openid, ZJL_deviceid, CZ_openid, device_type);
+                    $result = $wxDbObj->dbi_blebound_save(CZ_openid, ZJL_deviceid, CZ_openid, device_type);
                     $this->send_custom_message(trim($data->FromUserName), "text","User-Device DB bind, Result= ".json_encode($result) );
                 }
                 else
                     $this->send_custom_message(trim($data->FromUserName), "text","User-Device DB duplicated, no action");
 
-                $result = $wxDbObj->db_deviceqrcode_save(CZ_deviceid, CZ_qrcode, device_type, CZ_mac);
+                $result = $wxDbObj->dbi_deviceqrcode_save(CZ_deviceid, CZ_qrcode, device_type, CZ_mac);
                 $this->send_custom_message(trim($data->FromUserName), "text","Qrcode-MAC DB bind, Result= " .json_encode($result));
 
                 $this->device_AuthBLE(CZ_deviceid, CZ_mac);
@@ -1091,16 +1072,16 @@ class class_wx_IOT_sdk
                 $transMsg = $this->xms_responseText($data->FromUserName, $data->ToUserName,"Weixin get_bind_device , Result= " .json_encode($result));
                 break;
             case QL_openid:
-                $result = $wxDbObj->db_blebound_duplicate(QL_openid, QL_deviceid, QL_openid, device_type);
+                $result = $wxDbObj->dbi_blebound_duplicate(QL_openid, QL_deviceid, QL_openid, device_type);
                 if ($result == false)
                 {
-                    $result = $wxDbObj->db_blebound_save(QL_openid, QL_deviceid, QL_openid, device_type);
+                    $result = $wxDbObj->dbi_blebound_save(QL_openid, QL_deviceid, QL_openid, device_type);
                     $this->send_custom_message(trim($data->FromUserName), "text","User-Device DB bind, Result= ".json_encode($result) );
                 }
                 else
                     $this->send_custom_message(trim($data->FromUserName), "text","User-Device DB duplicated, no action");
 
-                $result = $wxDbObj->db_deviceqrcode_save(QL_deviceid, QL_qrcode, device_type, QL_mac);
+                $result = $wxDbObj->dbi_deviceqrcode_save(QL_deviceid, QL_qrcode, device_type, QL_mac);
                 $this->send_custom_message(trim($data->FromUserName), "text","Qrcode-MAC DB bind, Result= " .json_encode($result));
 
                 $this->device_AuthBLE(QL_deviceid, QL_mac);
@@ -1111,16 +1092,16 @@ class class_wx_IOT_sdk
                 $transMsg = $this->xms_responseText($data->FromUserName, $data->ToUserName,"Weixin get_bind_device , Result= " .json_encode($result));
                 break;
             case JT_openid:
-                $result = $wxDbObj->db_blebound_duplicate(JT_openid, JT_deviceid, JT_openid, device_type);
+                $result = $wxDbObj->dbi_blebound_duplicate(JT_openid, JT_deviceid, JT_openid, device_type);
                 if ($result == false)
                 {
-                    $result = $wxDbObj->db_blebound_save(JT_openid, JT_deviceid, JT_openid, device_type);
+                    $result = $wxDbObj->dbi_blebound_save(JT_openid, JT_deviceid, JT_openid, device_type);
                     $this->send_custom_message(trim($data->FromUserName), "text","User-Device DB bind, Result= ".json_encode($result) );
                 }
                 else
                     $this->send_custom_message(trim($data->FromUserName), "text","User-Device DB duplicated, no action");
 
-                $result = $wxDbObj->db_deviceqrcode_save(JT_deviceid, JT_qrcode, device_type, JT_mac);
+                $result = $wxDbObj->dbi_deviceqrcode_save(JT_deviceid, JT_qrcode, device_type, JT_mac);
                 $this->send_custom_message(trim($data->FromUserName), "text","Qrcode-MAC DB bind, Result= " .json_encode($result));
 
                 $this->device_AuthBLE(JT_deviceid, JT_mac);
@@ -1131,16 +1112,16 @@ class class_wx_IOT_sdk
                 $transMsg = $this->xms_responseText($data->FromUserName, $data->ToUserName,"Weixin get_bind_device , Result= " .json_encode($result));
                 break;
             case ZSC_openid:
-                $result = $wxDbObj->db_blebound_duplicate(ZSC_openid, ZSC_deviceid, ZSC_openid, device_type);
+                $result = $wxDbObj->dbi_blebound_duplicate(ZSC_openid, ZSC_deviceid, ZSC_openid, device_type);
                 if ($result == false)
                 {
-                    $result = $wxDbObj->db_blebound_save(ZSC_openid, ZSC_deviceid, ZSC_openid, device_type);
+                    $result = $wxDbObj->dbi_blebound_save(ZSC_openid, ZSC_deviceid, ZSC_openid, device_type);
                     $this->send_custom_message(trim($data->FromUserName), "text","User-Device DB bind, Result= ".json_encode($result) );
                 }
                 else
                     $this->send_custom_message(trim($data->FromUserName), "text","User-Device DB duplicated, no action");
 
-                $result = $wxDbObj->db_deviceqrcode_save(ZSC_deviceid, ZSC_qrcode, device_type, ZSC_mac);
+                $result = $wxDbObj->dbi_deviceqrcode_save(ZSC_deviceid, ZSC_qrcode, device_type, ZSC_mac);
                 $this->send_custom_message(trim($data->FromUserName), "text","Qrcode-MAC DB bind, Result= " .json_encode($result));
 
                 $this->device_AuthBLE(ZSC_deviceid, ZSC_mac);
@@ -1166,21 +1147,21 @@ class class_wx_IOT_sdk
         $longitude = (float)($data->Longitude)*10000;
         $timestamp = time();
 
-        $wxDbObj = new class_wx_db();
-        $db_info = $wxDbObj->db_blebound_query($user);
+        $wxDbObj = new classDbiL2sdkIotWx();
+        $dbi_info = $wxDbObj->dbi_blebound_query($user);
 
-        if ($db_info == false)
+        if ($dbi_info == false)
         {
             $transMsg = $this->xms_responseText($data->FromUserName, $data->ToUserName, "数据库中该用户未绑定设备\n".$data->FromUserName);
         }
         else
         {
             $i = 0;
-            while ($i<count($db_info)) //考虑同一个用户绑定多个设备的情况
+            while ($i<count($dbi_info)) //考虑同一个用户绑定多个设备的情况
             {
-                $dev_table = $db_info[$i];
+                $dev_table = $dbi_info[$i];
                 $deviceid = $dev_table["deviceID"];
-                $wxDbObj->db_emcdata_save_gps($timestamp, $user, $deviceid, $latitude,$longitude);
+                $wxDbObj->dbi_emcdata_save_gps($timestamp, $user, $deviceid, $latitude,$longitude);
                 $i++;
             }
 
@@ -1206,7 +1187,13 @@ class class_wx_IOT_sdk
         return implode($tmpArr);
     }
 
-}// End of class_wx_IOT_sdk
+    //任务入口函数
+    public function mfun_l2sdk_iot_wx_task_main_entry($parObj, $msg)
+    {
+
+    }
+
+}
 
 
 ?>

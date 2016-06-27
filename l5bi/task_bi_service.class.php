@@ -6,10 +6,10 @@
  * Time: 13:40
  */
 
-include_once "../l5bi/dbi_l5bi.class.php";
+include_once "../l5bi/dbi_l5bi_service.class.php";
 
 
-$biObj = new class_bi_db();
+$biObj = new classDbiL5biService();
 
 $timestamp = time();
 $date = date("ymd",$timestamp);
@@ -18,6 +18,6 @@ $hour =date('H',$timestamp);
 $devcode = "HCU_SH_0301";
 $statcode = "120101001";
 
-$biObj->bi_hourreport_process($devcode,$statcode,$date,$hour);
+$biObj->dbi_hourreport_process($devcode,$statcode,$date,$hour);
 
 ?>

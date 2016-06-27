@@ -1,25 +1,28 @@
 <?php
 	$id= $_REQUEST["id"];
-	function _encode($arr)
-    {
-      $na = array();
-      foreach ( $arr as $k => $value ) {
-        $na[_urlencode($k)] = _urlencode ($value);
-      }
-      return addcslashes(urldecode(json_encode($na)),"\r\n");
-    }
+	$num=count($_FILES['file-zh']['name']);   //ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ï¿½Ä¼ï¿½ï¿½Ä¸ï¿½ï¿½ï¿½
 
-    function _urlencode($elem)
-    {
-      if(is_array($elem)){
-        foreach($elem as $k=>$v){
-          $na[_urlencode($k)] = _urlencode($v);
-        }
-        return $na;
-      }
-      return urlencode($elem);
-    }
-	$num=count($_FILES['file-zh']['name']);   //¼ÆËãÉÏ´«ÎÄ¼þµÄ¸öÊý
+	function _encode($arr)
+	{
+		$na = array();
+		foreach ( $arr as $k => $value ) {
+			$na[_urlencode($k)] = _urlencode ($value);
+		}
+		return addcslashes(urldecode(json_encode($na)),"\r\n");
+	}
+
+	function _urlencode($elem)
+	{
+		$na = 0;
+		if(is_array($elem)){
+			foreach($elem as $k=>$v){
+				$na[_urlencode($k)] = _urlencode($v);
+			}
+			return $na;
+		}
+		return urlencode($elem);
+	}
+
 	for($i=0;$i<$num;$i++)
 	{
 		  
@@ -43,3 +46,8 @@
 				}
 		   
 	}
+
+
+?>
+
+

@@ -7,11 +7,17 @@
  */
 include_once "../../l1comvm/vmlayer.php";
 
-class class_emc_db
+class classDbiL2snrEmc
 {
+    //构造函数
+    public function __construct()
+    {
+
+    }
+
     //存储EMC数据，每一次存储，都是新增一条记录
     //记录存储是以TIME_GRID_SIZE分钟为网格化的，保证每一个时间网格只有一条记录
-    public function db_emcData_save($deviceid, $sensorid,$timestamp,$data,$gps)
+    public function dbi_emcData_save($deviceid, $sensorid,$timestamp,$data,$gps)
     {
         //建立连接
         $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME, MFUN_CLOUD_DBPORT);
@@ -60,7 +66,7 @@ class class_emc_db
 
     //删除对应用户所有超过90天的数据
     //缺省做成90天，如果参数错误，导致90天以内的数据强行删除，则不被认可
-    public function db_emcData_delete_3monold($deviceid,$sensorid,$days)
+    public function dbi_emcData_delete_3monold($deviceid,$sensorid,$days)
     {
         if ($days <90) $days = 90;  //不允许删除90天以内的数据
         //建立连接
@@ -85,7 +91,7 @@ class class_emc_db
     }
 
     //新增或者更新累计辐射剂量数据，每个用户一条记录，不得重复
-    public function db_emcAccumulation_save( $deviceid)
+    public function dbi_emcAccumulation_save( $deviceid)
     {
         //建立连接
         $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME, MFUN_CLOUD_DBPORT);
@@ -196,7 +202,7 @@ class class_emc_db
     //返回双结构数据：数组的第一个包含了31天的平均值，30个采样点，第二个包含了90天的平均值（每三天平均一次），30个点的采样数据
     //数组是32个元素，DAY数据在1-31中，90天的均值数在0-29中
     //这样设计只是为了处理的方便，上层使用时自行处理边界问题
-    public function db_EmcAccumulationInfo_inqury( $deviceid)
+    public function dbi_EmcAccumulationInfo_inqury( $deviceid)
     {
         //建立连接
         $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME, MFUN_CLOUD_DBPORT);
@@ -221,7 +227,7 @@ class class_emc_db
         return $result;
     }
 
-    public function db_minreport_update_emc($devcode,$statcode,$timestamp,$data)
+    public function dbi_minreport_update_emc($devcode,$statcode,$timestamp,$data)
     {
         //建立连接
         $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME, MFUN_CLOUD_DBPORT);
@@ -254,7 +260,7 @@ class class_emc_db
     }
 
     //ZSC
-    public function db_LatestEmcValue_inqury($sid)
+    public function dbi_LatestEmcValue_inqury($sid)
     {
         $LatestEmcValue = 0;
         $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME, MFUN_CLOUD_DBPORT);
@@ -275,7 +281,7 @@ class class_emc_db
 
     //ZSC 通过sid=0查询到最近的一个测量值索引及测量值信息
     //2016－02－26 LZH 此函数需要修改，sid=0保存最大sid的机制已经修改
-    public function db_LatestEmcValueIndex_inqury($sid)
+    public function dbi_LatestEmcValueIndex_inqury($sid)
     {
         //$LatestEmcValueIndex = 0;
         $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME, MFUN_CLOUD_DBPORT);
