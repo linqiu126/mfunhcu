@@ -4474,7 +4474,7 @@ class classTaskL2sdkWechat
  *                                               总入口Response函数                                                   *
  *********************************************************************************************************************/
     //响应消息
-    public function mfun_l2sdk_wechat_task_main_entry($parObj, $msg)
+    public function mfun_l2sdk_wechat_task_main_entry($parObj, $msgId, $msgName, $msg)
     {
         //$postStr = $GLOBALS["HTTP_RAW_POST_DATA"];
         $postStr = file_get_contents('php://input','r');

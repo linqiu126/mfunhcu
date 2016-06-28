@@ -115,7 +115,7 @@ class classTaskL2snrNoise
     }
 
     //任务入口函数
-    public function mfun_l2snr_noise_task_main_entry($parObj, $msg)
+    public function mfun_l2snr_noise_task_main_entry($parObj, $msgId, $msgName, $msg)
     {
 
     }

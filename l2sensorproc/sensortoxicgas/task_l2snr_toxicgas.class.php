@@ -17,7 +17,7 @@ class classTaskL2snrToxicgas
     }
 
     //任务入口函数
-    public function mfun_l2snr_toxicgas_task_main_entry($parObj, $msg)
+    public function mfun_l2snr_toxicgas_task_main_entry($parObj, $msgId, $msgName, $msg)
     {
 
     }

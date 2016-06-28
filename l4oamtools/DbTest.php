@@ -149,21 +149,28 @@ $resp = $Obj->responseMsg();*/
 //$postStr = "<xml><ToUserName><![CDATA[SAE_MFUNHCU]]></ToUserName><FromUserName><![CDATA[HCU_SH_0301]]></FromUserName><CreateTime>1457872559</CreateTime><MsgType><![CDATA[hcu_command]]></MsgType><Content><![CDATA[FD00]]></Content><FuncFlag>0</FuncFlag></xml>";
 
 $postStr = "<xml><ToUserName><![CDATA[AQ_HCU]]></ToUserName><FromUserName><![CDATA[HCU_SH_0305]]></FromUserName><CreateTime>1463066586</CreateTime><MsgType><![CDATA[hcu_text]]></MsgType><Content><![CDATA[201881050201130345000000004E000000000000000057318D70]]></Content><FuncFlag>0</FuncFlag></xml>";
+$GLOBALS["HTTP_RAW_POST_DATA"] = $postStr;
 
 //中环保格式
 //$postStr = "##007020160619033803000___11111ZHB_NOMHCU_SH_0304_44444405556666a01000=139A,68BE";
 
-libxml_disable_entity_loader(true);
-$postObj = simplexml_load_string($postStr, 'SimpleXMLElement');
+$obj = new classTaskL1vmCoreRouter();
+//$postStr = $GLOBALS["HTTP_RAW_POST_DATA"];
+//$msg = file_get_contents('php://input','r');
+$msg = $GLOBALS["HTTP_RAW_POST_DATA"];
+$obj->mfun_l1vm_task_main_entry(MFUN_MAIN_ENTRY_HCU_IOT, $msg);
 
-$hcuDevObj = new classTaskL2sdkIotHcu();
-$result = $hcuDevObj->receive_hcu_xmlMessage(null, $postObj);
+//libxml_disable_entity_loader(true);
+//$postObj = simplexml_load_string($postStr, 'SimpleXMLElement');
+
+//$hcuDevObj = new classTaskL2sdkIotHcu();
+//$result = $hcuDevObj->receive_hcu_xmlMessage(null, $postObj);
 //$result = $hcuDevObj->receive_hcu_zhbMessage($postStr);
 
 
 
-$wxObj = new classTaskL2sdkIotWx(MFUN_WX_APPID, MFUN_WX_APPSECRET);
-$result = $wxObj->receive_wx_deviceMessage($postObj);
+//$wxObj = new classTaskL2sdkIotWx(MFUN_WX_APPID, MFUN_WX_APPSECRET);
+//$result = $wxObj->receive_wx_deviceMessage($postObj);
 
 
 /*$fromuser = strtoupper("$fromuser");

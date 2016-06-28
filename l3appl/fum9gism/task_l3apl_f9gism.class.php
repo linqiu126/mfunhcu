@@ -17,7 +17,7 @@ class classTaskL3aplF9gism
     }
 
     //任务入口函数
-    public function mfun_l3apl_f9gism_task_main_entry($parObj, $msg)
+    public function mfun_l3apl_f9gism_task_main_entry($parObj, $msgId, $msgName, $msg)
     {
 
     }

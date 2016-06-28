@@ -25,8 +25,8 @@ class classL1vmFuncComApi
         }
         */
         //存储log在数据库中
-        $cDbObj = new classL1vmCommonDbi();
-        $result = $cDbObj->db_log_process($project,$fromUser,$createTime,$log_content);
+        $cDbObj = new classDbiL1vmCommon();
+        $result = $cDbObj->dbi_log_process($project,$fromUser,$createTime,$log_content);
 
         return $result;
     }

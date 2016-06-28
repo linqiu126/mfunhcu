@@ -1188,7 +1188,7 @@ class classTaskL2sdkIotWx
     }
 
     //任务入口函数
-    public function mfun_l2sdk_iot_wx_task_main_entry($parObj, $msg)
+    public function mfun_l2sdk_iot_wx_task_main_entry($parObj, $msgId, $msgName, $msg)
     {
 
     }

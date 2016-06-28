@@ -31,24 +31,25 @@ define("MFUN_TASK_ID_L2SENSOR_CO1", 18);
 define("MFUN_TASK_ID_L2SENSOR_HCHO", 19);
 define("MFUN_TASK_ID_L2SENSOR_TOXICGAS", 20);
 define("MFUN_TASK_ID_L2SENSOR_LIGHTSTR", 21);
-define("MFUN_TASK_ID_L3APPL_FUM1SYM", 22);
-define("MFUN_TASK_ID_L3APPL_FUM2CM", 23);
-define("MFUN_TASK_ID_L3APPL_FUM3DM", 24);
-define("MFUN_TASK_ID_L3APPL_FUM4ICM", 25);
-define("MFUN_TASK_ID_L3APPL_FUM5FM", 26);
-define("MFUN_TASK_ID_L3APPL_FUM6PM", 27);
-define("MFUN_TASK_ID_L3APPL_FUM7ADS", 28);
-define("MFUN_TASK_ID_L3APPL_FUM8PSM", 29);
-define("MFUN_TASK_ID_L3APPL_FUM9GISM", 30);
-define("MFUN_TASK_ID_L3APPL_FUMXPRCM", 31);
-define("MFUN_TASK_ID_L3WXPRC_EMC", 32);
-define("MFUN_TASK_ID_L4AQYC_UI", 33);
-define("MFUN_TASK_ID_L4EMCWX_UI", 34);
-define("MFUN_TASK_ID_L4TBSWR_UI", 35);
-define("MFUN_TASK_ID_L4OAMTOOLS", 36);
-define("MFUN_TASK_ID_L5BI", 37);
-define("MFUN_TASK_ID_MAX", 38);
-define("MFUN_TASK_ID_NULL", 39); //注意，不能超过系统DIMENSION中的MAX_TASK_NUM_IN_ONE_MFUN
+define("MFUN_TASK_ID_L2SENSOR_RAIN", 22);
+define("MFUN_TASK_ID_L3APPL_FUM1SYM", 23);
+define("MFUN_TASK_ID_L3APPL_FUM2CM", 24);
+define("MFUN_TASK_ID_L3APPL_FUM3DM", 25);
+define("MFUN_TASK_ID_L3APPL_FUM4ICM", 26);
+define("MFUN_TASK_ID_L3APPL_FUM5FM", 27);
+define("MFUN_TASK_ID_L3APPL_FUM6PM", 28);
+define("MFUN_TASK_ID_L3APPL_FUM7ADS", 29);
+define("MFUN_TASK_ID_L3APPL_FUM8PSM", 30);
+define("MFUN_TASK_ID_L3APPL_FUM9GISM", 31);
+define("MFUN_TASK_ID_L3APPL_FUMXPRCM", 32);
+define("MFUN_TASK_ID_L3WXPRC_EMC", 33);
+define("MFUN_TASK_ID_L4AQYC_UI", 34);
+define("MFUN_TASK_ID_L4EMCWX_UI", 35);
+define("MFUN_TASK_ID_L4TBSWR_UI", 36);
+define("MFUN_TASK_ID_L4OAMTOOLS", 37);
+define("MFUN_TASK_ID_L5BI", 38);
+define("MFUN_TASK_ID_MAX", 39);
+define("MFUN_TASK_ID_NULL", 40); //注意，不能超过系统DIMENSION中的MAX_TASK_NUM_IN_ONE_MFUN
 
 /*
  *  class的定义及规定
@@ -84,6 +85,7 @@ class classConstL1vmSysTaskList
         MFUN_TASK_ID_L2SENSOR_HCHO => array("NAME" => "MFUN_TASK_L2SENSOR_HCHO", "PRESENT" => true),
         MFUN_TASK_ID_L2SENSOR_TOXICGAS => array("NAME" => "MFUN_TASK_L2SENSOR_TOXICGAS", "PRESENT" => true),
         MFUN_TASK_ID_L2SENSOR_LIGHTSTR => array("NAME" => "MFUN_TASK_L2SENSOR_LIGHTSTR", "PRESENT" => true),
+        MFUN_TASK_ID_L2SENSOR_RAIN => array("NAME" => "MFUN_TASK_ID_L2SENSOR_RAIN", "PRESENT" => true),
         MFUN_TASK_ID_L3APPL_FUM1SYM => array("NAME" => "MFUN_TASK_L3APPL_FUM1SYM", "PRESENT" => true),
         MFUN_TASK_ID_L3APPL_FUM2CM => array("NAME" => "MFUN_TASK_L3APPL_FUM2CM", "PRESENT" => true),
         MFUN_TASK_ID_L3APPL_FUM3DM => array("NAME" => "MFUN_TASK_L3APPL_FUM3DM", "PRESENT" => true),
@@ -132,6 +134,7 @@ class classConstL1vmSysTaskList
             $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_HCHO]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_TOXICGAS]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_LIGHTSTR]["PRESENT"] = true;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_RAIN]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM1SYM]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM2CM]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM3DM]["PRESENT"] = true;
@@ -175,6 +178,7 @@ class classConstL1vmSysTaskList
             $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_HCHO]["PRESENT"] = false;
             $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_TOXICGAS]["PRESENT"] = false;
             $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_LIGHTSTR]["PRESENT"] = false;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_RAIN]["PRESENT"] = false;
             $mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM1SYM]["PRESENT"] = false;
             $mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM2CM]["PRESENT"] = false;
             $mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM3DM]["PRESENT"] = false;
@@ -218,6 +222,7 @@ class classConstL1vmSysTaskList
             $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_HCHO]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_TOXICGAS]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_LIGHTSTR]["PRESENT"] = true;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_RAIN]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM1SYM]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM2CM]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM3DM]["PRESENT"] = true;
@@ -263,6 +268,7 @@ class classConstL1vmSysTaskList
             $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_HCHO]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_TOXICGAS]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_LIGHTSTR]["PRESENT"] = true;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_RAIN]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM1SYM]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM2CM]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM3DM]["PRESENT"] = true;

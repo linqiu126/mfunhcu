@@ -29,7 +29,7 @@ class classTaskL1vmCoreRouter
     public function __construct()
     {
         for ($i=0; $i<MFUN_MSG_BUFFER_NBR_MAX; $i++){
-            $this->msgBufferList[$i] = array("valid" => "false", "srcId" => 0, "destId" => 0, "msgId" => 0, "msgName" => "", "msgBody" => "");
+            $this->msgBufferList[$i] = array("valid" => false, "srcId" => 0, "destId" => 0, "msgId" => 0, "msgName" => "", "msgBody" => "");
         }
         $this->msgBufferReadCnt = 0;
         $this->msgBufferWriteCnt = 0;
@@ -117,43 +117,42 @@ class classTaskL1vmCoreRouter
     }
 
     //任务入口函数
-    public function mfun_l1vm_task_main_entry($parObj, $msg)
+    public function mfun_l1vm_task_main_entry($parObj, $msgId, $msgName, $msg)
     {
+        //先生成$loggerObj对应的指针
+        $loggerObj = new classL1vmFuncComApi();
+        $log_time = date("Y-m-d H:i:s", time());
+
         //先处理接收到的消息的基本情况
         if (empty($msg) == true){
-            $obj = new classL1vmFuncComApi();
-            $log_time = date("Y-m-d H:i:s", time());
-            $obj->logger("NULL", "mfun_l1vm_task_main_entry", $log_time, "P: Nothing received");
+            $loggerObj->logger("NULL", "mfun_l1vm_task_main_entry", $log_time, "P: Nothing received");
             echo "";
             return false;
-            //exit;
         }
 
-        //然后发送消息到缓冲区中
+        //然后发送从L1_MAIN_ENTRY接收到的消息到缓冲区中
         if ($parObj == MFUN_MAIN_ENTRY_HCU_IOT){
             if ($this->mfun_l1vm_msg_send(MFUN_TASK_ID_L1VM,
                     MFUN_TASK_ID_L2SDK_IOT_HCU,
-                    MSG_ID_L1VM_L2SDK_IOT_HCU_INCOMING,
+                    MSG_ID_L1VM_TO_L2SDK_IOT_HCU_INCOMING,
                     "MSG_ID_L1VM_L2SDK_IOT_HCU_INCOMING",
                     $msg) == false){
-                //logsave
-                $obj = new classL1vmFuncComApi();
-                $log_time = date("Y-m-d H:i:s", time());
-                $obj->logger("MFUN_MAIN_ENTRY_HCU_IOT", "mfun_l1vm_task_main_entry", $log_time, "P: Send to message buffer error.");
-                echo "Cloud internal error.";
+                $result = "Cloud: Send to message buffer error.";
+                $log_content = "P:" . json_encode($result);
+                $loggerObj->logger("MFUN_MAIN_ENTRY_HCU_IOT", "mfun_l1vm_task_main_entry", $log_time, $log_content);
+                echo trim($result);
                 return false;
             };
         }elseif($parObj == MFUN_MAIN_ENTRY_EMC_WX){
             if ($this->mfun_l1vm_msg_send(MFUN_TASK_ID_L1VM,
                     MFUN_TASK_ID_L2SDK_IOT_WX,
-                    MSG_ID_L1VM_L2SDK_IOT_WX_INCOMING,
+                    MSG_ID_L1VM_TO_L2SDK_IOT_HCU_INCOMING,
                     "MSG_ID_L1VM_L2SDK_IOT_WX_INCOMING",
                     $msg) == false) {
-                //logsave
-                $obj = new classL1vmFuncComApi();
-                $log_time = date("Y-m-d H:i:s", time());
-                $obj->logger("MFUN_MAIN_ENTRY_EMC_WX", "mfun_l1vm_task_main_entry", $log_time, "P: Send to message buffer error.");
-                echo "Cloud internal error.";
+                $result = "Cloud: Send to message buffer error.";
+                $log_content = "P:" . json_encode($result);
+                $loggerObj->logger("MFUN_MAIN_ENTRY_EMC_WX", "mfun_l1vm_task_main_entry", $log_time, $log_content);
+                echo trim($result);
                 return false;
             };
         }elseif($parObj == MFUN_MAIN_ENTRY_CRON){
@@ -183,25 +182,25 @@ class classTaskL1vmCoreRouter
             if (($result["msgId"] <= MSG_ID_MFUN_MIN) || ($result["msgId"] >=MSG_ID_MFUN_MAX)) continue;
             //检查目标任务模块是否激活
             if ($modObj->mfun_vm_getTaskPresent($result["destId"]) != true){
-                $obj = new classL1vmFuncComApi();
-                $log_time = date("Y-m-d H:i:s", time());
-                $obj->logger("NULL", "mfun_l1vm_task_main_entry", $log_time, "P: Target module is not actived.");
-                echo "Cloud internal error.";
+                $result = "Cloud: Target module is not actived.";
+                $log_content = "P:" . json_encode($result);
+                $loggerObj->logger("NULL", "mfun_l1vm_task_main_entry", $log_time, $log_content);
+                echo trim($result);
                 continue;
             }
             //具体开始处理目标消息的大循环
             switch($result["destId"]){
                 case MFUN_TASK_ID_L1VM:
                     $obj = new classTaskL1vmCoreRouter();
-                    $obj->mfun_l1vm_task_main_entry($this, ["msgBody"]);
+                    $obj->mfun_l1vm_task_main_entry($this, $result["msgId"], $result["msgName"], $result["msgBody"]);
                     break;
                 case MFUN_TASK_ID_L2SDK_IOT_APPLE:
                     $obj = new classTaskL2sdkIotApple();
-                    $obj->mfun_l2sdk_iot_apple_task_main_entry($this, $result["msgBody"]);
+                    $obj->mfun_l2sdk_iot_apple_task_main_entry($this, $result["msgId"], $result["msgName"], $result["msgBody"]);
                     break;
                 case MFUN_TASK_ID_L2SDK_IOT_JD:
                     $obj = new classTaskL2sdkIotJd();
-                    $obj->mfun_l2sdk_iot_jd_task_main_entry($this, $result["msgBody"]);
+                    $obj->mfun_l2sdk_iot_jd_task_main_entry($this, $result["msgId"], $result["msgName"], $result["msgBody"]);
                     break;
                 case MFUN_TASK_ID_L2SDK_WECHAT:
                     $wx_options = array(
@@ -212,139 +211,147 @@ class classTaskL1vmCoreRouter
                         'debug'=> MFUN_WX_DEBUG,
                         'logcallback' => MFUN_WX_LOGCALLBACK);
                     $obj = new classTaskL2sdkWechat($wx_options);
-                    $obj->mfun_l2sdk_wechat_task_main_entry($this, $result["msgBody"]);
+                    $obj->mfun_l2sdk_wechat_task_main_entry($this, $result["msgId"], $result["msgName"], $result["msgBody"]);
                     break;
                 case MFUN_TASK_ID_L2SDK_IOT_WX:
                     $obj = new classTaskL2sdkIotWx(MFUN_WX_APPID, MFUN_WX_APPSECRET);
-                    $obj->mfun_l2sdk_iot_wx_task_main_entry($this, $result["msgBody"]);
+                    $obj->mfun_l2sdk_iot_wx_task_main_entry($this, $result["msgId"], $result["msgName"], $result["msgBody"]);
                     break;
                 case MFUN_TASK_ID_L2SDK_IOT_WX_JSSDK:
                     $obj = new classTaskL2sdkIotWxJssdk(MFUN_WX_APPID, MFUN_WX_APPSECRET);
-                    $obj->mfun_l2sdk_iot_wx_jssdk_task_main_entry($this, $result["msgBody"]);
+                    $obj->mfun_l2sdk_iot_wx_jssdk_task_main_entry($this, $result["msgId"], $result["msgName"], $result["msgBody"]);
                     break;
                 case MFUN_TASK_ID_L2SDK_IOT_HCU:
                     $obj = new classTaskL2sdkIotHcu();
-                    $obj->mfun_l2sdk_iot_hcu_task_main_entry($this, $result["msgBody"]);
+                    $obj->mfun_l2sdk_iot_hcu_task_main_entry($this, $result["msgId"], $result["msgName"], $result["msgBody"]);
                     break;
                 case MFUN_TASK_ID_L2SENSOR_EMC:
                     $obj = new classTaskL2snrEmc();
-                    $obj->mfun_l2snr_emc_task_main_entry($this, $result["msgBody"]);
+                    $obj->mfun_l2snr_emc_task_main_entry($this, $result["msgId"], $result["msgName"], $result["msgBody"]);
                     break;
                 case MFUN_TASK_ID_L2SENSOR_HSMMP:
                     $obj = new classTaskL2snrHsmmp();
-                    $obj->mfun_l2snr_hsmmp_task_main_entry($this, $result["msgBody"]);
+                    $obj->mfun_l2snr_hsmmp_task_main_entry($this, $result["msgId"], $result["msgName"], $result["msgBody"]);
                     break;
                 case MFUN_TASK_ID_L2SENSOR_HUMID:
                     $obj = new classTaskL2snrHumid();
-                    $obj->mfun_l2snr_humid_task_main_entry($this, $result["msgBody"]);
+                    $obj->mfun_l2snr_humid_task_main_entry($this, $result["msgId"], $result["msgName"], $result["msgBody"]);
                     break;
                 case MFUN_TASK_ID_L2SENSOR_NOISE:
                     $obj = new classTaskL2snrNoise();
-                    $obj->mfun_l2snr_noise_task_main_entry($this, $result["msgBody"]);
+                    $obj->mfun_l2snr_noise_task_main_entry($this, $result["msgId"], $result["msgName"], $result["msgBody"]);
                     break;
                 case MFUN_TASK_ID_L2SENSOR_PM25:
                     $obj = new classTaskL2snrPm25();
-                    $obj->mfun_l2snr_pm25_task_main_entry($this, $result["msgBody"]);
+                    $obj->mfun_l2snr_pm25_task_main_entry($this, $result["msgId"], $result["msgName"], $result["msgBody"]);
                     break;
                 case MFUN_TASK_ID_L2SENSOR_TEMP:
                     $obj = new classTaskL2snrTemp();
-                    $obj->mfun_l2snr_temp_task_main_entry($this, $result["msgBody"]);
+                    $obj->mfun_l2snr_temp_task_main_entry($this, $result["msgId"], $result["msgName"], $result["msgBody"]);
                     break;
                 case MFUN_TASK_ID_L2SENSOR_WINDDIR:
                     $obj = new classTaskL2snrWinddir();
-                    $obj->mfun_l2snr_winddir_task_main_entry($this, $result["msgBody"]);
+                    $obj->mfun_l2snr_winddir_task_main_entry($this, $result["msgId"], $result["msgName"], $result["msgBody"]);
                     break;
                 case MFUN_TASK_ID_L2SENSOR_WINDSPD:
                     $obj = new classTaskL2snrWindspd();
-                    $obj->mfun_l2snr_windspd_task_main_entry($this, $result["msgBody"]);
+                    $obj->mfun_l2snr_windspd_task_main_entry($this, $result["msgId"], $result["msgName"], $result["msgBody"]);
                     break;
                 case MFUN_TASK_ID_L2SENSOR_AIRPRS:
                     $obj = new classTaskL2snrAirprs();
-                    $obj->mfun_l2snr_airprs_task_main_entry($this, $result["msgBody"]);
+                    $obj->mfun_l2snr_airprs_task_main_entry($this, $result["msgId"], $result["msgName"], $result["msgBody"]);
                     break;
                 case MFUN_TASK_ID_L2SENSOR_ALCOHOL:
                     $obj = new classTaskL2snrAlcohol();
-                    $obj->mfun_l2snr_alcohol_task_main_entry($this, $result["msgBody"]);
+                    $obj->mfun_l2snr_alcohol_task_main_entry($this, $result["msgId"], $result["msgName"], $result["msgBody"]);
                     break;
                 case MFUN_TASK_ID_L2SENSOR_CO1:
                     $obj = new classTaskL2snrCo1();
-                    $obj->mfun_l2snr_co1_task_main_entry($this, $result["msgBody"]);
+                    $obj->mfun_l2snr_co1_task_main_entry($this, $result["msgId"], $result["msgName"], $result["msgBody"]);
                     break;
                 case MFUN_TASK_ID_L2SENSOR_HCHO:
                     $obj = new classTaskL2snrHcho();
-                    $obj->mfun_l2snr_hcho_task_main_entry($this, $result["msgBody"]);
+                    $obj->mfun_l2snr_hcho_task_main_entry($this, $result["msgId"], $result["msgName"], $result["msgBody"]);
                     break;
                 case MFUN_TASK_ID_L2SENSOR_TOXICGAS:
                     $obj = new classTaskL2snrToxicgas();
-                    $obj->mfun_l2snr_toxicgas_task_main_entry($this, $result["msgBody"]);
+                    $obj->mfun_l2snr_toxicgas_task_main_entry($this, $result["msgId"], $result["msgName"], $result["msgBody"]);
                     break;
                 case MFUN_TASK_ID_L2SENSOR_LIGHTSTR:
                     $obj = new classTaskL2snrLightstr();
-                    $obj->mfun_l2snr_lightstr_task_main_entry($this, $result["msgBody"]);
+                    $obj->mfun_l2snr_lightstr_task_main_entry($this, $result["msgId"], $result["msgName"], $result["msgBody"]);
+                    break;
+                case MFUN_TASK_ID_L2SENSOR_RAIN:
+                    $obj = new classTaskL2snrRain();
+                    $obj->mfun_l2snr_rain_task_main_entry($this, $result["msgId"], $result["msgName"], $result["msgBody"]);
                     break;
                 case MFUN_TASK_ID_L3APPL_FUM1SYM:
                     $obj = new classTaskL3aplF1sym();
-                    $obj->mfun_l3apl_f1sym_task_main_entry($this, $result["msgBody"]);
+                    $obj->mfun_l3apl_f1sym_task_main_entry($this, $result["msgId"], $result["msgName"], $result["msgBody"]);
                     break;
                 case MFUN_TASK_ID_L3APPL_FUM2CM:
                     $obj = new classTaskL3aplF2cm();
-                    $obj->mfun_l3apl_f2cm_task_main_entry($this, $result["msgBody"]);
+                    $obj->mfun_l3apl_f2cm_task_main_entry($this, $result["msgId"], $result["msgName"], $result["msgBody"]);
                     break;
                 case MFUN_TASK_ID_L3APPL_FUM3DM:
                     $obj = new classTaskL3aplF3dm();
-                    $obj->mfun_l3apl_f3dm_task_main_entry($this, $result["msgBody"]);
+                    $obj->mfun_l3apl_f3dm_task_main_entry($this, $result["msgId"], $result["msgName"], $result["msgBody"]);
                     break;
                 case MFUN_TASK_ID_L3APPL_FUM4ICM:
                     $obj = new classTaskL3aplF4icm();
-                    $obj->mfun_l3apl_f4icm_task_main_entry($this, $result["msgBody"]);
+                    $obj->mfun_l3apl_f4icm_task_main_entry($this, $result["msgId"], $result["msgName"], $result["msgBody"]);
                     break;
                 case MFUN_TASK_ID_L3APPL_FUM5FM:
                     $obj = new classTaskL3aplF5fm();
-                    $obj->mfun_l3apl_f5fm_task_main_entry($this, $result["msgBody"]);
+                    $obj->mfun_l3apl_f5fm_task_main_entry($this, $result["msgId"], $result["msgName"], $result["msgBody"]);
                     break;
                 case MFUN_TASK_ID_L3APPL_FUM6PM:
                     $obj = new classTaskL3aplF6pm();
-                    $obj->mfun_l3apl_f6pm_task_main_entry($this, $result["msgBody"]);
+                    $obj->mfun_l3apl_f6pm_task_main_entry($this, $result["msgId"], $result["msgName"], $result["msgBody"]);
                     break;
                 case MFUN_TASK_ID_L3APPL_FUM7ADS:
                     $obj = new classTaskL3aplF7ads();
-                    $obj->mfun_l3apl_f7ads_task_main_entry($this, $result["msgBody"]);
+                    $obj->mfun_l3apl_f7ads_task_main_entry($this, $result["msgId"], $result["msgName"], $result["msgBody"]);
                     break;
                 case MFUN_TASK_ID_L3APPL_FUM8PSM:
                     $obj = new classTaskL3aplF8psm();
-                    $obj->mfun_l3apl_f8psm_task_main_entry($this, $result["msgBody"]);
+                    $obj->mfun_l3apl_f8psm_task_main_entry($this, $result["msgId"], $result["msgName"], $result["msgBody"]);
                     break;
                 case MFUN_TASK_ID_L3APPL_FUM9GISM:
                     $obj = new classTaskL3aplF9gism();
-                    $obj->mfun_l3apl_f9gism_task_main_entry($this, $result["msgBody"]);
+                    $obj->mfun_l3apl_f9gism_task_main_entry($this, $result["msgId"], $result["msgName"], $result["msgBody"]);
                     break;
                 case MFUN_TASK_ID_L3APPL_FUMXPRCM:
                     $obj = new classTaskL3aplFxprcm();
-                    $obj->mfun_l3apl_fxprcm_task_main_entry($this, $result["msgBody"]);
+                    $obj->mfun_l3apl_fxprcm_task_main_entry($this, $result["msgId"], $result["msgName"], $result["msgBody"]);
                     break;
                 case MFUN_TASK_ID_L3WXPRC_EMC:
                     $obj = new classTaskL3wxCtrlEmc();
-                    $obj->mfun_l3wx_ctrl_emc_task_main_entry($this, $result["msgBody"]);
+                    $obj->mfun_l3wx_ctrl_emc_task_main_entry($this, $result["msgId"], $result["msgName"], $result["msgBody"]);
                     break;
                 case MFUN_TASK_ID_L4AQYC_UI:
                     $obj = new classTaskL4aqycUi();
-                    $obj->mfun_l4aqyc_ui_task_main_entry($this, $result["msgBody"]);
+                    $obj->mfun_l4aqyc_ui_task_main_entry($this, $result["msgId"], $result["msgName"], $result["msgBody"]);
                     break;
                 case MFUN_TASK_ID_L4EMCWX_UI:
                     $obj = new classTaskL4emcwxUi();
-                    $obj->mfun_l4emcwx_ui_task_main_entry($this, $result["msgBody"]);
+                    $obj->mfun_l4emcwx_ui_task_main_entry($this, $result["msgId"], $result["msgName"], $result["msgBody"]);
                     break;
                 case MFUN_TASK_ID_L4TBSWR_UI:
                     $obj = new classTaskL4tbswrUi();
-                    $obj->mfun_l4tbswr_ui_task_main_entry($this, $result["msgBody"]);
+                    $obj->mfun_l4tbswr_ui_task_main_entry($this, $result["msgId"], $result["msgName"], $result["msgBody"]);
                     break;
                 case MFUN_TASK_ID_L4OAMTOOLS:
                     break;
                 case MFUN_TASK_ID_L5BI:
                     $obj = new classTaskL5biService();
-                    $obj->mfun_l5bi_service_task_main_entry($this, $result["msgBody"]);
+                    $obj->mfun_l5bi_service_task_main_entry($this, $result["msgId"], $result["msgName"], $result["msgBody"]);
                     break;
                 default:
+                    $result = "Cloud: Not supported destination module.";
+                    $log_content = "P:" . json_encode($result);
+                    $loggerObj->logger("NULL", "mfun_l1vm_task_main_entry", $log_time, $log_content);
+                    echo trim($result);
                     break;
             }//End of switch
 
