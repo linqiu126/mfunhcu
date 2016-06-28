@@ -45,9 +45,9 @@ define("IHU_MSG_HEAD_LENGTH", 24); //12 Byte
 define("HCU_MSG_HEAD_FORMAT", "A2Key/A2Len/A2Cmd");// 1B 控制字ctrl_key, 1B 长度length（除控制字和长度本身外），1B 操作字opt_key
 define("HCU_MSG_HEAD_LENGTH", 6); //3 Byte
 
-define("PLTF_WX", 0x01);  //微信平台
-define("PLTF_HCU", 0x02); //HCU平台
-define("PLTF_JD", 0x03);  //京东平台
+define("MFUN_PLTF_WX", 0x01);  //微信平台
+define("MFUN_PLTF_HCU", 0x02); //HCU平台
+define("MFUN_PLTF_JD", 0x03);  //京东平台
 
 define("HOUR_VALIDE_NUM", 54); // HCU环保标准：1小时采集的有效分钟数据应不少于 54个
 define("DAY_VALIDE_NUM", 21);  // HCU环保标准：每日应有不少于21个有效小时均值的算术平均值为有效日均值
@@ -82,37 +82,34 @@ define("S_TYPE_NOISE", "S_000A");
 define("L3_HEAD_MAGIC", 0xFE);
 define("L3_HEAD_VERSION",0x01);
 define("L3_HEAD_LENGTH", 0x08);
-define("CMDID_SEND_TEXT_REQ", 0x1);    //HW -> CLOUD
-define("CMDID_SEND_TEXT_RESP", 0x1001);   //CLOUD ->HW
-define("CMDID_OPEN_LIGHT_PUSH", 0x2001);  //CLOUD ->HW
-define("CMDID_CLOSE_LIGHT_PUSH", 0x2002);   //CLOUD ->HW
-define("CMDID_HW_VERSION_REQ", 0x3001);
-define("CMDID_HW_VERSION_RESP", 0x3002);
-define("CMDID_HW_VERSION_PUSH", 0x3003);
-define("CMDID_EMC_DATA_REV", 0x2712);
-define("CMDID_OCH_DATA_REQ", 0x4010);  //酒精测试量
-define("CMDID_OCH_DATA_RESP", 0x4011);
+define("MFUN_CMDID_SEND_TEXT_REQ", 0x1);    //HW -> CLOUD
+define("MFUN_CMDID_SEND_TEXT_RESP", 0x1001);   //CLOUD ->HW
+define("MFUN_CMDID_OPEN_LIGHT_PUSH", 0x2001);  //CLOUD ->HW
+define("MFUN_CMDID_CLOSE_LIGHT_PUSH", 0x2002);   //CLOUD ->HW
+define("MFUN_CMDID_HW_VERSION_REQ", 0x3001);
+define("MFUN_CMDID_HW_VERSION_RESP", 0x3002);
+define("MFUN_CMDID_HW_VERSION_PUSH", 0x3003);
+define("MFUN_CMDID_EMC_DATA_REV", 0x2712);
+define("MFUN_CMDID_OCH_DATA_REQ", 0x4010);  //酒精测试量
+define("MFUN_CMDID_OCH_DATA_RESP", 0x4011);
 
 //下列L3控制字有效，功能已经实现
-define("CMDID_VERSION_SYNC", 0xF0);   //IHU软，硬件版本查询命令字
-define("CMDID_TIME_SYNC", 0xF2);    //时间同步命令字
-define("CMDID_EMC_DATA", 0x20);   //电磁波辐射测量命令字
-define("CMDID_PM_DATA", 0x25);  //MODBUS 颗粒物命令字
-define("CMDID_WINDSPEED_DATA", 0x26);  //MODBUS 风速命令字
-define("CMDID_WINDDIR_DATA", 0x27);  //MODBUS 风向命令字
-define("CMDID_TEMPERATURE_DATA", 0x28);  //MODBUS 温度命令字
-define("CMDID_HUMIDITY_DATA", 0x29);  //MODBUS 湿度命令字
-define("CMDID_VIDEO_DATA", 0x2C);  //Video命令字
-define("CMDID_NOISE_DATA", 0x2B);  //Noise命令字
-
-define("CMDID_INVENTORY_DATA", 0xA0); //SW,HW 版本信息
-define("CMDID_SW_UPDATE", 0xA1);   //HCU软件更新
-
-define("CMDID_HEART_BEAT", 0xFE); //HCU心跳特殊控制字
-define("CMDID_HCU_POLLING", 0xFD); //HCU命令轮询控制字
-
-define("CMDID_EMC_DATA_PUSH", 0x2001); //临时定义给IHU测试
-define("CMDID_EMC_DATA_RESP", 0x2081); //临时定义给IHU测试
+define("MFUN_CMDID_VERSION_SYNC", 0xF0);   //IHU软，硬件版本查询命令字
+define("MFUN_CMDID_TIME_SYNC", 0xF2);    //时间同步命令字
+define("MFUN_CMDID_EMC_DATA", 0x20);   //电磁波辐射测量命令字
+define("MFUN_CMDID_PM25_DATA", 0x25);  //MODBUS 颗粒物命令字
+define("MFUN_CMDID_WINDSPD_DATA", 0x26);  //MODBUS 风速命令字
+define("MFUN_CMDID_WINDDIR_DATA", 0x27);  //MODBUS 风向命令字
+define("MFUN_CMDID_TEMP_DATA", 0x28);  //MODBUS 温度命令字
+define("MFUN_CMDID_HUMID_DATA", 0x29);  //MODBUS 湿度命令字
+define("MFUN_CMDID_HSMMP_DATA", 0x2C);  //Video命令字
+define("MFUN_CMDID_NOISE_DATA", 0x2B);  //Noise命令字
+define("MFUN_CMDID_INVENTORY_DATA", 0xA0); //SW,HW 版本信息
+define("MFUN_CMDID_SW_UPDATE", 0xA1);   //HCU软件更新
+define("MFUN_CMDID_HEART_BEAT", 0xFE); //HCU心跳特殊控制字
+define("MFUN_CMDID_HCU_POLLING", 0xFD); //HCU命令轮询控制字
+define("MFUN_CMDID_EMC_DATA_PUSH", 0x2001); //临时定义给IHU测试
+define("MFUN_CMDID_EMC_DATA_RESP", 0x2081); //临时定义给IHU测试
 
 //MODBUS操作字，0x0开头表示下行从CLOUD到下位机
 define("MODBUS_DATA_REQ", 0x01); //测量命令

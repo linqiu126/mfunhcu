@@ -925,43 +925,43 @@ class classTaskL2sdkIotWx
         $statCode = "";
         switch ($ctrl_key)
         {
-            case CMDID_VERSION_SYNC:
+            case MFUN_CMDID_VERSION_SYNC:
                 //定时辐射强度处理
                 $ihuObj = new classApiL2snrCommonService();
-                $resp = $ihuObj->func_version_update_process(PLTF_WX, $deviceId, $data);
+                $resp = $ihuObj->func_version_update_process(MFUN_PLTF_WX, $deviceId, $data);
                 break;
-            case CMDID_TIME_SYNC:
+            case MFUN_CMDID_TIME_SYNC:
                 $ihuObj = new classApiL2snrCommonService();
-                $msg_body = $ihuObj->func_timeSync_process(PLTF_WX, $deviceId, $data);
+                $msg_body = $ihuObj->func_timeSync_process(MFUN_PLTF_WX, $deviceId, $data);
                 if(!empty($msg_body))
                     $resp = pack('H*',$msg_body);
                 else
                     $resp = $msg_body;
                 break;
-            case CMDID_EMC_DATA_RESP://定时辐射强度处理
+            case MFUN_CMDID_EMC_DATA_RESP://定时辐射强度处理
                 $ihuObj = new class_emc_service();
-                $resp = $ihuObj->func_emc_process(PLTF_WX, $deviceId, $statCode, $data);
+                $resp = $ihuObj->func_emc_process(MFUN_PLTF_WX, $deviceId, $statCode, $data);
                 break;
-            case CMDID_PM_DATA:
+            case MFUN_CMDID_PM25_DATA:
                 //MODBUS数据处理
                 $ihuObj = new class_pmData_service();
-                $resp = $ihuObj->func_pmData_process(PLTF_WX, $deviceId, $statCode, $data);
+                $resp = $ihuObj->func_pmData_process(MFUN_PLTF_WX, $deviceId, $statCode, $data);
                 break;
-            case CMDID_WINDSPEED_DATA:
+            case MFUN_CMDID_WINDSPD_DATA:
                 $ihuObj = new class_windSpeed_service();
-                $resp = $ihuObj->func_windSpeed_process(PLTF_WX, $deviceId, $statCode, $data);
+                $resp = $ihuObj->func_windSpeed_process(MFUN_PLTF_WX, $deviceId, $statCode, $data);
                 break;
-            case CMDID_WINDDIR_DATA:
+            case MFUN_CMDID_WINDDIR_DATA:
                 $ihuObj = new class_windDirection_service();
-                $resp = $ihuObj->func_windDirection_process(PLTF_WX, $deviceId, $statCode, $data);
+                $resp = $ihuObj->func_windDirection_process(MFUN_PLTF_WX, $deviceId, $statCode, $data);
                 break;
-            case CMDID_TEMPERATURE_DATA:
+            case MFUN_CMDID_TEMP_DATA:
                 $ihuObj = new class_temperature_service();
-                $resp = $ihuObj->func_temperature_process(PLTF_WX, $deviceId, $statCode, $data);
+                $resp = $ihuObj->func_temperature_process(MFUN_PLTF_WX, $deviceId, $statCode, $data);
                 break;
-            case CMDID_HUMIDITY_DATA:
+            case MFUN_CMDID_HUMID_DATA:
                 $ihuObj = new class_humidity_service();
-                $resp = $ihuObj->func_humidity_process(PLTF_WX, $deviceId, $statCode, $data);
+                $resp = $ihuObj->func_humidity_process(MFUN_PLTF_WX, $deviceId, $statCode, $data);
                 break;
             default:
                 $resp ="ERROR WX_IOT: invalid service type";

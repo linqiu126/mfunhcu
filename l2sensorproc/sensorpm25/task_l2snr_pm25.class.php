@@ -17,11 +17,11 @@ class classTaskL2snrPm25
 
     }
 
-    public function func_pmData_process($platform, $deviceId, $statCode, $content)
+    public function func_pm25_data_process($platform, $deviceId, $statCode, $content)
     {
         switch($platform)
         {
-            case PLTF_WX:
+            case MFUN_PLTF_WX:
                 $length = hexdec(substr($content, 2, 2)) & 0xFF;
                 $length =($length + 2)*2; //消息总长度等于length＋1B 控制字＋1B长度本身
                 if ($length != strlen($content)){
@@ -38,7 +38,7 @@ class classTaskL2snrPm25
                         break;
                 }
                 break;
-            case PLTF_HCU:
+            case MFUN_PLTF_HCU:
                 $raw_MsgHead = substr($content, 0, HCU_MSG_HEAD_LENGTH);  //截取4Byte MsgHead
                 $msgHead = unpack(HCU_MSG_HEAD_FORMAT, $raw_MsgHead);
 
@@ -75,7 +75,7 @@ class classTaskL2snrPm25
                         break;
                 }
                 break;
-            case PLTF_JD:
+            case MFUN_PLTF_JD:
                 $resp = ""; //no response message
                 break;
             default:
@@ -158,7 +158,7 @@ class classTaskL2snrPm25
     //PM强度读取 (Cloud- > IHU)
     public function func_pm_data_push_process()
     {
-        $cmdid = $this->byte2string(CMDID_PM_DATA);
+        $cmdid = $this->byte2string(MFUN_CMDID_PM25_DATA);
         $length = "01";
         $sub_key =  $this->byte2string(MODBUS_DATA_REQ);
         $msg_body = $cmdid . $length . $sub_key;
@@ -179,7 +179,48 @@ class classTaskL2snrPm25
     //任务入口函数
     public function mfun_l2snr_pm25_task_main_entry($parObj, $msgId, $msgName, $msg)
     {
+        //定义本入口函数的logger处理对象及函数
+        $loggerObj = new classL1vmFuncComApi();
+        $log_time = date("Y-m-d H:i:s", time());
 
+        //入口消息内容判断
+        if (empty($msg) == true) {
+            $result = "Received null message body";
+            $log_content = "R:" . json_encode($result);
+            $loggerObj->logger("MFUN_TASK_ID_L2SNR_PM25", "mfun_l2snr_pm25_task_main_entry", $log_time, $log_content);
+            echo trim($result);
+            return false;
+        }
+        if (($msgId != MSG_ID_L2SDK_HCU_TO_L2SNR_PM25) || ($msgName != "MSG_ID_L2SDK_HCU_TO_L2SNR_PM25")){
+            $result = "Msgid or MsgName error";
+            $log_content = "P:" . json_encode($result);
+            $loggerObj->logger("MFUN_TASK_ID_L2SNR_PM25", "mfun_l2snr_pm25_task_main_entry", $log_time, $log_content);
+            echo trim($result);
+            return false;
+        }
+
+        //解开消息
+        $project= "";
+        $log_from = "";
+        $platform ="";
+        $deviceId="";
+        $statCode = "";
+        $content="";
+        if (isset($msg["project"])) $project = $msg["project"];
+        if (isset($msg["log_from"])) $log_from = $msg["log_from"];
+        if (isset($msg["platform"])) $platform = $msg["platform"];
+        if (isset($msg["deviceId"])) $deviceId = $msg["deviceId"];
+        if (isset($msg["statCode"])) $statCode = $msg["statCode"];
+        if (isset($msg["content"])) $content = $msg["content"];
+
+        //具体处理函数
+        $resp = $this->func_pm25_data_process($platform, $deviceId, $statCode, $content);
+
+        //返回ECHO
+        $log_content = "T:" . json_encode($resp);
+        $loggerObj->logger($project, $log_from, $log_time, $log_content);
+        echo trim($resp);
+        return true;
     }
 
 }//End of class_pmData_service

@@ -103,16 +103,18 @@ Make By：ZJL
 > 增加所有任务模块的入口
 > 框架基本搭建完成，还需要完善消息发送和处理方式
 > 二次包含vmlayer.php出现告警，再研究
+> 搭建好了IOT_HCU对应传感器的所有任务框架
 
 
 
 
 
 
-
-
-
-
+//已知的潜在错误
+1. include_once包含以下vmlayer.php多次，造成以下WARNING，如何消除
+Warning: include_once(../../l1comvm/vmlayer.php): failed to open stream: No such file or directory in C:\wamp\www\mfunhcu\l2sensorproc\sensoremc\dbi_l2snr_emc.class.php on line 8
+2. task_l2snr_emc.class.php中line74，resp=""，为什么？
+3. task_l2sdk_iot_hcu.class.php, line108，引用父进程的函数指针，编译器发现潜在错误，如何消除？
 
 
 

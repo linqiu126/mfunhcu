@@ -63,45 +63,45 @@ class classTaskL2sdkIotHcu
         $ctrl_key = hexdec($key['Key'])& 0xFF;
         switch ($ctrl_key)
         {
-            case CMDID_VERSION_SYNC:
+            case MFUN_CMDID_VERSION_SYNC:
                 $hcuObj = new classApiL2snrCommonService();
-                $resp = $hcuObj->func_version_update_process(PLTF_HCU, $deviceId, $content);
+                $resp = $hcuObj->func_version_update_process(MFUN_PLTF_HCU, $deviceId, $content);
                 $log_content = "T:" . json_encode($resp);
                 $loggerObj->logger($project, $log_from, $log_time, $log_content);
                 echo trim($resp);
                 break;
-            case CMDID_TIME_SYNC:
+            case MFUN_CMDID_TIME_SYNC:
                 $hcuObj = new classApiL2snrCommonService();
                 $resp = $hcuObj->func_timeSync_process();
                 $log_content = "T:" . json_encode($resp);
                 $loggerObj->logger($project, $log_from, $log_time, $log_content);
                 echo trim($resp);
                 break;
-            case CMDID_INVENTORY_DATA:
+            case MFUN_CMDID_INVENTORY_DATA:
                 $hcuObj = new classApiL2snrCommonService();
-                $resp = $hcuObj->func_inventory_data_process(PLTF_HCU,$deviceId, $content);
+                $resp = $hcuObj->func_inventory_data_process(MFUN_PLTF_HCU,$deviceId, $content);
                 $log_content = "T:" . json_encode($resp);
                 $loggerObj->logger($project, $log_from, $log_time, $log_content);
                 echo trim($resp);
                 break;
-            case CMDID_HEART_BEAT:
+            case MFUN_CMDID_HEART_BEAT:
                 $hcuObj = new classApiL2snrCommonService();
                 $resp = $hcuObj->func_heartBeat_process();
                 $log_content = "T:" . json_encode($resp);
                 $loggerObj->logger($project, $log_from, $log_time, $log_content);
                 echo trim($resp);
                 break;
-            case CMDID_HCU_POLLING:
+            case MFUN_CMDID_HCU_POLLING:
                 $hcuObj = new classApiL2snrCommonService();
                 $resp = $hcuObj->func_hcuPolling_process($deviceId);
                 $log_content = "T:" . json_encode($resp);
                 $loggerObj->logger($project, $log_from, $log_time, $log_content);
                 echo trim($resp);
                 break;
-            case CMDID_EMC_DATA:  //定时辐射强度处理
+            case MFUN_CMDID_EMC_DATA:  //定时辐射强度处理
                 $msg = array("project" => $project,
                     "log_from" => $log_from,
-                    "platform" => PLTF_HCU,
+                    "platform" => MFUN_PLTF_HCU,
                     "deviceId" => $deviceId,
                     "statCode" => $statCode,
                     "content" => $content);
@@ -117,40 +117,144 @@ class classTaskL2sdkIotHcu
                     return false;
                 };
                 //$hcuObj = new classTaskL2snrEmc();
-                //$resp = $hcuObj->func_emc_process(PLTF_HCU, $deviceId, $statCode, $content);
+                //$resp = $hcuObj->func_emc_process(MFUN_PLTF_HCU, $deviceId, $statCode, $content);
                 break;
-            case CMDID_PM_DATA:
-                $hcuObj = new classTaskL2snrPm25();
-                $resp = $hcuObj->func_pmData_process(PLTF_HCU, $deviceId, $statCode, $content);
+            case MFUN_CMDID_PM25_DATA:
+                $msg = array("project" => $project,
+                    "log_from" => $log_from,
+                    "platform" => MFUN_PLTF_HCU,
+                    "deviceId" => $deviceId,
+                    "statCode" => $statCode,
+                    "content" => $content);
+                if ($parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L2SDK_IOT_HCU,
+                        MFUN_TASK_ID_L2SENSOR_PM25,
+                        MSG_ID_L2SDK_HCU_TO_L2SNR_PM25,
+                        "MSG_ID_L2SDK_HCU_TO_L2SNR_PM25",
+                        $msg) == false){
+                    $result = "Send to message buffer error";
+                    $log_content = "P:" . json_encode($result);
+                    $loggerObj->logger($project, $log_from, $log_time, $log_content);
+                    echo trim($result);
+                    return false;
+                };
                 break;
-            case CMDID_WINDSPEED_DATA:
-                $hcuObj = new classTaskL2snrWindspd();
-                $resp = $hcuObj->func_windSpeed_process(PLTF_HCU, $deviceId, $statCode, $content);
+            case MFUN_CMDID_WINDDIR_DATA:
+                $msg = array("project" => $project,
+                    "log_from" => $log_from,
+                    "platform" => MFUN_PLTF_HCU,
+                    "deviceId" => $deviceId,
+                    "statCode" => $statCode,
+                    "content" => $content);
+                if ($parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L2SDK_IOT_HCU,
+                        MFUN_TASK_ID_L2SENSOR_WINDDIR,
+                        MSG_ID_L2SDK_HCU_TO_L2SNR_WINDDIR,
+                        "MSG_ID_L2SDK_HCU_TO_L2SNR_WINDDIR",
+                        $msg) == false){
+                    $result = "Send to message buffer error";
+                    $log_content = "P:" . json_encode($result);
+                    $loggerObj->logger($project, $log_from, $log_time, $log_content);
+                    echo trim($result);
+                    return false;
+                };
                 break;
-            case CMDID_WINDDIR_DATA:
-                $hcuObj = new classTaskL2snrWinddir();
-                $resp = $hcuObj->func_windDirection_process(PLTF_HCU, $deviceId,  $statCode, $content);
+            case MFUN_CMDID_WINDSPD_DATA:
+                $msg = array("project" => $project,
+                    "log_from" => $log_from,
+                    "platform" => MFUN_PLTF_HCU,
+                    "deviceId" => $deviceId,
+                    "statCode" => $statCode,
+                    "content" => $content);
+                if ($parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L2SDK_IOT_HCU,
+                        MFUN_TASK_ID_L2SENSOR_WINDSPD,
+                        MSG_ID_L2SDK_HCU_TO_L2SNR_WINDSPD,
+                        "MSG_ID_L2SDK_HCU_TO_L2SNR_WINDSPD",
+                        $msg) == false){
+                    $result = "Send to message buffer error";
+                    $log_content = "P:" . json_encode($result);
+                    $loggerObj->logger($project, $log_from, $log_time, $log_content);
+                    echo trim($result);
+                    return false;
+                };
                 break;
-            case CMDID_TEMPERATURE_DATA:
-                $hcuObj = new classTaskL2snrTemp();
-                $resp = $hcuObj->func_temperature_process(PLTF_HCU, $deviceId, $statCode, $content);
+            case MFUN_CMDID_TEMP_DATA:
+                $msg = array("project" => $project,
+                    "log_from" => $log_from,
+                    "platform" => MFUN_PLTF_HCU,
+                    "deviceId" => $deviceId,
+                    "statCode" => $statCode,
+                    "content" => $content);
+                if ($parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L2SDK_IOT_HCU,
+                        MFUN_TASK_ID_L2SENSOR_TEMP,
+                        MSG_ID_L2SDK_HCU_TO_L2SNR_TEMP,
+                        "MSG_ID_L2SDK_HCU_TO_L2SNR_TEMP",
+                        $msg) == false){
+                    $result = "Send to message buffer error";
+                    $log_content = "P:" . json_encode($result);
+                    $loggerObj->logger($project, $log_from, $log_time, $log_content);
+                    echo trim($result);
+                    return false;
+                };                break;
+            case MFUN_CMDID_HUMID_DATA:
+                $msg = array("project" => $project,
+                    "log_from" => $log_from,
+                    "platform" => MFUN_PLTF_HCU,
+                    "deviceId" => $deviceId,
+                    "statCode" => $statCode,
+                    "content" => $content);
+                if ($parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L2SDK_IOT_HCU,
+                        MFUN_TASK_ID_L2SENSOR_HUMID,
+                        MSG_ID_L2SDK_HCU_TO_L2SNR_HUMID,
+                        "MSG_ID_L2SDK_HCU_TO_L2SNR_HUMID",
+                        $msg) == false){
+                    $result = "Send to message buffer error";
+                    $log_content = "P:" . json_encode($result);
+                    $loggerObj->logger($project, $log_from, $log_time, $log_content);
+                    echo trim($result);
+                    return false;
+                };
                 break;
-            case CMDID_HUMIDITY_DATA:
-                $hcuObj = new classTaskL2snrHumid();
-                $resp = $hcuObj->func_humidity_process(PLTF_HCU, $deviceId, $statCode, $content);
-                break;
-            case CMDID_VIDEO_DATA:
+            case MFUN_CMDID_HSMMP_DATA:
                 if (empty($funcFlag)){
                     //return "HCU_IOT: video link empty";
                 }
-                $hcuObj = new classTaskL2snrHsmmp();
-                $resp = $hcuObj->func_video_process(PLTF_HCU, $deviceId, $content,$funcFlag);
+                $msg = array("project" => $project,
+                    "log_from" => $log_from,
+                    "platform" => MFUN_PLTF_HCU,
+                    "deviceId" => $deviceId,
+                    "statCode" => $statCode,
+                    "content" => $content);
+                if ($parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L2SDK_IOT_HCU,
+                        MFUN_TASK_ID_L2SENSOR_HSMMP,
+                        MSG_ID_L2SDK_HCU_TO_L2SNR_HSMMP,
+                        "MSG_ID_L2SDK_HCU_TO_L2SNR_HSMMP",
+                        $msg) == false){
+                    $result = "Send to message buffer error";
+                    $log_content = "P:" . json_encode($result);
+                    $loggerObj->logger($project, $log_from, $log_time, $log_content);
+                    echo trim($result);
+                    return false;
+                };
                 break;
-            case CMDID_NOISE_DATA:
-                $hcuObj = new classTaskL2snrNoise();
-                $resp = $hcuObj->func_noise_process(PLTF_HCU, $deviceId, $statCode, $content);
+            case MFUN_CMDID_NOISE_DATA:
+                $msg = array("project" => $project,
+                    "log_from" => $log_from,
+                    "platform" => MFUN_PLTF_HCU,
+                    "deviceId" => $deviceId,
+                    "statCode" => $statCode,
+                    "content" => $content);
+                if ($parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L2SDK_IOT_HCU,
+                        MFUN_TASK_ID_L2SENSOR_NOISE,
+                        MSG_ID_L2SDK_HCU_TO_L2SNR_NOISE,
+                        "MSG_ID_L2SDK_HCU_TO_L2SNR_NOISE",
+                        $msg) == false){
+                    $result = "Send to message buffer error";
+                    $log_content = "P:" . json_encode($result);
+                    $loggerObj->logger($project, $log_from, $log_time, $log_content);
+                    echo trim($result);
+                    return false;
+                };
                 break;
-            case CMDID_SW_UPDATE:
+            case MFUN_CMDID_SW_UPDATE:
                 $resp ="HCU_IOT: Not yet support!";
                 $log_content = "T:" . json_encode($resp);
                 $loggerObj->logger($project, $log_from, $log_time, $log_content);

@@ -158,7 +158,7 @@ $obj = new classTaskL1vmCoreRouter();
 //$postStr = $GLOBALS["HTTP_RAW_POST_DATA"];
 //$msg = file_get_contents('php://input','r');
 $msg = $GLOBALS["HTTP_RAW_POST_DATA"];
-$obj->mfun_l1vm_task_main_entry(MFUN_MAIN_ENTRY_HCU_IOT, $msg);
+$obj->mfun_l1vm_task_main_entry(MFUN_MAIN_ENTRY_HCU_IOT, NULL, NULL, $msg);
 
 //libxml_disable_entity_loader(true);
 //$postObj = simplexml_load_string($postStr, 'SimpleXMLElement');

@@ -135,7 +135,7 @@ class classTaskL1vmCoreRouter
             if ($this->mfun_l1vm_msg_send(MFUN_TASK_ID_L1VM,
                     MFUN_TASK_ID_L2SDK_IOT_HCU,
                     MSG_ID_L1VM_TO_L2SDK_IOT_HCU_INCOMING,
-                    "MSG_ID_L1VM_L2SDK_IOT_HCU_INCOMING",
+                    "MSG_ID_L1VM_TO_L2SDK_IOT_HCU_INCOMING",
                     $msg) == false){
                 $result = "Cloud: Send to message buffer error.";
                 $log_content = "P:" . json_encode($result);
@@ -147,7 +147,7 @@ class classTaskL1vmCoreRouter
             if ($this->mfun_l1vm_msg_send(MFUN_TASK_ID_L1VM,
                     MFUN_TASK_ID_L2SDK_IOT_WX,
                     MSG_ID_L1VM_TO_L2SDK_IOT_HCU_INCOMING,
-                    "MSG_ID_L1VM_L2SDK_IOT_WX_INCOMING",
+                    "MSG_ID_L1VM_TO_L2SDK_IOT_HCU_INCOMING",
                     $msg) == false) {
                 $result = "Cloud: Send to message buffer error.";
                 $log_content = "P:" . json_encode($result);

@@ -20,13 +20,13 @@ class classTaskL2snrEmc
     {
         switch($platform)
         {
-            case PLTF_WX:
+            case MFUN_PLTF_WX:
                 if (strlen($content) == 0) {
                     return "ERROR EMC_SERVICE[WX]: message length invalid";  //消息长度不合法，直接返回
                 }
                 $resp = $this->wx_emcdata_req_process($deviceId,$content);
                 break;
-            case PLTF_HCU:
+            case MFUN_PLTF_HCU:
                 $raw_MsgHead = substr($content, 0, HCU_MSG_HEAD_LENGTH);  //截取4Byte MsgHead
                 $msgHead = unpack(HCU_MSG_HEAD_FORMAT, $raw_MsgHead);
 
@@ -48,7 +48,7 @@ class classTaskL2snrEmc
                         break;
                 }
                 break;
-            case PLTF_JD:
+            case MFUN_PLTF_JD:
                 $resp = ""; //no response message
                 break;
             default:
@@ -71,6 +71,7 @@ class classTaskL2snrEmc
         $sDbObj->dbi_emcData_delete_3monold($deviceId, $sensorId, 90);  //remove 90 days old data.
         $sDbObj->dbi_emcAccumulation_save($deviceId); //累计值计算，如果不是初次接收数据，而且日期没有改变，则该过程将非常快
 
+        //完全不需要返回？？？
         $resp = ""; //no response message
         return $resp;
     }
@@ -157,10 +158,10 @@ class classTaskL2snrEmc
             echo trim($result);
             return false;
         }
-        if (($msgId != MSG_ID_L1VM_TO_L2SDK_IOT_HCU_INCOMING) || ($msgName != "MSG_ID_L1VM_TO_L2SDK_IOT_HCU_INCOMING")){
+        if (($msgId != MSG_ID_L2SDK_HCU_TO_L2SNR_EMC) || ($msgName != "MSG_ID_L2SDK_HCU_TO_L2SNR_EMC")){
             $result = "Msgid or MsgName error";
             $log_content = "P:" . json_encode($result);
-            $loggerObj->logger("NULL", "mfun_l2sdk_iot_hcu_task_main_entry", $log_time, $log_content);
+            $loggerObj->logger("MFUN_TASK_ID_L2SNR_EMC", "mfun_l2snr_emc_task_main_entry", $log_time, $log_content);
             echo trim($result);
             return false;
         }
