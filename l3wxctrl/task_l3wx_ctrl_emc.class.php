@@ -5,7 +5,7 @@
  * Date: 2016/6/27
  * Time: 22:44
  */
-include_once "../l1comvm/vmlayer.php";
+//include_once "../l1comvm/vmlayer.php";
 include_once "dbi_l3wxctrl.emc.class.php";
 
 class classTaskL3wxCtrlEmc

@@ -5,7 +5,7 @@
  * Date: 2015/12/13
  * Time: 12:26
  */
-include_once "../../l1comvm/vmlayer.php";
+//include_once "../../l1comvm/vmlayer.php";
 include_once "dbi_l2snr_noise.class.php";
 
 
@@ -155,9 +155,14 @@ class classTaskL2snrNoise
         $resp = $this->func_noise_process($platform, $deviceId, $statCode, $content);
 
         //返回ECHO
-        $log_content = "T:" . json_encode($resp);
-        $loggerObj->logger($project, $log_from, $log_time, $log_content);
-        echo trim($resp);
+        if (!empty($resp))
+        {
+            $log_content = "T:" . json_encode($resp);
+            $loggerObj->logger($project, $log_from, $log_time, $log_content);
+            echo trim($resp);
+        }
+
+        //返回
         return true;
     }
 

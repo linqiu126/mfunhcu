@@ -5,7 +5,7 @@
  * Date: 2016/1/6
  * Time: 13:40
  */
-include_once "../l1comvm/vmlayer.php";
+//include_once "../l1comvm/vmlayer.php";
 include_once "../l5bi/dbi_l5bi_service.class.php";
 
 $biObj = new classDbiL5biService();

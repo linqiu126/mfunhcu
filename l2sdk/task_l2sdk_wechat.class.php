@@ -41,7 +41,7 @@
  *  		);
  *   $result = $weObj->createMenu($newmenu);
  */
-include_once "../l1comvm/vmlayer.php";
+//include_once "../l1comvm/vmlayer.php";
 include_once "../l2sdk/task_l2sdk_iot_wx.class.php";
 include_once "../l2sdk/task_l2sdk_iot_hcu.class.php";
 
@@ -4473,24 +4473,37 @@ class classTaskL2sdkWechat
 /**********************************************************************************************************************
  *                                               总入口Response函数                                                   *
  *********************************************************************************************************************/
-    //响应消息
+    //入口消息
+	//$result的技巧是，IOT_WX对应的消息，$result设置为空，从而没有返回ECHO
     public function mfun_l2sdk_wechat_task_main_entry($parObj, $msgId, $msgName, $msg)
     {
-        //$postStr = $GLOBALS["HTTP_RAW_POST_DATA"];
-        $postStr = file_get_contents('php://input','r');
+		//定义本入口函数的logger处理对象及函数
+		$loggerObj = new classL1vmFuncComApi();
+		$log_time = date("Y-m-d H:i:s", time());
 
-        if (!empty($postStr))
-        {
-            //判断收到的消息类型
+		//入口消息内容判断
+		if (empty($msg) == true) {
+			$loggerObj->logger("MFUN_TASK_ID_L2SDK_WECHAT", "mfun_l2sdk_wechat_task_main_entry", $log_time, "R: Received null message body.");
+			echo "";
+			return false;
+		}
+		if (($msgId != MSG_ID_L1VM_TO_L2SDK_WECHAT_INCOMING) || ($msgName != "MSG_ID_L1VM_TO_L2SDK_WECHAT_INCOMING")){
+			$result = "Msgid or MsgName error";
+			$log_content = "P:" . json_encode($result);
+			$loggerObj->logger("MFUN_TASK_ID_L2SDK_WECHAT", "mfun_l2sdk_wechat_task_main_entry", $log_time, $log_content);
+			echo trim($result);
+			return false;
+		}
 
-            $format = substr(trim($postStr), 0, 2);
-            switch ($format)
-            {
-                case XML_FORMAT:
-                    libxml_disable_entity_loader(true);  //prevent XML entity injection
-                    $postObj = simplexml_load_string($postStr, 'SimpleXMLElement');  //防止破坏CDATA的内容，进而影响智能硬件L3消息体
-                    //$postObj = simplexml_load_string($postStr, 'SimpleXMLElement', LIBXML_NOCDATA);
-                    $textTpl = "<xml>
+		//判断收到的消息类型
+		$format = substr(trim($msg), 0, 2);
+		switch ($format)
+		{
+			case XML_FORMAT:
+				libxml_disable_entity_loader(true);  //prevent XML entity injection
+				$postObj = simplexml_load_string($msg, 'SimpleXMLElement');  //防止破坏CDATA的内容，进而影响智能硬件L3消息体
+				//$postObj = simplexml_load_string($postStr, 'SimpleXMLElement', LIBXML_NOCDATA);
+				$textTpl = "<xml>
                         <ToUserName><![CDATA[%s]]></ToUserName>
                         <FromUserName><![CDATA[%s]]></FromUserName>
                         <CreateTime>%s</CreateTime>
@@ -4498,103 +4511,129 @@ class classTaskL2sdkWechat
                         <Content><![CDATA[%s]]></Content>
                         <FuncFlag>0</FuncFlag></xml>";
 
-                    $fromUser = trim($postObj->FromUserName);
-                    $createTime = trim($postObj->CreateTime);
-                    $log_time = date("Y-m-d H:i:s",$createTime);
-                    $log_content = "R:".trim($postStr);
+				$fromUser = trim($postObj->FromUserName);
+				$createTime = trim($postObj->CreateTime);
+				$log_time = date("Y-m-d H:i:s",$createTime);
+				$log_content = "R:".trim($msg);
+				$RX_TYPE = trim($postObj->MsgType);
 
-                    $RX_TYPE = trim($postObj->MsgType);
+				//消息类型分离
+				switch ($RX_TYPE)
+				{
+					case "event":
+						$project = "IHU";
+						$this->logger($project,$fromUser,$log_time,$log_content);
+						$log_from = MFUN_CLOUD_WX;
+						$result = $this->receiveEvent($postObj);
+						break;
 
-                    //消息类型分离
-                    switch ($RX_TYPE)
-                    {
-                        case "event":
-                            $project = "IHU";
-                            $this->logger($project,$fromUser,$log_time,$log_content);
-                            $log_from = MFUN_CLOUD_WX;
-                            $result = $this->receiveEvent($postObj);
-                            break;
-                        case "text":
-                            $project = "IHU";
-                            $this->logger($project,$fromUser,$log_time,$log_content);
-                            $log_from = MFUN_CLOUD_WX;
-                            $result = $this->receiveText($postObj);
-                            break;
-                        case "image":
-                            $project = "IHU";
-                            $this->logger($project,$fromUser,$log_time,$log_content);
-                            $log_from = MFUN_CLOUD_WX;
-                            $result = $this->receiveImage($postObj);
-                            break;
-                        case "location":
-                            $project = "IHU";
-                            $this->logger($project,$fromUser,$log_time,$log_content);
-                            $log_from = MFUN_CLOUD_WX;
-                            $result = $this->receiveLocation($postObj);
-                            //$wxDevObj = new class_wx_IOT_sdk($this->appid, $this->appsecret);
-                            //$result = $wxDevObj->receive_locationEvent($postObj);
-                            break;
-                        case "voice":
-                            $project = "IHU";
-                            $this->logger($project,$fromUser,$log_time,$log_content);
-                            $log_from = MFUN_CLOUD_WX;
-                            $result = $this->receiveVoice($postObj);
-                            break;
-                        case "video":
-                            $project = "IHU";
-                            $this->logger($project,$fromUser,$log_time,$log_content);
-                            $log_from = MFUN_CLOUD_WX;
-                            $result = $this->receiveVideo($postObj);
-                            break;
-                        case "link":
-                            $project = "IHU";
-                            $this->logger($project,$fromUser,$log_time,$log_content);
-                            $log_from = MFUN_CLOUD_WX;
-                            $result = $this->receiveLink($postObj);
-                            break;
-                        case "device_text":  //智能硬件设备text消息，都转到IOT相关的CLASS中
-                            $project = "IHU";
-                            $this->logger($project,$fromUser,$log_time,$log_content);
-                            $wxDevObj = new classTaskL2sdkIotWx($this->appid, $this->appsecret);
-                            $log_from = MFUN_CLOUD_WX;
-                            $result = $wxDevObj->receive_wx_deviceMessage($postObj);
-                            break;
-                        case "device_event":
-                            $project = "IHU";
-                            $this->logger($project,$fromUser,$log_time,$log_content);
-                            $log_from = MFUN_CLOUD_WX;
-                            $wxDevObj = new classTaskL2sdkIotWx($this->appid, $this->appsecret);
-                            $result = $wxDevObj->receive_wx_deviceEvent($postObj);
-                            break;
-                        default:
-                            $project = "NULL";
-                            $this->logger($project,$fromUser,$log_time,$log_content);
-                            $log_from = "CLOUD_NONE";
-                            $result = "[XML_FORMAT]unknown message type: ".$RX_TYPE;
-                            break;
-                    }
-                    break;
-                default:
-                    $result = "Unknown message format";
-                    $project = "NULL";
-                    $log_from = "CLOUD_NONE";
-                    break;
-            }
+					case "text":
+						$project = "IHU";
+						$this->logger($project,$fromUser,$log_time,$log_content);
+						$log_from = MFUN_CLOUD_WX;
+						$result = $this->receiveText($postObj);
+						break;
 
-            if (!empty($result))
-            {
-                $timestamp = time();
-                $log_time = date("Y-m-d H:i:s", $timestamp);
-                $log_content = "T:". json_encode($result);
-                $this->logger($project,$log_from, $log_time, $log_content);
-                echo trim($result);
-            }
-        }
-        else
-        {
-            echo "";
-            exit;
-        }
+					case "image":
+						$project = "IHU";
+						$this->logger($project,$fromUser,$log_time,$log_content);
+						$log_from = MFUN_CLOUD_WX;
+						$result = $this->receiveImage($postObj);
+						break;
+
+					case "location":
+						$project = "IHU";
+						$this->logger($project,$fromUser,$log_time,$log_content);
+						$log_from = MFUN_CLOUD_WX;
+						$result = $this->receiveLocation($postObj);
+						//$wxDevObj = new class_wx_IOT_sdk($this->appid, $this->appsecret);
+						//$result = $wxDevObj->receive_locationEvent($postObj);
+						break;
+
+					case "voice":
+						$project = "IHU";
+						$this->logger($project,$fromUser,$log_time,$log_content);
+						$log_from = MFUN_CLOUD_WX;
+						$result = $this->receiveVoice($postObj);
+						break;
+
+					case "video":
+						$project = "IHU";
+						$this->logger($project,$fromUser,$log_time,$log_content);
+						$log_from = MFUN_CLOUD_WX;
+						$result = $this->receiveVideo($postObj);
+						break;
+
+					case "link":
+						$project = "IHU";
+						$this->logger($project,$fromUser,$log_time,$log_content);
+						$log_from = MFUN_CLOUD_WX;
+						$result = $this->receiveLink($postObj);
+						break;
+
+					case "device_text":  //智能硬件设备text消息，都转到IOT相关的CLASS中
+						$project = "IHU";
+						$this->logger($project,$fromUser,$log_time,$log_content);
+						//$wxDevObj = new classTaskL2sdkIotWx($this->appid, $this->appsecret);
+						$log_from = MFUN_CLOUD_WX;
+						$platform = MFUN_IOT_WX_DEVICE_TEXT;
+						$msg = array("project" => $project,
+							"log_from" => $log_from,
+							"platform" => $platform,
+							"content" => $postObj);
+						if ($parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L2SDK_WECHAT,
+								MFUN_TASK_ID_L2SDK_IOT_WX,
+								MSG_ID_WECHAT_TO_L2SDK_IOT_WX_INCOMING,
+								"MSG_ID_WECHAT_TO_L2SDK_IOT_WX_INCOMING",
+								$msg) == false) $result = "Send to message buffer error";
+						else $result = "";
+						//$wxDevObj->receive_wx_deviceMessage($postObj);
+						//$result = "";
+						break;
+
+					case "device_event": //智能硬件设备text消息，都转到IOT相关的CLASS中
+						$project = "IHU";
+						$this->logger($project,$fromUser,$log_time,$log_content);
+						$log_from = MFUN_CLOUD_WX;
+						$platform = MFUN_IOT_WX_DEVICE_EVENT;
+						//$wxDevObj = new classTaskL2sdkIotWx($this->appid, $this->appsecret);
+						//$wxDevObj->receive_wx_deviceEvent($postObj);
+						//$result = "";
+						$msg = array("project" => $project,
+							"log_from" => $log_from,
+							"platform" => $platform,
+							"content" => $postObj);
+						if ($parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L2SDK_WECHAT,
+								MFUN_TASK_ID_L2SDK_IOT_WX,
+								MSG_ID_WECHAT_TO_L2SDK_IOT_WX_INCOMING,
+								"MSG_ID_WECHAT_TO_L2SDK_IOT_WX_INCOMING",
+								$msg) == false) $result = "Send to message buffer error";
+						else $result = "";
+						break;
+
+					default:
+						$project = "NULL";
+						$this->logger($project,$fromUser,$log_time,$log_content);
+						$log_from = "CLOUD_NONE";
+						$result = "[XML_FORMAT]unknown message type: ".$RX_TYPE;
+						break;
+				}
+				break;
+			default:
+				$result = "Unknown message format";
+				$project = "NULL";
+				$log_from = "CLOUD_NONE";
+				break;
+		}
+
+		if (!empty($result))
+		{
+			$timestamp = time();
+			$log_time = date("Y-m-d H:i:s", $timestamp);
+			$log_content = "T:". json_encode($result);
+			$this->logger($project,$log_from, $log_time, $log_content);
+			echo trim($result);
+		}
     }
 
 } //end of Class class_wechat_sdk

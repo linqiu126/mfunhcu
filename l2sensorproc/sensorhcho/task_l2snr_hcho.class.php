@@ -5,7 +5,7 @@
  * Date: 2016/6/27
  * Time: 22:27
  */
-include_once "../../l1comvm/vmlayer.php";
+//include_once "../../l1comvm/vmlayer.php";
 include_once "dbi_l2snr_hcho.class.php";
 
 class classTaskL2snrHcho
@@ -62,9 +62,14 @@ class classTaskL2snrHcho
         $resp = $this->func_hcho_data_process($platform, $deviceId, $statCode, $content);
 
         //返回ECHO
-        $log_content = "T:" . json_encode($resp);
-        $loggerObj->logger($project, $log_from, $log_time, $log_content);
-        echo trim($resp);
+        if (!empty($resp))
+        {
+            $log_content = "T:" . json_encode($resp);
+            $loggerObj->logger($project, $log_from, $log_time, $log_content);
+            echo trim($resp);
+        }
+
+        //返回
         return true;
     }
 

@@ -5,7 +5,7 @@
  * Date: 2016/1/2
  * Time: 16:06
  */
-include_once "../../l1comvm/vmlayer.php";
+//include_once "../../l1comvm/vmlayer.php";
 
 class classDbiL2snrHsmmp
 {

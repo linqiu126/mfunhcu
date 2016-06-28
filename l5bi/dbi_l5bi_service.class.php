@@ -7,7 +7,7 @@
  * Description: this file provide database API for business intelligence
  */
 
-include_once "../l1comvm/vmlayer.php";
+//include_once "../l1comvm/vmlayer.php";
 
 class classDbiL5biService
 {

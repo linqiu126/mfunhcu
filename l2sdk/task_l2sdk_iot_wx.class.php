@@ -511,7 +511,7 @@ class classTaskL2sdkIotWx
      *                                               自定义API部分                                                     *
      ******************************************************************************************************************/
     //接收微信消息类型为“device_text”的处理函数，传入data为下位机发送的16进制码流
-    public function receive_wx_deviceMessage($data)
+    public function receive_wx_deviceMessage($parObj, $data)
     {
         //发送到L3的比特流还需要进行base64解码和16进制unpack
         $content = base64_decode($data->Content);
@@ -573,7 +573,7 @@ class classTaskL2sdkIotWx
     } //receive_deviceMessage处理结束
 
     //接收微信消息类型为“device_event”的处理函数，传入data为下位机发送的16进制码流
-    public function receive_wx_deviceEvent($data)
+    public function receive_wx_deviceEvent($parObj, $data)
     {
         $content = base64_decode($data->Content);
         $content = unpack('H*',$content);
@@ -1190,7 +1190,57 @@ class classTaskL2sdkIotWx
     //任务入口函数
     public function mfun_l2sdk_iot_wx_task_main_entry($parObj, $msgId, $msgName, $msg)
     {
+        //定义本入口函数的logger处理对象及函数
+        $loggerObj = new classL1vmFuncComApi();
+        $log_time = date("Y-m-d H:i:s", time());
 
+        //入口消息内容判断
+        if (empty($msg) == true) {
+            $loggerObj->logger("MFUN_TASK_ID_L2SDK_IOT_WX", "mfun_l2sdk_iot_wx_task_main_entry", $log_time, "R: Received null message body.");
+            echo "";
+            return false;
+        }
+        if (($msgId != MSG_ID_WECHAT_TO_L2SDK_IOT_WX_INCOMING) || ($msgName != "MSG_ID_WECHAT_TO_L2SDK_IOT_WX_INCOMING")){
+            $result = "Msgid or MsgName error";
+            $log_content = "P:" . json_encode($result);
+            $loggerObj->logger("MFUN_TASK_ID_L2SDK_IOT_WX", "mfun_l2sdk_iot_wx_task_main_entry", $log_time, $log_content);
+            echo trim($result);
+            return false;
+        }
+
+        //解开消息
+        $project= "";
+        $log_from = "";
+        $platform = "";
+        $content="";
+        if (isset($msg["project"])) $project = $msg["project"];
+        if (isset($msg["log_from"])) $log_from = $msg["log_from"];
+        if (isset($msg["platform"])) $platform = $msg["platform"];
+        if (isset($msg["content"])) $content = $msg["content"];
+
+        //具体处理函数
+        switch($platform){
+            case MFUN_IOT_WX_DEVICE_TEXT:
+                $resp = $this->receive_wx_deviceMessage($parObj, $content);
+                break;
+            case MFUN_IOT_WX_DEVICE_EVENT:
+                $resp = $this->receive_wx_deviceEvent($parObj, $content);
+                break;
+            default:
+                $resp = "";
+                break;
+        }
+
+        //返回ECHO
+        if (!empty($resp))
+        {
+            $log_content = "T:" . json_encode($resp);
+            $loggerObj->logger($project, $log_from, $log_time, $log_content);
+            echo trim($resp);
+        }
+
+        //返回
+        return true;
     }
 
 }

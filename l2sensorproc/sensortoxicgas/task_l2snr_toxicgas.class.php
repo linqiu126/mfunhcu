@@ -5,7 +5,7 @@
  * Date: 2016/6/27
  * Time: 22:28
  */
-include_once "../../l1comvm/vmlayer.php";
+//include_once "../../l1comvm/vmlayer.php";
 include_once "dbi_l2snr_toxicgas.class.php";
 
 class classTaskL2snrToxicgas
@@ -62,9 +62,14 @@ class classTaskL2snrToxicgas
         $resp = $this->func_toxicgas_data_process($platform, $deviceId, $statCode, $content);
 
         //返回ECHO
-        $log_content = "T:" . json_encode($resp);
-        $loggerObj->logger($project, $log_from, $log_time, $log_content);
-        echo trim($resp);
+        if (!empty($resp))
+        {
+            $log_content = "T:" . json_encode($resp);
+            $loggerObj->logger($project, $log_from, $log_time, $log_content);
+            echo trim($resp);
+        }
+
+        //返回
         return true;
     }
 

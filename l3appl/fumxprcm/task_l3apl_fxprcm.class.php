@@ -5,7 +5,7 @@
  * Date: 2016/6/27
  * Time: 22:39
  */
-include_once "../../l1comvm/vmlayer.php";
+//include_once "../../l1comvm/vmlayer.php";
 include_once "dbi_l3apl_fxprcm.class.php";
 
 class classTaskL3aplFxprcm

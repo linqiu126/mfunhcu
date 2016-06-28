@@ -7,7 +7,6 @@
  */
 include_once "../l1comvm/vmlayer.php";
 include_once "../l2sdk/dbi_l2sdk_iot_hcu.class.php";
-include_once "../l2sensorproc/sensoremc/task_l2snr_emc.class.php";  //To be removed
 
 //HCU硬件设备级 Layer 2 SDK
 //TASK_ID = MFUN_TASK_ID_L2SDK_IOT_HCU
@@ -66,38 +65,28 @@ class classTaskL2sdkIotHcu
             case MFUN_CMDID_VERSION_SYNC:
                 $hcuObj = new classApiL2snrCommonService();
                 $resp = $hcuObj->func_version_update_process(MFUN_PLTF_HCU, $deviceId, $content);
-                $log_content = "T:" . json_encode($resp);
-                $loggerObj->logger($project, $log_from, $log_time, $log_content);
-                echo trim($resp);
                 break;
+
             case MFUN_CMDID_TIME_SYNC:
                 $hcuObj = new classApiL2snrCommonService();
                 $resp = $hcuObj->func_timeSync_process();
-                $log_content = "T:" . json_encode($resp);
-                $loggerObj->logger($project, $log_from, $log_time, $log_content);
-                echo trim($resp);
                 break;
+
             case MFUN_CMDID_INVENTORY_DATA:
                 $hcuObj = new classApiL2snrCommonService();
                 $resp = $hcuObj->func_inventory_data_process(MFUN_PLTF_HCU,$deviceId, $content);
-                $log_content = "T:" . json_encode($resp);
-                $loggerObj->logger($project, $log_from, $log_time, $log_content);
-                echo trim($resp);
                 break;
+
             case MFUN_CMDID_HEART_BEAT:
                 $hcuObj = new classApiL2snrCommonService();
                 $resp = $hcuObj->func_heartBeat_process();
-                $log_content = "T:" . json_encode($resp);
-                $loggerObj->logger($project, $log_from, $log_time, $log_content);
-                echo trim($resp);
                 break;
+
             case MFUN_CMDID_HCU_POLLING:
                 $hcuObj = new classApiL2snrCommonService();
                 $resp = $hcuObj->func_hcuPolling_process($deviceId);
-                $log_content = "T:" . json_encode($resp);
-                $loggerObj->logger($project, $log_from, $log_time, $log_content);
-                echo trim($resp);
                 break;
+
             case MFUN_CMDID_EMC_DATA:  //定时辐射强度处理
                 $msg = array("project" => $project,
                     "log_from" => $log_from,
@@ -109,16 +98,13 @@ class classTaskL2sdkIotHcu
                         MFUN_TASK_ID_L2SENSOR_EMC,
                         MSG_ID_L2SDK_HCU_TO_L2SNR_EMC,
                         "MSG_ID_L2SDK_HCU_TO_L2SNR_EMC",
-                        $msg) == false){
-                    $result = "Send to message buffer error";
-                    $log_content = "P:" . json_encode($result);
-                    $loggerObj->logger($project, $log_from, $log_time, $log_content);
-                    echo trim($result);
-                    return false;
-                };
+                        $msg) == false) $resp = "Send to message buffer error";
+                else $resp = "";
+
                 //$hcuObj = new classTaskL2snrEmc();
                 //$resp = $hcuObj->func_emc_process(MFUN_PLTF_HCU, $deviceId, $statCode, $content);
                 break;
+
             case MFUN_CMDID_PM25_DATA:
                 $msg = array("project" => $project,
                     "log_from" => $log_from,
@@ -130,14 +116,10 @@ class classTaskL2sdkIotHcu
                         MFUN_TASK_ID_L2SENSOR_PM25,
                         MSG_ID_L2SDK_HCU_TO_L2SNR_PM25,
                         "MSG_ID_L2SDK_HCU_TO_L2SNR_PM25",
-                        $msg) == false){
-                    $result = "Send to message buffer error";
-                    $log_content = "P:" . json_encode($result);
-                    $loggerObj->logger($project, $log_from, $log_time, $log_content);
-                    echo trim($result);
-                    return false;
-                };
+                        $msg) == false) $resp = "Send to message buffer error";
+                else $resp = "";
                 break;
+
             case MFUN_CMDID_WINDDIR_DATA:
                 $msg = array("project" => $project,
                     "log_from" => $log_from,
@@ -149,14 +131,10 @@ class classTaskL2sdkIotHcu
                         MFUN_TASK_ID_L2SENSOR_WINDDIR,
                         MSG_ID_L2SDK_HCU_TO_L2SNR_WINDDIR,
                         "MSG_ID_L2SDK_HCU_TO_L2SNR_WINDDIR",
-                        $msg) == false){
-                    $result = "Send to message buffer error";
-                    $log_content = "P:" . json_encode($result);
-                    $loggerObj->logger($project, $log_from, $log_time, $log_content);
-                    echo trim($result);
-                    return false;
-                };
+                        $msg) == false) $resp = "Send to message buffer error";
+                else $resp = "";
                 break;
+
             case MFUN_CMDID_WINDSPD_DATA:
                 $msg = array("project" => $project,
                     "log_from" => $log_from,
@@ -168,14 +146,10 @@ class classTaskL2sdkIotHcu
                         MFUN_TASK_ID_L2SENSOR_WINDSPD,
                         MSG_ID_L2SDK_HCU_TO_L2SNR_WINDSPD,
                         "MSG_ID_L2SDK_HCU_TO_L2SNR_WINDSPD",
-                        $msg) == false){
-                    $result = "Send to message buffer error";
-                    $log_content = "P:" . json_encode($result);
-                    $loggerObj->logger($project, $log_from, $log_time, $log_content);
-                    echo trim($result);
-                    return false;
-                };
+                        $msg) == false) $resp = "Send to message buffer error";
+                else $resp = "";
                 break;
+
             case MFUN_CMDID_TEMP_DATA:
                 $msg = array("project" => $project,
                     "log_from" => $log_from,
@@ -187,13 +161,10 @@ class classTaskL2sdkIotHcu
                         MFUN_TASK_ID_L2SENSOR_TEMP,
                         MSG_ID_L2SDK_HCU_TO_L2SNR_TEMP,
                         "MSG_ID_L2SDK_HCU_TO_L2SNR_TEMP",
-                        $msg) == false){
-                    $result = "Send to message buffer error";
-                    $log_content = "P:" . json_encode($result);
-                    $loggerObj->logger($project, $log_from, $log_time, $log_content);
-                    echo trim($result);
-                    return false;
-                };                break;
+                        $msg) == false) $resp = "Send to message buffer error";
+                else $resp = "";
+                break;
+
             case MFUN_CMDID_HUMID_DATA:
                 $msg = array("project" => $project,
                     "log_from" => $log_from,
@@ -205,14 +176,10 @@ class classTaskL2sdkIotHcu
                         MFUN_TASK_ID_L2SENSOR_HUMID,
                         MSG_ID_L2SDK_HCU_TO_L2SNR_HUMID,
                         "MSG_ID_L2SDK_HCU_TO_L2SNR_HUMID",
-                        $msg) == false){
-                    $result = "Send to message buffer error";
-                    $log_content = "P:" . json_encode($result);
-                    $loggerObj->logger($project, $log_from, $log_time, $log_content);
-                    echo trim($result);
-                    return false;
-                };
+                        $msg) == false) $resp = "Send to message buffer error";
+                else $resp = "";
                 break;
+
             case MFUN_CMDID_HSMMP_DATA:
                 if (empty($funcFlag)){
                     //return "HCU_IOT: video link empty";
@@ -227,14 +194,10 @@ class classTaskL2sdkIotHcu
                         MFUN_TASK_ID_L2SENSOR_HSMMP,
                         MSG_ID_L2SDK_HCU_TO_L2SNR_HSMMP,
                         "MSG_ID_L2SDK_HCU_TO_L2SNR_HSMMP",
-                        $msg) == false){
-                    $result = "Send to message buffer error";
-                    $log_content = "P:" . json_encode($result);
-                    $loggerObj->logger($project, $log_from, $log_time, $log_content);
-                    echo trim($result);
-                    return false;
-                };
+                        $msg) == false) $resp = "Send to message buffer error";
+                else $resp = "";
                 break;
+
             case MFUN_CMDID_NOISE_DATA:
                 $msg = array("project" => $project,
                     "log_from" => $log_from,
@@ -246,27 +209,28 @@ class classTaskL2sdkIotHcu
                         MFUN_TASK_ID_L2SENSOR_NOISE,
                         MSG_ID_L2SDK_HCU_TO_L2SNR_NOISE,
                         "MSG_ID_L2SDK_HCU_TO_L2SNR_NOISE",
-                        $msg) == false){
-                    $result = "Send to message buffer error";
-                    $log_content = "P:" . json_encode($result);
-                    $loggerObj->logger($project, $log_from, $log_time, $log_content);
-                    echo trim($result);
-                    return false;
-                };
+                        $msg) == false) $resp = "Send to message buffer error";
+                else $resp = "";
                 break;
+
             case MFUN_CMDID_SW_UPDATE:
                 $resp ="HCU_IOT: Not yet support!";
-                $log_content = "T:" . json_encode($resp);
-                $loggerObj->logger($project, $log_from, $log_time, $log_content);
-                echo trim($resp);
                 break;
+
             default:
                 $resp ="HCU_IOT: invalid command type";
-                $log_content = "T:" . json_encode($resp);
-                $loggerObj->logger($project, $log_from, $log_time, $log_content);
-                echo trim($resp);
                 break;
         }
+
+        //ECHO回去
+        if (!empty($resp))
+        {
+            $log_content = "T:" . json_encode($resp);
+            $loggerObj->logger($project, $log_from, $log_time, $log_content);
+            echo trim($resp);
+        }
+
+        //返回
         return true;
     } //receive_hcu_xmlMsg处理结束
 
@@ -274,6 +238,10 @@ class classTaskL2sdkIotHcu
     //处理环保局要求格式的消息
     public function receive_hcu_zhbMessage($parObj, $pdu, $project, $log_from)
     {
+        //定义本入口函数的logger处理对象及函数
+        $loggerObj = new classL1vmFuncComApi();
+        $log_time = date("Y-m-d H:i:s", time());
+
         $pdu_format = "A2Header/A4Len";
         $temp = unpack($pdu_format, $pdu);
 
@@ -331,7 +299,13 @@ class classTaskL2sdkIotHcu
                 break;
         }
 
-        return $resp;
+        //ECHO回去
+        $log_content = "T:" . json_encode($resp);
+        $loggerObj->logger($project, $log_from, $log_time, $log_content);
+        echo trim($resp);
+
+        //返回
+        return true;
     }//receive_hcu_ZhbMsg处理结束
 
     public function dummy_data_response($fromUser)
@@ -414,7 +388,7 @@ class classTaskL2sdkIotHcu
         if (($msgId != MSG_ID_L1VM_TO_L2SDK_IOT_HCU_INCOMING) || ($msgName != "MSG_ID_L1VM_TO_L2SDK_IOT_HCU_INCOMING")){
             $result = "Msgid or MsgName error";
             $log_content = "P:" . json_encode($result);
-            $loggerObj->logger("NULL", "mfun_l2sdk_iot_hcu_task_main_entry", $log_time, $log_content);
+            $loggerObj->logger("MFUN_TASK_ID_L2SDK_IOT_HCU", "mfun_l2sdk_iot_hcu_task_main_entry", $log_time, $log_content);
             echo trim($result);
             return false;
         }
@@ -436,6 +410,7 @@ class classTaskL2sdkIotHcu
 
                 $fromUser = trim($postObj->FromUserName);
                 $createTime = trim($postObj->CreateTime);
+                $log_time = date("Y-m-d H:i:s",$createTime);
                 $log_content = "R:" . trim($msg);
                 $RX_TYPE = trim($postObj->MsgType);
 
@@ -499,14 +474,13 @@ class classTaskL2sdkIotHcu
 
         //处理结果
         //由于消息的分布发送到各个任务模块中去了，这里不再统一处理ECHO返回，而由各个任务模块单独完成
-        /*
         if (!empty($result)) {
             $timestamp = time();
             $log_time = date("Y-m-d H:i:s", $timestamp);
             $log_content = "T:" . json_encode($result);
             $loggerObj->logger($project, $log_from, $log_time, $log_content);
             echo trim($result);
-        }*/
+        }
 
         //结束，返回
         return true;

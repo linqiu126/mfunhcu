@@ -5,7 +5,7 @@
  * Date: 2015/12/13
  * Time: 13:12
  */
-include_once "../../l1comvm/vmlayer.php";
+//include_once "../../l1comvm/vmlayer.php";
 
 class classApiL2snrCommonService
 {
@@ -17,7 +17,7 @@ class classApiL2snrCommonService
 
     public function func_timeSync_process()  //时间同步消息处理，返回当前时间戳
     {
-        $cmdid = $this->byte2string(CMDID_TIME_SYNC);
+        $cmdid = $this->byte2string(MFUN_CMDID_TIME_SYNC);
         $now = time();
         $timestamp = dechex($now);
         $length = "04";
@@ -28,7 +28,7 @@ class classApiL2snrCommonService
 
     public function func_heartBeat_process() //心跳监测消息处理，返回心跳帧
     {
-        $cmdid = $this->byte2string(CMDID_HEART_BEAT);
+        $cmdid = $this->byte2string(MFUN_CMDID_HEART_BEAT);
         $length = "00";
         $resp = $cmdid . $length;
 
@@ -41,7 +41,7 @@ class classApiL2snrCommonService
         $resp = $cDbObj->dbi_cmdbuf_inquiry_cmd($deviceId);
         if (empty($resp))
         {
-            $cmdid = $this->byte2string(CMDID_HCU_POLLING);
+            $cmdid = $this->byte2string(MFUN_CMDID_HCU_POLLING);
             $length = "00";
             $resp = $cmdid . $length;
         }
@@ -62,7 +62,7 @@ class classApiL2snrCommonService
 
         switch($platform)
         {
-            case PLTF_WX:  //说明版本更新请求来自微信，验证IHU设备信息表（t_deviceqrcode）中MAC地址合法性
+            case MFUN_PLTF_WX:  //说明版本更新请求来自微信，验证IHU设备信息表（t_deviceqrcode）中MAC地址合法性
                 $wDbObj = new classDbiL2sdkIotWx();
                 $result = $wDbObj->dbi_deviceQrcode_valid_mac($deviceId, $mac);
                 if ($result == true)
@@ -70,7 +70,7 @@ class classApiL2snrCommonService
                 else
                     $resp = "COMMON_SERVICE: IHU invalid MAC address";
                 break;
-            case PLTF_HCU:  //说明版本更新请求来自HCU，验证HCU设备信息表（t_hcudevice）中MAC地址合法性
+            case MFUN_PLTF_HCU:  //说明版本更新请求来自HCU，验证HCU设备信息表（t_hcudevice）中MAC地址合法性
                 $cDbObj = new classDbiL1vmCommon();
                 $result = $cDbObj->dbi_hcuDevice_valid_mac($deviceId, $mac);
                 if ($result == true)
@@ -78,7 +78,7 @@ class classApiL2snrCommonService
                 else
                     $resp = "COMMON_SERVICE: HCU invalid MAC address";
                 break;
-            case PLTF_JD:
+            case MFUN_PLTF_JD:
                 $resp = "";
                 break;
             default:
@@ -144,7 +144,7 @@ class classApiL2snrCommonService
 
     public function func_version_push_process()
     {
-        $cmdid = $this->byte2string(CMDID_VERSION_SYNC);
+        $cmdid = $this->byte2string(MFUN_CMDID_VERSION_SYNC);
         $length = "01";
         $sub_key = "00";
         $msg_body = $cmdid . $length . $sub_key;

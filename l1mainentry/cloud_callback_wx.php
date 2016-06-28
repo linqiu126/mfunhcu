@@ -16,17 +16,12 @@ $wx_options = array(
     'debug'=> MFUN_WX_DEBUG,
     'logcallback' => MFUN_WX_LOGCALLBACK
 );
-
 $wxObj = new classTaskL2sdkWechat($wx_options);
-
 //$wxObj->responseMsg();
-
 if (isset($_GET['echostr'])) {
     $wxObj->valid_sdk01();
-}
-else{
-    $wxObj->responseMsg();
-}
+}else{
+    $wxObj->responseMsg();}
 */
 
 // 主程序MAIN()
