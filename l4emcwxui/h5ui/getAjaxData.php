@@ -24,7 +24,7 @@ if(isset($_GET["deviceid"])) {
 
 
 //访问数据库数据
-$db = new classL2snrEmcDbi();
+$db = new classDbiL2snrEmc();
 
 //临时注销，需要根据新架构调整
 //$deviceid = $db->db_deviceid_inqury($wxuser);

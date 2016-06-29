@@ -129,7 +129,8 @@ class classTaskL2snrNoise
             echo trim($result);
             return false;
         }
-        if (($msgId != MSG_ID_L2SDK_HCU_TO_L2SNR_NOISE) || ($msgName != "MSG_ID_L2SDK_HCU_TO_L2SNR_NOISE")){
+        //多条消息发送到PM25
+        if (($msgId != MSG_ID_L2SDK_HCU_TO_L2SNR_NOISE) && ($msgId != MSG_ID_L2SDK_EMCWX_TO_L2SNR_NOISE_DATA_READ_INSTANT) && ($msgId != MSG_ID_L2SDK_EMCWX_TO_L2SNR_NOISE_DATA_REPORT_TIMING)){
             $result = "Msgid or MsgName error";
             $log_content = "P:" . json_encode($result);
             $loggerObj->logger("MFUN_TASK_ID_L2SNR_NOISE", "mfun_l2snr_noise_task_main_entry", $log_time, $log_content);
@@ -137,22 +138,52 @@ class classTaskL2snrNoise
             return false;
         }
 
-        //解开消息
+        //赋初值
         $project= "";
         $log_from = "";
         $platform ="";
         $deviceId="";
         $statCode = "";
         $content="";
-        if (isset($msg["project"])) $project = $msg["project"];
-        if (isset($msg["log_from"])) $log_from = $msg["log_from"];
-        if (isset($msg["platform"])) $platform = $msg["platform"];
-        if (isset($msg["deviceId"])) $deviceId = $msg["deviceId"];
-        if (isset($msg["statCode"])) $statCode = $msg["statCode"];
-        if (isset($msg["content"])) $content = $msg["content"];
 
-        //具体处理函数
-        $resp = $this->func_noise_process($platform, $deviceId, $statCode, $content);
+        if ($msgId == MSG_ID_L2SDK_HCU_TO_L2SNR_PM25)
+        {
+            if (isset($msg["project"])) $project = $msg["project"];
+            if (isset($msg["log_from"])) $log_from = $msg["log_from"];
+            if (isset($msg["platform"])) $platform = $msg["platform"];
+            if (isset($msg["deviceId"])) $deviceId = $msg["deviceId"];
+            if (isset($msg["statCode"])) $statCode = $msg["statCode"];
+            if (isset($msg["content"])) $content = $msg["content"];
+
+            //具体处理函数
+            $resp = $this->func_noise_process($platform, $deviceId, $statCode, $content);
+        }
+        elseif ($msgId == MSG_ID_L2SDK_EMCWX_TO_L2SNR_NOISE_DATA_READ_INSTANT)
+        {
+            //解开消息
+            if (isset($msg["project"])) $project = $msg["project"];
+            if (isset($msg["log_from"])) $log_from = $msg["log_from"];
+            if (isset($msg["deviceId"])) $deviceId = $msg["deviceId"];
+            if (isset($msg["content"])) $content = $msg["content"];
+            //具体处理函数
+            $resp = $this->wx_noise_req_process($deviceId, $content);
+        }
+        elseif ($msgId == MSG_ID_L2SDK_EMCWX_TO_L2SNR_NOISE_DATA_REPORT_TIMING)
+        {
+            //解开消息
+            if (isset($msg["project"])) $project = $msg["project"];
+            if (isset($msg["log_from"])) $log_from = $msg["log_from"];
+            if (isset($msg["platform"])) $platform = $msg["platform"];
+            if (isset($msg["deviceId"])) $deviceId = $msg["deviceId"];
+            if (isset($msg["statCode"])) $statCode = $msg["statCode"];
+            if (isset($msg["content"])) $content = $msg["content"];
+
+            //具体处理函数
+            $resp = $this->func_noise_process($platform, $deviceId, $statCode, $content);
+        }
+        else{
+            $resp = ""; //啥都不ECHO
+        }
 
         //返回ECHO
         if (!empty($resp))

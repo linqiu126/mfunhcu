@@ -15,7 +15,7 @@ class classApiL2snrCommonService
 
     }
 
-    public function func_timeSync_process()  //时间同步消息处理，返回当前时间戳
+    public function func_timeSync_process($optType, $deviceId, $data)  //时间同步消息处理，返回当前时间戳
     {
         $cmdid = $this->byte2string(MFUN_CMDID_TIME_SYNC);
         $now = time();

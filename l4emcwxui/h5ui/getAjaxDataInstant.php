@@ -7,8 +7,8 @@
  * Time: 15:50
  */
 
-include_once "../l1comvm/l1comvm.php";
-include_once "../db_class.php";
+include_once "../../l1comvm/vmlayer.php";
+include_once "../../l1comvm/dbi_common.class.php";
 header("Content-type:text/html;charset=utf-8");
 
 
@@ -22,11 +22,11 @@ if(isset($_GET["deviceid"])) {
 }
 */
 
-$db = new class_mysql_db();
+$db = new classDbiL2snrEmc();
 
 $sid = 0;
-$LatestEmcValueIndex = $db->db_LatestEmcValueIndex_inqury($sid);
-$wxuser_db = $db->db_wxuser_inqury($LatestEmcValueIndex-1);
+$LatestEmcValueIndex = $db->dbi_LatestEmcValueIndex_inqury($sid);
+$wxuser_db = $db->dbi_wxuser_inqury($LatestEmcValueIndex-1);
 if($wxuser_db = $wxuser)
 {
     $EmcValue = $db->db_LatestEmcValue_inqury($LatestEmcValueIndex-1);

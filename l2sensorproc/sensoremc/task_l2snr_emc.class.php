@@ -111,12 +111,12 @@ class classTaskL2snrEmc
         return $resp;
     }
 
-    public function func_emc_data_push_process()
+    public function func_emc_data_push_process($deviceId, $content)
     {
         $magicCode = "FECF";
         $version = "0001";
         $length = "000C";
-        $cmdid = $this->ushort2string(CMDID_EMC_DATA_PUSH);
+        $cmdid = $this->ushort2string(MFUN_CMDID_EMC_DATA_PUSH);
         $seq = "0000";
         $errCode = "0000";
 
@@ -158,7 +158,8 @@ class classTaskL2snrEmc
             echo trim($result);
             return false;
         }
-        if (($msgId != MSG_ID_L2SDK_HCU_TO_L2SNR_EMC) || ($msgName != "MSG_ID_L2SDK_HCU_TO_L2SNR_EMC")){
+        //多条消息发送到EMC
+        if (($msgId != MSG_ID_L2SDK_HCU_TO_L2SNR_EMC) && ($msgId != MSG_ID_L2SDK_EMCWX_TO_L2SNR_EMC_DATA_READ_INSTANT) && ($msgId != MSG_ID_L2SDK_EMCWX_TO_L2SNR_EMC_DATA_REPORT_TIMING)){
             $result = "Msgid or MsgName error";
             $log_content = "P:" . json_encode($result);
             $loggerObj->logger("MFUN_TASK_ID_L2SNR_EMC", "mfun_l2snr_emc_task_main_entry", $log_time, $log_content);
@@ -166,22 +167,53 @@ class classTaskL2snrEmc
             return false;
         }
 
-        //解开消息
+        //赋初值
         $project= "";
         $log_from = "";
         $platform ="";
         $deviceId="";
         $statCode = "";
         $content="";
-        if (isset($msg["project"])) $project = $msg["project"];
-        if (isset($msg["log_from"])) $log_from = $msg["log_from"];
-        if (isset($msg["platform"])) $platform = $msg["platform"];
-        if (isset($msg["deviceId"])) $deviceId = $msg["deviceId"];
-        if (isset($msg["statCode"])) $statCode = $msg["statCode"];
-        if (isset($msg["content"])) $content = $msg["content"];
 
-        //具体处理函数
-        $resp = $this->func_emc_process($platform, $deviceId, $statCode, $content);
+        if ($msgId == MSG_ID_L2SDK_HCU_TO_L2SNR_EMC)
+        {
+            //解开消息
+            if (isset($msg["project"])) $project = $msg["project"];
+            if (isset($msg["log_from"])) $log_from = $msg["log_from"];
+            if (isset($msg["platform"])) $platform = $msg["platform"];
+            if (isset($msg["deviceId"])) $deviceId = $msg["deviceId"];
+            if (isset($msg["statCode"])) $statCode = $msg["statCode"];
+            if (isset($msg["content"])) $content = $msg["content"];
+
+            //具体处理函数
+            $resp = $this->func_emc_process($platform, $deviceId, $statCode, $content);
+        }
+        elseif ($msgId == MSG_ID_L2SDK_EMCWX_TO_L2SNR_EMC_DATA_READ_INSTANT)
+        {
+            //解开消息
+            if (isset($msg["project"])) $project = $msg["project"];
+            if (isset($msg["log_from"])) $log_from = $msg["log_from"];
+            if (isset($msg["deviceId"])) $deviceId = $msg["deviceId"];
+            if (isset($msg["content"])) $content = $msg["content"];
+            //具体处理函数
+            $resp = $this->func_emc_data_push_process($deviceId, $content);
+        }
+        elseif ($msgId == MSG_ID_L2SDK_EMCWX_TO_L2SNR_EMC_DATA_REPORT_TIMING)
+        {
+            //解开消息
+            if (isset($msg["project"])) $project = $msg["project"];
+            if (isset($msg["log_from"])) $log_from = $msg["log_from"];
+            if (isset($msg["platform"])) $platform = $msg["platform"];
+            if (isset($msg["deviceId"])) $deviceId = $msg["deviceId"];
+            if (isset($msg["statCode"])) $statCode = $msg["statCode"];
+            if (isset($msg["content"])) $content = $msg["content"];
+
+            //具体处理函数
+            $resp = $this->func_emc_process($platform, $deviceId, $statCode, $content);
+        }
+        else{
+            $resp = ""; //啥都不ECHO
+        }
 
         //返回ECHO
         if (!empty($resp))

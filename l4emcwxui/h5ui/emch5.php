@@ -8,7 +8,7 @@
 include_once "../../l1comvm/vmlayer.php";
 include_once "../../l2sdk/task_l2sdk_iot_wx_jssdk.php";
 
-$jssdk = new JSSDK(WX_APPID, WX_APPSECRET);
+$jssdk = new classTaskL2sdkIotWxJssdk(MFUN_WX_APPID, MFUN_WX_APPSECRET);
 $signPackage = $jssdk->GetSignPackage();
 
 //Start: OAuth2.0认证

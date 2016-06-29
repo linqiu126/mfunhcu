@@ -6,18 +6,20 @@
  * Time: 13:15
  */
 
-/*
- *  全局控制常量
- *
- */
-
+/**************************************************************************************
+ *                             全局控制常量                                           *
+ *************************************************************************************/
 //项目名称，每个项目均为唯一用于本项目选择启动配置数据库中的工参信息
+//项目目前支持：HCU_PRJ_AQYC, HCU_PRJ_TBSWR, HCU_PRJ_EMCWX, 本地=HCU_PRJ_AQYC
 define ("MFUN_CURRENT_WORKING_PROJECT_NAME_UNIQUE", "HCU_PRJ_AQYC");
 
 //定义系统消息入口
-define ("MFUN_MAIN_ENTRY_HCU_IOT", "MFUN_HCU_IOT");
-define ("MFUN_MAIN_ENTRY_EMC_WX", "MFUN_EMC_WX");
-define ("MFUN_MAIN_ENTRY_CRON", "MFUN_CRON");
+define ("MFUN_MAIN_ENTRY_IOT_HCU", "MFUN_MAIN_ENTRY_IOT_HCU");
+define ("MFUN_MAIN_ENTRY_EMC_WX", "MFUN_MAIN_ENTRY_EMC_WX");
+define ("MFUN_MAIN_ENTRY_CRON", "MFUN_MAIN_ENTRY_CRON");
+define ("MFUN_MAIN_ENTRY_AQYC_UI", "MFUN_MAIN_ENTRY_AQYC_UI");
+define ("MFUN_MAIN_ENTRY_TBSWR_UI", "MFUN_MAIN_ENTRY_TBSWR_UI");
+define ("MFUN_MAIN_ENTRY_EMCWX_UI", "MFUN_MAIN_ENTRY_EMCWX_UI");
 
 //不同的方式来确定本机运行环境，还是服务器运行环境，本来想获取Localhost来进行判断，但没成功
 //实验了不同的方式，包括$_SERVER['LOCAL_ADDR']， $_SERVER['SERVER_ADDR']， getenv('SERVER_ADDR')等方式

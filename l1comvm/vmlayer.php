@@ -172,7 +172,7 @@ class classTaskL1vmCoreRouter
         }
 
         //然后发送从L1_MAIN_ENTRY接收到的消息到缓冲区中
-        if ($parObj == MFUN_MAIN_ENTRY_HCU_IOT){
+        if ($parObj == MFUN_MAIN_ENTRY_IOT_HCU){
             if ($this->mfun_l1vm_msg_send(MFUN_TASK_ID_L1VM,
                     MFUN_TASK_ID_L2SDK_IOT_HCU,
                     MSG_ID_L1VM_TO_L2SDK_IOT_HCU_INCOMING,
@@ -184,6 +184,7 @@ class classTaskL1vmCoreRouter
                 echo trim($result);
                 return false;
             };
+
         }elseif($parObj == MFUN_MAIN_ENTRY_EMC_WX){
             if ($this->mfun_l1vm_msg_send(MFUN_TASK_ID_L1VM,
                     MFUN_TASK_ID_L2SDK_WECHAT,
@@ -196,7 +197,14 @@ class classTaskL1vmCoreRouter
                 echo trim($result);
                 return false;
             };
+
         }elseif($parObj == MFUN_MAIN_ENTRY_CRON){
+
+        }elseif($parObj == MFUN_MAIN_ENTRY_AQYC_UI){
+
+        }elseif($parObj == MFUN_MAIN_ENTRY_TBSWR_UI){
+
+        }elseif($parObj == MFUN_MAIN_ENTRY_EMCWX_UI){
 
         }elseif($parObj == $this){
 

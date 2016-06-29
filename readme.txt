@@ -111,7 +111,43 @@ Make By：ZJL
   =>ihu_device_text_process：同上
 
 //= ZJL, 2016 June.29, CURRENT_SW_DELIVERY R02.D13
->
+> 增加AQYC/TBSWR/EMCWX的H5YUI界面入口，先考虑将界面模块纳入到统一的VM处理模块机制中，包括CRON模块
+> IOT_WX修改好了，支持气象6参数以及相应的任务模块
+> 扩展系统消息到DATA_READ_INSTANT以及DATA_REPORT_TIMING，以支持所有的瞬时读取和定时发送模式。L2SNR传感器框架改好以支持。
+
+
+
+
+
+
+
+
+
+
+==待考虑的问题和功能
+> 数据库分库，预期L1-L2一个独立数据库，L3基础界面一个独立数据库，L4一个项目界面一个独立的数据库，L5一个独立的数据库
+> L3appl分为10项大功能任务，还是50个小功能任务，待定
+> L4UI分解为模块入口
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

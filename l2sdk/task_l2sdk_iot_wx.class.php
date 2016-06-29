@@ -529,7 +529,7 @@ class classTaskL2sdkIotWx
             $this->send_custom_message(trim($data->FromUserName), "text", $msgContent);  //使用API-CURL推送客服微信用户
         }
         //调用统一的deviceTask处理入口函数
-        $resp_msg = $this->ihu_deviceTaskProcess("device_text", $strContent, $fromUser, $deviceId);
+        $resp_msg = $this->ihu_deviceTaskProcess($parObj, "device_text", $strContent, $fromUser, $deviceId);
 
         $wxDbObj = new classDbiL2sdkIotWx();
         $dbi_info = $wxDbObj->dbi_blebound_query($data->FromUserName);  //查询该用户是否是绑定用户
@@ -540,7 +540,7 @@ class classTaskL2sdkIotWx
                 return $resp_msg;
 
             $i = 0;
-            while ($i<count($dbi_info)) //考虑同一个用户绑定多个设备的情况,循环发送response给该用户绑定的所有设备
+            while ($i < count($dbi_info)) //考虑同一个用户绑定多个设备的情况,循环发送response给该用户绑定的所有设备
             {
                 $dev_table = $dbi_info[$i];
                 $result = $this->trans_msgtodevice($dev_table["deviceType"], $dev_table["deviceID"], $dev_table["openID"], $resp_msg);
@@ -622,7 +622,7 @@ class classTaskL2sdkIotWx
         }
 
         //因为是DEVICE_EVENT事件，设备内传输的L3信息应该是空的，这里保留设备L3消息相关处理
-        $event_resp = $this->ihu_deviceTaskProcess("device_text", $strContent, $data->FromUserName, $data->DeviceID);
+        $event_resp = $this->ihu_deviceTaskProcess($parObj, "device_text", $strContent, $data->FromUserName, $data->DeviceID);
 
         $logDbObj = new classDbiL1vmCommon();
         $wx_trace = $logDbObj->dbi_LogSwitchInfo_inqury($data->FromUserName);
@@ -635,7 +635,7 @@ class classTaskL2sdkIotWx
     }
 
     //用户自己定义的微信点击菜单命令“event->CLICK”处理函数
-    public function receive_wx_deviceClick($data)
+    public function receive_wx_deviceClick($parObj, $data)
     {
         switch($data->EventKey) {
             case "CLICK_USER":
@@ -652,7 +652,7 @@ class classTaskL2sdkIotWx
                 else
                 {
                     //对版本读取操作进行层三处理，构造可以发送给硬件设备的信息
-                    $msg_body = $this->ihu_deviceTaskProcess($data->EventKey, "", $data->FromUserName, $data->DeviceID);
+                    $msg_body = $this->ihu_deviceTaskProcess($parObj, $data->EventKey, "", $data->FromUserName, $data->DeviceID);
 
                     if (!empty($msg_body))
                     {
@@ -766,7 +766,7 @@ class classTaskL2sdkIotWx
                 else
                 {
                     //对辐射强度瞬时读取操作进行层三处理，构造可以发送给硬件设备的信息
-                    $msg_body = $this->ihu_deviceTaskProcess($data->EventKey, "", $data->FromUserName, $data->DeviceID);
+                    $msg_body = $this->ihu_deviceTaskProcess($parObj, $data->EventKey, "", $data->FromUserName, $data->DeviceID);
 
                     if (!empty($msg_body))
                     {
@@ -813,7 +813,7 @@ class classTaskL2sdkIotWx
                 else
                 {
                     //对PM2.5读取操作进行层三处理，构造可以发送给硬件设备的信息
-                    $msg_body = $this->ihu_deviceTaskProcess($data->EventKey, "", $data->FromUserName, $data->DeviceID);
+                    $msg_body = $this->ihu_deviceTaskProcess($parObj, $data->EventKey, "", $data->FromUserName, $data->DeviceID);
 
                     if (!empty($msg_body))
                     {
@@ -872,27 +872,55 @@ class classTaskL2sdkIotWx
     }//End of receive_deviceClickCommand
 
     //统一的deviceTask处理入口函数
-    public function ihu_deviceTaskProcess ($optType, $content, $fromuser, $deviceid)
+    public function ihu_deviceTaskProcess ($parObj, $optType, $content, $fromUser, $deviceId)
     {
+        //赋初值
+        $respContent = "";
+
         switch ($optType)
         {
             case "device_text":
-                $respContent = $this->ihu_device_text_process($fromuser, $deviceid, $content);
+                $respContent = $this->ihu_device_text_process($parObj, $fromUser, $deviceId, $content);
                 break;
             case "bind":
-                $respContent = $this->ihu_bind_process($content);
+                $respContent = $this->ihu_bind_process($parObj, $content);
                 break;
             case "unbind":
-                $respContent = $this->ihu_unbind_process($content);
+                $respContent = $this->ihu_unbind_process($parObj, $content);
                 break;
+
+            //如果消息发送到EMC模块，则返回就为空，本模块不再处理，而留给了EMC模块进行处理
             case "CLICK_EMC_READ":
-                $ihuObj = new class_emc_service();
-                $respContent = $ihuObj->func_emc_data_push_process();
+                $msg = array("project" => $optType,
+                    "log_from" => $fromUser,
+                    "deviceId" => $deviceId,
+                    "content" => $content);
+                if ($parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L2SDK_IOT_WX,
+                        MFUN_TASK_ID_L2SENSOR_EMC,
+                        MSG_ID_L2SDK_EMCWX_TO_L2SNR_EMC_DATA_READ_INSTANT,
+                        "MSG_ID_L2SDK_EMCWX_TO_L2SNR_EMC_DATA_READ_INSTANT",
+                        $msg) == false) $result = "Send to message buffer error";
+                else $result = "";
+                //$ihuObj = new class_emc_service();
+                //$respContent = $ihuObj->func_emc_data_push_process();
                 break;
+
+            //如果消息发送到EMC模块，则返回就为空，本模块不再处理，而留给了PM25模块进行处理
             case "CLICK_PM25_READ":
-                $ihuObj = new class_pmData_service();
-                $respContent = $ihuObj->func_pm_data_push_process();
+                $msg = array("project" => $optType,
+                    "log_from" => $fromUser,
+                    "deviceId" => $deviceId,
+                    "content" => $content);
+                if ($parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L2SDK_IOT_WX,
+                        MFUN_TASK_ID_L2SENSOR_PM25,
+                        MSG_ID_L2SDK_EMCWX_TO_L2SNR_PM25_DATA_READ_INSTANT,
+                        "MSG_ID_L2SDK_EMCWX_TO_L2SNR_PM25_DATA_READ_INSTANT",
+                        $msg) == false) $result = "Send to message buffer error";
+                else $result = "";
+                //$ihuObj = new class_pmData_service();
+                //$respContent = $ihuObj->func_pm_data_push_process();
                 break;
+
             case "CLICK_VERSION":
                 $ihuObj = new classApiL2snrCommonService();
                 $respContent = $ihuObj->func_version_push_process();
@@ -905,7 +933,7 @@ class classTaskL2sdkIotWx
     }
 
     //Layer3 业务消息的处理函数，跳转到对应的业务处理模块
-    public function ihu_device_text_process($fromUser, $deviceId, $content)
+    public function ihu_device_text_process($parObj, $fromUser, $deviceId, $content)
     {
         //因为收到的Airsync数据消息头已经被微信处理掉，传递过来的消息体在上级函数中已经被处理成16制格式的字符串
         if (strlen($content) < IHU_MSG_HEAD_LENGTH) {
@@ -938,31 +966,126 @@ class classTaskL2sdkIotWx
                 else
                     $resp = $msg_body;
                 break;
+
             case MFUN_CMDID_EMC_DATA_RESP://定时辐射强度处理
-                $ihuObj = new class_emc_service();
-                $resp = $ihuObj->func_emc_process(MFUN_PLTF_WX, $deviceId, $statCode, $data);
+                $msg = array("project" => MFUN_PLTF_WX,
+                    "log_from" => $fromUser,
+                    "platform" => MFUN_PLTF_WX,
+                    "deviceId" => $deviceId,
+                    "statCode" => $statCode,
+                    "content" => $data);
+                if ($parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L2SDK_IOT_WX,
+                        MFUN_TASK_ID_L2SENSOR_EMC,
+                        MSG_ID_L2SDK_EMCWX_TO_L2SNR_EMC_DATA_REPORT_TIMING,
+                        "MSG_ID_L2SDK_EMCWX_TO_L2SNR_EMC_DATA_REPORT_TIMING",
+                        $msg) == false) $result = "Send to message buffer error";
+                else $result = "";
+                //$ihuObj = new class_emc_service();
+                //$resp = $ihuObj->func_emc_process(MFUN_PLTF_WX, $deviceId, $statCode, $data);
                 break;
+
             case MFUN_CMDID_PM25_DATA:
                 //MODBUS数据处理
-                $ihuObj = new class_pmData_service();
-                $resp = $ihuObj->func_pmData_process(MFUN_PLTF_WX, $deviceId, $statCode, $data);
+                $msg = array("project" => MFUN_PLTF_WX,
+                    "log_from" => $fromUser,
+                    "platform" => MFUN_PLTF_WX,
+                    "deviceId" => $deviceId,
+                    "statCode" => $statCode,
+                    "content" => $data);
+                if ($parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L2SDK_IOT_WX,
+                        MFUN_TASK_ID_L2SENSOR_PM25,
+                        MSG_ID_L2SDK_EMCWX_TO_L2SNR_PM25_DATA_REPORT_TIMING,
+                        "MSG_ID_L2SDK_EMCWX_TO_L2SNR_PM25_DATA_REPORT_TIMING",
+                        $msg) == false) $result = "Send to message buffer error";
+                else $result = "";
+                //$ihuObj = new class_pmData_service();
+                //$resp = $ihuObj->func_pmData_process(MFUN_PLTF_WX, $deviceId, $statCode, $data);
                 break;
+
             case MFUN_CMDID_WINDSPD_DATA:
-                $ihuObj = new class_windSpeed_service();
-                $resp = $ihuObj->func_windSpeed_process(MFUN_PLTF_WX, $deviceId, $statCode, $data);
+                $msg = array("project" => MFUN_PLTF_WX,
+                    "log_from" => $fromUser,
+                    "platform" => MFUN_PLTF_WX,
+                    "deviceId" => $deviceId,
+                    "statCode" => $statCode,
+                    "content" => $data);
+                if ($parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L2SDK_IOT_WX,
+                        MFUN_TASK_ID_L2SENSOR_WINDSPD,
+                        MSG_ID_L2SDK_EMCWX_TO_L2SNR_WINDSPD_DATA_REPORT_TIMING,
+                        "MSG_ID_L2SDK_EMCWX_TO_L2SNR_WINDSPD_DATA_REPORT_TIMING",
+                        $msg) == false) $result = "Send to message buffer error";
+                else $result = "";
+
+                //$ihuObj = new class_windSpeed_service();
+                //$resp = $ihuObj->func_windSpeed_process(MFUN_PLTF_WX, $deviceId, $statCode, $data);
                 break;
+
             case MFUN_CMDID_WINDDIR_DATA:
-                $ihuObj = new class_windDirection_service();
-                $resp = $ihuObj->func_windDirection_process(MFUN_PLTF_WX, $deviceId, $statCode, $data);
+                $msg = array("project" => MFUN_PLTF_WX,
+                    "log_from" => $fromUser,
+                    "platform" => MFUN_PLTF_WX,
+                    "deviceId" => $deviceId,
+                    "statCode" => $statCode,
+                    "content" => $data);
+                if ($parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L2SDK_IOT_WX,
+                        MFUN_TASK_ID_L2SENSOR_WINDDIR,
+                        MSG_ID_L2SDK_EMCWX_TO_L2SNR_WINDDIR_DATA_REPORT_TIMING,
+                        "MSG_ID_L2SDK_EMCWX_TO_L2SNR_WINDDIR_DATA_REPORT_TIMING",
+                        $msg) == false) $result = "Send to message buffer error";
+                else $result = "";
+                //$ihuObj = new class_windDirection_service();
+                //$resp = $ihuObj->func_windDirection_process(MFUN_PLTF_WX, $deviceId, $statCode, $data);
                 break;
+
             case MFUN_CMDID_TEMP_DATA:
-                $ihuObj = new class_temperature_service();
-                $resp = $ihuObj->func_temperature_process(MFUN_PLTF_WX, $deviceId, $statCode, $data);
+                $msg = array("project" => MFUN_PLTF_WX,
+                    "log_from" => $fromUser,
+                    "platform" => MFUN_PLTF_WX,
+                    "deviceId" => $deviceId,
+                    "statCode" => $statCode,
+                    "content" => $data);
+                if ($parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L2SDK_IOT_WX,
+                        MFUN_TASK_ID_L2SENSOR_TEMP,
+                        MSG_ID_L2SDK_EMCWX_TO_L2SNR_TEMP_DATA_REPORT_TIMING,
+                        "MSG_ID_L2SDK_EMCWX_TO_L2SNR_TEMP_DATA_REPORT_TIMING",
+                        $msg) == false) $result = "Send to message buffer error";
+                else $result = "";
+                //$ihuObj = new class_temperature_service();
+                //$resp = $ihuObj->func_temperature_process(MFUN_PLTF_WX, $deviceId, $statCode, $data);
                 break;
+
             case MFUN_CMDID_HUMID_DATA:
-                $ihuObj = new class_humidity_service();
-                $resp = $ihuObj->func_humidity_process(MFUN_PLTF_WX, $deviceId, $statCode, $data);
+                $msg = array("project" => MFUN_PLTF_WX,
+                    "log_from" => $fromUser,
+                    "platform" => MFUN_PLTF_WX,
+                    "deviceId" => $deviceId,
+                    "statCode" => $statCode,
+                    "content" => $data);
+                if ($parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L2SDK_IOT_WX,
+                        MFUN_TASK_ID_L2SENSOR_HUMID,
+                        MSG_ID_L2SDK_EMCWX_TO_L2SNR_HUMID_DATA_REPORT_TIMING,
+                        "MSG_ID_L2SDK_EMCWX_TO_L2SNR_HUMID_DATA_REPORT_TIMING",
+                        $msg) == false) $result = "Send to message buffer error";
+                else $result = "";
+                //$ihuObj = new class_humidity_service();
+                //$resp = $ihuObj->func_humidity_process(MFUN_PLTF_WX, $deviceId, $statCode, $data);
                 break;
+
+            case MFUN_CMDID_NOISE_DATA:
+                $msg = array("project" => MFUN_PLTF_WX,
+                    "log_from" => $fromUser,
+                    "platform" => MFUN_PLTF_WX,
+                    "deviceId" => $deviceId,
+                    "statCode" => $statCode,
+                    "content" => $data);
+                if ($parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L2SDK_IOT_WX,
+                        MFUN_TASK_ID_L2SENSOR_NOISE,
+                        MSG_ID_L2SDK_EMCWX_TO_L2SNR_NOISE_DATA_REPORT_TIMING,
+                        "MSG_ID_L2SDK_EMCWX_TO_L2SNR_NOISE_DATA_REPORT_TIMING",
+                        $msg) == false) $result = "Send to message buffer error";
+                else $result = "";
+                break;
+
             default:
                 $resp ="ERROR WX_IOT: invalid service type";
                 break;
@@ -971,14 +1094,14 @@ class classTaskL2sdkIotWx
     }
 
     //来自设备的bind事件，类似手环敲击进行绑定
-    private function ihu_bind_process($content)
+    private function ihu_bind_process($parObj, $content)
     {
         //目前假设是空包，所以不处理
         return "";
     }
 
     //来自设备的unbind事件
-    private function ihu_unbind_process($content)
+    private function ihu_unbind_process($parObj, $content)
     {
         //目前假设是空包，所以不处理
         return "";
