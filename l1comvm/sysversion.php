@@ -8,7 +8,7 @@
 
 //SW version control, for internal usage
 define ("MFUN_CURRENT_SW_RELEASE", "02");  //R01 = 0x01 (MFUN.SW.R01.456)
-define ("MFUN_CURRENT_SW_DELIVERY","D13"); //001 = 0x01 (XQ.HCU.SW.R01.456), starting from 100 as 2015/11/02
+define ("MFUN_CURRENT_SW_DELIVERY","D14"); //001 = 0x01 (XQ.HCU.SW.R01.456), starting from 100 as 2015/11/02
 define("MFUN_CURRENT_VERSION", "R0" . MFUN_CURRENT_SW_RELEASE . "." . MFUN_CURRENT_SW_DELIVERY);  //当前SAE应用版本号
 
 /*
@@ -33,7 +33,7 @@ define("MFUN_CURRENT_VERSION", "R0" . MFUN_CURRENT_SW_RELEASE . "." . MFUN_CURRE
     R02_D11: 2016/03/08，后台界面增加视频处理功能
 //= ZJL, 2016 June.20, CURRENT_SW_DELIVERY R02.D12
 //= ZJL, 2016 June.29, CURRENT_SW_DELIVERY R02.D13
-
+//= ZJL, 2016 June.29, CURRENT_SW_DELIVERY R02.D14
 
  */
 
