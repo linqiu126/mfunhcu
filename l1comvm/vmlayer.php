@@ -161,7 +161,7 @@ class classTaskL1vmCoreRouter
     public function mfun_l1vm_task_main_entry($parObj, $msgId, $msgName, $msg)
     {
         //先生成$loggerObj对应的指针
-        $loggerObj = new classL1vmFuncComApi();
+        $loggerObj = new classApiL1vmFuncCom();
         $log_time = date("Y-m-d H:i:s", time());
 
         //先处理接收到的消息的基本情况

@@ -6,7 +6,7 @@
  * Time: 12:06
  */
 
-class classL1vmFuncComApi
+class classApiL1vmFuncCom
 {
 
     //日志记录

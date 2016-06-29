@@ -8,7 +8,7 @@
 
 //SW version control, for internal usage
 define ("MFUN_CURRENT_SW_RELEASE", "02");  //R01 = 0x01 (MFUN.SW.R01.456)
-define ("MFUN_CURRENT_SW_DELIVERY","D12"); //001 = 0x01 (XQ.HCU.SW.R01.456), starting from 100 as 2015/11/02
+define ("MFUN_CURRENT_SW_DELIVERY","D13"); //001 = 0x01 (XQ.HCU.SW.R01.456), starting from 100 as 2015/11/02
 define("MFUN_CURRENT_VERSION", "R0" . MFUN_CURRENT_SW_RELEASE . "." . MFUN_CURRENT_SW_DELIVERY);  //当前SAE应用版本号
 
 /*
@@ -32,7 +32,7 @@ define("MFUN_CURRENT_VERSION", "R0" . MFUN_CURRENT_SW_RELEASE . "." . MFUN_CURRE
     R02_D10: 2016/03/01，删除根目录下QL以前不需要的文件，增加测量数据精度字段，GPS经度（E,W)纬度(N，S)标识
     R02_D11: 2016/03/08，后台界面增加视频处理功能
 //= ZJL, 2016 June.20, CURRENT_SW_DELIVERY R02.D12
-
+//= ZJL, 2016 June.29, CURRENT_SW_DELIVERY R02.D13
 
 
  */

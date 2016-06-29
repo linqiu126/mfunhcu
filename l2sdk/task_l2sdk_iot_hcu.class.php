@@ -22,7 +22,7 @@ class classTaskL2sdkIotHcu
     public function receive_hcu_xmlMessage($parObj, $data, $project, $log_from)
     {
         //定义本入口函数的logger处理对象及函数
-        $loggerObj = new classL1vmFuncComApi();
+        $loggerObj = new classApiL1vmFuncCom();
         $log_time = date("Y-m-d H:i:s", time());
 
         //目前HCU发送的数据已经是ASCII码，不需要再进行解码
@@ -239,7 +239,7 @@ class classTaskL2sdkIotHcu
     public function receive_hcu_zhbMessage($parObj, $pdu, $project, $log_from)
     {
         //定义本入口函数的logger处理对象及函数
-        $loggerObj = new classL1vmFuncComApi();
+        $loggerObj = new classApiL1vmFuncCom();
         $log_time = date("Y-m-d H:i:s", time());
 
         $pdu_format = "A2Header/A4Len";
@@ -376,7 +376,7 @@ class classTaskL2sdkIotHcu
     public function mfun_l2sdk_iot_hcu_task_main_entry($parObj, $msgId, $msgName, $msg)
     {
         //定义本入口函数的logger处理对象及函数
-        $loggerObj = new classL1vmFuncComApi();
+        $loggerObj = new classApiL1vmFuncCom();
         $log_time = date("Y-m-d H:i:s", time());
 
         //入口消息内容判断

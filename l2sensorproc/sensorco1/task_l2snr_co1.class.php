@@ -25,7 +25,7 @@ class classTaskL2snrCo1
     public function mfun_l2snr_co1_task_main_entry($parObj, $msgId, $msgName, $msg)
     {
         //定义本入口函数的logger处理对象及函数
-        $loggerObj = new classL1vmFuncComApi();
+        $loggerObj = new classApiL1vmFuncCom();
         $log_time = date("Y-m-d H:i:s", time());
 
         //入口消息内容判断

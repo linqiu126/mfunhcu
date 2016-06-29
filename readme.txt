@@ -110,8 +110,8 @@ Make By：ZJL
   不再回来，目前的流程需要在L3/L4完成一部分后，再返回IOT_WX程序模块再处理。这部分等待完善。
   =>ihu_device_text_process：同上
 
-
-
+//= ZJL, 2016 June.29, CURRENT_SW_DELIVERY R02.D13
+>
 
 
 
