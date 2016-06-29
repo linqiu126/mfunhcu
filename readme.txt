@@ -114,8 +114,9 @@ Make By：ZJL
 > 增加AQYC/TBSWR/EMCWX的H5YUI界面入口，先考虑将界面模块纳入到统一的VM处理模块机制中，包括CRON模块
 > IOT_WX修改好了，支持气象6参数以及相应的任务模块
 > 扩展系统消息到DATA_READ_INSTANT以及DATA_REPORT_TIMING，以支持所有的瞬时读取和定时发送模式。L2SNR传感器框架改好以支持。
-
-
+> 搭建后台数据库分库的雏形，BXXH分为bxxhl1l2, bxxhl3app, bxxhl4aqyc, bxxhl4tbswr, bxxhl4emcwx, bxxhl5bi等不同数据库
+> 最复杂的AQYC界面对应的数据库也分开了，但可能有潜在的问题，需要再测试和调整
+> 数据库文件分别保存备份了
 
 
 

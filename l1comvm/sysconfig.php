@@ -39,7 +39,12 @@ if (isset($_SERVER['SERVER_NAME']))
         define("MFUN_CLOUD_DBHOST", SAE_MYSQL_HOST_M);    //连接的服务器地址 w.rdc.sae.sina.com.cn
         define("MFUN_CLOUD_DBUSER", SAE_MYSQL_USER);     //连接数据库的用户名
         define("MFUN_CLOUD_DBPSW", SAE_MYSQL_PASS);        //连接数据库的密码
-        define("MFUN_CLOUD_DBNAME", "app_mfuncard");         //连接的数据库名称
+        define("MFUN_CLOUD_DBNAME_L1L2", "app_mfuncard");         //连接的数据库名称
+        define("MFUN_CLOUD_DBNAME_L3APP", "app_mfuncard");         //连接的数据库名称
+        define("MFUN_CLOUD_DBNAME_L4EMCWX", "app_mfuncard");         //连接的数据库名称
+        define("MFUN_CLOUD_DBNAME_L4AQYC", "app_mfuncard");         //连接的数据库名称
+        define("MFUN_CLOUD_DBNAME_L4TBSWR", "app_mfuncard");         //连接的数据库名称
+        define("MFUN_CLOUD_DBNAME_L5BI", "app_mfuncard");         //连接的数据库名称
         define("MFUN_CLOUD_DBPORT", SAE_MYSQL_PORT);
         define("MFUN_CLOUD_DBHOST_S", SAE_MYSQL_DB);
         //EMCWX应用定义
@@ -69,7 +74,12 @@ if (isset($_SERVER['SERVER_NAME']))
         define("MFUN_CLOUD_DBHOST", SAE_MYSQL_HOST_M);    //连接的服务器地址 w.rdc.sae.sina.com.cn
         define("MFUN_CLOUD_DBUSER", SAE_MYSQL_USER);     //连接数据库的用户名
         define("MFUN_CLOUD_DBPSW", SAE_MYSQL_PASS);        //连接数据库的密码
-        define("MFUN_CLOUD_DBNAME", "app_mfunhcu");         //连接的数据库名称
+        define("MFUN_CLOUD_DBNAME_L1L2", "app_mfuncard");         //连接的数据库名称
+        define("MFUN_CLOUD_DBNAME_L3APP", "app_mfuncard");         //连接的数据库名称
+        define("MFUN_CLOUD_DBNAME_L4EMCWX", "app_mfuncard");         //连接的数据库名称
+        define("MFUN_CLOUD_DBNAME_L4AQYC", "app_mfuncard");         //连接的数据库名称
+        define("MFUN_CLOUD_DBNAME_L4TBSWR", "app_mfuncard");         //连接的数据库名称
+        define("MFUN_CLOUD_DBNAME_L5BI", "app_mfuncard");         //连接的数据库名称
         define("MFUN_CLOUD_DBPORT", SAE_MYSQL_PORT);
         define("MFUN_CLOUD_DBHOST_S", SAE_MYSQL_DB);
         //EMCWX应用定义
@@ -100,7 +110,12 @@ if (isset($_SERVER['SERVER_NAME']))
         define("MFUN_CLOUD_DBHOST", SAE_MYSQL_HOST_M);    //连接的服务器地址 w.rdc.sae.sina.com.cn
         define("MFUN_CLOUD_DBUSER", SAE_MYSQL_USER);     //连接数据库的用户名
         define("MFUN_CLOUD_DBPSW", SAE_MYSQL_PASS);        //连接数据库的密码
-        define("MFUN_CLOUD_DBNAME", "app_smdzjl");         //连接的数据库名称
+        define("MFUN_CLOUD_DBNAME_L1L2", "app_mfuncard");         //连接的数据库名称
+        define("MFUN_CLOUD_DBNAME_L3APP", "app_mfuncard");         //连接的数据库名称
+        define("MFUN_CLOUD_DBNAME_L4EMCWX", "app_mfuncard");         //连接的数据库名称
+        define("MFUN_CLOUD_DBNAME_L4AQYC", "app_mfuncard");         //连接的数据库名称
+        define("MFUN_CLOUD_DBNAME_L4TBSWR", "app_mfuncard");         //连接的数据库名称
+        define("MFUN_CLOUD_DBNAME_L5BI", "app_mfuncard");         //连接的数据库名称
         define("MFUN_CLOUD_DBPORT", SAE_MYSQL_PORT);
         define("MFUN_CLOUD_DBHOST_S", SAE_MYSQL_DB);
         //EMCWX应用定义
@@ -131,7 +146,12 @@ if (isset($_SERVER['SERVER_NAME']))
         define("MFUN_CLOUD_DBHOST", SAE_MYSQL_HOST_M);    //连接的服务器地址 w.rdc.sae.sina.com.cn
         define("MFUN_CLOUD_DBUSER", SAE_MYSQL_USER);     //连接数据库的用户名
         define("MFUN_CLOUD_DBPSW", SAE_MYSQL_PASS);        //连接数据库的密码
-        define("MFUN_CLOUD_DBNAME", "app_zscble");         //连接的数据库名称
+        define("MFUN_CLOUD_DBNAME_L1L2", "app_mfuncard");         //连接的数据库名称
+        define("MFUN_CLOUD_DBNAME_L3APP", "app_mfuncard");         //连接的数据库名称
+        define("MFUN_CLOUD_DBNAME_L4EMCWX", "app_mfuncard");         //连接的数据库名称
+        define("MFUN_CLOUD_DBNAME_L4AQYC", "app_mfuncard");         //连接的数据库名称
+        define("MFUN_CLOUD_DBNAME_L4TBSWR", "app_mfuncard");         //连接的数据库名称
+        define("MFUN_CLOUD_DBNAME_L5BI", "app_mfuncard");         //连接的数据库名称
         define("MFUN_CLOUD_DBPORT", SAE_MYSQL_PORT);
         define("MFUN_CLOUD_DBHOST_S", SAE_MYSQL_DB);
         //EMCWX应用定义
@@ -163,7 +183,12 @@ if (isset($_SERVER['SERVER_NAME']))
         define("MFUN_CLOUD_DBHOST", "127.0.0.1");    //连接的服务器地址
         define("MFUN_CLOUD_DBUSER", "root");     //连接数据库的用户名
         define("MFUN_CLOUD_DBPSW", "smoon");        //连接数据库的密码
-        define("MFUN_CLOUD_DBNAME", "bxxh");         //连接的数据库名称BXXH
+        define("MFUN_CLOUD_DBNAME_L1L2", "bxxhl1l2");         //连接的数据库名称
+        define("MFUN_CLOUD_DBNAME_L3APP", "bxxhl3app");         //连接的数据库名称
+        define("MFUN_CLOUD_DBNAME_L4EMCWX", "bxxhl4emcwx");         //连接的数据库名称
+        define("MFUN_CLOUD_DBNAME_L4AQYC", "bxxhl4aqyc");         //连接的数据库名称
+        define("MFUN_CLOUD_DBNAME_L4TBSWR", "bxxhl4tbswr");         //连接的数据库名称
+        define("MFUN_CLOUD_DBNAME_L5BI", "bxxhl5bi");         //连接的数据库名称
         define("MFUN_CLOUD_DBPORT", 3306);           //缺省设置
         define("MFUN_CLOUD_DBHOST_S", "");          //无效
         //EMCWX应用定义
@@ -195,7 +220,12 @@ if (isset($_SERVER['SERVER_NAME']))
     define("MFUN_CLOUD_DBHOST", "localhost");    //连接的服务器地址
     define("MFUN_CLOUD_DBUSER", "TestUser");     //连接数据库的用户名
     define("MFUN_CLOUD_DBPSW", "123456");        //连接数据库的密码
-    define("MFUN_CLOUD_DBNAME", "BXXH");         //连接的数据库名称BXXH
+    define("MFUN_CLOUD_DBNAME_L1L2", "bxxhl1l2");         //连接的数据库名称
+    define("MFUN_CLOUD_DBNAME_L3APP", "bxxhl3app");         //连接的数据库名称
+    define("MFUN_CLOUD_DBNAME_L4EMCWX", "bxxhl4emcwx");         //连接的数据库名称
+    define("MFUN_CLOUD_DBNAME_L4AQYC", "bxxhl4aqyc");         //连接的数据库名称
+    define("MFUN_CLOUD_DBNAME_L4TBSWR", "bxxhl4tbswr");         //连接的数据库名称
+    define("MFUN_CLOUD_DBNAME_L5BI", "bxxhl5bi");         //连接的数据库名称
     define("MFUN_CLOUD_DBPORT", 3306);           //缺省设置
     define("MFUN_CLOUD_DBHOST_S", "");          //无效
     //EMCWX应用定义
