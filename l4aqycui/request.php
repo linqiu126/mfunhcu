@@ -50,6 +50,7 @@ switch ($key)
         $user = trim($_GET["name"]);
         $pwd = trim($_GET["password"]);
         $userinfo =$uiDbObj->dbi_login_req($user, $pwd);
+
         $jsonencode = json_encode($userinfo);
         echo $jsonencode;
         break;
@@ -1390,7 +1391,8 @@ switch ($key)
                         id: userid,
                         ret: stat_list
                     };*/
-        $uid = $_GET["id"];
+        if(isset($_GET["id"]))
+            $uid = $_GET["id"];
         $stat_list = $uiDbObj->dbi_map_sitetinfo_req($uid);
         if(!empty($stat_list))
             $retval=array(

@@ -71,12 +71,6 @@ define("TIME_GRID_SIZE", 1); //定义用于数据存储的时间网格为。单�
 define("XML_FORMAT", "<x"); //XML数据格式，消息以<xml开头
 define("ZHB_FORMAT", "##"); //中环保数据格式，消息以##开头
 
-define("PG_CODE_PREFIX", "PG");   //定义项目组code的特征字，项目组code必须以“PG”开头
-define("PROJ_CODE_PREFIX", "P_");  //定义项目code的特征字，项目code必须以“P_”开头
-define("UID_PREFIX", "UID");  //定义用户ID的特征字，用户ID必须以UID开头
-define("CODE_FORMAT_LEN", 2); //定义项目code和项目组code的特征字长度
-define("SESSIONID_VALID_TIME", 1800);  //Session ID有效时间为30分钟
-
 define("IHU_MSG_HEAD_FORMAT", "A4MagicCode/A4Version/A4Length/A4CmdId/A4Seq/A4ErrCode");
 define("IHU_MSG_HEAD_LENGTH", 24); //12 Byte
 define("HCU_MSG_HEAD_FORMAT", "A2Key/A2Len/A2Cmd");// 1B 控制字ctrl_key, 1B 长度length（除控制字和长度本身外），1B 操作字opt_key
@@ -86,38 +80,10 @@ define("MFUN_PLTF_WX", 0x01);  //微信平台
 define("MFUN_PLTF_HCU", 0x02); //HCU平台
 define("MFUN_PLTF_JD", 0x03);  //京东平台
 
-define("HOUR_VALIDE_NUM", 54); // HCU环保标准：1小时采集的有效分钟数据应不少于 54个
-define("DAY_VALIDE_NUM", 21);  // HCU环保标准：每日应有不少于21个有效小时均值的算术平均值为有效日均值
-
-define("MAX_LOG_NUM", 5000);  //防止t_loginfo表单数据无限制的增长，保留的最大记录数
-
-define("ZHB_HRB_FRAME","ZHB_HRB");
-define("ZHB_NOM_FRAME","ZHB_NOM");
 
 //用于区分WECHAT->IOT_HCU的处理内容及过程
 define("MFUN_IOT_WX_DEVICE_TEXT","DEVICE_TEXT");
 define("MFUN_IOT_WX_DEVICE_EVENT","DEVICE_EVENT");
-
-define("SESSION_ID_LEN", 8); //UI界面session id字符串长度
-define("USER_ID_LEN", 6); //UI界面user id字符串长度
-
-//定义各测量值告警门限
-define("TH_ALARM_NOISE", 80);
-define("TH_ALARM_HUMIDITY", 50);
-define("TH_ALARM_TEMPERATURE", 45);
-define("TH_ALARM_PM25", 100);
-define("TH_ALARM_WINDSPEED", 20);
-define("TH_ALARM_EMC", 100);
-define("TH_ALARM_WINDDIR", 360);
-
-//定义传感器类型
-define("S_TYPE_PM", "S_0001");
-define("S_TYPE_WINDSPEED", "S_0002");
-define("S_TYPE_WINDDIR", "S_0003");
-define("S_TYPE_EMC", "S_0005");
-define("S_TYPE_TEMPERATURE", "S_0006");
-define("S_TYPE_HUMIDITY", "S_0007");
-define("S_TYPE_NOISE", "S_000A");
 
 //层三处理消息的定义，保留，暂时没有使用
 define("L3_HEAD_MAGIC", 0xFE);
@@ -187,14 +153,7 @@ define("OPT_VEDIOLINK_RESP", 0x81); //返回下位机存放的视频文件link
 define("OPT_VEDIOFILE_REQ", 0x02);   //命令下位机上传选中的视频文件
 define("OPT_VEDIOFILE_RESP", 0x82);  //视频文件传输完成响应
 
-//传感器ID定义
-define ("ID_EQUIP_PM", 0x01);
-define ("ID_EQUIP_WINDSPEED", 0x02);
-define ("ID_EQUIP_WINDDIR", 0x03);
-define ("ID_EQUIP_EMC", 0x05);
-define ("ID_EQUIP_TEMPERATURE", 0x06);
-define ("ID_EQUIP_HUMIDITY", 0x06);
-define ("ID_EQUIP_NOISE", 0x0A);
+
 
 
 ?>

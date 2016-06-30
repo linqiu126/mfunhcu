@@ -14,6 +14,7 @@ include_once "../l1comvm/vmlayer.php";
 
 $uiDbObj = new classDbiL4aqycUi();
 
+$result = $uiDbObj->dbi_login_req("admin", "admin");
 /*
 $a = "2016-06-12 21:06:00";
 
