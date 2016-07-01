@@ -531,7 +531,7 @@ class classTaskL2sdkIotWx
         //调用统一的deviceTask处理入口函数
         $resp_msg = $this->ihu_deviceTaskProcess($parObj, "device_text", $strContent, $fromUser, $deviceId);
 
-        $wxDbObj = new classDbiL2sdkIotWx();
+        $wxDbObj = new classDbiL2sdkWechat();
         $dbi_info = $wxDbObj->dbi_blebound_query($data->FromUserName);  //查询该用户是否是绑定用户
         if ($dbi_info == true && !empty($resp_msg) )
         {
@@ -580,7 +580,7 @@ class classTaskL2sdkIotWx
         $strContent = strtoupper($content["1"]);//转换成16进制格式的字符串
 
         //这里有个假设：解绑来自于用户的操作，Event/Ubscribe和Event_device/Ubind是分离的
-        $wxDbObj = new classDbiL2sdkIotWx();
+        $wxDbObj = new classDbiL2sdkWechat();
         switch ($data->Event)
         {
             case "bind":
@@ -642,7 +642,7 @@ class classTaskL2sdkIotWx
                 $transMsg = $this->xms_responseText($data->FromUserName, $data->ToUserName, "Appid = " . $this->appid . "\nTokenID = " . $this->access_token ."\nJS_ticket =" . $this->js_ticket);
                 break;
             case "CLICK_VERSION":
-                $wxDbObj = new classDbiL2sdkIotWx();
+                $wxDbObj = new classDbiL2sdkWechat();
                 $dbi_info = $wxDbObj->dbi_blebound_query($data->FromUserName);
 
                 if ($dbi_info == false)
@@ -690,7 +690,7 @@ class classTaskL2sdkIotWx
                 break;
             case "CLICK_BIND_INQ":
                 //增加第三方后台云的绑定状态
-                $wxDbObj = new classDbiL2sdkIotWx();
+                $wxDbObj = new classDbiL2sdkWechat();
                 $result = $wxDbObj->dbi_blebound_query($data->FromUserName);
                 if ($result == false)
                 {
@@ -741,7 +741,7 @@ class classTaskL2sdkIotWx
                     $wxResp = "No device bind for this user in Weixin, result=" . json_encode($result["resp_msg"]);
                 }
                 //再解绑第三方数据库的绑定状态
-                $wxDbObj = new classDbiL2sdkIotWx();
+                $wxDbObj = new classDbiL2sdkWechat();
                 $dbi_info = $wxDbObj->dbi_blebound_query($data->FromUserName);
                 if ($dbi_info == false)
                 {
@@ -756,7 +756,7 @@ class classTaskL2sdkIotWx
                 break;
 
             case "CLICK_EMC_READ":
-                $wxDbObj = new classDbiL2sdkIotWx();
+                $wxDbObj = new classDbiL2sdkWechat();
                 $dbi_info = $wxDbObj->dbi_blebound_query($data->FromUserName);
 
                 if ($dbi_info == false)
@@ -803,7 +803,7 @@ class classTaskL2sdkIotWx
                 }
                 break;
             case "CLICK_PM25_READ":
-                $wxDbObj = new classDbiL2sdkIotWx();
+                $wxDbObj = new classDbiL2sdkWechat();
                 $dbi_info = $wxDbObj->dbi_blebound_query($data->FromUserName);
 
                 if ($dbi_info == false)
@@ -1110,7 +1110,7 @@ class classTaskL2sdkIotWx
     //强制绑定菜单处理函数，主要用于调试目的
     public function click_bindCommand ($data)
     {
-        $wxDbObj = new classDbiL2sdkIotWx();
+        $wxDbObj = new classDbiL2sdkWechat();
         switch ($data->FromUserName){
             case LZH_openid:
                 $result = $wxDbObj->dbi_blebound_duplicate(LZH_openid, LZH_deviceid, LZH_openid, device_type);
@@ -1270,7 +1270,8 @@ class classTaskL2sdkIotWx
         $longitude = (float)($data->Longitude)*10000;
         $timestamp = time();
 
-        $wxDbObj = new classDbiL2sdkIotWx();
+        $wxDbObj = new classDbiL2sdkWechat();
+        $emcDbObj = new classDbiL2snrEmc();
         $dbi_info = $wxDbObj->dbi_blebound_query($user);
 
         if ($dbi_info == false)
@@ -1284,7 +1285,7 @@ class classTaskL2sdkIotWx
             {
                 $dev_table = $dbi_info[$i];
                 $deviceid = $dev_table["deviceID"];
-                $wxDbObj->dbi_emcdata_save_gps($timestamp, $user, $deviceid, $latitude,$longitude);
+                $emcDbObj->dbi_emcdata_save_gps($timestamp, $user, $deviceid, $latitude,$longitude);
                 $i++;
             }
 

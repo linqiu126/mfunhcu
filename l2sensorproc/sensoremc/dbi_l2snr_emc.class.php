@@ -324,7 +324,7 @@ class classDbiL2snrEmc
     //ZSC
     public function dbi_LatestEmcValue_inqury($sid)
     {
-        $LatestEmcValue = 0;
+        $LatestEmcValue = "";
         $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
         if (!$mysqli) {
             die('Could not connect: ' . mysqli_error($mysqli));
@@ -345,7 +345,7 @@ class classDbiL2snrEmc
     //2016－02－26 LZH 此函数需要修改，sid=0保存最大sid的机制已经修改
     public function dbi_LatestEmcValueIndex_inqury($sid)
     {
-        //$LatestEmcValueIndex = 0;
+        $LatestEmcValueIndex = "";
         $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
         if (!$mysqli) {
             die('Could not connect: ' . mysqli_error($mysqli));

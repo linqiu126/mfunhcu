@@ -30,6 +30,14 @@ CREATE TABLE IF NOT EXISTS `t_l2snr_windspd` (
   PRIMARY KEY (`sid`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=9968 ;
 
+--
+-- 转存表中的数据 `t_l2snr_windspd`
+--
+
+INSERT INTO `t_l2snr_windspd` (`sid`, `deviceid`, `sensorid`, `windspeed`, `dataflag`, `reportdate`, `hourminindex`, `altitude`, `flag_la`, `latitude`, `flag_lo`, `longitude`) VALUES
+(19899, 'HCU_SH_0301', 6, 172, 'N', '2016-03-13', 1235, 0, '\0', 0, '\0', 0);
+
+
  */
 
 
@@ -86,6 +94,43 @@ class classDbiL2snrWindspd
         }
         $mysqli->close();
         return $result;
+    }
+
+    //删除对应用户所有超过90天的数据
+    //缺省做成90天，如果参数错误，导致90天以内的数据强行删除，则不被认可
+    public function dbi_windspdData_delete_3monold($deviceid, $sensorid, $days)
+    {
+        if ($days <90) $days = 90;  //不允许删除90天以内的数据
+        //建立连接
+        $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli)
+        {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        //尝试使用一次性删除技巧，结果非常好!!!
+        $result = $mysqli->query("DELETE FROM `t_l2snr_windspddata` WHERE ((`deviceid` = '$deviceid' AND `sensorid` = '$sensorid')
+                      AND (TO_DAYS(NOW()) - TO_DAYS(`reportdate`) > '$days'))");
+        $mysqli->close();
+        return $result;
+    }
+
+    public function dbi_LatestWindspdValue_inqury($sid)
+    {
+        $LatestWindspdValue = "";
+        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli) {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+
+        $result = $mysqli->query("SELECT * FROM `t_l2snr_windspddata` WHERE `sid` = '$sid'");
+
+        if ($result->num_rows>0)
+        {
+            $row = $result->fetch_array();
+            $LatestWindspdValue = $row['windspeed'];
+        }
+        $mysqli->close();
+        return $LatestWindspdValue;
     }
 
     public function dbi_minreport_update_windspeed($devcode,$statcode,$timestamp,$data)

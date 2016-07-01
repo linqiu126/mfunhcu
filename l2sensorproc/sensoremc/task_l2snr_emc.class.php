@@ -102,10 +102,11 @@ class classTaskL2snrEmc
 
         //更新数据精度格式表
         $format = $report["format"];
-        $cDbObj = new classDbiL1vmCommon();
+        $cDbObj = new classDbiL2snrCom();
         $cDbObj->dbi_dataformat_update_format($deviceId,"T_emcdata",$format);
         //更新瞬时测量值聚合表
-        $cDbObj->dbi_currentreport_update_value($deviceId, $statCode, $timeStamp,"T_emcdata", $report);
+        $dDbObj = new classDbiL3apF3dm();
+        $dDbObj->dbi_currentreport_update_value($deviceId, $statCode, $timeStamp,"T_emcdata", $report);
 
         $resp = "";
         return $resp;

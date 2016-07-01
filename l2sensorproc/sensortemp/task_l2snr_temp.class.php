@@ -108,10 +108,11 @@ class classTaskL2snrTemp
 
         //更新数据精度格式表
         $format = $report["format"];
-        $cDbObj = new classDbiL1vmCommon();
+        $cDbObj = new classDbiL2snrCom();
         $cDbObj->dbi_dataformat_update_format($deviceId,"T_temperature",$format);
         //更新瞬时测量值聚合表
-        $cDbObj->dbi_currentreport_update_value($deviceId, $statCode, $timeStamp,"T_temperature", $report);
+        $eDbObj = new classDbiL3apF3dm();
+        $eDbObj->dbi_currentreport_update_value($deviceId, $statCode, $timeStamp,"T_temperature", $report);
 
         $resp = ""; //no response message
         return $resp;

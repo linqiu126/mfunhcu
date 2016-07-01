@@ -31,6 +31,13 @@ CREATE TABLE IF NOT EXISTS `t_l2snr_noisedata` (
   PRIMARY KEY (`sid`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=9319 ;
 
+--
+-- 转存表中的数据 `t_l2snr_noisedata`
+--
+
+INSERT INTO `t_l2snr_noisedata` (`sid`, `deviceid`, `sensorid`, `noise`, `dataflag`, `reportdate`, `hourminindex`, `altitude`, `flag_la`, `latitude`, `flag_lo`, `longitude`) VALUES
+(19899, 'HCU_SH_0301', 6, 172, 'N', '2016-03-13', 1235, 0, '\0', 0, '\0', 0);
+
  */
 
 
@@ -89,6 +96,41 @@ class classDbiL2snrNoise
         return $result;
     }
 
+    //删除对应用户所有超过90天的数据
+    //缺省做成90天，如果参数错误，导致90天以内的数据强行删除，则不被认可
+    public function dbi_noiseData_delete_3monold($deviceid, $sensorid,$days)
+    {
+        if ($days <90) $days = 90;  //不允许删除90天以内的数据
+        //建立连接
+        $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli)
+        {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $result = $mysqli->query("DELETE FROM `t_l2snr_noisedata` WHERE ((`deviceid` = '$deviceid' AND `sensorid` ='$sensorid') AND (TO_DAYS(NOW()) - TO_DAYS(`date`) > '$days'))");
+        $mysqli->close();
+        return $result;
+    }
+
+    public function dbi_LatestNoiseValue_inqury($sid)
+    {
+        $LatestNoiseValue = "";
+        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli) {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+
+        $result = $mysqli->query("SELECT * FROM `t_l2snr_noisedata` WHERE `sid` = '$sid'");
+
+        if ($result->num_rows>0)
+        {
+            $row = $result->fetch_array();
+            $LatestNoiseValue = $row['noise'];
+        }
+        $mysqli->close();
+        return $LatestNoiseValue;
+    }
+    
     public function dbi_minreport_update_noise($devcode,$statcode,$timestamp,$data)
     {
         //建立连接

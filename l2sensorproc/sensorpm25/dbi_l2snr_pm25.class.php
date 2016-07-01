@@ -121,6 +121,26 @@ class classDbiL2snrPm25
         return $result;
     }
 
+    public function dbi_LatestPm25Value_inqury($sid)
+    {
+        $LatestPm25Value = "";
+        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli) {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+
+        $result = $mysqli->query("SELECT * FROM `t_l2snr_pm25data` WHERE `sid` = '$sid'");
+
+        if ($result->num_rows>0)
+        {
+            $row = $result->fetch_array();
+            $LatestPm25Value = $row['pm25'];
+        }
+        $mysqli->close();
+        return $LatestPm25Value;
+    }
+
+
     public function dbi_minreport_update_pmdata($devcode,$statcode,$timestamp,$data)
     {
         //建立连接

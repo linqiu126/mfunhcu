@@ -36,7 +36,7 @@ class classTaskL2sdkIotHcu
         $funcFlag = trim($data->FuncFlag);
 
         //取DB中的硬件信息，判断基本信息
-        $cDbObj = new classDbiL1vmCommon();
+        $cDbObj = new classDbiL2sdkHcu();
         $result = $cDbObj->dbi_hcuDevice_valid_device($deviceId); //FromUserName对应每个HCU硬件的设备编号
         if (empty($result)){
             $result = "HCU_IOT: invalid device ID";

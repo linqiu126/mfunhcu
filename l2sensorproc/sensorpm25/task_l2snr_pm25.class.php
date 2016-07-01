@@ -130,10 +130,11 @@ class classTaskL2snrPm25
 
         //更新数据精度格式表
         $format = $report["format"];
-        $cDbObj = new classDbiL1vmCommon();
+        $cDbObj = new classDbiL2snrCom();
         $cDbObj->dbi_dataformat_update_format($deviceId,"T_pmdata",$format);
         //更新瞬时测量值聚合表
-        $cDbObj->dbi_currentreport_update_value($deviceId, $statCode, $timeStamp,"T_pmdata", $report);
+        $eDbObj = new classDbiL3apF3dm();
+        $eDbObj->dbi_currentreport_update_value($deviceId, $statCode, $timeStamp,"T_pmdata", $report);
 
         $resp = ""; //no response message
         return $resp;
@@ -147,7 +148,7 @@ class classTaskL2snrPm25
         $sensorId = hexdec($data['Equ']) & 0xFF;
         $status = hexdec($data['Status']) & 0xFF;
 
-        $cDbObj = new classDbiL1vmCommon();
+        $cDbObj = new classDbiL2sdkHcu();
         $cDbObj->dbi_hcuDevice_update_status($deviceId,$statCode,$status);
 
         $resp = ""; //no response message

@@ -82,7 +82,7 @@ class classDbiL2snrHumid
                                   AND `reportdate` = '$date' AND `hourminindex` = '$hourminindex')");
         if (($result->num_rows)>0)   //重复，则覆盖
         {
-            $result=$mysqli->query("UPDATE `t_thumidity` SET  `humidity` = '$humidity',`altitude` = '$altitude',`flag_la` = '$flag_la',`latitude` = '$latitude',`flag_lo` = '$flag_lo',`longitude` = '$longitude'
+            $result=$mysqli->query("UPDATE `t_l2snr_humiddata` SET  `humidity` = '$humidity',`altitude` = '$altitude',`flag_la` = '$flag_la',`latitude` = '$latitude',`flag_lo` = '$flag_lo',`longitude` = '$longitude'
                     WHERE (`deviceid` = '$deviceid' AND `sensorid` = '$sensorid' AND `reportdate` = '$date' AND `hourminindex` = '$hourminindex')");
         }
         else   //不存在，新增
@@ -92,6 +92,41 @@ class classDbiL2snrHumid
         }
         $mysqli->close();
         return $result;
+    }
+
+    //删除对应用户所有超过90天的数据
+    //缺省做成90天，如果参数错误，导致90天以内的数据强行删除，则不被认可
+    public function dbi_humidData_delete_3monold($deviceid, $sensorid,$days)
+    {
+        if ($days <90) $days = 90;  //不允许删除90天以内的数据
+        //建立连接
+        $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli)
+        {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $result = $mysqli->query("DELETE FROM `t_l2snr_humiddata` WHERE ((`deviceid` = '$deviceid' AND `sensorid` ='$sensorid') AND (TO_DAYS(NOW()) - TO_DAYS(`date`) > '$days'))");
+        $mysqli->close();
+        return $result;
+    }
+
+    public function dbi_LatestHumidValue_inqury($sid)
+    {
+        $LatestHumidValue = "";
+        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli) {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+
+        $result = $mysqli->query("SELECT * FROM `t_l2snr_humiddata` WHERE `sid` = '$sid'");
+
+        if ($result->num_rows>0)
+        {
+            $row = $result->fetch_array();
+            $LatestHumidValue = $row['humidity'];
+        }
+        $mysqli->close();
+        return $LatestHumidValue;
     }
 
     public function dbi_minreport_update_humidity($devcode,$statcode,$timestamp,$data)

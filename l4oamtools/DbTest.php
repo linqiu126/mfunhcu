@@ -12,7 +12,7 @@ include_once "../l1comvm/vmlayer.php";
 //header("Content-type:text/html;charset=utf-8");
 
 
-$uiDbObj = new classDbiL4aqycUi();
+$uiDbObj = new classDbiL3apF1sym();
 
 $result = $uiDbObj->dbi_login_req("admin", "admin");
 /*
@@ -298,7 +298,7 @@ $data = addslashes(fread(fopen("C:\wamp\www\mfunhcu\l4oamtools\qrcode.png", "rb"
 $dbiObj->dbi_picture_data_save(1, 1, 1, $data, 1);
 //fclose($data);
 //读取操作
-$bindata = $dbiObj->dbi_latest_picture_data_inqury(1);
+$bindata = $dbiObj->dbi_latestPictureData_inqury(1);
 $myfile = fopen("C:\wamp\www\mfunhcu\l4oamtools\aaapic.png", "w") or die("Unable to open file!");
 fwrite($myfile, $bindata);
 fclose($myfile);
