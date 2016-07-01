@@ -7,6 +7,68 @@
  */
 //include_once "../../l1comvm/vmlayer.php";
 
+/*
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `t_l2snr_emcdata`
+--
+
+CREATE TABLE IF NOT EXISTS `t_l2snr_emcdata` (
+  `sid` int(4) NOT NULL AUTO_INCREMENT,
+  `deviceid` char(50) NOT NULL,
+  `sensorid` int(1) NOT NULL,
+  `emcvalue` int(4) NOT NULL,
+  `dataflag` char(1) NOT NULL DEFAULT 'N',
+  `reportdate` date NOT NULL,
+  `hourminindex` int(2) NOT NULL,
+  `altitude` int(4) NOT NULL,
+  `flag_la` char(1) NOT NULL,
+  `latitude` int(4) NOT NULL,
+  `flag_lo` char(1) NOT NULL,
+  `longitude` int(4) NOT NULL,
+  PRIMARY KEY (`sid`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=63697 ;
+
+--
+-- 转存表中的数据 `t_l2snr_emcdata`
+--
+
+INSERT INTO `t_l2snr_emcdata` (`sid`, `deviceid`, `sensorid`, `emcvalue`, `dataflag`, `reportdate`, `hourminindex`, `altitude`, `flag_la`, `latitude`, `flag_lo`, `longitude`) VALUES
+(63695, 'HCU_SH_0305', 5, 4867, 'N', '2016-05-10', 927, 0, 'N', 0, 'E', 0),
+(63696, 'HCU_SH_0302', 5, 4681, 'N', '2016-04-07', 1345, 0, 'N', 0, 'E', 0);
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `t_l2snr_emcaccumulation`
+--
+
+CREATE TABLE IF NOT EXISTS `t_l2snr_emcaccumulation` (
+  `sid` int(4) NOT NULL AUTO_INCREMENT,
+  `deviceid` char(50) NOT NULL,
+  `lastupdatedate` date NOT NULL,
+  `avg30days` char(192) NOT NULL,
+  `avg3month` char(192) NOT NULL,
+  PRIMARY KEY (`sid`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=8 ;
+
+--
+-- 转存表中的数据 `t_l2snr_emcaccumulation`
+--
+
+INSERT INTO `t_l2snr_emcaccumulation` (`sid`, `deviceid`, `lastupdatedate`, `avg30days`, `avg3month`) VALUES
+(1, 'HCU_SH_0301', '2016-04-27', '0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0', '0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0'),
+(2, 'gh_70c714952b02_8248307502397542f48a3775bcb234d4', '2016-04-23', '0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0', '0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0'),
+(3, 'HCU_SH_0302', '2016-06-30', '0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0', '0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0'),
+(4, 'HCU_SH_0303', '2016-06-12', '0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0', '0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0'),
+(5, 'HCU_SH_0305', '2016-06-30', '0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0', '0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0'),
+(6, 'HCU_SH_0304', '2016-06-16', '0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0', '0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0'),
+(7, 'HCU_SH_0309', '2016-06-18', '0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0', '0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0');
+
+
+ */
+
 class classDbiL2snrEmc
 {
     //构造函数
@@ -48,16 +110,16 @@ class classDbiL2snrEmc
         $stamp = getdate($timestamp);
         $hourminindex = intval(($stamp["hours"] * 60 + floor($stamp["minutes"]/TIME_GRID_SIZE)));
 
-        $result = $mysqli->query("SELECT * FROM `t_emcdata` WHERE (( `deviceid` = '$deviceid' AND `sensorid` = '$sensorid')
+        $result = $mysqli->query("SELECT * FROM `t_l2snr_emcdata` WHERE (( `deviceid` = '$deviceid' AND `sensorid` = '$sensorid')
                         AND (`reportdate` = '$date' AND `hourminindex` = '$hourminindex'))");
         if (($result->num_rows)>0)   //重复，则覆盖
         {
-            $result = $mysqli->query("UPDATE `t_emcdata` SET `emcvalue` = '$emc',`altitude` = '$altitude',`flag_la` = '$flag_la',`latitude` = '$latitude',`flag_lo` = '$flag_lo',`longitude` = '$longitude'
+            $result = $mysqli->query("UPDATE `t_l2snr_emcdata` SET `emcvalue` = '$emc',`altitude` = '$altitude',`flag_la` = '$flag_la',`latitude` = '$latitude',`flag_lo` = '$flag_lo',`longitude` = '$longitude'
                       WHERE ((`deviceid` = '$deviceid' AND `sensorid` = '$sensorid') AND (`reportdate` = '$date' AND `hourminindex` = '$hourminindex'))");
         }
         else   //不存在，新增
         {
-            $result = $mysqli->query("INSERT INTO `t_emcdata` (deviceid,sensorid,emcvalue,reportdate,hourminindex,altitude,flag_la,latitude,flag_lo,longitude)
+            $result = $mysqli->query("INSERT INTO `t_l2snr_emcdata` (deviceid,sensorid,emcvalue,reportdate,hourminindex,altitude,flag_la,latitude,flag_lo,longitude)
                       VALUES ('$deviceid','$sensorid','$emc', '$date', '$hourminindex','$altitude', '$flag_la','$latitude', '$flag_lo','$longitude')");
         }
         $mysqli->close();
@@ -84,7 +146,7 @@ class classDbiL2snrEmc
             $res = $mysqli->query("DELETE FROM `emcdatainfo` WHERE `sid` = '$sidtmp'");
         }*/
         //尝试使用一次性删除技巧，结果非常好!!!
-        $result = $mysqli->query("DELETE FROM `t_emcdata` WHERE ((`deviceid` = '$deviceid' AND `sensorid` = '$sensorid')
+        $result = $mysqli->query("DELETE FROM `t_l2snr_emcdata` WHERE ((`deviceid` = '$deviceid' AND `sensorid` = '$sensorid')
                       AND (TO_DAYS(NOW()) - TO_DAYS(`reportdate`) > '$days'))");
         $mysqli->close();
         return $result;
@@ -98,7 +160,7 @@ class classDbiL2snrEmc
         if (!$mysqli) {
             die('Could not connect: ' . mysqli_error($mysqli));
         }
-        $result = $mysqli->query("SELECT * FROM `t_emcaccumulation` WHERE (`deviceid` = '$deviceid')");
+        $result = $mysqli->query("SELECT * FROM `t_l2snr_emcaccumulation` WHERE (`deviceid` = '$deviceid')");
         $tag = 0;
         if (($result->num_rows)>0)   //更新数据而已，而且假设每个用户只有唯一的一条记录
         {
@@ -114,7 +176,7 @@ class classDbiL2snrEmc
         else  //如果是第一次创建
         {
             //先找到当前表中最大的SID系列号
-            $result = $mysqli->query("SELECT  MAX(`sid`)  FROM `t_emcaccumulation` WHERE 1 ");
+            $result = $mysqli->query("SELECT  MAX(`sid`)  FROM `t_l2snr_emcaccumulation` WHERE 1 ");
             if ($result->num_rows>0){
                 $row_max =  $result->fetch_array();
                 $sid_max = $row_max['MAX(`sid`)'];
@@ -125,14 +187,14 @@ class classDbiL2snrEmc
             $lastupdatedate = intval(date("ymd"));
             $avg30days = "0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0";  //使用;做数据之间的分割
             $avg3month = "0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0";
-            $result = $mysqli->query("INSERT INTO `t_emcaccumulation` (deviceid, lastupdatedate, avg30days, avg3month)
+            $result = $mysqli->query("INSERT INTO `t_l2snr_emcaccumulation` (deviceid, lastupdatedate, avg30days, avg3month)
                           VALUES ('$deviceid', '$lastupdatedate', '$avg30days', '$avg3month')");
             $tag = 2;
         }
         if ($tag ==1 || $tag ==2)  //不同天的更新，或者新创时的全面计算
         {
             //从数据库中取出，进行处理
-            $result = $mysqli->query("SELECT * FROM `t_emcaccumulation` WHERE (`sid` = '$sid')");
+            $result = $mysqli->query("SELECT * FROM `t_l2snr_emcaccumulation` WHERE (`sid` = '$sid')");
             $row = $result->fetch_array();  //原则上只有唯一的一个记录
             $avg30days = $row['avg30days'];
             $avg3month = $row['avg3month'];
@@ -150,7 +212,7 @@ class classDbiL2snrEmc
             if ($tag == 1) $day90 = $lastUpdateStart;  //两天的边界问题需要考虑在内
             if ($tag == 2) $day90 = intval(date("ymd", time()-90*24*60*60));
 
-            $result = $mysqli->query("SELECT * FROM `t_emcdata` WHERE (`deviceid` = '$deviceid')");
+            $result = $mysqli->query("SELECT * FROM `t_l2snr_emcdata` WHERE (`deviceid` = '$deviceid')");
             while($row = $result->fetch_array())
             {
                 $getdate0 = date("ymd", strtotime($row['date']));
@@ -188,9 +250,9 @@ class classDbiL2snrEmc
             $avg30days = implode(";", $avgd2);
             $avg3month = implode(";", $avgm2);
             //再重新存入数据文件
-            $res1=$mysqli->query("UPDATE `t_emcaccumulation` SET `avg30days` = '$avg30days' WHERE (`sid` = '$sid')");
-            $res2=$mysqli->query("UPDATE `t_emcaccumulation` SET `avg3month` = '$avg3month' WHERE (`sid` = '$sid')");
-            $res3=$mysqli->query("UPDATE `t_emcaccumulation` SET `lastupdatedate` = '$day0' WHERE (`sid` = '$sid')");
+            $res1=$mysqli->query("UPDATE `t_l2snr_emcaccumulation` SET `avg30days` = '$avg30days' WHERE (`sid` = '$sid')");
+            $res2=$mysqli->query("UPDATE `t_l2snr_emcaccumulation` SET `avg3month` = '$avg3month' WHERE (`sid` = '$sid')");
+            $res3=$mysqli->query("UPDATE `t_l2snr_emcaccumulation` SET `lastupdatedate` = '$day0' WHERE (`sid` = '$sid')");
 
             $result = $res1 OR $res2 OR $res3;
         }
@@ -209,7 +271,7 @@ class classDbiL2snrEmc
         if (!$mysqli) {
             die('Could not connect: ' . mysqli_error($mysqli));
         }
-        $result = $mysqli->query("SELECT * FROM `t_emcaccumulation` WHERE (`deviceid` = '$deviceid')");
+        $result = $mysqli->query("SELECT * FROM `t_l2snr_emcaccumulation` WHERE (`deviceid` = '$deviceid')");
         $row = $result->fetch_array();
         //Shanchun: 取时间给前台界面显示调用
         $date = $row['lastupdatedate'];
@@ -243,16 +305,16 @@ class classDbiL2snrEmc
         $emc = $data["value"];
 
         //存储新记录，如果发现是已经存在的数据，则覆盖，否则新增
-        $result = $mysqli->query("SELECT * FROM `t_minreport` WHERE (`devcode` = '$devcode' AND `statcode` = '$statcode'
+        $result = $mysqli->query("SELECT * FROM `t_l2snr_minreport` WHERE (`devcode` = '$devcode' AND `statcode` = '$statcode'
                                   AND `reportdate` = '$date' AND `hourminindex` = '$hourminindex')");
         if (($result->num_rows)>0)   //重复，则覆盖
         {
-            $result=$mysqli->query("UPDATE `t_minreport` SET `emcvalue` = '$emc'
+            $result=$mysqli->query("UPDATE `t_l2snr_minreport` SET `emcvalue` = '$emc'
                           WHERE (`devcode` = '$devcode' AND `statcode` = '$statcode' AND `reportdate` = '$date' AND `hourminindex` = '$hourminindex')");
         }
         else   //不存在，新增
         {
-            $result = $mysqli->query("INSERT INTO `t_minreport` (devcode,statcode,reportdate,hourminindex,emcvalue)
+            $result = $mysqli->query("INSERT INTO `t_l2snr_minreport` (devcode,statcode,reportdate,hourminindex,emcvalue)
                           VALUES ('$devcode','$statcode','$date', '$hourminindex','$emc')");
         }
         $mysqli->close();
@@ -268,7 +330,7 @@ class classDbiL2snrEmc
             die('Could not connect: ' . mysqli_error($mysqli));
         }
 
-        $result = $mysqli->query("SELECT * FROM `t_emcdata` WHERE `sid` = '$sid'");
+        $result = $mysqli->query("SELECT * FROM `t_l2snr_emcdata` WHERE `sid` = '$sid'");
 
         if ($result->num_rows>0)
         {
@@ -289,7 +351,7 @@ class classDbiL2snrEmc
             die('Could not connect: ' . mysqli_error($mysqli));
         }
 
-        $result = $mysqli->query("SELECT * FROM `t_emcdata` WHERE `sid` = '$sid'");
+        $result = $mysqli->query("SELECT * FROM `t_l2snr_emcdata` WHERE `sid` = '$sid'");
 
 
         if ($result->num_rows>0)
@@ -302,7 +364,60 @@ class classDbiL2snrEmc
         return $LatestEmcValueIndex;
 
     }
+
+    public function dbi_emcdata_save_gps($deviceid,$timestamp,$latitude,$longitude)
+    {
+        //建立连接
+        $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2, MFUN_CLOUD_DBPORT);
+        if (!$mysqli) {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+
+        //计算时间网格
+        $date = intval(date("ymd", $timestamp));
+        $stamp = getdate($timestamp);
+        $hourminindex = intval(($stamp["hours"] * 60 + floor($stamp["minutes"]/TIME_GRID_SIZE)));
+
+        //查询是否有相同时间网格的记录
+        $result = $mysqli->query("SELECT * FROM `t_l2snr_emcdata` WHERE (`deviceid` = '$deviceid' AND `reportdate` = '$date' AND `hourminindex` = '$hourminindex')");
+        if (($result->num_rows)>0)   //存在则更新对应记录的GPS信息
+        {
+            $result=$mysqli->query("UPDATE `t_l2snr_emcdata` SET `latitude` = $latitude,`longitude` = $longitude
+                        WHERE (`deviceid` = '$deviceid' AND `reportdate` = '$date' AND `hourminindex` = '$hourminindex')");
+        }
+        else   //不存在，新增一条时间网格记录并保存GPS信息
+        {
+            $result=$mysqli->query("INSERT INTO `t_l2snr_emcdata` (deviceid, reportdate, hourminindex, latitude, longitude)
+                      VALUES ('$deviceid', '$date', '$hourminindex', '$latitude', '$longitude')");
+        }
+
+        $mysqli->close();
+        return $result;
+    }
+    
     //ZSC
+    /*  to be checked with Shanchun how to modify this function
+    public function dbi_wxuser_inqury($sid)
+    {
+        //$wxuser = 0;
+        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2, MFUN_CLOUD_DBPORT);
+        if (!$mysqli) {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+
+        $result = $mysqli->query("SELECT * FROM `t_l2snr_emcdata` WHERE `sid` = '$sid'");
+
+        if ($result->num_rows>0)
+        {
+            $row = $result->fetch_array();
+            $wxuser = $row['wxuser'];
+        }
+        $mysqli->close();
+        return $wxuser;
+    }
+*/
+
+    //Shanchun End
 
 }
 

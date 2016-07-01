@@ -7,6 +7,34 @@
  */
 //include_once "../../l1comvm/vmlayer.php";
 
+/*
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `t_l2snr_tempdata`
+--
+
+CREATE TABLE IF NOT EXISTS `t_l2snr_tempdata` (
+  `sid` int(4) NOT NULL AUTO_INCREMENT,
+  `deviceid` char(50) NOT NULL,
+  `sensorid` int(1) NOT NULL,
+  `temperature` int(4) NOT NULL,
+  `dataflag` char(1) NOT NULL DEFAULT 'N',
+  `reportdate` date NOT NULL,
+  `hourminindex` int(2) NOT NULL,
+  `altitude` int(4) NOT NULL,
+  `flag_la` char(1) NOT NULL,
+  `latitude` int(4) NOT NULL,
+  `flag_lo` char(1) NOT NULL,
+  `longitude` int(4) NOT NULL,
+  PRIMARY KEY (`sid`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=21027 ;
+
+
+ */
+
+
 class classDbiL2snrTemp
 {
     //构造函数
@@ -46,16 +74,16 @@ class classDbiL2snrTemp
         $temperature = $data["value"];
 
         //存储新记录，如果发现是已经存在的数据，则覆盖，否则新增
-        $result = $mysqli->query("SELECT * FROM `t_temperature` WHERE (`deviceid` = '$deviceid' AND `sensorid` = '$sensorid'
+        $result = $mysqli->query("SELECT * FROM `t_l2snr_tempdata` WHERE (`deviceid` = '$deviceid' AND `sensorid` = '$sensorid'
                                   AND `reportdate` = '$date' AND `hourminindex` = '$hourminindex')");
         if (($result->num_rows)>0)   //重复，则覆盖
         {
-            $result=$mysqli->query("UPDATE `t_temperature` SET `temperature` = '$temperature',`altitude` = '$altitude',`flag_la` = '$flag_la',`latitude` = '$latitude',`flag_lo` = '$flag_lo',`longitude` = '$longitude'
+            $result=$mysqli->query("UPDATE `t_l2snr_tempdata` SET `temperature` = '$temperature',`altitude` = '$altitude',`flag_la` = '$flag_la',`latitude` = '$latitude',`flag_lo` = '$flag_lo',`longitude` = '$longitude'
                           WHERE (`deviceid` = '$deviceid' AND `sensorid` = '$sensorid' AND `reportdate` = '$date' AND `hourminindex` = '$hourminindex')");
         }
         else   //不存在，新增
         {
-            $result=$mysqli->query("INSERT INTO `t_temperature` (deviceid,sensorid,temperature,reportdate,hourminindex,altitude,flag_la,latitude,flag_lo,longitude)
+            $result=$mysqli->query("INSERT INTO `t_l2snr_tempdata` (deviceid,sensorid,temperature,reportdate,hourminindex,altitude,flag_la,latitude,flag_lo,longitude)
                                   VALUES ('$deviceid','$sensorid','$temperature','$date','$hourminindex','$altitude', '$flag_la','$latitude', '$flag_lo','$longitude')");
         }
         $mysqli->close();
@@ -78,16 +106,16 @@ class classDbiL2snrTemp
         $temperature = $data["value"];
 
         //存储新记录，如果发现是已经存在的数据，则覆盖，否则新增
-        $result = $mysqli->query("SELECT * FROM `t_minreport` WHERE (`devcode` = '$devcode' AND `statcode` = '$statcode'
+        $result = $mysqli->query("SELECT * FROM `t_l2snr_minreport` WHERE (`devcode` = '$devcode' AND `statcode` = '$statcode'
                                   AND `reportdate` = '$date' AND `hourminindex` = '$hourminindex')");
         if (($result->num_rows)>0)   //重复，则覆盖
         {
-            $result=$mysqli->query("UPDATE `t_minreport` SET `temperature` = '$temperature'
+            $result=$mysqli->query("UPDATE `t_l2snr_minreport` SET `temperature` = '$temperature'
                           WHERE (`devcode` = '$devcode' AND `statcode` = '$statcode' AND `reportdate` = '$date' AND `hourminindex` = '$hourminindex')");
         }
         else   //不存在，新增
         {
-            $result=$mysqli->query("INSERT INTO `t_minreport` (devcode,statcode,temperature,reportdate,hourminindex)
+            $result=$mysqli->query("INSERT INTO `t_l2snr_minreport` (devcode,statcode,temperature,reportdate,hourminindex)
                                   VALUES ('$devcode', '$statcode', '$temperature','$date','$hourminindex')");
         }
         $mysqli->close();

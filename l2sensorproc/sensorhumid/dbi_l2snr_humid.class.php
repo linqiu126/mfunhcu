@@ -7,6 +7,38 @@
  */
 //include_once "../../l1comvm/vmlayer.php";
 
+/*
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `t_l2snr_humiddata`
+--
+
+CREATE TABLE IF NOT EXISTS `t_l2snr_humiddata` (
+  `sid` int(4) NOT NULL AUTO_INCREMENT,
+  `deviceid` char(50) NOT NULL,
+  `sensorid` int(1) NOT NULL,
+  `humidity` int(4) NOT NULL,
+  `dataflag` char(1) NOT NULL DEFAULT 'N',
+  `reportdate` date NOT NULL,
+  `hourminindex` int(2) NOT NULL,
+  `altitude` int(4) NOT NULL,
+  `flag_la` char(1) NOT NULL,
+  `latitude` int(4) NOT NULL,
+  `flag_lo` char(1) NOT NULL,
+  `longitude` int(4) NOT NULL,
+  PRIMARY KEY (`sid`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=19900 ;
+
+--
+-- 转存表中的数据 `t_l2snr_humiddata`
+--
+
+INSERT INTO `t_l2snr_humiddata` (`sid`, `deviceid`, `sensorid`, `humidity`, `dataflag`, `reportdate`, `hourminindex`, `altitude`, `flag_la`, `latitude`, `flag_lo`, `longitude`) VALUES
+(19899, 'HCU_SH_0301', 6, 172, 'N', '2016-03-13', 1235, 0, '\0', 0, '\0', 0);
+
+*/
+
 class classDbiL2snrHumid
 {
     //构造函数
@@ -46,7 +78,7 @@ class classDbiL2snrHumid
         $humidity = $data["value"];
 
         //存储新记录，如果发现是已经存在的数据，则覆盖，否则新增
-        $result = $mysqli->query("SELECT * FROM `t_humidity` WHERE (`deviceid` = '$deviceid' AND `sensorid` = '$sensorid'
+        $result = $mysqli->query("SELECT * FROM `t_l2snr_humiddata` WHERE (`deviceid` = '$deviceid' AND `sensorid` = '$sensorid'
                                   AND `reportdate` = '$date' AND `hourminindex` = '$hourminindex')");
         if (($result->num_rows)>0)   //重复，则覆盖
         {
@@ -55,7 +87,7 @@ class classDbiL2snrHumid
         }
         else   //不存在，新增
         {
-            $result=$mysqli->query("INSERT INTO `t_humidity` (deviceid,sensorid,humidity,reportdate,hourminindex,altitude,flag_la,latitude,flag_lo,longitude)
+            $result=$mysqli->query("INSERT INTO `t_l2snr_humiddata` (deviceid,sensorid,humidity,reportdate,hourminindex,altitude,flag_la,latitude,flag_lo,longitude)
                     VALUES ('$deviceid','$sensorid','$humidity','$date','$hourminindex','$altitude', '$flag_la','$latitude', '$flag_lo','$longitude')");
         }
         $mysqli->close();
@@ -78,16 +110,16 @@ class classDbiL2snrHumid
         $humidity = $data["value"];
 
         //存储新记录，如果发现是已经存在的数据，则覆盖，否则新增
-        $result = $mysqli->query("SELECT * FROM `t_minreport` WHERE (`devcode` = '$devcode' AND `statcode` = '$statcode'
+        $result = $mysqli->query("SELECT * FROM `t_l2snr_minreport` WHERE (`devcode` = '$devcode' AND `statcode` = '$statcode'
                                   AND `reportdate` = '$date' AND `hourminindex` = '$hourminindex')");
         if (($result->num_rows)>0)   //重复，则覆盖
         {
-            $result=$mysqli->query("UPDATE `t_minreport` SET `humidity` = '$humidity'
+            $result=$mysqli->query("UPDATE `t_l2snr_minreport` SET `humidity` = '$humidity'
                           WHERE (`devcode` = '$devcode' AND `statcode` = '$statcode' AND `reportdate` = '$date' AND `hourminindex` = '$hourminindex')");
         }
         else   //不存在，新增
         {
-            $result=$mysqli->query("INSERT INTO `t_minreport` (devcode,statcode,humidity,reportdate,hourminindex)
+            $result=$mysqli->query("INSERT INTO `t_l2snr_minreport` (devcode,statcode,humidity,reportdate,hourminindex)
                                   VALUES ('$devcode', '$statcode', '$humidity','$date','$hourminindex')");
         }
         $mysqli->close();

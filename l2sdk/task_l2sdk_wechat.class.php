@@ -42,6 +42,7 @@
  *   $result = $weObj->createMenu($newmenu);
  */
 //include_once "../l1comvm/vmlayer.php";
+include_once "../l2sdk/dbi_l2sdk_wechat.class.php";
 include_once "../l2sdk/task_l2sdk_iot_wx.class.php";
 include_once "../l2sdk/task_l2sdk_iot_hcu.class.php";
 

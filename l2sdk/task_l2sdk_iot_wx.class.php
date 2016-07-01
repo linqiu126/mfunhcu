@@ -67,7 +67,7 @@ class classTaskL2sdkIotWx
         //这里的Token刷的太快，会出现超过微信设置的每天API刷新的上限问题
         //解决了Token的心病问题：官方程序使用定时器+共享中控服务器的方式，咱们这里完全采用数据库+用户业务逻辑触发，一样可靠
         //原则上，同一个Appid/Appsecrete的逻辑功能，包括不同Subscriber的操作，都
-        $wxDbObj = new classDbiL2sdkIotWx();
+        $wxDbObj = new classDbiL2sdkWechat();
         // $result = $wxDbObj->dbi_accesstoken_inqury($appid, $appsecret);
         $result = $wxDbObj->dbi_accesstoken_inqury(MFUN_WX_APPID, MFUN_WX_APPSECRET);
         //2小时=7200秒为最长限度，考虑到余量，少放点
@@ -99,7 +99,7 @@ class classTaskL2sdkIotWx
     //强制刷微信token, 由于一天最多2000次，所以强制刷新间隔不能超过45 （24x60x60)/2000=43.2
     public function compel_get_token($appid, $appsecret)
     {
-        $wxDbObj = new classDbiL2sdkIotWx();
+        $wxDbObj = new classDbiL2sdkWechat();
         $result = $wxDbObj->dbi_accesstoken_inqury($appid, $appsecret);
         if (($result == "NOTEXIST") || (time() > $result["lasttime"] + 60))
         {

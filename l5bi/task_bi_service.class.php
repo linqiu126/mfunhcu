@@ -8,7 +8,7 @@
 //include_once "../l1comvm/vmlayer.php";
 include_once "../l5bi/dbi_l5bi_service.class.php";
 
-$biObj = new classDbiL5biService();
+$biObj = new classDbiL2snrCom();
 
 $timestamp = time();
 $date = date("ymd",$timestamp);

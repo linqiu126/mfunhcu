@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: 2016-06-29 10:40:28
+-- Generation Time: 2016-07-01 10:47:28
 -- 服务器版本： 5.6.17
 -- PHP Version: 5.5.12
 
@@ -113,8 +113,8 @@ CREATE TABLE IF NOT EXISTS `t_currentreport` (
 --
 
 INSERT INTO `t_currentreport` (`sid`, `deviceid`, `statcode`, `createtime`, `emcvalue`, `pm01`, `pm25`, `pm10`, `noise`, `windspeed`, `winddirection`, `temperature`, `humidity`, `rain`, `airpressure`) VALUES
-(2, 'HCU_SH_0301', '120101001', '2016-04-27 19:48:03', 5219, 231, 231, 637, 641, 0, 106, 188, 205, 0, 0),
-(15, 'HCU_SH_0302', '120101002', '2016-06-19 12:56:19', 5050, NULL, NULL, NULL, NULL, NULL, NULL, 451, 350, NULL, NULL),
+(2, 'HCU_SH_0301', '120101001', '2016-03-13 20:35:25', 5219, 274, 274, 1170, 641, 0, 106, 188, 172, 0, 0),
+(15, 'HCU_SH_0302', '120101002', '2016-04-07 22:25:52', 4681, NULL, NULL, NULL, NULL, NULL, NULL, 451, 350, NULL, NULL),
 (6, 'HCU_SH_0305', '120101005', '2016-05-10 15:27:44', 4867, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
 (16, 'HCU_SH_0309', '120101009', '2016-06-18 23:30:39', 5151, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
 (11, 'HCU_SH_0304', '120101004', '2016-06-16 17:41:00', 4767, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),

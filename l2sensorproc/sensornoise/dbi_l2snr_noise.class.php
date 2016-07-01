@@ -7,6 +7,33 @@
  */
 //include_once "../../l1comvm/vmlayer.php";
 
+/*
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `t_l2snr_noisedata`
+--
+
+CREATE TABLE IF NOT EXISTS `t_l2snr_noisedata` (
+  `sid` int(4) NOT NULL AUTO_INCREMENT,
+  `deviceid` char(50) NOT NULL,
+  `sensorid` int(1) NOT NULL,
+  `noise` int(4) NOT NULL,
+  `dataflag` char(1) NOT NULL DEFAULT 'N',
+  `reportdate` date NOT NULL,
+  `hourminindex` int(2) NOT NULL,
+  `altitude` int(4) NOT NULL,
+  `flag_la` char(1) NOT NULL,
+  `latitude` int(4) NOT NULL,
+  `flag_lo` char(1) NOT NULL,
+  `longitude` int(4) NOT NULL,
+  PRIMARY KEY (`sid`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=9319 ;
+
+ */
+
+
 class classDbiL2snrNoise
 {
     //构造函数
@@ -46,16 +73,16 @@ class classDbiL2snrNoise
         $noise = $data["value"];
 
         //存储新记录，如果发现是已经存在的数据，则覆盖，否则新增
-        $result = $mysqli->query("SELECT * FROM `t_noisedata` WHERE (`deviceid` = '$deviceid' AND `sensorid` = '$sensorid'
+        $result = $mysqli->query("SELECT * FROM `t_l2snr_noisedata` WHERE (`deviceid` = '$deviceid' AND `sensorid` = '$sensorid'
                                   AND `reportdate` = '$date' AND `hourminindex` = '$hourminindex')");
         if (($result->num_rows)>0)   //重复，则覆盖
         {
-            $result=$mysqli->query("UPDATE `t_noisedata` SET `noise` = '$noise',`altitude` = '$altitude',`flag_la` = '$flag_la',`latitude` = '$latitude',`flag_lo` = '$flag_lo',`longitude` = '$longitude'
+            $result=$mysqli->query("UPDATE `t_l2snr_noisedata` SET `noise` = '$noise',`altitude` = '$altitude',`flag_la` = '$flag_la',`latitude` = '$latitude',`flag_lo` = '$flag_lo',`longitude` = '$longitude'
                           WHERE (`deviceid` = '$deviceid' AND `sensorid` = '$sensorid' AND `reportdate` = '$date' AND `hourminindex` = '$hourminindex')");
         }
         else   //不存在，新增
         {
-            $result=$mysqli->query("INSERT INTO `t_noisedata` (deviceid,sensorid,noise,reportdate,hourminindex,altitude,flag_la,latitude,flag_lo,longitude)
+            $result=$mysqli->query("INSERT INTO `t_l2snr_noisedata` (deviceid,sensorid,noise,reportdate,hourminindex,altitude,flag_la,latitude,flag_lo,longitude)
                                   VALUES ('$deviceid','$sensorid','$noise','$date','$hourminindex','$altitude', '$flag_la','$latitude', '$flag_lo','$longitude')");
         }
         $mysqli->close();
@@ -78,16 +105,16 @@ class classDbiL2snrNoise
         $noise = $data["value"];
 
         //存储新记录，如果发现是已经存在的数据，则覆盖，否则新增
-        $result = $mysqli->query("SELECT * FROM `t_minreport` WHERE (`devcode` = '$devcode' AND `statcode` = '$statcode'
+        $result = $mysqli->query("SELECT * FROM `t_l2snr_minreport` WHERE (`devcode` = '$devcode' AND `statcode` = '$statcode'
                                   AND `reportdate` = '$date' AND `hourminindex` = '$hourminindex')");
         if (($result->num_rows)>0)   //重复，则覆盖
         {
-            $result=$mysqli->query("UPDATE `t_minreport` SET `noise` = '$noise'
+            $result=$mysqli->query("UPDATE `t_l2snr_minreport` SET `noise` = '$noise'
                           WHERE (`devcode` = '$devcode' AND `statcode` = '$statcode' AND `reportdate` = '$date' AND `hourminindex` = '$hourminindex')");
         }
         else   //不存在，新增
         {
-            $result=$mysqli->query("INSERT INTO `t_minreport` (devcode,statcode,noise,reportdate,hourminindex)
+            $result=$mysqli->query("INSERT INTO `t_l2snr_minreport` (devcode,statcode,noise,reportdate,hourminindex)
                                   VALUES ('$devcode', '$statcode', '$noise','$date','$hourminindex')");
         }
         $mysqli->close();

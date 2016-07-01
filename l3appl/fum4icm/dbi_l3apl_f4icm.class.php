@@ -7,6 +7,22 @@
  */
 //include_once "../../l1comvm/vmlayer.php";
 
+/*
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `t_f4icm_test`
+--
+
+CREATE TABLE IF NOT EXISTS `t_f4icm_test` (
+  `sid` int(4) NOT NULL AUTO_INCREMENT,
+  `testinfo` char(10) NOT NULL,
+  PRIMARY KEY (`sid`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=75 ;
+
+*/
+
 class classDbiL3apF4icm
 {
     //构造函数

@@ -105,7 +105,7 @@ class classTaskL2sdkIotWxJssdk {
   
     private function getJsApiTicket() {
         // jsapi_ticket 应该全局存储与更新
-        $wxDbObj = new classDbiL2sdkIotWx();
+        $wxDbObj = new classDbiL2sdkWechat();
         $result = $wxDbObj->dbi_accesstoken_inqury($this->appId, $this->appSecret);
 
         if (($result == "NOTEXIST") || (time() > $result["lasttime"] + 6500))
@@ -132,7 +132,7 @@ class classTaskL2sdkIotWxJssdk {
 
     private function getAccessToken() {
         // access_token 应该全局存储与更新
-        $wxDbObj = new classDbiL2sdkIotWx();
+        $wxDbObj = new classDbiL2sdkWechat();
         $result = $wxDbObj->dbi_accesstoken_inqury($this->appId, $this->appSecret);
         //$result = $wxDbObj->dbi_AccessTokenInfo_inqury(MFUN_WX_APPID, MFUN_WX_APPSECRET);
 

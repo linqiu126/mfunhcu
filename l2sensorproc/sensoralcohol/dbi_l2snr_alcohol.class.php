@@ -14,6 +14,8 @@ class classDbiL2snrAlcohol
     {
 
     }
+
+
 }
 
 ?>

@@ -206,6 +206,8 @@ class classTaskL1vmCoreRouter
 
         }elseif($parObj == MFUN_MAIN_ENTRY_EMCWX_UI){
 
+        }elseif($parObj == MFUN_MAIN_ENTRY_NO_CALLBACK){   //本来就不行也要处理，因为消息已经发送进队列了
+
         }elseif($parObj == $this){
 
         }else{
