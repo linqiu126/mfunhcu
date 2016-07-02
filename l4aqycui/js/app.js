@@ -18,7 +18,7 @@ function logout(){
     /*
     delCookie("Environmental.inspection.session");
     window.location="http://"+window.location.host;
-     */
+    */
 
      delCookie("Environmental.inspection.session");
      var txt = window.location.href;
@@ -326,6 +326,97 @@ $(document).ready(function() {
         touchcookie();
         warning_handle();
     });
+
+    $("#InstConf").on('click',function(){
+        touchcookie();
+        Inst_Conf();
+    });
+    $("#InstRead").on('click',function(){
+        touchcookie();
+        Inst_Read();
+    });
+    $("#InstDesign").on('click',function(){
+        touchcookie();
+        Inst_Design();
+    });
+    $("#InstControl").on('click',function(){
+        touchcookie();
+        Inst_Control();
+    });
+    $("#InstSnapshot").on('click',function(){
+        touchcookie();
+        Inst_Snapshot();
+    });
+    $("#InstVideo").on('click',function(){
+        touchcookie();
+        Inst_Video();
+    });
+    $("#AuditTarget").on('click',function(){
+        touchcookie();
+        Audit_Target();
+    });
+    $("#AuditStability").on('click',function(){
+        touchcookie();
+        Audit_Stability();
+    });
+    $("#AuditAvailability").on('click',function(){
+        touchcookie();
+        Audit_Availability();
+    });
+    $("#AuditError").on('click',function(){
+        touchcookie();
+        Audit_Error();
+    });
+    $("#AuditQuality").on('click',function(){
+        touchcookie();
+        Audit_Quality();
+    });
+    $("#GeoInfoQuery").on('click',function(){
+        touchcookie();
+        Geo_InfoQuery();
+    });
+    $("#GeoTrendAnalysis").on('click',function(){
+        touchcookie();
+        Geo_TrendAnalysis();
+    });
+    $("#GeoDisaterForecast").on('click',function(){
+        touchcookie();
+        Geo_DisaterForecast();
+    });
+    $("#GeoEmergencyDirect").on('click',function(){
+        touchcookie();
+        Geo_EmergencyDirect();
+    });
+    $("#GeoDiffusionAnalysis").on('click',function(){
+        touchcookie();
+        Geo_DiffusionAnalysis();
+    });
+    $("#WorkflowDesign").on('click',function(){
+        touchcookie();
+        Work_flowDesign();
+    });
+    $("#OrderManagement").on('click',function(){
+        touchcookie();
+        Order_Management();
+    });
+    $("#UnloadingManagement").on('click',function(){
+        touchcookie();
+        Unloading_Management();
+    });
+    $("#OrderAudit").on('click',function(){
+        touchcookie();
+        Order_Audit();
+    });
+    $("#ADConf").on('click',function(){
+        touchcookie();
+        AD_Conf();
+    });
+    $("#WEBConf").on('click',function(){
+        touchcookie();
+        WEB_Conf();
+    });
+
+
 
     //user view buttons
     $("#UserfreshButton").on('click',function(){
@@ -752,7 +843,8 @@ function proj_manage(){
 }
 function para_manage(){
     clear_window();
-    $("#ParaManageView").css("display","block");
+    //$("#ParaManageView").css("display","block");
+    $("#Undefined").css("display","block");
 }
 function mp_manage(){
     clear_window();
@@ -790,11 +882,102 @@ function warning_check(){
 }
 function warning_handle(){
     clear_window();
-    $("#WarningHandleView").css("display","block");
+    //$("#WarningHandleView").css("display","block");
+    $("#Undefined").css("display","block");
 }
 function desktop(){
     clear_window();
     $("#Desktop").css("display","block");
+}
+
+
+function Inst_Conf(){
+    clear_window();
+    $("#Undefined").css("display","block");
+}
+function Inst_Read(){
+    clear_window();
+    $("#Undefined").css("display","block");
+}
+function Inst_Design(){
+    clear_window();
+    $("#Undefined").css("display","block");
+}
+function Inst_Control(){
+    clear_window();
+    $("#Undefined").css("display","block");
+}
+function Inst_Snapshot(){
+    clear_window();
+    $("#Undefined").css("display","block");
+}
+function Inst_Video(){
+    clear_window();
+    $("#Undefined").css("display","block");
+}
+function Audit_Target(){
+    clear_window();
+    $("#Undefined").css("display","block");
+}
+function Audit_Stability(){
+    clear_window();
+    $("#Undefined").css("display","block");
+}
+function Audit_Availability(){
+    clear_window();
+    $("#Undefined").css("display","block");
+}
+function Audit_Error(){
+    clear_window();
+    $("#Undefined").css("display","block");
+}
+function Audit_Quality(){
+    clear_window();
+    $("#Undefined").css("display","block");
+}
+function Geo_InfoQuery(){
+    clear_window();
+    $("#Undefined").css("display","block");
+}
+function Geo_TrendAnalysis(){
+    clear_window();
+    $("#Undefined").css("display","block");
+}
+function Geo_DisaterForecast(){
+    clear_window();
+    $("#Undefined").css("display","block");
+}
+function Geo_EmergencyDirect(){
+    clear_window();
+    $("#Undefined").css("display","block");
+}
+function Geo_DiffusionAnalysis(){
+    clear_window();
+    $("#Undefined").css("display","block");
+}
+function Work_flowDesign(){
+    clear_window();
+    $("#Undefined").css("display","block");
+}
+function Order_Management(){
+    clear_window();
+    $("#Undefined").css("display","block");
+}
+function Unloading_Management(){
+    clear_window();
+    $("#Undefined").css("display","block");
+}
+function Order_Audit(){
+    clear_window();
+    $("#Undefined").css("display","block");
+}
+function AD_Conf(){
+    clear_window();
+    $("#Undefined").css("display","block");
+}
+function WEB_Conf(){
+    clear_window();
+    $("#Undefined").css("display","block");
 }
 
 function clear_window(){
@@ -810,6 +993,7 @@ function clear_window(){
     $("#WarningCheckView").css("display","none");
     $("#WarningHandleView").css("display","none");
     $("#Desktop").css("display","none");
+    $("#Undefined").css("display","none");
 }
 
 

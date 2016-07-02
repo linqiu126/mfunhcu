@@ -6,6 +6,20 @@
  * Time: 11:33
  */
 include_once "../l1comvm/vmlayer.php";
+
+
+//define('ROOT' , pathinfo(__FILE__, PATHINFO_DIRNAME));
+
+//$path = ROOT."/l3appl/fum1sym/dbi_l3apl_f1sym.class.php";
+
+//$path2 = pathinfo(__FILE__, PATHINFO_DIRNAME);
+
+//$path3 = $_SERVER['DOCUMENT_ROOT'];
+
+//$dir = dirname(__FILE__);
+
+//require dirname(__FILE__).'/../l1comvm/vmlayer.php';
+
 //include_once "../l2sdk/task_l2sdk_wechat.class.php";
 //include_once "../l2sdk/task_l2sdk_iot_hcu.class.php";
 //include_once "../l4aqycui/dbi_l4aqyc_ui.class.php";

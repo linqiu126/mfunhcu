@@ -2,13 +2,13 @@
 <html>
 <head lang="en">
     <meta charset="utf-8">
-    <title>室外扬尘监控系统</title>
+    <title>环境监测系统</title>
     <!-- Bootstrap core CSS -->
     <link href="/xhzn/mfunhcu/l4aqycui/css/bootstrap.min.css" rel="stylesheet">
     <link href="/xhzn/mfunhcu/l4aqycui/css/bootstrap-duallistbox.min.css" rel="stylesheet" />
     <link href="/xhzn/mfunhcu/l4aqycui/css/jquery.dataTables.min.css" rel="stylesheet">
     <link href="/xhzn/mfunhcu/l4aqycui/css/buttons.dataTables.min.css" rel="stylesheet">
-    <!--link href="./css/dataTables.tableTools.min.css" rel="stylesheet"-->
+    <!--link href="/xhzn/mfunhcu/l4aqycui/css/dataTables.tableTools.min.css" rel="stylesheet"-->
 
     <link href="/xhzn/mfunhcu/l4aqycui/css/fileinput.css" media="all" rel="stylesheet" type="text/css" />
     <link href="/xhzn/mfunhcu/l4aqycui/css/scope.css" rel="stylesheet">
@@ -23,13 +23,13 @@
     <script src="/xhzn/mfunhcu/l4aqycui/js/table/jquery.dataTables.min.js"></script>
     <script src="/xhzn/mfunhcu/l4aqycui/js/table/dataTables.buttons.min.js"></script>
     <script src="/xhzn/mfunhcu/l4aqycui/js/table/jszip.min.js"></script>
-    <!--script src="/js/table/pdfmake.min.js"></script-->
-    <!--script src="/js/table/vfs_fonts.js"></script-->
+    <!--script src="/xhzn/mfunhcu/l4aqycui/js/table/pdfmake.min.js"></script-->
+    <!--script src="/xhzn/mfunhcu/l4aqycui/js/table/vfs_fonts.js"></script-->
     <script src="/xhzn/mfunhcu/l4aqycui/js/table/buttons.html5.min.js"></script>
     <script src="/xhzn/mfunhcu/l4aqycui/js/table/buttons.flash.min.js"></script>
     <script src="/xhzn/mfunhcu/l4aqycui/js/fileinput.js" type="text/javascript"></script>
     <script src="/xhzn/mfunhcu/l4aqycui/js/fileinput_locale_zh.js" type="text/javascript"></script>
-    <!--script src="/js/table/dataTables.tableTools.min.js" type="text/javascript" chartset="utf8" ></script-->
+    <!--script src="/xhzn/mfunhcu/l4aqycui/js/table/dataTables.tableTools.min.js" type="text/javascript" chartset="utf8" ></script-->
     <script src="/xhzn/mfunhcu/l4aqycui/js/hcu_util.js"></script>
     <script src="/xhzn/mfunhcu/l4aqycui/js/app.js"></script>
 
@@ -40,7 +40,7 @@
 </div>
 <nav class="navbar navbar-default" role="navigation">
     <div class="navbar-header">
-        <a class="navbar-brand" href="#">室外扬尘监控系统</a>
+        <a class="navbar-brand" href="#">欢迎登录</a>
     </div>
     <div>
         <ul class="nav navbar-nav">
@@ -54,7 +54,7 @@
             </a>
             <ul class="dropdown-menu" >
                 <li id="menu_logout"><a href="#">退出</a></li>
-                <li id="menu_user_profile"><a href="#">信息发布配置</a></li>
+                <li id="menu_user_profile"><a href="#">屏保配置</a></li>
             </ul>
             </li>
         </ul>
@@ -109,8 +109,8 @@
                     </div>
                     <div id="collapseThree" class="panel-collapse collapse">
                         <ul class="list-group">
-                            <li class="list-group-item li_menu" href="#" id="MPMonitor">监控地图</li>
-                            <li class="list-group-item li_menu" href="#" id="MPMonitorTable" style="display:none">监测点聚合</li>
+                            <li class="list-group-item li_menu" href="#" id="MPMonitor">地图监控</li>
+                            <li class="list-group-item li_menu" href="#" id="MPMonitorTable" style="display:none">站点监控</li>
                             <li class="list-group-item li_menu" href="#" id="MPStaticMonitorTable">监测点聚合</li>
                         </ul>
                     </div>
@@ -131,10 +131,104 @@
                         </ul>
                     </div>
                 </div>
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#Accordion_menu"
+                               href="#collapseFive">
+                                仪器操控
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapseFive" class="panel-collapse collapse">
+                        <ul class="list-group">
+                            <li class="list-group-item li_menu" href="#" id="InstConf">参数设置</li>
+                            <li class="list-group-item li_menu" href="#" id="InstRead">瞬时读数</li>
+                            <li class="list-group-item li_menu" href="#" id="InstDesign">软件设计</li>
+                            <li class="list-group-item li_menu" href="#" id="InstControl">远程操控</li>
+                            <li class="list-group-item li_menu" href="#" id="InstSnapshot">抓图拍图</li>
+                            <li class="list-group-item li_menu" href="#" id="InstVideo">视频浏览</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#Accordion_menu"
+                               href="#collapseSix">
+                                性能管理
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapseSix" class="panel-collapse collapse">
+                        <ul class="list-group">
+                            <li class="list-group-item li_menu" href="#" id="AuditTarget">业务指标</li>
+                            <li class="list-group-item li_menu" href="#" id="AuditStability">稳定性统计</li>
+                            <li class="list-group-item li_menu" href="#" id="AuditAvailability">可用性统计</li>
+                            <li class="list-group-item li_menu" href="#" id="AuditError">差错率统计</li>
+                            <li class="list-group-item li_menu" href="#" id="AuditQuality">质量统计</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#Accordion_menu"
+                               href="#collapseSeven">
+                                地理环境管理
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapseSeven" class="panel-collapse collapse">
+                        <ul class="list-group">
+                            <li class="list-group-item li_menu" href="#" id="GeoInfoQuery">信息查询</li>
+                            <li class="list-group-item li_menu" href="#" id="GeoTrendAnalysis">趋势分析</li>
+                            <li class="list-group-item li_menu" href="#" id="GeoDisaterForecast">灾情预警</li>
+                            <li class="list-group-item li_menu" href="#" id="GeoEmergencyDirect">应急指挥</li>
+                            <li class="list-group-item li_menu" href="#" id="GeoDiffusionAnalysis">扩散分析</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#Accordion_menu"
+                               href="#collapseEight">
+                                工单管理
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapseEight" class="panel-collapse collapse">
+                        <ul class="list-group">
+                            <li class="list-group-item li_menu" href="#" id="WorkflowDesign">流程设计</li>
+                            <li class="list-group-item li_menu" href="#" id="OrderManagement">订单管理</li>
+                            <li class="list-group-item li_menu" href="#" id="UnloadingManagement">排污收费</li>
+                            <li class="list-group-item li_menu" href="#" id="OrderAudit">订单统计</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#Accordion_menu"
+                               href="#collapseNine">
+                                广告和门户
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapseNine" class="panel-collapse collapse">
+                        <ul class="list-group">
+                            <li class="list-group-item li_menu" href="#" id="ADConf">广告信息设置</li>
+                            <li class="list-group-item li_menu" href="#" id="WEBConf">门户信息设置</li>
+                        </ul>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="col-sm-8 col-md-9 col-lg-10 column"  >
             <div class="desktop" id="Desktop">
+            </div>
+            <div class="undefined" id="Undefined">
             </div>
             <div class="row clearfix" id="UserManageView">
                 <div class="col-md-6 column" id="RightWindow1">

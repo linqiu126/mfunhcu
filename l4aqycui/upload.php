@@ -1,28 +1,25 @@
 <?php
 	$id= $_REQUEST["id"];
-	$num=count($_FILES['file-zh']['name']);   //锟斤拷锟斤拷锟较达拷锟侥硷拷锟侥革拷锟斤拷
-
 	function _encode($arr)
-	{
-		$na = array();
-		foreach ( $arr as $k => $value ) {
-			$na[_urlencode($k)] = _urlencode ($value);
-		}
-		return addcslashes(urldecode(json_encode($na)),"\r\n");
-	}
+    {
+      $na = array();
+      foreach ( $arr as $k => $value ) {
+        $na[_urlencode($k)] = _urlencode ($value);
+      }
+      return addcslashes(urldecode(json_encode($na)),"\r\n");
+    }
 
-	function _urlencode($elem)
-	{
-		$na = 0;
-		if(is_array($elem)){
-			foreach($elem as $k=>$v){
-				$na[_urlencode($k)] = _urlencode($v);
-			}
-			return $na;
-		}
-		return urlencode($elem);
-	}
-
+    function _urlencode($elem)
+    {
+      if(is_array($elem)){
+        foreach($elem as $k=>$v){
+          $na[_urlencode($k)] = _urlencode($v);
+        }
+        return $na;
+      }
+      return urlencode($elem);
+    }
+	$num=count($_FILES['file-zh']['name']);   //计算上传文件的个数
 	for($i=0;$i<$num;$i++)
 	{
 		  
@@ -46,8 +43,3 @@
 				}
 		   
 	}
-
-
-?>
-
-

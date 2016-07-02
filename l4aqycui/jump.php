@@ -1,23 +1,11 @@
 ﻿<?php
-include_once "./dbi_l4aqyc_ui.class.php";
+include_once "../l3appl/fum1sym/dbi_l3apl_f1sym.class.php";
 
 function check_session($s){
 
-    $uiDbObj = new classDbiL4aqycUi();
+    $uiDbObj = new classDbiL3apF1sym();
     $usrinfo =$uiDbObj->dbi_session_check($s);
     return $usrinfo;
-    /*
-	if($s == "1234567"){
-        return "admin";
-    }
-    if($s == "7654321"){
-        return "user";
-    }
-    if($s == "1111111"){
-            return "黄";
-        }
-    return "";
-    */
 }
 
 $session=$_GET["session"];

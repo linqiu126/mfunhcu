@@ -46,6 +46,7 @@ function getCookie(name)
 }
 function jump(str){
     log("try to dump to session "+window.location.host+"/"+jump_url+"?session"+str);
+    //console.log("http://"+window.location.host+"/"+jump_url+"?session="+str);
     window.location="http://"+window.location.host+"/"+jump_url+"?session="+str;
 }
 $(document).ready(function() {
