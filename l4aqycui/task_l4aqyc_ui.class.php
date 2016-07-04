@@ -16,32 +16,9 @@ class classTaskL4aqycUi
 
     }
 
-    function _encode($arr)
-    {
-        $na = array();
-        foreach ( $arr as $k => $value ) {
-            $na[_urlencode($k)] = _urlencode ($value);
-        }
-        return addcslashes(urldecode(json_encode($na)),"\r\n");
-    }
-
-    function _urlencode($elem)
-    {
-        $na = 0;
-        if(is_array($elem)&&(!empty($elem))){
-            foreach($elem as $k=>$v){
-                $na[_urlencode($k)] = _urlencode($v);
-            }
-            return $na;
-        }
-        if(is_array($elem)&&empty($elem)){
-            return $elem;
-        }
-        return urlencode($elem);
-    }
-
-
-    //任务入口函数
+    /**************************************************************************************
+     *                             任务入口函数                                           *
+     *************************************************************************************/
     public function mfun_l4aqyc_ui_task_main_entry($parObj, $msgId, $msgName, $msg)
     {
         //定义本入口函数的logger处理对象及函数
@@ -67,6 +44,7 @@ class classTaskL4aqycUi
 
         if (($msgId == MSG_ID_L4AQYCUI_CLICK_INCOMING) && (isset($msg)))
         {
+            $resp = "";
             //这里是L4AQYC与L3APPL功能之间的交换矩阵，从而让UI对应的多种不确定组合变换为L3APPL确定的功能组合
             switch($msg)
             {
@@ -84,7 +62,9 @@ class classTaskL4aqycUi
                 //  admin: "true"
                 //};
                 case "login":  //login message:
-                    $input = array("user" => trim($_GET["name"]), "pwd" => trim($_GET["password"]));
+                    if (isset($_GET["name"])) $name = trim($_GET["name"]); else $name = "";
+                    if (isset($_GET["password"])) $pwd = trim($_GET["password"]); else $pwd = "";
+                    $input = array("user" => $name, "pwd" => $pwd);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM1SYM, MSG_ID_L4AQYCUI_TO_L3F1_LOGIN, "MSG_ID_L4AQYCUI_TO_L3F1_LOGIN",$input);
                     break;
 
@@ -102,75 +82,9 @@ class classTaskL4aqycUi
                         }*/
                 //echo $key;
                 case "UserInfo":    // get User Information after login
-                    $input = array("session" => trim($_GET["session"]));
+                    if (isset($_GET["session"])) $session = trim($_GET["session"]); else $session = "";
+                    $input = array("session" => $session);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM1SYM, MSG_ID_L4AQYCUI_TO_L3F1_USERINFO, "MSG_ID_L4AQYCUI_TO_L3F1_USERINFO",$input);
-                    break;
-
-                //require data structure:
-                /*var map={
-                          action:"ProjectPGList",
-                          user:usr.id
-                      };*/
-                //return data structure:
-                /*var temp = {
-                  id: (i),
-                  name: "��Ŀ��"+i
-                  }
-                  proj_pg_list.push(temp);
-                  var retval={
-                  status:"true",
-                  ret: proj_pg_list
-                  };
-                  */
-                case "ProjectPGList":  //Get the Project & Project Group list which will be use in user auth
-                    $user = $_GET["user"];
-                    $proj_pg_list = $uiF2cmDbObj->dbi_all_projpglist_req();
-
-                    if(!empty($proj_pg_list))
-                        $retval=array(
-                            'status'=>'true',
-                            'ret'=>$proj_pg_list
-                        );
-                    else
-                        $retval=array(
-                            'status'=>'false',
-                            'ret'=>null
-                        );
-                    $jsonencode = _encode($retval);
-                    echo $jsonencode;
-                    break;
-
-                //require data structure:
-                /*var map={
-                          action:"ProjectList",
-                          user:usr.id
-                      };*/
-                //return data structure:
-                /*          var temp = {
-                            id: (i),
-                            name: "��Ŀ��"+i
-                        }
-                        projlist.push(temp);
-                        var retval={
-                            status:"true",
-                            ret: projlist
-                        };*/
-                case "ProjectList":   //Get the Project list
-                    $user = $_GET["user"];
-                    $projlist = $uiF2cmDbObj->dbi_all_projlist_req();
-
-                    if(!empty($projlist))
-                        $retval=array(
-                            'status'=>'true',
-                            'ret'=>$projlist
-                        );
-                    else
-                        $retval=array(
-                            'status'=>'false',
-                            'ret'=>null
-                        );
-                    $jsonencode = _encode($retval);
-                    echo $jsonencode;
                     break;
 
                 //require data structure:
@@ -191,37 +105,17 @@ class classTaskL4aqycUi
                    msg:""
                 };*/
                 case "UserNew": //Add new user
-
-                    $auth = array();
-                    if(isset($_GET["auth"]))
-                        $auth = $_GET["auth"];
-
-                    $userinfo =array(
-                        'name' => $_GET["name"],
-                        'nickname' => $_GET["nickname"],
-                        'password' => $_GET["password"],
-                        'mobile' => $_GET["mobile"],
-                        'mail' => $_GET["mail"],
-                        'type' => $_GET["type"],
-                        'memo' => $_GET["memo"],
-                        'auth' => $auth
-                    );
-
-                    $result = $uiF1symDbObj->dbi_userinfo_new($userinfo);
-
-                    if($result == true){
-                        $retval=array(
-                            'status'=>'true',
-                            'msg'=>'用户新增成功'
-                        );
-                    }
-                    else
-                        $retval=array(
-                            'status'=>'false',
-                            'msg'=>'用户新增失败'
-                        );
-                    $jsonencode = _encode($retval);
-                    echo $jsonencode;
+                    if (isset($_GET["name"])) $name = trim($_GET["name"]); else  $name = "";
+                    if (isset($_GET["nickname"])) $nickname = trim($_GET["nickname"]); else  $nickname = "";
+                    if (isset($_GET["password"])) $password = trim($_GET["password"]); else  $password = "";
+                    if (isset($_GET["mobile"])) $mobile = trim($_GET["mobile"]); else  $mobile = "";
+                    if (isset($_GET["mail"])) $mail = trim($_GET["mail"]); else  $mail = "";
+                    if (isset($_GET["type"])) $type = trim($_GET["type"]); else  $type = "";
+                    if (isset($_GET["memo"])) $memo = trim($_GET["memo"]); else  $memo = "";
+                    if (isset($_GET["auth"])) $auth = trim($_GET["auth"]); else  $auth = "";
+                    $input = array("name" => $name, "nickname" => $nickname, "password" => $password, "mobile" => $mobile,
+                        "mail" => $mail, "type" => $type, "memo" => $memo, "auth" => $auth);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM1SYM, MSG_ID_L4AQYCUI_TO_L3F1_USERNEW, "MSG_ID_L4AQYCUI_TO_L3F1_USERNEW",$input);
                     break;
 
                 //require data structure:
@@ -243,37 +137,18 @@ class classTaskL4aqycUi
                    msg:""
                 };*/
                 case "UserMod":  //modify user
-
-                    $auth = array();
-                    if(isset($_GET["auth"]))
-                        $auth = $_GET["auth"];
-
-                    $userinfo =array(
-                        'id' =>$_GET["id"],
-                        'name' => $_GET["name"],
-                        'nickname' => $_GET["nickname"],
-                        'password' => $_GET["password"],
-                        'mobile' => $_GET["mobile"],
-                        'mail' => $_GET["mail"],
-                        'type' => $_GET["type"],
-                        'memo' => $_GET["memo"],
-                        'auth' => $auth
-                    );
-
-                    $result = $uiF1symDbObj->dbi_userinfo_update($userinfo);
-
-                    if($result)
-                        $retval=array(
-                            'status'=>'true',
-                            'msg'=>'用户信息更新成功'
-                        );
-                    else
-                        $retval=array(
-                            'status'=>'false',
-                            'msg'=>'用户信息更新失败'
-                        );
-                    $jsonencode = _encode($retval);
-                    echo $jsonencode;
+                    if (isset($_GET["id"])) $id = trim($_GET["id"]); else  $id = "";
+                    if (isset($_GET["name"])) $name = trim($_GET["name"]); else  $name = "";
+                    if (isset($_GET["nickname"])) $nickname = trim($_GET["nickname"]); else  $nickname = "";
+                    if (isset($_GET["password"])) $password = trim($_GET["password"]); else  $password = "";
+                    if (isset($_GET["mobile"])) $mobile = trim($_GET["mobile"]); else  $mobile = "";
+                    if (isset($_GET["mail"])) $mail = trim($_GET["mail"]); else  $mail = "";
+                    if (isset($_GET["type"])) $type = trim($_GET["type"]); else  $type = "";
+                    if (isset($_GET["memo"])) $memo = trim($_GET["memo"]); else  $memo = "";
+                    if (isset($_GET["auth"])) $auth = trim($_GET["auth"]); else  $auth = "";
+                    $input = array("id" => $id, "name" => $name, "nickname" => $nickname, "password" => $password, "mobile" => $mobile,
+                        "mail" => $mail, "type" => $type, "memo" => $memo, "auth" => $auth);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM1SYM, MSG_ID_L4AQYCUI_TO_L3F1_USERMOD, "MSG_ID_L4AQYCUI_TO_L3F1_USERMOD",$input);
                     break;
 
                 //require data structure:
@@ -287,20 +162,9 @@ class classTaskL4aqycUi
                    msg:""
                 };*/
                 case "UserDel": //Delete the user
-                    $uid = $_GET["id"];
-                    $result = $uiF1symDbObj->dbi_userinfo_delete($uid);
-                    if($result == true)
-                        $retval=array(
-                            'status'=>'true',
-                            'msg'=>'用户删除成功'
-                        );
-                    else
-                        $retval=array(
-                            'status'=>'false',
-                            'msg'=>'用户删除失败'
-                        );
-                    $jsonencode = _encode($retval);
-                    echo $jsonencode;
+                    if (isset($_GET["id"])) $id = trim($_GET["id"]); else  $id = "";
+                    $input = array("id" => $id);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM1SYM, MSG_ID_L4AQYCUI_TO_L3F1_USERDEL, "MSG_ID_L4AQYCUI_TO_L3F1_USERDEL",$input);
                     break;
 
                 //require data structure:
@@ -330,32 +194,53 @@ class classTaskL4aqycUi
                                                       ret: usertable
                                                   };*/
                 case "UserTable": //查询所有用户信息表
+                    if (isset($_GET["length"])) $length = trim($_GET["length"]); else  $length = "";
+                    if (isset($_GET["startseq"])) $startseq = trim($_GET["startseq"]); else  $startseq = "";
+                    $input = array("length" => $length, "startseq" => $startseq);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM1SYM, MSG_ID_L4AQYCUI_TO_L3F1_USERTABLE, "MSG_ID_L4AQYCUI_TO_L3F1_USERTABLE",$input);
+                    break;
 
-                    $total = $uiF1symDbObj->dbi_usernum_inqury();
-                    $query_length = (int)($_GET['length']);
-                    $start = (int)($_GET['startseq']);
-                    if($query_length> $total-$start)
-                    {$query_length = $total-$start;}
+                //require data structure:
+                /*var map={
+                          action:"ProjectPGList",
+                          user:usr.id
+                      };*/
+                //return data structure:
+                /*var temp = {
+                  id: (i),
+                  name: "��Ŀ��"+i
+                  }
+                  proj_pg_list.push(temp);
+                  var retval={
+                  status:"true",
+                  ret: proj_pg_list
+                  };
+                  */
+                case "ProjectPGList":  //Get the Project & Project Group list which will be use in user auth
+                    if (isset($_GET["user"])) $user = trim($_GET["user"]); else  $user = "";
+                    $input = array("user" => $user);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4AQYCUI_TO_L3F2_PROJECTPGLIST, "MSG_ID_L4AQYCUI_TO_L3F2_PROJECTPGLIST",$input);
+                    break;
 
-                    $usertable = $uiF1symDbObj->dbi_usertable_req($start, $query_length);
-                    if (!empty($usertable))
-                        $retval=array(
-                            'status'=>'true',
-                            'start'=> (string)$start,
-                            'total'=> (string)$total,
-                            'length'=>(string)$query_length,
-                            'ret'=> $usertable
-                        );
-                    else
-                        $retval=array(
-                            'status'=>'false',
-                            'start'=> null,
-                            'total'=> null,
-                            'length'=>null,
-                            'ret'=> null
-                        );
-                    $jsonencode = _encode($retval);
-                    echo $jsonencode;
+                //require data structure:
+                /*var map={
+                          action:"ProjectList",
+                          user:usr.id
+                      };*/
+                //return data structure:
+                /*          var temp = {
+                            id: (i),
+                            name: "��Ŀ��"+i
+                        }
+                        projlist.push(temp);
+                        var retval={
+                            status:"true",
+                            ret: projlist
+                        };*/
+                case "ProjectList":   //Get the Project list
+                    if (isset($_GET["user"])) $user = trim($_GET["user"]); else  $user = "";
+                    $input = array("user" => $user);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4AQYCUI_TO_L3F2_PROJECTLIST, "MSG_ID_L4AQYCUI_TO_L3F2_PROJECTLIST",$input);
                     break;
 
                 //require data structure:
@@ -374,75 +259,41 @@ class classTaskL4aqycUi
                                              ret: userproj
                                          };*/
                 case "UserProj":    // query project list belong to one user
-
-                    $uid = $_GET["userid"];
-                    $userproj = $uiF2cmDbObj->dbi_user_projpglist_req($uid);
-                    if(!empty($userproj))
-                        $retval= array(
-                            'status'=>"true",
-                            'ret'=>$userproj
-                        );
-                    else
-                        $retval= array(
-                            'status'=>"true",
-                            'ret'=>""
-                        );
-                    $jsonencode = _encode($retval);
-                    echo $jsonencode;
+                    if (isset($_GET["userid"])) $userid = trim($_GET["userid"]); else  $userid = "";
+                    $input = array("$userid" => $userid);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4AQYCUI_TO_L3F2_USERPROJ, "MSG_ID_L4AQYCUI_TO_L3F2_USERPROJ",$input);
                     break;
 
+                //require data structure:
+                /*      var map={
+                    action:"PGTable",
+                    startseq: start,
+                    length:length,
+                    user:usr.id
+                };
+                //return data structure:
+                var temp = {
+                                 PGCode: (start+(i+1)),
+                                 PGName:"��Ŀ��"+(start+i),
+                                 ChargeMan:"�û�"+(start+i),
+                                 Telephone:"139139"+(start+i),
+                                 Department:"��λ"+(start+i),
+                                 Address:"��ַ"+(start+i),
+                                 Stage:"��ע"+(start+i)
+                             };
+                             pgtable.push(temp);
+                             var retval={
+                                             status:"true",
+                                             start: start,
+                                             total: total,
+                                             length:query_length,
+                                             ret: pgtable
+                                         };*/
                 case "PGTable":    // query project group table
-                    //require data structure:
-                    /*      var map={
-                        action:"PGTable",
-                        startseq: start,
-                        length:length,
-                        user:usr.id
-                    };
-                    //return data structure:
-                    var temp = {
-                                     PGCode: (start+(i+1)),
-                                     PGName:"��Ŀ��"+(start+i),
-                                     ChargeMan:"�û�"+(start+i),
-                                     Telephone:"139139"+(start+i),
-                                     Department:"��λ"+(start+i),
-                                     Address:"��ַ"+(start+i),
-                                     Stage:"��ע"+(start+i)
-                                 };
-                                 pgtable.push(temp);
-                                 var retval={
-                                                 status:"true",
-                                                 start: start,
-                                                 total: total,
-                                                 length:query_length,
-                                                 ret: pgtable
-                                             };*/
-                    $total = $uiF2cmDbObj->dbi_all_pgnum_inqury();
-                    $query_length = (int)($_GET['length']);
-                    $start = (int)($_GET['startseq']);
-                    if($query_length> $total-$start)
-                    {$query_length = $total-$start;}
-
-                    $pgtable = $uiF2cmDbObj->dbi_all_pgtable_req($start, $query_length);
-
-                    if(!empty($pgtable))
-                        $retval=array(
-                            'status'=>'true',
-                            'start'=> (string)$start,
-                            'total'=> (string)$total,
-                            'length'=>(string)$query_length,
-                            'ret'=> $pgtable
-                        );
-                    else
-                        $retval=array(
-                            'status'=>'false',
-                            'start'=> null,
-                            'total'=> null,
-                            'length'=>null,
-                            'ret'=> null
-                        );
-                    $jsonencode = _encode($retval);
-                    echo $jsonencode;
+                    if (isset($_GET["length"])) $length = trim($_GET["length"]); else  $length = "";
+                    if (isset($_GET["startseq"])) $startseq = trim($_GET["startseq"]); else  $startseq = "";
+                    $input = array("length" => $length, "startseq" => $startseq);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4AQYCUI_TO_L3F2_PGTABLE, "MSG_ID_L4AQYCUI_TO_L3F2_PGTABLE",$input);
                     break;
 
                 //require data structure:
@@ -465,37 +316,18 @@ class classTaskL4aqycUi
                             msg:""
                         };*/
                 case "PGNew":  //创建新的项目组
-
-
-                    $projlist = array();
-                    if(isset($_GET["Projlist"]))
-                        $projlist = $_GET["Projlist"];
-
-                    $pginfo =array(
-                        'PGCode' => $_GET["PGCode"],
-                        'PGName' => $_GET["PGName"],
-                        'ChargeMan' => $_GET["ChargeMan"],
-                        'Telephone' => $_GET["Telephone"],
-                        'Department' => $_GET["Department"],
-                        'Address' => $_GET["Address"],
-                        'Stage' => $_GET["Stage"],
-                        'Projlist' => $projlist,
-                        'user' => $_GET["user"]
-                    );
-
-                    $result = $uiF2cmDbObj->dbi_pginfo_update($pginfo);
-                    if($result)
-                        $retval=array(
-                            'status'=>'true',
-                            'msg'=>'新建项目组成功'
-                        );
-                    else
-                        $retval=array(
-                            'status'=>'false',
-                            'msg'=>'新建项目组失败'
-                        );
-                    $jsonencode = _encode($retval);
-                    echo $jsonencode;
+                    if (isset($_GET["PGCode"])) $PGCode = trim($_GET["PGCode"]); else  $PGCode = "";
+                    if (isset($_GET["PGName"])) $PGName = trim($_GET["PGName"]); else  $PGName = "";
+                    if (isset($_GET["ChargeMan"])) $ChargeMan = trim($_GET["ChargeMan"]); else  $ChargeMan = "";
+                    if (isset($_GET["Telephone"])) $Telephone = trim($_GET["Telephone"]); else  $Telephone = "";
+                    if (isset($_GET["Department"])) $Department = trim($_GET["Department"]); else  $Department = "";
+                    if (isset($_GET["Address"])) $Address = trim($_GET["Address"]); else  $Address = "";
+                    if (isset($_GET["Stage"])) $Stage = trim($_GET["Stage"]); else  $Stage = "";
+                    if (isset($_GET["Projlist"])) $Projlist = trim($_GET["Projlist"]); else  $Projlist = "";
+                    if (isset($_GET["user"])) $user = trim($_GET["user"]); else  $user = "";
+                    $input = array("PGCode" => $PGCode, "PGName" => $PGName, "ChargeMan" => $ChargeMan, "Telephone" => $Telephone, "Department" => $Department,
+                        "Address" => $Address, "Stage" => $Stage, "Projlist" => $Projlist, "user" => $user);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4AQYCUI_TO_L3F2_PGNEW, "MSG_ID_L4AQYCUI_TO_L3F2_PGNEW",$input);
                     break;
 
                 //require data structure:
@@ -517,37 +349,20 @@ class classTaskL4aqycUi
                             status:"true",
                             msg:""
                         };*/
+
                 case "PGMod":  //修改项目组信息
-                  $projlist = array();
-                    if(isset($_GET["Projlist"]))
-                        $projlist = $_GET["Projlist"];
-
-                    $pginfo =array(
-                        'PGCode' => $_GET["PGCode"],
-                        'PGName' => $_GET["PGName"],
-                        'ChargeMan' => $_GET["ChargeMan"],
-                        'Telephone' => $_GET["Telephone"],
-                        'Department' => $_GET["Department"],
-                        'Address' => $_GET["Address"],
-                        'Stage' => $_GET["Stage"],
-                        'Projlist' => $projlist,
-                        'user' => $_GET["user"]
-                    );
-
-
-                    $result = $uiF2cmDbObj->dbi_pginfo_update($pginfo);
-                    if($result)
-                        $retval=array(
-                            'status'=>'true',
-                            'msg'=>'项目组信息修改成功'
-                        );
-                    else
-                        $retval=array(
-                            'status'=>'false',
-                            'msg'=>'项目组信息修改失败'
-                        );
-                    $jsonencode = _encode($retval);
-                    echo $jsonencode;
+                    if (isset($_GET["PGCode"])) $PGCode = trim($_GET["PGCode"]); else  $PGCode = "";
+                    if (isset($_GET["PGName"])) $PGName = trim($_GET["PGName"]); else  $PGName = "";
+                    if (isset($_GET["ChargeMan"])) $ChargeMan = trim($_GET["ChargeMan"]); else  $ChargeMan = "";
+                    if (isset($_GET["Telephone"])) $Telephone = trim($_GET["Telephone"]); else  $Telephone = "";
+                    if (isset($_GET["Department"])) $Department = trim($_GET["Department"]); else  $Department = "";
+                    if (isset($_GET["Address"])) $Address = trim($_GET["Address"]); else  $Address = "";
+                    if (isset($_GET["Stage"])) $Stage = trim($_GET["Stage"]); else  $Stage = "";
+                    if (isset($_GET["Projlist"])) $Projlist = trim($_GET["Projlist"]); else  $Projlist = "";
+                    if (isset($_GET["user"])) $user = trim($_GET["user"]); else  $user = "";
+                    $input = array("PGCode" => $PGCode, "PGName" => $PGName, "ChargeMan" => $ChargeMan, "Telephone" => $Telephone, "Department" => $Department,
+                        "Address" => $Address, "Stage" => $Stage, "Projlist" => $Projlist, "user" => $user);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4AQYCUI_TO_L3F2_PGMOD, "MSG_ID_L4AQYCUI_TO_L3F2_PGMOD",$input);
                     break;
 
                 //require data structure:
@@ -563,20 +378,9 @@ class classTaskL4aqycUi
                    msg:""
                 };*/
                 case "PGDel":  //删除项目组信息
-                    $pgcode = $_GET["id"];
-                    $result = $uiF2cmDbObj->dbi_pginfo_delete($pgcode);
-                    if ($result)
-                        $retval=array(
-                            'status'=>'true',
-                            'msg'=>'成功删除一个项目组'
-                        );
-                    else
-                        $retval=array(
-                            'status'=>'false',
-                            'msg'=>'删除一个项目组失败'
-                        );
-                    $jsonencode = _encode($retval);
-                    echo $jsonencode;
+                    if (isset($_GET["id"])) $id = trim($_GET["id"]); else  $id = "";
+                    $input = array("id" => $id);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4AQYCUI_TO_L3F2_PGDEL, "MSG_ID_L4AQYCUI_TO_L3F2_PGDEL",$input);
                     break;
 
                 //require data structure:
@@ -595,21 +399,9 @@ class classTaskL4aqycUi
                 ret: PGProj
                 }*/
                 case "PGProj":    // 查询属于项目组的所有项目列表
-                    $pgcode = $_GET['id'];
-                    $projlist = $uiF2cmDbObj->dbi_pg_projlist_req($pgcode);
-
-                    if(!empty($projlist))
-                        $retval=array(
-                            'status'=>'true',
-                            'ret'=> $projlist
-                        );
-                    else
-                        $retval=array(
-                            'status'=>'true',
-                            'ret'=> ""
-                        );
-                    $jsonencode = _encode($retval);
-                    echo $jsonencode;
+                    if (isset($_GET["id"])) $id = trim($_GET["id"]); else  $id = "";
+                    $input = array("id" => $id);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4AQYCUI_TO_L3F2_PGPROJ, "MSG_ID_L4AQYCUI_TO_L3F2_PGPROJ",$input);
                     break;
 
 
@@ -642,33 +434,10 @@ class classTaskL4aqycUi
                                 ret: projtable
                             };*/
                 case "ProjTable":    // query project table
-
-
-                    $total = $uiF2cmDbObj->dbi_all_projnum_inqury();
-                    $query_length = (int)($_GET['length']);
-                    $start = (int)($_GET['startseq']);
-                    if($query_length> $total-$start)
-                    {$query_length = $total-$start;}
-
-                    $projtable = $uiF2cmDbObj->dbi_all_projtable_req($start, $query_length);
-                    if(!empty($projtable))
-                        $retval=array(
-                            'status'=>'true',
-                            'start'=> (string)$start,
-                            'total'=> (string)$total,
-                            'length'=>(string)$query_length,
-                            'ret'=> $projtable
-                        );
-                    else
-                        $retval=array(
-                            'status'=>'false',
-                            'start'=> null,
-                            'total'=> null,
-                            'length'=> null,
-                            'ret'=> null
-                        );
-                    $jsonencode = _encode($retval);
-                    echo $jsonencode;
+                    if (isset($_GET["length"])) $length = trim($_GET["length"]); else  $length = "";
+                    if (isset($_GET["startseq"])) $startseq = trim($_GET["startseq"]); else  $startseq = "";
+                    $input = array("length" => $length, "startseq" => $startseq);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4AQYCUI_TO_L3F2_PROJTABLE, "MSG_ID_L4AQYCUI_TO_L3F2_PROJTABLE",$input);
                     break;
 
                 //require data structure:
@@ -691,33 +460,17 @@ class classTaskL4aqycUi
                             msg:""
                         };*/
                 case "ProjNew": //创建新的项目信息
-
-
-                    $sessionid = $_GET["user"];
-                    $projinfo =array(
-                        'ProjCode' => $_GET["ProjCode"],
-                        'ProjName' => $_GET["ProjName"],
-                        'ChargeMan' => $_GET["ChargeMan"],
-                        'Telephone' => $_GET["Telephone"],
-                        'Department' => $_GET["Department"],
-                        'Address' => $_GET["Address"],
-                        'ProStartTime' => $_GET["ProStartTime"],
-                        'Stage' => $_GET["Stage"]
-                    );
-
-                    $result = $uiF2cmDbObj->dbi_projinfo_update($projinfo);
-                    if ($result == true)
-                        $retval=array(
-                            'status'=>'true',
-                            'msg'=>'新项目创建成功'
-                        );
-                    else
-                        $retval=array(
-                            'status'=>'true',
-                            'msg'=>'新项目创建失败'
-                        );
-                    $jsonencode = _encode($retval);
-                    echo $jsonencode;
+                    if (isset($_GET["ProjCode"])) $ProjCode = trim($_GET["ProjCode"]); else  $ProjCode = "";
+                    if (isset($_GET["ProjName"])) $ProjName = trim($_GET["ProjName"]); else  $ProjName = "";
+                    if (isset($_GET["ChargeMan"])) $ChargeMan = trim($_GET["ChargeMan"]); else  $ChargeMan = "";
+                    if (isset($_GET["Telephone"])) $Telephone = trim($_GET["Telephone"]); else  $Telephone = "";
+                    if (isset($_GET["Department"])) $Department = trim($_GET["Department"]); else  $Department = "";
+                    if (isset($_GET["Address"])) $Address = trim($_GET["Address"]); else  $Address = "";
+                    if (isset($_GET["ProStartTime"])) $ProStartTime = trim($_GET["ProStartTime"]); else  $ProStartTime = "";
+                    if (isset($_GET["Stage"])) $Stage = trim($_GET["Stage"]); else  $Stage = "";
+                    $input = array("ProjCode" => $ProjCode, "ProjName" => $ProjName, "ChargeMan" => $ChargeMan, "Telephone" => $Telephone, "Department" => $Department,
+                        "Address" => $Address, "ProStartTime" => $ProStartTime, "Stage" => $Stage);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4AQYCUI_TO_L3F2_PROJNEW, "MSG_ID_L4AQYCUI_TO_L3F2_PROJNEW",$input);
                     break;
 
                 //require data structure:
@@ -740,32 +493,17 @@ class classTaskL4aqycUi
                             msg:""
                         };*/
                 case "ProjMod": //修改项目信息
-
-                    $sessionid = $_GET["user"];
-                    $projinfo =array(
-                        'ProjCode' => $_GET["ProjCode"],
-                        'ProjName' => $_GET["ProjName"],
-                        'ChargeMan' => $_GET["ChargeMan"],
-                        'Telephone' => $_GET["Telephone"],
-                        'Department' => $_GET["Department"],
-                        'Address' => $_GET["Address"],
-                        'ProStartTime' => $_GET["ProStartTime"],
-                        'Stage' => $_GET["Stage"]
-                    );
-
-                    $result = $uiF2cmDbObj->dbi_projinfo_update($projinfo);
-                    if ($result == true)
-                        $retval=array(
-                            'status'=>'true',
-                            'msg'=>'项目信息修改成功'
-                        );
-                    else
-                        $retval=array(
-                            'status'=>'true',
-                            'msg'=>'项目信息修改失败'
-                        );
-                    $jsonencode = _encode($retval);
-                    echo $jsonencode;
+                    if (isset($_GET["ProjCode"])) $ProjCode = trim($_GET["ProjCode"]); else  $ProjCode = "";
+                    if (isset($_GET["ProjName"])) $ProjName = trim($_GET["ProjName"]); else  $ProjName = "";
+                    if (isset($_GET["ChargeMan"])) $ChargeMan = trim($_GET["ChargeMan"]); else  $ChargeMan = "";
+                    if (isset($_GET["Telephone"])) $Telephone = trim($_GET["Telephone"]); else  $Telephone = "";
+                    if (isset($_GET["Department"])) $Department = trim($_GET["Department"]); else  $Department = "";
+                    if (isset($_GET["Address"])) $Address = trim($_GET["Address"]); else  $Address = "";
+                    if (isset($_GET["ProStartTime"])) $ProStartTime = trim($_GET["ProStartTime"]); else  $ProStartTime = "";
+                    if (isset($_GET["Stage"])) $Stage = trim($_GET["Stage"]); else  $Stage = "";
+                    $input = array("ProjCode" => $ProjCode, "ProjName" => $ProjName, "ChargeMan" => $ChargeMan, "Telephone" => $Telephone, "Department" => $Department,
+                        "Address" => $Address, "ProStartTime" => $ProStartTime, "Stage" => $Stage);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4AQYCUI_TO_L3F2_PROJMOD, "MSG_ID_L4AQYCUI_TO_L3F2_PROJMOD",$input);
                     break;
 
                 //require data structure:
@@ -781,22 +519,9 @@ class classTaskL4aqycUi
                                msg:""
                            };*/
                 case "ProjDel":  //删除一个项目
-
-                    $projcode = $_GET["ProjCode"];
-
-                    $result = $uiF3dmDbObj->dbi_projinfo_delete($projcode);
-                    if ($result == true)
-                        $retval=array(
-                            'status'=>'true',
-                            'msg'=>'成功删除一个项目'
-                        );
-                    else
-                        $retval=array(
-                            'status'=>'false',
-                            'msg'=>'删除一个项目失败'
-                        );
-                    $jsonencode = _encode($retval);
-                    echo $jsonencode;
+                    if (isset($_GET["ProjCode"])) $ProjCode = trim($_GET["ProjCode"]); else  $ProjCode = "";
+                    $input = array("ProjCode" => $ProjCode);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM3DM, MSG_ID_L4AQYCUI_TO_L3F3_PROJDEL, "MSG_ID_L4AQYCUI_TO_L3F3_PROJDEL",$input);
                     break;
 
                 //require data structure:
@@ -816,43 +541,20 @@ class classTaskL4aqycUi
                            ret: ProjPoint
                        };    */
                 case "ProjPoint":   //查询所有监控点列表
-
-
-                    $sitelist = $uiF3dmDbObj->dbi_all_sitelist_req();
-                    if(!empty($sitelist))
-                        $retval=array(
-                            'status'=>'true',
-                            'ret'=> $sitelist
-                        );
-                    else
-                        $retval=array(
-                            'status'=>'false',
-                            'ret'=> null
-                        );
-                    $jsonencode = _encode($retval);
-                    echo $jsonencode;
+                    if (isset($_GET["user"])) $user = trim($_GET["user"]); else  $user = "";
+                    $input = array("user" => $user);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM3DM, MSG_ID_L4AQYCUI_TO_L3F3_PROJPOINT, "MSG_ID_L4AQYCUI_TO_L3F3_PROJPOINT",$input);
                     break;
 
+                /*
+                var map={
+                        action:"PointProj",
+                        ProjCode: ProjCode
+                    };*/
                 case "PointProj": //查询该项目下面对应监控点列表
-                    /*
-                    var map={
-                            action:"PointProj",
-                            ProjCode: ProjCode
-                        };*/
-                    $projcode = $_GET["ProjCode"];
-                    $sitelist = $uiF3dmDbObj->dbi_proj_sitelist_req($projcode);
-                    if(!empty($sitelist))
-                        $retval=array(
-                            'status'=>'true',
-                            'ret'=> $sitelist
-                        );
-                    else
-                        $retval=array(
-                            'status'=>'true',
-                            'ret'=> ""
-                        );
-                    $jsonencode = _encode($retval);
-                    echo $jsonencode;
+                    if (isset($_GET["ProjCode"])) $ProjCode = trim($_GET["ProjCode"]); else  $ProjCode = "";
+                    $input = array("ProjCode" => $ProjCode);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM3DM, MSG_ID_L4AQYCUI_TO_L3F3_POINTPROJ, "MSG_ID_L4AQYCUI_TO_L3F3_POINTPROJ",$input);
                     break;
 
                 //require data structure:
@@ -890,33 +592,10 @@ class classTaskL4aqycUi
                             ret: projtable
                         };*/
                 case "PointTable":  //查询所有监控点信息
-
-
-
-                    $total = $uiF3dmDbObj->dbi_all_sitenum_inqury();
-                    $query_length = (int)($_GET['length']);
-                    $start = (int)($_GET['startseq']);
-                    if($query_length> $total-$start)
-                    {$query_length = $total-$start;}
-                    $sitetable = $uiF3dmDbObj->dbi_all_sitetable_req($start, $query_length);
-                    if(!empty($sitetable))
-                        $retval=array(
-                            'status'=>'true',
-                            'start'=> (string)$start,
-                            'total'=> (string)$total,
-                            'length'=>(string)$query_length,
-                            'ret'=> $sitetable
-                        );
-                    else
-                        $retval=array(
-                            'status'=>'false',
-                            'start'=> null,
-                            'total'=> null,
-                            'length'=>null,
-                            'ret'=> null
-                        );
-                    $jsonencode = _encode($retval);
-                    echo $jsonencode;
+                    if (isset($_GET["length"])) $length = trim($_GET["length"]); else  $length = "";
+                    if (isset($_GET["startseq"])) $startseq = trim($_GET["startseq"]); else  $startseq = "";
+                    $input = array("length" => $length, "startseq" => $startseq);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM3DM, MSG_ID_L4AQYCUI_TO_L3F3_POINTTABLE, "MSG_ID_L4AQYCUI_TO_L3F3_POINTTABLE",$input);
                     break;
 
                 case "PointDetail":
@@ -948,39 +627,24 @@ class classTaskL4aqycUi
                             msg:""
                         };*/
                 case "PointNew":  //新建监测点
-
-
-                    $sessionid = $_GET["user"];
-                    $siteinfo =array(
-                        'StatCode' => $_GET["StatCode"],
-                        'StatName' => $_GET["StatName"],
-                        'ProjCode' => $_GET["ProjCode"],
-                        'ChargeMan' => $_GET["ChargeMan"],
-                        'Telephone' => $_GET["Telephone"],
-                        'Longitude' => $_GET["Longitude"],
-                        'Latitude' => $_GET["Latitude"],
-                        'Department' => $_GET["Department"],
-                        'Address' => $_GET["Address"],
-                        'Country' => $_GET["Country"],
-                        'Street' => $_GET["Street"],
-                        'Square' => $_GET["Square"],
-                        'ProStartTime' => $_GET["ProStartTime"],
-                        'Stage' => $_GET["Stage"]
-                    );
-                    $result = $uiF3dmDbObj->dbi_siteinfo_update($siteinfo);
-                    if ($result == true)
-                        $retval=array(
-                            'status'=>'true',
-                            'msg'=>'新建监测点成功'
-                        );
-                    else
-                        $retval=array(
-                            'status'=>'false',
-                            'msg'=>'新建监测点失败'
-                        );
-
-                    $jsonencode = _encode($retval);
-                    echo $jsonencode;
+                    if (isset($_GET["StatCode"])) $StatCode = trim($_GET["StatCode"]); else  $StatCode = "";
+                    if (isset($_GET["StatName"])) $StatName = trim($_GET["StatName"]); else  $StatName = "";
+                    if (isset($_GET["ProjCode"])) $ProjCode = trim($_GET["ProjCode"]); else  $ProjCode = "";
+                    if (isset($_GET["ChargeMan"])) $ChargeMan = trim($_GET["ChargeMan"]); else  $ChargeMan = "";
+                    if (isset($_GET["Telephone"])) $Telephone = trim($_GET["Telephone"]); else  $Telephone = "";
+                    if (isset($_GET["Longitude"])) $Longitude = trim($_GET["Longitude"]); else  $Longitude = "";
+                    if (isset($_GET["Latitude"])) $Latitude = trim($_GET["Latitude"]); else  $Latitude = "";
+                    if (isset($_GET["Department"])) $Department = trim($_GET["Department"]); else  $Department = "";
+                    if (isset($_GET["Address"])) $Address = trim($_GET["Address"]); else  $Address = "";
+                    if (isset($_GET["Country"])) $Country = trim($_GET["Country"]); else  $Country = "";
+                    if (isset($_GET["Street"])) $Street = trim($_GET["Street"]); else  $Street = "";
+                    if (isset($_GET["Square"])) $Square = trim($_GET["Square"]); else  $Square = "";
+                    if (isset($_GET["ProStartTime"])) $ProStartTime = trim($_GET["ProStartTime"]); else  $ProStartTime = "";
+                    if (isset($_GET["Stage"])) $Stage = trim($_GET["Stage"]); else  $Stage = "";
+                    $input = array("StatCode" => $StatCode, "StatName" => $StatName, "ProjCode" => $ProjCode, "ChargeMan" => $ChargeMan, "Telephone" => $Telephone,
+                        "Longitude" => $Longitude, "Latitude" => $Latitude, "Department" => $Department, "Address" => $Address, "Country" => $Country,
+                        "Street" => $Street, "Square" => $Square, "ProStartTime" => $ProStartTime, "Stage" => $Stage);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM3DM, MSG_ID_L4AQYCUI_TO_L3F3_POINTNEW, "MSG_ID_L4AQYCUI_TO_L3F3_POINTNEW",$input);
                     break;
 
                 //require data structure:
@@ -1008,37 +672,24 @@ class classTaskL4aqycUi
                             msg:""
                         };*/
                 case "PointMod"://修改监测点信息
-
-                    $sessionid = $_GET["user"];
-                    $siteinfo =array(
-                        'StatCode' => $_GET["StatCode"],
-                        'StatName' => $_GET["StatName"],
-                        'ProjCode' => $_GET["ProjCode"],
-                        'ChargeMan' => $_GET["ChargeMan"],
-                        'Telephone' => $_GET["Telephone"],
-                        'Longitude' => $_GET["Longitude"],
-                        'Latitude' => $_GET["Latitude"],
-                        'Department' => $_GET["Department"],
-                        'Address' => $_GET["Address"],
-                        'Country' => $_GET["Country"],
-                        'Street' => $_GET["Street"],
-                        'Square' => $_GET["Square"],
-                        'ProStartTime' => $_GET["ProStartTime"],
-                        'Stage' => $_GET["Stage"]
-                    );
-                    $result = $uiF3dmDbObj->dbi_siteinfo_update($siteinfo);
-                    if ($result == true)
-                        $retval=array(
-                            'status'=>'true',
-                            'msg'=>'新修改监测点成功'
-                        );
-                    else
-                        $retval=array(
-                            'status'=>'false',
-                            'msg'=>'修改监测点失败'
-                        );
-                    $jsonencode = _encode($retval);
-                    echo $jsonencode;
+                    if (isset($_GET["StatCode"])) $StatCode = trim($_GET["StatCode"]); else  $StatCode = "";
+                    if (isset($_GET["StatName"])) $StatName = trim($_GET["StatName"]); else  $StatName = "";
+                    if (isset($_GET["ProjCode"])) $ProjCode = trim($_GET["ProjCode"]); else  $ProjCode = "";
+                    if (isset($_GET["ChargeMan"])) $ChargeMan = trim($_GET["ChargeMan"]); else  $ChargeMan = "";
+                    if (isset($_GET["Telephone"])) $Telephone = trim($_GET["Telephone"]); else  $Telephone = "";
+                    if (isset($_GET["Longitude"])) $Longitude = trim($_GET["Longitude"]); else  $Longitude = "";
+                    if (isset($_GET["Latitude"])) $Latitude = trim($_GET["Latitude"]); else  $Latitude = "";
+                    if (isset($_GET["Department"])) $Department = trim($_GET["Department"]); else  $Department = "";
+                    if (isset($_GET["Address"])) $Address = trim($_GET["Address"]); else  $Address = "";
+                    if (isset($_GET["Country"])) $Country = trim($_GET["Country"]); else  $Country = "";
+                    if (isset($_GET["Street"])) $Street = trim($_GET["Street"]); else  $Street = "";
+                    if (isset($_GET["Square"])) $Square = trim($_GET["Square"]); else  $Square = "";
+                    if (isset($_GET["ProStartTime"])) $ProStartTime = trim($_GET["ProStartTime"]); else  $ProStartTime = "";
+                    if (isset($_GET["Stage"])) $Stage = trim($_GET["Stage"]); else  $Stage = "";
+                    $input = array("StatCode" => $StatCode, "StatName" => $StatName, "ProjCode" => $ProjCode, "ChargeMan" => $ChargeMan, "Telephone" => $Telephone,
+                        "Longitude" => $Longitude, "Latitude" => $Latitude, "Department" => $Department, "Address" => $Address, "Country" => $Country,
+                        "Street" => $Street, "Square" => $Square, "ProStartTime" => $ProStartTime, "Stage" => $Stage);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM3DM, MSG_ID_L4AQYCUI_TO_L3F3_POINTMOD, "MSG_ID_L4AQYCUI_TO_L3F3_POINTMOD",$input);
                     break;
 
                 //require data structure:
@@ -1054,22 +705,9 @@ class classTaskL4aqycUi
                                 msg:""
                             };*/
                 case "PointDel":  //删除一个监测点
-
-                    $statcode = $_GET["StatCode"];
-                    $result = $uiF3dmDbObj->dbi_siteinfo_delete($statcode);
-                    if ($result)
-                        $retval=array(
-                            'status'=>'true',
-                            'msg'=>'成功删除一个监测点'
-                        );
-                    else
-                        $retval=array(
-                            'status'=>'false',
-                            'msg'=>'删除一个监测点失败'
-                        );
-
-                    $jsonencode = _encode($retval);
-                    echo $jsonencode;
+                    if (isset($_GET["StatCode"])) $StatCode = trim($_GET["StatCode"]); else  $StatCode = "";
+                    $input = array("StatCode" => $StatCode);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM3DM, MSG_ID_L4AQYCUI_TO_L3F3_POINTDEL, "MSG_ID_L4AQYCUI_TO_L3F3_POINTDEL",$input);
                     break;
 
                 //require data structure:
@@ -1090,20 +728,9 @@ class classTaskL4aqycUi
                         };*/
 
                 case "PointDev": //查询监测点下的HCU设备列表
-                    $statcode = $_GET['StatCode'];
-                    $devlist = $uiF3dmDbObj->dbi_site_devlist_req($statcode);
-                    if(!empty($devlist))
-                        $retval=array(
-                            'status'=>"true",
-                            'ret'=> $devlist
-                        );
-                    else
-                        $retval=array(
-                            'status'=>"true",
-                            'ret'=> ""
-                        );
-                    $jsonencode = _encode($retval);
-                    echo $jsonencode;
+                    if (isset($_GET["StatCode"])) $StatCode = trim($_GET["StatCode"]); else  $StatCode = "";
+                    $input = array("StatCode" => $StatCode);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM3DM, MSG_ID_L4AQYCUI_TO_L3F3_POINTDEV, "MSG_ID_L4AQYCUI_TO_L3F3_POINTDEV",$input);
                     break;
 
                 //require data structure:
@@ -1141,32 +768,10 @@ class classTaskL4aqycUi
                                             ret: projtable
                                         };*/
                 case "DevTable": //查询HCU设备列表信息
-
-                    $total = $uiSdkDbObj->dbi_all_hcunum_inqury();
-                    $query_length = (int)($_GET["length"]);
-                    $start = (int)($_GET["startseq"]);
-                    if($query_length> $total-$start)
-                    {$query_length = $total-$start;}
-                    $devtable = $uiF3dmDbObj->dbi_all_hcutable_req($start,$query_length);
-                    if(!empty($devtable))
-                        $retval=array(
-                            'status'=>'true',
-                            'start'=> (string)$start,
-                            'total'=> (string)$total,
-                            'length'=>(string)$query_length,
-                            'ret'=> $devtable
-                        );
-                    else
-                        $retval=array(
-                            'status'=>'false',
-                            'start'=> null,
-                            'total'=> null,
-                            'length'=>null,
-                            'ret'=> null
-                        );
-
-                    $jsonencode = _encode($retval);
-                    echo $jsonencode;
+                    if (isset($_GET["length"])) $length = trim($_GET["length"]); else  $length = "";
+                    if (isset($_GET["startseq"])) $startseq = trim($_GET["startseq"]); else  $startseq = "";
+                    $input = array("length" => $length, "startseq" => $startseq);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM3DM, MSG_ID_L4AQYCUI_TO_L3F3_DEVTABLE, "MSG_ID_L4AQYCUI_TO_L3F3_DEVTABLE",$input);
                     break;
 
                 //require data structure:
@@ -1187,35 +792,16 @@ class classTaskL4aqycUi
                                         msg:""
                                     };*/
                 case "DevNew":  //创建新的HCU信息
-
-                    $sessionid = $_GET["user"];
-                    $devinfo =array(
-                        'DevCode' => $_GET["DevCode"],
-                        'StatCode' => $_GET["StatCode"],
-                        'StartTime' => $_GET["StartTime"],
-                        'PreEndTime' => $_GET["PreEndTime"],
-                        'EndTime' => $_GET["EndTime"],
-                        'DevStatus' => $_GET["DevStatus"],
-                        'VideoURL' => $_GET["VideoURL"]
-                    );
-                    $result = $uiSdkDbObj->dbi_devinfo_update($devinfo);
-                    if ($result == true)
-                        $retval=array(
-                            'status'=>'true',
-                            'msg'=>'新增监测设备成功'
-                        );
-                    else
-                        $retval=array(
-                            'status'=>'false',
-                            'msg'=>'新增监测设备失败'
-                        );
-
-                    $retval=array(
-                        'status'=>'true',
-                        'msg'=>''
-                    );
-                    $jsonencode = _encode($retval);
-                    echo $jsonencode;
+                    if (isset($_GET["DevCode"])) $DevCode = trim($_GET["DevCode"]); else  $DevCode = "";
+                    if (isset($_GET["StatCode"])) $StatCode = trim($_GET["StatCode"]); else  $StatCode = "";
+                    if (isset($_GET["StartTime"])) $StartTime = trim($_GET["StartTime"]); else  $StartTime = "";
+                    if (isset($_GET["PreEndTime"])) $PreEndTime = trim($_GET["PreEndTime"]); else  $PreEndTime = "";
+                    if (isset($_GET["EndTime"])) $EndTime = trim($_GET["EndTime"]); else  $EndTime = "";
+                    if (isset($_GET["DevStatus"])) $DevStatus = trim($_GET["DevStatus"]); else  $DevStatus = "";
+                    if (isset($_GET["VideoURL"])) $VideoURL = trim($_GET["VideoURL"]); else  $VideoURL = "";
+                    $input = array("DevCode" => $DevCode, "StatCode" => $StatCode, "StartTime" => $StartTime, "PreEndTime" => $PreEndTime,
+                        "EndTime" => $EndTime, "DevStatus" => $DevStatus, "VideoURL" => $VideoURL);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM3DM, MSG_ID_L4AQYCUI_TO_L3F3_DEVNEW, "MSG_ID_L4AQYCUI_TO_L3F3_DEVNEW",$input);
                     break;
 
                 //require data structure:
@@ -1236,30 +822,16 @@ class classTaskL4aqycUi
                                         msg:""
                                     };*/
                 case "DevMod": //修改监测设备信息
-
-                    $sessionid = $_GET["user"];
-                    $devinfo =array(
-                        'DevCode' => $_GET["DevCode"],
-                        'StatCode' => $_GET["StatCode"],
-                        'StartTime' => $_GET["StartTime"],
-                        'PreEndTime' => $_GET["PreEndTime"],
-                        'EndTime' => $_GET["EndTime"],
-                        'DevStatus' => $_GET["DevStatus"],
-                        'VideoURL' => $_GET["VideoURL"]
-                    );
-                    $result = $uiSdkDbObj->dbi_devinfo_update($devinfo);
-                    if ($result == true)
-                        $retval=array(
-                            'status'=>'true',
-                            'msg'=>'修改监测设备信息成功'
-                        );
-                    else
-                        $retval=array(
-                            'status'=>'false',
-                            'msg'=>'修改监测设备信息失败'
-                        );
-                    $jsonencode = _encode($retval);
-                    echo $jsonencode;
+                    if (isset($_GET["DevCode"])) $DevCode = trim($_GET["DevCode"]); else  $DevCode = "";
+                    if (isset($_GET["StatCode"])) $StatCode = trim($_GET["StatCode"]); else  $StatCode = "";
+                    if (isset($_GET["StartTime"])) $StartTime = trim($_GET["StartTime"]); else  $StartTime = "";
+                    if (isset($_GET["PreEndTime"])) $PreEndTime = trim($_GET["PreEndTime"]); else  $PreEndTime = "";
+                    if (isset($_GET["EndTime"])) $EndTime = trim($_GET["EndTime"]); else  $EndTime = "";
+                    if (isset($_GET["DevStatus"])) $DevStatus = trim($_GET["DevStatus"]); else  $DevStatus = "";
+                    if (isset($_GET["VideoURL"])) $VideoURL = trim($_GET["VideoURL"]); else  $VideoURL = "";
+                    $input = array("DevCode" => $DevCode, "StatCode" => $StatCode, "StartTime" => $StartTime, "PreEndTime" => $PreEndTime,
+                        "EndTime" => $EndTime, "DevStatus" => $DevStatus, "VideoURL" => $VideoURL);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM3DM, MSG_ID_L4AQYCUI_TO_L3F3_DEVMOD, "MSG_ID_L4AQYCUI_TO_L3F3_DEVMOD",$input);
                     break;
 
                 //require data structure:
@@ -1275,21 +847,9 @@ class classTaskL4aqycUi
                                 msg:""
                             };*/
                 case "DevDel":  //删除HCU设备
-
-                    $devcode = $_GET["DevCode"];
-                    $result = $uiF3dmDbObj->dbi_deviceinfo_delete($devcode);
-                    if ($result)
-                        $retval=array(
-                            'status'=>'true',
-                            'msg'=>'删除HCU设备成功'
-                        );
-                    else
-                        $retval=array(
-                            'status'=>'true',
-                            'msg'=>'删除HCU设备失败'
-                        );
-                    $jsonencode = _encode($retval);
-                    echo $jsonencode;
+                    if (isset($_GET["DevCode"])) $DevCode = trim($_GET["DevCode"]); else  $DevCode = "";
+                    $input = array("DevCode" => $DevCode);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM3DM, MSG_ID_L4AQYCUI_TO_L3F3_DEVDEL, "MSG_ID_L4AQYCUI_TO_L3F3_DEVDEL",$input);
                     break;
 
                 //require data structure:
@@ -1379,23 +939,9 @@ class classTaskL4aqycUi
                         array_push($alarmlist,$map8);
                 */
                 case "DevAlarm":  //获取当前的测量值，如果测量值超出范围，提示告警
-
-
-                    $statcode =$_GET["StatCode"];
-
-                    $alarmlist = $uiF3dmDbObj->dbi_dev_currentvalue_req($statcode);
-                    if(!empty($alarmlist))
-                        $retval=array(
-                            'status'=>'true',
-                            'ret'=> $alarmlist
-                        );
-                    else
-                        $retval=array(
-                            'status'=>'false',
-                            'ret'=> null
-                        );
-                    $jsonencode = _encode($retval);
-                    echo $jsonencode;
+                    if (isset($_GET["StatCode"])) $StatCode = trim($_GET["StatCode"]); else  $StatCode = "";
+                    $input = array("StatCode" => $StatCode);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM3DM, MSG_ID_L4AQYCUI_TO_L3F5_DEVALARM, "MSG_ID_L4AQYCUI_TO_L3F5_DEVALARM",$input);
                     break;
 
                 //require data structure:
@@ -1429,24 +975,9 @@ class classTaskL4aqycUi
                                 ret: stat_list
                             };*/
                 case "MonitorList":      // get monitorList in map by user id
-
-                    if(isset($_GET["id"]))
-                        $uid = $_GET["id"];
-                    $stat_list = $uiF3dmDbObj->dbi_map_sitetinfo_req($uid);
-                    if(!empty($stat_list))
-                        $retval=array(
-                            'status'=>'true',
-                            'id'=>$uid,
-                            'ret'=> $stat_list
-                        );
-                    else
-                        $retval=array(
-                            'status'=>'false',
-                            'id'=>$uid,
-                            'ret'=> null
-                        );
-                    $jsonencode = _encode($retval);
-                    echo $jsonencode;
+                    if (isset($_GET["id"])) $id = trim($_GET["id"]); else  $id = "";
+                    $input = array("id" => $id);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM3DM, MSG_ID_L4AQYCUI_TO_L3F3_MONITORLIST, "MSG_ID_L4AQYCUI_TO_L3F3_MONITORLIST",$input);
                     break;
 
                 //require data structure:
@@ -1489,46 +1020,12 @@ class classTaskL4aqycUi
                                     day_alarm: day_alarm
                                 };*/
                 case "AlarmQuery": //查询一个监测点历史告警数据 minute/hour/day
-
-                    $user = $_GET["id"];
-                    $statcode = $_GET["StatCode"];
-                    $query_date = $_GET["date"];
-                    $query_type = $_GET["type"];
-                    $result = $uiF3dmDbObj->dbi_dev_alarmhistory_req($statcode, $query_date, $query_type);
-
-                    if(!empty($result))
-                        $retval= array(
-                            'status'=>"true",
-                            'StatCode'=> $statcode,
-                            'date'=> $query_date,
-                            'AlarmName'=> $result["alarm_name"],
-                            'AlarmUnit'=> $result["alarm_unit"],
-                            'WarningTarget'=>$result["warning"],
-                            'minute_head'=>$result["minute_head"],
-                            'minute_alarm'=> $result["minute_alarm"],
-                            'hour_head'=>$result["hour_head"],
-                            'hour_alarm'=> $result["hour_alarm"],
-                            'day_head'=>$result["day_head"],
-                            'day_alarm'=> $result["day_alarm"]
-                        );
-                    else
-                        $retval= array(
-                            'status'=>"false",
-                            'StatCode'=> $statcode,
-                            'date'=> $query_date,
-                            'AlarmName'=> $query_type,
-                            'AlarmUnit'=> null,
-                            'WarningTarget'=> null,
-                            'minute_head'=> null,
-                            'minute_alarm'=> null,
-                            'hour_head'=> null,
-                            'hour_alarm'=> null,
-                            'day_head'=> null,
-                            'day_alarm'=> null
-                        );
-
-                    $jsonencode = json_encode($retval,JSON_UNESCAPED_UNICODE);
-                    echo $jsonencode;
+                    if (isset($_GET["id"])) $id = trim($_GET["id"]); else  $id = "";
+                    if (isset($_GET["StatCode"])) $StatCode = trim($_GET["StatCode"]); else  $StatCode = "";
+                    if (isset($_GET["date"])) $date = trim($_GET["date"]); else  $date = "";
+                    if (isset($_GET["type"])) $type = trim($_GET["type"]); else  $type = "";
+                    $input = array("id" => $id, "StatCode" => $StatCode, "date" => $date, "type" => $type);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM3DM, MSG_ID_L4AQYCUI_TO_L3F5_ALARMQUERY, "MSG_ID_L4AQYCUI_TO_L3F5_ALARMQUERY",$input);
                     break;
 
                 //require data structure:
@@ -1548,20 +1045,9 @@ class classTaskL4aqycUi
                                 typelist: ret
                             };*/
                 case "AlarmType":  //获取所有传感器类型
-
-                    $alarm_type = $uiL2snrDbObj->dbi_all_alarmtype_req();
-                    if(!empty($alarm_type))
-                        $retval=array(
-                            'status'=>'true',
-                            'typelist'=> $alarm_type
-                        );
-                    else
-                        $retval=array(
-                            'status'=>'false',
-                            'typelist'=> null
-                        );
-                    $jsonencode = _encode($retval);
-                    echo $jsonencode;
+                    if (isset($_GET["user"])) $user = trim($_GET["user"]); else  $user = "";
+                    $input = array("user" => $user);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM3DM, MSG_ID_L4AQYCUI_TO_L3F3_ALARMTYPE, "MSG_ID_L4AQYCUI_TO_L3F3_ALARMTYPE",$input);
                     break;
 
                 // input tablename =>string
@@ -1576,121 +1062,47 @@ class classTaskL4aqycUi
                 //$Condition = $_GET["Condition"];
                 //$Filter = $_GET["Filter"];
                 case "TableQuery":
-
-
-                    $tablename = $_GET["TableName"];
-                    $condition = array();
-                    if(isset($_GET["Condition"]))
-                        $condition = $_GET["Condition"];
-
-                    /*
-                            $column = 16;
-                            $row = 40;
-                            $column_name = array();
-                            $row_content = array();
-                            for( $i=0;$i<$column;$i++){
-                                array_push($column_name,"第".(string)($i+1)."列");
-                            }
-                            for($i=0;$i<$row;$i++){
-                                $one_row = array();
-                                array_push($one_row,(string)($i+1));
-                                array_push($one_row,"备注".(string)($i+1));
-                                for($j=0;$j<($column-6);$j++) array_push($one_row,rand(10,110));
-
-                                //one_row.push("地址"+(i+1)+"xxxxx路"+(i+1)+"xxxxx号");
-                                array_push($one_row,"地址".((string)($i+1))."xxxxx路".((string)($i+1))."xxxxx号");
-                                //one_row.push("测试");
-                                array_push($one_row,"测试");
-                                //one_row.push("名称");
-                                array_push($one_row,"名称");
-                                //one_row.push("长数据长数据长数据"+(i+1)+"xxxxx路"+(i+1)+"xxxxx号");
-                                array_push($one_row,"长数据长数据长数据".((string)($i+1))."xxxxx路".((string)($i+1))."xxxxx号");
-                                array_push($row_content,$one_row);
-                                //row_content.push(one_row);
-                            }
-                    */
-                    $result = $uiL2snrDbObj->dbi_excel_historydata_req($condition);
-                    if(!empty($result))
-                        $retval=array(
-                            'status'=>'true',
-                            'ColumnName' => $result["column"],
-                            'TableData' => $result["data"]
-                        );
-                    else
-                        $retval=array(
-                            'status'=>'false',
-                            'ColumnName' => null,
-                            'TableData' => null
-                        );
-                    $jsonencode = _encode($retval);
-                    echo $jsonencode;
+                    if (isset($_GET["TableName"])) $TableName = trim($_GET["TableName"]); else  $TableName = "";
+                    if (isset($_GET["Condition"])) $Condition = trim($_GET["Condition"]); else  $Condition = "";
+                    $input = array("TableName" => $TableName, "Condition" => $Condition);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM3DM, MSG_ID_L4AQYCUI_TO_L3F3_TABLEQUERY, "MSG_ID_L4AQYCUI_TO_L3F3_TABLEQUERY",$input);
                     break;
 
                 case "SensorList":
-                    $sensor_list = $uiL2snrDbObj->dbi_all_sensorlist_req();
-                    if(!empty($sensor_list))
-                        $retval=array(
-                            'status'=>'true',
-                            'SensorList'=> $sensor_list
-                        );
-                    else
-                        $retval=array(
-                            'status'=>'false',
-                            'SensorList'=> null
-                        );
-                    $jsonencode = _encode($retval);
-                    echo $jsonencode;
+                    if (isset($_GET["user"])) $user = trim($_GET["user"]); else  $user = "";
+                    $input = array("user" => $user);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM3DM, MSG_ID_L4AQYCUI_TO_L3F3_SENSORLIST, "MSG_ID_L4AQYCUI_TO_L3F3_SENSORLIST",$input);
                     break;
 
                 case "DevSensor":
-                    $devcode = $_GET["DevCode"];
-                    $sensorinfo = $uiL2snrDbObj->dbi_dev_sensorinfo_req($devcode);
-
-                    if(!empty($sensorinfo))
-                        $retval=array(
-                            'status'=>'true',
-                            'ret'=>$sensorinfo
-                        );
-                    else
-                        $retval=array(
-                            'status'=>'false',
-                            'ret'=>null
-                        );
-
-                    $jsonencode = json_encode($retval,JSON_UNESCAPED_UNICODE);
-                    echo $jsonencode;
+                    if (isset($_GET["DevCode"])) $DevCode = trim($_GET["DevCode"]); else  $DevCode = "";
+                    $input = array("DevCode" => $DevCode);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM3DM, MSG_ID_L4AQYCUI_TO_L3F3_DEVSENSOR, "MSG_ID_L4AQYCUI_TO_L3F3_DEVSENSOR",$input);
                     break;
 
                 case "SensorUpdate":
-                    $DevCode = $_GET["DevCode"];
-                    $SensorCode = $_GET["SensorCode"];
-                    $status = $_GET["status"];
-                    $ParaList = $_GET["ParaList"];
-                    $retval=array(
-                        'status'=>'true',
-                        'msg'=>''
-                    );
-                    $jsonencode = _encode($retval);
-                    echo $jsonencode; break;
+                    if (isset($_GET["DevCode"])) $DevCode = trim($_GET["DevCode"]); else  $DevCode = "";
+                    if (isset($_GET["SensorCode"])) $SensorCode = trim($_GET["SensorCode"]); else  $SensorCode = "";
+                    if (isset($_GET["status"])) $status = trim($_GET["status"]); else  $status = "";
+                    if (isset($_GET["ParaList"])) $ParaList = trim($_GET["ParaList"]); else  $ParaList = "";
+                    $input = array("DevCode" => $DevCode, "SensorCode" => $SensorCode, "status" => $status, "ParaList" => $ParaList);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM3DM, MSG_ID_L4AQYCUI_TO_L3F3_SENSORUPDATE, "MSG_ID_L4AQYCUI_TO_L3F3_SENSORUPDATE",$input);
+                    break;
 
+                /*
+                        var usr = data.id;
+                        var Msg = data.msg;
+                        var ifdev = data.ifdev;
+                        var retval={
+                            status:"true",
+                            msg:""
+                        };*/
                 case "SetUserMsg":
-                    /*
-                            var usr = data.id;
-                            var Msg = data.msg;
-                            var ifdev = data.ifdev;
-                            var retval={
-                                status:"true",
-                                msg:""
-                            };*/
-                    $usr = $_GET["id"];
-                    $msg = $_GET["msg"];
-                    $ifdev = $_GET["ifdev"];
-                    $retval=array(
-                        'status'=>'true',
-                        'msg'=>''
-                    );
-                    $jsonencode = _encode($retval);
-                    echo $jsonencode;
+                    if (isset($_GET["id"])) $id = trim($_GET["id"]); else  $id = "";
+                    if (isset($_GET["msg"])) $msg1 = trim($_GET["msg"]); else  $msg1 = "";
+                    if (isset($_GET["ifdev"])) $ifdev = trim($_GET["ifdev"]); else  $ifdev = "";
+                    $input = array("id" => $id, "msg" => $msg1, "ifdev" => $ifdev);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM3DM, MSG_ID_L4AQYCUI_TO_L3F7_SETUSERMSG, "MSG_ID_L4AQYCUI_TO_L3F7_SETUSERMSG",$input);
                     break;
 
                 /*
@@ -1701,15 +1113,9 @@ class classTaskL4aqycUi
                         ifdev:"true"
                     };*/
                 case "GetUserMsg":
-
-                    $usr = $_GET["id"];
-                    $retval=array(
-                        'status'=>'true',
-                        'msg'=>'您好，今天是xxxx号，欢迎领导前来视察，今天的气温是 今天的PM2.5是....',
-                        'ifdev'=>"true"
-                    );
-                    $jsonencode = _encode($retval);
-                    echo $jsonencode;
+                    if (isset($_GET["id"])) $id = trim($_GET["id"]); else  $id = "";
+                    $input = array("id" => $id);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM3DM, MSG_ID_L4AQYCUI_TO_L3F7_GETUSERMSG, "MSG_ID_L4AQYCUI_TO_L3F7_GETUSERMSG",$input);
                     break;
 
                 /*
@@ -1720,16 +1126,10 @@ class classTaskL4aqycUi
                             msg:temp+"您好，今天是"+temp+"号，欢迎领导前来视察，今天的气温是 今天的PM2.5是.xxx.yyy.zzz."
                         };*/
                 case "ShowUserMsg":
-                  $usr = $_GET["id"];
-                    $StatCode = $_GET["StatCode"];
-                    $temp =(string)rand(1000,9999);
-                    $retval=array(
-                        'status'=>'true',
-                        'msg'=>$temp.'您好，今天是'.$temp.'号，欢迎领导前来视察，今天的气温是 今天的PM2.5是....'
-                    );
-
-                    $jsonencode = _encode($retval);
-                    echo $jsonencode;
+                    if (isset($_GET["id"])) $id = trim($_GET["id"]); else  $id = "";
+                    if (isset($_GET["StatCode"])) $StatCode = trim($_GET["StatCode"]); else  $StatCode = "";
+                    $input = array("id" => $id, "StatCode" => $StatCode);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM3DM, MSG_ID_L4AQYCUI_TO_L3F7_SHOWUSERMSG, "MSG_ID_L4AQYCUI_TO_L3F7_SHOWUSERMSG",$input);
                     break;
 
                 /*
@@ -1747,21 +1147,9 @@ class classTaskL4aqycUi
                                 img: ImgList
                             };*/
                 case "GetUserImg":
-                    $usr = $_GET["id"];
-                    $ImgList = array();
-                    for ($i=1;$i<6;$i++){
-                        $map = array(
-                            'name'=>"test".(string)$i.".jpg",
-                            'url'=>"assets/img/test".(string)$i.".jpg"
-                        );
-                        array_push($ImgList,$map);
-                    }
-                    $retval=array(
-                        'status'=>'true',
-                        'img'=>$ImgList
-                    );
-                    $jsonencode = _encode($retval);
-                    echo $jsonencode;
+                    if (isset($_GET["id"])) $id = trim($_GET["id"]); else  $id = "";
+                    $input = array("id" => $id);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM3DM, MSG_ID_L4AQYCUI_TO_L3F7_GETUSERIMG, "MSG_ID_L4AQYCUI_TO_L3F7_GETUSERIMG",$input);
                     break;
 
 
@@ -1771,12 +1159,9 @@ class classTaskL4aqycUi
                         status:"true"
                     };*/
                 case "ClearUserImg":
-                  $usr = $_GET["id"];
-                    $retval=array(
-                        'status'=>'true'
-                    );
-                    $jsonencode = _encode($retval);
-                    echo $jsonencode;
+                    if (isset($_GET["id"])) $id = trim($_GET["id"]); else  $id = "";
+                    $input = array("id" => $id);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM3DM, MSG_ID_L4AQYCUI_TO_L3F7_CLEARUSERIMG, "MSG_ID_L4AQYCUI_TO_L3F7_CLEARUSERIMG",$input);
                     break;
 
                 /*
@@ -1786,27 +1171,13 @@ class classTaskL4aqycUi
                     TableData:row_content
                 };*/
                 case "GetStaticMonitorTable":  //查询测量点聚合信息
-                    $sessionid = $_GET["id"];
-                    $uid = $uiF1symDbObj->dbi_session_check($sessionid);
-                    $result = $uiF3dmDbObj->dbi_user_dataaggregate_req($uid);
-                    if(!empty($result))
-                        $retval=array(
-                            'status'=>'true',
-                            'ColumnName' => $result["column"],
-                            'TableData' => $result["data"]
-                        );
-                    else
-                        $retval=array(
-                            'status'=>'false',
-                            'ColumnName' => null,
-                            'TableData' => null
-                        );
-
-                    $jsonencode = _encode($retval);
-                    echo $jsonencode;
+                    if (isset($_GET["id"])) $id = trim($_GET["id"]); else  $id = "";
+                    $input = array("id" => $id);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM3DM, MSG_ID_L4AQYCUI_TO_L3F3_GETSTATICMONITORTABLE, "MSG_ID_L4AQYCUI_TO_L3F3_GETSTATICMONITORTABLE",$input);
                     break;
 
                 default:
+                    $resp = ""; //啥都不ECHO
                     break;
             }
 

@@ -40,14 +40,242 @@ class classTaskL3aplF2cm
         return urlencode($elem);
     }
 
-    function func_xxx_process($user)
+    function func_project_pglist_process($user)
     {
-        $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
-        $jsonencode = json_encode($uiF1symDbObj);
+        $uiF2cmDbObj = new classDbiL3apF2cm(); //初始化一个UI DB对象
+        $proj_pg_list = $uiF2cmDbObj->dbi_all_projpglist_req();
+        if(!empty($proj_pg_list))
+            $retval=array(
+                'status'=>'true',
+                'ret'=>$proj_pg_list
+            );
+        else
+            $retval=array(
+                'status'=>'false',
+                'ret'=>null
+            );
+        $jsonencode = _encode($retval);
         return $jsonencode;
     }
 
-    //任务入口函数
+    function func_project_list_process($user)
+    {
+        $uiF2cmDbObj = new classDbiL3apF2cm(); //初始化一个UI DB对象
+        $projlist = $uiF2cmDbObj->dbi_all_projlist_req();
+
+        if(!empty($projlist))
+            $retval=array(
+                'status'=>'true',
+                'ret'=>$projlist
+            );
+        else
+            $retval=array(
+                'status'=>'false',
+                'ret'=>null
+            );
+        //$jsonencode = _encode($retval);
+        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
+        return $jsonencode;
+    }
+
+    function func_user_project_list_process($userid)
+    {
+        $uiF2cmDbObj = new classDbiL3apF2cm(); //初始化一个UI DB对象
+        $userproj = $uiF2cmDbObj->dbi_user_projpglist_req($userid);
+        if(!empty($userproj))
+            $retval= array(
+                'status'=>"true",
+                'ret'=>$userproj
+            );
+        else
+            $retval= array(
+                'status'=>"true",
+                'ret'=>""
+            );
+        //$jsonencode = _encode($retval);
+        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
+        return $jsonencode;
+    }
+
+    function func_pg_table_process($length, $startseq)
+    {
+        $uiF2cmDbObj = new classDbiL3apF2cm(); //初始化一个UI DB对象
+        $total = $uiF2cmDbObj->dbi_all_pgnum_inqury();
+        $query_length = (int)($length);
+        $start = (int)($startseq);
+        if($query_length> $total-$start)
+        {$query_length = $total-$start;}
+        $pgtable = $uiF2cmDbObj->dbi_all_pgtable_req($start, $query_length);
+        if(!empty($pgtable))
+            $retval=array(
+                'status'=>'true',
+                'start'=> (string)$start,
+                'total'=> (string)$total,
+                'length'=>(string)$query_length,
+                'ret'=> $pgtable
+            );
+        else
+            $retval=array(
+                'status'=>'false',
+                'start'=> null,
+                'total'=> null,
+                'length'=>null,
+                'ret'=> null
+            );
+        //$jsonencode = _encode($retval);
+        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
+        return $jsonencode;
+    }
+
+    function func_pg_new_process($pginfo)
+    {
+        $uiF2cmDbObj = new classDbiL3apF2cm(); //初始化一个UI DB对象
+        $result = $uiF2cmDbObj->dbi_pginfo_update($pginfo);
+        if($result)
+            $retval=array(
+                'status'=>'true',
+                'msg'=>'新建项目组成功'
+            );
+        else
+            $retval=array(
+                'status'=>'false',
+                'msg'=>'新建项目组失败'
+            );
+        //$jsonencode = _encode($retval);
+        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
+        return $jsonencode;
+    }
+
+    function func_pg_mod_process($pginfo)
+    {
+        $uiF2cmDbObj = new classDbiL3apF2cm(); //初始化一个UI DB对象
+        $result = $uiF2cmDbObj->dbi_pginfo_update($pginfo);
+        if($result)
+            $retval=array(
+                'status'=>'true',
+                'msg'=>'项目组信息修改成功'
+            );
+        else
+            $retval=array(
+                'status'=>'false',
+                'msg'=>'项目组信息修改失败'
+            );
+        //$jsonencode = _encode($retval);
+        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
+        return $jsonencode;
+    }
+
+    function func_pg_del_process($pgid)
+    {
+        $uiF2cmDbObj = new classDbiL3apF2cm(); //初始化一个UI DB对象
+        $result = $uiF2cmDbObj->dbi_pginfo_delete($pgid);
+        if ($result)
+            $retval=array(
+                'status'=>'true',
+                'msg'=>'成功删除一个项目组'
+            );
+        else
+            $retval=array(
+                'status'=>'false',
+                'msg'=>'删除一个项目组失败'
+            );
+        //$jsonencode = _encode($retval);
+        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
+        return $jsonencode;
+    }
+
+    function func_pg_project_process($pgid)
+    {
+        $uiF2cmDbObj = new classDbiL3apF2cm(); //初始化一个UI DB对象
+        $projlist = $uiF2cmDbObj->dbi_pg_projlist_req($pgid);
+        if(!empty($projlist))
+            $retval=array(
+                'status'=>'true',
+                'ret'=> $projlist
+            );
+        else
+            $retval=array(
+                'status'=>'true',
+                'ret'=> ""
+            );
+        //$jsonencode = _encode($retval);
+        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
+        return $jsonencode;
+    }
+
+    function func_project_table_process($length, $startseq)
+    {
+        $uiF2cmDbObj = new classDbiL3apF2cm(); //初始化一个UI DB对象
+        $total = $uiF2cmDbObj->dbi_all_projnum_inqury();
+        $query_length = (int)($length);
+        $start = (int)($startseq);
+        if($query_length> $total-$start)
+        {$query_length = $total-$start;}
+        $projtable = $uiF2cmDbObj->dbi_all_projtable_req($start, $query_length);
+        if(!empty($projtable))
+            $retval=array(
+                'status'=>'true',
+                'start'=> (string)$start,
+                'total'=> (string)$total,
+                'length'=>(string)$query_length,
+                'ret'=> $projtable
+            );
+        else
+            $retval=array(
+                'status'=>'false',
+                'start'=> null,
+                'total'=> null,
+                'length'=> null,
+                'ret'=> null
+            );
+        //$jsonencode = _encode($retval);
+        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
+        return $jsonencode;
+    }
+
+    function func_project_new_process($projinfo)
+    {
+        $uiF2cmDbObj = new classDbiL3apF2cm(); //初始化一个UI DB对象
+        $result = $uiF2cmDbObj->dbi_projinfo_update($projinfo);
+        if ($result == true)
+            $retval=array(
+                'status'=>'true',
+                'msg'=>'新项目创建成功'
+            );
+        else
+            $retval=array(
+                'status'=>'true',
+                'msg'=>'新项目创建失败'
+            );
+        //$jsonencode = _encode($retval);
+        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
+        return $jsonencode;
+    }
+
+    function func_project_mod_process($projinfo)
+    {
+        $uiF2cmDbObj = new classDbiL3apF2cm(); //初始化一个UI DB对象
+        $result = $uiF2cmDbObj->dbi_projinfo_update($projinfo);
+        if ($result == true)
+            $retval=array(
+                'status'=>'true',
+                'msg'=>'项目信息修改成功'
+            );
+        else
+            $retval=array(
+                'status'=>'true',
+                'msg'=>'项目信息修改失败'
+            );
+        //$jsonencode = _encode($retval);
+        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
+        return $jsonencode;
+    }
+
+
+
+    /**************************************************************************************
+     *                             任务入口函数                                           *
+     *************************************************************************************/
     public function mfun_l3apl_f2cm_task_main_entry($parObj, $msgId, $msgName, $msg)
     {
         //定义本入口函数的logger处理对象及函数
@@ -71,15 +299,144 @@ class classTaskL3aplF2cm
             return false;
         }
 
-        //功能Login
-        if ($msgId == MSG_ID_L4AQYCUI_TO_L3F1_LOGIN)
+        //功能Project Pg List
+        if ($msgId == MSG_ID_L4AQYCUI_TO_L3F2_PROJECTPGLIST)
+        {
+            if (isset($msg["user"])) $user = $msg["user"]; else  $user = "";
+            //具体处理函数
+            $resp = $this->func_project_pglist_process($user);
+        }
+
+        //功能Project List
+        elseif ($msgId == MSG_ID_L4AQYCUI_TO_L3F2_PROJECTLIST)
         {
             //解开消息
-            $user = "";
-            if (isset($msg["user"])) $user = $msg["user"];
+            if (isset($msg["user"])) $user = $msg["user"]; else  $user = "";
             //具体处理函数
-            $resp = $this->func_xxx_process($user);
+            $resp = $this->func_project_list_process($user);
         }
+
+        //功能User Project
+        elseif ($msgId == MSG_ID_L4AQYCUI_TO_L3F2_USERPROJ)
+        {
+            //解开消息
+            if (isset($msg["userid"])) $userid = $msg["userid"]; else  $userid = "";
+            //具体处理函数
+            $resp = $this->func_user_project_list_process($userid);
+        }
+
+        //功能PG Table
+        elseif ($msgId == MSG_ID_L4AQYCUI_TO_L3F2_PGTABLE)
+        {
+            //解开消息
+            if (isset($msg["length"])) $length = $msg["length"]; else  $length = "";
+            if (isset($msg["startseq"])) $startseq = $msg["startseq"]; else  $startseq = "";
+            //具体处理函数
+            $resp = $this->func_pg_table_process($length, $startseq);
+        }
+
+        //功能PG New
+        elseif ($msgId == MSG_ID_L4AQYCUI_TO_L3F2_PGNEW)
+        {
+            //解开消息
+            if (isset($msg["PGCode"])) $PGCode = $msg["PGCode"]; else  $PGCode = "";
+            if (isset($msg["PGName"])) $PGName = $msg["PGName"]; else  $PGName = "";
+            if (isset($msg["ChargeMan"])) $ChargeMan = $msg["ChargeMan"]; else  $ChargeMan = "";
+            if (isset($msg["Telephone"])) $Telephone = $msg["Telephone"]; else  $Telephone = "";
+            if (isset($msg["Department"])) $Department = $msg["Department"]; else  $Department = "";
+            if (isset($msg["Address"])) $Address = $msg["Address"]; else  $Address = "";
+            if (isset($msg["Stage"])) $Stage = $msg["Stage"]; else  $Stage = "";
+            if (isset($msg["Projlist"])) $Projlist = $msg["Projlist"]; else  $Projlist = "";
+            if (isset($msg["user"])) $user = $msg["user"]; else  $user = "";
+            $pginfo = array("PGCode" => $PGCode, "PGName" => $PGName, "ChargeMan" => $ChargeMan, "Telephone" => $Telephone, "Department" => $Department,
+                "Address" => $Address, "Stage" => $Stage, "Projlist" => $Projlist, "user" => $user, );
+            //具体处理函数
+            $resp = $this->func_pg_new_process($pginfo);
+        }
+
+        //功能PG Mod
+        elseif ($msgId == MSG_ID_L4AQYCUI_TO_L3F2_PGMOD)
+        {
+            //解开消息
+            if (isset($msg["PGCode"])) $PGCode = $msg["PGCode"]; else  $PGCode = "";
+            if (isset($msg["PGName"])) $PGName = $msg["PGName"]; else  $PGName = "";
+            if (isset($msg["ChargeMan"])) $ChargeMan = $msg["ChargeMan"]; else  $ChargeMan = "";
+            if (isset($msg["Telephone"])) $Telephone = $msg["Telephone"]; else  $Telephone = "";
+            if (isset($msg["Department"])) $Department = $msg["Department"]; else  $Department = "";
+            if (isset($msg["Address"])) $Address = $msg["Address"]; else  $Address = "";
+            if (isset($msg["Stage"])) $Stage = $msg["Stage"]; else  $Stage = "";
+            if (isset($msg["Projlist"])) $Projlist = $msg["Projlist"]; else  $Projlist = "";
+            if (isset($msg["user"])) $user = $msg["user"]; else  $user = "";
+            $pginfo = array("PGCode" => $PGCode, "PGName" => $PGName, "ChargeMan" => $ChargeMan, "Telephone" => $Telephone, "Department" => $Department,
+                "Address" => $Address, "Stage" => $Stage, "Projlist" => $Projlist, "user" => $user, );
+            //具体处理函数
+            $resp = $this->func_pg_mod_process($pginfo);
+        }
+
+        //功能PG Del
+        elseif ($msgId == MSG_ID_L4AQYCUI_TO_L3F2_PGDEL)
+        {
+            //解开消息
+            if (isset($msg["id"])) $pgid = $msg["id"]; else  $pgid = "";
+            //具体处理函数
+            $resp = $this->func_pg_del_process($pgid);
+        }
+
+        //功能PG Project
+        elseif ($msgId == MSG_ID_L4AQYCUI_TO_L3F2_PGPROJ)
+        {
+            //解开消息
+            if (isset($msg["id"])) $pgid = $msg["id"]; else  $pgid = "";
+            //具体处理函数
+            $resp = $this->func_pg_project_process($pgid);
+        }
+
+        //功能Project Table
+        elseif ($msgId == MSG_ID_L4AQYCUI_TO_L3F2_PROJTABLE)
+        {
+            //解开消息
+            if (isset($msg["length"])) $length = $msg["length"]; else  $length = "";
+            if (isset($msg["startseq"])) $startseq = $msg["startseq"]; else  $startseq = "";
+            //具体处理函数
+            $resp = $this->func_project_table_process($length, $startseq);
+        }
+
+        //功能ProjNew
+        elseif ($msgId == MSG_ID_L4AQYCUI_TO_L3F2_PROJNEW)
+        {
+            //解开消息
+            if (isset($msg["ProjCode"])) $ProjCode = $msg["ProjCode"]; else  $ProjCode = "";
+            if (isset($msg["ProjName"])) $ProjName = $msg["ProjName"]; else  $ProjName = "";
+            if (isset($msg["ChargeMan"])) $ChargeMan = $msg["ChargeMan"]; else  $ChargeMan = "";
+            if (isset($msg["Telephone"])) $Telephone = $msg["Telephone"]; else  $Telephone = "";
+            if (isset($msg["Department"])) $Department = $msg["Department"]; else  $Department = "";
+            if (isset($msg["Address"])) $Address = $msg["Address"]; else  $Address = "";
+            if (isset($msg["ProStartTime"])) $ProStartTime = $msg["ProStartTime"]; else  $ProStartTime = "";
+            if (isset($msg["Stage"])) $Stage = $msg["Stage"]; else  $Stage = "";
+            $projinfo = array("ProjCode" => $ProjCode, "ProjName" => $ProjName, "ChargeMan" => $ChargeMan, "Telephone" => $Telephone, "Department" => $Department,
+                "Address" => $Address, "ProStartTime" => $ProStartTime, "Stage" => $Stage);
+            //具体处理函数
+            $resp = $this->func_project_new_process($projinfo);
+        }
+
+        //功能ProjMod
+        elseif ($msgId == MSG_ID_L4AQYCUI_TO_L3F2_PROJMOD)
+        {
+            //解开消息
+            if (isset($msg["ProjCode"])) $ProjCode = $msg["ProjCode"]; else  $ProjCode = "";
+            if (isset($msg["ProjName"])) $ProjName = $msg["ProjName"]; else  $ProjName = "";
+            if (isset($msg["ChargeMan"])) $ChargeMan = $msg["ChargeMan"]; else  $ChargeMan = "";
+            if (isset($msg["Telephone"])) $Telephone = $msg["Telephone"]; else  $Telephone = "";
+            if (isset($msg["Department"])) $Department = $msg["Department"]; else  $Department = "";
+            if (isset($msg["Address"])) $Address = $msg["Address"]; else  $Address = "";
+            if (isset($msg["ProStartTime"])) $ProStartTime = $msg["ProStartTime"]; else  $ProStartTime = "";
+            if (isset($msg["Stage"])) $Stage = $msg["Stage"]; else  $Stage = "";
+            $projinfo = array("ProjCode" => $ProjCode, "ProjName" => $ProjName, "ChargeMan" => $ChargeMan, "Telephone" => $Telephone, "Department" => $Department,
+                "Address" => $Address, "ProStartTime" => $ProStartTime, "Stage" => $Stage);
+            //具体处理函数
+            $resp = $this->func_project_mod_process($projinfo);
+        }
+
 
         else{
             $resp = ""; //啥都不ECHO

@@ -40,14 +40,84 @@ class classTaskL3aplF7ads
         return urlencode($elem);
     }
 
-    function func_xxx_process($user)
+    //TBD，功能待完善
+    function func_set_user_msg_process($msginfo)
     {
-        $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
-        $jsonencode = json_encode($uiF1symDbObj);
+        $uiF7adsDbObj = new classDbiL3apF7ads(); //初始化一个UI DB对象
+        $retval=array(
+            'status'=>'true',
+            'msg'=>''
+        );
+        //$jsonencode = _encode($retval);
+        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
+       return $jsonencode;
+    }
+
+    //TBD，功能待完善
+    function func_get_user_msg_process($id)
+    {
+        $uiF7adsDbObj = new classDbiL3apF7ads(); //初始化一个UI DB对象
+        $retval=array(
+            'status'=>'true',
+            'msg'=>'您好，今天是xxxx号，欢迎领导前来视察，今天的气温是 今天的PM2.5是....',
+            'ifdev'=>"true"
+        );
+        //$jsonencode = _encode($retval);
+        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
         return $jsonencode;
     }
 
-    //任务入口函数
+    //TBD，功能待完善
+    function func_show_user_msg_process($id, $StatCode)
+    {
+        $uiF7adsDbObj = new classDbiL3apF7ads(); //初始化一个UI DB对象
+        $temp =(string)rand(1000,9999);
+        $retval=array(
+            'status'=>'true',
+            'msg'=>$temp.'您好，今天是'.$temp.'号，欢迎领导前来视察，今天的气温是 今天的PM2.5是....'
+        );
+        //$jsonencode = _encode($retval);
+        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
+        return $jsonencode;
+    }
+
+    //TBD，功能待完善
+    function func_get_user_image_process($id)
+    {
+        $uiF7adsDbObj = new classDbiL3apF7ads(); //初始化一个UI DB对象
+        $ImgList = array();
+        for ($i=1;$i<6;$i++){
+            $map = array(
+                'name'=>"test".(string)$i.".jpg",
+                'url'=>"assets/img/test".(string)$i.".jpg"
+            );
+            array_push($ImgList,$map);
+        }
+        $retval=array(
+            'status'=>'true',
+            'img'=>$ImgList
+        );
+        //$jsonencode = _encode($retval);
+        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
+        return $jsonencode;
+    }
+
+    //TBD，功能待完善
+    function func_clear_user_image_process($id)
+    {
+        $uiF7adsDbObj = new classDbiL3apF7ads(); //初始化一个UI DB对象
+        $retval=array(
+            'status'=>'true'
+        );
+        //$jsonencode = _encode($retval);
+        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
+        return $jsonencode;
+    }
+
+
+    /**************************************************************************************
+     *                             任务入口函数                                           *
+     *************************************************************************************/
     public function mfun_l3apl_f7ads_task_main_entry($parObj, $msgId, $msgName, $msg)
     {
         //定义本入口函数的logger处理对象及函数
@@ -71,14 +141,53 @@ class classTaskL3aplF7ads
             return false;
         }
 
-        //功能Login
-        if ($msgId == MSG_ID_L4AQYCUI_TO_L3F1_LOGIN)
+        //功能Set User Message
+        if ($msgId == MSG_ID_L4AQYCUI_TO_L3F7_SETUSERMSG)
         {
             //解开消息
-            $user = "";
-            if (isset($msg["user"])) $user = $msg["user"];
+            if (isset($msg["id"])) $id = $msg["id"]; else  $id = "";
+            if (isset($msg["msg"])) $msg1 = $msg["msg"]; else  $msg1 = "";
+            if (isset($msg["ifdev"])) $ifdev = $msg["ifdev"]; else  $ifdev = "";
+            $msginfo = array("id" => $id, "msg" => $msg1, "ifdev" => $ifdev);
             //具体处理函数
-            $resp = $this->func_xxx_process($user);
+            $resp = $this->func_set_user_msg_process($msginfo);
+        }
+
+        //功能Get User Message
+        elseif ($msgId == MSG_ID_L4AQYCUI_TO_L3F7_GETUSERMSG)
+        {
+            //解开消息
+            if (isset($msg["id"])) $id = $msg["id"]; else  $id = "";
+            //具体处理函数
+            $resp = $this->func_get_user_msg_process($id);
+        }
+
+        //功能Show User Message
+        elseif ($msgId == MSG_ID_L4AQYCUI_TO_L3F7_SHOWUSERMSG)
+        {
+            //解开消息
+            if (isset($msg["id"])) $id = $msg["id"]; else  $id = "";
+            if (isset($msg["StatCode"])) $StatCode = $msg["StatCode"]; else  $StatCode = "";
+            //具体处理函数
+            $resp = $this->func_show_user_msg_process($id, $StatCode);
+        }
+
+        //功能Get User Image
+        elseif ($msgId == MSG_ID_L4AQYCUI_TO_L3F7_GETUSERIMG)
+        {
+            //解开消息
+            if (isset($msg["id"])) $id = $msg["id"]; else  $id = "";
+            //具体处理函数
+            $resp = $this->func_get_user_image_process($id);
+        }
+
+        //功能Clear User Image
+        elseif ($msgId == MSG_ID_L4AQYCUI_TO_L3F7_CLEARUSERIMG)
+        {
+            //解开消息
+            if (isset($msg["id"])) $id = $msg["id"]; else  $id = "";
+            //具体处理函数
+            $resp = $this->func_clear_user_image_process($id);
         }
 
         else{

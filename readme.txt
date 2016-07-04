@@ -138,15 +138,13 @@ Make By：ZJL
 //= LZH, 2016 July.3, CURRENT_SW_DELIVERY R02.D17
 > 合并UI
 
-//= ZJL, 2016 July.4, CURRENT_SW_DELIVERY R02.D17
+//= ZJL, 2016 July.4, CURRENT_SW_DELIVERY R02.D18
 > 继续完善L4AQYC UI的VM
+> 将L4AQYC UI任务全部改造为VM机制
+> Requet.php改造为入口函数，同时调用L1_MAIN_ENTRY中的AQYC_UI入口，从而将所有入口全部排到一个层次
+> 试图增加SOCKET LISTENING的入口，待完善
 
 
-
-
-==待考虑的问题和功能
-> L3appl分为10项大功能任务，还是50个小功能任务，待定
-> L4UI分解为模块入口
 
 
 

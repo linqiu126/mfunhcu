@@ -40,15 +40,69 @@ class classTaskL3aplF5fm
         return urlencode($elem);
     }
 
-    function func_xxx_process($user)
+    function func_dev_alarm_process($StatCode)
     {
-        $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
-        $jsonencode = json_encode($uiF1symDbObj);
+        $uiF3dmDbObj = new classDbiL3apF3dm(); //初始化一个UI DB对象
+        $alarmlist = $uiF3dmDbObj->dbi_dev_currentvalue_req($StatCode);
+        if(!empty($alarmlist))
+            $retval=array(
+                'status'=>'true',
+                'ret'=> $alarmlist
+            );
+        else
+            $retval=array(
+                'status'=>'false',
+                'ret'=> null
+            );
+        //$jsonencode = _encode($retval);
+        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
         return $jsonencode;
     }
-    
 
-    //任务入口函数
+    function func_alarm_query_process($id, $StatCode, $date, $type)
+    {
+        $uiF3dmDbObj = new classDbiL3apF3dm(); //初始化一个UI DB对象
+        $result = $uiF3dmDbObj->dbi_dev_alarmhistory_req($StatCode, $date, $type);
+        if(!empty($result))
+            $retval= array(
+                'status'=>"true",
+                'StatCode'=> $StatCode,
+                'date'=> $date,
+                'AlarmName'=> $result["alarm_name"],
+                'AlarmUnit'=> $result["alarm_unit"],
+                'WarningTarget'=>$result["warning"],
+                'minute_head'=>$result["minute_head"],
+                'minute_alarm'=> $result["minute_alarm"],
+                'hour_head'=>$result["hour_head"],
+                'hour_alarm'=> $result["hour_alarm"],
+                'day_head'=>$result["day_head"],
+                'day_alarm'=> $result["day_alarm"]
+            );
+        else
+            $retval= array(
+                'status'=>"false",
+                'StatCode'=> $StatCode,
+                'date'=> $date,
+                'AlarmName'=> $type,
+                'AlarmUnit'=> null,
+                'WarningTarget'=> null,
+                'minute_head'=> null,
+                'minute_alarm'=> null,
+                'hour_head'=> null,
+                'hour_alarm'=> null,
+                'day_head'=> null,
+                'day_alarm'=> null
+            );
+
+        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
+        return $jsonencode;
+    }
+
+
+
+    /**************************************************************************************
+     *                             任务入口函数                                           *
+     *************************************************************************************/
     public function mfun_l3apl_f5fm_task_main_entry($parObj, $msgId, $msgName, $msg)
     {
         //定义本入口函数的logger处理对象及函数
@@ -72,15 +126,28 @@ class classTaskL3aplF5fm
             return false;
         }
 
-        //功能Login
-        if ($msgId == MSG_ID_L4AQYCUI_TO_L3F1_LOGIN)
+        //功能Dev Alarm
+        if ($msgId == MSG_ID_L4AQYCUI_TO_L3F5_DEVALARM)
         {
             //解开消息
-            $user = "";
-            if (isset($msg["user"])) $user = $msg["user"];
+            if (isset($msg["StatCode"])) $StatCode = $msg["StatCode"]; else  $StatCode = "";
             //具体处理函数
-            $resp = $this->func_xxx_process($user);
+            $resp = $this->func_dev_alarm_process($StatCode);
         }
+
+        //功能Alarm Query
+        elseif ($msgId == MSG_ID_L4AQYCUI_TO_L3F5_ALARMQUERY)
+        {
+            //解开消息
+            if (isset($msg["id"])) $id = $msg["id"]; else  $id = "";
+            if (isset($msg["StatCode"])) $StatCode = $msg["StatCode"]; else  $StatCode = "";
+            if (isset($msg["date"])) $date = $msg["date"]; else  $date = "";
+            if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
+            $input = array("id" => $id, "StatCode" => $StatCode, "date" => $date, "type" => $type);
+            //具体处理函数
+            $resp = $this->func_alarm_query_process($id, $StatCode, $date, $type);
+        }
+
 
         else{
             $resp = ""; //啥都不ECHO

@@ -46,8 +46,11 @@ class classTaskL3aplF4icm
         $jsonencode = json_encode($uiF1symDbObj);
         return $jsonencode;
     }
-    
-    //任务入口函数
+
+
+    /**************************************************************************************
+     *                             任务入口函数                                           *
+     *************************************************************************************/
     public function mfun_l3apl_f4icm_task_main_entry($parObj, $msgId, $msgName, $msg)
     {
         //定义本入口函数的logger处理对象及函数
@@ -75,8 +78,7 @@ class classTaskL3aplF4icm
         if ($msgId == MSG_ID_L4AQYCUI_TO_L3F1_LOGIN)
         {
             //解开消息
-            $user = "";
-            if (isset($msg["user"])) $user = $msg["user"];
+            if (isset($msg["user"])) $user = $msg["user"]; else  $user = "";
             //具体处理函数
             $resp = $this->func_xxx_process($user);
         }

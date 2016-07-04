@@ -177,7 +177,9 @@ class classTaskL2snrPm25
         return substr_replace($out, $a1, strlen($out)-strlen($a1), strlen($a1));
     }
 
-    //任务入口函数
+    /**************************************************************************************
+     *                             任务入口函数                                           *
+     *************************************************************************************/
     public function mfun_l2snr_pm25_task_main_entry($parObj, $msgId, $msgName, $msg)
     {
         //定义本入口函数的logger处理对象及函数

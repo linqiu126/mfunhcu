@@ -26,9 +26,10 @@ include_once "../l1comvm/vmlayer.php";
 //header("Content-type:text/html;charset=utf-8");
 
 
-$uiDbObj = new classDbiL3apF1sym();
+//$uiDbObj = new classDbiL3apF1sym();
+//$result = $uiDbObj->dbi_login_req("admin", "admin");
 
-$result = $uiDbObj->dbi_login_req("admin", "admin");
+
 /*
 $a = "2016-06-12 21:06:00";
 
@@ -317,5 +318,18 @@ $myfile = fopen("C:\wamp\www\mfunhcu\l4oamtools\aaapic.png", "w") or die("Unable
 fwrite($myfile, $bindata);
 fclose($myfile);
 //TEST CASE: 测试图片存储的功能：END
+
+//TEST CASE: L4AQYC-UI界面: START
+$_GET["action"] = "login";
+$_GET["name"] = "admin";
+$_GET["password"] = "admin";
+$obj = new classTaskL1vmCoreRouter();
+$obj->mfun_l1vm_task_main_entry(MFUN_MAIN_ENTRY_AQYC_UI, NULL, NULL, $_GET["action"]);
+
+$_GET["action"] = "UserInfo";
+$_GET["session"] = 1;
+$obj = new classTaskL1vmCoreRouter();
+$obj->mfun_l1vm_task_main_entry(MFUN_MAIN_ENTRY_AQYC_UI, NULL, NULL, $_GET["action"]);
+//TEST CASE: L4AQYC-UI界面: END
 
 ?>
