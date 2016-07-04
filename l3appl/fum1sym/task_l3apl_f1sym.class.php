@@ -269,7 +269,7 @@ class classTaskL3aplF1sym
         {
             $log_content = "T:" . json_encode($resp);
             $loggerObj->logger("L4AQYCUI", "MFUN_TASK_ID_L3APPL_FUM1SYM", $log_time, $log_content);
-            echo trim($resp); //这里需要编码送出去，跟其他处理方式还不太一样
+            echo trim($resp);
         }
 
         //返回

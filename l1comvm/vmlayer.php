@@ -52,6 +52,7 @@ include_once "../l3appl/fum8psm/task_l3apl_f8psm.class.php";
 include_once "../l3appl/fum9gism/task_l3apl_f9gism.class.php";
 include_once "../l3appl/fumxprcm/task_l3apl_fxprcm.class.php";
 include_once "../l3wxctrl/task_l3wx_ctrl_emc.class.php";
+include_once "../l2timercron/task_l2timer_cron.class.php";
 include_once "../l4emcwxui/task_l4emcwx_ui.class.php";
 include_once "../l4aqycui/task_l4aqyc_ui.class.php";
 include_once "../l4tbswrui/task_l4tbswr_ui.class.php";
@@ -158,8 +159,6 @@ class classTaskL1vmCoreRouter
     }
 
 
-
-
     /**************************************************************************************
      *                             任务入口函数                                           *
      *************************************************************************************/
@@ -204,6 +203,39 @@ class classTaskL1vmCoreRouter
             };
 
         }elseif($parObj == MFUN_MAIN_ENTRY_CRON){
+            if ($msg == MSG_ID_L2TIMER_CRON_60SEC_COMING) $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L1VM, MFUN_TASK_ID_L2TIMER_CRON, MSG_ID_L2TIMER_CRON_60SEC_COMING, "MSG_ID_L2TIMER_CRON_60SEC_COMING", MSG_ID_L2TIMER_CRON_60SEC_COMING);
+            elseif ($msg == MSG_ID_L2TIMER_CRON_180SEC_COMING) $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L1VM, MFUN_TASK_ID_L2TIMER_CRON, MSG_ID_L2TIMER_CRON_180SEC_COMING, "MSG_ID_L2TIMER_CRON_180SEC_COMING", MSG_ID_L2TIMER_CRON_180SEC_COMING);
+            elseif ($msg == MSG_ID_L2TIMER_CRON_10MIN_COMING) $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L1VM, MFUN_TASK_ID_L2TIMER_CRON, MSG_ID_L2TIMER_CRON_10MIN_COMING, "MSG_ID_L2TIMER_CRON_10MIN_COMING", MSG_ID_L2TIMER_CRON_10MIN_COMING);
+            elseif ($msg == MSG_ID_L2TIMER_CRON_30MIN_COMING) $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L1VM, MFUN_TASK_ID_L2TIMER_CRON, MSG_ID_L2TIMER_CRON_30MIN_COMING, "MSG_ID_L2TIMER_CRON_30MIN_COMING", MSG_ID_L2TIMER_CRON_30MIN_COMING);
+            elseif ($msg == MSG_ID_L2TIMER_CRON_1HOUR_COMING) $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L1VM, MFUN_TASK_ID_L2TIMER_CRON, MSG_ID_L2TIMER_CRON_1HOUR_COMING, "MSG_ID_L2TIMER_CRON_1HOUR_COMING", MSG_ID_L2TIMER_CRON_1HOUR_COMING);
+            elseif ($msg == MSG_ID_L2TIMER_CRON_6HOUR_COMING) $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L1VM, MFUN_TASK_ID_L2TIMER_CRON, MSG_ID_L2TIMER_CRON_6HOUR_COMING, "MSG_ID_L2TIMER_CRON_6HOUR_COMING", MSG_ID_L2TIMER_CRON_6HOUR_COMING);
+            elseif ($msg == MSG_ID_L2TIMER_CRON_24HOUR_COMING) $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L1VM, MFUN_TASK_ID_L2TIMER_CRON, MSG_ID_L2TIMER_CRON_24HOUR_COMING, "MSG_ID_L2TIMER_CRON_24HOUR_COMING", MSG_ID_L2TIMER_CRON_24HOUR_COMING);
+            elseif ($msg == MSG_ID_L2TIMER_CRON_2DAY_COMING) $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L1VM, MFUN_TASK_ID_L2TIMER_CRON, MSG_ID_L2TIMER_CRON_2DAY_COMING, "MSG_ID_L2TIMER_CRON_2DAY_COMING", MSG_ID_L2TIMER_CRON_2DAY_COMING);
+            elseif ($msg == MSG_ID_L2TIMER_CRON_7DAY_COMING) $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L1VM, MFUN_TASK_ID_L2TIMER_CRON, MSG_ID_L2TIMER_CRON_7DAY_COMING, "MSG_ID_L2TIMER_CRON_7DAY_COMING", MSG_ID_L2TIMER_CRON_7DAY_COMING);
+            elseif ($msg == MSG_ID_L2TIMER_CRON_30DAY_COMING) $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L1VM, MFUN_TASK_ID_L2TIMER_CRON, MSG_ID_L2TIMER_CRON_30DAY_COMING, "MSG_ID_L2TIMER_CRON_30DAY_COMING", MSG_ID_L2TIMER_CRON_30DAY_COMING);
+            else {
+                $result = "Cloud: Send to message buffer error.";
+                $log_content = "P:" . json_encode($result);
+                $loggerObj->logger("MFUN_TASK_ID_L2TIMER_CRON", "mfun_l1vm_task_main_entry", $log_time, $log_content);
+                echo trim($result);
+                return false;
+            }
+
+        }elseif($parObj == MFUN_MAIN_ENTRY_SOCKET_LISTEN){//暂时不用干啥，由钩子函数发送给MAIN_ENTRY，然后直接执行相应内容
+
+
+        }elseif($parObj == MFUN_MAIN_ENTRY_EMCWX_UI){
+            if ($this->mfun_l1vm_msg_send(MFUN_TASK_ID_L1VM,
+                    MFUN_TASK_ID_L4EMCWX_UI,
+                    MSG_ID_L4EMCWXUI_CLICK_INCOMING,
+                    "MSG_ID_L4EMCWXUI_CLICK_INCOMING",
+                    $msg) == false) {
+                $result = "Cloud: Send to message buffer error.";
+                $log_content = "P:" . json_encode($result);
+                $loggerObj->logger("MFUN_TASK_ID_L4EMCWX_UI", "mfun_l1vm_task_main_entry", $log_time, $log_content);
+                echo trim($result);
+                return false;
+            };
 
         }elseif($parObj == MFUN_MAIN_ENTRY_AQYC_UI){
             if ($this->mfun_l1vm_msg_send(MFUN_TASK_ID_L1VM,
@@ -219,12 +251,21 @@ class classTaskL1vmCoreRouter
             };
 
         }elseif($parObj == MFUN_MAIN_ENTRY_TBSWR_UI){
-
-        }elseif($parObj == MFUN_MAIN_ENTRY_EMCWX_UI){
+            if ($this->mfun_l1vm_msg_send(MFUN_TASK_ID_L1VM,
+                    MFUN_TASK_ID_L4TBSWR_UI,
+                    MSG_ID_L4TBSWR_CLICK_INCOMING,
+                    "MSG_ID_L4TBSWR_CLICK_INCOMING",
+                    $msg) == false) {
+                $result = "Cloud: Send to message buffer error.";
+                $log_content = "P:" . json_encode($result);
+                $loggerObj->logger("MFUN_TASK_ID_L4TBSWR_UI", "mfun_l1vm_task_main_entry", $log_time, $log_content);
+                echo trim($result);
+                return false;
+            };
 
         }elseif($parObj == MFUN_MAIN_ENTRY_DIRECT_IN){   //本来就不需要处理，因为消息已经发送进队列了
 
-        }elseif($parObj == $this){
+        }elseif($parObj == $this){  //Do nothing so far
 
         }else{
 
@@ -376,6 +417,16 @@ class classTaskL1vmCoreRouter
                 case MFUN_TASK_ID_L2SENSOR_RAIN:
                     $obj = new classTaskL2snrRain();
                     $obj->mfun_l2snr_rain_task_main_entry($this, $result["msgId"], $result["msgName"], $result["msgBody"]);
+                    break;
+                
+                case MFUN_TASK_ID_L2TIMER_CRON:
+                    $obj = new classTaskL2TimerCron();
+                    $obj->mfun_l2timer_cron_task_main_entry($this, $result["msgId"], $result["msgName"], $result["msgBody"]);
+                    break;
+
+                case MFUN_TASK_ID_L2SOCKET_LISTEN:
+                    $obj = new classTaskL2SocketListen();
+                    $obj->mfun_l2socket_listen_task_main_entry($this, $result["msgId"], $result["msgName"], $result["msgBody"]);
                     break;
 
                 case MFUN_TASK_ID_L3APPL_FUM1SYM:

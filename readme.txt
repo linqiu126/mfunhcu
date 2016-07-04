@@ -144,8 +144,9 @@ Make By：ZJL
 > Requet.php改造为入口函数，同时调用L1_MAIN_ENTRY中的AQYC_UI入口，从而将所有入口全部排到一个层次
 > 试图增加SOCKET LISTENING的入口，待完善
 
-
-
+//= ZJL, 2016 July.4, CURRENT_SW_DELIVERY R02.D19
+> CRON增加到VM任务中
+> SOCKET LISTENING任务增加到VM中，待完善
 
 
 
