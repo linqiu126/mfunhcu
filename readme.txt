@@ -135,6 +135,12 @@ Make By：ZJL
 //= Multi author, 2016 July.1, CURRENT_SW_DELIVERY R02.D16
 > 临时修复L4AQYC的REQUEST.php，让其可以使用，等待将其结构转换为不同功能的VM机制
 
+//= LZH, 2016 July.3, CURRENT_SW_DELIVERY R02.D17
+> 合并UI
+
+//= ZJL, 2016 July.4, CURRENT_SW_DELIVERY R02.D17
+> 继续完善L4AQYC UI的VM
+
 
 
 

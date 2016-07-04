@@ -185,7 +185,7 @@ class classTaskL1vmCoreRouter
                 return false;
             };
 
-        }elseif($parObj == MFUN_MAIN_ENTRY_EMC_WX){
+        }elseif($parObj == MFUN_MAIN_ENTRY_WECHAT){
             if ($this->mfun_l1vm_msg_send(MFUN_TASK_ID_L1VM,
                     MFUN_TASK_ID_L2SDK_WECHAT,
                     MSG_ID_L1VM_TO_L2SDK_WECHAT_INCOMING,
@@ -193,7 +193,7 @@ class classTaskL1vmCoreRouter
                     $msg) == false) {
                 $result = "Cloud: Send to message buffer error.";
                 $log_content = "P:" . json_encode($result);
-                $loggerObj->logger("MFUN_MAIN_ENTRY_EMC_WX", "mfun_l1vm_task_main_entry", $log_time, $log_content);
+                $loggerObj->logger("MFUN_MAIN_ENTRY_WECHAT", "mfun_l1vm_task_main_entry", $log_time, $log_content);
                 echo trim($result);
                 return false;
             };
@@ -201,12 +201,23 @@ class classTaskL1vmCoreRouter
         }elseif($parObj == MFUN_MAIN_ENTRY_CRON){
 
         }elseif($parObj == MFUN_MAIN_ENTRY_AQYC_UI){
+            if ($this->mfun_l1vm_msg_send(MFUN_TASK_ID_L1VM,
+                    MFUN_TASK_ID_L4AQYC_UI,
+                    MSG_ID_L4AQYCUI_CLICK_INCOMING,
+                    "MSG_ID_L4AQYCUI_CLICK_INCOMING",
+                    $msg) == false) {
+                $result = "Cloud: Send to message buffer error.";
+                $log_content = "P:" . json_encode($result);
+                $loggerObj->logger("MFUN_MAIN_ENTRY_AQYC_UI", "mfun_l1vm_task_main_entry", $log_time, $log_content);
+                echo trim($result);
+                return false;
+            };
 
         }elseif($parObj == MFUN_MAIN_ENTRY_TBSWR_UI){
 
         }elseif($parObj == MFUN_MAIN_ENTRY_EMCWX_UI){
 
-        }elseif($parObj == MFUN_MAIN_ENTRY_NO_CALLBACK){   //本来就不行也要处理，因为消息已经发送进队列了
+        }elseif($parObj == MFUN_MAIN_ENTRY_DIRECT_IN){   //本来就不需要处理，因为消息已经发送进队列了
 
         }elseif($parObj == $this){
 
