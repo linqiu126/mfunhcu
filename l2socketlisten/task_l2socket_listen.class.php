@@ -15,7 +15,7 @@ class classTaskL2SocketListen
 
     }
 
-    function func_ftp_video_process()
+    function func_ftp_video_process($serv, $fd, $fromid, $data)
     {
         return "";
     }
@@ -45,9 +45,15 @@ class classTaskL2SocketListen
             return false;
         }
 
-        if ($msgId == MSG_ID_L2SOCKET_LISTEN_COMING)
+        if ($msgId == MSG_ID_L2SOCKET_LISTEN_DATA_COMING)
         {
-            $this->func_ftp_video_process();
+            //解开消息
+            if (isset($msg["serv"])) $serv = $msg["serv"]; else  $serv = "";
+            if (isset($msg["fd"])) $fd = $msg["fd"]; else  $fd = "";
+            if (isset($msg["fromid"])) $fromid = $msg["fromid"]; else  $fromid = "";
+            if (isset($msg["data"])) $data = $msg["data"]; else  $data = "";
+            //具体处理函数
+            $this->func_ftp_video_process($serv, $fd, $fromid, $data);
         }
 
         else{

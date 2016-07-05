@@ -144,9 +144,11 @@ Make By：ZJL
 > Requet.php改造为入口函数，同时调用L1_MAIN_ENTRY中的AQYC_UI入口，从而将所有入口全部排到一个层次
 > 试图增加SOCKET LISTENING的入口，待完善
 
-//= ZJL, 2016 July.4, CURRENT_SW_DELIVERY R02.D19
-> CRON增加到VM任务中
-> SOCKET LISTENING任务增加到VM中，待完善
+//= ZJL, 2016 July.5, CURRENT_SW_DELIVERY R02.D19
+> CRON增加到VM任务中，同时支持1-10级不同的时间颗粒度
+> SOCKET LISTENING任务增加到VM中，处理函数挂载到onReceive事件中
+> 这两项执行任务需要通过Linux/VPS的服务配置来启动，而不是通过appach来启动的，这个要特别注意。
+> 本来打算支持的RabbitMQ也是类似机理，考虑到其使用的复杂性，暂时没用，未来一旦需要支持超过1M的连接，就需要了
 
 
 

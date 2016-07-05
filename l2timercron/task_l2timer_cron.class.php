@@ -15,12 +15,12 @@ class classTaskL2TimerCron
 
     }
 
-    function func_timer_60sec_process()
+    function func_timer_1min_process()
     {
         return "";
     }
 
-    function func_timer_180sec_process()
+    function func_timer_3min_process()
     {
         return "";
     }
@@ -133,14 +133,14 @@ class classTaskL2TimerCron
             return false;
         }
 
-        if ($msgId == MSG_ID_L2TIMER_CRON_60SEC_COMING)
+        if ($msgId == MSG_ID_L2TIMER_CRON_1MIN_COMING)
         {
-            $this->func_timer_60sec_process();
+            $this->func_timer_1min_process();
         }
 
-        elseif ($msgId == MSG_ID_L2TIMER_CRON_180SEC_COMING)
+        elseif ($msgId == MSG_ID_L2TIMER_CRON_3MIN_COMING)
         {
-            $this->func_timer_180sec_process();
+            $this->func_timer_3min_process();
         }
 
         elseif ($msgId == MSG_ID_L2TIMER_CRON_10MIN_COMING)
