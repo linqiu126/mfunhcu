@@ -176,7 +176,24 @@ class classTaskL1vmCoreRouter
         }
 
         //然后发送从L1_MAIN_ENTRY接收到的消息到缓冲区中
-        if ($parObj == MFUN_MAIN_ENTRY_IOT_HCU){
+
+
+
+        if($parObj == MFUN_MAIN_ENTRY_WECHAT) {
+            if ($this->mfun_l1vm_msg_send(MFUN_TASK_ID_L1VM,
+                    MFUN_TASK_ID_L2SDK_WECHAT,
+                    MSG_ID_L1VM_TO_L2SDK_WECHAT_INCOMING,
+                    "MSG_ID_L1VM_TO_L2SDK_WECHAT_INCOMING",
+                    $msg) == false
+            ) {
+                $result = "Cloud: Send to message buffer error.";
+                $log_content = "P:" . json_encode($result);
+                $loggerObj->logger("MFUN_MAIN_ENTRY_WECHAT", "mfun_l1vm_task_main_entry", $log_time, $log_content);
+                echo trim($result);
+                return false;
+            }
+
+        }elseif ($parObj == MFUN_MAIN_ENTRY_IOT_HCU){
             if ($this->mfun_l1vm_msg_send(MFUN_TASK_ID_L1VM,
                     MFUN_TASK_ID_L2SDK_IOT_HCU,
                     MSG_ID_L1VM_TO_L2SDK_IOT_HCU_INCOMING,
@@ -187,20 +204,33 @@ class classTaskL1vmCoreRouter
                 $loggerObj->logger("MFUN_MAIN_ENTRY_HCU_IOT", "mfun_l1vm_task_main_entry", $log_time, $log_content);
                 echo trim($result);
                 return false;
-            };
+            }
 
-        }elseif($parObj == MFUN_MAIN_ENTRY_WECHAT){
+        }elseif ($parObj == MFUN_MAIN_ENTRY_JINGDONG){
             if ($this->mfun_l1vm_msg_send(MFUN_TASK_ID_L1VM,
-                    MFUN_TASK_ID_L2SDK_WECHAT,
-                    MSG_ID_L1VM_TO_L2SDK_WECHAT_INCOMING,
-                    "MSG_ID_L1VM_TO_L2SDK_WECHAT_INCOMING",
-                    $msg) == false) {
+                    MFUN_TASK_ID_L2SDK_IOT_JD,
+                    MSG_ID_L2SDK_JD_INCOMING,
+                    "MSG_ID_L2SDK_JD_INCOMING",
+                    $msg) == false){
                 $result = "Cloud: Send to message buffer error.";
                 $log_content = "P:" . json_encode($result);
-                $loggerObj->logger("MFUN_MAIN_ENTRY_WECHAT", "mfun_l1vm_task_main_entry", $log_time, $log_content);
+                $loggerObj->logger("MFUN_MAIN_ENTRY_JINGDONG", "mfun_l1vm_task_main_entry", $log_time, $log_content);
                 echo trim($result);
                 return false;
-            };
+            }
+
+        }elseif ($parObj == MFUN_MAIN_ENTRY_APPLE){
+            if ($this->mfun_l1vm_msg_send(MFUN_TASK_ID_L1VM,
+                    MFUN_TASK_ID_L2SDK_IOT_APPLE,
+                    MSG_ID_L2SDK_APPLE_INCOMING,
+                    "MSG_ID_L2SDK_APPLE_INCOMING",
+                    $msg) == false){
+                $result = "Cloud: Send to message buffer error.";
+                $log_content = "P:" . json_encode($result);
+                $loggerObj->logger("MFUN_MAIN_ENTRY_APPLE", "mfun_l1vm_task_main_entry", $log_time, $log_content);
+                echo trim($result);
+                return false;
+            }
 
         }elseif($parObj == MFUN_MAIN_ENTRY_CRON){
             if ($msg == MSG_ID_L2TIMER_CRON_1MIN_COMING) $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L1VM, MFUN_TASK_ID_L2TIMER_CRON, MSG_ID_L2TIMER_CRON_1MIN_COMING, "MSG_ID_L2TIMER_CRON_60SEC_COMING", MSG_ID_L2TIMER_CRON_1MIN_COMING);
@@ -232,7 +262,7 @@ class classTaskL1vmCoreRouter
                 $loggerObj->logger("MFUN_TASK_ID_L2SOCKET_LISTEN", "mfun_l1vm_task_main_entry", $log_time, $log_content);
                 echo trim($result);
                 return false;
-            };
+            }
 
         }elseif($parObj == MFUN_MAIN_ENTRY_EMCWX_UI){
             if ($this->mfun_l1vm_msg_send(MFUN_TASK_ID_L1VM,
@@ -245,7 +275,7 @@ class classTaskL1vmCoreRouter
                 $loggerObj->logger("MFUN_TASK_ID_L4EMCWX_UI", "mfun_l1vm_task_main_entry", $log_time, $log_content);
                 echo trim($result);
                 return false;
-            };
+            }
 
         }elseif($parObj == MFUN_MAIN_ENTRY_AQYC_UI){
             if ($this->mfun_l1vm_msg_send(MFUN_TASK_ID_L1VM,
@@ -258,7 +288,7 @@ class classTaskL1vmCoreRouter
                 $loggerObj->logger("MFUN_MAIN_ENTRY_AQYC_UI", "mfun_l1vm_task_main_entry", $log_time, $log_content);
                 echo trim($result);
                 return false;
-            };
+            }
 
         }elseif($parObj == MFUN_MAIN_ENTRY_TBSWR_UI){
             if ($this->mfun_l1vm_msg_send(MFUN_TASK_ID_L1VM,
@@ -271,7 +301,7 @@ class classTaskL1vmCoreRouter
                 $loggerObj->logger("MFUN_TASK_ID_L4TBSWR_UI", "mfun_l1vm_task_main_entry", $log_time, $log_content);
                 echo trim($result);
                 return false;
-            };
+            }
 
         }elseif($parObj == MFUN_MAIN_ENTRY_DIRECT_IN){   //本来就不需要处理，因为消息已经发送进队列了
 

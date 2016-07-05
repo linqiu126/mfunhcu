@@ -333,10 +333,10 @@ class classDbiL3apF3dm
         while($row = $result->fetch_array())
         {
             $temp = $row["auth_code"];
-            $fromat = substr($temp, 0, CODE_FORMAT_LEN);
-            if($fromat == PROJ_CODE_PREFIX)
+            $fromat = substr($temp, 0, MFUN_CODE_FORMAT_LEN);
+            if($fromat == MFUN_PROJ_CODE_PREFIX)
                 array_push($p_list,$temp);
-            elseif ($fromat == PG_CODE_PREFIX)
+            elseif ($fromat == MFUN_PG_CODE_PREFIX)
                 array_push($pg_list,$temp);
         }
 
@@ -765,7 +765,7 @@ class classDbiL3apF3dm
 
             $currentvalue = array();
             if ($noise != NULL){
-                if ($noise > TH_ALARM_NOISE)
+                if ($noise > MFUN_TH_ALARM_NOISE)
                     $alarm = "true";
                 else
                     $alarm = "false";
@@ -792,7 +792,7 @@ class classDbiL3apF3dm
             }
 
             if ($humidity != NULL){
-                if ($humidity > TH_ALARM_HUMIDITY)
+                if ($humidity > MFUN_TH_ALARM_HUMIDITY)
                     $alarm = "true";
                 else
                     $alarm = "false";
@@ -807,7 +807,7 @@ class classDbiL3apF3dm
             }
 
             if ($temperature != NULL){
-                if ($temperature > TH_ALARM_TEMPERATURE)
+                if ($temperature > MFUN_TH_ALARM_TEMPERATURE)
                     $alarm = "true";
                 else
                     $alarm = "false";
@@ -822,7 +822,7 @@ class classDbiL3apF3dm
             }
 
             if ($pm25 != NULL){
-                if ($pm25 > TH_ALARM_PM25)
+                if ($pm25 > MFUN_TH_ALARM_PM25)
                     $alarm = "true";
                 else
                     $alarm = "false";
@@ -837,7 +837,7 @@ class classDbiL3apF3dm
             }
 
             if ($windspeed != NULL){
-                if ($windspeed > TH_ALARM_WINDSPEED)
+                if ($windspeed > MFUN_TH_ALARM_WINDSPEED)
                     $alarm = "true";
                 else
                     $alarm = "false";
@@ -877,10 +877,10 @@ class classDbiL3apF3dm
         }
 
         switch($alarm_type) {
-            case S_TYPE_PM:
+            case MFUN_S_TYPE_PM:
                 $resp["alarm_name"] = "细颗粒物";
                 $resp["alarm_unit"] = "毫克/立方米";
-                $resp["warning"] = TH_ALARM_PM25;
+                $resp["warning"] = MFUN_TH_ALARM_PM25;
 
                 $resp["minute_alarm"] = array();
                 $resp["minute_head"] = array();
@@ -933,10 +933,10 @@ class classDbiL3apF3dm
                 }
                 break;
 
-            case S_TYPE_WINDSPEED:
+            case MFUN_S_TYPE_WINDSPEED:
                 $resp["alarm_name"] = "风速";
                 $resp["alarm_unit"] = "千米/小时";
-                $resp["warning"] = TH_ALARM_WINDSPEED;
+                $resp["warning"] = MFUN_TH_ALARM_WINDSPEED;
 
                 $resp["minute_alarm"] = array();
                 $resp["minute_head"] = array();
@@ -988,10 +988,10 @@ class classDbiL3apF3dm
                 }
                 break;
 
-            case S_TYPE_WINDDIR:
+            case MFUN_S_TYPE_WINDDIR:
                 $resp["alarm_name"] = "风向";
                 $resp["alarm_unit"] = "度";
-                $resp["warning"] = TH_ALARM_WINDDIR;
+                $resp["warning"] = MFUN_TH_ALARM_WINDDIR;
 
                 $resp["minute_alarm"] = array();
                 $resp["minute_head"] = array();
@@ -1043,10 +1043,10 @@ class classDbiL3apF3dm
                 }
                 break;
 
-            case S_TYPE_EMC:
+            case MFUN_S_TYPE_EMC:
                 $resp["alarm_name"] = "电磁辐射";
                 $resp["alarm_unit"] = "毫瓦/平方毫米";
-                $resp["warning"] = TH_ALARM_EMC;
+                $resp["warning"] = MFUN_TH_ALARM_EMC;
 
                 $resp["minute_alarm"] = array();
                 $resp["minute_head"] = array();
@@ -1098,10 +1098,10 @@ class classDbiL3apF3dm
                 }
                 break;
 
-            case S_TYPE_TEMPERATURE:
+            case MFUN_S_TYPE_TEMPERATURE:
                 $resp["alarm_name"] = "温度";
                 $resp["alarm_unit"] = "摄氏度";
-                $resp["warning"] = TH_ALARM_TEMPERATURE;
+                $resp["warning"] = MFUN_TH_ALARM_TEMPERATURE;
 
                 $resp["minute_alarm"] = array();
                 $resp["minute_head"] = array();
@@ -1153,10 +1153,10 @@ class classDbiL3apF3dm
                 }
                 break;
 
-            case S_TYPE_HUMIDITY:
+            case MFUN_S_TYPE_HUMIDITY:
                 $resp["alarm_name"] = "湿度";
                 $resp["alarm_unit"] = "%";
-                $resp["warning"] = TH_ALARM_HUMIDITY;
+                $resp["warning"] = MFUN_TH_ALARM_HUMIDITY;
 
                 $resp["minute_alarm"] = array();
                 $resp["minute_head"] = array();
@@ -1208,10 +1208,10 @@ class classDbiL3apF3dm
                 }
                 break;
 
-            case S_TYPE_NOISE:
+            case MFUN_S_TYPE_NOISE:
                 $resp["alarm_name"] = "噪声";
                 $resp["alarm_unit"] = "分贝";
-                $resp["warning"] = TH_ALARM_NOISE;
+                $resp["warning"] = MFUN_TH_ALARM_NOISE;
 
                 $resp["minute_alarm"] = array();
                 $resp["minute_head"] = array();

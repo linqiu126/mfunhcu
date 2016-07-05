@@ -123,6 +123,7 @@ class classTaskL2snrPm25
 
         $sDbObj = new classDbiL2snrPm25();
         $sDbObj->dbi_pmData_save($deviceId, $sensorId, $timeStamp, $report,$gps);
+        //该函数处理需要再完善，不确定是否可用
         $sDbObj->dbi_pmdata_delete_3monold($deviceId, $sensorId,90);  //remove 90 days old data.
 
         //更新分钟测量报告聚合表

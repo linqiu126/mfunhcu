@@ -101,7 +101,8 @@ class classTaskL2snrHumid
 
         $sDbObj = new classDbiL2snrHumid();
         $sDbObj->dbi_humidity_data_save($deviceId, $sensorId, $timeStamp, $report,$gps);
-        //$wxDbObj->dbi_AirPmDataInfo_delete_3monold($fromuser, $deviceid, $boxid,90);  //remove 90 days old data.
+        //该函数处理需要再完善，不确定是否可用
+        $sDbObj->dbi_humidData_delete_3monold($sensorId, $deviceId, MFUN_HCU_DATA_SAVE_DURATION_IN_DAYS);  //remove 90 days old data.
 
         //更新分钟测量报告聚合表
         $sDbObj->dbi_minreport_update_humidity($deviceId,$statCode,$timeStamp,$report);

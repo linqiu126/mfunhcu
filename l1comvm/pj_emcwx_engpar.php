@@ -82,4 +82,8 @@ elseif(MFUN_WX_APPID =="wx32f73ab219f56efb") //用于ZJL的服务号
     define("ZJL_mac","D03972A5EF27");
 }
 
+//定义数据保存不删的时间长度
+define ("MFUN_EMCWX_DATA_SAVE_DURATION_IN_DAYS", 90);
+
+
 ?>

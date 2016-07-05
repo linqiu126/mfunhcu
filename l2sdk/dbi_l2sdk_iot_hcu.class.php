@@ -163,7 +163,7 @@ class classDbiL2sdkHcu
         $endtime = $devinfo["EndTime"];
         $devstatue = $devinfo["DevStatus"];
         $videourl = $devinfo["VideoURL"];
-        $default_sensor = S_TYPE_EMC.";";
+        $default_sensor = MFUN_S_TYPE_EMC.";";
 
         $query_str = "SELECT * FROM `t_l2sdk_iothcu_hcudevice` WHERE `devcode` = '$devcode'";
         $result = $mysqli->query($query_str);

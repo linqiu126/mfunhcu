@@ -218,7 +218,7 @@ class classDbiL3apF1sym
             $row = $result->fetch_array();
             $lastupdate = $row['lastupdate'];
             $currenttime = time();
-            if($currenttime < ($lastupdate + SESSIONID_VALID_TIME))
+            if($currenttime < ($lastupdate + MFUN_SESSIONID_VALID_TIME))
                 $uid = $row['uid'];
             else
                 $uid = "";
@@ -257,7 +257,7 @@ class classDbiL3apF1sym
                 $admin = "false";
 
             if ($pwd == $password) {
-                $strlen = SESSION_ID_LEN;
+                $strlen = MFUN_SESSION_ID_LEN;
                 $sessionid = $this->getRandomSid($strlen);
                 $userinfo = array(
                     'status' => "true",
@@ -307,7 +307,7 @@ class classDbiL3apF1sym
             $uid = $row['uid'];
             $lastupdate = $row['lastupdate'];
             $now= time();
-            if ($lastupdate < $now + SESSIONID_VALID_TIME) //sessionid 在有效时间内
+            if ($lastupdate < $now + MFUN_SESSIONID_VALID_TIME) //sessionid 在有效时间内
             {
                 $query_str = "SELECT * FROM `t_l3f1sym_account` WHERE `uid` = '$uid'";
                 $result = $mysqli->query($query_str);
@@ -401,7 +401,7 @@ class classDbiL3apF1sym
         //$mysqli->query("set character_set_connection = utf8");
         $mysqli->query("SET NAMES utf8");
 
-        $uid = UID_PREFIX.$this->getRandomUid(3);  //UID的分配机制将来要重新考虑，避免重复
+        $uid = MFUN_UID_PREFIX.$this->getRandomUid(3);  //UID的分配机制将来要重新考虑，避免重复
         $user = $userinfo["name"];
         $nick = $userinfo["nickname"];
         $pwd = $userinfo["password"];

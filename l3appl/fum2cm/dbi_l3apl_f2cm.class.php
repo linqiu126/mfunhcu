@@ -326,8 +326,8 @@ class classDbiL3apF2cm
         {
             $pgcode = "";
             $authcode = $row['auth_code'];
-            $fromat = substr($authcode, 0, CODE_FORMAT_LEN);
-            if ($fromat == PG_CODE_PREFIX)
+            $fromat = substr($authcode, 0, MFUN_CODE_FORMAT_LEN);
+            if ($fromat == MFUN_PG_CODE_PREFIX)
                 $pgcode = $authcode;
 
             $query_str = "SELECT * FROM `t_l3f2cm_projgroup` WHERE `pg_code` = '$pgcode'";
@@ -366,8 +366,8 @@ class classDbiL3apF2cm
             while($row = $result->fetch_array())
             {
                 $authcode = $row['auth_code'];
-                $fromat = substr($authcode, 0, CODE_FORMAT_LEN);
-                if($fromat == PROJ_CODE_PREFIX)  //取得code为项目号
+                $fromat = substr($authcode, 0, MFUN_CODE_FORMAT_LEN);
+                if($fromat == MFUN_PROJ_CODE_PREFIX)  //取得code为项目号
                 {
                     $pcode = $authcode;
                     $query_str = "SELECT * FROM `t_l3f2cm_projinfo` WHERE `p_code` = '$pcode'";
@@ -381,7 +381,7 @@ class classDbiL3apF2cm
                         array_push($projlist, $temp);
                     }
                 }
-                elseif($fromat == PG_CODE_PREFIX)  //取得的code为项目组号
+                elseif($fromat == MFUN_PG_CODE_PREFIX)  //取得的code为项目组号
                 {
                     $pgcode = $authcode;
                     $temp = $this->dbi_pg_projlist_req($pgcode);
@@ -416,10 +416,10 @@ class classDbiL3apF2cm
             $pgcode = "";
             $pcode = "";
             $authcode = $row['auth_code'];
-            $fromat = substr($authcode, 0, CODE_FORMAT_LEN);
-            if ($fromat == PG_CODE_PREFIX)
+            $fromat = substr($authcode, 0, MFUN_CODE_FORMAT_LEN);
+            if ($fromat == MFUN_PG_CODE_PREFIX)
                 $pgcode = $authcode;
-            elseif($fromat == PROJ_CODE_PREFIX)
+            elseif($fromat == MFUN_PROJ_CODE_PREFIX)
                 $pcode = $authcode;
 
             $query_str = "SELECT * FROM `t_l3f2cm_projgroup` WHERE `pg_code` = '$pgcode'";

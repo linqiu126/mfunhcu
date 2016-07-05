@@ -273,7 +273,7 @@ class classTaskL2sdkIotHcu
 
         switch($cn)
         {
-            case ZHB_NOM_FRAME:
+            case MFUN_ZHB_NOM_FRAME:
                 $sdu_format = "A20QN/A5ST/A7CN/A12MN/A6PW/A4PNUM/A4PNO";
                 $temp = unpack($sdu_format, $sdu_body);
                 $pnum = $temp['PNUM']; //总包号
@@ -284,7 +284,7 @@ class classTaskL2sdkIotHcu
 
                 $resp = $this->dummy_data_response($mn);
                 break;
-            case ZHB_HRB_FRAME:
+            case MFUN_ZHB_HRB_FRAME:
                 $sdu_format = "A20QN/A5ST/A7CN/A12MN/A6PW/A3FLAG";
                 $temp = unpack($sdu_format, $sdu_body);
                 $flag = $temp['FLAG']; //数据是否拆分及应答标志

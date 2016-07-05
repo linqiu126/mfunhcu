@@ -31,31 +31,31 @@ switch($sensorType)
 {
     case "temperature":
         $ctrl_key = $cObj->byte2string(CMDID_TEMPERATURE_DATA);
-        $sensorid = $cObj->byte2string(ID_EQUIP_TEMPERATURE);
+        $sensorid = $cObj->byte2string(MFUN_ID_EQUIP_TEMPERATURE);
         break;
     case "humidity":
         $ctrl_key = $cObj->byte2string(CMDID_HUMIDITY_DATA);
-        $sensorid = $cObj->byte2string(ID_EQUIP_HUMIDITY);
+        $sensorid = $cObj->byte2string(MFUN_ID_EQUIP_HUMIDITY);
         break;
     case "windspeed":
         $ctrl_key = $cObj->byte2string(CMDID_WINDSPEED_DATA);
-        $sensorid = $cObj->byte2string(ID_EQUIP_WINDSPEED);
+        $sensorid = $cObj->byte2string(MFUN_ID_EQUIP_WINDSPEED);
         break;
     case "winddirection":
         $ctrl_key = $cObj->byte2string(CMDID_WINDDIR_DATA);
-        $sensorid = $cObj->byte2string(ID_EQUIP_WINDDIR);
+        $sensorid = $cObj->byte2string(MFUN_ID_EQUIP_WINDDIR);
         break;
     case "pmdata":
         $ctrl_key = $cObj->byte2string(CMDID_PM_DATA);
-        $sensorid = $cObj->byte2string(ID_EQUIP_PM);
+        $sensorid = $cObj->byte2string(MFUN_ID_EQUIP_PM);
         break;
     case "noise":
         $ctrl_key = $cObj->byte2string(CMDID_NOISE_DATA);
-        $sensorid = $cObj->byte2string(ID_EQUIP_NOISE);
+        $sensorid = $cObj->byte2string(MFUN_ID_EQUIP_NOISE);
         break;
     case "emc":
         $ctrl_key = $cObj->byte2string(CMDID_EMC_DATA);
-        $sensorid = $cObj->byte2string(ID_EQUIP_EMC);
+        $sensorid = $cObj->byte2string(MFUN_ID_EQUIP_EMC);
         break;
     case "airpressure":
         $ctrl_key = "";

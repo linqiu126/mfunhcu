@@ -102,7 +102,7 @@ class classTaskL2snrWindspd
 
         $sDbObj = new classDbiL2snrWindspd();
         $sDbObj->dbi_windSpeed_data_save($deviceId, $sensorId, $timeStamp, $report,$gps);
-        //$wxDbObj->dbi_AirPmDataInfo_delete_3monold($fromuser, $deviceid, $boxid,90);  //remove 90 days old data.
+        $sDbObj->dbi_windspdData_delete_3monold($sensorId, $deviceId, MFUN_HCU_DATA_SAVE_DURATION_IN_DAYS);  //remove 90 days old data.
 
         //更新分钟测量报告聚合表
         $sDbObj->dbi_minreport_update_windspeed($deviceId,$statCode,$timeStamp,$report);

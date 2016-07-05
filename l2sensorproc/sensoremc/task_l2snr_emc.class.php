@@ -68,7 +68,7 @@ class classTaskL2snrEmc
 
         $sDbObj = new classDbiL2snrEmc();
         $sDbObj->dbi_emcData_save($deviceId, $sensorId, $emc_time, $emc_value,$gps);
-        $sDbObj->dbi_emcData_delete_3monold($deviceId, $sensorId, 90);  //remove 90 days old data.
+        $sDbObj->dbi_emcData_delete_3monold($deviceId, $sensorId, MFUN_EMCWX_DATA_SAVE_DURATION_IN_DAYS);  //remove 90 days old data.
         $sDbObj->dbi_emcAccumulation_save($deviceId); //累计值计算，如果不是初次接收数据，而且日期没有改变，则该过程将非常快
 
         //完全不需要返回？？？
@@ -94,7 +94,8 @@ class classTaskL2snrEmc
         //存入数据库中
         $sDbObj = new classDbiL2snrEmc();
         $sDbObj->dbi_emcData_save($deviceId, $sensorId, $timeStamp, $report, $gps);
-        $sDbObj->dbi_emcData_delete_3monold($deviceId, $sensorId, 90);  //remove 90 days old data.
+        //该函数处理需要再完善，不确定是否可用
+        $sDbObj->dbi_emcData_delete_3monold($deviceId, $sensorId, MFUN_HCU_DATA_SAVE_DURATION_IN_DAYS);  //remove 90 days old data.
         $sDbObj->dbi_emcAccumulation_save($deviceId); //累计值计算，如果不是初次接收数据，而且日期没有改变，则该过程将非常快
 
         //更新分钟测量报告聚合表
