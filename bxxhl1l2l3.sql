@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: 2016-07-06 09:47:38
+-- Generation Time: 2016-07-06 10:41:15
 -- 服务器版本： 5.6.17
 -- PHP Version: 5.5.12
 
@@ -100,7 +100,7 @@ CREATE TABLE IF NOT EXISTS `t_l1vm_loginfo` (
   `createtime` char(20) NOT NULL,
   `logdata` text NOT NULL,
   PRIMARY KEY (`sid`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=508 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=547 ;
 
 --
 -- 转存表中的数据 `t_l1vm_loginfo`
@@ -615,7 +615,46 @@ INSERT INTO `t_l1vm_loginfo` (`sid`, `sysver`, `project`, `fromuser`, `createtim
 (504, 'R02.D21', 'L4AQYCUI', 'MFUN_TASK_ID_L3APPL_FUM1SYM', '2016-07-06 15:33:59', 'T:"{"status":"true","text":"login success","key":"qESxq46v","admin":"true"}"'),
 (505, 'R02.D21', 'VM_TRACE', 'MSG_ID_L4AQYCUI_CLICK_INCOMING', '2016-07-06 15:33:59', 'R: "UserInfo"'),
 (506, 'R02.D21', 'VM_TRACE', 'MSG_ID_L4AQYCUI_TO_L3F1_USERINFO', '2016-07-06 15:33:59', 'R: {"session":"1"}'),
-(507, 'R02.D21', 'L4AQYCUI', 'MFUN_TASK_ID_L3APPL_FUM1SYM', '2016-07-06 15:33:59', 'T:"{"status":"false","ret":null}"');
+(507, 'R02.D21', 'L4AQYCUI', 'MFUN_TASK_ID_L3APPL_FUM1SYM', '2016-07-06 15:33:59', 'T:"{"status":"false","ret":null}"'),
+(508, 'R02.D21', 'VM_TRACE', 'MSG_ID_L1VM_TO_L2SDK_IOT_HCU_INCOMING', '2016-07-06 16:35:39', 'R: "<xml><ToUserName><![CDATA[AQ_HCU]]></ToUserName><FromUserName><![CDATA[HCU_SH_0302]]></FromUserName><CreateTime>1460039152</CreateTime><MsgType><![CDATA[hcu_text]]></MsgType><Content><![CDATA[201881050201124945000000004E000000000000000057066DF0]]></Content><FuncFlag>0</FuncFlag></xml>"'),
+(509, 'R02.D21', 'HCU', 'HCU_SH_0302', '2016-04-07 22:25:52', 'R:<xml><ToUserName><![CDATA[AQ_HCU]]></ToUserName><FromUserName><![CDATA[HCU_SH_0302]]></FromUserName><CreateTime>1460039152</CreateTime><MsgType><![CDATA[hcu_text]]></MsgType><Content><![CDATA[201881050201124945000000004E000000000000000057066DF0]]></Content><FuncFlag>0</FuncFlag></xml>'),
+(510, 'R02.D21', 'VM_TRACE', 'MSG_ID_L2SDK_HCU_TO_L2SNR_EMC', '2016-07-06 16:35:39', 'R: {"project":"HCU","log_from":"AQ_HCU","platform":2,"deviceId":"HCU_SH_0302","statCode":"120101015","content":"201881050201124945000000004E000000000000000057066DF0"}'),
+(511, 'R02.D21', 'VM_TRACE', 'MSG_ID_L1VM_TO_L2SDK_IOT_HCU_INCOMING', '2016-07-06 16:35:39', 'R: "<xml><ToUserName><![CDATA[AQ_HCU]]></ToUserName><FromUserName><![CDATA[HCU_SH_0301]]></FromUserName><CreateTime>1457872404</CreateTime><MsgType><![CDATA[hcu_text]]></MsgType><Content><![CDATA[252281010201000001120000011200000492000000000000000000000000000056E55E14]]></Content><FuncFlag>0</FuncFlag></xml>"'),
+(512, 'R02.D21', 'HCU', 'HCU_SH_0301', '2016-03-13 20:33:24', 'R:<xml><ToUserName><![CDATA[AQ_HCU]]></ToUserName><FromUserName><![CDATA[HCU_SH_0301]]></FromUserName><CreateTime>1457872404</CreateTime><MsgType><![CDATA[hcu_text]]></MsgType><Content><![CDATA[252281010201000001120000011200000492000000000000000000000000000056E55E14]]></Content><FuncFlag>0</FuncFlag></xml>'),
+(513, 'R02.D21', 'VM_TRACE', 'MSG_ID_L2SDK_HCU_TO_L2SNR_PM25', '2016-07-06 16:35:39', 'R: {"project":"HCU","log_from":"AQ_HCU","platform":2,"deviceId":"HCU_SH_0301","statCode":"120101001","content":"252281010201000001120000011200000492000000000000000000000000000056E55E14"}'),
+(514, 'R02.D21', 'VM_TRACE', 'MSG_ID_L1VM_TO_L2SDK_IOT_HCU_INCOMING', '2016-07-06 16:35:39', 'R: "<xml><ToUserName><![CDATA[AQ_HCU]]></ToUserName><FromUserName><![CDATA[HCU_SH_0301]]></FromUserName><CreateTime>1459985808</CreateTime><MsgType><![CDATA[hcu_text]]></MsgType><Content><![CDATA[261881020201000045000000004E000000000000000057059D90]]></Content><FuncFlag>0</FuncFlag></xml>"'),
+(515, 'R02.D21', 'HCU', 'HCU_SH_0301', '2016-04-07 07:36:48', 'R:<xml><ToUserName><![CDATA[AQ_HCU]]></ToUserName><FromUserName><![CDATA[HCU_SH_0301]]></FromUserName><CreateTime>1459985808</CreateTime><MsgType><![CDATA[hcu_text]]></MsgType><Content><![CDATA[261881020201000045000000004E000000000000000057059D90]]></Content><FuncFlag>0</FuncFlag></xml>'),
+(516, 'R02.D21', 'VM_TRACE', 'MSG_ID_L2SDK_HCU_TO_L2SNR_WINDSPD', '2016-07-06 16:35:39', 'R: {"project":"HCU","log_from":"AQ_HCU","platform":2,"deviceId":"HCU_SH_0301","statCode":"120101001","content":"261881020201000045000000004E000000000000000057059D90"}'),
+(517, 'R02.D21', 'VM_TRACE', 'MSG_ID_L1VM_TO_L2SDK_IOT_HCU_INCOMING', '2016-07-06 16:35:39', 'R: "<xml><ToUserName><![CDATA[AQ_HCU]]></ToUserName><FromUserName><![CDATA[HCU_SH_0301]]></FromUserName><CreateTime>1459899126</CreateTime><MsgType><![CDATA[hcu_text]]></MsgType><Content><![CDATA[271881030201008D45000000004E000000000000000057044AF5]]></Content><FuncFlag>0</FuncFlag></xml>"'),
+(518, 'R02.D21', 'HCU', 'HCU_SH_0301', '2016-04-06 07:32:06', 'R:<xml><ToUserName><![CDATA[AQ_HCU]]></ToUserName><FromUserName><![CDATA[HCU_SH_0301]]></FromUserName><CreateTime>1459899126</CreateTime><MsgType><![CDATA[hcu_text]]></MsgType><Content><![CDATA[271881030201008D45000000004E000000000000000057044AF5]]></Content><FuncFlag>0</FuncFlag></xml>'),
+(519, 'R02.D21', 'VM_TRACE', 'MSG_ID_L2SDK_HCU_TO_L2SNR_WINDDIR', '2016-07-06 16:35:39', 'R: {"project":"HCU","log_from":"AQ_HCU","platform":2,"deviceId":"HCU_SH_0301","statCode":"120101001","content":"271881030201008D45000000004E000000000000000057044AF5"}'),
+(520, 'R02.D21', 'VM_TRACE', 'MSG_ID_L1VM_TO_L2SDK_IOT_HCU_INCOMING', '2016-07-06 16:35:39', 'R: "<xml><ToUserName><![CDATA[AQ_HCU]]></ToUserName><FromUserName><![CDATA[HCU_SH_0301]]></FromUserName><CreateTime>1457872422</CreateTime><MsgType><![CDATA[hcu_text]]></MsgType><Content><![CDATA[2818810602010223000000000000000000000000000056E55E26]]></Content><FuncFlag>0</FuncFlag></xml>"'),
+(521, 'R02.D21', 'HCU', 'HCU_SH_0301', '2016-03-13 20:33:42', 'R:<xml><ToUserName><![CDATA[AQ_HCU]]></ToUserName><FromUserName><![CDATA[HCU_SH_0301]]></FromUserName><CreateTime>1457872422</CreateTime><MsgType><![CDATA[hcu_text]]></MsgType><Content><![CDATA[2818810602010223000000000000000000000000000056E55E26]]></Content><FuncFlag>0</FuncFlag></xml>'),
+(522, 'R02.D21', 'VM_TRACE', 'MSG_ID_L2SDK_HCU_TO_L2SNR_TEMP', '2016-07-06 16:35:39', 'R: {"project":"HCU","log_from":"AQ_HCU","platform":2,"deviceId":"HCU_SH_0301","statCode":"120101001","content":"2818810602010223000000000000000000000000000056E55E26"}'),
+(523, 'R02.D21', 'VM_TRACE', 'MSG_ID_L1VM_TO_L2SDK_IOT_HCU_INCOMING', '2016-07-06 16:35:39', 'R: "<xml><ToUserName><![CDATA[AQ_HCU]]></ToUserName><FromUserName><![CDATA[HCU_SH_0301]]></FromUserName><CreateTime>1457872525</CreateTime><MsgType><![CDATA[hcu_text]]></MsgType><Content><![CDATA[29188106020100AC000000000000000000000000000056E55E8D]]></Content><FuncFlag>0</FuncFlag></xml>"'),
+(524, 'R02.D21', 'HCU', 'HCU_SH_0301', '2016-03-13 20:35:25', 'R:<xml><ToUserName><![CDATA[AQ_HCU]]></ToUserName><FromUserName><![CDATA[HCU_SH_0301]]></FromUserName><CreateTime>1457872525</CreateTime><MsgType><![CDATA[hcu_text]]></MsgType><Content><![CDATA[29188106020100AC000000000000000000000000000056E55E8D]]></Content><FuncFlag>0</FuncFlag></xml>'),
+(525, 'R02.D21', 'VM_TRACE', 'MSG_ID_L2SDK_HCU_TO_L2SNR_HUMID', '2016-07-06 16:35:39', 'R: {"project":"HCU","log_from":"AQ_HCU","platform":2,"deviceId":"HCU_SH_0301","statCode":"120101001","content":"29188106020100AC000000000000000000000000000056E55E8D"}'),
+(526, 'R02.D21', 'VM_TRACE', 'MSG_ID_L1VM_TO_L2SDK_IOT_HCU_INCOMING', '2016-07-06 16:35:39', 'R: "<xml><ToUserName><![CDATA[AQ_HCU]]></ToUserName><FromUserName><![CDATA[HCU_SH_0301]]></FromUserName><CreateTime>1457872731</CreateTime><MsgType><![CDATA[hcu_text]]></MsgType><Content><![CDATA[2B1A810A02020000028B000000000000000000000000000056E55F5B]]></Content><FuncFlag>0</FuncFlag></xml>"'),
+(527, 'R02.D21', 'HCU', 'HCU_SH_0301', '2016-03-13 20:38:51', 'R:<xml><ToUserName><![CDATA[AQ_HCU]]></ToUserName><FromUserName><![CDATA[HCU_SH_0301]]></FromUserName><CreateTime>1457872731</CreateTime><MsgType><![CDATA[hcu_text]]></MsgType><Content><![CDATA[2B1A810A02020000028B000000000000000000000000000056E55F5B]]></Content><FuncFlag>0</FuncFlag></xml>'),
+(528, 'R02.D21', 'VM_TRACE', 'MSG_ID_L2SDK_HCU_TO_L2SNR_NOISE', '2016-07-06 16:35:39', 'R: {"project":"HCU","log_from":"AQ_HCU","platform":2,"deviceId":"HCU_SH_0301","statCode":"120101001","content":"2B1A810A02020000028B000000000000000000000000000056E55F5B"}'),
+(529, 'R02.D21', 'VM_TRACE', 'MSG_ID_L1VM_TO_L2SDK_IOT_HCU_INCOMING', '2016-07-06 16:35:39', 'R: "<xml><ToUserName><![CDATA[AQ_HCU]]></ToUserName><FromUserName><![CDATA[HCU_SH_0301]]></FromUserName><CreateTime>1457872409</CreateTime><MsgType><![CDATA[hcu_heart_beat]]></MsgType><Content><![CDATA[FE00]]></Content><FuncFlag>0</FuncFlag></xml>"'),
+(530, 'R02.D21', 'HCU', 'HCU_SH_0301', '2016-03-13 20:33:29', 'R:<xml><ToUserName><![CDATA[AQ_HCU]]></ToUserName><FromUserName><![CDATA[HCU_SH_0301]]></FromUserName><CreateTime>1457872409</CreateTime><MsgType><![CDATA[hcu_heart_beat]]></MsgType><Content><![CDATA[FE00]]></Content><FuncFlag>0</FuncFlag></xml>'),
+(531, 'R02.D21', 'HCU', 'AQ_HCU', '2016-07-06 16:35:39', 'T:"FE00"'),
+(532, 'R02.D21', 'VM_TRACE', 'MSG_ID_L1VM_TO_L2SDK_IOT_HCU_INCOMING', '2016-07-06 16:35:39', 'R: "<xml><ToUserName><![CDATA[AQ_HCU]]></ToUserName><FromUserName><![CDATA[HCU_SH_0301]]></FromUserName><CreateTime>1457872559</CreateTime><MsgType><![CDATA[hcu_command]]></MsgType><Content><![CDATA[FD00]]></Content><FuncFlag>0</FuncFlag></xml>"'),
+(533, 'R02.D21', 'HCU', 'HCU_SH_0301', '2016-03-13 20:35:59', 'R:<xml><ToUserName><![CDATA[AQ_HCU]]></ToUserName><FromUserName><![CDATA[HCU_SH_0301]]></FromUserName><CreateTime>1457872559</CreateTime><MsgType><![CDATA[hcu_command]]></MsgType><Content><![CDATA[FD00]]></Content><FuncFlag>0</FuncFlag></xml>'),
+(534, 'R02.D21', 'HCU', 'AQ_HCU', '2016-07-06 16:35:39', 'T:"FD00"'),
+(535, 'R02.D21', 'VM_TRACE', 'MSG_ID_L1VM_TO_L2SDK_IOT_HCU_INCOMING', '2016-07-06 16:35:39', 'R: "<xml><ToUserName><![CDATA[AQ_HCU]]></ToUserName><FromUserName><![CDATA[HCU_SH_0305]]></FromUserName><CreateTime>1463066586</CreateTime><MsgType><![CDATA[hcu_text]]></MsgType><Content><![CDATA[201881050201130345000000004E000000000000000057318D70]]></Content><FuncFlag>0</FuncFlag></xml>"'),
+(536, 'R02.D21', 'HCU', 'HCU_SH_0305', '2016-05-12 23:23:06', 'R:<xml><ToUserName><![CDATA[AQ_HCU]]></ToUserName><FromUserName><![CDATA[HCU_SH_0305]]></FromUserName><CreateTime>1463066586</CreateTime><MsgType><![CDATA[hcu_text]]></MsgType><Content><![CDATA[201881050201130345000000004E000000000000000057318D70]]></Content><FuncFlag>0</FuncFlag></xml>'),
+(537, 'R02.D21', 'VM_TRACE', 'MSG_ID_L2SDK_HCU_TO_L2SNR_EMC', '2016-07-06 16:35:39', 'R: {"project":"HCU","log_from":"AQ_HCU","platform":2,"deviceId":"HCU_SH_0305","statCode":"120101005","content":"201881050201130345000000004E000000000000000057318D70"}'),
+(538, 'R02.D21', 'VM_TRACE', 'MSG_ID_L1VM_TO_L2SDK_IOT_HCU_INCOMING', '2016-07-06 16:35:39', 'R: "##007020160619033803000___11111ZHB_NOMHCU_SH_0304_44444405556666a01000=139A,68BE"'),
+(539, 'R02.D21', 'HCU', 'ZHBMSG', '2016-07-06 16:35:39', 'R:##007020160619033803000___11111ZHB_NOMHCU_SH_0304_44444405556666a01000=139A,68BE'),
+(540, 'R02.D21', 'HCU', 'AQ_HCU', '2016-07-06 16:35:39', 'T:'),
+(541, 'R02.D21', 'VM_TRACE', 'MSG_ID_L4AQYCUI_CLICK_INCOMING', '2016-07-06 16:35:39', 'R: "login"'),
+(542, 'R02.D21', 'VM_TRACE', 'MSG_ID_L4AQYCUI_TO_L3F1_LOGIN', '2016-07-06 16:35:39', 'R: {"user":"admin","pwd":"admin"}'),
+(543, 'R02.D21', 'L4AQYCUI', 'MFUN_TASK_ID_L3APPL_FUM1SYM', '2016-07-06 16:35:39', 'T:"{"status":"true","text":"login success","key":"IvknCO76","admin":"true"}"'),
+(544, 'R02.D21', 'VM_TRACE', 'MSG_ID_L4AQYCUI_CLICK_INCOMING', '2016-07-06 16:35:39', 'R: "UserInfo"'),
+(545, 'R02.D21', 'VM_TRACE', 'MSG_ID_L4AQYCUI_TO_L3F1_USERINFO', '2016-07-06 16:35:39', 'R: {"session":"1"}'),
+(546, 'R02.D21', 'L4AQYCUI', 'MFUN_TASK_ID_L3APPL_FUM1SYM', '2016-07-06 16:35:39', 'T:"{"status":"false","ret":null}"');
 
 -- --------------------------------------------------------
 
@@ -1294,7 +1333,7 @@ CREATE TABLE IF NOT EXISTS `t_l2snr_hourreport` (
   `datastatus` char(10) DEFAULT NULL,
   `validdatanum` int(1) DEFAULT NULL,
   PRIMARY KEY (`sid`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=71 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=72 ;
 
 --
 -- 转存表中的数据 `t_l2snr_hourreport`
@@ -1370,7 +1409,8 @@ INSERT INTO `t_l2snr_hourreport` (`sid`, `devcode`, `statcode`, `reportdate`, `h
 (67, '', NULL, '0000-00-00', 0, 67, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
 (68, '', NULL, '0000-00-00', 0, 68, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
 (69, '', NULL, '0000-00-00', 0, 69, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(70, '', NULL, '0000-00-00', 0, 70, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+(70, '', NULL, '0000-00-00', 0, 70, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(71, '', NULL, '0000-00-00', 0, 71, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -1882,7 +1922,7 @@ CREATE TABLE IF NOT EXISTS `t_l3f1sym_session` (
 --
 
 INSERT INTO `t_l3f1sym_session` (`sessionid`, `uid`, `lastupdate`) VALUES
-('qESxq46v', 'UID001', 1467790439);
+('IvknCO76', 'UID001', 1467794139);
 
 -- --------------------------------------------------------
 
@@ -2181,6 +2221,161 @@ CREATE TABLE IF NOT EXISTS `t_l3f4icm_sensorctrltable` (
 
 INSERT INTO `t_l3f4icm_sensorctrltable` (`sid`, `deviceid`, `sensorid`, `equid`, `sensortype`, `workingcycle`, `onoffstatus`, `sampleduaration`, `paralpha`, `parbeta`, `pargama`) VALUES
 (1, 'HCU301_22', 111, 6, '风速', 0, 0, 0, 0, 0, 0);
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `t_l3f5fm_alarmdata`
+--
+
+CREATE TABLE IF NOT EXISTS `t_l3f5fm_alarmdata` (
+  `sid` int(4) NOT NULL AUTO_INCREMENT,
+  `alarmsrc` int(4) NOT NULL,
+  `alarmtype` char(20) NOT NULL,
+  `alarmdesc` char(50) NOT NULL,
+  `alarmimpact` char(50) NOT NULL,
+  `alarmseverity` int(4) NOT NULL,
+  `tsgen` int(4) NOT NULL,
+  `tsclose` int(4) NOT NULL,
+  PRIMARY KEY (`sid`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+
+--
+-- 转存表中的数据 `t_l3f5fm_alarmdata`
+--
+
+INSERT INTO `t_l3f5fm_alarmdata` (`sid`, `alarmsrc`, `alarmtype`, `alarmdesc`, `alarmimpact`, `alarmseverity`, `tsgen`, `tsclose`) VALUES
+(1, 0, '', 'Cloud HCU inter-link failure.', '', 0, 0, 0);
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `t_l3f6pm_perfdata`
+--
+
+CREATE TABLE IF NOT EXISTS `t_l3f6pm_perfdata` (
+  `sid` int(4) NOT NULL AUTO_INCREMENT,
+  `deviceid` int(4) NOT NULL,
+  `sensorid` int(4) NOT NULL,
+  `stability` int(4) NOT NULL,
+  `errcnt` int(4) NOT NULL,
+  `timeupdate` int(4) NOT NULL,
+  PRIMARY KEY (`sid`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+
+--
+-- 转存表中的数据 `t_l3f6pm_perfdata`
+--
+
+INSERT INTO `t_l3f6pm_perfdata` (`sid`, `deviceid`, `sensorid`, `stability`, `errcnt`, `timeupdate`) VALUES
+(1, 111, 15, 90, 0, 0);
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `t_l3f7ads_adsdata`
+--
+
+CREATE TABLE IF NOT EXISTS `t_l3f7ads_adsdata` (
+  `sid` int(4) NOT NULL AUTO_INCREMENT,
+  `termid` int(4) NOT NULL,
+  `termip` char(50) NOT NULL,
+  `adstitle` char(50) NOT NULL,
+  `adscontent` char(200) NOT NULL,
+  `hightlights` char(100) NOT NULL,
+  `activestart` int(4) NOT NULL,
+  `activeend` int(4) NOT NULL,
+  PRIMARY KEY (`sid`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+
+--
+-- 转存表中的数据 `t_l3f7ads_adsdata`
+--
+
+INSERT INTO `t_l3f7ads_adsdata` (`sid`, `termid`, `termip`, `adstitle`, `adscontent`, `hightlights`, `activestart`, `activeend`) VALUES
+(1, 111, '', 'VIP来访', '', '热烈欢迎李主席到访一行', 0, 0);
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `t_l3f8psm_portaldata`
+--
+
+CREATE TABLE IF NOT EXISTS `t_l3f8psm_portaldata` (
+  `sid` int(4) NOT NULL AUTO_INCREMENT,
+  `content1` char(50) NOT NULL,
+  `content2` char(50) NOT NULL,
+  PRIMARY KEY (`sid`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+
+--
+-- 转存表中的数据 `t_l3f8psm_portaldata`
+--
+
+INSERT INTO `t_l3f8psm_portaldata` (`sid`, `content1`, `content2`) VALUES
+(1, '政府环保公告2016年', '');
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `t_l3f9gism_accidencedirection`
+--
+
+CREATE TABLE IF NOT EXISTS `t_l3f9gism_accidencedirection` (
+  `sid` int(4) NOT NULL AUTO_INCREMENT,
+  `title` char(50) NOT NULL,
+  `content1` char(50) NOT NULL,
+  PRIMARY KEY (`sid`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+
+--
+-- 转存表中的数据 `t_l3f9gism_accidencedirection`
+--
+
+INSERT INTO `t_l3f9gism_accidencedirection` (`sid`, `title`, `content1`) VALUES
+(1, '上海中江公司污染事故应急处理态势一览表', '');
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `t_l3f9gism_scheduledirection`
+--
+
+CREATE TABLE IF NOT EXISTS `t_l3f9gism_scheduledirection` (
+  `sid` int(4) NOT NULL AUTO_INCREMENT,
+  `title` char(50) NOT NULL,
+  `perf1` int(4) NOT NULL,
+  `perf2` int(4) NOT NULL,
+  PRIMARY KEY (`sid`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+
+--
+-- 转存表中的数据 `t_l3f9gism_scheduledirection`
+--
+
+INSERT INTO `t_l3f9gism_scheduledirection` (`sid`, `title`, `perf1`, `perf2`) VALUES
+(1, '上海浦东污染形势图', 0, 0);
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `t_l3fxprcm_workerbill`
+--
+
+CREATE TABLE IF NOT EXISTS `t_l3fxprcm_workerbill` (
+  `sid` int(4) NOT NULL AUTO_INCREMENT,
+  `task1` char(50) NOT NULL,
+  `approval1` char(50) NOT NULL,
+  `state` char(50) NOT NULL,
+  PRIMARY KEY (`sid`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+
+--
+-- 转存表中的数据 `t_l3fxprcm_workerbill`
+--
+
+INSERT INTO `t_l3fxprcm_workerbill` (`sid`, `task1`, `approval1`, `state`) VALUES
+(1, '浦东中环巡视任务', '', '');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
