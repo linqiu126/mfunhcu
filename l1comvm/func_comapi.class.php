@@ -8,6 +8,11 @@
 
 class classApiL1vmFuncCom
 {
+    //构造函数
+    public function __construct()
+    {
+
+    }
 
     //日志记录
     public function logger($project,$fromUser,$createTime,$log_content)
@@ -26,8 +31,24 @@ class classApiL1vmFuncCom
         */
         //存储log在数据库中
         $cDbObj = new classDbiL1vmCommon();
-        $result = $cDbObj->dbi_log_process($project,$fromUser,$createTime,$log_content);
+        $result = $cDbObj->dbi_log_process_save($project,$fromUser,$createTime,$log_content);
 
+        return $result;
+    }
+
+    //MODULE TRACE查询
+    public function trace_module_inqury($moduleId)
+    {
+        $obj = new classDbiL1vmCommon();
+        $result = $obj->dbi_logtrace_module_inqury($moduleId);
+        return $result;
+    }
+
+    //MESSAGE TRACE查询
+    public function trace_msg_inqury($msgId)
+    {
+        $obj = new classDbiL1vmCommon();
+        $result = $obj->dbi_logtrace_mmsg_inqury($msgId);
         return $result;
     }
 

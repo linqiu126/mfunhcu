@@ -4466,7 +4466,7 @@ class classTaskL2sdkWechat
         */
         //存储log在数据库中
         $cDbObj = new classDbiL1vmCommon();
-        $result = $cDbObj->dbi_log_process($project,$fromUser,$createTime,$log_content);
+        $result = $cDbObj->dbi_log_process_save($project,$fromUser,$createTime,$log_content);
 
         return $result;
     }

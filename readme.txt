@@ -152,21 +152,11 @@ Make By：ZJL
 > 建立JD/APPLE入口的框架
 > 逐步建立L2SENSOR中的工程参数配置，减少直接数据常量定义
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+//= ZJL, 2016 July.6, CURRENT_SW_DELIVERY R02.D20
+> 给Logger数据条目增加版本属性，以便及时分析是在哪个版本下出现的问题
+> 增加TRACE机制，方便调试
+> 开始搭建F3-FX的数据DBI框架
+> 修正L2SNR_MINREPORT数据表单中$result=inqury的结果==FALSE的潜在性错误
 
 
 
@@ -174,7 +164,10 @@ Make By：ZJL
 
 
 //已知的潜在错误
-1. task_l2sdk_iot_hcu.class.php, line108，引用父进程的函数指针，编译器发现潜在错误，如何消除？
+1. task_l2sdk_iot_hcu.class.php, line108，引用父进程的函数指针，编译器发现潜在错误，如何消除？ 目前执行都很正常，但是程序代码不好看
+2. l3appl->fxyyy中，调用_encode函数出错，如何办？
+ //$jsonencode = _encode($retval);
+           $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
 
 
 

@@ -111,6 +111,128 @@ class classTaskL1vmCoreRouter
         $this->msgBufferUsedCnt++;
         $this->msgBufferWriteCnt = ($this->msgBufferWriteCnt+1) % MFUN_MSG_BUFFER_NBR_MAX;
 
+        //完事的MESSAGE TRACE机制, 先生成$loggerObj对应的指针
+        $loggerObj = new classApiL1vmFuncCom();
+        $log_time = date("Y-m-d H:i:s", time());
+        if (TRACE_MSG_ON == TRACE_MSG_MODE_ALL_ON){
+            $loggerObj->logger("VM_TRACE", $msgName, $log_time, "R: " . json_encode($msgBody));
+        }
+        elseif (TRACE_MSG_ON == TRACE_MSG_MODE_ALL_OFF){
+            //No trace
+        }
+        elseif (TRACE_MSG_ON == TRACE_MSG_MODE_MOUDLE_TO_ALLOW){
+            $result = $loggerObj->trace_module_inqury($destId);
+            if (isset($result) == true){
+                if ($result["allowflag"] == TRACE_MSG_GENERAL_ON)
+                    $loggerObj->logger("VM_TRACE", $msgName, $log_time, "R: " . json_encode($msgBody));
+            }
+        }
+        elseif (TRACE_MSG_ON == TRACE_MSG_MODE_MOUDLE_TO_RESTRICT){
+            $result = $loggerObj->trace_module_inqury($destId);
+            if (isset($result) == true){
+                if ($result["restrictflag"] != TRACE_MSG_GENERAL_ON)
+                    $loggerObj->logger("VM_TRACE", $msgName, $log_time, "R: " . json_encode($msgBody));
+            }
+        }
+        elseif (TRACE_MSG_ON == TRACE_MSG_MODE_MOUDLE_FROM_ALLOW){
+            $result = $loggerObj->trace_module_inqury($srcId);
+            if (isset($result) == true){
+                if ($result["allowflag"] == TRACE_MSG_GENERAL_ON)
+                    $loggerObj->logger("VM_TRACE", $msgName, $log_time, "R: " . json_encode($msgBody));
+            }
+        }
+        elseif (TRACE_MSG_ON == TRACE_MSG_MODE_MOUDLE_FROM_RESTRICT){
+            $result = $loggerObj->trace_module_inqury($srcId);
+            if (isset($result) == true){
+                if ($result["restrictflag"] != TRACE_MSG_GENERAL_ON)
+                    $loggerObj->logger("VM_TRACE", $msgName, $log_time, "R: " . json_encode($msgBody));
+            }
+        }
+        elseif (TRACE_MSG_ON == TRACE_MSG_MODE_MOUDLE_DOUBLE_ALLOW){
+            $result1 = $loggerObj->trace_module_inqury($srcId);
+            $result2 = $loggerObj->trace_module_inqury($destId);
+            if (isset($result) == true){
+                if (($result1["allowflag"] == TRACE_MSG_GENERAL_ON) && ($result2["allowflag"] == TRACE_MSG_GENERAL_ON))
+                    $loggerObj->logger("VM_TRACE", $msgName, $log_time, "R: " . json_encode($msgBody));
+            }
+        }
+        elseif (TRACE_MSG_ON == TRACE_MSG_MODE_MOUDLE_DOUBLE_RESTRICT){
+            $result1 = $loggerObj->trace_module_inqury($srcId);
+            $result2 = $loggerObj->trace_module_inqury($destId);
+            if (isset($result) == true){
+                if (($result1["restrictflag"] != TRACE_MSG_GENERAL_ON) && ($result2["restrictflag"] != TRACE_MSG_GENERAL_ON))
+                    $loggerObj->logger("VM_TRACE", $msgName, $log_time, "R: " . json_encode($msgBody));
+            }
+        }
+        elseif (TRACE_MSG_ON == TRACE_MSG_MODE_MSGID_ALLOW){
+            $result = $loggerObj->trace_msg_inqury($msgId);
+            if (isset($result) == true){
+                if ($result["allowflag"] == TRACE_MSG_GENERAL_ON)
+                    $loggerObj->logger("VM_TRACE", $msgName, $log_time, "R: " . json_encode($msgBody));
+            }
+        }
+        elseif (TRACE_MSG_ON == TRACE_MSG_MODE_MSGID_RESTRICT){
+            $result = $loggerObj->trace_msg_inqury($msgId);
+            if (isset($result) == true){
+                if ($result["restrictflag"] != TRACE_MSG_GENERAL_ON)
+                    $loggerObj->logger("VM_TRACE", $msgName, $log_time, "R: " . json_encode($msgBody));
+            }
+        }
+        elseif (TRACE_MSG_ON == TRACE_MSG_MODE_COMBINE_TO_ALLOW){
+            $result1 = $loggerObj->trace_module_inqury($destId);
+            $result2 = $loggerObj->trace_msg_inqury($msgId);
+            if (isset($result) == true){
+                if (($result1["allowflag"] == TRACE_MSG_GENERAL_ON) && ($result2["allowflag"] == TRACE_MSG_GENERAL_ON))
+                    $loggerObj->logger("VM_TRACE", $msgName, $log_time, "R: " . json_encode($msgBody));
+            }
+        }
+        elseif (TRACE_MSG_ON == TRACE_MSG_MODE_COMBINE_TO_RESTRICT){
+            $result1 = $loggerObj->trace_module_inqury($destId);
+            $result2 = $loggerObj->trace_msg_inqury($msgId);
+            if (isset($result) == true){
+                if (($result1["restrictflag"] != TRACE_MSG_GENERAL_ON) && ($result2["restrictflag"] != TRACE_MSG_GENERAL_ON))
+                    $loggerObj->logger("VM_TRACE", $msgName, $log_time, "R: " . json_encode($msgBody));
+            }
+        }
+        elseif (TRACE_MSG_ON == TRACE_MSG_MODE_COMBINE_FROM_ALLOW){
+            $result1 = $loggerObj->trace_module_inqury($srcId);
+            $result2 = $loggerObj->trace_msg_inqury($msgId);
+            if (isset($result) == true){
+                if (($result1["allowflag"] == TRACE_MSG_GENERAL_ON) && ($result2["allowflag"] == TRACE_MSG_GENERAL_ON))
+                    $loggerObj->logger("VM_TRACE", $msgName, $log_time, "R: " . json_encode($msgBody));
+            }
+        }
+        elseif (TRACE_MSG_ON == TRACE_MSG_MODE_COMBINE_FROM_RESTRICT){
+            $result1 = $loggerObj->trace_module_inqury($srcId);
+            $result2 = $loggerObj->trace_msg_inqury($msgId);
+            if (isset($result) == true){
+                if (($result1["restrictflag"] != TRACE_MSG_GENERAL_ON) && ($result2["restrictflag"] != TRACE_MSG_GENERAL_ON))
+                    $loggerObj->logger("VM_TRACE", $msgName, $log_time, "R: " . json_encode($msgBody));
+            }
+        }
+        elseif (TRACE_MSG_ON == TRACE_MSG_MODE_COMBINE_DOUBLE_ALLOW){
+            $result1 = $loggerObj->trace_module_inqury($srcId);
+            $result2 = $loggerObj->trace_module_inqury($destId);
+            $result3 = $loggerObj->trace_msg_inqury($msgId);
+            if (isset($result) == true){
+                if (($result1["allowflag"] == TRACE_MSG_GENERAL_ON) && ($result2["allowflag"] == TRACE_MSG_GENERAL_ON) && ($result3["allowflag"] == TRACE_MSG_GENERAL_ON))
+                    $loggerObj->logger("VM_TRACE", $msgName, $log_time, "R: " . json_encode($msgBody));
+            }
+        }
+        elseif (TRACE_MSG_ON == TRACE_MSG_MODE_COMBINE_DOUBLE_RESTRICT){
+            $result1 = $loggerObj->trace_module_inqury($srcId);
+            $result2 = $loggerObj->trace_module_inqury($destId);
+            $result3 = $loggerObj->trace_msg_inqury($msgId);
+            if (isset($result) == true){
+                if (($result1["restrictflag"] != TRACE_MSG_GENERAL_ON) && ($result2["restrictflag"] != TRACE_MSG_GENERAL_ON) && ($result3["restrictflag"] != TRACE_MSG_GENERAL_ON))
+                    $loggerObj->logger("VM_TRACE", $msgName, $log_time, "R: " . json_encode($msgBody));
+            }
+        }
+        else{
+            //Do nothing
+        }
+
+        //返回
         return true;
     }
 
@@ -176,9 +298,6 @@ class classTaskL1vmCoreRouter
         }
 
         //然后发送从L1_MAIN_ENTRY接收到的消息到缓冲区中
-
-
-
         if($parObj == MFUN_MAIN_ENTRY_WECHAT) {
             if ($this->mfun_l1vm_msg_send(MFUN_TASK_ID_L1VM,
                     MFUN_TASK_ID_L2SDK_WECHAT,

@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: 2016-07-01 16:44:06
+-- Generation Time: 2016-07-06 06:03:24
 -- 服务器版本： 5.6.17
 -- PHP Version: 5.5.12
 
@@ -65,82 +65,395 @@ INSERT INTO `t_l1vm_deviceversion` (`deviceid`, `hw_type`, `hw_ver`, `sw_rel`, `
 
 CREATE TABLE IF NOT EXISTS `t_l1vm_loginfo` (
   `sid` int(6) NOT NULL AUTO_INCREMENT,
-  `project` char(5) NOT NULL,
+  `sysver` char(20) NOT NULL,
+  `project` char(10) NOT NULL,
   `fromuser` char(50) NOT NULL,
   `createtime` char(20) NOT NULL,
   `logdata` text NOT NULL,
   PRIMARY KEY (`sid`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=581216 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=30 ;
 
 --
 -- 转存表中的数据 `t_l1vm_loginfo`
 --
 
-INSERT INTO `t_l1vm_loginfo` (`sid`, `project`, `fromuser`, `createtime`, `logdata`) VALUES
-(581026, 'HCU', 'HCU_SH_0302', '2016-04-07 22:25:52', 'R:<xml><ToUserName><![CDATA[SAE_MFUNHCU]]></ToUserName><FromUserName><![CDATA[HCU_SH_0302]]></FromUserName><CreateTime>1460039152</CreateTime><MsgType><![CDATA[hcu_text]]></MsgType><Content><![CDATA[201881050201124945000000004E000000000000000057066DF0]]></Content><FuncFlag>0</FuncFlag></xml>'),
-(581171, 'HCU', 'HCU_SH_0305', '2016-05-12 23:23:06', 'R:<xml><ToUserName><![CDATA[AQ_HCU]]></ToUserName><FromUserName><![CDATA[HCU_SH_0305]]></FromUserName><CreateTime>1463066586</CreateTime><MsgType><![CDATA[hcu_text]]></MsgType><Content><![CDATA[201881050201130345000000004E000000000000000057318D70]]></Content><FuncFlag>0</FuncFlag></xml>'),
-(581172, 'HCU', 'ZHBMSG', '2016-06-30 15:02:51', 'R:##007020160619033803000___11111ZHB_NOMHCU_SH_0304_44444405556666a01000=139A,68BE'),
-(581173, 'HCU', 'AQ_HCU', '2016-06-30 15:02:51', 'T:'),
-(581174, 'HCU', 'HCU_SH_0302', '2016-04-07 22:25:52', 'R:<xml><ToUserName><![CDATA[AQ_HCU]]></ToUserName><FromUserName><![CDATA[HCU_SH_0302]]></FromUserName><CreateTime>1460039152</CreateTime><MsgType><![CDATA[hcu_text]]></MsgType><Content><![CDATA[201881050201124945000000004E000000000000000057066DF0]]></Content><FuncFlag>0</FuncFlag></xml>'),
-(581175, 'HCU', 'HCU_SH_0301', '2016-03-13 20:33:24', 'R:<xml><ToUserName><![CDATA[AQ_HCU]]></ToUserName><FromUserName><![CDATA[HCU_SH_0301]]></FromUserName><CreateTime>1457872404</CreateTime><MsgType><![CDATA[hcu_text]]></MsgType><Content><![CDATA[252281010201000001120000011200000492000000000000000000000000000056E55E14]]></Content><FuncFlag>0</FuncFlag></xml>'),
-(581176, 'HCU', 'HCU_SH_0301', '2016-04-07 07:36:48', 'R:<xml><ToUserName><![CDATA[AQ_HCU]]></ToUserName><FromUserName><![CDATA[HCU_SH_0301]]></FromUserName><CreateTime>1459985808</CreateTime><MsgType><![CDATA[hcu_text]]></MsgType><Content><![CDATA[261881020201000045000000004E000000000000000057059D90]]></Content><FuncFlag>0</FuncFlag></xml>'),
-(581177, 'HCU', 'HCU_SH_0301', '2016-04-06 07:32:06', 'R:<xml><ToUserName><![CDATA[AQ_HCU]]></ToUserName><FromUserName><![CDATA[HCU_SH_0301]]></FromUserName><CreateTime>1459899126</CreateTime><MsgType><![CDATA[hcu_text]]></MsgType><Content><![CDATA[271881030201008D45000000004E000000000000000057044AF5]]></Content><FuncFlag>0</FuncFlag></xml>'),
-(581178, 'HCU', 'HCU_SH_0301', '2016-03-13 20:33:42', 'R:<xml><ToUserName><![CDATA[AQ_HCU]]></ToUserName><FromUserName><![CDATA[HCU_SH_0301]]></FromUserName><CreateTime>1457872422</CreateTime><MsgType><![CDATA[hcu_text]]></MsgType><Content><![CDATA[2818810602010223000000000000000000000000000056E55E26]]></Content><FuncFlag>0</FuncFlag></xml>'),
-(581179, 'HCU', 'HCU_SH_0301', '2016-03-13 20:35:25', 'R:<xml><ToUserName><![CDATA[AQ_HCU]]></ToUserName><FromUserName><![CDATA[HCU_SH_0301]]></FromUserName><CreateTime>1457872525</CreateTime><MsgType><![CDATA[hcu_text]]></MsgType><Content><![CDATA[29188106020100AC000000000000000000000000000056E55E8D]]></Content><FuncFlag>0</FuncFlag></xml>'),
-(581180, 'HCU', 'HCU_SH_0301', '2016-03-13 20:38:51', 'R:<xml><ToUserName><![CDATA[AQ_HCU]]></ToUserName><FromUserName><![CDATA[HCU_SH_0301]]></FromUserName><CreateTime>1457872731</CreateTime><MsgType><![CDATA[hcu_text]]></MsgType><Content><![CDATA[2B1A810A02020000028B000000000000000000000000000056E55F5B]]></Content><FuncFlag>0</FuncFlag></xml>'),
-(581181, 'HCU', 'HCU_SH_0301', '2016-03-13 20:33:29', 'R:<xml><ToUserName><![CDATA[AQ_HCU]]></ToUserName><FromUserName><![CDATA[HCU_SH_0301]]></FromUserName><CreateTime>1457872409</CreateTime><MsgType><![CDATA[hcu_heart_beat]]></MsgType><Content><![CDATA[FE00]]></Content><FuncFlag>0</FuncFlag></xml>'),
-(581182, 'HCU', 'AQ_HCU', '2016-07-01 22:04:06', 'T:"FE00"'),
-(581183, 'HCU', 'HCU_SH_0301', '2016-03-13 20:35:59', 'R:<xml><ToUserName><![CDATA[AQ_HCU]]></ToUserName><FromUserName><![CDATA[HCU_SH_0301]]></FromUserName><CreateTime>1457872559</CreateTime><MsgType><![CDATA[hcu_command]]></MsgType><Content><![CDATA[FD00]]></Content><FuncFlag>0</FuncFlag></xml>'),
-(581184, 'HCU', 'AQ_HCU', '2016-07-01 22:04:06', 'T:"FD00"'),
-(581185, 'HCU', 'HCU_SH_0305', '2016-05-12 23:23:06', 'R:<xml><ToUserName><![CDATA[AQ_HCU]]></ToUserName><FromUserName><![CDATA[HCU_SH_0305]]></FromUserName><CreateTime>1463066586</CreateTime><MsgType><![CDATA[hcu_text]]></MsgType><Content><![CDATA[201881050201130345000000004E000000000000000057318D70]]></Content><FuncFlag>0</FuncFlag></xml>'),
-(581186, 'HCU', 'ZHBMSG', '2016-07-01 22:04:07', 'R:##007020160619033803000___11111ZHB_NOMHCU_SH_0304_44444405556666a01000=139A,68BE'),
-(581187, 'HCU', 'AQ_HCU', '2016-07-01 22:04:07', 'T:'),
-(581188, 'HCU', 'HCU_SH_0302', '2016-04-07 22:25:52', 'R:<xml><ToUserName><![CDATA[AQ_HCU]]></ToUserName><FromUserName><![CDATA[HCU_SH_0302]]></FromUserName><CreateTime>1460039152</CreateTime><MsgType><![CDATA[hcu_text]]></MsgType><Content><![CDATA[201881050201124945000000004E000000000000000057066DF0]]></Content><FuncFlag>0</FuncFlag></xml>'),
-(581189, 'HCU', 'HCU_SH_0301', '2016-03-13 20:33:24', 'R:<xml><ToUserName><![CDATA[AQ_HCU]]></ToUserName><FromUserName><![CDATA[HCU_SH_0301]]></FromUserName><CreateTime>1457872404</CreateTime><MsgType><![CDATA[hcu_text]]></MsgType><Content><![CDATA[252281010201000001120000011200000492000000000000000000000000000056E55E14]]></Content><FuncFlag>0</FuncFlag></xml>'),
-(581190, 'HCU', 'HCU_SH_0301', '2016-04-07 07:36:48', 'R:<xml><ToUserName><![CDATA[AQ_HCU]]></ToUserName><FromUserName><![CDATA[HCU_SH_0301]]></FromUserName><CreateTime>1459985808</CreateTime><MsgType><![CDATA[hcu_text]]></MsgType><Content><![CDATA[261881020201000045000000004E000000000000000057059D90]]></Content><FuncFlag>0</FuncFlag></xml>'),
-(581191, 'HCU', 'HCU_SH_0301', '2016-04-06 07:32:06', 'R:<xml><ToUserName><![CDATA[AQ_HCU]]></ToUserName><FromUserName><![CDATA[HCU_SH_0301]]></FromUserName><CreateTime>1459899126</CreateTime><MsgType><![CDATA[hcu_text]]></MsgType><Content><![CDATA[271881030201008D45000000004E000000000000000057044AF5]]></Content><FuncFlag>0</FuncFlag></xml>'),
-(581192, 'HCU', 'HCU_SH_0301', '2016-03-13 20:33:42', 'R:<xml><ToUserName><![CDATA[AQ_HCU]]></ToUserName><FromUserName><![CDATA[HCU_SH_0301]]></FromUserName><CreateTime>1457872422</CreateTime><MsgType><![CDATA[hcu_text]]></MsgType><Content><![CDATA[2818810602010223000000000000000000000000000056E55E26]]></Content><FuncFlag>0</FuncFlag></xml>'),
-(581193, 'HCU', 'HCU_SH_0301', '2016-03-13 20:35:25', 'R:<xml><ToUserName><![CDATA[AQ_HCU]]></ToUserName><FromUserName><![CDATA[HCU_SH_0301]]></FromUserName><CreateTime>1457872525</CreateTime><MsgType><![CDATA[hcu_text]]></MsgType><Content><![CDATA[29188106020100AC000000000000000000000000000056E55E8D]]></Content><FuncFlag>0</FuncFlag></xml>'),
-(581194, 'HCU', 'HCU_SH_0301', '2016-03-13 20:38:51', 'R:<xml><ToUserName><![CDATA[AQ_HCU]]></ToUserName><FromUserName><![CDATA[HCU_SH_0301]]></FromUserName><CreateTime>1457872731</CreateTime><MsgType><![CDATA[hcu_text]]></MsgType><Content><![CDATA[2B1A810A02020000028B000000000000000000000000000056E55F5B]]></Content><FuncFlag>0</FuncFlag></xml>'),
-(581195, 'HCU', 'HCU_SH_0301', '2016-03-13 20:33:29', 'R:<xml><ToUserName><![CDATA[AQ_HCU]]></ToUserName><FromUserName><![CDATA[HCU_SH_0301]]></FromUserName><CreateTime>1457872409</CreateTime><MsgType><![CDATA[hcu_heart_beat]]></MsgType><Content><![CDATA[FE00]]></Content><FuncFlag>0</FuncFlag></xml>'),
-(581196, 'HCU', 'AQ_HCU', '2016-07-01 22:36:51', 'T:"FE00"'),
-(581197, 'HCU', 'HCU_SH_0301', '2016-03-13 20:35:59', 'R:<xml><ToUserName><![CDATA[AQ_HCU]]></ToUserName><FromUserName><![CDATA[HCU_SH_0301]]></FromUserName><CreateTime>1457872559</CreateTime><MsgType><![CDATA[hcu_command]]></MsgType><Content><![CDATA[FD00]]></Content><FuncFlag>0</FuncFlag></xml>'),
-(581198, 'HCU', 'AQ_HCU', '2016-07-01 22:36:51', 'T:"FD00"'),
-(581199, 'HCU', 'HCU_SH_0305', '2016-05-12 23:23:06', 'R:<xml><ToUserName><![CDATA[AQ_HCU]]></ToUserName><FromUserName><![CDATA[HCU_SH_0305]]></FromUserName><CreateTime>1463066586</CreateTime><MsgType><![CDATA[hcu_text]]></MsgType><Content><![CDATA[201881050201130345000000004E000000000000000057318D70]]></Content><FuncFlag>0</FuncFlag></xml>'),
-(581200, 'HCU', 'ZHBMSG', '2016-07-01 22:36:51', 'R:##007020160619033803000___11111ZHB_NOMHCU_SH_0304_44444405556666a01000=139A,68BE'),
-(581201, 'HCU', 'AQ_HCU', '2016-07-01 22:36:52', 'T:'),
-(581202, 'HCU', 'HCU_SH_0302', '2016-04-07 22:25:52', 'R:<xml><ToUserName><![CDATA[AQ_HCU]]></ToUserName><FromUserName><![CDATA[HCU_SH_0302]]></FromUserName><CreateTime>1460039152</CreateTime><MsgType><![CDATA[hcu_text]]></MsgType><Content><![CDATA[201881050201124945000000004E000000000000000057066DF0]]></Content><FuncFlag>0</FuncFlag></xml>'),
-(581203, 'HCU', 'HCU_SH_0301', '2016-03-13 20:33:24', 'R:<xml><ToUserName><![CDATA[AQ_HCU]]></ToUserName><FromUserName><![CDATA[HCU_SH_0301]]></FromUserName><CreateTime>1457872404</CreateTime><MsgType><![CDATA[hcu_text]]></MsgType><Content><![CDATA[252281010201000001120000011200000492000000000000000000000000000056E55E14]]></Content><FuncFlag>0</FuncFlag></xml>'),
-(581204, 'HCU', 'HCU_SH_0301', '2016-04-07 07:36:48', 'R:<xml><ToUserName><![CDATA[AQ_HCU]]></ToUserName><FromUserName><![CDATA[HCU_SH_0301]]></FromUserName><CreateTime>1459985808</CreateTime><MsgType><![CDATA[hcu_text]]></MsgType><Content><![CDATA[261881020201000045000000004E000000000000000057059D90]]></Content><FuncFlag>0</FuncFlag></xml>'),
-(581205, 'HCU', 'HCU_SH_0301', '2016-04-06 07:32:06', 'R:<xml><ToUserName><![CDATA[AQ_HCU]]></ToUserName><FromUserName><![CDATA[HCU_SH_0301]]></FromUserName><CreateTime>1459899126</CreateTime><MsgType><![CDATA[hcu_text]]></MsgType><Content><![CDATA[271881030201008D45000000004E000000000000000057044AF5]]></Content><FuncFlag>0</FuncFlag></xml>'),
-(581206, 'HCU', 'HCU_SH_0301', '2016-03-13 20:33:42', 'R:<xml><ToUserName><![CDATA[AQ_HCU]]></ToUserName><FromUserName><![CDATA[HCU_SH_0301]]></FromUserName><CreateTime>1457872422</CreateTime><MsgType><![CDATA[hcu_text]]></MsgType><Content><![CDATA[2818810602010223000000000000000000000000000056E55E26]]></Content><FuncFlag>0</FuncFlag></xml>'),
-(581207, 'HCU', 'HCU_SH_0301', '2016-03-13 20:35:25', 'R:<xml><ToUserName><![CDATA[AQ_HCU]]></ToUserName><FromUserName><![CDATA[HCU_SH_0301]]></FromUserName><CreateTime>1457872525</CreateTime><MsgType><![CDATA[hcu_text]]></MsgType><Content><![CDATA[29188106020100AC000000000000000000000000000056E55E8D]]></Content><FuncFlag>0</FuncFlag></xml>'),
-(581208, 'HCU', 'HCU_SH_0301', '2016-03-13 20:38:51', 'R:<xml><ToUserName><![CDATA[AQ_HCU]]></ToUserName><FromUserName><![CDATA[HCU_SH_0301]]></FromUserName><CreateTime>1457872731</CreateTime><MsgType><![CDATA[hcu_text]]></MsgType><Content><![CDATA[2B1A810A02020000028B000000000000000000000000000056E55F5B]]></Content><FuncFlag>0</FuncFlag></xml>'),
-(581209, 'HCU', 'HCU_SH_0301', '2016-03-13 20:33:29', 'R:<xml><ToUserName><![CDATA[AQ_HCU]]></ToUserName><FromUserName><![CDATA[HCU_SH_0301]]></FromUserName><CreateTime>1457872409</CreateTime><MsgType><![CDATA[hcu_heart_beat]]></MsgType><Content><![CDATA[FE00]]></Content><FuncFlag>0</FuncFlag></xml>'),
-(581210, 'HCU', 'AQ_HCU', '2016-07-01 22:43:50', 'T:"FE00"'),
-(581211, 'HCU', 'HCU_SH_0301', '2016-03-13 20:35:59', 'R:<xml><ToUserName><![CDATA[AQ_HCU]]></ToUserName><FromUserName><![CDATA[HCU_SH_0301]]></FromUserName><CreateTime>1457872559</CreateTime><MsgType><![CDATA[hcu_command]]></MsgType><Content><![CDATA[FD00]]></Content><FuncFlag>0</FuncFlag></xml>'),
-(581212, 'HCU', 'AQ_HCU', '2016-07-01 22:43:50', 'T:"FD00"'),
-(581213, 'HCU', 'HCU_SH_0305', '2016-05-12 23:23:06', 'R:<xml><ToUserName><![CDATA[AQ_HCU]]></ToUserName><FromUserName><![CDATA[HCU_SH_0305]]></FromUserName><CreateTime>1463066586</CreateTime><MsgType><![CDATA[hcu_text]]></MsgType><Content><![CDATA[201881050201130345000000004E000000000000000057318D70]]></Content><FuncFlag>0</FuncFlag></xml>'),
-(581214, 'HCU', 'ZHBMSG', '2016-07-01 22:43:50', 'R:##007020160619033803000___11111ZHB_NOMHCU_SH_0304_44444405556666a01000=139A,68BE'),
-(581215, 'HCU', 'AQ_HCU', '2016-07-01 22:43:50', 'T:');
+INSERT INTO `t_l1vm_loginfo` (`sid`, `sysver`, `project`, `fromuser`, `createtime`, `logdata`) VALUES
+(1, 'R002.D20', 'VM_TRACE', 'MSG_ID_L2SDK_HCU_DATA_COMING', '2016-07-06 11:45:03', 'R: <xml><ToUserName><![CDATA[AQ_HCU]]></ToUserName><FromUserName><![CDATA[HCU_SH_0302]]></FromUserName><CreateTime>1460039152</CreateTime><MsgType><![CDATA[hcu_text]]></MsgType><Content><![CDATA[201881050201124945000000004E000000000000000057066DF0]]></Content><FuncFlag>0</FuncFlag></xml>'),
+(2, 'R002.D20', 'HCU', 'HCU_SH_0302', '2016-04-07 22:25:52', 'R:<xml><ToUserName><![CDATA[AQ_HCU]]></ToUserName><FromUserName><![CDATA[HCU_SH_0302]]></FromUserName><CreateTime>1460039152</CreateTime><MsgType><![CDATA[hcu_text]]></MsgType><Content><![CDATA[201881050201124945000000004E000000000000000057066DF0]]></Content><FuncFlag>0</FuncFlag></xml>'),
+(3, 'R002.D20', 'VM_TRACE', 'MSG_ID_L2SDK_HCU_DATA_COMING', '2016-07-06 11:45:03', 'R: <xml><ToUserName><![CDATA[AQ_HCU]]></ToUserName><FromUserName><![CDATA[HCU_SH_0301]]></FromUserName><CreateTime>1457872404</CreateTime><MsgType><![CDATA[hcu_text]]></MsgType><Content><![CDATA[252281010201000001120000011200000492000000000000000000000000000056E55E14]]></Content><FuncFlag>0</FuncFlag></xml>'),
+(4, 'R002.D20', 'HCU', 'HCU_SH_0301', '2016-03-13 20:33:24', 'R:<xml><ToUserName><![CDATA[AQ_HCU]]></ToUserName><FromUserName><![CDATA[HCU_SH_0301]]></FromUserName><CreateTime>1457872404</CreateTime><MsgType><![CDATA[hcu_text]]></MsgType><Content><![CDATA[252281010201000001120000011200000492000000000000000000000000000056E55E14]]></Content><FuncFlag>0</FuncFlag></xml>'),
+(5, 'R002.D20', 'VM_TRACE', 'MSG_ID_L2SDK_HCU_DATA_COMING', '2016-07-06 11:45:03', 'R: <xml><ToUserName><![CDATA[AQ_HCU]]></ToUserName><FromUserName><![CDATA[HCU_SH_0301]]></FromUserName><CreateTime>1459985808</CreateTime><MsgType><![CDATA[hcu_text]]></MsgType><Content><![CDATA[261881020201000045000000004E000000000000000057059D90]]></Content><FuncFlag>0</FuncFlag></xml>'),
+(6, 'R002.D20', 'HCU', 'HCU_SH_0301', '2016-04-07 07:36:48', 'R:<xml><ToUserName><![CDATA[AQ_HCU]]></ToUserName><FromUserName><![CDATA[HCU_SH_0301]]></FromUserName><CreateTime>1459985808</CreateTime><MsgType><![CDATA[hcu_text]]></MsgType><Content><![CDATA[261881020201000045000000004E000000000000000057059D90]]></Content><FuncFlag>0</FuncFlag></xml>'),
+(7, 'R002.D20', 'VM_TRACE', 'MSG_ID_L2SDK_HCU_DATA_COMING', '2016-07-06 11:45:03', 'R: <xml><ToUserName><![CDATA[AQ_HCU]]></ToUserName><FromUserName><![CDATA[HCU_SH_0301]]></FromUserName><CreateTime>1459899126</CreateTime><MsgType><![CDATA[hcu_text]]></MsgType><Content><![CDATA[271881030201008D45000000004E000000000000000057044AF5]]></Content><FuncFlag>0</FuncFlag></xml>'),
+(8, 'R002.D20', 'HCU', 'HCU_SH_0301', '2016-04-06 07:32:06', 'R:<xml><ToUserName><![CDATA[AQ_HCU]]></ToUserName><FromUserName><![CDATA[HCU_SH_0301]]></FromUserName><CreateTime>1459899126</CreateTime><MsgType><![CDATA[hcu_text]]></MsgType><Content><![CDATA[271881030201008D45000000004E000000000000000057044AF5]]></Content><FuncFlag>0</FuncFlag></xml>'),
+(9, 'R002.D20', 'VM_TRACE', 'MSG_ID_L2SDK_HCU_DATA_COMING', '2016-07-06 11:45:03', 'R: <xml><ToUserName><![CDATA[AQ_HCU]]></ToUserName><FromUserName><![CDATA[HCU_SH_0301]]></FromUserName><CreateTime>1457872422</CreateTime><MsgType><![CDATA[hcu_text]]></MsgType><Content><![CDATA[2818810602010223000000000000000000000000000056E55E26]]></Content><FuncFlag>0</FuncFlag></xml>'),
+(10, 'R002.D20', 'HCU', 'HCU_SH_0301', '2016-03-13 20:33:42', 'R:<xml><ToUserName><![CDATA[AQ_HCU]]></ToUserName><FromUserName><![CDATA[HCU_SH_0301]]></FromUserName><CreateTime>1457872422</CreateTime><MsgType><![CDATA[hcu_text]]></MsgType><Content><![CDATA[2818810602010223000000000000000000000000000056E55E26]]></Content><FuncFlag>0</FuncFlag></xml>'),
+(11, 'R002.D20', 'VM_TRACE', 'MSG_ID_L2SDK_HCU_DATA_COMING', '2016-07-06 11:45:03', 'R: <xml><ToUserName><![CDATA[AQ_HCU]]></ToUserName><FromUserName><![CDATA[HCU_SH_0301]]></FromUserName><CreateTime>1457872525</CreateTime><MsgType><![CDATA[hcu_text]]></MsgType><Content><![CDATA[29188106020100AC000000000000000000000000000056E55E8D]]></Content><FuncFlag>0</FuncFlag></xml>'),
+(12, 'R002.D20', 'HCU', 'HCU_SH_0301', '2016-03-13 20:35:25', 'R:<xml><ToUserName><![CDATA[AQ_HCU]]></ToUserName><FromUserName><![CDATA[HCU_SH_0301]]></FromUserName><CreateTime>1457872525</CreateTime><MsgType><![CDATA[hcu_text]]></MsgType><Content><![CDATA[29188106020100AC000000000000000000000000000056E55E8D]]></Content><FuncFlag>0</FuncFlag></xml>'),
+(13, 'R002.D20', 'VM_TRACE', 'MSG_ID_L2SDK_HCU_DATA_COMING', '2016-07-06 11:45:03', 'R: <xml><ToUserName><![CDATA[AQ_HCU]]></ToUserName><FromUserName><![CDATA[HCU_SH_0301]]></FromUserName><CreateTime>1457872731</CreateTime><MsgType><![CDATA[hcu_text]]></MsgType><Content><![CDATA[2B1A810A02020000028B000000000000000000000000000056E55F5B]]></Content><FuncFlag>0</FuncFlag></xml>'),
+(14, 'R002.D20', 'HCU', 'HCU_SH_0301', '2016-03-13 20:38:51', 'R:<xml><ToUserName><![CDATA[AQ_HCU]]></ToUserName><FromUserName><![CDATA[HCU_SH_0301]]></FromUserName><CreateTime>1457872731</CreateTime><MsgType><![CDATA[hcu_text]]></MsgType><Content><![CDATA[2B1A810A02020000028B000000000000000000000000000056E55F5B]]></Content><FuncFlag>0</FuncFlag></xml>'),
+(15, 'R002.D20', 'VM_TRACE', 'MSG_ID_L2SDK_HCU_DATA_COMING', '2016-07-06 11:45:03', 'R: <xml><ToUserName><![CDATA[AQ_HCU]]></ToUserName><FromUserName><![CDATA[HCU_SH_0301]]></FromUserName><CreateTime>1457872409</CreateTime><MsgType><![CDATA[hcu_heart_beat]]></MsgType><Content><![CDATA[FE00]]></Content><FuncFlag>0</FuncFlag></xml>'),
+(16, 'R002.D20', 'HCU', 'HCU_SH_0301', '2016-03-13 20:33:29', 'R:<xml><ToUserName><![CDATA[AQ_HCU]]></ToUserName><FromUserName><![CDATA[HCU_SH_0301]]></FromUserName><CreateTime>1457872409</CreateTime><MsgType><![CDATA[hcu_heart_beat]]></MsgType><Content><![CDATA[FE00]]></Content><FuncFlag>0</FuncFlag></xml>'),
+(17, 'R002.D20', 'HCU', 'AQ_HCU', '2016-07-06 11:45:03', 'T:"FE00"'),
+(18, 'R002.D20', 'VM_TRACE', 'MSG_ID_L2SDK_HCU_DATA_COMING', '2016-07-06 11:45:03', 'R: <xml><ToUserName><![CDATA[AQ_HCU]]></ToUserName><FromUserName><![CDATA[HCU_SH_0301]]></FromUserName><CreateTime>1457872559</CreateTime><MsgType><![CDATA[hcu_command]]></MsgType><Content><![CDATA[FD00]]></Content><FuncFlag>0</FuncFlag></xml>'),
+(19, 'R002.D20', 'HCU', 'HCU_SH_0301', '2016-03-13 20:35:59', 'R:<xml><ToUserName><![CDATA[AQ_HCU]]></ToUserName><FromUserName><![CDATA[HCU_SH_0301]]></FromUserName><CreateTime>1457872559</CreateTime><MsgType><![CDATA[hcu_command]]></MsgType><Content><![CDATA[FD00]]></Content><FuncFlag>0</FuncFlag></xml>'),
+(20, 'R002.D20', 'HCU', 'AQ_HCU', '2016-07-06 11:45:03', 'T:"FD00"'),
+(21, 'R002.D20', 'VM_TRACE', 'MSG_ID_L2SDK_HCU_DATA_COMING', '2016-07-06 11:45:03', 'R: <xml><ToUserName><![CDATA[AQ_HCU]]></ToUserName><FromUserName><![CDATA[HCU_SH_0305]]></FromUserName><CreateTime>1463066586</CreateTime><MsgType><![CDATA[hcu_text]]></MsgType><Content><![CDATA[201881050201130345000000004E000000000000000057318D70]]></Content><FuncFlag>0</FuncFlag></xml>'),
+(22, 'R002.D20', 'HCU', 'HCU_SH_0305', '2016-05-12 23:23:06', 'R:<xml><ToUserName><![CDATA[AQ_HCU]]></ToUserName><FromUserName><![CDATA[HCU_SH_0305]]></FromUserName><CreateTime>1463066586</CreateTime><MsgType><![CDATA[hcu_text]]></MsgType><Content><![CDATA[201881050201130345000000004E000000000000000057318D70]]></Content><FuncFlag>0</FuncFlag></xml>'),
+(23, 'R002.D20', 'VM_TRACE', 'MSG_ID_L2SDK_HCU_DATA_COMING', '2016-07-06 11:45:03', 'R: ##007020160619033803000___11111ZHB_NOMHCU_SH_0304_44444405556666a01000=139A,68BE'),
+(24, 'R002.D20', 'HCU', 'ZHBMSG', '2016-07-06 11:45:03', 'R:##007020160619033803000___11111ZHB_NOMHCU_SH_0304_44444405556666a01000=139A,68BE'),
+(25, 'R002.D20', 'HCU', 'AQ_HCU', '2016-07-06 11:45:03', 'T:'),
+(26, 'R002.D20', 'VM_TRACE', 'MSG_ID_L2SDK_HCU_DATA_COMING', '2016-07-06 11:45:03', 'R: login'),
+(27, 'R002.D20', 'L4AQYCUI', 'MFUN_TASK_ID_L3APPL_FUM1SYM', '2016-07-06 11:45:03', 'T:"{"status":"true","text":"login success","key":"AmTFFL0K","admin":"true"}"'),
+(28, 'R002.D20', 'VM_TRACE', 'MSG_ID_L2SDK_HCU_DATA_COMING', '2016-07-06 11:45:03', 'R: UserInfo'),
+(29, 'R002.D20', 'L4AQYCUI', 'MFUN_TASK_ID_L3APPL_FUM1SYM', '2016-07-06 11:45:03', 'T:"{"status":"false","ret":null}"');
 
 -- --------------------------------------------------------
 
 --
--- 表的结构 `t_l1vm_logswitch`
+-- 表的结构 `t_l1vm_logtracemodule`
 --
 
-CREATE TABLE IF NOT EXISTS `t_l1vm_logswitch` (
+CREATE TABLE IF NOT EXISTS `t_l1vm_logtracemodule` (
+  `sid` int(6) NOT NULL AUTO_INCREMENT,
+  `moduleid` int(2) NOT NULL,
+  `allowflag` tinyint(1) NOT NULL,
+  `restrictflag` tinyint(1) NOT NULL,
+  PRIMARY KEY (`sid`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=81 ;
+
+--
+-- 转存表中的数据 `t_l1vm_logtracemodule`
+--
+
+INSERT INTO `t_l1vm_logtracemodule` (`sid`, `moduleid`, `allowflag`, `restrictflag`) VALUES
+(1, 1, 1, 0),
+(2, 2, 1, 0),
+(3, 3, 1, 0),
+(4, 4, 1, 0),
+(5, 5, 1, 0),
+(6, 6, 1, 0),
+(7, 7, 1, 0),
+(8, 8, 1, 0),
+(9, 9, 1, 0),
+(10, 10, 1, 0),
+(11, 11, 1, 0),
+(12, 12, 1, 0),
+(13, 13, 1, 0),
+(14, 14, 1, 0),
+(15, 15, 1, 0),
+(16, 16, 1, 0),
+(17, 17, 1, 0),
+(18, 18, 1, 0),
+(19, 19, 1, 0),
+(20, 20, 1, 0),
+(21, 21, 1, 0),
+(22, 22, 1, 0),
+(23, 23, 1, 0),
+(24, 24, 1, 0),
+(25, 25, 1, 0),
+(26, 26, 1, 0),
+(27, 27, 1, 0),
+(28, 28, 1, 0),
+(29, 29, 1, 0),
+(30, 30, 1, 0),
+(31, 31, 1, 0),
+(32, 32, 1, 0),
+(33, 33, 1, 0),
+(34, 34, 1, 0),
+(35, 35, 1, 0),
+(36, 36, 1, 0),
+(37, 37, 1, 0),
+(38, 38, 1, 0),
+(39, 39, 1, 0),
+(40, 40, 1, 0),
+(41, 41, 1, 0),
+(42, 42, 1, 0),
+(43, 43, 1, 0),
+(44, 44, 1, 0),
+(45, 45, 1, 0),
+(46, 46, 1, 0),
+(47, 47, 1, 0),
+(48, 48, 1, 0),
+(49, 49, 1, 0),
+(50, 50, 1, 0),
+(51, 51, 1, 0),
+(52, 52, 1, 0),
+(53, 53, 1, 0),
+(54, 54, 1, 0),
+(55, 55, 1, 0),
+(56, 56, 1, 0),
+(57, 57, 1, 0),
+(58, 58, 1, 0),
+(59, 59, 1, 0),
+(60, 60, 1, 0),
+(61, 61, 1, 0),
+(62, 62, 1, 0),
+(63, 63, 1, 0),
+(64, 64, 1, 0),
+(65, 65, 1, 0),
+(66, 66, 1, 0),
+(67, 67, 1, 0),
+(68, 68, 1, 0),
+(69, 69, 1, 0),
+(70, 70, 1, 0),
+(71, 71, 1, 0),
+(72, 72, 1, 0),
+(73, 73, 1, 0),
+(74, 74, 1, 0),
+(75, 75, 1, 0),
+(76, 76, 1, 0),
+(77, 77, 1, 0),
+(78, 78, 1, 0),
+(79, 79, 1, 0),
+(80, 80, 1, 0);
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `t_l1vm_logtracemsg`
+--
+
+CREATE TABLE IF NOT EXISTS `t_l1vm_logtracemsg` (
+  `sid` int(6) NOT NULL AUTO_INCREMENT,
+  `msgid` int(2) NOT NULL,
+  `allowflag` tinyint(1) NOT NULL,
+  `restrictflag` tinyint(1) NOT NULL,
+  PRIMARY KEY (`sid`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=210 ;
+
+--
+-- 转存表中的数据 `t_l1vm_logtracemsg`
+--
+
+INSERT INTO `t_l1vm_logtracemsg` (`sid`, `msgid`, `allowflag`, `restrictflag`) VALUES
+(1, 1, 1, 0),
+(2, 2, 1, 0),
+(3, 3, 1, 0),
+(4, 4, 1, 0),
+(5, 5, 1, 0),
+(6, 6, 1, 0),
+(7, 7, 1, 0),
+(8, 8, 1, 0),
+(9, 9, 1, 0),
+(10, 10, 1, 0),
+(11, 11, 1, 0),
+(12, 12, 1, 0),
+(13, 13, 1, 0),
+(14, 14, 1, 0),
+(15, 15, 1, 0),
+(16, 16, 1, 0),
+(17, 17, 1, 0),
+(18, 18, 1, 0),
+(19, 19, 1, 0),
+(20, 20, 1, 0),
+(21, 21, 1, 0),
+(22, 22, 1, 0),
+(23, 23, 1, 0),
+(24, 24, 1, 0),
+(25, 25, 1, 0),
+(26, 26, 1, 0),
+(27, 27, 1, 0),
+(28, 28, 1, 0),
+(29, 29, 1, 0),
+(30, 30, 1, 0),
+(31, 31, 1, 0),
+(32, 32, 1, 0),
+(33, 33, 1, 0),
+(34, 34, 1, 0),
+(35, 35, 1, 0),
+(36, 36, 1, 0),
+(37, 37, 1, 0),
+(38, 38, 1, 0),
+(39, 39, 1, 0),
+(40, 40, 1, 0),
+(41, 41, 1, 0),
+(42, 42, 1, 0),
+(43, 43, 1, 0),
+(44, 44, 1, 0),
+(45, 45, 1, 0),
+(46, 46, 1, 0),
+(47, 47, 1, 0),
+(48, 48, 1, 0),
+(49, 49, 1, 0),
+(50, 50, 1, 0),
+(51, 51, 1, 0),
+(52, 52, 1, 0),
+(53, 53, 1, 0),
+(54, 54, 1, 0),
+(55, 55, 1, 0),
+(56, 56, 1, 0),
+(57, 57, 1, 0),
+(58, 58, 1, 0),
+(59, 59, 1, 0),
+(60, 60, 1, 0),
+(61, 61, 1, 0),
+(62, 62, 1, 0),
+(63, 63, 1, 0),
+(64, 64, 1, 0),
+(65, 65, 1, 0),
+(66, 66, 1, 0),
+(67, 67, 1, 0),
+(68, 68, 1, 0),
+(69, 69, 1, 0),
+(70, 70, 1, 0),
+(71, 71, 1, 0),
+(72, 72, 1, 0),
+(73, 73, 1, 0),
+(74, 74, 1, 0),
+(75, 75, 1, 0),
+(76, 76, 1, 0),
+(77, 77, 1, 0),
+(78, 78, 1, 0),
+(79, 79, 1, 0),
+(80, 80, 1, 0),
+(81, 81, 1, 0),
+(82, 82, 1, 0),
+(83, 83, 1, 0),
+(84, 84, 1, 0),
+(85, 85, 1, 0),
+(86, 86, 1, 0),
+(87, 87, 1, 0),
+(88, 88, 1, 0),
+(89, 89, 1, 0),
+(90, 90, 1, 0),
+(91, 91, 1, 0),
+(92, 92, 1, 0),
+(93, 93, 1, 0),
+(94, 94, 1, 0),
+(95, 95, 1, 0),
+(96, 96, 1, 0),
+(97, 97, 1, 0),
+(98, 98, 1, 0),
+(99, 99, 1, 0),
+(100, 100, 1, 0),
+(101, 101, 1, 0),
+(102, 102, 1, 0),
+(103, 103, 1, 0),
+(104, 104, 1, 0),
+(105, 105, 1, 0),
+(106, 106, 1, 0),
+(107, 107, 1, 0),
+(108, 108, 1, 0),
+(109, 109, 1, 0),
+(110, 110, 1, 0),
+(111, 111, 1, 0),
+(112, 112, 1, 0),
+(113, 113, 1, 0),
+(114, 114, 1, 0),
+(115, 115, 1, 0),
+(116, 116, 1, 0),
+(117, 117, 1, 0),
+(118, 118, 1, 0),
+(119, 119, 1, 0),
+(120, 120, 1, 0),
+(121, 121, 1, 0),
+(122, 122, 1, 0),
+(123, 123, 1, 0),
+(124, 124, 1, 0),
+(125, 125, 1, 0),
+(126, 126, 1, 0),
+(127, 127, 1, 0),
+(128, 128, 1, 0),
+(129, 129, 1, 0),
+(130, 130, 1, 0),
+(131, 131, 1, 0),
+(132, 132, 1, 0),
+(133, 133, 1, 0),
+(134, 134, 1, 0),
+(135, 135, 1, 0),
+(136, 136, 1, 0),
+(137, 137, 1, 0),
+(138, 138, 1, 0),
+(139, 139, 1, 0),
+(140, 140, 1, 0),
+(141, 141, 1, 0),
+(142, 142, 1, 0),
+(143, 143, 1, 0),
+(144, 144, 1, 0),
+(145, 145, 1, 0),
+(146, 146, 1, 0),
+(147, 147, 1, 0),
+(148, 148, 1, 0),
+(149, 149, 1, 0),
+(150, 150, 1, 0),
+(151, 151, 1, 0),
+(152, 152, 1, 0),
+(153, 153, 1, 0),
+(154, 154, 1, 0),
+(155, 155, 1, 0),
+(156, 156, 1, 0),
+(157, 157, 1, 0),
+(158, 158, 1, 0),
+(159, 159, 1, 0),
+(160, 160, 1, 0),
+(161, 161, 1, 0),
+(162, 162, 1, 0),
+(163, 163, 1, 0),
+(164, 164, 1, 0),
+(165, 165, 1, 0),
+(166, 166, 1, 0),
+(167, 167, 1, 0),
+(168, 168, 1, 0),
+(169, 169, 1, 0),
+(170, 170, 1, 0),
+(171, 171, 1, 0),
+(172, 172, 1, 0),
+(173, 173, 1, 0),
+(174, 174, 1, 0),
+(175, 175, 1, 0),
+(176, 176, 1, 0),
+(177, 177, 1, 0),
+(178, 178, 1, 0),
+(179, 179, 1, 0),
+(180, 180, 1, 0),
+(181, 181, 1, 0),
+(182, 182, 1, 0),
+(183, 183, 1, 0),
+(184, 184, 1, 0),
+(185, 185, 1, 0),
+(186, 186, 1, 0),
+(187, 187, 1, 0),
+(188, 188, 1, 0),
+(189, 189, 1, 0),
+(190, 190, 1, 0),
+(191, 191, 1, 0),
+(192, 192, 1, 0),
+(193, 193, 1, 0),
+(194, 194, 1, 0),
+(195, 195, 1, 0),
+(196, 196, 1, 0),
+(197, 197, 1, 0),
+(198, 198, 1, 0),
+(199, 199, 1, 0),
+(200, 200, 1, 0),
+(201, 201, 1, 0),
+(202, 202, 1, 0),
+(203, 203, 1, 0),
+(204, 204, 1, 0),
+(205, 205, 1, 0),
+(206, 206, 1, 0),
+(207, 207, 1, 0),
+(208, 208, 1, 0),
+(209, 209, 1, 0);
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `t_l1vm_logwechatswitch`
+--
+
+CREATE TABLE IF NOT EXISTS `t_l1vm_logwechatswitch` (
   `user` char(50) NOT NULL,
   `switch` char(1) NOT NULL,
   PRIMARY KEY (`user`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
--- 转存表中的数据 `t_l1vm_logswitch`
+-- 转存表中的数据 `t_l1vm_logwechatswitch`
 --
 
-INSERT INTO `t_l1vm_logswitch` (`user`, `switch`) VALUES
+INSERT INTO `t_l1vm_logwechatswitch` (`user`, `switch`) VALUES
 ('oS0Chv3Uum1TZqHaCEb06AoBfCvY', '1'),
 ('oS0Chv-avCH7W4ubqOQAFXojYODY', '1');
 
@@ -381,9 +694,9 @@ CREATE TABLE IF NOT EXISTS `t_l2snr_emcaccumulation` (
 INSERT INTO `t_l2snr_emcaccumulation` (`sid`, `deviceid`, `lastupdatedate`, `avg30days`, `avg3month`) VALUES
 (1, 'HCU_SH_0301', '2016-04-27', '0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0', '0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0'),
 (2, 'gh_70c714952b02_8248307502397542f48a3775bcb234d4', '2016-04-23', '0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0', '0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0'),
-(3, 'HCU_SH_0302', '2016-07-01', '0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0', '0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0'),
+(3, 'HCU_SH_0302', '2016-07-06', '0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0', '0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0'),
 (4, 'HCU_SH_0303', '2016-06-12', '0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0', '0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0'),
-(5, 'HCU_SH_0305', '2016-07-01', '0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0', '0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0'),
+(5, 'HCU_SH_0305', '2016-07-06', '0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0', '0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0'),
 (6, 'HCU_SH_0304', '2016-06-16', '0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0', '0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0'),
 (7, 'HCU_SH_0309', '2016-06-18', '0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0', '0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0');
 
@@ -472,7 +785,7 @@ CREATE TABLE IF NOT EXISTS `t_l2snr_hourreport` (
   `datastatus` char(10) DEFAULT NULL,
   `validdatanum` int(1) DEFAULT NULL,
   PRIMARY KEY (`sid`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=22 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=57 ;
 
 --
 -- 转存表中的数据 `t_l2snr_hourreport`
@@ -499,7 +812,42 @@ INSERT INTO `t_l2snr_hourreport` (`sid`, `devcode`, `statcode`, `reportdate`, `h
 (18, '', NULL, '0000-00-00', 0, 18, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
 (19, '', NULL, '0000-00-00', 0, 19, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
 (20, '', NULL, '0000-00-00', 0, 20, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(21, '', NULL, '0000-00-00', 0, 21, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+(21, '', NULL, '0000-00-00', 0, 21, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(22, '', NULL, '0000-00-00', 0, 22, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(23, '', NULL, '0000-00-00', 0, 23, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(24, '', NULL, '0000-00-00', 0, 24, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(25, '', NULL, '0000-00-00', 0, 25, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(26, '', NULL, '0000-00-00', 0, 26, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(27, '', NULL, '0000-00-00', 0, 27, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(28, '', NULL, '0000-00-00', 0, 28, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(29, '', NULL, '0000-00-00', 0, 29, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(30, '', NULL, '0000-00-00', 0, 30, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(31, '', NULL, '0000-00-00', 0, 31, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(32, '', NULL, '0000-00-00', 0, 32, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(33, '', NULL, '0000-00-00', 0, 33, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(34, '', NULL, '0000-00-00', 0, 34, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(35, '', NULL, '0000-00-00', 0, 35, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(36, '', NULL, '0000-00-00', 0, 36, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(37, '', NULL, '0000-00-00', 0, 37, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(38, '', NULL, '0000-00-00', 0, 38, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(39, '', NULL, '0000-00-00', 0, 39, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(40, '', NULL, '0000-00-00', 0, 40, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(41, '', NULL, '0000-00-00', 0, 41, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(42, '', NULL, '0000-00-00', 0, 42, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(43, '', NULL, '0000-00-00', 0, 43, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(44, '', NULL, '0000-00-00', 0, 44, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(45, '', NULL, '0000-00-00', 0, 45, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(46, '', NULL, '0000-00-00', 0, 46, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(47, '', NULL, '0000-00-00', 0, 47, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(48, '', NULL, '0000-00-00', 0, 48, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(49, '', NULL, '0000-00-00', 0, 49, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(50, '', NULL, '0000-00-00', 0, 50, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(51, '', NULL, '0000-00-00', 0, 51, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(52, '', NULL, '0000-00-00', 0, 52, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(53, '', NULL, '0000-00-00', 0, 53, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(54, '', NULL, '0000-00-00', 0, 54, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(55, '', NULL, '0000-00-00', 0, 55, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(56, '', NULL, '0000-00-00', 0, 56, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -1011,7 +1359,7 @@ CREATE TABLE IF NOT EXISTS `t_l3f1sym_session` (
 --
 
 INSERT INTO `t_l3f1sym_session` (`sessionid`, `uid`, `lastupdate`) VALUES
-('5EN3CYEO', 'UID001', 1467384230);
+('AmTFFL0K', 'UID001', 1467776703);
 
 -- --------------------------------------------------------
 

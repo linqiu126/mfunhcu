@@ -231,80 +231,60 @@ $result = $db->db_EmcAccumulationInfo_inqury("aaa", "bbb");
 //EMC 20
 //$postStr = "<xml><ToUserName><![CDATA[AQ_HCU]]></ToUserName><FromUserName><![CDATA[HCU_SH_0301]]></FromUserName><CreateTime>1463066438</CreateTime><MsgType><![CDATA[hcu_text]]></MsgType><Content><![CDATA[20188105020113DB45000000004E0000000000000000570A59B2]]></Content><FuncFlag>0</FuncFlag></xml>";
 $postStr = "<xml><ToUserName><![CDATA[AQ_HCU]]></ToUserName><FromUserName><![CDATA[HCU_SH_0302]]></FromUserName><CreateTime>1460039152</CreateTime><MsgType><![CDATA[hcu_text]]></MsgType><Content><![CDATA[201881050201124945000000004E000000000000000057066DF0]]></Content><FuncFlag>0</FuncFlag></xml>";
-$GLOBALS["HTTP_RAW_POST_DATA"] = $postStr;
-$msg = $GLOBALS["HTTP_RAW_POST_DATA"];
+//$GLOBALS["HTTP_RAW_POST_DATA"] = $postStr;
+//$msg = $GLOBALS["HTTP_RAW_POST_DATA"];
 $obj = new classTaskL1vmCoreRouter();
-$obj->mfun_l1vm_task_main_entry(MFUN_MAIN_ENTRY_IOT_HCU, NULL, NULL, $msg);
+$obj->mfun_l1vm_task_main_entry(MFUN_MAIN_ENTRY_IOT_HCU, MSG_ID_L2SDK_HCU_DATA_COMING, "MSG_ID_L2SDK_HCU_DATA_COMING", $postStr);
 
 //PM 25
 $postStr = "<xml><ToUserName><![CDATA[AQ_HCU]]></ToUserName><FromUserName><![CDATA[HCU_SH_0301]]></FromUserName><CreateTime>1457872404</CreateTime><MsgType><![CDATA[hcu_text]]></MsgType><Content><![CDATA[252281010201000001120000011200000492000000000000000000000000000056E55E14]]></Content><FuncFlag>0</FuncFlag></xml>";
-$GLOBALS["HTTP_RAW_POST_DATA"] = $postStr;
-$msg = $GLOBALS["HTTP_RAW_POST_DATA"];
 $obj = new classTaskL1vmCoreRouter();
-$obj->mfun_l1vm_task_main_entry(MFUN_MAIN_ENTRY_IOT_HCU, NULL, NULL, $msg);
+$obj->mfun_l1vm_task_main_entry(MFUN_MAIN_ENTRY_IOT_HCU, MSG_ID_L2SDK_HCU_DATA_COMING, "MSG_ID_L2SDK_HCU_DATA_COMING", $postStr);
 
 //Wind speed 26
 $postStr = "<xml><ToUserName><![CDATA[AQ_HCU]]></ToUserName><FromUserName><![CDATA[HCU_SH_0301]]></FromUserName><CreateTime>1459985808</CreateTime><MsgType><![CDATA[hcu_text]]></MsgType><Content><![CDATA[261881020201000045000000004E000000000000000057059D90]]></Content><FuncFlag>0</FuncFlag></xml>";
-$GLOBALS["HTTP_RAW_POST_DATA"] = $postStr;
-$msg = $GLOBALS["HTTP_RAW_POST_DATA"];
 $obj = new classTaskL1vmCoreRouter();
-$obj->mfun_l1vm_task_main_entry(MFUN_MAIN_ENTRY_IOT_HCU, NULL, NULL, $msg);
+$obj->mfun_l1vm_task_main_entry(MFUN_MAIN_ENTRY_IOT_HCU, MSG_ID_L2SDK_HCU_DATA_COMING, "MSG_ID_L2SDK_HCU_DATA_COMING", $postStr);
 
 //Wind Direction 27
 $postStr = "<xml><ToUserName><![CDATA[AQ_HCU]]></ToUserName><FromUserName><![CDATA[HCU_SH_0301]]></FromUserName><CreateTime>1459899126</CreateTime><MsgType><![CDATA[hcu_text]]></MsgType><Content><![CDATA[271881030201008D45000000004E000000000000000057044AF5]]></Content><FuncFlag>0</FuncFlag></xml>";
-$GLOBALS["HTTP_RAW_POST_DATA"] = $postStr;
-$msg = $GLOBALS["HTTP_RAW_POST_DATA"];
 $obj = new classTaskL1vmCoreRouter();
-$obj->mfun_l1vm_task_main_entry(MFUN_MAIN_ENTRY_IOT_HCU, NULL, NULL, $msg);
+$obj->mfun_l1vm_task_main_entry(MFUN_MAIN_ENTRY_IOT_HCU, MSG_ID_L2SDK_HCU_DATA_COMING, "MSG_ID_L2SDK_HCU_DATA_COMING", $postStr);
 
 //Temperature 28
 $postStr = "<xml><ToUserName><![CDATA[AQ_HCU]]></ToUserName><FromUserName><![CDATA[HCU_SH_0301]]></FromUserName><CreateTime>1457872422</CreateTime><MsgType><![CDATA[hcu_text]]></MsgType><Content><![CDATA[2818810602010223000000000000000000000000000056E55E26]]></Content><FuncFlag>0</FuncFlag></xml>";
-$GLOBALS["HTTP_RAW_POST_DATA"] = $postStr;
-$msg = $GLOBALS["HTTP_RAW_POST_DATA"];
 $obj = new classTaskL1vmCoreRouter();
-$obj->mfun_l1vm_task_main_entry(MFUN_MAIN_ENTRY_IOT_HCU, NULL, NULL, $msg);
+$obj->mfun_l1vm_task_main_entry(MFUN_MAIN_ENTRY_IOT_HCU, MSG_ID_L2SDK_HCU_DATA_COMING, "MSG_ID_L2SDK_HCU_DATA_COMING", $postStr);
 
 //Humidity 29
 $postStr = "<xml><ToUserName><![CDATA[AQ_HCU]]></ToUserName><FromUserName><![CDATA[HCU_SH_0301]]></FromUserName><CreateTime>1457872525</CreateTime><MsgType><![CDATA[hcu_text]]></MsgType><Content><![CDATA[29188106020100AC000000000000000000000000000056E55E8D]]></Content><FuncFlag>0</FuncFlag></xml>";
-$GLOBALS["HTTP_RAW_POST_DATA"] = $postStr;
-$msg = $GLOBALS["HTTP_RAW_POST_DATA"];
 $obj = new classTaskL1vmCoreRouter();
-$obj->mfun_l1vm_task_main_entry(MFUN_MAIN_ENTRY_IOT_HCU, NULL, NULL, $msg);
+$obj->mfun_l1vm_task_main_entry(MFUN_MAIN_ENTRY_IOT_HCU, MSG_ID_L2SDK_HCU_DATA_COMING, "MSG_ID_L2SDK_HCU_DATA_COMING", $postStr);
 
 //Noise 2B
 $postStr = "<xml><ToUserName><![CDATA[AQ_HCU]]></ToUserName><FromUserName><![CDATA[HCU_SH_0301]]></FromUserName><CreateTime>1457872731</CreateTime><MsgType><![CDATA[hcu_text]]></MsgType><Content><![CDATA[2B1A810A02020000028B000000000000000000000000000056E55F5B]]></Content><FuncFlag>0</FuncFlag></xml>";
-$GLOBALS["HTTP_RAW_POST_DATA"] = $postStr;
-$msg = $GLOBALS["HTTP_RAW_POST_DATA"];
 $obj = new classTaskL1vmCoreRouter();
-$obj->mfun_l1vm_task_main_entry(MFUN_MAIN_ENTRY_IOT_HCU, NULL, NULL, $msg);
+$obj->mfun_l1vm_task_main_entry(MFUN_MAIN_ENTRY_IOT_HCU, MSG_ID_L2SDK_HCU_DATA_COMING, "MSG_ID_L2SDK_HCU_DATA_COMING", $postStr);
 
 //Heart Beat
 $postStr = "<xml><ToUserName><![CDATA[AQ_HCU]]></ToUserName><FromUserName><![CDATA[HCU_SH_0301]]></FromUserName><CreateTime>1457872409</CreateTime><MsgType><![CDATA[hcu_heart_beat]]></MsgType><Content><![CDATA[FE00]]></Content><FuncFlag>0</FuncFlag></xml>";
-$GLOBALS["HTTP_RAW_POST_DATA"] = $postStr;
-$msg = $GLOBALS["HTTP_RAW_POST_DATA"];
 $obj = new classTaskL1vmCoreRouter();
-$obj->mfun_l1vm_task_main_entry(MFUN_MAIN_ENTRY_IOT_HCU, NULL, NULL, $msg);
+$obj->mfun_l1vm_task_main_entry(MFUN_MAIN_ENTRY_IOT_HCU, MSG_ID_L2SDK_HCU_DATA_COMING, "MSG_ID_L2SDK_HCU_DATA_COMING", $postStr);
 
 //CMD pooling
 $postStr = "<xml><ToUserName><![CDATA[AQ_HCU]]></ToUserName><FromUserName><![CDATA[HCU_SH_0301]]></FromUserName><CreateTime>1457872559</CreateTime><MsgType><![CDATA[hcu_command]]></MsgType><Content><![CDATA[FD00]]></Content><FuncFlag>0</FuncFlag></xml>";
-$GLOBALS["HTTP_RAW_POST_DATA"] = $postStr;
-$msg = $GLOBALS["HTTP_RAW_POST_DATA"];
 $obj = new classTaskL1vmCoreRouter();
-$obj->mfun_l1vm_task_main_entry(MFUN_MAIN_ENTRY_IOT_HCU, NULL, NULL, $msg);
+$obj->mfun_l1vm_task_main_entry(MFUN_MAIN_ENTRY_IOT_HCU, MSG_ID_L2SDK_HCU_DATA_COMING, "MSG_ID_L2SDK_HCU_DATA_COMING", $postStr);
 
 //EMC 20
 $postStr = "<xml><ToUserName><![CDATA[AQ_HCU]]></ToUserName><FromUserName><![CDATA[HCU_SH_0305]]></FromUserName><CreateTime>1463066586</CreateTime><MsgType><![CDATA[hcu_text]]></MsgType><Content><![CDATA[201881050201130345000000004E000000000000000057318D70]]></Content><FuncFlag>0</FuncFlag></xml>";
-$GLOBALS["HTTP_RAW_POST_DATA"] = $postStr;
-$msg = $GLOBALS["HTTP_RAW_POST_DATA"];
 $obj = new classTaskL1vmCoreRouter();
-$obj->mfun_l1vm_task_main_entry(MFUN_MAIN_ENTRY_IOT_HCU, NULL, NULL, $msg);
+$obj->mfun_l1vm_task_main_entry(MFUN_MAIN_ENTRY_IOT_HCU, MSG_ID_L2SDK_HCU_DATA_COMING, "MSG_ID_L2SDK_HCU_DATA_COMING", $postStr);
 
 //中环保格式
 $postStr = "##007020160619033803000___11111ZHB_NOMHCU_SH_0304_44444405556666a01000=139A,68BE";
-$GLOBALS["HTTP_RAW_POST_DATA"] = $postStr;
-$msg = $GLOBALS["HTTP_RAW_POST_DATA"];
 $obj = new classTaskL1vmCoreRouter();
-$obj->mfun_l1vm_task_main_entry(MFUN_MAIN_ENTRY_IOT_HCU, NULL, NULL, $msg);
+$obj->mfun_l1vm_task_main_entry(MFUN_MAIN_ENTRY_IOT_HCU, MSG_ID_L2SDK_HCU_DATA_COMING, "MSG_ID_L2SDK_HCU_DATA_COMING", $postStr);
 //TEST CASE: 基础数据测试用例集: END
 
 //TEST CASE: 测试图片存储的功能: START
@@ -324,12 +304,12 @@ $_GET["action"] = "login";
 $_GET["name"] = "admin";
 $_GET["password"] = "admin";
 $obj = new classTaskL1vmCoreRouter();
-$obj->mfun_l1vm_task_main_entry(MFUN_MAIN_ENTRY_AQYC_UI, NULL, NULL, $_GET["action"]);
+$obj->mfun_l1vm_task_main_entry(MFUN_MAIN_ENTRY_AQYC_UI, MSG_ID_L2SDK_HCU_DATA_COMING, "MSG_ID_L2SDK_HCU_DATA_COMING", $_GET["action"]);
 
 $_GET["action"] = "UserInfo";
 $_GET["session"] = 1;
 $obj = new classTaskL1vmCoreRouter();
-$obj->mfun_l1vm_task_main_entry(MFUN_MAIN_ENTRY_AQYC_UI, NULL, NULL, $_GET["action"]);
+$obj->mfun_l1vm_task_main_entry(MFUN_MAIN_ENTRY_AQYC_UI, MSG_ID_L2SDK_HCU_DATA_COMING, "MSG_ID_L2SDK_HCU_DATA_COMING", $_GET["action"]);
 //TEST CASE: L4AQYC-UI界面: END
 
 ?>

@@ -151,6 +151,10 @@ class classDbiL2snrWindspd
         //存储新记录，如果发现是已经存在的数据，则覆盖，否则新增
         $result = $mysqli->query("SELECT * FROM `t_l2snr_minreport` WHERE (`devcode` = '$devcode' AND `statcode` = '$statcode'
                                   AND `reportdate` = '$date' AND `hourminindex` = '$hourminindex')");
+        if ($result == false){
+            $mysqli->close();
+            return $result;
+        }
         if (($result->num_rows)>0)   //重复，则覆盖
         {
             $result=$mysqli->query("UPDATE `t_l2snr_minreport` SET `windspeed` = '$windspeed'

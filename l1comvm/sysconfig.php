@@ -280,7 +280,29 @@ if (isset($_SERVER['SERVER_NAME']))
     define("MFUN_MQ_RABBIT_EXCHANGE", "e_linvo");
     define("MFUN_MQ_RABBIT_QUEUE", "q_linvo");
     define("MFUN_MQ_RABBIT_ROUTE_KEY", "key_1");
-
 }
+
+
+//TRACE开关，缺省打开
+define ("TRACE_MSG_GENERAL_ON", 1); //开
+define ("TRACE_MSG_GENERAL_OFF", 0); //关
+define ("TRACE_MSG_MODE_INVALID", 0xFF); //无效
+define ("TRACE_MSG_MODE_ALL_OFF", 0); //全关
+define ("TRACE_MSG_MODE_ALL_ON", 1); //放开所有的TRACE模块和消息，该模式将忽略模块和消息的设置
+define ("TRACE_MSG_MODE_MOUDLE_TO_ALLOW", 10);  //只通过模块号过滤消息
+define ("TRACE_MSG_MODE_MOUDLE_TO_RESTRICT", 11);  //只通过模块号过滤消息
+define ("TRACE_MSG_MODE_MOUDLE_FROM_ALLOW", 12);  //只通过模块号过滤消息
+define ("TRACE_MSG_MODE_MOUDLE_FROM_RESTRICT", 13);  //只通过模块号过滤消息
+define ("TRACE_MSG_MODE_MOUDLE_DOUBLE_ALLOW", 14);  //只通过模块号过滤消息
+define ("TRACE_MSG_MODE_MOUDLE_DOUBLE_RESTRICT", 15);  //只通过模块号过滤消息
+define ("TRACE_MSG_MODE_MSGID_ALLOW", 20);  //只通过模块号过滤消息
+define ("TRACE_MSG_MODE_MSGID_RESTRICT", 21);  //只通过模块号过滤消息
+define ("TRACE_MSG_MODE_COMBINE_TO_ALLOW", 30);  //通过模块和消息枚举
+define ("TRACE_MSG_MODE_COMBINE_TO_RESTRICT", 31);  //通过模块和消息枚举
+define ("TRACE_MSG_MODE_COMBINE_FROM_ALLOW", 32);  //通过模块和消息枚举
+define ("TRACE_MSG_MODE_COMBINE_FROM_RESTRICT", 33);  //通过模块和消息枚举
+define ("TRACE_MSG_MODE_COMBINE_DOUBLE_ALLOW", 34);  //通过模块和消息枚举
+define ("TRACE_MSG_MODE_COMBINE_DOUBLE_RESTRICT", 35);  //通过模块和消息枚举
+define ("TRACE_MSG_ON", TRACE_MSG_MODE_ALL_ON);
 
 ?>
