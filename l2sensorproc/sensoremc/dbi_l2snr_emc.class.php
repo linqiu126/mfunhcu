@@ -112,11 +112,7 @@ class classDbiL2snrEmc
 
         $result = $mysqli->query("SELECT * FROM `t_l2snr_emcdata` WHERE (( `deviceid` = '$deviceid' AND `sensorid` = '$sensorid')
                         AND (`reportdate` = '$date' AND `hourminindex` = '$hourminindex'))");
-        if ($result == false){
-            $mysqli->close();
-            return $result;
-        }
-        if (($result->num_rows)>0)   //重复，则覆盖
+        if (($result != false) && ($result->num_rows)>0)   //重复，则覆盖
         {
             $result = $mysqli->query("UPDATE `t_l2snr_emcdata` SET `emcvalue` = '$emc',`altitude` = '$altitude',`flag_la` = '$flag_la',`latitude` = '$latitude',`flag_lo` = '$flag_lo',`longitude` = '$longitude'
                       WHERE ((`deviceid` = '$deviceid' AND `sensorid` = '$sensorid') AND (`reportdate` = '$date' AND `hourminindex` = '$hourminindex'))");
@@ -166,7 +162,7 @@ class classDbiL2snrEmc
         }
         $result = $mysqli->query("SELECT * FROM `t_l2snr_emcaccumulation` WHERE (`deviceid` = '$deviceid')");
         $tag = 0;
-        if (($result->num_rows)>0)   //更新数据而已，而且假设每个用户只有唯一的一条记录
+        if (($result != false) && ($result->num_rows)>0)   //更新数据而已，而且假设每个用户只有唯一的一条记录
         {
             $row = $result->fetch_array();
             $lastupdatedate = date("ymd", strtotime($row['lastupdatedate']));  //字符串
@@ -311,11 +307,7 @@ class classDbiL2snrEmc
         //存储新记录，如果发现是已经存在的数据，则覆盖，否则新增
         $result = $mysqli->query("SELECT * FROM `t_l2snr_minreport` WHERE (`devcode` = '$devcode' AND `statcode` = '$statcode'
                                   AND `reportdate` = '$date' AND `hourminindex` = '$hourminindex')");
-        if ($result == false){
-            $mysqli->close();
-            return $result;
-        }
-        if (($result->num_rows)>0)   //重复，则覆盖
+        if (($result != false) && ($result->num_rows)>0)   //重复，则覆盖
         {
             $result=$mysqli->query("UPDATE `t_l2snr_minreport` SET `emcvalue` = '$emc'
                           WHERE (`devcode` = '$devcode' AND `statcode` = '$statcode' AND `reportdate` = '$date' AND `hourminindex` = '$hourminindex')");
@@ -340,7 +332,7 @@ class classDbiL2snrEmc
 
         $result = $mysqli->query("SELECT * FROM `t_l2snr_emcdata` WHERE `sid` = '$sid'");
 
-        if ($result->num_rows>0)
+        if (($result != false) && ($result->num_rows)>0)   //重复，则覆盖
         {
             $row = $result->fetch_array();
             $LatestEmcValue = $row['emcvalue'];
@@ -362,7 +354,7 @@ class classDbiL2snrEmc
         $result = $mysqli->query("SELECT * FROM `t_l2snr_emcdata` WHERE `sid` = '$sid'");
 
 
-        if ($result->num_rows>0)
+        if (($result != false) && ($result->num_rows)>0)   //重复，则覆盖
         {
             $row = $result->fetch_array();
             $LatestEmcValueIndex = $row['longitude'];
@@ -388,7 +380,7 @@ class classDbiL2snrEmc
 
         //查询是否有相同时间网格的记录
         $result = $mysqli->query("SELECT * FROM `t_l2snr_emcdata` WHERE (`deviceid` = '$deviceid' AND `reportdate` = '$date' AND `hourminindex` = '$hourminindex')");
-        if (($result->num_rows)>0)   //存在则更新对应记录的GPS信息
+        if (($result != false) && ($result->num_rows)>0)   //重复，则覆盖   //存在则更新对应记录的GPS信息
         {
             $result=$mysqli->query("UPDATE `t_l2snr_emcdata` SET `latitude` = $latitude,`longitude` = $longitude
                         WHERE (`deviceid` = '$deviceid' AND `reportdate` = '$date' AND `hourminindex` = '$hourminindex')");

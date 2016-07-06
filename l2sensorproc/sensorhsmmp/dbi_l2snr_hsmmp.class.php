@@ -92,11 +92,6 @@ class classDbiL2snrHsmmp
         {
             die('Could not connect: ' . mysqli_error($mysqli));
         }
-        $mysqli4=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L4AQYC, MFUN_CLOUD_DBPORT);
-        if (!$mysqli4)
-        {
-            die('Could not connect: ' . mysqli_error($mysqli4));
-        }
 
         $date = intval(date("ymd", $timestamp));
         $stamp = getdate($timestamp);
@@ -119,16 +114,12 @@ class classDbiL2snrHsmmp
 
         //是否需要这么干？？？
         //更新HCU设备信息表（t_hcudevice）中最新的视频链接，使之永远保存最后一次更新
-        $mysqli4->query("UPDATE `t_siteinfo` SET `videourl` = '$url' WHERE (`devcode` = '$deviceid')");
+        $mysqli->query("UPDATE `t_siteinfo` SET `videourl` = '$url' WHERE (`devcode` = '$deviceid')");
 
         //存储新记录，如果发现是已经存在的数据，则覆盖，否则新增
         $result = $mysqli->query("SELECT * FROM `t_l2snr_hsmmpdata` WHERE (`deviceid` = '$deviceid' AND `sensorid` = '$sensorid'
                                   AND `reportdate` = '$date' AND `hourminindex` = '$hourminindex')");
-        if ($result == false){
-            $mysqli->close();
-            return $result;
-        }
-        if (($result->num_rows)>0)   //重复，则覆盖
+        if (($result != false) && ($result->num_rows)>0)   //重复，则覆盖
         {
             $result=$mysqli->query("UPDATE `t_l2snr_hsmmpdata` SET `videourl` = '$url',`altitude` = '$altitude',`flag_la` = '$flag_la',`latitude` = '$latitude',`flag_lo` = '$flag_lo',`longitude` = '$longitude'
                     WHERE (`deviceid` = '$deviceid' AND `sensorid` = '$sensorid' AND `reportdate` = '$date' AND `hourminindex` = '$hourminindex')");
@@ -165,10 +156,8 @@ class classDbiL2snrHsmmp
         if (!$mysqli) {
             die('Could not connect: ' . mysqli_error($mysqli));
         }
-
         $result = $mysqli->query("SELECT * FROM `t_l2snr_hsmmpdata` WHERE `sid` = '$sid'");
-
-        if ($result->num_rows>0)
+        if (($result != false) && ($result->num_rows)>0)
         {
             $row = $result->fetch_array();
             $LatestHsmmpValue = $row['videourl'];
@@ -235,7 +224,7 @@ class classDbiL2snrHsmmp
         //存储新记录，如果发现是已经存在的数据，则覆盖，否则新增
         $result = $mysqli->query("SELECT * FROM `t_l2snr_picturedata` WHERE (`deviceid` = '$deviceid' AND `sensorid` = '$sensorid'
                                   AND `reportdate` = '$date' AND `hourminindex` = '$hourminindex')");
-        if (($result->num_rows)>0)   //重复，则覆盖
+        if (($result != false) && ($result->num_rows)>0)   //重复，则覆盖
         {
             $result=$mysqli->query("UPDATE `t_l2snr_picturedata` SET `bindata` = '$bindata',`altitude` = '$altitude',`flag_la` = '$flag_la',`latitude` = '$latitude',`flag_lo` = '$flag_lo',`longitude` = '$longitude'
                     WHERE (`deviceid` = '$deviceid' AND `sensorid` = '$sensorid' AND `reportdate` = '$date' AND `hourminindex` = '$hourminindex')");
@@ -275,7 +264,7 @@ class classDbiL2snrHsmmp
         }
 
         $result = $mysqli->query("SELECT * FROM `t_l2snr_picturedata` WHERE `deviceid` = '$deviceid'");
-        if ($result->num_rows>0)
+        if (($result != false) && ($result->num_rows)>0)
         {
             $row = $result->fetch_array();
             $LatestPictureValue = $row['bindata'];

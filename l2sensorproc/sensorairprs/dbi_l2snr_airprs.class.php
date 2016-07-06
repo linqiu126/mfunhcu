@@ -80,11 +80,7 @@ class classDbiL2snrAirprs
         //存储新记录，如果发现是已经存在的数据，则覆盖，否则新增
         $result = $mysqli->query("SELECT * FROM `t_l2snr_airprsdata` WHERE (`deviceid` = '$deviceid' AND `sensorid` = '$sensorid'
                                   AND `reportdate` = '$date' AND `hourminindex` = '$hourminindex')");
-        if ($result == false){
-            $mysqli->close();
-            return $result;
-        }
-        if (($result->num_rows)>0)   //重复，则覆盖
+        if (($result != false) && ($result->num_rows)>0)   //重复，则覆盖
         {
             $result=$mysqli->query("UPDATE `t_l2snr_airprsdata` SET  `airprs` = '$airprs',`altitude` = '$altitude',`flag_la` = '$flag_la',`latitude` = '$latitude',`flag_lo` = '$flag_lo',`longitude` = '$longitude'
                     WHERE (`deviceid` = '$deviceid' AND `sensorid` = '$sensorid' AND `reportdate` = '$date' AND `hourminindex` = '$hourminindex')");
@@ -123,8 +119,7 @@ class classDbiL2snrAirprs
         }
 
         $result = $mysqli->query("SELECT * FROM `t_l2snr_airprsdata` WHERE `sid` = '$sid'");
-
-        if ($result->num_rows>0)
+        if (($result != false) && ($result->num_rows)>0)
         {
             $row = $result->fetch_array();
             $LatestAirprsValue = $row['airprs'];
@@ -151,7 +146,7 @@ class classDbiL2snrAirprs
         //存储新记录，如果发现是已经存在的数据，则覆盖，否则新增
         $result = $mysqli->query("SELECT * FROM `t_l2snr_minreport` WHERE (`devcode` = '$devcode' AND `statcode` = '$statcode'
                                   AND `reportdate` = '$date' AND `hourminindex` = '$hourminindex')");
-        if (($result->num_rows)>0)   //重复，则覆盖
+        if (($result != false) && ($result->num_rows)>0)   //重复，则覆盖
         {
             $result=$mysqli->query("UPDATE `t_l2snr_minreport` SET `airprs` = '$airprs'
                           WHERE (`devcode` = '$devcode' AND `statcode` = '$statcode' AND `reportdate` = '$date' AND `hourminindex` = '$hourminindex')");

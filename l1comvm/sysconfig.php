@@ -10,10 +10,10 @@
  *                             全局控制常量                                           *
  *************************************************************************************/
 //项目名称，每个项目均为唯一用于本项目选择启动配置数据库中的工参信息
-//项目目前支持：HCU_PRJ_AQYC, HCU_PRJ_TBSWR, HCU_PRJ_EMCWX, 本地=HCU_PRJ_AQYC
-define ("MFUN_WORKING_PROJECT_NAME_UNIQUE_AQYC", "HCU_PRJ_AQYC");
-define ("MFUN_WORKING_PROJECT_NAME_UNIQUE_EMCWX", "HCU_PRJ_EMCWX");
-define ("MFUN_WORKING_PROJECT_NAME_UNIQUE_TBSWR", "HCU_PRJ_TBSWR");
+//项目目前支持：MFUN_PRJ_AQYC, MFUN_PRJ_TBSWR, MFUN_PRJ_EMCWX, 本地=MFUN_PRJ_AQYC
+define ("MFUN_WORKING_PROJECT_NAME_UNIQUE_AQYC", "MFUN_PRJ_AQYC");
+define ("MFUN_WORKING_PROJECT_NAME_UNIQUE_EMCWX", "MFUN_PRJ_EMCWX");
+define ("MFUN_WORKING_PROJECT_NAME_UNIQUE_TBSWR", "MFUN_PRJ_TBSWR");
 define ("MFUN_CURRENT_WORKING_PROJECT_NAME_UNIQUE", MFUN_WORKING_PROJECT_NAME_UNIQUE_AQYC);
 
 //定义系统消息入口

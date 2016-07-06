@@ -114,7 +114,7 @@ class classConstL1vmSysTaskList
     public function __construct()
     {
         //按照不同的工作配置情况，设置模块标识及PRESENT情况
-        if (MFUN_CURRENT_WORKING_PROJECT_NAME_UNIQUE == "HCU_PRJ_AQYC")
+        if (MFUN_CURRENT_WORKING_PROJECT_NAME_UNIQUE == MFUN_WORKING_PROJECT_NAME_UNIQUE_AQYC)
         {
             $mfunTaskArrayConst[MFUN_TASK_ID_MIN]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L1VM]["PRESENT"] = true;
@@ -249,7 +249,7 @@ class classConstL1vmSysTaskList
         else
         {
             //缺省配置成AQYC项目
-            define("MFUN_CURRENT_WORKING_PROJECT_NAME_UNIQUE", "HCU_PRJ_AQYC");
+            define("MFUN_CURRENT_WORKING_PROJECT_NAME_UNIQUE", MFUN_WORKING_PROJECT_NAME_UNIQUE_AQYC);
             $mfunTaskArrayConst[MFUN_TASK_ID_MIN]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L1VM]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_IOT_APPLE]["PRESENT"] = false;
@@ -301,7 +301,7 @@ class classConstL1vmSysTaskList
             return self::$mfunTaskArrayConst[$taskId]["NAME"];
         }else {
             return false;
-        };
+        }
     }
 
     //通过TaskName读取TaskId
@@ -321,7 +321,7 @@ class classConstL1vmSysTaskList
             return self::$mfunTaskArrayConst[$taskId]["PRESENT"];
         }else {
             return false;
-        };
+        }
     }
 }
 

@@ -155,13 +155,21 @@ Make By：ZJL
 //= ZJL, 2016 July.6, CURRENT_SW_DELIVERY R02.D20
 > 给Logger数据条目增加版本属性，以便及时分析是在哪个版本下出现的问题
 > 增加TRACE机制，方便调试
-> 开始搭建F3-FX的数据DBI框架
 > 修正L2SNR_MINREPORT数据表单中$result=inqury的结果==FALSE的潜在性错误
+> 完善消息定义中的自动编码，解放了每次需要手动调整数值的过程
+
+//= ZJL, 2016 July.6, CURRENT_SW_DELIVERY R02.D21
+> 工参数据表单的初步框架
+> AQYC的开机图片等信息将存入到系统工参配置数据表单中
+> 初步搭建完成F1到FX的数据DBI框架
 
 
 
 
 
+//待完善的功能
+1. 需要编制小型工具，支持工参数据，特别是图片内容的导入导出
+2. TRACE结果的图形化移植，从之前的SAE中移植到阿里云上，并用起来
 
 //已知的潜在错误
 1. task_l2sdk_iot_hcu.class.php, line108，引用父进程的函数指针，编译器发现潜在错误，如何消除？ 目前执行都很正常，但是程序代码不好看

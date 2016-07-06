@@ -409,7 +409,6 @@ INSERT INTO `t_l1vm_deviceversion` (`deviceid`, `hw_type`, `hw_ver`, `sw_rel`, `
 
 
 -- --------------------------------------------------------
-
 --
 -- 表的结构 `t_l1vm_cmdbuf`
 --
@@ -421,6 +420,36 @@ CREATE TABLE IF NOT EXISTS `t_l1vm_cmdbuf` (
   `cmdtime` datetime NOT NULL,
   PRIMARY KEY (`sid`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+
+-- --------------------------------------------------------
+--
+-- 表的结构 `t_l1vm_engpar`
+--
+
+CREATE TABLE IF NOT EXISTS `t_l1vm_engpar` (
+  `sid` int(4) NOT NULL AUTO_INCREMENT,
+  `project` char(50) NOT NULL,
+  `cloudhttp` char(50) NOT NULL,
+  `customername` char(50) NOT NULL,
+  `maxusers` int(4) NOT NULL,
+  `maxadmin` int(4) NOT NULL,
+  `filenamebg` char(50) NOT NULL,
+  `filetypebg` char(10) NOT NULL,
+  `filedatabg` mediumblob NOT NULL,
+  `filenamelog` char(50) NOT NULL,
+  `filetypelog` char(10) NOT NULL,
+  `filedatalog` mediumblob NOT NULL,
+  PRIMARY KEY (`sid`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+--
+-- 转存表中的数据 `t_l1vm_engpar`
+--
+
+INSERT INTO `t_l1vm_engpar` (`project`, `cloudhttp`, `customername`, `maxusers`, `maxadmin`) VALUES
+('MFUN_PRJ_AQYC', "http://", "上海市环保局", 100000, 10);
+
 
  */
 
@@ -632,6 +661,33 @@ class classDbiL1vmCommon
 
         $mysqli->close();
         return $switch_info;
+    }
+
+    //查询t_l1vm_engpar中的允许及限制状态
+    //该函数还不完整，待完善定义
+    public function dbi_engineering_parameter_inqury($project)
+    {
+        //建立连接
+        $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli)
+        {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $result = $mysqli->query("SELECT * FROM `t_l1vm_engpar` WHERE `project` = '$project'");
+        if ($result->num_rows>0)
+        {
+            $row = $result->fetch_array();
+            //$allow = intval($row['allowflag']);
+            //$restrict = intval($row['restrictflag']);
+            //$resp = array("allowflag" => $allow, "restrictflag" => $restrict);
+            $resp = $result;
+        }
+        else{
+            $resp = "";
+        }
+
+        $mysqli->close();
+        return $resp;
     }
 
 }//End of class_common_db
