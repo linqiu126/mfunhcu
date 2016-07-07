@@ -10,11 +10,11 @@
  *                             全局控制常量                                           *
  *************************************************************************************/
 //项目名称，每个项目均为唯一用于本项目选择启动配置数据库中的工参信息
-//项目目前支持：MFUN_PRJ_AQYC, MFUN_PRJ_TBSWR, MFUN_PRJ_EMCWX, 本地=MFUN_PRJ_AQYC
-define ("MFUN_WORKING_PROJECT_NAME_UNIQUE_AQYC", "MFUN_PRJ_AQYC");
-define ("MFUN_WORKING_PROJECT_NAME_UNIQUE_EMCWX", "MFUN_PRJ_EMCWX");
-define ("MFUN_WORKING_PROJECT_NAME_UNIQUE_TBSWR", "MFUN_PRJ_TBSWR");
-define ("MFUN_CURRENT_WORKING_PROJECT_NAME_UNIQUE", MFUN_WORKING_PROJECT_NAME_UNIQUE_AQYC);
+//项目目前支持：MFUN_PRG_AQYC, MFUN_PRG_EMCWX, MFUN_PRG_TBSWR, 本地=MFUN_PRG_AQYC
+define ("MFUN_WORKING_PROGRAM_NAME_UNIQUE_AQYC", "MFUN_PRG_AQYC");
+define ("MFUN_WORKING_PROGRAM_NAME_UNIQUE_EMCWX", "MFUN_PRG_EMCWX");
+define ("MFUN_WORKING_PROGRAM_NAME_UNIQUE_TBSWR", "MFUN_PRG_TBSWR");
+define ("MFUN_CURRENT_WORKING_PROGRAM_NAME_UNIQUE", MFUN_WORKING_PROGRAM_NAME_UNIQUE_AQYC);
 
 //定义系统消息入口
 define ("MFUN_MAIN_ENTRY_IOT_HCU", "MFUN_MAIN_ENTRY_IOT_HCU");
@@ -212,6 +212,114 @@ if (isset($_SERVER['SERVER_NAME']))
         define("MFUN_MQ_RABBIT_QUEUE", "q_linvo");
         define("MFUN_MQ_RABBIT_ROUTE_KEY", "key_1");
 
+    } elseif ($_SERVER['SERVER_NAME'] == "www.tengxun.com.cn") //腾讯云
+    {
+        //云后台定义
+        define("MFUN_CLOUD_HCU", "TENXUN_HCU"); //HCU后台云应用
+        define("MFUN_CLOUD_WX", "TENXUN_WX"); //微信后台云应用
+        //主数据库定义
+        //define("MFUN_CLOUD_DBHOST", "h5.aiqiworld.com/myAdmin");    //连接的服务器地址
+        define("MFUN_CLOUD_DBHOST", "127.0.0.1");    //连接的服务器地址
+        define("MFUN_CLOUD_DBUSER", "root");     //连接数据库的用户名
+        define("MFUN_CLOUD_DBPSW", "smoon");        //连接数据库的密码
+        define("MFUN_CLOUD_DBNAME_L1L2L3", "bxxhl1l2l3");         //连接的数据库名称
+        define("MFUN_CLOUD_DBNAME_L4EMCWX", "bxxhl4emcwx");         //连接的数据库名称
+        define("MFUN_CLOUD_DBNAME_L4AQYC", "bxxhl4aqyc");         //连接的数据库名称
+        define("MFUN_CLOUD_DBNAME_L4TBSWR", "bxxhl4tbswr");         //连接的数据库名称
+        define("MFUN_CLOUD_DBNAME_L5BI", "bxxhl5bi");         //连接的数据库名称
+        define("MFUN_CLOUD_DBPORT", 3306);           //缺省设置
+        define("MFUN_CLOUD_DBHOST_S", "");          //无效
+        //EMCWX应用定义
+        define("MFUN_WX_APPID", "wx1183be5c8f6a24b4");  //微信测试号AppID
+        define("MFUN_WX_APPSECRET", "d52a63064ed543c5eecae6c3df35be55");  //填写高级调用功能的app id, 请在微信开发模式后台查询
+        define("MFUN_WX_ENCODINGAESKEY", "ihIyvJ8LLAnOHpHzKTG0yIJxlzl1Fzw5ygRgHO96ieW");   //填写加密用的EncodingAESKey，如接口为明文模式可忽略
+        //测试公号的后台运行配置参数
+        define("MFUN_WX_TOOL_SERVICENUM", "gh_70c714952b02");
+        define("MFUN_WX_TOOL_APPID", "wx1183be5c8f6a24b4");
+        define("MFUN_WX_TOOL_APPSECRET", "d52a63064ed543c5eecae6c3df35be55");
+        define("MFUN_WX_TOOL_BLEMAC", "D03972A5EF27");
+        //RabbitMQ消息队列定义
+        define("MFUN_MQ_RABBIT_HOST", "127.0.0.1");
+        define("MFUN_MQ_RABBIT_PORT", "5672");
+        define("MFUN_MQ_RABBIT_LOGIN", "guest");
+        define("MFUN_MQ_RABBIT_PSWD", "guest");
+        define("MFUN_MQ_RABBIT_VHOST", "/");
+        define("MFUN_MQ_RABBIT_EXCHANGE", "e_linvo");
+        define("MFUN_MQ_RABBIT_QUEUE", "q_linvo");
+        define("MFUN_MQ_RABBIT_ROUTE_KEY", "key_1");
+
+    } elseif ($_SERVER['SERVER_NAME'] == "www.baidu.com.cn") //百度云
+    {
+        //云后台定义
+        define("MFUN_CLOUD_HCU", "BAIDU_HCU"); //HCU后台云应用
+        define("MFUN_CLOUD_WX", "BAIDU_WX"); //微信后台云应用
+        //主数据库定义
+        //define("MFUN_CLOUD_DBHOST", "h5.aiqiworld.com/myAdmin");    //连接的服务器地址
+        define("MFUN_CLOUD_DBHOST", "127.0.0.1");    //连接的服务器地址
+        define("MFUN_CLOUD_DBUSER", "root");     //连接数据库的用户名
+        define("MFUN_CLOUD_DBPSW", "smoon");        //连接数据库的密码
+        define("MFUN_CLOUD_DBNAME_L1L2L3", "bxxhl1l2l3");         //连接的数据库名称
+        define("MFUN_CLOUD_DBNAME_L4EMCWX", "bxxhl4emcwx");         //连接的数据库名称
+        define("MFUN_CLOUD_DBNAME_L4AQYC", "bxxhl4aqyc");         //连接的数据库名称
+        define("MFUN_CLOUD_DBNAME_L4TBSWR", "bxxhl4tbswr");         //连接的数据库名称
+        define("MFUN_CLOUD_DBNAME_L5BI", "bxxhl5bi");         //连接的数据库名称
+        define("MFUN_CLOUD_DBPORT", 3306);           //缺省设置
+        define("MFUN_CLOUD_DBHOST_S", "");          //无效
+        //EMCWX应用定义
+        define("MFUN_WX_APPID", "wx1183be5c8f6a24b4");  //微信测试号AppID
+        define("MFUN_WX_APPSECRET", "d52a63064ed543c5eecae6c3df35be55");  //填写高级调用功能的app id, 请在微信开发模式后台查询
+        define("MFUN_WX_ENCODINGAESKEY", "ihIyvJ8LLAnOHpHzKTG0yIJxlzl1Fzw5ygRgHO96ieW");   //填写加密用的EncodingAESKey，如接口为明文模式可忽略
+        //测试公号的后台运行配置参数
+        define("MFUN_WX_TOOL_SERVICENUM", "gh_70c714952b02");
+        define("MFUN_WX_TOOL_APPID", "wx1183be5c8f6a24b4");
+        define("MFUN_WX_TOOL_APPSECRET", "d52a63064ed543c5eecae6c3df35be55");
+        define("MFUN_WX_TOOL_BLEMAC", "D03972A5EF27");
+        //RabbitMQ消息队列定义
+        define("MFUN_MQ_RABBIT_HOST", "127.0.0.1");
+        define("MFUN_MQ_RABBIT_PORT", "5672");
+        define("MFUN_MQ_RABBIT_LOGIN", "guest");
+        define("MFUN_MQ_RABBIT_PSWD", "guest");
+        define("MFUN_MQ_RABBIT_VHOST", "/");
+        define("MFUN_MQ_RABBIT_EXCHANGE", "e_linvo");
+        define("MFUN_MQ_RABBIT_QUEUE", "q_linvo");
+        define("MFUN_MQ_RABBIT_ROUTE_KEY", "key_1");
+
+    } elseif ($_SERVER['SERVER_NAME'] == "www.jingdong.com.cn") //京东云
+    {
+        //云后台定义
+        define("MFUN_CLOUD_HCU", "JD_HCU"); //HCU后台云应用
+        define("MFUN_CLOUD_WX", "JD_WX"); //微信后台云应用
+        //主数据库定义
+        //define("MFUN_CLOUD_DBHOST", "h5.aiqiworld.com/myAdmin");    //连接的服务器地址
+        define("MFUN_CLOUD_DBHOST", "127.0.0.1");    //连接的服务器地址
+        define("MFUN_CLOUD_DBUSER", "root");     //连接数据库的用户名
+        define("MFUN_CLOUD_DBPSW", "smoon");        //连接数据库的密码
+        define("MFUN_CLOUD_DBNAME_L1L2L3", "bxxhl1l2l3");         //连接的数据库名称
+        define("MFUN_CLOUD_DBNAME_L4EMCWX", "bxxhl4emcwx");         //连接的数据库名称
+        define("MFUN_CLOUD_DBNAME_L4AQYC", "bxxhl4aqyc");         //连接的数据库名称
+        define("MFUN_CLOUD_DBNAME_L4TBSWR", "bxxhl4tbswr");         //连接的数据库名称
+        define("MFUN_CLOUD_DBNAME_L5BI", "bxxhl5bi");         //连接的数据库名称
+        define("MFUN_CLOUD_DBPORT", 3306);           //缺省设置
+        define("MFUN_CLOUD_DBHOST_S", "");          //无效
+        //EMCWX应用定义
+        define("MFUN_WX_APPID", "wx1183be5c8f6a24b4");  //微信测试号AppID
+        define("MFUN_WX_APPSECRET", "d52a63064ed543c5eecae6c3df35be55");  //填写高级调用功能的app id, 请在微信开发模式后台查询
+        define("MFUN_WX_ENCODINGAESKEY", "ihIyvJ8LLAnOHpHzKTG0yIJxlzl1Fzw5ygRgHO96ieW");   //填写加密用的EncodingAESKey，如接口为明文模式可忽略
+        //测试公号的后台运行配置参数
+        define("MFUN_WX_TOOL_SERVICENUM", "gh_70c714952b02");
+        define("MFUN_WX_TOOL_APPID", "wx1183be5c8f6a24b4");
+        define("MFUN_WX_TOOL_APPSECRET", "d52a63064ed543c5eecae6c3df35be55");
+        define("MFUN_WX_TOOL_BLEMAC", "D03972A5EF27");
+        //RabbitMQ消息队列定义
+        define("MFUN_MQ_RABBIT_HOST", "127.0.0.1");
+        define("MFUN_MQ_RABBIT_PORT", "5672");
+        define("MFUN_MQ_RABBIT_LOGIN", "guest");
+        define("MFUN_MQ_RABBIT_PSWD", "guest");
+        define("MFUN_MQ_RABBIT_VHOST", "/");
+        define("MFUN_MQ_RABBIT_EXCHANGE", "e_linvo");
+        define("MFUN_MQ_RABBIT_QUEUE", "q_linvo");
+        define("MFUN_MQ_RABBIT_ROUTE_KEY", "key_1");
+
     }elseif ($_SERVER['SERVER_NAME'] == "localhost"){  //用于本地浏览器调试
         //云后台定义
         define("MFUN_CLOUD_HCU", "AQ_HCU"); //HCU后台云应用
@@ -282,10 +390,11 @@ if (isset($_SERVER['SERVER_NAME']))
     define("MFUN_MQ_RABBIT_ROUTE_KEY", "key_1");
 }
 
-
 //TRACE开关，缺省打开
 define ("TRACE_MSG_GENERAL_ON", 1); //开
 define ("TRACE_MSG_GENERAL_OFF", 0); //关
+define ("MFUN_TRACE_VM", "VM_TRACE");
+
 define ("TRACE_MSG_MODE_INVALID", 0xFF); //无效
 define ("TRACE_MSG_MODE_ALL_OFF", 0); //全关
 define ("TRACE_MSG_MODE_ALL_ON", 1); //放开所有的TRACE模块和消息，该模式将忽略模块和消息的设置
@@ -304,5 +413,6 @@ define ("TRACE_MSG_MODE_COMBINE_FROM_RESTRICT", 33);  //通过模块和消息枚
 define ("TRACE_MSG_MODE_COMBINE_DOUBLE_ALLOW", 34);  //通过模块和消息枚举
 define ("TRACE_MSG_MODE_COMBINE_DOUBLE_RESTRICT", 35);  //通过模块和消息枚举
 define ("TRACE_MSG_ON", TRACE_MSG_MODE_ALL_ON);
+
 
 ?>

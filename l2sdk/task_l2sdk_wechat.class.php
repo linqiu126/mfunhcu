@@ -4500,7 +4500,7 @@ class classTaskL2sdkWechat
 		$format = substr(trim($msg), 0, 2);
 		switch ($format)
 		{
-			case XML_FORMAT:
+			case MFUN_FRAME_FORMAT_ZHB:
 				libxml_disable_entity_loader(true);  //prevent XML entity injection
 				$postObj = simplexml_load_string($msg, 'SimpleXMLElement');  //防止破坏CDATA的内容，进而影响智能硬件L3消息体
 				//$postObj = simplexml_load_string($postStr, 'SimpleXMLElement', LIBXML_NOCDATA);

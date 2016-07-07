@@ -48,7 +48,7 @@ class classApiL1vmFuncCom
     public function trace_msg_inqury($msgId)
     {
         $obj = new classDbiL1vmCommon();
-        $result = $obj->dbi_logtrace_mmsg_inqury($msgId);
+        $result = $obj->dbi_logtrace_msg_inqury($msgId);
         return $result;
     }
 

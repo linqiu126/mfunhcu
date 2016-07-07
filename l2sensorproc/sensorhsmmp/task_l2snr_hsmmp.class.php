@@ -42,15 +42,15 @@ class classTaskL2snrHsmmp
                 }
                 break;
             case MFUN_PLTF_HCU:
-                $raw_MsgHead = substr($content, 0, HCU_MSG_HEAD_LENGTH);  //截取4Byte MsgHead
-                $msgHead = unpack(HCU_MSG_HEAD_FORMAT, $raw_MsgHead);
+                $raw_MsgHead = substr($content, 0, MFUN_HCU_MSG_HEAD_LENGTH);  //截取4Byte MsgHead
+                $msgHead = unpack(MFUN_HCU_MSG_HEAD_FORMAT, $raw_MsgHead);
 
                 $length = hexdec($msgHead['Len']) & 0xFF;
                 $length =  ($length+2) * 2; //因为收到的消息为16进制字符，消息总长度等于length＋1B控制字＋1B长度本身
                 if ($length != strlen($content)) {
                     return "VIDEO_SERVICE[HCU]: message length invalid";  //消息长度不合法，直接返回
                 }
-                $data = substr($content, HCU_MSG_HEAD_LENGTH, $length - HCU_MSG_HEAD_LENGTH);//截取消息数据域
+                $data = substr($content, MFUN_HCU_MSG_HEAD_LENGTH, $length - MFUN_HCU_MSG_HEAD_LENGTH);//截取消息数据域
 
                 $opt_key = hexdec($msgHead['Cmd']) & 0xFF;
                 switch ($opt_key) //MODBUS操作字处理

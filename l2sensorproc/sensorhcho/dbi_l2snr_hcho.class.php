@@ -58,7 +58,7 @@ class classDbiL2snrHcho
 
         $date = intval(date("ymd", $timestamp));
         $stamp = getdate($timestamp);
-        $hourminindex = intval(($stamp["hours"] * 60 + floor($stamp["minutes"]/TIME_GRID_SIZE)));
+        $hourminindex = intval(($stamp["hours"] * 60 + floor($stamp["minutes"]/MFUN_TIME_GRID_SIZE)));
 
         if(!empty($gps)){
             $altitude = $gps["altitude"];
@@ -143,7 +143,7 @@ class classDbiL2snrHcho
 
         $date = intval(date("ymd", $timestamp));
         $stamp = getdate($timestamp);
-        $hourminindex = intval(($stamp["hours"] * 60 + floor($stamp["minutes"]/TIME_GRID_SIZE)));
+        $hourminindex = intval(($stamp["hours"] * 60 + floor($stamp["minutes"]/MFUN_TIME_GRID_SIZE)));
 
         $hcho = $data["value"];
 

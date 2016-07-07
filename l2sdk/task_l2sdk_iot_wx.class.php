@@ -936,11 +936,11 @@ class classTaskL2sdkIotWx
     public function ihu_device_text_process($parObj, $fromUser, $deviceId, $content)
     {
         //因为收到的Airsync数据消息头已经被微信处理掉，传递过来的消息体在上级函数中已经被处理成16制格式的字符串
-        if (strlen($content) < IHU_MSG_HEAD_LENGTH) {
+        if (strlen($content) < MFUN_IHU_MSG_HEAD_LENGTH) {
             return "ERROR WX_IOT: invalid message";  //消息长度小于固定消息头的长度
         }
-        $raw_MsgHead = substr($content, 0, IHU_MSG_HEAD_LENGTH);  //截取12Byte MsgHead
-        $msgHead = unpack(IHU_MSG_HEAD_FORMAT, $raw_MsgHead);
+        $raw_MsgHead = substr($content, 0, MFUN_IHU_MSG_HEAD_LENGTH);  //截取12Byte MsgHead
+        $msgHead = unpack(MFUN_IHU_MSG_HEAD_FORMAT, $raw_MsgHead);
 
         $length = hexdec($msgHead['Length']) & 0xFFFF; //total length包括长度域本身
         $length =  $length * 2; //因为收到的消息为16进制字符，消息总长度等于实际长度的2倍
@@ -948,7 +948,7 @@ class classTaskL2sdkIotWx
             return "ERROR WX_IOT: message length invalid";  //消息长度不合法，直接返回
         }
 
-        $data = substr($content, IHU_MSG_HEAD_LENGTH, $length - IHU_MSG_HEAD_LENGTH); //截取消息数据域
+        $data = substr($content, MFUN_IHU_MSG_HEAD_LENGTH, $length - MFUN_IHU_MSG_HEAD_LENGTH); //截取消息数据域
         $ctrl_key = hexdec($msgHead['CmdId']) & 0xFFFF;
         $statCode = "";
         switch ($ctrl_key)

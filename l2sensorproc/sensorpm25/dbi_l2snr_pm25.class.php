@@ -68,7 +68,7 @@ class classDbiL2snrPm25
         //存储新记录，如果发现是已经存在的数据，则覆盖，否则新增
         $date = intval(date("ymd", $timestamp));
         $stamp = getdate($timestamp);
-        $hourminindex = intval(($stamp["hours"] * 60 + floor($stamp["minutes"]/TIME_GRID_SIZE)));
+        $hourminindex = intval(($stamp["hours"] * 60 + floor($stamp["minutes"]/MFUN_TIME_GRID_SIZE)));
 
         if(!empty($gps)){
             $altitude = $gps["altitude"];
@@ -150,7 +150,7 @@ class classDbiL2snrPm25
 
         $date = intval(date("ymd", $timestamp));
         $stamp = getdate($timestamp);
-        $hourminindex = intval(($stamp["hours"] * 60 + floor($stamp["minutes"]/TIME_GRID_SIZE)));
+        $hourminindex = intval(($stamp["hours"] * 60 + floor($stamp["minutes"]/MFUN_TIME_GRID_SIZE)));
         $pm01 = $data["pm01"];
         $pm25 = $data["pm25"];
         $pm10 = $data["pm10"];

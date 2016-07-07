@@ -17,10 +17,12 @@ include_once "../l1comvm/sysversion.php";
 
 CREATE TABLE IF NOT EXISTS `t_l1vm_loginfo` (
   `sid` int(6) NOT NULL AUTO_INCREMENT,
+  `sysprog` char(20) NOT NULL,
   `sysver` char(20) NOT NULL,
-  `project` char(10) NOT NULL,
+  `project` char(50) NOT NULL,
   `fromuser` char(50) NOT NULL,
   `createtime` char(20) NOT NULL,
+  `logtime` char(20) NOT NULL,
   `logdata` text NOT NULL,
   PRIMARY KEY (`sid`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
@@ -29,11 +31,11 @@ CREATE TABLE IF NOT EXISTS `t_l1vm_loginfo` (
 -- 转存表中的数据 `t_l1vm_loginfo`
 --
 
-INSERT INTO `t_l1vm_loginfo` (`sid`, `sysver`, `project`, `fromuser`, `createtime`, `logdata`) VALUES
-(1, 'R002.D20', 'VM_TRACE', 'MSG_ID_L2SDK_HCU_DATA_COMING', '2016-07-06 10:41:35', 'R: <xml><ToUserName><![CDATA[AQ_HCU]]></ToUserName><FromUserName><![CDATA[HCU_SH_0302]]></FromUserName><CreateTime>1460039152</CreateTime><MsgType><![CDATA[hcu_text]]></MsgType><Content><![CDATA[201881050201124945000000004E000000000000000057066DF0]]></Content><FuncFlag>0</FuncFlag></xml>'),
-(2, 'R002.D20', 'L4AQYCUI', 'MFUN_TASK_ID_L3APPL_FUM1SYM', '2016-07-06 10:41:36', 'T:"{"status":"true","text":"login success","key":"gbsm6ote","admin":"true"}"'),
-(3, 'R002.D20', 'VM_TRACE', 'MSG_ID_L2SDK_HCU_DATA_COMING', '2016-07-06 10:41:36', 'R: UserInfo'),
-(4, 'R002.D20', 'L4AQYCUI', 'MFUN_TASK_ID_L3APPL_FUM1SYM', '2016-07-06 10:41:36', 'T:"{"status":"false","ret":null}"');
+INSERT INTO `t_l1vm_loginfo` (`sid`, `sysprog`, `sysver`, `project`, `fromuser`, `createtime`, `logtime`,`logdata`) VALUES
+(1, 'MFUN_PRG_AQYC', 'R002.D20', 'VM_TRACE', 'MSG_ID_L2SDK_HCU_DATA_COMING', '2016-07-06 10:41:35', '2016-07-06 10:41:35', 'R: <xml><ToUserName><![CDATA[AQ_HCU]]></ToUserName><FromUserName><![CDATA[HCU_SH_0302]]></FromUserName><CreateTime>1460039152</CreateTime><MsgType><![CDATA[hcu_text]]></MsgType><Content><![CDATA[201881050201124945000000004E000000000000000057066DF0]]></Content><FuncFlag>0</FuncFlag></xml>'),
+(2, 'MFUN_PRG_AQYC', 'R002.D20', 'L4AQYCUI', 'MFUN_TASK_ID_L3APPL_FUM1SYM', '2016-07-06 10:41:36', '2016-07-06 10:41:35', 'T:"{"status":"true","text":"login success","key":"gbsm6ote","admin":"true"}"'),
+(3, 'MFUN_PRG_AQYC', 'R002.D20', 'VM_TRACE', 'MSG_ID_L2SDK_HCU_DATA_COMING', '2016-07-06 10:41:36', '2016-07-06 10:41:35', 'R: UserInfo'),
+(4, 'MFUN_PRG_AQYC', 'R002.D20', 'L4AQYCUI', 'MFUN_TASK_ID_L3APPL_FUM1SYM', '2016-07-06 10:41:36', '2016-07-06 10:41:35', 'T:"{"status":"false","ret":null}"');
 
 
 -- --------------------------------------------------------
@@ -471,9 +473,11 @@ class classDbiL1vmCommon
             die('Could not connect: ' . mysqli_error($mysqli));
         }
 
-        $ver = MFUN_CURRENT_VERSION;
+        $sysver = MFUN_CURRENT_VERSION;
+        $sysprog = MFUN_CURRENT_WORKING_PROGRAM_NAME_UNIQUE;
+        $logtime = date("Y-m-d H:i:s", time());
         //存储新记录
-        $result = $mysqli->query("INSERT INTO `t_l1vm_loginfo` (sysver, project,fromuser,createtime, logdata) VALUES ('$ver', '$project', '$fromuser', '$createtime', '$log_content')");
+        $result = $mysqli->query("INSERT INTO `t_l1vm_loginfo` (sysprog,sysver, project,fromuser,createtime, logtime,logdata) VALUES ('$sysprog', '$sysver', '$project', '$fromuser', '$createtime', '$logtime','$log_content')");
 
         //查找最大SID
         $result = $mysqli->query("SELECT  MAX(`sid`)  FROM `t_l1vm_loginfo` WHERE 1 ");

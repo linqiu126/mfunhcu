@@ -143,29 +143,31 @@ define("MSG_ID_MFUN_MAX", $index++);
 /**************************************************************************************
  *                             公共消息全局量定义                                     *
  *************************************************************************************/
-define("TIME_GRID_SIZE", 1); //定义用于数据存储的时间网格为。单位为分钟
+define("MFUN_TIME_GRID_SIZE", 1); //定义用于数据存储的时间网格为。单位为分钟
 
-define("XML_FORMAT", "<x"); //XML数据格式，消息以<xml开头
-define("ZHB_FORMAT", "##"); //中环保数据格式，消息以##开头
+define("MFUN_FRAME_FORMAT_XML", "<x"); //XML数据格式，消息以<xml开头
+define("MFUN_FRAME_FORMAT_ZHB", "##"); //中环保数据格式，消息以##开头
+define("MFUN_FRAME_FORMAT_APPLE", "$<"); //APPLE数据格式
+define("MFUN_FRAME_FORMAT_JD", "#$"); //JD数据格式
 
-define("IHU_MSG_HEAD_FORMAT", "A4MagicCode/A4Version/A4Length/A4CmdId/A4Seq/A4ErrCode");
-define("IHU_MSG_HEAD_LENGTH", 24); //12 Byte
-define("HCU_MSG_HEAD_FORMAT", "A2Key/A2Len/A2Cmd");// 1B 控制字ctrl_key, 1B 长度length（除控制字和长度本身外），1B 操作字opt_key
-define("HCU_MSG_HEAD_LENGTH", 6); //3 Byte
+define("MFUN_IHU_MSG_HEAD_FORMAT", "A4MagicCode/A4Version/A4Length/A4CmdId/A4Seq/A4ErrCode");
+define("MFUN_IHU_MSG_HEAD_LENGTH", 24); //12 Byte
+define("MFUN_HCU_MSG_HEAD_FORMAT", "A2Key/A2Len/A2Cmd");// 1B 控制字ctrl_key, 1B 长度length（除控制字和长度本身外），1B 操作字opt_key
+define("MFUN_HCU_MSG_HEAD_LENGTH", 6); //3 Byte
 
 define("MFUN_PLTF_WX", 0x01);  //微信平台
 define("MFUN_PLTF_HCU", 0x02); //HCU平台
 define("MFUN_PLTF_JD", 0x03);  //京东平台
-
+define("MFUN_PLTF_APPLE", 0x04);  //苹果平台
 
 //用于区分WECHAT->IOT_HCU的处理内容及过程
 define("MFUN_IOT_WX_DEVICE_TEXT","DEVICE_TEXT");
 define("MFUN_IOT_WX_DEVICE_EVENT","DEVICE_EVENT");
 
 //层三处理消息的定义，保留，暂时没有使用
-define("L3_HEAD_MAGIC", 0xFE);
-define("L3_HEAD_VERSION",0x01);
-define("L3_HEAD_LENGTH", 0x08);
+define("MFUN_L3_HEAD_MAGIC", 0xFE);
+define("MFUN_L3_HEAD_VERSION",0x01);
+define("MFUN_L3_HEAD_LENGTH", 0x08);
 define("MFUN_CMDID_SEND_TEXT_REQ", 0x1);    //HW -> CLOUD
 define("MFUN_CMDID_SEND_TEXT_RESP", 0x1001);   //CLOUD ->HW
 define("MFUN_CMDID_OPEN_LIGHT_PUSH", 0x2001);  //CLOUD ->HW

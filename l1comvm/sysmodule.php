@@ -9,51 +9,52 @@ include_once "../l1comvm/sysconfig.php";
 include_once "../l1comvm/sysdim.php";
 
 //全局TaskId的定义，全系统唯一定义，后面会不断的用到
-define("MFUN_TASK_ID_MIN", 0);
-define("MFUN_TASK_ID_L1VM", 1);
-define("MFUN_TASK_ID_L2SDK_IOT_APPLE", 2);
-define("MFUN_TASK_ID_L2SDK_IOT_JD", 3);
-define("MFUN_TASK_ID_L2SDK_WECHAT", 4);
-define("MFUN_TASK_ID_L2SDK_IOT_WX", 5);
-define("MFUN_TASK_ID_L2SDK_IOT_WX_JSSDK", 6);
-define("MFUN_TASK_ID_L2SDK_IOT_HCU", 7);
-define("MFUN_TASK_ID_L2SENSOR_EMC", 8);
-define("MFUN_TASK_ID_L2SENSOR_HSMMP", 9);
-define("MFUN_TASK_ID_L2SENSOR_HUMID", 10);
-define("MFUN_TASK_ID_L2SENSOR_NOISE", 11);
-define("MFUN_TASK_ID_L2SENSOR_PM25", 12);
-define("MFUN_TASK_ID_L2SENSOR_TEMP", 13);
-define("MFUN_TASK_ID_L2SENSOR_WINDDIR", 14);
-define("MFUN_TASK_ID_L2SENSOR_WINDSPD", 15);
-define("MFUN_TASK_ID_L2SENSOR_AIRPRS", 16);
-define("MFUN_TASK_ID_L2SENSOR_ALCOHOL", 17);
-define("MFUN_TASK_ID_L2SENSOR_CO1", 18);
-define("MFUN_TASK_ID_L2SENSOR_HCHO", 19);
-define("MFUN_TASK_ID_L2SENSOR_TOXICGAS", 20);
-define("MFUN_TASK_ID_L2SENSOR_LIGHTSTR", 21);
-define("MFUN_TASK_ID_L2SENSOR_RAIN", 22);
-define("MFUN_TASK_ID_L2TIMER_CRON", 23);
-define("MFUN_TASK_ID_L2SOCKET_LISTEN", 24);
+$taskIndex = 0;
+define("MFUN_TASK_ID_MIN", $taskIndex++);
+define("MFUN_TASK_ID_L1VM", $taskIndex++);
+define("MFUN_TASK_ID_L2SDK_IOT_APPLE", $taskIndex++);
+define("MFUN_TASK_ID_L2SDK_IOT_JD", $taskIndex++);
+define("MFUN_TASK_ID_L2SDK_WECHAT", $taskIndex++);
+define("MFUN_TASK_ID_L2SDK_IOT_WX", $taskIndex++);
+define("MFUN_TASK_ID_L2SDK_IOT_WX_JSSDK", $taskIndex++);
+define("MFUN_TASK_ID_L2SDK_IOT_HCU", $taskIndex++);
+define("MFUN_TASK_ID_L2SENSOR_EMC", $taskIndex++);
+define("MFUN_TASK_ID_L2SENSOR_HSMMP", $taskIndex++);
+define("MFUN_TASK_ID_L2SENSOR_HUMID", $taskIndex++);
+define("MFUN_TASK_ID_L2SENSOR_NOISE", $taskIndex++);
+define("MFUN_TASK_ID_L2SENSOR_PM25", $taskIndex++);
+define("MFUN_TASK_ID_L2SENSOR_TEMP", $taskIndex++);
+define("MFUN_TASK_ID_L2SENSOR_WINDDIR", $taskIndex++);
+define("MFUN_TASK_ID_L2SENSOR_WINDSPD", $taskIndex++);
+define("MFUN_TASK_ID_L2SENSOR_AIRPRS", $taskIndex++);
+define("MFUN_TASK_ID_L2SENSOR_ALCOHOL", $taskIndex++);
+define("MFUN_TASK_ID_L2SENSOR_CO1", $taskIndex++);
+define("MFUN_TASK_ID_L2SENSOR_HCHO", $taskIndex++);
+define("MFUN_TASK_ID_L2SENSOR_TOXICGAS", $taskIndex++);
+define("MFUN_TASK_ID_L2SENSOR_LIGHTSTR", $taskIndex++);
+define("MFUN_TASK_ID_L2SENSOR_RAIN", $taskIndex++);
+define("MFUN_TASK_ID_L2TIMER_CRON", $taskIndex++);
+define("MFUN_TASK_ID_L2SOCKET_LISTEN", $taskIndex++);
 
-define("MFUN_TASK_ID_L3APPL_FUM1SYM", 30);
-define("MFUN_TASK_ID_L3APPL_FUM2CM", 31);
-define("MFUN_TASK_ID_L3APPL_FUM3DM", 32);
-define("MFUN_TASK_ID_L3APPL_FUM4ICM", 33);
-define("MFUN_TASK_ID_L3APPL_FUM5FM", 34);
-define("MFUN_TASK_ID_L3APPL_FUM6PM", 35);
-define("MFUN_TASK_ID_L3APPL_FUM7ADS", 36);
-define("MFUN_TASK_ID_L3APPL_FUM8PSM", 37);
-define("MFUN_TASK_ID_L3APPL_FUM9GISM", 38);
-define("MFUN_TASK_ID_L3APPL_FUMXPRCM", 39);
-define("MFUN_TASK_ID_L3WXPRC_EMC", 40);
+define("MFUN_TASK_ID_L3APPL_FUM1SYM", $taskIndex++);
+define("MFUN_TASK_ID_L3APPL_FUM2CM", $taskIndex++);
+define("MFUN_TASK_ID_L3APPL_FUM3DM", $taskIndex++);
+define("MFUN_TASK_ID_L3APPL_FUM4ICM", $taskIndex++);
+define("MFUN_TASK_ID_L3APPL_FUM5FM", $taskIndex++);
+define("MFUN_TASK_ID_L3APPL_FUM6PM", $taskIndex++);
+define("MFUN_TASK_ID_L3APPL_FUM7ADS", $taskIndex++);
+define("MFUN_TASK_ID_L3APPL_FUM8PSM", $taskIndex++);
+define("MFUN_TASK_ID_L3APPL_FUM9GISM", $taskIndex++);
+define("MFUN_TASK_ID_L3APPL_FUMXPRCM", $taskIndex++);
+define("MFUN_TASK_ID_L3WXPRC_EMC", $taskIndex++);
 
-define("MFUN_TASK_ID_L4AQYC_UI", 50);
-define("MFUN_TASK_ID_L4EMCWX_UI", 51);
-define("MFUN_TASK_ID_L4TBSWR_UI", 52);
-define("MFUN_TASK_ID_L4OAMTOOLS", 53);
-define("MFUN_TASK_ID_L5BI", 54);
-define("MFUN_TASK_ID_MAX", 55);
-define("MFUN_TASK_ID_NULL", 56); //注意，不能超过系统DIMENSION中的MAX_TASK_NUM_IN_ONE_MFUN
+define("MFUN_TASK_ID_L4AQYC_UI", $taskIndex++);
+define("MFUN_TASK_ID_L4EMCWX_UI", $taskIndex++);
+define("MFUN_TASK_ID_L4TBSWR_UI", $taskIndex++);
+define("MFUN_TASK_ID_L4OAMTOOLS", $taskIndex++);
+define("MFUN_TASK_ID_L5BI", $taskIndex++);
+define("MFUN_TASK_ID_MAX", $taskIndex++);
+define("MFUN_TASK_ID_NULL", $taskIndex++); //注意，不能超过系统DIMENSION中的MAX_TASK_NUM_IN_ONE_MFUN
 
 /*
  *  class的定义及规定
@@ -90,6 +91,8 @@ class classConstL1vmSysTaskList
         MFUN_TASK_ID_L2SENSOR_TOXICGAS => array("NAME" => "MFUN_TASK_L2SENSOR_TOXICGAS", "PRESENT" => true),
         MFUN_TASK_ID_L2SENSOR_LIGHTSTR => array("NAME" => "MFUN_TASK_L2SENSOR_LIGHTSTR", "PRESENT" => true),
         MFUN_TASK_ID_L2SENSOR_RAIN => array("NAME" => "MFUN_TASK_ID_L2SENSOR_RAIN", "PRESENT" => true),
+        MFUN_TASK_ID_L2TIMER_CRON => array("NAME" => "MFUN_TASK_ID_L2TIMER_CRON", "PRESENT" => true),
+        MFUN_TASK_ID_L2SOCKET_LISTEN => array("NAME" => "MFUN_TASK_ID_L2SOCKET_LISTEN", "PRESENT" => true),
         MFUN_TASK_ID_L3APPL_FUM1SYM => array("NAME" => "MFUN_TASK_L3APPL_FUM1SYM", "PRESENT" => true),
         MFUN_TASK_ID_L3APPL_FUM2CM => array("NAME" => "MFUN_TASK_L3APPL_FUM2CM", "PRESENT" => true),
         MFUN_TASK_ID_L3APPL_FUM3DM => array("NAME" => "MFUN_TASK_L3APPL_FUM3DM", "PRESENT" => true),
@@ -114,7 +117,7 @@ class classConstL1vmSysTaskList
     public function __construct()
     {
         //按照不同的工作配置情况，设置模块标识及PRESENT情况
-        if (MFUN_CURRENT_WORKING_PROJECT_NAME_UNIQUE == MFUN_WORKING_PROJECT_NAME_UNIQUE_AQYC)
+        if (MFUN_CURRENT_WORKING_PROGRAM_NAME_UNIQUE == MFUN_WORKING_PROGRAM_NAME_UNIQUE_AQYC)
         {
             $mfunTaskArrayConst[MFUN_TASK_ID_MIN]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L1VM]["PRESENT"] = true;
@@ -139,6 +142,8 @@ class classConstL1vmSysTaskList
             $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_TOXICGAS]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_LIGHTSTR]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_RAIN]["PRESENT"] = true;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L2TIMER_CRON]["PRESENT"] = true;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L2SOCKET_LISTEN]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM1SYM]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM2CM]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM3DM]["PRESENT"] = true;
@@ -158,7 +163,7 @@ class classConstL1vmSysTaskList
             $mfunTaskArrayConst[MFUN_TASK_ID_MAX]["PRESENT"] = false;
             $mfunTaskArrayConst[MFUN_TASK_ID_NULL]["PRESENT"] = false;
         }
-        elseif (MFUN_CURRENT_WORKING_PROJECT_NAME_UNIQUE == "HCU_PRJ_EMCWX")
+        elseif (MFUN_CURRENT_WORKING_PROGRAM_NAME_UNIQUE == MFUN_WORKING_PROGRAM_NAME_UNIQUE_EMCWX)
         {
             $mfunTaskArrayConst[MFUN_TASK_ID_MIN]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L1VM]["PRESENT"] = true;
@@ -183,6 +188,8 @@ class classConstL1vmSysTaskList
             $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_TOXICGAS]["PRESENT"] = false;
             $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_LIGHTSTR]["PRESENT"] = false;
             $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_RAIN]["PRESENT"] = false;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L2TIMER_CRON]["PRESENT"] = true;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L2SOCKET_LISTEN]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM1SYM]["PRESENT"] = false;
             $mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM2CM]["PRESENT"] = false;
             $mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM3DM]["PRESENT"] = false;
@@ -202,7 +209,7 @@ class classConstL1vmSysTaskList
             $mfunTaskArrayConst[MFUN_TASK_ID_MAX]["PRESENT"] = false;
             $mfunTaskArrayConst[MFUN_TASK_ID_NULL]["PRESENT"] = false;
         }
-        elseif (MFUN_CURRENT_WORKING_PROJECT_NAME_UNIQUE == "HCU_PRJ_TBSWR")
+        elseif (MFUN_CURRENT_WORKING_PROGRAM_NAME_UNIQUE == MFUN_WORKING_PROGRAM_NAME_UNIQUE_TBSWR)
         {
             $mfunTaskArrayConst[MFUN_TASK_ID_MIN]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L1VM]["PRESENT"] = true;
@@ -227,6 +234,8 @@ class classConstL1vmSysTaskList
             $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_TOXICGAS]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_LIGHTSTR]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_RAIN]["PRESENT"] = true;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L2TIMER_CRON]["PRESENT"] = true;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L2SOCKET_LISTEN]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM1SYM]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM2CM]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM3DM]["PRESENT"] = true;
@@ -249,7 +258,7 @@ class classConstL1vmSysTaskList
         else
         {
             //缺省配置成AQYC项目
-            define("MFUN_CURRENT_WORKING_PROJECT_NAME_UNIQUE", MFUN_WORKING_PROJECT_NAME_UNIQUE_AQYC);
+            define("MFUN_CURRENT_WORKING_PROGRAM_NAME_UNIQUE", MFUN_WORKING_PROGRAM_NAME_UNIQUE_AQYC);
             $mfunTaskArrayConst[MFUN_TASK_ID_MIN]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L1VM]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_IOT_APPLE]["PRESENT"] = false;
@@ -273,6 +282,8 @@ class classConstL1vmSysTaskList
             $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_TOXICGAS]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_LIGHTSTR]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_RAIN]["PRESENT"] = true;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L2TIMER_CRON]["PRESENT"] = true;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L2SOCKET_LISTEN]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM1SYM]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM2CM]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM3DM]["PRESENT"] = true;

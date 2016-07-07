@@ -236,7 +236,7 @@ class classTaskL2sdkIotHcu
 
 
     //处理环保局要求格式的消息
-    public function receive_hcu_zhbMessage($parObj, $pdu, $project, $log_from)
+    public function receive_hcu_zhbMessage($parObj, $project, $log_from, $pdu)
     {
         //定义本入口函数的logger处理对象及函数
         $loggerObj = new classApiL1vmFuncCom();
@@ -281,7 +281,6 @@ class classTaskL2sdkIotHcu
                 $fix_len = $fix_len + 4 + 4; //=20+5+7+12+6+4+4
                 $dataLen =$pduLen - $fix_len;
                 $data = substr($sdu_body, $fix_len, $dataLen);  //数据区的处理等规范业务逻辑明确后再处理
-
                 $resp = $this->dummy_data_response($mn);
                 break;
             case MFUN_ZHB_HRB_FRAME:
@@ -299,7 +298,7 @@ class classTaskL2sdkIotHcu
                 break;
         }
 
-        //ECHO回去
+        //ECHO回去，即使是空的，也一并记录下来，说明处理有问题，或者本来就应该返回空内容
         $log_content = "T:" . json_encode($resp);
         $loggerObj->logger($project, $log_from, $log_time, $log_content);
         echo trim($resp);
@@ -371,6 +370,16 @@ class classTaskL2sdkIotHcu
             return false;
     }
 
+    public function receive_hcu_appleMessage($parObj, $project, $log_from, $msg)
+    {
+
+    }
+
+    public function receive_hcu_jdMessage($parObj, $project, $log_from, $msg)
+    {
+
+    }
+
     /**************************************************************************************
      *                             任务入口函数                                           *
      *************************************************************************************/
@@ -398,7 +407,7 @@ class classTaskL2sdkIotHcu
         //正式处理消息格式和消息内容的过程
         $format = substr(trim($msg), 0, 2);
         switch ($format) {
-            case XML_FORMAT:
+            case MFUN_FRAME_FORMAT_XML:
                 libxml_disable_entity_loader(true);  //prevent XML entity injection
                 $postObj = simplexml_load_string($msg, 'SimpleXMLElement');  //防止破坏CDATA的内容，进而影响智能硬件L3消息体
                 //$postObj = simplexml_load_string($postStr, 'SimpleXMLElement', LIBXML_NOCDATA);
@@ -419,27 +428,27 @@ class classTaskL2sdkIotHcu
                 //消息或者说帧类型分离
                 switch ($RX_TYPE) {
                     case "hcu_text":
-                        $project = "HCU";
+                        $project = MFUN_PRJ_HCU_XML;
                         $loggerObj->logger($project, $fromUser, $log_time, $log_content);
-                        $log_from = MFUN_CLOUD_HCU;
+                        $log_from = $fromUser;
                         $this->receive_hcu_xmlMessage($parObj, $postObj, $project, $log_from);
                         break;
                     case "hcu_heart_beat":
-                        $project = "HCU";
+                        $project = MFUN_PRJ_HCU_XML;
                         $loggerObj->logger($project, $fromUser, $log_time, $log_content);
-                        $log_from = MFUN_CLOUD_HCU;
+                        $log_from = $fromUser;
                         $this->receive_hcu_xmlMessage($parObj, $postObj, $project, $log_from);
                         break;
                     case "hcu_command":
-                        $project = "HCU";
+                        $project = MFUN_PRJ_HCU_XML;
                         $loggerObj->logger($project, $fromUser, $log_time, $log_content);
-                        $log_from = MFUN_CLOUD_HCU;
+                        $log_from = $fromUser;
                         $this->receive_hcu_xmlMessage($parObj, $postObj, $project, $log_from);
                         break;
                     case "hcu_polling":
-                        $project = "HCU";
+                        $project = MFUN_PRJ_HCU_XML;
                         $loggerObj->logger($project, $fromUser, $log_time, $log_content);
-                        $log_from = MFUN_CLOUD_HCU;
+                        $log_from = $fromUser;
                         $this->receive_hcu_xmlMessage($parObj, $postObj, $project, $log_from);
                         break;
                     default:
@@ -455,13 +464,29 @@ class classTaskL2sdkIotHcu
                         break;
                 }
                 break;
-            case ZHB_FORMAT:
-                $project = "HCU";
-                $fromUser = "ZHBMSG";
+            case MFUN_FRAME_FORMAT_ZHB:
+                $project = MFUN_PRJ_HCU_ZHB;
+                $fromUser = "ZHBMSG_TO_UNPACK";
                 $log_content = "R:" . trim($msg);
                 $loggerObj->logger($project, $fromUser, $log_time, $log_content); //ZHB接收消息log保存
-                $log_from = MFUN_CLOUD_HCU;
-                $this->receive_hcu_zhbMessage($parObj, $msg, $project, $log_from);
+                $log_from = $fromUser;
+                $this->receive_hcu_zhbMessage($parObj, $project, $log_from, $msg);
+                break;
+            case MFUN_FRAME_FORMAT_APPLE:
+                $project = MFUN_PRJ_HCU_APPLE;
+                $fromUser = "APPLEMSG_TO_UNPACK";
+                $log_content = "R:" . trim($msg);
+                $loggerObj->logger($project, $fromUser, $log_time, $log_content);
+                $log_from = $fromUser;
+                $this->receive_hcu_appleMessage($parObj, $project, $log_from, $msg);
+                break;
+            case MFUN_FRAME_FORMAT_JD:
+                $project = MFUN_PRJ_HCU_JD;
+                $fromUser = "JDMSG_TO_UNPACK";
+                $log_content = "R:" . trim($msg);
+                $loggerObj->logger($project, $fromUser, $log_time, $log_content);
+                $log_from = $fromUser;
+                $this->receive_hcu_jdMessage($parObj, $project, $log_from, $msg);
                 break;
             default:
                 $result = "Unknown message format";

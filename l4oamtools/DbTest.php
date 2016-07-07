@@ -315,7 +315,7 @@ $obj->mfun_l1vm_task_main_entry(MFUN_MAIN_ENTRY_AQYC_UI, MSG_ID_L2SDK_HCU_DATA_C
 //TEST CASE: 全局工程参数中图像的更新: START
 $dbiObj = new classDbiL1vmCommon();
 $data = addslashes(fread(fopen("C:\wamp\www\mfunhcu\l4oamtools\qrcode.png", "rb"), filesize("C:\wamp\www\mfunhcu\l4oamtools\qrcode.png")));
-$project = MFUN_CURRENT_WORKING_PROJECT_NAME_UNIQUE;
+$project = MFUN_CURRENT_WORKING_PROGRAM_NAME_UNIQUE;
 $filename = json_encode("C:\wamp\www\mfunhcu\l4oamtools\qrcode.png"); $filetype = "png";
 $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
     $result=$mysqli->query("UPDATE `t_l1vm_engpar` SET `filenamebg` = '$filename', `filetypebg` = '$filetype',`filedatabg` = '$data' WHERE (`project` = '$project')");
