@@ -30,31 +30,31 @@ $cObj = new classApiL2snrCommonService();
 switch($sensorType)
 {
     case "temperature":
-        $ctrl_key = $cObj->byte2string(CMDID_TEMPERATURE_DATA);
+        $ctrl_key = $cObj->byte2string(MFUN_HCU_CMDID_TEMP_DATA);
         $sensorid = $cObj->byte2string(MFUN_ID_EQUIP_TEMPERATURE);
         break;
     case "humidity":
-        $ctrl_key = $cObj->byte2string(CMDID_HUMIDITY_DATA);
+        $ctrl_key = $cObj->byte2string(MFUN_HCU_CMDID_HUMID_DATA);
         $sensorid = $cObj->byte2string(MFUN_ID_EQUIP_HUMIDITY);
         break;
     case "windspeed":
-        $ctrl_key = $cObj->byte2string(CMDID_WINDSPEED_DATA);
+        $ctrl_key = $cObj->byte2string(MFUN_HCU_CMDID_WINDSPD_DATA);
         $sensorid = $cObj->byte2string(MFUN_ID_EQUIP_WINDSPEED);
         break;
     case "winddirection":
-        $ctrl_key = $cObj->byte2string(CMDID_WINDDIR_DATA);
+        $ctrl_key = $cObj->byte2string(MFUN_HCU_CMDID_WINDDIR_DATA);
         $sensorid = $cObj->byte2string(MFUN_ID_EQUIP_WINDDIR);
         break;
     case "pmdata":
-        $ctrl_key = $cObj->byte2string(CMDID_PM_DATA);
+        $ctrl_key = $cObj->byte2string(MFUN_HCU_CMDID_PM25_DATA);
         $sensorid = $cObj->byte2string(MFUN_ID_EQUIP_PM);
         break;
     case "noise":
-        $ctrl_key = $cObj->byte2string(CMDID_NOISE_DATA);
+        $ctrl_key = $cObj->byte2string(MFUN_HCU_CMDID_NOISE_DATA);
         $sensorid = $cObj->byte2string(MFUN_ID_EQUIP_NOISE);
         break;
     case "emc":
-        $ctrl_key = $cObj->byte2string(CMDID_EMC_DATA);
+        $ctrl_key = $cObj->byte2string(MFUN_HCU_CMDID_EMC_DATA);
         $sensorid = $cObj->byte2string(MFUN_ID_EQUIP_EMC);
         break;
     case "airpressure":
@@ -75,7 +75,7 @@ switch($sensorType)
 switch($opt_type)
 {
     case "set_switch":
-        $opt_key = $cObj->byte2string(MODBUS_SWITCH_SET);
+        $opt_key = $cObj->byte2string(MFUN_HCU_MODBUS_SWITCH_SET);
         $switchSet = $_POST["set_onoff"];
         if ($switchSet == NULL){
             echo "<script type='text/javascript'> alert('告警：请选择测量开启还是停止！'); history.back();</script>";
@@ -91,7 +91,7 @@ switch($opt_type)
         $respCmd = $ctrl_key . $len . $opt_key . $sensorid . $switch;
         break;
     case "set_addr":
-        $opt_key = $cObj->byte2string(MODBUS_ADDR_SET);
+        $opt_key = $cObj->byte2string(MFUN_HCU_MODBUS_ADDR_SET);
         $addr = $_POST["modbus_addr"];
         if (empty($addr)){
             echo "<script type='text/javascript'> alert('请输入MODBUS设备地址！'); history.back();</script>";
@@ -107,7 +107,7 @@ switch($opt_type)
         $respCmd = $ctrl_key . $len . $opt_key . $sensorid . $addr;
         break;
     case "set_period":
-        $opt_key = $cObj->byte2string(MODBUS_PERIOD_SET);
+        $opt_key = $cObj->byte2string(MFUN_HCU_MODBUS_PERIOD_SET);
         $period = $_POST["period"];
         if (empty($period)){
             echo "<script type='text/javascript'> alert('请输入测量周期！'); history.back();</script>";
@@ -118,7 +118,7 @@ switch($opt_type)
         $respCmd = $ctrl_key . $len . $opt_key . $sensorid . $period;
         break;
     case "set_samples":
-        $opt_key = $cObj->byte2string(MODBUS_SAMPLES_SET);
+        $opt_key = $cObj->byte2string(MFUN_HCU_MODBUS_SAMPLES_SET);
         $samples = $_POST["samples"];
         if (empty($samples)){
             echo "<script type='text/javascript'> alert('请输入采样间隔！'); history.back();</script>";
@@ -129,7 +129,7 @@ switch($opt_type)
         $respCmd = $ctrl_key . $len . $opt_key . $sensorid . $samples;
         break;
     case "set_times":
-        $opt_key = $cObj->byte2string(MODBUS_TIMES_SET);
+        $opt_key = $cObj->byte2string(MFUN_HCU_MODBUS_TIMES_SET);
         $times = $_POST["times"];
         if (empty($times)){
             echo "<script type='text/javascript'> alert('请输入测量次数！'); history.back();</script>";
@@ -140,27 +140,27 @@ switch($opt_type)
         $respCmd = $ctrl_key . $len . $opt_key . $sensorid . $times;
         break;
     case "read_switch":
-        $opt_key = $cObj->byte2string(MODBUS_SWITCH_READ);
+        $opt_key = $cObj->byte2string(MFUN_HCU_MODBUS_SWITCH_READ);
         $len = $cObj->byte2string(strlen( $opt_key . $sensorid)/2);
         $respCmd = $ctrl_key . $len . $opt_key . $sensorid;
         break;
     case "read_addr":
-        $opt_key = $cObj->byte2string(MODBUS_ADDR_READ);
+        $opt_key = $cObj->byte2string(MFUN_HCU_MODBUS_ADDR_READ);
         $len = $cObj->byte2string(strlen( $opt_key . $sensorid)/2);
         $respCmd = $ctrl_key . $len . $opt_key . $sensorid;
         break;
     case "read_period":
-        $opt_key = $cObj->byte2string(MODBUS_PERIOD_READ);
+        $opt_key = $cObj->byte2string(MFUN_HCU_MODBUS_PERIOD_READ);
         $len = $cObj->byte2string(strlen( $opt_key . $sensorid)/2);
         $respCmd = $ctrl_key . $len . $opt_key . $sensorid;
         break;
     case "read_samples":
-        $opt_key = $cObj->byte2string(MODBUS_SAMPLES_READ);
+        $opt_key = $cObj->byte2string(MFUN_HCU_MODBUS_SAMPLES_READ);
         $len = $cObj->byte2string(strlen( $opt_key . $sensorid)/2);
         $respCmd = $ctrl_key . $len . $opt_key . $sensorid;
         break;
     case "read_times":
-        $opt_key = $cObj->byte2string(MODBUS_TIMES_READ);
+        $opt_key = $cObj->byte2string(MFUN_HCU_MODBUS_TIMES_READ);
         $len = $cObj->byte2string(strlen( $opt_key . $sensorid)/2);
         $respCmd = $ctrl_key . $len . $opt_key . $sensorid;
         break;

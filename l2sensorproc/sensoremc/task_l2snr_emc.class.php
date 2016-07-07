@@ -20,13 +20,13 @@ class classTaskL2snrEmc
     {
         switch($platform)
         {
-            case MFUN_PLTF_WX:
+            case MFUN_PLTF_WECHAT:
                 if (strlen($content) == 0) {
                     return "ERROR EMC_SERVICE[WX]: message length invalid";  //消息长度不合法，直接返回
                 }
-                $resp = $this->wx_emcdata_req_process($deviceId,$content);
+                $resp = $this->wx_emcdata_req_process($deviceId, $content);
                 break;
-            case MFUN_PLTF_HCU:
+            case MFUN_PLTF_HCUGX:
                 $raw_MsgHead = substr($content, 0, MFUN_HCU_MSG_HEAD_LENGTH);  //截取4Byte MsgHead
                 $msgHead = unpack(MFUN_HCU_MSG_HEAD_FORMAT, $raw_MsgHead);
 
@@ -40,7 +40,7 @@ class classTaskL2snrEmc
                 $opt_key = hexdec($msgHead['Cmd']) & 0xFF;
                 switch ($opt_key) //MODBUS操作字处理
                 {
-                    case MODBUS_DATA_REPORT:
+                    case MFUN_HCU_MODBUS_DATA_REPORT:
                         $resp = $this->hcu_emcdata_req_process($deviceId, $statCode, $data);
                         break;
                     default:
@@ -48,7 +48,7 @@ class classTaskL2snrEmc
                         break;
                 }
                 break;
-            case MFUN_PLTF_JD:
+            case MFUN_PLTF_JDIOT:
                 $resp = ""; //no response message
                 break;
             default:
@@ -58,13 +58,16 @@ class classTaskL2snrEmc
         return $resp;
     }
 
-    private function wx_emcdata_req_process( $deviceId,$content)
+    private function wx_emcdata_req_process( $deviceId, $content)
     {
-        $emc_value = hexdec($content) & 0xFFFF;
-        //$emc_time = hexdec(substr($content, 8, 8)) & 0xFFFFFFFF;
-        $emc_time = time(); //下位机暂时没有时间上报，取系统当前时间
-        $sensorId = "";
-        $gps = "";
+        //$emc_value = hexdec(substr($content, 4, 4)) & 0xFFFFFFFF;
+        $format = "A2EmcCmd/A2Len/A4EmcValue/A12Time/A12Gps";
+        $data = unpack($format, $content);
+        $emc_value = hexdec($data['EmcValue']) & 0xFFFF;
+        $emc_time = hexdec($data['Time']) & 0xFFFFFFFF;
+        $gps = hexdec($data['Gps']) & 0xFFFFFFFF;
+        //$emc_time = time(); //下位机暂时没有时间上报，取系统当前时间
+        $sensorId = 1;
 
         $sDbObj = new classDbiL2snrEmc();
         $sDbObj->dbi_emcData_save($deviceId, $sensorId, $emc_time, $emc_value,$gps);
@@ -118,7 +121,7 @@ class classTaskL2snrEmc
         $magicCode = "FECF";
         $version = "0001";
         $length = "000C";
-        $cmdid = $this->ushort2string(MFUN_CMDID_EMC_DATA_PUSH);
+        $cmdid = $this->ushort2string(MFUN_IHU_CMDID_EMC_DATA_PUSH);
         $seq = "0000";
         $errCode = "0000";
 

@@ -20,7 +20,7 @@ class classTaskL2snrHsmmp
     {
         switch($platform)
         {
-            case MFUN_PLTF_WX:   //微信有专门的video消息类型，这里暂时定义一个空操作保持结构的完整性
+            case MFUN_PLTF_WECHAT:   //微信有专门的video消息类型，这里暂时定义一个空操作保持结构的完整性
                 $length = hexdec(substr($content, 2, 2)) & 0xFF;
                 $length = ($length + 2)*2; //消息总长度等于length＋1B 控制字＋1B长度本身
                 if ($length != strlen($content)){
@@ -29,10 +29,10 @@ class classTaskL2snrHsmmp
                 $sub_key = hexdec(substr($content, 4, 2)) & 0xFF;
                 switch ($sub_key) //MODBUS操作字处理
                 {
-                    case OPT_VEDIOLINK_RESP:
+                    case MFUN_HCU_OPT_VEDIOLINK_RESP:
                         $resp = $this->wx_hsmmp_req_process($deviceId, $content,$funcFlag);
                         break;
-                    case OPT_VEDIOFILE_RESP:
+                    case MFUN_HCU_OPT_VEDIOFILE_RESP:
                         $resp = "";
                         break;
 
@@ -41,7 +41,7 @@ class classTaskL2snrHsmmp
                         break;
                 }
                 break;
-            case MFUN_PLTF_HCU:
+            case MFUN_PLTF_HCUGX:
                 $raw_MsgHead = substr($content, 0, MFUN_HCU_MSG_HEAD_LENGTH);  //截取4Byte MsgHead
                 $msgHead = unpack(MFUN_HCU_MSG_HEAD_FORMAT, $raw_MsgHead);
 
@@ -55,7 +55,7 @@ class classTaskL2snrHsmmp
                 $opt_key = hexdec($msgHead['Cmd']) & 0xFF;
                 switch ($opt_key) //MODBUS操作字处理
                 {
-                    case MODBUS_DATA_REPORT:
+                    case MFUN_HCU_MODBUS_DATA_REPORT:
                         $resp = $this->hcu_video_req_process($deviceId, $data, $funcFlag);
                         break;
                     default:
@@ -63,7 +63,7 @@ class classTaskL2snrHsmmp
                         break;
                 }
                 break;
-            case MFUN_PLTF_JD:
+            case MFUN_PLTF_JDIOT:
                 $resp = ""; //no response message
                 break;
             default:

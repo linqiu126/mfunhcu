@@ -21,7 +21,7 @@ class classTaskL2snrPm25
     {
         switch($platform)
         {
-            case MFUN_PLTF_WX:
+            case MFUN_PLTF_WECHAT:
                 $length = hexdec(substr($content, 2, 2)) & 0xFF;
                 $length =($length + 2)*2; //消息总长度等于length＋1B 控制字＋1B长度本身
                 if ($length != strlen($content)){
@@ -30,7 +30,7 @@ class classTaskL2snrPm25
                 $sub_key = hexdec(substr($content, 4, 2)) & 0xFF;
                 switch ($sub_key) //MODBUS操作字处理
                 {
-                    case MODBUS_DATA_REPORT:
+                    case MFUN_HCU_MODBUS_DATA_REPORT:
                         $resp = $this->wx_pmdata_req_process($deviceId, $content);
                         break;
                     default:
@@ -38,7 +38,7 @@ class classTaskL2snrPm25
                         break;
                 }
                 break;
-            case MFUN_PLTF_HCU:
+            case MFUN_PLTF_HCUGX:
                 $raw_MsgHead = substr($content, 0, MFUN_HCU_MSG_HEAD_LENGTH);  //截取4Byte MsgHead
                 $msgHead = unpack(MFUN_HCU_MSG_HEAD_FORMAT, $raw_MsgHead);
 
@@ -52,22 +52,22 @@ class classTaskL2snrPm25
                 $opt_key = hexdec($msgHead['Cmd']) & 0xFF;
                 switch ($opt_key) //MODBUS操作字处理
                 {
-                    case MODBUS_DATA_REPORT:
+                    case MFUN_HCU_MODBUS_DATA_REPORT:
                         $resp = $this->hcu_pmdata_req_process($deviceId,$statCode, $data);
                         break;
-                    case MODBUS_SWITCH_SET_ACK:
+                    case MFUN_HCU_MODBUS_SWITCH_SET_ACK:
                         $resp = $this->hcu_pm_switch_set_process($deviceId,$statCode, $data);
                         break;
-                    case MODBUS_ADDR_SET_ACK:
+                    case MFUN_HCU_MODBUS_ADDR_SET_ACK:
                         $resp = "";
                         break;
-                    case MODBUS_PERIOD_SET_ACK:
+                    case MFUN_HCU_MODBUS_PERIOD_SET_ACK:
                         $resp = "";
                         break;
-                    case MODBUS_SAMPLE_SET_ACK:
+                    case MFUN_HCU_MODBUS_SAMPLE_SET_ACK:
                         $resp = "";
                         break;
-                    case MODBUS_TIMES_SET_ACK:
+                    case MFUN_HCU_MODBUS_TIMES_SET_ACK:
                         $resp = "";
                         break;
                     default:
@@ -75,7 +75,7 @@ class classTaskL2snrPm25
                         break;
                 }
                 break;
-            case MFUN_PLTF_JD:
+            case MFUN_PLTF_JDIOT:
                 $resp = ""; //no response message
                 break;
             default:
@@ -160,9 +160,9 @@ class classTaskL2snrPm25
     //PM强度读取 (Cloud- > IHU)
     public function func_pm_data_push_process($deviceId, $content)
     {
-        $cmdid = $this->byte2string(MFUN_CMDID_PM25_DATA);
+        $cmdid = $this->byte2string(MFUN_IHU_CMDID_PM25_DATA);
         $length = "01";
-        $sub_key =  $this->byte2string(MODBUS_DATA_REQ);
+        $sub_key =  $this->byte2string(MFUN_HCU_MODBUS_DATA_REQ);
         $msg_body = $cmdid . $length . $sub_key;
 
         $hex_body = pack('H*',$msg_body);

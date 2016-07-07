@@ -173,6 +173,12 @@ Make By：ZJL
 > 试图给EMCWX增加自动化测试集，欠缺完善的测试数据
 > SOCKET只有在AQ_HCU环境下才能测试，待完善
 
+//= ZJL, 2016 July.7, CURRENT_SW_DELIVERY R02.D23
+> 完善EMCWX测试例程
+> 将commsg.php中的全局定义分为IHU/HCU两个不同的类别
+> 增加NBIOT的基础框架功能
+
+
 
 
 

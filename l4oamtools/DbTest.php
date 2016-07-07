@@ -53,7 +53,9 @@ while($row = $result->fetch_array())
  *************************************************************************************/
 //EMCWX测试开始
 echo " [TC EMCWX: EMC DEVICE_TEXT START]\n";
-$GLOBALS["HTTP_RAW_POST_DATA"] = "<xml><ToUserName><![CDATA[AQ_HCU]]></ToUserName><FromUserName><![CDATA[HCU_SH_0302]]></FromUserName><CreateTime>1460039152</CreateTime><MsgType><![CDATA[device_text]]></MsgType><Content><![CDATA[201881050201124945000000004E000000000000000057066DF0]]></Content><FuncFlag>0</FuncFlag></xml>";
+//$content = pack("H*", "FE01001C71212372010002206500403020101020304050607081800");
+$content = base64_encode(pack("H*", "201000220650040302010102030405060708"));
+$GLOBALS["HTTP_RAW_POST_DATA"] = "<xml><ToUserName><![CDATA[IHU]]></ToUserName><FromUserName><![CDATA[oS0Chv3Uum1TZqHaCEb06AoBfCvY]]></FromUserName><CreateTime>1460039152</CreateTime><MsgType><![CDATA[device_text]]></MsgType><Content><![CDATA[" . $content . "]]></Content><FuncFlag>0</FuncFlag></xml>";
 require("../l1mainentry/cloud_callback_wechat.php");
 echo " [TC EMCWX: EMC DEVICE_TEXT END]\n";
 
@@ -71,7 +73,7 @@ echo " [TC EMCWX: EMC DEVICE_EVENT END]\n";
  *************************************************************************************/
 //SOCKET测试开始
 echo " [TC SOCKET: xxx START]\n";
-if (MFUN_CLOUD_HCU == "AQ_HCU"){
+if (MFUN_CLOUD_HCU == "TEST_HCU"){
     require("../l1mainentry/cloud_callback_socket_listening.php");
 }
 echo " [TC SOCKET: xxx END]\n";
@@ -627,7 +629,9 @@ echo " [TC L4AQYC: GetStaticMonitorTable END]\n";
 
 
 
-
+/**************************************************************************************
+ *                             NBIOT/IWM TEST CASES                              *
+ *************************************************************************************/
 
 
 

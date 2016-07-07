@@ -62,35 +62,35 @@ class classTaskL2sdkIotHcu
         $ctrl_key = hexdec($key['Key'])& 0xFF;
         switch ($ctrl_key)
         {
-            case MFUN_CMDID_VERSION_SYNC:
+            case MFUN_HCU_CMDID_VERSION_SYNC:
                 $hcuObj = new classApiL2snrCommonService();
-                $resp = $hcuObj->func_version_update_process(MFUN_PLTF_HCU, $deviceId, $content);
+                $resp = $hcuObj->func_version_update_process(MFUN_PLTF_HCUGX, $deviceId, $content);
                 break;
 
-            case MFUN_CMDID_TIME_SYNC:
+            case MFUN_HCU_CMDID_TIME_SYNC:
                 $hcuObj = new classApiL2snrCommonService();
                 $resp = $hcuObj->func_timeSync_process();
                 break;
 
-            case MFUN_CMDID_INVENTORY_DATA:
+            case MFUN_HCU_CMDID_INVENTORY_DATA:
                 $hcuObj = new classApiL2snrCommonService();
-                $resp = $hcuObj->func_inventory_data_process(MFUN_PLTF_HCU,$deviceId, $content);
+                $resp = $hcuObj->func_inventory_data_process(MFUN_PLTF_HCUGX,$deviceId, $content);
                 break;
 
-            case MFUN_CMDID_HEART_BEAT:
+            case MFUN_HCU_CMDID_HEART_BEAT:
                 $hcuObj = new classApiL2snrCommonService();
                 $resp = $hcuObj->func_heartBeat_process();
                 break;
 
-            case MFUN_CMDID_HCU_POLLING:
+            case MFUN_HCU_CMDID_HCU_POLLING:
                 $hcuObj = new classApiL2snrCommonService();
                 $resp = $hcuObj->func_hcuPolling_process($deviceId);
                 break;
 
-            case MFUN_CMDID_EMC_DATA:  //定时辐射强度处理
+            case MFUN_HCU_CMDID_EMC_DATA:  //定时辐射强度处理
                 $msg = array("project" => $project,
                     "log_from" => $log_from,
-                    "platform" => MFUN_PLTF_HCU,
+                    "platform" => MFUN_PLTF_HCUGX,
                     "deviceId" => $deviceId,
                     "statCode" => $statCode,
                     "content" => $content);
@@ -102,13 +102,13 @@ class classTaskL2sdkIotHcu
                 else $resp = "";
 
                 //$hcuObj = new classTaskL2snrEmc();
-                //$resp = $hcuObj->func_emc_process(MFUN_PLTF_HCU, $deviceId, $statCode, $content);
+                //$resp = $hcuObj->func_emc_process(MFUN_PLTF_HCUGX, $deviceId, $statCode, $content);
                 break;
 
-            case MFUN_CMDID_PM25_DATA:
+            case MFUN_HCU_CMDID_PM25_DATA:
                 $msg = array("project" => $project,
                     "log_from" => $log_from,
-                    "platform" => MFUN_PLTF_HCU,
+                    "platform" => MFUN_PLTF_HCUGX,
                     "deviceId" => $deviceId,
                     "statCode" => $statCode,
                     "content" => $content);
@@ -120,10 +120,10 @@ class classTaskL2sdkIotHcu
                 else $resp = "";
                 break;
 
-            case MFUN_CMDID_WINDDIR_DATA:
+            case MFUN_HCU_CMDID_WINDDIR_DATA:
                 $msg = array("project" => $project,
                     "log_from" => $log_from,
-                    "platform" => MFUN_PLTF_HCU,
+                    "platform" => MFUN_PLTF_HCUGX,
                     "deviceId" => $deviceId,
                     "statCode" => $statCode,
                     "content" => $content);
@@ -135,10 +135,10 @@ class classTaskL2sdkIotHcu
                 else $resp = "";
                 break;
 
-            case MFUN_CMDID_WINDSPD_DATA:
+            case MFUN_HCU_CMDID_WINDSPD_DATA:
                 $msg = array("project" => $project,
                     "log_from" => $log_from,
-                    "platform" => MFUN_PLTF_HCU,
+                    "platform" => MFUN_PLTF_HCUGX,
                     "deviceId" => $deviceId,
                     "statCode" => $statCode,
                     "content" => $content);
@@ -150,10 +150,10 @@ class classTaskL2sdkIotHcu
                 else $resp = "";
                 break;
 
-            case MFUN_CMDID_TEMP_DATA:
+            case MFUN_HCU_CMDID_TEMP_DATA:
                 $msg = array("project" => $project,
                     "log_from" => $log_from,
-                    "platform" => MFUN_PLTF_HCU,
+                    "platform" => MFUN_PLTF_HCUGX,
                     "deviceId" => $deviceId,
                     "statCode" => $statCode,
                     "content" => $content);
@@ -165,10 +165,10 @@ class classTaskL2sdkIotHcu
                 else $resp = "";
                 break;
 
-            case MFUN_CMDID_HUMID_DATA:
+            case MFUN_HCU_CMDID_HUMID_DATA:
                 $msg = array("project" => $project,
                     "log_from" => $log_from,
-                    "platform" => MFUN_PLTF_HCU,
+                    "platform" => MFUN_PLTF_HCUGX,
                     "deviceId" => $deviceId,
                     "statCode" => $statCode,
                     "content" => $content);
@@ -180,13 +180,13 @@ class classTaskL2sdkIotHcu
                 else $resp = "";
                 break;
 
-            case MFUN_CMDID_HSMMP_DATA:
+            case MFUN_HCU_CMDID_HSMMP_DATA:
                 if (empty($funcFlag)){
                     //return "HCU_IOT: video link empty";
                 }
                 $msg = array("project" => $project,
                     "log_from" => $log_from,
-                    "platform" => MFUN_PLTF_HCU,
+                    "platform" => MFUN_PLTF_HCUGX,
                     "deviceId" => $deviceId,
                     "statCode" => $statCode,
                     "content" => $content);
@@ -198,10 +198,10 @@ class classTaskL2sdkIotHcu
                 else $resp = "";
                 break;
 
-            case MFUN_CMDID_NOISE_DATA:
+            case MFUN_HCU_CMDID_NOISE_DATA:
                 $msg = array("project" => $project,
                     "log_from" => $log_from,
-                    "platform" => MFUN_PLTF_HCU,
+                    "platform" => MFUN_PLTF_HCUGX,
                     "deviceId" => $deviceId,
                     "statCode" => $statCode,
                     "content" => $content);
@@ -213,7 +213,7 @@ class classTaskL2sdkIotHcu
                 else $resp = "";
                 break;
 
-            case MFUN_CMDID_SW_UPDATE:
+            case MFUN_HCU_CMDID_SW_UPDATE:
                 $resp ="HCU_IOT: Not yet support!";
                 break;
 

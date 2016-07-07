@@ -25,6 +25,7 @@ include_once "../l2sdk/task_l2sdk_iot_apple.class.php";
 include_once "../l2sdk/task_l2sdk_iot_jd.class.php";
 include_once "../l2sdk/task_l2sdk_iot_wx.class.php";
 include_once "../l2sdk/task_l2sdk_iot_wx_jssdk.php";
+include_once "../l2sdk/task_l2sdk_nb_iot.class.php";
 include_once "../l2sensorproc/proccom/svr_l2snr_com.class.php";
 include_once "../l2sensorproc/sensorairprs/task_l2snr_airprs.class.php";
 include_once "../l2sensorproc/sensoremc/task_l2snr_emc.class.php";
@@ -56,6 +57,7 @@ include_once "../l2timercron/task_l2timer_cron.class.php";
 include_once "../l4emcwxui/task_l4emcwx_ui.class.php";
 include_once "../l4aqycui/task_l4aqyc_ui.class.php";
 include_once "../l4tbswrui/task_l4tbswr_ui.class.php";
+include_once "../l4nbiotimui/task_l4nbiot_im_ui.class.php";
 include_once "../l5bi/task_bi_service.class.php";
 
 
@@ -512,6 +514,19 @@ class classTaskL1vmCoreRouter
                 return false;
             }
 
+        }elseif($parObj == MFUN_MAIN_ENTRY_NBIOT){
+            if ($this->mfun_l1vm_msg_send(MFUN_TASK_ID_L1VM,
+                    MFUN_TASK_ID_L2SDK_NB_IOT,
+                    MSG_ID_L2SDK_NBIOT_INCOMING,
+                    "MSG_ID_L2SDK_NBIOT_INCOMING",
+                    $msg) == false) {
+                $result = "Cloud: Send to message buffer error.";
+                $log_content = "P:" . json_encode($result);
+                $loggerObj->logger("MFUN_TASK_ID_L2SDK_NB_IOT", "mfun_l1vm_task_main_entry", $log_time, $log_content);
+                echo trim($result);
+                return false;
+            }
+
         }elseif($parObj == MFUN_MAIN_ENTRY_DIRECT_IN){   //本来就不需要处理，因为消息已经发送进队列了
 
         //}elseif($parObj == $this){  //Do nothing so far
@@ -594,6 +609,11 @@ class classTaskL1vmCoreRouter
                 case MFUN_TASK_ID_L2SDK_IOT_HCU:
                     $obj = new classTaskL2sdkIotHcu();
                     $obj->mfun_l2sdk_iot_hcu_task_main_entry($this, $result["msgId"], $result["msgName"], $result["msgBody"]);
+                    break;
+
+                case MFUN_TASK_ID_L2SDK_NB_IOT:
+                    $obj = new classTaskL2sdkNbIot();
+                    $obj->mfun_l2sdk_nb_iot_task_main_entry($this, $result["msgId"], $result["msgName"], $result["msgBody"]);
                     break;
 
                 case MFUN_TASK_ID_L2SENSOR_EMC:
@@ -746,6 +766,11 @@ class classTaskL1vmCoreRouter
                 case MFUN_TASK_ID_L4TBSWR_UI:
                     $obj = new classTaskL4tbswrUi();
                     $obj->mfun_l4tbswr_ui_task_main_entry($this, $result["msgId"], $result["msgName"], $result["msgBody"]);
+                    break;
+
+                case MFUN_TASK_ID_L4NBIOTIM_UI:
+                    $obj = new classTaskL4nbiotImUi();
+                    $obj->mfun_l4nbiot_im_ui_task_main_entry($this, $result["msgId"], $result["msgName"], $result["msgBody"]);
                     break;
 
                 case MFUN_TASK_ID_L4OAMTOOLS:

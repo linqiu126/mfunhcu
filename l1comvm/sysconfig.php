@@ -11,9 +11,10 @@
  *************************************************************************************/
 //项目名称，每个项目均为唯一用于本项目选择启动配置数据库中的工参信息
 //项目目前支持：MFUN_PRG_AQYC, MFUN_PRG_EMCWX, MFUN_PRG_TBSWR, 本地=MFUN_PRG_AQYC
-define ("MFUN_WORKING_PROGRAM_NAME_UNIQUE_AQYC", "MFUN_PRG_AQYC");
-define ("MFUN_WORKING_PROGRAM_NAME_UNIQUE_EMCWX", "MFUN_PRG_EMCWX");
-define ("MFUN_WORKING_PROGRAM_NAME_UNIQUE_TBSWR", "MFUN_PRG_TBSWR");
+define ("MFUN_WORKING_PROGRAM_NAME_UNIQUE_AQYC", "MFUN_PRG_AQYC");      //爱启扬尘
+define ("MFUN_WORKING_PROGRAM_NAME_UNIQUE_EMCWX", "MFUN_PRG_EMCWX");    //电磁辐射
+define ("MFUN_WORKING_PROGRAM_NAME_UNIQUE_TBSWR", "MFUN_PRG_TBSWR");    //水污染
+define ("MFUN_WORKING_PROGRAM_NAME_UNIQUE_NBIOT_IM", "MFUN_PRG_NBIM");  //智能电表
 define ("MFUN_CURRENT_WORKING_PROGRAM_NAME_UNIQUE", MFUN_WORKING_PROGRAM_NAME_UNIQUE_AQYC);
 
 //定义系统消息入口
@@ -21,6 +22,7 @@ define ("MFUN_MAIN_ENTRY_IOT_HCU", "MFUN_MAIN_ENTRY_IOT_HCU");
 define ("MFUN_MAIN_ENTRY_WECHAT", "MFUN_MAIN_ENTRY_WECHAT");
 define ("MFUN_MAIN_ENTRY_JINGDONG", "MFUN_MAIN_ENTRY_JINGDONG");
 define ("MFUN_MAIN_ENTRY_APPLE", "MFUN_MAIN_ENTRY_APPLE");
+define ("MFUN_MAIN_ENTRY_NBIOT", "MFUN_MAIN_ENTRY_NBIOT");
 define ("MFUN_MAIN_ENTRY_CRON", "MFUN_MAIN_ENTRY_CRON");
 define ("MFUN_MAIN_ENTRY_SOCKET_LISTEN", "MFUN_MAIN_ENTRY_SOCKET_LISTEN");
 define ("MFUN_MAIN_ENTRY_AQYC_UI", "MFUN_MAIN_ENTRY_AQYC_UI");
@@ -357,7 +359,7 @@ if (isset($_SERVER['SERVER_NAME']))
 }else   //本地配置数据库信息,需要根据个人配置修改
 {
     //云后台定义
-    define("MFUN_CLOUD_HCU", "PC_HCU"); //HCU后台云应用
+    define("MFUN_CLOUD_HCU", "AQ_HCU"); //HCU后台云应用
     define("MFUN_CLOUD_WX", "PC_WX"); //微信后台云应用
     //主数据库定义
     define("MFUN_CLOUD_DBHOST", "localhost");    //连接的服务器地址
