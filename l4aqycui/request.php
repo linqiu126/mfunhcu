@@ -1,8 +1,8 @@
 ﻿<?php
 include_once "../l1comvm/vmlayer.php";
-require_once "./dbi_l4aqyc_ui.class.php";
-header("Content-type:text/html;charset=utf-8");
-#require '/php/req.php';
+require_once "dbi_l4aqyc_ui.class.php";
+//header("Content-type:text/html;charset=utf-8");
+//require '/php/req.php';
 
 //L4AQYCUI的入口起点
 //这里的入参格式是跟前端界面商量约定好的

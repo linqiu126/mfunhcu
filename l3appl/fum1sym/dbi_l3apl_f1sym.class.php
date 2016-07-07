@@ -364,7 +364,7 @@ class classDbiL3apF1sym
         $result = $mysqli->query($query_str);
 
         $usertable = array();
-        while($row = $result->fetch_array())
+        while (($result != false) && (($row = $result->fetch_array()) > 0))
         {
             $attribute = $row['attribute'];
             if ($attribute == 'admin' or  $attribute == '管理员')

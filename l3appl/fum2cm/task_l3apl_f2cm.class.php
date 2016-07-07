@@ -54,7 +54,8 @@ class classTaskL3aplF2cm
                 'status'=>'false',
                 'ret'=>null
             );
-        $jsonencode = _encode($retval);
+        //$jsonencode = _encode($retval);
+        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
         return $jsonencode;
     }
 

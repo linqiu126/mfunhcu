@@ -168,6 +168,9 @@ Make By：ZJL
 > 扩展更加丰富支持的协议标准，到APPLE/JD的程序框架
 > ZHB的解码需要进一步完善，目前还非常不完善
 > Log功能再完善，可以开始恢复后台管理界面及相应LOG工具了
+> 给L4AQYC制作完整的TEST CASES，发现9个遗留问题
+> 给CRON增加自动化测试，待完善程序执行细节
+> 试图给EMCWX增加自动化测试集，欠缺完善的测试数据
 
 
 
@@ -182,16 +185,25 @@ Make By：ZJL
 //已知的潜在错误
 1. task_l2sdk_iot_hcu.class.php, line108，引用父进程的函数指针，编译器发现潜在错误，如何消除？ 目前执行都很正常，但是程序代码不好看
 2. l3appl->fxyyy中，调用_encode函数出错，如何办？
- //$jsonencode = _encode($retval);
-           $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
-
-
-
-
-
-
-
-
+    //$jsonencode = _encode($retval);
+    $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
+3.  [TC L4AQYC: USERNEW START]
+    Warning: Illegal string offset 'id' in C:\wamp\www\mfunhcu\l3appl\fum1sym\dbi_l3apl_f1sym.class.php on line 442
+4.  [TC L4AQYC: UserMod START]
+    Warning: Illegal string offset 'id' in C:\wamp\www\mfunhcu\l3appl\fum1sym\dbi_l3apl_f1sym.class.php on line 504
+5.  [TC L4AQYC: UserDel START]
+    Warning: Illegal string offset 'id' in C:\wamp\www\mfunhcu\l3appl\fum1sym\dbi_l3apl_f1sym.class.php on line 504
+6. [TC L4AQYC: PGNew START]
+    Warning: Illegal string offset 'id' in C:\wamp\www\mfunhcu\l3appl\fum2cm\dbi_l3apl_f2cm.class.php on line 537
+7. [TC L4AQYC: PGMod START]
+    Warning: Illegal string offset 'id' in C:\wamp\www\mfunhcu\l3appl\fum2cm\dbi_l3apl_f2cm.class.php on line 537
+8. [TC L4AQYC: TableQuery START]
+    Notice: Undefined variable: end in C:\wamp\www\mfunhcu\l2sensorproc\proccom\dbi_l2snr_com.class.php on line 665
+9. TC L4AQYC: DevSensor START
+    Same error as 8.
+10.TC CRON: DEFAULT START
+    Notice: Object of class classTaskL1vmCoreRouter could not be converted to int in C:\wamp\www\mfunhcu\l1comvm\vmlayer.php on line 517
+11.
 
 
 

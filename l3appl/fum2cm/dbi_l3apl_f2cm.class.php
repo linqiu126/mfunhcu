@@ -191,7 +191,7 @@ class classDbiL3apF2cm
         $query_str = "SELECT * FROM `t_l3f2cm_projgroup` limit $start, $total";
         $result = $mysqli->query($query_str);
         $pgtable = array();
-        while($row = $result->fetch_array())
+        while(($result !=false) && (($row = $result->fetch_array()) > 0))
         {
 
             $temp = array(

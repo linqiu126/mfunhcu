@@ -324,9 +324,9 @@ class classTaskL2sdkIotHcu
         $crc = strtoupper(dechex($this->crc16($dataField,$crc=0xffff)));
         $cr = "0D"; //回车键CR
         $lf = "0A"; //换行键LF
-
-        $pdu = $pHeader . $pduLen .$dataField . $crc . $cr . $lf;
-        $resp = pack("H*",$pdu);
+        $pdu =  $pHeader .$pduLen .$dataField . $crc . $cr . $lf;
+        $resp = pack("A*",$pdu);
+        //var_dump($resp);
 
         return $resp;
     }

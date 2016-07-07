@@ -4500,7 +4500,7 @@ class classTaskL2sdkWechat
 		$format = substr(trim($msg), 0, 2);
 		switch ($format)
 		{
-			case MFUN_FRAME_FORMAT_ZHB:
+			case MFUN_FRAME_FORMAT_XML:
 				libxml_disable_entity_loader(true);  //prevent XML entity injection
 				$postObj = simplexml_load_string($msg, 'SimpleXMLElement');  //防止破坏CDATA的内容，进而影响智能硬件L3消息体
 				//$postObj = simplexml_load_string($postStr, 'SimpleXMLElement', LIBXML_NOCDATA);
@@ -4522,28 +4522,28 @@ class classTaskL2sdkWechat
 				switch ($RX_TYPE)
 				{
 					case "event":
-						$project = "IHU";
+						$project = MFUN_PRJ_IHU_EMC_WX;
 						$this->logger($project,$fromUser,$log_time,$log_content);
 						$log_from = MFUN_CLOUD_WX;
 						$result = $this->receiveEvent($postObj);
 						break;
 
 					case "text":
-						$project = "IHU";
+						$project = MFUN_PRJ_IHU_EMC_WX;
 						$this->logger($project,$fromUser,$log_time,$log_content);
 						$log_from = MFUN_CLOUD_WX;
 						$result = $this->receiveText($postObj);
 						break;
 
 					case "image":
-						$project = "IHU";
+						$project = MFUN_PRJ_IHU_EMC_WX;
 						$this->logger($project,$fromUser,$log_time,$log_content);
 						$log_from = MFUN_CLOUD_WX;
 						$result = $this->receiveImage($postObj);
 						break;
 
 					case "location":
-						$project = "IHU";
+						$project = MFUN_PRJ_IHU_EMC_WX;
 						$this->logger($project,$fromUser,$log_time,$log_content);
 						$log_from = MFUN_CLOUD_WX;
 						$result = $this->receiveLocation($postObj);
@@ -4552,28 +4552,28 @@ class classTaskL2sdkWechat
 						break;
 
 					case "voice":
-						$project = "IHU";
+						$project = MFUN_PRJ_IHU_EMC_WX;
 						$this->logger($project,$fromUser,$log_time,$log_content);
 						$log_from = MFUN_CLOUD_WX;
 						$result = $this->receiveVoice($postObj);
 						break;
 
 					case "video":
-						$project = "IHU";
+						$project = MFUN_PRJ_IHU_EMC_WX;
 						$this->logger($project,$fromUser,$log_time,$log_content);
 						$log_from = MFUN_CLOUD_WX;
 						$result = $this->receiveVideo($postObj);
 						break;
 
 					case "link":
-						$project = "IHU";
+						$project = MFUN_PRJ_IHU_EMC_WX;
 						$this->logger($project,$fromUser,$log_time,$log_content);
 						$log_from = MFUN_CLOUD_WX;
 						$result = $this->receiveLink($postObj);
 						break;
 
 					case "device_text":  //智能硬件设备text消息，都转到IOT相关的CLASS中
-						$project = "IHU";
+						$project = MFUN_PRJ_IHU_EMC_WX;
 						$this->logger($project,$fromUser,$log_time,$log_content);
 						//$wxDevObj = new classTaskL2sdkIotWx($this->appid, $this->appsecret);
 						$log_from = MFUN_CLOUD_WX;
@@ -4593,7 +4593,7 @@ class classTaskL2sdkWechat
 						break;
 
 					case "device_event": //智能硬件设备text消息，都转到IOT相关的CLASS中
-						$project = "IHU";
+						$project = MFUN_PRJ_IHU_EMC_WX;
 						$this->logger($project,$fromUser,$log_time,$log_content);
 						$log_from = MFUN_CLOUD_WX;
 						$platform = MFUN_IOT_WX_DEVICE_EVENT;

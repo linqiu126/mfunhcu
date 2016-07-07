@@ -47,7 +47,7 @@ echo "<br>Step1：测试最新刷新的Token=<br>"."$wxObj->access_token"."<br>"
 
 // Step2 设备用户绑定状态查询
 echo "<br>Step2：设备和用户后台数据库绑定： <br>";
-$wxDbObj = new classDbiL2sdkIotWx();
+$wxDbObj = new classDbiL2sdkWechat();
 $result = $wxDbObj->dbi_blebound_duplicate($openid, $deviceid, $openid, $devicetype);
 if ($result == false)
 {

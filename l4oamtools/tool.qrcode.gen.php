@@ -37,7 +37,7 @@ $wxDevObj = new classTaskL2sdkIotWx(MFUN_WX_APPID, MFUN_WX_APPSECRET);
 echo "<br>测试最新刷新的Token=<br>"."$wxDevObj->access_token"."<br>";
 
 //Step2: 从数据库中取得有效的DEVICE_ID
-$wxDbObj = new classDbiL2sdkIotWx();
+$wxDbObj = new classDbiL2sdkWechat();
 $result = $wxDbObj->dbi_deviceqrcode_query_mac();
 if ($result ==null)
 {

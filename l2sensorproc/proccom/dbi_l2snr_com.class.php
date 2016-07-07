@@ -328,11 +328,11 @@ class classDbiL2snrCom
         }
         $mysqli->query("set character_set_results = utf8");
 
-        $query_str = "SELECT * FROM `t_l2sdk_iothcu_hcudevice` WHERE 1";
+        $query_str = "SELECT * FROM `t_l2snr_sensortype` WHERE 1";
         $result = $mysqli->query($query_str);
 
         $alarm_type = array();
-        while($row = $result->fetch_array())
+        while(($result != false) && (($row = $result->fetch_array()) > 0))
         {
             $temp = array(
                 'id' => $row['id'],

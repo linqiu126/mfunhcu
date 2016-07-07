@@ -11,6 +11,7 @@ include_once "../l1comvm/sysconfig.php";
  * 通用配置参数: 所有项目相关缺省配置参数                                             *
  *************************************************************************************/
 //通用项目标识
+define("MFUN_PRJ_IHU_EMC_WX", "IHU_EMCWX");
 define("MFUN_PRJ_HCU_XML", "IOT_HCU_XML");
 define("MFUN_PRJ_HCU_ZHB", "IOT_HCU_ZHB");
 define("MFUN_PRJ_HCU_APPLE", "IOT_HCU_APPLE");

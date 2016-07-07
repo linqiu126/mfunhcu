@@ -563,7 +563,7 @@ class classDbiL3apF3dm
         $result = $mysqli->query($query_str);
 
         $hcutable = array();
-        while($row = $result->fetch_array())
+        while (($result != false) && (($row = $result->fetch_array()) > 0))
         {
             $devcode = $row['devcode'];
             $statcode = $row['statcode'];
