@@ -33,6 +33,7 @@ class classL1MainEntrySocketListenServer
         $this->serv->on('Task', array($this, 'onTask'));
         $this->serv->on('Finish', array($this, 'onFinish'));
         $this->serv->start();
+        return;
     }
     public function onStart( $serv ) {
         echo "Start\n";
@@ -74,9 +75,9 @@ class classL1MainEntrySocketListenServer
     	echo "Result: {$data}\n";
     }
 }
+
+//该服务目前只能在AQ云下跑，其它的待开发完善
 $server = new classL1MainEntrySocketListenServer();
-
-
 
 ?>
 

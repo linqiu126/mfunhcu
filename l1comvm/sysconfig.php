@@ -322,8 +322,8 @@ if (isset($_SERVER['SERVER_NAME']))
 
     }elseif ($_SERVER['SERVER_NAME'] == "localhost"){  //用于本地浏览器调试
         //云后台定义
-        define("MFUN_CLOUD_HCU", "AQ_HCU"); //HCU后台云应用
-        define("MFUN_CLOUD_WX", "AQ_WX"); //微信后台云应用
+        define("MFUN_CLOUD_HCU", "LOCAL_HCU"); //HCU后台云应用
+        define("MFUN_CLOUD_WX", "LOCAL_WX"); //微信后台云应用
         //主数据库定义
         define("MFUN_CLOUD_DBHOST", "localhost");    //连接的服务器地址
         define("MFUN_CLOUD_DBUSER", "TestUser");     //连接数据库的用户名
@@ -357,8 +357,8 @@ if (isset($_SERVER['SERVER_NAME']))
 }else   //本地配置数据库信息,需要根据个人配置修改
 {
     //云后台定义
-    define("MFUN_CLOUD_HCU", "AQ_HCU"); //HCU后台云应用
-    define("MFUN_CLOUD_WX", "AQ_WX"); //微信后台云应用
+    define("MFUN_CLOUD_HCU", "PC_HCU"); //HCU后台云应用
+    define("MFUN_CLOUD_WX", "PC_WX"); //微信后台云应用
     //主数据库定义
     define("MFUN_CLOUD_DBHOST", "localhost");    //连接的服务器地址
     define("MFUN_CLOUD_DBUSER", "TestUser");     //连接数据库的用户名
