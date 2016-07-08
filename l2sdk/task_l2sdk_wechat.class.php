@@ -4363,7 +4363,7 @@ class classTaskL2sdkWechat
     }
 
     //接收事件消息
-    public function receiveEvent($object)
+    public function receiveEvent($parObj, $object)
     {
         $result= NULL;
         $click = 0;
@@ -4403,7 +4403,7 @@ class classTaskL2sdkWechat
                     default:    //转到智能硬件菜单部分，这里的结构保持完整性
                         $click = 2;
                         $wxDevObj = new classTaskL2sdkIotWx($this->appid, $this->appsecret);
-                        $content = $wxDevObj->receive_wx_deviceClick($object);
+                        $content = $wxDevObj->receive_wx_device_click_message($parObj, $object);
                         //$content = "点击菜单：".$object->EventKey;
                         break;
                 }
@@ -4525,7 +4525,7 @@ class classTaskL2sdkWechat
 						$project = MFUN_PRJ_IHU_EMC_WX;
 						$this->logger($project,$fromUser,$log_time,$log_content);
 						$log_from = MFUN_CLOUD_WX;
-						$result = $this->receiveEvent($postObj);
+						$result = $this->receiveEvent($parObj, $postObj);
 						break;
 
 					case "text":
@@ -4588,17 +4588,17 @@ class classTaskL2sdkWechat
 								"MSG_ID_WECHAT_TO_L2SDK_IOT_WX_INCOMING",
 								$msg) == false) $result = "Send to message buffer error";
 						else $result = "";
-						//$wxDevObj->receive_wx_deviceMessage($postObj);
+						//$wxDevObj->receive_wx_device_text_message($postObj);
 						//$result = "";
 						break;
 
-					case "device_event": //智能硬件设备text消息，都转到IOT相关的CLASS中
+					case "device_event": //智能硬件设备event消息，都转到IOT相关的CLASS中
 						$project = MFUN_PRJ_IHU_EMC_WX;
 						$this->logger($project,$fromUser,$log_time,$log_content);
 						$log_from = MFUN_CLOUD_WX;
 						$platform = MFUN_IOT_WX_DEVICE_EVENT;
 						//$wxDevObj = new classTaskL2sdkIotWx($this->appid, $this->appsecret);
-						//$wxDevObj->receive_wx_deviceEvent($postObj);
+						//$wxDevObj->receive_wx_device_event_message($postObj);
 						//$result = "";
 						$msg = array("project" => $project,
 							"log_from" => $log_from,
@@ -4635,6 +4635,9 @@ class classTaskL2sdkWechat
 			$this->logger($project,$log_from, $log_time, $log_content);
 			echo trim($result);
 		}
+
+		//返回
+		return true;
     }
 
 } //end of Class class_wechat_sdk

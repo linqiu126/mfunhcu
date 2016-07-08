@@ -511,7 +511,7 @@ class classTaskL2sdkIotWx
      *                                               自定义API部分                                                     *
      ******************************************************************************************************************/
     //接收微信消息类型为“device_text”的处理函数，传入data为下位机发送的16进制码流
-    public function receive_wx_deviceMessage($parObj, $data)
+    public function receive_wx_device_text_message($parObj, $data)
     {
         //发送到L3的比特流还需要进行base64解码和16进制unpack
         $content = base64_decode($data->Content);
@@ -523,58 +523,54 @@ class classTaskL2sdkIotWx
         $wx_trace = $logDbObj->dbi_LogSwitchInfo_inqury($fromUser);
         $result = "";
 
-        if ($wx_trace == 1) //打印收到的device消息
-        {
+        //推送打印收到的device消息给手机WX界面
+        if ($wx_trace == 1) {
             $msgContent = "R:DEVICE_TEXT= " . $strContent;
             $this->send_custom_message(trim($data->FromUserName), "text", $msgContent);  //使用API-CURL推送客服微信用户
         }
-        //调用统一的deviceTask处理入口函数
-        $resp_msg = $this->ihu_deviceTaskProcess($parObj, "device_text", $strContent, $fromUser, $deviceId);
 
+        //调用统一的deviceTask处理入口函数
+        $resp_msg = $this->ihu_device_L25_content_process($parObj, "device_text", $strContent, $fromUser, $deviceId);
+
+        //处理绑定用户，将相应信息通知给绑定的用户
         $wxDbObj = new classDbiL2sdkWechat();
         $dbi_info = $wxDbObj->dbi_blebound_query($data->FromUserName);  //查询该用户是否是绑定用户
         if ($dbi_info == true && !empty($resp_msg) )
         {
             $check = unpack('A5Hint', $resp_msg);
-            if($check['Hint'] == "ERROR")
-                return $resp_msg;
-
+            if($check['Hint'] == "ERROR") return $resp_msg;
+            //考虑同一个用户绑定多个设备的情况,循环发送response给该用户绑定的所有设
             $i = 0;
-            while ($i < count($dbi_info)) //考虑同一个用户绑定多个设备的情况,循环发送response给该用户绑定的所有设备
+            while ($i < count($dbi_info))
             {
                 $dev_table = $dbi_info[$i];
                 $result = $this->trans_msgtodevice($dev_table["deviceType"], $dev_table["deviceID"], $dev_table["openID"], $resp_msg);
-                /*
-                if ($result["errcode"] ==40001)  //防止偶然未知原因导致token失效，强制刷新token并再次发送
-                {
-                    $this->compel_get_token($this->appid,$this->appsecret);
-                    $result = $this->trans_msgtodevice($dev_table["deviceType"], $dev_table["deviceID"], $dev_table["openID"], $resp_msg);
-                }
-                */
+                //if ($result["errcode"] ==40001)  //防止偶然未知原因导致token失效，强制刷新token并再次发送 {
+                //    $this->compel_get_token($this->appid,$this->appsecret);
+                //    $result = $this->trans_msgtodevice($dev_table["deviceType"], $dev_table["deviceID"], $dev_table["openID"], $resp_msg);
+                //}
                 $i++;
             }
             //推送回复消息给微信界面
-            if ($wx_trace == 1)
-            {
-                //$msg_body = unpack('H*',$resp_msg);
-                //$str_body = strtoupper($msg_body["1"]);
-                $transMsg = $this->send_custom_message(trim($data->FromUserName), "text",
-                    "T:DEVICE_TEXT= " . $resp_msg . "\n Result= " . json_encode($result));
+            if ($wx_trace == 1){
+                $transMsg = $this->send_custom_message(trim($data->FromUserName), "text", "T:DEVICE_TEXT= " . $resp_msg . "\n Result= " . json_encode($result));
             }
             else{
                 $transMsg = $result;
             }
-        }
+        } //绑定用户
         else{
             $transMsg = $resp_msg;
-        }
+        }//非绑定用户
 
+        //返回结果
         return $transMsg;
     } //receive_deviceMessage处理结束
 
     //接收微信消息类型为“device_event”的处理函数，传入data为下位机发送的16进制码流
-    public function receive_wx_deviceEvent($parObj, $data)
+    public function receive_wx_device_event_message($parObj, $data)
     {
+        //解码
         $content = base64_decode($data->Content);
         $content = unpack('H*',$content);
         $strContent = strtoupper($content["1"]);//转换成16进制格式的字符串
@@ -598,7 +594,6 @@ class classTaskL2sdkIotWx
                 {
                     if (!empty($dbi_table["mac"]))
                     {
-
                         $this->device_AuthBLE($dbi_table["deviceid"], $dbi_table["mac"]);
                         $this->compel_bind($data->DeviceID, $data->OpenID);
                         $resp3 = "Weixin device MAC bind OK";
@@ -622,8 +617,9 @@ class classTaskL2sdkIotWx
         }
 
         //因为是DEVICE_EVENT事件，设备内传输的L3信息应该是空的，这里保留设备L3消息相关处理
-        $event_resp = $this->ihu_deviceTaskProcess($parObj, "device_text", $strContent, $data->FromUserName, $data->DeviceID);
+        $event_resp = $this->ihu_device_L25_content_process($parObj, "device_text", $strContent, $data->FromUserName, $data->DeviceID);
 
+        //会送给WX界面相应的TRACE消息
         $logDbObj = new classDbiL1vmCommon();
         $wx_trace = $logDbObj->dbi_LogSwitchInfo_inqury($data->FromUserName);
         if ($wx_trace == 1)
@@ -635,7 +631,7 @@ class classTaskL2sdkIotWx
     }
 
     //用户自己定义的微信点击菜单命令“event->CLICK”处理函数
-    public function receive_wx_deviceClick($parObj, $data)
+    public function receive_wx_device_click_message($parObj, $data)
     {
         $result = "";
         switch($data->EventKey) {
@@ -653,7 +649,7 @@ class classTaskL2sdkIotWx
                 else
                 {
                     //对版本读取操作进行层三处理，构造可以发送给硬件设备的信息
-                    $msg_body = $this->ihu_deviceTaskProcess($parObj, $data->EventKey, "", $data->FromUserName, $data->DeviceID);
+                    $msg_body = $this->ihu_device_L25_content_process($parObj, $data->EventKey, "", $data->FromUserName, $data->DeviceID);
 
                     if (!empty($msg_body))
                     {
@@ -767,7 +763,7 @@ class classTaskL2sdkIotWx
                 else
                 {
                     //对辐射强度瞬时读取操作进行层三处理，构造可以发送给硬件设备的信息
-                    $msg_body = $this->ihu_deviceTaskProcess($parObj, $data->EventKey, "", $data->FromUserName, $data->DeviceID);
+                    $msg_body = $this->ihu_device_L25_content_process($parObj, $data->EventKey, "", $data->FromUserName, $data->DeviceID);
 
                     if (!empty($msg_body))
                     {
@@ -814,7 +810,7 @@ class classTaskL2sdkIotWx
                 else
                 {
                     //对PM2.5读取操作进行层三处理，构造可以发送给硬件设备的信息
-                    $msg_body = $this->ihu_deviceTaskProcess($parObj, $data->EventKey, "", $data->FromUserName, $data->DeviceID);
+                    $msg_body = $this->ihu_device_L25_content_process($parObj, $data->EventKey, "", $data->FromUserName, $data->DeviceID);
 
                     if (!empty($msg_body))
                     {
@@ -872,8 +868,8 @@ class classTaskL2sdkIotWx
         return $transMsg;
     }//End of receive_deviceClickCommand
 
-    //统一的deviceTask处理入口函数
-    public function ihu_deviceTaskProcess ($parObj, $optType, $content, $fromUser, $deviceId)
+    //统一的device content处理入口函数
+    public function ihu_device_L25_content_process ($parObj, $optType, $content, $fromUser, $deviceId)
     {
         //赋初值
         $respContent = "";
@@ -882,15 +878,16 @@ class classTaskL2sdkIotWx
         switch ($optType)
         {
             case "device_text":
-                $respContent = $this->ihu_device_text_process($parObj, $fromUser, $deviceId, $content);
+                $respContent = $this->ihu_device_L28_usercmd_text_process($parObj, $fromUser, $deviceId, $content);
                 break;
             case "bind":
-                $respContent = $this->ihu_bind_process($parObj, $content);
+                $respContent = $this->ihu_device_L28_syscmd_bind_process($parObj, $content);
                 break;
             case "unbind":
-                $respContent = $this->ihu_unbind_process($parObj, $content);
+                $respContent = $this->ihu_device_L28_syscmd_unbind_process($parObj, $content);
                 break;
 
+            //手机微信界面上的CLICK命令
             //如果消息发送到EMC模块，则返回就为空，本模块不再处理，而留给了EMC模块进行处理
             case "CLICK_EMC_READ":
                 $msg = array("project" => $optType,
@@ -906,6 +903,7 @@ class classTaskL2sdkIotWx
                 $respContent = $result;
                 break;
 
+            //手机微信界面上的CLICK命令
             //如果消息发送到EMC模块，则返回就为空，本模块不再处理，而留给了PM25模块进行处理
             case "CLICK_PM25_READ":
                 $msg = array("project" => $optType,
@@ -921,10 +919,12 @@ class classTaskL2sdkIotWx
                 $respContent = $result;
                 break;
 
+            //手机微信界面上的CLICK命令
             case "CLICK_VERSION":
                 $ihuObj = new classApiL2snrCommonService();
                 $respContent = $ihuObj->func_version_push_process();
                 break;
+
             default:
                 $respContent = "";
                 break;
@@ -932,8 +932,8 @@ class classTaskL2sdkIotWx
         return $respContent;
     }
 
-    //Layer3 业务消息的处理函数，跳转到对应的业务处理模块
-    public function ihu_device_text_process($parObj, $fromUser, $deviceId, $content)
+    //Layer28 业务消息的处理函数，跳转到对应的业务处理模块
+    public function ihu_device_L28_usercmd_text_process($parObj, $fromUser, $deviceId, $content)
     {
         //因为收到的Airsync数据消息头已经被微信处理掉，传递过来的消息体在上级函数中已经被处理成16制格式的字符串
         /*
@@ -1099,14 +1099,14 @@ class classTaskL2sdkIotWx
     }
 
     //来自设备的bind事件，类似手环敲击进行绑定
-    private function ihu_bind_process($parObj, $content)
+    private function ihu_device_L28_syscmd_bind_process($parObj, $content)
     {
         //目前假设是空包，所以不处理
         return "";
     }
 
     //来自设备的unbind事件
-    private function ihu_unbind_process($parObj, $content)
+    private function ihu_device_L28_syscmd_unbind_process($parObj, $content)
     {
         //目前假设是空包，所以不处理
         return "";
@@ -1354,10 +1354,10 @@ class classTaskL2sdkIotWx
         //具体处理函数
         switch($platform){
             case MFUN_IOT_WX_DEVICE_TEXT:
-                $resp = $this->receive_wx_deviceMessage($parObj, $content);
+                $resp = $this->receive_wx_device_text_message($parObj, $content);
                 break;
             case MFUN_IOT_WX_DEVICE_EVENT:
-                $resp = $this->receive_wx_deviceEvent($parObj, $content);
+                $resp = $this->receive_wx_device_event_message($parObj, $content);
                 break;
             default:
                 $resp = "";

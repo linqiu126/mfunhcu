@@ -106,9 +106,9 @@ Make By：ZJL
 > 搭建好了IOT_HCU对应传感器的所有任务框架
 > 修改好了SDK_WECHAT
 > IOT_WX还未修改完整，
-  =>ihu_deviceTaskProcess：发送到EMC/PM25的L3/L4处理信息，需要到SENSOR EMC/PM25处理完整，
+  =>ihu_device_L25_content_process：发送到EMC/PM25的L3/L4处理信息，需要到SENSOR EMC/PM25处理完整，
   不再回来，目前的流程需要在L3/L4完成一部分后，再返回IOT_WX程序模块再处理。这部分等待完善。
-  =>ihu_device_text_process：同上
+  =>ihu_device_L28_usercmd_text_process：同上
 
 //= ZJL, 2016 June.29, CURRENT_SW_DELIVERY R02.D13
 > 增加AQYC/TBSWR/EMCWX的H5YUI界面入口，先考虑将界面模块纳入到统一的VM处理模块机制中，包括CRON模块
@@ -177,6 +177,11 @@ Make By：ZJL
 > 完善EMCWX测试例程
 > 将commsg.php中的全局定义分为IHU/HCU两个不同的类别
 > 增加NBIOT的基础框架功能
+
+//= ZJL, 2016 July.8, CURRENT_SW_DELIVERY R02.D24
+> 增加sysinfo数据表单
+> 完善WECHAT之中部分函数的命名，以方便理解程序结构
+
 
 
 

@@ -5,9 +5,7 @@
  * Date: 2016/6/20
  * Time: 22:59
  */
-include_once "../l1comvm/vmlayer.php";
-
-
+//include_once "../../l1comvm/vmlayer.php";
 //require_once "../../l1comvm/sysconfig.php";
 
 /*
@@ -131,7 +129,30 @@ INSERT INTO `t_l3f1sym_userprofile` (`id`, `username`, `email`, `password_hash`,
 (52, 'zjl', 'smdzjl@sina.cn', '$2y$12$pCBD9e0/B0bvwKs6crXA2.pzy606Bn4o19Bzx1r8jdjr1t1nN/jc.', 'GPJwlaHeV0JaMswrLuai0JsW7H8aUjPh', 1444091551, NULL, NULL, '117.135.149.14', 1444091501, 1444091551, 0),
 (53, 'shanchuz', 'zsc0905@sina.com', '$2y$12$mlslUwrYelb5nV6DfYot9ORgYGI9YB5.bN/HCMYru6QRn6UrfJsP6', '7VMvRAprvPsYU-Fqt6jDYeLvUzfLzdjF', 1444527288, NULL, NULL, '101.226.125.108', 1444527242, 1444527288, 0);
 
+//这个表单用来存储系统的各项LICENSE等信息
+-- --------------------------------------------------------
+--
+-- 表的结构 `t_l3f1sym_sysinfo`
+--
 
+CREATE TABLE IF NOT EXISTS `t_l3f1sym_sysinfo` (
+  `sid` int(4) NOT NULL AUTO_INCREMENT,
+  `keyid` char(50) NOT NULL,
+  `vendorinfo` char(200) NOT NULL,
+  `customerinfo` char(200) NOT NULL,
+  `licenseinfo` char(200) NOT NULL,
+  `maxadmin` int(4) NOT NULL DEFAULT 10,
+  `maxsubscribers` int(4) NOT NULL DEFAULT 1000,
+  `maxservers` int(4) NOT NULL DEFAULT 5,
+  PRIMARY KEY (`sid`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=75 ;
+
+--
+-- 转存表中的数据 `t_l3f1sym_sysinfo`
+--
+
+INSERT INTO `t_l3f1sym_sysinfo` (`sid`, `keyid`, `vendorinfo`, `customerinfo`) VALUES
+(100, 'AAA-BBB-012', 'Aiqi Yancheng Shanghai Ltd.', '上海是环保局，中环工程');
 
 
 */

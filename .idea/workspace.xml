@@ -2,28 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d2aa40e9-e569-42c7-88ab-3d7c06bf7aa1" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/l1mainentry/cloud_callback_nbiot.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/l2sdk/task_l2sdk_nb_iot.class.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/l4nbiotimui/task_l4nbiot_im_ui.class.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/l1comvm/commsg.php" afterPath="$PROJECT_DIR$/l1comvm/commsg.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/l1comvm/sysconfig.php" afterPath="$PROJECT_DIR$/l1comvm/sysconfig.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/l1comvm/sysmodule.php" afterPath="$PROJECT_DIR$/l1comvm/sysmodule.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bxxhl1l2l3.sql" afterPath="$PROJECT_DIR$/bxxhl1l2l3.sql" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/l1comvm/sysversion.php" afterPath="$PROJECT_DIR$/l1comvm/sysversion.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/l1comvm/vmlayer.php" afterPath="$PROJECT_DIR$/l1comvm/vmlayer.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/l2sdk/task_l2sdk_iot_hcu.class.php" afterPath="$PROJECT_DIR$/l2sdk/task_l2sdk_iot_hcu.class.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/l2sdk/task_l2sdk_iot_wx.class.php" afterPath="$PROJECT_DIR$/l2sdk/task_l2sdk_iot_wx.class.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/l2sensorproc/proccom/svr_l2snr_com.class.php" afterPath="$PROJECT_DIR$/l2sensorproc/proccom/svr_l2snr_com.class.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/l2sensorproc/sensoremc/task_l2snr_emc.class.php" afterPath="$PROJECT_DIR$/l2sensorproc/sensoremc/task_l2snr_emc.class.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/l2sensorproc/sensorhsmmp/task_l2snr_hsmmp.class.php" afterPath="$PROJECT_DIR$/l2sensorproc/sensorhsmmp/task_l2snr_hsmmp.class.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/l2sensorproc/sensorhumid/task_l2snr_humid.class.php" afterPath="$PROJECT_DIR$/l2sensorproc/sensorhumid/task_l2snr_humid.class.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/l2sensorproc/sensornoise/task_l2snr_noise.class.php" afterPath="$PROJECT_DIR$/l2sensorproc/sensornoise/task_l2snr_noise.class.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/l2sensorproc/sensorpm25/task_l2snr_pm25.class.php" afterPath="$PROJECT_DIR$/l2sensorproc/sensorpm25/task_l2snr_pm25.class.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/l2sensorproc/sensortemp/task_l2snr_temp.class.php" afterPath="$PROJECT_DIR$/l2sensorproc/sensortemp/task_l2snr_temp.class.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/l2sensorproc/sensorwinddir/task_l2snr_winddir.class.php" afterPath="$PROJECT_DIR$/l2sensorproc/sensorwinddir/task_l2snr_winddir.class.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/l2sensorproc/sensorwindspd/task_l2snr_windspd.class.php" afterPath="$PROJECT_DIR$/l2sensorproc/sensorwindspd/task_l2snr_windspd.class.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/l3appl/fum4icm/hcu_ctrl.process.php" afterPath="$PROJECT_DIR$/l3appl/fum4icm/hcu_ctrl.process.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/l4oamtools/DbTest.php" afterPath="$PROJECT_DIR$/l4oamtools/DbTest.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/l2sdk/task_l2sdk_wechat.class.php" afterPath="$PROJECT_DIR$/l2sdk/task_l2sdk_wechat.class.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/l3appl/fum1sym/dbi_l3apl_f1sym.class.php" afterPath="$PROJECT_DIR$/l3appl/fum1sym/dbi_l3apl_f1sym.class.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/readme.txt" afterPath="$PROJECT_DIR$/readme.txt" />
     </list>
     <ignored path="mfunhcu.iws" />
@@ -52,7 +36,18 @@
     <favorites_list name="mfunhcu" />
   </component>
   <component name="FileEditorManager">
-    <leaf />
+    <leaf>
+      <file leaf-file-name="readme.txt" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/readme.txt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.57536465">
+              <caret line="184" column="0" selection-start-line="184" selection-start-column="0" selection-end-line="184" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -87,22 +82,17 @@
         <option value="$PROJECT_DIR$/l4aqycui/request.php" />
         <option value="$PROJECT_DIR$/l4oamtools/tool.qrcode.gen.php" />
         <option value="$PROJECT_DIR$/l4oamtools/tool.dev.bind.php" />
-        <option value="$PROJECT_DIR$/l3appl/fum1sym/dbi_l3apl_f1sym.class.php" />
         <option value="$PROJECT_DIR$/l3appl/fum2cm/task_l3apl_f2cm.class.php" />
         <option value="$PROJECT_DIR$/l3appl/fum2cm/dbi_l3apl_f2cm.class.php" />
         <option value="$PROJECT_DIR$/l3appl/fum3dm/dbi_l3apl_f3dm.class.php" />
         <option value="$PROJECT_DIR$/l2sensorproc/proccom/dbi_l2snr_com.class.php" />
         <option value="$PROJECT_DIR$/l1comvm/pg_general_engpar.php" />
-        <option value="$PROJECT_DIR$/l2sdk/task_l2sdk_wechat.class.php" />
         <option value="$PROJECT_DIR$/l1mainentry/cloud_callback_socket_listening.php" />
-        <option value="$PROJECT_DIR$/l1comvm/sysversion.php" />
         <option value="$PROJECT_DIR$/l2sdk/task_l2sdk_iot_hcu.class.php" />
         <option value="$PROJECT_DIR$/l2sensorproc/proccom/svr_l2snr_com.class.php" />
-        <option value="$PROJECT_DIR$/l2sdk/task_l2sdk_iot_wx.class.php" />
         <option value="$PROJECT_DIR$/l2sensorproc/sensorpm25/task_l2snr_pm25.class.php" />
         <option value="$PROJECT_DIR$/l3appl/fum4icm/hcu_ctrl.process.php" />
         <option value="$PROJECT_DIR$/l2sensorproc/sensoremc/task_l2snr_emc.class.php" />
-        <option value="$PROJECT_DIR$/readme.txt" />
         <option value="$PROJECT_DIR$/l2sdk/task_l2sdk_nb_iot.class.php" />
         <option value="$PROJECT_DIR$/l1comvm/commsg.php" />
         <option value="$PROJECT_DIR$/l1mainentry/cloud_callback_nbiot.php" />
@@ -111,6 +101,11 @@
         <option value="$PROJECT_DIR$/l1comvm/vmlayer.php" />
         <option value="$PROJECT_DIR$/l4nbiotimui/task_l4nbiot_im_ui.class.php" />
         <option value="$PROJECT_DIR$/l1comvm/sysmodule.php" />
+        <option value="$PROJECT_DIR$/l1comvm/sysversion.php" />
+        <option value="$PROJECT_DIR$/l2sdk/task_l2sdk_iot_wx.class.php" />
+        <option value="$PROJECT_DIR$/l2sdk/task_l2sdk_wechat.class.php" />
+        <option value="$PROJECT_DIR$/readme.txt" />
+        <option value="$PROJECT_DIR$/l3appl/fum1sym/dbi_l3apl_f1sym.class.php" />
       </list>
     </option>
   </component>
@@ -125,7 +120,7 @@
       <server host="localhost" id="6e19a599-7798-48bd-987a-2fcca81dcb5c" name="localhost" />
     </servers>
   </component>
-  <component name="PhpWorkspaceProjectConfiguration" backward_compatibility_performed="true" interpreter_name="Localhost">
+  <component name="PhpWorkspaceProjectConfiguration" backward_compatibility_performed="true" interpreter_name="localhost">
     <include_path>
       <path value="C:\wamp\bin\php\php5.5.12" />
     </include_path>
@@ -134,8 +129,8 @@
   <component name="ProjectFrameBounds">
     <option name="x" value="-8" />
     <option name="y" value="-8" />
-    <option name="width" value="1616" />
-    <option name="height" value="876" />
+    <option name="width" value="1382" />
+    <option name="height" value="754" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
     <OptionsSetting value="true" id="Add" />
@@ -271,16 +266,16 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1616" height="876" extended-state="6" />
-    <editor active="false" />
+    <frame x="-8" y="-8" width="1382" height="754" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.123125" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.20424597" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2607562" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.17829457" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.452412" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4511628" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
@@ -308,28 +303,6 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="php">
-          <url>file://$PROJECT_DIR$/l3appl/fum1sym/dbi_l3apl_f1sym.class.php</url>
-          <line>415</line>
-          <option name="timeStamp" value="38" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="php">
-          <url>file://$PROJECT_DIR$/l2sdk/task_l2sdk_iot_wx.class.php</url>
-          <line>531</line>
-          <option name="timeStamp" value="49" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="php">
-          <url>file://$PROJECT_DIR$/l2sdk/task_l2sdk_iot_wx.class.php</url>
-          <line>954</line>
-          <option name="timeStamp" value="51" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="php">
-          <url>file://$PROJECT_DIR$/l2sensorproc/sensoremc/task_l2snr_emc.class.php</url>
-          <line>69</line>
-          <option name="timeStamp" value="54" />
-        </line-breakpoint>
-      </breakpoints>
       <option name="time" value="55" />
     </breakpoint-manager>
     <watches-manager>
@@ -386,7 +359,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.3861111">
           <caret line="230" column="46" selection-start-line="230" selection-start-column="20" selection-end-line="230" selection-end-column="46" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -394,7 +366,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.3696275">
           <caret line="60" column="28" selection-start-line="60" selection-start-column="28" selection-end-line="60" selection-end-column="28" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -423,7 +394,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.8989547">
           <caret line="275" column="0" selection-start-line="275" selection-start-column="0" selection-end-line="275" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -431,21 +401,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.6569343">
           <caret line="60" column="0" selection-start-line="60" selection-start-column="0" selection-end-line="60" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/l3appl/fum2cm/dbi_l3apl_f2cm.class.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="1.3260341">
-          <caret line="536" column="0" selection-start-line="536" selection-start-column="0" selection-end-line="536" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/l3appl/fum3dm/dbi_l3apl_f3dm.class.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.375">
-          <caret line="566" column="9" selection-start-line="566" selection-start-column="9" selection-end-line="566" selection-end-column="9" />
         </state>
       </provider>
     </entry>
@@ -453,15 +408,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.75910366">
           <caret line="642" column="18" selection-start-line="642" selection-start-column="18" selection-end-line="642" selection-end-column="18" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/l3appl/fum1sym/dbi_l3apl_f1sym.class.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="1.0414507">
-          <caret line="367" column="9" selection-start-line="367" selection-start-column="9" selection-end-line="367" selection-end-column="9" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -476,7 +422,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.71428573">
           <caret line="1176" column="26" selection-start-line="1176" selection-start-column="26" selection-end-line="1176" selection-end-column="26" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -513,7 +458,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-5.428571">
           <caret line="164" column="39" selection-start-line="164" selection-start-column="39" selection-end-line="164" selection-end-column="39" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -521,9 +465,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-9.5">
           <caret line="49" column="39" selection-start-line="49" selection-start-column="39" selection-end-line="49" selection-end-column="39" />
-          <folding>
-            <element signature="e#6#94#0#PHP" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -531,7 +472,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-13.571428">
           <caret line="34" column="25" selection-start-line="34" selection-start-column="25" selection-end-line="34" selection-end-column="25" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -539,14 +479,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.40772533">
           <caret line="15" column="2" selection-start-line="15" selection-start-column="2" selection-end-line="15" selection-end-column="2" />
-          <folding>
-            <marker date="1467712848541" expanded="true" signature="1864:1944" placeholder="SELECT `stat... t_l2sdk_iothcu_hcudevice" />
-            <marker date="1467712848541" expanded="true" signature="2558:2652" placeholder="SELECT * FRO... t_l2sdk_iothcu_hcudevice" />
-            <marker date="1467712848541" expanded="true" signature="3232:3349" placeholder="UPDATE `t_l2... " />
-            <marker date="1467712848541" expanded="true" signature="5424:5493" placeholder="SELECT * FRO... t_l2sdk_iothcu_hcudevice" />
-            <marker date="1467712848541" expanded="true" signature="5623:5766" placeholder="UPDATE `t_l2... " />
-            <marker date="1467712848541" expanded="true" signature="5887:6046" placeholder="INSERT INTO `t_l2sdk_iothcu_hcudevice`... " />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -554,7 +487,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-19.0">
           <caret line="90" column="0" selection-start-line="90" selection-start-column="0" selection-end-line="90" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -562,7 +494,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="28.821428">
           <caret line="26" column="25" selection-start-line="26" selection-start-column="25" selection-end-line="26" selection-end-column="25" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -570,15 +501,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-15.785714">
           <caret line="31" column="0" selection-start-line="31" selection-start-column="0" selection-end-line="31" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/l2sensorproc/sensoremc/task_l2snr_emc.class.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.82687926">
-          <caret line="50" column="17" selection-start-line="50" selection-start-column="17" selection-end-line="50" selection-end-column="17" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -586,52 +508,194 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="1.261959">
           <caret line="61" column="17" selection-start-line="61" selection-start-column="17" selection-end-line="61" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/l2sdk/task_l2sdk_iot_jd.class.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.48431373">
+          <caret line="13" column="10" selection-start-line="13" selection-start-column="10" selection-end-line="13" selection-end-column="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/l1mainentry/cloud_callback_jd.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-4.75">
+          <caret line="7" column="0" selection-start-line="7" selection-start-column="0" selection-end-line="13" selection-end-column="2" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/l4emcwxui/task_l4emcwx_ui.class.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.26760563">
+          <caret line="15" column="0" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/l1comvm/sysdim.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/l4nbiotimui/task_l4nbiot_im_ui.class.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.053521127">
+          <caret line="7" column="0" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/l1comvm/vmlayer.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="10.0084505">
+          <caret line="379" column="5" selection-start-line="379" selection-start-column="5" selection-end-line="379" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/l1comvm/sysmodule.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="2.043662">
+          <caret line="357" column="76" selection-start-line="357" selection-start-column="76" selection-end-line="357" selection-end-column="76" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/l1comvm/sysversion.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.16129032">
+          <caret line="10" column="39" selection-start-line="10" selection-start-column="39" selection-end-line="10" selection-end-column="39" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/l2sensorproc/proccom/svr_l2snr_com.class.php">
+    <entry file="file://$PROJECT_DIR$/l1comvm/sysconfig.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="1.0888382">
-          <caret line="79" column="22" selection-start-line="79" selection-start-column="22" selection-end-line="79" selection-end-column="22" />
+        <state vertical-scroll-proportion="0.032258064">
+          <caret line="24" column="58" selection-start-line="24" selection-start-column="58" selection-end-line="24" selection-end-column="58" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/l2sdk/task_l2sdk_iot_wx.class.php">
+    <entry file="file://$PROJECT_DIR$/l3appl/fum3dm/dbi_l3apl_f3dm.class.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-528.9286">
-          <caret line="1294" column="13" selection-start-line="1294" selection-start-column="13" selection-end-line="1294" selection-end-column="13" />
+        <state vertical-scroll-proportion="18.096775">
+          <caret line="566" column="9" selection-start-line="566" selection-start-column="9" selection-end-line="566" selection-end-column="9" />
           <folding>
-            <marker date="1467897421677" expanded="true" signature="10323:10703" placeholder="..." />
-            <marker date="1467897421677" expanded="true" signature="11025:11448" placeholder="..." />
-            <marker date="1467897421677" expanded="true" signature="11718:11953" placeholder="..." />
+            <marker date="1467879176002" expanded="true" signature="5869:5932" placeholder="SELECT * FRO... t_l3f3dm_siteinfo" />
+            <marker date="1467879176002" expanded="true" signature="6830:6904" placeholder="SELECT * FRO... t_l3f3dm_sum_currentreport" />
+            <marker date="1467879176002" expanded="true" signature="7000:7135" placeholder="UPDATE `t_l3... " />
+            <marker date="1467879176002" expanded="true" signature="7226:7372" placeholder="INSERT INTO `t_l3f3dm_sum_currentreport`... " />
+            <marker date="1467879176002" expanded="true" signature="7574:7649" placeholder="SELECT * FRO... t_l3f3dm_sum_currentreport" />
+            <marker date="1467879176002" expanded="true" signature="7744:7868" placeholder="UPDATE `t_l3... " />
+            <marker date="1467879176002" expanded="true" signature="7959:8094" placeholder="INSERT INTO `t_l3f3dm_sum_currentreport`... " />
+            <marker date="1467879176002" expanded="true" signature="8302:8378" placeholder="SELECT * FRO... t_l3f3dm_sum_currentreport" />
+            <marker date="1467879176002" expanded="true" signature="8473:8602" placeholder="UPDATE `t_l3... " />
+            <marker date="1467879176002" expanded="true" signature="8693:8833" placeholder="INSERT INTO `t_l3f3dm_sum_currentreport`... " />
+            <marker date="1467879176002" expanded="true" signature="9035:9111" placeholder="SELECT * FRO... t_l3f3dm_sum_currentreport" />
+            <marker date="1467879176002" expanded="true" signature="9206:9329" placeholder="UPDATE `t_l3... " />
+            <marker date="1467879176002" expanded="true" signature="9420:9554" placeholder="INSERT INTO `t_l3f3dm_sum_currentreport`... " />
+            <marker date="1467879176002" expanded="true" signature="9842:9917" placeholder="SELECT * FRO... t_l3f3dm_sum_currentreport" />
+            <marker date="1467879176002" expanded="true" signature="10012:10167" placeholder="UPDATE `t_l3... " />
+            <marker date="1467879176002" expanded="true" signature="10258:10416" placeholder="INSERT INTO `t_l3f3dm_sum_currentreport`... " />
+            <marker date="1467879176002" expanded="true" signature="10616:10692" placeholder="SELECT * FRO... t_l3f3dm_sum_currentreport" />
+            <marker date="1467879176002" expanded="true" signature="10787:10908" placeholder="UPDATE `t_l3... " />
+            <marker date="1467879176002" expanded="true" signature="10999:11131" placeholder="INSERT INTO `t_l3f3dm_sum_currentreport`... " />
+            <marker date="1467879176002" expanded="true" signature="11345:11421" placeholder="SELECT * FRO... t_l3f3dm_sum_currentreport" />
+            <marker date="1467879176002" expanded="true" signature="11516:11651" placeholder="UPDATE `t_l3... " />
+            <marker date="1467879176002" expanded="true" signature="11742:11888" placeholder="INSERT INTO `t_l3f3dm_sum_currentreport`... " />
+            <marker date="1467879176002" expanded="true" signature="12106:12182" placeholder="SELECT * FRO... t_l3f3dm_sum_currentreport" />
+            <marker date="1467879176002" expanded="true" signature="12277:12416" placeholder="UPDATE `t_l3... " />
+            <marker date="1467879176002" expanded="true" signature="12507:12657" placeholder="INSERT INTO `t_l3f3dm_sum_currentreport`... " />
+            <marker date="1467879176002" expanded="true" signature="12871:12947" placeholder="SELECT * FRO... t_l3f3dm_sum_currentreport" />
+            <marker date="1467879176002" expanded="true" signature="13042:13173" placeholder="UPDATE `t_l3... " />
+            <marker date="1467879176002" expanded="true" signature="13264:13406" placeholder="INSERT INTO `t_l3f3dm_sum_currentreport`... " />
+            <marker date="1467879176002" expanded="true" signature="13974:14031" placeholder="DELETE FROM " />
+            <marker date="1467879176002" expanded="true" signature="14115:14175" placeholder="DELETE FROM " />
+            <marker date="1467879176002" expanded="true" signature="14265:14338" placeholder="UPDATE `t_l3... " />
+            <marker date="1467879176002" expanded="true" signature="15331:15396" placeholder="SELECT `auth... t_l3f1sym_authlist" />
+            <marker date="1467879176002" expanded="true" signature="15988:16064" placeholder="SELECT `p_co... t_l3f3dm_sitemapping" />
+            <marker date="1467879176002" expanded="true" signature="16481:16557" placeholder="SELECT `stat... t_l3f3dm_sitemapping" />
+            <marker date="1467879176002" expanded="true" signature="17261:17302" placeholder="SELECT * FRO... t_l3f3dm_siteinfo" />
+            <marker date="1467879176002" expanded="true" signature="17859:17900" placeholder="SELECT * FRO... t_l3f3dm_siteinfo" />
+            <marker date="1467879176002" expanded="true" signature="18742:18802" placeholder="SELECT * FRO... t_l3f3dm_siteinfo" />
+            <marker date="1467879176002" expanded="true" signature="19642:19690" placeholder="SELECT * FRO... t_l3f3dm_siteinfo" />
+            <marker date="1467879176002" expanded="true" signature="20061:20120" placeholder="SELECT * FRO... t_l3f2cm_projinfo" />
+            <marker date="1467879176002" expanded="true" signature="22236:22300" placeholder="SELECT * FRO... t_l3f3dm_siteinfo" />
+            <marker date="1467879176002" expanded="true" signature="22430:22641" placeholder="UPDATE `t_l3... " />
+            <marker date="1467879176002" expanded="true" signature="22763:22961" placeholder="INSERT INTO `t_l3f3dm_siteinfo`... " />
+            <marker date="1467879176002" expanded="true" signature="23049:23173" placeholder="UPDATE `t_l3... " />
+            <marker date="1467879176002" expanded="true" signature="23754:23809" placeholder="SELECT * FRO... t_l2sdk_iothcu_hcudevice" />
+            <marker date="1467879176002" expanded="true" signature="24393:24457" placeholder="SELECT * FRO... t_l3f3dm_siteinfo" />
+            <marker date="1467879176002" expanded="true" signature="25659:25723" placeholder="SELECT * FRO... t_l3f3dm_siteinfo" />
+            <marker date="1467879176002" expanded="true" signature="26454:26516" placeholder="DELETE FROM " />
+            <marker date="1467879176002" expanded="true" signature="26601:26666" placeholder="DELETE FROM " />
+            <marker date="1467879176002" expanded="true" signature="26756:26843" placeholder="UPDATE `t_l2... " />
+            <marker date="1467879176002" expanded="true" signature="27412:27479" placeholder="DELETE FROM " />
+            <marker date="1467879176002" expanded="true" signature="27571:27648" placeholder="UPDATE `t_l3... " />
+            <marker date="1467879176002" expanded="true" signature="28611:28652" placeholder="SELECT * FRO... t_l3f2cm_projinfo" />
+            <marker date="1467879176002" expanded="true" signature="29169:29228" placeholder="SELECT * FRO... t_l3f3dm_siteinfo" />
+            <marker date="1467879176002" expanded="true" signature="31199:31268" placeholder="SELECT * FRO... t_l3f3dm_currentreport" />
+            <marker date="1467879176002" expanded="true" signature="35308:35372" placeholder="SELECT * FRO... t_l3f3dm_siteinfo" />
+            <marker date="1467879176002" expanded="true" signature="36079:36168" placeholder="SELECT * FRO... t_l2snr_pm25data" />
+            <marker date="1467879176002" expanded="true" signature="38488:38576" placeholder="SELECT * FRO... t_l2snr_windspd" />
+            <marker date="1467879176002" expanded="true" signature="40892:40980" placeholder="SELECT * FRO... t_l2snr_winddir" />
+            <marker date="1467879176002" expanded="true" signature="43299:43387" placeholder="SELECT * FRO... t_l2snr_emcdata" />
+            <marker date="1467879176002" expanded="true" signature="45715:45804" placeholder="SELECT * FRO... t_l2snr_tempdata" />
+            <marker date="1467879176002" expanded="true" signature="48126:48216" placeholder="SELECT * FRO... t_l2snr_humiddata" />
+            <marker date="1467879176002" expanded="true" signature="50530:50620" placeholder="SELECT * FRO... t_l2snr_noisedata" />
+            <marker date="1467879176002" expanded="true" signature="54017:54076" placeholder="SELECT * FRO... t_l3f2cm_projinfo" />
+            <marker date="1467879176002" expanded="true" signature="54598:54667" placeholder="SELECT * FRO... t_l3f3dm_currentreport" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/l2sdk/task_l2sdk_iot_hcu.class.php">
+    <entry file="file://$PROJECT_DIR$/l3appl/fum2cm/dbi_l3apl_f2cm.class.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-6.785714">
-          <caret line="430" column="47" selection-start-line="430" selection-start-column="35" selection-end-line="430" selection-end-column="51" />
+        <state vertical-scroll-proportion="17.129032">
+          <caret line="536" column="0" selection-start-line="536" selection-start-column="0" selection-end-line="536" selection-end-column="0" />
           <folding>
-            <marker date="1467899805643" expanded="true" signature="15655:16008" placeholder="..." />
+            <marker date="1467879176002" expanded="true" signature="5904:5945" placeholder="SELECT * FRO... t_l3f2cm_projinfo" />
+            <marker date="1467879176002" expanded="true" signature="6422:6464" placeholder="SELECT * FRO... t_l3f2cm_projgroup" />
+            <marker date="1467879176002" expanded="true" signature="7033:7082" placeholder="SELECT * FRO... t_l3f2cm_projgroup" />
+            <marker date="1467879176002" expanded="true" signature="8151:8199" placeholder="SELECT * FRO... t_l3f2cm_projinfo" />
+            <marker date="1467879176002" expanded="true" signature="9329:9371" placeholder="SELECT * FRO... t_l3f2cm_projgroup" />
+            <marker date="1467879176002" expanded="true" signature="9684:9725" placeholder="SELECT * FRO... t_l3f2cm_projinfo" />
+            <marker date="1467879176002" expanded="true" signature="10509:10550" placeholder="SELECT * FRO... t_l3f2cm_projinfo" />
+            <marker date="1467879176002" expanded="true" signature="11313:11368" placeholder="SELECT * FRO... t_l3f1sym_authlist" />
+            <marker date="1467879176002" expanded="true" signature="11748:11810" placeholder="SELECT * FRO... t_l3f2cm_projgroup" />
+            <marker date="1467879176002" expanded="true" signature="12656:12711" placeholder="SELECT * FRO... t_l3f1sym_authlist" />
+            <marker date="1467879176002" expanded="true" signature="13172:13231" placeholder="SELECT * FRO... t_l3f2cm_projinfo" />
+            <marker date="1467879176002" expanded="true" signature="14499:14554" placeholder="SELECT * FRO... t_l3f1sym_authlist" />
+            <marker date="1467879176002" expanded="true" signature="15070:15132" placeholder="SELECT * FRO... t_l3f2cm_projgroup" />
+            <marker date="1467879176002" expanded="true" signature="15518:15577" placeholder="SELECT * FRO... t_l3f2cm_projinfo" />
+            <marker date="1467879176002" expanded="true" signature="16384:16449" placeholder="SELECT * FRO... t_l3f2cm_projmapping" />
+            <marker date="1467879176002" expanded="true" signature="16647:16706" placeholder="SELECT * FRO... t_l3f2cm_projinfo" />
+            <marker date="1467879176002" expanded="true" signature="17933:17995" placeholder="SELECT * FRO... t_l3f2cm_projgroup" />
+            <marker date="1467879176002" expanded="true" signature="18125:18341" placeholder="UPDATE `t_l3... " />
+            <marker date="1467879176002" expanded="true" signature="18463:18661" placeholder="INSERT INTO `t_l3f2cm_projgroup`... " />
+            <marker date="1467879176002" expanded="true" signature="18784:18846" placeholder="DELETE FROM " />
+            <marker date="1467879176002" expanded="true" signature="19108:19188" placeholder="INSERT INTO `t_l3f2cm_projmapping`... " />
+            <marker date="1467879176002" expanded="true" signature="20249:20308" placeholder="SELECT * FRO... t_l3f2cm_projinfo" />
+            <marker date="1467879176002" expanded="true" signature="20438:20695" placeholder="UPDATE `t_l3... " />
+            <marker date="1467879176002" expanded="true" signature="20816:21050" placeholder="INSERT INTO `t_l3f2cm_projinfo`... " />
+            <marker date="1467879176002" expanded="true" signature="21524:21584" placeholder="DELETE FROM " />
+            <marker date="1467879176002" expanded="true" signature="21669:21731" placeholder="DELETE FROM " />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/l1comvm/pg_general_engpar.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-6.392857">
-          <caret line="14" column="42" selection-start-line="14" selection-start-column="42" selection-end-line="14" selection-end-column="42" />
+        <state vertical-scroll-proportion="0.44482175">
+          <caret line="16" column="46" selection-start-line="16" selection-start-column="46" selection-end-line="16" selection-end-column="46" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/l2sdk/task_l2sdk_nb_iot.class.php">
+    <entry file="file://$PROJECT_DIR$/l1mainentry/cloud_callback_nbiot.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.81960785">
-          <caret line="27" column="2" selection-start-line="27" selection-start-column="2" selection-end-line="27" selection-end-column="2" />
+        <state vertical-scroll-proportion="0.09677419">
+          <caret line="8" column="0" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
           <folding>
             <element signature="e#6#84#0#PHP" expanded="false" />
           </folding>
@@ -640,132 +704,128 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/l1comvm/commsg.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.57254905">
-          <caret line="73" column="48" selection-start-line="73" selection-start-column="48" selection-end-line="73" selection-end-column="48" />
+        <state vertical-scroll-proportion="-13.142858">
+          <caret line="156" column="42" selection-start-line="156" selection-start-column="42" selection-end-line="156" selection-end-column="42" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/l2sdk/task_l2sdk_iot_jd.class.php">
+    <entry file="file://$PROJECT_DIR$/l2sensorproc/proccom/svr_l2snr_com.class.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.48431373">
-          <caret line="13" column="10" selection-start-line="13" selection-start-column="10" selection-end-line="13" selection-end-column="10" />
+        <state vertical-scroll-proportion="-4.9298244">
+          <caret line="25" column="21" selection-start-line="25" selection-start-column="21" selection-end-line="25" selection-end-column="21" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/l2sensorproc/sensoremc/task_l2snr_emc.class.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-3.9298246">
+          <caret line="28" column="33" selection-start-line="28" selection-start-column="33" selection-end-line="28" selection-end-column="33" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/l2sdk/task_l2sdk_iot_hcu.class.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-25.321428">
+          <caret line="213" column="22" selection-start-line="213" selection-start-column="22" selection-end-line="213" selection-end-column="22" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/l2sdk/task_l2sdk_wechat.class.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="171.22353">
-          <caret line="4637" column="0" selection-start-line="4637" selection-start-column="0" selection-end-line="4637" selection-end-column="0" />
+        <state vertical-scroll-proportion="5.9800363">
+          <caret line="4407" column="30" selection-start-line="4407" selection-start-column="30" selection-end-line="4407" selection-end-column="30" />
           <folding>
-            <marker date="1467886936030" expanded="true" signature="32269:32420" placeholder="..." />
-            <marker date="1467886936030" expanded="true" signature="131572:131833" placeholder="..." />
-            <marker date="1467886936030" expanded="true" signature="132201:132413" placeholder="..." />
-            <marker date="1467886936030" expanded="true" signature="132772:132984" placeholder="..." />
-            <marker date="1467886936030" expanded="true" signature="133210:133416" placeholder="..." />
-            <marker date="1467886936030" expanded="true" signature="133587:133799" placeholder="..." />
-            <marker date="1467886936030" expanded="true" signature="134097:134282" placeholder="..." />
-            <marker date="1467886936030" expanded="true" signature="134495:134784" placeholder="..." />
-            <marker date="1467886936030" expanded="true" signature="135029:135233" placeholder="..." />
-            <marker date="1467886936030" expanded="true" signature="135403:135615" placeholder="..." />
-            <marker date="1467886936030" expanded="true" signature="135828:136051" placeholder="..." />
-            <marker date="1467886936030" expanded="true" signature="136275:136721" placeholder="..." />
-            <marker date="1467886936030" expanded="true" signature="136498:136667" placeholder="..." />
-            <marker date="1467886936030" expanded="true" signature="147271:147624" placeholder="..." />
+            <marker date="1467963962304" expanded="true" signature="32269:32420" placeholder="..." />
+            <marker date="1467963962304" expanded="true" signature="131572:131833" placeholder="..." />
+            <marker date="1467963962304" expanded="true" signature="132201:132413" placeholder="..." />
+            <marker date="1467963962304" expanded="true" signature="132772:132984" placeholder="..." />
+            <marker date="1467963962304" expanded="true" signature="133210:133416" placeholder="..." />
+            <marker date="1467963962304" expanded="true" signature="133587:133799" placeholder="..." />
+            <marker date="1467963962304" expanded="true" signature="134097:134282" placeholder="..." />
+            <marker date="1467963962304" expanded="true" signature="134495:134784" placeholder="..." />
+            <marker date="1467963962304" expanded="true" signature="135029:135233" placeholder="..." />
+            <marker date="1467963962304" expanded="true" signature="135403:135615" placeholder="..." />
+            <marker date="1467963962304" expanded="true" signature="135828:136051" placeholder="..." />
+            <marker date="1467963962304" expanded="true" signature="136275:136721" placeholder="..." />
+            <marker date="1467963962304" expanded="true" signature="136498:136667" placeholder="..." />
+            <marker date="1467963962304" expanded="true" signature="147298:147651" placeholder="..." />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/l1mainentry/cloud_callback_jd.php">
+    <entry file="file://$PROJECT_DIR$/l2sdk/task_l2sdk_iot_wx.class.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-4.75">
-          <caret line="7" column="0" selection-start-line="7" selection-start-column="0" selection-end-line="13" selection-end-column="2" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/l1mainentry/cloud_callback_nbiot.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.44705883">
-          <caret line="12" column="0" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/l4emcwxui/task_l4emcwx_ui.class.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.26760563">
-          <caret line="15" column="0" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/readme.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.42140922">
-          <caret line="179" column="0" selection-start-line="179" selection-start-column="0" selection-end-line="179" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/l4oamtools/DbTest.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.55774647">
-          <caret line="634" column="0" selection-start-line="634" selection-start-column="0" selection-end-line="634" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.25466892">
+          <caret line="1268" column="0" selection-start-line="1268" selection-start-column="0" selection-end-line="1268" selection-end-column="0" />
           <folding>
-            <element signature="e#6#88#0#PHP" expanded="false" />
-            <marker date="1467901309007" expanded="true" signature="15089:15224" placeholder="UPDATE `t_l1... " />
+            <element signature="n#ihu_device_L28_usercmd_text_process#0;n#classTaskL2sdkIotWx#0;n#!!top" expanded="false" />
+            <element signature="n#click_bindCommand#0;n#classTaskL2sdkIotWx#0;n#!!top" expanded="false" />
+            <element signature="n#receive_locationEvent#0;n#classTaskL2sdkIotWx#0;n#!!top" expanded="false" />
+            <marker date="1467963914378" expanded="true" signature="10323:10703" placeholder="..." />
+            <marker date="1467963914378" expanded="true" signature="11025:11448" placeholder="..." />
+            <marker date="1467963914378" expanded="true" signature="11718:11953" placeholder="..." />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/l1comvm/sysdim.php">
+    <entry file="file://$PROJECT_DIR$/l2sdk/task_l2sdk_nb_iot.class.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/l4nbiotimui/task_l4nbiot_im_ui.class.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.053521127">
-          <caret line="7" column="0" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.61290324">
+          <caret line="24" column="0" selection-start-line="24" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
           <folding>
             <element signature="e#6#84#0#PHP" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/l1comvm/sysconfig.php">
+    <entry file="file://$PROJECT_DIR$/l3appl/fum1sym/dbi_l3apl_f1sym.class.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-9.730986">
-          <caret line="24" column="58" selection-start-line="24" selection-start-column="58" selection-end-line="24" selection-end-column="58" />
-          <folding />
+        <state vertical-scroll-proportion="0.29032257">
+          <caret line="14" column="2" selection-start-line="14" selection-start-column="2" selection-end-line="14" selection-end-column="2" />
+          <folding>
+            <marker date="1467964454085" expanded="true" signature="6972:7026" placeholder="SELECT * FRO... t_l3f1sym_session" />
+            <marker date="1467964454085" expanded="true" signature="7101:7210" placeholder="UPDATE `t_l3... " />
+            <marker date="1467964454085" expanded="true" signature="7345:7449" placeholder="INSERT INTO `t_l3f1sym_session`... " />
+            <marker date="1467964454085" expanded="true" signature="7996:8062" placeholder="SELECT * FRO... t_l3f1sym_session" />
+            <marker date="1467964454085" expanded="true" signature="9011:9067" placeholder="SELECT * FRO... t_l3f1sym_account" />
+            <marker date="1467964454085" expanded="true" signature="10842:10908" placeholder="SELECT * FRO... t_l3f1sym_session" />
+            <marker date="1467964454085" expanded="true" signature="11276:11330" placeholder="SELECT * FRO... t_l3f1sym_account" />
+            <marker date="1467964454085" expanded="true" signature="12388:12429" placeholder="SELECT * FRO... t_l3f1sym_account" />
+            <marker date="1467964454085" expanded="true" signature="13004:13056" placeholder="SELECT * FRO... t_l3f1sym_account" />
+            <marker date="1467964454085" expanded="true" signature="14920:14976" placeholder="SELECT * FRO... t_l3f1sym_account" />
+            <marker date="1467964454085" expanded="true" signature="15106:15348" placeholder="UPDATE `t_l3... " />
+            <marker date="1467964454085" expanded="true" signature="15469:15696" placeholder="INSERT INTO `t_l3f1sym_account`... " />
+            <marker date="1467964454085" expanded="true" signature="15783:15836" placeholder="DELETE FROM " />
+            <marker date="1467964454085" expanded="true" signature="16086:16163" placeholder="INSERT INTO `t_l3f1sym_authlist`... " />
+            <marker date="1467964454085" expanded="true" signature="17412:17652" placeholder="UPDATE `t_l3... " />
+            <marker date="1467964454085" expanded="true" signature="17764:17989" placeholder="UPDATE `t_l3... " />
+            <marker date="1467964454085" expanded="true" signature="18076:18129" placeholder="DELETE FROM " />
+            <marker date="1467964454085" expanded="true" signature="18379:18456" placeholder="INSERT INTO `t_l3f1sym_authlist`... " />
+            <marker date="1467964454085" expanded="true" signature="18961:19013" placeholder="DELETE FROM " />
+            <marker date="1467964454085" expanded="true" signature="19097:19150" placeholder="DELETE FROM " />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/l1comvm/vmlayer.php">
+    <entry file="file://$PROJECT_DIR$/l4oamtools/DbTest.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="10.0084505">
-          <caret line="379" column="5" selection-start-line="379" selection-start-column="5" selection-end-line="379" selection-end-column="5" />
-          <folding />
+        <state vertical-scroll-proportion="20.096775">
+          <caret line="628" column="0" selection-start-line="628" selection-start-column="0" selection-end-line="628" selection-end-column="0" />
+          <folding>
+            <element signature="e#6#88#0#PHP" expanded="false" />
+            <marker date="1467949823223" expanded="true" signature="15089:15224" placeholder="UPDATE `t_l1... " />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/l1comvm/sysversion.php">
+    <entry file="file://$PROJECT_DIR$/readme.txt">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.7450704">
-          <caret line="44" column="49" selection-start-line="44" selection-start-column="49" selection-end-line="44" selection-end-column="49" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/l1comvm/sysmodule.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="2.043662">
-          <caret line="357" column="76" selection-start-line="357" selection-start-column="76" selection-end-line="357" selection-end-column="76" />
+        <state vertical-scroll-proportion="0.57536465">
+          <caret line="184" column="0" selection-start-line="184" selection-start-column="0" selection-end-line="184" selection-end-column="0" />
           <folding />
         </state>
       </provider>
