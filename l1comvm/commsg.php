@@ -70,8 +70,14 @@ define("MSG_ID_L2SDK_HCU_DATA_COMING", $index++);
 define("MSG_ID_L2SDK_JD_INCOMING", $index++);
 //L2SDK_APPLE消息部分
 define("MSG_ID_L2SDK_APPLE_INCOMING", $index++);
-//L2SDK_NBIOT消息部分
-define("MSG_ID_L2SDK_NBIOT_INCOMING", $index++);
+//L2SDK_NBIOT_IPM376消息部分
+define("MSG_ID_L2SDK_NBIOT_IPM376_INCOMING", $index++);
+//L2SDK_NBIOT_IGM消息部分
+define("MSG_ID_L2SDK_NBIOT_IGM_INCOMING", $index++);
+//L2SDK_NBIOT_LTEV消息部分
+define("MSG_ID_L2SDK_NBIOT_LTEV_INCOMING", $index++);
+//L2SDK_NBIOT_AGC消息部分
+define("MSG_ID_L2SDK_NBIOT_AGC_INCOMING", $index++);
 //L2TIMERCRON消息部分
 define("MSG_ID_L2TIMER_CRON_1MIN_COMING", $index++);
 define("MSG_ID_L2TIMER_CRON_3MIN_COMING", $index++);
@@ -137,6 +143,8 @@ define("MSG_ID_L4AQYCUI_TO_L3F7_CLEARUSERIMG", $index++);
 define("MSG_ID_L4EMCWXUI_CLICK_INCOMING", $index++);
 //L4TBSWRUI部分
 define("MSG_ID_L4TBSWR_CLICK_INCOMING", $index++);
+//L4NBIOTIPMUI部分
+define("MSG_ID_L4NBIOTIPM_CLICK_INCOMING", $index++);
 //L5BI部分
 define("MSG_ID_L4BI_CLICK_INCOMING", $index++);
 define("MSG_ID_MFUN_MAX", $index++);

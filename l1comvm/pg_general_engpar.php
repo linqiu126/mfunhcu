@@ -11,11 +11,13 @@ include_once "../l1comvm/sysconfig.php";
  * 通用配置参数: 所有项目相关缺省配置参数                                             *
  *************************************************************************************/
 //通用项目标识
+//目前只是为了在Log记录中起到应用场景的区分作用，还没有在消息处理中起到真正的作用
 define("MFUN_PRJ_IHU_EMC_WX", "IHU_EMCWX");
 define("MFUN_PRJ_HCU_XML", "IOT_HCU_XML");
 define("MFUN_PRJ_HCU_ZHB", "IOT_HCU_ZHB");
 define("MFUN_PRJ_HCU_APPLE", "IOT_HCU_APPLE");
 define("MFUN_PRJ_HCU_JD", "IOT_HCU_JD");
+define("MFUN_PRJ_NB_IOT", "IOT_NB_IOT");
 define("MFUN_MAX_LOG_NUM", 5000);  //防止t_loginfo表单数据无限制的增长，保留的最大记录数
 define("MFUN_SESSION_ID_LEN", 8); //UI界面session id字符串长度
 define("MFUN_USER_ID_LEN", 6); //UI界面user id字符串长度

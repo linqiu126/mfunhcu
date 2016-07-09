@@ -7,7 +7,7 @@
  */
 include_once "../l1comvm/vmlayer.php";
 
-class classTaskL2sdkNbIot
+class classTaskL2sdkNbiotIpm376
 {
     //构造函数
     public function __construct()
@@ -18,7 +18,7 @@ class classTaskL2sdkNbIot
     /**************************************************************************************
      *                             任务入口函数                                           *
      *************************************************************************************/
-    public function mfun_l2sdk_nb_iot_task_main_entry($parObj, $msgId, $msgName, $msg)
+    public function mfun_l2sdk_nbiot_ipm376_task_main_entry($parObj, $msgId, $msgName, $msg)
     {
 
     }

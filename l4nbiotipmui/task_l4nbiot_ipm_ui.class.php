@@ -7,7 +7,7 @@
  */
 include_once "../l1comvm/vmlayer.php";
 
-class classTaskL4nbiotImUi
+class classTaskL4nbiotIpmUi
 {
     //构造函数
     public function __construct()

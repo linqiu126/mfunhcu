@@ -25,7 +25,7 @@ include_once "../l2sdk/task_l2sdk_iot_apple.class.php";
 include_once "../l2sdk/task_l2sdk_iot_jd.class.php";
 include_once "../l2sdk/task_l2sdk_iot_wx.class.php";
 include_once "../l2sdk/task_l2sdk_iot_wx_jssdk.php";
-include_once "../l2sdk/task_l2sdk_nb_iot.class.php";
+include_once "../l2sdk/task_l2sdk_nbiot_ipm376.class.php";
 include_once "../l2sensorproc/proccom/svr_l2snr_com.class.php";
 include_once "../l2sensorproc/sensorairprs/task_l2snr_airprs.class.php";
 include_once "../l2sensorproc/sensoremc/task_l2snr_emc.class.php";
@@ -57,7 +57,7 @@ include_once "../l2timercron/task_l2timer_cron.class.php";
 include_once "../l4emcwxui/task_l4emcwx_ui.class.php";
 include_once "../l4aqycui/task_l4aqyc_ui.class.php";
 include_once "../l4tbswrui/task_l4tbswr_ui.class.php";
-include_once "../l4nbiotimui/task_l4nbiot_im_ui.class.php";
+include_once "../l4nbiotipmui/task_l4nbiot_ipm_ui.class.php";
 include_once "../l5bi/task_bi_service.class.php";
 
 
@@ -475,6 +475,58 @@ class classTaskL1vmCoreRouter
                 return false;
             }
 
+        }elseif($parObj == MFUN_MAIN_ENTRY_NBIOT_IPM376){
+            if ($this->mfun_l1vm_msg_send(MFUN_TASK_ID_L1VM,
+                    MFUN_TASK_ID_L2SDK_NBIOT_IPM376,
+                    MSG_ID_L2SDK_NBIOT_IPM376_INCOMING,
+                    "MSG_ID_L2SDK_NBIOT_IPM376_INCOMING",
+                    $msg) == false) {
+                $result = "Cloud: Send to message buffer error.";
+                $log_content = "P:" . json_encode($result);
+                $loggerObj->logger("MFUN_TASK_ID_L2SDK_NBIOT_IPM376", "mfun_l1vm_task_main_entry", $log_time, $log_content);
+                echo trim($result);
+                return false;
+            }
+
+        }elseif($parObj == MFUN_MAIN_ENTRY_NBIOT_IGM){
+            if ($this->mfun_l1vm_msg_send(MFUN_TASK_ID_L1VM,
+                    MFUN_TASK_ID_L2SDK_NBIOT_IGM,
+                    MSG_ID_L2SDK_NBIOT_IGM_INCOMING,
+                    "MSG_ID_L2SDK_NBIOT_IGM_INCOMING",
+                    $msg) == false) {
+                $result = "Cloud: Send to message buffer error.";
+                $log_content = "P:" . json_encode($result);
+                $loggerObj->logger("MFUN_TASK_ID_L2SDK_NBIOT_IGM", "mfun_l1vm_task_main_entry", $log_time, $log_content);
+                echo trim($result);
+                return false;
+            }
+
+        }elseif($parObj == MFUN_MAIN_ENTRY_NBIOT_LTEV){
+            if ($this->mfun_l1vm_msg_send(MFUN_TASK_ID_L1VM,
+                    MFUN_TASK_ID_L2SDK_NBIOT_LTEV,
+                    MSG_ID_L2SDK_NBIOT_LTEV_INCOMING,
+                    "MSG_ID_L2SDK_NBIOT_LTEV_INCOMING",
+                    $msg) == false) {
+                $result = "Cloud: Send to message buffer error.";
+                $log_content = "P:" . json_encode($result);
+                $loggerObj->logger("MFUN_TASK_ID_L2SDK_NBIOT_LTEV", "mfun_l1vm_task_main_entry", $log_time, $log_content);
+                echo trim($result);
+                return false;
+            }
+
+        }elseif($parObj == MFUN_MAIN_ENTRY_NBIOT_AGC){
+            if ($this->mfun_l1vm_msg_send(MFUN_TASK_ID_L1VM,
+                    MFUN_TASK_ID_L2SDK_NBIOT_AGC,
+                    MSG_ID_L2SDK_NBIOT_AGC_INCOMING,
+                    "MSG_ID_L2SDK_NBIOT_AGC_INCOMING",
+                    $msg) == false) {
+                $result = "Cloud: Send to message buffer error.";
+                $log_content = "P:" . json_encode($result);
+                $loggerObj->logger("MFUN_TASK_ID_L2SDK_NBIOT_AGC", "mfun_l1vm_task_main_entry", $log_time, $log_content);
+                echo trim($result);
+                return false;
+            }
+
         }elseif($parObj == MFUN_MAIN_ENTRY_EMCWX_UI){
             if ($this->mfun_l1vm_msg_send(MFUN_TASK_ID_L1VM,
                     MFUN_TASK_ID_L4EMCWX_UI,
@@ -514,15 +566,15 @@ class classTaskL1vmCoreRouter
                 return false;
             }
 
-        }elseif($parObj == MFUN_MAIN_ENTRY_NBIOT){
+        }elseif($parObj == MFUN_MAIN_ENTRY_NBIOT_IPM_UI){
             if ($this->mfun_l1vm_msg_send(MFUN_TASK_ID_L1VM,
-                    MFUN_TASK_ID_L2SDK_NB_IOT,
-                    MSG_ID_L2SDK_NBIOT_INCOMING,
-                    "MSG_ID_L2SDK_NBIOT_INCOMING",
+                    MFUN_TASK_ID_L4NBIOT_IPM_UI,
+                    MSG_ID_L4NBIOTIPM_CLICK_INCOMING,
+                    "MSG_ID_L4NBIOTIPM_CLICK_INCOMING",
                     $msg) == false) {
                 $result = "Cloud: Send to message buffer error.";
                 $log_content = "P:" . json_encode($result);
-                $loggerObj->logger("MFUN_TASK_ID_L2SDK_NB_IOT", "mfun_l1vm_task_main_entry", $log_time, $log_content);
+                $loggerObj->logger("MFUN_TASK_ID_L4NBIOT_IPM_UI", "mfun_l1vm_task_main_entry", $log_time, $log_content);
                 echo trim($result);
                 return false;
             }
@@ -611,9 +663,24 @@ class classTaskL1vmCoreRouter
                     $obj->mfun_l2sdk_iot_hcu_task_main_entry($this, $result["msgId"], $result["msgName"], $result["msgBody"]);
                     break;
 
-                case MFUN_TASK_ID_L2SDK_NB_IOT:
-                    $obj = new classTaskL2sdkNbIot();
-                    $obj->mfun_l2sdk_nb_iot_task_main_entry($this, $result["msgId"], $result["msgName"], $result["msgBody"]);
+                case MFUN_TASK_ID_L2SDK_NBIOT_IPM376:
+                    $obj = new classTaskL2sdkNbiotIpm376();
+                    $obj->mfun_l2sdk_nbiot_ipm376_task_main_entry($this, $result["msgId"], $result["msgName"], $result["msgBody"]);
+                    break;
+
+                case MFUN_TASK_ID_L2SDK_NBIOT_IGM:
+                    $obj = new classTaskL2sdkNbiotIgm();
+                    $obj->mfun_l2sdk_nbiot_igm_task_main_entry($this, $result["msgId"], $result["msgName"], $result["msgBody"]);
+                    break;
+
+                case MFUN_TASK_ID_L2SDK_NBIOT_LTEV:
+                    $obj = new classTaskL2sdkNbiotLtev();
+                    $obj->mfun_l2sdk_nbiot_ltev_task_main_entry($this, $result["msgId"], $result["msgName"], $result["msgBody"]);
+                    break;
+
+                case MFUN_TASK_ID_L2SDK_NBIOT_AGC:
+                    $obj = new classTaskL2sdkNbiotAgc();
+                    $obj->mfun_l2sdk_nbiot_agc_task_main_entry($this, $result["msgId"], $result["msgName"], $result["msgBody"]);
                     break;
 
                 case MFUN_TASK_ID_L2SENSOR_EMC:
@@ -768,8 +835,8 @@ class classTaskL1vmCoreRouter
                     $obj->mfun_l4tbswr_ui_task_main_entry($this, $result["msgId"], $result["msgName"], $result["msgBody"]);
                     break;
 
-                case MFUN_TASK_ID_L4NBIOTIM_UI:
-                    $obj = new classTaskL4nbiotImUi();
+                case MFUN_TASK_ID_L4NBIOT_IPM_UI:
+                    $obj = new classTaskL4nbiotIpmUi();
                     $obj->mfun_l4nbiot_im_ui_task_main_entry($this, $result["msgId"], $result["msgName"], $result["msgBody"]);
                     break;
 
