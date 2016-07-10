@@ -15,7 +15,7 @@ class classApiL2snrCommonService
 
     }
 
-    public function func_timeSync_process()  //时间同步消息处理，返回当前时间戳
+    public function func_timeSync_process($platform, $deviceId, $data)  //时间同步消息处理，返回当前时间戳
     {
         $cmdid = $this->byte2string(MFUN_HCU_CMDID_TIME_SYNC);
         $now = time();
@@ -62,7 +62,7 @@ class classApiL2snrCommonService
 
         switch($platform)
         {
-            case MFUN_PLTF_WECHAT:  //说明版本更新请求来自微信，验证IHU设备信息表（t_deviceqrcode）中MAC地址合法性
+            case MFUN_TECH_PLTF_WECHAT:  //说明版本更新请求来自微信，验证IHU设备信息表（t_deviceqrcode）中MAC地址合法性
                 $wDbObj = new classDbiL2sdkWechat();
                 $result = $wDbObj->dbi_deviceQrcode_valid_mac($deviceId, $mac);
                 if ($result == true)
@@ -70,7 +70,7 @@ class classApiL2snrCommonService
                 else
                     $resp = "COMMON_SERVICE: IHU invalid MAC address";
                 break;
-            case MFUN_PLTF_HCUGX:  //说明版本更新请求来自HCU，验证HCU设备信息表（t_hcudevice）中MAC地址合法性
+            case MFUN_TECH_PLTF_HCUGX:  //说明版本更新请求来自HCU，验证HCU设备信息表（t_hcudevice）中MAC地址合法性
                 $cDbObj = new classDbiL2sdkHcu();
                 $result = $cDbObj->dbi_hcuDevice_valid_mac($deviceId, $mac);
                 if ($result == true)
@@ -78,7 +78,7 @@ class classApiL2snrCommonService
                 else
                     $resp = "COMMON_SERVICE: HCU invalid MAC address";
                 break;
-            case MFUN_PLTF_JDIOT:
+            case MFUN_TECH_PLTF_JDIOT:
                 $resp = "";
                 break;
             default:

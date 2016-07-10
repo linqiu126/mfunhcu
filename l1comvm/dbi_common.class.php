@@ -493,9 +493,9 @@ class classDbiL1vmCommon
         }
 
         //检查记录数如果超过MAX_LOG_NUM，则删除老的记录
-        if (($sid_max - $sid_min) > MFUN_MAX_LOG_NUM)
+        if (($sid_max - $sid_min) > MFUN_L1VM_DBI_MAX_LOG_NUM)
         {
-            $count = $sid_max - MFUN_MAX_LOG_NUM;
+            $count = $sid_max - MFUN_L1VM_DBI_MAX_LOG_NUM;
             $result = $mysqli->query("DELETE FROM `t_l1vm_loginfo` WHERE (`sid` >0 AND `sid`< $count) ");
         }
 

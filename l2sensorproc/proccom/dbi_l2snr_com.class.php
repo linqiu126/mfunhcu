@@ -520,7 +520,7 @@ class classDbiL2snrCom
         $result = $mysqli->query("SELECT * FROM `t_l2snr_minreport` WHERE `devcode` = '$devcode' AND `statcode` = '$statcode' AND
                           (`hourminindex` >= '$start' AND `hourminindex` < '$end')");
 
-        if ($result->num_rows < MFUN_HOUR_VALIDE_NUM )  //如果该日期指定的小时里分钟测量值小于最低要求值，则该小时平均值无效，直接返回
+        if ($result->num_rows < MFUN_L2SNR_COMAPI_HOUR_VALIDE_NUM )  //如果该日期指定的小时里分钟测量值小于最低要求值，则该小时平均值无效，直接返回
             return false;
 
         //初始化各测试参数的小时平均值
@@ -586,21 +586,21 @@ class classDbiL2snrCom
                 $count_humidity++;
             }
         }
-        if ($count_emc >= MFUN_HOUR_VALIDE_NUM)
+        if ($count_emc >= MFUN_L2SNR_COMAPI_HOUR_VALIDE_NUM)
             $avg_emc = $avg_emc/$count_emc;
-        if ($count_noise >= MFUN_HOUR_VALIDE_NUM)
+        if ($count_noise >= MFUN_L2SNR_COMAPI_HOUR_VALIDE_NUM)
             $avg_noise = $avg_noise/$count_noise;
-        if ($count_pm01 >= MFUN_HOUR_VALIDE_NUM)
+        if ($count_pm01 >= MFUN_L2SNR_COMAPI_HOUR_VALIDE_NUM)
             $avg_pm01 = $avg_pm01/$count_pm01;
-        if ($count_pm25 >= MFUN_HOUR_VALIDE_NUM)
+        if ($count_pm25 >= MFUN_L2SNR_COMAPI_HOUR_VALIDE_NUM)
             $avg_pm25 = $avg_pm25/$count_pm25;
-        if ($count_pm10 >= MFUN_HOUR_VALIDE_NUM)
+        if ($count_pm10 >= MFUN_L2SNR_COMAPI_HOUR_VALIDE_NUM)
             $avg_pm10 = $avg_pm10/$count_pm10;
-        if ($count_windspeed >= MFUN_HOUR_VALIDE_NUM)
+        if ($count_windspeed >= MFUN_L2SNR_COMAPI_HOUR_VALIDE_NUM)
             $avg_windspeed = $avg_windspeed/$count_windspeed;
-        if ($count_temperature >= MFUN_HOUR_VALIDE_NUM)
+        if ($count_temperature >= MFUN_L2SNR_COMAPI_HOUR_VALIDE_NUM)
             $avg_temperature = $avg_temperature/$count_temperature;
-        if ($count_humidity >= MFUN_HOUR_VALIDE_NUM)
+        if ($count_humidity >= MFUN_L2SNR_COMAPI_HOUR_VALIDE_NUM)
             $avg_humidity = $avg_humidity/$count_humidity;
 
         //存储新记录，如果发现是已经存在的数据，则覆盖，否则新增

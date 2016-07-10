@@ -20,7 +20,7 @@ class classTaskL2snrWindspd
     {
         switch($platform)
         {
-            case MFUN_PLTF_WECHAT:
+            case MFUN_TECH_PLTF_WECHAT:
                 $length = hexdec(substr($content, 2, 2)) & 0xFF;
                 $length = ($length + 2)*2; //消息总长度等于length＋1B 控制字＋1B长度本身
                 if ($length != strlen($content)){
@@ -37,7 +37,7 @@ class classTaskL2snrWindspd
                         break;
                 }
                 break;
-            case MFUN_PLTF_HCUGX:
+            case MFUN_TECH_PLTF_HCUGX:
                 $raw_MsgHead = substr($content, 0, MFUN_HCU_MSG_HEAD_LENGTH);  //截取4Byte MsgHead
                 $msgHead = unpack(MFUN_HCU_MSG_HEAD_FORMAT, $raw_MsgHead);
 
@@ -59,7 +59,7 @@ class classTaskL2snrWindspd
                         break;
                 }
                 break;
-            case MFUN_PLTF_JDIOT:
+            case MFUN_TECH_PLTF_JDIOT:
                 $resp = ""; //no response message
                 break;
             default:

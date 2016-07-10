@@ -64,7 +64,7 @@ class classTaskL2sdkIotHcu
         {
             case MFUN_HCU_CMDID_VERSION_SYNC:
                 $hcuObj = new classApiL2snrCommonService();
-                $resp = $hcuObj->func_version_update_process(MFUN_PLTF_HCUGX, $deviceId, $content);
+                $resp = $hcuObj->func_version_update_process(MFUN_TECH_PLTF_HCUGX, $deviceId, $content);
                 break;
 
             case MFUN_HCU_CMDID_TIME_SYNC:
@@ -74,7 +74,7 @@ class classTaskL2sdkIotHcu
 
             case MFUN_HCU_CMDID_INVENTORY_DATA:
                 $hcuObj = new classApiL2snrCommonService();
-                $resp = $hcuObj->func_inventory_data_process(MFUN_PLTF_HCUGX,$deviceId, $content);
+                $resp = $hcuObj->func_inventory_data_process(MFUN_TECH_PLTF_HCUGX,$deviceId, $content);
                 break;
 
             case MFUN_HCU_CMDID_HEART_BEAT:
@@ -90,7 +90,7 @@ class classTaskL2sdkIotHcu
             case MFUN_HCU_CMDID_EMC_DATA:  //定时辐射强度处理
                 $msg = array("project" => $project,
                     "log_from" => $log_from,
-                    "platform" => MFUN_PLTF_HCUGX,
+                    "platform" => MFUN_TECH_PLTF_HCUGX,
                     "deviceId" => $deviceId,
                     "statCode" => $statCode,
                     "content" => $content);
@@ -102,13 +102,13 @@ class classTaskL2sdkIotHcu
                 else $resp = "";
 
                 //$hcuObj = new classTaskL2snrEmc();
-                //$resp = $hcuObj->func_emc_process(MFUN_PLTF_HCUGX, $deviceId, $statCode, $content);
+                //$resp = $hcuObj->func_emc_process(MFUN_TECH_PLTF_HCUGX, $deviceId, $statCode, $content);
                 break;
 
             case MFUN_HCU_CMDID_PM25_DATA:
                 $msg = array("project" => $project,
                     "log_from" => $log_from,
-                    "platform" => MFUN_PLTF_HCUGX,
+                    "platform" => MFUN_TECH_PLTF_HCUGX,
                     "deviceId" => $deviceId,
                     "statCode" => $statCode,
                     "content" => $content);
@@ -123,7 +123,7 @@ class classTaskL2sdkIotHcu
             case MFUN_HCU_CMDID_WINDDIR_DATA:
                 $msg = array("project" => $project,
                     "log_from" => $log_from,
-                    "platform" => MFUN_PLTF_HCUGX,
+                    "platform" => MFUN_TECH_PLTF_HCUGX,
                     "deviceId" => $deviceId,
                     "statCode" => $statCode,
                     "content" => $content);
@@ -138,7 +138,7 @@ class classTaskL2sdkIotHcu
             case MFUN_HCU_CMDID_WINDSPD_DATA:
                 $msg = array("project" => $project,
                     "log_from" => $log_from,
-                    "platform" => MFUN_PLTF_HCUGX,
+                    "platform" => MFUN_TECH_PLTF_HCUGX,
                     "deviceId" => $deviceId,
                     "statCode" => $statCode,
                     "content" => $content);
@@ -153,7 +153,7 @@ class classTaskL2sdkIotHcu
             case MFUN_HCU_CMDID_TEMP_DATA:
                 $msg = array("project" => $project,
                     "log_from" => $log_from,
-                    "platform" => MFUN_PLTF_HCUGX,
+                    "platform" => MFUN_TECH_PLTF_HCUGX,
                     "deviceId" => $deviceId,
                     "statCode" => $statCode,
                     "content" => $content);
@@ -168,7 +168,7 @@ class classTaskL2sdkIotHcu
             case MFUN_HCU_CMDID_HUMID_DATA:
                 $msg = array("project" => $project,
                     "log_from" => $log_from,
-                    "platform" => MFUN_PLTF_HCUGX,
+                    "platform" => MFUN_TECH_PLTF_HCUGX,
                     "deviceId" => $deviceId,
                     "statCode" => $statCode,
                     "content" => $content);
@@ -186,7 +186,7 @@ class classTaskL2sdkIotHcu
                 }
                 $msg = array("project" => $project,
                     "log_from" => $log_from,
-                    "platform" => MFUN_PLTF_HCUGX,
+                    "platform" => MFUN_TECH_PLTF_HCUGX,
                     "deviceId" => $deviceId,
                     "statCode" => $statCode,
                     "content" => $content);
@@ -201,7 +201,7 @@ class classTaskL2sdkIotHcu
             case MFUN_HCU_CMDID_NOISE_DATA:
                 $msg = array("project" => $project,
                     "log_from" => $log_from,
-                    "platform" => MFUN_PLTF_HCUGX,
+                    "platform" => MFUN_TECH_PLTF_HCUGX,
                     "deviceId" => $deviceId,
                     "statCode" => $statCode,
                     "content" => $content);
@@ -273,7 +273,7 @@ class classTaskL2sdkIotHcu
 
         switch($cn)
         {
-            case MFUN_ZHB_NOM_FRAME:
+            case MFUN_L2SDK_IOTHCU_ZHB_NOM_FRAME:
                 $sdu_format = "A20QN/A5ST/A7CN/A12MN/A6PW/A4PNUM/A4PNO";
                 $temp = unpack($sdu_format, $sdu_body);
                 $pnum = $temp['PNUM']; //总包号
@@ -283,7 +283,7 @@ class classTaskL2sdkIotHcu
                 $data = substr($sdu_body, $fix_len, $dataLen);  //数据区的处理等规范业务逻辑明确后再处理
                 $resp = $this->dummy_data_response($mn);
                 break;
-            case MFUN_ZHB_HRB_FRAME:
+            case MFUN_L2SDK_IOTHCU_ZHB_HRB_FRAME:
                 $sdu_format = "A20QN/A5ST/A7CN/A12MN/A6PW/A3FLAG";
                 $temp = unpack($sdu_format, $sdu_body);
                 $flag = $temp['FLAG']; //数据是否拆分及应答标志
@@ -407,7 +407,7 @@ class classTaskL2sdkIotHcu
         //正式处理消息格式和消息内容的过程
         $format = substr(trim($msg), 0, 2);
         switch ($format) {
-            case MFUN_FRAME_FORMAT_XML:
+            case MFUN_L2_FRAME_FORMAT_PREFIX_XML:
                 libxml_disable_entity_loader(true);  //prevent XML entity injection
                 $postObj = simplexml_load_string($msg, 'SimpleXMLElement');  //防止破坏CDATA的内容，进而影响智能硬件L3消息体
                 //$postObj = simplexml_load_string($postStr, 'SimpleXMLElement', LIBXML_NOCDATA);
@@ -464,7 +464,7 @@ class classTaskL2sdkIotHcu
                         break;
                 }
                 break;
-            case MFUN_FRAME_FORMAT_ZHB:
+            case MFUN_L2_FRAME_FORMAT_PREFIX_ZHB:
                 $project = MFUN_PRJ_HCU_ZHB;
                 $fromUser = "ZHBMSG_TO_UNPACK";
                 $log_content = "R:" . trim($msg);
@@ -472,7 +472,7 @@ class classTaskL2sdkIotHcu
                 $log_from = $fromUser;
                 $this->receive_hcu_zhbMessage($parObj, $project, $log_from, $msg);
                 break;
-            case MFUN_FRAME_FORMAT_APPLE:
+            case MFUN_L2_FRAME_FORMAT_PREFIX_APPLE:
                 $project = MFUN_PRJ_HCU_APPLE;
                 $fromUser = "APPLEMSG_TO_UNPACK";
                 $log_content = "R:" . trim($msg);
@@ -480,7 +480,7 @@ class classTaskL2sdkIotHcu
                 $log_from = $fromUser;
                 $this->receive_hcu_appleMessage($parObj, $project, $log_from, $msg);
                 break;
-            case MFUN_FRAME_FORMAT_JD:
+            case MFUN_L2_FRAME_FORMAT_PREFIX_JD:
                 $project = MFUN_PRJ_HCU_JD;
                 $fromUser = "JDMSG_TO_UNPACK";
                 $log_content = "R:" . trim($msg);

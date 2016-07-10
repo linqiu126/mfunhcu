@@ -20,13 +20,13 @@ class classTaskL2snrEmc
     {
         switch($platform)
         {
-            case MFUN_PLTF_WECHAT:
+            case MFUN_TECH_PLTF_WECHAT:
                 if (strlen($content) == 0) {
                     return "ERROR EMC_SERVICE[WX]: message length invalid";  //消息长度不合法，直接返回
                 }
                 $resp = $this->wx_emcdata_req_process($deviceId, $content);
                 break;
-            case MFUN_PLTF_HCUGX:
+            case MFUN_TECH_PLTF_HCUGX:
                 $raw_MsgHead = substr($content, 0, MFUN_HCU_MSG_HEAD_LENGTH);  //截取4Byte MsgHead
                 $msgHead = unpack(MFUN_HCU_MSG_HEAD_FORMAT, $raw_MsgHead);
 
@@ -48,7 +48,7 @@ class classTaskL2snrEmc
                         break;
                 }
                 break;
-            case MFUN_PLTF_JDIOT:
+            case MFUN_TECH_PLTF_JDIOT:
                 $resp = ""; //no response message
                 break;
             default:

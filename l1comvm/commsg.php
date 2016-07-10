@@ -154,20 +154,10 @@ define("MSG_ID_MFUN_MAX", $index++);
  *                             公共消息全局量定义                                     *
  *************************************************************************************/
 define("MFUN_TIME_GRID_SIZE", 1); //定义用于数据存储的时间网格为。单位为分钟
-define("MFUN_FRAME_FORMAT_XML", "<x"); //XML数据格式，消息以<xml开头
-define("MFUN_FRAME_FORMAT_ZHB", "##"); //中环保数据格式，消息以##开头
-define("MFUN_FRAME_FORMAT_APPLE", "$<"); //APPLE数据格式
-define("MFUN_FRAME_FORMAT_JD", "#$"); //JD数据格式
-define("MFUN_PLTF_WECHAT", 0x01);  //微信物联网平台
-define("MFUN_PLTF_HCUGX", 0x02); //HCU网关平台
-define("MFUN_PLTF_JDIOT", 0x03);  //京东物联平台
-define("MFUN_PLTF_APHOME", 0x04);  //京东物联平台
-define("MFUN_PLTF_NBIOT", 0x05);  //窄带物联平台
-
-//用于区分WECHAT->IOT_HCU的处理内容及过程
-define("MFUN_IOT_WX_DEVICE_TEXT","DEVICE_TEXT");
-define("MFUN_IOT_WX_DEVICE_EVENT","DEVICE_EVENT");
-
+define("MFUN_L2_FRAME_FORMAT_PREFIX_XML", "<x"); //XML数据格式，消息以<xml开头
+define("MFUN_L2_FRAME_FORMAT_PREFIX_ZHB", "##"); //中环保数据格式，消息以##开头
+define("MFUN_L2_FRAME_FORMAT_PREFIX_APPLE", "$<"); //APPLE数据格式
+define("MFUN_L2_FRAME_FORMAT_PREFIX_JD", "#$"); //JD数据格式
 
 /**************************************************************************************
  *                             IHU公共消息全局量定义                                   *

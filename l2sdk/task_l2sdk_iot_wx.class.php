@@ -961,11 +961,11 @@ class classTaskL2sdkIotWx
             case MFUN_IHU_CMDID_VERSION_SYNC:
                 //定时辐射强度处理
                 $ihuObj = new classApiL2snrCommonService();
-                $resp = $ihuObj->func_version_update_process(MFUN_PLTF_WECHAT, $deviceId, $data);
+                $resp = $ihuObj->func_version_update_process(MFUN_TECH_PLTF_WECHAT, $deviceId, $data);
                 break;
             case MFUN_IHU_CMDID_TIME_SYNC:
                 $ihuObj = new classApiL2snrCommonService();
-                $msg_body = $ihuObj->func_timeSync_process(MFUN_PLTF_WECHAT, $deviceId, $data);
+                $msg_body = $ihuObj->func_timeSync_process(MFUN_TECH_PLTF_WECHAT, $deviceId, $data);
                 if(!empty($msg_body))
                     $resp = pack('H*',$msg_body);
                 else
@@ -973,9 +973,9 @@ class classTaskL2sdkIotWx
                 break;
 
             case MFUN_IHU_CMDID_EMC_DATA://定时辐射强度处理
-                $msg = array("project" => MFUN_PLTF_WECHAT,
+                $msg = array("project" => MFUN_PRJ_IHU_EMCWX,
                     "log_from" => $fromUser,
-                    "platform" => MFUN_PLTF_WECHAT,
+                    "platform" => MFUN_TECH_PLTF_WECHAT,
                     "deviceId" => $deviceId,
                     "statCode" => $statCode,
                     "content" => $data);
@@ -986,14 +986,14 @@ class classTaskL2sdkIotWx
                         $msg) == false) $result = "Send to message buffer error";
                 else $result = "";
                 //$ihuObj = new class_emc_service();
-                //$resp = $ihuObj->func_emc_process(MFUN_PLTF_WECHAT, $deviceId, $statCode, $data);
+                //$resp = $ihuObj->func_emc_process(MFUN_TECH_PLTF_WECHAT, $deviceId, $statCode, $data);
                 break;
 
             case MFUN_IHU_CMDID_PM25_DATA:
                 //MODBUS数据处理
-                $msg = array("project" => MFUN_PLTF_WECHAT,
+                $msg = array("project" => MFUN_PRJ_IHU_EMCWX,
                     "log_from" => $fromUser,
-                    "platform" => MFUN_PLTF_WECHAT,
+                    "platform" => MFUN_TECH_PLTF_WECHAT,
                     "deviceId" => $deviceId,
                     "statCode" => $statCode,
                     "content" => $data);
@@ -1004,13 +1004,13 @@ class classTaskL2sdkIotWx
                         $msg) == false) $result = "Send to message buffer error";
                 else $result = "";
                 //$ihuObj = new class_pmData_service();
-                //$resp = $ihuObj->func_pmData_process(MFUN_PLTF_WECHAT, $deviceId, $statCode, $data);
+                //$resp = $ihuObj->func_pmData_process(MFUN_TECH_PLTF_WECHAT, $deviceId, $statCode, $data);
                 break;
 
             case MFUN_IHU_CMDID_WINDSPD_DATA:
-                $msg = array("project" => MFUN_PLTF_WECHAT,
+                $msg = array("project" => MFUN_PRJ_IHU_EMCWX,
                     "log_from" => $fromUser,
-                    "platform" => MFUN_PLTF_WECHAT,
+                    "platform" => MFUN_TECH_PLTF_WECHAT,
                     "deviceId" => $deviceId,
                     "statCode" => $statCode,
                     "content" => $data);
@@ -1022,13 +1022,13 @@ class classTaskL2sdkIotWx
                 else $result = "";
 
                 //$ihuObj = new class_windSpeed_service();
-                //$resp = $ihuObj->func_windSpeed_process(MFUN_PLTF_WECHAT, $deviceId, $statCode, $data);
+                //$resp = $ihuObj->func_windSpeed_process(MFUN_TECH_PLTF_WECHAT, $deviceId, $statCode, $data);
                 break;
 
             case MFUN_IHU_CMDID_WINDDIR_DATA:
-                $msg = array("project" => MFUN_PLTF_WECHAT,
+                $msg = array("project" => MFUN_PRJ_IHU_EMCWX,
                     "log_from" => $fromUser,
-                    "platform" => MFUN_PLTF_WECHAT,
+                    "platform" => MFUN_TECH_PLTF_WECHAT,
                     "deviceId" => $deviceId,
                     "statCode" => $statCode,
                     "content" => $data);
@@ -1039,13 +1039,13 @@ class classTaskL2sdkIotWx
                         $msg) == false) $result = "Send to message buffer error";
                 else $result = "";
                 //$ihuObj = new class_windDirection_service();
-                //$resp = $ihuObj->func_windDirection_process(MFUN_PLTF_WECHAT, $deviceId, $statCode, $data);
+                //$resp = $ihuObj->func_windDirection_process(MFUN_TECH_PLTF_WECHAT, $deviceId, $statCode, $data);
                 break;
 
             case MFUN_IHU_CMDID_TEMP_DATA:
-                $msg = array("project" => MFUN_PLTF_WECHAT,
+                $msg = array("project" => MFUN_PRJ_IHU_EMCWX,
                     "log_from" => $fromUser,
-                    "platform" => MFUN_PLTF_WECHAT,
+                    "platform" => MFUN_TECH_PLTF_WECHAT,
                     "deviceId" => $deviceId,
                     "statCode" => $statCode,
                     "content" => $data);
@@ -1056,13 +1056,13 @@ class classTaskL2sdkIotWx
                         $msg) == false) $result = "Send to message buffer error";
                 else $result = "";
                 //$ihuObj = new class_temperature_service();
-                //$resp = $ihuObj->func_temperature_process(MFUN_PLTF_WECHAT, $deviceId, $statCode, $data);
+                //$resp = $ihuObj->func_temperature_process(MFUN_TECH_PLTF_WECHAT, $deviceId, $statCode, $data);
                 break;
 
             case MFUN_IHU_CMDID_HUMID_DATA:
-                $msg = array("project" => MFUN_PLTF_WECHAT,
+                $msg = array("project" => MFUN_PRJ_IHU_EMCWX,
                     "log_from" => $fromUser,
-                    "platform" => MFUN_PLTF_WECHAT,
+                    "platform" => MFUN_TECH_PLTF_WECHAT,
                     "deviceId" => $deviceId,
                     "statCode" => $statCode,
                     "content" => $data);
@@ -1073,13 +1073,13 @@ class classTaskL2sdkIotWx
                         $msg) == false) $result = "Send to message buffer error";
                 else $result = "";
                 //$ihuObj = new class_humidity_service();
-                //$resp = $ihuObj->func_humidity_process(MFUN_PLTF_WECHAT, $deviceId, $statCode, $data);
+                //$resp = $ihuObj->func_humidity_process(MFUN_TECH_PLTF_WECHAT, $deviceId, $statCode, $data);
                 break;
 
             case MFUN_IHU_CMDID_NOISE_DATA:
-                $msg = array("project" => MFUN_PLTF_WECHAT,
+                $msg = array("project" => MFUN_PRJ_IHU_EMCWX,
                     "log_from" => $fromUser,
-                    "platform" => MFUN_PLTF_WECHAT,
+                    "platform" => MFUN_TECH_PLTF_WECHAT,
                     "deviceId" => $deviceId,
                     "statCode" => $statCode,
                     "content" => $data);
@@ -1353,10 +1353,10 @@ class classTaskL2sdkIotWx
 
         //具体处理函数
         switch($platform){
-            case MFUN_IOT_WX_DEVICE_TEXT:
+            case MFUN_TECH_PLTF_WECHAT_DEVICE_TEXT:
                 $resp = $this->receive_wx_device_text_message($parObj, $content);
                 break;
-            case MFUN_IOT_WX_DEVICE_EVENT:
+            case MFUN_TECH_PLTF_WECHAT_DEVICE_EVENT:
                 $resp = $this->receive_wx_device_event_message($parObj, $content);
                 break;
             default:
