@@ -186,8 +186,10 @@ Make By：ZJL
 
 //= ZJL, 2016 July.10, CURRENT_SW_DELIVERY R02.D25
 > 完善常亮命名的丰富性和一致性
-> 试着搭建IPM376的测试框架
+> IPM376架构搭建完成
 
+//= ZJL, 2016 July.11, CURRENT_SW_DELIVERY R02.D26
+> 构建IPM376的解码功能
 
 
 
