@@ -69,7 +69,7 @@ class classTaskL2sdkIotHcu
 
             case MFUN_HCU_CMDID_TIME_SYNC:
                 $hcuObj = new classApiL2snrCommonService();
-                $resp = $hcuObj->func_timeSync_process();
+                $resp = $hcuObj->func_timeSync_process(MFUN_TECH_PLTF_HCUGX, $deviceId, $data);
                 break;
 
             case MFUN_HCU_CMDID_INVENTORY_DATA:
