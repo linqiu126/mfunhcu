@@ -56,6 +56,7 @@ class classTaskL3aplF4icm
         //定义本入口函数的logger处理对象及函数
         $loggerObj = new classApiL1vmFuncCom();
         $log_time = date("Y-m-d H:i:s", time());
+        $project ="";
 
         //入口消息内容判断
         if (empty($msg) == true) {
@@ -81,6 +82,7 @@ class classTaskL3aplF4icm
             if (isset($msg["user"])) $user = $msg["user"]; else  $user = "";
             //具体处理函数
             $resp = $this->func_xxx_process($user);
+            $project = MFUN_PRJ_HCU_AQYCUI;
         }
 
         else{
@@ -91,7 +93,7 @@ class classTaskL3aplF4icm
         if (!empty($resp))
         {
             $log_content = "T:" . json_encode($resp);
-            $loggerObj->logger("L4AQYCUI", "MFUN_TASK_ID_L3APPL_FUM4ICM", $log_time, $log_content);
+            $loggerObj->logger($project, "MFUN_TASK_ID_L3APPL_FUM4ICM", $log_time, $log_content);
             echo trim($resp); //这里需要编码送出去，跟其他处理方式还不太一样
         }
 

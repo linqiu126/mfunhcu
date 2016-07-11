@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS `t_l2snr_humiddata` (
   `flag_lo` char(1) NOT NULL,
   `longitude` int(4) NOT NULL,
   PRIMARY KEY (`sid`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=19900 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 --
 -- 转存表中的数据 `t_l2snr_humiddata`

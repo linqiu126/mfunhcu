@@ -108,6 +108,7 @@ class classTaskL3aplF5fm
         //定义本入口函数的logger处理对象及函数
         $loggerObj = new classApiL1vmFuncCom();
         $log_time = date("Y-m-d H:i:s", time());
+        $project ="";
 
         //入口消息内容判断
         if (empty($msg) == true) {
@@ -133,6 +134,7 @@ class classTaskL3aplF5fm
             if (isset($msg["StatCode"])) $StatCode = $msg["StatCode"]; else  $StatCode = "";
             //具体处理函数
             $resp = $this->func_dev_alarm_process($StatCode);
+            $project = MFUN_PRJ_HCU_AQYCUI;
         }
 
         //功能Alarm Query
@@ -146,6 +148,7 @@ class classTaskL3aplF5fm
             $input = array("id" => $id, "StatCode" => $StatCode, "date" => $date, "type" => $type);
             //具体处理函数
             $resp = $this->func_alarm_query_process($id, $StatCode, $date, $type);
+            $project = MFUN_PRJ_HCU_AQYCUI;
         }
 
 
@@ -157,7 +160,7 @@ class classTaskL3aplF5fm
         if (!empty($resp))
         {
             $log_content = "T:" . json_encode($resp);
-            $loggerObj->logger("L4AQYCUI", "MFUN_TASK_ID_L3APPL_FUM5FM", $log_time, $log_content);
+            $loggerObj->logger($project, "MFUN_TASK_ID_L3APPL_FUM5FM", $log_time, $log_content);
             echo trim($resp); //这里需要编码送出去，跟其他处理方式还不太一样
         }
 

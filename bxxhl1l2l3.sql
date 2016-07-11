@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: 2016-07-08 10:24:30
+-- Generation Time: 2016-07-11 10:00:13
 -- 服务器版本： 5.6.17
 -- PHP Version: 5.5.12
 
@@ -1594,6 +1594,27 @@ INSERT INTO `t_l2sdk_iothcu_hcudevice` (`devcode`, `statcode`, `macaddr`, `ipadd
 -- --------------------------------------------------------
 
 --
+-- 表的结构 `t_l2sdk_nbiot_ipm376_context`
+--
+
+CREATE TABLE IF NOT EXISTS `t_l2sdk_nbiot_ipm376_context` (
+  `sid` int(4) NOT NULL AUTO_INCREMENT,
+  `ipmaddress` int(4) NOT NULL,
+  `cntpfc` int(1) NOT NULL,
+  `deviceflag` int(1) NOT NULL,
+  PRIMARY KEY (`sid`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+
+--
+-- 转存表中的数据 `t_l2sdk_nbiot_ipm376_context`
+--
+
+INSERT INTO `t_l2sdk_nbiot_ipm376_context` (`sid`, `ipmaddress`, `cntpfc`, `deviceflag`) VALUES
+(1, 111, 17, 1);
+
+-- --------------------------------------------------------
+
+--
 -- 表的结构 `t_l2sdk_wechat_accesstoken`
 --
 
@@ -2197,6 +2218,49 @@ CREATE TABLE IF NOT EXISTS `t_l2snr_humiddata` (
 
 INSERT INTO `t_l2snr_humiddata` (`sid`, `deviceid`, `sensorid`, `humidity`, `dataflag`, `reportdate`, `hourminindex`, `altitude`, `flag_la`, `latitude`, `flag_lo`, `longitude`) VALUES
 (19899, 'HCU_SH_0301', 6, 172, 'N', '2016-03-13', 1235, 0, '\0', 0, '\0', 0);
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `t_l2snr_ipm_afndata1_f25`
+--
+
+CREATE TABLE IF NOT EXISTS `t_l2snr_ipm_afndata1_f25` (
+  `sid` int(4) NOT NULL AUTO_INCREMENT,
+  `deviceid` int(4) NOT NULL,
+  `cur_terminaltime` char(20) NOT NULL,
+  `cur_sumusepower` int(3) NOT NULL,
+  `cur_phaseausepwr` int(3) NOT NULL,
+  `cur_phasebusepwr` int(3) NOT NULL,
+  `cur_phasecusepwr` int(3) NOT NULL,
+  `cur_sumnupower` int(3) NOT NULL,
+  `cur_phaseanupwr` int(3) NOT NULL,
+  `cur_phasebnupwr` int(3) NOT NULL,
+  `cur_sumphasecnupwr` int(3) NOT NULL,
+  `cur_powerfactor` int(2) NOT NULL,
+  `cur_phaseapwrfac` int(2) NOT NULL,
+  `cur_phasebpwrfac` int(2) NOT NULL,
+  `cur_phasecpwrfac` int(2) NOT NULL,
+  `cur_phaseavoltage` int(2) NOT NULL,
+  `cur_phasebvoltage` int(2) NOT NULL,
+  `cur_phasecvoltage` int(2) NOT NULL,
+  `cur_phaseacurrent` int(3) NOT NULL,
+  `cur_phasebcurrent` int(3) NOT NULL,
+  `cur_phaseccurrent` int(3) NOT NULL,
+  `cur_zeroordercurrent` int(3) NOT NULL,
+  `cur_sumvisualpower` int(3) NOT NULL,
+  `cur_phaseavisualpower` int(3) NOT NULL,
+  `cur_phasebvisualpower` int(3) NOT NULL,
+  `cur_phasecvisualpower` int(3) NOT NULL,
+  PRIMARY KEY (`sid`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+
+--
+-- 转存表中的数据 `t_l2snr_ipm_afndata1_f25`
+--
+
+INSERT INTO `t_l2snr_ipm_afndata1_f25` (`sid`, `deviceid`, `cur_terminaltime`, `cur_sumusepower`, `cur_phaseausepwr`, `cur_phasebusepwr`, `cur_phasecusepwr`, `cur_sumnupower`, `cur_phaseanupwr`, `cur_phasebnupwr`, `cur_sumphasecnupwr`, `cur_powerfactor`, `cur_phaseapwrfac`, `cur_phasebpwrfac`, `cur_phasecpwrfac`, `cur_phaseavoltage`, `cur_phasebvoltage`, `cur_phasecvoltage`, `cur_phaseacurrent`, `cur_phasebcurrent`, `cur_phaseccurrent`, `cur_zeroordercurrent`, `cur_sumvisualpower`, `cur_phaseavisualpower`, `cur_phasebvisualpower`, `cur_phasecvisualpower`) VALUES
+(1, 111, '111111', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 
 -- --------------------------------------------------------
 

@@ -163,6 +163,7 @@ class classTaskL3aplF1sym
         //定义本入口函数的logger处理对象及函数
         $loggerObj = new classApiL1vmFuncCom();
         $log_time = date("Y-m-d H:i:s", time());
+        $project ="";
 
         //入口消息内容判断
         if (empty($msg) == true) {
@@ -189,6 +190,7 @@ class classTaskL3aplF1sym
             if (isset($msg["pwd"])) $pwd = $msg["pwd"]; else  $pwd = "";
             //具体处理函数
             $resp = $this->func_login_process($user, $pwd);
+            $project = MFUN_PRJ_HCU_AQYCUI;
         }
 
         //功能UserInfo
@@ -198,6 +200,7 @@ class classTaskL3aplF1sym
             if (isset($msg["session"])) $session = $msg["session"]; else  $session = "";
             //具体处理函数
             $resp = $this->func_userinfo_process($session);
+            $project = MFUN_PRJ_HCU_AQYCUI;
         }
 
         //功能UserNew
@@ -216,6 +219,7 @@ class classTaskL3aplF1sym
                 "mail" => $mail, "type" => $type, "memo" => $memo, "auth" => $auth);
             //具体处理函数
             $resp = $this->func_usernew_process($userinfo);
+            $project = MFUN_PRJ_HCU_AQYCUI;
         }
 
         //功能UserMod
@@ -235,6 +239,7 @@ class classTaskL3aplF1sym
                 "mail" => $mail, "type" => $type, "memo" => $memo, "auth" => $auth);
             //具体处理函数
             $resp = $this->func_usermod_process($userinfo);
+            $project = MFUN_PRJ_HCU_AQYCUI;
         }
 
         //功能UserDel
@@ -244,6 +249,7 @@ class classTaskL3aplF1sym
             if (isset($msg["id"])) $id = $msg["id"]; else  $id = "";
             //具体处理函数
             $resp = $this->func_userdel_process($id);
+            $project = MFUN_PRJ_HCU_AQYCUI;
         }
 
         //功能UserTable
@@ -254,11 +260,8 @@ class classTaskL3aplF1sym
             if (isset($msg["startseq"])) $startseq = $msg["startseq"]; else  $startseq = "";
             //具体处理函数
             $resp = $this->func_usertable_process($length, $startseq);
+            $project = MFUN_PRJ_HCU_AQYCUI;
         }
-
-
-
-
 
         else{
             $resp = ""; //啥都不ECHO
@@ -268,7 +271,7 @@ class classTaskL3aplF1sym
         if (!empty($resp))
         {
             $log_content = "T:" . json_encode($resp);
-            $loggerObj->logger("L4AQYCUI", "MFUN_TASK_ID_L3APPL_FUM1SYM", $log_time, $log_content);
+            $loggerObj->logger($project, "MFUN_TASK_ID_L3APPL_FUM1SYM", $log_time, $log_content);
             echo trim($resp);
         }
 

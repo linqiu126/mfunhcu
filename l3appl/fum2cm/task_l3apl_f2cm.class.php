@@ -282,6 +282,7 @@ class classTaskL3aplF2cm
         //定义本入口函数的logger处理对象及函数
         $loggerObj = new classApiL1vmFuncCom();
         $log_time = date("Y-m-d H:i:s", time());
+        $project ="";
 
         //入口消息内容判断
         if (empty($msg) == true) {
@@ -306,6 +307,7 @@ class classTaskL3aplF2cm
             if (isset($msg["user"])) $user = $msg["user"]; else  $user = "";
             //具体处理函数
             $resp = $this->func_project_pglist_process($user);
+            $project = MFUN_PRJ_HCU_AQYCUI;
         }
 
         //功能Project List
@@ -315,6 +317,7 @@ class classTaskL3aplF2cm
             if (isset($msg["user"])) $user = $msg["user"]; else  $user = "";
             //具体处理函数
             $resp = $this->func_project_list_process($user);
+            $project = MFUN_PRJ_HCU_AQYCUI;
         }
 
         //功能User Project
@@ -324,6 +327,7 @@ class classTaskL3aplF2cm
             if (isset($msg["userid"])) $userid = $msg["userid"]; else  $userid = "";
             //具体处理函数
             $resp = $this->func_user_project_list_process($userid);
+            $project = MFUN_PRJ_HCU_AQYCUI;
         }
 
         //功能PG Table
@@ -334,6 +338,7 @@ class classTaskL3aplF2cm
             if (isset($msg["startseq"])) $startseq = $msg["startseq"]; else  $startseq = "";
             //具体处理函数
             $resp = $this->func_pg_table_process($length, $startseq);
+            $project = MFUN_PRJ_HCU_AQYCUI;
         }
 
         //功能PG New
@@ -353,6 +358,7 @@ class classTaskL3aplF2cm
                 "Address" => $Address, "Stage" => $Stage, "Projlist" => $Projlist, "user" => $user, );
             //具体处理函数
             $resp = $this->func_pg_new_process($pginfo);
+            $project = MFUN_PRJ_HCU_AQYCUI;
         }
 
         //功能PG Mod
@@ -372,6 +378,7 @@ class classTaskL3aplF2cm
                 "Address" => $Address, "Stage" => $Stage, "Projlist" => $Projlist, "user" => $user, );
             //具体处理函数
             $resp = $this->func_pg_mod_process($pginfo);
+            $project = MFUN_PRJ_HCU_AQYCUI;
         }
 
         //功能PG Del
@@ -381,6 +388,7 @@ class classTaskL3aplF2cm
             if (isset($msg["id"])) $pgid = $msg["id"]; else  $pgid = "";
             //具体处理函数
             $resp = $this->func_pg_del_process($pgid);
+            $project = MFUN_PRJ_HCU_AQYCUI;
         }
 
         //功能PG Project
@@ -390,6 +398,7 @@ class classTaskL3aplF2cm
             if (isset($msg["id"])) $pgid = $msg["id"]; else  $pgid = "";
             //具体处理函数
             $resp = $this->func_pg_project_process($pgid);
+            $project = MFUN_PRJ_HCU_AQYCUI;
         }
 
         //功能Project Table
@@ -400,6 +409,7 @@ class classTaskL3aplF2cm
             if (isset($msg["startseq"])) $startseq = $msg["startseq"]; else  $startseq = "";
             //具体处理函数
             $resp = $this->func_project_table_process($length, $startseq);
+            $project = MFUN_PRJ_HCU_AQYCUI;
         }
 
         //功能ProjNew
@@ -418,6 +428,7 @@ class classTaskL3aplF2cm
                 "Address" => $Address, "ProStartTime" => $ProStartTime, "Stage" => $Stage);
             //具体处理函数
             $resp = $this->func_project_new_process($projinfo);
+            $project = MFUN_PRJ_HCU_AQYCUI;
         }
 
         //功能ProjMod
@@ -436,6 +447,7 @@ class classTaskL3aplF2cm
                 "Address" => $Address, "ProStartTime" => $ProStartTime, "Stage" => $Stage);
             //具体处理函数
             $resp = $this->func_project_mod_process($projinfo);
+            $project = MFUN_PRJ_HCU_AQYCUI;
         }
 
 
@@ -447,7 +459,7 @@ class classTaskL3aplF2cm
         if (!empty($resp))
         {
             $log_content = "T:" . json_encode($resp);
-            $loggerObj->logger("L4AQYCUI", "MFUN_TASK_ID_L3APPL_FUM2CM", $log_time, $log_content);
+            $loggerObj->logger($project, "MFUN_TASK_ID_L3APPL_FUM2CM", $log_time, $log_content);
             echo trim($resp); //这里需要编码送出去，跟其他处理方式还不太一样
         }
 

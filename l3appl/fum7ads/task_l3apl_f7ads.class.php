@@ -123,6 +123,7 @@ class classTaskL3aplF7ads
         //定义本入口函数的logger处理对象及函数
         $loggerObj = new classApiL1vmFuncCom();
         $log_time = date("Y-m-d H:i:s", time());
+        $project ="";
 
         //入口消息内容判断
         if (empty($msg) == true) {
@@ -151,6 +152,7 @@ class classTaskL3aplF7ads
             $msginfo = array("id" => $id, "msg" => $msg1, "ifdev" => $ifdev);
             //具体处理函数
             $resp = $this->func_set_user_msg_process($msginfo);
+            $project = MFUN_PRJ_HCU_AQYCUI;
         }
 
         //功能Get User Message
@@ -160,6 +162,7 @@ class classTaskL3aplF7ads
             if (isset($msg["id"])) $id = $msg["id"]; else  $id = "";
             //具体处理函数
             $resp = $this->func_get_user_msg_process($id);
+            $project = MFUN_PRJ_HCU_AQYCUI;
         }
 
         //功能Show User Message
@@ -170,6 +173,7 @@ class classTaskL3aplF7ads
             if (isset($msg["StatCode"])) $StatCode = $msg["StatCode"]; else  $StatCode = "";
             //具体处理函数
             $resp = $this->func_show_user_msg_process($id, $StatCode);
+            $project = MFUN_PRJ_HCU_AQYCUI;
         }
 
         //功能Get User Image
@@ -179,6 +183,7 @@ class classTaskL3aplF7ads
             if (isset($msg["id"])) $id = $msg["id"]; else  $id = "";
             //具体处理函数
             $resp = $this->func_get_user_image_process($id);
+            $project = MFUN_PRJ_HCU_AQYCUI;
         }
 
         //功能Clear User Image
@@ -188,6 +193,7 @@ class classTaskL3aplF7ads
             if (isset($msg["id"])) $id = $msg["id"]; else  $id = "";
             //具体处理函数
             $resp = $this->func_clear_user_image_process($id);
+            $project = MFUN_PRJ_HCU_AQYCUI;
         }
 
         else{
@@ -198,7 +204,7 @@ class classTaskL3aplF7ads
         if (!empty($resp))
         {
             $log_content = "T:" . json_encode($resp);
-            $loggerObj->logger("L4AQYCUI", "MFUN_TASK_ID_L3APPL_FUM7ADS", $log_time, $log_content);
+            $loggerObj->logger($project, "MFUN_TASK_ID_L3APPL_FUM7ADS", $log_time, $log_content);
             echo trim($resp); //这里需要编码送出去，跟其他处理方式还不太一样
         }
 

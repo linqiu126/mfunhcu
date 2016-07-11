@@ -443,6 +443,7 @@ class classTaskL3aplF3dm
         //定义本入口函数的logger处理对象及函数
         $loggerObj = new classApiL1vmFuncCom();
         $log_time = date("Y-m-d H:i:s", time());
+        $project ="";
 
         //入口消息内容判断
         if (empty($msg) == true) {
@@ -468,6 +469,7 @@ class classTaskL3aplF3dm
             if (isset($msg["ProjCode"])) $ProjCode = $msg["ProjCode"]; else  $ProjCode = "";
             //具体处理函数
             $resp = $this->func_project_del_process($ProjCode);
+            $project = MFUN_PRJ_HCU_AQYCUI;
         }
 
         //功能Project Point 查询所有监控点列表
@@ -477,6 +479,7 @@ class classTaskL3aplF3dm
             if (isset($msg["user"])) $user = $msg["user"]; else  $user = "";
             //具体处理函数
             $resp = $this->func_project_point_process($user);
+            $project = MFUN_PRJ_HCU_AQYCUI;
         }
 
         //功能Point project查询该项目下面对应监控点列表
@@ -486,6 +489,7 @@ class classTaskL3aplF3dm
             if (isset($msg["ProjCode"])) $ProjCode = $msg["ProjCode"]; else  $ProjCode = "";
             //具体处理函数
             $resp = $this->func_point_project_process($ProjCode);
+            $project = MFUN_PRJ_HCU_AQYCUI;
         }
 
         //功能Point Table
@@ -496,6 +500,7 @@ class classTaskL3aplF3dm
             if (isset($msg["startseq"])) $startseq = $msg["startseq"]; else  $startseq = "";
             //具体处理函数
             $resp = $this->func_point_table_process($length, $startseq);
+            $project = MFUN_PRJ_HCU_AQYCUI;
         }
 
         //功能Point New
@@ -521,6 +526,7 @@ class classTaskL3aplF3dm
                 "Street" => $Street, "Square" => $Square, "ProStartTime" => $ProStartTime, "Stage" => $Stage);
             //具体处理函数
             $resp = $this->func_point_new_process($siteinfo);
+            $project = MFUN_PRJ_HCU_AQYCUI;
         }
 
         //功能Point Mod
@@ -546,6 +552,7 @@ class classTaskL3aplF3dm
                 "Street" => $Street, "Square" => $Square, "ProStartTime" => $ProStartTime, "Stage" => $Stage);
             //具体处理函数
             $resp = $this->func_point_mod_process($siteinfo);
+            $project = MFUN_PRJ_HCU_AQYCUI;
         }
 
         //功能Point Del
@@ -555,6 +562,7 @@ class classTaskL3aplF3dm
             if (isset($msg["StatCode"])) $StatCode = $msg["StatCode"]; else  $StatCode = "";
             //具体处理函数
             $resp = $this->func_point_del_process($StatCode);
+            $project = MFUN_PRJ_HCU_AQYCUI;
         }
 
         //功能Point Dev
@@ -564,6 +572,7 @@ class classTaskL3aplF3dm
             if (isset($msg["StatCode"])) $StatCode = $msg["StatCode"]; else  $StatCode = "";
             //具体处理函数
             $resp = $this->func_point_dev_process($StatCode);
+            $project = MFUN_PRJ_HCU_AQYCUI;
         }
 
         //功能Dev Table
@@ -574,6 +583,7 @@ class classTaskL3aplF3dm
             if (isset($msg["startseq"])) $startseq = $msg["startseq"]; else  $startseq = "";
             //具体处理函数
             $resp = $this->func_dev_table_process($length, $startseq);
+            $project = MFUN_PRJ_HCU_AQYCUI;
         }
 
         //功能Dev New
@@ -591,6 +601,7 @@ class classTaskL3aplF3dm
                 "EndTime" => $EndTime, "DevStatus" => $DevStatus, "VideoURL" => $VideoURL);
             //具体处理函数
             $resp = $this->func_dev_new_process($devinfo);
+            $project = MFUN_PRJ_HCU_AQYCUI;
         }
 
         //功能Dev Mod
@@ -608,6 +619,7 @@ class classTaskL3aplF3dm
                 "EndTime" => $EndTime, "DevStatus" => $DevStatus, "VideoURL" => $VideoURL);
             //具体处理函数
             $resp = $this->func_dev_mod_process($devinfo);
+            $project = MFUN_PRJ_HCU_AQYCUI;
         }
 
         //功能Dev Del
@@ -617,6 +629,7 @@ class classTaskL3aplF3dm
             if (isset($msg["DevCode"])) $DevCode = $msg["DevCode"]; else  $DevCode = "";
             //具体处理函数
             $resp = $this->func_dev_del_process($DevCode);
+            $project = MFUN_PRJ_HCU_AQYCUI;
         }
 
         //功能Monitor List
@@ -626,6 +639,7 @@ class classTaskL3aplF3dm
             if (isset($msg["id"])) $id = $msg["id"]; else  $id = "";
             //具体处理函数
             $resp = $this->func_monitor_list_process($id);
+            $project = MFUN_PRJ_HCU_AQYCUI;
         }
 
         //功能Alarm Type, 获取所有传感器类型
@@ -635,6 +649,7 @@ class classTaskL3aplF3dm
             if (isset($msg["user"])) $user = $msg["user"]; else  $user = "";
             //具体处理函数
             $resp = $this->func_sensor_type_list_process($user);
+            $project = MFUN_PRJ_HCU_AQYCUI;
         }
 
         //功能Tabel Query
@@ -645,6 +660,7 @@ class classTaskL3aplF3dm
             if (isset($msg["Condition"])) $Condition = $msg["Condition"]; else  $Condition = "";
             //具体处理函数
             $resp = $this->func_table_query_process($TableName, $Condition);
+            $project = MFUN_PRJ_HCU_AQYCUI;
         }
 
         //功能Sensor List
@@ -654,6 +670,7 @@ class classTaskL3aplF3dm
             if (isset($msg["user"])) $user = $msg["user"]; else  $user = "";
             //具体处理函数
             $resp = $this->func_sensor_list_process($user);
+            $project = MFUN_PRJ_HCU_AQYCUI;
         }
 
         //功能Dev Sensor
@@ -663,6 +680,7 @@ class classTaskL3aplF3dm
             if (isset($msg["DevCode"])) $DevCode = $msg["DevCode"]; else  $DevCode = "";
             //具体处理函数
             $resp = $this->func_dev_sensor_process($DevCode);
+            $project = MFUN_PRJ_HCU_AQYCUI;
         }
 
         //功能Sensor update
@@ -676,6 +694,7 @@ class classTaskL3aplF3dm
             $input = array("DevCode" => $DevCode, "SensorCode" => $SensorCode, "status" => $status, "ParaList" => $ParaList);
             //具体处理函数
             $resp = $this->func_sensor_update_process($DevCode, $SensorCode, $status, $ParaList);
+            $project = MFUN_PRJ_HCU_AQYCUI;
         }
 
         //功能GetStaticMonitorTable
@@ -685,6 +704,7 @@ class classTaskL3aplF3dm
             if (isset($msg["id"])) $id = $msg["id"]; else  $id = "";
             //具体处理函数
             $resp = $this->func_get_static_monitor_table_process($id);
+            $project = MFUN_PRJ_HCU_AQYCUI;
         }
 
         else{
@@ -695,7 +715,7 @@ class classTaskL3aplF3dm
         if (!empty($resp))
         {
             $log_content = "T:" . json_encode($resp);
-            $loggerObj->logger("L4AQYCUI", "MFUN_TASK_ID_L3APPL_FUM3DM", $log_time, $log_content);
+            $loggerObj->logger($project, "MFUN_TASK_ID_L3APPL_FUM3DM", $log_time, $log_content);
             echo trim($resp); //这里需要编码送出去，跟其他处理方式还不太一样
         }
 

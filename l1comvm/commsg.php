@@ -72,6 +72,22 @@ define("MSG_ID_L2SDK_JD_INCOMING", $index++);
 define("MSG_ID_L2SDK_APPLE_INCOMING", $index++);
 //L2SDK_NBIOT_IPM376消息部分
 define("MSG_ID_L2SDK_NBIOT_IPM376_INCOMING", $index++);
+define("MSG_ID_L2SDK_NBIOT_IPM376_TO_L2SNR_IPM_AFN_UL_CNFNG", $index++); //终端主动上报消息或者被动反馈消息
+define("MSG_ID_L2SDK_NBIOT_IPM376_TO_L2SNR_IPM_AFN_UL_RESET", $index++); //终端主动上报消息或者被动反馈消息
+define("MSG_ID_L2SDK_NBIOT_IPM376_TO_L2SNR_IPM_AFN_UL_LICK", $index++); //终端主动上报消息或者被动反馈消息
+define("MSG_ID_L2SDK_NBIOT_IPM376_TO_L2SNR_IPM_AFN_UL_RELAY", $index++); //终端主动上报消息或者被动反馈消息
+define("MSG_ID_L2SDK_NBIOT_IPM376_TO_L2SNR_IPM_AFN_UL_SETPAR", $index++); //终端主动上报消息或者被动反馈消息
+define("MSG_ID_L2SDK_NBIOT_IPM376_TO_L2SNR_IPM_AFN_UL_CONTROL", $index++); //终端主动上报消息或者被动反馈消息
+define("MSG_ID_L2SDK_NBIOT_IPM376_TO_L2SNR_IPM_AFN_UL_SECNEG", $index++); //终端主动上报消息或者被动反馈消息
+define("MSG_ID_L2SDK_NBIOT_IPM376_TO_L2SNR_IPM_AFN_UL_REQREP", $index++); //终端主动上报消息或者被动反馈消息
+define("MSG_ID_L2SDK_NBIOT_IPM376_TO_L2SNR_IPM_AFN_UL_REQCFG", $index++); //终端主动上报消息或者被动反馈消息
+define("MSG_ID_L2SDK_NBIOT_IPM376_TO_L2SNR_IPM_AFN_UL_INQPAR", $index++); //终端主动上报消息或者被动反馈消息
+define("MSG_ID_L2SDK_NBIOT_IPM376_TO_L2SNR_IPM_AFN_UL_REQTSK", $index++); //终端主动上报消息或者被动反馈消息
+define("MSG_ID_L2SDK_NBIOT_IPM376_TO_L2SNR_IPM_AFN_UL_REQDATA1", $index++); //终端主动上报消息或者被动反馈消息
+define("MSG_ID_L2SDK_NBIOT_IPM376_TO_L2SNR_IPM_AFN_UL_REQDATA2", $index++); //终端主动上报消息或者被动反馈消息
+define("MSG_ID_L2SDK_NBIOT_IPM376_TO_L2SNR_IPM_AFN_UL_REQDATA3", $index++); //终端主动上报消息或者被动反馈消息
+define("MSG_ID_L2SDK_NBIOT_IPM376_TO_L2SNR_IPM_AFN_UL_FILETRNS", $index++); //终端主动上报消息或者被动反馈消息
+define("MSG_ID_L2SDK_NBIOT_IPM376_TO_L2SNR_IPM_AFN_UL_DATAFWD", $index++); //终端主动上报消息或者被动反馈消息
 //L2SDK_NBIOT_IGM消息部分
 define("MSG_ID_L2SDK_NBIOT_IGM_INCOMING", $index++);
 //L2SDK_NBIOT_LTEV消息部分
@@ -145,6 +161,9 @@ define("MSG_ID_L4EMCWXUI_CLICK_INCOMING", $index++);
 define("MSG_ID_L4TBSWR_CLICK_INCOMING", $index++);
 //L4NBIOTIPMUI部分
 define("MSG_ID_L4NBIOTIPM_CLICK_INCOMING", $index++);
+define("MSG_ID_L4NBIOTIPM_TO_NBIOT_IPM376_DL_REQUEST", $index++);
+define("MSG_ID_L4NBIOTIPM_TO_L3F1_LOGIN", $index++);
+
 //L5BI部分
 define("MSG_ID_L4BI_CLICK_INCOMING", $index++);
 define("MSG_ID_MFUN_MAX", $index++);
@@ -160,7 +179,7 @@ define("MFUN_L2_FRAME_FORMAT_PREFIX_APPLE", "$<"); //APPLE数据格式
 define("MFUN_L2_FRAME_FORMAT_PREFIX_JD", "#$"); //JD数据格式
 
 /**************************************************************************************
- *                             IHU公共消息全局量定义                                   *
+ *                             IHU公共消息全局量定义                                  *
  *************************************************************************************/
 //L2处理消息的定义，用于处理微信头。由于微信后台服务器已经完成了这个消息体的处理，因而暂时没用，保留
 define("MFUN_IHU_MSG_HEAD_FORMAT", "A2MagicCode/A2Version/A4Length/A4CmdId/A2Seq/A2ErrCode");
@@ -255,5 +274,30 @@ define("MFUN_HCU_OPT_VEDIOLINK_REQ", 0x01);  //读取下位机存放的视频文
 define("MFUN_HCU_OPT_VEDIOLINK_RESP", 0x81); //返回下位机存放的视频文件link
 define("MFUN_HCU_OPT_VEDIOFILE_REQ", 0x02);   //命令下位机上传选中的视频文件
 define("MFUN_HCU_OPT_VEDIOFILE_RESP", 0x82);  //视频文件传输完成响应
+
+
+/**************************************************************************************
+ *                            NBIOT IPM376消息定义                                    *
+ *************************************************************************************/
+//AFN消息字段
+define("MFUN_NBIOT_IPM376_AFN_CMDID_CNFNG", 0x00);
+define("MFUN_NBIOT_IPM376_AFN_CMDID_RESET", 0x01);
+define("MFUN_NBIOT_IPM376_AFN_CMDID_LICK", 0x02);  //Link Interface Check
+define("MFUN_NBIOT_IPM376_AFN_CMDID_RELAY", 0x03);
+define("MFUN_NBIOT_IPM376_AFN_CMDID_SETPAR", 0x04);
+define("MFUN_NBIOT_IPM376_AFN_CMDID_CONTROL", 0x05);
+define("MFUN_NBIOT_IPM376_AFN_CMDID_SECNEG", 0x06);
+define("MFUN_NBIOT_IPM376_AFN_CMDID_REQREP", 0x08);
+define("MFUN_NBIOT_IPM376_AFN_CMDID_REQCFG", 0x09);
+define("MFUN_NBIOT_IPM376_AFN_CMDID_INQPAR", 0x0A);
+define("MFUN_NBIOT_IPM376_AFN_CMDID_REQTSK", 0x0B);
+define("MFUN_NBIOT_IPM376_AFN_CMDID_REQDATA1", 0x0C);
+define("MFUN_NBIOT_IPM376_AFN_CMDID_REQDATA2", 0x0D);
+define("MFUN_NBIOT_IPM376_AFN_CMDID_REQDATA3", 0x0E);
+define("MFUN_NBIOT_IPM376_AFN_CMDID_FILETRNS", 0x0F);
+define("MFUN_NBIOT_IPM376_AFN_CMDID_DATAFWD", 0x10);
+
+
+
 
 ?>

@@ -56,6 +56,7 @@ define("MFUN_PRJ_HCU_XML", "MFUN_PRJ_HCU_XML");
 define("MFUN_PRJ_HCU_ZHB", "MFUN_PRJ_HCU_ZHB");
 define("MFUN_PRJ_HCU_APPLE", "MFUN_PRJ_HCU_APPLE");
 define("MFUN_PRJ_HCU_JD", "MFUN_PRJ_HCU_JD");
+define("MFUN_PRJ_HCU_AQYCUI", "MFUN_PRJ_HCU_AQYCUI");
 define("MFUN_PRJ_NB_IOT_IPM376", "MFUN_PRJ_NB_IOT_IPM376");
 
 //不同的方式来确定本机运行环境，还是服务器运行环境，本来想获取Localhost来进行判断，但没成功
