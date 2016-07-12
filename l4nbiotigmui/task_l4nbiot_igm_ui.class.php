@@ -1,13 +1,13 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: MAMA
- * Date: 2016/7/11
- * Time: 20:11
+ * User: jianlinz
+ * Date: 2016/7/12
+ * Time: 14:49
  */
 include_once "../l1comvm/vmlayer.php";
 
-class classTaskL2sdkNbiotIwm
+class classTaskL4nbiotIgmUi
 {
     //构造函数
     public function __construct()
@@ -18,11 +18,11 @@ class classTaskL2sdkNbiotIwm
     /**************************************************************************************
      *                             任务入口函数                                           *
      *************************************************************************************/
-    public function mfun_l2sdk_nbiot_iwm_task_main_entry($parObj, $msgId, $msgName, $msg)
+    public function mfun_l4nbiot_igm_ui_task_main_entry($parObj, $msgId, $msgName, $msg)
     {
 
     }
 
-}
+}//End of class_task_service
 
 ?>

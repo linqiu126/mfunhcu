@@ -19,8 +19,7 @@ define("MFUN_TASK_ID_L2SDK_IOT_WX", $taskIndex++);
 define("MFUN_TASK_ID_L2SDK_IOT_WX_JSSDK", $taskIndex++);
 define("MFUN_TASK_ID_L2SDK_IOT_HCU", $taskIndex++);
 define("MFUN_TASK_ID_L2SDK_NBIOT_IPM376", $taskIndex++);  //基于376的电表
-define("MFUN_TASK_ID_L2SDK_NBIOT_IGM", $taskIndex++);     //煤气表
-define("MFUN_TASK_ID_L2SDK_NBIOT_IWM", $taskIndex++);     //水表
+define("MFUN_TASK_ID_L2SDK_NBIOT_STD_CJ188", $taskIndex++);//煤气水等表
 define("MFUN_TASK_ID_L2SDK_NBIOT_LTEV", $taskIndex++);    //车联网
 define("MFUN_TASK_ID_L2SDK_NBIOT_AGC", $taskIndex++);     //农业用途
 define("MFUN_TASK_ID_L2SENSOR_EMC", $taskIndex++);
@@ -57,6 +56,8 @@ define("MFUN_TASK_ID_L4AQYC_UI", $taskIndex++);
 define("MFUN_TASK_ID_L4EMCWX_UI", $taskIndex++);
 define("MFUN_TASK_ID_L4TBSWR_UI", $taskIndex++);
 define("MFUN_TASK_ID_L4NBIOT_IPM_UI", $taskIndex++);
+define("MFUN_TASK_ID_L4NBIOT_IGM_UI", $taskIndex++);
+define("MFUN_TASK_ID_L4NBIOT_IWM_UI", $taskIndex++);
 define("MFUN_TASK_ID_L4OAMTOOLS", $taskIndex++);
 define("MFUN_TASK_ID_L5BI", $taskIndex++);
 define("MFUN_TASK_ID_MAX", $taskIndex++);
@@ -83,8 +84,7 @@ class classConstL1vmSysTaskList
         MFUN_TASK_ID_L2SDK_IOT_WX_JSSDK => array("NAME" => "MFUN_TASK_L2SDK_IOT_WX_JSSDK", "PRESENT" => true),
         MFUN_TASK_ID_L2SDK_IOT_HCU => array("NAME" => "MFUN_TASK_L2SDK_IOT_HCU", "PRESENT" => true),
         MFUN_TASK_ID_L2SDK_NBIOT_IPM376 => array("NAME" => "MFUN_TASK_ID_L2SDK_NBIOT_IPM376", "PRESENT" => true),
-        MFUN_TASK_ID_L2SDK_NBIOT_IGM => array("NAME" => "MFUN_TASK_ID_L2SDK_NBIOT_IGM", "PRESENT" => true),
-        MFUN_TASK_ID_L2SDK_NBIOT_IWM => array("NAME" => "MFUN_TASK_ID_L2SDK_NBIOT_IWM", "PRESENT" => true),
+        MFUN_TASK_ID_L2SDK_NBIOT_STD_CJ188 => array("NAME" => "MFUN_TASK_ID_L2SDK_NBIOT_STD_CJ188", "PRESENT" => true),
         MFUN_TASK_ID_L2SDK_NBIOT_LTEV => array("NAME" => "MFUN_TASK_ID_L2SDK_NBIOT_LTEV", "PRESENT" => true),
         MFUN_TASK_ID_L2SDK_NBIOT_AGC => array("NAME" => "MFUN_TASK_ID_L2SDK_NBIOT_AGC", "PRESENT" => true),
         MFUN_TASK_ID_L2SENSOR_EMC => array("NAME" => "MFUN_TASK_L2SENSOR_EMC", "PRESENT" => true),
@@ -119,6 +119,8 @@ class classConstL1vmSysTaskList
         MFUN_TASK_ID_L4EMCWX_UI => array("NAME" => "MFUN_TASK_L4EMCWX_UI", "PRESENT" => true),
         MFUN_TASK_ID_L4TBSWR_UI => array("NAME" => "MFUN_TASK_L4TBSWR_UI", "PRESENT" => true),
         MFUN_TASK_ID_L4NBIOT_IPM_UI => array("NAME" => "MFUN_TASK_ID_L4NBIOT_IPM_UI", "PRESENT" => true),
+        MFUN_TASK_ID_L4NBIOT_IGM_UI => array("NAME" => "MFUN_TASK_ID_L4NBIOT_IGM_UI", "PRESENT" => true),
+        MFUN_TASK_ID_L4NBIOT_IWM_UI => array("NAME" => "MFUN_TASK_ID_L4NBIOT_IWM_UI", "PRESENT" => true),
         MFUN_TASK_ID_L4OAMTOOLS => array("NAME" => "MFUN_TASK_L4OAMTOOLS", "PRESENT" => true),
         MFUN_TASK_ID_L5BI => array("NAME" => "MFUN_TASK_L5BI", "PRESENT" => true),
         MFUN_TASK_ID_MAX => array("NAME" => "MFUN_TASK_MAX", "PRESENT" => true),
@@ -140,8 +142,7 @@ class classConstL1vmSysTaskList
             $mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_IOT_WX_JSSDK]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_IOT_HCU]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_NBIOT_IPM376]["PRESENT"] = false;
-            $mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_NBIOT_IGM]["PRESENT"] = false;
-            $mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_NBIOT_IWM]["PRESENT"] = false;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_NBIOT_STD_CJ188]["PRESENT"] = false;
             $mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_NBIOT_LTEV]["PRESENT"] = false;
             $mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_NBIOT_AGC]["PRESENT"] = false;
             $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_EMC]["PRESENT"] = true;
@@ -176,6 +177,8 @@ class classConstL1vmSysTaskList
             $mfunTaskArrayConst[MFUN_TASK_ID_L4EMCWX_UI]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L4TBSWR_UI]["PRESENT"] = false;
             $mfunTaskArrayConst[MFUN_TASK_ID_L4NBIOT_IPM_UI]["PRESENT"] = false;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L4NBIOT_IGM_UI]["PRESENT"] = false;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L4NBIOT_IWM_UI]["PRESENT"] = false;
             $mfunTaskArrayConst[MFUN_TASK_ID_L4OAMTOOLS]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L5BI]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_MAX]["PRESENT"] = false;
@@ -192,8 +195,7 @@ class classConstL1vmSysTaskList
             $mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_IOT_WX_JSSDK]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_IOT_HCU]["PRESENT"] = false;
             $mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_NBIOT_IPM376]["PRESENT"] = false;
-            $mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_NBIOT_IGM]["PRESENT"] = false;
-            $mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_NBIOT_IWM]["PRESENT"] = false;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_NBIOT_STD_CJ188]["PRESENT"] = false;
             $mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_NBIOT_LTEV]["PRESENT"] = false;
             $mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_NBIOT_AGC]["PRESENT"] = false;
             $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_EMC]["PRESENT"] = true;
@@ -228,6 +230,8 @@ class classConstL1vmSysTaskList
             $mfunTaskArrayConst[MFUN_TASK_ID_L4EMCWX_UI]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L4TBSWR_UI]["PRESENT"] = false;
             $mfunTaskArrayConst[MFUN_TASK_ID_L4NBIOT_IPM_UI]["PRESENT"] = false;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L4NBIOT_IGM_UI]["PRESENT"] = false;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L4NBIOT_IWM_UI]["PRESENT"] = false;
             $mfunTaskArrayConst[MFUN_TASK_ID_L4OAMTOOLS]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L5BI]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_MAX]["PRESENT"] = false;
@@ -244,8 +248,7 @@ class classConstL1vmSysTaskList
             $mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_IOT_WX_JSSDK]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_IOT_HCU]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_NBIOT_IPM376]["PRESENT"] = false;
-            $mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_NBIOT_IGM]["PRESENT"] = false;
-            $mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_NBIOT_IWM]["PRESENT"] = false;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_NBIOT_STD_CJ188]["PRESENT"] = false;
             $mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_NBIOT_LTEV]["PRESENT"] = false;
             $mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_NBIOT_AGC]["PRESENT"] = false;
             $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_EMC]["PRESENT"] = true;
@@ -280,6 +283,8 @@ class classConstL1vmSysTaskList
             $mfunTaskArrayConst[MFUN_TASK_ID_L4EMCWX_UI]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L4TBSWR_UI]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L4NBIOT_IPM_UI]["PRESENT"] = false;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L4NBIOT_IGM_UI]["PRESENT"] = false;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L4NBIOT_IWM_UI]["PRESENT"] = false;
             $mfunTaskArrayConst[MFUN_TASK_ID_L4OAMTOOLS]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L5BI]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_MAX]["PRESENT"] = false;
@@ -296,8 +301,7 @@ class classConstL1vmSysTaskList
             $mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_IOT_WX_JSSDK]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_IOT_HCU]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_NBIOT_IPM376]["PRESENT"] = true;
-            $mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_NBIOT_IGM]["PRESENT"] = false;
-            $mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_NBIOT_IWM]["PRESENT"] = false;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_NBIOT_STD_CJ188]["PRESENT"] = false;
             $mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_NBIOT_LTEV]["PRESENT"] = false;
             $mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_NBIOT_AGC]["PRESENT"] = false;
             $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_EMC]["PRESENT"] = true;
@@ -332,6 +336,8 @@ class classConstL1vmSysTaskList
             $mfunTaskArrayConst[MFUN_TASK_ID_L4EMCWX_UI]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L4TBSWR_UI]["PRESENT"] = false;
             $mfunTaskArrayConst[MFUN_TASK_ID_L4NBIOT_IPM_UI]["PRESENT"] = true;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L4NBIOT_IGM_UI]["PRESENT"] = false;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L4NBIOT_IWM_UI]["PRESENT"] = false;
             $mfunTaskArrayConst[MFUN_TASK_ID_L4OAMTOOLS]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L5BI]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_MAX]["PRESENT"] = false;
@@ -350,8 +356,7 @@ class classConstL1vmSysTaskList
             $mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_IOT_WX_JSSDK]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_IOT_HCU]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_NBIOT_IPM376]["PRESENT"] = true;
-            $mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_NBIOT_IGM]["PRESENT"] = false;
-            $mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_NBIOT_IWM]["PRESENT"] = false;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_NBIOT_STD_CJ188]["PRESENT"] = false;
             $mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_NBIOT_LTEV]["PRESENT"] = false;
             $mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_NBIOT_AGC]["PRESENT"] = false;
             $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_EMC]["PRESENT"] = true;
@@ -386,6 +391,8 @@ class classConstL1vmSysTaskList
             $mfunTaskArrayConst[MFUN_TASK_ID_L4EMCWX_UI]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L4TBSWR_UI]["PRESENT"] = false;
             $mfunTaskArrayConst[MFUN_TASK_ID_L4NBIOT_IPM_UI]["PRESENT"] = false;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L4NBIOT_IGM_UI]["PRESENT"] = false;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L4NBIOT_IWM_UI]["PRESENT"] = false;
             $mfunTaskArrayConst[MFUN_TASK_ID_L4OAMTOOLS]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L5BI]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_MAX]["PRESENT"] = false;

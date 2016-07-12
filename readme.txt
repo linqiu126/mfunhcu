@@ -190,6 +190,8 @@ Make By：ZJL
 
 //= ZJL, 2016 July.11, CURRENT_SW_DELIVERY R02.D26
 > 构建IPM376的解码功能
+> 构建CJ188规范的对应程序框架，以支持水表、煤气表、电表等内容
+
 
 
 

@@ -18,7 +18,7 @@ class classTaskL4nbiotIpmUi
     /**************************************************************************************
      *                             任务入口函数                                           *
      *************************************************************************************/
-    public function mfun_l4nbiot_im_ui_task_main_entry($parObj, $msgId, $msgName, $msg)
+    public function mfun_l4nbiot_ipm_ui_task_main_entry($parObj, $msgId, $msgName, $msg)
     {
         //定义本入口函数的logger处理对象及函数
         $loggerObj = new classApiL1vmFuncCom();
@@ -28,7 +28,7 @@ class classTaskL4nbiotIpmUi
         if (empty($msg) == true) {
             $result = "Received null message body";
             $log_content = "R:" . json_encode($result);
-            $loggerObj->logger("MFUN_TASK_ID_L4NBIOT_IPM_UI", "mfun_l4nbiot_im_ui_task_main_entry", $log_time, $log_content);
+            $loggerObj->logger("MFUN_TASK_ID_L4NBIOT_IPM_UI", "mfun_l4nbiot_ipm_ui_task_main_entry", $log_time, $log_content);
             echo trim($result);
             return false;
         }
@@ -36,7 +36,7 @@ class classTaskL4nbiotIpmUi
         if (($msgId <= MSG_ID_MFUN_MIN) || ($msgId >= MSG_ID_MFUN_MAX)){
             $result = "Msgid or MsgName error";
             $log_content = "P:" . json_encode($result);
-            $loggerObj->logger("MFUN_TASK_ID_L4NBIOT_IPM_UI", "mfun_l4nbiot_im_ui_task_main_entry", $log_time, $log_content);
+            $loggerObj->logger("MFUN_TASK_ID_L4NBIOT_IPM_UI", "mfun_l4nbiot_ipm_ui_task_main_entry", $log_time, $log_content);
             echo trim($result);
             return false;
         }
