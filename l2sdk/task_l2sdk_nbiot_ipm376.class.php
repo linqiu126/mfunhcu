@@ -43,7 +43,7 @@ class classTaskL2sdkNbiotIpm376
         $msgAddrA1 = hexdec($temp['AddrA1']) & 0xFFFF; //地址A1
         $msgAddrA2 = hexdec($temp['AddrA2']) & 0xFFFF; //地址A2
         $msgAddrA3 = hexdec($temp['AddrA3']) & 0xFF; //地址A3
-        if (($msgCtrl & 0x80) != 1) return ""; //DL DIR = 1，表示上行链路
+        if (((($msgCtrl & 0x80) >> 7) & 1) != 1) return ""; //DL DIR = 1，表示上行链路
         $framePRM = (($msgCtrl & 0x40) >> 6) & 1; //PRM表示为启动标识位
         $frameACD = (($msgCtrl & 0x20) >> 5) & 1; //ACD表示为上行要求访问位
         $frameFUNC = $msgCtrl & 0x0F; //D3-D0功能码字
@@ -152,7 +152,7 @@ class classTaskL2sdkNbiotIpm376
             echo trim($result);
             return false;
         }
-        //多条消息发送到L2SNR_IPM，这里潜在的消息太多，没法一个一个的判断，故而只检查上下界
+        //多条消息发送到IPM376，这里潜在的消息太多，没法一个一个的判断，故而只检查上下界
         if (($msgId <= MSG_ID_MFUN_MIN) || ($msgId >= MSG_ID_MFUN_MAX)){
             $result = "Msgid or MsgName error";
             $log_content = "P:" . json_encode($result);

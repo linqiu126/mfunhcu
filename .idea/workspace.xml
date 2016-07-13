@@ -2,9 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d2aa40e9-e569-42c7-88ab-3d7c06bf7aa1" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/l3appl/fum1sym/dbi_l3apl_f1sym.class.php" afterPath="$PROJECT_DIR$/l3appl/fum1sym/dbi_l3apl_f1sym.class.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/l4oamtools/DbTest.php" afterPath="$PROJECT_DIR$/l4oamtools/DbTest.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/readme.txt" afterPath="$PROJECT_DIR$/readme.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/l1comvm/commsg.php" afterPath="$PROJECT_DIR$/l1comvm/commsg.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/l2sdk/dbi_l2sdk_nbiot.class.php" afterPath="$PROJECT_DIR$/l2sdk/dbi_l2sdk_nbiot.class.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/l2sdk/task_l2sdk_nbiot_ipm376.class.php" afterPath="$PROJECT_DIR$/l2sdk/task_l2sdk_nbiot_ipm376.class.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/l2sdk/task_l2sdk_nbiot_std_cj188.class.php" afterPath="$PROJECT_DIR$/l2sdk/task_l2sdk_nbiot_std_cj188.class.php" />
     </list>
     <ignored path="mfunhcu.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -32,98 +34,45 @@
     <favorites_list name="mfunhcu" />
   </component>
   <component name="FileEditorManager">
-    <leaf>
-      <file leaf-file-name="DbTest.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/l4oamtools/DbTest.php">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file leaf-file-name="commsg.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/l1comvm/commsg.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-4.785714">
-              <caret line="319" column="0" selection-start-line="319" selection-start-column="0" selection-end-line="319" selection-end-column="0" />
+            <state vertical-scroll-proportion="-7.464286">
+              <caret line="328" column="0" selection-start-line="328" selection-start-column="0" selection-end-line="334" selection-end-column="53" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="task_l2sdk_nbiot_std_cj188.class.php" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/l2sdk/task_l2sdk_nbiot_std_cj188.class.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.7096774">
+              <caret line="100" column="0" selection-start-line="100" selection-start-column="0" selection-end-line="100" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="dbi_l2sdk_nbiot.class.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/l2sdk/dbi_l2sdk_nbiot.class.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-6.107143">
+              <caret line="149" column="63" selection-start-line="149" selection-start-column="50" selection-end-line="149" selection-end-column="63" />
               <folding>
-                <marker date="1468380570003" expanded="true" signature="15356:15491" placeholder="UPDATE `t_l1... " />
+                <marker date="1468399579470" expanded="true" signature="1611:1690" placeholder="SELECT * FRO... t_l2sdk_nbiot_ipm376_context" />
+                <marker date="1468399579470" expanded="true" signature="1807:1956" placeholder="UPDATE `t_l2... " />
+                <marker date="1468399579470" expanded="true" signature="2040:2182" placeholder="INSERT INTO `t_l2sdk_nbiot_ipm376_context`... " />
+                <marker date="1468399579470" expanded="true" signature="2628:2707" placeholder="SELECT * FRO... t_l2sdk_nbiot_ipm376_context" />
+                <marker date="1468399579470" expanded="true" signature="3424:3508" placeholder="SELECT * FRO... t_l2sdk_nbiot_ipm376_context" />
+                <marker date="1468399579470" expanded="true" signature="3625:3779" placeholder="UPDATE `t_l2... " />
+                <marker date="1468399579470" expanded="true" signature="3863:4010" placeholder="INSERT INTO `t_l2sdk_nbiot_ipm376_context`... " />
+                <marker date="1468399579470" expanded="true" signature="4461:4547" placeholder="SELECT * FRO... t_l2sdk_nbiot_ipm376_context" />
+                <marker date="1468399579470" expanded="true" signature="5142:5226" placeholder="SELECT * FRO... t_l2sdk_nbiot_std_cj188_context" />
+                <marker date="1468399579470" expanded="true" signature="5441:5571" placeholder="UPDATE `t_l2... " />
+                <marker date="1468399579470" expanded="true" signature="5655:5769" placeholder="INSERT INTO `t_l2sdk_nbiot_std_cj188_context`... " />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="request.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/l4aqycui/request.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-4.071429">
-              <caret line="9" column="0" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="h5ui_entry_aqyc.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/l1mainentry/h5ui_entry_aqyc.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-3.5">
-              <caret line="14" column="0" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="vmlayer.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/l1comvm/vmlayer.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-6.142857">
-              <caret line="796" column="0" selection-start-line="796" selection-start-column="0" selection-end-line="796" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="task_l3apl_f1sym.class.php" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/l3appl/fum1sym/task_l3apl_f1sym.class.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.582343">
-              <caret line="304" column="0" selection-start-line="304" selection-start-column="0" selection-end-line="304" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="dbi_l3apl_f1sym.class.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/l3appl/fum1sym/dbi_l3apl_f1sym.class.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-6.892857">
-              <caret line="636" column="0" selection-start-line="636" selection-start-column="0" selection-end-line="636" selection-end-column="0" />
-              <folding>
-                <marker date="1468380886708" expanded="true" signature="7587:7641" placeholder="SELECT * FRO... t_l3f1sym_session" />
-                <marker date="1468380886708" expanded="true" signature="7716:7825" placeholder="UPDATE `t_l3... " />
-                <marker date="1468380886708" expanded="true" signature="7960:8064" placeholder="INSERT INTO `t_l3f1sym_session`... " />
-                <marker date="1468380886708" expanded="true" signature="8611:8677" placeholder="SELECT * FRO... t_l3f1sym_session" />
-                <marker date="1468380886708" expanded="true" signature="9638:9694" placeholder="SELECT * FRO... t_l3f1sym_account" />
-                <marker date="1468380886708" expanded="true" signature="11481:11547" placeholder="SELECT * FRO... t_l3f1sym_session" />
-                <marker date="1468380886708" expanded="true" signature="11927:11981" placeholder="SELECT * FRO... t_l3f1sym_account" />
-                <marker date="1468380886708" expanded="true" signature="13039:13080" placeholder="SELECT * FRO... t_l3f1sym_account" />
-                <marker date="1468380886708" expanded="true" signature="13655:13707" placeholder="SELECT * FRO... t_l3f1sym_account" />
-                <marker date="1468380886708" expanded="true" signature="15583:15639" placeholder="SELECT * FRO... t_l3f1sym_account" />
-                <marker date="1468380886708" expanded="true" signature="15769:16011" placeholder="UPDATE `t_l3... " />
-                <marker date="1468380886708" expanded="true" signature="16132:16359" placeholder="INSERT INTO `t_l3f1sym_account`... " />
-                <marker date="1468380886708" expanded="true" signature="16446:16499" placeholder="DELETE FROM " />
-                <marker date="1468380886708" expanded="true" signature="16749:16826" placeholder="INSERT INTO `t_l3f1sym_authlist`... " />
-                <marker date="1468380886708" expanded="true" signature="18075:18315" placeholder="UPDATE `t_l3... " />
-                <marker date="1468380886708" expanded="true" signature="18427:18652" placeholder="UPDATE `t_l3... " />
-                <marker date="1468380886708" expanded="true" signature="18739:18792" placeholder="DELETE FROM " />
-                <marker date="1468380886708" expanded="true" signature="19042:19119" placeholder="INSERT INTO `t_l3f1sym_authlist`... " />
-                <marker date="1468380886708" expanded="true" signature="19624:19676" placeholder="DELETE FROM " />
-                <marker date="1468380886708" expanded="true" signature="19760:19813" placeholder="DELETE FROM " />
-                <marker date="1468380886708" expanded="true" signature="20354:20397" placeholder="SELECT * FRO... t_l3f1sym_hcu_swver" />
-                <marker date="1468380886708" expanded="true" signature="21681:21745" placeholder="SELECT * FRO... t_l3f1sym_hcu_swver" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="task_l4aqyc_ui.class.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/l4aqycui/task_l4aqyc_ui.class.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-10.214286">
-              <caret line="1215" column="0" selection-start-line="1215" selection-start-column="0" selection-end-line="1215" selection-end-column="0" />
-              <folding />
             </state>
           </provider>
         </entry>
@@ -163,12 +112,9 @@
         <option value="$PROJECT_DIR$/l3appl/fum9gism/task_l3apl_f9gism.class.php" />
         <option value="$PROJECT_DIR$/l3appl/fumxprcm/task_l3apl_fxprcm.class.php" />
         <option value="$PROJECT_DIR$/l2sensorproc/sensoripm/task_l2snr_ipm.class.php" />
-        <option value="$PROJECT_DIR$/l2sdk/dbi_l2sdk_nbiot.class.php" />
         <option value="$PROJECT_DIR$/l2sdk/task_l2sdk_nbiot_iwm.class.php" />
         <option value="$PROJECT_DIR$/l1mainentry/cloud_callback_nbiot_iwm.php" />
         <option value="$PROJECT_DIR$/l2sdk/task_l2sdk_iot_hcu.class.php" />
-        <option value="$PROJECT_DIR$/l2sdk/task_l2sdk_nbiot_ipm376.class.php" />
-        <option value="$PROJECT_DIR$/l2sdk/task_l2sdk_nbiot_std_cj188.class.php" />
         <option value="$PROJECT_DIR$/l1comvm/pg_nbiot_ipm_engpar.php" />
         <option value="$PROJECT_DIR$/l1comvm/pg_nbiot_iwm_engpar.php" />
         <option value="$PROJECT_DIR$/l1comvm/pg_nbiot_igm_engpar.php" />
@@ -181,12 +127,15 @@
         <option value="$PROJECT_DIR$/l1mainentry/h5ui_entry_nbiot_igm.php" />
         <option value="$PROJECT_DIR$/l1comvm/vmlayer.php" />
         <option value="$PROJECT_DIR$/l1comvm/sysversion.php" />
-        <option value="$PROJECT_DIR$/l1comvm/commsg.php" />
         <option value="$PROJECT_DIR$/l4aqycui/task_l4aqyc_ui.class.php" />
         <option value="$PROJECT_DIR$/l3appl/fum1sym/task_l3apl_f1sym.class.php" />
         <option value="$PROJECT_DIR$/readme.txt" />
         <option value="$PROJECT_DIR$/l4oamtools/DbTest.php" />
         <option value="$PROJECT_DIR$/l3appl/fum1sym/dbi_l3apl_f1sym.class.php" />
+        <option value="$PROJECT_DIR$/l1comvm/commsg.php" />
+        <option value="$PROJECT_DIR$/l2sdk/task_l2sdk_nbiot_ipm376.class.php" />
+        <option value="$PROJECT_DIR$/l2sdk/dbi_l2sdk_nbiot.class.php" />
+        <option value="$PROJECT_DIR$/l2sdk/task_l2sdk_nbiot_std_cj188.class.php" />
       </list>
     </option>
   </component>
@@ -268,7 +217,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="l4oamtools" />
+              <option name="myItemId" value="l2sdk" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -364,12 +313,12 @@
     <frame x="-8" y="-8" width="1382" height="754" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.20058565" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2137628" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.5813953" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4356589" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
@@ -399,11 +348,6 @@
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
-        <line-breakpoint enabled="true" type="php">
-          <url>file://$PROJECT_DIR$/l4oamtools/DbTest.php</url>
-          <line>319</line>
-          <option name="timeStamp" value="56" />
-        </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
           <url>file://$PROJECT_DIR$/l3appl/fum1sym/dbi_l3apl_f1sym.class.php</url>
           <line>594</line>
@@ -510,13 +454,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/l2sdk/dbi_l2sdk_nbiot.class.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.7741935">
-          <caret line="31" column="0" selection-start-line="31" selection-start-column="0" selection-end-line="31" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/l1mainentry/cloud_callback_nbiot_ipm376.php">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-4.75">
@@ -545,13 +482,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/l2sdk/task_l2sdk_nbiot_ipm376.class.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.41935483">
-          <caret line="54" column="48" selection-start-line="54" selection-start-column="48" selection-end-line="54" selection-end-column="48" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/l2sdk/task_l2sdk_iot_hcu.class.php">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.032258064">
@@ -570,13 +500,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.2580645">
           <caret line="13" column="2" selection-start-line="13" selection-start-column="2" selection-end-line="13" selection-end-column="2" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/l2sdk/task_l2sdk_nbiot_std_cj188.class.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="1.1198738">
-          <caret line="20" column="62" selection-start-line="20" selection-start-column="62" selection-end-line="20" selection-end-column="62" />
         </state>
       </provider>
     </entry>
@@ -727,90 +650,41 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/l1comvm/commsg.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.3327674">
-          <caret line="119" column="56" selection-start-line="119" selection-start-column="56" selection-end-line="119" selection-end-column="56" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/readme.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.547812">
-          <caret line="196" column="16" selection-start-line="196" selection-start-column="16" selection-end-line="196" selection-end-column="16" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/l4aqycui/request.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-4.071429">
-          <caret line="9" column="0" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/l1mainentry/h5ui_entry_aqyc.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-3.5">
-          <caret line="14" column="0" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/l4aqycui/task_l4aqyc_ui.class.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-10.214286">
+        <state vertical-scroll-proportion="0.0">
           <caret line="1215" column="0" selection-start-line="1215" selection-start-column="0" selection-end-line="1215" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/l1comvm/vmlayer.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-6.142857">
-          <caret line="796" column="0" selection-start-line="796" selection-start-column="0" selection-end-line="796" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/l4oamtools/DbTest.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-4.785714">
-          <caret line="319" column="0" selection-start-line="319" selection-start-column="0" selection-end-line="319" selection-end-column="0" />
-          <folding>
-            <marker date="1468380570003" expanded="true" signature="15356:15491" placeholder="UPDATE `t_l1... " />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/l3appl/fum1sym/dbi_l3apl_f1sym.class.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-6.892857">
+        <state vertical-scroll-proportion="0.0">
           <caret line="636" column="0" selection-start-line="636" selection-start-column="0" selection-end-line="636" selection-end-column="0" />
           <folding>
-            <marker date="1468380886708" expanded="true" signature="7587:7641" placeholder="SELECT * FRO... t_l3f1sym_session" />
-            <marker date="1468380886708" expanded="true" signature="7716:7825" placeholder="UPDATE `t_l3... " />
-            <marker date="1468380886708" expanded="true" signature="7960:8064" placeholder="INSERT INTO `t_l3f1sym_session`... " />
-            <marker date="1468380886708" expanded="true" signature="8611:8677" placeholder="SELECT * FRO... t_l3f1sym_session" />
-            <marker date="1468380886708" expanded="true" signature="9638:9694" placeholder="SELECT * FRO... t_l3f1sym_account" />
-            <marker date="1468380886708" expanded="true" signature="11481:11547" placeholder="SELECT * FRO... t_l3f1sym_session" />
-            <marker date="1468380886708" expanded="true" signature="11927:11981" placeholder="SELECT * FRO... t_l3f1sym_account" />
-            <marker date="1468380886708" expanded="true" signature="13039:13080" placeholder="SELECT * FRO... t_l3f1sym_account" />
-            <marker date="1468380886708" expanded="true" signature="13655:13707" placeholder="SELECT * FRO... t_l3f1sym_account" />
-            <marker date="1468380886708" expanded="true" signature="15583:15639" placeholder="SELECT * FRO... t_l3f1sym_account" />
-            <marker date="1468380886708" expanded="true" signature="15769:16011" placeholder="UPDATE `t_l3... " />
-            <marker date="1468380886708" expanded="true" signature="16132:16359" placeholder="INSERT INTO `t_l3f1sym_account`... " />
-            <marker date="1468380886708" expanded="true" signature="16446:16499" placeholder="DELETE FROM " />
-            <marker date="1468380886708" expanded="true" signature="16749:16826" placeholder="INSERT INTO `t_l3f1sym_authlist`... " />
-            <marker date="1468380886708" expanded="true" signature="18075:18315" placeholder="UPDATE `t_l3... " />
-            <marker date="1468380886708" expanded="true" signature="18427:18652" placeholder="UPDATE `t_l3... " />
-            <marker date="1468380886708" expanded="true" signature="18739:18792" placeholder="DELETE FROM " />
-            <marker date="1468380886708" expanded="true" signature="19042:19119" placeholder="INSERT INTO `t_l3f1sym_authlist`... " />
-            <marker date="1468380886708" expanded="true" signature="19624:19676" placeholder="DELETE FROM " />
-            <marker date="1468380886708" expanded="true" signature="19760:19813" placeholder="DELETE FROM " />
-            <marker date="1468380886708" expanded="true" signature="20354:20397" placeholder="SELECT * FRO... t_l3f1sym_hcu_swver" />
-            <marker date="1468380886708" expanded="true" signature="21681:21745" placeholder="SELECT * FRO... t_l3f1sym_hcu_swver" />
+            <marker date="1468381017749" expanded="true" signature="7587:7641" placeholder="SELECT * FRO... t_l3f1sym_session" />
+            <marker date="1468381017749" expanded="true" signature="7716:7825" placeholder="UPDATE `t_l3... " />
+            <marker date="1468381017749" expanded="true" signature="7960:8064" placeholder="INSERT INTO `t_l3f1sym_session`... " />
+            <marker date="1468381017749" expanded="true" signature="8611:8677" placeholder="SELECT * FRO... t_l3f1sym_session" />
+            <marker date="1468381017749" expanded="true" signature="9638:9694" placeholder="SELECT * FRO... t_l3f1sym_account" />
+            <marker date="1468381017749" expanded="true" signature="11481:11547" placeholder="SELECT * FRO... t_l3f1sym_session" />
+            <marker date="1468381017749" expanded="true" signature="11927:11981" placeholder="SELECT * FRO... t_l3f1sym_account" />
+            <marker date="1468381017749" expanded="true" signature="13039:13080" placeholder="SELECT * FRO... t_l3f1sym_account" />
+            <marker date="1468381017749" expanded="true" signature="13655:13707" placeholder="SELECT * FRO... t_l3f1sym_account" />
+            <marker date="1468381017749" expanded="true" signature="15583:15639" placeholder="SELECT * FRO... t_l3f1sym_account" />
+            <marker date="1468381017749" expanded="true" signature="15769:16011" placeholder="UPDATE `t_l3... " />
+            <marker date="1468381017749" expanded="true" signature="16132:16359" placeholder="INSERT INTO `t_l3f1sym_account`... " />
+            <marker date="1468381017749" expanded="true" signature="16446:16499" placeholder="DELETE FROM " />
+            <marker date="1468381017749" expanded="true" signature="16749:16826" placeholder="INSERT INTO `t_l3f1sym_authlist`... " />
+            <marker date="1468381017749" expanded="true" signature="18075:18315" placeholder="UPDATE `t_l3... " />
+            <marker date="1468381017749" expanded="true" signature="18427:18652" placeholder="UPDATE `t_l3... " />
+            <marker date="1468381017749" expanded="true" signature="18739:18792" placeholder="DELETE FROM " />
+            <marker date="1468381017749" expanded="true" signature="19042:19119" placeholder="INSERT INTO `t_l3f1sym_authlist`... " />
+            <marker date="1468381017749" expanded="true" signature="19624:19676" placeholder="DELETE FROM " />
+            <marker date="1468381017749" expanded="true" signature="19760:19813" placeholder="DELETE FROM " />
+            <marker date="1468381017749" expanded="true" signature="20354:20397" placeholder="SELECT * FRO... t_l3f1sym_hcu_swver" />
+            <marker date="1468381017749" expanded="true" signature="21681:21745" placeholder="SELECT * FRO... t_l3f1sym_hcu_swver" />
           </folding>
         </state>
       </provider>
@@ -819,6 +693,92 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.582343">
           <caret line="304" column="0" selection-start-line="304" selection-start-column="0" selection-end-line="304" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/l1comvm/vmlayer.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.032258064">
+          <caret line="796" column="0" selection-start-line="796" selection-start-column="0" selection-end-line="796" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/l1mainentry/h5ui_entry_aqyc.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.4516129">
+          <caret line="14" column="0" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/l4aqycui/request.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.29032257">
+          <caret line="9" column="0" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/l4oamtools/DbTest.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="319" column="0" selection-start-line="319" selection-start-column="0" selection-end-line="319" selection-end-column="0" />
+          <folding>
+            <marker date="1468381017749" expanded="true" signature="15356:15491" placeholder="UPDATE `t_l1... " />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/l2sdk/task_l2sdk_nbiot_ipm376.class.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-10.821428">
+          <caret line="45" column="14" selection-start-line="45" selection-start-column="14" selection-end-line="45" selection-end-column="14" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/l1comvm/commsg.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-7.464286">
+          <caret line="328" column="0" selection-start-line="328" selection-start-column="0" selection-end-line="334" selection-end-column="53" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/readme.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.60940033">
+          <caret line="198" column="0" selection-start-line="198" selection-start-column="0" selection-end-line="198" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/l2sdk/dbi_l2sdk_nbiot.class.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-6.107143">
+          <caret line="149" column="63" selection-start-line="149" selection-start-column="50" selection-end-line="149" selection-end-column="63" />
+          <folding>
+            <marker date="1468399579470" expanded="true" signature="1611:1690" placeholder="SELECT * FRO... t_l2sdk_nbiot_ipm376_context" />
+            <marker date="1468399579470" expanded="true" signature="1807:1956" placeholder="UPDATE `t_l2... " />
+            <marker date="1468399579470" expanded="true" signature="2040:2182" placeholder="INSERT INTO `t_l2sdk_nbiot_ipm376_context`... " />
+            <marker date="1468399579470" expanded="true" signature="2628:2707" placeholder="SELECT * FRO... t_l2sdk_nbiot_ipm376_context" />
+            <marker date="1468399579470" expanded="true" signature="3424:3508" placeholder="SELECT * FRO... t_l2sdk_nbiot_ipm376_context" />
+            <marker date="1468399579470" expanded="true" signature="3625:3779" placeholder="UPDATE `t_l2... " />
+            <marker date="1468399579470" expanded="true" signature="3863:4010" placeholder="INSERT INTO `t_l2sdk_nbiot_ipm376_context`... " />
+            <marker date="1468399579470" expanded="true" signature="4461:4547" placeholder="SELECT * FRO... t_l2sdk_nbiot_ipm376_context" />
+            <marker date="1468399579470" expanded="true" signature="5142:5226" placeholder="SELECT * FRO... t_l2sdk_nbiot_std_cj188_context" />
+            <marker date="1468399579470" expanded="true" signature="5441:5571" placeholder="UPDATE `t_l2... " />
+            <marker date="1468399579470" expanded="true" signature="5655:5769" placeholder="INSERT INTO `t_l2sdk_nbiot_std_cj188_context`... " />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/l2sdk/task_l2sdk_nbiot_std_cj188.class.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.7096774">
+          <caret line="100" column="0" selection-start-line="100" selection-start-column="0" selection-end-line="100" selection-end-column="0" />
           <folding />
         </state>
       </provider>
