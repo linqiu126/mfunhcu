@@ -192,6 +192,8 @@ Make By：ZJL
 > 构建IPM376的解码功能
 > 构建CJ188规范的对应程序框架，以支持水表、煤气表、电表等内容
 
+//= ZJL, 2016 July.13, CURRENT_SW_DELIVERY R02.D27
+> 增加AQYC程序升级的接口
 
 
 

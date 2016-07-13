@@ -145,7 +145,7 @@ CREATE TABLE IF NOT EXISTS `t_l3f1sym_sysinfo` (
   `maxsubscribers` int(4) NOT NULL DEFAULT 1000,
   `maxservers` int(4) NOT NULL DEFAULT 5,
   PRIMARY KEY (`sid`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=75 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 --
 -- 转存表中的数据 `t_l3f1sym_sysinfo`
@@ -153,6 +153,28 @@ CREATE TABLE IF NOT EXISTS `t_l3f1sym_sysinfo` (
 
 INSERT INTO `t_l3f1sym_sysinfo` (`sid`, `keyid`, `vendorinfo`, `customerinfo`) VALUES
 (100, 'AAA-BBB-012', 'Aiqi Yancheng Shanghai Ltd.', '上海是环保局，中环工程');
+
+
+--
+-- 表的结构 `t_l3f1sym_hcu_swver`
+--
+
+CREATE TABLE IF NOT EXISTS `t_l3f1sym_hcu_swver` (
+  `sid` int(4) NOT NULL AUTO_INCREMENT,
+  `swverid` char(50) NOT NULL,
+  `swverdescripition` char(50) NOT NULL,
+  `issuedate` date NOT NULL,
+  `swbin` mediumblob NOT NULL,
+  `dbbin` mediumblob NOT NULL,
+  PRIMARY KEY (`sid`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+--
+-- 转存表中的数据 `t_l3f1sym_hcu_swver`
+--
+
+INSERT INTO `t_l3f1sym_hcu_swver` (`sid`, `swverid`, `swverdescripition`, `issuedate`, `swbin`, `dbbin`) VALUES
+(1, 'AQYC.R02.099', '飞凌335D Baseline, 基础功能完善，气象五参数，视频，支持基于树莓派的传感器', '2016-07-13', '', '');
 
 
 */
@@ -554,7 +576,66 @@ class classDbiL3apF1sym
         return $result;
     }
 
+    //HCU_SWVER对应数据库的访问，获取最新的SWVER
+    public function dbi_latest_hcu_swver_inqury()
+    {
+        //建立连接
+        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli) {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $result = $mysqli->query("SELECT * FROM `t_l3f1sym_hcu_swver` WHERE 1");
 
+        $LatestVerValue = "";
+        $LatestRelease = 0;
+        $LatestVersion = 0;
+        if (($result != false) && ($result->num_rows)>0)   //重复，则覆盖
+        {
+            while($row = $result->fetch_array()){
+                $temp = $row['swver'];
+                //对版本格式有严格的诉求，否则会出错
+                $temp = substr(trim($temp), -7);
+                $release = substr($temp, 1, 2);
+                $version = substr($temp, 5, 2);
+                //空的，或者大版本大，或者大版本相当但小版本大
+                if ((empty($LatestVerValue)) || ($release > $LatestRelease) || (($release == $LatestRelease) && ($version > $LatestVersion))){
+                    $LatestVerValue = $temp;
+                    $LatestRelease = $release;
+                    $LatestVersion = $version;
+                }
+                else{}
+            }
+        }
+        $result = $LatestVerValue;
+
+        $mysqli->close();
+        return $result;
+    }
+
+    //HCU_SWVER对应数据库的访问
+    public function dbi_hcu_swver_inqury($swverid)
+    {
+        //建立连接
+        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli) {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $result = $mysqli->query("SELECT * FROM `t_l3f1sym_hcu_swver` WHERE `swverid` = '$swverid'");
+
+        $LatestSwValue = "";
+        $LatestDbValue = "";
+        if (($result != false) && ($result->num_rows)>0)   //重复，则覆盖
+        {
+            $row = $result->fetch_array();
+            $LatestSwValue = $row['swbin'];
+            $LatestDbValue = $row['dbbin'];
+        }
+
+        $result = array("swbin" => $LatestSwValue, "dbbin" => $LatestDbValue);
+
+        $mysqli->close();
+        return $result;
+    }
 
 }
 

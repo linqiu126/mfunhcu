@@ -117,6 +117,7 @@ define("MSG_ID_L4AQYCUI_TO_L3F1_USERNEW", $index++);
 define("MSG_ID_L4AQYCUI_TO_L3F1_USERMOD", $index++);
 define("MSG_ID_L4AQYCUI_TO_L3F1_USERDEL", $index++);
 define("MSG_ID_L4AQYCUI_TO_L3F1_USERTABLE", $index++);
+define("MSG_ID_L4AQYCUI_TO_L3F1_HCUSWUPDATE", $index++);
 define("MSG_ID_L4AQYCUI_TO_L3F2_PROJECTPGLIST", $index++);
 define("MSG_ID_L4AQYCUI_TO_L3F2_PROJECTLIST", $index++);
 define("MSG_ID_L4AQYCUI_TO_L3F2_USERPROJ", $index++);

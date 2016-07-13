@@ -202,6 +202,24 @@ class classTaskL4aqycUi
 
                 //require data structure:
                 /*var map={
+                    action:"HcuSwUpdate",
+                    deviceid: deviceid
+                    projectid: projectid
+                };*/
+                //return data structure:
+                /*  var retval={
+                   status:"true",
+                   msg:""
+                };*/
+                case "HcuSwUpdate": //Delete the user
+                    if (isset($_GET["deviceid"])) $deviceid = trim($_GET["deviceid"]); else  $deviceid = "";
+                    if (isset($_GET["projectid"])) $projectid = trim($_GET["projectid"]); else  $projectid = "";
+                    $input = array("deviceid" => $deviceid, "projectid" => $projectid);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM1SYM, MSG_ID_L4AQYCUI_TO_L3F1_HCUSWUPDATE, "MSG_ID_L4AQYCUI_TO_L3F1_HCUSWUPDATE",$input);
+                    break;
+
+                //require data structure:
+                /*var map={
                           action:"ProjectPGList",
                           user:usr.id
                       };*/

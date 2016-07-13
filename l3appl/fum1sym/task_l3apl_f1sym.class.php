@@ -154,6 +154,26 @@ class classTaskL3aplF1sym
         return $jsonencode;
     }
 
+    //待完善的函数
+    function func_hcu_sw_update_process($deviceid, $projectid)
+    {
+        //获取最新版本, swbin和dbbin
+        $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
+        $latestver = $uiF1symDbObj->dbi_latest_hcu_swver_inqury();
+        $result = $uiF1symDbObj->dbi_hcu_swver_inqury($latestver);
+
+        //发送软件版本到HCU网关
+
+        //返回结果
+        $retval=array(
+            'status'=>'true',
+            'ret'=> ""
+        );
+        //$jsonencode = _encode($retval);
+        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
+        return $jsonencode;
+    }
+
 
     /**************************************************************************************
      *                             任务入口函数                                           *
@@ -260,6 +280,17 @@ class classTaskL3aplF1sym
             if (isset($msg["startseq"])) $startseq = $msg["startseq"]; else  $startseq = "";
             //具体处理函数
             $resp = $this->func_usertable_process($length, $startseq);
+            $project = MFUN_PRJ_HCU_AQYCUI;
+        }
+
+        //功能HcuSwUpdate
+        elseif ($msgId == MSG_ID_L4AQYCUI_TO_L3F1_HCUSWUPDATE)
+        {
+            //解开消息
+            if (isset($msg["deviceid"])) $deviceid = $msg["deviceid"]; else  $deviceid = "";
+            if (isset($msg["projectid"])) $projectid = $msg["projectid"]; else  $projectid = "";
+            //具体处理函数
+            $resp = $this->func_hcu_sw_update_process($deviceid, $projectid);
             $project = MFUN_PRJ_HCU_AQYCUI;
         }
 
