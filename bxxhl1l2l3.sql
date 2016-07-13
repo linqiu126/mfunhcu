@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.4.15.5
+-- version 4.1.14
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: 2016-07-13 12:49:03
--- 服务器版本： 5.7.12
--- PHP Version: 5.4.16
+-- Generation Time: 2016-07-13 11:12:11
+-- 服务器版本： 5.6.17
+-- PHP Version: 5.5.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -14,7 +14,7 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
+/*!40101 SET NAMES utf8 */;
 
 --
 -- Database: `bxxhl1l2l3`
@@ -34,7 +34,8 @@ CREATE TABLE IF NOT EXISTS `profile` (
   `gravatar_id` varchar(32) DEFAULT NULL,
   `location` varchar(255) DEFAULT NULL,
   `website` varchar(255) DEFAULT NULL,
-  `bio` text
+  `bio` text,
+  PRIMARY KEY (`user_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
@@ -58,7 +59,8 @@ CREATE TABLE IF NOT EXISTS `token` (
   `user_id` int(11) NOT NULL,
   `code` varchar(32) NOT NULL,
   `created_at` int(11) NOT NULL,
-  `type` smallint(6) NOT NULL
+  `type` smallint(6) NOT NULL,
+  UNIQUE KEY `token_unique` (`user_id`,`code`,`type`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
@@ -75,11 +77,12 @@ INSERT INTO `token` (`user_id`, `code`, `created_at`, `type`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `t_l1vm_cmdbuf` (
-  `sid` int(4) NOT NULL,
+  `sid` int(4) NOT NULL AUTO_INCREMENT,
   `deviceid` char(50) NOT NULL,
   `cmd` char(50) NOT NULL,
-  `cmdtime` datetime NOT NULL
-) ENGINE=MyISAM AUTO_INCREMENT=552 DEFAULT CHARSET=utf8;
+  `cmdtime` datetime NOT NULL,
+  PRIMARY KEY (`sid`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=552 ;
 
 -- --------------------------------------------------------
 
@@ -92,7 +95,8 @@ CREATE TABLE IF NOT EXISTS `t_l1vm_deviceversion` (
   `hw_type` int(1) DEFAULT NULL,
   `hw_ver` int(2) DEFAULT NULL,
   `sw_rel` int(1) DEFAULT NULL,
-  `sw_drop` int(2) DEFAULT NULL
+  `sw_drop` int(2) DEFAULT NULL,
+  PRIMARY KEY (`deviceid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
@@ -110,7 +114,7 @@ INSERT INTO `t_l1vm_deviceversion` (`deviceid`, `hw_type`, `hw_ver`, `sw_rel`, `
 --
 
 CREATE TABLE IF NOT EXISTS `t_l1vm_engpar` (
-  `sid` int(4) NOT NULL,
+  `sid` int(4) NOT NULL AUTO_INCREMENT,
   `project` char(50) NOT NULL,
   `cloudhttp` char(50) NOT NULL,
   `customername` char(50) NOT NULL,
@@ -121,8 +125,9 @@ CREATE TABLE IF NOT EXISTS `t_l1vm_engpar` (
   `filedatabg` mediumblob NOT NULL,
   `filenamelog` char(50) NOT NULL,
   `filetypelog` char(10) NOT NULL,
-  `filedatalog` mediumblob NOT NULL
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+  `filedatalog` mediumblob NOT NULL,
+  PRIMARY KEY (`sid`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
 
 --
 -- 转存表中的数据 `t_l1vm_engpar`
@@ -138,15 +143,16 @@ INSERT INTO `t_l1vm_engpar` (`sid`, `project`, `cloudhttp`, `customername`, `max
 --
 
 CREATE TABLE IF NOT EXISTS `t_l1vm_loginfo` (
-  `sid` int(6) NOT NULL,
+  `sid` int(6) NOT NULL AUTO_INCREMENT,
   `sysprog` char(20) NOT NULL,
   `sysver` char(20) NOT NULL,
   `project` char(50) NOT NULL,
   `fromuser` char(50) NOT NULL,
   `createtime` char(20) NOT NULL,
   `logtime` char(20) NOT NULL,
-  `logdata` text NOT NULL
-) ENGINE=MyISAM AUTO_INCREMENT=1096 DEFAULT CHARSET=utf8;
+  `logdata` text NOT NULL,
+  PRIMARY KEY (`sid`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1096 ;
 
 --
 -- 转存表中的数据 `t_l1vm_loginfo`
@@ -1264,11 +1270,12 @@ INSERT INTO `t_l1vm_loginfo` (`sid`, `sysprog`, `sysver`, `project`, `fromuser`,
 --
 
 CREATE TABLE IF NOT EXISTS `t_l1vm_logtracemodule` (
-  `sid` int(6) NOT NULL,
+  `sid` int(6) NOT NULL AUTO_INCREMENT,
   `moduleid` int(2) NOT NULL,
   `allowflag` tinyint(1) NOT NULL,
-  `restrictflag` tinyint(1) NOT NULL
-) ENGINE=MyISAM AUTO_INCREMENT=81 DEFAULT CHARSET=utf8;
+  `restrictflag` tinyint(1) NOT NULL,
+  PRIMARY KEY (`sid`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=81 ;
 
 --
 -- 转存表中的数据 `t_l1vm_logtracemodule`
@@ -1363,11 +1370,12 @@ INSERT INTO `t_l1vm_logtracemodule` (`sid`, `moduleid`, `allowflag`, `restrictfl
 --
 
 CREATE TABLE IF NOT EXISTS `t_l1vm_logtracemsg` (
-  `sid` int(6) NOT NULL,
+  `sid` int(6) NOT NULL AUTO_INCREMENT,
   `msgid` int(2) NOT NULL,
   `allowflag` tinyint(1) NOT NULL,
-  `restrictflag` tinyint(1) NOT NULL
-) ENGINE=MyISAM AUTO_INCREMENT=210 DEFAULT CHARSET=utf8;
+  `restrictflag` tinyint(1) NOT NULL,
+  PRIMARY KEY (`sid`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=210 ;
 
 --
 -- 转存表中的数据 `t_l1vm_logtracemsg`
@@ -1592,7 +1600,8 @@ INSERT INTO `t_l1vm_logtracemsg` (`sid`, `msgid`, `allowflag`, `restrictflag`) V
 
 CREATE TABLE IF NOT EXISTS `t_l1vm_logwechatswitch` (
   `user` char(50) NOT NULL,
-  `switch` char(1) NOT NULL
+  `switch` char(1) NOT NULL,
+  PRIMARY KEY (`user`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
@@ -1616,7 +1625,8 @@ CREATE TABLE IF NOT EXISTS `t_l2sdk_iothcu_hcudevice` (
   `ipaddr` char(15) DEFAULT NULL,
   `switch` char(3) NOT NULL DEFAULT '0',
   `videourl` text,
-  `sensorlist` char(100) NOT NULL DEFAULT '0'
+  `sensorlist` char(100) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`devcode`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
@@ -1638,11 +1648,12 @@ INSERT INTO `t_l2sdk_iothcu_hcudevice` (`devcode`, `statcode`, `macaddr`, `ipadd
 --
 
 CREATE TABLE IF NOT EXISTS `t_l2sdk_nbiot_ipm376_context` (
-  `sid` int(4) NOT NULL,
+  `sid` int(4) NOT NULL AUTO_INCREMENT,
   `ipmaddress` int(4) NOT NULL,
   `cntpfc` int(1) NOT NULL,
-  `deviceflag` int(1) NOT NULL
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+  `deviceflag` int(1) NOT NULL,
+  PRIMARY KEY (`sid`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
 
 --
 -- 转存表中的数据 `t_l2sdk_nbiot_ipm376_context`
@@ -1650,6 +1661,27 @@ CREATE TABLE IF NOT EXISTS `t_l2sdk_nbiot_ipm376_context` (
 
 INSERT INTO `t_l2sdk_nbiot_ipm376_context` (`sid`, `ipmaddress`, `cntpfc`, `deviceflag`) VALUES
 (1, 111, 17, 1);
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `t_l2sdk_nbiot_std_cj188_context`
+--
+
+CREATE TABLE IF NOT EXISTS `t_l2sdk_nbiot_std_cj188_context` (
+  `sid` int(4) NOT NULL AUTO_INCREMENT,
+  `cj188address` char(14) NOT NULL,
+  `cntser` int(1) NOT NULL,
+  `deviceflag` int(1) NOT NULL,
+  PRIMARY KEY (`sid`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+
+--
+-- 转存表中的数据 `t_l2sdk_nbiot_std_cj188_context`
+--
+
+INSERT INTO `t_l2sdk_nbiot_std_cj188_context` (`sid`, `cj188address`, `cntser`, `deviceflag`) VALUES
+(1, '111', 17, 1);
 
 -- --------------------------------------------------------
 
@@ -1662,7 +1694,8 @@ CREATE TABLE IF NOT EXISTS `t_l2sdk_wechat_accesstoken` (
   `appsecret` char(50) NOT NULL,
   `lasttime` int(6) NOT NULL,
   `access_token` text NOT NULL,
-  `js_ticket` text NOT NULL
+  `js_ticket` text NOT NULL,
+  PRIMARY KEY (`appid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
@@ -1679,12 +1712,13 @@ INSERT INTO `t_l2sdk_wechat_accesstoken` (`appid`, `appsecret`, `lasttime`, `acc
 --
 
 CREATE TABLE IF NOT EXISTS `t_l2sdk_wechat_blebound` (
-  `sid` int(6) NOT NULL,
+  `sid` int(6) NOT NULL AUTO_INCREMENT,
   `fromuser` char(50) NOT NULL,
   `deviceid` char(50) NOT NULL,
   `openid` char(50) NOT NULL,
-  `devicetype` char(30) NOT NULL
-) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+  `devicetype` char(30) NOT NULL,
+  PRIMARY KEY (`sid`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=8 ;
 
 --
 -- 转存表中的数据 `t_l2sdk_wechat_blebound`
@@ -1704,7 +1738,8 @@ CREATE TABLE IF NOT EXISTS `t_l2sdk_wechat_deviceqrcode` (
   `deviceid` char(50) NOT NULL,
   `qrcode` char(100) NOT NULL,
   `devicetype` char(30) NOT NULL,
-  `macaddr` char(20) NOT NULL
+  `macaddr` char(20) NOT NULL,
+  PRIMARY KEY (`deviceid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
@@ -1722,7 +1757,7 @@ INSERT INTO `t_l2sdk_wechat_deviceqrcode` (`deviceid`, `qrcode`, `devicetype`, `
 --
 
 CREATE TABLE IF NOT EXISTS `t_l2snr_airprsdata` (
-  `sid` int(4) NOT NULL,
+  `sid` int(4) NOT NULL AUTO_INCREMENT,
   `deviceid` char(50) NOT NULL,
   `sensorid` int(1) NOT NULL,
   `airprs` int(4) NOT NULL,
@@ -1733,8 +1768,9 @@ CREATE TABLE IF NOT EXISTS `t_l2snr_airprsdata` (
   `flag_la` char(1) NOT NULL,
   `latitude` int(4) NOT NULL,
   `flag_lo` char(1) NOT NULL,
-  `longitude` int(4) NOT NULL
-) ENGINE=MyISAM AUTO_INCREMENT=19900 DEFAULT CHARSET=utf8;
+  `longitude` int(4) NOT NULL,
+  PRIMARY KEY (`sid`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=19900 ;
 
 --
 -- 转存表中的数据 `t_l2snr_airprsdata`
@@ -1750,7 +1786,7 @@ INSERT INTO `t_l2snr_airprsdata` (`sid`, `deviceid`, `sensorid`, `airprs`, `data
 --
 
 CREATE TABLE IF NOT EXISTS `t_l2snr_alcoholdata` (
-  `sid` int(4) NOT NULL,
+  `sid` int(4) NOT NULL AUTO_INCREMENT,
   `deviceid` char(50) NOT NULL,
   `sensorid` int(1) NOT NULL,
   `alcohol` int(4) NOT NULL,
@@ -1761,8 +1797,9 @@ CREATE TABLE IF NOT EXISTS `t_l2snr_alcoholdata` (
   `flag_la` char(1) NOT NULL,
   `latitude` int(4) NOT NULL,
   `flag_lo` char(1) NOT NULL,
-  `longitude` int(4) NOT NULL
-) ENGINE=MyISAM AUTO_INCREMENT=19900 DEFAULT CHARSET=utf8;
+  `longitude` int(4) NOT NULL,
+  PRIMARY KEY (`sid`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=19900 ;
 
 --
 -- 转存表中的数据 `t_l2snr_alcoholdata`
@@ -1778,7 +1815,7 @@ INSERT INTO `t_l2snr_alcoholdata` (`sid`, `deviceid`, `sensorid`, `alcohol`, `da
 --
 
 CREATE TABLE IF NOT EXISTS `t_l2snr_co1data` (
-  `sid` int(4) NOT NULL,
+  `sid` int(4) NOT NULL AUTO_INCREMENT,
   `deviceid` char(50) NOT NULL,
   `sensorid` int(1) NOT NULL,
   `co1` int(4) NOT NULL,
@@ -1789,8 +1826,9 @@ CREATE TABLE IF NOT EXISTS `t_l2snr_co1data` (
   `flag_la` char(1) NOT NULL,
   `latitude` int(4) NOT NULL,
   `flag_lo` char(1) NOT NULL,
-  `longitude` int(4) NOT NULL
-) ENGINE=MyISAM AUTO_INCREMENT=19900 DEFAULT CHARSET=utf8;
+  `longitude` int(4) NOT NULL,
+  PRIMARY KEY (`sid`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=19900 ;
 
 --
 -- 转存表中的数据 `t_l2snr_co1data`
@@ -1815,7 +1853,8 @@ CREATE TABLE IF NOT EXISTS `t_l2snr_dataformat` (
   `f_rain` int(1) DEFAULT NULL,
   `f_temperature` int(1) DEFAULT NULL,
   `f_winddirection` int(1) DEFAULT NULL,
-  `f_windspeed` int(1) DEFAULT NULL
+  `f_windspeed` int(1) DEFAULT NULL,
+  PRIMARY KEY (`deviceid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
@@ -1837,12 +1876,13 @@ INSERT INTO `t_l2snr_dataformat` (`deviceid`, `f_airpressure`, `f_emcdata`, `f_h
 --
 
 CREATE TABLE IF NOT EXISTS `t_l2snr_emcaccumulation` (
-  `sid` int(4) NOT NULL,
+  `sid` int(4) NOT NULL AUTO_INCREMENT,
   `deviceid` char(50) NOT NULL,
   `lastupdatedate` date NOT NULL,
   `avg30days` char(192) NOT NULL,
-  `avg3month` char(192) NOT NULL
-) ENGINE=MyISAM AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+  `avg3month` char(192) NOT NULL,
+  PRIMARY KEY (`sid`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=9 ;
 
 --
 -- 转存表中的数据 `t_l2snr_emcaccumulation`
@@ -1865,7 +1905,7 @@ INSERT INTO `t_l2snr_emcaccumulation` (`sid`, `deviceid`, `lastupdatedate`, `avg
 --
 
 CREATE TABLE IF NOT EXISTS `t_l2snr_emcdata` (
-  `sid` int(4) NOT NULL,
+  `sid` int(4) NOT NULL AUTO_INCREMENT,
   `deviceid` char(50) NOT NULL,
   `sensorid` int(1) NOT NULL,
   `emcvalue` int(4) NOT NULL,
@@ -1876,8 +1916,9 @@ CREATE TABLE IF NOT EXISTS `t_l2snr_emcdata` (
   `flag_la` char(1) NOT NULL,
   `latitude` int(4) NOT NULL,
   `flag_lo` char(1) NOT NULL,
-  `longitude` int(4) NOT NULL
-) ENGINE=MyISAM AUTO_INCREMENT=63846 DEFAULT CHARSET=utf8;
+  `longitude` int(4) NOT NULL,
+  PRIMARY KEY (`sid`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=63846 ;
 
 --
 -- 转存表中的数据 `t_l2snr_emcdata`
@@ -1893,7 +1934,7 @@ INSERT INTO `t_l2snr_emcdata` (`sid`, `deviceid`, `sensorid`, `emcvalue`, `dataf
 --
 
 CREATE TABLE IF NOT EXISTS `t_l2snr_hchodata` (
-  `sid` int(4) NOT NULL,
+  `sid` int(4) NOT NULL AUTO_INCREMENT,
   `deviceid` char(50) NOT NULL,
   `sensorid` int(1) NOT NULL,
   `hcho` int(4) NOT NULL,
@@ -1904,8 +1945,9 @@ CREATE TABLE IF NOT EXISTS `t_l2snr_hchodata` (
   `flag_la` char(1) NOT NULL,
   `latitude` int(4) NOT NULL,
   `flag_lo` char(1) NOT NULL,
-  `longitude` int(4) NOT NULL
-) ENGINE=MyISAM AUTO_INCREMENT=19900 DEFAULT CHARSET=utf8;
+  `longitude` int(4) NOT NULL,
+  PRIMARY KEY (`sid`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=19900 ;
 
 --
 -- 转存表中的数据 `t_l2snr_hchodata`
@@ -1921,7 +1963,7 @@ INSERT INTO `t_l2snr_hchodata` (`sid`, `deviceid`, `sensorid`, `hcho`, `dataflag
 --
 
 CREATE TABLE IF NOT EXISTS `t_l2snr_hourreport` (
-  `sid` int(4) NOT NULL,
+  `sid` int(4) NOT NULL AUTO_INCREMENT,
   `devcode` char(20) NOT NULL,
   `statcode` char(20) DEFAULT NULL,
   `reportdate` date NOT NULL,
@@ -1938,8 +1980,9 @@ CREATE TABLE IF NOT EXISTS `t_l2snr_hourreport` (
   `humidity` int(4) DEFAULT NULL,
   `airpressure` int(4) DEFAULT NULL,
   `datastatus` char(10) DEFAULT NULL,
-  `validdatanum` int(1) DEFAULT NULL
-) ENGINE=MyISAM AUTO_INCREMENT=243 DEFAULT CHARSET=utf8;
+  `validdatanum` int(1) DEFAULT NULL,
+  PRIMARY KEY (`sid`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=243 ;
 
 --
 -- 转存表中的数据 `t_l2snr_hourreport`
@@ -2196,7 +2239,7 @@ INSERT INTO `t_l2snr_hourreport` (`sid`, `devcode`, `statcode`, `reportdate`, `h
 --
 
 CREATE TABLE IF NOT EXISTS `t_l2snr_hsmmpdata` (
-  `sid` int(4) NOT NULL,
+  `sid` int(4) NOT NULL AUTO_INCREMENT,
   `deviceid` char(50) NOT NULL,
   `sensorid` int(1) NOT NULL,
   `videourl` text NOT NULL,
@@ -2207,8 +2250,9 @@ CREATE TABLE IF NOT EXISTS `t_l2snr_hsmmpdata` (
   `flag_la` char(1) NOT NULL,
   `latitude` int(4) NOT NULL,
   `flag_lo` char(1) NOT NULL,
-  `longitude` int(4) NOT NULL
-) ENGINE=MyISAM AUTO_INCREMENT=28070 DEFAULT CHARSET=utf8;
+  `longitude` int(4) NOT NULL,
+  PRIMARY KEY (`sid`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=28070 ;
 
 --
 -- 转存表中的数据 `t_l2snr_hsmmpdata`
@@ -2224,7 +2268,7 @@ INSERT INTO `t_l2snr_hsmmpdata` (`sid`, `deviceid`, `sensorid`, `videourl`, `dat
 --
 
 CREATE TABLE IF NOT EXISTS `t_l2snr_humiddata` (
-  `sid` int(4) NOT NULL,
+  `sid` int(4) NOT NULL AUTO_INCREMENT,
   `deviceid` char(50) NOT NULL,
   `sensorid` int(1) NOT NULL,
   `humidity` int(4) NOT NULL,
@@ -2235,8 +2279,9 @@ CREATE TABLE IF NOT EXISTS `t_l2snr_humiddata` (
   `flag_la` char(1) NOT NULL,
   `latitude` int(4) NOT NULL,
   `flag_lo` char(1) NOT NULL,
-  `longitude` int(4) NOT NULL
-) ENGINE=MyISAM AUTO_INCREMENT=19900 DEFAULT CHARSET=utf8;
+  `longitude` int(4) NOT NULL,
+  PRIMARY KEY (`sid`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=19900 ;
 
 --
 -- 转存表中的数据 `t_l2snr_humiddata`
@@ -2252,7 +2297,7 @@ INSERT INTO `t_l2snr_humiddata` (`sid`, `deviceid`, `sensorid`, `humidity`, `dat
 --
 
 CREATE TABLE IF NOT EXISTS `t_l2snr_ipm_afndata1_f25` (
-  `sid` int(4) NOT NULL,
+  `sid` int(4) NOT NULL AUTO_INCREMENT,
   `deviceid` int(4) NOT NULL,
   `cur_terminaltime` char(20) NOT NULL,
   `cur_sumusepower` int(3) NOT NULL,
@@ -2277,8 +2322,9 @@ CREATE TABLE IF NOT EXISTS `t_l2snr_ipm_afndata1_f25` (
   `cur_sumvisualpower` int(3) NOT NULL,
   `cur_phaseavisualpower` int(3) NOT NULL,
   `cur_phasebvisualpower` int(3) NOT NULL,
-  `cur_phasecvisualpower` int(3) NOT NULL
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+  `cur_phasecvisualpower` int(3) NOT NULL,
+  PRIMARY KEY (`sid`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
 
 --
 -- 转存表中的数据 `t_l2snr_ipm_afndata1_f25`
@@ -2294,7 +2340,7 @@ INSERT INTO `t_l2snr_ipm_afndata1_f25` (`sid`, `deviceid`, `cur_terminaltime`, `
 --
 
 CREATE TABLE IF NOT EXISTS `t_l2snr_lightstrdata` (
-  `sid` int(4) NOT NULL,
+  `sid` int(4) NOT NULL AUTO_INCREMENT,
   `deviceid` char(50) NOT NULL,
   `sensorid` int(1) NOT NULL,
   `lightstr` int(4) NOT NULL,
@@ -2305,8 +2351,9 @@ CREATE TABLE IF NOT EXISTS `t_l2snr_lightstrdata` (
   `flag_la` char(1) NOT NULL,
   `latitude` int(4) NOT NULL,
   `flag_lo` char(1) NOT NULL,
-  `longitude` int(4) NOT NULL
-) ENGINE=MyISAM AUTO_INCREMENT=19900 DEFAULT CHARSET=utf8;
+  `longitude` int(4) NOT NULL,
+  PRIMARY KEY (`sid`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=19900 ;
 
 --
 -- 转存表中的数据 `t_l2snr_lightstrdata`
@@ -2322,7 +2369,7 @@ INSERT INTO `t_l2snr_lightstrdata` (`sid`, `deviceid`, `sensorid`, `lightstr`, `
 --
 
 CREATE TABLE IF NOT EXISTS `t_l2snr_minreport` (
-  `sid` int(4) NOT NULL,
+  `sid` int(4) NOT NULL AUTO_INCREMENT,
   `devcode` char(20) NOT NULL,
   `statcode` char(20) NOT NULL,
   `reportdate` date NOT NULL,
@@ -2338,8 +2385,9 @@ CREATE TABLE IF NOT EXISTS `t_l2snr_minreport` (
   `temperature` int(4) DEFAULT NULL,
   `humidity` int(4) DEFAULT NULL,
   `airpressure` int(4) DEFAULT NULL,
-  `pmdataflag` char(10) DEFAULT NULL
-) ENGINE=MyISAM AUTO_INCREMENT=55779 DEFAULT CHARSET=utf8;
+  `pmdataflag` char(10) DEFAULT NULL,
+  PRIMARY KEY (`sid`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=55779 ;
 
 --
 -- 转存表中的数据 `t_l2snr_minreport`
@@ -2380,7 +2428,7 @@ INSERT INTO `t_l2snr_minreport` (`sid`, `devcode`, `statcode`, `reportdate`, `ho
 --
 
 CREATE TABLE IF NOT EXISTS `t_l2snr_noisedata` (
-  `sid` int(4) NOT NULL,
+  `sid` int(4) NOT NULL AUTO_INCREMENT,
   `deviceid` char(50) NOT NULL,
   `sensorid` int(1) NOT NULL,
   `noise` int(4) NOT NULL,
@@ -2391,8 +2439,9 @@ CREATE TABLE IF NOT EXISTS `t_l2snr_noisedata` (
   `flag_la` char(1) NOT NULL,
   `latitude` int(4) NOT NULL,
   `flag_lo` char(1) NOT NULL,
-  `longitude` int(4) NOT NULL
-) ENGINE=MyISAM AUTO_INCREMENT=19900 DEFAULT CHARSET=utf8;
+  `longitude` int(4) NOT NULL,
+  PRIMARY KEY (`sid`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=19900 ;
 
 --
 -- 转存表中的数据 `t_l2snr_noisedata`
@@ -2408,7 +2457,7 @@ INSERT INTO `t_l2snr_noisedata` (`sid`, `deviceid`, `sensorid`, `noise`, `datafl
 --
 
 CREATE TABLE IF NOT EXISTS `t_l2snr_picturedata` (
-  `sid` int(4) NOT NULL,
+  `sid` int(4) NOT NULL AUTO_INCREMENT,
   `deviceid` char(50) NOT NULL,
   `sensorid` int(1) NOT NULL,
   `filedescription` char(50) NOT NULL,
@@ -2423,8 +2472,9 @@ CREATE TABLE IF NOT EXISTS `t_l2snr_picturedata` (
   `flag_la` char(1) NOT NULL,
   `latitude` int(4) NOT NULL,
   `flag_lo` char(1) NOT NULL,
-  `longitude` int(4) NOT NULL
-) ENGINE=MyISAM AUTO_INCREMENT=28071 DEFAULT CHARSET=utf8;
+  `longitude` int(4) NOT NULL,
+  PRIMARY KEY (`sid`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=28071 ;
 
 --
 -- 转存表中的数据 `t_l2snr_picturedata`
@@ -2440,7 +2490,7 @@ INSERT INTO `t_l2snr_picturedata` (`sid`, `deviceid`, `sensorid`, `filedescripti
 --
 
 CREATE TABLE IF NOT EXISTS `t_l2snr_pm25data` (
-  `sid` int(4) NOT NULL,
+  `sid` int(4) NOT NULL AUTO_INCREMENT,
   `deviceid` char(50) NOT NULL,
   `sensorid` int(1) NOT NULL,
   `pm01` int(4) NOT NULL,
@@ -2453,8 +2503,9 @@ CREATE TABLE IF NOT EXISTS `t_l2snr_pm25data` (
   `flag_la` char(1) NOT NULL,
   `latitude` int(4) NOT NULL,
   `flag_lo` char(1) NOT NULL,
-  `longitude` int(4) NOT NULL
-) ENGINE=MyISAM AUTO_INCREMENT=4059 DEFAULT CHARSET=utf8;
+  `longitude` int(4) NOT NULL,
+  PRIMARY KEY (`sid`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4059 ;
 
 --
 -- 转存表中的数据 `t_l2snr_pm25data`
@@ -2470,7 +2521,7 @@ INSERT INTO `t_l2snr_pm25data` (`sid`, `deviceid`, `sensorid`, `pm01`, `pm25`, `
 --
 
 CREATE TABLE IF NOT EXISTS `t_l2snr_raindata` (
-  `sid` int(4) NOT NULL,
+  `sid` int(4) NOT NULL AUTO_INCREMENT,
   `deviceid` char(50) NOT NULL,
   `sensorid` int(1) NOT NULL,
   `rain` int(4) NOT NULL,
@@ -2481,8 +2532,9 @@ CREATE TABLE IF NOT EXISTS `t_l2snr_raindata` (
   `flag_la` char(1) NOT NULL,
   `latitude` int(4) NOT NULL,
   `flag_lo` char(1) NOT NULL,
-  `longitude` int(4) NOT NULL
-) ENGINE=MyISAM AUTO_INCREMENT=19900 DEFAULT CHARSET=utf8;
+  `longitude` int(4) NOT NULL,
+  PRIMARY KEY (`sid`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=19900 ;
 
 --
 -- 转存表中的数据 `t_l2snr_raindata`
@@ -2505,7 +2557,8 @@ CREATE TABLE IF NOT EXISTS `t_l2snr_sensorinfo` (
   `modbus` int(1) DEFAULT NULL COMMENT 'MODBUS地址',
   `period` int(2) DEFAULT NULL COMMENT '测量周期，单位秒',
   `samples` int(2) DEFAULT NULL COMMENT '采样间隔，单位秒',
-  `times` int(2) DEFAULT NULL COMMENT '测量次数'
+  `times` int(2) DEFAULT NULL COMMENT '测量次数',
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -2531,7 +2584,8 @@ CREATE TABLE IF NOT EXISTS `t_l2snr_sensortype` (
   `id` char(6) NOT NULL,
   `name` char(10) NOT NULL,
   `model` char(20) NOT NULL,
-  `vendor` char(20) NOT NULL
+  `vendor` char(20) NOT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -2541,7 +2595,7 @@ CREATE TABLE IF NOT EXISTS `t_l2snr_sensortype` (
 --
 
 CREATE TABLE IF NOT EXISTS `t_l2snr_tempdata` (
-  `sid` int(4) NOT NULL,
+  `sid` int(4) NOT NULL AUTO_INCREMENT,
   `deviceid` char(50) NOT NULL,
   `sensorid` int(1) NOT NULL,
   `temperature` int(4) NOT NULL,
@@ -2552,8 +2606,9 @@ CREATE TABLE IF NOT EXISTS `t_l2snr_tempdata` (
   `flag_la` char(1) NOT NULL,
   `latitude` int(4) NOT NULL,
   `flag_lo` char(1) NOT NULL,
-  `longitude` int(4) NOT NULL
-) ENGINE=MyISAM AUTO_INCREMENT=21027 DEFAULT CHARSET=utf8;
+  `longitude` int(4) NOT NULL,
+  PRIMARY KEY (`sid`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=21027 ;
 
 --
 -- 转存表中的数据 `t_l2snr_tempdata`
@@ -2569,7 +2624,7 @@ INSERT INTO `t_l2snr_tempdata` (`sid`, `deviceid`, `sensorid`, `temperature`, `d
 --
 
 CREATE TABLE IF NOT EXISTS `t_l2snr_toxicgasdata` (
-  `sid` int(4) NOT NULL,
+  `sid` int(4) NOT NULL AUTO_INCREMENT,
   `deviceid` char(50) NOT NULL,
   `sensorid` int(1) NOT NULL,
   `toxicgas` int(4) NOT NULL,
@@ -2580,8 +2635,9 @@ CREATE TABLE IF NOT EXISTS `t_l2snr_toxicgasdata` (
   `flag_la` char(1) NOT NULL,
   `latitude` int(4) NOT NULL,
   `flag_lo` char(1) NOT NULL,
-  `longitude` int(4) NOT NULL
-) ENGINE=MyISAM AUTO_INCREMENT=19900 DEFAULT CHARSET=utf8;
+  `longitude` int(4) NOT NULL,
+  PRIMARY KEY (`sid`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=19900 ;
 
 --
 -- 转存表中的数据 `t_l2snr_toxicgasdata`
@@ -2597,7 +2653,7 @@ INSERT INTO `t_l2snr_toxicgasdata` (`sid`, `deviceid`, `sensorid`, `toxicgas`, `
 --
 
 CREATE TABLE IF NOT EXISTS `t_l2snr_winddir` (
-  `sid` int(4) NOT NULL,
+  `sid` int(4) NOT NULL AUTO_INCREMENT,
   `deviceid` char(50) NOT NULL,
   `sensorid` int(1) NOT NULL,
   `winddirection` int(4) NOT NULL,
@@ -2608,8 +2664,9 @@ CREATE TABLE IF NOT EXISTS `t_l2snr_winddir` (
   `flag_la` char(1) NOT NULL,
   `latitude` int(4) NOT NULL,
   `flag_lo` char(1) NOT NULL,
-  `longitude` int(4) NOT NULL
-) ENGINE=MyISAM AUTO_INCREMENT=19900 DEFAULT CHARSET=utf8;
+  `longitude` int(4) NOT NULL,
+  PRIMARY KEY (`sid`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=19900 ;
 
 --
 -- 转存表中的数据 `t_l2snr_winddir`
@@ -2625,7 +2682,7 @@ INSERT INTO `t_l2snr_winddir` (`sid`, `deviceid`, `sensorid`, `winddirection`, `
 --
 
 CREATE TABLE IF NOT EXISTS `t_l2snr_windspd` (
-  `sid` int(4) NOT NULL,
+  `sid` int(4) NOT NULL AUTO_INCREMENT,
   `deviceid` char(50) NOT NULL,
   `sensorid` int(1) NOT NULL,
   `windspeed` int(4) NOT NULL,
@@ -2636,8 +2693,9 @@ CREATE TABLE IF NOT EXISTS `t_l2snr_windspd` (
   `flag_la` char(1) NOT NULL,
   `latitude` int(4) NOT NULL,
   `flag_lo` char(1) NOT NULL,
-  `longitude` int(4) NOT NULL
-) ENGINE=MyISAM AUTO_INCREMENT=19900 DEFAULT CHARSET=utf8;
+  `longitude` int(4) NOT NULL,
+  PRIMARY KEY (`sid`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=19900 ;
 
 --
 -- 转存表中的数据 `t_l2snr_windspd`
@@ -2662,7 +2720,8 @@ CREATE TABLE IF NOT EXISTS `t_l3f1sym_account` (
   `email` char(50) DEFAULT NULL,
   `regdate` date DEFAULT NULL,
   `city` char(10) DEFAULT NULL,
-  `backup` text
+  `backup` text,
+  PRIMARY KEY (`uid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -2684,10 +2743,11 @@ INSERT INTO `t_l3f1sym_account` (`uid`, `user`, `nick`, `pwd`, `attribute`, `pho
 --
 
 CREATE TABLE IF NOT EXISTS `t_l3f1sym_authlist` (
-  `sid` int(4) NOT NULL,
+  `sid` int(4) NOT NULL AUTO_INCREMENT,
   `uid` char(10) NOT NULL,
-  `auth_code` char(20) DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=280 DEFAULT CHARSET=utf8;
+  `auth_code` char(20) DEFAULT NULL,
+  PRIMARY KEY (`sid`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=280 ;
 
 --
 -- 转存表中的数据 `t_l3f1sym_authlist`
@@ -2786,13 +2846,14 @@ INSERT INTO `t_l3f1sym_authlist` (`sid`, `uid`, `auth_code`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `t_l3f1sym_hcu_swver` (
-  `sid` int(4) NOT NULL,
+  `sid` int(4) NOT NULL AUTO_INCREMENT,
   `swverid` char(50) NOT NULL,
   `swverdescripition` char(50) NOT NULL,
   `issuedate` date NOT NULL,
   `swbin` mediumblob NOT NULL,
-  `dbbin` mediumblob NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+  `dbbin` mediumblob NOT NULL,
+  PRIMARY KEY (`sid`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
 
 --
 -- 转存表中的数据 `t_l3f1sym_hcu_swver`
@@ -2810,7 +2871,8 @@ INSERT INTO `t_l3f1sym_hcu_swver` (`sid`, `swverid`, `swverdescripition`, `issue
 CREATE TABLE IF NOT EXISTS `t_l3f1sym_session` (
   `sessionid` char(8) NOT NULL,
   `uid` char(20) NOT NULL,
-  `lastupdate` int(4) NOT NULL
+  `lastupdate` int(4) NOT NULL,
+  PRIMARY KEY (`sessionid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -2827,15 +2889,16 @@ INSERT INTO `t_l3f1sym_session` (`sessionid`, `uid`, `lastupdate`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `t_l3f1sym_sysinfo` (
-  `sid` int(4) NOT NULL,
+  `sid` int(4) NOT NULL AUTO_INCREMENT,
   `keyid` char(50) NOT NULL,
   `vendorinfo` char(200) NOT NULL,
   `customerinfo` char(200) NOT NULL,
   `licenseinfo` char(200) NOT NULL,
   `maxadmin` int(4) NOT NULL DEFAULT '10',
   `maxsubscribers` int(4) NOT NULL DEFAULT '1000',
-  `maxservers` int(4) NOT NULL DEFAULT '5'
-) ENGINE=InnoDB AUTO_INCREMENT=101 DEFAULT CHARSET=utf8;
+  `maxservers` int(4) NOT NULL DEFAULT '5',
+  PRIMARY KEY (`sid`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=101 ;
 
 --
 -- 转存表中的数据 `t_l3f1sym_sysinfo`
@@ -2851,7 +2914,7 @@ INSERT INTO `t_l3f1sym_sysinfo` (`sid`, `keyid`, `vendorinfo`, `customerinfo`, `
 --
 
 CREATE TABLE IF NOT EXISTS `t_l3f1sym_userprofile` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `username` varchar(25) NOT NULL,
   `email` varchar(255) NOT NULL,
   `password_hash` varchar(60) NOT NULL,
@@ -2862,8 +2925,11 @@ CREATE TABLE IF NOT EXISTS `t_l3f1sym_userprofile` (
   `registration_ip` varchar(45) DEFAULT NULL,
   `created_at` int(11) NOT NULL,
   `updated_at` int(11) NOT NULL,
-  `flags` int(11) NOT NULL DEFAULT '0'
-) ENGINE=MyISAM AUTO_INCREMENT=54 DEFAULT CHARSET=utf8;
+  `flags` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `user_unique_username` (`username`),
+  UNIQUE KEY `user_unique_email` (`email`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=54 ;
 
 --
 -- 转存表中的数据 `t_l3f1sym_userprofile`
@@ -2889,7 +2955,8 @@ CREATE TABLE IF NOT EXISTS `t_l3f2cm_projgroup` (
   `phone` char(20) DEFAULT NULL,
   `department` char(50) DEFAULT NULL,
   `addr` char(100) DEFAULT NULL,
-  `backup` text
+  `backup` text,
+  PRIMARY KEY (`pg_code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -2919,7 +2986,9 @@ CREATE TABLE IF NOT EXISTS `t_l3f2cm_projinfo` (
   `starttime` date NOT NULL,
   `pre_endtime` date NOT NULL,
   `true_endtime` date NOT NULL,
-  `stage` text NOT NULL
+  `stage` text NOT NULL,
+  PRIMARY KEY (`p_code`),
+  KEY `statCode` (`p_code`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
@@ -2954,10 +3023,11 @@ INSERT INTO `t_l3f2cm_projinfo` (`p_code`, `p_name`, `chargeman`, `telephone`, `
 --
 
 CREATE TABLE IF NOT EXISTS `t_l3f2cm_projmapping` (
-  `sid` int(4) NOT NULL,
+  `sid` int(4) NOT NULL AUTO_INCREMENT,
   `p_code` char(20) NOT NULL,
-  `pg_code` char(20) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=150 DEFAULT CHARSET=utf8;
+  `pg_code` char(20) NOT NULL,
+  PRIMARY KEY (`sid`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=150 ;
 
 --
 -- 转存表中的数据 `t_l3f2cm_projmapping`
@@ -3002,7 +3072,9 @@ CREATE TABLE IF NOT EXISTS `t_l3f3dm_siteinfo` (
   `flag_la` char(1) NOT NULL,
   `latitude` int(4) NOT NULL,
   `flag_lo` char(1) NOT NULL,
-  `longitude` int(4) NOT NULL
+  `longitude` int(4) NOT NULL,
+  PRIMARY KEY (`statcode`),
+  KEY `statCode` (`statcode`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
@@ -3037,10 +3109,11 @@ INSERT INTO `t_l3f3dm_siteinfo` (`statcode`, `name`, `devcode`, `p_code`, `start
 --
 
 CREATE TABLE IF NOT EXISTS `t_l3f3dm_sitemapping` (
-  `sid` int(4) NOT NULL,
+  `sid` int(4) NOT NULL AUTO_INCREMENT,
   `statcode` char(20) NOT NULL,
-  `p_code` char(20) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8;
+  `p_code` char(20) NOT NULL,
+  PRIMARY KEY (`sid`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=20 ;
 
 --
 -- 转存表中的数据 `t_l3f3dm_sitemapping`
@@ -3074,7 +3147,7 @@ INSERT INTO `t_l3f3dm_sitemapping` (`sid`, `statcode`, `p_code`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `t_l3f3dm_sum_currentreport` (
-  `sid` int(4) NOT NULL,
+  `sid` int(4) NOT NULL AUTO_INCREMENT,
   `deviceid` char(50) NOT NULL,
   `statcode` char(20) NOT NULL,
   `createtime` char(20) NOT NULL,
@@ -3088,8 +3161,9 @@ CREATE TABLE IF NOT EXISTS `t_l3f3dm_sum_currentreport` (
   `temperature` int(4) DEFAULT NULL,
   `humidity` int(4) DEFAULT NULL,
   `rain` int(4) DEFAULT NULL,
-  `airpressure` int(4) DEFAULT NULL
-) ENGINE=MyISAM AUTO_INCREMENT=17 DEFAULT CHARSET=utf8;
+  `airpressure` int(4) DEFAULT NULL,
+  PRIMARY KEY (`sid`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=17 ;
 
 --
 -- 转存表中的数据 `t_l3f3dm_sum_currentreport`
@@ -3110,7 +3184,7 @@ INSERT INTO `t_l3f3dm_sum_currentreport` (`sid`, `deviceid`, `statcode`, `create
 --
 
 CREATE TABLE IF NOT EXISTS `t_l3f4icm_sensorctrltable` (
-  `sid` int(4) NOT NULL,
+  `sid` int(4) NOT NULL AUTO_INCREMENT,
   `deviceid` char(20) NOT NULL,
   `sensorid` int(2) NOT NULL,
   `equid` int(2) NOT NULL,
@@ -3120,8 +3194,9 @@ CREATE TABLE IF NOT EXISTS `t_l3f4icm_sensorctrltable` (
   `sampleduaration` int(2) NOT NULL,
   `paralpha` int(2) NOT NULL,
   `parbeta` int(2) NOT NULL,
-  `pargama` int(2) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+  `pargama` int(2) NOT NULL,
+  PRIMARY KEY (`sid`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
 
 --
 -- 转存表中的数据 `t_l3f4icm_sensorctrltable`
@@ -3137,15 +3212,16 @@ INSERT INTO `t_l3f4icm_sensorctrltable` (`sid`, `deviceid`, `sensorid`, `equid`,
 --
 
 CREATE TABLE IF NOT EXISTS `t_l3f5fm_alarmdata` (
-  `sid` int(4) NOT NULL,
+  `sid` int(4) NOT NULL AUTO_INCREMENT,
   `alarmsrc` int(4) NOT NULL,
   `alarmtype` char(20) NOT NULL,
   `alarmdesc` char(50) NOT NULL,
   `alarmimpact` char(50) NOT NULL,
   `alarmseverity` int(4) NOT NULL,
   `tsgen` int(4) NOT NULL,
-  `tsclose` int(4) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+  `tsclose` int(4) NOT NULL,
+  PRIMARY KEY (`sid`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
 
 --
 -- 转存表中的数据 `t_l3f5fm_alarmdata`
@@ -3161,13 +3237,14 @@ INSERT INTO `t_l3f5fm_alarmdata` (`sid`, `alarmsrc`, `alarmtype`, `alarmdesc`, `
 --
 
 CREATE TABLE IF NOT EXISTS `t_l3f6pm_perfdata` (
-  `sid` int(4) NOT NULL,
+  `sid` int(4) NOT NULL AUTO_INCREMENT,
   `deviceid` int(4) NOT NULL,
   `sensorid` int(4) NOT NULL,
   `stability` int(4) NOT NULL,
   `errcnt` int(4) NOT NULL,
-  `timeupdate` int(4) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+  `timeupdate` int(4) NOT NULL,
+  PRIMARY KEY (`sid`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
 
 --
 -- 转存表中的数据 `t_l3f6pm_perfdata`
@@ -3183,15 +3260,16 @@ INSERT INTO `t_l3f6pm_perfdata` (`sid`, `deviceid`, `sensorid`, `stability`, `er
 --
 
 CREATE TABLE IF NOT EXISTS `t_l3f7ads_adsdata` (
-  `sid` int(4) NOT NULL,
+  `sid` int(4) NOT NULL AUTO_INCREMENT,
   `termid` int(4) NOT NULL,
   `termip` char(50) NOT NULL,
   `adstitle` char(50) NOT NULL,
   `adscontent` char(200) NOT NULL,
   `hightlights` char(100) NOT NULL,
   `activestart` int(4) NOT NULL,
-  `activeend` int(4) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+  `activeend` int(4) NOT NULL,
+  PRIMARY KEY (`sid`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
 
 --
 -- 转存表中的数据 `t_l3f7ads_adsdata`
@@ -3207,10 +3285,11 @@ INSERT INTO `t_l3f7ads_adsdata` (`sid`, `termid`, `termip`, `adstitle`, `adscont
 --
 
 CREATE TABLE IF NOT EXISTS `t_l3f8psm_portaldata` (
-  `sid` int(4) NOT NULL,
+  `sid` int(4) NOT NULL AUTO_INCREMENT,
   `content1` char(50) NOT NULL,
-  `content2` char(50) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+  `content2` char(50) NOT NULL,
+  PRIMARY KEY (`sid`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
 
 --
 -- 转存表中的数据 `t_l3f8psm_portaldata`
@@ -3226,10 +3305,11 @@ INSERT INTO `t_l3f8psm_portaldata` (`sid`, `content1`, `content2`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `t_l3f9gism_accidencedirection` (
-  `sid` int(4) NOT NULL,
+  `sid` int(4) NOT NULL AUTO_INCREMENT,
   `title` char(50) NOT NULL,
-  `content1` char(50) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+  `content1` char(50) NOT NULL,
+  PRIMARY KEY (`sid`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
 
 --
 -- 转存表中的数据 `t_l3f9gism_accidencedirection`
@@ -3245,11 +3325,12 @@ INSERT INTO `t_l3f9gism_accidencedirection` (`sid`, `title`, `content1`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `t_l3f9gism_scheduledirection` (
-  `sid` int(4) NOT NULL,
+  `sid` int(4) NOT NULL AUTO_INCREMENT,
   `title` char(50) NOT NULL,
   `perf1` int(4) NOT NULL,
-  `perf2` int(4) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+  `perf2` int(4) NOT NULL,
+  PRIMARY KEY (`sid`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
 
 --
 -- 转存表中的数据 `t_l3f9gism_scheduledirection`
@@ -3265,11 +3346,12 @@ INSERT INTO `t_l3f9gism_scheduledirection` (`sid`, `title`, `perf1`, `perf2`) VA
 --
 
 CREATE TABLE IF NOT EXISTS `t_l3fxprcm_workerbill` (
-  `sid` int(4) NOT NULL,
+  `sid` int(4) NOT NULL AUTO_INCREMENT,
   `task1` char(50) NOT NULL,
   `approval1` char(50) NOT NULL,
-  `state` char(50) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+  `state` char(50) NOT NULL,
+  PRIMARY KEY (`sid`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
 
 --
 -- 转存表中的数据 `t_l3fxprcm_workerbill`
@@ -3285,7 +3367,7 @@ INSERT INTO `t_l3fxprcm_workerbill` (`sid`, `task1`, `approval1`, `state`) VALUE
 --
 
 CREATE TABLE IF NOT EXISTS `user` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `username` varchar(25) NOT NULL,
   `email` varchar(255) NOT NULL,
   `password_hash` varchar(60) NOT NULL,
@@ -3296,8 +3378,11 @@ CREATE TABLE IF NOT EXISTS `user` (
   `registration_ip` varchar(45) DEFAULT NULL,
   `created_at` int(11) NOT NULL,
   `updated_at` int(11) NOT NULL,
-  `flags` int(11) NOT NULL DEFAULT '0'
-) ENGINE=MyISAM AUTO_INCREMENT=54 DEFAULT CHARSET=utf8;
+  `flags` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `user_unique_username` (`username`),
+  UNIQUE KEY `user_unique_email` (`email`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=54 ;
 
 --
 -- 转存表中的数据 `user`
@@ -3310,583 +3395,6 @@ INSERT INTO `user` (`id`, `username`, `email`, `password_hash`, `auth_key`, `con
 (52, 'zjl', 'smdzjl@sina.cn', '$2y$12$pCBD9e0/B0bvwKs6crXA2.pzy606Bn4o19Bzx1r8jdjr1t1nN/jc.', 'GPJwlaHeV0JaMswrLuai0JsW7H8aUjPh', 1444091551, NULL, NULL, '117.135.149.14', 1444091501, 1444091551, 0),
 (53, 'shanchuz', 'zsc0905@sina.com', '$2y$12$mlslUwrYelb5nV6DfYot9ORgYGI9YB5.bN/HCMYru6QRn6UrfJsP6', '7VMvRAprvPsYU-Fqt6jDYeLvUzfLzdjF', 1444527288, NULL, NULL, '101.226.125.108', 1444527242, 1444527288, 0);
 
---
--- Indexes for dumped tables
---
-
---
--- Indexes for table `profile`
---
-ALTER TABLE `profile`
-  ADD PRIMARY KEY (`user_id`);
-
---
--- Indexes for table `token`
---
-ALTER TABLE `token`
-  ADD UNIQUE KEY `token_unique` (`user_id`,`code`,`type`);
-
---
--- Indexes for table `t_l1vm_cmdbuf`
---
-ALTER TABLE `t_l1vm_cmdbuf`
-  ADD PRIMARY KEY (`sid`);
-
---
--- Indexes for table `t_l1vm_deviceversion`
---
-ALTER TABLE `t_l1vm_deviceversion`
-  ADD PRIMARY KEY (`deviceid`);
-
---
--- Indexes for table `t_l1vm_engpar`
---
-ALTER TABLE `t_l1vm_engpar`
-  ADD PRIMARY KEY (`sid`);
-
---
--- Indexes for table `t_l1vm_loginfo`
---
-ALTER TABLE `t_l1vm_loginfo`
-  ADD PRIMARY KEY (`sid`);
-
---
--- Indexes for table `t_l1vm_logtracemodule`
---
-ALTER TABLE `t_l1vm_logtracemodule`
-  ADD PRIMARY KEY (`sid`);
-
---
--- Indexes for table `t_l1vm_logtracemsg`
---
-ALTER TABLE `t_l1vm_logtracemsg`
-  ADD PRIMARY KEY (`sid`);
-
---
--- Indexes for table `t_l1vm_logwechatswitch`
---
-ALTER TABLE `t_l1vm_logwechatswitch`
-  ADD PRIMARY KEY (`user`);
-
---
--- Indexes for table `t_l2sdk_iothcu_hcudevice`
---
-ALTER TABLE `t_l2sdk_iothcu_hcudevice`
-  ADD PRIMARY KEY (`devcode`);
-
---
--- Indexes for table `t_l2sdk_nbiot_ipm376_context`
---
-ALTER TABLE `t_l2sdk_nbiot_ipm376_context`
-  ADD PRIMARY KEY (`sid`);
-
---
--- Indexes for table `t_l2sdk_wechat_accesstoken`
---
-ALTER TABLE `t_l2sdk_wechat_accesstoken`
-  ADD PRIMARY KEY (`appid`);
-
---
--- Indexes for table `t_l2sdk_wechat_blebound`
---
-ALTER TABLE `t_l2sdk_wechat_blebound`
-  ADD PRIMARY KEY (`sid`);
-
---
--- Indexes for table `t_l2sdk_wechat_deviceqrcode`
---
-ALTER TABLE `t_l2sdk_wechat_deviceqrcode`
-  ADD PRIMARY KEY (`deviceid`);
-
---
--- Indexes for table `t_l2snr_airprsdata`
---
-ALTER TABLE `t_l2snr_airprsdata`
-  ADD PRIMARY KEY (`sid`);
-
---
--- Indexes for table `t_l2snr_alcoholdata`
---
-ALTER TABLE `t_l2snr_alcoholdata`
-  ADD PRIMARY KEY (`sid`);
-
---
--- Indexes for table `t_l2snr_co1data`
---
-ALTER TABLE `t_l2snr_co1data`
-  ADD PRIMARY KEY (`sid`);
-
---
--- Indexes for table `t_l2snr_dataformat`
---
-ALTER TABLE `t_l2snr_dataformat`
-  ADD PRIMARY KEY (`deviceid`);
-
---
--- Indexes for table `t_l2snr_emcaccumulation`
---
-ALTER TABLE `t_l2snr_emcaccumulation`
-  ADD PRIMARY KEY (`sid`);
-
---
--- Indexes for table `t_l2snr_emcdata`
---
-ALTER TABLE `t_l2snr_emcdata`
-  ADD PRIMARY KEY (`sid`);
-
---
--- Indexes for table `t_l2snr_hchodata`
---
-ALTER TABLE `t_l2snr_hchodata`
-  ADD PRIMARY KEY (`sid`);
-
---
--- Indexes for table `t_l2snr_hourreport`
---
-ALTER TABLE `t_l2snr_hourreport`
-  ADD PRIMARY KEY (`sid`);
-
---
--- Indexes for table `t_l2snr_hsmmpdata`
---
-ALTER TABLE `t_l2snr_hsmmpdata`
-  ADD PRIMARY KEY (`sid`);
-
---
--- Indexes for table `t_l2snr_humiddata`
---
-ALTER TABLE `t_l2snr_humiddata`
-  ADD PRIMARY KEY (`sid`);
-
---
--- Indexes for table `t_l2snr_ipm_afndata1_f25`
---
-ALTER TABLE `t_l2snr_ipm_afndata1_f25`
-  ADD PRIMARY KEY (`sid`);
-
---
--- Indexes for table `t_l2snr_lightstrdata`
---
-ALTER TABLE `t_l2snr_lightstrdata`
-  ADD PRIMARY KEY (`sid`);
-
---
--- Indexes for table `t_l2snr_minreport`
---
-ALTER TABLE `t_l2snr_minreport`
-  ADD PRIMARY KEY (`sid`);
-
---
--- Indexes for table `t_l2snr_noisedata`
---
-ALTER TABLE `t_l2snr_noisedata`
-  ADD PRIMARY KEY (`sid`);
-
---
--- Indexes for table `t_l2snr_picturedata`
---
-ALTER TABLE `t_l2snr_picturedata`
-  ADD PRIMARY KEY (`sid`);
-
---
--- Indexes for table `t_l2snr_pm25data`
---
-ALTER TABLE `t_l2snr_pm25data`
-  ADD PRIMARY KEY (`sid`);
-
---
--- Indexes for table `t_l2snr_raindata`
---
-ALTER TABLE `t_l2snr_raindata`
-  ADD PRIMARY KEY (`sid`);
-
---
--- Indexes for table `t_l2snr_sensorinfo`
---
-ALTER TABLE `t_l2snr_sensorinfo`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `t_l2snr_sensortype`
---
-ALTER TABLE `t_l2snr_sensortype`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `t_l2snr_tempdata`
---
-ALTER TABLE `t_l2snr_tempdata`
-  ADD PRIMARY KEY (`sid`);
-
---
--- Indexes for table `t_l2snr_toxicgasdata`
---
-ALTER TABLE `t_l2snr_toxicgasdata`
-  ADD PRIMARY KEY (`sid`);
-
---
--- Indexes for table `t_l2snr_winddir`
---
-ALTER TABLE `t_l2snr_winddir`
-  ADD PRIMARY KEY (`sid`);
-
---
--- Indexes for table `t_l2snr_windspd`
---
-ALTER TABLE `t_l2snr_windspd`
-  ADD PRIMARY KEY (`sid`);
-
---
--- Indexes for table `t_l3f1sym_account`
---
-ALTER TABLE `t_l3f1sym_account`
-  ADD PRIMARY KEY (`uid`);
-
---
--- Indexes for table `t_l3f1sym_authlist`
---
-ALTER TABLE `t_l3f1sym_authlist`
-  ADD PRIMARY KEY (`sid`);
-
---
--- Indexes for table `t_l3f1sym_hcu_swver`
---
-ALTER TABLE `t_l3f1sym_hcu_swver`
-  ADD PRIMARY KEY (`sid`);
-
---
--- Indexes for table `t_l3f1sym_session`
---
-ALTER TABLE `t_l3f1sym_session`
-  ADD PRIMARY KEY (`sessionid`);
-
---
--- Indexes for table `t_l3f1sym_sysinfo`
---
-ALTER TABLE `t_l3f1sym_sysinfo`
-  ADD PRIMARY KEY (`sid`);
-
---
--- Indexes for table `t_l3f1sym_userprofile`
---
-ALTER TABLE `t_l3f1sym_userprofile`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `user_unique_username` (`username`),
-  ADD UNIQUE KEY `user_unique_email` (`email`);
-
---
--- Indexes for table `t_l3f2cm_projgroup`
---
-ALTER TABLE `t_l3f2cm_projgroup`
-  ADD PRIMARY KEY (`pg_code`);
-
---
--- Indexes for table `t_l3f2cm_projinfo`
---
-ALTER TABLE `t_l3f2cm_projinfo`
-  ADD PRIMARY KEY (`p_code`),
-  ADD KEY `statCode` (`p_code`);
-
---
--- Indexes for table `t_l3f2cm_projmapping`
---
-ALTER TABLE `t_l3f2cm_projmapping`
-  ADD PRIMARY KEY (`sid`);
-
---
--- Indexes for table `t_l3f3dm_siteinfo`
---
-ALTER TABLE `t_l3f3dm_siteinfo`
-  ADD PRIMARY KEY (`statcode`),
-  ADD KEY `statCode` (`statcode`);
-
---
--- Indexes for table `t_l3f3dm_sitemapping`
---
-ALTER TABLE `t_l3f3dm_sitemapping`
-  ADD PRIMARY KEY (`sid`);
-
---
--- Indexes for table `t_l3f3dm_sum_currentreport`
---
-ALTER TABLE `t_l3f3dm_sum_currentreport`
-  ADD PRIMARY KEY (`sid`);
-
---
--- Indexes for table `t_l3f4icm_sensorctrltable`
---
-ALTER TABLE `t_l3f4icm_sensorctrltable`
-  ADD PRIMARY KEY (`sid`);
-
---
--- Indexes for table `t_l3f5fm_alarmdata`
---
-ALTER TABLE `t_l3f5fm_alarmdata`
-  ADD PRIMARY KEY (`sid`);
-
---
--- Indexes for table `t_l3f6pm_perfdata`
---
-ALTER TABLE `t_l3f6pm_perfdata`
-  ADD PRIMARY KEY (`sid`);
-
---
--- Indexes for table `t_l3f7ads_adsdata`
---
-ALTER TABLE `t_l3f7ads_adsdata`
-  ADD PRIMARY KEY (`sid`);
-
---
--- Indexes for table `t_l3f8psm_portaldata`
---
-ALTER TABLE `t_l3f8psm_portaldata`
-  ADD PRIMARY KEY (`sid`);
-
---
--- Indexes for table `t_l3f9gism_accidencedirection`
---
-ALTER TABLE `t_l3f9gism_accidencedirection`
-  ADD PRIMARY KEY (`sid`);
-
---
--- Indexes for table `t_l3f9gism_scheduledirection`
---
-ALTER TABLE `t_l3f9gism_scheduledirection`
-  ADD PRIMARY KEY (`sid`);
-
---
--- Indexes for table `t_l3fxprcm_workerbill`
---
-ALTER TABLE `t_l3fxprcm_workerbill`
-  ADD PRIMARY KEY (`sid`);
-
---
--- Indexes for table `user`
---
-ALTER TABLE `user`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `user_unique_username` (`username`),
-  ADD UNIQUE KEY `user_unique_email` (`email`);
-
---
--- AUTO_INCREMENT for dumped tables
---
-
---
--- AUTO_INCREMENT for table `t_l1vm_cmdbuf`
---
-ALTER TABLE `t_l1vm_cmdbuf`
-  MODIFY `sid` int(4) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=552;
---
--- AUTO_INCREMENT for table `t_l1vm_engpar`
---
-ALTER TABLE `t_l1vm_engpar`
-  MODIFY `sid` int(4) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
---
--- AUTO_INCREMENT for table `t_l1vm_loginfo`
---
-ALTER TABLE `t_l1vm_loginfo`
-  MODIFY `sid` int(6) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=1096;
---
--- AUTO_INCREMENT for table `t_l1vm_logtracemodule`
---
-ALTER TABLE `t_l1vm_logtracemodule`
-  MODIFY `sid` int(6) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=81;
---
--- AUTO_INCREMENT for table `t_l1vm_logtracemsg`
---
-ALTER TABLE `t_l1vm_logtracemsg`
-  MODIFY `sid` int(6) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=210;
---
--- AUTO_INCREMENT for table `t_l2sdk_nbiot_ipm376_context`
---
-ALTER TABLE `t_l2sdk_nbiot_ipm376_context`
-  MODIFY `sid` int(4) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
---
--- AUTO_INCREMENT for table `t_l2sdk_wechat_blebound`
---
-ALTER TABLE `t_l2sdk_wechat_blebound`
-  MODIFY `sid` int(6) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=8;
---
--- AUTO_INCREMENT for table `t_l2snr_airprsdata`
---
-ALTER TABLE `t_l2snr_airprsdata`
-  MODIFY `sid` int(4) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=19900;
---
--- AUTO_INCREMENT for table `t_l2snr_alcoholdata`
---
-ALTER TABLE `t_l2snr_alcoholdata`
-  MODIFY `sid` int(4) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=19900;
---
--- AUTO_INCREMENT for table `t_l2snr_co1data`
---
-ALTER TABLE `t_l2snr_co1data`
-  MODIFY `sid` int(4) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=19900;
---
--- AUTO_INCREMENT for table `t_l2snr_emcaccumulation`
---
-ALTER TABLE `t_l2snr_emcaccumulation`
-  MODIFY `sid` int(4) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=9;
---
--- AUTO_INCREMENT for table `t_l2snr_emcdata`
---
-ALTER TABLE `t_l2snr_emcdata`
-  MODIFY `sid` int(4) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=63846;
---
--- AUTO_INCREMENT for table `t_l2snr_hchodata`
---
-ALTER TABLE `t_l2snr_hchodata`
-  MODIFY `sid` int(4) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=19900;
---
--- AUTO_INCREMENT for table `t_l2snr_hourreport`
---
-ALTER TABLE `t_l2snr_hourreport`
-  MODIFY `sid` int(4) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=243;
---
--- AUTO_INCREMENT for table `t_l2snr_hsmmpdata`
---
-ALTER TABLE `t_l2snr_hsmmpdata`
-  MODIFY `sid` int(4) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=28070;
---
--- AUTO_INCREMENT for table `t_l2snr_humiddata`
---
-ALTER TABLE `t_l2snr_humiddata`
-  MODIFY `sid` int(4) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=19900;
---
--- AUTO_INCREMENT for table `t_l2snr_ipm_afndata1_f25`
---
-ALTER TABLE `t_l2snr_ipm_afndata1_f25`
-  MODIFY `sid` int(4) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
---
--- AUTO_INCREMENT for table `t_l2snr_lightstrdata`
---
-ALTER TABLE `t_l2snr_lightstrdata`
-  MODIFY `sid` int(4) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=19900;
---
--- AUTO_INCREMENT for table `t_l2snr_minreport`
---
-ALTER TABLE `t_l2snr_minreport`
-  MODIFY `sid` int(4) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=55779;
---
--- AUTO_INCREMENT for table `t_l2snr_noisedata`
---
-ALTER TABLE `t_l2snr_noisedata`
-  MODIFY `sid` int(4) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=19900;
---
--- AUTO_INCREMENT for table `t_l2snr_picturedata`
---
-ALTER TABLE `t_l2snr_picturedata`
-  MODIFY `sid` int(4) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=28071;
---
--- AUTO_INCREMENT for table `t_l2snr_pm25data`
---
-ALTER TABLE `t_l2snr_pm25data`
-  MODIFY `sid` int(4) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4059;
---
--- AUTO_INCREMENT for table `t_l2snr_raindata`
---
-ALTER TABLE `t_l2snr_raindata`
-  MODIFY `sid` int(4) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=19900;
---
--- AUTO_INCREMENT for table `t_l2snr_tempdata`
---
-ALTER TABLE `t_l2snr_tempdata`
-  MODIFY `sid` int(4) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=21027;
---
--- AUTO_INCREMENT for table `t_l2snr_toxicgasdata`
---
-ALTER TABLE `t_l2snr_toxicgasdata`
-  MODIFY `sid` int(4) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=19900;
---
--- AUTO_INCREMENT for table `t_l2snr_winddir`
---
-ALTER TABLE `t_l2snr_winddir`
-  MODIFY `sid` int(4) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=19900;
---
--- AUTO_INCREMENT for table `t_l2snr_windspd`
---
-ALTER TABLE `t_l2snr_windspd`
-  MODIFY `sid` int(4) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=19900;
---
--- AUTO_INCREMENT for table `t_l3f1sym_authlist`
---
-ALTER TABLE `t_l3f1sym_authlist`
-  MODIFY `sid` int(4) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=280;
---
--- AUTO_INCREMENT for table `t_l3f1sym_hcu_swver`
---
-ALTER TABLE `t_l3f1sym_hcu_swver`
-  MODIFY `sid` int(4) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
---
--- AUTO_INCREMENT for table `t_l3f1sym_sysinfo`
---
-ALTER TABLE `t_l3f1sym_sysinfo`
-  MODIFY `sid` int(4) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=101;
---
--- AUTO_INCREMENT for table `t_l3f1sym_userprofile`
---
-ALTER TABLE `t_l3f1sym_userprofile`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=54;
---
--- AUTO_INCREMENT for table `t_l3f2cm_projmapping`
---
-ALTER TABLE `t_l3f2cm_projmapping`
-  MODIFY `sid` int(4) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=150;
---
--- AUTO_INCREMENT for table `t_l3f3dm_sitemapping`
---
-ALTER TABLE `t_l3f3dm_sitemapping`
-  MODIFY `sid` int(4) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=20;
---
--- AUTO_INCREMENT for table `t_l3f3dm_sum_currentreport`
---
-ALTER TABLE `t_l3f3dm_sum_currentreport`
-  MODIFY `sid` int(4) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=17;
---
--- AUTO_INCREMENT for table `t_l3f4icm_sensorctrltable`
---
-ALTER TABLE `t_l3f4icm_sensorctrltable`
-  MODIFY `sid` int(4) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
---
--- AUTO_INCREMENT for table `t_l3f5fm_alarmdata`
---
-ALTER TABLE `t_l3f5fm_alarmdata`
-  MODIFY `sid` int(4) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
---
--- AUTO_INCREMENT for table `t_l3f6pm_perfdata`
---
-ALTER TABLE `t_l3f6pm_perfdata`
-  MODIFY `sid` int(4) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
---
--- AUTO_INCREMENT for table `t_l3f7ads_adsdata`
---
-ALTER TABLE `t_l3f7ads_adsdata`
-  MODIFY `sid` int(4) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
---
--- AUTO_INCREMENT for table `t_l3f8psm_portaldata`
---
-ALTER TABLE `t_l3f8psm_portaldata`
-  MODIFY `sid` int(4) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
---
--- AUTO_INCREMENT for table `t_l3f9gism_accidencedirection`
---
-ALTER TABLE `t_l3f9gism_accidencedirection`
-  MODIFY `sid` int(4) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
---
--- AUTO_INCREMENT for table `t_l3f9gism_scheduledirection`
---
-ALTER TABLE `t_l3f9gism_scheduledirection`
-  MODIFY `sid` int(4) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
---
--- AUTO_INCREMENT for table `t_l3fxprcm_workerbill`
---
-ALTER TABLE `t_l3fxprcm_workerbill`
-  MODIFY `sid` int(4) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
---
--- AUTO_INCREMENT for table `user`
---
-ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=54;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
