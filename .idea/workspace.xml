@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d2aa40e9-e569-42c7-88ab-3d7c06bf7aa1" name="Default" comment="">
+<<<<<<< HEAD
       <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/l4aqycui/font-awesome/fonts/FontAwesome.otf" />
       <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/l4aqycui/font-awesome/fonts/fontawesome-webfont.eot" />
       <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/l4aqycui/font-awesome/fonts/fontawesome-webfont.ttf" />
@@ -70,6 +71,13 @@
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/l1comvm/sysversion.php" afterPath="$PROJECT_DIR$/l1comvm/sysversion.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/l4aqycui/.idea/workspace.xml" afterPath="$PROJECT_DIR$/l4aqycui/.idea/workspace.xml" />
+=======
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/l1comvm/commsg.php" afterPath="$PROJECT_DIR$/l1comvm/commsg.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/l2sdk/dbi_l2sdk_nbiot.class.php" afterPath="$PROJECT_DIR$/l2sdk/dbi_l2sdk_nbiot.class.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/l2sdk/task_l2sdk_nbiot_ipm376.class.php" afterPath="$PROJECT_DIR$/l2sdk/task_l2sdk_nbiot_ipm376.class.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/l2sdk/task_l2sdk_nbiot_std_cj188.class.php" afterPath="$PROJECT_DIR$/l2sdk/task_l2sdk_nbiot_std_cj188.class.php" />
+>>>>>>> feature
     </list>
     <ignored path="mfunhcu.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -100,6 +108,7 @@
     <favorites_list name="mfunhcu" />
   </component>
   <component name="FileEditorManager">
+<<<<<<< HEAD
     <leaf>
       <file leaf-file-name="task_l4aqyc_ui.class.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/l4aqycui/task_l4aqyc_ui.class.php">
@@ -146,21 +155,38 @@
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="-4.137931" vertical-offset="0" max-vertical-offset="1260">
               <caret line="6" column="39" selection-start-line="6" selection-start-column="16" selection-end-line="6" selection-end-column="39" />
+=======
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file leaf-file-name="commsg.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/l1comvm/commsg.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-7.464286">
+              <caret line="328" column="0" selection-start-line="328" selection-start-column="0" selection-end-line="334" selection-end-column="53" />
+>>>>>>> feature
               <folding />
             </state>
           </provider>
         </entry>
       </file>
+<<<<<<< HEAD
       <file leaf-file-name="helloworld.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/l4aqycui/helloworld.html">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="-4.448276" vertical-offset="51" max-vertical-offset="1120">
               <caret line="9" column="35" selection-start-line="9" selection-start-column="35" selection-end-line="9" selection-end-column="35" />
+=======
+      <file leaf-file-name="task_l2sdk_nbiot_std_cj188.class.php" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/l2sdk/task_l2sdk_nbiot_std_cj188.class.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.7096774">
+              <caret line="100" column="0" selection-start-line="100" selection-start-column="0" selection-end-line="100" selection-end-column="0" />
+>>>>>>> feature
               <folding />
             </state>
           </provider>
         </entry>
       </file>
+<<<<<<< HEAD
       <file leaf-file-name="scope.css" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/l4aqycui/css/scope.css">
           <provider selected="true" editor-type-id="text-editor">
@@ -239,11 +265,31 @@
                 <marker date="1468394392409" expanded="true" signature="151301:151351" placeholder="..." />
                 <marker date="1468394392409" expanded="true" signature="151416:151431" placeholder="..." />
                 <marker date="1468394392409" expanded="true" signature="160877:160893" placeholder="..." />
+=======
+      <file leaf-file-name="dbi_l2sdk_nbiot.class.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/l2sdk/dbi_l2sdk_nbiot.class.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-6.107143">
+              <caret line="149" column="63" selection-start-line="149" selection-start-column="50" selection-end-line="149" selection-end-column="63" />
+              <folding>
+                <marker date="1468399579470" expanded="true" signature="1611:1690" placeholder="SELECT * FRO... t_l2sdk_nbiot_ipm376_context" />
+                <marker date="1468399579470" expanded="true" signature="1807:1956" placeholder="UPDATE `t_l2... " />
+                <marker date="1468399579470" expanded="true" signature="2040:2182" placeholder="INSERT INTO `t_l2sdk_nbiot_ipm376_context`... " />
+                <marker date="1468399579470" expanded="true" signature="2628:2707" placeholder="SELECT * FRO... t_l2sdk_nbiot_ipm376_context" />
+                <marker date="1468399579470" expanded="true" signature="3424:3508" placeholder="SELECT * FRO... t_l2sdk_nbiot_ipm376_context" />
+                <marker date="1468399579470" expanded="true" signature="3625:3779" placeholder="UPDATE `t_l2... " />
+                <marker date="1468399579470" expanded="true" signature="3863:4010" placeholder="INSERT INTO `t_l2sdk_nbiot_ipm376_context`... " />
+                <marker date="1468399579470" expanded="true" signature="4461:4547" placeholder="SELECT * FRO... t_l2sdk_nbiot_ipm376_context" />
+                <marker date="1468399579470" expanded="true" signature="5142:5226" placeholder="SELECT * FRO... t_l2sdk_nbiot_std_cj188_context" />
+                <marker date="1468399579470" expanded="true" signature="5441:5571" placeholder="UPDATE `t_l2... " />
+                <marker date="1468399579470" expanded="true" signature="5655:5769" placeholder="INSERT INTO `t_l2sdk_nbiot_std_cj188_context`... " />
+>>>>>>> feature
               </folding>
             </state>
           </provider>
         </entry>
       </file>
+<<<<<<< HEAD
       <file leaf-file-name="Login.css" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/l4aqycui/css/Login.css">
           <provider selected="true" editor-type-id="text-editor">
@@ -254,6 +300,8 @@
           </provider>
         </entry>
       </file>
+=======
+>>>>>>> feature
     </leaf>
   </component>
   <component name="Git.Settings">
@@ -282,12 +330,9 @@
         <option value="$PROJECT_DIR$/l3appl/fum9gism/task_l3apl_f9gism.class.php" />
         <option value="$PROJECT_DIR$/l3appl/fumxprcm/task_l3apl_fxprcm.class.php" />
         <option value="$PROJECT_DIR$/l2sensorproc/sensoripm/task_l2snr_ipm.class.php" />
-        <option value="$PROJECT_DIR$/l2sdk/dbi_l2sdk_nbiot.class.php" />
         <option value="$PROJECT_DIR$/l2sdk/task_l2sdk_nbiot_iwm.class.php" />
         <option value="$PROJECT_DIR$/l1mainentry/cloud_callback_nbiot_iwm.php" />
         <option value="$PROJECT_DIR$/l2sdk/task_l2sdk_iot_hcu.class.php" />
-        <option value="$PROJECT_DIR$/l2sdk/task_l2sdk_nbiot_ipm376.class.php" />
-        <option value="$PROJECT_DIR$/l2sdk/task_l2sdk_nbiot_std_cj188.class.php" />
         <option value="$PROJECT_DIR$/l1comvm/pg_nbiot_ipm_engpar.php" />
         <option value="$PROJECT_DIR$/l1comvm/pg_nbiot_iwm_engpar.php" />
         <option value="$PROJECT_DIR$/l1comvm/pg_nbiot_igm_engpar.php" />
@@ -299,7 +344,12 @@
         <option value="$PROJECT_DIR$/l1mainentry/h5ui_entry_nbiot_iwm.php" />
         <option value="$PROJECT_DIR$/l1mainentry/h5ui_entry_nbiot_igm.php" />
         <option value="$PROJECT_DIR$/l1comvm/vmlayer.php" />
+<<<<<<< HEAD
         <option value="$PROJECT_DIR$/l1comvm/commsg.php" />
+=======
+        <option value="$PROJECT_DIR$/l1comvm/sysversion.php" />
+        <option value="$PROJECT_DIR$/l4aqycui/task_l4aqyc_ui.class.php" />
+>>>>>>> feature
         <option value="$PROJECT_DIR$/l3appl/fum1sym/task_l3apl_f1sym.class.php" />
         <option value="$PROJECT_DIR$/l4oamtools/DbTest.php" />
         <option value="$PROJECT_DIR$/l4aqycui/helloworld.html" />
@@ -311,8 +361,15 @@
         <option value="$PROJECT_DIR$/l4aqycui/js/app.js" />
         <option value="$PROJECT_DIR$/l4aqycui/task_l4aqyc_ui.class.php" />
         <option value="$PROJECT_DIR$/l3appl/fum1sym/dbi_l3apl_f1sym.class.php" />
+<<<<<<< HEAD
         <option value="$PROJECT_DIR$/l1comvm/sysversion.php" />
         <option value="$PROJECT_DIR$/readme.txt" />
+=======
+        <option value="$PROJECT_DIR$/l1comvm/commsg.php" />
+        <option value="$PROJECT_DIR$/l2sdk/task_l2sdk_nbiot_ipm376.class.php" />
+        <option value="$PROJECT_DIR$/l2sdk/dbi_l2sdk_nbiot.class.php" />
+        <option value="$PROJECT_DIR$/l2sdk/task_l2sdk_nbiot_std_cj188.class.php" />
+>>>>>>> feature
       </list>
     </option>
   </component>
@@ -391,6 +448,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+<<<<<<< HEAD
               <option name="myItemId" value="l4aqycui" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -438,6 +496,9 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="l1comvm" />
+=======
+              <option name="myItemId" value="l2sdk" />
+>>>>>>> feature
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -528,6 +589,7 @@
     <frame x="-9" y="-9" width="1938" height="1050" extended-state="0" />
     <editor active="true" />
     <layout>
+<<<<<<< HEAD
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -547,6 +609,27 @@
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.5813953" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+=======
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2137628" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="true" content_ui="tabs" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4356589" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.28992248" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.42170542" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+>>>>>>> feature
     </layout>
   </component>
   <component name="Vcs.Log.UiProperties">
@@ -568,11 +651,6 @@
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
-        <line-breakpoint enabled="true" type="php">
-          <url>file://$PROJECT_DIR$/l4oamtools/DbTest.php</url>
-          <line>319</line>
-          <option name="timeStamp" value="56" />
-        </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
           <url>file://$PROJECT_DIR$/l3appl/fum1sym/dbi_l3apl_f1sym.class.php</url>
           <line>594</line>
@@ -616,6 +694,7 @@
         </state>
       </provider>
     </entry>
+<<<<<<< HEAD
     <entry file="file://$PROJECT_DIR$/l2sdk/dbi_l2sdk_nbiot.class.php">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.7741935" vertical-offset="0" max-vertical-offset="0">
@@ -623,6 +702,8 @@
         </state>
       </provider>
     </entry>
+=======
+>>>>>>> feature
     <entry file="file://$PROJECT_DIR$/l1mainentry/cloud_callback_nbiot_ipm376.php">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-4.75" vertical-offset="0" max-vertical-offset="0">
@@ -651,6 +732,7 @@
         </state>
       </provider>
     </entry>
+<<<<<<< HEAD
     <entry file="file://$PROJECT_DIR$/l2sdk/task_l2sdk_nbiot_ipm376.class.php">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.41935483" vertical-offset="0" max-vertical-offset="0">
@@ -658,6 +740,8 @@
         </state>
       </provider>
     </entry>
+=======
+>>>>>>> feature
     <entry file="file://$PROJECT_DIR$/l2sdk/task_l2sdk_iot_hcu.class.php">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.032258064" vertical-offset="0" max-vertical-offset="0">
@@ -679,6 +763,7 @@
         </state>
       </provider>
     </entry>
+<<<<<<< HEAD
     <entry file="file://$PROJECT_DIR$/l2sdk/task_l2sdk_nbiot_std_cj188.class.php">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="1.1198738" vertical-offset="0" max-vertical-offset="0">
@@ -686,6 +771,8 @@
         </state>
       </provider>
     </entry>
+=======
+>>>>>>> feature
     <entry file="file://$PROJECT_DIR$/l1comvm/pg_emcwx_engpar.php">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="0">
@@ -822,14 +909,22 @@
         </state>
       </provider>
     </entry>
+<<<<<<< HEAD
     <entry file="file://$PROJECT_DIR$/l4oamtools/DbTest.php">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="6380" max-vertical-offset="16840">
           <caret line="319" column="0" selection-start-line="319" selection-start-column="0" selection-end-line="319" selection-end-column="0" />
+=======
+    <entry file="file://$PROJECT_DIR$/l4aqycui/task_l4aqyc_ui.class.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="1215" column="0" selection-start-line="1215" selection-start-column="0" selection-end-line="1215" selection-end-column="0" />
+>>>>>>> feature
           <folding />
         </state>
       </provider>
     </entry>
+<<<<<<< HEAD
     <entry file="file://$PROJECT_DIR$/l3appl/fum1sym/task_l3apl_f1sym.class.php">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-50.03448" vertical-offset="4529" max-vertical-offset="6300">
@@ -875,36 +970,95 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-6.206897" vertical-offset="0" max-vertical-offset="400">
           <caret line="9" column="0" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
+=======
+    <entry file="file://$PROJECT_DIR$/l3appl/fum1sym/dbi_l3apl_f1sym.class.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="636" column="0" selection-start-line="636" selection-start-column="0" selection-end-line="636" selection-end-column="0" />
+          <folding>
+            <marker date="1468381017749" expanded="true" signature="7587:7641" placeholder="SELECT * FRO... t_l3f1sym_session" />
+            <marker date="1468381017749" expanded="true" signature="7716:7825" placeholder="UPDATE `t_l3... " />
+            <marker date="1468381017749" expanded="true" signature="7960:8064" placeholder="INSERT INTO `t_l3f1sym_session`... " />
+            <marker date="1468381017749" expanded="true" signature="8611:8677" placeholder="SELECT * FRO... t_l3f1sym_session" />
+            <marker date="1468381017749" expanded="true" signature="9638:9694" placeholder="SELECT * FRO... t_l3f1sym_account" />
+            <marker date="1468381017749" expanded="true" signature="11481:11547" placeholder="SELECT * FRO... t_l3f1sym_session" />
+            <marker date="1468381017749" expanded="true" signature="11927:11981" placeholder="SELECT * FRO... t_l3f1sym_account" />
+            <marker date="1468381017749" expanded="true" signature="13039:13080" placeholder="SELECT * FRO... t_l3f1sym_account" />
+            <marker date="1468381017749" expanded="true" signature="13655:13707" placeholder="SELECT * FRO... t_l3f1sym_account" />
+            <marker date="1468381017749" expanded="true" signature="15583:15639" placeholder="SELECT * FRO... t_l3f1sym_account" />
+            <marker date="1468381017749" expanded="true" signature="15769:16011" placeholder="UPDATE `t_l3... " />
+            <marker date="1468381017749" expanded="true" signature="16132:16359" placeholder="INSERT INTO `t_l3f1sym_account`... " />
+            <marker date="1468381017749" expanded="true" signature="16446:16499" placeholder="DELETE FROM " />
+            <marker date="1468381017749" expanded="true" signature="16749:16826" placeholder="INSERT INTO `t_l3f1sym_authlist`... " />
+            <marker date="1468381017749" expanded="true" signature="18075:18315" placeholder="UPDATE `t_l3... " />
+            <marker date="1468381017749" expanded="true" signature="18427:18652" placeholder="UPDATE `t_l3... " />
+            <marker date="1468381017749" expanded="true" signature="18739:18792" placeholder="DELETE FROM " />
+            <marker date="1468381017749" expanded="true" signature="19042:19119" placeholder="INSERT INTO `t_l3f1sym_authlist`... " />
+            <marker date="1468381017749" expanded="true" signature="19624:19676" placeholder="DELETE FROM " />
+            <marker date="1468381017749" expanded="true" signature="19760:19813" placeholder="DELETE FROM " />
+            <marker date="1468381017749" expanded="true" signature="20354:20397" placeholder="SELECT * FRO... t_l3f1sym_hcu_swver" />
+            <marker date="1468381017749" expanded="true" signature="21681:21745" placeholder="SELECT * FRO... t_l3f1sym_hcu_swver" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/l3appl/fum1sym/task_l3apl_f1sym.class.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.582343">
+          <caret line="304" column="0" selection-start-line="304" selection-start-column="0" selection-end-line="304" selection-end-column="0" />
+>>>>>>> feature
           <folding />
         </state>
       </provider>
     </entry>
+<<<<<<< HEAD
     <entry file="file://$PROJECT_DIR$/l4aqycui/jump.php">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-18.62069" vertical-offset="0" max-vertical-offset="660">
           <caret line="27" column="2" selection-start-line="27" selection-start-column="2" selection-end-line="27" selection-end-column="2" />
+=======
+    <entry file="file://$PROJECT_DIR$/l1comvm/vmlayer.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.032258064">
+          <caret line="796" column="0" selection-start-line="796" selection-start-column="0" selection-end-line="796" selection-end-column="0" />
+>>>>>>> feature
           <folding />
         </state>
       </provider>
     </entry>
+<<<<<<< HEAD
     <entry file="file://$PROJECT_DIR$/l4aqycui/upload.php">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="5.448276" vertical-offset="158" max-vertical-offset="1000">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+=======
+    <entry file="file://$PROJECT_DIR$/l1mainentry/h5ui_entry_aqyc.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.4516129">
+          <caret line="14" column="0" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
+>>>>>>> feature
           <folding />
         </state>
       </provider>
     </entry>
+<<<<<<< HEAD
     <entry file="file://$PROJECT_DIR$/l4aqycui/font-awesome/less/variables.less">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.4576659" vertical-offset="0" max-vertical-offset="15000">
           <caret line="10" column="27" selection-start-line="10" selection-start-column="27" selection-end-line="10" selection-end-column="27" />
+=======
+    <entry file="file://$PROJECT_DIR$/l4aqycui/request.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.29032257">
+          <caret line="9" column="0" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
+>>>>>>> feature
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/l4aqycui/font-awesome/scss/_variables.scss">
       <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
         <state vertical-scroll-proportion="0.26128265" vertical-offset="0" max-vertical-offset="15000">
           <caret line="11" column="43" selection-start-line="11" selection-start-column="43" selection-end-line="11" selection-end-column="43" />
           <folding />
@@ -936,10 +1090,17 @@
             <marker date="1468394392409" expanded="true" signature="151301:151351" placeholder="..." />
             <marker date="1468394392409" expanded="true" signature="151416:151431" placeholder="..." />
             <marker date="1468394392409" expanded="true" signature="160877:160893" placeholder="..." />
+=======
+        <state vertical-scroll-proportion="0.0">
+          <caret line="319" column="0" selection-start-line="319" selection-start-column="0" selection-end-line="319" selection-end-column="0" />
+          <folding>
+            <marker date="1468381017749" expanded="true" signature="15356:15491" placeholder="UPDATE `t_l1... " />
+>>>>>>> feature
           </folding>
         </state>
       </provider>
     </entry>
+<<<<<<< HEAD
     <entry file="file://$PROJECT_DIR$/l4aqycui/css/scope.css">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="4780">
@@ -1024,10 +1185,53 @@
             <marker date="1468397045973" expanded="true" signature="19755:19808" placeholder="DELETE FROM ..." />
             <marker date="1468397045973" expanded="true" signature="20349:20392" placeholder="SELECT * FRO..." />
             <marker date="1468397045973" expanded="true" signature="21676:21740" placeholder="SELECT * FRO..." />
+=======
+    <entry file="file://$PROJECT_DIR$/l2sdk/task_l2sdk_nbiot_ipm376.class.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-10.821428">
+          <caret line="45" column="14" selection-start-line="45" selection-start-column="14" selection-end-line="45" selection-end-column="14" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/l1comvm/commsg.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-7.464286">
+          <caret line="328" column="0" selection-start-line="328" selection-start-column="0" selection-end-line="334" selection-end-column="53" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/readme.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.60940033">
+          <caret line="198" column="0" selection-start-line="198" selection-start-column="0" selection-end-line="198" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/l2sdk/dbi_l2sdk_nbiot.class.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-6.107143">
+          <caret line="149" column="63" selection-start-line="149" selection-start-column="50" selection-end-line="149" selection-end-column="63" />
+          <folding>
+            <marker date="1468399579470" expanded="true" signature="1611:1690" placeholder="SELECT * FRO... t_l2sdk_nbiot_ipm376_context" />
+            <marker date="1468399579470" expanded="true" signature="1807:1956" placeholder="UPDATE `t_l2... " />
+            <marker date="1468399579470" expanded="true" signature="2040:2182" placeholder="INSERT INTO `t_l2sdk_nbiot_ipm376_context`... " />
+            <marker date="1468399579470" expanded="true" signature="2628:2707" placeholder="SELECT * FRO... t_l2sdk_nbiot_ipm376_context" />
+            <marker date="1468399579470" expanded="true" signature="3424:3508" placeholder="SELECT * FRO... t_l2sdk_nbiot_ipm376_context" />
+            <marker date="1468399579470" expanded="true" signature="3625:3779" placeholder="UPDATE `t_l2... " />
+            <marker date="1468399579470" expanded="true" signature="3863:4010" placeholder="INSERT INTO `t_l2sdk_nbiot_ipm376_context`... " />
+            <marker date="1468399579470" expanded="true" signature="4461:4547" placeholder="SELECT * FRO... t_l2sdk_nbiot_ipm376_context" />
+            <marker date="1468399579470" expanded="true" signature="5142:5226" placeholder="SELECT * FRO... t_l2sdk_nbiot_std_cj188_context" />
+            <marker date="1468399579470" expanded="true" signature="5441:5571" placeholder="UPDATE `t_l2... " />
+            <marker date="1468399579470" expanded="true" signature="5655:5769" placeholder="INSERT INTO `t_l2sdk_nbiot_std_cj188_context`... " />
+>>>>>>> feature
           </folding>
         </state>
       </provider>
     </entry>
+<<<<<<< HEAD
     <entry file="file://$PROJECT_DIR$/l1comvm/sysversion.php">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-23.51724" vertical-offset="258" max-vertical-offset="1100">
@@ -1040,6 +1244,12 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="1.2016317" vertical-offset="3049" max-vertical-offset="7740">
           <caret line="204" column="8" selection-start-line="204" selection-start-column="8" selection-end-line="204" selection-end-column="8" />
+=======
+    <entry file="file://$PROJECT_DIR$/l2sdk/task_l2sdk_nbiot_std_cj188.class.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.7096774">
+          <caret line="100" column="0" selection-start-line="100" selection-start-column="0" selection-end-line="100" selection-end-column="0" />
+>>>>>>> feature
           <folding />
         </state>
       </provider>
