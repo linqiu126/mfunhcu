@@ -197,8 +197,8 @@ Make By：ZJL
 > 增加相应的SW UPDATE测试程序
 > 继续完善CJ188编解码
 
-
-
+//= LZH, 2016 July.13, CURRENT_SW_DELIVERY R02.D28
+> 增加最新手机界面UI功能支持，界面十大功能框架
 
 
 
