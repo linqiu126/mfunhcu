@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: 2016-07-11 10:00:13
+-- Generation Time: 2016-07-13 05:16:34
 -- 服务器版本： 5.6.17
 -- PHP Version: 5.5.12
 
@@ -2767,6 +2767,29 @@ INSERT INTO `t_l3f1sym_authlist` (`sid`, `uid`, `auth_code`) VALUES
 (274, 'UID363', 'z'),
 (277, 'UID805', 'z'),
 (279, '11', 'z');
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `t_l3f1sym_hcu_swver`
+--
+
+CREATE TABLE IF NOT EXISTS `t_l3f1sym_hcu_swver` (
+  `sid` int(4) NOT NULL AUTO_INCREMENT,
+  `swverid` char(50) NOT NULL,
+  `swverdescripition` char(50) NOT NULL,
+  `issuedate` date NOT NULL,
+  `swbin` mediumblob NOT NULL,
+  `dbbin` mediumblob NOT NULL,
+  PRIMARY KEY (`sid`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+
+--
+-- 转存表中的数据 `t_l3f1sym_hcu_swver`
+--
+
+INSERT INTO `t_l3f1sym_hcu_swver` (`sid`, `swverid`, `swverdescripition`, `issuedate`, `swbin`, `dbbin`) VALUES
+(1, 'AQYC.R02.099', '飞凌335D Baseline, 基础功能完善，气象五参数，视频，支持基于树莓派的传感器', '2016-07-13', '', '');
 
 -- --------------------------------------------------------
 
