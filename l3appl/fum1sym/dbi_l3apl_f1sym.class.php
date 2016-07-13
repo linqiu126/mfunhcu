@@ -592,14 +592,14 @@ class classDbiL3apF1sym
         if (($result != false) && ($result->num_rows)>0)   //重复，则覆盖
         {
             while($row = $result->fetch_array()){
-                $temp = $row['swver'];
+                $temp1 = $row['swverid'];
                 //对版本格式有严格的诉求，否则会出错
-                $temp = substr(trim($temp), -7);
+                $temp = substr(trim($temp1), -7);
                 $release = substr($temp, 1, 2);
-                $version = substr($temp, 5, 2);
+                $version = substr($temp, 4, 3);
                 //空的，或者大版本大，或者大版本相当但小版本大
                 if ((empty($LatestVerValue)) || ($release > $LatestRelease) || (($release == $LatestRelease) && ($version > $LatestVersion))){
-                    $LatestVerValue = $temp;
+                    $LatestVerValue = $temp1;
                     $LatestRelease = $release;
                     $LatestVersion = $version;
                 }

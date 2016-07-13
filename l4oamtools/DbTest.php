@@ -317,6 +317,13 @@ $_GET["startseq"] = "11";
 require("../l4aqycui/request.php");
 echo " [TC L4AQYC: UserTable END]\n";
 
+echo " [TC L4AQYC: HcuSwUpdate START]\n";
+$_GET["action"] = "HcuSwUpdate";
+$_GET["deviceid"] = "11";
+$_GET["projectid"] = "11";
+require("../l4aqycui/request.php");
+echo " [TC L4AQYC: HcuSwUpdate END]\n";
+
 echo " [TC L4AQYC: ProjectPGList START]\n";
 $_GET["action"] = "ProjectPGList";
 $_GET["user"] = "11";
