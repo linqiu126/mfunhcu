@@ -46,31 +46,7 @@ class classTaskL2sdkNbiotStdCj188
         if ($msgCtrlDir != 1) return ""; //UL DIR = 1, DL DIR = 0
         $msgCtrl = $msgCtrl & 0x3F;
 
-        if ($msgCtrl == MFUN_NBIOT_CJ188_CTRL_READ_DATA) $resp = $this->func_frame_read_data_process($msgType, $msgBody, $msgLen, $msgCtrlDir, $msgCtrlStatus, $msgAddr);
-        elseif ($msgCtrl == MFUN_NBIOT_CJ188_CTRL_READ_KEY_VER) $resp = $this->func_frame_read_key_ver_process($msgType, $msgBody, $msgLen, $msgCtrlDir, $msgCtrlStatus, $msgAddr);
-        elseif ($msgCtrl == MFUN_NBIOT_CJ188_CTRL_READ_ADDR) $resp = $this->func_frame_read_addr_process($msgType, $msgBody, $msgLen, $msgCtrlDir, $msgCtrlStatus, $msgAddr);
-        elseif ($msgCtrl == MFUN_NBIOT_CJ188_CTRL_WRITE_ADDR) $resp = $this->func_frame_write_process($msgType, $msgBody, $msgLen, $msgCtrlDir, $msgCtrlStatus, $msgAddr);
-        elseif ($msgCtrl == MFUN_NBIOT_CJ188_CTRL_SET_DEVICE_SYN) $resp = $this->func_frame_set_device_syn_process($msgType, $msgBody, $msgLen, $msgCtrlDir, $msgCtrlStatus, $msgAddr);
-        else{return "";}
-
-        return $resp;
-    }
-
-    function func_check_sum_caculate($content)
-    {
-        $i = 0;
-        if (strlen($content) != ((strlen($content)/2) * 2)) return "";
-        $result = 0;
-        for ($i =0; $i < strlen($content)/2; $i++){
-            $temp = substr($content, 2*$i, 2);
-            $temp = hexdec($temp);
-            $result = ($result + $temp) & 0xFF;
-        }
-        return $result;
-    }
-
-    function func_frame_read_data_process($msgType, $msgBody, $msgLen, $msgCtrlDir, $msgCtrlStatus, $msgAddr)
-    {
+        //先将通用的帧处理做完
         $cj188Obj = new classDbiL2sdkNbiotStdCj188(); //初始化一个UI DB对象
         if ($msgCtrlDir != 1) return "";
         if (($msgCtrlStatus == 1) && ($msgLen != 3)) return "";  //异常回送码
@@ -92,34 +68,328 @@ class classTaskL2sdkNbiotStdCj188
                 $resp = $Stat;
             }
         }
+        //正常的回复应答帧
         elseif (($msgCtrlStatus == 1) && ($msgLen > 3)){
-            $format = "A2DI0/A2DI1/A2Ser";
-            $temp = $format($format, $msgBody);
-            $DI0 = hexdec($temp['DI0']);
-            $DI1 = hexdec($temp['DI1']);
-            $Ser = hexdec($temp['Ser']);
-
-
+            if ($msgCtrl == MFUN_NBIOT_CJ188_CTRL_READ_DATA) $resp = $this->func_frame_read_data_process($msgAddr, $msgType, $msgBody, $msgLen, $msgCtrlDir, $msgCtrlStatus, $msgAddr);
+            elseif ($msgCtrl == MFUN_NBIOT_CJ188_CTRL_READ_KEY_VER) $resp = $this->func_frame_read_key_ver_process($msgAddr, $msgType, $msgBody, $msgLen, $msgCtrlDir, $msgCtrlStatus, $msgAddr);
+            elseif ($msgCtrl == MFUN_NBIOT_CJ188_CTRL_READ_ADDR) $resp = $this->func_frame_read_addr_process($msgAddr, $msgType, $msgBody, $msgLen, $msgCtrlDir, $msgCtrlStatus, $msgAddr);
+            else{return "";}
         }
+        //其它都是非正常状态，暂时不支持厂商自定义的消息状态
+        else{
+            return "";
+        }
+
         return $resp;
     }
 
-    function func_frame_read_key_ver_process($msgType, $msgBody, $msgLen, $msgCtrlDir, $msgCtrlStatus, $msgAddr6)
+    function func_check_sum_caculate($content)
+    {
+        $i = 0;
+        if (strlen($content) != ((strlen($content)/2) * 2)) return "";
+        $result = 0;
+        for ($i =0; $i < strlen($content)/2; $i++){
+            $temp = substr($content, 2*$i, 2);
+            $temp = hexdec($temp);
+            $result = ($result + $temp) & 0xFF;
+        }
+        return $result;
+    }
+
+    function func_frame_read_data_process($msgAddr,$msgType, $msgBody, $msgLen, $msgCtrlDir, $msgCtrlStatus, $msgAddr)
+    {
+        $format = "A2DI0/A2DI1/A2Ser";
+        $temp = $format($format, $msgBody);
+        $DI0 = (hexdec($temp['DI0'])) & 0xFF;
+        $DI1 = (hexdec($temp['DI1'])) & 0xFF;
+        $Ser = hexdec($temp['Ser']);
+        $DI0DI1 = ($DI0 << 8) & 0xFF00 + $DI1;
+
+        $cj188Obj = new classDbiL2sdkNbiotStdCj188(); //初始化一个UI DB对象
+        //采用这种方式将RESP发送回去，是否会有ECHO的问题，待定！！！
+        if ($Ser != $cj188Obj->dbi_std_cj188_context_pfc_inqury($msgAddr)) {
+            $resp = "SER ERROR!";
+            return $resp;
+        }
+        //SER序号增加1，以便下一帧继续使用
+        else {
+            $cj188Obj->dbi_std_cj188_cntser_increase($msgAddr);
+        }
+
+        //正式处理不同的DI0/DI1
+        $resp = "";
+        switch($DI0DI1){
+            case MFUN_NBIOT_CJ188_READ_DI0DI1_CURRENT_COUNTER_DATA:
+                if (($msgLen = 0x16) && (($msgType == MFUN_NBIOT_CJ188_T_TYPE_COLD_WATER_METER) || ($msgType == MFUN_NBIOT_CJ188_T_TYPE_HOT_WATER_METER)
+                        || ($msgType == MFUN_NBIOT_CJ188_T_TYPE_DRINK_WATER_METER) || ($msgType == MFUN_NBIOT_CJ188_T_TYPE_MIDDLE_WATER_METER)
+                        || ($msgType == MFUN_NBIOT_CJ188_T_TYPE_GAS_METER) || ($msgType == MFUN_NBIOT_CJ188_T_TYPE_ELECTRONIC_POWER_METER)))
+                {
+                    $format = "A2DI0/A2DI1/A2Ser/A2CuAVp/A2CuAV0/A2CuAV2/A2CuAV4/A2CuAVu/A2ToAVp/A2ToAV0/A2ToAV2/A2ToAV4/A2ToAVu/A14RealTime/A4ST";
+                    $temp = $format($format, $msgBody);
+                    //当前累计流量
+                    $CuAVp = (dechex($temp['CuAVp'])) & 0xFF;
+                    $CuAV0 = (dechex($temp['CuAV0'])) & 0xFF;
+                    $CuAV2 = (dechex($temp['CuAV2'])) & 0xFF;
+                    $CuAV4 = (dechex($temp['CuAV4'])) & 0xFF;
+                    $CuAVu = $temp['CuAVu'];
+                    $CuAV = $CuAV4 * 10000 + $CuAV2 * 100 + $CuAV0 + $CuAVp / 100;
+                    //结算日累计流量
+                    $ToAVp = (dechex($temp['ToAVp'])) & 0xFF;
+                    $ToAV0 = (dechex($temp['ToAV0'])) & 0xFF;
+                    $ToAV2 = (dechex($temp['ToAV2'])) & 0xFF;
+                    $ToAV4 = (dechex($temp['ToAV4'])) & 0xFF;
+                    $ToAVu = $temp['ToAVu'];
+                    $ToAV = $ToAV4 * 10000 + $ToAV2 * 100 + $ToAV0 + $ToAVp / 100;
+                    $realtime = $temp['RealTime'];
+                    $st = $temp['ST'];
+                    //按照道理，应该讲数据发送给L2SNR的水表等外设进行处理。这里先偷懒，直接将数据存入到数据库中。
+                    $resp = $cj188Obj->dbi_std_cj188_data_save_counter_data_water_and_gas_and_power_meter($msgAddr, $msgType, $CuAV, $CuAVu, $ToAV, $ToAVu, $realtime, $st);
+                }
+                elseif (($msgLen = 0x2E) && (($msgType == MFUN_NBIOT_CJ188_T_TYPE_HEAT_ENERGY_METER) || ($msgType == MFUN_NBIOT_CJ188_T_TYPE_COLD_ENERGY_METER)))
+                {
+                    $format = "A2DI0/A2DI1/A2Ser/A2ToHp/A2ToH0/A2ToH2/A2ToH4/A2ToHu/A2CuHp/A2CuH0/A2CuH2/A2CuH4/A2CuHu/A2HPp/A2HP0/A2HP2/A2HP4/A2HPu/A2Fop/A2Fo0/A2Fo2/A2Fo4/A2Fou/A2AFp/A2AF0/A2AF2/A2AF4/A2AFu/A2SWp/A2SW0/A2SW2/A2BWp/A2BW0/A2BW2/A2AW0/A2AW2/A2AW4/A14RealTime/A4ST";
+                    $temp = $format($format, $msgBody);
+                    //结算日热量
+                    $ToHp = (dechex($temp['ToHp'])) & 0xFF;
+                    $ToH0 = (dechex($temp['ToH0'])) & 0xFF;
+                    $ToH2 = (dechex($temp['ToH2'])) & 0xFF;
+                    $ToH4 = (dechex($temp['ToH4'])) & 0xFF;
+                    $ToHu = $temp['ToHu'];
+                    $ToH = $ToH4 * 10000 + $ToH2 * 100 + $ToH0 + $ToHp / 100;
+                    //当前热量
+                    $CuHp = (dechex($temp['CuHp'])) & 0xFF;
+                    $CuH0 = (dechex($temp['CuH0'])) & 0xFF;
+                    $CuH2 = (dechex($temp['CuH2'])) & 0xFF;
+                    $CuH4 = (dechex($temp['CuH4'])) & 0xFF;
+                    $CuHu = $temp['CuHu'];
+                    $CuH = $CuH4 * 10000 + $CuH2 * 100 + $CuH0 + $CuHp / 100;
+                    //热功率
+                    $HPp = (dechex($temp['HPp'])) & 0xFF;
+                    $HP0 = (dechex($temp['HP0'])) & 0xFF;
+                    $HP2 = (dechex($temp['HP2'])) & 0xFF;
+                    $HP4 = (dechex($temp['HP4'])) & 0xFF;
+                    $HPu = $temp['HPu'];
+                    $HP = $HP4 * 10000 + $HP2 * 100 + $HP0 + $HPp / 100;
+                    //流量
+                    $Fop = (dechex($temp['Fop'])) & 0xFF;
+                    $Fo0 = (dechex($temp['Fo0'])) & 0xFF;
+                    $Fo2 = (dechex($temp['Fo2'])) & 0xFF;
+                    $Fo4 = (dechex($temp['Fo4'])) & 0xFF;
+                    $Fou = $temp['Fou'];
+                    $Fo = $Fo4 * 10000 + $Fo2 * 100 + $Fo0 + $Fop / 100;
+                    //累计流量
+                    $AFp = (dechex($temp['AFp'])) & 0xFF;
+                    $AF0 = (dechex($temp['AF0'])) & 0xFF;
+                    $AF2 = (dechex($temp['AF2'])) & 0xFF;
+                    $AF4 = (dechex($temp['AF4'])) & 0xFF;
+                    $AFu = $temp['AFu'];
+                    $AF = $AF4 * 10000 + $AF2 * 100 + $AF0 + $AFp / 100;
+                    //供水温度
+                    $SWp = (dechex($temp['SWp'])) & 0xFF;
+                    $SW0 = (dechex($temp['SW0'])) & 0xFF;
+                    $SW2 = (dechex($temp['SW2'])) & 0xFF;
+                    $SW = $SW2 * 100 + $SW0 + $SWp / 100;
+                    //回水温度
+                    $BWp = (dechex($temp['BWp'])) & 0xFF;
+                    $BW0 = (dechex($temp['BW0'])) & 0xFF;
+                    $BW2 = (dechex($temp['BW2'])) & 0xFF;
+                    $BW = $BW2 * 100 + $BW0 + $BWp / 100;
+                    //累计工作时间
+                    $AW0 = (dechex($temp['AW0'])) & 0xFF;
+                    $AW2 = (dechex($temp['AW2'])) & 0xFF;
+                    $AW4 = (dechex($temp['AW4'])) & 0xFF;
+                    $AW = $AW4 * 10000 + $AW2 * 100 + $AW0;
+                    $realtime = $temp['RealTime'];
+                    $st = $temp['ST'];
+                    //按照道理，应该讲数据发送给L2SNR的水表等外设进行处理。这里先偷懒，直接将数据存入到数据库中。
+                    $resp = $cj188Obj->dbi_std_cj188_data_save_counter_data_heat_meter($msgAddr, $msgType, $ToH, $ToHu, $CuH, $CuHu, $HP, $HPu,$Fo, $Fou, $AF, $AFu, $SW, $BW, $AW, $realtime, $st);
+                }
+                else{
+                        $resp = "";
+                }
+                break;
+            case MFUN_NBIOT_CJ188_READ_DI0DI1_HISTORY_COUNTER_DATA1:
+                if (($msgLen = 0x16) && (($msgType == MFUN_NBIOT_CJ188_T_TYPE_COLD_WATER_METER) || ($msgType == MFUN_NBIOT_CJ188_T_TYPE_HOT_WATER_METER)
+                        || ($msgType == MFUN_NBIOT_CJ188_T_TYPE_DRINK_WATER_METER) || ($msgType == MFUN_NBIOT_CJ188_T_TYPE_MIDDLE_WATER_METER)
+                        || ($msgType == MFUN_NBIOT_CJ188_T_TYPE_GAS_METER) || ($msgType == MFUN_NBIOT_CJ188_T_TYPE_ELECTRONIC_POWER_METER)))
+                {
+                    $format = "A2DI0/A2DI1/A2Ser/A2CuAVp/A2CuAV0/A2CuAV2/A2CuAV4";
+                    $temp = $format($format, $msgBody);
+                    //当前累计流量
+                    $CuAVp = (dechex($temp['CuAVp'])) & 0xFF;
+                    $CuAV0 = (dechex($temp['CuAV0'])) & 0xFF;
+                    $CuAV2 = (dechex($temp['CuAV2'])) & 0xFF;
+                    $CuAV4 = (dechex($temp['CuAV4'])) & 0xFF;
+                    $CuAVu = $temp['CuAVu'];
+                    $CuAV = $CuAV4 * 10000 + $CuAV2 * 100 + $CuAV0 + $CuAVp / 100;
+                    //按照道理，应该讲数据发送给L2SNR的水表等外设进行处理。这里先偷懒，直接将数据存入到数据库中。
+                    $resp = $cj188Obj->dbi_std_cj188_data_save_counter_data_water_and_gas_and_power_meter_last_month($msgAddr, $msgType, $CuAV, $CuAVu, 1);
+                }
+                elseif (($msgLen = 0x2E) && (($msgType == MFUN_NBIOT_CJ188_T_TYPE_HEAT_ENERGY_METER) || ($msgType == MFUN_NBIOT_CJ188_T_TYPE_COLD_ENERGY_METER)))
+                {
+                    $format = "A2DI0/A2DI1/A2Ser/A2CuAVp/A2CuAV0/A2CuAV2/A2CuAV4";
+                    $temp = $format($format, $msgBody);
+                    //当前累计流量
+                    $CuAVp = (dechex($temp['CuAVp'])) & 0xFF;
+                    $CuAV0 = (dechex($temp['CuAV0'])) & 0xFF;
+                    $CuAV2 = (dechex($temp['CuAV2'])) & 0xFF;
+                    $CuAV4 = (dechex($temp['CuAV4'])) & 0xFF;
+                    $CuAVu = $temp['CuAVu'];
+                    $CuAV = $CuAV4 * 10000 + $CuAV2 * 100 + $CuAV0 + $CuAVp / 100;
+                    //按照道理，应该讲数据发送给L2SNR的水表等外设进行处理。这里先偷懒，直接将数据存入到数据库中。
+                    $resp = $cj188Obj->dbi_std_cj188_data_save_counter_data_heat_meter_last_month($msgAddr, $msgType, $CuAV, $CuAVu, 1);
+                }
+                break;
+            case MFUN_NBIOT_CJ188_READ_DI0DI1_HISTORY_COUNTER_DATA2:
+                if (($msgLen = 0x16) && (($msgType == MFUN_NBIOT_CJ188_T_TYPE_COLD_WATER_METER) || ($msgType == MFUN_NBIOT_CJ188_T_TYPE_HOT_WATER_METER)
+                        || ($msgType == MFUN_NBIOT_CJ188_T_TYPE_DRINK_WATER_METER) || ($msgType == MFUN_NBIOT_CJ188_T_TYPE_MIDDLE_WATER_METER)
+                        || ($msgType == MFUN_NBIOT_CJ188_T_TYPE_GAS_METER) || ($msgType == MFUN_NBIOT_CJ188_T_TYPE_ELECTRONIC_POWER_METER)))
+                {
+                    $format = "A2DI0/A2DI1/A2Ser/A2CuAVp/A2CuAV0/A2CuAV2/A2CuAV4";
+                    $temp = $format($format, $msgBody);
+                    //当前累计流量
+                    $CuAVp = (dechex($temp['CuAVp'])) & 0xFF;
+                    $CuAV0 = (dechex($temp['CuAV0'])) & 0xFF;
+                    $CuAV2 = (dechex($temp['CuAV2'])) & 0xFF;
+                    $CuAV4 = (dechex($temp['CuAV4'])) & 0xFF;
+                    $CuAVu = $temp['CuAVu'];
+                    $CuAV = $CuAV4 * 10000 + $CuAV2 * 100 + $CuAV0 + $CuAVp / 100;
+                    //按照道理，应该讲数据发送给L2SNR的水表等外设进行处理。这里先偷懒，直接将数据存入到数据库中。
+                    $resp = $cj188Obj->dbi_std_cj188_data_save_counter_data_water_and_gas_and_power_meter_last_month($msgAddr, $msgType, $CuAV, $CuAVu, 2);
+                }
+                elseif (($msgLen = 0x2E) && (($msgType == MFUN_NBIOT_CJ188_T_TYPE_HEAT_ENERGY_METER) || ($msgType == MFUN_NBIOT_CJ188_T_TYPE_COLD_ENERGY_METER)))
+                {
+                    $format = "A2DI0/A2DI1/A2Ser/A2CuAVp/A2CuAV0/A2CuAV2/A2CuAV4";
+                    $temp = $format($format, $msgBody);
+                    //当前累计流量
+                    $CuAVp = (dechex($temp['CuAVp'])) & 0xFF;
+                    $CuAV0 = (dechex($temp['CuAV0'])) & 0xFF;
+                    $CuAV2 = (dechex($temp['CuAV2'])) & 0xFF;
+                    $CuAV4 = (dechex($temp['CuAV4'])) & 0xFF;
+                    $CuAVu = $temp['CuAVu'];
+                    $CuAV = $CuAV4 * 10000 + $CuAV2 * 100 + $CuAV0 + $CuAVp / 100;
+                    //按照道理，应该讲数据发送给L2SNR的水表等外设进行处理。这里先偷懒，直接将数据存入到数据库中。
+                    $resp = $cj188Obj->dbi_std_cj188_data_save_counter_data_heat_meter_last_month($msgAddr, $msgType, $CuAV, $CuAVu, 2);
+                }
+                break;
+            case MFUN_NBIOT_CJ188_READ_DI0DI1_HISTORY_COUNTER_DATA3:
+                if (($msgLen = 0x16) && (($msgType == MFUN_NBIOT_CJ188_T_TYPE_COLD_WATER_METER) || ($msgType == MFUN_NBIOT_CJ188_T_TYPE_HOT_WATER_METER)
+                        || ($msgType == MFUN_NBIOT_CJ188_T_TYPE_DRINK_WATER_METER) || ($msgType == MFUN_NBIOT_CJ188_T_TYPE_MIDDLE_WATER_METER)
+                        || ($msgType == MFUN_NBIOT_CJ188_T_TYPE_GAS_METER) || ($msgType == MFUN_NBIOT_CJ188_T_TYPE_ELECTRONIC_POWER_METER)))
+                {
+                    $format = "A2DI0/A2DI1/A2Ser/A2CuAVp/A2CuAV0/A2CuAV2/A2CuAV4";
+                    $temp = $format($format, $msgBody);
+                    //当前累计流量
+                    $CuAVp = (dechex($temp['CuAVp'])) & 0xFF;
+                    $CuAV0 = (dechex($temp['CuAV0'])) & 0xFF;
+                    $CuAV2 = (dechex($temp['CuAV2'])) & 0xFF;
+                    $CuAV4 = (dechex($temp['CuAV4'])) & 0xFF;
+                    $CuAVu = $temp['CuAVu'];
+                    $CuAV = $CuAV4 * 10000 + $CuAV2 * 100 + $CuAV0 + $CuAVp / 100;
+                    //按照道理，应该讲数据发送给L2SNR的水表等外设进行处理。这里先偷懒，直接将数据存入到数据库中。
+                    $resp = $cj188Obj->dbi_std_cj188_data_save_counter_data_water_and_gas_and_power_meter_last_month($msgAddr, $msgType, $CuAV, $CuAVu, 3);
+                }
+                elseif (($msgLen = 0x2E) && (($msgType == MFUN_NBIOT_CJ188_T_TYPE_HEAT_ENERGY_METER) || ($msgType == MFUN_NBIOT_CJ188_T_TYPE_COLD_ENERGY_METER)))
+                {
+                    $format = "A2DI0/A2DI1/A2Ser/A2CuAVp/A2CuAV0/A2CuAV2/A2CuAV4";
+                    $temp = $format($format, $msgBody);
+                    //当前累计流量
+                    $CuAVp = (dechex($temp['CuAVp'])) & 0xFF;
+                    $CuAV0 = (dechex($temp['CuAV0'])) & 0xFF;
+                    $CuAV2 = (dechex($temp['CuAV2'])) & 0xFF;
+                    $CuAV4 = (dechex($temp['CuAV4'])) & 0xFF;
+                    $CuAVu = $temp['CuAVu'];
+                    $CuAV = $CuAV4 * 10000 + $CuAV2 * 100 + $CuAV0 + $CuAVp / 100;
+                    //按照道理，应该讲数据发送给L2SNR的水表等外设进行处理。这里先偷懒，直接将数据存入到数据库中。
+                    $resp = $cj188Obj->dbi_std_cj188_data_save_counter_data_heat_meter_last_month($msgAddr, $msgType, $CuAV, $CuAVu, 3);
+                }
+                break;
+            case MFUN_NBIOT_CJ188_READ_DI0DI1_HISTORY_COUNTER_DATA4:
+                if (($msgLen = 0x16) && (($msgType == MFUN_NBIOT_CJ188_T_TYPE_COLD_WATER_METER) || ($msgType == MFUN_NBIOT_CJ188_T_TYPE_HOT_WATER_METER)
+                        || ($msgType == MFUN_NBIOT_CJ188_T_TYPE_DRINK_WATER_METER) || ($msgType == MFUN_NBIOT_CJ188_T_TYPE_MIDDLE_WATER_METER)
+                        || ($msgType == MFUN_NBIOT_CJ188_T_TYPE_GAS_METER) || ($msgType == MFUN_NBIOT_CJ188_T_TYPE_ELECTRONIC_POWER_METER)))
+                {
+                    $format = "A2DI0/A2DI1/A2Ser/A2CuAVp/A2CuAV0/A2CuAV2/A2CuAV4";
+                    $temp = $format($format, $msgBody);
+                    //当前累计流量
+                    $CuAVp = (dechex($temp['CuAVp'])) & 0xFF;
+                    $CuAV0 = (dechex($temp['CuAV0'])) & 0xFF;
+                    $CuAV2 = (dechex($temp['CuAV2'])) & 0xFF;
+                    $CuAV4 = (dechex($temp['CuAV4'])) & 0xFF;
+                    $CuAVu = $temp['CuAVu'];
+                    $CuAV = $CuAV4 * 10000 + $CuAV2 * 100 + $CuAV0 + $CuAVp / 100;
+                    //按照道理，应该讲数据发送给L2SNR的水表等外设进行处理。这里先偷懒，直接将数据存入到数据库中。
+                    $resp = $cj188Obj->dbi_std_cj188_data_save_counter_data_water_and_gas_and_power_meter_last_month($msgAddr, $msgType, $CuAV, $CuAVu, 4);
+                }
+                elseif (($msgLen = 0x2E) && (($msgType == MFUN_NBIOT_CJ188_T_TYPE_HEAT_ENERGY_METER) || ($msgType == MFUN_NBIOT_CJ188_T_TYPE_COLD_ENERGY_METER)))
+                {
+                    $format = "A2DI0/A2DI1/A2Ser/A2CuAVp/A2CuAV0/A2CuAV2/A2CuAV4";
+                    $temp = $format($format, $msgBody);
+                    //当前累计流量
+                    $CuAVp = (dechex($temp['CuAVp'])) & 0xFF;
+                    $CuAV0 = (dechex($temp['CuAV0'])) & 0xFF;
+                    $CuAV2 = (dechex($temp['CuAV2'])) & 0xFF;
+                    $CuAV4 = (dechex($temp['CuAV4'])) & 0xFF;
+                    $CuAVu = $temp['CuAVu'];
+                    $CuAV = $CuAV4 * 10000 + $CuAV2 * 100 + $CuAV0 + $CuAVp / 100;
+                    //按照道理，应该讲数据发送给L2SNR的水表等外设进行处理。这里先偷懒，直接将数据存入到数据库中。
+                    $resp = $cj188Obj->dbi_std_cj188_data_save_counter_data_heat_meter_last_month($msgAddr, $msgType, $CuAV, $CuAVu, 4);
+                }
+                break;
+            case MFUN_NBIOT_CJ188_READ_DI0DI1_HISTORY_COUNTER_DATA5:
+                break;
+            case MFUN_NBIOT_CJ188_READ_DI0DI1_HISTORY_COUNTER_DATA6:
+                break;
+            case MFUN_NBIOT_CJ188_READ_DI0DI1_HISTORY_COUNTER_DATA7:
+                break;
+            case MFUN_NBIOT_CJ188_READ_DI0DI1_HISTORY_COUNTER_DATA8:
+                break;
+            case MFUN_NBIOT_CJ188_READ_DI0DI1_HISTORY_COUNTER_DATA9:
+                break;
+            case MFUN_NBIOT_CJ188_READ_DI0DI1_HISTORY_COUNTER_DATA10:
+                break;
+            case MFUN_NBIOT_CJ188_READ_DI0DI1_HISTORY_COUNTER_DATA11:
+                break;
+            case MFUN_NBIOT_CJ188_READ_DI0DI1_HISTORY_COUNTER_DATA12:
+                break;
+            case MFUN_NBIOT_CJ188_READ_DI0DI1_PRICE_TABLE:
+                break;
+            case MFUN_NBIOT_CJ188_READ_DI0DI1_BILL_DATE:
+                break;
+            case MFUN_NBIOT_CJ188_READ_DI0DI1_ACCOUNT_DATE:
+                break;
+            case MFUN_NBIOT_CJ188_READ_DI0DI1_BUY_AMOUNT:
+                break;
+            case MFUN_NBIOT_CJ188_READ_DI0DI1_KEY_VER:
+                break;
+            case MFUN_NBIOT_CJ188_READ_DI0DI1_ADDRESS:
+                break;
+
+            default:
+                $resp = "";
+                break;
+        }
+
+
+        return $resp;
+    }
+
+    function func_frame_read_key_ver_process($msgAddr,$msgType, $msgBody, $msgLen, $msgCtrlDir, $msgCtrlStatus, $msgAddr6)
     {
         return "";
     }
 
-    function func_frame_read_addr_process($msgType, $msgBody, $msgLen, $msgCtrlDir, $msgCtrlStatus, $msgAddr)
+    function func_frame_read_addr_process($msgAddr,$msgType, $msgBody, $msgLen, $msgCtrlDir, $msgCtrlStatus, $msgAddr)
     {
         return "";
     }
 
-    function func_frame_write_process($msgType, $msgBody, $msgLen, $msgCtrlDir, $msgCtrlStatus, $msgAddr)
+    function func_frame_write_process($msgAddr,$msgType, $msgBody, $msgLen, $msgCtrlDir, $msgCtrlStatus, $msgAddr)
     {
         return "";
     }
 
-    function func_frame_set_device_syn_process($msgType, $msgBody, $msgLen, $msgCtrlDir, $msgCtrlStatus, $msgAddr)
+    function func_frame_set_device_syn_process($msgAddr,$msgType, $msgBody, $msgLen, $msgCtrlDir, $msgCtrlStatus, $msgAddr)
     {
         return "";
     }

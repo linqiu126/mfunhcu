@@ -44,6 +44,42 @@ CREATE TABLE IF NOT EXISTS `t_l2sdk_nbiot_std_cj188_context` (
 INSERT INTO `t_l2sdk_nbiot_std_cj188_context` (`sid`, `cj188address`, `cntser`, `deviceflag`) VALUES (1, 111, 17, 1);
 
 
+--
+-- 表的结构 `t_l2sdk_nbiot_std_cj188_data`
+--
+
+CREATE TABLE IF NOT EXISTS `t_l2sdk_nbiot_std_cj188_data` (
+  `sid` int(4) NOT NULL AUTO_INCREMENT,
+  `cj188address` char(14) NOT NULL,
+  `equtype` int(1) NOT NULL,
+  `heatpower` float(6,2) NOT NULL,
+  `heatpoweruint` int(1) NOT NULL,
+  `currentheat` float(6,2) NOT NULL,
+  `currentheatuint` int(1) NOT NULL,
+  `flowvolume` float(6,2) NOT NULL,
+  `flowvolumeuint` int(1) NOT NULL,
+  `todayheat` float(6,2) NOT NULL,
+  `todayheatuint` int(1) NOT NULL,
+  `currentaccuvolume` float(6,2) NOT NULL,
+  `currentaccuvolumeuint` int(1) NOT NULL,
+  `todayaccuvolume` float(6,2) NOT NULL,
+  `todayaccuvolumeuint` int(1) NOT NULL,
+  `lastmonth` int(1) NOT NULL,
+  `accumuworktime` int(3) NOT NULL,
+  `supplywatertemp` float(4,2) NOT NULL,
+  `backwatertemp` float(4,2) NOT NULL,
+  `realtime` char(14) NOT NULL,
+  `st` char(4) NOT NULL,
+  `todaydate` char(2) NOT NULL,
+  `key` int(8) NOT NULL,
+  `buycode` int(1) NOT NULL,
+  `amount` float(6,2) NOT NULL,
+  `price` float(4,2) NOT NULL,
+  `volume` int(3) NOT NULL,
+  PRIMARY KEY (`sid`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+
 */
 
 class classDbiL2sdkNbiotIpm376
@@ -160,11 +196,11 @@ class classDbiL2sdkNbiotStdCj188
             $row = $result->fetch_array();
             $LatestValue = ($row['cntser'] + 1) % 256;
             $result=$mysqli->query("UPDATE `t_l2sdk_nbiot_std_cj188_context` SET  `cntser` = '$LatestValue'
-                    WHERE (`ipmaddress` = '$cj188address')");
+                    WHERE (`cj188address` = '$cj188address')");
         }
         else   //不存在，新增
         {
-            $result=$mysqli->query("INSERT INTO `t_l2sdk_nbiot_std_cj188_context` (ipmaddress, cntser)
+            $result=$mysqli->query("INSERT INTO `t_l2sdk_nbiot_std_cj188_context` (cj188address, cntser)
                     VALUES ('$cj188address', 0)");
         }
 
@@ -172,6 +208,57 @@ class classDbiL2sdkNbiotStdCj188
         return $result;
     }
 
+    public function dbi_std_cj188_data_save_counter_data_water_and_gas_and_power_meter($cj188address, $equtype, $curaccuvolume, $curaccuvolumeunit, $todayaccuvolume, $todayaccuvolumeunit, $realtime, $st)
+    {
+        //建立连接
+        $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli) { die('Could not connect: ' . mysqli_error($mysqli)); }
+
+        $result=$mysqli->query("INSERT INTO `t_l2sdk_nbiot_std_cj188_data` (cj188address, equtype, currentaccuvolume, currentaccuvolumeuint, todayaccuvolume, todayaccuvolumeuint, realtime, st)
+                    VALUES ('$cj188address','$equtype','$curaccuvolume','$curaccuvolumeunit','$todayaccuvolume','$todayaccuvolumeunit','$realtime','$st')");
+
+        $mysqli->close();
+        return $result;
+    }
+
+    public function dbi_std_cj188_data_save_counter_data_heat_meter($cj188address, $equtype, $todayheat, $todayheatuint, $currentheat, $currentheatuint, $heatpower, $heatpoweruint, $flowvolume, $flowvolumeuint, $currentaccuvolume, $currentaccuvolumeuint, $supplywatertemp, $backwatertemp, $accumuworktime, $realtime, $st)
+    {
+        //建立连接
+        $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli) { die('Could not connect: ' . mysqli_error($mysqli)); }
+
+        $result=$mysqli->query("INSERT INTO `t_l2sdk_nbiot_std_cj188_data` (cj188address, equtype, todayheat, todayheatuint, currentheat, currentheatuint, heatpower, heatpoweruint, flowvolume, flowvolumeuint, currentaccuvolume, currentaccuvolumeuint, supplywatertemp, backwatertemp, accumuworktime, realtime, st)
+                    VALUES ('$cj188address','$equtype','$todayheat','$todayheatuint','$currentheat','$currentheatuint','$heatpower','$heatpoweruint','$flowvolume','$flowvolumeuint','$currentaccuvolume','$currentaccuvolumeuint','$supplywatertemp','$backwatertemp','$accumuworktime','$realtime','$st')");
+
+        $mysqli->close();
+        return $result;
+    }
+
+    public function dbi_std_cj188_data_save_counter_data_water_and_gas_and_power_meter_last_month($cj188address, $equtype, $curaccuvolume, $curaccuvolumeunit, $lastmonth)
+    {
+        //建立连接
+        $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli) { die('Could not connect: ' . mysqli_error($mysqli)); }
+
+        $result=$mysqli->query("INSERT INTO `t_l2sdk_nbiot_std_cj188_data` (cj188address, equtype, todayaccuvolume, todayaccuvolumeuint, lastmonth)
+                    VALUES ('$cj188address','$equtype','$curaccuvolume','$curaccuvolumeunit', '$lastmonth')");
+
+        $mysqli->close();
+        return $result;
+    }
+
+    public function dbi_std_cj188_data_save_counter_data_heat_meter_last_month($cj188address, $equtype, $todayheat, $todayheatunit, $lastmonth)
+    {
+        //建立连接
+        $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli) { die('Could not connect: ' . mysqli_error($mysqli)); }
+
+        $result=$mysqli->query("INSERT INTO `t_l2sdk_nbiot_std_cj188_data` (cj188address, equtype, todayheat, todayheatuint, lastmonth)
+                    VALUES ('$cj188address','$equtype','$todayheat','$todayheatunit', '$lastmonth')");
+
+        $mysqli->close();
+        return $result;
+    }
 
 }
 
