@@ -70,26 +70,39 @@ define("MSG_ID_L2SDK_HCU_DATA_COMING", $index++);
 define("MSG_ID_L2SDK_JD_INCOMING", $index++);
 //L2SDK_APPLE消息部分
 define("MSG_ID_L2SDK_APPLE_INCOMING", $index++);
-//L2SDK_NBIOT_IPM376消息部分
-define("MSG_ID_L2SDK_NBIOT_IPM376_INCOMING", $index++);
-define("MSG_ID_L2SDK_NBIOT_IPM376_TO_L2SNR_IPM_AFN_UL_CNFNG", $index++); //终端主动上报消息或者被动反馈消息
-define("MSG_ID_L2SDK_NBIOT_IPM376_TO_L2SNR_IPM_AFN_UL_RESET", $index++); //终端主动上报消息或者被动反馈消息
-define("MSG_ID_L2SDK_NBIOT_IPM376_TO_L2SNR_IPM_AFN_UL_LICK", $index++); //终端主动上报消息或者被动反馈消息
-define("MSG_ID_L2SDK_NBIOT_IPM376_TO_L2SNR_IPM_AFN_UL_RELAY", $index++); //终端主动上报消息或者被动反馈消息
-define("MSG_ID_L2SDK_NBIOT_IPM376_TO_L2SNR_IPM_AFN_UL_SETPAR", $index++); //终端主动上报消息或者被动反馈消息
-define("MSG_ID_L2SDK_NBIOT_IPM376_TO_L2SNR_IPM_AFN_UL_CONTROL", $index++); //终端主动上报消息或者被动反馈消息
-define("MSG_ID_L2SDK_NBIOT_IPM376_TO_L2SNR_IPM_AFN_UL_SECNEG", $index++); //终端主动上报消息或者被动反馈消息
-define("MSG_ID_L2SDK_NBIOT_IPM376_TO_L2SNR_IPM_AFN_UL_REQREP", $index++); //终端主动上报消息或者被动反馈消息
-define("MSG_ID_L2SDK_NBIOT_IPM376_TO_L2SNR_IPM_AFN_UL_REQCFG", $index++); //终端主动上报消息或者被动反馈消息
-define("MSG_ID_L2SDK_NBIOT_IPM376_TO_L2SNR_IPM_AFN_UL_INQPAR", $index++); //终端主动上报消息或者被动反馈消息
-define("MSG_ID_L2SDK_NBIOT_IPM376_TO_L2SNR_IPM_AFN_UL_REQTSK", $index++); //终端主动上报消息或者被动反馈消息
-define("MSG_ID_L2SDK_NBIOT_IPM376_TO_L2SNR_IPM_AFN_UL_REQDATA1", $index++); //终端主动上报消息或者被动反馈消息
-define("MSG_ID_L2SDK_NBIOT_IPM376_TO_L2SNR_IPM_AFN_UL_REQDATA2", $index++); //终端主动上报消息或者被动反馈消息
-define("MSG_ID_L2SDK_NBIOT_IPM376_TO_L2SNR_IPM_AFN_UL_REQDATA3", $index++); //终端主动上报消息或者被动反馈消息
-define("MSG_ID_L2SDK_NBIOT_IPM376_TO_L2SNR_IPM_AFN_UL_FILETRNS", $index++); //终端主动上报消息或者被动反馈消息
-define("MSG_ID_L2SDK_NBIOT_IPM376_TO_L2SNR_IPM_AFN_UL_DATAFWD", $index++); //终端主动上报消息或者被动反馈消息
+//L2SDK_NBIOT_STD_QG376消息部分
+define("MSG_ID_L2SDK_NBIOT_STD_QG376_INCOMING", $index++);
+define("MSG_ID_L2SDK_NBIOT_STD_QG376_TO_L2SNR_IPM_AFN_UL_CNFNG", $index++); //终端主动上报消息或者被动反馈消息
+define("MSG_ID_L2SDK_NBIOT_STD_QG376_TO_L2SNR_IPM_AFN_UL_RESET", $index++); //终端主动上报消息或者被动反馈消息
+define("MSG_ID_L2SDK_NBIOT_STD_QG376_TO_L2SNR_IPM_AFN_UL_LICK", $index++); //终端主动上报消息或者被动反馈消息
+define("MSG_ID_L2SDK_NBIOT_STD_QG376_TO_L2SNR_IPM_AFN_UL_RELAY", $index++); //终端主动上报消息或者被动反馈消息
+define("MSG_ID_L2SDK_NBIOT_STD_QG376_TO_L2SNR_IPM_AFN_UL_SETPAR", $index++); //终端主动上报消息或者被动反馈消息
+define("MSG_ID_L2SDK_NBIOT_STD_QG376_TO_L2SNR_IPM_AFN_UL_CONTROL", $index++); //终端主动上报消息或者被动反馈消息
+define("MSG_ID_L2SDK_NBIOT_STD_QG376_TO_L2SNR_IPM_AFN_UL_SECNEG", $index++); //终端主动上报消息或者被动反馈消息
+define("MSG_ID_L2SDK_NBIOT_STD_QG376_TO_L2SNR_IPM_AFN_UL_REQREP", $index++); //终端主动上报消息或者被动反馈消息
+define("MSG_ID_L2SDK_NBIOT_STD_QG376_TO_L2SNR_IPM_AFN_UL_REQCFG", $index++); //终端主动上报消息或者被动反馈消息
+define("MSG_ID_L2SDK_NBIOT_STD_QG376_TO_L2SNR_IPM_AFN_UL_INQPAR", $index++); //终端主动上报消息或者被动反馈消息
+define("MSG_ID_L2SDK_NBIOT_STD_QG376_TO_L2SNR_IPM_AFN_UL_REQTSK", $index++); //终端主动上报消息或者被动反馈消息
+define("MSG_ID_L2SDK_NBIOT_STD_QG376_TO_L2SNR_IPM_AFN_UL_REQDATA1", $index++); //终端主动上报消息或者被动反馈消息
+define("MSG_ID_L2SDK_NBIOT_STD_QG376_TO_L2SNR_IPM_AFN_UL_REQDATA2", $index++); //终端主动上报消息或者被动反馈消息
+define("MSG_ID_L2SDK_NBIOT_STD_QG376_TO_L2SNR_IPM_AFN_UL_REQDATA3", $index++); //终端主动上报消息或者被动反馈消息
+define("MSG_ID_L2SDK_NBIOT_STD_QG376_TO_L2SNR_IPM_AFN_UL_FILETRNS", $index++); //终端主动上报消息或者被动反馈消息
+define("MSG_ID_L2SDK_NBIOT_STD_QG376_TO_L2SNR_IPM_AFN_UL_DATAFWD", $index++); //终端主动上报消息或者被动反馈消息
 //L2SDK_NBIOT_STD_CJ188消息部分
 define("MSG_ID_L2SDK_NBIOT_STD_CJ188_INCOMING", $index++);
+define("MSG_ID_L2SDK_NBIOT_STD_CJ188_TO_L2SNR_IPM_READ_DATA", $index++); //终端主动上报消息或者被动反馈消息
+define("MSG_ID_L2SDK_NBIOT_STD_CJ188_TO_L2SNR_IPM_READ_KEY_VER", $index++); //终端主动上报消息或者被动反馈消息
+define("MSG_ID_L2SDK_NBIOT_STD_CJ188_TO_L2SNR_IPM_READ_ADDR", $index++); //终端主动上报消息或者被动反馈消息
+define("MSG_ID_L2SDK_NBIOT_STD_CJ188_TO_L2SNR_IGM_READ_DATA", $index++); //终端主动上报消息或者被动反馈消息
+define("MSG_ID_L2SDK_NBIOT_STD_CJ188_TO_L2SNR_IGM_READ_KEY_VER", $index++); //终端主动上报消息或者被动反馈消息
+define("MSG_ID_L2SDK_NBIOT_STD_CJ188_TO_L2SNR_IGM_READ_ADDR", $index++); //终端主动上报消息或者被动反馈消息
+define("MSG_ID_L2SDK_NBIOT_STD_CJ188_TO_L2SNR_IWM_READ_DATA", $index++); //终端主动上报消息或者被动反馈消息
+define("MSG_ID_L2SDK_NBIOT_STD_CJ188_TO_L2SNR_IWM_READ_KEY_VER", $index++); //终端主动上报消息或者被动反馈消息
+define("MSG_ID_L2SDK_NBIOT_STD_CJ188_TO_L2SNR_IWM_READ_ADDR", $index++); //终端主动上报消息或者被动反馈消息
+define("MSG_ID_L2SDK_NBIOT_STD_CJ188_TO_L2SNR_IHM_READ_DATA", $index++); //终端主动上报消息或者被动反馈消息
+define("MSG_ID_L2SDK_NBIOT_STD_CJ188_TO_L2SNR_IHM_READ_KEY_VER", $index++); //终端主动上报消息或者被动反馈消息
+define("MSG_ID_L2SDK_NBIOT_STD_CJ188_TO_L2SNR_IHM_READ_ADDR", $index++); //终端主动上报消息或者被动反馈消息
+
 //L2SDK_NBIOT_LTEV消息部分
 define("MSG_ID_L2SDK_NBIOT_LTEV_INCOMING", $index++);
 //L2SDK_NBIOT_AGC消息部分
@@ -161,16 +174,19 @@ define("MSG_ID_L4EMCWXUI_CLICK_INCOMING", $index++);
 //L4TBSWRUI部分
 define("MSG_ID_L4TBSWR_CLICK_INCOMING", $index++);
 //L4NBIOTIPMUI部分
-define("MSG_ID_L4NBIOTIPM_CLICK_INCOMING", $index++);
-define("MSG_ID_L4NBIOTIPM_TO_NBIOT_IPM376_DL_REQUEST", $index++);
-define("MSG_ID_L4NBIOTIPM_TO_NBIOT_IPM188_DL_REQUEST", $index++);
-define("MSG_ID_L4NBIOTIPM_TO_L3F1_LOGIN", $index++);
+define("MSG_ID_L4NBIOT_IPMUI_CLICK_INCOMING", $index++);
+define("MSG_ID_L4NBIOT_IPMUI_TO_NBIOT_STD_QG376_DL_REQUEST", $index++);
+define("MSG_ID_L4NBIOT_IPMUI_TO_NBIOT_STD_CK188_DL_REQUEST", $index++);
+define("MSG_ID_L4NBIOT_IPMUI_TO_L3F1_LOGIN", $index++);
 //L4NBIOTIGMUI部分
-define("MSG_ID_L4NBIOTIGM_CLICK_INCOMING", $index++);
-define("MSG_ID_L4NBIOTIPM_TO_NBIOT_IGM188_DL_REQUEST", $index++);
+define("MSG_ID_L4NBIOT_IGMUI_CLICK_INCOMING", $index++);
+define("MSG_ID_L4NBIOT_IGMUI_TO_NBIOT_STD_CK188_DL_REQUEST", $index++);
 //L4NBIOTIWMUI部分
-define("MSG_ID_L4NBIOTIWM_CLICK_INCOMING", $index++);
-define("MSG_ID_L4NBIOTIPM_TO_NBIOT_IWM188_DL_REQUEST", $index++);
+define("MSG_ID_L4NBIOT_IWMUI_CLICK_INCOMING", $index++);
+define("MSG_ID_L4NBIOT_IWMUI_TO_NBIOT_STD_CK188_DL_REQUEST", $index++);
+//L4NBIOTIHMUI部分
+define("MSG_ID_L4NBIOT_IHMUI_CLICK_INCOMING", $index++);
+define("MSG_ID_L4NBIOT_IHMUI_TO_NBIOT_STD_CK188_DL_REQUEST", $index++);
 
 //L5BI部分
 define("MSG_ID_L4BI_CLICK_INCOMING", $index++);

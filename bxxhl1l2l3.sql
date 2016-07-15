@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: 2016-07-14 10:59:43
+-- Generation Time: 2016-07-15 03:45:19
 -- 服务器版本： 5.6.17
 -- PHP Version: 5.5.12
 
@@ -2377,6 +2377,72 @@ INSERT INTO `t_l2snr_humiddata` (`sid`, `deviceid`, `sensorid`, `humidity`, `dat
 -- --------------------------------------------------------
 
 --
+-- 表的结构 `t_l2snr_igm_data_cj188`
+--
+
+CREATE TABLE IF NOT EXISTS `t_l2snr_igm_data_cj188` (
+  `sid` int(4) NOT NULL AUTO_INCREMENT,
+  `cj188address` char(14) NOT NULL,
+  `equtype` int(1) NOT NULL,
+  `flowvolume` float(6,2) NOT NULL,
+  `flowvolumeuint` int(1) NOT NULL,
+  `currentaccuvolume` float(6,2) NOT NULL,
+  `currentaccuvolumeuint` int(1) NOT NULL,
+  `todayaccuvolume` float(6,2) NOT NULL,
+  `todayaccuvolumeuint` int(1) NOT NULL,
+  `lastmonth` int(1) NOT NULL,
+  `accumuworktime` int(3) NOT NULL,
+  `supplywatertemp` float(4,2) NOT NULL,
+  `backwatertemp` float(4,2) NOT NULL,
+  `realtime` char(14) NOT NULL,
+  `st` char(4) NOT NULL,
+  `todaydate` char(2) NOT NULL,
+  `key` int(8) NOT NULL,
+  `buycode` int(1) NOT NULL,
+  `amount` float(6,2) NOT NULL,
+  `price` float(4,2) NOT NULL,
+  `volume` int(3) NOT NULL,
+  PRIMARY KEY (`sid`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `t_l2snr_ihm_data_cj188`
+--
+
+CREATE TABLE IF NOT EXISTS `t_l2snr_ihm_data_cj188` (
+  `sid` int(4) NOT NULL AUTO_INCREMENT,
+  `cj188address` char(14) NOT NULL,
+  `equtype` int(1) NOT NULL,
+  `heatpower` float(6,2) NOT NULL,
+  `heatpoweruint` int(1) NOT NULL,
+  `currentheat` float(6,2) NOT NULL,
+  `currentheatuint` int(1) NOT NULL,
+  `todayheat` float(6,2) NOT NULL,
+  `todayheatuint` int(1) NOT NULL,
+  `flowvolume` float(6,2) NOT NULL,
+  `flowvolumeuint` int(1) NOT NULL,
+  `currentaccuvolume` float(6,2) NOT NULL,
+  `currentaccuvolumeuint` int(1) NOT NULL,
+  `lastmonth` int(1) NOT NULL,
+  `accumuworktime` int(3) NOT NULL,
+  `supplywatertemp` float(4,2) NOT NULL,
+  `backwatertemp` float(4,2) NOT NULL,
+  `realtime` char(14) NOT NULL,
+  `st` char(4) NOT NULL,
+  `todaydate` char(2) NOT NULL,
+  `key` int(8) NOT NULL,
+  `buycode` int(1) NOT NULL,
+  `amount` float(6,2) NOT NULL,
+  `price` float(4,2) NOT NULL,
+  `volume` int(3) NOT NULL,
+  PRIMARY KEY (`sid`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
 -- 表的结构 `t_l2snr_ipm_afndata1_f25`
 --
 
@@ -2416,6 +2482,68 @@ CREATE TABLE IF NOT EXISTS `t_l2snr_ipm_afndata1_f25` (
 
 INSERT INTO `t_l2snr_ipm_afndata1_f25` (`sid`, `deviceid`, `cur_terminaltime`, `cur_sumusepower`, `cur_phaseausepwr`, `cur_phasebusepwr`, `cur_phasecusepwr`, `cur_sumnupower`, `cur_phaseanupwr`, `cur_phasebnupwr`, `cur_sumphasecnupwr`, `cur_powerfactor`, `cur_phaseapwrfac`, `cur_phasebpwrfac`, `cur_phasecpwrfac`, `cur_phaseavoltage`, `cur_phasebvoltage`, `cur_phasecvoltage`, `cur_phaseacurrent`, `cur_phasebcurrent`, `cur_phaseccurrent`, `cur_zeroordercurrent`, `cur_sumvisualpower`, `cur_phaseavisualpower`, `cur_phasebvisualpower`, `cur_phasecvisualpower`) VALUES
 (1, 111, '111111', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `t_l2snr_ipm_data_cj188`
+--
+
+CREATE TABLE IF NOT EXISTS `t_l2snr_ipm_data_cj188` (
+  `sid` int(4) NOT NULL AUTO_INCREMENT,
+  `cj188address` char(14) NOT NULL,
+  `equtype` int(1) NOT NULL,
+  `flowvolume` float(6,2) NOT NULL,
+  `flowvolumeuint` int(1) NOT NULL,
+  `currentaccuvolume` float(6,2) NOT NULL,
+  `currentaccuvolumeuint` int(1) NOT NULL,
+  `todayaccuvolume` float(6,2) NOT NULL,
+  `todayaccuvolumeuint` int(1) NOT NULL,
+  `lastmonth` int(1) NOT NULL,
+  `accumuworktime` int(3) NOT NULL,
+  `supplywatertemp` float(4,2) NOT NULL,
+  `backwatertemp` float(4,2) NOT NULL,
+  `realtime` char(14) NOT NULL,
+  `st` char(4) NOT NULL,
+  `todaydate` char(2) NOT NULL,
+  `key` int(8) NOT NULL,
+  `buycode` int(1) NOT NULL,
+  `amount` float(6,2) NOT NULL,
+  `price` float(4,2) NOT NULL,
+  `volume` int(3) NOT NULL,
+  PRIMARY KEY (`sid`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `t_l2snr_iwm_data_cj188`
+--
+
+CREATE TABLE IF NOT EXISTS `t_l2snr_iwm_data_cj188` (
+  `sid` int(4) NOT NULL AUTO_INCREMENT,
+  `cj188address` char(14) NOT NULL,
+  `equtype` int(1) NOT NULL,
+  `flowvolume` float(6,2) NOT NULL,
+  `flowvolumeuint` int(1) NOT NULL,
+  `currentaccuvolume` float(6,2) NOT NULL,
+  `currentaccuvolumeuint` int(1) NOT NULL,
+  `todayaccuvolume` float(6,2) NOT NULL,
+  `todayaccuvolumeuint` int(1) NOT NULL,
+  `lastmonth` int(1) NOT NULL,
+  `accumuworktime` int(3) NOT NULL,
+  `supplywatertemp` float(4,2) NOT NULL,
+  `backwatertemp` float(4,2) NOT NULL,
+  `realtime` char(14) NOT NULL,
+  `st` char(4) NOT NULL,
+  `todaydate` char(2) NOT NULL,
+  `key` int(8) NOT NULL,
+  `buycode` int(1) NOT NULL,
+  `amount` float(6,2) NOT NULL,
+  `price` float(4,2) NOT NULL,
+  `volume` int(3) NOT NULL,
+  PRIMARY KEY (`sid`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 

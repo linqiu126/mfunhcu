@@ -41,7 +41,7 @@ class classTaskL4nbiotIpmUi
             return false;
         }
 
-        if (($msgId == MSG_ID_L4NBIOTIPM_CLICK_INCOMING) && (isset($msg)))
+        if (($msgId == MSG_ID_L4NBIOT_IPMUI_CLICK_INCOMING) && (isset($msg)))
         {
             $resp = "";
             //这里是L4NBIOTIPMUI与底层L2SDK之间的交换矩阵
@@ -65,31 +65,31 @@ class classTaskL4nbiotIpmUi
                     if (isset($_GET["name"])) $name = trim($_GET["name"]); else $name = "";
                     if (isset($_GET["password"])) $pwd = trim($_GET["password"]); else $pwd = "";
                     $input = array("user" => $name, "pwd" => $pwd);
-                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4NBIOT_IPM_UI, MFUN_TASK_ID_L3APPL_FUM1SYM, MSG_ID_L4NBIOTIPM_TO_L3F1_LOGIN, "MSG_ID_L4NBIOTIPM_TO_L3F1_LOGIN", $input);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4NBIOT_IPM_UI, MFUN_TASK_ID_L3APPL_FUM1SYM, MSG_ID_L4NBIOT_IPMUI_TO_L3F1_LOGIN, "MSG_ID_L4NBIOT_IPMUI_TO_L3F1_LOGIN", $input);
                     break;
 
                 //function reqdata1_f1
                 case "afn_reqdata1_f1":
                     $input = array("user" => "", "func" => "afn_reqdata1_f1", "pwd" => "");
-                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4NBIOT_IPM_UI, MFUN_TASK_ID_L2SDK_NBIOT_IPM376, MSG_ID_L4NBIOTIPM_TO_NBIOT_IPM376_DL_REQUEST, "MSG_ID_L4NBIOTIPM_TO_NBIOT_IPM376_DL_REQUEST", $input);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4NBIOT_IPM_UI, MFUN_TASK_ID_L2SDK_NBIOT_STD_QG376, MSG_ID_L4NBIOT_IPMUI_TO_NBIOT_STD_QG376_DL_REQUEST, "MSG_ID_L4NBIOT_IPMUI_TO_NBIOT_STD_QG376_DL_REQUEST", $input);
                     break;
 
                 //function reqdata1_f2
                 case "afn_reqdata1_f2":
                     $input = array("user" => "", "func" => "afn_reqdata1_f2", "pwd" => "");
-                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4NBIOT_IPM_UI, MFUN_TASK_ID_L2SDK_NBIOT_IPM376, MSG_ID_L4NBIOTIPM_TO_NBIOT_IPM376_DL_REQUEST, "MSG_ID_L4NBIOTIPM_TO_NBIOT_IPM376_DL_REQUEST", $input);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4NBIOT_IPM_UI, MFUN_TASK_ID_L2SDK_NBIOT_STD_QG376, MSG_ID_L4NBIOT_IPMUI_TO_NBIOT_STD_QG376_DL_REQUEST, "MSG_ID_L4NBIOT_IPMUI_TO_NBIOT_STD_QG376_DL_REQUEST", $input);
                     break;
 
                 //function reqdata1_f25
                 case "afn_reqdata1_f25":
                     $input = array("user" => "", "pwd" => "");
-                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4NBIOT_IPM_UI, MFUN_TASK_ID_L2SDK_NBIOT_IPM376, MSG_ID_L4NBIOTIPM_TO_NBIOT_IPM376_DL_REQUEST, "MSG_ID_L4NBIOTIPM_TO_NBIOT_IPM376_DL_REQUEST", $input);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4NBIOT_IPM_UI, MFUN_TASK_ID_L2SDK_NBIOT_STD_QG376, MSG_ID_L4NBIOT_IPMUI_TO_NBIOT_STD_QG376_DL_REQUEST, "MSG_ID_L4NBIOT_IPMUI_TO_NBIOT_STD_QG376_DL_REQUEST", $input);
                     break;
 
                 //function reqdata1_f26
                 case "afn_reqdata1_f26":
                     $input = array("user" => "", "pwd" => "");
-                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4NBIOT_IPM_UI, MFUN_TASK_ID_L2SDK_NBIOT_IPM376, MSG_ID_L4NBIOTIPM_TO_NBIOT_IPM376_DL_REQUEST, "MSG_ID_L4NBIOTIPM_TO_NBIOT_IPM376_DL_REQUEST", $input);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4NBIOT_IPM_UI, MFUN_TASK_ID_L2SDK_NBIOT_STD_QG376, MSG_ID_L4NBIOT_IPMUI_TO_NBIOT_STD_QG376_DL_REQUEST, "MSG_ID_L4NBIOT_IPMUI_TO_NBIOT_STD_QG376_DL_REQUEST", $input);
                     break;
 
                 default:

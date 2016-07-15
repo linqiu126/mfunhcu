@@ -7,7 +7,7 @@
  */
 include_once "../l1comvm/vmlayer.php";
 
-class classTaskL2sdkNbiotIpm376
+class classTaskL2sdkNbiotStdQg376
 {
     //构造函数
     public function __construct()
@@ -15,7 +15,7 @@ class classTaskL2sdkNbiotIpm376
 
     }
 
-    function func_l2sdk_ipm376_ul_frame_process($msg)
+    function func_l2sdk_std_qg376_ul_frame_process($msg)
     {
         $ipm376Obj = new classDbiL2sdkNbiotIpm376(); //初始化一个UI DB对象
 
@@ -123,7 +123,7 @@ class classTaskL2sdkNbiotIpm376
         return "";
     }
 
-    function func_l2sdk_ipm376_dl_frame_process($user)
+    function func_l2sdk_std_qg376_dl_frame_process($user)
     {
         //L3消息处理
         //L2编码并发送出去
@@ -136,7 +136,7 @@ class classTaskL2sdkNbiotIpm376
     /**************************************************************************************
      *                             任务入口函数                                           *
      *************************************************************************************/
-    public function mfun_l2sdk_nbiot_ipm376_task_main_entry($parObj, $msgId, $msgName, $msg)
+    public function mfun_l2sdk_nbiot_std_qg376_task_main_entry($parObj, $msgId, $msgName, $msg)
     {
         //合法性检查
         //定义本入口函数的logger处理对象及函数
@@ -148,7 +148,7 @@ class classTaskL2sdkNbiotIpm376
         if (empty($msg) == true) {
             $result = "Received null message body";
             $log_content = "R:" . json_encode($result);
-            $loggerObj->logger("MFUN_TASK_ID_L2SDK_NBIOT_IPM376", "mfun_l2sdk_nbiot_ipm376_task_main_entry", $log_time, $log_content);
+            $loggerObj->logger("MFUN_TASK_ID_L2SDK_NBIOT_STD_QG376", "mfun_l2sdk_nbiot_std_qg376_task_main_entry", $log_time, $log_content);
             echo trim($result);
             return false;
         }
@@ -156,25 +156,25 @@ class classTaskL2sdkNbiotIpm376
         if (($msgId <= MSG_ID_MFUN_MIN) || ($msgId >= MSG_ID_MFUN_MAX)){
             $result = "Msgid or MsgName error";
             $log_content = "P:" . json_encode($result);
-            $loggerObj->logger("MFUN_TASK_ID_L2SDK_NBIOT_IPM376", "mfun_l2sdk_nbiot_ipm376_task_main_entry", $log_time, $log_content);
+            $loggerObj->logger("MFUN_TASK_ID_L2SDK_NBIOT_STD_QG376", "mfun_l2sdk_nbiot_std_qg376_task_main_entry", $log_time, $log_content);
             echo trim($result);
             return false;
         }
 
         //判定是UL还是DL来的消息
-        if ($msgId == MSG_ID_L2SDK_NBIOT_IPM376_INCOMING){
+        if ($msgId == MSG_ID_L2SDK_NBIOT_STD_QG376_INCOMING){
             //解开消息
             //if (isset($msg["user"])) $user = $msg["user"]; else  $user = "";
             //具体处理函数
-            $resp = $this->func_l2sdk_ipm376_ul_frame_process($msg);
+            $resp = $this->func_l2sdk_std_qg376_ul_frame_process($msg);
             $project = MFUN_PRJ_NB_IOT_IPM376;
         }
 
-        elseif($msgId == MSG_ID_L4NBIOTIPM_TO_NBIOT_IPM376_DL_REQUEST){
+        elseif($msgId == MSG_ID_L4NBIOT_IPMUI_TO_NBIOT_STD_QG376_DL_REQUEST){
             //解开消息
             if (isset($msg["user"])) $user = $msg["user"]; else  $user = "";
             //具体处理函数
-            $resp = $this->func_l2sdk_ipm376_dl_frame_process($user);
+            $resp = $this->func_l2sdk_std_qg376_dl_frame_process($user);
             $project = MFUN_PRJ_NB_IOT_IPM376;
         }
         else{
@@ -185,7 +185,7 @@ class classTaskL2sdkNbiotIpm376
         if (!empty($resp))
         {
             $log_content = "T:" . json_encode($resp);
-            $loggerObj->logger($project, "MFUN_TASK_ID_L2SDK_NBIOT_IPM376", $log_time, $log_content);
+            $loggerObj->logger($project, "MFUN_TASK_ID_L2SDK_NBIOT_STD_QG376", $log_time, $log_content);
             echo trim($resp); //这里需要编码送出去，跟其他处理方式还不太一样
         }
 

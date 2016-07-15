@@ -442,7 +442,7 @@ class classTaskL2sdkNbiotStdCj188
         }
 
         //IPM188UI来的业务应用消息，待发送出去给终端设备
-        elseif($msgId == MSG_ID_L4NBIOTIPM_TO_NBIOT_IPM188_DL_REQUEST){
+        elseif($msgId == MSG_ID_L4NBIOT_IPMUI_TO_NBIOT_STD_CK188_DL_REQUEST){
             //解开消息
             if (isset($msg["user"])) $user = $msg["user"]; else  $user = "";
             //具体处理函数
@@ -451,7 +451,7 @@ class classTaskL2sdkNbiotStdCj188
         }
 
         //IWM188UI来的业务应用消息，待发送出去给终端设备
-        elseif($msgId == MSG_ID_L4NBIOTIPM_TO_NBIOT_IWM188_DL_REQUEST){
+        elseif($msgId == MSG_ID_L4NBIOT_IPMUI_TO_NBIOT_STD_CK188_DL_REQUEST){
             //解开消息
             if (isset($msg["user"])) $user = $msg["user"]; else  $user = "";
             //具体处理函数
@@ -460,7 +460,7 @@ class classTaskL2sdkNbiotStdCj188
         }
 
         //IGM188UI来的业务应用消息，待发送出去给终端设备
-        elseif($msgId == MSG_ID_L4NBIOTIPM_TO_NBIOT_IGM188_DL_REQUEST){
+        elseif($msgId == MSG_ID_L4NBIOT_IPMUI_TO_NBIOT_STD_CK188_DL_REQUEST){
             //解开消息
             if (isset($msg["user"])) $user = $msg["user"]; else  $user = "";
             //具体处理函数
@@ -476,7 +476,7 @@ class classTaskL2sdkNbiotStdCj188
         if (!empty($resp))
         {
             $log_content = "T:" . json_encode($resp);
-            $loggerObj->logger($project, "MFUN_TASK_ID_L2SDK_NBIOT_IPM376", $log_time, $log_content);
+            $loggerObj->logger($project, "MFUN_TASK_ID_L2SDK_NBIOT_STD_QG376", $log_time, $log_content);
             echo trim($resp); //这里需要编码送出去，跟其他处理方式还不太一样
         }
 

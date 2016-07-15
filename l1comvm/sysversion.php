@@ -8,7 +8,7 @@
 
 //SW version control, for internal usage
 define ("MFUN_CURRENT_SW_RELEASE", "02");  //R01 = 0x01 (MFUN.SW.R01.456)
-define ("MFUN_CURRENT_SW_DELIVERY","D28"); //001 = 0x01 (XQ.HCU.SW.R01.456), starting from 100 as 2015/11/02
+define ("MFUN_CURRENT_SW_DELIVERY","D29"); //001 = 0x01 (XQ.HCU.SW.R01.456), starting from 100 as 2015/11/02
 define("MFUN_CURRENT_VERSION", "R" . MFUN_CURRENT_SW_RELEASE . "." . MFUN_CURRENT_SW_DELIVERY);  //当前SAE应用版本号
 
 /*
@@ -48,6 +48,8 @@ define("MFUN_CURRENT_VERSION", "R" . MFUN_CURRENT_SW_RELEASE . "." . MFUN_CURREN
 //= ZJL, 2016 July.11, CURRENT_SW_DELIVERY R02.D26
 //= ZJL, 2016 July.13, CURRENT_SW_DELIVERY R02.D27
 //= LZH, 2016 July.13, CURRENT_SW_DELIVERY R02.D28, 合并最新手机UI界面支持功能，以及十大功能框架
+//= ZJL, 2016 July.15, CURRENT_SW_DELIVERY R02.D29
+
 
  */
 

@@ -125,6 +125,26 @@ class classTaskL2snrIpm
         return $jsonencode;
     }
 
+    function func_ipm_cj188_ul_read_data_process($user)
+    {
+        $ipmObj = new classDbiL2snrIpm(); //初始化一个UI DB对象
+        $jsonencode = json_encode($ipmObj);
+        return $jsonencode;
+    }
+
+    function func_ipm_cj188_ul_read_key_ver_process($user)
+    {
+        $ipmObj = new classDbiL2snrIpm(); //初始化一个UI DB对象
+        $jsonencode = json_encode($ipmObj);
+        return $jsonencode;
+    }
+
+    function func_ipm_cj188_ul_read_address_process($user)
+    {
+        $ipmObj = new classDbiL2snrIpm(); //初始化一个UI DB对象
+        $jsonencode = json_encode($ipmObj);
+        return $jsonencode;
+    }
 
     /**************************************************************************************
      *                             任务入口函数                                           *
@@ -153,8 +173,8 @@ class classTaskL2snrIpm
             return false;
         }
 
-        //上报CONFIRM
-        if ($msgId == MSG_ID_L2SDK_NBIOT_IPM376_TO_L2SNR_IPM_AFN_UL_CNFNG)
+        //QG376规范中上报CONFIRM
+        if ($msgId == MSG_ID_L2SDK_NBIOT_STD_QG376_TO_L2SNR_IPM_AFN_UL_CNFNG)
         {
             //解开消息
             if (isset($msg["user"])) $user = $msg["user"]; else  $user = "";
@@ -163,8 +183,8 @@ class classTaskL2snrIpm
             $project = MFUN_PRJ_NB_IOT_IPM376;
         }
 
-        //上报RESET
-        if ($msgId == MSG_ID_L2SDK_NBIOT_IPM376_TO_L2SNR_IPM_AFN_UL_RESET)
+        //QG376规范中上报RESET
+        elseif ($msgId == MSG_ID_L2SDK_NBIOT_STD_QG376_TO_L2SNR_IPM_AFN_UL_RESET)
         {
             //解开消息
             if (isset($msg["user"])) $user = $msg["user"]; else  $user = "";
@@ -173,8 +193,8 @@ class classTaskL2snrIpm
             $project = MFUN_PRJ_NB_IOT_IPM376;
         }
 
-        //上报LK_CHECK
-        if ($msgId == MSG_ID_L2SDK_NBIOT_IPM376_TO_L2SNR_IPM_AFN_UL_LICK)
+        //QG376规范中上报LK_CHECK
+        elseif ($msgId == MSG_ID_L2SDK_NBIOT_STD_QG376_TO_L2SNR_IPM_AFN_UL_LICK)
         {
             //解开消息
             if (isset($msg["user"])) $user = $msg["user"]; else  $user = "";
@@ -183,8 +203,8 @@ class classTaskL2snrIpm
             $project = MFUN_PRJ_NB_IOT_IPM376;
         }
 
-        //上报RELAY
-        if ($msgId == MSG_ID_L2SDK_NBIOT_IPM376_TO_L2SNR_IPM_AFN_UL_RELAY)
+        //QG376规范中上报RELAY
+        elseif ($msgId == MSG_ID_L2SDK_NBIOT_STD_QG376_TO_L2SNR_IPM_AFN_UL_RELAY)
         {
             //解开消息
             if (isset($msg["user"])) $user = $msg["user"]; else  $user = "";
@@ -193,8 +213,8 @@ class classTaskL2snrIpm
             $project = MFUN_PRJ_NB_IOT_IPM376;
         }
 
-        //上报SET Parameter
-        if ($msgId == MSG_ID_L2SDK_NBIOT_IPM376_TO_L2SNR_IPM_AFN_UL_SETPAR)
+        //QG376规范中上报SET Parameter
+        elseif ($msgId == MSG_ID_L2SDK_NBIOT_STD_QG376_TO_L2SNR_IPM_AFN_UL_SETPAR)
         {
             //解开消息
             if (isset($msg["user"])) $user = $msg["user"]; else  $user = "";
@@ -203,8 +223,8 @@ class classTaskL2snrIpm
             $project = MFUN_PRJ_NB_IOT_IPM376;
         }
 
-        //上报CONTROL
-        if ($msgId == MSG_ID_L2SDK_NBIOT_IPM376_TO_L2SNR_IPM_AFN_UL_CONTROL)
+        //QG376规范中上报CONTROL
+        elseif ($msgId == MSG_ID_L2SDK_NBIOT_STD_QG376_TO_L2SNR_IPM_AFN_UL_CONTROL)
         {
             //解开消息
             if (isset($msg["user"])) $user = $msg["user"]; else  $user = "";
@@ -213,8 +233,8 @@ class classTaskL2snrIpm
             $project = MFUN_PRJ_NB_IOT_IPM376;
         }
 
-        //上报Security Negotiation
-        if ($msgId == MSG_ID_L2SDK_NBIOT_IPM376_TO_L2SNR_IPM_AFN_UL_SECNEG)
+        //QG376规范中上报Security Negotiation
+        elseif ($msgId == MSG_ID_L2SDK_NBIOT_STD_QG376_TO_L2SNR_IPM_AFN_UL_SECNEG)
         {
             //解开消息
             if (isset($msg["user"])) $user = $msg["user"]; else  $user = "";
@@ -223,8 +243,8 @@ class classTaskL2snrIpm
             $project = MFUN_PRJ_NB_IOT_IPM376;
         }
 
-        //上报REQUEST REPORT
-        if ($msgId == MSG_ID_L2SDK_NBIOT_IPM376_TO_L2SNR_IPM_AFN_UL_REQREP)
+        //QG376规范中上报REQUEST REPORT
+        elseif ($msgId == MSG_ID_L2SDK_NBIOT_STD_QG376_TO_L2SNR_IPM_AFN_UL_REQREP)
         {
             //解开消息
             if (isset($msg["user"])) $user = $msg["user"]; else  $user = "";
@@ -233,8 +253,8 @@ class classTaskL2snrIpm
             $project = MFUN_PRJ_NB_IOT_IPM376;
         }
 
-        //上报REQUEST CONFIG
-        if ($msgId == MSG_ID_L2SDK_NBIOT_IPM376_TO_L2SNR_IPM_AFN_UL_REQCFG)
+        //QG376规范中上报REQUEST CONFIG
+        elseif ($msgId == MSG_ID_L2SDK_NBIOT_STD_QG376_TO_L2SNR_IPM_AFN_UL_REQCFG)
         {
             //解开消息
             if (isset($msg["user"])) $user = $msg["user"]; else  $user = "";
@@ -243,8 +263,8 @@ class classTaskL2snrIpm
             $project = MFUN_PRJ_NB_IOT_IPM376;
         }
 
-        //上报INQURY PARAMETER
-        if ($msgId == MSG_ID_L2SDK_NBIOT_IPM376_TO_L2SNR_IPM_AFN_UL_INQPAR)
+        //QG376规范中上报INQURY PARAMETER
+        elseif ($msgId == MSG_ID_L2SDK_NBIOT_STD_QG376_TO_L2SNR_IPM_AFN_UL_INQPAR)
         {
             //解开消息
             if (isset($msg["user"])) $user = $msg["user"]; else  $user = "";
@@ -253,8 +273,8 @@ class classTaskL2snrIpm
             $project = MFUN_PRJ_NB_IOT_IPM376;
         }
 
-        //上报REQUEST TASK
-        if ($msgId == MSG_ID_L2SDK_NBIOT_IPM376_TO_L2SNR_IPM_AFN_UL_REQTSK)
+        //QG376规范中上报REQUEST TASK
+        elseif ($msgId == MSG_ID_L2SDK_NBIOT_STD_QG376_TO_L2SNR_IPM_AFN_UL_REQTSK)
         {
             //解开消息
             if (isset($msg["user"])) $user = $msg["user"]; else  $user = "";
@@ -263,8 +283,8 @@ class classTaskL2snrIpm
             $project = MFUN_PRJ_NB_IOT_IPM376;
         }
 
-        //上报REQUEST DATA1
-        if ($msgId == MSG_ID_L2SDK_NBIOT_IPM376_TO_L2SNR_IPM_AFN_UL_REQDATA1)
+        //QG376规范中上报REQUEST DATA1
+        elseif ($msgId == MSG_ID_L2SDK_NBIOT_STD_QG376_TO_L2SNR_IPM_AFN_UL_REQDATA1)
         {
             //解开消息
             if (isset($msg["user"])) $user = $msg["user"]; else  $user = "";
@@ -273,8 +293,8 @@ class classTaskL2snrIpm
             $project = MFUN_PRJ_NB_IOT_IPM376;
         }
 
-        //上报REQUEST DATA2
-        if ($msgId == MSG_ID_L2SDK_NBIOT_IPM376_TO_L2SNR_IPM_AFN_UL_REQDATA2)
+        //QG376规范中上报REQUEST DATA2
+        elseif ($msgId == MSG_ID_L2SDK_NBIOT_STD_QG376_TO_L2SNR_IPM_AFN_UL_REQDATA2)
         {
             //解开消息
             if (isset($msg["user"])) $user = $msg["user"]; else  $user = "";
@@ -283,8 +303,8 @@ class classTaskL2snrIpm
             $project = MFUN_PRJ_NB_IOT_IPM376;
         }
 
-        //上报REQUEST DATA3
-        if ($msgId == MSG_ID_L2SDK_NBIOT_IPM376_TO_L2SNR_IPM_AFN_UL_REQDATA3)
+        //QG376规范中上报REQUEST DATA3
+        elseif ($msgId == MSG_ID_L2SDK_NBIOT_STD_QG376_TO_L2SNR_IPM_AFN_UL_REQDATA3)
         {
             //解开消息
             if (isset($msg["user"])) $user = $msg["user"]; else  $user = "";
@@ -293,8 +313,8 @@ class classTaskL2snrIpm
             $project = MFUN_PRJ_NB_IOT_IPM376;
         }
 
-        //上报FILE TRANSFER
-        if ($msgId == MSG_ID_L2SDK_NBIOT_IPM376_TO_L2SNR_IPM_AFN_UL_FILETRNS)
+        //QG376规范中上报FILE TRANSFER
+        elseif ($msgId == MSG_ID_L2SDK_NBIOT_STD_QG376_TO_L2SNR_IPM_AFN_UL_FILETRNS)
         {
             //解开消息
             if (isset($msg["user"])) $user = $msg["user"]; else  $user = "";
@@ -303,14 +323,44 @@ class classTaskL2snrIpm
             $project = MFUN_PRJ_NB_IOT_IPM376;
         }
 
-        //上报DATA FORWARD
-        if ($msgId == MSG_ID_L2SDK_NBIOT_IPM376_TO_L2SNR_IPM_AFN_UL_DATAFWD)
+        //QG376规范中上报DATA FORWARD
+        elseif ($msgId == MSG_ID_L2SDK_NBIOT_STD_QG376_TO_L2SNR_IPM_AFN_UL_DATAFWD)
         {
             //解开消息
             if (isset($msg["user"])) $user = $msg["user"]; else  $user = "";
             //具体处理函数
             $resp = $this->func_afn_ul_data_forward_process($user);
             $project = MFUN_PRJ_NB_IOT_IPM376;
+        }
+
+        //CJ188规范中上报READ DATA
+        if ($msgId == MSG_ID_L2SDK_NBIOT_STD_CJ188_TO_L2SNR_IGM_READ_DATA)
+        {
+            //解开消息
+            if (isset($msg["user"])) $user = $msg["user"]; else  $user = "";
+            //具体处理函数
+            $resp = $this->func_ipm_cj188_ul_read_data_process($user);
+            $project = MFUN_PRJ_NB_IOT_IGM188;
+        }
+
+        //CJ188规范中上报READ KEY VER
+        elseif ($msgId == MSG_ID_L2SDK_NBIOT_STD_CJ188_TO_L2SNR_IGM_READ_KEY_VER)
+        {
+            //解开消息
+            if (isset($msg["user"])) $user = $msg["user"]; else  $user = "";
+            //具体处理函数
+            $resp = $this->func_ipm_cj188_ul_read_key_ver_process($user);
+            $project = MFUN_PRJ_NB_IOT_IGM188;
+        }
+
+        //CJ188规范中上报READ ADDRESS
+        elseif ($msgId == MSG_ID_L2SDK_NBIOT_STD_CJ188_TO_L2SNR_IGM_READ_ADDR)
+        {
+            //解开消息
+            if (isset($msg["user"])) $user = $msg["user"]; else  $user = "";
+            //具体处理函数
+            $resp = $this->func_ipm_cj188_ul_read_address_process($user);
+            $project = MFUN_PRJ_NB_IOT_IGM188;
         }
 
         else{
