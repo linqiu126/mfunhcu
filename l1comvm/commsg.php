@@ -332,6 +332,15 @@ define("MFUN_NBIOT_IPM376_FRAME_MAX_LEN", 255); //16383 under fix network transm
  *                            NBIOT CJ188消息定义                                    *
  *************************************************************************************/
 //T代码标识不同的仪表
+define("MFUN_NBIOT_CJ188_T_TYPE_WATER_METER_MIN", 0x10);
+define("MFUN_NBIOT_CJ188_T_TYPE_WATER_METER_MAX", 0x19);
+define("MFUN_NBIOT_CJ188_T_TYPE_HEAT_METER_MIN", 0x20);
+define("MFUN_NBIOT_CJ188_T_TYPE_HEAT_METER_MAX", 0x29);
+define("MFUN_NBIOT_CJ188_T_TYPE_GAS_METER_MIN", 0x30);
+define("MFUN_NBIOT_CJ188_T_TYPE_GAS_METER_MAX", 0x39);
+define("MFUN_NBIOT_CJ188_T_TYPE_POWER_METER_MIN", 0x40);
+define("MFUN_NBIOT_CJ188_T_TYPE_POWER_METER_MAX", 0x49);
+
 define("MFUN_NBIOT_CJ188_T_TYPE_COLD_WATER_METER", 0x10);
 define("MFUN_NBIOT_CJ188_T_TYPE_HOT_WATER_METER", 0x11);
 define("MFUN_NBIOT_CJ188_T_TYPE_DRINK_WATER_METER", 0x12);

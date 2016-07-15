@@ -203,7 +203,8 @@ Make By：ZJL
 
 //= ZJL, 2016 July.15, CURRENT_SW_DELIVERY R02.D29
 > IPM376改造为完善的STD_QG376规范，跟IPM不再保持唯一的映射关系
-> 完善CJ188功能框架
+> 完善CJ188功能框架，完成上行解码链路的工作
+
 
 
 //待完善的功能

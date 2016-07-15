@@ -9,10 +9,10 @@
 -- --------------------------------------------------------
 
 --
--- 表的结构 `t_l2sdk_nbiot_ipm376_context`
+-- 表的结构 `t_l2sdk_nbiot_std_qg376_context`
 --
 
-CREATE TABLE IF NOT EXISTS `t_l2sdk_nbiot_ipm376_context` (
+CREATE TABLE IF NOT EXISTS `t_l2sdk_nbiot_std_qg376_context` (
   `sid` int(4) NOT NULL AUTO_INCREMENT,
   `ipmaddress` int(4) NOT NULL,
   `cntpfc` int(1) NOT NULL,
@@ -20,10 +20,10 @@ CREATE TABLE IF NOT EXISTS `t_l2sdk_nbiot_ipm376_context` (
   PRIMARY KEY (`sid`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
--- 转存表中的数据 `t_l2sdk_nbiot_ipm376_context`
+-- 转存表中的数据 `t_l2sdk_nbiot_std_qg376_context`
 --
 
-INSERT INTO `t_l2sdk_nbiot_ipm376_context` (`sid`, `ipmaddress`, `cntpfc`, `deviceflag`) VALUES (1, 111, 17, 1);
+INSERT INTO `t_l2sdk_nbiot_std_qg376_context` (`sid`, `ipmaddress`, `cntpfc`, `deviceflag`) VALUES (1, 111, 17, 1);
 
 
 --
@@ -44,42 +44,6 @@ CREATE TABLE IF NOT EXISTS `t_l2sdk_nbiot_std_cj188_context` (
 INSERT INTO `t_l2sdk_nbiot_std_cj188_context` (`sid`, `cj188address`, `cntser`, `deviceflag`) VALUES (1, 111, 17, 1);
 
 
---
--- 表的结构 `t_l2sdk_nbiot_std_cj188_data`
---
-
-CREATE TABLE IF NOT EXISTS `t_l2sdk_nbiot_std_cj188_data` (
-  `sid` int(4) NOT NULL AUTO_INCREMENT,
-  `cj188address` char(14) NOT NULL,
-  `equtype` int(1) NOT NULL,
-  `heatpower` float(6,2) NOT NULL,
-  `heatpoweruint` int(1) NOT NULL,
-  `currentheat` float(6,2) NOT NULL,
-  `currentheatuint` int(1) NOT NULL,
-  `flowvolume` float(6,2) NOT NULL,
-  `flowvolumeuint` int(1) NOT NULL,
-  `todayheat` float(6,2) NOT NULL,
-  `todayheatuint` int(1) NOT NULL,
-  `currentaccuvolume` float(6,2) NOT NULL,
-  `currentaccuvolumeuint` int(1) NOT NULL,
-  `todayaccuvolume` float(6,2) NOT NULL,
-  `todayaccuvolumeuint` int(1) NOT NULL,
-  `lastmonth` int(1) NOT NULL,
-  `accumuworktime` int(3) NOT NULL,
-  `supplywatertemp` float(4,2) NOT NULL,
-  `backwatertemp` float(4,2) NOT NULL,
-  `realtime` char(14) NOT NULL,
-  `st` char(4) NOT NULL,
-  `todaydate` char(2) NOT NULL,
-  `key` int(8) NOT NULL,
-  `buycode` int(1) NOT NULL,
-  `amount` float(6,2) NOT NULL,
-  `price` float(4,2) NOT NULL,
-  `volume` int(3) NOT NULL,
-  PRIMARY KEY (`sid`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
-
 */
 
 class classDbiL2sdkNbiotIpm376
@@ -97,15 +61,15 @@ class classDbiL2sdkNbiotIpm376
         if (!$mysqli) { die('Could not connect: ' . mysqli_error($mysqli)); }
 
         //存储新记录，如果发现是已经存在的数据，则覆盖，否则新增
-        $result = $mysqli->query("SELECT * FROM `t_l2sdk_nbiot_ipm376_context` WHERE (`deviceid` = '$ipmaddress')");
+        $result = $mysqli->query("SELECT * FROM `t_l2sdk_nbiot_std_qg376_context` WHERE (`deviceid` = '$ipmaddress')");
         if (($result != false) && ($result->num_rows)>0)  //重复，则覆盖
         {
-            $result=$mysqli->query("UPDATE `t_l2sdk_nbiot_ipm376_context` SET  `cntpfc` = '$cntpfc',`deviceflag` = '$deviceflag'
+            $result=$mysqli->query("UPDATE `t_l2sdk_nbiot_std_qg376_context` SET  `cntpfc` = '$cntpfc',`deviceflag` = '$deviceflag'
                     WHERE (`ipmaddress` = '$ipmaddress')");
         }
         else   //不存在，新增
         {
-            $result=$mysqli->query("INSERT INTO `t_l2sdk_nbiot_ipm376_context` (ipmaddress, cntpfc, deviceflag)
+            $result=$mysqli->query("INSERT INTO `t_l2sdk_nbiot_std_qg376_context` (ipmaddress, cntpfc, deviceflag)
                     VALUES ('$ipmaddress','$cntpfc','$deviceflag')");
         }
 
@@ -121,7 +85,7 @@ class classDbiL2sdkNbiotIpm376
         if (!$mysqli) {
             die('Could not connect: ' . mysqli_error($mysqli));
         }
-        $result = $mysqli->query("SELECT * FROM `t_l2sdk_nbiot_ipm376_context` WHERE `ipmaddress` = '$ipmaddress'");
+        $result = $mysqli->query("SELECT * FROM `t_l2sdk_nbiot_std_qg376_context` WHERE `ipmaddress` = '$ipmaddress'");
         if (($result != false) && ($result->num_rows)>0)
         {
             $row = $result->fetch_array();
