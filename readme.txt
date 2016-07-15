@@ -136,7 +136,7 @@ Make By：ZJL
 > 临时修复L4AQYC的REQUEST.php，让其可以使用，等待将其结构转换为不同功能的VM机制
 
 //= LZH, 2016 July.3, CURRENT_SW_DELIVERY R02.D17
-> 合并UI
+> 合并调试最新UI模块
 
 //= ZJL, 2016 July.4, CURRENT_SW_DELIVERY R02.D18
 > 继续完善L4AQYC UI的VM
@@ -205,6 +205,8 @@ Make By：ZJL
 > IPM376改造为完善的STD_QG376规范，跟IPM不再保持唯一的映射关系
 > 完善CJ188功能框架，完成上行解码链路的工作
 
+//= LZH, 2016 July.15, CURRENT_SW_DELIVERY R02.D30
+> fix UI界面bug，所有修改框架前的界面功能回归测试OK
 
 
 //待完善的功能

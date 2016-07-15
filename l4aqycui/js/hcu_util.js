@@ -34,10 +34,10 @@ function get_minute_list(date){
     var input = date.split("-");
     var myDate=new Date();
     myDate.setDate(parseInt(input[2]));
-    myDate.setMonth(parseInt(input[1])-1);	//ÉèÖÃ Date ¶ÔÏóÖĞÔÂ·İ (0 ~ 11)¡£
-    myDate.setFullYear(parseInt(input[0]));	//ÉèÖÃ Date ¶ÔÏóÖĞµÄÄê·İ£¨ËÄÎ»Êı×Ö£©¡£
-    myDate.setHours(0);	//ÉèÖÃ Date ¶ÔÏóÖĞµÄĞ¡Ê± (0 ~ 23)¡£
-    myDate.setMinutes(0);	//ÉèÖÃ Date ¶ÔÏóÖĞµÄ·ÖÖÓ (0 ~ 59)¡£
+    myDate.setMonth(parseInt(input[1])-1);	//ï¿½ï¿½ï¿½ï¿½ Date ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â·ï¿½ (0 ~ 11)ï¿½ï¿½
+    myDate.setFullYear(parseInt(input[0]));	//ï¿½ï¿½ï¿½ï¿½ Date ï¿½ï¿½ï¿½ï¿½ï¿½Ğµï¿½ï¿½ï¿½İ£ï¿½ï¿½ï¿½Î»ï¿½ï¿½ï¿½Ö£ï¿½ï¿½ï¿½
+    myDate.setHours(0);	//ï¿½ï¿½ï¿½ï¿½ Date ï¿½ï¿½ï¿½ï¿½ï¿½Ğµï¿½Ğ¡Ê± (0 ~ 23)ï¿½ï¿½
+    myDate.setMinutes(0);	//ï¿½ï¿½ï¿½ï¿½ Date ï¿½ï¿½ï¿½ï¿½ï¿½ĞµÄ·ï¿½ï¿½ï¿½ (0 ~ 59)ï¿½ï¿½
     myDate.setSeconds(0);
 
     var ret = new Array();
@@ -52,10 +52,10 @@ function get_hour_list(date){
     var input = date.split("-");
     var myDate=new Date();
     myDate.setDate(parseInt(input[2]));
-    myDate.setMonth(parseInt(input[1])-1);	//ÉèÖÃ Date ¶ÔÏóÖĞÔÂ·İ (0 ~ 11)¡£
-    myDate.setFullYear(parseInt(input[0]));	//ÉèÖÃ Date ¶ÔÏóÖĞµÄÄê·İ£¨ËÄÎ»Êı×Ö£©¡£
-    myDate.setHours(0);	//ÉèÖÃ Date ¶ÔÏóÖĞµÄĞ¡Ê± (0 ~ 23)¡£
-    myDate.setMinutes(0);	//ÉèÖÃ Date ¶ÔÏóÖĞµÄ·ÖÖÓ (0 ~ 59)¡£
+    myDate.setMonth(parseInt(input[1])-1);	//ï¿½ï¿½ï¿½ï¿½ Date ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â·ï¿½ (0 ~ 11)ï¿½ï¿½
+    myDate.setFullYear(parseInt(input[0]));	//ï¿½ï¿½ï¿½ï¿½ Date ï¿½ï¿½ï¿½ï¿½ï¿½Ğµï¿½ï¿½ï¿½İ£ï¿½ï¿½ï¿½Î»ï¿½ï¿½ï¿½Ö£ï¿½ï¿½ï¿½
+    myDate.setHours(0);	//ï¿½ï¿½ï¿½ï¿½ Date ï¿½ï¿½ï¿½ï¿½ï¿½Ğµï¿½Ğ¡Ê± (0 ~ 23)ï¿½ï¿½
+    myDate.setMinutes(0);	//ï¿½ï¿½ï¿½ï¿½ Date ï¿½ï¿½ï¿½ï¿½ï¿½ĞµÄ·ï¿½ï¿½ï¿½ (0 ~ 59)ï¿½ï¿½
     myDate.setSeconds(0);
     //console.log(myDate.Format("yyyy-MM-dd hh:mm:ss"));
     myDate.setTime(myDate.getTime()-1000*60*60*24*6);
@@ -73,10 +73,10 @@ function get_day_list(date){
     var input = date.split("-");
     var myDate=new Date();
     myDate.setDate(parseInt(input[2]));
-    myDate.setMonth(parseInt(input[1])-1);	//ÉèÖÃ Date ¶ÔÏóÖĞÔÂ·İ (0 ~ 11)¡£
-    myDate.setFullYear(parseInt(input[0]));	//ÉèÖÃ Date ¶ÔÏóÖĞµÄÄê·İ£¨ËÄÎ»Êı×Ö£©¡£
-    myDate.setHours(0);	//ÉèÖÃ Date ¶ÔÏóÖĞµÄĞ¡Ê± (0 ~ 23)¡£
-    myDate.setMinutes(0);	//ÉèÖÃ Date ¶ÔÏóÖĞµÄ·ÖÖÓ (0 ~ 59)¡£
+    myDate.setMonth(parseInt(input[1])-1);	//ï¿½ï¿½ï¿½ï¿½ Date ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â·ï¿½ (0 ~ 11)ï¿½ï¿½
+    myDate.setFullYear(parseInt(input[0]));	//ï¿½ï¿½ï¿½ï¿½ Date ï¿½ï¿½ï¿½ï¿½ï¿½Ğµï¿½ï¿½ï¿½İ£ï¿½ï¿½ï¿½Î»ï¿½ï¿½ï¿½Ö£ï¿½ï¿½ï¿½
+    myDate.setHours(0);	//ï¿½ï¿½ï¿½ï¿½ Date ï¿½ï¿½ï¿½ï¿½ï¿½Ğµï¿½Ğ¡Ê± (0 ~ 23)ï¿½ï¿½
+    myDate.setMinutes(0);	//ï¿½ï¿½ï¿½ï¿½ Date ï¿½ï¿½ï¿½ï¿½ï¿½ĞµÄ·ï¿½ï¿½ï¿½ (0 ~ 59)ï¿½ï¿½
     myDate.setSeconds(0);
     myDate.setTime(myDate.getTime()-1000*60*60*24*29);
     var ret = new Array();
@@ -89,13 +89,13 @@ function get_day_list(date){
 }
 Date.prototype.Format = function (fmt) { //author: meizz
     var o = {
-        "M+": this.getMonth() + 1, //ÔÂ·İ
-        "d+": this.getDate(), //ÈÕ
+        "M+": this.getMonth() + 1, //ï¿½Â·ï¿½
+        "d+": this.getDate(), //ï¿½ï¿½
         "h+": this.getHours(), //Ğ¡Ê±
-        "m+": this.getMinutes(), //·Ö
-        "s+": this.getSeconds(), //Ãë
-        "q+": Math.floor((this.getMonth() + 3) / 3), //¼¾¶È
-        "S": this.getMilliseconds() //ºÁÃë
+        "m+": this.getMinutes(), //ï¿½ï¿½
+        "s+": this.getSeconds(), //ï¿½ï¿½
+        "q+": Math.floor((this.getMonth() + 3) / 3), //ï¿½ï¿½ï¿½ï¿½
+        "S": this.getMilliseconds() //ï¿½ï¿½ï¿½ï¿½
     };
     if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
     for (var k in o)
@@ -109,7 +109,7 @@ function get_yesterday(){
 }
 
 function log(str){
-    //console.log(str);
+    console.log(str);
 }
 function getsec(str)
 {

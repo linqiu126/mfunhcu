@@ -751,7 +751,7 @@ class classDbiL3apF3dm
         }
         $mysqli->query("set character_set_results = utf8");
 
-        $query_str = "SELECT * FROM `t_l3f3dm_currentreport` WHERE `statcode` = '$statcode'";
+        $query_str = "SELECT * FROM `t_l3f3dm_sum_currentreport` WHERE `statcode` = '$statcode'";
         $result = $mysqli->query($query_str);
         if (($result->num_rows)>0)
         {
@@ -1322,7 +1322,7 @@ class classDbiL3apF3dm
                 array_push($one_row, $row["chargeman"]);
                 array_push($one_row, $row["telephone"]);
             }
-            $query_str = "SELECT * FROM `t_l3f3dm_currentreport` WHERE `statcode` = '$statcode'";
+            $query_str = "SELECT * FROM `t_l3f3dm_sum_currentreport` WHERE `statcode` = '$statcode'";
             $result = $mysqli->query($query_str);
             if (($result->num_rows) > 0)
             {

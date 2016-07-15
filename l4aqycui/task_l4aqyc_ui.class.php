@@ -112,7 +112,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["mail"])) $mail = trim($_GET["mail"]); else  $mail = "";
                     if (isset($_GET["type"])) $type = trim($_GET["type"]); else  $type = "";
                     if (isset($_GET["memo"])) $memo = trim($_GET["memo"]); else  $memo = "";
-                    if (isset($_GET["auth"])) $auth = trim($_GET["auth"]); else  $auth = "";
+                    if (isset($_GET["auth"])) $auth = $_GET["auth"]; else  $auth = array();
                     $input = array("name" => $name, "nickname" => $nickname, "password" => $password, "mobile" => $mobile,
                         "mail" => $mail, "type" => $type, "memo" => $memo, "auth" => $auth);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM1SYM, MSG_ID_L4AQYCUI_TO_L3F1_USERNEW, "MSG_ID_L4AQYCUI_TO_L3F1_USERNEW",$input);
@@ -145,7 +145,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["mail"])) $mail = trim($_GET["mail"]); else  $mail = "";
                     if (isset($_GET["type"])) $type = trim($_GET["type"]); else  $type = "";
                     if (isset($_GET["memo"])) $memo = trim($_GET["memo"]); else  $memo = "";
-                    if (isset($_GET["auth"])) $auth = trim($_GET["auth"]); else  $auth = "";
+                    if (isset($_GET["auth"])) $auth = $_GET["auth"]; else  $auth = array();
                     $input = array("id" => $id, "name" => $name, "nickname" => $nickname, "password" => $password, "mobile" => $mobile,
                         "mail" => $mail, "type" => $type, "memo" => $memo, "auth" => $auth);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM1SYM, MSG_ID_L4AQYCUI_TO_L3F1_USERMOD, "MSG_ID_L4AQYCUI_TO_L3F1_USERMOD",$input);
@@ -278,7 +278,7 @@ class classTaskL4aqycUi
                                          };*/
                 case "UserProj":    // query project list belong to one user
                     if (isset($_GET["userid"])) $userid = trim($_GET["userid"]); else  $userid = "";
-                    $input = array("$userid" => $userid);
+                    $input = array("userid" => $userid);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4AQYCUI_TO_L3F2_USERPROJ, "MSG_ID_L4AQYCUI_TO_L3F2_USERPROJ",$input);
                     break;
 
@@ -341,7 +341,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["Department"])) $Department = trim($_GET["Department"]); else  $Department = "";
                     if (isset($_GET["Address"])) $Address = trim($_GET["Address"]); else  $Address = "";
                     if (isset($_GET["Stage"])) $Stage = trim($_GET["Stage"]); else  $Stage = "";
-                    if (isset($_GET["Projlist"])) $Projlist = trim($_GET["Projlist"]); else  $Projlist = "";
+                    if (isset($_GET["Projlist"])) $Projlist = $_GET["Projlist"]; else  $Projlist = array();
                     if (isset($_GET["user"])) $user = trim($_GET["user"]); else  $user = "";
                     $input = array("PGCode" => $PGCode, "PGName" => $PGName, "ChargeMan" => $ChargeMan, "Telephone" => $Telephone, "Department" => $Department,
                         "Address" => $Address, "Stage" => $Stage, "Projlist" => $Projlist, "user" => $user);
@@ -376,7 +376,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["Department"])) $Department = trim($_GET["Department"]); else  $Department = "";
                     if (isset($_GET["Address"])) $Address = trim($_GET["Address"]); else  $Address = "";
                     if (isset($_GET["Stage"])) $Stage = trim($_GET["Stage"]); else  $Stage = "";
-                    if (isset($_GET["Projlist"])) $Projlist = trim($_GET["Projlist"]); else  $Projlist = "";
+                    if (isset($_GET["Projlist"])) $Projlist = $_GET["Projlist"]; else  $Projlist = array();
                     if (isset($_GET["user"])) $user = trim($_GET["user"]); else  $user = "";
                     $input = array("PGCode" => $PGCode, "PGName" => $PGName, "ChargeMan" => $ChargeMan, "Telephone" => $Telephone, "Department" => $Department,
                         "Address" => $Address, "Stage" => $Stage, "Projlist" => $Projlist, "user" => $user);
@@ -959,7 +959,7 @@ class classTaskL4aqycUi
                 case "DevAlarm":  //获取当前的测量值，如果测量值超出范围，提示告警
                     if (isset($_GET["StatCode"])) $StatCode = trim($_GET["StatCode"]); else  $StatCode = "";
                     $input = array("StatCode" => $StatCode);
-                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM3DM, MSG_ID_L4AQYCUI_TO_L3F5_DEVALARM, "MSG_ID_L4AQYCUI_TO_L3F5_DEVALARM",$input);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM5FM, MSG_ID_L4AQYCUI_TO_L3F5_DEVALARM, "MSG_ID_L4AQYCUI_TO_L3F5_DEVALARM",$input);
                     break;
 
                 //require data structure:
@@ -1043,7 +1043,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["date"])) $date = trim($_GET["date"]); else  $date = "";
                     if (isset($_GET["type"])) $type = trim($_GET["type"]); else  $type = "";
                     $input = array("id" => $id, "StatCode" => $StatCode, "date" => $date, "type" => $type);
-                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM3DM, MSG_ID_L4AQYCUI_TO_L3F5_ALARMQUERY, "MSG_ID_L4AQYCUI_TO_L3F5_ALARMQUERY",$input);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM5FM, MSG_ID_L4AQYCUI_TO_L3F5_ALARMQUERY, "MSG_ID_L4AQYCUI_TO_L3F5_ALARMQUERY",$input);
                     break;
 
                 //require data structure:
@@ -1081,7 +1081,7 @@ class classTaskL4aqycUi
                 //$Filter = $_GET["Filter"];
                 case "TableQuery":
                     if (isset($_GET["TableName"])) $TableName = trim($_GET["TableName"]); else  $TableName = "";
-                    if (isset($_GET["Condition"])) $Condition = trim($_GET["Condition"]); else  $Condition = "";
+                    if (isset($_GET["Condition"])) $Condition = $_GET["Condition"]; else  $Condition = array();
                     $input = array("TableName" => $TableName, "Condition" => $Condition);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM3DM, MSG_ID_L4AQYCUI_TO_L3F3_TABLEQUERY, "MSG_ID_L4AQYCUI_TO_L3F3_TABLEQUERY",$input);
                     break;
@@ -1120,7 +1120,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["msg"])) $msg1 = trim($_GET["msg"]); else  $msg1 = "";
                     if (isset($_GET["ifdev"])) $ifdev = trim($_GET["ifdev"]); else  $ifdev = "";
                     $input = array("id" => $id, "msg" => $msg1, "ifdev" => $ifdev);
-                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM3DM, MSG_ID_L4AQYCUI_TO_L3F7_SETUSERMSG, "MSG_ID_L4AQYCUI_TO_L3F7_SETUSERMSG",$input);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM7ADS, MSG_ID_L4AQYCUI_TO_L3F7_SETUSERMSG, "MSG_ID_L4AQYCUI_TO_L3F7_SETUSERMSG",$input);
                     break;
 
                 /*
@@ -1133,7 +1133,7 @@ class classTaskL4aqycUi
                 case "GetUserMsg":
                     if (isset($_GET["id"])) $id = trim($_GET["id"]); else  $id = "";
                     $input = array("id" => $id);
-                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM3DM, MSG_ID_L4AQYCUI_TO_L3F7_GETUSERMSG, "MSG_ID_L4AQYCUI_TO_L3F7_GETUSERMSG",$input);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM7ADS, MSG_ID_L4AQYCUI_TO_L3F7_GETUSERMSG, "MSG_ID_L4AQYCUI_TO_L3F7_GETUSERMSG",$input);
                     break;
 
                 /*
@@ -1147,7 +1147,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["id"])) $id = trim($_GET["id"]); else  $id = "";
                     if (isset($_GET["StatCode"])) $StatCode = trim($_GET["StatCode"]); else  $StatCode = "";
                     $input = array("id" => $id, "StatCode" => $StatCode);
-                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM3DM, MSG_ID_L4AQYCUI_TO_L3F7_SHOWUSERMSG, "MSG_ID_L4AQYCUI_TO_L3F7_SHOWUSERMSG",$input);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM7ADS, MSG_ID_L4AQYCUI_TO_L3F7_SHOWUSERMSG, "MSG_ID_L4AQYCUI_TO_L3F7_SHOWUSERMSG",$input);
                     break;
 
                 /*
@@ -1167,7 +1167,7 @@ class classTaskL4aqycUi
                 case "GetUserImg":
                     if (isset($_GET["id"])) $id = trim($_GET["id"]); else  $id = "";
                     $input = array("id" => $id);
-                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM3DM, MSG_ID_L4AQYCUI_TO_L3F7_GETUSERIMG, "MSG_ID_L4AQYCUI_TO_L3F7_GETUSERIMG",$input);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM7ADS, MSG_ID_L4AQYCUI_TO_L3F7_GETUSERIMG, "MSG_ID_L4AQYCUI_TO_L3F7_GETUSERIMG",$input);
                     break;
 
 
@@ -1179,7 +1179,7 @@ class classTaskL4aqycUi
                 case "ClearUserImg":
                     if (isset($_GET["id"])) $id = trim($_GET["id"]); else  $id = "";
                     $input = array("id" => $id);
-                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM3DM, MSG_ID_L4AQYCUI_TO_L3F7_CLEARUSERIMG, "MSG_ID_L4AQYCUI_TO_L3F7_CLEARUSERIMG",$input);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM7ADS, MSG_ID_L4AQYCUI_TO_L3F7_CLEARUSERIMG, "MSG_ID_L4AQYCUI_TO_L3F7_CLEARUSERIMG",$input);
                     break;
 
                 /*

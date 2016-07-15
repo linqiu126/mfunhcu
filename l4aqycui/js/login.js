@@ -3,7 +3,7 @@
 //var jump_url = ".jump";
 
 var request_head= "request.php";
-var jump_url = "jump.php";
+var jump_url = "/xhzn/mfunhcu/l4aqycui/jump.php";
 function log(str){
     console.log(str);
 }

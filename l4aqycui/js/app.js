@@ -4023,7 +4023,7 @@ function get_select_monitor(title){
 function addMarker(point){
     // 创建图标对象
     if(monitor_map_list == null) return;
-    var myIcon = new BMap.Icon("/image/map-marker-ball-azure-small.png", new BMap.Size(32, 32),{
+    var myIcon = new BMap.Icon("/xhzn/mfunhcu/l4aqycui/image/map-marker-ball-azure-small.png", new BMap.Size(32, 32),{
         anchor: new BMap.Size(16, 30)
     });
     for(var i=0;i<monitor_map_list.length;i++){
@@ -4606,7 +4606,7 @@ function get_alarmpointinfo_on_map(){
 function alarm_addMarker(point){
     if(monitor_map_list == null)return;
     // 创建图标对象
-    var myIcon = new BMap.Icon("/image/map-marker-ball-azure-small.png", new BMap.Size(32, 32),{
+    var myIcon = new BMap.Icon("/xhzn/mfunhcu/l4aqycui/image/map-marker-ball-azure-small.png", new BMap.Size(32, 32),{
         anchor: new BMap.Size(16, 30)
     });
     for(var i=0;i<monitor_map_list.length;i++){
