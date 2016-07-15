@@ -6,6 +6,7 @@
  * Time: 14:34
  */
 include_once "../l1comvm/vmlayer.php";
+include_once "dbi_l2sdk_nbiot.class.php";
 
 class classTaskL2sdkNbiotStdCj188
 {
@@ -54,12 +55,12 @@ class classTaskL2sdkNbiotStdCj188
         //通信异常下的应答帧
         if ( ($msgCtrlStatus == 1) && ($msgLen == 3)){
             $format = "A2Ser/A4Stat";
-            $temp = $format($format, $msgBody);
+            $temp = unpack($format, $msgBody);
             $Ser = hexdec($temp['Ser']);
             $Stat = hexdec($temp['Stat']);
 
             //采用这种方式将RESP发送回去，是否会有ECHO的问题，待定！！！
-            if ($Ser != $cj188Obj->dbi_std_cj188_context_pfc_inqury($msgAddr)) {
+            if ($Ser != $cj188Obj->dbi_std_cj188_context_ser_inqury($msgAddr)) {
                 $resp = "SER ERROR!";
             }
             //SER序号增加1，以便下一帧继续使用
@@ -69,7 +70,7 @@ class classTaskL2sdkNbiotStdCj188
             }
         }
         //正常的回复应答帧
-        elseif (($msgCtrlStatus == 1) && ($msgLen > 3)){
+        elseif (($msgCtrlStatus == 0) && ($msgLen >= 3)){
             if ($msgCtrl == MFUN_NBIOT_CJ188_CTRL_READ_DATA) $resp = $this->func_frame_read_data_process($parObj, $msgAddr, $msgType, $msgBody, $msgLen, $msgCtrlDir, $msgCtrlStatus);
             elseif ($msgCtrl == MFUN_NBIOT_CJ188_CTRL_READ_KEY_VER) $resp = $this->func_frame_read_key_ver_process($parObj, $msgAddr, $msgType, $msgBody, $msgLen, $msgCtrlDir, $msgCtrlStatus);
             elseif ($msgCtrl == MFUN_NBIOT_CJ188_CTRL_READ_ADDR) $resp = $this->func_frame_read_addr_process($parObj, $msgAddr, $msgType, $msgBody, $msgLen, $msgCtrlDir, $msgCtrlStatus);
@@ -99,15 +100,15 @@ class classTaskL2sdkNbiotStdCj188
     function func_frame_read_data_process($parObj, $msgAddr, $msgType, $msgBody, $msgLen, $msgCtrlDir, $msgCtrlStatus)
     {
         $format = "A2DI0/A2DI1/A2Ser";
-        $temp = $format($format, $msgBody);
+        $temp = unpack($format, $msgBody);
         $DI0 = (hexdec($temp['DI0'])) & 0xFF;
         $DI1 = (hexdec($temp['DI1'])) & 0xFF;
         $Ser = hexdec($temp['Ser']);
-        $DI0DI1 = ($DI0 << 8) & 0xFF00 + $DI1;
+        $DI0DI1 = ($DI0 << 8) + $DI1;
 
         $cj188Obj = new classDbiL2sdkNbiotStdCj188(); //初始化一个UI DB对象
         //采用这种方式将RESP发送回去，是否会有ECHO的问题，待定！！！
-        if ($Ser != $cj188Obj->dbi_std_cj188_context_pfc_inqury($msgAddr)) {
+        if ($Ser != $cj188Obj->dbi_std_cj188_context_ser_inqury($msgAddr)) {
             $resp = "SER ERROR!";
             return $resp;
         }
@@ -125,7 +126,7 @@ class classTaskL2sdkNbiotStdCj188
             "msgCtrlDir" => $msgCtrlDir,
             "msgCtrlStatus" => $msgCtrlStatus);
         if (($msgType >= MFUN_NBIOT_CJ188_T_TYPE_WATER_METER_MIN) &&($msgType <= MFUN_NBIOT_CJ188_T_TYPE_WATER_METER_MAX))
-            $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L2SDK_NBIOT_STD_CJ188, MFUN_TASK_ID_L2SENSOR_IPM, MSG_ID_L2SDK_NBIOT_STD_CJ188_TO_L2SNR_IWM_READ_DATA, "MSG_ID_L2SDK_NBIOT_STD_CJ188_TO_L2SNR_IWM_READ_DATA",$input);
+            $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L2SDK_NBIOT_STD_CJ188, MFUN_TASK_ID_L2SENSOR_IWM, MSG_ID_L2SDK_NBIOT_STD_CJ188_TO_L2SNR_IWM_READ_DATA, "MSG_ID_L2SDK_NBIOT_STD_CJ188_TO_L2SNR_IWM_READ_DATA",$input);
         elseif(($msgType >= MFUN_NBIOT_CJ188_T_TYPE_HEAT_METER_MIN) &&($msgType <= MFUN_NBIOT_CJ188_T_TYPE_HEAT_METER_MAX))
             $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L2SDK_NBIOT_STD_CJ188, MFUN_TASK_ID_L2SENSOR_IHM, MSG_ID_L2SDK_NBIOT_STD_CJ188_TO_L2SNR_IHM_READ_DATA, "MSG_ID_L2SDK_NBIOT_STD_CJ188_TO_L2SNR_IHM_READ_DATA",$input);
         elseif(($msgType >= MFUN_NBIOT_CJ188_T_TYPE_GAS_METER_MIN) &&($msgType <= MFUN_NBIOT_CJ188_T_TYPE_GAS_METER_MAX))
@@ -140,15 +141,15 @@ class classTaskL2sdkNbiotStdCj188
     function func_frame_read_key_ver_process($parObj, $msgAddr,$msgType, $msgBody, $msgLen, $msgCtrlDir, $msgCtrlStatus)
     {
         $format = "A2DI0/A2DI1/A2Ser";
-        $temp = $format($format, $msgBody);
+        $temp = unpack($format, $msgBody);
         $DI0 = (hexdec($temp['DI0'])) & 0xFF;
         $DI1 = (hexdec($temp['DI1'])) & 0xFF;
         $Ser = hexdec($temp['Ser']);
-        $DI0DI1 = ($DI0 << 8) & 0xFF00 + $DI1;
+        $DI0DI1 = ($DI0 << 8) + $DI1;
 
         $cj188Obj = new classDbiL2sdkNbiotStdCj188(); //初始化一个UI DB对象
         //采用这种方式将RESP发送回去，是否会有ECHO的问题，待定！！！
-        if ($Ser != $cj188Obj->dbi_std_cj188_context_pfc_inqury($msgAddr)) {
+        if ($Ser != $cj188Obj->dbi_std_cj188_context_ser_inqury($msgAddr)) {
             $resp = "SER ERROR!";
             return $resp;
         }
@@ -166,7 +167,7 @@ class classTaskL2sdkNbiotStdCj188
             "msgCtrlDir" => $msgCtrlDir,
             "msgCtrlStatus" => $msgCtrlStatus);
         if (($msgType >= MFUN_NBIOT_CJ188_T_TYPE_WATER_METER_MIN) &&($msgType <= MFUN_NBIOT_CJ188_T_TYPE_WATER_METER_MAX))
-            $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L2SDK_NBIOT_STD_CJ188, MFUN_TASK_ID_L2SENSOR_IPM, MSG_ID_L2SDK_NBIOT_STD_CJ188_TO_L2SNR_IWM_READ_KEY_VER, "MSG_ID_L2SDK_NBIOT_STD_CJ188_TO_L2SNR_IWM_READ_KEY_VER",$input);
+            $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L2SDK_NBIOT_STD_CJ188, MFUN_TASK_ID_L2SENSOR_IWM, MSG_ID_L2SDK_NBIOT_STD_CJ188_TO_L2SNR_IWM_READ_KEY_VER, "MSG_ID_L2SDK_NBIOT_STD_CJ188_TO_L2SNR_IWM_READ_KEY_VER",$input);
         elseif(($msgType >= MFUN_NBIOT_CJ188_T_TYPE_HEAT_METER_MIN) &&($msgType <= MFUN_NBIOT_CJ188_T_TYPE_HEAT_METER_MAX))
             $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L2SDK_NBIOT_STD_CJ188, MFUN_TASK_ID_L2SENSOR_IHM, MSG_ID_L2SDK_NBIOT_STD_CJ188_TO_L2SNR_IHM_READ_KEY_VER, "MSG_ID_L2SDK_NBIOT_STD_CJ188_TO_L2SNR_IHM_READ_KEY_VER",$input);
         elseif(($msgType >= MFUN_NBIOT_CJ188_T_TYPE_GAS_METER_MIN) &&($msgType <= MFUN_NBIOT_CJ188_T_TYPE_GAS_METER_MAX))
@@ -181,15 +182,15 @@ class classTaskL2sdkNbiotStdCj188
     function func_frame_read_addr_process($parObj, $msgAddr,$msgType, $msgBody, $msgLen, $msgCtrlDir, $msgCtrlStatus)
     {
         $format = "A2DI0/A2DI1/A2Ser";
-        $temp = $format($format, $msgBody);
+        $temp = unpack($format, $msgBody);
         $DI0 = (hexdec($temp['DI0'])) & 0xFF;
         $DI1 = (hexdec($temp['DI1'])) & 0xFF;
         $Ser = hexdec($temp['Ser']);
-        $DI0DI1 = ($DI0 << 8) & 0xFF00 + $DI1;
+        $DI0DI1 = ($DI0 << 8) + $DI1;
 
         $cj188Obj = new classDbiL2sdkNbiotStdCj188(); //初始化一个UI DB对象
         //采用这种方式将RESP发送回去，是否会有ECHO的问题，待定！！！
-        if ($Ser != $cj188Obj->dbi_std_cj188_context_pfc_inqury($msgAddr)) {
+        if ($Ser != $cj188Obj->dbi_std_cj188_context_ser_inqury($msgAddr)) {
             $resp = "SER ERROR!";
             return $resp;
         }
@@ -207,7 +208,7 @@ class classTaskL2sdkNbiotStdCj188
             "msgCtrlDir" => $msgCtrlDir,
             "msgCtrlStatus" => $msgCtrlStatus);
         if (($msgType >= MFUN_NBIOT_CJ188_T_TYPE_WATER_METER_MIN) &&($msgType <= MFUN_NBIOT_CJ188_T_TYPE_WATER_METER_MAX))
-            $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L2SDK_NBIOT_STD_CJ188, MFUN_TASK_ID_L2SENSOR_IPM, MSG_ID_L2SDK_NBIOT_STD_CJ188_TO_L2SNR_IWM_READ_ADDR, "MSG_ID_L2SDK_NBIOT_STD_CJ188_TO_L2SNR_IWM_READ_ADDR",$input);
+            $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L2SDK_NBIOT_STD_CJ188, MFUN_TASK_ID_L2SENSOR_IWM, MSG_ID_L2SDK_NBIOT_STD_CJ188_TO_L2SNR_IWM_READ_ADDR, "MSG_ID_L2SDK_NBIOT_STD_CJ188_TO_L2SNR_IWM_READ_ADDR",$input);
         elseif(($msgType >= MFUN_NBIOT_CJ188_T_TYPE_HEAT_METER_MIN) &&($msgType <= MFUN_NBIOT_CJ188_T_TYPE_HEAT_METER_MAX))
             $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L2SDK_NBIOT_STD_CJ188, MFUN_TASK_ID_L2SENSOR_IHM, MSG_ID_L2SDK_NBIOT_STD_CJ188_TO_L2SNR_IHM_READ_ADDR, "MSG_ID_L2SDK_NBIOT_STD_CJ188_TO_L2SNR_IHM_READ_ADDR",$input);
         elseif(($msgType >= MFUN_NBIOT_CJ188_T_TYPE_GAS_METER_MIN) &&($msgType <= MFUN_NBIOT_CJ188_T_TYPE_GAS_METER_MAX))

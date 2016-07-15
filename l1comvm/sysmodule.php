@@ -546,7 +546,7 @@ class classConstL1vmSysTaskList
             $mfunTaskArrayConst[MFUN_TASK_ID_MAX]["PRESENT"] = false;
             $mfunTaskArrayConst[MFUN_TASK_ID_NULL]["PRESENT"] = false;
         }
-        elseif (MFUN_CURRENT_WORKING_PROGRAM_NAME_UNIQUE == MFUN_WORKING_PROGRAM_NAME_UNIQUE_NBIOT_TESTMODE)
+        elseif (MFUN_CURRENT_WORKING_PROGRAM_NAME_UNIQUE == MFUN_WORKING_PROGRAM_NAME_UNIQUE_TESTMODE)
         {
             $mfunTaskArrayConst[MFUN_TASK_ID_MIN]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L1VM]["PRESENT"] = true;
