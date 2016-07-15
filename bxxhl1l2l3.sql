@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: 2016-07-15 06:58:50
+-- Generation Time: 2016-07-15 07:36:45
 -- 服务器版本： 5.6.17
 -- PHP Version: 5.5.12
 
@@ -17,58 +17,8 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8 */;
 
 --
--- Database: `bxxhl1l2l3`
+-- Database: `test`
 --
-
--- --------------------------------------------------------
-
---
--- 表的结构 `profile`
---
-
-CREATE TABLE IF NOT EXISTS `profile` (
-  `user_id` int(11) NOT NULL,
-  `name` varchar(255) DEFAULT NULL,
-  `public_email` varchar(255) DEFAULT NULL,
-  `gravatar_email` varchar(255) DEFAULT NULL,
-  `gravatar_id` varchar(32) DEFAULT NULL,
-  `location` varchar(255) DEFAULT NULL,
-  `website` varchar(255) DEFAULT NULL,
-  `bio` text,
-  PRIMARY KEY (`user_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
---
--- 转存表中的数据 `profile`
---
-
-INSERT INTO `profile` (`user_id`, `name`, `public_email`, `gravatar_email`, `gravatar_id`, `location`, `website`, `bio`) VALUES
-(51, NULL, NULL, 'liuzehong@hotmail.com', '0038795ab795a52fd00280f97b57e5f6', NULL, NULL, NULL),
-(49, NULL, NULL, 'linqiu126@sina.cn', '4760e2e3aafca2f4a603d51e52deb272', NULL, NULL, NULL),
-(50, NULL, NULL, 'bxxh2015@sina.cn', 'c282e45fd6baf771929e3da07baa46d1', NULL, NULL, NULL),
-(52, NULL, NULL, 'smdzjl@sina.cn', 'bb810bea5271778acb0970138798cb66', NULL, NULL, NULL),
-(53, NULL, NULL, 'zsc0905@sina.com', 'c8ce578315b2942d07515e00bce18abe', NULL, NULL, NULL);
-
--- --------------------------------------------------------
-
---
--- 表的结构 `token`
---
-
-CREATE TABLE IF NOT EXISTS `token` (
-  `user_id` int(11) NOT NULL,
-  `code` varchar(32) NOT NULL,
-  `created_at` int(11) NOT NULL,
-  `type` smallint(6) NOT NULL,
-  UNIQUE KEY `token_unique` (`user_id`,`code`,`type`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
---
--- 转存表中的数据 `token`
---
-
-INSERT INTO `token` (`user_id`, `code`, `created_at`, `type`) VALUES
-(51, 'TYBmCj5stq2EmG48q2AJ4FgqN7_-f_Dc', 1444047832, 0);
 
 -- --------------------------------------------------------
 
@@ -3515,41 +3465,6 @@ CREATE TABLE IF NOT EXISTS `t_l3fxprcm_workerbill` (
 
 INSERT INTO `t_l3fxprcm_workerbill` (`sid`, `task1`, `approval1`, `state`) VALUES
 (1, '浦东中环巡视任务', '', '');
-
--- --------------------------------------------------------
-
---
--- 表的结构 `user`
---
-
-CREATE TABLE IF NOT EXISTS `user` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `username` varchar(25) NOT NULL,
-  `email` varchar(255) NOT NULL,
-  `password_hash` varchar(60) NOT NULL,
-  `auth_key` varchar(32) NOT NULL,
-  `confirmed_at` int(11) DEFAULT NULL,
-  `unconfirmed_email` varchar(255) DEFAULT NULL,
-  `blocked_at` int(11) DEFAULT NULL,
-  `registration_ip` varchar(45) DEFAULT NULL,
-  `created_at` int(11) NOT NULL,
-  `updated_at` int(11) NOT NULL,
-  `flags` int(11) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `user_unique_username` (`username`),
-  UNIQUE KEY `user_unique_email` (`email`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=54 ;
-
---
--- 转存表中的数据 `user`
---
-
-INSERT INTO `user` (`id`, `username`, `email`, `password_hash`, `auth_key`, `confirmed_at`, `unconfirmed_email`, `blocked_at`, `registration_ip`, `created_at`, `updated_at`, `flags`) VALUES
-(50, 'bxxh2015', 'bxxh2015@sina.cn', '$2y$12$3vo17XiHR8tzfmAsXOK8BeDJsd38ONOSTjbv0C19qbpr2C7IfDggK', '3au2TiBE1NjaP0D0iy9-e9MzFLJ5I7ws', 1442896173, NULL, NULL, '183.193.36.164', 1442896107, 1442896173, 0),
-(49, 'linqiu12611', 'linqiu126@sina.cn', '$2y$12$9zRpK4xehj5s/npanxz6O.P1njI5MUsDBB9wskUYJ12cuTWZdrcJq', 'bqjflR9mJOyioXiYhQUGfWjMDPIg-GSJ', 1442894217, NULL, NULL, '183.193.36.164', 1442894194, 1442894217, 0),
-(51, 'mfuncloud', 'liuzehong@hotmail.com', '$2y$12$/zjcwitKWqk.hfa.ligqFOtmiHMwProHj.QugIuvYFvFxY7MbY7om', 'k05QvRL9FCgxSv13BcB363dcPOFF2hJA', NULL, NULL, NULL, '101.226.125.122', 1444047832, 1444047832, 0),
-(52, 'zjl', 'smdzjl@sina.cn', '$2y$12$pCBD9e0/B0bvwKs6crXA2.pzy606Bn4o19Bzx1r8jdjr1t1nN/jc.', 'GPJwlaHeV0JaMswrLuai0JsW7H8aUjPh', 1444091551, NULL, NULL, '117.135.149.14', 1444091501, 1444091551, 0),
-(53, 'shanchuz', 'zsc0905@sina.com', '$2y$12$mlslUwrYelb5nV6DfYot9ORgYGI9YB5.bN/HCMYru6QRn6UrfJsP6', '7VMvRAprvPsYU-Fqt6jDYeLvUzfLzdjF', 1444527288, NULL, NULL, '101.226.125.108', 1444527242, 1444527288, 0);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
