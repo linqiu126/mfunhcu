@@ -1,5 +1,7 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="DbTest" type="PhpLocalRunConfigurationType" factoryName="PHP Console" path="$PROJECT_DIR$/l4oamtools/DbTest.php">
+    <RunnerSettings RunnerId="PhpScriptDebugRunner" />
+    <ConfigurationWrapper RunnerId="PhpScriptDebugRunner" />
     <method />
   </configuration>
 </component>

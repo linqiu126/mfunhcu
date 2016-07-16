@@ -416,7 +416,7 @@ class classDbiL2snrCom
         $sensorinfo = array();
         while ($i < count($sensor_list))
         {
-            $id = $sensor_list[$i];
+            if(isset($sensor_list[$i])) $id = $sensor_list[$i]; else $id = "";
             $query_str = "SELECT * FROM `t_l2snr_sensorinfo` WHERE `id` = '$id'";
             $result = $mysqli->query($query_str);
             if (($result->num_rows)>0)
@@ -637,6 +637,12 @@ class classDbiL2snrCom
             die('Could not connect: ' . mysqli_error($mysqli));
         }
         $mysqli->query("set character_set_results = utf8");
+
+        $session = "";
+        $statcode = "";
+        $type = "";
+        $start = date(time()); //初始化开始日期为当前日期
+        $end = date(time());   //初始化结束日期为当前日期
 
         if($condition[0]["ConditonName"] == "UserId")
             $session = $condition[0]["Equal"];

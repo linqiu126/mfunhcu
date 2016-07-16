@@ -534,7 +534,7 @@ class classDbiL3apF2cm
             $i = 0;
             while ($i < count($projlist))
             {
-                $pcode = $projlist[$i]["id"];
+                if(isset($projlist[$i]["id"])) $pcode = $projlist[$i]["id"]; else $pcode = "";
                 $query_str = "INSERT INTO `t_l3f2cm_projmapping` (p_code, pg_code) VALUE ('$pcode', '$pgcode')";
                 $result3 = $mysqli->query($query_str);
                 $i++;

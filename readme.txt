@@ -244,7 +244,7 @@ Make By：ZJL
     Same error as 8.
 10.TC CRON: DEFAULT START
     Notice: Object of class classTaskL1vmCoreRouter could not be converted to int in C:\wamp\www\mfunhcu\l1comvm\vmlayer.php on line 517
-11.
+11. AQUI所有界面echo的消息前面多出来9个回车符，但对功能没有影响。
 
 
 
