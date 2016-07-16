@@ -21,8 +21,9 @@ define ("TC_EMCWX", false);
 define ("TC_SOCKET", false);
 define ("TC_CRON", false);
 define ("TC_IOT_HCU", false);
-define ("TC_L4AQYC_UI", true);
-define ("TC_NBIOT_CJ188", false);
+define ("TC_L4AQYC_UI", false);
+define ("TC_NBIOT_CJ188_UL", false);
+define ("TC_NBIOT_CJ188_DL", true);
 define ("TC_NBIOT_QG376", false);
 
 
@@ -652,7 +653,7 @@ if (TC_L4AQYC_UI == true) {
 /**************************************************************************************
  *                             NBIOT IPM/IWM/IGM/IHM @CJ188 TEST CASES                              *
  *************************************************************************************/
-if (TC_NBIOT_CJ188 == true){
+if (TC_NBIOT_CJ188_UL == true){
     //TEST CASE: NBIOT IWM/IPM/IGM/IHM@CJ188: START
 
     echo " [TC: READ_DATA返回错误帧 START]\n";
@@ -875,7 +876,22 @@ if (TC_NBIOT_CJ188 == true){
 //TEST CASE: NBIOT IWM/IPM/IGM/IHM@CJ188: END
 }
 
+if (TC_NBIOT_CJ188_DL == true){
+    //TEST CASE: NBIOT IWM/IPM/IGM/IHM@CJ188: START
 
+    echo " [TC DL IPM: READ DATA - 读取计量器 START]\n";
+    include_once "../l2sdk/dbi_l2sdk_nbiot.class.php";
+    $obj = new classDbiL2sdkNbiotStdCj188();
+    $obj->dbi_std_cj188_cntser_set_value("11223344556677", 1);
+    $_GET["action"] = "ipm_read_cur_cnt_data";
+    $_GET["len"] = 3;
+    $_GET["type"] = 0x40;
+    require("../l1mainentry/h5ui_entry_nbiot_ipm.php");
+    echo " [TC DL IPM: READ DATA - 读取计量器 END]\n";
+
+
+//TEST CASE: NBIOT IWM/IPM/IGM/IHM@CJ188: END
+}
 
 /**************************************************************************************
  *                             NBIOT IPM @QG376 TEST CASES                            *

@@ -58,6 +58,7 @@ include_once "../l3appl/fum8psm/task_l3apl_f8psm.class.php";
 include_once "../l3appl/fum9gism/task_l3apl_f9gism.class.php";
 include_once "../l3appl/fumxprcm/task_l3apl_fxprcm.class.php";
 include_once "../l3wxopr/task_l3wx_opr_emc.class.php";
+include_once "../l3nbiotopr/task_l3nbiot_opr_meter.class.php";
 include_once "../l2timercron/task_l2timer_cron.class.php";
 include_once "../l4emcwxui/task_l4emcwx_ui.class.php";
 include_once "../l4aqycui/task_l4aqyc_ui.class.php";
