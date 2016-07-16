@@ -210,6 +210,11 @@ Make By：ZJL
 //= LZH, 2016 July.15, CURRENT_SW_DELIVERY R02.D30
 > fix UI界面bug，所有修改框架前的界面功能回归测试OK
 
+//= LZH, 2016 July.16, CURRENT_SW_DELIVERY R02.D31,
+> 继续下行链路CJ188的编制
+
+
+
 
 //待完善的功能
 1. 需要编制小型工具，支持工参数据，特别是图片内容的导入导出

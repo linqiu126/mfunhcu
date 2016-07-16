@@ -57,7 +57,7 @@ include_once "../l3appl/fum7ads/task_l3apl_f7ads.class.php";
 include_once "../l3appl/fum8psm/task_l3apl_f8psm.class.php";
 include_once "../l3appl/fum9gism/task_l3apl_f9gism.class.php";
 include_once "../l3appl/fumxprcm/task_l3apl_fxprcm.class.php";
-include_once "../l3wxctrl/task_l3wx_ctrl_emc.class.php";
+include_once "../l3wxopr/task_l3wx_opr_emc.class.php";
 include_once "../l2timercron/task_l2timer_cron.class.php";
 include_once "../l4emcwxui/task_l4emcwx_ui.class.php";
 include_once "../l4aqycui/task_l4aqyc_ui.class.php";
@@ -879,9 +879,14 @@ class classTaskL1vmCoreRouter
                     $obj->mfun_l3apl_fxprcm_task_main_entry($this, $result["msgId"], $result["msgName"], $result["msgBody"]);
                     break;
 
-                case MFUN_TASK_ID_L3WXPRC_EMC:
-                    $obj = new classTaskL3wxCtrlEmc();
-                    $obj->mfun_l3wx_ctrl_emc_task_main_entry($this, $result["msgId"], $result["msgName"], $result["msgBody"]);
+                case MFUN_TASK_ID_L3WX_OPR_EMC:
+                    $obj = new classTaskL3wxOprEmc();
+                    $obj->mfun_l3wx_opr_emc_task_main_entry($this, $result["msgId"], $result["msgName"], $result["msgBody"]);
+                    break;
+
+                case MFUN_TASK_ID_L3NBIOT_OPR_METER:
+                    $obj = new classTaskL3nbiotOprMeter();
+                    $obj->mfun_l3nbiot_opr_meter_task_main_entry($this, $result["msgId"], $result["msgName"], $result["msgBody"]);
                     break;
 
                 case MFUN_TASK_ID_L4AQYC_UI:

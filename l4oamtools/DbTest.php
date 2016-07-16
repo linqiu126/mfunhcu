@@ -21,9 +21,9 @@ define ("TC_EMCWX", false);
 define ("TC_SOCKET", false);
 define ("TC_CRON", false);
 define ("TC_IOT_HCU", false);
-define ("TC_L4AQYC_UI", false);
-define ("TC_NBIOT_CJ188", true);
-define ("TC_NBIOT_QG376", true);
+define ("TC_L4AQYC_UI", true);
+define ("TC_NBIOT_CJ188", false);
+define ("TC_NBIOT_QG376", false);
 
 
 /**************************************************************************************

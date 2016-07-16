@@ -482,7 +482,7 @@ class classDbiL3apF1sym
             $i = 0;
             while ($i < count($auth))
             {
-                $authcode = $auth[$i]["id"];
+                if (isset($auth[$i]["id"])) $authcode = $auth[$i]["id"]; else $authcode = "";
                 $query_str = "INSERT INTO `t_l3f1sym_authlist` (uid, auth_code) VALUE ('$uid', '$authcode')";
                 $result = $mysqli->query($query_str);
                 $i++;
@@ -544,7 +544,7 @@ class classDbiL3apF1sym
             $i = 0;
             while ($i < count($auth))
             {
-                $authcode = $auth[$i]["id"];
+                if (isset($auth[$i]["id"])) $authcode = $auth[$i]["id"]; else $authcode = "";
                 $query_str = "INSERT INTO `t_l3f1sym_authlist` (uid, auth_code) VALUE ('$uid', '$authcode')";
                 $result = $mysqli->query($query_str);
                 $i++;

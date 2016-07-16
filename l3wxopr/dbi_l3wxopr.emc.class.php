@@ -7,7 +7,7 @@
  */
 //include_once "../l1comvm/vmlayer.php";
 
-class classDbiL3wxCtrlEmc
+class classDbiL3wxOprEmc
 {
     //构造函数
     public function __construct()
