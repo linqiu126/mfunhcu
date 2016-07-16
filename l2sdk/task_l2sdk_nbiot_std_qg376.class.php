@@ -170,7 +170,7 @@ class classTaskL2sdkNbiotStdQg376
             $project = MFUN_PRJ_NB_IOT_IPM376;
         }
 
-        elseif($msgId == MSG_ID_L4NBIOT_IPMUI_TO_NBIOT_STD_QG376_DL_REQUEST){
+        elseif($msgId == MSG_ID_L3NBIOT_OPR_METERTO_STD_QG376_DL_REQUEST){
             //解开消息
             if (isset($msg["user"])) $user = $msg["user"]; else  $user = "";
             //具体处理函数
