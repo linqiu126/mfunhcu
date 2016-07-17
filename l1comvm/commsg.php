@@ -90,18 +90,30 @@ define("MSG_ID_L2SDK_NBIOT_STD_QG376_TO_L2SNR_IPM_AFN_UL_FILETRNS", $index++); /
 define("MSG_ID_L2SDK_NBIOT_STD_QG376_TO_L2SNR_IPM_AFN_UL_DATAFWD", $index++); //终端主动上报消息或者被动反馈消息
 //L2SDK_NBIOT_STD_CJ188消息部分
 define("MSG_ID_L2SDK_NBIOT_STD_CJ188_INCOMING", $index++);
-define("MSG_ID_L2SDK_NBIOT_STD_CJ188_TO_L2SNR_IPM_READ_DATA", $index++); //终端主动上报消息或者被动反馈消息
-define("MSG_ID_L2SDK_NBIOT_STD_CJ188_TO_L2SNR_IPM_READ_KEY_VER", $index++); //终端主动上报消息或者被动反馈消息
-define("MSG_ID_L2SDK_NBIOT_STD_CJ188_TO_L2SNR_IPM_READ_ADDR", $index++); //终端主动上报消息或者被动反馈消息
-define("MSG_ID_L2SDK_NBIOT_STD_CJ188_TO_L2SNR_IGM_READ_DATA", $index++); //终端主动上报消息或者被动反馈消息
-define("MSG_ID_L2SDK_NBIOT_STD_CJ188_TO_L2SNR_IGM_READ_KEY_VER", $index++); //终端主动上报消息或者被动反馈消息
-define("MSG_ID_L2SDK_NBIOT_STD_CJ188_TO_L2SNR_IGM_READ_ADDR", $index++); //终端主动上报消息或者被动反馈消息
 define("MSG_ID_L2SDK_NBIOT_STD_CJ188_TO_L2SNR_IWM_READ_DATA", $index++); //终端主动上报消息或者被动反馈消息
 define("MSG_ID_L2SDK_NBIOT_STD_CJ188_TO_L2SNR_IWM_READ_KEY_VER", $index++); //终端主动上报消息或者被动反馈消息
 define("MSG_ID_L2SDK_NBIOT_STD_CJ188_TO_L2SNR_IWM_READ_ADDR", $index++); //终端主动上报消息或者被动反馈消息
+define("MSG_ID_L2SDK_NBIOT_STD_CJ188_TO_L2SNR_IWM_WRITE_DATA", $index++); //终端主动上报消息或者被动反馈消息
+define("MSG_ID_L2SDK_NBIOT_STD_CJ188_TO_L2SNR_IWM_WRITE_ADDR", $index++); //终端主动上报消息或者被动反馈消息
+define("MSG_ID_L2SDK_NBIOT_STD_CJ188_TO_L2SNR_IWM_WRITE_DEVICE_SYN", $index++); //终端主动上报消息或者被动反馈消息
 define("MSG_ID_L2SDK_NBIOT_STD_CJ188_TO_L2SNR_IHM_READ_DATA", $index++); //终端主动上报消息或者被动反馈消息
 define("MSG_ID_L2SDK_NBIOT_STD_CJ188_TO_L2SNR_IHM_READ_KEY_VER", $index++); //终端主动上报消息或者被动反馈消息
 define("MSG_ID_L2SDK_NBIOT_STD_CJ188_TO_L2SNR_IHM_READ_ADDR", $index++); //终端主动上报消息或者被动反馈消息
+define("MSG_ID_L2SDK_NBIOT_STD_CJ188_TO_L2SNR_IHM_WRITE_DATA", $index++); //终端主动上报消息或者被动反馈消息
+define("MSG_ID_L2SDK_NBIOT_STD_CJ188_TO_L2SNR_IHM_WRITE_ADDR", $index++); //终端主动上报消息或者被动反馈消息
+define("MSG_ID_L2SDK_NBIOT_STD_CJ188_TO_L2SNR_IHM_WRITE_DEVICE_SYN", $index++); //终端主动上报消息或者被动反馈消息
+define("MSG_ID_L2SDK_NBIOT_STD_CJ188_TO_L2SNR_IGM_READ_DATA", $index++); //终端主动上报消息或者被动反馈消息
+define("MSG_ID_L2SDK_NBIOT_STD_CJ188_TO_L2SNR_IGM_READ_KEY_VER", $index++); //终端主动上报消息或者被动反馈消息
+define("MSG_ID_L2SDK_NBIOT_STD_CJ188_TO_L2SNR_IGM_READ_ADDR", $index++); //终端主动上报消息或者被动反馈消息
+define("MSG_ID_L2SDK_NBIOT_STD_CJ188_TO_L2SNR_IGM_WRITE_DATA", $index++); //终端主动上报消息或者被动反馈消息
+define("MSG_ID_L2SDK_NBIOT_STD_CJ188_TO_L2SNR_IGM_WRITE_ADDR", $index++); //终端主动上报消息或者被动反馈消息
+define("MSG_ID_L2SDK_NBIOT_STD_CJ188_TO_L2SNR_IGM_WRITE_DEVICE_SYN", $index++); //终端主动上报消息或者被动反馈消息
+define("MSG_ID_L2SDK_NBIOT_STD_CJ188_TO_L2SNR_IPM_READ_DATA", $index++); //终端主动上报消息或者被动反馈消息
+define("MSG_ID_L2SDK_NBIOT_STD_CJ188_TO_L2SNR_IPM_READ_KEY_VER", $index++); //终端主动上报消息或者被动反馈消息
+define("MSG_ID_L2SDK_NBIOT_STD_CJ188_TO_L2SNR_IPM_READ_ADDR", $index++); //终端主动上报消息或者被动反馈消息
+define("MSG_ID_L2SDK_NBIOT_STD_CJ188_TO_L2SNR_IPM_WRITE_DATA", $index++); //终端主动上报消息或者被动反馈消息
+define("MSG_ID_L2SDK_NBIOT_STD_CJ188_TO_L2SNR_IPM_WRITE_ADDR", $index++); //终端主动上报消息或者被动反馈消息
+define("MSG_ID_L2SDK_NBIOT_STD_CJ188_TO_L2SNR_IPM_WRITE_DEVICE_SYN", $index++); //终端主动上报消息或者被动反馈消息
 
 //L2SDK_NBIOT_LTEV消息部分
 define("MSG_ID_L2SDK_NBIOT_LTEV_INCOMING", $index++);
@@ -519,7 +531,7 @@ define("MFUN_NBIOT_CJ188_WRITE_DI0DI1_STD_TIME", 0xA015);
 define("MFUN_NBIOT_CJ188_WRITE_DI0DI1_SWITCH_CTRL", 0xA017);
 define("MFUN_NBIOT_CJ188_WRITE_DI0DI1_OFF_FACTORY_START", 0xA019);
 define("MFUN_NBIOT_CJ188_WRITE_DI0DI1_ADDRESS", 0xA018);
-define("MFUN_NBIOT_CJ188_WRITE_DEVICE_SYN_DATA", 0xA016);
+define("MFUN_NBIOT_CJ188_WRITE_DI0DI1_DEVICE_SYN_DATA", 0xA016);
 
 //消息头的全局定义
 define("MFUN_NBIOT_CJ188_FRAME_FIX_HEAD", 0x68);

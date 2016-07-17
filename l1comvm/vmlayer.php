@@ -64,7 +64,11 @@ include_once "../l4emcwxui/task_l4emcwx_ui.class.php";
 include_once "../l4aqycui/task_l4aqyc_ui.class.php";
 include_once "../l4tbswrui/task_l4tbswr_ui.class.php";
 include_once "../l4nbiotipmui/task_l4nbiot_ipm_ui.class.php";
+include_once "../l4nbiotiwmui/task_l4nbiot_iwm_ui.class.php";
+include_once "../l4nbiotigmui/task_l4nbiot_igm_ui.class.php";
+include_once "../l4nbiotihmui/task_l4nbiot_ihm_ui.class.php";
 include_once "../l5bi/task_bi_service.class.php";
+date_default_timezone_set('prc'); //设置北京时间为系统的缺省时间
 
 
 class classTaskL1vmCoreRouter

@@ -295,6 +295,195 @@ class classTaskL2snrIhm
         return $resp;
     }
 
+    function func_ihm_cj188_ul_write_data_confirm_process($parObj, $msgAddr, $msgType, $msgBody, $msgLen, $msgCtrlDir, $msgCtrlStatus)
+    {
+        $cj188Obj = new classDbiL2snrIhm(); //初始化一个UI DB对象
+        $format = "A2DI0/A2DI1/A2Ser";
+        $temp = unpack($format, $msgBody);
+        $DI0 = (hexdec($temp['DI0'])) & 0xFF;
+        $DI1 = (hexdec($temp['DI1'])) & 0xFF;
+        $DI0DI1 = ($DI0 << 8)  + $DI1;
+
+        //正式处理不同的DI0/DI1
+        $resp = "";
+        switch($DI0DI1){
+            case MFUN_NBIOT_CJ188_WRITE_DI0DI1_PRICE_TABLE:
+                if (($msgLen == 0x5) && (($msgType == MFUN_NBIOT_CJ188_T_TYPE_HEAT_ENERGY_METER) || ($msgType == MFUN_NBIOT_CJ188_T_TYPE_COLD_ENERGY_METER)))
+                {
+                    $format = "A2DI0/A2DI1/A2Ser/A4ST";
+                    $temp = unpack($format, $msgBody);
+                    //当前状态
+                    $st = $temp['ST'];
+                    $resp = $cj188Obj->dbi_ihm_std_cj188_data_save_write_st($msgAddr, $msgType, $st);
+                }
+                else{
+                    $resp = "";
+                }
+                break;
+
+            case MFUN_NBIOT_CJ188_WRITE_DI0DI1_BILL_DATE:
+                if (($msgLen == 0x3) && (($msgType == MFUN_NBIOT_CJ188_T_TYPE_HEAT_ENERGY_METER) || ($msgType == MFUN_NBIOT_CJ188_T_TYPE_COLD_ENERGY_METER)))
+                {
+                    $format = "A2DI0/A2DI1/A2Ser";
+                    $temp = unpack($format, $msgBody);
+                    $resp = "";  // Do nothing
+                }
+                else{
+                    $resp = "";
+                }
+                break;
+
+            case MFUN_NBIOT_CJ188_WRITE_DI0DI1_ACCOUNT_DATE:
+                if (($msgLen == 0x3) && (($msgType == MFUN_NBIOT_CJ188_T_TYPE_HEAT_ENERGY_METER) || ($msgType == MFUN_NBIOT_CJ188_T_TYPE_COLD_ENERGY_METER)))
+                {
+                    $format = "A2DI0/A2DI1/A2Ser";
+                    $temp = unpack($format, $msgBody);
+                    $resp = "";  // Do nothing
+                }
+                else{
+                    $resp = "";
+                }
+                break;
+
+            case MFUN_NBIOT_CJ188_WRITE_DI0DI1_BUY_AMOUNT:
+                if (($msgLen == 0x8) && (($msgType == MFUN_NBIOT_CJ188_T_TYPE_HEAT_ENERGY_METER) || ($msgType == MFUN_NBIOT_CJ188_T_TYPE_COLD_ENERGY_METER)))
+                {
+                    $format = "A2DI0/A2DI1/A2Ser/A2BC/A2AAp/A2AA0/A2AA2/A2AA4";
+                    $temp = unpack($format, $msgBody);
+                    //购买金额
+                    $bc = hexdec($temp['BC']);
+                    $AAp = hexdec(dechex($temp['AAp'])) & 0xFF;
+                    $AA0 = hexdec(dechex($temp['AA0'])) & 0xFF;
+                    $AA2 = hexdec(dechex($temp['AA2'])) & 0xFF;
+                    $AA4 = hexdec(dechex($temp['AA4'])) & 0xFF;
+                    $AA = $AA4 * 10000 + $AA2 * 100 + $AA0 + $AAp / 100;
+                    $resp = $cj188Obj->dbi_ihm_std_cj188_data_save_write_buy_amount($msgAddr, $msgType, $bc, $AA);
+                }
+                else{
+                    $resp = "";
+                }
+                break;
+
+            case MFUN_NBIOT_CJ188_WRITE_DI0DI1_NEW_KEY:
+                if (($msgLen == 0x4) && (($msgType == MFUN_NBIOT_CJ188_T_TYPE_HEAT_ENERGY_METER) || ($msgType == MFUN_NBIOT_CJ188_T_TYPE_COLD_ENERGY_METER)))
+                {
+                    $format = "A2DI0/A2DI1/A2Ser/A2Keyver";
+                    $temp = unpack($format, $msgBody);
+                    //购买金额
+                    $keyver = hexdec($temp['Keyver']);
+                    $resp = $cj188Obj->dbi_ihm_std_cj188_data_save_key_ver($msgAddr, $msgType, $keyver);
+                }
+                else{
+                    $resp = "";
+                }
+                break;
+
+            case MFUN_NBIOT_CJ188_WRITE_DI0DI1_STD_TIME:
+                if (($msgLen == 0x3) && (($msgType == MFUN_NBIOT_CJ188_T_TYPE_HEAT_ENERGY_METER) || ($msgType == MFUN_NBIOT_CJ188_T_TYPE_COLD_ENERGY_METER)))
+                {
+                    $format = "A2DI0/A2DI1/A2Ser";
+                    $temp = unpack($format, $msgBody);
+                    //Do nothing
+                }
+                else{
+                    $resp = "";
+                }
+                break;
+
+            case MFUN_NBIOT_CJ188_WRITE_DI0DI1_SWITCH_CTRL:
+                if (($msgLen == 0x5) && (($msgType == MFUN_NBIOT_CJ188_T_TYPE_HEAT_ENERGY_METER) || ($msgType == MFUN_NBIOT_CJ188_T_TYPE_COLD_ENERGY_METER)))
+                {
+                    $format = "A2DI0/A2DI1/A2Ser/A4ST";
+                    $temp = unpack($format, $msgBody);
+                    //当前状态
+                    $st = $temp['ST'];
+                    $resp = $cj188Obj->dbi_ihm_std_cj188_data_save_write_st($msgAddr, $msgType, $st);
+                }
+                else{
+                    $resp = "";
+                }
+                break;
+
+            case MFUN_NBIOT_CJ188_WRITE_DI0DI1_OFF_FACTORY_START:
+                if (($msgLen == 0x3) && (($msgType == MFUN_NBIOT_CJ188_T_TYPE_HEAT_ENERGY_METER) || ($msgType == MFUN_NBIOT_CJ188_T_TYPE_COLD_ENERGY_METER)))
+                {
+                    $format = "A2DI0/A2DI1/A2Ser";
+                    $temp = unpack($format, $msgBody);
+                    //Do nothing
+                }
+                else{
+                    $resp = "";
+                }
+                break;
+
+            default:
+                $resp = "";
+                break;
+        }
+
+        return $resp;
+    }
+
+    function func_ihm_cj188_ul_write_addr_confirm_process($parObj, $msgAddr, $msgType, $msgBody, $msgLen, $msgCtrlDir, $msgCtrlStatus)
+    {
+        $cj188Obj = new classDbiL2snrIhm(); //初始化一个UI DB对象
+        $format = "A2DI0/A2DI1/A2Ser";
+        $temp = unpack($format, $msgBody);
+        $DI0 = (hexdec($temp['DI0'])) & 0xFF;
+        $DI1 = (hexdec($temp['DI1'])) & 0xFF;
+        $DI0DI1 = ($DI0 << 8) + $DI1;
+
+        //正式处理不同的DI0/DI1
+        $resp = "";
+        switch($DI0DI1){
+            case MFUN_NBIOT_CJ188_WRITE_DI0DI1_ADDRESS:
+                if (($msgLen == 0x03) && (($msgType == MFUN_NBIOT_CJ188_T_TYPE_HEAT_ENERGY_METER) || ($msgType == MFUN_NBIOT_CJ188_T_TYPE_COLD_ENERGY_METER)))
+                {
+                    $format = "A2DI0/A2DI1/A2Ser";
+                    $temp = unpack($format, $msgBody);
+                    //Do nothing
+                }
+                else $resp = "";
+                break;
+            default:
+                $resp = "";
+                break;
+        }
+
+        return $resp;
+    }
+
+    function func_ihm_cj188_ul_write_device_syn_confirm_process($parObj, $msgAddr, $msgType, $msgBody, $msgLen, $msgCtrlDir, $msgCtrlStatus)
+    {
+        $cj188Obj = new classDbiL2snrIhm(); //初始化一个UI DB对象
+        $format = "A2DI0/A2DI1/A2Ser";
+        $temp = unpack($format, $msgBody);
+        $DI0 = (hexdec($temp['DI0'])) & 0xFF;
+        $DI1 = (hexdec($temp['DI1'])) & 0xFF;
+        $DI0DI1 = ($DI0 << 8) + $DI1;
+
+        //正式处理不同的DI0/DI1
+        $resp = "";
+        switch($DI0DI1){
+            case MFUN_NBIOT_CJ188_WRITE_DI0DI1_DEVICE_SYN_DATA:
+                if (($msgLen == 0x05) && (($msgType == MFUN_NBIOT_CJ188_T_TYPE_HEAT_ENERGY_METER) || ($msgType == MFUN_NBIOT_CJ188_T_TYPE_COLD_ENERGY_METER)))
+                {
+                    $format = "A2DI0/A2DI1/A2Ser/A4ST";
+                    $temp = unpack($format, $msgBody);
+                    //当前状态
+                    $st = $temp['ST'];
+                    $resp = $cj188Obj->dbi_ihm_std_cj188_data_save_write_st($msgAddr, $msgType, $st);
+                }
+                else $resp = "";
+                break;
+            default:
+                $resp = "";
+                break;
+        }
+
+        return $resp;
+    }
+
 
     /**************************************************************************************
      *                             任务入口函数                                           *
@@ -366,6 +555,51 @@ class classTaskL2snrIhm
             if (isset($msg["msgCtrlStatus"])) $msgCtrlStatus = $msg["msgCtrlStatus"]; else  $msgCtrlStatus = "";
             //具体处理函数
             $resp = $this->func_ihm_cj188_ul_read_address_process($parObj, $msgAddr, $msgType, $msgBody, $msgLen, $msgCtrlDir, $msgCtrlStatus);
+            $project = MFUN_PRJ_NB_IOT_IHM188;
+        }
+
+        //CJ188规范中WRITE DATA的证实过程
+        elseif ($msgId == MSG_ID_L2SDK_NBIOT_STD_CJ188_TO_L2SNR_IHM_WRITE_DATA)
+        {
+            //解开消息
+            if (isset($msg["msgAddr"])) $msgAddr = $msg["msgAddr"]; else  $msgAddr = "";
+            if (isset($msg["msgType"])) $msgType = $msg["msgType"]; else  $msgType = "";
+            if (isset($msg["msgBody"])) $msgBody = $msg["msgBody"]; else  $msgBody = "";
+            if (isset($msg["msgLen"])) $msgLen = $msg["msgLen"]; else  $msgLen = "";
+            if (isset($msg["msgCtrlDir"])) $msgCtrlDir = $msg["msgCtrlDir"]; else  $msgCtrlDir = "";
+            if (isset($msg["msgCtrlStatus"])) $msgCtrlStatus = $msg["msgCtrlStatus"]; else  $msgCtrlStatus = "";
+            //具体处理函数
+            $resp = $this->func_ihm_cj188_ul_write_data_confirm_process($parObj, $msgAddr, $msgType, $msgBody, $msgLen, $msgCtrlDir, $msgCtrlStatus);
+            $project = MFUN_PRJ_NB_IOT_IHM188;
+        }
+
+        //CJ188规范中WRITE ADDR的证实过程
+        elseif ($msgId == MSG_ID_L2SDK_NBIOT_STD_CJ188_TO_L2SNR_IHM_WRITE_ADDR)
+        {
+            //解开消息
+            if (isset($msg["msgAddr"])) $msgAddr = $msg["msgAddr"]; else  $msgAddr = "";
+            if (isset($msg["msgType"])) $msgType = $msg["msgType"]; else  $msgType = "";
+            if (isset($msg["msgBody"])) $msgBody = $msg["msgBody"]; else  $msgBody = "";
+            if (isset($msg["msgLen"])) $msgLen = $msg["msgLen"]; else  $msgLen = "";
+            if (isset($msg["msgCtrlDir"])) $msgCtrlDir = $msg["msgCtrlDir"]; else  $msgCtrlDir = "";
+            if (isset($msg["msgCtrlStatus"])) $msgCtrlStatus = $msg["msgCtrlStatus"]; else  $msgCtrlStatus = "";
+            //具体处理函数
+            $resp = $this->func_ihm_cj188_ul_write_addr_confirm_process($parObj, $msgAddr, $msgType, $msgBody, $msgLen, $msgCtrlDir, $msgCtrlStatus);
+            $project = MFUN_PRJ_NB_IOT_IHM188;
+        }
+
+        //CJ188规范中WRITE DEVICE SYN的证实过程
+        elseif ($msgId == MSG_ID_L2SDK_NBIOT_STD_CJ188_TO_L2SNR_IHM_WRITE_DEVICE_SYN)
+        {
+            //解开消息
+            if (isset($msg["msgAddr"])) $msgAddr = $msg["msgAddr"]; else  $msgAddr = "";
+            if (isset($msg["msgType"])) $msgType = $msg["msgType"]; else  $msgType = "";
+            if (isset($msg["msgBody"])) $msgBody = $msg["msgBody"]; else  $msgBody = "";
+            if (isset($msg["msgLen"])) $msgLen = $msg["msgLen"]; else  $msgLen = "";
+            if (isset($msg["msgCtrlDir"])) $msgCtrlDir = $msg["msgCtrlDir"]; else  $msgCtrlDir = "";
+            if (isset($msg["msgCtrlStatus"])) $msgCtrlStatus = $msg["msgCtrlStatus"]; else  $msgCtrlStatus = "";
+            //具体处理函数
+            $resp = $this->func_ihm_cj188_ul_write_device_syn_confirm_process($parObj, $msgAddr, $msgType, $msgBody, $msgLen, $msgCtrlDir, $msgCtrlStatus);
             $project = MFUN_PRJ_NB_IOT_IHM188;
         }
 

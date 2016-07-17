@@ -74,6 +74,9 @@ class classTaskL2sdkNbiotStdCj188
             if ($msgCtrl == MFUN_NBIOT_CJ188_CTRL_READ_DATA) $resp = $this->func_frame_read_data_process($parObj, $msgAddr, $msgType, $msgBody, $msgLen, $msgCtrlDir, $msgCtrlStatus);
             elseif ($msgCtrl == MFUN_NBIOT_CJ188_CTRL_READ_KEY_VER) $resp = $this->func_frame_read_key_ver_process($parObj, $msgAddr, $msgType, $msgBody, $msgLen, $msgCtrlDir, $msgCtrlStatus);
             elseif ($msgCtrl == MFUN_NBIOT_CJ188_CTRL_READ_ADDR) $resp = $this->func_frame_read_addr_process($parObj, $msgAddr, $msgType, $msgBody, $msgLen, $msgCtrlDir, $msgCtrlStatus);
+            elseif ($msgCtrl == MFUN_NBIOT_CJ188_CTRL_WRITE_DATA) $resp = $this->func_frame_write_data_process($parObj, $msgAddr, $msgType, $msgBody, $msgLen, $msgCtrlDir, $msgCtrlStatus);
+            elseif ($msgCtrl == MFUN_NBIOT_CJ188_CTRL_WRITE_ADDR) $resp = $this->func_frame_write_address_process($parObj, $msgAddr, $msgType, $msgBody, $msgLen, $msgCtrlDir, $msgCtrlStatus);
+            elseif ($msgCtrl == MFUN_NBIOT_CJ188_CTRL_WRITE_DEVICE_SYN) $resp = $this->func_frame_write_device_syn_process($parObj, $msgAddr, $msgType, $msgBody, $msgLen, $msgCtrlDir, $msgCtrlStatus);
             else{return "";}
         }
         //其它都是非正常状态，暂时不支持厂商自定义的消息状态
@@ -220,6 +223,130 @@ class classTaskL2sdkNbiotStdCj188
         return "";
     }
 
+    function func_frame_write_data_process($parObj, $msgAddr,$msgType, $msgBody, $msgLen, $msgCtrlDir, $msgCtrlStatus)
+    {
+        $format = "A2DI0/A2DI1/A2Ser";
+        $temp = unpack($format, $msgBody);
+        $DI0 = (hexdec($temp['DI0'])) & 0xFF;
+        $DI1 = (hexdec($temp['DI1'])) & 0xFF;
+        $Ser = hexdec($temp['Ser']);
+        $DI0DI1 = ($DI0 << 8) + $DI1;
+
+        $cj188Obj = new classDbiL2sdkNbiotStdCj188(); //初始化一个UI DB对象
+        //采用这种方式将RESP发送回去，是否会有ECHO的问题，待定！！！
+        if ($Ser != $cj188Obj->dbi_std_cj188_context_ser_inqury($msgAddr)) {
+            $resp = "SER ERROR!";
+            return $resp;
+        }
+        //SER序号增加1，以便下一帧继续使用
+        else {
+            $cj188Obj->dbi_std_cj188_cntser_increase($msgAddr);
+        }
+
+        //组包，发送消息给目标传感器
+        $resp = "";
+        $input = array("msgAddr" => $msgAddr,
+            "msgType" => $msgType,
+            "msgBody" => $msgBody,
+            "msgLen" => $msgLen,
+            "msgCtrlDir" => $msgCtrlDir,
+            "msgCtrlStatus" => $msgCtrlStatus);
+        if (($msgType >= MFUN_NBIOT_CJ188_T_TYPE_WATER_METER_MIN) &&($msgType <= MFUN_NBIOT_CJ188_T_TYPE_WATER_METER_MAX))
+            $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L2SDK_NBIOT_STD_CJ188, MFUN_TASK_ID_L2SENSOR_IWM, MSG_ID_L2SDK_NBIOT_STD_CJ188_TO_L2SNR_IWM_WRITE_DATA, "MSG_ID_L2SDK_NBIOT_STD_CJ188_TO_L2SNR_IWM_WRITE_DATA",$input);
+        elseif(($msgType >= MFUN_NBIOT_CJ188_T_TYPE_HEAT_METER_MIN) &&($msgType <= MFUN_NBIOT_CJ188_T_TYPE_HEAT_METER_MAX))
+            $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L2SDK_NBIOT_STD_CJ188, MFUN_TASK_ID_L2SENSOR_IHM, MSG_ID_L2SDK_NBIOT_STD_CJ188_TO_L2SNR_IHM_WRITE_DATA, "MSG_ID_L2SDK_NBIOT_STD_CJ188_TO_L2SNR_IHM_WRITE_DATA",$input);
+        elseif(($msgType >= MFUN_NBIOT_CJ188_T_TYPE_GAS_METER_MIN) &&($msgType <= MFUN_NBIOT_CJ188_T_TYPE_GAS_METER_MAX))
+            $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L2SDK_NBIOT_STD_CJ188, MFUN_TASK_ID_L2SENSOR_IGM, MSG_ID_L2SDK_NBIOT_STD_CJ188_TO_L2SNR_IGM_WRITE_DATA, "MSG_ID_L2SDK_NBIOT_STD_CJ188_TO_L2SNR_IGM_WRITE_DATA",$input);
+        elseif(($msgType >= MFUN_NBIOT_CJ188_T_TYPE_POWER_METER_MIN) &&($msgType <= MFUN_NBIOT_CJ188_T_TYPE_POWER_METER_MAX))
+            $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L2SDK_NBIOT_STD_CJ188, MFUN_TASK_ID_L2SENSOR_IPM, MSG_ID_L2SDK_NBIOT_STD_CJ188_TO_L2SNR_IPM_WRITE_DATA, "MSG_ID_L2SDK_NBIOT_STD_CJ188_TO_L2SNR_IPM_WRITE_DATA",$input);
+        else return "";
+
+        return "";
+    }
+
+    function func_frame_write_address_process($parObj, $msgAddr,$msgType, $msgBody, $msgLen, $msgCtrlDir, $msgCtrlStatus)
+    {
+        $format = "A2DI0/A2DI1/A2Ser";
+        $temp = unpack($format, $msgBody);
+        $DI0 = (hexdec($temp['DI0'])) & 0xFF;
+        $DI1 = (hexdec($temp['DI1'])) & 0xFF;
+        $Ser = hexdec($temp['Ser']);
+        $DI0DI1 = ($DI0 << 8) + $DI1;
+
+        $cj188Obj = new classDbiL2sdkNbiotStdCj188(); //初始化一个UI DB对象
+        //采用这种方式将RESP发送回去，是否会有ECHO的问题，待定！！！
+        if ($Ser != $cj188Obj->dbi_std_cj188_context_ser_inqury($msgAddr)) {
+            $resp = "SER ERROR!";
+            return $resp;
+        }
+        //SER序号增加1，以便下一帧继续使用
+        else {
+            $cj188Obj->dbi_std_cj188_cntser_increase($msgAddr);
+        }
+
+        //组包，发送消息给目标传感器
+        $resp = "";
+        $input = array("msgAddr" => $msgAddr,
+            "msgType" => $msgType,
+            "msgBody" => $msgBody,
+            "msgLen" => $msgLen,
+            "msgCtrlDir" => $msgCtrlDir,
+            "msgCtrlStatus" => $msgCtrlStatus);
+        if (($msgType >= MFUN_NBIOT_CJ188_T_TYPE_WATER_METER_MIN) &&($msgType <= MFUN_NBIOT_CJ188_T_TYPE_WATER_METER_MAX))
+            $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L2SDK_NBIOT_STD_CJ188, MFUN_TASK_ID_L2SENSOR_IWM, MSG_ID_L2SDK_NBIOT_STD_CJ188_TO_L2SNR_IWM_WRITE_ADDR, "MSG_ID_L2SDK_NBIOT_STD_CJ188_TO_L2SNR_IWM_WRITE_ADDR",$input);
+        elseif(($msgType >= MFUN_NBIOT_CJ188_T_TYPE_HEAT_METER_MIN) &&($msgType <= MFUN_NBIOT_CJ188_T_TYPE_HEAT_METER_MAX))
+            $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L2SDK_NBIOT_STD_CJ188, MFUN_TASK_ID_L2SENSOR_IHM, MSG_ID_L2SDK_NBIOT_STD_CJ188_TO_L2SNR_IHM_WRITE_ADDR, "MSG_ID_L2SDK_NBIOT_STD_CJ188_TO_L2SNR_IHM_WRITE_ADDR",$input);
+        elseif(($msgType >= MFUN_NBIOT_CJ188_T_TYPE_GAS_METER_MIN) &&($msgType <= MFUN_NBIOT_CJ188_T_TYPE_GAS_METER_MAX))
+            $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L2SDK_NBIOT_STD_CJ188, MFUN_TASK_ID_L2SENSOR_IGM, MSG_ID_L2SDK_NBIOT_STD_CJ188_TO_L2SNR_IGM_WRITE_ADDR, "MSG_ID_L2SDK_NBIOT_STD_CJ188_TO_L2SNR_IGM_WRITE_ADDR",$input);
+        elseif(($msgType >= MFUN_NBIOT_CJ188_T_TYPE_POWER_METER_MIN) &&($msgType <= MFUN_NBIOT_CJ188_T_TYPE_POWER_METER_MAX))
+            $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L2SDK_NBIOT_STD_CJ188, MFUN_TASK_ID_L2SENSOR_IPM, MSG_ID_L2SDK_NBIOT_STD_CJ188_TO_L2SNR_IPM_WRITE_ADDR, "MSG_ID_L2SDK_NBIOT_STD_CJ188_TO_L2SNR_IPM_WRITE_ADDR",$input);
+        else return "";
+
+        return "";
+    }
+
+    function func_frame_write_device_syn_process($parObj, $msgAddr,$msgType, $msgBody, $msgLen, $msgCtrlDir, $msgCtrlStatus)
+    {
+        $format = "A2DI0/A2DI1/A2Ser";
+        $temp = unpack($format, $msgBody);
+        $DI0 = (hexdec($temp['DI0'])) & 0xFF;
+        $DI1 = (hexdec($temp['DI1'])) & 0xFF;
+        $Ser = hexdec($temp['Ser']);
+        $DI0DI1 = ($DI0 << 8) + $DI1;
+
+        $cj188Obj = new classDbiL2sdkNbiotStdCj188(); //初始化一个UI DB对象
+        //采用这种方式将RESP发送回去，是否会有ECHO的问题，待定！！！
+        if ($Ser != $cj188Obj->dbi_std_cj188_context_ser_inqury($msgAddr)) {
+            $resp = "SER ERROR!";
+            return $resp;
+        }
+        //SER序号增加1，以便下一帧继续使用
+        else {
+            $cj188Obj->dbi_std_cj188_cntser_increase($msgAddr);
+        }
+
+        //组包，发送消息给目标传感器
+        $resp = "";
+        $input = array("msgAddr" => $msgAddr,
+            "msgType" => $msgType,
+            "msgBody" => $msgBody,
+            "msgLen" => $msgLen,
+            "msgCtrlDir" => $msgCtrlDir,
+            "msgCtrlStatus" => $msgCtrlStatus);
+        if (($msgType >= MFUN_NBIOT_CJ188_T_TYPE_WATER_METER_MIN) &&($msgType <= MFUN_NBIOT_CJ188_T_TYPE_WATER_METER_MAX))
+            $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L2SDK_NBIOT_STD_CJ188, MFUN_TASK_ID_L2SENSOR_IWM, MSG_ID_L2SDK_NBIOT_STD_CJ188_TO_L2SNR_IWM_WRITE_DEVICE_SYN, "MSG_ID_L2SDK_NBIOT_STD_CJ188_TO_L2SNR_IWM_WRITE_DEVICE_SYN",$input);
+        elseif(($msgType >= MFUN_NBIOT_CJ188_T_TYPE_HEAT_METER_MIN) &&($msgType <= MFUN_NBIOT_CJ188_T_TYPE_HEAT_METER_MAX))
+            $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L2SDK_NBIOT_STD_CJ188, MFUN_TASK_ID_L2SENSOR_IHM, MSG_ID_L2SDK_NBIOT_STD_CJ188_TO_L2SNR_IHM_WRITE_DEVICE_SYN, "MSG_ID_L2SDK_NBIOT_STD_CJ188_TO_L2SNR_IHM_WRITE_DEVICE_SYN",$input);
+        elseif(($msgType >= MFUN_NBIOT_CJ188_T_TYPE_GAS_METER_MIN) &&($msgType <= MFUN_NBIOT_CJ188_T_TYPE_GAS_METER_MAX))
+            $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L2SDK_NBIOT_STD_CJ188, MFUN_TASK_ID_L2SENSOR_IGM, MSG_ID_L2SDK_NBIOT_STD_CJ188_TO_L2SNR_IGM_WRITE_DEVICE_SYN, "MSG_ID_L2SDK_NBIOT_STD_CJ188_TO_L2SNR_IGM_WRITE_DEVICE_SYN",$input);
+        elseif(($msgType >= MFUN_NBIOT_CJ188_T_TYPE_POWER_METER_MIN) &&($msgType <= MFUN_NBIOT_CJ188_T_TYPE_POWER_METER_MAX))
+            $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L2SDK_NBIOT_STD_CJ188, MFUN_TASK_ID_L2SENSOR_IPM, MSG_ID_L2SDK_NBIOT_STD_CJ188_TO_L2SNR_IPM_WRITE_DEVICE_SYN, "MSG_ID_L2SDK_NBIOT_STD_CJ188_TO_L2SNR_IPM_WRITE_DEVICE_SYN",$input);
+        else return "";
+
+        return "";
+    }
+
+
     function func_l2sdk_std_cj188_dl_frame_process($parObj, $user)
     {
         //L3消息处理
@@ -228,21 +355,6 @@ class classTaskL2sdkNbiotStdCj188
         $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
         $jsonencode = json_encode($uiF1symDbObj);
         return $jsonencode;
-    }
-
-    function func_frame_write_data_process($parObj, $msgAddr,$msgType, $msgBody, $msgLen, $msgCtrlDir, $msgCtrlStatus)
-    {
-        return "";
-    }
-
-    function func_frame_write_address_process($parObj, $msgAddr,$msgType, $msgBody, $msgLen, $msgCtrlDir, $msgCtrlStatus)
-    {
-        return "";
-    }
-
-    function func_frame_write_device_syn_process($parObj, $msgAddr,$msgType, $msgBody, $msgLen, $msgCtrlDir, $msgCtrlStatus)
-    {
-        return "";
     }
 
     /**************************************************************************************
@@ -283,39 +395,12 @@ class classTaskL2sdkNbiotStdCj188
         }
 
         //IPM188UI来的业务应用消息，待发送出去给终端设备
-        elseif($msgId == MSG_ID_L4NBIOT_IPMUI_TO_NBIOT_STD_CK188_DL_REQUEST){
+        elseif($msgId == MSG_ID_L3NBIOT_OPR_METERTO_STD_CJ188_DL_REQUEST){
             //解开消息
             if (isset($msg["user"])) $user = $msg["user"]; else  $user = "";
             //具体处理函数
             $resp = $this->func_l2sdk_std_cj188_dl_frame_process($parObj, $user);
             $project = MFUN_PRJ_NB_IOT_IPM188;
-        }
-
-        //IWM188UI来的业务应用消息，待发送出去给终端设备
-        elseif($msgId == MSG_ID_L4NBIOT_IWMUI_TO_NBIOT_STD_CK188_DL_REQUEST){
-            //解开消息
-            if (isset($msg["user"])) $user = $msg["user"]; else  $user = "";
-            //具体处理函数
-            $resp = $this->func_l2sdk_std_cj188_dl_frame_process($parObj, $user);
-            $project = MFUN_PRJ_NB_IOT_IWM188;
-        }
-
-        //IGM188UI来的业务应用消息，待发送出去给终端设备
-        elseif($msgId == MSG_ID_L4NBIOT_IGMUI_TO_NBIOT_STD_CK188_DL_REQUEST){
-            //解开消息
-            if (isset($msg["user"])) $user = $msg["user"]; else  $user = "";
-            //具体处理函数
-            $resp = $this->func_l2sdk_std_cj188_dl_frame_process($parObj, $user);
-            $project = MFUN_PRJ_NB_IOT_IGM188;
-        }
-
-        //IHM188UI来的业务应用消息，待发送出去给终端设备
-        elseif($msgId == MSG_ID_L4NBIOT_IHMUI_TO_NBIOT_STD_CK188_DL_REQUEST){
-            //解开消息
-            if (isset($msg["user"])) $user = $msg["user"]; else  $user = "";
-            //具体处理函数
-            $resp = $this->func_l2sdk_std_cj188_dl_frame_process($parObj, $user);
-            $project = MFUN_PRJ_NB_IOT_IHM188;
         }
 
         else{

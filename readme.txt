@@ -210,15 +210,20 @@ Make By：ZJL
 //= LZH, 2016 July.15, CURRENT_SW_DELIVERY R02.D30
 > fix UI界面bug，所有修改框架前的界面功能回归测试OK
 
-//= LZH, 2016 July.16, CURRENT_SW_DELIVERY R02.D31,
+//= ZJL, 2016 July.16, CURRENT_SW_DELIVERY R02.D31
 > 继续下行链路CJ188的编制
+> 下行链路的功能部分完成，CJ188 SDK还等待完成
+
+//= ZJL, 2016 July.18, CURRENT_SW_DELIVERY R02.D32
+> DL测试代码完成
+> 上行链路增加了写入过程
+> 新增加的上行链路中测试代码也完善
 
 
 
 
 //待完善的功能
 1. 需要编制小型工具，支持工参数据，特别是图片内容的导入导出
-2. TRACE结果的图形化移植，从之前的SAE中移植到阿里云上，并用起来
 3. 恢复后台管理界面及相应工具
 4. SOCKET的功能
 
@@ -228,23 +233,6 @@ Make By：ZJL
 2. l3appl->fxyyy中，调用_encode函数出错，如何办？
     //$jsonencode = _encode($retval);
     $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
-3.  [TC L4AQYC: USERNEW START]
-    Warning: Illegal string offset 'id' in C:\wamp\www\mfunhcu\l3appl\fum1sym\dbi_l3apl_f1sym.class.php on line 442
-4.  [TC L4AQYC: UserMod START]
-    Warning: Illegal string offset 'id' in C:\wamp\www\mfunhcu\l3appl\fum1sym\dbi_l3apl_f1sym.class.php on line 504
-5.  [TC L4AQYC: UserDel START]
-    Warning: Illegal string offset 'id' in C:\wamp\www\mfunhcu\l3appl\fum1sym\dbi_l3apl_f1sym.class.php on line 504
-6. [TC L4AQYC: PGNew START]
-    Warning: Illegal string offset 'id' in C:\wamp\www\mfunhcu\l3appl\fum2cm\dbi_l3apl_f2cm.class.php on line 537
-7. [TC L4AQYC: PGMod START]
-    Warning: Illegal string offset 'id' in C:\wamp\www\mfunhcu\l3appl\fum2cm\dbi_l3apl_f2cm.class.php on line 537
-8. [TC L4AQYC: TableQuery START]
-    Notice: Undefined variable: end in C:\wamp\www\mfunhcu\l2sensorproc\proccom\dbi_l2snr_com.class.php on line 665
-9. TC L4AQYC: DevSensor START
-    Same error as 8.
-10.TC CRON: DEFAULT START
-    Notice: Object of class classTaskL1vmCoreRouter could not be converted to int in C:\wamp\www\mfunhcu\l1comvm\vmlayer.php on line 517
-11. AQUI所有界面echo的消息前面多出来9个回车符，但对功能没有影响。
 
 
 
