@@ -90,6 +90,7 @@ class classTaskL2sdkNbiotStdCj188
     function func_check_sum_caculate($content)
     {
         $i = 0;
+        if (strlen($content) == 0) return 0;
         if (strlen($content) != ((strlen($content)/2) * 2)) return "";
         $result = 0;
         for ($i =0; $i < strlen($content)/2; $i++){
@@ -305,7 +306,7 @@ class classTaskL2sdkNbiotStdCj188
         return "";
     }
 
-    function func_frame_write_device_syn_process($parObj, $msgAddr,$msgType, $msgBody, $msgLen, $msgCtrlDir, $msgCtrlStatus)
+    function func_frame_write_device_syn_process($parObj, $msgAddr, $msgType, $msgBody, $msgLen, $msgCtrlDir, $msgCtrlStatus)
     {
         $format = "A2DI0/A2DI1/A2Ser";
         $temp = unpack($format, $msgBody);
@@ -347,14 +348,42 @@ class classTaskL2sdkNbiotStdCj188
     }
 
 
-    function func_l2sdk_std_cj188_dl_frame_process($parObj, $user)
+    function func_l2sdk_std_cj188_dl_frame_process($parObj, $taddr, $type, $msgCtrl, $msgHead, $msgBody)
     {
-        //L3消息处理
-        //L2编码并发送出去
+        //检查收到的信息是否合法
+        if (($type < MFUN_NBIOT_CJ188_T_TYPE_WATER_METER_MIN) || ($type > MFUN_NBIOT_CJ188_T_TYPE_POWER_METER_MAX)) return "";
+        if (($msgCtrl < MFUN_NBIOT_CJ188_CTRL_MIN) || ($msgCtrl > MFUN_NBIOT_CJ188_CTRL_MAX)) return "";
+        if (strlen($taddr) != 14 ) return "";
+        if (strlen($msgHead) != 6) return "";
 
-        $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
-        $jsonencode = json_encode($uiF1symDbObj);
-        return $jsonencode;
+        //试图组建整个帧
+        $frameFixHead = MFUN_NBIOT_CJ188_FRAME_FIX_HEAD;
+        $frameCtrlDir = 0; //DL
+        $frameCtrl = $frameCtrlDir << 7 + $msgCtrl & 0x3F;
+        $frameTail = MFUN_NBIOT_CJ188_FRAME_FIX_TAIL;
+
+        //取得ser编号
+        $cj188Obj = new classDbiL2sdkNbiotStdCj188(); //初始化一个UI DB对象
+        if ((($ser = $cj188Obj->dbi_std_cj188_context_ser_inqury($taddr)) == false) || (empty($ser = $cj188Obj->dbi_std_cj188_context_ser_inqury($taddr)) == true))
+        {
+            $cj188Obj->dbi_std_cj188_context_data_save($taddr, 0, "");
+        }
+        $frameSer = $ser & 0xFF;
+        if ($frameSer != $ser){
+            $cj188Obj->dbi_std_cj188_context_data_save($taddr, $frameSer, "");
+        }
+
+        //计算CRC CHECKSUM
+        $frameCrcHead = $this->func_check_sum_caculate(substr($msgHead,2,4));  //长度不在CRC范畴内
+        $frameCrcBody = $this->func_check_sum_caculate($msgBody);
+        if (empty($frameCrcBody)) $frameCrcBody = 0;
+        $frameCrc = ($frameCrcHead + $frameSer + $frameCrcBody) & 0xFF;
+
+        //L2编码
+        $frameMsg = sprintf("%02X%02X%s%02X%s%02X%s%02X%02X", $frameFixHead, $type, $taddr, $msgCtrl, $msgHead, $frameSer, $msgBody ,$frameCrc, $frameTail);
+
+        //返回
+        return $frameMsg;
     }
 
     /**************************************************************************************
@@ -397,9 +426,14 @@ class classTaskL2sdkNbiotStdCj188
         //IPM188UI来的业务应用消息，待发送出去给终端设备
         elseif($msgId == MSG_ID_L3NBIOT_OPR_METERTO_STD_CJ188_DL_REQUEST){
             //解开消息
-            if (isset($msg["user"])) $user = $msg["user"]; else  $user = "";
+            if (isset($msg["taddr"])) $taddr = $msg["taddr"]; else  $taddr = "";
+            if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
+            if (isset($msg["msgCtrl"])) $msgCtrl = $msg["msgCtrl"]; else  $msgCtrl = "";
+            if (isset($msg["msgHead"])) $msgHead = $msg["msgHead"]; else  $msgHead = "";
+            if (isset($msg["msgBody"])) $msgBody = $msg["msgBody"]; else  $msgBody = "";
+
             //具体处理函数
-            $resp = $this->func_l2sdk_std_cj188_dl_frame_process($parObj, $user);
+            $resp = $this->func_l2sdk_std_cj188_dl_frame_process($parObj, $taddr, $type, $msgCtrl, $msgHead, $msgBody);
             $project = MFUN_PRJ_NB_IOT_IPM188;
         }
 

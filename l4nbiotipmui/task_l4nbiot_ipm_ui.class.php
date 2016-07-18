@@ -93,139 +93,159 @@ class classTaskL4nbiotIpmUi
                     break;
 
                 case "ipm_read_cur_cnt_data":
+                    if (isset($_GET["taddr"])) $taddr = trim($_GET["taddr"]); else $taddr = "";
                     if (isset($_GET["len"])) $len = trim($_GET["len"]); else $len = "";
                     if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
-                    $input = array("type" => $type, "len" => $len);
+                    $input = array("taddr" => $taddr, "type" => $type, "len" => $len);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4NBIOT_IPM_UI, MFUN_TASK_ID_L3NBIOT_OPR_METER, MSG_ID_L4NBIOT_IPMUI_TO_L3OPR_METER_DL_READ_DI0DI1_CURRENT_COUNTER_DATA, "MSG_ID_L4NBIOT_IPMUI_TO_L3OPR_METER_DL_READ_DI0DI1_CURRENT_COUNTER_DATA",$input);
                     break;
 
                 case "ipm_read_his_cnt_data1":
+                    if (isset($_GET["taddr"])) $taddr = trim($_GET["taddr"]); else $taddr = "";
                     if (isset($_GET["len"])) $len = trim($_GET["len"]); else $len = "";
                     if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
-                    $input = array("type" => $type, "len" => $len);
+                    $input = array("taddr" => $taddr, "type" => $type, "len" => $len);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4NBIOT_IPM_UI, MFUN_TASK_ID_L3NBIOT_OPR_METER, MSG_ID_L4NBIOT_IPMUI_TO_L3OPR_METER_DL_READ_DI0DI1_HISTORY_COUNTER_DATA1, "MSG_ID_L4NBIOT_IPMUI_TO_L3OPR_METER_DL_READ_DI0DI1_HISTORY_COUNTER_DATA1",$input);
                     break;
 
                 case "ipm_read_his_cnt_data2":
+                    if (isset($_GET["taddr"])) $taddr = trim($_GET["taddr"]); else $taddr = "";
                     if (isset($_GET["len"])) $len = trim($_GET["len"]); else $len = "";
                     if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
-                    $input = array("type" => $type, "len" => $len);
+                    $input = array("taddr" => $taddr, "type" => $type, "len" => $len);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4NBIOT_IPM_UI, MFUN_TASK_ID_L3NBIOT_OPR_METER, MSG_ID_L4NBIOT_IPMUI_TO_L3OPR_METER_DL_READ_DI0DI1_HISTORY_COUNTER_DATA2, "MSG_ID_L4NBIOT_IPMUI_TO_L3OPR_METER_DL_READ_DI0DI1_HISTORY_COUNTER_DATA2",$input);
                     break;
 
                 case "ipm_read_his_cnt_data3":
+                    if (isset($_GET["taddr"])) $taddr = trim($_GET["taddr"]); else $taddr = "";
                     if (isset($_GET["len"])) $len = trim($_GET["len"]); else $len = "";
                     if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
-                    $input = array("type" => $type, "len" => $len);
+                    $input = array("taddr" => $taddr, "type" => $type, "len" => $len);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4NBIOT_IPM_UI, MFUN_TASK_ID_L3NBIOT_OPR_METER, MSG_ID_L4NBIOT_IPMUI_TO_L3OPR_METER_DL_READ_DI0DI1_HISTORY_COUNTER_DATA3, "MSG_ID_L4NBIOT_IPMUI_TO_L3OPR_METER_DL_READ_DI0DI1_HISTORY_COUNTER_DATA3",$input);
                     break;
 
                 case "ipm_read_his_cnt_data4":
+                    if (isset($_GET["taddr"])) $taddr = trim($_GET["taddr"]); else $taddr = "";
                     if (isset($_GET["len"])) $len = trim($_GET["len"]); else $len = "";
                     if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
-                    $input = array("type" => $type, "len" => $len);
+                    $input = array("taddr" => $taddr, "type" => $type, "len" => $len);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4NBIOT_IPM_UI, MFUN_TASK_ID_L3NBIOT_OPR_METER, MSG_ID_L4NBIOT_IPMUI_TO_L3OPR_METER_DL_READ_DI0DI1_HISTORY_COUNTER_DATA4, "MSG_ID_L4NBIOT_IPMUI_TO_L3OPR_METER_DL_READ_DI0DI1_HISTORY_COUNTER_DATA4",$input);
                     break;
 
                 case "ipm_read_his_cnt_data5":
+                    if (isset($_GET["taddr"])) $taddr = trim($_GET["taddr"]); else $taddr = "";
                     if (isset($_GET["len"])) $len = trim($_GET["len"]); else $len = "";
                     if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
-                    $input = array("type" => $type, "len" => $len);
+                    $input = array("taddr" => $taddr, "type" => $type, "len" => $len);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4NBIOT_IPM_UI, MFUN_TASK_ID_L3NBIOT_OPR_METER, MSG_ID_L4NBIOT_IPMUI_TO_L3OPR_METER_DL_READ_DI0DI1_HISTORY_COUNTER_DATA5, "MSG_ID_L4NBIOT_IPMUI_TO_L3OPR_METER_DL_READ_DI0DI1_HISTORY_COUNTER_DATA5",$input);
                     break;
 
                 case "ipm_read_his_cnt_data6":
+                    if (isset($_GET["taddr"])) $taddr = trim($_GET["taddr"]); else $taddr = "";
                     if (isset($_GET["len"])) $len = trim($_GET["len"]); else $len = "";
                     if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
-                    $input = array("type" => $type, "len" => $len);
+                    $input = array("taddr" => $taddr, "type" => $type, "len" => $len);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4NBIOT_IPM_UI, MFUN_TASK_ID_L3NBIOT_OPR_METER, MSG_ID_L4NBIOT_IPMUI_TO_L3OPR_METER_DL_READ_DI0DI1_HISTORY_COUNTER_DATA6, "MSG_ID_L4NBIOT_IPMUI_TO_L3OPR_METER_DL_READ_DI0DI1_HISTORY_COUNTER_DATA6",$input);
                     break;
 
                 case "ipm_read_his_cnt_data7":
+                    if (isset($_GET["taddr"])) $taddr = trim($_GET["taddr"]); else $taddr = "";
                     if (isset($_GET["len"])) $len = trim($_GET["len"]); else $len = "";
                     if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
-                    $input = array("type" => $type, "len" => $len);
+                    $input = array("taddr" => $taddr, "type" => $type, "len" => $len);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4NBIOT_IPM_UI, MFUN_TASK_ID_L3NBIOT_OPR_METER, MSG_ID_L4NBIOT_IPMUI_TO_L3OPR_METER_DL_READ_DI0DI1_HISTORY_COUNTER_DATA7, "MSG_ID_L4NBIOT_IPMUI_TO_L3OPR_METER_DL_READ_DI0DI1_HISTORY_COUNTER_DATA7",$input);
                     break;
 
                 case "ipm_read_his_cnt_data8":
+                    if (isset($_GET["taddr"])) $taddr = trim($_GET["taddr"]); else $taddr = "";
                     if (isset($_GET["len"])) $len = trim($_GET["len"]); else $len = "";
                     if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
-                    $input = array("type" => $type, "len" => $len);
+                    $input = array("taddr" => $taddr, "type" => $type, "len" => $len);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4NBIOT_IPM_UI, MFUN_TASK_ID_L3NBIOT_OPR_METER, MSG_ID_L4NBIOT_IPMUI_TO_L3OPR_METER_DL_READ_DI0DI1_HISTORY_COUNTER_DATA8, "MSG_ID_L4NBIOT_IPMUI_TO_L3OPR_METER_DL_READ_DI0DI1_HISTORY_COUNTER_DATA8",$input);
                     break;
 
                 case "ipm_read_his_cnt_data9":
+                    if (isset($_GET["taddr"])) $taddr = trim($_GET["taddr"]); else $taddr = "";
                     if (isset($_GET["len"])) $len = trim($_GET["len"]); else $len = "";
                     if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
-                    $input = array("type" => $type, "len" => $len);
+                    $input = array("taddr" => $taddr, "type" => $type, "len" => $len);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4NBIOT_IPM_UI, MFUN_TASK_ID_L3NBIOT_OPR_METER, MSG_ID_L4NBIOT_IPMUI_TO_L3OPR_METER_DL_READ_DI0DI1_HISTORY_COUNTER_DATA9, "MSG_ID_L4NBIOT_IPMUI_TO_L3OPR_METER_DL_READ_DI0DI1_HISTORY_COUNTER_DATA9",$input);
                     break;
 
                 case "ipm_read_his_cnt_data10":
+                    if (isset($_GET["taddr"])) $taddr = trim($_GET["taddr"]); else $taddr = "";
                     if (isset($_GET["len"])) $len = trim($_GET["len"]); else $len = "";
                     if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
-                    $input = array("type" => $type, "len" => $len);
+                    $input = array("taddr" => $taddr, "type" => $type, "len" => $len);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4NBIOT_IPM_UI, MFUN_TASK_ID_L3NBIOT_OPR_METER, MSG_ID_L4NBIOT_IPMUI_TO_L3OPR_METER_DL_READ_DI0DI1_HISTORY_COUNTER_DATA10, "MSG_ID_L4NBIOT_IPMUI_TO_L3OPR_METER_DL_READ_DI0DI1_HISTORY_COUNTER_DATA10",$input);
                     break;
 
                 case "ipm_read_his_cnt_data11":
+                    if (isset($_GET["taddr"])) $taddr = trim($_GET["taddr"]); else $taddr = "";
                     if (isset($_GET["len"])) $len = trim($_GET["len"]); else $len = "";
                     if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
-                    $input = array("type" => $type, "len" => $len);
+                    $input = array("taddr" => $taddr, "type" => $type, "len" => $len);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4NBIOT_IPM_UI, MFUN_TASK_ID_L3NBIOT_OPR_METER, MSG_ID_L4NBIOT_IPMUI_TO_L3OPR_METER_DL_READ_DI0DI1_HISTORY_COUNTER_DATA11, "MSG_ID_L4NBIOT_IPMUI_TO_L3OPR_METER_DL_READ_DI0DI1_HISTORY_COUNTER_DATA11",$input);
                     break;
 
                 case "ipm_read_his_cnt_data12":
+                    if (isset($_GET["taddr"])) $taddr = trim($_GET["taddr"]); else $taddr = "";
                     if (isset($_GET["len"])) $len = trim($_GET["len"]); else $len = "";
                     if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
-                    $input = array("type" => $type, "len" => $len);
+                    $input = array("taddr" => $taddr, "type" => $type, "len" => $len);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4NBIOT_IPM_UI, MFUN_TASK_ID_L3NBIOT_OPR_METER, MSG_ID_L4NBIOT_IPMUI_TO_L3OPR_METER_DL_READ_DI0DI1_HISTORY_COUNTER_DATA12, "MSG_ID_L4NBIOT_IPMUI_TO_L3OPR_METER_DL_READ_DI0DI1_HISTORY_COUNTER_DATA12",$input);
                     break;
 
                 case "ipm_read_price_table":
+                    if (isset($_GET["taddr"])) $taddr = trim($_GET["taddr"]); else $taddr = "";
                     if (isset($_GET["len"])) $len = trim($_GET["len"]); else $len = "";
                     if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
-                    $input = array("type" => $type, "len" => $len);
+                    $input = array("taddr" => $taddr, "type" => $type, "len" => $len);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4NBIOT_IPM_UI, MFUN_TASK_ID_L3NBIOT_OPR_METER, MSG_ID_L4NBIOT_IPMUI_TO_L3OPR_METER_DL_READ_DI0DI1_PRICE_TABLE, "MSG_ID_L4NBIOT_IPMUI_TO_L3OPR_METER_DL_READ_DI0DI1_PRICE_TABLE",$input);
                     break;
 
                 case "ipm_read_bill_date":
+                    if (isset($_GET["taddr"])) $taddr = trim($_GET["taddr"]); else $taddr = "";
                     if (isset($_GET["len"])) $len = trim($_GET["len"]); else $len = "";
                     if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
-                    $input = array("type" => $type, "len" => $len);
+                    $input = array("taddr" => $taddr, "type" => $type, "len" => $len);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4NBIOT_IPM_UI, MFUN_TASK_ID_L3NBIOT_OPR_METER, MSG_ID_L4NBIOT_IPMUI_TO_L3OPR_METER_DL_READ_DI0DI1_BILL_DATE, "MSG_ID_L4NBIOT_IPMUI_TO_L3OPR_METER_DL_READ_DI0DI1_BILL_DATE",$input);
                     break;
 
                 case "ipm_read_account_date":
+                    if (isset($_GET["taddr"])) $taddr = trim($_GET["taddr"]); else $taddr = "";
                     if (isset($_GET["len"])) $len = trim($_GET["len"]); else $len = "";
                     if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
-                    $input = array("type" => $type, "len" => $len);
+                    $input = array("taddr" => $taddr, "type" => $type, "len" => $len);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4NBIOT_IPM_UI, MFUN_TASK_ID_L3NBIOT_OPR_METER, MSG_ID_L4NBIOT_IPMUI_TO_L3OPR_METER_DL_READ_DI0DI1_ACCOUNT_DATE, "MSG_ID_L4NBIOT_IPMUI_TO_L3OPR_METER_DL_READ_DI0DI1_ACCOUNT_DATE",$input);
                     break;
 
                 case "ipm_read_buy_amount":
+                    if (isset($_GET["taddr"])) $taddr = trim($_GET["taddr"]); else $taddr = "";
                     if (isset($_GET["len"])) $len = trim($_GET["len"]); else $len = "";
                     if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
-                    $input = array("type" => $type, "len" => $len);
+                    $input = array("taddr" => $taddr, "type" => $type, "len" => $len);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4NBIOT_IPM_UI, MFUN_TASK_ID_L3NBIOT_OPR_METER, MSG_ID_L4NBIOT_IPMUI_TO_L3OPR_METER_DL_READ_DI0DI1_BUY_AMOUNT, "MSG_ID_L4NBIOT_IPMUI_TO_L3OPR_METER_DL_READ_DI0DI1_BUY_AMOUNT",$input);
                     break;
 
                 case "ipm_read_key_ver":
+                    if (isset($_GET["taddr"])) $taddr = trim($_GET["taddr"]); else $taddr = "";
                     if (isset($_GET["len"])) $len = trim($_GET["len"]); else $len = "";
                     if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
-                    $input = array("type" => $type, "len" => $len);
+                    $input = array("taddr" => $taddr, "type" => $type, "len" => $len);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4NBIOT_IPM_UI, MFUN_TASK_ID_L3NBIOT_OPR_METER, MSG_ID_L4NBIOT_IPMUI_TO_L3OPR_METER_DL_READ_DI0DI1_KEY_VER, "MSG_ID_L4NBIOT_IPMUI_TO_L3OPR_METER_DL_READ_DI0DI1_KEY_VER",$input);
                     break;
 
                 case "ipm_read_address":
+                    if (isset($_GET["taddr"])) $taddr = trim($_GET["taddr"]); else $taddr = "";
                     if (isset($_GET["len"])) $len = trim($_GET["len"]); else $len = "";
                     if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
-                    $input = array("type" => $type, "len" => $len);
+                    $input = array("taddr" => $taddr, "type" => $type, "len" => $len);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4NBIOT_IPM_UI, MFUN_TASK_ID_L3NBIOT_OPR_METER, MSG_ID_L4NBIOT_IPMUI_TO_L3OPR_METER_DL_READ_DI0DI1_ADDRESS, "MSG_ID_L4NBIOT_IPMUI_TO_L3OPR_METER_DL_READ_DI0DI1_ADDRESS",$input);
                     break;
 
                 case "ipm_write_price_table":
+                    if (isset($_GET["taddr"])) $taddr = trim($_GET["taddr"]); else $taddr = "";
                     if (isset($_GET["len"])) $len = trim($_GET["len"]); else $len = "";
                     if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
                     if (isset($_GET["price1"])) $price1 = trim($_GET["price1"]); else $price1 = "";
@@ -234,80 +254,89 @@ class classTaskL4nbiotIpmUi
                     if (isset($_GET["volume2"])) $volume2 = trim($_GET["volume2"]); else $volume2 = "";
                     if (isset($_GET["price3"])) $price3 = trim($_GET["price3"]); else $price3 = "";
                     if (isset($_GET["startdate"])) $startdate = trim($_GET["startdate"]); else $startdate = "";
-                    $input = array("type" => $type, "len" => $len, "price1" => $price1, "volume1" => $volume1, "price2" => $price2, "volume2" => $volume2, "price3" => $price3, "startdate" => $startdate);
+                    $input = array("taddr" => $taddr, "type" => $type, "len" => $len, "price1" => $price1, "volume1" => $volume1, "price2" => $price2, "volume2" => $volume2, "price3" => $price3, "startdate" => $startdate);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4NBIOT_IPM_UI, MFUN_TASK_ID_L3NBIOT_OPR_METER, MSG_ID_L4NBIOT_IPMUI_TO_L3OPR_METER_DL_WRITE_DI0DI1_PRICE_TABLE, "MSG_ID_L4NBIOT_IPMUI_TO_L3OPR_METER_DL_WRITE_DI0DI1_PRICE_TABLE",$input);
                     break;
 
                 case "ipm_write_bill_date":
+                    if (isset($_GET["taddr"])) $taddr = trim($_GET["taddr"]); else $taddr = "";
                     if (isset($_GET["len"])) $len = trim($_GET["len"]); else $len = "";
                     if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
                     if (isset($_GET["billdate"])) $billdate = trim($_GET["billdate"]); else $billdate = "";
-                    $input = array("type" => $type, "len" => $len, "billdate" => $billdate);
+                    $input = array("taddr" => $taddr, "type" => $type, "len" => $len, "billdate" => $billdate);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4NBIOT_IPM_UI, MFUN_TASK_ID_L3NBIOT_OPR_METER, MSG_ID_L4NBIOT_IPMUI_TO_L3OPR_METER_DL_WRITE_DI0DI1_BILL_DATE, "MSG_ID_L4NBIOT_IPMUI_TO_L3OPR_METER_DL_WRITE_DI0DI1_BILL_DATE",$input);
                     break;
 
                 case "ipm_write_account_date":
+                    if (isset($_GET["taddr"])) $taddr = trim($_GET["taddr"]); else $taddr = "";
                     if (isset($_GET["len"])) $len = trim($_GET["len"]); else $len = "";
                     if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
                     if (isset($_GET["accountdate"])) $accountdate = trim($_GET["accountdate"]); else $accountdate = "";
-                    $input = array("type" => $type, "len" => $len, "accountdate" => $accountdate);
+                    $input = array("taddr" => $taddr, "type" => $type, "len" => $len, "accountdate" => $accountdate);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4NBIOT_IPM_UI, MFUN_TASK_ID_L3NBIOT_OPR_METER, MSG_ID_L4NBIOT_IPMUI_TO_L3OPR_METER_DL_WRITE_DI0DI1_ACCOUNT_DATE, "MSG_ID_L4NBIOT_IPMUI_TO_L3OPR_METER_DL_WRITE_DI0DI1_ACCOUNT_DATE",$input);
                     break;
 
                 case "ipm_write_buy_amount":
+                    if (isset($_GET["taddr"])) $taddr = trim($_GET["taddr"]); else $taddr = "";
                     if (isset($_GET["len"])) $len = trim($_GET["len"]); else $len = "";
                     if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
                     if (isset($_GET["buycode"])) $buycode = trim($_GET["buycode"]); else $buycode = "";
                     if (isset($_GET["buyamount"])) $buyamount = trim($_GET["buyamount"]); else $buyamount = "";
-                    $input = array("type" => $type, "len" => $len, "buycode" => $buycode, "buyamount" => $buyamount);
+                    $input = array("taddr" => $taddr, "type" => $type, "len" => $len, "buycode" => $buycode, "buyamount" => $buyamount);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4NBIOT_IPM_UI, MFUN_TASK_ID_L3NBIOT_OPR_METER, MSG_ID_L4NBIOT_IPMUI_TO_L3OPR_METER_DL_WRITE_DI0DI1_BUY_AMOUNT, "MSG_ID_L4NBIOT_IPMUI_TO_L3OPR_METER_DL_WRITE_DI0DI1_BUY_AMOUNT",$input);
                     break;
 
                 case "ipm_write_new_key":
+                    if (isset($_GET["taddr"])) $taddr = trim($_GET["taddr"]); else $taddr = "";
                     if (isset($_GET["len"])) $len = trim($_GET["len"]); else $len = "";
                     if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
                     if (isset($_GET["kerver"])) $kerver = trim($_GET["kerver"]); else $kerver = "";
                     if (isset($_GET["newkey"])) $newkey = trim($_GET["newkey"]); else $newkey = "";
-                    $input = array("type" => $type, "len" => $len, "kerver" => $kerver, "newkey" => $newkey);
+                    $input = array("taddr" => $taddr, "type" => $type, "len" => $len, "kerver" => $kerver, "newkey" => $newkey);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4NBIOT_IPM_UI, MFUN_TASK_ID_L3NBIOT_OPR_METER, MSG_ID_L4NBIOT_IPMUI_TO_L3OPR_METER_DL_WRITE_DI0DI1_NEW_KEY, "MSG_ID_L4NBIOT_IPMUI_TO_L3OPR_METER_DL_WRITE_DI0DI1_NEW_KEY",$input);
                     break;
 
                 case "ipm_write_std_time":
+                    if (isset($_GET["taddr"])) $taddr = trim($_GET["taddr"]); else $taddr = "";
                     if (isset($_GET["len"])) $len = trim($_GET["len"]); else $len = "";
                     if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
                     if (isset($_GET["realtime"])) $realtime = trim($_GET["realtime"]); else $realtime = "";
-                    $input = array("type" => $type, "len" => $len, "realtime" => $realtime);
+                    $input = array("taddr" => $taddr, "type" => $type, "len" => $len, "realtime" => $realtime);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4NBIOT_IPM_UI, MFUN_TASK_ID_L3NBIOT_OPR_METER, MSG_ID_L4NBIOT_IPMUI_TO_L3OPR_METER_DL_WRITE_DI0DI1_STD_TIME, "MSG_ID_L4NBIOT_IPMUI_TO_L3OPR_METER_DL_WRITE_DI0DI1_STD_TIME",$input);
                     break;
 
                 case "ipm_write_switch_ctrl":
+                    if (isset($_GET["taddr"])) $taddr = trim($_GET["taddr"]); else $taddr = "";
                     if (isset($_GET["len"])) $len = trim($_GET["len"]); else $len = "";
                     if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
                     if (isset($_GET["switch"])) $switch = trim($_GET["switch"]); else $switch = "";
-                    $input = array("type" => $type, "len" => $len, "switch" => $switch);
+                    $input = array("taddr" => $taddr, "type" => $type, "len" => $len, "switch" => $switch);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4NBIOT_IPM_UI, MFUN_TASK_ID_L3NBIOT_OPR_METER, MSG_ID_L4NBIOT_IPMUI_TO_L3OPR_METER_DL_WRITE_DI0DI1_SWITCH_CTRL, "MSG_ID_L4NBIOT_IPMUI_TO_L3OPR_METER_DL_WRITE_DI0DI1_SWITCH_CTRL",$input);
                     break;
 
                 case "ipm_write_off_fac_start":
+                    if (isset($_GET["taddr"])) $taddr = trim($_GET["taddr"]); else $taddr = "";
                     if (isset($_GET["len"])) $len = trim($_GET["len"]); else $len = "";
                     if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
-                    $input = array("type" => $type, "len" => $len);
+                    $input = array("taddr" => $taddr, "type" => $type, "len" => $len);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4NBIOT_IPM_UI, MFUN_TASK_ID_L3NBIOT_OPR_METER, MSG_ID_L4NBIOT_IPMUI_TO_L3OPR_METER_DL_WRITE_DI0DI1_OFF_FACTORY_START, "MSG_ID_L4NBIOT_IPMUI_TO_L3OPR_METER_DL_WRITE_DI0DI1_OFF_FACTORY_START",$input);
                     break;
 
                 case "ipm_write_address":
+                    if (isset($_GET["taddr"])) $taddr = trim($_GET["taddr"]); else $taddr = "";
                     if (isset($_GET["len"])) $len = trim($_GET["len"]); else $len = "";
                     if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
                     if (isset($_GET["newaddr"])) $newaddr = trim($_GET["newaddr"]); else $newaddr = "";
-                    $input = array("type" => $type, "len" => $len, "newaddr" => $newaddr);
+                    $input = array("taddr" => $taddr, "type" => $type, "len" => $len, "newaddr" => $newaddr);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4NBIOT_IPM_UI, MFUN_TASK_ID_L3NBIOT_OPR_METER, MSG_ID_L4NBIOT_IPMUI_TO_L3OPR_METER_DL_WRITE_DI0DI1_ADDRESS, "MSG_ID_L4NBIOT_IPMUI_TO_L3OPR_METER_DL_WRITE_DI0DI1_ADDRESS",$input);
                     break;
 
                 case "ipm_write_device_syn":
+                    if (isset($_GET["taddr"])) $taddr = trim($_GET["taddr"]); else $taddr = "";
                     if (isset($_GET["len"])) $len = trim($_GET["len"]); else $len = "";
                     if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
                     if (isset($_GET["curaccumvolume"])) $curaccumvolume = trim($_GET["curaccumvolume"]); else $curaccumvolume = "";
-                    $input = array("type" => $type, "len" => $len, "curaccumvolume" => $curaccumvolume);
+                    $input = array("taddr" => $taddr, "type" => $type, "len" => $len, "curaccumvolume" => $curaccumvolume);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4NBIOT_IPM_UI, MFUN_TASK_ID_L3NBIOT_OPR_METER, MSG_ID_L4NBIOT_IPMUI_TO_L3OPR_METER_DL_WRITE_DEVICE_SYN_DATA, "MSG_ID_L4NBIOT_IPMUI_TO_L3OPR_METER_DL_WRITE_DEVICE_SYN_DATA",$input);
                     break;
 

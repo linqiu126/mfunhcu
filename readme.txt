@@ -219,6 +219,11 @@ Make By：ZJL
 > 上行链路增加了写入过程
 > 新增加的上行链路中测试代码也完善
 
+//= ZJL, 2016 July.18, CURRENT_SW_DELIVERY R02.D33
+> 下行DL代码的SDK
+> SDK DL全部完善好，测试脚本验证好，输出码流正常
+> CJ188服务器一侧的，算是全部完成了
+
 
 
 
@@ -227,12 +232,14 @@ Make By：ZJL
 3. 恢复后台管理界面及相应工具
 4. SOCKET的功能
 
-
 //已知的潜在错误
 1. task_l2sdk_iot_hcu.class.php, line108，引用父进程的函数指针，编译器发现潜在错误，如何消除？ 目前执行都很正常，但是程序代码不好看
 2. l3appl->fxyyy中，调用_encode函数出错，如何办？
     //$jsonencode = _encode($retval);
     $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
+
+
+
 
 
 

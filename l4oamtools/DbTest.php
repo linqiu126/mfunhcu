@@ -22,8 +22,8 @@ define ("TC_SOCKET", false);
 define ("TC_CRON", false);
 define ("TC_IOT_HCU", false);
 define ("TC_L4AQYC_UI", false);
-define ("TC_NBIOT_CJ188_UL", true);
-define ("TC_NBIOT_CJ188_DL", false);
+define ("TC_NBIOT_CJ188_UL", false);
+define ("TC_NBIOT_CJ188_DL", true);
 define ("TC_NBIOT_QG376", false);
 
 require("testcase_nbiot188.php");

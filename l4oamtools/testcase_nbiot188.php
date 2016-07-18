@@ -560,6 +560,7 @@ if (TC_NBIOT_CJ188_DL == true){
     $obj = new classDbiL2sdkNbiotStdCj188();
     $obj->dbi_std_cj188_cntser_set_value("11223344556677", 1);
     $_GET["action"] = "iwm_write_bill_date";
+    $_GET["taddr"] = "11223344556677";
     $_GET["len"] = 0x4;
     $_GET["type"] = 0x10;
     $_GET["billdate"] = 14;
@@ -571,6 +572,7 @@ if (TC_NBIOT_CJ188_DL == true){
     $obj = new classDbiL2sdkNbiotStdCj188();
     $obj->dbi_std_cj188_cntser_set_value("11223344556677", 1);
     $_GET["action"] = "ipm_read_cur_cnt_data";
+    $_GET["taddr"] = "11223344556677";
     $_GET["len"] = 3;
     $_GET["type"] = 0x40;
     require("../l1mainentry/h5ui_entry_nbiot_ipm.php");
@@ -581,6 +583,7 @@ if (TC_NBIOT_CJ188_DL == true){
     $obj = new classDbiL2sdkNbiotStdCj188();
     $obj->dbi_std_cj188_cntser_set_value("11223344556677", 1);
     $_GET["action"] = "iwm_read_cur_cnt_data";
+    $_GET["taddr"] = "11223344556677";
     $_GET["len"] = 3;
     $_GET["type"] = 0x10;
     require("../l1mainentry/h5ui_entry_nbiot_iwm.php");
@@ -591,6 +594,7 @@ if (TC_NBIOT_CJ188_DL == true){
     $obj = new classDbiL2sdkNbiotStdCj188();
     $obj->dbi_std_cj188_cntser_set_value("11223344556677", 1);
     $_GET["action"] = "ihm_read_cur_cnt_data";
+    $_GET["taddr"] = "11223344556677";
     $_GET["len"] = 3;
     $_GET["type"] = 0x20;
     require("../l1mainentry/h5ui_entry_nbiot_ihm.php");
@@ -601,6 +605,7 @@ if (TC_NBIOT_CJ188_DL == true){
     $obj = new classDbiL2sdkNbiotStdCj188();
     $obj->dbi_std_cj188_cntser_set_value("11223344556677", 1);
     $_GET["action"] = "igm_read_cur_cnt_data";
+    $_GET["taddr"] = "11223344556677";
     $_GET["len"] = 3;
     $_GET["type"] = 0x30;
     require("../l1mainentry/h5ui_entry_nbiot_igm.php");
@@ -611,6 +616,7 @@ if (TC_NBIOT_CJ188_DL == true){
     $obj = new classDbiL2sdkNbiotStdCj188();
     $obj->dbi_std_cj188_cntser_set_value("11223344556677", 1);
     $_GET["action"] = "iwm_read_his_cnt_data1";
+    $_GET["taddr"] = "11223344556677";
     $_GET["len"] = 3;
     $_GET["type"] = 0x10;
     require("../l1mainentry/h5ui_entry_nbiot_iwm.php");
@@ -621,6 +627,7 @@ if (TC_NBIOT_CJ188_DL == true){
     $obj = new classDbiL2sdkNbiotStdCj188();
     $obj->dbi_std_cj188_cntser_set_value("11223344556677", 1);
     $_GET["action"] = "ihm_read_his_cnt_data2";
+    $_GET["taddr"] = "11223344556677";
     $_GET["len"] = 3;
     $_GET["type"] = 0x20;
     require("../l1mainentry/h5ui_entry_nbiot_ihm.php");
@@ -631,6 +638,7 @@ if (TC_NBIOT_CJ188_DL == true){
     $obj = new classDbiL2sdkNbiotStdCj188();
     $obj->dbi_std_cj188_cntser_set_value("11223344556677", 1);
     $_GET["action"] = "igm_read_his_cnt_data3";
+    $_GET["taddr"] = "11223344556677";
     $_GET["len"] = 3;
     $_GET["type"] = 0x30;
     require("../l1mainentry/h5ui_entry_nbiot_igm.php");
@@ -641,6 +649,7 @@ if (TC_NBIOT_CJ188_DL == true){
     $obj = new classDbiL2sdkNbiotStdCj188();
     $obj->dbi_std_cj188_cntser_set_value("11223344556677", 1);
     $_GET["action"] = "ipm_read_his_cnt_data4";
+    $_GET["taddr"] = "11223344556677";
     $_GET["len"] = 3;
     $_GET["type"] = 0x40;
     require("../l1mainentry/h5ui_entry_nbiot_ipm.php");
@@ -651,6 +660,7 @@ if (TC_NBIOT_CJ188_DL == true){
     $obj = new classDbiL2sdkNbiotStdCj188();
     $obj->dbi_std_cj188_cntser_set_value("11223344556677", 1);
     $_GET["action"] = "iwm_read_his_cnt_data5";
+    $_GET["taddr"] = "11223344556677";
     $_GET["len"] = 3;
     $_GET["type"] = 0x10;
     require("../l1mainentry/h5ui_entry_nbiot_iwm.php");
@@ -661,6 +671,7 @@ if (TC_NBIOT_CJ188_DL == true){
     $obj = new classDbiL2sdkNbiotStdCj188();
     $obj->dbi_std_cj188_cntser_set_value("11223344556677", 1);
     $_GET["action"] = "ihm_read_his_cnt_data6";
+    $_GET["taddr"] = "11223344556677";
     $_GET["len"] = 3;
     $_GET["type"] = 0x20;
     require("../l1mainentry/h5ui_entry_nbiot_ihm.php");
@@ -671,6 +682,7 @@ if (TC_NBIOT_CJ188_DL == true){
     $obj = new classDbiL2sdkNbiotStdCj188();
     $obj->dbi_std_cj188_cntser_set_value("11223344556677", 1);
     $_GET["action"] = "igm_read_his_cnt_data7";
+    $_GET["taddr"] = "11223344556677";
     $_GET["len"] = 3;
     $_GET["type"] = 0x30;
     require("../l1mainentry/h5ui_entry_nbiot_igm.php");
@@ -681,6 +693,7 @@ if (TC_NBIOT_CJ188_DL == true){
     $obj = new classDbiL2sdkNbiotStdCj188();
     $obj->dbi_std_cj188_cntser_set_value("11223344556677", 1);
     $_GET["action"] = "ipm_read_his_cnt_data8";
+    $_GET["taddr"] = "11223344556677";
     $_GET["len"] = 3;
     $_GET["type"] = 0x40;
     require("../l1mainentry/h5ui_entry_nbiot_ipm.php");
@@ -691,6 +704,7 @@ if (TC_NBIOT_CJ188_DL == true){
     $obj = new classDbiL2sdkNbiotStdCj188();
     $obj->dbi_std_cj188_cntser_set_value("11223344556677", 1);
     $_GET["action"] = "iwm_read_his_cnt_data9";
+    $_GET["taddr"] = "11223344556677";
     $_GET["len"] = 3;
     $_GET["type"] = 0x10;
     require("../l1mainentry/h5ui_entry_nbiot_iwm.php");
@@ -701,6 +715,7 @@ if (TC_NBIOT_CJ188_DL == true){
     $obj = new classDbiL2sdkNbiotStdCj188();
     $obj->dbi_std_cj188_cntser_set_value("11223344556677", 1);
     $_GET["action"] = "ihm_read_his_cnt_data10";
+    $_GET["taddr"] = "11223344556677";
     $_GET["len"] = 3;
     $_GET["type"] = 0x20;
     require("../l1mainentry/h5ui_entry_nbiot_ihm.php");
@@ -711,6 +726,7 @@ if (TC_NBIOT_CJ188_DL == true){
     $obj = new classDbiL2sdkNbiotStdCj188();
     $obj->dbi_std_cj188_cntser_set_value("11223344556677", 1);
     $_GET["action"] = "igm_read_his_cnt_data11";
+    $_GET["taddr"] = "11223344556677";
     $_GET["len"] = 3;
     $_GET["type"] = 0x30;
     require("../l1mainentry/h5ui_entry_nbiot_igm.php");
@@ -721,6 +737,7 @@ if (TC_NBIOT_CJ188_DL == true){
     $obj = new classDbiL2sdkNbiotStdCj188();
     $obj->dbi_std_cj188_cntser_set_value("11223344556677", 1);
     $_GET["action"] = "ipm_read_his_cnt_data12";
+    $_GET["taddr"] = "11223344556677";
     $_GET["len"] = 3;
     $_GET["type"] = 0x40;
     require("../l1mainentry/h5ui_entry_nbiot_ipm.php");
@@ -731,6 +748,7 @@ if (TC_NBIOT_CJ188_DL == true){
     $obj = new classDbiL2sdkNbiotStdCj188();
     $obj->dbi_std_cj188_cntser_set_value("11223344556677", 1);
     $_GET["action"] = "iwm_write_price_table";
+    $_GET["taddr"] = "11223344556677";
     $_GET["len"] = 0x13;
     $_GET["type"] = 0x10;
     $_GET["price1"] = 11.222;
@@ -747,6 +765,7 @@ if (TC_NBIOT_CJ188_DL == true){
     $obj = new classDbiL2sdkNbiotStdCj188();
     $obj->dbi_std_cj188_cntser_set_value("11223344556677", 1);
     $_GET["action"] = "iwm_write_account_date";
+    $_GET["taddr"] = "11223344556677";
     $_GET["len"] = 0x4;
     $_GET["type"] = 0x10;
     $_GET["accountdate"] = 14;
@@ -759,6 +778,7 @@ if (TC_NBIOT_CJ188_DL == true){
     $obj = new classDbiL2sdkNbiotStdCj188();
     $obj->dbi_std_cj188_cntser_set_value("11223344556677", 1);
     $_GET["action"] = "iwm_write_bill_date";
+    $_GET["taddr"] = "11223344556677";
     $_GET["len"] = 0x4;
     $_GET["type"] = 0x10;
     $_GET["billdate"] = 14;
@@ -770,6 +790,7 @@ if (TC_NBIOT_CJ188_DL == true){
     $obj = new classDbiL2sdkNbiotStdCj188();
     $obj->dbi_std_cj188_cntser_set_value("11223344556677", 1);
     $_GET["action"] = "iwm_write_buy_amount";
+    $_GET["taddr"] = "11223344556677";
     $_GET["len"] = 0x8;
     $_GET["type"] = 0x10;
     $_GET["buycode"] = 14;
@@ -782,6 +803,7 @@ if (TC_NBIOT_CJ188_DL == true){
     $obj = new classDbiL2sdkNbiotStdCj188();
     $obj->dbi_std_cj188_cntser_set_value("11223344556677", 1);
     $_GET["action"] = "iwm_write_new_key";
+    $_GET["taddr"] = "11223344556677";
     $_GET["len"] = 0x0C;
     $_GET["type"] = 0x10;
     $_GET["kerver"] = 14;
@@ -794,6 +816,7 @@ if (TC_NBIOT_CJ188_DL == true){
     $obj = new classDbiL2sdkNbiotStdCj188();
     $obj->dbi_std_cj188_cntser_set_value("11223344556677", 1);
     $_GET["action"] = "iwm_write_std_time";
+    $_GET["taddr"] = "11223344556677";
     $_GET["len"] = 0x0A;
     $_GET["type"] = 0x10;
     $_GET["realtime"] = "20110131152233";
@@ -805,6 +828,7 @@ if (TC_NBIOT_CJ188_DL == true){
     $obj = new classDbiL2sdkNbiotStdCj188();
     $obj->dbi_std_cj188_cntser_set_value("11223344556677", 1);
     $_GET["action"] = "iwm_write_switch_ctrl";
+    $_GET["taddr"] = "11223344556677";
     $_GET["len"] = 0x04;
     $_GET["type"] = 0x10;
     $_GET["switch"] = true;
@@ -816,6 +840,7 @@ if (TC_NBIOT_CJ188_DL == true){
     $obj = new classDbiL2sdkNbiotStdCj188();
     $obj->dbi_std_cj188_cntser_set_value("11223344556677", 1);
     $_GET["action"] = "iwm_write_off_fac_start";
+    $_GET["taddr"] = "11223344556677";
     $_GET["len"] = 0x03;
     $_GET["type"] = 0x10;
     require("../l1mainentry/h5ui_entry_nbiot_iwm.php");
@@ -826,6 +851,7 @@ if (TC_NBIOT_CJ188_DL == true){
     $obj = new classDbiL2sdkNbiotStdCj188();
     $obj->dbi_std_cj188_cntser_set_value("11223344556677", 1);
     $_GET["action"] = "iwm_write_address";
+    $_GET["taddr"] = "11223344556677";
     $_GET["len"] = 0x0A;
     $_GET["type"] = 0x10;
     $_GET["newaddr"] = "77665544332211";
@@ -837,6 +863,7 @@ if (TC_NBIOT_CJ188_DL == true){
     $obj = new classDbiL2sdkNbiotStdCj188();
     $obj->dbi_std_cj188_cntser_set_value("11223344556677", 1);
     $_GET["action"] = "iwm_write_device_syn";
+    $_GET["taddr"] = "11223344556677";
     $_GET["len"] = 0x8;
     $_GET["type"] = 0x10;
     $_GET["curaccumvolume"] = 12345.446;
@@ -848,6 +875,7 @@ if (TC_NBIOT_CJ188_DL == true){
     $obj = new classDbiL2sdkNbiotStdCj188();
     $obj->dbi_std_cj188_cntser_set_value("11223344556677", 1);
     $_GET["action"] = "ihm_write_price_table";
+    $_GET["taddr"] = "11223344556677";
     $_GET["len"] = 0x13;
     $_GET["type"] = 0x20;
     $_GET["price1"] = 11.222;
@@ -864,6 +892,7 @@ if (TC_NBIOT_CJ188_DL == true){
     $obj = new classDbiL2sdkNbiotStdCj188();
     $obj->dbi_std_cj188_cntser_set_value("11223344556677", 1);
     $_GET["action"] = "ihm_write_account_date";
+    $_GET["taddr"] = "11223344556677";
     $_GET["len"] = 0x4;
     $_GET["type"] = 0x20;
     $_GET["accountdate"] = 14;
@@ -875,6 +904,7 @@ if (TC_NBIOT_CJ188_DL == true){
     $obj = new classDbiL2sdkNbiotStdCj188();
     $obj->dbi_std_cj188_cntser_set_value("11223344556677", 1);
     $_GET["action"] = "ihm_write_bill_date";
+    $_GET["taddr"] = "11223344556677";
     $_GET["len"] = 0x4;
     $_GET["type"] = 0x20;
     $_GET["billdate"] = 14;
@@ -886,6 +916,7 @@ if (TC_NBIOT_CJ188_DL == true){
     $obj = new classDbiL2sdkNbiotStdCj188();
     $obj->dbi_std_cj188_cntser_set_value("11223344556677", 1);
     $_GET["action"] = "ihm_write_buy_amount";
+    $_GET["taddr"] = "11223344556677";
     $_GET["len"] = 0x8;
     $_GET["type"] = 0x20;
     $_GET["buycode"] = 14;
@@ -898,6 +929,7 @@ if (TC_NBIOT_CJ188_DL == true){
     $obj = new classDbiL2sdkNbiotStdCj188();
     $obj->dbi_std_cj188_cntser_set_value("11223344556677", 1);
     $_GET["action"] = "ihm_write_new_key";
+    $_GET["taddr"] = "11223344556677";
     $_GET["len"] = 0x0C;
     $_GET["type"] = 0x20;
     $_GET["kerver"] = 14;
@@ -910,6 +942,7 @@ if (TC_NBIOT_CJ188_DL == true){
     $obj = new classDbiL2sdkNbiotStdCj188();
     $obj->dbi_std_cj188_cntser_set_value("11223344556677", 1);
     $_GET["action"] = "ihm_write_std_time";
+    $_GET["taddr"] = "11223344556677";
     $_GET["len"] = 0x0A;
     $_GET["type"] = 0x20;
     $_GET["realtime"] = "20110131152233";
@@ -921,6 +954,7 @@ if (TC_NBIOT_CJ188_DL == true){
     $obj = new classDbiL2sdkNbiotStdCj188();
     $obj->dbi_std_cj188_cntser_set_value("11223344556677", 1);
     $_GET["action"] = "ihm_write_switch_ctrl";
+    $_GET["taddr"] = "11223344556677";
     $_GET["len"] = 0x04;
     $_GET["type"] = 0x20;
     $_GET["switch"] = true;
@@ -932,6 +966,7 @@ if (TC_NBIOT_CJ188_DL == true){
     $obj = new classDbiL2sdkNbiotStdCj188();
     $obj->dbi_std_cj188_cntser_set_value("11223344556677", 1);
     $_GET["action"] = "ihm_write_off_fac_start";
+    $_GET["taddr"] = "11223344556677";
     $_GET["len"] = 0x03;
     $_GET["type"] = 0x20;
     require("../l1mainentry/h5ui_entry_nbiot_ihm.php");
@@ -942,6 +977,7 @@ if (TC_NBIOT_CJ188_DL == true){
     $obj = new classDbiL2sdkNbiotStdCj188();
     $obj->dbi_std_cj188_cntser_set_value("11223344556677", 1);
     $_GET["action"] = "ihm_write_address";
+    $_GET["taddr"] = "11223344556677";
     $_GET["len"] = 0x0A;
     $_GET["type"] = 0x20;
     $_GET["newaddr"] = "77665544332211";
@@ -953,6 +989,7 @@ if (TC_NBIOT_CJ188_DL == true){
     $obj = new classDbiL2sdkNbiotStdCj188();
     $obj->dbi_std_cj188_cntser_set_value("11223344556677", 1);
     $_GET["action"] = "ihm_write_device_syn";
+    $_GET["taddr"] = "11223344556677";
     $_GET["len"] = 0x8;
     $_GET["type"] = 0x20;
     $_GET["curaccumvolume"] = 12345.446;
@@ -964,6 +1001,7 @@ if (TC_NBIOT_CJ188_DL == true){
     $obj = new classDbiL2sdkNbiotStdCj188();
     $obj->dbi_std_cj188_cntser_set_value("11223344556677", 1);
     $_GET["action"] = "igm_write_price_table";
+    $_GET["taddr"] = "11223344556677";
     $_GET["len"] = 0x13;
     $_GET["type"] = 0x30;
     $_GET["price1"] = 11.222;
@@ -980,6 +1018,7 @@ if (TC_NBIOT_CJ188_DL == true){
     $obj = new classDbiL2sdkNbiotStdCj188();
     $obj->dbi_std_cj188_cntser_set_value("11223344556677", 1);
     $_GET["action"] = "igm_write_account_date";
+    $_GET["taddr"] = "11223344556677";
     $_GET["len"] = 0x4;
     $_GET["type"] = 0x30;
     $_GET["accountdate"] = 14;
@@ -990,7 +1029,8 @@ if (TC_NBIOT_CJ188_DL == true){
     include_once "../l2sdk/dbi_l2sdk_nbiot.class.php";
     $obj = new classDbiL2sdkNbiotStdCj188();
     $obj->dbi_std_cj188_cntser_set_value("11223344556677", 1);
-    $_GET["action"] = "ihm_write_bill_date";
+    $_GET["action"] = "igm_write_bill_date";
+    $_GET["taddr"] = "11223344556677";
     $_GET["len"] = 0x4;
     $_GET["type"] = 0x30;
     $_GET["billdate"] = 14;
@@ -1002,6 +1042,7 @@ if (TC_NBIOT_CJ188_DL == true){
     $obj = new classDbiL2sdkNbiotStdCj188();
     $obj->dbi_std_cj188_cntser_set_value("11223344556677", 1);
     $_GET["action"] = "igm_write_buy_amount";
+    $_GET["taddr"] = "11223344556677";
     $_GET["len"] = 0x8;
     $_GET["type"] = 0x30;
     $_GET["buycode"] = 14;
@@ -1014,6 +1055,7 @@ if (TC_NBIOT_CJ188_DL == true){
     $obj = new classDbiL2sdkNbiotStdCj188();
     $obj->dbi_std_cj188_cntser_set_value("11223344556677", 1);
     $_GET["action"] = "igm_write_new_key";
+    $_GET["taddr"] = "11223344556677";
     $_GET["len"] = 0x0C;
     $_GET["type"] = 0x30;
     $_GET["kerver"] = 14;
@@ -1026,6 +1068,7 @@ if (TC_NBIOT_CJ188_DL == true){
     $obj = new classDbiL2sdkNbiotStdCj188();
     $obj->dbi_std_cj188_cntser_set_value("11223344556677", 1);
     $_GET["action"] = "igm_write_std_time";
+    $_GET["taddr"] = "11223344556677";
     $_GET["len"] = 0x0A;
     $_GET["type"] = 0x30;
     $_GET["realtime"] = "20110131152233";
@@ -1037,6 +1080,7 @@ if (TC_NBIOT_CJ188_DL == true){
     $obj = new classDbiL2sdkNbiotStdCj188();
     $obj->dbi_std_cj188_cntser_set_value("11223344556677", 1);
     $_GET["action"] = "igm_write_switch_ctrl";
+    $_GET["taddr"] = "11223344556677";
     $_GET["len"] = 0x04;
     $_GET["type"] = 0x30;
     $_GET["switch"] = true;
@@ -1048,6 +1092,7 @@ if (TC_NBIOT_CJ188_DL == true){
     $obj = new classDbiL2sdkNbiotStdCj188();
     $obj->dbi_std_cj188_cntser_set_value("11223344556677", 1);
     $_GET["action"] = "igm_write_off_fac_start";
+    $_GET["taddr"] = "11223344556677";
     $_GET["len"] = 0x03;
     $_GET["type"] = 0x30;
     require("../l1mainentry/h5ui_entry_nbiot_igm.php");
@@ -1058,6 +1103,7 @@ if (TC_NBIOT_CJ188_DL == true){
     $obj = new classDbiL2sdkNbiotStdCj188();
     $obj->dbi_std_cj188_cntser_set_value("11223344556677", 1);
     $_GET["action"] = "igm_write_address";
+    $_GET["taddr"] = "11223344556677";
     $_GET["len"] = 0x0A;
     $_GET["type"] = 0x30;
     $_GET["newaddr"] = "77665544332211";
@@ -1069,6 +1115,7 @@ if (TC_NBIOT_CJ188_DL == true){
     $obj = new classDbiL2sdkNbiotStdCj188();
     $obj->dbi_std_cj188_cntser_set_value("11223344556677", 1);
     $_GET["action"] = "igm_write_device_syn";
+    $_GET["taddr"] = "11223344556677";
     $_GET["len"] = 0x8;
     $_GET["type"] = 0x30;
     $_GET["curaccumvolume"] = 12345.446;
@@ -1080,6 +1127,7 @@ if (TC_NBIOT_CJ188_DL == true){
     $obj = new classDbiL2sdkNbiotStdCj188();
     $obj->dbi_std_cj188_cntser_set_value("11223344556677", 1);
     $_GET["action"] = "ipm_write_price_table";
+    $_GET["taddr"] = "11223344556677";
     $_GET["len"] = 0x13;
     $_GET["type"] = 0x40;
     $_GET["price1"] = 11.222;
@@ -1096,6 +1144,7 @@ if (TC_NBIOT_CJ188_DL == true){
     $obj = new classDbiL2sdkNbiotStdCj188();
     $obj->dbi_std_cj188_cntser_set_value("11223344556677", 1);
     $_GET["action"] = "ipm_write_account_date";
+    $_GET["taddr"] = "11223344556677";
     $_GET["len"] = 0x4;
     $_GET["type"] = 0x40;
     $_GET["accountdate"] = 14;
@@ -1107,6 +1156,7 @@ if (TC_NBIOT_CJ188_DL == true){
     $obj = new classDbiL2sdkNbiotStdCj188();
     $obj->dbi_std_cj188_cntser_set_value("11223344556677", 1);
     $_GET["action"] = "ipm_write_bill_date";
+    $_GET["taddr"] = "11223344556677";
     $_GET["len"] = 0x4;
     $_GET["type"] = 0x40;
     $_GET["billdate"] = 14;
@@ -1118,6 +1168,7 @@ if (TC_NBIOT_CJ188_DL == true){
     $obj = new classDbiL2sdkNbiotStdCj188();
     $obj->dbi_std_cj188_cntser_set_value("11223344556677", 1);
     $_GET["action"] = "ipm_write_buy_amount";
+    $_GET["taddr"] = "11223344556677";
     $_GET["len"] = 0x8;
     $_GET["type"] = 0x40;
     $_GET["buycode"] = 14;
@@ -1130,6 +1181,7 @@ if (TC_NBIOT_CJ188_DL == true){
     $obj = new classDbiL2sdkNbiotStdCj188();
     $obj->dbi_std_cj188_cntser_set_value("11223344556677", 1);
     $_GET["action"] = "ipm_write_new_key";
+    $_GET["taddr"] = "11223344556677";
     $_GET["len"] = 0x0C;
     $_GET["type"] = 0x40;
     $_GET["kerver"] = 14;
@@ -1142,6 +1194,7 @@ if (TC_NBIOT_CJ188_DL == true){
     $obj = new classDbiL2sdkNbiotStdCj188();
     $obj->dbi_std_cj188_cntser_set_value("11223344556677", 1);
     $_GET["action"] = "ipm_write_std_time";
+    $_GET["taddr"] = "11223344556677";
     $_GET["len"] = 0x0A;
     $_GET["type"] = 0x40;
     $_GET["realtime"] = "20110131152233";
@@ -1153,6 +1206,7 @@ if (TC_NBIOT_CJ188_DL == true){
     $obj = new classDbiL2sdkNbiotStdCj188();
     $obj->dbi_std_cj188_cntser_set_value("11223344556677", 1);
     $_GET["action"] = "ipm_write_switch_ctrl";
+    $_GET["taddr"] = "11223344556677";
     $_GET["len"] = 0x04;
     $_GET["type"] = 0x40;
     $_GET["switch"] = true;
@@ -1164,6 +1218,7 @@ if (TC_NBIOT_CJ188_DL == true){
     $obj = new classDbiL2sdkNbiotStdCj188();
     $obj->dbi_std_cj188_cntser_set_value("11223344556677", 1);
     $_GET["action"] = "ipm_write_off_fac_start";
+    $_GET["taddr"] = "11223344556677";
     $_GET["len"] = 0x03;
     $_GET["type"] = 0x40;
     require("../l1mainentry/h5ui_entry_nbiot_ipm.php");
@@ -1174,6 +1229,7 @@ if (TC_NBIOT_CJ188_DL == true){
     $obj = new classDbiL2sdkNbiotStdCj188();
     $obj->dbi_std_cj188_cntser_set_value("11223344556677", 1);
     $_GET["action"] = "ipm_write_address";
+    $_GET["taddr"] = "11223344556677";
     $_GET["len"] = 0x0A;
     $_GET["type"] = 0x40;
     $_GET["newaddr"] = "77665544332211";
@@ -1185,6 +1241,7 @@ if (TC_NBIOT_CJ188_DL == true){
     $obj = new classDbiL2sdkNbiotStdCj188();
     $obj->dbi_std_cj188_cntser_set_value("11223344556677", 1);
     $_GET["action"] = "ipm_write_device_syn";
+    $_GET["taddr"] = "11223344556677";
     $_GET["len"] = 0x8;
     $_GET["type"] = 0x40;
     $_GET["curaccumvolume"] = 12345.446;

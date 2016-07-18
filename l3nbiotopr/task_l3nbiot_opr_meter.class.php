@@ -51,235 +51,235 @@ class classTaskL3nbiotOprMeter
         return $jsonencode;
     }
 
-    function func_iwm_ihm_igm_ipm_read_cur_cnt_data_process($parObj, $type, $len)
+    function func_iwm_ihm_igm_ipm_read_cur_cnt_data_process($parObj, $taddr, $type, $len)
     {
         if (($len != 0x3) || ($type <MFUN_NBIOT_CJ188_T_TYPE_WATER_METER_MIN) || ($type > MFUN_NBIOT_CJ188_T_TYPE_POWER_METER_MAX)) return "";
         $D0D1 = MFUN_NBIOT_CJ188_READ_DI0DI1_CURRENT_COUNTER_DATA;
         $msgHead = sprintf("%02X%04X", $len, $D0D1);
         $msgBody = "";
         $msgCtrl = MFUN_NBIOT_CJ188_CTRL_READ_DATA;
-        $input = array("type" => $type, "msgCtrl" => $msgCtrl, "msgHead" => $msgHead, "msgBody" => $msgBody);
+        $input = array("taddr" => $taddr, "type" => $type, "msgCtrl" => $msgCtrl, "msgHead" => $msgHead, "msgBody" => $msgBody);
         $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L3NBIOT_OPR_METER, MFUN_TASK_ID_L2SDK_NBIOT_STD_CJ188, MSG_ID_L3NBIOT_OPR_METERTO_STD_CJ188_DL_REQUEST, "MSG_ID_L3NBIOT_OPR_METERTO_STD_CJ188_DL_REQUEST", $input);
         return "";
     }
 
-    function func_iwm_ihm_igm_ipm_read_his_cnt_data1_process($parObj, $type, $len)
+    function func_iwm_ihm_igm_ipm_read_his_cnt_data1_process($parObj, $taddr, $type, $len)
     {
         if (($len != 0x3) || ($type <MFUN_NBIOT_CJ188_T_TYPE_WATER_METER_MIN) || ($type > MFUN_NBIOT_CJ188_T_TYPE_POWER_METER_MAX)) return "";
         $D0D1 = MFUN_NBIOT_CJ188_READ_DI0DI1_HISTORY_COUNTER_DATA1;
         $msgHead = sprintf("%02X%04X", $len, $D0D1);
         $msgBody = "";
         $msgCtrl = MFUN_NBIOT_CJ188_CTRL_READ_DATA;
-        $input = array("type" => $type, "msgCtrl" => $msgCtrl, "msgHead" => $msgHead, "msgBody" => $msgBody);
+        $input = array("taddr" => $taddr, "type" => $type, "msgCtrl" => $msgCtrl, "msgHead" => $msgHead, "msgBody" => $msgBody);
         $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L3NBIOT_OPR_METER, MFUN_TASK_ID_L2SDK_NBIOT_STD_CJ188, MSG_ID_L3NBIOT_OPR_METERTO_STD_CJ188_DL_REQUEST, "MSG_ID_L3NBIOT_OPR_METERTO_STD_CJ188_DL_REQUEST", $input);
         return "";
     }
 
-    function func_iwm_ihm_igm_ipm_read_his_cnt_data2_process($parObj, $type, $len)
+    function func_iwm_ihm_igm_ipm_read_his_cnt_data2_process($parObj, $taddr, $type, $len)
     {
         if (($len != 0x3) || ($type <MFUN_NBIOT_CJ188_T_TYPE_WATER_METER_MIN) || ($type > MFUN_NBIOT_CJ188_T_TYPE_POWER_METER_MAX)) return "";
         $D0D1 = MFUN_NBIOT_CJ188_READ_DI0DI1_HISTORY_COUNTER_DATA2;
         $msgHead = sprintf("%02X%04X", $len, $D0D1);
         $msgBody = "";
         $msgCtrl = MFUN_NBIOT_CJ188_CTRL_READ_DATA;
-        $input = array("type" => $type, "msgCtrl" => $msgCtrl, "msgHead" => $msgHead, "msgBody" => $msgBody);
+        $input = array("taddr" => $taddr, "type" => $type, "msgCtrl" => $msgCtrl, "msgHead" => $msgHead, "msgBody" => $msgBody);
         $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L3NBIOT_OPR_METER, MFUN_TASK_ID_L2SDK_NBIOT_STD_CJ188, MSG_ID_L3NBIOT_OPR_METERTO_STD_CJ188_DL_REQUEST, "MSG_ID_L3NBIOT_OPR_METERTO_STD_CJ188_DL_REQUEST", $input);
         return "";
     }
 
-    function func_iwm_ihm_igm_ipm_read_his_cnt_data3_process($parObj, $type, $len)
+    function func_iwm_ihm_igm_ipm_read_his_cnt_data3_process($parObj, $taddr, $type, $len)
     {
         if (($len != 0x3) || ($type <MFUN_NBIOT_CJ188_T_TYPE_WATER_METER_MIN) || ($type > MFUN_NBIOT_CJ188_T_TYPE_POWER_METER_MAX)) return "";
         $D0D1 = MFUN_NBIOT_CJ188_READ_DI0DI1_HISTORY_COUNTER_DATA3;
         $msgHead = sprintf("%02X%04X", $len, $D0D1);
         $msgBody = "";
         $msgCtrl = MFUN_NBIOT_CJ188_CTRL_READ_DATA;
-        $input = array("type" => $type, "msgCtrl" => $msgCtrl, "msgHead" => $msgHead, "msgBody" => $msgBody);
+        $input = array("taddr" => $taddr, "type" => $type, "msgCtrl" => $msgCtrl, "msgHead" => $msgHead, "msgBody" => $msgBody);
         $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L3NBIOT_OPR_METER, MFUN_TASK_ID_L2SDK_NBIOT_STD_CJ188, MSG_ID_L3NBIOT_OPR_METERTO_STD_CJ188_DL_REQUEST, "MSG_ID_L3NBIOT_OPR_METERTO_STD_CJ188_DL_REQUEST", $input);
         return "";
     }
 
-    function func_iwm_ihm_igm_ipm_read_his_cnt_data4_process($parObj, $type, $len)
+    function func_iwm_ihm_igm_ipm_read_his_cnt_data4_process($parObj, $taddr, $type, $len)
     {
         if (($len != 0x3) || ($type <MFUN_NBIOT_CJ188_T_TYPE_WATER_METER_MIN) || ($type > MFUN_NBIOT_CJ188_T_TYPE_POWER_METER_MAX)) return "";
         $D0D1 = MFUN_NBIOT_CJ188_READ_DI0DI1_HISTORY_COUNTER_DATA4;
         $msgHead = sprintf("%02X%04X", $len, $D0D1);
         $msgBody = "";
         $msgCtrl = MFUN_NBIOT_CJ188_CTRL_READ_DATA;
-        $input = array("type" => $type, "msgCtrl" => $msgCtrl, "msgHead" => $msgHead, "msgBody" => $msgBody);
+        $input = array("taddr" => $taddr, "type" => $type, "msgCtrl" => $msgCtrl, "msgHead" => $msgHead, "msgBody" => $msgBody);
         $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L3NBIOT_OPR_METER, MFUN_TASK_ID_L2SDK_NBIOT_STD_CJ188, MSG_ID_L3NBIOT_OPR_METERTO_STD_CJ188_DL_REQUEST, "MSG_ID_L3NBIOT_OPR_METERTO_STD_CJ188_DL_REQUEST", $input);
         return "";
     }
 
-    function func_iwm_ihm_igm_ipm_read_his_cnt_data5_process($parObj, $type, $len)
+    function func_iwm_ihm_igm_ipm_read_his_cnt_data5_process($parObj, $taddr, $type, $len)
     {
         if (($len != 0x3) || ($type <MFUN_NBIOT_CJ188_T_TYPE_WATER_METER_MIN) || ($type > MFUN_NBIOT_CJ188_T_TYPE_POWER_METER_MAX)) return "";
         $D0D1 = MFUN_NBIOT_CJ188_READ_DI0DI1_HISTORY_COUNTER_DATA5;
         $msgHead = sprintf("%02X%04X", $len, $D0D1);
         $msgBody = "";
         $msgCtrl = MFUN_NBIOT_CJ188_CTRL_READ_DATA;
-        $input = array("type" => $type, "msgCtrl" => $msgCtrl, "msgHead" => $msgHead, "msgBody" => $msgBody);
+        $input = array("taddr" => $taddr, "type" => $type, "msgCtrl" => $msgCtrl, "msgHead" => $msgHead, "msgBody" => $msgBody);
         $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L3NBIOT_OPR_METER, MFUN_TASK_ID_L2SDK_NBIOT_STD_CJ188, MSG_ID_L3NBIOT_OPR_METERTO_STD_CJ188_DL_REQUEST, "MSG_ID_L3NBIOT_OPR_METERTO_STD_CJ188_DL_REQUEST", $input);
         return "";
     }
 
-    function func_iwm_ihm_igm_ipm_read_his_cnt_data6_process($parObj, $type, $len)
+    function func_iwm_ihm_igm_ipm_read_his_cnt_data6_process($parObj, $taddr, $type, $len)
     {
         if (($len != 0x3) || ($type <MFUN_NBIOT_CJ188_T_TYPE_WATER_METER_MIN) || ($type > MFUN_NBIOT_CJ188_T_TYPE_POWER_METER_MAX)) return "";
         $D0D1 = MFUN_NBIOT_CJ188_READ_DI0DI1_HISTORY_COUNTER_DATA6;
         $msgHead = sprintf("%02X%04X", $len, $D0D1);
         $msgBody = "";
         $msgCtrl = MFUN_NBIOT_CJ188_CTRL_READ_DATA;
-        $input = array("type" => $type, "msgCtrl" => $msgCtrl, "msgHead" => $msgHead, "msgBody" => $msgBody);
+        $input = array("taddr" => $taddr, "type" => $type, "msgCtrl" => $msgCtrl, "msgHead" => $msgHead, "msgBody" => $msgBody);
         $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L3NBIOT_OPR_METER, MFUN_TASK_ID_L2SDK_NBIOT_STD_CJ188, MSG_ID_L3NBIOT_OPR_METERTO_STD_CJ188_DL_REQUEST, "MSG_ID_L3NBIOT_OPR_METERTO_STD_CJ188_DL_REQUEST", $input);
         return "";
     }
 
-    function func_iwm_ihm_igm_ipm_read_his_cnt_data7_process($parObj, $type, $len)
+    function func_iwm_ihm_igm_ipm_read_his_cnt_data7_process($parObj, $taddr, $type, $len)
     {
         if (($len != 0x3) || ($type <MFUN_NBIOT_CJ188_T_TYPE_WATER_METER_MIN) || ($type > MFUN_NBIOT_CJ188_T_TYPE_POWER_METER_MAX)) return "";
         $D0D1 = MFUN_NBIOT_CJ188_READ_DI0DI1_HISTORY_COUNTER_DATA7;
         $msgHead = sprintf("%02X%04X", $len, $D0D1);
         $msgBody = "";
         $msgCtrl = MFUN_NBIOT_CJ188_CTRL_READ_DATA;
-        $input = array("type" => $type, "msgCtrl" => $msgCtrl, "msgHead" => $msgHead, "msgBody" => $msgBody);
+        $input = array("taddr" => $taddr, "type" => $type, "msgCtrl" => $msgCtrl, "msgHead" => $msgHead, "msgBody" => $msgBody);
         $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L3NBIOT_OPR_METER, MFUN_TASK_ID_L2SDK_NBIOT_STD_CJ188, MSG_ID_L3NBIOT_OPR_METERTO_STD_CJ188_DL_REQUEST, "MSG_ID_L3NBIOT_OPR_METERTO_STD_CJ188_DL_REQUEST", $input);
         return "";
     }
 
-    function func_iwm_ihm_igm_ipm_read_his_cnt_data8_process($parObj, $type, $len)
+    function func_iwm_ihm_igm_ipm_read_his_cnt_data8_process($parObj, $taddr, $type, $len)
     {
         if (($len != 0x3) || ($type <MFUN_NBIOT_CJ188_T_TYPE_WATER_METER_MIN) || ($type > MFUN_NBIOT_CJ188_T_TYPE_POWER_METER_MAX)) return "";
         $D0D1 = MFUN_NBIOT_CJ188_READ_DI0DI1_HISTORY_COUNTER_DATA8;
         $msgHead = sprintf("%02X%04X", $len, $D0D1);
         $msgBody = "";
         $msgCtrl = MFUN_NBIOT_CJ188_CTRL_READ_DATA;
-        $input = array("type" => $type, "msgCtrl" => $msgCtrl, "msgHead" => $msgHead, "msgBody" => $msgBody);
+        $input = array("taddr" => $taddr, "type" => $type, "msgCtrl" => $msgCtrl, "msgHead" => $msgHead, "msgBody" => $msgBody);
         $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L3NBIOT_OPR_METER, MFUN_TASK_ID_L2SDK_NBIOT_STD_CJ188, MSG_ID_L3NBIOT_OPR_METERTO_STD_CJ188_DL_REQUEST, "MSG_ID_L3NBIOT_OPR_METERTO_STD_CJ188_DL_REQUEST", $input);
         return "";
     }
 
-    function func_iwm_ihm_igm_ipm_read_his_cnt_data9_process($parObj, $type, $len)
+    function func_iwm_ihm_igm_ipm_read_his_cnt_data9_process($parObj, $taddr, $type, $len)
     {
         if (($len != 0x3) || ($type <MFUN_NBIOT_CJ188_T_TYPE_WATER_METER_MIN) || ($type > MFUN_NBIOT_CJ188_T_TYPE_POWER_METER_MAX)) return "";
         $D0D1 = MFUN_NBIOT_CJ188_READ_DI0DI1_HISTORY_COUNTER_DATA9;
         $msgHead = sprintf("%02X%04X", $len, $D0D1);
         $msgBody = "";
         $msgCtrl = MFUN_NBIOT_CJ188_CTRL_READ_DATA;
-        $input = array("type" => $type, "msgCtrl" => $msgCtrl, "msgHead" => $msgHead, "msgBody" => $msgBody);
+        $input = array("taddr" => $taddr, "type" => $type, "msgCtrl" => $msgCtrl, "msgHead" => $msgHead, "msgBody" => $msgBody);
         $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L3NBIOT_OPR_METER, MFUN_TASK_ID_L2SDK_NBIOT_STD_CJ188, MSG_ID_L3NBIOT_OPR_METERTO_STD_CJ188_DL_REQUEST, "MSG_ID_L3NBIOT_OPR_METERTO_STD_CJ188_DL_REQUEST", $input);
         return "";
     }
 
-    function func_iwm_ihm_igm_ipm_read_his_cnt_data10_process($parObj, $type, $len)
+    function func_iwm_ihm_igm_ipm_read_his_cnt_data10_process($parObj, $taddr, $type, $len)
     {
         if (($len != 0x3) || ($type <MFUN_NBIOT_CJ188_T_TYPE_WATER_METER_MIN) || ($type > MFUN_NBIOT_CJ188_T_TYPE_POWER_METER_MAX)) return "";
         $D0D1 = MFUN_NBIOT_CJ188_READ_DI0DI1_HISTORY_COUNTER_DATA10;
         $msgHead = sprintf("%02X%04X", $len, $D0D1);
         $msgBody = "";
         $msgCtrl = MFUN_NBIOT_CJ188_CTRL_READ_DATA;
-        $input = array("type" => $type, "msgCtrl" => $msgCtrl, "msgHead" => $msgHead, "msgBody" => $msgBody);
+        $input = array("taddr" => $taddr, "type" => $type, "msgCtrl" => $msgCtrl, "msgHead" => $msgHead, "msgBody" => $msgBody);
         $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L3NBIOT_OPR_METER, MFUN_TASK_ID_L2SDK_NBIOT_STD_CJ188, MSG_ID_L3NBIOT_OPR_METERTO_STD_CJ188_DL_REQUEST, "MSG_ID_L3NBIOT_OPR_METERTO_STD_CJ188_DL_REQUEST", $input);
         return "";
     }
 
-    function func_iwm_ihm_igm_ipm_read_his_cnt_data11_process($parObj, $type, $len)
+    function func_iwm_ihm_igm_ipm_read_his_cnt_data11_process($parObj, $taddr, $type, $len)
     {
         if (($len != 0x3) || ($type <MFUN_NBIOT_CJ188_T_TYPE_WATER_METER_MIN) || ($type > MFUN_NBIOT_CJ188_T_TYPE_POWER_METER_MAX)) return "";
         $D0D1 = MFUN_NBIOT_CJ188_READ_DI0DI1_HISTORY_COUNTER_DATA11;
         $msgHead = sprintf("%02X%04X", $len, $D0D1);
         $msgBody = "";
         $msgCtrl = MFUN_NBIOT_CJ188_CTRL_READ_DATA;
-        $input = array("type" => $type, "msgCtrl" => $msgCtrl, "msgHead" => $msgHead, "msgBody" => $msgBody);
+        $input = array("taddr" => $taddr, "type" => $type, "msgCtrl" => $msgCtrl, "msgHead" => $msgHead, "msgBody" => $msgBody);
         $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L3NBIOT_OPR_METER, MFUN_TASK_ID_L2SDK_NBIOT_STD_CJ188, MSG_ID_L3NBIOT_OPR_METERTO_STD_CJ188_DL_REQUEST, "MSG_ID_L3NBIOT_OPR_METERTO_STD_CJ188_DL_REQUEST", $input);
         return "";
     }
 
-    function func_iwm_ihm_igm_ipm_read_his_cnt_data12_process($parObj, $type, $len)
+    function func_iwm_ihm_igm_ipm_read_his_cnt_data12_process($parObj, $taddr, $type, $len)
     {
         if (($len != 0x3) || ($type <MFUN_NBIOT_CJ188_T_TYPE_WATER_METER_MIN) || ($type > MFUN_NBIOT_CJ188_T_TYPE_POWER_METER_MAX)) return "";
         $D0D1 = MFUN_NBIOT_CJ188_READ_DI0DI1_HISTORY_COUNTER_DATA12;
         $msgHead = sprintf("%02X%04X", $len, $D0D1);
         $msgBody = "";
         $msgCtrl = MFUN_NBIOT_CJ188_CTRL_READ_DATA;
-        $input = array("type" => $type, "msgCtrl" => $msgCtrl, "msgHead" => $msgHead, "msgBody" => $msgBody);
+        $input = array("taddr" => $taddr, "type" => $type, "msgCtrl" => $msgCtrl, "msgHead" => $msgHead, "msgBody" => $msgBody);
         $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L3NBIOT_OPR_METER, MFUN_TASK_ID_L2SDK_NBIOT_STD_CJ188, MSG_ID_L3NBIOT_OPR_METERTO_STD_CJ188_DL_REQUEST, "MSG_ID_L3NBIOT_OPR_METERTO_STD_CJ188_DL_REQUEST", $input);
         return "";
     }
 
-    function func_iwm_ihm_igm_ipm_read_price_table_process($parObj, $type, $len)
+    function func_iwm_ihm_igm_ipm_read_price_table_process($parObj, $taddr, $type, $len)
     {
         if (($len != 0x3) || ($type <MFUN_NBIOT_CJ188_T_TYPE_WATER_METER_MIN) || ($type > MFUN_NBIOT_CJ188_T_TYPE_POWER_METER_MAX)) return "";
         $D0D1 = MFUN_NBIOT_CJ188_READ_DI0DI1_PRICE_TABLE;
         $msgHead = sprintf("%02X%04X", $len, $D0D1);
         $msgBody = "";
         $msgCtrl = MFUN_NBIOT_CJ188_CTRL_READ_DATA;
-        $input = array("type" => $type, "msgCtrl" => $msgCtrl, "msgHead" => $msgHead, "msgBody" => $msgBody);
+        $input = array("taddr" => $taddr, "type" => $type, "msgCtrl" => $msgCtrl, "msgHead" => $msgHead, "msgBody" => $msgBody);
         $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L3NBIOT_OPR_METER, MFUN_TASK_ID_L2SDK_NBIOT_STD_CJ188, MSG_ID_L3NBIOT_OPR_METERTO_STD_CJ188_DL_REQUEST, "MSG_ID_L3NBIOT_OPR_METERTO_STD_CJ188_DL_REQUEST", $input);
         return "";
     }
 
-    function func_iwm_ihm_igm_ipm_read_bill_date_process($parObj, $type, $len)
+    function func_iwm_ihm_igm_ipm_read_bill_date_process($parObj, $taddr, $type, $len)
     {
         if (($len != 0x3) || ($type <MFUN_NBIOT_CJ188_T_TYPE_WATER_METER_MIN) || ($type > MFUN_NBIOT_CJ188_T_TYPE_POWER_METER_MAX)) return "";
         $D0D1 = MFUN_NBIOT_CJ188_READ_DI0DI1_BILL_DATE;
         $msgHead = sprintf("%02X%04X", $len, $D0D1);
         $msgBody = "";
         $msgCtrl = MFUN_NBIOT_CJ188_CTRL_READ_DATA;
-        $input = array("type" => $type, "msgCtrl" => $msgCtrl, "msgHead" => $msgHead, "msgBody" => $msgBody);
+        $input = array("taddr" => $taddr, "type" => $type, "msgCtrl" => $msgCtrl, "msgHead" => $msgHead, "msgBody" => $msgBody);
         $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L3NBIOT_OPR_METER, MFUN_TASK_ID_L2SDK_NBIOT_STD_CJ188, MSG_ID_L3NBIOT_OPR_METERTO_STD_CJ188_DL_REQUEST, "MSG_ID_L3NBIOT_OPR_METERTO_STD_CJ188_DL_REQUEST", $input);
         return "";
     }
 
-    function func_iwm_ihm_igm_ipm_read_account_date_process($parObj, $type, $len)
+    function func_iwm_ihm_igm_ipm_read_account_date_process($parObj, $taddr, $type, $len)
     {
         if (($len != 0x3) || ($type <MFUN_NBIOT_CJ188_T_TYPE_WATER_METER_MIN) || ($type > MFUN_NBIOT_CJ188_T_TYPE_POWER_METER_MAX)) return "";
         $D0D1 = MFUN_NBIOT_CJ188_READ_DI0DI1_ACCOUNT_DATE;
         $msgHead = sprintf("%02X%04X", $len, $D0D1);
         $msgBody = "";
         $msgCtrl = MFUN_NBIOT_CJ188_CTRL_READ_DATA;
-        $input = array("type" => $type, "msgCtrl" => $msgCtrl, "msgHead" => $msgHead, "msgBody" => $msgBody);
+        $input = array("taddr" => $taddr, "type" => $type, "msgCtrl" => $msgCtrl, "msgHead" => $msgHead, "msgBody" => $msgBody);
         $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L3NBIOT_OPR_METER, MFUN_TASK_ID_L2SDK_NBIOT_STD_CJ188, MSG_ID_L3NBIOT_OPR_METERTO_STD_CJ188_DL_REQUEST, "MSG_ID_L3NBIOT_OPR_METERTO_STD_CJ188_DL_REQUEST", $input);
         return "";
     }
 
-    function func_iwm_ihm_igm_ipm_read_buy_amount_process($parObj, $type, $len)
+    function func_iwm_ihm_igm_ipm_read_buy_amount_process($parObj, $taddr, $type, $len)
     {
         if (($len != 0x3) || ($type <MFUN_NBIOT_CJ188_T_TYPE_WATER_METER_MIN) || ($type > MFUN_NBIOT_CJ188_T_TYPE_POWER_METER_MAX)) return "";
         $D0D1 = MFUN_NBIOT_CJ188_READ_DI0DI1_BUY_AMOUNT;
         $msgHead = sprintf("%02X%04X", $len, $D0D1);
         $msgBody = "";
         $msgCtrl = MFUN_NBIOT_CJ188_CTRL_READ_DATA;
-        $input = array("type" => $type, "msgCtrl" => $msgCtrl, "msgHead" => $msgHead, "msgBody" => $msgBody);
+        $input = array("taddr" => $taddr, "type" => $type, "msgCtrl" => $msgCtrl, "msgHead" => $msgHead, "msgBody" => $msgBody);
         $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L3NBIOT_OPR_METER, MFUN_TASK_ID_L2SDK_NBIOT_STD_CJ188, MSG_ID_L3NBIOT_OPR_METERTO_STD_CJ188_DL_REQUEST, "MSG_ID_L3NBIOT_OPR_METERTO_STD_CJ188_DL_REQUEST", $input);
         return "";
     }
 
-    function func_iwm_ihm_igm_ipm_read_key_ver_process($parObj, $type, $len)
+    function func_iwm_ihm_igm_ipm_read_key_ver_process($parObj, $taddr, $type, $len)
     {
         if (($len != 0x3) || ($type <MFUN_NBIOT_CJ188_T_TYPE_WATER_METER_MIN) || ($type > MFUN_NBIOT_CJ188_T_TYPE_POWER_METER_MAX)) return "";
         $D0D1 = MFUN_NBIOT_CJ188_READ_DI0DI1_KEY_VER;
         $msgHead = sprintf("%02X%04X", $len, $D0D1);
         $msgBody = "";
         $msgCtrl = MFUN_NBIOT_CJ188_CTRL_READ_KEY_VER;
-        $input = array("type" => $type, "msgCtrl" => $msgCtrl, "msgHead" => $msgHead, "msgBody" => $msgBody);
+        $input = array("taddr" => $taddr, "type" => $type, "msgCtrl" => $msgCtrl, "msgHead" => $msgHead, "msgBody" => $msgBody);
         $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L3NBIOT_OPR_METER, MFUN_TASK_ID_L2SDK_NBIOT_STD_CJ188, MSG_ID_L3NBIOT_OPR_METERTO_STD_CJ188_DL_REQUEST, "MSG_ID_L3NBIOT_OPR_METERTO_STD_CJ188_DL_REQUEST", $input);
         return "";
     }
 
-    function func_iwm_ihm_igm_ipm_read_address_process($parObj, $type, $len)
+    function func_iwm_ihm_igm_ipm_read_address_process($parObj, $taddr, $type, $len)
     {
         if (($len != 0x3) || ($type <MFUN_NBIOT_CJ188_T_TYPE_WATER_METER_MIN) || ($type > MFUN_NBIOT_CJ188_T_TYPE_POWER_METER_MAX)) return "";
         $D0D1 = MFUN_NBIOT_CJ188_READ_DI0DI1_ADDRESS;
         $msgHead = sprintf("%02X%04X", $len, $D0D1);
         $msgBody = "";
         $msgCtrl = MFUN_NBIOT_CJ188_CTRL_READ_ADDR;
-        $input = array("type" => $type, "msgCtrl" => $msgCtrl, "msgHead" => $msgHead, "msgBody" => $msgBody);
+        $input = array("taddr" => $taddr, "type" => $type, "msgCtrl" => $msgCtrl, "msgHead" => $msgHead, "msgBody" => $msgBody);
         $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L3NBIOT_OPR_METER, MFUN_TASK_ID_L2SDK_NBIOT_STD_CJ188, MSG_ID_L3NBIOT_OPR_METERTO_STD_CJ188_DL_REQUEST, "MSG_ID_L3NBIOT_OPR_METERTO_STD_CJ188_DL_REQUEST", $input);
         return "";
     }
 
-    function func_iwm_write_price_table_process($parObj, $type, $len, $price1, $volume1, $price2, $volume2, $price3, $startdate)
+    function func_iwm_write_price_table_process($parObj, $taddr, $type, $len, $price1, $volume1, $price2, $volume2, $price3, $startdate)
     {
         if (($len != 0x13) || ($type <MFUN_NBIOT_CJ188_T_TYPE_WATER_METER_MIN) || ($type > MFUN_NBIOT_CJ188_T_TYPE_WATER_METER_MAX)) return "";
         $D0D1 = MFUN_NBIOT_CJ188_WRITE_DI0DI1_PRICE_TABLE;
@@ -301,36 +301,36 @@ class classTaskL3nbiotOprMeter
         $v20 = (int)$volume2 - $v24 * 10000 - $v22 * 100;
         $msgBody = sprintf("%02d%02d%02d%02d%02d%02d%02d%02d%02d%02d%02d%02d%02d%02d%02d%02d", $p1p, $p10, $p12, $v10, $v12, $v14, $p2p, $p20, $p22, $v20, $v22, $v24, $p3p, $p30, $p32, $startdate);
         $msgCtrl = MFUN_NBIOT_CJ188_CTRL_WRITE_DATA;
-        $input = array("type" => $type, "msgCtrl" => $msgCtrl, "msgHead" => $msgHead, "msgBody" => $msgBody);
+        $input = array("taddr" => $taddr, "type" => $type, "msgCtrl" => $msgCtrl, "msgHead" => $msgHead, "msgBody" => $msgBody);
         $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L3NBIOT_OPR_METER, MFUN_TASK_ID_L2SDK_NBIOT_STD_CJ188, MSG_ID_L3NBIOT_OPR_METERTO_STD_CJ188_DL_REQUEST, "MSG_ID_L3NBIOT_OPR_METERTO_STD_CJ188_DL_REQUEST", $input);
         return "";
     }
 
-    function func_iwm_write_bill_date_process($parObj, $type, $len, $billdate)
+    function func_iwm_write_bill_date_process($parObj, $taddr, $type, $len, $billdate)
     {
         if (($len != 0x4) || ($type <MFUN_NBIOT_CJ188_T_TYPE_WATER_METER_MIN) || ($type > MFUN_NBIOT_CJ188_T_TYPE_WATER_METER_MAX)) return "";
         $D0D1 = MFUN_NBIOT_CJ188_WRITE_DI0DI1_BILL_DATE;
         $msgHead = sprintf("%02X%04X", $len, $D0D1);
         $msgBody = sprintf("%02d", $billdate);
         $msgCtrl = MFUN_NBIOT_CJ188_CTRL_WRITE_DATA;
-        $input = array("type" => $type, "msgCtrl" => $msgCtrl, "msgHead" => $msgHead, "msgBody" => $msgBody);
+        $input = array("taddr" => $taddr, "type" => $type, "msgCtrl" => $msgCtrl, "msgHead" => $msgHead, "msgBody" => $msgBody);
         $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L3NBIOT_OPR_METER, MFUN_TASK_ID_L2SDK_NBIOT_STD_CJ188, MSG_ID_L3NBIOT_OPR_METERTO_STD_CJ188_DL_REQUEST, "MSG_ID_L3NBIOT_OPR_METERTO_STD_CJ188_DL_REQUEST", $input);
         return "";
     }
 
-    function func_iwm_write_account_date_process($parObj, $type, $len, $accountdate)
+    function func_iwm_write_account_date_process($parObj, $taddr, $type, $len, $accountdate)
     {
         if (($len != 0x4) || ($type <MFUN_NBIOT_CJ188_T_TYPE_WATER_METER_MIN) || ($type > MFUN_NBIOT_CJ188_T_TYPE_WATER_METER_MAX)) return "";
         $D0D1 = MFUN_NBIOT_CJ188_WRITE_DI0DI1_ACCOUNT_DATE;
         $msgHead = sprintf("%02X%04X", $len, $D0D1);
         $msgBody = sprintf("%02d", $accountdate);
         $msgCtrl = MFUN_NBIOT_CJ188_CTRL_WRITE_DATA;
-        $input = array("type" => $type, "msgCtrl" => $msgCtrl, "msgHead" => $msgHead, "msgBody" => $msgBody);
+        $input = array("taddr" => $taddr, "type" => $type, "msgCtrl" => $msgCtrl, "msgHead" => $msgHead, "msgBody" => $msgBody);
         $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L3NBIOT_OPR_METER, MFUN_TASK_ID_L2SDK_NBIOT_STD_CJ188, MSG_ID_L3NBIOT_OPR_METERTO_STD_CJ188_DL_REQUEST, "MSG_ID_L3NBIOT_OPR_METERTO_STD_CJ188_DL_REQUEST", $input);
         return "";
     }
 
-    function func_iwm_write_buy_amount_process($parObj, $type, $len, $buycode, $buyamount)
+    function func_iwm_write_buy_amount_process($parObj, $taddr, $type, $len, $buycode, $buyamount)
     {
         if (($len != 0x8) || ($type <MFUN_NBIOT_CJ188_T_TYPE_WATER_METER_MIN) || ($type > MFUN_NBIOT_CJ188_T_TYPE_WATER_METER_MAX)) return "";
         $D0D1 = MFUN_NBIOT_CJ188_WRITE_DI0DI1_BUY_AMOUNT;
@@ -341,13 +341,13 @@ class classTaskL3nbiotOprMeter
         $b1p = (int)(($buyamount - $b14 * 10000 - $b12 * 100 - $b10) * 100);
         $msgBody = sprintf("%02X%02d%02d%02d%02d", $buycode, $b1p, $b10, $b12, $b14);
         $msgCtrl = MFUN_NBIOT_CJ188_CTRL_WRITE_DATA;
-        $input = array("type" => $type, "msgCtrl" => $msgCtrl, "msgHead" => $msgHead, "msgBody" => $msgBody);
+        $input = array("taddr" => $taddr, "type" => $type, "msgCtrl" => $msgCtrl, "msgHead" => $msgHead, "msgBody" => $msgBody);
         $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L3NBIOT_OPR_METER, MFUN_TASK_ID_L2SDK_NBIOT_STD_CJ188, MSG_ID_L3NBIOT_OPR_METERTO_STD_CJ188_DL_REQUEST, "MSG_ID_L3NBIOT_OPR_METERTO_STD_CJ188_DL_REQUEST", $input);
         return "";
     }
 
     //NEWKEY必须是以8个字节的HEX形式出现，并且是字符串，否则不接受
-    function func_iwm_write_new_key_process($parObj, $type, $len, $kerver, $newkey)
+    function func_iwm_write_new_key_process($parObj, $taddr, $type, $len, $kerver, $newkey)
     {
         if (($len != 0x0C) || ($type <MFUN_NBIOT_CJ188_T_TYPE_WATER_METER_MIN) || ($type > MFUN_NBIOT_CJ188_T_TYPE_WATER_METER_MAX)) return "";
         if (strlen($newkey) != 16) return "";
@@ -355,13 +355,13 @@ class classTaskL3nbiotOprMeter
         $msgHead = sprintf("%02X%04X", $len, $D0D1);
         $msgBody = sprintf("%02X%s", $kerver, $newkey);
         $msgCtrl = MFUN_NBIOT_CJ188_CTRL_WRITE_DATA;
-        $input = array("type" => $type, "msgCtrl" => $msgCtrl, "msgHead" => $msgHead, "msgBody" => $msgBody);
+        $input = array("taddr" => $taddr, "type" => $type, "msgCtrl" => $msgCtrl, "msgHead" => $msgHead, "msgBody" => $msgBody);
         $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L3NBIOT_OPR_METER, MFUN_TASK_ID_L2SDK_NBIOT_STD_CJ188, MSG_ID_L3NBIOT_OPR_METERTO_STD_CJ188_DL_REQUEST, "MSG_ID_L3NBIOT_OPR_METERTO_STD_CJ188_DL_REQUEST", $input);
         return "";
     }
 
     //忽略输入的时间，而直接采用系统时间
-    function func_iwm_write_std_time_process($parObj, $type, $len, $realtime)
+    function func_iwm_write_std_time_process($parObj, $taddr, $type, $len, $realtime)
     {
         if (($len != 0x0A) || ($type <MFUN_NBIOT_CJ188_T_TYPE_WATER_METER_MIN) || ($type > MFUN_NBIOT_CJ188_T_TYPE_WATER_METER_MAX)) return "";
         //if (strlen($realtime) != 14) return "";
@@ -370,13 +370,13 @@ class classTaskL3nbiotOprMeter
         $msgHead = sprintf("%02X%04X", $len, $D0D1);
         $msgBody = sprintf("%s", $t);
         $msgCtrl = MFUN_NBIOT_CJ188_CTRL_WRITE_DATA;
-        $input = array("type" => $type, "msgCtrl" => $msgCtrl, "msgHead" => $msgHead, "msgBody" => $msgBody);
+        $input = array("taddr" => $taddr, "type" => $type, "msgCtrl" => $msgCtrl, "msgHead" => $msgHead, "msgBody" => $msgBody);
         $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L3NBIOT_OPR_METER, MFUN_TASK_ID_L2SDK_NBIOT_STD_CJ188, MSG_ID_L3NBIOT_OPR_METERTO_STD_CJ188_DL_REQUEST, "MSG_ID_L3NBIOT_OPR_METERTO_STD_CJ188_DL_REQUEST", $input);
         return "";
     }
 
     //输入的SWITCH采用TRUE或者FALSE来控制开关，TRUE表示开，否则关。
-    function func_iwm_write_switch_ctrl_process($parObj, $type, $len, $switch)
+    function func_iwm_write_switch_ctrl_process($parObj, $taddr, $type, $len, $switch)
     {
         if (($len != 0x4) || ($type <MFUN_NBIOT_CJ188_T_TYPE_WATER_METER_MIN) || ($type > MFUN_NBIOT_CJ188_T_TYPE_WATER_METER_MAX)) return "";
         $D0D1 = MFUN_NBIOT_CJ188_WRITE_DI0DI1_SWITCH_CTRL;
@@ -384,24 +384,24 @@ class classTaskL3nbiotOprMeter
         $msgHead = sprintf("%02X%04X", $len, $D0D1);
         $msgBody = sprintf("%02X", $s);
         $msgCtrl = MFUN_NBIOT_CJ188_CTRL_WRITE_DATA;
-        $input = array("type" => $type, "msgCtrl" => $msgCtrl, "msgHead" => $msgHead, "msgBody" => $msgBody);
+        $input = array("taddr" => $taddr, "type" => $type, "msgCtrl" => $msgCtrl, "msgHead" => $msgHead, "msgBody" => $msgBody);
         $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L3NBIOT_OPR_METER, MFUN_TASK_ID_L2SDK_NBIOT_STD_CJ188, MSG_ID_L3NBIOT_OPR_METERTO_STD_CJ188_DL_REQUEST, "MSG_ID_L3NBIOT_OPR_METERTO_STD_CJ188_DL_REQUEST", $input);
         return "";
     }
 
-    function func_iwm_write_off_fac_start_process($parObj, $type, $len)
+    function func_iwm_write_off_fac_start_process($parObj, $taddr, $type, $len)
     {
         if (($len != 0x3) || ($type <MFUN_NBIOT_CJ188_T_TYPE_WATER_METER_MIN) || ($type > MFUN_NBIOT_CJ188_T_TYPE_WATER_METER_MAX)) return "";
         $D0D1 = MFUN_NBIOT_CJ188_WRITE_DI0DI1_OFF_FACTORY_START;
         $msgHead = sprintf("%02X%04X", $len, $D0D1);
         $msgBody = "";
         $msgCtrl = MFUN_NBIOT_CJ188_CTRL_WRITE_DATA;
-        $input = array("type" => $type, "msgCtrl" => $msgCtrl, "msgHead" => $msgHead, "msgBody" => $msgBody);
+        $input = array("taddr" => $taddr, "type" => $type, "msgCtrl" => $msgCtrl, "msgHead" => $msgHead, "msgBody" => $msgBody);
         $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L3NBIOT_OPR_METER, MFUN_TASK_ID_L2SDK_NBIOT_STD_CJ188, MSG_ID_L3NBIOT_OPR_METERTO_STD_CJ188_DL_REQUEST, "MSG_ID_L3NBIOT_OPR_METERTO_STD_CJ188_DL_REQUEST", $input);
         return "";
     }
 
-    function func_iwm_write_address_process($parObj, $type, $len, $newaddr)
+    function func_iwm_write_address_process($parObj, $taddr, $type, $len, $newaddr)
     {
         if (($len != 0x0A) || ($type <MFUN_NBIOT_CJ188_T_TYPE_WATER_METER_MIN) || ($type > MFUN_NBIOT_CJ188_T_TYPE_WATER_METER_MAX)) return "";
         if (strlen($newaddr) != 14) return "";
@@ -409,12 +409,12 @@ class classTaskL3nbiotOprMeter
         $msgHead = sprintf("%02X%04X", $len, $D0D1);
         $msgBody = sprintf("%s", $newaddr);
         $msgCtrl = MFUN_NBIOT_CJ188_CTRL_WRITE_ADDR;
-        $input = array("type" => $type, "msgCtrl" => $msgCtrl, "msgHead" => $msgHead, "msgBody" => $msgBody);
+        $input = array("taddr" => $taddr, "type" => $type, "msgCtrl" => $msgCtrl, "msgHead" => $msgHead, "msgBody" => $msgBody);
         $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L3NBIOT_OPR_METER, MFUN_TASK_ID_L2SDK_NBIOT_STD_CJ188, MSG_ID_L3NBIOT_OPR_METERTO_STD_CJ188_DL_REQUEST, "MSG_ID_L3NBIOT_OPR_METERTO_STD_CJ188_DL_REQUEST", $input);
         return "";
     }
 
-    function func_iwm_write_device_syn_process($parObj, $type, $len, $curaccumvolume)
+    function func_iwm_write_device_syn_process($parObj, $taddr, $type, $len, $curaccumvolume)
     {
         if (($len != 0x08) || ($type <MFUN_NBIOT_CJ188_T_TYPE_WATER_METER_MIN) || ($type > MFUN_NBIOT_CJ188_T_TYPE_WATER_METER_MAX)) return "";
         $D0D1 = MFUN_NBIOT_CJ188_WRITE_DI0DI1_DEVICE_SYN_DATA;
@@ -426,12 +426,12 @@ class classTaskL3nbiotOprMeter
         $cu = 0x2C; //固定为立方米M3
         $msgBody = sprintf("%02d%02d%02d%02d%02X", $c1p, $c10, $c12, $c14, $cu);
         $msgCtrl = MFUN_NBIOT_CJ188_CTRL_WRITE_DEVICE_SYN;
-        $input = array("type" => $type, "msgCtrl" => $msgCtrl, "msgHead" => $msgHead, "msgBody" => $msgBody);
+        $input = array("taddr" => $taddr, "type" => $type, "msgCtrl" => $msgCtrl, "msgHead" => $msgHead, "msgBody" => $msgBody);
         $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L3NBIOT_OPR_METER, MFUN_TASK_ID_L2SDK_NBIOT_STD_CJ188, MSG_ID_L3NBIOT_OPR_METERTO_STD_CJ188_DL_REQUEST, "MSG_ID_L3NBIOT_OPR_METERTO_STD_CJ188_DL_REQUEST", $input);
         return "";
     }
 
-    function func_ihm_write_price_table_process($parObj, $type, $len, $price1, $volume1, $price2, $volume2, $price3, $startdate)
+    function func_ihm_write_price_table_process($parObj, $taddr, $type, $len, $price1, $volume1, $price2, $volume2, $price3, $startdate)
     {
         if (($len != 0x13) || ($type <MFUN_NBIOT_CJ188_T_TYPE_HEAT_METER_MIN) || ($type > MFUN_NBIOT_CJ188_T_TYPE_HEAT_METER_MAX)) return "";
         $D0D1 = MFUN_NBIOT_CJ188_WRITE_DI0DI1_PRICE_TABLE;
@@ -453,36 +453,36 @@ class classTaskL3nbiotOprMeter
         $v20 = (int)$volume2 - $v24 * 10000 - $v22 * 100;
         $msgBody = sprintf("%02d%02d%02d%02d%02d%02d%02d%02d%02d%02d%02d%02d%02d%02d%02d%02d", $p1p, $p10, $p12, $v10, $v12, $v14, $p2p, $p20, $p22, $v20, $v22, $v24, $p3p, $p30, $p32, $startdate);
         $msgCtrl = MFUN_NBIOT_CJ188_CTRL_WRITE_DATA;
-        $input = array("type" => $type, "msgCtrl" => $msgCtrl, "msgHead" => $msgHead, "msgBody" => $msgBody);
+        $input = array("taddr" => $taddr, "type" => $type, "msgCtrl" => $msgCtrl, "msgHead" => $msgHead, "msgBody" => $msgBody);
         $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L3NBIOT_OPR_METER, MFUN_TASK_ID_L2SDK_NBIOT_STD_CJ188, MSG_ID_L3NBIOT_OPR_METERTO_STD_CJ188_DL_REQUEST, "MSG_ID_L3NBIOT_OPR_METERTO_STD_CJ188_DL_REQUEST", $input);
         return "";
     }
 
-    function func_ihm_write_bill_date_process($parObj, $type, $len, $billdate)
+    function func_ihm_write_bill_date_process($parObj, $taddr, $type, $len, $billdate)
     {
         if (($len != 0x4) || ($type <MFUN_NBIOT_CJ188_T_TYPE_HEAT_METER_MIN) || ($type > MFUN_NBIOT_CJ188_T_TYPE_HEAT_METER_MAX)) return "";
         $D0D1 = MFUN_NBIOT_CJ188_WRITE_DI0DI1_BILL_DATE;
         $msgHead = sprintf("%02X%04X", $len, $D0D1);
         $msgBody = sprintf("%02d", $billdate);
         $msgCtrl = MFUN_NBIOT_CJ188_CTRL_WRITE_DATA;
-        $input = array("type" => $type, "msgCtrl" => $msgCtrl, "msgHead" => $msgHead, "msgBody" => $msgBody);
+        $input = array("taddr" => $taddr, "type" => $type, "msgCtrl" => $msgCtrl, "msgHead" => $msgHead, "msgBody" => $msgBody);
         $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L3NBIOT_OPR_METER, MFUN_TASK_ID_L2SDK_NBIOT_STD_CJ188, MSG_ID_L3NBIOT_OPR_METERTO_STD_CJ188_DL_REQUEST, "MSG_ID_L3NBIOT_OPR_METERTO_STD_CJ188_DL_REQUEST", $input);
         return "";
     }
 
-    function func_ihm_write_account_date_process($parObj, $type, $len, $accountdate)
+    function func_ihm_write_account_date_process($parObj, $taddr, $type, $len, $accountdate)
     {
         if (($len != 0x4) || ($type <MFUN_NBIOT_CJ188_T_TYPE_HEAT_METER_MIN) || ($type > MFUN_NBIOT_CJ188_T_TYPE_HEAT_METER_MAX)) return "";
         $D0D1 = MFUN_NBIOT_CJ188_WRITE_DI0DI1_ACCOUNT_DATE;
         $msgHead = sprintf("%02X%04X", $len, $D0D1);
         $msgBody = sprintf("%02d", $accountdate);
         $msgCtrl = MFUN_NBIOT_CJ188_CTRL_WRITE_DATA;
-        $input = array("type" => $type, "msgCtrl" => $msgCtrl, "msgHead" => $msgHead, "msgBody" => $msgBody);
+        $input = array("taddr" => $taddr, "type" => $type, "msgCtrl" => $msgCtrl, "msgHead" => $msgHead, "msgBody" => $msgBody);
         $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L3NBIOT_OPR_METER, MFUN_TASK_ID_L2SDK_NBIOT_STD_CJ188, MSG_ID_L3NBIOT_OPR_METERTO_STD_CJ188_DL_REQUEST, "MSG_ID_L3NBIOT_OPR_METERTO_STD_CJ188_DL_REQUEST", $input);
         return "";
     }
 
-    function func_ihm_write_buy_amount_process($parObj, $type, $len, $buycode, $buyamount)
+    function func_ihm_write_buy_amount_process($parObj, $taddr, $type, $len, $buycode, $buyamount)
     {
         if (($len != 0x8) || ($type <MFUN_NBIOT_CJ188_T_TYPE_HEAT_METER_MIN) || ($type > MFUN_NBIOT_CJ188_T_TYPE_HEAT_METER_MAX)) return "";
         $D0D1 = MFUN_NBIOT_CJ188_WRITE_DI0DI1_BUY_AMOUNT;
@@ -493,13 +493,13 @@ class classTaskL3nbiotOprMeter
         $b1p = (int)(($buyamount - $b14 * 10000 - $b12 * 100 - $b10) * 100);
         $msgBody = sprintf("%02X%02d%02d%02d%02d", $buycode, $b1p, $b10, $b12, $b14);
         $msgCtrl = MFUN_NBIOT_CJ188_CTRL_WRITE_DATA;
-        $input = array("type" => $type, "msgCtrl" => $msgCtrl, "msgHead" => $msgHead, "msgBody" => $msgBody);
+        $input = array("taddr" => $taddr, "type" => $type, "msgCtrl" => $msgCtrl, "msgHead" => $msgHead, "msgBody" => $msgBody);
         $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L3NBIOT_OPR_METER, MFUN_TASK_ID_L2SDK_NBIOT_STD_CJ188, MSG_ID_L3NBIOT_OPR_METERTO_STD_CJ188_DL_REQUEST, "MSG_ID_L3NBIOT_OPR_METERTO_STD_CJ188_DL_REQUEST", $input);
         return "";
     }
 
     //NEWKEY必须是以8个字节的HEX形式出现，并且是字符串，否则不接受
-    function func_ihm_write_new_key_process($parObj, $type, $len, $kerver, $newkey)
+    function func_ihm_write_new_key_process($parObj, $taddr, $type, $len, $kerver, $newkey)
     {
         if (($len != 0x0C) || ($type <MFUN_NBIOT_CJ188_T_TYPE_HEAT_METER_MIN) || ($type > MFUN_NBIOT_CJ188_T_TYPE_HEAT_METER_MAX)) return "";
         if (strlen($newkey) != 16) return "";
@@ -507,13 +507,13 @@ class classTaskL3nbiotOprMeter
         $msgHead = sprintf("%02X%04X", $len, $D0D1);
         $msgBody = sprintf("%02X%s", $kerver, $newkey);
         $msgCtrl = MFUN_NBIOT_CJ188_CTRL_WRITE_DATA;
-        $input = array("type" => $type, "msgCtrl" => $msgCtrl, "msgHead" => $msgHead, "msgBody" => $msgBody);
+        $input = array("taddr" => $taddr, "type" => $type, "msgCtrl" => $msgCtrl, "msgHead" => $msgHead, "msgBody" => $msgBody);
         $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L3NBIOT_OPR_METER, MFUN_TASK_ID_L2SDK_NBIOT_STD_CJ188, MSG_ID_L3NBIOT_OPR_METERTO_STD_CJ188_DL_REQUEST, "MSG_ID_L3NBIOT_OPR_METERTO_STD_CJ188_DL_REQUEST", $input);
         return "";
     }
 
     //忽略输入的时间，而直接采用系统时间
-    function func_ihm_write_std_time_process($parObj, $type, $len, $realtime)
+    function func_ihm_write_std_time_process($parObj, $taddr, $type, $len, $realtime)
     {
         if (($len != 0x0A) || ($type <MFUN_NBIOT_CJ188_T_TYPE_HEAT_METER_MIN) || ($type > MFUN_NBIOT_CJ188_T_TYPE_HEAT_METER_MAX)) return "";
         //if (strlen($realtime) != 14) return "";
@@ -522,13 +522,13 @@ class classTaskL3nbiotOprMeter
         $msgHead = sprintf("%02X%04X", $len, $D0D1);
         $msgBody = sprintf("%s", $t);
         $msgCtrl = MFUN_NBIOT_CJ188_CTRL_WRITE_DATA;
-        $input = array("type" => $type, "msgCtrl" => $msgCtrl, "msgHead" => $msgHead, "msgBody" => $msgBody);
+        $input = array("taddr" => $taddr, "type" => $type, "msgCtrl" => $msgCtrl, "msgHead" => $msgHead, "msgBody" => $msgBody);
         $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L3NBIOT_OPR_METER, MFUN_TASK_ID_L2SDK_NBIOT_STD_CJ188, MSG_ID_L3NBIOT_OPR_METERTO_STD_CJ188_DL_REQUEST, "MSG_ID_L3NBIOT_OPR_METERTO_STD_CJ188_DL_REQUEST", $input);
         return "";
     }
 
     //输入的SWITCH采用TRUE或者FALSE来控制开关，TRUE表示开，否则关。
-    function func_ihm_write_switch_ctrl_process($parObj, $type, $len, $switch)
+    function func_ihm_write_switch_ctrl_process($parObj, $taddr, $type, $len, $switch)
     {
         if (($len != 0x4) || ($type <MFUN_NBIOT_CJ188_T_TYPE_HEAT_METER_MIN) || ($type > MFUN_NBIOT_CJ188_T_TYPE_HEAT_METER_MAX)) return "";
         $D0D1 = MFUN_NBIOT_CJ188_WRITE_DI0DI1_SWITCH_CTRL;
@@ -536,24 +536,24 @@ class classTaskL3nbiotOprMeter
         $msgHead = sprintf("%02X%04X", $len, $D0D1);
         $msgBody = sprintf("%02X", $s);
         $msgCtrl = MFUN_NBIOT_CJ188_CTRL_WRITE_DATA;
-        $input = array("type" => $type, "msgCtrl" => $msgCtrl, "msgHead" => $msgHead, "msgBody" => $msgBody);
+        $input = array("taddr" => $taddr, "type" => $type, "msgCtrl" => $msgCtrl, "msgHead" => $msgHead, "msgBody" => $msgBody);
         $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L3NBIOT_OPR_METER, MFUN_TASK_ID_L2SDK_NBIOT_STD_CJ188, MSG_ID_L3NBIOT_OPR_METERTO_STD_CJ188_DL_REQUEST, "MSG_ID_L3NBIOT_OPR_METERTO_STD_CJ188_DL_REQUEST", $input);
         return "";
     }
 
-    function func_ihm_write_off_fac_start_process($parObj, $type, $len)
+    function func_ihm_write_off_fac_start_process($parObj, $taddr, $type, $len)
     {
         if (($len != 0x3) || ($type <MFUN_NBIOT_CJ188_T_TYPE_HEAT_METER_MIN) || ($type > MFUN_NBIOT_CJ188_T_TYPE_HEAT_METER_MAX)) return "";
         $D0D1 = MFUN_NBIOT_CJ188_WRITE_DI0DI1_OFF_FACTORY_START;
         $msgHead = sprintf("%02X%04X", $len, $D0D1);
         $msgBody = "";
         $msgCtrl = MFUN_NBIOT_CJ188_CTRL_WRITE_DATA;
-        $input = array("type" => $type, "msgCtrl" => $msgCtrl, "msgHead" => $msgHead, "msgBody" => $msgBody);
+        $input = array("taddr" => $taddr, "type" => $type, "msgCtrl" => $msgCtrl, "msgHead" => $msgHead, "msgBody" => $msgBody);
         $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L3NBIOT_OPR_METER, MFUN_TASK_ID_L2SDK_NBIOT_STD_CJ188, MSG_ID_L3NBIOT_OPR_METERTO_STD_CJ188_DL_REQUEST, "MSG_ID_L3NBIOT_OPR_METERTO_STD_CJ188_DL_REQUEST", $input);
         return "";
     }
 
-    function func_ihm_write_address_process($parObj, $type, $len, $newaddr)
+    function func_ihm_write_address_process($parObj, $taddr, $type, $len, $newaddr)
     {
         if (($len != 0x0A) || ($type <MFUN_NBIOT_CJ188_T_TYPE_HEAT_METER_MIN) || ($type > MFUN_NBIOT_CJ188_T_TYPE_HEAT_METER_MAX)) return "";
         if (strlen($newaddr) != 14) return "";
@@ -561,12 +561,12 @@ class classTaskL3nbiotOprMeter
         $msgHead = sprintf("%02X%04X", $len, $D0D1);
         $msgBody = sprintf("%s", $newaddr);
         $msgCtrl = MFUN_NBIOT_CJ188_CTRL_WRITE_ADDR;
-        $input = array("type" => $type, "msgCtrl" => $msgCtrl, "msgHead" => $msgHead, "msgBody" => $msgBody);
+        $input = array("taddr" => $taddr, "type" => $type, "msgCtrl" => $msgCtrl, "msgHead" => $msgHead, "msgBody" => $msgBody);
         $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L3NBIOT_OPR_METER, MFUN_TASK_ID_L2SDK_NBIOT_STD_CJ188, MSG_ID_L3NBIOT_OPR_METERTO_STD_CJ188_DL_REQUEST, "MSG_ID_L3NBIOT_OPR_METERTO_STD_CJ188_DL_REQUEST", $input);
         return "";
     }
 
-    function func_ihm_write_device_syn_process($parObj, $type, $len, $curaccumvolume)
+    function func_ihm_write_device_syn_process($parObj, $taddr, $type, $len, $curaccumvolume)
     {
         if (($len != 0x08) || ($type <MFUN_NBIOT_CJ188_T_TYPE_HEAT_METER_MIN) || ($type > MFUN_NBIOT_CJ188_T_TYPE_HEAT_METER_MAX)) return "";
         $D0D1 = MFUN_NBIOT_CJ188_WRITE_DI0DI1_DEVICE_SYN_DATA;
@@ -578,12 +578,12 @@ class classTaskL3nbiotOprMeter
         $cu = 0x2C; //固定为立方米M3
         $msgBody = sprintf("%02d%02d%02d%02d%02X", $c1p, $c10, $c12, $c14, $cu);
         $msgCtrl = MFUN_NBIOT_CJ188_CTRL_WRITE_DEVICE_SYN;
-        $input = array("type" => $type, "msgCtrl" => $msgCtrl, "msgHead" => $msgHead, "msgBody" => $msgBody);
+        $input = array("taddr" => $taddr, "type" => $type, "msgCtrl" => $msgCtrl, "msgHead" => $msgHead, "msgBody" => $msgBody);
         $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L3NBIOT_OPR_METER, MFUN_TASK_ID_L2SDK_NBIOT_STD_CJ188, MSG_ID_L3NBIOT_OPR_METERTO_STD_CJ188_DL_REQUEST, "MSG_ID_L3NBIOT_OPR_METERTO_STD_CJ188_DL_REQUEST", $input);
         return "";
     }
 
-    function func_igm_write_price_table_process($parObj, $type, $len, $price1, $volume1, $price2, $volume2, $price3, $startdate)
+    function func_igm_write_price_table_process($parObj, $taddr, $type, $len, $price1, $volume1, $price2, $volume2, $price3, $startdate)
     {
         if (($len != 0x13) || ($type <MFUN_NBIOT_CJ188_T_TYPE_GAS_METER_MIN) || ($type > MFUN_NBIOT_CJ188_T_TYPE_GAS_METER_MAX)) return "";
         $D0D1 = MFUN_NBIOT_CJ188_WRITE_DI0DI1_PRICE_TABLE;
@@ -605,36 +605,36 @@ class classTaskL3nbiotOprMeter
         $v20 = (int)$volume2 - $v24 * 10000 - $v22 * 100;
         $msgBody = sprintf("%02d%02d%02d%02d%02d%02d%02d%02d%02d%02d%02d%02d%02d%02d%02d%02d", $p1p, $p10, $p12, $v10, $v12, $v14, $p2p, $p20, $p22, $v20, $v22, $v24, $p3p, $p30, $p32, $startdate);
         $msgCtrl = MFUN_NBIOT_CJ188_CTRL_WRITE_DATA;
-        $input = array("type" => $type, "msgCtrl" => $msgCtrl, "msgHead" => $msgHead, "msgBody" => $msgBody);
+        $input = array("taddr" => $taddr, "type" => $type, "msgCtrl" => $msgCtrl, "msgHead" => $msgHead, "msgBody" => $msgBody);
         $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L3NBIOT_OPR_METER, MFUN_TASK_ID_L2SDK_NBIOT_STD_CJ188, MSG_ID_L3NBIOT_OPR_METERTO_STD_CJ188_DL_REQUEST, "MSG_ID_L3NBIOT_OPR_METERTO_STD_CJ188_DL_REQUEST", $input);
         return "";
     }
 
-    function func_igm_write_bill_date_process($parObj, $type, $len, $billdate)
+    function func_igm_write_bill_date_process($parObj, $taddr, $type, $len, $billdate)
     {
         if (($len != 0x4) || ($type <MFUN_NBIOT_CJ188_T_TYPE_GAS_METER_MIN) || ($type > MFUN_NBIOT_CJ188_T_TYPE_GAS_METER_MAX)) return "";
         $D0D1 = MFUN_NBIOT_CJ188_WRITE_DI0DI1_BILL_DATE;
         $msgHead = sprintf("%02X%04X", $len, $D0D1);
         $msgBody = sprintf("%02d", $billdate);
         $msgCtrl = MFUN_NBIOT_CJ188_CTRL_WRITE_DATA;
-        $input = array("type" => $type, "msgCtrl" => $msgCtrl, "msgHead" => $msgHead, "msgBody" => $msgBody);
+        $input = array("taddr" => $taddr, "type" => $type, "msgCtrl" => $msgCtrl, "msgHead" => $msgHead, "msgBody" => $msgBody);
         $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L3NBIOT_OPR_METER, MFUN_TASK_ID_L2SDK_NBIOT_STD_CJ188, MSG_ID_L3NBIOT_OPR_METERTO_STD_CJ188_DL_REQUEST, "MSG_ID_L3NBIOT_OPR_METERTO_STD_CJ188_DL_REQUEST", $input);
         return "";
     }
 
-    function func_igm_write_account_date_process($parObj, $type, $len, $accountdate)
+    function func_igm_write_account_date_process($parObj, $taddr, $type, $len, $accountdate)
     {
         if (($len != 0x4) || ($type <MFUN_NBIOT_CJ188_T_TYPE_GAS_METER_MIN) || ($type > MFUN_NBIOT_CJ188_T_TYPE_GAS_METER_MAX)) return "";
         $D0D1 = MFUN_NBIOT_CJ188_WRITE_DI0DI1_ACCOUNT_DATE;
         $msgHead = sprintf("%02X%04X", $len, $D0D1);
         $msgBody = sprintf("%02d", $accountdate);
         $msgCtrl = MFUN_NBIOT_CJ188_CTRL_WRITE_DATA;
-        $input = array("type" => $type, "msgCtrl" => $msgCtrl, "msgHead" => $msgHead, "msgBody" => $msgBody);
+        $input = array("taddr" => $taddr, "type" => $type, "msgCtrl" => $msgCtrl, "msgHead" => $msgHead, "msgBody" => $msgBody);
         $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L3NBIOT_OPR_METER, MFUN_TASK_ID_L2SDK_NBIOT_STD_CJ188, MSG_ID_L3NBIOT_OPR_METERTO_STD_CJ188_DL_REQUEST, "MSG_ID_L3NBIOT_OPR_METERTO_STD_CJ188_DL_REQUEST", $input);
         return "";
     }
 
-    function func_igm_write_buy_amount_process($parObj, $type, $len, $buycode, $buyamount)
+    function func_igm_write_buy_amount_process($parObj, $taddr, $type, $len, $buycode, $buyamount)
     {
         if (($len != 0x8) || ($type <MFUN_NBIOT_CJ188_T_TYPE_GAS_METER_MIN) || ($type > MFUN_NBIOT_CJ188_T_TYPE_GAS_METER_MAX)) return "";
         $D0D1 = MFUN_NBIOT_CJ188_WRITE_DI0DI1_BUY_AMOUNT;
@@ -645,13 +645,13 @@ class classTaskL3nbiotOprMeter
         $b1p = (int)(($buyamount - $b14 * 10000 - $b12 * 100 - $b10) * 100);
         $msgBody = sprintf("%02X%02d%02d%02d%02d", $buycode, $b1p, $b10, $b12, $b14);
         $msgCtrl = MFUN_NBIOT_CJ188_CTRL_WRITE_DATA;
-        $input = array("type" => $type, "msgCtrl" => $msgCtrl, "msgHead" => $msgHead, "msgBody" => $msgBody);
+        $input = array("taddr" => $taddr, "type" => $type, "msgCtrl" => $msgCtrl, "msgHead" => $msgHead, "msgBody" => $msgBody);
         $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L3NBIOT_OPR_METER, MFUN_TASK_ID_L2SDK_NBIOT_STD_CJ188, MSG_ID_L3NBIOT_OPR_METERTO_STD_CJ188_DL_REQUEST, "MSG_ID_L3NBIOT_OPR_METERTO_STD_CJ188_DL_REQUEST", $input);
         return "";
     }
 
     //NEWKEY必须是以8个字节的HEX形式出现，并且是字符串，否则不接受
-    function func_igm_write_new_key_process($parObj, $type, $len, $kerver, $newkey)
+    function func_igm_write_new_key_process($parObj, $taddr, $type, $len, $kerver, $newkey)
     {
         if (($len != 0x0C) || ($type <MFUN_NBIOT_CJ188_T_TYPE_GAS_METER_MIN) || ($type > MFUN_NBIOT_CJ188_T_TYPE_GAS_METER_MAX)) return "";
         if (strlen($newkey) != 16) return "";
@@ -659,13 +659,13 @@ class classTaskL3nbiotOprMeter
         $msgHead = sprintf("%02X%04X", $len, $D0D1);
         $msgBody = sprintf("%02X%s", $kerver, $newkey);
         $msgCtrl = MFUN_NBIOT_CJ188_CTRL_WRITE_DATA;
-        $input = array("type" => $type, "msgCtrl" => $msgCtrl, "msgHead" => $msgHead, "msgBody" => $msgBody);
+        $input = array("taddr" => $taddr, "type" => $type, "msgCtrl" => $msgCtrl, "msgHead" => $msgHead, "msgBody" => $msgBody);
         $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L3NBIOT_OPR_METER, MFUN_TASK_ID_L2SDK_NBIOT_STD_CJ188, MSG_ID_L3NBIOT_OPR_METERTO_STD_CJ188_DL_REQUEST, "MSG_ID_L3NBIOT_OPR_METERTO_STD_CJ188_DL_REQUEST", $input);
         return "";
     }
 
     //忽略输入的时间，而直接采用系统时间
-    function func_igm_write_std_time_process($parObj, $type, $len, $realtime)
+    function func_igm_write_std_time_process($parObj, $taddr, $type, $len, $realtime)
     {
         if (($len != 0x0A) || ($type <MFUN_NBIOT_CJ188_T_TYPE_GAS_METER_MIN) || ($type > MFUN_NBIOT_CJ188_T_TYPE_GAS_METER_MAX)) return "";
         //if (strlen($realtime) != 14) return "";
@@ -674,13 +674,13 @@ class classTaskL3nbiotOprMeter
         $msgHead = sprintf("%02X%04X", $len, $D0D1);
         $msgBody = sprintf("%s", $t);
         $msgCtrl = MFUN_NBIOT_CJ188_CTRL_WRITE_DATA;
-        $input = array("type" => $type, "msgCtrl" => $msgCtrl, "msgHead" => $msgHead, "msgBody" => $msgBody);
+        $input = array("taddr" => $taddr, "type" => $type, "msgCtrl" => $msgCtrl, "msgHead" => $msgHead, "msgBody" => $msgBody);
         $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L3NBIOT_OPR_METER, MFUN_TASK_ID_L2SDK_NBIOT_STD_CJ188, MSG_ID_L3NBIOT_OPR_METERTO_STD_CJ188_DL_REQUEST, "MSG_ID_L3NBIOT_OPR_METERTO_STD_CJ188_DL_REQUEST", $input);
         return "";
     }
 
     //输入的SWITCH采用TRUE或者FALSE来控制开关，TRUE表示开，否则关。
-    function func_igm_write_switch_ctrl_process($parObj, $type, $len, $switch)
+    function func_igm_write_switch_ctrl_process($parObj, $taddr, $type, $len, $switch)
     {
         if (($len != 0x4) || ($type <MFUN_NBIOT_CJ188_T_TYPE_GAS_METER_MIN) || ($type > MFUN_NBIOT_CJ188_T_TYPE_GAS_METER_MAX)) return "";
         $D0D1 = MFUN_NBIOT_CJ188_WRITE_DI0DI1_SWITCH_CTRL;
@@ -688,24 +688,24 @@ class classTaskL3nbiotOprMeter
         $msgHead = sprintf("%02X%04X", $len, $D0D1);
         $msgBody = sprintf("%02X", $s);
         $msgCtrl = MFUN_NBIOT_CJ188_CTRL_WRITE_DATA;
-        $input = array("type" => $type, "msgCtrl" => $msgCtrl, "msgHead" => $msgHead, "msgBody" => $msgBody);
+        $input = array("taddr" => $taddr, "type" => $type, "msgCtrl" => $msgCtrl, "msgHead" => $msgHead, "msgBody" => $msgBody);
         $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L3NBIOT_OPR_METER, MFUN_TASK_ID_L2SDK_NBIOT_STD_CJ188, MSG_ID_L3NBIOT_OPR_METERTO_STD_CJ188_DL_REQUEST, "MSG_ID_L3NBIOT_OPR_METERTO_STD_CJ188_DL_REQUEST", $input);
         return "";
     }
 
-    function func_igm_write_off_fac_start_process($parObj, $type, $len)
+    function func_igm_write_off_fac_start_process($parObj, $taddr, $type, $len)
     {
         if (($len != 0x3) || ($type <MFUN_NBIOT_CJ188_T_TYPE_GAS_METER_MIN) || ($type > MFUN_NBIOT_CJ188_T_TYPE_GAS_METER_MAX)) return "";
         $D0D1 = MFUN_NBIOT_CJ188_WRITE_DI0DI1_OFF_FACTORY_START;
         $msgHead = sprintf("%02X%04X", $len, $D0D1);
         $msgBody = "";
         $msgCtrl = MFUN_NBIOT_CJ188_CTRL_WRITE_DATA;
-        $input = array("type" => $type, "msgCtrl" => $msgCtrl, "msgHead" => $msgHead, "msgBody" => $msgBody);
+        $input = array("taddr" => $taddr, "type" => $type, "msgCtrl" => $msgCtrl, "msgHead" => $msgHead, "msgBody" => $msgBody);
         $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L3NBIOT_OPR_METER, MFUN_TASK_ID_L2SDK_NBIOT_STD_CJ188, MSG_ID_L3NBIOT_OPR_METERTO_STD_CJ188_DL_REQUEST, "MSG_ID_L3NBIOT_OPR_METERTO_STD_CJ188_DL_REQUEST", $input);
         return "";
     }
 
-    function func_igm_write_address_process($parObj, $type, $len, $newaddr)
+    function func_igm_write_address_process($parObj, $taddr, $type, $len, $newaddr)
     {
         if (($len != 0x0A) || ($type <MFUN_NBIOT_CJ188_T_TYPE_GAS_METER_MIN) || ($type > MFUN_NBIOT_CJ188_T_TYPE_GAS_METER_MAX)) return "";
         if (strlen($newaddr) != 14) return "";
@@ -713,12 +713,12 @@ class classTaskL3nbiotOprMeter
         $msgHead = sprintf("%02X%04X", $len, $D0D1);
         $msgBody = sprintf("%s", $newaddr);
         $msgCtrl = MFUN_NBIOT_CJ188_CTRL_WRITE_ADDR;
-        $input = array("type" => $type, "msgCtrl" => $msgCtrl, "msgHead" => $msgHead, "msgBody" => $msgBody);
+        $input = array("taddr" => $taddr, "type" => $type, "msgCtrl" => $msgCtrl, "msgHead" => $msgHead, "msgBody" => $msgBody);
         $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L3NBIOT_OPR_METER, MFUN_TASK_ID_L2SDK_NBIOT_STD_CJ188, MSG_ID_L3NBIOT_OPR_METERTO_STD_CJ188_DL_REQUEST, "MSG_ID_L3NBIOT_OPR_METERTO_STD_CJ188_DL_REQUEST", $input);
         return "";
     }
 
-    function func_igm_write_device_syn_process($parObj, $type, $len, $curaccumvolume)
+    function func_igm_write_device_syn_process($parObj, $taddr, $type, $len, $curaccumvolume)
     {
         if (($len != 0x08) || ($type <MFUN_NBIOT_CJ188_T_TYPE_GAS_METER_MIN) || ($type > MFUN_NBIOT_CJ188_T_TYPE_GAS_METER_MAX)) return "";
         $D0D1 = MFUN_NBIOT_CJ188_WRITE_DI0DI1_DEVICE_SYN_DATA;
@@ -730,12 +730,12 @@ class classTaskL3nbiotOprMeter
         $cu = 0x2C; //固定为立方米M3
         $msgBody = sprintf("%02d%02d%02d%02d%02X", $c1p, $c10, $c12, $c14, $cu);
         $msgCtrl = MFUN_NBIOT_CJ188_CTRL_WRITE_DEVICE_SYN;
-        $input = array("type" => $type, "msgCtrl" => $msgCtrl, "msgHead" => $msgHead, "msgBody" => $msgBody);
+        $input = array("taddr" => $taddr, "type" => $type, "msgCtrl" => $msgCtrl, "msgHead" => $msgHead, "msgBody" => $msgBody);
         $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L3NBIOT_OPR_METER, MFUN_TASK_ID_L2SDK_NBIOT_STD_CJ188, MSG_ID_L3NBIOT_OPR_METERTO_STD_CJ188_DL_REQUEST, "MSG_ID_L3NBIOT_OPR_METERTO_STD_CJ188_DL_REQUEST", $input);
         return "";
     }
 
-    function func_ipm_write_price_table_process($parObj, $type, $len, $price1, $volume1, $price2, $volume2, $price3, $startdate)
+    function func_ipm_write_price_table_process($parObj, $taddr, $type, $len, $price1, $volume1, $price2, $volume2, $price3, $startdate)
     {
         if (($len != 0x13) || ($type <MFUN_NBIOT_CJ188_T_TYPE_POWER_METER_MIN) || ($type > MFUN_NBIOT_CJ188_T_TYPE_POWER_METER_MAX)) return "";
         $D0D1 = MFUN_NBIOT_CJ188_WRITE_DI0DI1_PRICE_TABLE;
@@ -757,36 +757,36 @@ class classTaskL3nbiotOprMeter
         $v20 = (int)$volume2 - $v24 * 10000 - $v22 * 100;
         $msgBody = sprintf("%02d%02d%02d%02d%02d%02d%02d%02d%02d%02d%02d%02d%02d%02d%02d%02d", $p1p, $p10, $p12, $v10, $v12, $v14, $p2p, $p20, $p22, $v20, $v22, $v24, $p3p, $p30, $p32, $startdate);
         $msgCtrl = MFUN_NBIOT_CJ188_CTRL_WRITE_DATA;
-        $input = array("type" => $type, "msgCtrl" => $msgCtrl, "msgHead" => $msgHead, "msgBody" => $msgBody);
+        $input = array("taddr" => $taddr, "type" => $type, "msgCtrl" => $msgCtrl, "msgHead" => $msgHead, "msgBody" => $msgBody);
         $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L3NBIOT_OPR_METER, MFUN_TASK_ID_L2SDK_NBIOT_STD_CJ188, MSG_ID_L3NBIOT_OPR_METERTO_STD_CJ188_DL_REQUEST, "MSG_ID_L3NBIOT_OPR_METERTO_STD_CJ188_DL_REQUEST", $input);
         return "";
     }
 
-    function func_ipm_write_bill_date_process($parObj, $type, $len, $billdate)
+    function func_ipm_write_bill_date_process($parObj, $taddr, $type, $len, $billdate)
     {
         if (($len != 0x4) || ($type <MFUN_NBIOT_CJ188_T_TYPE_POWER_METER_MIN) || ($type > MFUN_NBIOT_CJ188_T_TYPE_POWER_METER_MAX)) return "";
         $D0D1 = MFUN_NBIOT_CJ188_WRITE_DI0DI1_BILL_DATE;
         $msgHead = sprintf("%02X%04X", $len, $D0D1);
         $msgBody = sprintf("%02d", $billdate);
         $msgCtrl = MFUN_NBIOT_CJ188_CTRL_WRITE_DATA;
-        $input = array("type" => $type, "msgCtrl" => $msgCtrl, "msgHead" => $msgHead, "msgBody" => $msgBody);
+        $input = array("taddr" => $taddr, "type" => $type, "msgCtrl" => $msgCtrl, "msgHead" => $msgHead, "msgBody" => $msgBody);
         $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L3NBIOT_OPR_METER, MFUN_TASK_ID_L2SDK_NBIOT_STD_CJ188, MSG_ID_L3NBIOT_OPR_METERTO_STD_CJ188_DL_REQUEST, "MSG_ID_L3NBIOT_OPR_METERTO_STD_CJ188_DL_REQUEST", $input);
         return "";
     }
 
-    function func_ipm_write_account_date_process($parObj, $type, $len, $accountdate)
+    function func_ipm_write_account_date_process($parObj, $taddr, $type, $len, $accountdate)
     {
         if (($len != 0x4) || ($type <MFUN_NBIOT_CJ188_T_TYPE_POWER_METER_MIN) || ($type > MFUN_NBIOT_CJ188_T_TYPE_POWER_METER_MAX)) return "";
         $D0D1 = MFUN_NBIOT_CJ188_WRITE_DI0DI1_ACCOUNT_DATE;
         $msgHead = sprintf("%02X%04X", $len, $D0D1);
         $msgBody = sprintf("%02d", $accountdate);
         $msgCtrl = MFUN_NBIOT_CJ188_CTRL_WRITE_DATA;
-        $input = array("type" => $type, "msgCtrl" => $msgCtrl, "msgHead" => $msgHead, "msgBody" => $msgBody);
+        $input = array("taddr" => $taddr, "type" => $type, "msgCtrl" => $msgCtrl, "msgHead" => $msgHead, "msgBody" => $msgBody);
         $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L3NBIOT_OPR_METER, MFUN_TASK_ID_L2SDK_NBIOT_STD_CJ188, MSG_ID_L3NBIOT_OPR_METERTO_STD_CJ188_DL_REQUEST, "MSG_ID_L3NBIOT_OPR_METERTO_STD_CJ188_DL_REQUEST", $input);
         return "";
     }
 
-    function func_ipm_write_buy_amount_process($parObj, $type, $len, $buycode, $buyamount)
+    function func_ipm_write_buy_amount_process($parObj, $taddr, $type, $len, $buycode, $buyamount)
     {
         if (($len != 0x8) || ($type <MFUN_NBIOT_CJ188_T_TYPE_POWER_METER_MIN) || ($type > MFUN_NBIOT_CJ188_T_TYPE_POWER_METER_MAX)) return "";
         $D0D1 = MFUN_NBIOT_CJ188_WRITE_DI0DI1_BUY_AMOUNT;
@@ -797,13 +797,13 @@ class classTaskL3nbiotOprMeter
         $b1p = (int)(($buyamount - $b14 * 10000 - $b12 * 100 - $b10) * 100);
         $msgBody = sprintf("%02X%02d%02d%02d%02d", $buycode, $b1p, $b10, $b12, $b14);
         $msgCtrl = MFUN_NBIOT_CJ188_CTRL_WRITE_DATA;
-        $input = array("type" => $type, "msgCtrl" => $msgCtrl, "msgHead" => $msgHead, "msgBody" => $msgBody);
+        $input = array("taddr" => $taddr, "type" => $type, "msgCtrl" => $msgCtrl, "msgHead" => $msgHead, "msgBody" => $msgBody);
         $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L3NBIOT_OPR_METER, MFUN_TASK_ID_L2SDK_NBIOT_STD_CJ188, MSG_ID_L3NBIOT_OPR_METERTO_STD_CJ188_DL_REQUEST, "MSG_ID_L3NBIOT_OPR_METERTO_STD_CJ188_DL_REQUEST", $input);
         return "";
     }
 
     //NEWKEY必须是以8个字节的HEX形式出现，并且是字符串，否则不接受
-    function func_ipm_write_new_key_process($parObj, $type, $len, $kerver, $newkey)
+    function func_ipm_write_new_key_process($parObj, $taddr, $type, $len, $kerver, $newkey)
     {
         if (($len != 0x0C) || ($type <MFUN_NBIOT_CJ188_T_TYPE_POWER_METER_MIN) || ($type > MFUN_NBIOT_CJ188_T_TYPE_POWER_METER_MAX)) return "";
         if (strlen($newkey) != 16) return "";
@@ -811,13 +811,13 @@ class classTaskL3nbiotOprMeter
         $msgHead = sprintf("%02X%04X", $len, $D0D1);
         $msgBody = sprintf("%02X%s", $kerver, $newkey);
         $msgCtrl = MFUN_NBIOT_CJ188_CTRL_WRITE_DATA;
-        $input = array("type" => $type, "msgCtrl" => $msgCtrl, "msgHead" => $msgHead, "msgBody" => $msgBody);
+        $input = array("taddr" => $taddr, "type" => $type, "msgCtrl" => $msgCtrl, "msgHead" => $msgHead, "msgBody" => $msgBody);
         $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L3NBIOT_OPR_METER, MFUN_TASK_ID_L2SDK_NBIOT_STD_CJ188, MSG_ID_L3NBIOT_OPR_METERTO_STD_CJ188_DL_REQUEST, "MSG_ID_L3NBIOT_OPR_METERTO_STD_CJ188_DL_REQUEST", $input);
         return "";
     }
 
     //忽略输入的时间，而直接采用系统时间
-    function func_ipm_write_std_time_process($parObj, $type, $len, $realtime)
+    function func_ipm_write_std_time_process($parObj, $taddr, $type, $len, $realtime)
     {
         if (($len != 0x0A) || ($type <MFUN_NBIOT_CJ188_T_TYPE_POWER_METER_MIN) || ($type > MFUN_NBIOT_CJ188_T_TYPE_POWER_METER_MAX)) return "";
         //if (strlen($realtime) != 14) return "";
@@ -826,13 +826,13 @@ class classTaskL3nbiotOprMeter
         $msgHead = sprintf("%02X%04X", $len, $D0D1);
         $msgBody = sprintf("%s", $t);
         $msgCtrl = MFUN_NBIOT_CJ188_CTRL_WRITE_DATA;
-        $input = array("type" => $type, "msgCtrl" => $msgCtrl, "msgHead" => $msgHead, "msgBody" => $msgBody);
+        $input = array("taddr" => $taddr, "type" => $type, "msgCtrl" => $msgCtrl, "msgHead" => $msgHead, "msgBody" => $msgBody);
         $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L3NBIOT_OPR_METER, MFUN_TASK_ID_L2SDK_NBIOT_STD_CJ188, MSG_ID_L3NBIOT_OPR_METERTO_STD_CJ188_DL_REQUEST, "MSG_ID_L3NBIOT_OPR_METERTO_STD_CJ188_DL_REQUEST", $input);
         return "";
     }
 
     //输入的SWITCH采用TRUE或者FALSE来控制开关，TRUE表示开，否则关。
-    function func_ipm_write_switch_ctrl_process($parObj, $type, $len, $switch)
+    function func_ipm_write_switch_ctrl_process($parObj, $taddr, $type, $len, $switch)
     {
         if (($len != 0x4) || ($type <MFUN_NBIOT_CJ188_T_TYPE_POWER_METER_MIN) || ($type > MFUN_NBIOT_CJ188_T_TYPE_POWER_METER_MAX)) return "";
         $D0D1 = MFUN_NBIOT_CJ188_WRITE_DI0DI1_SWITCH_CTRL;
@@ -840,24 +840,24 @@ class classTaskL3nbiotOprMeter
         $msgHead = sprintf("%02X%04X", $len, $D0D1);
         $msgBody = sprintf("%02X", $s);
         $msgCtrl = MFUN_NBIOT_CJ188_CTRL_WRITE_DATA;
-        $input = array("type" => $type, "msgCtrl" => $msgCtrl, "msgHead" => $msgHead, "msgBody" => $msgBody);
+        $input = array("taddr" => $taddr, "type" => $type, "msgCtrl" => $msgCtrl, "msgHead" => $msgHead, "msgBody" => $msgBody);
         $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L3NBIOT_OPR_METER, MFUN_TASK_ID_L2SDK_NBIOT_STD_CJ188, MSG_ID_L3NBIOT_OPR_METERTO_STD_CJ188_DL_REQUEST, "MSG_ID_L3NBIOT_OPR_METERTO_STD_CJ188_DL_REQUEST", $input);
         return "";
     }
 
-    function func_ipm_write_off_fac_start_process($parObj, $type, $len)
+    function func_ipm_write_off_fac_start_process($parObj, $taddr, $type, $len)
     {
         if (($len != 0x3) || ($type <MFUN_NBIOT_CJ188_T_TYPE_POWER_METER_MIN) || ($type > MFUN_NBIOT_CJ188_T_TYPE_POWER_METER_MAX)) return "";
         $D0D1 = MFUN_NBIOT_CJ188_WRITE_DI0DI1_OFF_FACTORY_START;
         $msgHead = sprintf("%02X%04X", $len, $D0D1);
         $msgBody = "";
         $msgCtrl = MFUN_NBIOT_CJ188_CTRL_WRITE_DATA;
-        $input = array("type" => $type, "msgCtrl" => $msgCtrl, "msgHead" => $msgHead, "msgBody" => $msgBody);
+        $input = array("taddr" => $taddr, "type" => $type, "msgCtrl" => $msgCtrl, "msgHead" => $msgHead, "msgBody" => $msgBody);
         $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L3NBIOT_OPR_METER, MFUN_TASK_ID_L2SDK_NBIOT_STD_CJ188, MSG_ID_L3NBIOT_OPR_METERTO_STD_CJ188_DL_REQUEST, "MSG_ID_L3NBIOT_OPR_METERTO_STD_CJ188_DL_REQUEST", $input);
         return "";
     }
 
-    function func_ipm_write_address_process($parObj, $type, $len, $newaddr)
+    function func_ipm_write_address_process($parObj, $taddr, $type, $len, $newaddr)
     {
         if (($len != 0x0A) || ($type <MFUN_NBIOT_CJ188_T_TYPE_POWER_METER_MIN) || ($type > MFUN_NBIOT_CJ188_T_TYPE_POWER_METER_MAX)) return "";
         if (strlen($newaddr) != 14) return "";
@@ -865,12 +865,12 @@ class classTaskL3nbiotOprMeter
         $msgHead = sprintf("%02X%04X", $len, $D0D1);
         $msgBody = sprintf("%s", $newaddr);
         $msgCtrl = MFUN_NBIOT_CJ188_CTRL_WRITE_ADDR;
-        $input = array("type" => $type, "msgCtrl" => $msgCtrl, "msgHead" => $msgHead, "msgBody" => $msgBody);
+        $input = array("taddr" => $taddr, "type" => $type, "msgCtrl" => $msgCtrl, "msgHead" => $msgHead, "msgBody" => $msgBody);
         $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L3NBIOT_OPR_METER, MFUN_TASK_ID_L2SDK_NBIOT_STD_CJ188, MSG_ID_L3NBIOT_OPR_METERTO_STD_CJ188_DL_REQUEST, "MSG_ID_L3NBIOT_OPR_METERTO_STD_CJ188_DL_REQUEST", $input);
         return "";
     }
 
-    function func_ipm_write_device_syn_process($parObj, $type, $len, $curaccumvolume)
+    function func_ipm_write_device_syn_process($parObj, $taddr, $type, $len, $curaccumvolume)
     {
         if (($len != 0x08) || ($type <MFUN_NBIOT_CJ188_T_TYPE_POWER_METER_MIN) || ($type > MFUN_NBIOT_CJ188_T_TYPE_POWER_METER_MAX)) return "";
         $D0D1 = MFUN_NBIOT_CJ188_WRITE_DI0DI1_DEVICE_SYN_DATA;
@@ -882,7 +882,7 @@ class classTaskL3nbiotOprMeter
         $cu = 0x2C; //固定为立方米M3
         $msgBody = sprintf("%02d%02d%02d%02d%02X", $c1p, $c10, $c12, $c14, $cu);
         $msgCtrl = MFUN_NBIOT_CJ188_CTRL_WRITE_DEVICE_SYN;
-        $input = array("type" => $type, "msgCtrl" => $msgCtrl, "msgHead" => $msgHead, "msgBody" => $msgBody);
+        $input = array("taddr" => $taddr, "type" => $type, "msgCtrl" => $msgCtrl, "msgHead" => $msgHead, "msgBody" => $msgBody);
         $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L3NBIOT_OPR_METER, MFUN_TASK_ID_L2SDK_NBIOT_STD_CJ188, MSG_ID_L3NBIOT_OPR_METERTO_STD_CJ188_DL_REQUEST, "MSG_ID_L3NBIOT_OPR_METERTO_STD_CJ188_DL_REQUEST", $input);
         return "";
     }
@@ -958,196 +958,216 @@ class classTaskL3nbiotOprMeter
         elseif ($msgId == MSG_ID_L4NBIOT_IPMUI_TO_L3OPR_METER_DL_READ_DI0DI1_CURRENT_COUNTER_DATA)
         {
             //解开消息
+            if (isset($msg["taddr"])) $taddr = trim($msg["taddr"]); else $taddr = "";
             if (isset($msg["len"])) $len = $msg["len"]; else  $len = "";
             if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
             //具体处理函数
-            $resp = $this->func_iwm_ihm_igm_ipm_read_cur_cnt_data_process($parObj, $type, $len);
+            $resp = $this->func_iwm_ihm_igm_ipm_read_cur_cnt_data_process($parObj, $taddr, $type, $len);
             $project = MFUN_PRJ_NB_IOT_IPM188;
         }
 
         elseif ($msgId == MSG_ID_L4NBIOT_IPMUI_TO_L3OPR_METER_DL_READ_DI0DI1_HISTORY_COUNTER_DATA1)
         {
             //解开消息
+            if (isset($msg["taddr"])) $taddr = trim($msg["taddr"]); else $taddr = "";
             if (isset($msg["len"])) $len = $msg["len"]; else  $len = "";
             if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
             //具体处理函数
-            $resp = $this->func_iwm_ihm_igm_ipm_read_his_cnt_data1_process($parObj, $type, $len);
+            $resp = $this->func_iwm_ihm_igm_ipm_read_his_cnt_data1_process($parObj, $taddr, $type, $len);
             $project = MFUN_PRJ_NB_IOT_IPM188;
         }
 
         elseif ($msgId == MSG_ID_L4NBIOT_IPMUI_TO_L3OPR_METER_DL_READ_DI0DI1_HISTORY_COUNTER_DATA2)
         {
             //解开消息
+            if (isset($msg["taddr"])) $taddr = trim($msg["taddr"]); else $taddr = "";
             if (isset($msg["len"])) $len = $msg["len"]; else  $len = "";
             if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
             //具体处理函数
-            $resp = $this->func_iwm_ihm_igm_ipm_read_his_cnt_data2_process($parObj, $type, $len);
+            $resp = $this->func_iwm_ihm_igm_ipm_read_his_cnt_data2_process($parObj, $taddr, $type, $len);
             $project = MFUN_PRJ_NB_IOT_IPM188;
         }
 
         elseif ($msgId == MSG_ID_L4NBIOT_IPMUI_TO_L3OPR_METER_DL_READ_DI0DI1_HISTORY_COUNTER_DATA3)
         {
             //解开消息
+            if (isset($msg["taddr"])) $taddr = trim($msg["taddr"]); else $taddr = "";
             if (isset($msg["len"])) $len = $msg["len"]; else  $len = "";
             if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
             //具体处理函数
-            $resp = $this->func_iwm_ihm_igm_ipm_read_his_cnt_data3_process($parObj, $type, $len);
+            $resp = $this->func_iwm_ihm_igm_ipm_read_his_cnt_data3_process($parObj, $taddr, $type, $len);
             $project = MFUN_PRJ_NB_IOT_IPM188;
         }
 
         elseif ($msgId == MSG_ID_L4NBIOT_IPMUI_TO_L3OPR_METER_DL_READ_DI0DI1_HISTORY_COUNTER_DATA4)
         {
             //解开消息
+            if (isset($msg["taddr"])) $taddr = trim($msg["taddr"]); else $taddr = "";
             if (isset($msg["len"])) $len = $msg["len"]; else  $len = "";
             if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
             //具体处理函数
-            $resp = $this->func_iwm_ihm_igm_ipm_read_his_cnt_data4_process($parObj, $type, $len);
+            $resp = $this->func_iwm_ihm_igm_ipm_read_his_cnt_data4_process($parObj, $taddr, $type, $len);
             $project = MFUN_PRJ_NB_IOT_IPM188;
         }
 
         elseif ($msgId == MSG_ID_L4NBIOT_IPMUI_TO_L3OPR_METER_DL_READ_DI0DI1_HISTORY_COUNTER_DATA5)
         {
             //解开消息
+            if (isset($msg["taddr"])) $taddr = trim($msg["taddr"]); else $taddr = "";
             if (isset($msg["len"])) $len = $msg["len"]; else  $len = "";
             if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
             //具体处理函数
-            $resp = $this->func_iwm_ihm_igm_ipm_read_his_cnt_data5_process($parObj, $type, $len);
+            $resp = $this->func_iwm_ihm_igm_ipm_read_his_cnt_data5_process($parObj, $taddr, $type, $len);
             $project = MFUN_PRJ_NB_IOT_IPM188;
         }
 
         elseif ($msgId == MSG_ID_L4NBIOT_IPMUI_TO_L3OPR_METER_DL_READ_DI0DI1_HISTORY_COUNTER_DATA6)
         {
             //解开消息
+            if (isset($msg["taddr"])) $taddr = trim($msg["taddr"]); else $taddr = "";
             if (isset($msg["len"])) $len = $msg["len"]; else  $len = "";
             if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
             //具体处理函数
-            $resp = $this->func_iwm_ihm_igm_ipm_read_his_cnt_data6_process($parObj, $type, $len);
+            $resp = $this->func_iwm_ihm_igm_ipm_read_his_cnt_data6_process($parObj, $taddr, $type, $len);
             $project = MFUN_PRJ_NB_IOT_IPM188;
         }
 
         elseif ($msgId == MSG_ID_L4NBIOT_IPMUI_TO_L3OPR_METER_DL_READ_DI0DI1_HISTORY_COUNTER_DATA7)
         {
             //解开消息
+            if (isset($msg["taddr"])) $taddr = trim($msg["taddr"]); else $taddr = "";
             if (isset($msg["len"])) $len = $msg["len"]; else  $len = "";
             if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
             //具体处理函数
-            $resp = $this->func_iwm_ihm_igm_ipm_read_his_cnt_data7_process($parObj, $type, $len);
+            $resp = $this->func_iwm_ihm_igm_ipm_read_his_cnt_data7_process($parObj, $taddr, $type, $len);
             $project = MFUN_PRJ_NB_IOT_IPM188;
         }
 
         elseif ($msgId == MSG_ID_L4NBIOT_IPMUI_TO_L3OPR_METER_DL_READ_DI0DI1_HISTORY_COUNTER_DATA8)
         {
             //解开消息
+            if (isset($msg["taddr"])) $taddr = trim($msg["taddr"]); else $taddr = "";
             if (isset($msg["len"])) $len = $msg["len"]; else  $len = "";
             if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
             //具体处理函数
-            $resp = $this->func_iwm_ihm_igm_ipm_read_his_cnt_data8_process($parObj, $type, $len);
+            $resp = $this->func_iwm_ihm_igm_ipm_read_his_cnt_data8_process($parObj, $taddr, $type, $len);
             $project = MFUN_PRJ_NB_IOT_IPM188;
         }
 
         elseif ($msgId == MSG_ID_L4NBIOT_IPMUI_TO_L3OPR_METER_DL_READ_DI0DI1_HISTORY_COUNTER_DATA9)
         {
             //解开消息
+            if (isset($msg["taddr"])) $taddr = trim($msg["taddr"]); else $taddr = "";
             if (isset($msg["len"])) $len = $msg["len"]; else  $len = "";
             if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
             //具体处理函数
-            $resp = $this->func_iwm_ihm_igm_ipm_read_his_cnt_data9_process($parObj, $type, $len);
+            $resp = $this->func_iwm_ihm_igm_ipm_read_his_cnt_data9_process($parObj, $taddr, $type, $len);
             $project = MFUN_PRJ_NB_IOT_IPM188;
         }
 
         elseif ($msgId == MSG_ID_L4NBIOT_IPMUI_TO_L3OPR_METER_DL_READ_DI0DI1_HISTORY_COUNTER_DATA10)
         {
             //解开消息
+            if (isset($msg["taddr"])) $taddr = trim($msg["taddr"]); else $taddr = "";
             if (isset($msg["len"])) $len = $msg["len"]; else  $len = "";
             if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
             //具体处理函数
-            $resp = $this->func_iwm_ihm_igm_ipm_read_his_cnt_data10_process($parObj, $type, $len);
+            $resp = $this->func_iwm_ihm_igm_ipm_read_his_cnt_data10_process($parObj, $taddr, $type, $len);
             $project = MFUN_PRJ_NB_IOT_IPM188;
         }
 
         elseif ($msgId == MSG_ID_L4NBIOT_IPMUI_TO_L3OPR_METER_DL_READ_DI0DI1_HISTORY_COUNTER_DATA11)
         {
             //解开消息
+            if (isset($msg["taddr"])) $taddr = trim($msg["taddr"]); else $taddr = "";
             if (isset($msg["len"])) $len = $msg["len"]; else  $len = "";
             if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
             //具体处理函数
-            $resp = $this->func_iwm_ihm_igm_ipm_read_his_cnt_data11_process($parObj, $type, $len);
+            $resp = $this->func_iwm_ihm_igm_ipm_read_his_cnt_data11_process($parObj, $taddr, $type, $len);
             $project = MFUN_PRJ_NB_IOT_IPM188;
         }
 
         elseif ($msgId == MSG_ID_L4NBIOT_IPMUI_TO_L3OPR_METER_DL_READ_DI0DI1_HISTORY_COUNTER_DATA12)
         {
             //解开消息
+            if (isset($msg["taddr"])) $taddr = trim($msg["taddr"]); else $taddr = "";
             if (isset($msg["len"])) $len = $msg["len"]; else  $len = "";
             if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
             //具体处理函数
-            $resp = $this->func_iwm_ihm_igm_ipm_read_his_cnt_data12_process($parObj, $type, $len);
+            $resp = $this->func_iwm_ihm_igm_ipm_read_his_cnt_data12_process($parObj, $taddr, $type, $len);
             $project = MFUN_PRJ_NB_IOT_IPM188;
         }
 
         elseif ($msgId == MSG_ID_L4NBIOT_IPMUI_TO_L3OPR_METER_DL_READ_DI0DI1_PRICE_TABLE)
         {
             //解开消息
+            if (isset($msg["taddr"])) $taddr = trim($msg["taddr"]); else $taddr = "";
             if (isset($msg["len"])) $len = $msg["len"]; else  $len = "";
             if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
             //具体处理函数
-            $resp = $this->func_iwm_ihm_igm_ipm_read_price_table_process($parObj, $type, $len);
+            $resp = $this->func_iwm_ihm_igm_ipm_read_price_table_process($parObj, $taddr, $type, $len);
             $project = MFUN_PRJ_NB_IOT_IPM188;
         }
 
         elseif ($msgId == MSG_ID_L4NBIOT_IPMUI_TO_L3OPR_METER_DL_READ_DI0DI1_BILL_DATE)
         {
             //解开消息
+            if (isset($msg["taddr"])) $taddr = trim($msg["taddr"]); else $taddr = "";
             if (isset($msg["len"])) $len = $msg["len"]; else  $len = "";
             if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
             //具体处理函数
-            $resp = $this->func_iwm_ihm_igm_ipm_read_bill_date_process($parObj, $type, $len);
+            $resp = $this->func_iwm_ihm_igm_ipm_read_bill_date_process($parObj, $taddr, $type, $len);
             $project = MFUN_PRJ_NB_IOT_IPM188;
         }
 
         elseif ($msgId == MSG_ID_L4NBIOT_IPMUI_TO_L3OPR_METER_DL_READ_DI0DI1_ACCOUNT_DATE)
         {
             //解开消息
+            if (isset($msg["taddr"])) $taddr = trim($msg["taddr"]); else $taddr = "";
             if (isset($msg["len"])) $len = $msg["len"]; else  $len = "";
             if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
             //具体处理函数
-            $resp = $this->func_iwm_ihm_igm_ipm_read_account_date_process($parObj, $type, $len);
+            $resp = $this->func_iwm_ihm_igm_ipm_read_account_date_process($parObj, $taddr, $type, $len);
             $project = MFUN_PRJ_NB_IOT_IPM188;
         }
 
         elseif ($msgId == MSG_ID_L4NBIOT_IPMUI_TO_L3OPR_METER_DL_READ_DI0DI1_BUY_AMOUNT)
         {
             //解开消息
+            if (isset($msg["taddr"])) $taddr = trim($msg["taddr"]); else $taddr = "";
             if (isset($msg["len"])) $len = $msg["len"]; else  $len = "";
             if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
             //具体处理函数
-            $resp = $this->func_iwm_ihm_igm_ipm_read_buy_amount_process($parObj, $type, $len);
+            $resp = $this->func_iwm_ihm_igm_ipm_read_buy_amount_process($parObj, $taddr, $type, $len);
             $project = MFUN_PRJ_NB_IOT_IPM188;
         }
 
         elseif ($msgId == MSG_ID_L4NBIOT_IPMUI_TO_L3OPR_METER_DL_READ_DI0DI1_KEY_VER)
         {
             //解开消息
+            if (isset($msg["taddr"])) $taddr = trim($msg["taddr"]); else $taddr = "";
             if (isset($msg["len"])) $len = $msg["len"]; else  $len = "";
             if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
             //具体处理函数
-            $resp = $this->func_iwm_ihm_igm_ipm_read_key_ver_process($parObj, $type, $len);
+            $resp = $this->func_iwm_ihm_igm_ipm_read_key_ver_process($parObj, $taddr, $type, $len);
             $project = MFUN_PRJ_NB_IOT_IPM188;
         }
 
         elseif ($msgId == MSG_ID_L4NBIOT_IPMUI_TO_L3OPR_METER_DL_READ_DI0DI1_ADDRESS)
         {
             //解开消息
+            if (isset($msg["taddr"])) $taddr = trim($msg["taddr"]); else $taddr = "";
             if (isset($msg["len"])) $len = $msg["len"]; else  $len = "";
             if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
             //具体处理函数
-            $resp = $this->func_iwm_ihm_igm_ipm_read_address_process($parObj, $type, $len);
+            $resp = $this->func_iwm_ihm_igm_ipm_read_address_process($parObj, $taddr, $type, $len);
             $project = MFUN_PRJ_NB_IOT_IPM188;
         }
 
         elseif ($msgId == MSG_ID_L4NBIOT_IPMUI_TO_L3OPR_METER_DL_WRITE_DI0DI1_PRICE_TABLE)
         {
             //解开消息
+            if (isset($msg["taddr"])) $taddr = trim($msg["taddr"]); else $taddr = "";
             if (isset($msg["len"])) $len = trim($msg["len"]); else $len = "";
             if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
             if (isset($msg["price1"])) $price1 = trim($msg["price1"]); else $price1 = "";
@@ -1158,303 +1178,332 @@ class classTaskL3nbiotOprMeter
             if (isset($msg["startdate"])) $startdate = trim($msg["startdate"]); else $startdate = "";
 
             //具体处理函数
-            $resp = $this->func_ipm_write_price_table_process($parObj, $type, $len, $price1, $volume1, $price2, $volume2, $price3, $startdate);
+            $resp = $this->func_ipm_write_price_table_process($parObj, $taddr, $type, $len, $price1, $volume1, $price2, $volume2, $price3, $startdate);
             $project = MFUN_PRJ_NB_IOT_IPM188;
         }
 
         elseif ($msgId == MSG_ID_L4NBIOT_IPMUI_TO_L3OPR_METER_DL_WRITE_DI0DI1_BILL_DATE)
         {
             //解开消息
+            if (isset($msg["taddr"])) $taddr = trim($msg["taddr"]); else $taddr = "";
             if (isset($msg["len"])) $len = $msg["len"]; else  $len = "";
             if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
             if (isset($msg["billdate"])) $billdate = trim($msg["billdate"]); else $billdate = "";
             //具体处理函数
-            $resp = $this->func_ipm_write_bill_date_process($parObj, $type, $len, $billdate);
+            $resp = $this->func_ipm_write_bill_date_process($parObj, $taddr, $type, $len, $billdate);
             $project = MFUN_PRJ_NB_IOT_IPM188;
         }
 
         elseif ($msgId == MSG_ID_L4NBIOT_IPMUI_TO_L3OPR_METER_DL_WRITE_DI0DI1_ACCOUNT_DATE)
         {
             //解开消息
+            if (isset($msg["taddr"])) $taddr = trim($msg["taddr"]); else $taddr = "";
             if (isset($msg["len"])) $len = $msg["len"]; else  $len = "";
             if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
             if (isset($msg["accountdate"])) $accountdate = trim($msg["accountdate"]); else $accountdate = "";
             //具体处理函数
-            $resp = $this->func_ipm_write_account_date_process($parObj, $type, $len, $accountdate);
+            $resp = $this->func_ipm_write_account_date_process($parObj, $taddr, $type, $len, $accountdate);
             $project = MFUN_PRJ_NB_IOT_IPM188;
         }
 
         elseif ($msgId == MSG_ID_L4NBIOT_IPMUI_TO_L3OPR_METER_DL_WRITE_DI0DI1_BUY_AMOUNT)
         {
             //解开消息
+            if (isset($msg["taddr"])) $taddr = trim($msg["taddr"]); else $taddr = "";
             if (isset($msg["len"])) $len = $msg["len"]; else  $len = "";
             if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
             if (isset($msg["buycode"])) $buycode = trim($msg["buycode"]); else $buycode = "";
             if (isset($msg["buyamount"])) $buyamount = trim($msg["buyamount"]); else $buyamount = "";
             //具体处理函数
-            $resp = $this->func_ipm_write_buy_amount_process($parObj, $type, $len, $buycode, $buyamount);
+            $resp = $this->func_ipm_write_buy_amount_process($parObj, $taddr, $type, $len, $buycode, $buyamount);
             $project = MFUN_PRJ_NB_IOT_IPM188;
         }
 
         elseif ($msgId == MSG_ID_L4NBIOT_IPMUI_TO_L3OPR_METER_DL_WRITE_DI0DI1_NEW_KEY)
         {
             //解开消息
+            if (isset($msg["taddr"])) $taddr = trim($msg["taddr"]); else $taddr = "";
             if (isset($msg["len"])) $len = $msg["len"]; else  $len = "";
             if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
             if (isset($msg["kerver"])) $kerver = trim($msg["kerver"]); else $kerver = "";
             if (isset($msg["newkey"])) $newkey = trim($msg["newkey"]); else $newkey = "";
             //具体处理函数
-            $resp = $this->func_ipm_write_new_key_process($parObj, $type, $len, $kerver, $newkey);
+            $resp = $this->func_ipm_write_new_key_process($parObj, $taddr, $type, $len, $kerver, $newkey);
             $project = MFUN_PRJ_NB_IOT_IPM188;
         }
 
         elseif ($msgId == MSG_ID_L4NBIOT_IPMUI_TO_L3OPR_METER_DL_WRITE_DI0DI1_STD_TIME)
         {
             //解开消息
+            if (isset($msg["taddr"])) $taddr = trim($msg["taddr"]); else $taddr = "";
             if (isset($msg["len"])) $len = $msg["len"]; else  $len = "";
             if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
             if (isset($msg["realtime"])) $realtime = trim($msg["realtime"]); else $realtime = "";
             //具体处理函数
-            $resp = $this->func_ipm_write_std_time_process($parObj, $type, $len, $realtime);
+            $resp = $this->func_ipm_write_std_time_process($parObj, $taddr, $type, $len, $realtime);
             $project = MFUN_PRJ_NB_IOT_IPM188;
         }
 
         elseif ($msgId == MSG_ID_L4NBIOT_IPMUI_TO_L3OPR_METER_DL_WRITE_DI0DI1_SWITCH_CTRL)
         {
             //解开消息
+            if (isset($msg["taddr"])) $taddr = trim($msg["taddr"]); else $taddr = "";
             if (isset($msg["len"])) $len = $msg["len"]; else  $len = "";
             if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
             if (isset($msg["switch"])) $switch = trim($msg["switch"]); else $switch = "";
             //具体处理函数
-            $resp = $this->func_ipm_write_switch_ctrl_process($parObj, $type, $len, $switch);
+            $resp = $this->func_ipm_write_switch_ctrl_process($parObj, $taddr, $type, $len, $switch);
             $project = MFUN_PRJ_NB_IOT_IPM188;
         }
 
         elseif ($msgId == MSG_ID_L4NBIOT_IPMUI_TO_L3OPR_METER_DL_WRITE_DI0DI1_OFF_FACTORY_START)
         {
             //解开消息
+            if (isset($msg["taddr"])) $taddr = trim($msg["taddr"]); else $taddr = "";
             if (isset($msg["len"])) $len = $msg["len"]; else  $len = "";
             if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
             //具体处理函数
-            $resp = $this->func_ipm_write_off_fac_start_process($parObj, $type, $len);
+            $resp = $this->func_ipm_write_off_fac_start_process($parObj, $taddr, $type, $len);
             $project = MFUN_PRJ_NB_IOT_IPM188;
         }
 
         elseif ($msgId == MSG_ID_L4NBIOT_IPMUI_TO_L3OPR_METER_DL_WRITE_DI0DI1_ADDRESS)
         {
             //解开消息
+            if (isset($msg["taddr"])) $taddr = trim($msg["taddr"]); else $taddr = "";
             if (isset($msg["len"])) $len = $msg["len"]; else  $len = "";
             if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
             if (isset($msg["newaddr"])) $newaddr = trim($msg["newaddr"]); else $newaddr = "";
             //具体处理函数
-            $resp = $this->func_ipm_write_address_process($parObj, $type, $len, $newaddr);
+            $resp = $this->func_ipm_write_address_process($parObj, $taddr, $type, $len, $newaddr);
             $project = MFUN_PRJ_NB_IOT_IPM188;
         }
 
         elseif ($msgId == MSG_ID_L4NBIOT_IPMUI_TO_L3OPR_METER_DL_WRITE_DEVICE_SYN_DATA)
         {
             //解开消息
+            if (isset($msg["taddr"])) $taddr = trim($msg["taddr"]); else $taddr = "";
             if (isset($msg["len"])) $len = $msg["len"]; else  $len = "";
             if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
             if (isset($msg["curaccumvolume"])) $curaccumvolume = trim($msg["curaccumvolume"]); else $curaccumvolume = "";
             //具体处理函数
-            $resp = $this->func_ipm_write_device_syn_process($parObj, $type, $len, $curaccumvolume);
+            $resp = $this->func_ipm_write_device_syn_process($parObj, $taddr, $type, $len, $curaccumvolume);
             $project = MFUN_PRJ_NB_IOT_IPM188;
         }
 
         elseif ($msgId == MSG_ID_L4NBIOT_IWMUI_TO_L3OPR_METER_DL_READ_DI0DI1_CURRENT_COUNTER_DATA)
         {
             //解开消息
+            if (isset($msg["taddr"])) $taddr = trim($msg["taddr"]); else $taddr = "";
             if (isset($msg["len"])) $len = $msg["len"]; else  $len = "";
             if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
             //具体处理函数
-            $resp = $this->func_iwm_ihm_igm_ipm_read_cur_cnt_data_process($parObj, $type, $len);
+            $resp = $this->func_iwm_ihm_igm_ipm_read_cur_cnt_data_process($parObj, $taddr, $type, $len);
             $project = MFUN_PRJ_NB_IOT_IWM188;
         }
 
         elseif ($msgId == MSG_ID_L4NBIOT_IWMUI_TO_L3OPR_METER_DL_READ_DI0DI1_HISTORY_COUNTER_DATA1)
         {
             //解开消息
+            if (isset($msg["taddr"])) $taddr = trim($msg["taddr"]); else $taddr = "";
             if (isset($msg["len"])) $len = $msg["len"]; else  $len = "";
             if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
             //具体处理函数
-            $resp = $this->func_iwm_ihm_igm_ipm_read_his_cnt_data1_process($parObj, $type, $len);
+            $resp = $this->func_iwm_ihm_igm_ipm_read_his_cnt_data1_process($parObj, $taddr, $type, $len);
             $project = MFUN_PRJ_NB_IOT_IWM188;
         }
 
         elseif ($msgId == MSG_ID_L4NBIOT_IWMUI_TO_L3OPR_METER_DL_READ_DI0DI1_HISTORY_COUNTER_DATA2)
         {
             //解开消息
+            if (isset($msg["taddr"])) $taddr = trim($msg["taddr"]); else $taddr = "";
             if (isset($msg["len"])) $len = $msg["len"]; else  $len = "";
             if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
             //具体处理函数
-            $resp = $this->func_iwm_ihm_igm_ipm_read_his_cnt_data2_process($parObj, $type, $len);
+            $resp = $this->func_iwm_ihm_igm_ipm_read_his_cnt_data2_process($parObj, $taddr, $type, $len);
             $project = MFUN_PRJ_NB_IOT_IWM188;
         }
 
         elseif ($msgId == MSG_ID_L4NBIOT_IWMUI_TO_L3OPR_METER_DL_READ_DI0DI1_HISTORY_COUNTER_DATA3)
         {
             //解开消息
+            if (isset($msg["taddr"])) $taddr = trim($msg["taddr"]); else $taddr = "";
             if (isset($msg["len"])) $len = $msg["len"]; else  $len = "";
             if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
             //具体处理函数
-            $resp = $this->func_iwm_ihm_igm_ipm_read_his_cnt_data3_process($parObj, $type, $len);
+            $resp = $this->func_iwm_ihm_igm_ipm_read_his_cnt_data3_process($parObj, $taddr, $type, $len);
             $project = MFUN_PRJ_NB_IOT_IWM188;
         }
 
         elseif ($msgId == MSG_ID_L4NBIOT_IWMUI_TO_L3OPR_METER_DL_READ_DI0DI1_HISTORY_COUNTER_DATA4)
         {
             //解开消息
+            if (isset($msg["taddr"])) $taddr = trim($msg["taddr"]); else $taddr = "";
             if (isset($msg["len"])) $len = $msg["len"]; else  $len = "";
             if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
             //具体处理函数
-            $resp = $this->func_iwm_ihm_igm_ipm_read_his_cnt_data4_process($parObj, $type, $len);
+            $resp = $this->func_iwm_ihm_igm_ipm_read_his_cnt_data4_process($parObj, $taddr, $type, $len);
             $project = MFUN_PRJ_NB_IOT_IWM188;
         }
 
         elseif ($msgId == MSG_ID_L4NBIOT_IWMUI_TO_L3OPR_METER_DL_READ_DI0DI1_HISTORY_COUNTER_DATA5)
         {
             //解开消息
+            if (isset($msg["taddr"])) $taddr = trim($msg["taddr"]); else $taddr = "";
             if (isset($msg["len"])) $len = $msg["len"]; else  $len = "";
             if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
             //具体处理函数
-            $resp = $this->func_iwm_ihm_igm_ipm_read_his_cnt_data5_process($parObj, $type, $len);
+            $resp = $this->func_iwm_ihm_igm_ipm_read_his_cnt_data5_process($parObj, $taddr, $type, $len);
             $project = MFUN_PRJ_NB_IOT_IWM188;
         }
 
         elseif ($msgId == MSG_ID_L4NBIOT_IWMUI_TO_L3OPR_METER_DL_READ_DI0DI1_HISTORY_COUNTER_DATA6)
         {
             //解开消息
+            if (isset($msg["taddr"])) $taddr = trim($msg["taddr"]); else $taddr = "";
             if (isset($msg["len"])) $len = $msg["len"]; else  $len = "";
             if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
             //具体处理函数
-            $resp = $this->func_iwm_ihm_igm_ipm_read_his_cnt_data6_process($parObj, $type, $len);
+            $resp = $this->func_iwm_ihm_igm_ipm_read_his_cnt_data6_process($parObj, $taddr, $type, $len);
             $project = MFUN_PRJ_NB_IOT_IWM188;
         }
 
         elseif ($msgId == MSG_ID_L4NBIOT_IWMUI_TO_L3OPR_METER_DL_READ_DI0DI1_HISTORY_COUNTER_DATA7)
         {
             //解开消息
+            if (isset($msg["taddr"])) $taddr = trim($msg["taddr"]); else $taddr = "";
             if (isset($msg["len"])) $len = $msg["len"]; else  $len = "";
             if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
             //具体处理函数
-            $resp = $this->func_iwm_ihm_igm_ipm_read_his_cnt_data7_process($parObj, $type, $len);
+            $resp = $this->func_iwm_ihm_igm_ipm_read_his_cnt_data7_process($parObj, $taddr, $type, $len);
             $project = MFUN_PRJ_NB_IOT_IWM188;
         }
 
         elseif ($msgId == MSG_ID_L4NBIOT_IWMUI_TO_L3OPR_METER_DL_READ_DI0DI1_HISTORY_COUNTER_DATA8)
         {
             //解开消息
+            if (isset($msg["taddr"])) $taddr = trim($msg["taddr"]); else $taddr = "";
             if (isset($msg["len"])) $len = $msg["len"]; else  $len = "";
             if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
             //具体处理函数
-            $resp = $this->func_iwm_ihm_igm_ipm_read_his_cnt_data8_process($parObj, $type, $len);
+            $resp = $this->func_iwm_ihm_igm_ipm_read_his_cnt_data8_process($parObj, $taddr, $type, $len);
             $project = MFUN_PRJ_NB_IOT_IWM188;
         }
 
         elseif ($msgId == MSG_ID_L4NBIOT_IWMUI_TO_L3OPR_METER_DL_READ_DI0DI1_HISTORY_COUNTER_DATA9)
         {
             //解开消息
+            if (isset($msg["taddr"])) $taddr = trim($msg["taddr"]); else $taddr = "";
             if (isset($msg["len"])) $len = $msg["len"]; else  $len = "";
             if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
             //具体处理函数
-            $resp = $this->func_iwm_ihm_igm_ipm_read_his_cnt_data9_process($parObj, $type, $len);
+            $resp = $this->func_iwm_ihm_igm_ipm_read_his_cnt_data9_process($parObj, $taddr, $type, $len);
             $project = MFUN_PRJ_NB_IOT_IWM188;
         }
 
         elseif ($msgId == MSG_ID_L4NBIOT_IWMUI_TO_L3OPR_METER_DL_READ_DI0DI1_HISTORY_COUNTER_DATA10)
         {
             //解开消息
+            if (isset($msg["taddr"])) $taddr = trim($msg["taddr"]); else $taddr = "";
             if (isset($msg["len"])) $len = $msg["len"]; else  $len = "";
             if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
             //具体处理函数
-            $resp = $this->func_iwm_ihm_igm_ipm_read_his_cnt_data10_process($parObj, $type, $len);
+            $resp = $this->func_iwm_ihm_igm_ipm_read_his_cnt_data10_process($parObj, $taddr, $type, $len);
             $project = MFUN_PRJ_NB_IOT_IWM188;
         }
 
         elseif ($msgId == MSG_ID_L4NBIOT_IWMUI_TO_L3OPR_METER_DL_READ_DI0DI1_HISTORY_COUNTER_DATA11)
         {
             //解开消息
+            if (isset($msg["taddr"])) $taddr = trim($msg["taddr"]); else $taddr = "";
             if (isset($msg["len"])) $len = $msg["len"]; else  $len = "";
             if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
             //具体处理函数
-            $resp = $this->func_iwm_ihm_igm_ipm_read_his_cnt_data11_process($parObj, $type, $len);
+            $resp = $this->func_iwm_ihm_igm_ipm_read_his_cnt_data11_process($parObj, $taddr, $type, $len);
             $project = MFUN_PRJ_NB_IOT_IWM188;
         }
 
         elseif ($msgId == MSG_ID_L4NBIOT_IWMUI_TO_L3OPR_METER_DL_READ_DI0DI1_HISTORY_COUNTER_DATA12)
         {
             //解开消息
+            if (isset($msg["taddr"])) $taddr = trim($msg["taddr"]); else $taddr = "";
             if (isset($msg["len"])) $len = $msg["len"]; else  $len = "";
             if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
             //具体处理函数
-            $resp = $this->func_iwm_ihm_igm_ipm_read_his_cnt_data12_process($parObj, $type, $len);
+            $resp = $this->func_iwm_ihm_igm_ipm_read_his_cnt_data12_process($parObj, $taddr, $type, $len);
             $project = MFUN_PRJ_NB_IOT_IWM188;
         }
 
         elseif ($msgId == MSG_ID_L4NBIOT_IWMUI_TO_L3OPR_METER_DL_READ_DI0DI1_PRICE_TABLE)
         {
             //解开消息
+            if (isset($msg["taddr"])) $taddr = trim($msg["taddr"]); else $taddr = "";
             if (isset($msg["len"])) $len = $msg["len"]; else  $len = "";
             if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
             //具体处理函数
-            $resp = $this->func_iwm_ihm_igm_ipm_read_price_table_process($parObj, $type, $len);
+            $resp = $this->func_iwm_ihm_igm_ipm_read_price_table_process($parObj, $taddr, $type, $len);
             $project = MFUN_PRJ_NB_IOT_IWM188;
         }
 
         elseif ($msgId == MSG_ID_L4NBIOT_IWMUI_TO_L3OPR_METER_DL_READ_DI0DI1_BILL_DATE)
         {
             //解开消息
+            if (isset($msg["taddr"])) $taddr = trim($msg["taddr"]); else $taddr = "";
             if (isset($msg["len"])) $len = $msg["len"]; else  $len = "";
             if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
             //具体处理函数
-            $resp = $this->func_iwm_ihm_igm_ipm_read_bill_date_process($parObj, $type, $len);
+            $resp = $this->func_iwm_ihm_igm_ipm_read_bill_date_process($parObj, $taddr, $type, $len);
             $project = MFUN_PRJ_NB_IOT_IWM188;
         }
 
         elseif ($msgId == MSG_ID_L4NBIOT_IWMUI_TO_L3OPR_METER_DL_READ_DI0DI1_ACCOUNT_DATE)
         {
             //解开消息
+            if (isset($msg["taddr"])) $taddr = trim($msg["taddr"]); else $taddr = "";
             if (isset($msg["len"])) $len = $msg["len"]; else  $len = "";
             if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
             //具体处理函数
-            $resp = $this->func_iwm_ihm_igm_ipm_read_account_date_process($parObj, $type, $len);
+            $resp = $this->func_iwm_ihm_igm_ipm_read_account_date_process($parObj, $taddr, $type, $len);
             $project = MFUN_PRJ_NB_IOT_IWM188;
         }
 
         elseif ($msgId == MSG_ID_L4NBIOT_IWMUI_TO_L3OPR_METER_DL_READ_DI0DI1_BUY_AMOUNT)
         {
             //解开消息
+            if (isset($msg["taddr"])) $taddr = trim($msg["taddr"]); else $taddr = "";
             if (isset($msg["len"])) $len = $msg["len"]; else  $len = "";
             if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
             //具体处理函数
-            $resp = $this->func_iwm_ihm_igm_ipm_read_buy_amount_process($parObj, $type, $len);
+            $resp = $this->func_iwm_ihm_igm_ipm_read_buy_amount_process($parObj, $taddr, $type, $len);
             $project = MFUN_PRJ_NB_IOT_IWM188;
         }
 
         elseif ($msgId == MSG_ID_L4NBIOT_IWMUI_TO_L3OPR_METER_DL_READ_DI0DI1_KEY_VER)
         {
             //解开消息
+            if (isset($msg["taddr"])) $taddr = trim($msg["taddr"]); else $taddr = "";
             if (isset($msg["len"])) $len = $msg["len"]; else  $len = "";
             if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
             //具体处理函数
-            $resp = $this->func_iwm_ihm_igm_ipm_read_key_ver_process($parObj, $type, $len);
+            $resp = $this->func_iwm_ihm_igm_ipm_read_key_ver_process($parObj, $taddr, $type, $len);
             $project = MFUN_PRJ_NB_IOT_IWM188;
         }
 
         elseif ($msgId == MSG_ID_L4NBIOT_IWMUI_TO_L3OPR_METER_DL_READ_DI0DI1_ADDRESS)
         {
             //解开消息
+            if (isset($msg["taddr"])) $taddr = trim($msg["taddr"]); else $taddr = "";
             if (isset($msg["len"])) $len = $msg["len"]; else  $len = "";
             if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
             //具体处理函数
-            $resp = $this->func_iwm_ihm_igm_ipm_read_address_process($parObj, $type, $len);
+            $resp = $this->func_iwm_ihm_igm_ipm_read_address_process($parObj, $taddr, $type, $len);
             $project = MFUN_PRJ_NB_IOT_IWM188;
         }
 
         elseif ($msgId == MSG_ID_L4NBIOT_IWMUI_TO_L3OPR_METER_DL_WRITE_DI0DI1_PRICE_TABLE)
         {
             //解开消息
+            if (isset($msg["taddr"])) $taddr = trim($msg["taddr"]); else $taddr = "";
             if (isset($msg["len"])) $len = trim($msg["len"]); else $len = "";
             if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
             if (isset($msg["price1"])) $price1 = trim($msg["price1"]); else $price1 = "";
@@ -1465,303 +1514,332 @@ class classTaskL3nbiotOprMeter
             if (isset($msg["startdate"])) $startdate = trim($msg["startdate"]); else $startdate = "";
 
             //具体处理函数
-            $resp = $this->func_iwm_write_price_table_process($parObj, $type, $len, $price1, $volume1, $price2, $volume2, $price3, $startdate);
+            $resp = $this->func_iwm_write_price_table_process($parObj, $taddr, $type, $len, $price1, $volume1, $price2, $volume2, $price3, $startdate);
             $project = MFUN_PRJ_NB_IOT_IWM188;
         }
 
         elseif ($msgId == MSG_ID_L4NBIOT_IWMUI_TO_L3OPR_METER_DL_WRITE_DI0DI1_BILL_DATE)
         {
             //解开消息
+            if (isset($msg["taddr"])) $taddr = trim($msg["taddr"]); else $taddr = "";
             if (isset($msg["len"])) $len = $msg["len"]; else  $len = "";
             if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
             if (isset($msg["billdate"])) $billdate = trim($msg["billdate"]); else $billdate = "";
             //具体处理函数
-            $resp = $this->func_iwm_write_bill_date_process($parObj, $type, $len, $billdate);
+            $resp = $this->func_iwm_write_bill_date_process($parObj, $taddr, $type, $len, $billdate);
             $project = MFUN_PRJ_NB_IOT_IWM188;
         }
 
         elseif ($msgId == MSG_ID_L4NBIOT_IWMUI_TO_L3OPR_METER_DL_WRITE_DI0DI1_ACCOUNT_DATE)
         {
             //解开消息
+            if (isset($msg["taddr"])) $taddr = trim($msg["taddr"]); else $taddr = "";
             if (isset($msg["len"])) $len = $msg["len"]; else  $len = "";
             if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
             if (isset($msg["accountdate"])) $accountdate = trim($msg["accountdate"]); else $accountdate = "";
             //具体处理函数
-            $resp = $this->func_iwm_write_account_date_process($parObj, $type, $len, $accountdate);
+            $resp = $this->func_iwm_write_account_date_process($parObj, $taddr, $type, $len, $accountdate);
             $project = MFUN_PRJ_NB_IOT_IWM188;
         }
 
         elseif ($msgId == MSG_ID_L4NBIOT_IWMUI_TO_L3OPR_METER_DL_WRITE_DI0DI1_BUY_AMOUNT)
         {
             //解开消息
+            if (isset($msg["taddr"])) $taddr = trim($msg["taddr"]); else $taddr = "";
             if (isset($msg["len"])) $len = $msg["len"]; else  $len = "";
             if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
             if (isset($msg["buycode"])) $buycode = trim($msg["buycode"]); else $buycode = "";
             if (isset($msg["buyamount"])) $buyamount = trim($msg["buyamount"]); else $buyamount = "";
             //具体处理函数
-            $resp = $this->func_iwm_write_buy_amount_process($parObj, $type, $len, $buycode, $buyamount);
+            $resp = $this->func_iwm_write_buy_amount_process($parObj, $taddr, $type, $len, $buycode, $buyamount);
             $project = MFUN_PRJ_NB_IOT_IWM188;
         }
 
         elseif ($msgId == MSG_ID_L4NBIOT_IWMUI_TO_L3OPR_METER_DL_WRITE_DI0DI1_NEW_KEY)
         {
             //解开消息
+            if (isset($msg["taddr"])) $taddr = trim($msg["taddr"]); else $taddr = "";
             if (isset($msg["len"])) $len = $msg["len"]; else  $len = "";
             if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
             if (isset($msg["kerver"])) $kerver = trim($msg["kerver"]); else $kerver = "";
             if (isset($msg["newkey"])) $newkey = trim($msg["newkey"]); else $newkey = "";
             //具体处理函数
-            $resp = $this->func_iwm_write_new_key_process($parObj, $type, $len, $kerver, $newkey);
+            $resp = $this->func_iwm_write_new_key_process($parObj, $taddr, $type, $len, $kerver, $newkey);
             $project = MFUN_PRJ_NB_IOT_IWM188;
         }
 
         elseif ($msgId == MSG_ID_L4NBIOT_IWMUI_TO_L3OPR_METER_DL_WRITE_DI0DI1_STD_TIME)
         {
             //解开消息
+            if (isset($msg["taddr"])) $taddr = trim($msg["taddr"]); else $taddr = "";
             if (isset($msg["len"])) $len = $msg["len"]; else  $len = "";
             if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
             if (isset($msg["realtime"])) $realtime = trim($msg["realtime"]); else $realtime = "";
             //具体处理函数
-            $resp = $this->func_iwm_write_std_time_process($parObj, $type, $len, $realtime);
+            $resp = $this->func_iwm_write_std_time_process($parObj, $taddr, $type, $len, $realtime);
             $project = MFUN_PRJ_NB_IOT_IWM188;
         }
 
         elseif ($msgId == MSG_ID_L4NBIOT_IWMUI_TO_L3OPR_METER_DL_WRITE_DI0DI1_SWITCH_CTRL)
         {
             //解开消息
+            if (isset($msg["taddr"])) $taddr = trim($msg["taddr"]); else $taddr = "";
             if (isset($msg["len"])) $len = $msg["len"]; else  $len = "";
             if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
             if (isset($msg["switch"])) $switch = trim($msg["switch"]); else $switch = "";
             //具体处理函数
-            $resp = $this->func_iwm_write_switch_ctrl_process($parObj, $type, $len, $switch);
+            $resp = $this->func_iwm_write_switch_ctrl_process($parObj, $taddr, $type, $len, $switch);
             $project = MFUN_PRJ_NB_IOT_IWM188;
         }
 
         elseif ($msgId == MSG_ID_L4NBIOT_IWMUI_TO_L3OPR_METER_DL_WRITE_DI0DI1_OFF_FACTORY_START)
         {
             //解开消息
+            if (isset($msg["taddr"])) $taddr = trim($msg["taddr"]); else $taddr = "";
             if (isset($msg["len"])) $len = $msg["len"]; else  $len = "";
             if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
             //具体处理函数
-            $resp = $this->func_iwm_write_off_fac_start_process($parObj, $type, $len);
+            $resp = $this->func_iwm_write_off_fac_start_process($parObj, $taddr, $type, $len);
             $project = MFUN_PRJ_NB_IOT_IWM188;
         }
 
         elseif ($msgId == MSG_ID_L4NBIOT_IWMUI_TO_L3OPR_METER_DL_WRITE_DI0DI1_ADDRESS)
         {
             //解开消息
+            if (isset($msg["taddr"])) $taddr = trim($msg["taddr"]); else $taddr = "";
             if (isset($msg["len"])) $len = $msg["len"]; else  $len = "";
             if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
             if (isset($msg["newaddr"])) $newaddr = trim($msg["newaddr"]); else $newaddr = "";
             //具体处理函数
-            $resp = $this->func_iwm_write_address_process($parObj, $type, $len, $newaddr);
+            $resp = $this->func_iwm_write_address_process($parObj, $taddr, $type, $len, $newaddr);
             $project = MFUN_PRJ_NB_IOT_IWM188;
         }
 
         elseif ($msgId == MSG_ID_L4NBIOT_IWMUI_TO_L3OPR_METER_DL_WRITE_DEVICE_SYN_DATA)
         {
             //解开消息
+            if (isset($msg["taddr"])) $taddr = trim($msg["taddr"]); else $taddr = "";
             if (isset($msg["len"])) $len = $msg["len"]; else  $len = "";
             if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
             if (isset($msg["curaccumvolume"])) $curaccumvolume = trim($msg["curaccumvolume"]); else $curaccumvolume = "";
             //具体处理函数
-            $resp = $this->func_iwm_write_device_syn_process($parObj, $type, $len, $curaccumvolume);
+            $resp = $this->func_iwm_write_device_syn_process($parObj, $taddr, $type, $len, $curaccumvolume);
             $project = MFUN_PRJ_NB_IOT_IWM188;
         }
 
         elseif ($msgId == MSG_ID_L4NBIOT_IGMUI_TO_L3OPR_METER_DL_READ_DI0DI1_CURRENT_COUNTER_DATA)
         {
             //解开消息
+            if (isset($msg["taddr"])) $taddr = trim($msg["taddr"]); else $taddr = "";
             if (isset($msg["len"])) $len = $msg["len"]; else  $len = "";
             if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
             //具体处理函数
-            $resp = $this->func_iwm_ihm_igm_ipm_read_cur_cnt_data_process($parObj, $type, $len);
+            $resp = $this->func_iwm_ihm_igm_ipm_read_cur_cnt_data_process($parObj, $taddr, $type, $len);
             $project = MFUN_PRJ_NB_IOT_IGM188;
         }
 
         elseif ($msgId == MSG_ID_L4NBIOT_IGMUI_TO_L3OPR_METER_DL_READ_DI0DI1_HISTORY_COUNTER_DATA1)
         {
             //解开消息
+            if (isset($msg["taddr"])) $taddr = trim($msg["taddr"]); else $taddr = "";
             if (isset($msg["len"])) $len = $msg["len"]; else  $len = "";
             if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
             //具体处理函数
-            $resp = $this->func_iwm_ihm_igm_ipm_read_his_cnt_data1_process($parObj, $type, $len);
+            $resp = $this->func_iwm_ihm_igm_ipm_read_his_cnt_data1_process($parObj, $taddr, $type, $len);
             $project = MFUN_PRJ_NB_IOT_IGM188;
         }
 
         elseif ($msgId == MSG_ID_L4NBIOT_IGMUI_TO_L3OPR_METER_DL_READ_DI0DI1_HISTORY_COUNTER_DATA2)
         {
             //解开消息
+            if (isset($msg["taddr"])) $taddr = trim($msg["taddr"]); else $taddr = "";
             if (isset($msg["len"])) $len = $msg["len"]; else  $len = "";
             if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
             //具体处理函数
-            $resp = $this->func_iwm_ihm_igm_ipm_read_his_cnt_data2_process($parObj, $type, $len);
+            $resp = $this->func_iwm_ihm_igm_ipm_read_his_cnt_data2_process($parObj, $taddr, $type, $len);
             $project = MFUN_PRJ_NB_IOT_IGM188;
         }
 
         elseif ($msgId == MSG_ID_L4NBIOT_IGMUI_TO_L3OPR_METER_DL_READ_DI0DI1_HISTORY_COUNTER_DATA3)
         {
             //解开消息
+            if (isset($msg["taddr"])) $taddr = trim($msg["taddr"]); else $taddr = "";
             if (isset($msg["len"])) $len = $msg["len"]; else  $len = "";
             if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
             //具体处理函数
-            $resp = $this->func_iwm_ihm_igm_ipm_read_his_cnt_data3_process($parObj, $type, $len);
+            $resp = $this->func_iwm_ihm_igm_ipm_read_his_cnt_data3_process($parObj, $taddr, $type, $len);
             $project = MFUN_PRJ_NB_IOT_IGM188;
         }
 
         elseif ($msgId == MSG_ID_L4NBIOT_IGMUI_TO_L3OPR_METER_DL_READ_DI0DI1_HISTORY_COUNTER_DATA4)
         {
             //解开消息
+            if (isset($msg["taddr"])) $taddr = trim($msg["taddr"]); else $taddr = "";
             if (isset($msg["len"])) $len = $msg["len"]; else  $len = "";
             if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
             //具体处理函数
-            $resp = $this->func_iwm_ihm_igm_ipm_read_his_cnt_data4_process($parObj, $type, $len);
+            $resp = $this->func_iwm_ihm_igm_ipm_read_his_cnt_data4_process($parObj, $taddr, $type, $len);
             $project = MFUN_PRJ_NB_IOT_IGM188;
         }
 
         elseif ($msgId == MSG_ID_L4NBIOT_IGMUI_TO_L3OPR_METER_DL_READ_DI0DI1_HISTORY_COUNTER_DATA5)
         {
             //解开消息
+            if (isset($msg["taddr"])) $taddr = trim($msg["taddr"]); else $taddr = "";
             if (isset($msg["len"])) $len = $msg["len"]; else  $len = "";
             if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
             //具体处理函数
-            $resp = $this->func_iwm_ihm_igm_ipm_read_his_cnt_data5_process($parObj, $type, $len);
+            $resp = $this->func_iwm_ihm_igm_ipm_read_his_cnt_data5_process($parObj, $taddr, $type, $len);
             $project = MFUN_PRJ_NB_IOT_IGM188;
         }
 
         elseif ($msgId == MSG_ID_L4NBIOT_IGMUI_TO_L3OPR_METER_DL_READ_DI0DI1_HISTORY_COUNTER_DATA6)
         {
             //解开消息
+            if (isset($msg["taddr"])) $taddr = trim($msg["taddr"]); else $taddr = "";
             if (isset($msg["len"])) $len = $msg["len"]; else  $len = "";
             if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
             //具体处理函数
-            $resp = $this->func_iwm_ihm_igm_ipm_read_his_cnt_data6_process($parObj, $type, $len);
+            $resp = $this->func_iwm_ihm_igm_ipm_read_his_cnt_data6_process($parObj, $taddr, $type, $len);
             $project = MFUN_PRJ_NB_IOT_IGM188;
         }
 
         elseif ($msgId == MSG_ID_L4NBIOT_IGMUI_TO_L3OPR_METER_DL_READ_DI0DI1_HISTORY_COUNTER_DATA7)
         {
             //解开消息
+            if (isset($msg["taddr"])) $taddr = trim($msg["taddr"]); else $taddr = "";
             if (isset($msg["len"])) $len = $msg["len"]; else  $len = "";
             if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
             //具体处理函数
-            $resp = $this->func_iwm_ihm_igm_ipm_read_his_cnt_data7_process($parObj, $type, $len);
+            $resp = $this->func_iwm_ihm_igm_ipm_read_his_cnt_data7_process($parObj, $taddr, $type, $len);
             $project = MFUN_PRJ_NB_IOT_IGM188;
         }
 
         elseif ($msgId == MSG_ID_L4NBIOT_IGMUI_TO_L3OPR_METER_DL_READ_DI0DI1_HISTORY_COUNTER_DATA8)
         {
             //解开消息
+            if (isset($msg["taddr"])) $taddr = trim($msg["taddr"]); else $taddr = "";
             if (isset($msg["len"])) $len = $msg["len"]; else  $len = "";
             if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
             //具体处理函数
-            $resp = $this->func_iwm_ihm_igm_ipm_read_his_cnt_data8_process($parObj, $type, $len);
+            $resp = $this->func_iwm_ihm_igm_ipm_read_his_cnt_data8_process($parObj, $taddr, $type, $len);
             $project = MFUN_PRJ_NB_IOT_IGM188;
         }
 
         elseif ($msgId == MSG_ID_L4NBIOT_IGMUI_TO_L3OPR_METER_DL_READ_DI0DI1_HISTORY_COUNTER_DATA9)
         {
             //解开消息
+            if (isset($msg["taddr"])) $taddr = trim($msg["taddr"]); else $taddr = "";
             if (isset($msg["len"])) $len = $msg["len"]; else  $len = "";
             if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
             //具体处理函数
-            $resp = $this->func_iwm_ihm_igm_ipm_read_his_cnt_data9_process($parObj, $type, $len);
+            $resp = $this->func_iwm_ihm_igm_ipm_read_his_cnt_data9_process($parObj, $taddr, $type, $len);
             $project = MFUN_PRJ_NB_IOT_IGM188;
         }
 
         elseif ($msgId == MSG_ID_L4NBIOT_IGMUI_TO_L3OPR_METER_DL_READ_DI0DI1_HISTORY_COUNTER_DATA10)
         {
             //解开消息
+            if (isset($msg["taddr"])) $taddr = trim($msg["taddr"]); else $taddr = "";
             if (isset($msg["len"])) $len = $msg["len"]; else  $len = "";
             if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
             //具体处理函数
-            $resp = $this->func_iwm_ihm_igm_ipm_read_his_cnt_data10_process($parObj, $type, $len);
+            $resp = $this->func_iwm_ihm_igm_ipm_read_his_cnt_data10_process($parObj, $taddr, $type, $len);
             $project = MFUN_PRJ_NB_IOT_IGM188;
         }
 
         elseif ($msgId == MSG_ID_L4NBIOT_IGMUI_TO_L3OPR_METER_DL_READ_DI0DI1_HISTORY_COUNTER_DATA11)
         {
             //解开消息
+            if (isset($msg["taddr"])) $taddr = trim($msg["taddr"]); else $taddr = "";
             if (isset($msg["len"])) $len = $msg["len"]; else  $len = "";
             if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
             //具体处理函数
-            $resp = $this->func_iwm_ihm_igm_ipm_read_his_cnt_data11_process($parObj, $type, $len);
+            $resp = $this->func_iwm_ihm_igm_ipm_read_his_cnt_data11_process($parObj, $taddr, $type, $len);
             $project = MFUN_PRJ_NB_IOT_IGM188;
         }
 
         elseif ($msgId == MSG_ID_L4NBIOT_IGMUI_TO_L3OPR_METER_DL_READ_DI0DI1_HISTORY_COUNTER_DATA12)
         {
             //解开消息
+            if (isset($msg["taddr"])) $taddr = trim($msg["taddr"]); else $taddr = "";
             if (isset($msg["len"])) $len = $msg["len"]; else  $len = "";
             if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
             //具体处理函数
-            $resp = $this->func_iwm_ihm_igm_ipm_read_his_cnt_data12_process($parObj, $type, $len);
+            $resp = $this->func_iwm_ihm_igm_ipm_read_his_cnt_data12_process($parObj, $taddr, $type, $len);
             $project = MFUN_PRJ_NB_IOT_IGM188;
         }
 
         elseif ($msgId == MSG_ID_L4NBIOT_IGMUI_TO_L3OPR_METER_DL_READ_DI0DI1_PRICE_TABLE)
         {
             //解开消息
+            if (isset($msg["taddr"])) $taddr = trim($msg["taddr"]); else $taddr = "";
             if (isset($msg["len"])) $len = $msg["len"]; else  $len = "";
             if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
             //具体处理函数
-            $resp = $this->func_iwm_ihm_igm_ipm_read_price_table_process($parObj, $type, $len);
+            $resp = $this->func_iwm_ihm_igm_ipm_read_price_table_process($parObj, $taddr, $type, $len);
             $project = MFUN_PRJ_NB_IOT_IGM188;
         }
 
         elseif ($msgId == MSG_ID_L4NBIOT_IGMUI_TO_L3OPR_METER_DL_READ_DI0DI1_BILL_DATE)
         {
             //解开消息
+            if (isset($msg["taddr"])) $taddr = trim($msg["taddr"]); else $taddr = "";
             if (isset($msg["len"])) $len = $msg["len"]; else  $len = "";
             if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
             //具体处理函数
-            $resp = $this->func_iwm_ihm_igm_ipm_read_bill_date_process($parObj, $type, $len);
+            $resp = $this->func_iwm_ihm_igm_ipm_read_bill_date_process($parObj, $taddr, $type, $len);
             $project = MFUN_PRJ_NB_IOT_IGM188;
         }
 
         elseif ($msgId == MSG_ID_L4NBIOT_IGMUI_TO_L3OPR_METER_DL_READ_DI0DI1_ACCOUNT_DATE)
         {
             //解开消息
+            if (isset($msg["taddr"])) $taddr = trim($msg["taddr"]); else $taddr = "";
             if (isset($msg["len"])) $len = $msg["len"]; else  $len = "";
             if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
             //具体处理函数
-            $resp = $this->func_iwm_ihm_igm_ipm_read_account_date_process($parObj, $type, $len);
+            $resp = $this->func_iwm_ihm_igm_ipm_read_account_date_process($parObj, $taddr, $type, $len);
             $project = MFUN_PRJ_NB_IOT_IGM188;
         }
 
         elseif ($msgId == MSG_ID_L4NBIOT_IGMUI_TO_L3OPR_METER_DL_READ_DI0DI1_BUY_AMOUNT)
         {
             //解开消息
+            if (isset($msg["taddr"])) $taddr = trim($msg["taddr"]); else $taddr = "";
             if (isset($msg["len"])) $len = $msg["len"]; else  $len = "";
             if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
             //具体处理函数
-            $resp = $this->func_iwm_ihm_igm_ipm_read_buy_amount_process($parObj, $type, $len);
+            $resp = $this->func_iwm_ihm_igm_ipm_read_buy_amount_process($parObj, $taddr, $type, $len);
             $project = MFUN_PRJ_NB_IOT_IGM188;
         }
 
         elseif ($msgId == MSG_ID_L4NBIOT_IGMUI_TO_L3OPR_METER_DL_READ_DI0DI1_KEY_VER)
         {
             //解开消息
+            if (isset($msg["taddr"])) $taddr = trim($msg["taddr"]); else $taddr = "";
             if (isset($msg["len"])) $len = $msg["len"]; else  $len = "";
             if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
             //具体处理函数
-            $resp = $this->func_iwm_ihm_igm_ipm_read_key_ver_process($parObj, $type, $len);
+            $resp = $this->func_iwm_ihm_igm_ipm_read_key_ver_process($parObj, $taddr, $type, $len);
             $project = MFUN_PRJ_NB_IOT_IGM188;
         }
 
         elseif ($msgId == MSG_ID_L4NBIOT_IGMUI_TO_L3OPR_METER_DL_READ_DI0DI1_ADDRESS)
         {
             //解开消息
+            if (isset($msg["taddr"])) $taddr = trim($msg["taddr"]); else $taddr = "";
             if (isset($msg["len"])) $len = $msg["len"]; else  $len = "";
             if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
             //具体处理函数
-            $resp = $this->func_iwm_ihm_igm_ipm_read_address_process($parObj, $type, $len);
+            $resp = $this->func_iwm_ihm_igm_ipm_read_address_process($parObj, $taddr, $type, $len);
             $project = MFUN_PRJ_NB_IOT_IGM188;
         }
 
         elseif ($msgId == MSG_ID_L4NBIOT_IGMUI_TO_L3OPR_METER_DL_WRITE_DI0DI1_PRICE_TABLE)
         {
             //解开消息
+            if (isset($msg["taddr"])) $taddr = trim($msg["taddr"]); else $taddr = "";
             if (isset($msg["len"])) $len = trim($msg["len"]); else $len = "";
             if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
             if (isset($msg["price1"])) $price1 = trim($msg["price1"]); else $price1 = "";
@@ -1772,303 +1850,332 @@ class classTaskL3nbiotOprMeter
             if (isset($msg["startdate"])) $startdate = trim($msg["startdate"]); else $startdate = "";
 
             //具体处理函数
-            $resp = $this->func_igm_write_price_table_process($parObj, $type, $len, $price1, $volume1, $price2, $volume2, $price3, $startdate);
+            $resp = $this->func_igm_write_price_table_process($parObj, $taddr, $type, $len, $price1, $volume1, $price2, $volume2, $price3, $startdate);
             $project = MFUN_PRJ_NB_IOT_IGM188;
         }
 
         elseif ($msgId == MSG_ID_L4NBIOT_IGMUI_TO_L3OPR_METER_DL_WRITE_DI0DI1_BILL_DATE)
         {
             //解开消息
+            if (isset($msg["taddr"])) $taddr = trim($msg["taddr"]); else $taddr = "";
             if (isset($msg["len"])) $len = $msg["len"]; else  $len = "";
             if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
             if (isset($msg["billdate"])) $billdate = trim($msg["billdate"]); else $billdate = "";
             //具体处理函数
-            $resp = $this->func_igm_write_bill_date_process($parObj, $type, $len, $billdate);
+            $resp = $this->func_igm_write_bill_date_process($parObj, $taddr, $type, $len, $billdate);
             $project = MFUN_PRJ_NB_IOT_IGM188;
         }
 
         elseif ($msgId == MSG_ID_L4NBIOT_IGMUI_TO_L3OPR_METER_DL_WRITE_DI0DI1_ACCOUNT_DATE)
         {
             //解开消息
+            if (isset($msg["taddr"])) $taddr = trim($msg["taddr"]); else $taddr = "";
             if (isset($msg["len"])) $len = $msg["len"]; else  $len = "";
             if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
             if (isset($msg["accountdate"])) $accountdate = trim($msg["accountdate"]); else $accountdate = "";
             //具体处理函数
-            $resp = $this->func_igm_write_account_date_process($parObj, $type, $len, $accountdate);
+            $resp = $this->func_igm_write_account_date_process($parObj, $taddr, $type, $len, $accountdate);
             $project = MFUN_PRJ_NB_IOT_IGM188;
         }
 
         elseif ($msgId == MSG_ID_L4NBIOT_IGMUI_TO_L3OPR_METER_DL_WRITE_DI0DI1_BUY_AMOUNT)
         {
             //解开消息
+            if (isset($msg["taddr"])) $taddr = trim($msg["taddr"]); else $taddr = "";
             if (isset($msg["len"])) $len = $msg["len"]; else  $len = "";
             if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
             if (isset($msg["buycode"])) $buycode = trim($msg["buycode"]); else $buycode = "";
             if (isset($msg["buyamount"])) $buyamount = trim($msg["buyamount"]); else $buyamount = "";
             //具体处理函数
-            $resp = $this->func_igm_write_buy_amount_process($parObj, $type, $len, $buycode, $buyamount);
+            $resp = $this->func_igm_write_buy_amount_process($parObj, $taddr, $type, $len, $buycode, $buyamount);
             $project = MFUN_PRJ_NB_IOT_IGM188;
         }
 
         elseif ($msgId == MSG_ID_L4NBIOT_IGMUI_TO_L3OPR_METER_DL_WRITE_DI0DI1_NEW_KEY)
         {
             //解开消息
+            if (isset($msg["taddr"])) $taddr = trim($msg["taddr"]); else $taddr = "";
             if (isset($msg["len"])) $len = $msg["len"]; else  $len = "";
             if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
             if (isset($msg["kerver"])) $kerver = trim($msg["kerver"]); else $kerver = "";
             if (isset($msg["newkey"])) $newkey = trim($msg["newkey"]); else $newkey = "";
             //具体处理函数
-            $resp = $this->func_igm_write_new_key_process($parObj, $type, $len, $kerver, $newkey);
+            $resp = $this->func_igm_write_new_key_process($parObj, $taddr, $type, $len, $kerver, $newkey);
             $project = MFUN_PRJ_NB_IOT_IGM188;
         }
 
         elseif ($msgId == MSG_ID_L4NBIOT_IGMUI_TO_L3OPR_METER_DL_WRITE_DI0DI1_STD_TIME)
         {
             //解开消息
+            if (isset($msg["taddr"])) $taddr = trim($msg["taddr"]); else $taddr = "";
             if (isset($msg["len"])) $len = $msg["len"]; else  $len = "";
             if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
             if (isset($msg["realtime"])) $realtime = trim($msg["realtime"]); else $realtime = "";
             //具体处理函数
-            $resp = $this->func_igm_write_std_time_process($parObj, $type, $len, $realtime);
+            $resp = $this->func_igm_write_std_time_process($parObj, $taddr, $type, $len, $realtime);
             $project = MFUN_PRJ_NB_IOT_IGM188;
         }
 
         elseif ($msgId == MSG_ID_L4NBIOT_IGMUI_TO_L3OPR_METER_DL_WRITE_DI0DI1_SWITCH_CTRL)
         {
             //解开消息
+            if (isset($msg["taddr"])) $taddr = trim($msg["taddr"]); else $taddr = "";
             if (isset($msg["len"])) $len = $msg["len"]; else  $len = "";
             if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
             if (isset($msg["switch"])) $switch = trim($msg["switch"]); else $switch = "";
             //具体处理函数
-            $resp = $this->func_igm_write_switch_ctrl_process($parObj, $type, $len, $switch);
+            $resp = $this->func_igm_write_switch_ctrl_process($parObj, $taddr, $type, $len, $switch);
             $project = MFUN_PRJ_NB_IOT_IGM188;
         }
 
         elseif ($msgId == MSG_ID_L4NBIOT_IGMUI_TO_L3OPR_METER_DL_WRITE_DI0DI1_OFF_FACTORY_START)
         {
             //解开消息
+            if (isset($msg["taddr"])) $taddr = trim($msg["taddr"]); else $taddr = "";
             if (isset($msg["len"])) $len = $msg["len"]; else  $len = "";
             if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
             //具体处理函数
-            $resp = $this->func_igm_write_off_fac_start_process($parObj, $type, $len);
+            $resp = $this->func_igm_write_off_fac_start_process($parObj, $taddr, $type, $len);
             $project = MFUN_PRJ_NB_IOT_IGM188;
         }
 
         elseif ($msgId == MSG_ID_L4NBIOT_IGMUI_TO_L3OPR_METER_DL_WRITE_DI0DI1_ADDRESS)
         {
             //解开消息
+            if (isset($msg["taddr"])) $taddr = trim($msg["taddr"]); else $taddr = "";
             if (isset($msg["len"])) $len = $msg["len"]; else  $len = "";
             if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
             if (isset($msg["newaddr"])) $newaddr = trim($msg["newaddr"]); else $newaddr = "";
             //具体处理函数
-            $resp = $this->func_igm_write_address_process($parObj, $type, $len, $newaddr);
+            $resp = $this->func_igm_write_address_process($parObj, $taddr, $type, $len, $newaddr);
             $project = MFUN_PRJ_NB_IOT_IGM188;
         }
 
         elseif ($msgId == MSG_ID_L4NBIOT_IGMUI_TO_L3OPR_METER_DL_WRITE_DEVICE_SYN_DATA)
         {
             //解开消息
+            if (isset($msg["taddr"])) $taddr = trim($msg["taddr"]); else $taddr = "";
             if (isset($msg["len"])) $len = $msg["len"]; else  $len = "";
             if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
             if (isset($msg["curaccumvolume"])) $curaccumvolume = trim($msg["curaccumvolume"]); else $curaccumvolume = "";
             //具体处理函数
-            $resp = $this->func_igm_write_device_syn_process($parObj, $type, $len, $curaccumvolume);
+            $resp = $this->func_igm_write_device_syn_process($parObj, $taddr, $type, $len, $curaccumvolume);
             $project = MFUN_PRJ_NB_IOT_IGM188;
         }
 
         elseif ($msgId == MSG_ID_L4NBIOT_IHMUI_TO_L3OPR_METER_DL_READ_DI0DI1_CURRENT_COUNTER_DATA)
         {
             //解开消息
+            if (isset($msg["taddr"])) $taddr = trim($msg["taddr"]); else $taddr = "";
             if (isset($msg["len"])) $len = $msg["len"]; else  $len = "";
             if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
             //具体处理函数
-            $resp = $this->func_iwm_ihm_igm_ipm_read_cur_cnt_data_process($parObj, $type, $len);
+            $resp = $this->func_iwm_ihm_igm_ipm_read_cur_cnt_data_process($parObj, $taddr, $type, $len);
             $project = MFUN_PRJ_NB_IOT_IHM188;
         }
 
         elseif ($msgId == MSG_ID_L4NBIOT_IHMUI_TO_L3OPR_METER_DL_READ_DI0DI1_HISTORY_COUNTER_DATA1)
         {
             //解开消息
+            if (isset($msg["taddr"])) $taddr = trim($msg["taddr"]); else $taddr = "";
             if (isset($msg["len"])) $len = $msg["len"]; else  $len = "";
             if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
             //具体处理函数
-            $resp = $this->func_iwm_ihm_igm_ipm_read_his_cnt_data1_process($parObj, $type, $len);
+            $resp = $this->func_iwm_ihm_igm_ipm_read_his_cnt_data1_process($parObj, $taddr, $type, $len);
             $project = MFUN_PRJ_NB_IOT_IHM188;
         }
 
         elseif ($msgId == MSG_ID_L4NBIOT_IHMUI_TO_L3OPR_METER_DL_READ_DI0DI1_HISTORY_COUNTER_DATA2)
         {
             //解开消息
+            if (isset($msg["taddr"])) $taddr = trim($msg["taddr"]); else $taddr = "";
             if (isset($msg["len"])) $len = $msg["len"]; else  $len = "";
             if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
             //具体处理函数
-            $resp = $this->func_iwm_ihm_igm_ipm_read_his_cnt_data2_process($parObj, $type, $len);
+            $resp = $this->func_iwm_ihm_igm_ipm_read_his_cnt_data2_process($parObj, $taddr, $type, $len);
             $project = MFUN_PRJ_NB_IOT_IHM188;
         }
 
         elseif ($msgId == MSG_ID_L4NBIOT_IHMUI_TO_L3OPR_METER_DL_READ_DI0DI1_HISTORY_COUNTER_DATA3)
         {
             //解开消息
+            if (isset($msg["taddr"])) $taddr = trim($msg["taddr"]); else $taddr = "";
             if (isset($msg["len"])) $len = $msg["len"]; else  $len = "";
             if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
             //具体处理函数
-            $resp = $this->func_iwm_ihm_igm_ipm_read_his_cnt_data3_process($parObj, $type, $len);
+            $resp = $this->func_iwm_ihm_igm_ipm_read_his_cnt_data3_process($parObj, $taddr, $type, $len);
             $project = MFUN_PRJ_NB_IOT_IHM188;
         }
 
         elseif ($msgId == MSG_ID_L4NBIOT_IHMUI_TO_L3OPR_METER_DL_READ_DI0DI1_HISTORY_COUNTER_DATA4)
         {
             //解开消息
+            if (isset($msg["taddr"])) $taddr = trim($msg["taddr"]); else $taddr = "";
             if (isset($msg["len"])) $len = $msg["len"]; else  $len = "";
             if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
             //具体处理函数
-            $resp = $this->func_iwm_ihm_igm_ipm_read_his_cnt_data4_process($parObj, $type, $len);
+            $resp = $this->func_iwm_ihm_igm_ipm_read_his_cnt_data4_process($parObj, $taddr, $type, $len);
             $project = MFUN_PRJ_NB_IOT_IHM188;
         }
 
         elseif ($msgId == MSG_ID_L4NBIOT_IHMUI_TO_L3OPR_METER_DL_READ_DI0DI1_HISTORY_COUNTER_DATA5)
         {
             //解开消息
+            if (isset($msg["taddr"])) $taddr = trim($msg["taddr"]); else $taddr = "";
             if (isset($msg["len"])) $len = $msg["len"]; else  $len = "";
             if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
             //具体处理函数
-            $resp = $this->func_iwm_ihm_igm_ipm_read_his_cnt_data5_process($parObj, $type, $len);
+            $resp = $this->func_iwm_ihm_igm_ipm_read_his_cnt_data5_process($parObj, $taddr, $type, $len);
             $project = MFUN_PRJ_NB_IOT_IHM188;
         }
 
         elseif ($msgId == MSG_ID_L4NBIOT_IHMUI_TO_L3OPR_METER_DL_READ_DI0DI1_HISTORY_COUNTER_DATA6)
         {
             //解开消息
+            if (isset($msg["taddr"])) $taddr = trim($msg["taddr"]); else $taddr = "";
             if (isset($msg["len"])) $len = $msg["len"]; else  $len = "";
             if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
             //具体处理函数
-            $resp = $this->func_iwm_ihm_igm_ipm_read_his_cnt_data6_process($parObj, $type, $len);
+            $resp = $this->func_iwm_ihm_igm_ipm_read_his_cnt_data6_process($parObj, $taddr, $type, $len);
             $project = MFUN_PRJ_NB_IOT_IHM188;
         }
 
         elseif ($msgId == MSG_ID_L4NBIOT_IHMUI_TO_L3OPR_METER_DL_READ_DI0DI1_HISTORY_COUNTER_DATA7)
         {
             //解开消息
+            if (isset($msg["taddr"])) $taddr = trim($msg["taddr"]); else $taddr = "";
             if (isset($msg["len"])) $len = $msg["len"]; else  $len = "";
             if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
             //具体处理函数
-            $resp = $this->func_iwm_ihm_igm_ipm_read_his_cnt_data7_process($parObj, $type, $len);
+            $resp = $this->func_iwm_ihm_igm_ipm_read_his_cnt_data7_process($parObj, $taddr, $type, $len);
             $project = MFUN_PRJ_NB_IOT_IHM188;
         }
 
         elseif ($msgId == MSG_ID_L4NBIOT_IHMUI_TO_L3OPR_METER_DL_READ_DI0DI1_HISTORY_COUNTER_DATA8)
         {
             //解开消息
+            if (isset($msg["taddr"])) $taddr = trim($msg["taddr"]); else $taddr = "";
             if (isset($msg["len"])) $len = $msg["len"]; else  $len = "";
             if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
             //具体处理函数
-            $resp = $this->func_iwm_ihm_igm_ipm_read_his_cnt_data8_process($parObj, $type, $len);
+            $resp = $this->func_iwm_ihm_igm_ipm_read_his_cnt_data8_process($parObj, $taddr, $type, $len);
             $project = MFUN_PRJ_NB_IOT_IHM188;
         }
 
         elseif ($msgId == MSG_ID_L4NBIOT_IHMUI_TO_L3OPR_METER_DL_READ_DI0DI1_HISTORY_COUNTER_DATA9)
         {
             //解开消息
+            if (isset($msg["taddr"])) $taddr = trim($msg["taddr"]); else $taddr = "";
             if (isset($msg["len"])) $len = $msg["len"]; else  $len = "";
             if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
             //具体处理函数
-            $resp = $this->func_iwm_ihm_igm_ipm_read_his_cnt_data9_process($parObj, $type, $len);
+            $resp = $this->func_iwm_ihm_igm_ipm_read_his_cnt_data9_process($parObj, $taddr, $type, $len);
             $project = MFUN_PRJ_NB_IOT_IHM188;
         }
 
         elseif ($msgId == MSG_ID_L4NBIOT_IHMUI_TO_L3OPR_METER_DL_READ_DI0DI1_HISTORY_COUNTER_DATA10)
         {
             //解开消息
+            if (isset($msg["taddr"])) $taddr = trim($msg["taddr"]); else $taddr = "";
             if (isset($msg["len"])) $len = $msg["len"]; else  $len = "";
             if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
             //具体处理函数
-            $resp = $this->func_iwm_ihm_igm_ipm_read_his_cnt_data10_process($parObj, $type, $len);
+            $resp = $this->func_iwm_ihm_igm_ipm_read_his_cnt_data10_process($parObj, $taddr, $type, $len);
             $project = MFUN_PRJ_NB_IOT_IHM188;
         }
 
         elseif ($msgId == MSG_ID_L4NBIOT_IHMUI_TO_L3OPR_METER_DL_READ_DI0DI1_HISTORY_COUNTER_DATA11)
         {
             //解开消息
+            if (isset($msg["taddr"])) $taddr = trim($msg["taddr"]); else $taddr = "";
             if (isset($msg["len"])) $len = $msg["len"]; else  $len = "";
             if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
             //具体处理函数
-            $resp = $this->func_iwm_ihm_igm_ipm_read_his_cnt_data11_process($parObj, $type, $len);
+            $resp = $this->func_iwm_ihm_igm_ipm_read_his_cnt_data11_process($parObj, $taddr, $type, $len);
             $project = MFUN_PRJ_NB_IOT_IHM188;
         }
 
         elseif ($msgId == MSG_ID_L4NBIOT_IHMUI_TO_L3OPR_METER_DL_READ_DI0DI1_HISTORY_COUNTER_DATA12)
         {
             //解开消息
+            if (isset($msg["taddr"])) $taddr = trim($msg["taddr"]); else $taddr = "";
             if (isset($msg["len"])) $len = $msg["len"]; else  $len = "";
             if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
             //具体处理函数
-            $resp = $this->func_iwm_ihm_igm_ipm_read_his_cnt_data12_process($parObj, $type, $len);
+            $resp = $this->func_iwm_ihm_igm_ipm_read_his_cnt_data12_process($parObj, $taddr, $type, $len);
             $project = MFUN_PRJ_NB_IOT_IHM188;
         }
 
         elseif ($msgId == MSG_ID_L4NBIOT_IHMUI_TO_L3OPR_METER_DL_READ_DI0DI1_PRICE_TABLE)
         {
             //解开消息
+            if (isset($msg["taddr"])) $taddr = trim($msg["taddr"]); else $taddr = "";
             if (isset($msg["len"])) $len = $msg["len"]; else  $len = "";
             if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
             //具体处理函数
-            $resp = $this->func_iwm_ihm_igm_ipm_read_price_table_process($parObj, $type, $len);
+            $resp = $this->func_iwm_ihm_igm_ipm_read_price_table_process($parObj, $taddr, $type, $len);
             $project = MFUN_PRJ_NB_IOT_IHM188;
         }
 
         elseif ($msgId == MSG_ID_L4NBIOT_IHMUI_TO_L3OPR_METER_DL_READ_DI0DI1_BILL_DATE)
         {
             //解开消息
+            if (isset($msg["taddr"])) $taddr = trim($msg["taddr"]); else $taddr = "";
             if (isset($msg["len"])) $len = $msg["len"]; else  $len = "";
             if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
             //具体处理函数
-            $resp = $this->func_iwm_ihm_igm_ipm_read_bill_date_process($parObj, $type, $len);
+            $resp = $this->func_iwm_ihm_igm_ipm_read_bill_date_process($parObj, $taddr, $type, $len);
             $project = MFUN_PRJ_NB_IOT_IHM188;
         }
 
         elseif ($msgId == MSG_ID_L4NBIOT_IHMUI_TO_L3OPR_METER_DL_READ_DI0DI1_ACCOUNT_DATE)
         {
             //解开消息
+            if (isset($msg["taddr"])) $taddr = trim($msg["taddr"]); else $taddr = "";
             if (isset($msg["len"])) $len = $msg["len"]; else  $len = "";
             if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
             //具体处理函数
-            $resp = $this->func_iwm_ihm_igm_ipm_read_account_date_process($parObj, $type, $len);
+            $resp = $this->func_iwm_ihm_igm_ipm_read_account_date_process($parObj, $taddr, $type, $len);
             $project = MFUN_PRJ_NB_IOT_IHM188;
         }
 
         elseif ($msgId == MSG_ID_L4NBIOT_IHMUI_TO_L3OPR_METER_DL_READ_DI0DI1_BUY_AMOUNT)
         {
             //解开消息
+            if (isset($msg["taddr"])) $taddr = trim($msg["taddr"]); else $taddr = "";
             if (isset($msg["len"])) $len = $msg["len"]; else  $len = "";
             if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
             //具体处理函数
-            $resp = $this->func_iwm_ihm_igm_ipm_read_buy_amount_process($parObj, $type, $len);
+            $resp = $this->func_iwm_ihm_igm_ipm_read_buy_amount_process($parObj, $taddr, $type, $len);
             $project = MFUN_PRJ_NB_IOT_IHM188;
         }
 
         elseif ($msgId == MSG_ID_L4NBIOT_IHMUI_TO_L3OPR_METER_DL_READ_DI0DI1_KEY_VER)
         {
             //解开消息
+            if (isset($msg["taddr"])) $taddr = trim($msg["taddr"]); else $taddr = "";
             if (isset($msg["len"])) $len = $msg["len"]; else  $len = "";
             if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
             //具体处理函数
-            $resp = $this->func_iwm_ihm_igm_ipm_read_key_ver_process($parObj, $type, $len);
+            $resp = $this->func_iwm_ihm_igm_ipm_read_key_ver_process($parObj, $taddr, $type, $len);
             $project = MFUN_PRJ_NB_IOT_IHM188;
         }
 
         elseif ($msgId == MSG_ID_L4NBIOT_IHMUI_TO_L3OPR_METER_DL_READ_DI0DI1_ADDRESS)
         {
             //解开消息
+            if (isset($msg["taddr"])) $taddr = trim($msg["taddr"]); else $taddr = "";
             if (isset($msg["len"])) $len = $msg["len"]; else  $len = "";
             if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
             //具体处理函数
-            $resp = $this->func_iwm_ihm_igm_ipm_read_address_process($parObj, $type, $len);
+            $resp = $this->func_iwm_ihm_igm_ipm_read_address_process($parObj, $taddr, $type, $len);
             $project = MFUN_PRJ_NB_IOT_IHM188;
         }
 
         elseif ($msgId == MSG_ID_L4NBIOT_IHMUI_TO_L3OPR_METER_DL_WRITE_DI0DI1_PRICE_TABLE)
         {
             //解开消息
+            if (isset($msg["taddr"])) $taddr = trim($msg["taddr"]); else $taddr = "";
             if (isset($msg["len"])) $len = trim($msg["len"]); else $len = "";
             if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
             if (isset($msg["price1"])) $price1 = trim($msg["price1"]); else $price1 = "";
@@ -2079,107 +2186,116 @@ class classTaskL3nbiotOprMeter
             if (isset($msg["startdate"])) $startdate = trim($msg["startdate"]); else $startdate = "";
 
             //具体处理函数
-            $resp = $this->func_ihm_write_price_table_process($parObj, $type, $len, $price1, $volume1, $price2, $volume2, $price3, $startdate);
+            $resp = $this->func_ihm_write_price_table_process($parObj, $taddr, $type, $len, $price1, $volume1, $price2, $volume2, $price3, $startdate);
             $project = MFUN_PRJ_NB_IOT_IHM188;
         }
 
         elseif ($msgId == MSG_ID_L4NBIOT_IHMUI_TO_L3OPR_METER_DL_WRITE_DI0DI1_BILL_DATE)
         {
             //解开消息
+            if (isset($msg["taddr"])) $taddr = trim($msg["taddr"]); else $taddr = "";
             if (isset($msg["len"])) $len = $msg["len"]; else  $len = "";
             if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
             if (isset($msg["billdate"])) $billdate = trim($msg["billdate"]); else $billdate = "";
             //具体处理函数
-            $resp = $this->func_ihm_write_bill_date_process($parObj, $type, $len, $billdate);
+            $resp = $this->func_ihm_write_bill_date_process($parObj, $taddr, $type, $len, $billdate);
             $project = MFUN_PRJ_NB_IOT_IHM188;
         }
 
         elseif ($msgId == MSG_ID_L4NBIOT_IHMUI_TO_L3OPR_METER_DL_WRITE_DI0DI1_ACCOUNT_DATE)
         {
             //解开消息
+            if (isset($msg["taddr"])) $taddr = trim($msg["taddr"]); else $taddr = "";
             if (isset($msg["len"])) $len = $msg["len"]; else  $len = "";
             if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
             if (isset($msg["accountdate"])) $accountdate = trim($msg["accountdate"]); else $accountdate = "";
             //具体处理函数
-            $resp = $this->func_ihm_write_account_date_process($parObj, $type, $len, $accountdate);
+            $resp = $this->func_ihm_write_account_date_process($parObj, $taddr, $type, $len, $accountdate);
             $project = MFUN_PRJ_NB_IOT_IHM188;
         }
 
         elseif ($msgId == MSG_ID_L4NBIOT_IHMUI_TO_L3OPR_METER_DL_WRITE_DI0DI1_BUY_AMOUNT)
         {
             //解开消息
+            if (isset($msg["taddr"])) $taddr = trim($msg["taddr"]); else $taddr = "";
             if (isset($msg["len"])) $len = $msg["len"]; else  $len = "";
             if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
             if (isset($msg["buycode"])) $buycode = trim($msg["buycode"]); else $buycode = "";
             if (isset($msg["buyamount"])) $buyamount = trim($msg["buyamount"]); else $buyamount = "";
             //具体处理函数
-            $resp = $this->func_ihm_write_buy_amount_process($parObj, $type, $len, $buycode, $buyamount);
+            $resp = $this->func_ihm_write_buy_amount_process($parObj, $taddr, $type, $len, $buycode, $buyamount);
             $project = MFUN_PRJ_NB_IOT_IHM188;
         }
 
         elseif ($msgId == MSG_ID_L4NBIOT_IHMUI_TO_L3OPR_METER_DL_WRITE_DI0DI1_NEW_KEY)
         {
             //解开消息
+            if (isset($msg["taddr"])) $taddr = trim($msg["taddr"]); else $taddr = "";
             if (isset($msg["len"])) $len = $msg["len"]; else  $len = "";
             if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
             if (isset($msg["kerver"])) $kerver = trim($msg["kerver"]); else $kerver = "";
             if (isset($msg["newkey"])) $newkey = trim($msg["newkey"]); else $newkey = "";
             //具体处理函数
-            $resp = $this->func_ihm_write_new_key_process($parObj, $type, $len, $kerver, $newkey);
+            $resp = $this->func_ihm_write_new_key_process($parObj, $taddr, $type, $len, $kerver, $newkey);
             $project = MFUN_PRJ_NB_IOT_IHM188;
         }
 
         elseif ($msgId == MSG_ID_L4NBIOT_IHMUI_TO_L3OPR_METER_DL_WRITE_DI0DI1_STD_TIME)
         {
             //解开消息
+            if (isset($msg["taddr"])) $taddr = trim($msg["taddr"]); else $taddr = "";
             if (isset($msg["len"])) $len = $msg["len"]; else  $len = "";
             if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
             if (isset($msg["realtime"])) $realtime = trim($msg["realtime"]); else $realtime = "";
             //具体处理函数
-            $resp = $this->func_ihm_write_std_time_process($parObj, $type, $len, $realtime);
+            $resp = $this->func_ihm_write_std_time_process($parObj, $taddr, $type, $len, $realtime);
             $project = MFUN_PRJ_NB_IOT_IHM188;
         }
 
         elseif ($msgId == MSG_ID_L4NBIOT_IHMUI_TO_L3OPR_METER_DL_WRITE_DI0DI1_SWITCH_CTRL)
         {
             //解开消息
+            if (isset($msg["taddr"])) $taddr = trim($msg["taddr"]); else $taddr = "";
             if (isset($msg["len"])) $len = $msg["len"]; else  $len = "";
             if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
             if (isset($msg["switch"])) $switch = trim($msg["switch"]); else $switch = "";
             //具体处理函数
-            $resp = $this->func_ihm_write_switch_ctrl_process($parObj, $type, $len, $switch);
+            $resp = $this->func_ihm_write_switch_ctrl_process($parObj, $taddr, $type, $len, $switch);
             $project = MFUN_PRJ_NB_IOT_IHM188;
         }
 
         elseif ($msgId == MSG_ID_L4NBIOT_IHMUI_TO_L3OPR_METER_DL_WRITE_DI0DI1_OFF_FACTORY_START)
         {
             //解开消息
+            if (isset($msg["taddr"])) $taddr = trim($msg["taddr"]); else $taddr = "";
             if (isset($msg["len"])) $len = $msg["len"]; else  $len = "";
             if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
             //具体处理函数
-            $resp = $this->func_ihm_write_off_fac_start_process($parObj, $type, $len);
+            $resp = $this->func_ihm_write_off_fac_start_process($parObj, $taddr, $type, $len);
             $project = MFUN_PRJ_NB_IOT_IHM188;
         }
 
         elseif ($msgId == MSG_ID_L4NBIOT_IHMUI_TO_L3OPR_METER_DL_WRITE_DI0DI1_ADDRESS)
         {
             //解开消息
+            if (isset($msg["taddr"])) $taddr = trim($msg["taddr"]); else $taddr = "";
             if (isset($msg["len"])) $len = $msg["len"]; else  $len = "";
             if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
             if (isset($msg["newaddr"])) $newaddr = trim($msg["newaddr"]); else $newaddr = "";
             //具体处理函数
-            $resp = $this->func_ihm_write_address_process($parObj, $type, $len, $newaddr);
+            $resp = $this->func_ihm_write_address_process($parObj, $taddr, $type, $len, $newaddr);
             $project = MFUN_PRJ_NB_IOT_IHM188;
         }
 
         elseif ($msgId == MSG_ID_L4NBIOT_IHMUI_TO_L3OPR_METER_DL_WRITE_DEVICE_SYN_DATA)
         {
             //解开消息
+            if (isset($msg["taddr"])) $taddr = trim($msg["taddr"]); else $taddr = "";
             if (isset($msg["len"])) $len = $msg["len"]; else  $len = "";
             if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
             if (isset($msg["curaccumvolume"])) $curaccumvolume = trim($msg["curaccumvolume"]); else $curaccumvolume = "";
             //具体处理函数
-            $resp = $this->func_ihm_write_device_syn_process($parObj, $type, $len, $curaccumvolume);
+            $resp = $this->func_ihm_write_device_syn_process($parObj, $taddr, $type, $len, $curaccumvolume);
             $project = MFUN_PRJ_NB_IOT_IHM188;
         }
         
@@ -2204,287 +2320,287 @@ class classTaskL3nbiotOprMeter
 
 /*
 
-    function func_igm_read_cur_cnt_data_process($parObj, $type, $len)
+    function func_igm_read_cur_cnt_data_process($parObj, $taddr, $type, $len)
     {
         return "";
     }
 
-    function func_igm_read_his_cnt_data1_process($parObj, $type, $len)
+    function func_igm_read_his_cnt_data1_process($parObj, $taddr, $type, $len)
     {
         return "";
     }
 
-    function func_igm_read_his_cnt_data2_process($parObj, $type, $len)
+    function func_igm_read_his_cnt_data2_process($parObj, $taddr, $type, $len)
     {
         return "";
     }
 
-    function func_igm_read_his_cnt_data3_process($parObj, $type, $len)
+    function func_igm_read_his_cnt_data3_process($parObj, $taddr, $type, $len)
     {
         return "";
     }
 
-    function func_igm_read_his_cnt_data4_process($parObj, $type, $len)
+    function func_igm_read_his_cnt_data4_process($parObj, $taddr, $type, $len)
     {
         return "";
     }
 
-    function func_iwm_read_cur_cnt_data_process($parObj, $type, $len)
+    function func_iwm_read_cur_cnt_data_process($parObj, $taddr, $type, $len)
     {
         return "";
     }
 
-    function func_iwm_read_his_cnt_data1_process($parObj, $type, $len)
+    function func_iwm_read_his_cnt_data1_process($parObj, $taddr, $type, $len)
     {
         return "";
     }
 
-    function func_iwm_read_his_cnt_data2_process($parObj, $type, $len)
+    function func_iwm_read_his_cnt_data2_process($parObj, $taddr, $type, $len)
     {
         return "";
     }
 
-    function func_iwm_read_his_cnt_data3_process($parObj, $type, $len)
+    function func_iwm_read_his_cnt_data3_process($parObj, $taddr, $type, $len)
     {
         return "";
     }
 
-    function func_iwm_read_his_cnt_data4_process($parObj, $type, $len)
+    function func_iwm_read_his_cnt_data4_process($parObj, $taddr, $type, $len)
     {
         return "";
     }
 
-    function func_iwm_read_his_cnt_data5_process($parObj, $type, $len)
+    function func_iwm_read_his_cnt_data5_process($parObj, $taddr, $type, $len)
     {
         return "";
     }
 
-    function func_iwm_read_his_cnt_data6_process($parObj, $type, $len)
+    function func_iwm_read_his_cnt_data6_process($parObj, $taddr, $type, $len)
     {
         return "";
     }
 
-    function func_iwm_read_his_cnt_data7_process($parObj, $type, $len)
+    function func_iwm_read_his_cnt_data7_process($parObj, $taddr, $type, $len)
     {
         return "";
     }
 
-    function func_iwm_read_his_cnt_data8_process($parObj, $type, $len)
+    function func_iwm_read_his_cnt_data8_process($parObj, $taddr, $type, $len)
     {
         return "";
     }
 
-    function func_iwm_read_his_cnt_data9_process($parObj, $type, $len)
+    function func_iwm_read_his_cnt_data9_process($parObj, $taddr, $type, $len)
     {
         return "";
     }
 
-    function func_iwm_read_his_cnt_data10_process($parObj, $type, $len)
+    function func_iwm_read_his_cnt_data10_process($parObj, $taddr, $type, $len)
     {
         return "";
     }
 
-    function func_iwm_read_his_cnt_data11_process($parObj, $type, $len)
+    function func_iwm_read_his_cnt_data11_process($parObj, $taddr, $type, $len)
     {
         return "";
     }
 
-    function func_iwm_read_his_cnt_data12_process($parObj, $type, $len)
+    function func_iwm_read_his_cnt_data12_process($parObj, $taddr, $type, $len)
     {
         return "";
     }
 
-    function func_iwm_read_price_table_process($parObj, $type, $len)
+    function func_iwm_read_price_table_process($parObj, $taddr, $type, $len)
     {
         return "";
     }
 
-    function func_iwm_read_bill_date_process($parObj, $type, $len)
+    function func_iwm_read_bill_date_process($parObj, $taddr, $type, $len)
     {
         return "";
     }
 
-    function func_iwm_read_account_date_process($parObj, $type, $len)
+    function func_iwm_read_account_date_process($parObj, $taddr, $type, $len)
     {
         return "";
     }
 
-    function func_iwm_read_buy_amount_process($parObj, $type, $len)
+    function func_iwm_read_buy_amount_process($parObj, $taddr, $type, $len)
     {
         return "";
     }
 
-    function func_iwm_read_key_ver_process($parObj, $type, $len)
+    function func_iwm_read_key_ver_process($parObj, $taddr, $type, $len)
     {
         return "";
     }
 
-    function func_iwm_read_address_process($parObj, $type, $len)
+    function func_iwm_read_address_process($parObj, $taddr, $type, $len)
     {
         return "";
     }
 
-    function func_igm_read_his_cnt_data5_process($parObj, $type, $len)
+    function func_igm_read_his_cnt_data5_process($parObj, $taddr, $type, $len)
     {
         return "";
     }
 
-    function func_igm_read_his_cnt_data6_process($parObj, $type, $len)
+    function func_igm_read_his_cnt_data6_process($parObj, $taddr, $type, $len)
     {
         return "";
     }
 
-    function func_igm_read_his_cnt_data7_process($parObj, $type, $len)
+    function func_igm_read_his_cnt_data7_process($parObj, $taddr, $type, $len)
     {
         return "";
     }
 
-    function func_igm_read_his_cnt_data8_process($parObj, $type, $len)
+    function func_igm_read_his_cnt_data8_process($parObj, $taddr, $type, $len)
     {
         return "";
     }
 
-    function func_igm_read_his_cnt_data9_process($parObj, $type, $len)
+    function func_igm_read_his_cnt_data9_process($parObj, $taddr, $type, $len)
     {
         return "";
     }
 
-    function func_igm_read_his_cnt_data10_process($parObj, $type, $len)
+    function func_igm_read_his_cnt_data10_process($parObj, $taddr, $type, $len)
     {
         return "";
     }
 
-    function func_igm_read_his_cnt_data11_process($parObj, $type, $len)
+    function func_igm_read_his_cnt_data11_process($parObj, $taddr, $type, $len)
     {
         return "";
     }
 
-    function func_igm_read_his_cnt_data12_process($parObj, $type, $len)
+    function func_igm_read_his_cnt_data12_process($parObj, $taddr, $type, $len)
     {
         return "";
     }
 
-    function func_igm_read_price_table_process($parObj, $type, $len)
+    function func_igm_read_price_table_process($parObj, $taddr, $type, $len)
     {
         return "";
     }
 
-    function func_igm_read_bill_date_process($parObj, $type, $len)
+    function func_igm_read_bill_date_process($parObj, $taddr, $type, $len)
     {
         return "";
     }
 
-    function func_igm_read_account_date_process($parObj, $type, $len)
+    function func_igm_read_account_date_process($parObj, $taddr, $type, $len)
     {
         return "";
     }
 
-    function func_igm_read_buy_amount_process($parObj, $type, $len)
+    function func_igm_read_buy_amount_process($parObj, $taddr, $type, $len)
     {
         return "";
     }
 
-    function func_igm_read_key_ver_process($parObj, $type, $len)
+    function func_igm_read_key_ver_process($parObj, $taddr, $type, $len)
     {
         return "";
     }
 
-    function func_igm_read_address_process($parObj, $type, $len)
+    function func_igm_read_address_process($parObj, $taddr, $type, $len)
     {
         return "";
     }
 
-    function func_ihm_read_cur_cnt_data_process($parObj, $type, $len)
+    function func_ihm_read_cur_cnt_data_process($parObj, $taddr, $type, $len)
     {
         return "";
     }
 
-    function func_ihm_read_his_cnt_data1_process($parObj, $type, $len)
+    function func_ihm_read_his_cnt_data1_process($parObj, $taddr, $type, $len)
     {
         return "";
     }
 
-    function func_ihm_read_his_cnt_data2_process($parObj, $type, $len)
+    function func_ihm_read_his_cnt_data2_process($parObj, $taddr, $type, $len)
     {
         return "";
     }
 
-    function func_ihm_read_his_cnt_data3_process($parObj, $type, $len)
+    function func_ihm_read_his_cnt_data3_process($parObj, $taddr, $type, $len)
     {
         return "";
     }
 
-    function func_ihm_read_his_cnt_data4_process($parObj, $type, $len)
+    function func_ihm_read_his_cnt_data4_process($parObj, $taddr, $type, $len)
     {
         return "";
     }
 
-    function func_ihm_read_his_cnt_data5_process($parObj, $type, $len)
+    function func_ihm_read_his_cnt_data5_process($parObj, $taddr, $type, $len)
     {
         return "";
     }
 
-    function func_ihm_read_his_cnt_data6_process($parObj, $type, $len)
+    function func_ihm_read_his_cnt_data6_process($parObj, $taddr, $type, $len)
     {
         return "";
     }
 
-    function func_ihm_read_his_cnt_data7_process($parObj, $type, $len)
+    function func_ihm_read_his_cnt_data7_process($parObj, $taddr, $type, $len)
     {
         return "";
     }
 
-    function func_ihm_read_his_cnt_data8_process($parObj, $type, $len)
+    function func_ihm_read_his_cnt_data8_process($parObj, $taddr, $type, $len)
     {
         return "";
     }
 
-    function func_ihm_read_his_cnt_data9_process($parObj, $type, $len)
+    function func_ihm_read_his_cnt_data9_process($parObj, $taddr, $type, $len)
     {
         return "";
     }
 
-    function func_ihm_read_his_cnt_data10_process($parObj, $type, $len)
+    function func_ihm_read_his_cnt_data10_process($parObj, $taddr, $type, $len)
     {
         return "";
     }
 
-    function func_ihm_read_his_cnt_data11_process($parObj, $type, $len)
+    function func_ihm_read_his_cnt_data11_process($parObj, $taddr, $type, $len)
     {
         return "";
     }
 
-    function func_ihm_read_his_cnt_data12_process($parObj, $type, $len)
+    function func_ihm_read_his_cnt_data12_process($parObj, $taddr, $type, $len)
     {
         return "";
     }
 
-    function func_ihm_read_price_table_process($parObj, $type, $len)
+    function func_ihm_read_price_table_process($parObj, $taddr, $type, $len)
     {
         return "";
     }
 
-    function func_ihm_read_bill_date_process($parObj, $type, $len)
+    function func_ihm_read_bill_date_process($parObj, $taddr, $type, $len)
     {
         return "";
     }
 
-    function func_ihm_read_account_date_process($parObj, $type, $len)
+    function func_ihm_read_account_date_process($parObj, $taddr, $type, $len)
     {
         return "";
     }
 
-    function func_ihm_read_buy_amount_process($parObj, $type, $len)
+    function func_ihm_read_buy_amount_process($parObj, $taddr, $type, $len)
     {
         return "";
     }
 
-    function func_ihm_read_key_ver_process($parObj, $type, $len)
+    function func_ihm_read_key_ver_process($parObj, $taddr, $type, $len)
     {
         return "";
     }
 
-    function func_ihm_read_address_process($parObj, $type, $len)
+    function func_ihm_read_address_process($parObj, $taddr, $type, $len)
     {
         return "";
     }
