@@ -61,7 +61,7 @@ class classDbiL2sdkNbiotIpm376
         if (!$mysqli) { die('Could not connect: ' . mysqli_error($mysqli)); }
 
         //存储新记录，如果发现是已经存在的数据，则覆盖，否则新增
-        $result = $mysqli->query("SELECT * FROM `t_l2sdk_nbiot_std_qg376_context` WHERE (`deviceid` = '$ipmaddress')");
+        $result = $mysqli->query("SELECT * FROM `t_l2sdk_nbiot_std_qg376_context` WHERE (`ipmaddress` = '$ipmaddress')");
         if (($result != false) && ($result->num_rows)>0)  //重复，则覆盖
         {
             $result=$mysqli->query("UPDATE `t_l2sdk_nbiot_std_qg376_context` SET  `cntpfc` = '$cntpfc',`deviceflag` = '$deviceflag'
@@ -113,15 +113,15 @@ class classDbiL2sdkNbiotStdCj188
         if (!$mysqli) { die('Could not connect: ' . mysqli_error($mysqli)); }
 
         //存储新记录，如果发现是已经存在的数据，则覆盖，否则新增
-        $result = $mysqli->query("SELECT * FROM `t_l2sdk_nbiot_std_cj188_context` WHERE (`deviceid` = '$cj188address')");
+        $result = $mysqli->query("SELECT * FROM `t_l2sdk_nbiot_std_cj188_context` WHERE (`cj188address` = '$cj188address')");
         if (($result != false) && ($result->num_rows)>0)  //重复，则覆盖
         {
-            $result=$mysqli->query("UPDATE `t_l2sdk_nbiot_std_cj188_context` SET  `cntpfc` = '$cntser',`deviceflag` = '$deviceflag'
-                    WHERE (`ipmaddress` = '$cj188address')");
+            $result=$mysqli->query("UPDATE `t_l2sdk_nbiot_std_cj188_context` SET  `cntser` = '$cntser',`deviceflag` = '$deviceflag'
+                    WHERE (`cj188address` = '$cj188address')");
         }
         else   //不存在，新增
         {
-            $result=$mysqli->query("INSERT INTO `t_l2sdk_nbiot_std_cj188_context` (ipmaddress, cntser, deviceflag)
+            $result=$mysqli->query("INSERT INTO `t_l2sdk_nbiot_std_cj188_context` (cj188address, cntser, deviceflag)
                     VALUES ('$cj188address','$cntser','$deviceflag')");
         }
 

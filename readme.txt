@@ -223,7 +223,7 @@ Make By：ZJL
 > 下行DL代码的SDK
 > SDK DL全部完善好，测试脚本验证好，输出码流正常
 > CJ188服务器一侧的，算是全部完成了
-
+> Bug fix on L2SDK NBIOT dbi functions.
 
 
 
