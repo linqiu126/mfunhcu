@@ -147,7 +147,6 @@ define("MSG_ID_L4AQYCUI_TO_L3F1_USERNEW", $index++);
 define("MSG_ID_L4AQYCUI_TO_L3F1_USERMOD", $index++);
 define("MSG_ID_L4AQYCUI_TO_L3F1_USERDEL", $index++);
 define("MSG_ID_L4AQYCUI_TO_L3F1_USERTABLE", $index++);
-define("MSG_ID_L4AQYCUI_TO_L3F1_HCUSWUPDATE", $index++);
 define("MSG_ID_L4AQYCUI_TO_L3F2_PROJECTPGLIST", $index++);
 define("MSG_ID_L4AQYCUI_TO_L3F2_PROJECTLIST", $index++);
 define("MSG_ID_L4AQYCUI_TO_L3F2_USERPROJ", $index++);
@@ -179,6 +178,13 @@ define("MSG_ID_L4AQYCUI_TO_L3F3_SENSORLIST", $index++);
 define("MSG_ID_L4AQYCUI_TO_L3F3_DEVSENSOR", $index++);
 define("MSG_ID_L4AQYCUI_TO_L3F3_SENSORUPDATE", $index++);
 define("MSG_ID_L4AQYCUI_TO_L3F3_GETSTATICMONITORTABLE", $index++);
+
+define("MSG_ID_L4AQYCUI_TO_L3F4_ALLSW", $index++);      //查询所有可用的软件版本
+define("MSG_ID_L4AQYCUI_TO_L3F4_DEVSW", $index++);      //查询指定HCU设备当前版本
+define("MSG_ID_L4AQYCUI_TO_L3F4_SWUPDATE", $index++);   //请求将指定的HCU设备软件更新到指定版本
+define("MSG_ID_L4AQYCUI_TO_L3F4_VIDEOLIST", $index++);  //查询某HCU设备指定日期的视频文件列表
+define("MSG_ID_L4AQYCUI_TO_L3F4_VIDEOPLAY", $index++);  //请求播放某指定视频文件
+
 define("MSG_ID_L4AQYCUI_TO_L3F5_DEVALARM", $index++);
 define("MSG_ID_L4AQYCUI_TO_L3F5_ALARMQUERY", $index++);
 define("MSG_ID_L4AQYCUI_TO_L3F7_SETUSERMSG", $index++);
@@ -389,6 +395,15 @@ define("MFUN_IHU_CMDID_EMC_DATA_RESP", 0x2081); //临时定义给IHU测试
  *************************************************************************************/
 define("MFUN_HCU_MSG_HEAD_FORMAT", "A2Key/A2Len/A2Cmd");// 1B 控制字ctrl_key, 1B 长度length（除控制字和长度本身外），1B 操作字opt_key
 define("MFUN_HCU_MSG_HEAD_LENGTH", 6); //3 Byte
+
+define("MFUN_HCU_CMD_RESP_FAILURE",  0x00);  //HCU响应消息失败，
+define("MFUN_HCU_CMD_RESP_SUCCESS",  0x01);  //HCU响应消息成功
+
+//定义HCU视频文件状态，N-正常状态，文件名上传但文件本身没有上传；D-文件下载中；R-文件上传完成，可以随时播放; F-视频下载失败
+define ("MFUN_HCU_VIDEO_DATA_STATUS_NORMAL", "N");
+define ("MFUN_HCU_VIDEO_DATA_STATUS_DOWNLOAD", "D");
+define ("MFUN_HCU_VIDEO_DATA_STATUS_READY", "R");
+define ("MFUN_HCU_VIDEO_DATA_STATUS_FAIL", "F");
 
 //HCU下列L3控制字有效，功能已经实现
 define("MFUN_HCU_CMDID_VERSION_SYNC", 0xF0);   //IHU软，硬件版本查询命令字

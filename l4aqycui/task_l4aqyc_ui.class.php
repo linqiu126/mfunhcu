@@ -202,24 +202,6 @@ class classTaskL4aqycUi
 
                 //require data structure:
                 /*var map={
-                    action:"HcuSwUpdate",
-                    deviceid: deviceid
-                    projectid: projectid
-                };*/
-                //return data structure:
-                /*  var retval={
-                   status:"true",
-                   msg:""
-                };*/
-                case "HcuSwUpdate": //Delete the user
-                    if (isset($_GET["deviceid"])) $deviceid = trim($_GET["deviceid"]); else  $deviceid = "";
-                    if (isset($_GET["projectid"])) $projectid = trim($_GET["projectid"]); else  $projectid = "";
-                    $input = array("deviceid" => $deviceid, "projectid" => $projectid);
-                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM1SYM, MSG_ID_L4AQYCUI_TO_L3F1_HCUSWUPDATE, "MSG_ID_L4AQYCUI_TO_L3F1_HCUSWUPDATE",$input);
-                    break;
-
-                //require data structure:
-                /*var map={
                           action:"ProjectPGList",
                           user:usr.id
                       };*/
@@ -1192,6 +1174,158 @@ class classTaskL4aqycUi
                     if (isset($_GET["id"])) $id = trim($_GET["id"]); else  $id = "";
                     $input = array("id" => $id);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM3DM, MSG_ID_L4AQYCUI_TO_L3F3_GETSTATICMONITORTABLE, "MSG_ID_L4AQYCUI_TO_L3F3_GETSTATICMONITORTABLE",$input);
+                    break;
+
+                /*
+                        var usr = data.id;
+                        var StatCode = data.StatCode;
+                        var date = data.date;
+                        var hour = data.hour;
+                        var VideoList = new Array();
+                        for(var j=0;j<5;j++) {
+                            var map = {
+                                id: "Video_" + StatCode + "_" + date + "_" + hour + "_" + j,
+                                attr: "视频属性"
+                            }
+                            VideoList.push(map);
+                        }
+                        var retval={
+                            status:"true",
+                            ret: VideoList
+                        };
+                        return JSON.stringify(retval);
+                */
+                case "GetVideoList": //获取指定站点指定时间段内的所有视频文件列表
+                    if (isset($_GET["id"])) $uid = trim($_GET["id"]); else  $uid = "";
+                    if (isset($_GET["StatCode"])) $StatCode = trim($_GET["StatCode"]); else  $StatCode = "";
+                    if (isset($_GET["date"])) $date = trim($_GET["date"]); else  $date = "";
+                    if (isset($_GET["hour"])) $hour = trim($_GET["hour"]); else  $hour = "";
+                    $input = array("id" => $uid, "StatCode" => $StatCode, "date" => $date, "hour" => $hour);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM4ICM, MSG_ID_L4AQYCUI_TO_L3F4_VIDEOLIST, "MSG_ID_L4AQYCUI_TO_L3F4_VIDEOLIST",$input);
+                    break;
+
+                /*
+                        var videoid = data.id;
+                        var number = GetRandomNum(1,10);
+                        if(number ==10){
+                            var retval={
+                                status:"true",
+                                url:"/video/avorion.mp4"
+                            }
+                            return JSON.stringify(retval);
+                        }else{
+                            var retval={
+                                status:"true",
+                                url:"downloading"
+                            }
+                            return JSON.stringify(retval);
+                        }
+                */
+                case "GetVideo":
+                    if (isset($_GET["id"])) $videoid = trim($_GET["id"]); else  $videoid = "";
+                    $input = array("id" => $videoid);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM4ICM, MSG_ID_L4AQYCUI_TO_L3F4_VIDEOPLAY, "MSG_ID_L4AQYCUI_TO_L3F4_VIDEOPLAY",$input);
+                    break;
+              /*
+              var verlist = new Array();
+              for (var i=0;i<10;i++){
+                  verlist.push("Ver "+(i+1)+".00");
+              }
+              var retval={
+                  status:"true",
+                  ret: verlist
+              }
+              return JSON.stringify(retval);
+              */
+                case "GetVersionList":
+
+                    $verlist = array();
+                    for ($i=0;$i<10;$i++){
+                        array_push($verlist,"Ver ".(string)($i+1).".00");
+                    }
+                    $retval=array(
+                        'status'=>'true',
+                        'ret'=> $verlist
+                    );
+                    $jsonencode = _encode($retval);
+                    echo $jsonencode; break;
+
+                case "GetProjDevVersion":
+                    /*
+                                var ProjCode = data.ProjCode;
+                                var projdev = new Array();
+                                for(var i=0;i<5;i++){
+                                    for(var j=0;j<4;j++){
+                                        var temp = {
+                                            DevCode: i+"_"+j,
+                                            ProjName: "测量点"+i,
+                                            version: "Ver 1.00"
+                                        }
+                                        projdev.push(temp);
+                                    }
+                                }
+                                var retval={
+                                    status:"true",
+                                    ret: projdev
+                                };
+                                return JSON.stringify(retval);
+                    */
+                    $ProjCode = $_GET["ProjCode"];
+                    $projdev = array();
+                    for($i=0;$i<5;$i++){
+                        for($j=0;$j<4;$j++){
+                            $temp = array(
+                                'DevCode'=> $ProjCode."_".(string)$i."_".(string)$j,
+                                'ProjName'=> "测量点".(string)$i,
+                                'version'=> "Ver 1.00"
+                            );
+                            array_push($projdev,$temp);
+                        }
+                    }
+                    $retval=array(
+                        'status'=>'true',
+                        'ret'=> $projdev
+                    );
+                    $jsonencode = _encode($retval);
+                    echo $jsonencode; break;
+
+                case "UpdateDevVersion":
+                    /*
+                    var usr = data.id;
+                    var list = data.list;
+                    var version = data.version;
+                    var retval={
+                        status:"true"
+                    }
+                    return JSON.stringify(retval);
+                    */
+                    $usr = $_GET["id"];
+                    $list = $_GET["list"];
+                    $version = $_GET["version"];
+                    $retval=array(
+                        'status'=>'true'
+                    );
+                    $jsonencode = _encode($retval);
+                    echo $jsonencode; break;
+
+
+                //require data structure:
+                /*var map={
+                    action:"HcuSwUpdate",
+                    deviceid: deviceid
+                    projectid: projectid
+                };*/
+                //return data structure:
+                /*  var retval={
+                   status:"true",
+                   msg:""
+                };*/
+
+                case "HcuSwUpdate": //Delete the user
+                    if (isset($_GET["deviceid"])) $deviceid = trim($_GET["deviceid"]); else  $deviceid = "";
+                    if (isset($_GET["projectid"])) $projectid = trim($_GET["projectid"]); else  $projectid = "";
+                    $input = array("deviceid" => $deviceid, "projectid" => $projectid);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM1SYM, MSG_ID_L4AQYCUI_TO_L3F4_SWUPDATE, "MSG_ID_L4AQYCUI_TO_L3F4_SWUPDATE",$input);
                     break;
 
                 default:

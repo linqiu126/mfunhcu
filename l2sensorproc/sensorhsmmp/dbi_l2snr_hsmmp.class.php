@@ -114,7 +114,7 @@ class classDbiL2snrHsmmp
 
         //是否需要这么干？？？
         //更新HCU设备信息表（t_hcudevice）中最新的视频链接，使之永远保存最后一次更新
-        $mysqli->query("UPDATE `t_siteinfo` SET `videourl` = '$url' WHERE (`devcode` = '$deviceid')");
+        $mysqli->query("UPDATE `t_l2sdk_iothcu_hcudevice` SET `videourl` = '$url' WHERE (`devcode` = '$deviceid')");
 
         //存储新记录，如果发现是已经存在的数据，则覆盖，否则新增
         $result = $mysqli->query("SELECT * FROM `t_l2snr_hsmmpdata` WHERE (`deviceid` = '$deviceid' AND `sensorid` = '$sensorid'
@@ -129,6 +129,27 @@ class classDbiL2snrHsmmp
             $result=$mysqli->query("INSERT INTO `t_l2snr_hsmmpdata` (deviceid,sensorid,videourl,reportdate,hourminindex,altitude,flag_la,latitude,flag_lo,longitude)
                     VALUES ('$deviceid','$sensorid','$url','$date','$hourminindex','$altitude', '$flag_la','$latitude', '$flag_lo','$longitude')");
         }
+        $mysqli->close();
+        return $result;
+    }
+
+    public function dbi_video_data_status_update($deviceid, $status, $videoid)
+    {
+        //建立连接
+        $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli)
+        {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+
+        if ($status == MFUN_HCU_CMD_RESP_FAILURE)
+            $dataflag = MFUN_HCU_VIDEO_DATA_STATUS_FAIL;
+        elseif ($status == MFUN_HCU_CMD_RESP_SUCCESS)
+            $dataflag = MFUN_HCU_VIDEO_DATA_STATUS_READY;
+
+        $query_str = "UPDATE `t_l2snr_hsmmpdata` SET `dataflag` = '$dataflag' WHERE (`deviceid` = '$deviceid' AND `videourl` = '$videoid')";
+        $result = $mysqli->query($query_str);
+
         $mysqli->close();
         return $result;
     }

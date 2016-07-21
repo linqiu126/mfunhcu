@@ -143,6 +143,20 @@ http.createServer(function(request, response) {
         case ".ttf":
             console.log("Client require :"+pathname);
             //Data = fs.readFileSync("."+pathname,'binary');
+            response.writeHead(200, {"Content-Type": "video/mpeg4"});
+            //response.write(Data);
+            //response.end();
+            var file = "."+pathname;
+            fs.stat(file, function (err, stat) {
+                var img = fs.readFileSync(file);
+                response.contentType = 'video/mpeg4';
+                response.contentLength = stat.size;
+                response.end(img, 'binary');
+            });
+            break;
+        case ".mp4":
+            console.log("Client require :"+pathname);
+            //Data = fs.readFileSync("."+pathname,'binary');
             response.writeHead(200, {"Content-Type": "application/x-font-ttf"});
             //response.write(Data);
             //response.end();

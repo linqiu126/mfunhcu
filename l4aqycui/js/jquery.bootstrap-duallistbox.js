@@ -351,7 +351,7 @@
       // Add the custom HTML template
       this.container = $('' +
         '<div class="bootstrap-duallistbox-container">' +
-        ' <div class="box1">' +
+        ' <div class="box1 col-md-6 col-sm-6 col-xs-6 column">' +
         '   <label></label>' +
         '   <span class="info-container">' +
         '     <span class="info"></span>' +
@@ -369,7 +369,7 @@
         '   </div>' +
         '   <select multiple="multiple"></select>' +
         ' </div>' +
-        ' <div class="box2">' +
+        ' <div class="box2 col-md-6 col-sm-6 col-xs-6 column">' +
         '   <label></label>' +
         '   <span class="info-container">' +
         '     <span class="info"></span>' +

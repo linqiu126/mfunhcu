@@ -225,6 +225,9 @@ Make By：ZJL
 > CJ188服务器一侧的，算是全部完成了
 > Bug fix on L2SDK NBIOT dbi functions.
 
+//= LZH, 2016 July.21, CURRENT_SW_DELIVERY R02.D34
+> UI界面增加视频播放和软件下载功能
+> 视频播放功能测试代码完善，输出正确
 
 
 //待完善的功能

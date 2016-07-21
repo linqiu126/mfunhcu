@@ -490,6 +490,22 @@ if (TC_L4AQYC_UI == true) {
     $_GET["id"] = "11";
     require("../l4aqycui/request.php");
     echo " [TC L4AQYC: GetStaticMonitorTable END]\n";
+
+    echo " [TC L4AQYC: GetVideoList START]\n";
+    $_GET["action"] = "GetVideoList";
+    $_GET["id"] = "UID001";
+    $_GET["StatCode"] = "120101001";
+    $_GET["date"] = "2016-04-16";
+    $_GET["hour"] = "11";
+    require("../l4aqycui/request.php");
+    echo " [TC L4AQYC: GetVideoList END]\n";
+
+    echo " [TC L4AQYC: GetVideo START]\n";
+    $_GET["action"] = "GetVideo";
+    $_GET["id"] = "HCU_SH_0301_av201607201122.h264.mp4";
+    require("../l4aqycui/request.php");
+    echo " [TC L4AQYC: GetVideo END]\n";
+
 //TEST CASE: L4AQYC-UI界面: END
 
 }

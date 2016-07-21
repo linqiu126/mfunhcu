@@ -1249,6 +1249,77 @@
                 TableData:row_content
             };
             return JSON.stringify(retval);
+        case "GetVideoList":
+            var usr = data.id;
+            var StatCode = data.StatCode;
+            var date = data.date;
+            var hour = data.hour;
+            var VideoList = new Array();
+            for(var j=0;j<5;j++) {
+                var map = {
+                    id: "Video_" + StatCode + "_" + date + "_" + hour + "_" + j,
+                    attr: "Video_" + StatCode + "_" + date + "_" + hour + "_" + j+"视频属性10m"
+                }
+                VideoList.push(map);
+            }
+            var retval={
+                status:"true",
+                ret: VideoList
+            };
+            return JSON.stringify(retval);
+        case "GetVideo":
+            var videoid = data.id;
+            var number = GetRandomNum(8,10);
+            if(number ==10){
+                var retval={
+                    status:"true",
+                    url:"/video/avorion.mp4"
+                }
+                return JSON.stringify(retval);
+            }else{
+                var retval={
+                    status:"true",
+                    url:"downloading"
+                }
+                return JSON.stringify(retval);
+            }
+
+        case "GetVersionList":
+            var verlist = new Array();
+            for (var i=0;i<10;i++){
+                verlist.push("Ver_"+(i+1)+".00");
+            }
+            var retval={
+                status:"true",
+                ret: verlist
+            }
+            return JSON.stringify(retval);
+        case "GetProjDevVersion":
+            var ProjCode = data.ProjCode;
+            var projdev = new Array();
+            for(var i=0;i<5;i++){
+                for(var j=0;j<4;j++){
+                    var temp = {
+                        DevCode: ProjCode+"_"+i+"_"+j,
+                        ProjName: "测量点"+i,
+                        version: "Ver 1.00"
+                    }
+                    projdev.push(temp);
+                }
+            }
+            var retval={
+                status:"true",
+                ret: projdev
+            };
+            return JSON.stringify(retval);
+        case "UpdateDevVersion":
+            var usr = data.id;
+            var list = data.list;
+            var version = data.version;
+            var retval={
+                status:"true"
+            }
+            return JSON.stringify(retval);
         case "list":
             var query_key = data.key;
             var ret_number = GetRandomNum(10,50);

@@ -6765,10 +6765,10 @@ INSERT INTO `t_l3f1sym_authlist` (`sid`, `uid`, `auth_code`) VALUES
 -- --------------------------------------------------------
 
 --
--- 表的结构 `t_l3f1sym_hcu_swver`
+-- 表的结构 `t_l3f4icm_swfactory`
 --
 
-CREATE TABLE IF NOT EXISTS `t_l3f1sym_hcu_swver` (
+CREATE TABLE IF NOT EXISTS `t_l3f4icm_swfactory` (
   `sid` int(4) NOT NULL AUTO_INCREMENT,
   `swverid` char(50) NOT NULL,
   `swverdescripition` char(50) NOT NULL,
@@ -6779,10 +6779,10 @@ CREATE TABLE IF NOT EXISTS `t_l3f1sym_hcu_swver` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
 
 --
--- 转存表中的数据 `t_l3f1sym_hcu_swver`
+-- 转存表中的数据 `t_l3f4icm_swfactory`
 --
 
-INSERT INTO `t_l3f1sym_hcu_swver` (`sid`, `swverid`, `swverdescripition`, `issuedate`, `swbin`, `dbbin`) VALUES
+INSERT INTO `t_l3f4icm_swfactory` (`sid`, `swverid`, `swverdescripition`, `issuedate`, `swbin`, `dbbin`) VALUES
 (1, 'AQYC.R02.099', '飞凌335D Baseline, 基础功能完善，气象五参数，视频，支持基于树莓派的传感器', '2016-07-13', '', '');
 
 -- --------------------------------------------------------

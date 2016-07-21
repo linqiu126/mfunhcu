@@ -40,10 +40,74 @@ class classTaskL3aplF4icm
         return urlencode($elem);
     }
 
-    function func_xxx_process($user)
+    //查询指定监测点指定时间的视频列表
+    function func_hcu_videolist_process($StatCode, $date,$hour)
     {
-        $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
-        $jsonencode = json_encode($uiF1symDbObj);
+        $uiF4icmDbObj = new classDbiL3apF4icm(); //初始化一个UI DB对象
+        $videolist = $uiF4icmDbObj->dbi_hcu_vediolist_inqury($StatCode, $date,$hour);
+        if (!empty($videolist))
+            $retval=array(
+                'status'=>'true',
+                'ret'=> $videolist
+            );
+        else
+            $retval=array(
+                'status'=>'false',
+                'ret'=> null
+            );
+        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
+        return $jsonencode;
+    }
+
+    //请求播放指定视频
+    function func_hcu_videoplay_process($videoid)
+    {
+        $uiF4icmDbObj = new classDbiL3apF4icm(); //初始化一个UI DB对象
+        $result = $uiF4icmDbObj->dbi_hcu_vedioplay_request($videoid);
+        if (!empty($result))
+            $retval=array(
+                'status'=>'true',
+                'url'=> $result
+            );
+        else
+            $retval=array(
+                'status'=>'false',
+                'url'=> null
+            );
+        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
+        return $jsonencode;
+    }
+
+    //待完善的函数
+    function func_hcu_sw_update_process($deviceid, $projectid)
+    {
+        //获取最新版本, swbin和dbbin
+        $uiF4icmDbObj = new classDbiL3apF4icm(); //初始化一个UI DB对象
+        $latestver = $uiF4icmDbObj->dbi_latest_hcu_swver_inqury();
+        $result = $uiF4icmDbObj->dbi_hcu_swver_inqury($latestver);
+
+        //发送软件版本到HCU网关
+
+        //返回结果
+        $retval=array(
+            'status'=>'true',
+            'ret'=> ""
+        );
+        //$jsonencode = _encode($retval);
+        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
+        return $jsonencode;
+    }
+
+    function func_all_sw_process()
+    {
+        $uiF4icmDbObj = new classDbiL3apF4icm(); //初始化一个UI DB对象
+        $sw_list = $uiF4icmDbObj->dbi_hcu_allsw_inqury();
+        //返回结果
+        $retval=array(
+            'status'=>'true',
+            'ret'=> $sw_list
+        );
+        $jsonencode = json_encode($retval);
         return $jsonencode;
     }
 
@@ -75,15 +139,48 @@ class classTaskL3aplF4icm
             return false;
         }
 
-        //功能Login
-        if ($msgId == MSG_ID_L4AQYCUI_TO_L3F1_LOGIN)
+        //功能
+        if ($msgId == MSG_ID_L4AQYCUI_TO_L3F4_ALLSW)
         {
             //解开消息
-            if (isset($msg["user"])) $user = $msg["user"]; else  $user = "";
+            if (isset($msg["user"])) $user = $msg["user"]; else  $user = "";  //此处的UID是为了将来做权限控制
             //具体处理函数
-            $resp = $this->func_xxx_process($user);
+            $resp = $this->func_all_sw_process();
             $project = MFUN_PRJ_HCU_AQYCUI;
         }
+
+        elseif ($msgId == MSG_ID_L4AQYCUI_TO_L3F4_DEVSW)
+        {
+
+        }
+
+        elseif ($msgId == MSG_ID_L4AQYCUI_TO_L3F4_SWUPDATE)
+        {
+            //解开消息
+            if (isset($msg["deviceid"])) $deviceid = $msg["deviceid"]; else  $deviceid = "";
+            if (isset($msg["projectid"])) $projectid = $msg["projectid"]; else  $projectid = "";
+            //具体处理函数
+            $resp = $this->func_hcu_sw_update_process($deviceid, $projectid);
+            $project = MFUN_PRJ_HCU_AQYCUI;
+        }
+
+        elseif ($msgId == MSG_ID_L4AQYCUI_TO_L3F4_VIDEOLIST)
+        {
+            if (isset($msg["id"])) $uid = $msg["id"]; else  $uid = "";
+            if (isset($msg["StatCode"])) $StatCode = $msg["StatCode"]; else  $StatCode = "";
+            if (isset($msg["date"])) $date = $msg["date"]; else  $date = "";
+            if (isset($msg["hour"])) $hour = $msg["hour"]; else  $hour = "";
+            $resp = $this->func_hcu_videolist_process($StatCode, $date,$hour);
+            $project = MFUN_PRJ_HCU_AQYCUI;
+        }
+
+        elseif ($msgId == MSG_ID_L4AQYCUI_TO_L3F4_VIDEOPLAY)
+        {
+            if (isset($msg["id"])) $videoid = $msg["id"]; else  $videoid = "";
+            $resp = $this->func_hcu_videoplay_process($videoid);
+            $project = MFUN_PRJ_HCU_AQYCUI;
+        }
+
 
         else{
             $resp = ""; //啥都不ECHO

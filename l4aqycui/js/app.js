@@ -27,8 +27,14 @@ function logout(){
 
 }
 
+function video_windows(videoid){
+    window.open("http://"+window.location.host+"/video/video.html?id="+videoid,'监控录像',"height=284, width=340, top=0, left=400,toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no")
+}
 
-
+function screen_windows(){
+    window.open("http://"+window.location.host+"/"+screen_saver_address+"?id="+usr.id+"&StatCode="+monitor_selected.StatCode,'屏幕保护',"height=auto, width=auto");
+}
+//
 
 
 var usr;
@@ -77,6 +83,9 @@ var project_selected;
 var project_selected_device;
 var project_module_status;
 
+// parameter management
+var parameter_initial = false;
+var software_version_list = null;
 
 
 // monitor point table control
@@ -424,6 +433,12 @@ $(document).ready(function() {
 
     NewPGProjDual2 = $('.NewPGProjDual').bootstrapDualListbox(
         { nonSelectedListLabel: '全部项目', selectedListLabel: '本组包含', preserveSelectionOnMove: 'moved', moveOnSelect: true, nonSelectedFilter: '',showFilterInputs: false,infoText:""});
+
+    DevUpdateDual2 = $('.DevUpdateAuthDual').bootstrapDualListbox(
+        { nonSelectedListLabel: '当前设备', selectedListLabel: '需要升级', preserveSelectionOnMove: 'moved', moveOnSelect: true, nonSelectedFilter: '',showFilterInputs: false,infoText:""});
+
+
+
     // $("#showValue").click(function () { alert($('[name="duallistbox_demo1"]').val());});
     //$('.user_auth_dual').showFilterInputs=false;
     $("#Desktop").css("min-height",window.screen.availHeight-300);
@@ -973,6 +988,16 @@ $(document).ready(function() {
 
 
     });
+    $("#Video_query_Input").change(function(){
+        $("#Video_query_Input").val(date_compare_today($("#Video_query_Input").val()));
+        video_selection_change();
+    });
+    $("#VideoHour_choice").change(function(){
+        video_selection_change();
+    });
+    $("#Alarm_query_Input").change(function(){
+        $("#Alarm_query_Input").val(date_compare_today($("#Alarm_query_Input").val()));
+    });
     $("#AlarmExport").on('click',function() {
         touchcookie();
         Data_export_alarm();
@@ -1007,7 +1032,8 @@ $(document).ready(function() {
     $("#VCRshow").on('click',function() {
         var vcraddress = $("#VCRStatus_choice").val();
         if(vcraddress == "") return;
-        window.open("http://"+vcraddress,'监控录像',"height=480, width=640, top=0, left=400,toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no")
+        video_windows(vcraddress);
+        //window.open("http://"+vcraddress,'监控录像',"height=480, width=640, top=0, left=400,toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no")
     });
     $("#MonitorTableFlash").on('click',function() {
         query_static_warning();
@@ -1020,7 +1046,8 @@ $(document).ready(function() {
     });
     $("#ScreenSaver").on('click',function() {
         if(monitor_selected == null) return;
-        window.open("http://"+window.location.host+"/"+screen_saver_address+"?id="+usr.id+"&StatCode="+monitor_selected.StatCode,'屏幕保护',"height=auto, width=auto");
+        screen_windows();
+        //window.open("http://"+window.location.host+"/"+screen_saver_address+"?id="+usr.id+"&StatCode="+monitor_selected.StatCode,'屏幕保护',"height=auto, width=auto");
     });
     $("#UsrMsgCommit").on('click',function() {
         touchcookie();
@@ -1034,6 +1061,10 @@ $(document).ready(function() {
     $("#UsrImgFlash").on('click',function() {
         touchcookie();
         get_user_image()
+    });
+    $("#UpdateConfirm_button").on('click',function() {
+        touchcookie();
+        update_version();
     });
 
     //alert($(window).height());
@@ -1084,9 +1115,10 @@ function proj_manage(){
 }
 function para_manage(){
     clear_window();
-    //$("#ParaManageView").css("display","block");
-    write_title("施工中","");
-    $("#Undefined").css("display","block");
+    write_title("参数管理","您可以在这里升级您的设备版本");
+    $("#ParaManageView").css("display","block");
+    if(!parameter_initial)parameter_initialize();
+    //$("#Undefined").css("display","block");
 }
 function mp_manage(){
     clear_window();
@@ -2757,6 +2789,106 @@ function submit_mod_proj_module(){
 }
 
 /*
+Parameter management view
+ */
+
+function get_version_list(){
+    var map={
+        action:"GetVersionList"
+    };
+    jQuery.get(request_head, map, function (data) {
+        log(data);
+        var result=JSON.parse(data);
+        if(result.status == "false"){
+            show_expiredModule();
+            return;
+        }
+        software_version_list = result.ret;
+    });
+}
+
+function get_projdev_version(ProjCode){
+    var map={
+        action:"GetProjDevVersion",
+        ProjCode: ProjCode
+    };
+    jQuery.get(request_head, map, function (data) {
+        log(data);
+        var result=JSON.parse(data);
+        if(result.status == "false"){
+            show_expiredModule();
+            return;
+        }
+        var projdev = result.ret;
+        $("#duallistboxDevUpdate").empty();
+        var txt = "";
+        for(var i =0;i<projdev.length;i++){
+            txt = "<option value='"+projdev[i].DevCode+"'";
+            txt = txt +">"+projdev[i].DevCode+projdev[i].ProjName+projdev[i].version+"</option>";
+            $("#duallistboxDevUpdate").append(txt);
+        }
+        //$("#duallistboxPGProj_new").append(txt);
+        $("#duallistboxDevUpdate").bootstrapDualListbox('refresh', true);
+
+    });
+}
+function update_version(){
+    var update_list = get_update_dev_list();
+    var update_version = $("#UpdateVersion_choice").val();
+    if(update_list.length == 0){
+        show_alarm_module(true,"没有选中的设备");
+        return;
+    }
+    var map={
+        action:"UpdateDevVersion",
+        id: usr.id,
+        list: update_list,
+        version: update_version
+    }
+    jQuery.get(request_head, map, function (data) {
+        log(data);
+        var result=JSON.parse(data);
+        if(result.status == "false"){
+            show_expiredModule();
+            return;
+        }
+        show_alarm_module(false,"设置成功，设备会在下个更新点更新");
+    });
+}
+function parameter_initialize(){
+    parameter_initial = true;
+    get_version_list();
+    if(project_list == null)get_project_list();
+    window.setTimeout("draw_parameter_page()", wait_time_middle);
+
+}
+function draw_parameter_page(){
+    $("#UpdateProj_choice").empty();
+    $("#UpdateVersion_choice").empty();
+    var txt = "";
+    for(var i=0;i<project_list.length;i++){
+        txt = txt +"<option value="+project_list[i].id+">"+project_list[i].name+"</option>";
+    }
+    $("#UpdateProj_choice").append(txt);
+    txt = "";
+    for(var i=0;i<software_version_list.length;i++){
+        txt = txt +"<option value="+software_version_list[i]+">"+software_version_list[i]+"</option>";
+    }
+    $("#UpdateVersion_choice").append(txt);
+    $("#UpdateProj_choice").change(function (){
+        get_projdev_version($("#UpdateProj_choice").val());
+    });
+    get_projdev_version($("#UpdateProj_choice").val());
+}
+function get_update_dev_list(){
+    var update = new Array();
+    $('#duallistboxDevUpdate :selected').each(function(i, selected) {
+        update.push($(selected).val());
+    });
+    return update;
+}
+
+/*
  Monitor point view function part
  */
 
@@ -3957,7 +4089,7 @@ function get_monitor_warning_on_map(){
                 txt = txt + " <div class='col-md-6 column'>";
                 for(var i=0;i<ret.length;i++){
                     var nickname = ret[i].AlarmEName;
-                    txt = txt + "<img src='/xhzn/mfunhcu/l4aqycui/svg/icon/"+ret[i].AlarmEName+".svg' style='width:36px;hight:36px'></img><label style='max-width: 150px;min-width: 150px'>&nbsp&nbsp&nbsp&nbsp"+ret[i].AlarmName+":";
+                    txt = txt + "<img src='/xhzn/mfunhcu/l4aqycui/svg//icon/"+ret[i].AlarmEName+".svg' style='width:36px;hight:36px'></img><label style='max-width: 150px;min-width: 150px'>&nbsp&nbsp&nbsp&nbsp"+ret[i].AlarmName+":";
                     var value = parseInt(ret[i].AlarmValue);
                     var warning = ret[i].WarningTarget;
 
@@ -3977,13 +4109,15 @@ function get_monitor_warning_on_map(){
             if(monitor_map_handle!=null){
                 monitor_map_handle.setContent(txt);
             }
-
+            $("#VideoStatCode_Input").val(monitor_selected.StatName);
+            video_selection_change();
+            /*
             $("#VCRStatus_choice").empty();
             txt = "";
             for(var i =0;i<result.vcr.length;i++){
                 txt = txt +"<option value='"+result.vcr[i].vcraddress+"'>"+result.vcr[i].vcrname+"</option>"
             }
-            $("#VCRStatus_choice").append(txt);
+            $("#VCRStatus_choice").append(txt);*/
         });
     }
 
@@ -4048,7 +4182,38 @@ function addMarker(point){
     }
 
 }
-
+function video_selection_change(){
+    console.log($("#Video_query_Input").val())
+    if(monitor_selected!=null && $("#Video_query_Input").val()!=""){
+        get_video(monitor_selected.StatCode,$("#Video_query_Input").val(),$("#VideoHour_choice").val());
+    }
+}
+function get_video(StatCode,date,hour){
+    var map={
+        action:"GetVideoList",
+        id: usr.id,
+        StatCode:StatCode,
+        date:date,
+        hour:hour
+    };
+    //console.log(map);
+    jQuery.get(request_head, map, function (data) {
+        log(data);
+        var result=JSON.parse(data);
+        if(result.status == "false"){
+            show_expiredModule();
+            return;
+        }
+        var VideoList = result.ret;
+        $("#VCRStatus_choice").empty();
+        var txt="";
+        for( var i=0;i<VideoList.length;i++){
+            txt = txt +"<option value='"+VideoList[i].id+"'>"+VideoList[i].attr+"</option>"
+        }
+        $("#VCRStatus_choice").append(txt);
+        //console.log(monitor_map_list);
+    });
+}
 //warning_table
 function initialize_warning_table(){
     $("#Monitor_Page_control").empty();

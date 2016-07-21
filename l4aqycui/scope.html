@@ -22,7 +22,7 @@
     <script src="/xhzn/mfunhcu/l4aqycui/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=2Pcn24FAWGTcyW4jsC8O38IyPd0pDZYX"></script>
     <script src="/xhzn/mfunhcu/l4aqycui/js/Chart.min.js"></script>
-    <script src="/xhzn/mfunhcu/l4aqycui/js/jquery.bootstrap-duallistbox.min.js"></script>
+    <script src="/xhzn/mfunhcu/l4aqycui/js/jquery.bootstrap-duallistbox.js"></script>
     <script src="/xhzn/mfunhcu/l4aqycui/js/bootstrap-datetimepicker.min.js"></script>
     <script src="/xhzn/mfunhcu/l4aqycui/js/bootstrap-datetimepicker.zh-CN.js"></script>
     <script src="/xhzn/mfunhcu/l4aqycui/js/highstock-js/highstock.js"></script>
@@ -68,7 +68,7 @@
                                         <li><a href="#" id="UserManage">用户设置</a></li>
                                         <li><a href="#" id="PGManage">项目组管理</a></li>
                                         <li><a href="#" id="ProjManage">项目信息</a></li>
-                                        <li><a href="#" id="ParaManage">参数管理</a></li>
+                                        <li><a href="#" id="ParaManage">软件管理</a></li>
                                     </ul>
                                 </li>
                                 <li><a><i class="fa fa-edit"></i> 项目管理 <span class="fa fa-chevron-down"></span></a>
@@ -152,7 +152,7 @@
                                     <span class=" fa fa-angle-down"></span>
                                 </a>
                                 <ul class="dropdown-menu dropdown-usermenu pull-right">
-                                    <li id="menu_user_profile"><a href="#"> 屏保配置</a></li>
+                                    <li id="menu_user_profile"><a href="#"> 广告屏保配置</a></li>
                                     <li id="menu_logout"><a href="#" ><i class="fa fa-sign-out pull-right"></i>退出</a></li>
                                 </ul>
                             </li>
@@ -1023,7 +1023,44 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="row clearfix" id="ParaManageView"></div>
+                                        <div class="row clearfix" id="ParaManageView">
+                                            <div class="col-md-6 col-sm-6 col-xs-12 column" >
+                                                <div class="input-group ">
+                                                    <span class="input-group-addon" id="UpdateProj" style="min-width: 100px">选择项目</span>
+                                                    <select class="form-control" placeholder="选择需要升级的项目" aria-describedby="basic-addon1" id="UpdateProj_choice">
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-5 col-sm-5 col-xs-12 column" >
+                                                <div class="input-group ">
+                                                    <span class="input-group-addon" id="UpdateVersion" style="min-width: 100px">选择版本</span>
+                                                    <select class="form-control" placeholder="选择需要升级的版本" aria-describedby="basic-addon1" id="UpdateVersion_choice">
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-1 col-sm-1 col-xs-12 column" >
+                                                <button type="button" class="btn btn-primary" id="UpdateConfirm_button">升级</button>
+                                            </div>
+                                            <div style="min-height: 20px"></div>
+                                            <div class="col-md-12 col-sm-12 col-xs-12 column" style="min-height:200px">
+                                                <div>
+                                                    <select multiple="multiple" size="10" name="duallistboxDevUpdate" class="DevUpdateAuthDual" id="duallistboxDevUpdate">
+                                                        <option value="1">Option 1</option>
+                                                        <option value="2">Option 2</option>
+                                                        <option value="3" selected="selected">Option 3</option>
+                                                        <option value="4">Option 4</option>
+                                                        <option value="5">Option 5</option>
+                                                        <option value="6" selected="selected">Option 6</option>
+                                                        <option value="7">Option 7</option>
+                                                        <option value="8">Option 8</option>
+                                                        <option value="9">Option 9</option>
+                                                        <option value="10">Option 10</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+
+                                        </div>
                                         <div class="row clearfix" id="MPManageView">
                                             <div class="col-md-6 col-sm-6 col-xs-6 column">
                                                 <ul class="pagination" id="Point_Page_control">
@@ -1445,10 +1482,58 @@
                                                 <div id="MPMonitorViewMap" class="baidu-maps"></div>
                                             </div>
                                             <HR class="HR-map" SIZE=3/>
+                                            <div class="col-md-4 col-sm-6 col-xs-12 column" >
+                                                <div class="input-group ">
+                                                    <span class="input-group-addon" id="VideoStatCode" style="min-width: 100px">选中地点</span>
+                                                    <input type="text" class="form-control" placeholder="请在地图上选择一个地点" aria-describedby="basic-addon1" id="VideoStatCode_Input" disabled="disabled"/>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4 col-sm-6 col-xs-12 column" >
+                                                <div class="form-group " style="height:29px">
+                                                    <div class="input-group date form_date col-md-5" data-date="" data-date-format="yyyy-mm-dd" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
+                                                        <div class="input-group">
+                                                            <div class="input-group-addon">视频日期</div>
+                                                            <input class="form-control" size="16" type="text" value=""  placeholder="视频日期" id="Video_query_Input" disabled="disabled" style="min-width: 106px">
+                                                            <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                                                        </div></div>
+                                                </div>
+
+                                            </div>
+                                            <div class="col-md-4 col-sm-12 col-xs-12 column" >
+                                                <div class="input-group ">
+                                                    <span class="input-group-addon" id="VideoHour" style="min-width: 100px">时间段</span>
+                                                    <select class="form-control" placeholder="传感器状态" aria-describedby="basic-addon1" id="VideoHour_choice">
+                                                        <option value="0">0:00-1:00</option>
+                                                        <option value="1">1:00-2:00</option>
+                                                        <option value="2">2:00-3:00</option>
+                                                        <option value="3">3:00-4:00</option>
+                                                        <option value="4">4:00-5:00</option>
+                                                        <option value="5">5:00-6:00</option>
+                                                        <option value="6">6:00-7:00</option>
+                                                        <option value="7">7:00-8:00</option>
+                                                        <option value="8">8:00-9:00</option>
+                                                        <option value="9">9:00-10:00</option>
+                                                        <option value="10">10:00-11:00</option>
+                                                        <option value="11">11:00-12:00</option>
+                                                        <option value="12">12:00-13:00</option>
+                                                        <option value="13">13:00-14:00</option>
+                                                        <option value="14">14:00-15:00</option>
+                                                        <option value="15">15:00-16:00</option>
+                                                        <option value="16">16:00-17:00</option>
+                                                        <option value="17">17:00-18:00</option>
+                                                        <option value="18">18:00-19:00</option>
+                                                        <option value="19">19:00-20:00</option>
+                                                        <option value="20">20:00-21:00</option>
+                                                        <option value="21">21:00-22:00</option>
+                                                        <option value="22">22:00-23:00</option>
+                                                        <option value="23">23:00-0:00</option>
+                                                    </select>
+                                                </div>
+                                            </div>
                                             <div class="col-md-4 col-sm-12 col-xs-12 column" >
                                                 <div class="input-group ">
                                                     <span class="input-group-addon" id="VCRStatus" style="min-width: 100px">选择视频</span>
-                                                    <select class="form-control" placeholder="传感器状态" aria-describedby="basic-addon1" id="VCRStatus_choice">
+                                                    <select class="form-control" placeholder="没有视频" aria-describedby="basic-addon1" id="VCRStatus_choice">
                                                     </select>
                                                 </div>
                                             </div>
@@ -1558,64 +1643,22 @@
                                                                             <p><strong>地址 </strong> 国和路346号 </p>
                                                                             <div class="left col-xs-6">
                                                                                 <ul class="list-unstyled">
-                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
-                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
-                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
-                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
-                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
-                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
                                                                                 </ul>
                                                                             </div>
                                                                             <div class="left col-xs-6">
                                                                                 <ul class="list-unstyled">
-                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
-                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
-                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
-                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
-                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
-                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
-                                                                                </ul>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="col-xs-12 bottom text-center">
-                                                                            <div class="col-xs-12 col-sm-6 emphasis">
-                                                                                <p class="ratings">
-                                                                                    <a>状态：正在运行</a>
-                                                                                </p>
-                                                                            </div>
-                                                                            <div class="col-xs-12 col-sm-6 emphasis">
-                                                                                <button type="button" class="btn btn-success btn-xs">
-                                                                                    <i class="fa fa-user"> </i> 开/关</button>
-                                                                                <button type="button" class="btn btn-primary btn-xs">
-                                                                                    <i class="fa fa-user"> </i> 详细配置
-                                                                                </button>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-md-4 profile_details">
-                                                                    <div class="well profile_view">
-                                                                        <div class="col-sm-12">
-                                                                            <h2 class="brief">江湾体育场</h2>
-                                                                            <p><strong>地址 </strong> 国和路346号 </p>
-                                                                            <div class="left col-xs-6">
-                                                                                <ul class="list-unstyled">
-                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
-                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
-                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
-                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
-                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
-                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
-                                                                                </ul>
-                                                                            </div>
-                                                                            <div class="left col-xs-6">
-                                                                                <ul class="list-unstyled">
-                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
-                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
-                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
-                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
-                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
-                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
                                                                                 </ul>
                                                                             </div>
                                                                         </div>
@@ -1642,64 +1685,22 @@
                                                                             <p><strong>地址 </strong> 国和路346号 </p>
                                                                             <div class="left col-xs-6">
                                                                                 <ul class="list-unstyled">
-                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
-                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
-                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
-                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
-                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
-                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
                                                                                 </ul>
                                                                             </div>
                                                                             <div class="left col-xs-6">
                                                                                 <ul class="list-unstyled">
-                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
-                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
-                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
-                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
-                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
-                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
-                                                                                </ul>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="col-xs-12 bottom text-center">
-                                                                            <div class="col-xs-12 col-sm-6 emphasis">
-                                                                                <p class="ratings">
-                                                                                    <a>状态：正在运行</a>
-                                                                                </p>
-                                                                            </div>
-                                                                            <div class="col-xs-12 col-sm-6 emphasis">
-                                                                                <button type="button" class="btn btn-success btn-xs">
-                                                                                    <i class="fa fa-user"> </i> 开/关</button>
-                                                                                <button type="button" class="btn btn-primary btn-xs">
-                                                                                    <i class="fa fa-user"> </i> 详细配置
-                                                                                </button>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-md-4 profile_details">
-                                                                    <div class="well profile_view">
-                                                                        <div class="col-sm-12">
-                                                                            <h2 class="brief">江湾体育场</h2>
-                                                                            <p><strong>地址 </strong> 国和路346号 </p>
-                                                                            <div class="left col-xs-6">
-                                                                                <ul class="list-unstyled">
-                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
-                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
-                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
-                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
-                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
-                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
-                                                                                </ul>
-                                                                            </div>
-                                                                            <div class="left col-xs-6">
-                                                                                <ul class="list-unstyled">
-                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
-                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
-                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
-                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
-                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
-                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
                                                                                 </ul>
                                                                             </div>
                                                                         </div>
@@ -1726,22 +1727,22 @@
                                                                             <p><strong>地址 </strong> 国和路346号 </p>
                                                                             <div class="left col-xs-6">
                                                                                 <ul class="list-unstyled">
-                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
-                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
-                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
-                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
-                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
-                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
                                                                                 </ul>
                                                                             </div>
                                                                             <div class="left col-xs-6">
                                                                                 <ul class="list-unstyled">
-                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
-                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
-                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
-                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
-                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
-                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
                                                                                 </ul>
                                                                             </div>
                                                                         </div>
@@ -1768,22 +1769,106 @@
                                                                             <p><strong>地址 </strong> 国和路346号 </p>
                                                                             <div class="left col-xs-6">
                                                                                 <ul class="list-unstyled">
-                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
-                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
-                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
-                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
-                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
-                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
                                                                                 </ul>
                                                                             </div>
                                                                             <div class="left col-xs-6">
                                                                                 <ul class="list-unstyled">
-                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
-                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
-                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
-                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
-                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
-                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                                                </ul>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-xs-12 bottom text-center">
+                                                                            <div class="col-xs-12 col-sm-6 emphasis">
+                                                                                <p class="ratings">
+                                                                                    <a>状态：正在运行</a>
+                                                                                </p>
+                                                                            </div>
+                                                                            <div class="col-xs-12 col-sm-6 emphasis">
+                                                                                <button type="button" class="btn btn-success btn-xs">
+                                                                                    <i class="fa fa-user"> </i> 开/关</button>
+                                                                                <button type="button" class="btn btn-primary btn-xs">
+                                                                                    <i class="fa fa-user"> </i> 详细配置
+                                                                                </button>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-4 profile_details">
+                                                                    <div class="well profile_view">
+                                                                        <div class="col-sm-12">
+                                                                            <h2 class="brief">江湾体育场</h2>
+                                                                            <p><strong>地址 </strong> 国和路346号 </p>
+                                                                            <div class="left col-xs-6">
+                                                                                <ul class="list-unstyled">
+                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                                                </ul>
+                                                                            </div>
+                                                                            <div class="left col-xs-6">
+                                                                                <ul class="list-unstyled">
+                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                                                </ul>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-xs-12 bottom text-center">
+                                                                            <div class="col-xs-12 col-sm-6 emphasis">
+                                                                                <p class="ratings">
+                                                                                    <a>状态：正在运行</a>
+                                                                                </p>
+                                                                            </div>
+                                                                            <div class="col-xs-12 col-sm-6 emphasis">
+                                                                                <button type="button" class="btn btn-success btn-xs">
+                                                                                    <i class="fa fa-user"> </i> 开/关</button>
+                                                                                <button type="button" class="btn btn-primary btn-xs">
+                                                                                    <i class="fa fa-user"> </i> 详细配置
+                                                                                </button>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-4 profile_details">
+                                                                    <div class="well profile_view">
+                                                                        <div class="col-sm-12">
+                                                                            <h2 class="brief">江湾体育场</h2>
+                                                                            <p><strong>地址 </strong> 国和路346号 </p>
+                                                                            <div class="left col-xs-6">
+                                                                                <ul class="list-unstyled">
+                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                                                </ul>
+                                                                            </div>
+                                                                            <div class="left col-xs-6">
+                                                                                <ul class="list-unstyled">
+                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                                                    <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
                                                                                 </ul>
                                                                             </div>
                                                                         </div>
@@ -1945,7 +2030,7 @@
             <!-- /top navigation -->
 <!--body>
 <div class="logo-header">
-    <img class="logo" src="/xhzn/mfunhcu/l4aqycui/svg/logo.svg" >
+    <img class="logo" src="/svg/logo.svg" >
 </div>
 <nav class="navbar navbar-default" role="navigation">
     <div class="navbar-header">
@@ -3477,64 +3562,22 @@
                                                 <p><strong>地址 </strong> 国和路346号 </p>
                                                 <div class="left col-xs-6">
                                                     <ul class="list-unstyled">
-                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
-                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
-                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
-                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
-                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
-                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
                                                     </ul>
                                                 </div>
                                                 <div class="left col-xs-6">
                                                     <ul class="list-unstyled">
-                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
-                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
-                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
-                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
-                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
-                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                            <div class="col-xs-12 bottom text-center">
-                                                <div class="col-xs-12 col-sm-6 emphasis">
-                                                    <p class="ratings">
-                                                        <a>状态：正在运行</a>
-                                                    </p>
-                                                </div>
-                                                <div class="col-xs-12 col-sm-6 emphasis">
-                                                    <button type="button" class="btn btn-success btn-xs">
-                                                        <i class="fa fa-user"> </i> 开/关</button>
-                                                    <button type="button" class="btn btn-primary btn-xs">
-                                                        <i class="fa fa-user"> </i> 详细配置
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4 profile_details">
-                                        <div class="well profile_view">
-                                            <div class="col-sm-12">
-                                                <h2 class="brief">江湾体育场</h2>
-                                                <p><strong>地址 </strong> 国和路346号 </p>
-                                                <div class="left col-xs-6">
-                                                    <ul class="list-unstyled">
-                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
-                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
-                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
-                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
-                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
-                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
-                                                    </ul>
-                                                </div>
-                                                <div class="left col-xs-6">
-                                                    <ul class="list-unstyled">
-                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
-                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
-                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
-                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
-                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
-                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
                                                     </ul>
                                                 </div>
                                             </div>
@@ -3561,64 +3604,22 @@
                                                 <p><strong>地址 </strong> 国和路346号 </p>
                                                 <div class="left col-xs-6">
                                                     <ul class="list-unstyled">
-                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
-                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
-                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
-                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
-                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
-                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
                                                     </ul>
                                                 </div>
                                                 <div class="left col-xs-6">
                                                     <ul class="list-unstyled">
-                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
-                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
-                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
-                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
-                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
-                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                            <div class="col-xs-12 bottom text-center">
-                                                <div class="col-xs-12 col-sm-6 emphasis">
-                                                    <p class="ratings">
-                                                        <a>状态：正在运行</a>
-                                                    </p>
-                                                </div>
-                                                <div class="col-xs-12 col-sm-6 emphasis">
-                                                    <button type="button" class="btn btn-success btn-xs">
-                                                        <i class="fa fa-user"> </i> 开/关</button>
-                                                    <button type="button" class="btn btn-primary btn-xs">
-                                                        <i class="fa fa-user"> </i> 详细配置
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4 profile_details">
-                                        <div class="well profile_view">
-                                            <div class="col-sm-12">
-                                                <h2 class="brief">江湾体育场</h2>
-                                                <p><strong>地址 </strong> 国和路346号 </p>
-                                                <div class="left col-xs-6">
-                                                    <ul class="list-unstyled">
-                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
-                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
-                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
-                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
-                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
-                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
-                                                    </ul>
-                                                </div>
-                                                <div class="left col-xs-6">
-                                                    <ul class="list-unstyled">
-                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
-                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
-                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
-                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
-                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
-                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
                                                     </ul>
                                                 </div>
                                             </div>
@@ -3645,22 +3646,22 @@
                                                 <p><strong>地址 </strong> 国和路346号 </p>
                                                 <div class="left col-xs-6">
                                                     <ul class="list-unstyled">
-                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
-                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
-                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
-                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
-                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
-                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
                                                     </ul>
                                                 </div>
                                                 <div class="left col-xs-6">
                                                     <ul class="list-unstyled">
-                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
-                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
-                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
-                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
-                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
-                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
                                                     </ul>
                                                 </div>
                                             </div>
@@ -3687,22 +3688,106 @@
                                                 <p><strong>地址 </strong> 国和路346号 </p>
                                                 <div class="left col-xs-6">
                                                     <ul class="list-unstyled">
-                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
-                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
-                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
-                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
-                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
-                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
                                                     </ul>
                                                 </div>
                                                 <div class="left col-xs-6">
                                                     <ul class="list-unstyled">
-                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
-                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
-                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
-                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
-                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
-                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg/icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-12 bottom text-center">
+                                                <div class="col-xs-12 col-sm-6 emphasis">
+                                                    <p class="ratings">
+                                                        <a>状态：正在运行</a>
+                                                    </p>
+                                                </div>
+                                                <div class="col-xs-12 col-sm-6 emphasis">
+                                                    <button type="button" class="btn btn-success btn-xs">
+                                                        <i class="fa fa-user"> </i> 开/关</button>
+                                                    <button type="button" class="btn btn-primary btn-xs">
+                                                        <i class="fa fa-user"> </i> 详细配置
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 profile_details">
+                                        <div class="well profile_view">
+                                            <div class="col-sm-12">
+                                                <h2 class="brief">江湾体育场</h2>
+                                                <p><strong>地址 </strong> 国和路346号 </p>
+                                                <div class="left col-xs-6">
+                                                    <ul class="list-unstyled">
+                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                    </ul>
+                                                </div>
+                                                <div class="left col-xs-6">
+                                                    <ul class="list-unstyled">
+                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-12 bottom text-center">
+                                                <div class="col-xs-12 col-sm-6 emphasis">
+                                                    <p class="ratings">
+                                                        <a>状态：正在运行</a>
+                                                    </p>
+                                                </div>
+                                                <div class="col-xs-12 col-sm-6 emphasis">
+                                                    <button type="button" class="btn btn-success btn-xs">
+                                                        <i class="fa fa-user"> </i> 开/关</button>
+                                                    <button type="button" class="btn btn-primary btn-xs">
+                                                        <i class="fa fa-user"> </i> 详细配置
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 profile_details">
+                                        <div class="well profile_view">
+                                            <div class="col-sm-12">
+                                                <h2 class="brief">江湾体育场</h2>
+                                                <p><strong>地址 </strong> 国和路346号 </p>
+                                                <div class="left col-xs-6">
+                                                    <ul class="list-unstyled">
+                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                    </ul>
+                                                </div>
+                                                <div class="left col-xs-6">
+                                                    <ul class="list-unstyled">
+                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
+                                                        <li><img src='/xhzn/mfunhcu/l4aqycui/svg//icon/AP.svg' style='width:24px;hight:24px'><i class="fa fa-building"></i> 测量项目=测量值</li>
                                                     </ul>
                                                 </div>
                                             </div>

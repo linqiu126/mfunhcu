@@ -42,7 +42,7 @@ class classTaskL2snrHsmmp
                 }
                 break;
             case MFUN_TECH_PLTF_HCUGX:
-                $raw_MsgHead = substr($content, 0, MFUN_HCU_MSG_HEAD_LENGTH);  //截取4Byte MsgHead
+                $raw_MsgHead = substr($content, 0, MFUN_HCU_MSG_HEAD_LENGTH);  //截取3Byte MsgHead
                 $msgHead = unpack(MFUN_HCU_MSG_HEAD_FORMAT, $raw_MsgHead);
 
                 $length = hexdec($msgHead['Len']) & 0xFF;
@@ -53,10 +53,13 @@ class classTaskL2snrHsmmp
                 $data = substr($content, MFUN_HCU_MSG_HEAD_LENGTH, $length - MFUN_HCU_MSG_HEAD_LENGTH);//截取消息数据域
 
                 $opt_key = hexdec($msgHead['Cmd']) & 0xFF;
-                switch ($opt_key) //MODBUS操作字处理
+                switch ($opt_key) //操作字处理
                 {
-                    case MFUN_HCU_MODBUS_DATA_REPORT:
-                        $resp = $this->hcu_video_req_process($deviceId, $data, $funcFlag);
+                    case MFUN_HCU_OPT_VEDIOLINK_RESP:
+                        $resp = $this->hcu_videolink_resp_process($deviceId, $data, $funcFlag);
+                        break;
+                    case MFUN_HCU_OPT_VEDIOFILE_RESP:
+                        $resp = $this->hcu_videofile_resp_process($deviceId, $data);
                         break;
                     default:
                         $resp = "";
@@ -80,7 +83,7 @@ class classTaskL2snrHsmmp
         return $resp;
     }
 
-    private function hcu_video_req_process( $deviceId,$content,$funcFlag)
+    private function hcu_videolink_resp_process( $deviceId,$content,$funcFlag)
     {
         $format = "A2Equ/A2Type/A2Flag_Lo/A8Longitude/A2Flag_La/A8Latitude/A8Altitude/A8Time";
         $data = unpack($format, $content);
@@ -93,8 +96,22 @@ class classTaskL2snrHsmmp
         $gps["altitude"] = hexdec($data['Altitude']) & 0xFFFFFFFF;
         $timeStamp = hexdec($data['Time']) & 0xFFFFFFFF;
 
-        $sDbObj = new classDbiL2snrHsmmp();
-        $sDbObj->dbi_video_data_save($deviceId, $sensorId, $timeStamp, $funcFlag,$gps);
+        $dbiL2snrHsmmpObj = new classDbiL2snrHsmmp();
+        $dbiL2snrHsmmpObj->dbi_video_data_save($deviceId, $sensorId, $timeStamp, $funcFlag,$gps);
+
+        $resp = ""; //no response message
+        return $resp;
+    }
+
+    private function hcu_videofile_resp_process($deviceId, $content)
+    {
+        $format = "A2Status/A35Video";
+        $data = unpack($format, $content);
+
+        $status = hexdec($data["Status"]) & 0xFF;
+        $videoid = $data["Video"];
+        $dbiL2snrHsmmpObj = new classDbiL2snrHsmmp();
+        $dbiL2snrHsmmpObj->dbi_video_data_status_update($deviceId, $status, $videoid);
 
         $resp = ""; //no response message
         return $resp;
