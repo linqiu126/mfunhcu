@@ -236,6 +236,22 @@ class classDbiL3apF4icm
 
     public function dbi_hcu_allsw_inqury()
     {
+        //建立连接
+        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli) {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $result = $mysqli->query("SELECT * FROM `t_l3f4icm_swfactory` WHERE 1");
+        $verlist = array();
+        if ($result->num_rows > 0)
+        {
+            while ($row = $result->fetch_array()) {
+                $version = $row["swverid"];
+                array_push($verlist, $version);
+            }
+        }
+        $mysqli->close();
+        return $verlist;
 
     }
 
@@ -298,6 +314,27 @@ class classDbiL3apF4icm
 
         $mysqli->close();
         return $result;
+    }
+
+    //仪表控制，更新传感器信息
+    public function dbi_sensor_info_update($DevCode, $SensorCode, $status,$ParaList)
+    {
+        //建立连接
+        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli) {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+
+        $mysqli->query("set character_set_results = utf8");
+
+        $query_str = "SELECT * FROM `t_l2sdk_iothcu_hcudevice` WHERE `devcode` = '$DevCode'";
+        $result = $mysqli->query($query_str);
+        if (($result != false) && ($result->num_rows)>0) {
+            $row = $result->fetch_array();
+
+        }
+
+
     }
 
 }

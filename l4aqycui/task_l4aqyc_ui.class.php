@@ -1226,18 +1226,22 @@ class classTaskL4aqycUi
                     $input = array("id" => $videoid);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM4ICM, MSG_ID_L4AQYCUI_TO_L3F4_VIDEOPLAY, "MSG_ID_L4AQYCUI_TO_L3F4_VIDEOPLAY",$input);
                     break;
-              /*
-              var verlist = new Array();
-              for (var i=0;i<10;i++){
-                  verlist.push("Ver "+(i+1)+".00");
-              }
-              var retval={
-                  status:"true",
-                  ret: verlist
-              }
-              return JSON.stringify(retval);
-              */
+                  /*
+                  var verlist = new Array();
+                  for (var i=0;i<10;i++){
+                      verlist.push("Ver "+(i+1)+".00");
+                  }
+                  var retval={
+                      status:"true",
+                      ret: verlist
+                  }
+                  return JSON.stringify(retval);
+                  */
                 case "GetVersionList":
+                    if (isset($_GET["id"])) $uid = trim($_GET["id"]); else  $uid = "";
+                    $input = array("uid" => $uid);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM4ICM, MSG_ID_L4AQYCUI_TO_L3F4_ALLSW, "MSG_ID_L4AQYCUI_TO_L3F4_ALLSW",$input);
+                    break;
 
                     $verlist = array();
                     for ($i=0;$i<10;$i++){
@@ -1250,26 +1254,32 @@ class classTaskL4aqycUi
                     $jsonencode = _encode($retval);
                     echo $jsonencode; break;
 
+                /*
+                   var ProjCode = data.ProjCode;
+                   var projdev = new Array();
+                   for(var i=0;i<5;i++){
+                       for(var j=0;j<4;j++){
+                           var temp = {
+                               DevCode: i+"_"+j,
+                               ProjName: "测量点"+i,
+                               version: "Ver 1.00"
+                           }
+                           projdev.push(temp);
+                       }
+                   }
+                   var retval={
+                       status:"true",
+                       ret: projdev
+                   };
+                   return JSON.stringify(retval);
+               */
                 case "GetProjDevVersion":
-                    /*
-                                var ProjCode = data.ProjCode;
-                                var projdev = new Array();
-                                for(var i=0;i<5;i++){
-                                    for(var j=0;j<4;j++){
-                                        var temp = {
-                                            DevCode: i+"_"+j,
-                                            ProjName: "测量点"+i,
-                                            version: "Ver 1.00"
-                                        }
-                                        projdev.push(temp);
-                                    }
-                                }
-                                var retval={
-                                    status:"true",
-                                    ret: projdev
-                                };
-                                return JSON.stringify(retval);
-                    */
+                    if (isset($_GET["id"])) $uid = trim($_GET["id"]); else  $uid = "";
+                    if (isset($_GET["ProjCode"])) $ProjCode = trim($_GET["ProjCode"]); else  $ProjCode = "";
+                    $input = array("uid" => $uid, "ProjCode" => $ProjCode);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM4ICM, MSG_ID_L4AQYCUI_TO_L3F4_DEVSW, "MSG_ID_L4AQYCUI_TO_L3F4_DEVSW",$input);
+                    break;
+
                     $ProjCode = $_GET["ProjCode"];
                     $projdev = array();
                     for($i=0;$i<5;$i++){
@@ -1289,8 +1299,7 @@ class classTaskL4aqycUi
                     $jsonencode = _encode($retval);
                     echo $jsonencode; break;
 
-                case "UpdateDevVersion":
-                    /*
+                /*
                     var usr = data.id;
                     var list = data.list;
                     var version = data.version;
@@ -1298,7 +1307,9 @@ class classTaskL4aqycUi
                         status:"true"
                     }
                     return JSON.stringify(retval);
-                    */
+                */
+                case "UpdateDevVersion":
+
                     $usr = $_GET["id"];
                     $list = $_GET["list"];
                     $version = $_GET["version"];

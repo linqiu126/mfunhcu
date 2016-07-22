@@ -1115,7 +1115,7 @@ function proj_manage(){
 }
 function para_manage(){
     clear_window();
-    write_title("参数管理","您可以在这里升级您的设备版本");
+    write_title("软件管理","您可以在这里升级您的设备版本");
     $("#ParaManageView").css("display","block");
     if(!parameter_initial)parameter_initialize();
     //$("#Undefined").css("display","block");
@@ -3704,7 +3704,7 @@ function draw_dev_table(data){
             }else{ txt =txt+ "<tr class=' li_menu' id='dev_table_cell"+i+"' DevCode='"+device_table[sequence+i].DevCode+"'>";}
 
             var type = "开启";
-            if(device_table[sequence+i].DevStatus == false) type = "关闭";
+            if(device_table[sequence+i].DevStatus == "false") type = "关闭";
             txt = txt +"<td>" + device_table[sequence+i].DevCode+"</td>"
                 +"<td>" + get_proj_name(device_table[sequence+i].ProjCode)+"</td>"
                 +"<td>" + get_point_name(device_table[sequence+i].StatCode)+"</td>"
@@ -3803,7 +3803,7 @@ function draw_dev_detail_panel(){
     $("#Label_dev_detail").empty();
     if(device_selected_sensor == null) return;
     var type = "开启";
-    if(device_selected.DevStatus == false) type = "关闭";
+    if(device_selected.DevStatus == "false") type = "关闭";
     var txt = "<p></p><p></p>"+
         "<div class='col-md-12 col-sm-12 col-xs-12 column'>"+
         "<dl >"+

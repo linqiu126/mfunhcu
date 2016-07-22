@@ -77,12 +77,12 @@ if (TC_IOT_HCU == true) {
 //TEST CASE: 测试图片存储的功能: START
     echo " [TC OTHERS: PICTURE STORAGE START]\n";
     $dbiObj = new classDbiL2snrHsmmp();
-    $data = addslashes(fread(fopen("C:\wamp\www\mfunhcu\l4oamtools\qrcode.png", "rb"), filesize("C:\wamp\www\mfunhcu\l4oamtools\qrcode.png")));
+    $data = addslashes(fread(fopen("C:\wamp\www\xhzn\mfunhcu\l4oamtools\qrcode.png", "rb"), filesize("C:\wamp\www\xhzn\mfunhcu\l4oamtools\qrcode.png")));
     $dbiObj->dbi_picture_data_save(1, 1, 1, $data, 1);
 //fclose($data);
 //读取操作
     $bindata = $dbiObj->dbi_latestPictureData_inqury(1);
-    $myfile = fopen("C:\wamp\www\mfunhcu\l4oamtools\aaapic.png", "w") or die("Unable to open file!");
+    $myfile = fopen("C:\wamp\www\xhzn\mfunhcu\l4oamtools\aaapic.png", "w") or die("Unable to open file!");
     fwrite($myfile, $bindata);
     fclose($myfile);
     echo " [TC OTHERS: PICTURE STORAGE END]\n";
@@ -92,7 +92,7 @@ if (TC_IOT_HCU == true) {
 //TEST CASE: 全局工程参数中图像的更新: START
     echo " [TC ENGPAR: UPDATE LOG PICTURE FILES START]\n";
     $dbiObj = new classDbiL1vmCommon();
-    $data = addslashes(fread(fopen("C:\wamp\www\mfunhcu\l4oamtools\qrcode.png", "rb"), filesize("C:\wamp\www\mfunhcu\l4oamtools\qrcode.png")));
+    $data = addslashes(fread(fopen("C:\wamp\www\xhzn\mfunhcu\l4oamtools\qrcode.png", "rb"), filesize("C:\wamp\www\xhzn\mfunhcu\l4oamtools\qrcode.png")));
     $project = MFUN_CURRENT_WORKING_PROGRAM_NAME_UNIQUE;
     $filename = json_encode("C:\wamp\www\mfunhcu\l4oamtools\qrcode.png");
     $filetype = "png";

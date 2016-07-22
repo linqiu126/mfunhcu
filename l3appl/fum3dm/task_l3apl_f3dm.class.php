@@ -400,11 +400,18 @@ class classTaskL3aplF3dm
     //TBD，功能待完善
     function func_sensor_update_process($DevCode, $SensorCode, $status, $ParaList)
     {
-        $uiL2snrDbObj = new classDbiL2snrCom();
-        $retval=array(
-            'status'=>'true',
-            'msg'=>''
-        );
+        $uiF4icmDbObj = new classDbiL3apF4icm();
+        $resp = $uiF4icmDbObj->dbi_sensor_info_update($DevCode, $SensorCode, $status,$ParaList);
+        if (!empty($resp))
+            $retval=array(
+                'status'=>'true',
+                'msg'=>$resp
+            );
+        else
+            $retval=array(
+                'status'=>'false',
+                'msg'=>null
+            );
         //$jsonencode = _encode($retval);
         $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
         return $jsonencode;

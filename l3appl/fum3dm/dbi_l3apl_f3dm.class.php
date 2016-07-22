@@ -571,9 +571,9 @@ class classDbiL3apF3dm
             $ipaddr = $row['ipaddr'];
             $devstatus = $row['switch'];
             $url = $row['videourl'];
-            if ($devstatus == "1")
+            if ($devstatus == "on")
                 $devstatus = "true";
-            elseif($devstatus == "0")
+            elseif($devstatus == "off")
                 $devstatus = "false";
 
             $query_str = "SELECT * FROM `t_l3f3dm_siteinfo` WHERE `statcode` = '$statcode'";      //查询HCU设备对应监测点号

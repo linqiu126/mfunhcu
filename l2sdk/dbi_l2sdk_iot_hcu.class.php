@@ -161,7 +161,10 @@ class classDbiL2sdkHcu
         $starttime = $devinfo["StartTime"];
         $preendtime = $devinfo["PreEndTime"];
         $endtime = $devinfo["EndTime"];
-        $devstatue = $devinfo["DevStatus"];
+        if($devinfo["DevStatus"] == "true")
+            $devstatus = "on";
+        else
+            $devstatus = "off";
         $videourl = $devinfo["VideoURL"];
         $default_sensor = MFUN_L3APL_F3DM_S_TYPE_EMC.";";
 
@@ -170,12 +173,12 @@ class classDbiL2sdkHcu
 
         if (($result->num_rows)>0) //重复，则覆盖
         {
-            $query_str = "UPDATE `t_l2sdk_iothcu_hcudevice` SET `statcode` = '$statcode',`switch` = '$devstatue',`videourl` = '$videourl' WHERE (`devcode` = '$devcode' )";
+            $query_str = "UPDATE `t_l2sdk_iothcu_hcudevice` SET `statcode` = '$statcode',`switch` = '$devstatus',`videourl` = '$videourl' WHERE (`devcode` = '$devcode' )";
             $result = $mysqli->query($query_str);
         }
         else //不存在，新增
         {
-            $query_str = "INSERT INTO `t_l2sdk_iothcu_hcudevice` (devcode,statcode,switch,videourl,sensorlist) VALUES ('$devcode','$statcode','$devstatue','$videourl','$default_sensor')";
+            $query_str = "INSERT INTO `t_l2sdk_iothcu_hcudevice` (devcode,statcode,switch,videourl,sensorlist) VALUES ('$devcode','$statcode','$devstatus','$videourl','$default_sensor')";
             $result = $mysqli->query($query_str);
         }
 

@@ -78,8 +78,53 @@ class classTaskL3aplF4icm
         return $jsonencode;
     }
 
-    //待完善的函数
-    function func_hcu_sw_update_process($deviceid, $projectid)
+    //查询所有可用的软件版本列表
+    function func_allsw_version_process()
+    {
+        $uiF4icmDbObj = new classDbiL3apF4icm(); //初始化一个UI DB对象
+        $sw_list = $uiF4icmDbObj->dbi_hcu_allsw_inqury();
+        //返回结果
+        $retval=array(
+            'status'=>'true',
+            'ret'=> $sw_list
+        );
+        $jsonencode = json_encode($retval);
+        return $jsonencode;
+    }
+
+    //查询指定项目下所有设备的当前版本信息
+    function func_devsw_version_process($projcode)
+    {
+        $uiF3dmDbObj = new classDbiL3apF3dm(); //初始化一个UI DB对象
+        $sitelist = $uiF3dmDbObj->dbi_proj_sitelist_req($projcode); //查询指定项目号下的所有监测点
+
+
+        $i = 0;
+        $devlist = array();
+        while($i < count($sitelist)){
+            $devlist = $uiF3dmDbObj->dbi_site_devlist_req($sitelist[$i]["id"]); //查询指定监测点下的HCU设备
+            $i++;
+        }
+
+        $j = 0;
+        while($j < count($devlist)){
+            $devcode = $devlist[$j]["name"];
+            $j++;
+            $uiF4icmDbObj = new classDbiL3apF4icm(); //初始化一个UI DB对象
+            $latestver = $uiF4icmDbObj->dbi_latest_hcu_swver_inqury();
+
+        }
+        //返回结果
+        $retval=array(
+            'status'=>'true',
+            'ret'=> $latestver
+        );
+        $jsonencode = json_encode($retval);
+        return $jsonencode;
+    }
+
+    //更新指定设备到指定的版本
+    function func_devsw_update_process($deviceid, $projectid)
     {
         //获取最新版本, swbin和dbbin
         $uiF4icmDbObj = new classDbiL3apF4icm(); //初始化一个UI DB对象
@@ -95,19 +140,6 @@ class classTaskL3aplF4icm
         );
         //$jsonencode = _encode($retval);
         $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
-        return $jsonencode;
-    }
-
-    function func_all_sw_process()
-    {
-        $uiF4icmDbObj = new classDbiL3apF4icm(); //初始化一个UI DB对象
-        $sw_list = $uiF4icmDbObj->dbi_hcu_allsw_inqury();
-        //返回结果
-        $retval=array(
-            'status'=>'true',
-            'ret'=> $sw_list
-        );
-        $jsonencode = json_encode($retval);
         return $jsonencode;
     }
 
@@ -143,15 +175,20 @@ class classTaskL3aplF4icm
         if ($msgId == MSG_ID_L4AQYCUI_TO_L3F4_ALLSW)
         {
             //解开消息
-            if (isset($msg["user"])) $user = $msg["user"]; else  $user = "";  //此处的UID是为了将来做权限控制
+            if (isset($msg["uid"])) $user = $msg["uid"]; else  $user = "";  //此处的UID是为了将来做权限控制
             //具体处理函数
-            $resp = $this->func_all_sw_process();
+            $resp = $this->func_allsw_version_process();
             $project = MFUN_PRJ_HCU_AQYCUI;
         }
 
         elseif ($msgId == MSG_ID_L4AQYCUI_TO_L3F4_DEVSW)
         {
-
+            //解开消息
+            if (isset($msg["uid"])) $user = $msg["uid"]; else  $user = "";  //此处的UID是为了将来做权限控制
+            if (isset($msg["ProjCode"])) $projcode = $msg["ProjCode"]; else  $projcode = "";
+            //具体处理函数
+            $resp = $this->func_devsw_version_process($projcode);
+            $project = MFUN_PRJ_HCU_AQYCUI;
         }
 
         elseif ($msgId == MSG_ID_L4AQYCUI_TO_L3F4_SWUPDATE)
@@ -160,7 +197,7 @@ class classTaskL3aplF4icm
             if (isset($msg["deviceid"])) $deviceid = $msg["deviceid"]; else  $deviceid = "";
             if (isset($msg["projectid"])) $projectid = $msg["projectid"]; else  $projectid = "";
             //具体处理函数
-            $resp = $this->func_hcu_sw_update_process($deviceid, $projectid);
+            $resp = $this->func_devsw_update_process($deviceid, $projectid);
             $project = MFUN_PRJ_HCU_AQYCUI;
         }
 
