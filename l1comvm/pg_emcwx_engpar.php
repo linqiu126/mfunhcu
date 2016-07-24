@@ -13,7 +13,8 @@ include_once "../l1comvm/pg_general_engpar.php";
  * EMCWX: 电磁辐射微信项目相关缺省配置参数                                            *
  *************************************************************************************/
 //正式测试公号/服务公号的配置参数
-date_default_timezone_set('prc');  //设置时区为北京时间
+date_default_timezone_set("PRC");  //设置时区为北京时间
+//date_default_timezone_set("Etc/GMT-8");东八区,我们比那快8小时所以减8
 define("MFUN_WX_TOKEN", "weixin");  //TOKEN，必须和微信绑定的URL使用的TOKEN一致
 define("MFUN_WX_DEBUG", false);
 define("MFUN_WX_LOGCALLBACK", false);

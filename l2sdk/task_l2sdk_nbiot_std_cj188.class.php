@@ -364,7 +364,8 @@ class classTaskL2sdkNbiotStdCj188
 
         //取得ser编号
         $cj188Obj = new classDbiL2sdkNbiotStdCj188(); //初始化一个UI DB对象
-        if ((($ser = $cj188Obj->dbi_std_cj188_context_ser_inqury($taddr)) == false) || (empty($ser = $cj188Obj->dbi_std_cj188_context_ser_inqury($taddr)) == true))
+        $ser = $cj188Obj->dbi_std_cj188_context_ser_inqury($taddr);
+        if (($ser == false) || (empty($ser) == true))
         {
             $cj188Obj->dbi_std_cj188_context_data_save($taddr, 0, "");
         }
