@@ -228,6 +228,7 @@ Make By：ZJL
 //= LZH, 2016 July.21, CURRENT_SW_DELIVERY R02.D34
 > UI界面增加视频播放和软件下载功能
 > 视频播放功能测试代码完善，输出正确
+> ZJL: 修正apach中报出的几个小错误
 
 
 //待完善的功能
