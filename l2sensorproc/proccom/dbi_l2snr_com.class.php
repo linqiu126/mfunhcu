@@ -44,10 +44,10 @@ INSERT INTO `t_l2snr_dataformat` (`deviceid`, `f_airpressure`, `f_emcdata`, `f_h
 -- --------------------------------------------------------
 
 --
--- 表的结构 `t_l2snr_sensorinfo`
+-- 表的结构 `t_l2snr_sensortype`
 --
 
-CREATE TABLE IF NOT EXISTS `t_l2snr_sensorinfo` (
+CREATE TABLE IF NOT EXISTS `t_l2snr_sensortype` (
   `id` char(6) NOT NULL,
   `name` char(10) NOT NULL,
   `model` char(20) NOT NULL,
@@ -60,10 +60,10 @@ CREATE TABLE IF NOT EXISTS `t_l2snr_sensorinfo` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- 转存表中的数据 `t_l2snr_sensorinfo`
+-- 转存表中的数据 `t_l2snr_sensortype`
 --
 
-INSERT INTO `t_l2snr_sensorinfo` (`id`, `name`, `model`, `vendor`, `modbus`, `period`, `samples`, `times`) VALUES
+INSERT INTO `t_l2snr_sensortype` (`id`, `name`, `model`, `vendor`, `modbus`, `period`, `samples`, `times`) VALUES
 ('S_0001', '细颗粒物', 'PM-100', '爱启公司', 1, 100, 500, 200),
 ('S_0002', '风速', 'WS-100', '爱启公司', 2, NULL, NULL, NULL),
 ('S_0003', '风向', 'WD-100', '爱启公司', 3, NULL, NULL, NULL),
@@ -328,14 +328,14 @@ class classDbiL2snrCom
         }
         $mysqli->query("set character_set_results = utf8");
 
-        $query_str = "SELECT * FROM `t_l2snr_sensorinfo` WHERE 1";
+        $query_str = "SELECT * FROM `t_l2snr_sensortype` WHERE 1";
         $result = $mysqli->query($query_str);
 
         $alarm_type = array();
         while(($result != false) && (($row = $result->fetch_array()) > 0))
         {
             $temp = array(
-                'id' => $row['id'],
+                'id' => $row['typeid'],
                 'name' => $row['name']
             );
             array_push($alarm_type, $temp);
@@ -355,14 +355,14 @@ class classDbiL2snrCom
         }
         $mysqli->query("set character_set_results = utf8");
 
-        $query_str = "SELECT * FROM `t_l2snr_sensorinfo` WHERE 1";
+        $query_str = "SELECT * FROM `t_l2snr_sensortype` WHERE 1";
         $result = $mysqli->query($query_str);
 
         $sensor_list = array();
         while($row = $result->fetch_array())
         {
             $temp = array(
-                'id' => $row['id'],
+                'id' => $row['typeid'],
                 'name' => $row['name'],
                 'nickname' => $row['model'],  //to be update
                 'memo' => $row['vendor'],
@@ -385,99 +385,70 @@ class classDbiL2snrCom
         }
         $mysqli->query("set character_set_results = utf8");
 
-        $query_str = "SELECT * FROM `t_l2sdk_iothcu_hcudevice` WHERE `devcode` = '$devcode'";
+        $query_str = "SELECT * FROM `t_l3f4icm_sensorctrl` WHERE `deviceid` = '$devcode'";
         $result = $mysqli->query($query_str);
 
-        if (($result->num_rows)>0)
-        {
-            $row = $result->fetch_array();
-            $strlist = $row['sensorlist'];
-            $onoff = $row['switch'];
-
-            $i = 0;
-            $temp = "";
-            $sensor_list =array();
-            while($i < strlen($strlist)){
-                $str = substr($strlist, $i, 1);
-                if($str != ";")
-                    $temp = $temp.$str;
-                elseif($str == ";"){
-                    array_push($sensor_list, $temp);
-                    $temp = "";
-                }
-                $i++;
-            }
-        }
-        else{
-            $sensor_list = "";
-        }
-
-        $i = 0;
         $sensorinfo = array();
-        while ($i < count($sensor_list))
+        while($row = $result->fetch_array())
         {
-            if(isset($sensor_list[$i])) $id = $sensor_list[$i]; else $id = "";
-            $query_str = "SELECT * FROM `t_l2snr_sensorinfo` WHERE `id` = '$id'";
-            $result = $mysqli->query($query_str);
-            if (($result->num_rows)>0)
-            {
-                $row = $result->fetch_array();
-                $modbus = $row['modbus'];
-                $period = $row['period'];
-                $samples = $row['samples'];
-                $times = $row['times'];
+            $typeid = $row['sensortype'];
+            $onoff = $row['onoffstatus'];
+            $modbus = $row['modbus_addr'];
+            $period = $row['meas_period'];
+            $samples = $row['sample_interval'];
+            $times = $row['meas_times'];
 
-                $paralist = array();
-                if ($id == "S_0001"){
-                    $temp = array(
-                        'name'=>"Status",
-                        'memo'=>"颗粒物传感器当前工作状态",
-                        'value'=>$onoff
-                    );
-                    array_push($paralist,$temp);
-                }
-                if(!empty($modbus)){
-                    $temp = array(
-                        'name'=>"MODBUS_Addr",
-                        'memo'=>"MODBUS地址",
-                        'value'=>$modbus
-                    );
-                    array_push($paralist,$temp);
-                }
-                if(!empty($period)){
-                    $temp = array(
-                        'name'=>"Measurement_Period",
-                        'memo'=>"测量周期",
-                        'value'=>$period
-                    );
-                    array_push($paralist,$temp);
-                }
-                if(!empty($samples)){
-                    $temp = array(
-                        'name'=>"Samples_Interval",
-                        'memo'=>"采样间隔",
-                        'value'=>$samples
-                    );
-                    array_push($paralist,$temp);
-                }
-                if(!empty($times)){
-                    $temp = array(
-                        'name'=>"Measurement_Times",
-                        'memo'=>"测量次数",
-                        'value'=>$times
-                    );
-                    array_push($paralist,$temp);
-                }
-
+            $paralist = array();
+            /*
+            if (!empty($onoff)){
                 $temp = array(
-                    'id' => $id,
-                    'status' => "true",
+                    'name'=>"Status",
+                    'memo'=>"传感器当前工作状态",
+                    'value'=>$onoff
+                );
+                array_push($paralist,$temp);
+            }
+            */
+            if(!empty($modbus)){
+                $temp = array(
+                    'name'=>"MODBUS_Addr",
+                    'memo'=>"MODBUS地址",
+                    'value'=>$modbus
+                );
+                array_push($paralist,$temp);
+            }
+            if(!empty($period)){
+                $temp = array(
+                    'name'=>"Measurement_Period",
+                    'memo'=>"测量周期",
+                    'value'=>$period
+                );
+                array_push($paralist,$temp);
+            }
+            if(!empty($samples)){
+                $temp = array(
+                    'name'=>"Samples_Interval",
+                    'memo'=>"采样间隔",
+                    'value'=>$samples
+                );
+                array_push($paralist,$temp);
+            }
+            if(!empty($times)){
+                $temp = array(
+                    'name'=>"Measurement_Times",
+                    'memo'=>"测量次数",
+                    'value'=>$times
+                );
+                array_push($paralist,$temp);
+            }
+            if((!empty($typeid)) AND (!empty($onoff))){
+                $temp = array(
+                    'id' => $typeid,
+                    'status' => $onoff,
                     'para'=>$paralist
                 );
-                array_push($sensorinfo, $temp);
-
             }
-            $i++;
+            array_push($sensorinfo, $temp);
         }
 
         $mysqli->close();

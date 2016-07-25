@@ -28,7 +28,7 @@ function logout(){
 }
 
 function video_windows(videoid){
-    window.open("http://"+window.location.host+"/video/video.html?id="+videoid,'监控录像',"height=284, width=340, top=0, left=400,toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no")
+    window.open("http://"+window.location.host+"/xhzn/mfunhcu/l4aqycui/video/video.html?id="+videoid,'监控录像',"height=284, width=340, top=0, left=400,toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no")
 }
 
 function screen_windows(){

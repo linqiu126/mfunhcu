@@ -389,10 +389,10 @@ INSERT INTO `t_l1vm_logwechatswitch` (`user`, `switch`) VALUES
 -- --------------------------------------------------------
 
 --
--- 表的结构 `t_l1vm_deviceversion`
+-- 表的结构 `t_l2sdk_iothcu_inventory`
 --
 
-CREATE TABLE IF NOT EXISTS `t_l1vm_deviceversion` (
+CREATE TABLE IF NOT EXISTS `t_l2sdk_iothcu_inventory` (
   `deviceid` char(50) NOT NULL,
   `hw_type` int(1) DEFAULT NULL,
   `hw_ver` int(2) DEFAULT NULL,
@@ -402,10 +402,10 @@ CREATE TABLE IF NOT EXISTS `t_l1vm_deviceversion` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
--- 转存表中的数据 `t_l1vm_deviceversion`
+-- 转存表中的数据 `t_l2sdk_iothcu_inventory`
 --
 
-INSERT INTO `t_l1vm_deviceversion` (`deviceid`, `hw_type`, `hw_ver`, `sw_rel`, `sw_drop`) VALUES
+INSERT INTO `t_l2sdk_iothcu_inventory` (`deviceid`, `hw_type`, `hw_ver`, `sw_rel`, `sw_drop`) VALUES
 ('HCU_SH_0304', 2, 3, 1, 90),
 ('HCU_SH_0302', 2, 3, 1, 92);
 
@@ -563,15 +563,15 @@ class classDbiL1vmCommon
             die('Could not connect: ' . mysqli_error($mysqli));
         }
         //先检查是否存在，如果存在，就更新，否则创建
-        $result = $mysqli->query("SELECT * FROM `t_l1vm_deviceversion` WHERE `deviceid` = '$deviceid'");
+        $result = $mysqli->query("SELECT * FROM `t_l2sdk_iothcu_inventory` WHERE `deviceid` = '$deviceid'");
         if (($result->num_rows)>0)
         {
-            $result=$mysqli->query("UPDATE `t_l1vm_deviceversion` SET `hw_type` = '$hw_type',`hw_ver` = '$hw_ver',`sw_rel` = '$sw_rel',`sw_drop` = '$sw_drop'
+            $result=$mysqli->query("UPDATE `t_l2sdk_iothcu_inventory` SET `hw_type` = '$hw_type',`hw_ver` = '$hw_ver',`sw_rel` = '$sw_rel',`sw_drop` = '$sw_drop'
                             WHERE `deviceid` = '$deviceid'");
         }
         else
         {
-            $result=$mysqli->query("INSERT INTO `t_l1vm_deviceversion` (deviceid, hw_type, hw_ver, sw_rel,sw_drop)
+            $result=$mysqli->query("INSERT INTO `t_l2sdk_iothcu_inventory` (deviceid, hw_type, hw_ver, sw_rel,sw_drop)
                           VALUES ('$deviceid', '$hw_type', '$hw_ver','$sw_rel','$sw_drop')");
         }
         $mysqli->close();

@@ -16,10 +16,10 @@
 
 -- --------------------------------------------------------
 --
--- 表的结构 `t_l3f4icm_sensorctrltable`
+-- 表的结构 `t_l3f4icm_sensorctrl`
 --
 
-CREATE TABLE IF NOT EXISTS `t_l3f4icm_sensorctrltable` (
+CREATE TABLE IF NOT EXISTS `t_l3f4icm_sensorctrl` (
   `sid` int(4) NOT NULL AUTO_INCREMENT,
   `deviceid` char(20) NOT NULL,
   `sensorid` int(2) NOT NULL,
@@ -35,10 +35,10 @@ CREATE TABLE IF NOT EXISTS `t_l3f4icm_sensorctrltable` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 --
--- 转存表中的数据 `t_l3f4icm_sensorctrltable`
+-- 转存表中的数据 `t_l3f4icm_sensorctrl`
 --
 
-INSERT INTO `t_l3f4icm_sensorctrltable` (`sid`, `deviceid`, `sensorid`, `equid`, `sensortype`, `workingcycle`, `onoffstatus`, `sampleduaration`, `paralpha`, `parbeta`, `pargama`) VALUES
+INSERT INTO `t_l3f4icm_sensorctrl` (`sid`, `deviceid`, `sensorid`, `equid`, `sensortype`, `workingcycle`, `onoffstatus`, `sampleduaration`, `paralpha`, `parbeta`, `pargama`) VALUES
 (1, 'HCU301_22', 111, 6, '风速', 0, 0, 0, 0, 0, 0);
 
 
@@ -83,14 +83,14 @@ class classDbiL3apF4icm
         }
 
         //存储新记录，如果发现是已经存在的数据，则覆盖，否则新增
-        $result = $mysqli->query("SELECT * FROM `t_l3f4icm_sensorctrltable` WHERE (`deviceid` = '$deviceid' AND `sensorid` = '$sensorid'");
+        $result = $mysqli->query("SELECT * FROM `t_l3f4icm_sensorctrl` WHERE (`deviceid` = '$deviceid' AND `sensorid` = '$sensorid'");
         if (($result != false) && ($result->num_rows)>0)   //重复，则覆盖
         {
-            $result=$mysqli->query("UPDATE `t_l3f4icm_sensorctrltable` SET  `equid` = '$equid',`sensortype` = '$sensortype' WHERE (`deviceid` = '$deviceid' AND `sensorid` = '$sensorid')");
+            $result=$mysqli->query("UPDATE `t_l3f4icm_sensorctrl` SET  `equid` = '$equid',`sensortype` = '$sensortype' WHERE (`deviceid` = '$deviceid' AND `sensorid` = '$sensorid')");
         }
         else   //不存在，新增
         {
-            $result=$mysqli->query("INSERT INTO `t_l3f4icm_sensorctrltable` (deviceid,sensorid,equid,sensortype)
+            $result=$mysqli->query("INSERT INTO `t_l3f4icm_sensorctrl` (deviceid,sensorid,equid,sensortype)
                     VALUES ('$deviceid','$sensorid','$equid','$sensortype')");
         }
         $mysqli->close();
@@ -108,7 +108,7 @@ class classDbiL3apF4icm
         {
             die('Could not connect: ' . mysqli_error($mysqli));
         }
-        $result = $mysqli->query("DELETE FROM `t_l3f4icm_sensorctrltable` WHERE ((`deviceid` = '$deviceid' AND `sensorid` ='$sensorid') AND (TO_DAYS(NOW()) - TO_DAYS(`date`) > '$days'))");
+        $result = $mysqli->query("DELETE FROM `t_l3f4icm_sensorctrl` WHERE ((`deviceid` = '$deviceid' AND `sensorid` ='$sensorid') AND (TO_DAYS(NOW()) - TO_DAYS(`date`) > '$days'))");
         $mysqli->close();
         return $result;
     }
@@ -120,7 +120,7 @@ class classDbiL3apF4icm
         if (!$mysqli) {
             die('Could not connect: ' . mysqli_error($mysqli));
         }
-        $result = $mysqli->query("SELECT * FROM `t_l3f4icm_sensorctrltable` WHERE `sid` = '$sid'");
+        $result = $mysqli->query("SELECT * FROM `t_l3f4icm_sensorctrl` WHERE `sid` = '$sid'");
         if (($result != false) && ($result->num_rows)>0)
         {
             $row = $result->fetch_array();
@@ -234,6 +234,7 @@ class classDbiL3apF4icm
         return $resp;
     }
 
+    //查询所有可用SW版本
     public function dbi_hcu_allsw_inqury()
     {
         //建立连接
@@ -245,8 +246,11 @@ class classDbiL3apF4icm
         $verlist = array();
         if ($result->num_rows > 0)
         {
+            $apiL2snrCommonServiceObj = new classApiL2snrCommonService();
             while ($row = $result->fetch_array()) {
-                $version = $row["swverid"];
+                $sw_rel = $apiL2snrCommonServiceObj->byte2string($row["sw_rel"]);
+                $sw_drop = $apiL2snrCommonServiceObj->ushort2string($row["sw_drop"]);
+                $version = "HCUSW_R" . $sw_rel . ".D" . $sw_drop;
                 array_push($verlist, $version);
             }
         }
@@ -255,51 +259,46 @@ class classDbiL3apF4icm
 
     }
 
-    //HCU_SWVER对应数据库的访问，获取最新的SWVER
-    public function dbi_latest_hcu_swver_inqury()
+    //查询指定HCU最新的SW Version
+    public function dbi_latest_hcu_swver_inqury($devcode)
     {
         //建立连接
         $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
         if (!$mysqli) {
             die('Could not connect: ' . mysqli_error($mysqli));
         }
-        $result = $mysqli->query("SELECT * FROM `t_l3f4icm_swfactory` WHERE 1");
+        $query_str = "SELECT * FROM `t_l2sdk_iothcu_inventory` WHERE `devcode` = '$devcode'";
+        $result = $mysqli->query($query_str);
 
-        $LatestVerValue = "";
-        $LatestRelease = 0;
-        $LatestVersion = 0;
-        if (($result != false) && ($result->num_rows)>0)   //重复，则覆盖
-        {
-            while($row = $result->fetch_array()){
-                $temp1 = $row['swverid'];
-                //对版本格式有严格的诉求，否则会出错
-                $temp = substr(trim($temp1), -7);
-                $release = substr($temp, 1, 2);
-                $version = substr($temp, 4, 3);
-                //空的，或者大版本大，或者大版本相当但小版本大
-                if ((empty($LatestVerValue)) || ($release > $LatestRelease) || (($release == $LatestRelease) && ($version > $LatestVersion))){
-                    $LatestVerValue = $temp1;
-                    $LatestRelease = $release;
-                    $LatestVersion = $version;
-                }
-                else{}
-            }
+        if (($result != false) AND ($result->num_rows)>0) {
+            $apiL2snrCommonServiceObj = new classApiL2snrCommonService();
+            $row = $result->fetch_array();
+            $sw_rel = $apiL2snrCommonServiceObj->byte2string($row["sw_rel"]);
+            $sw_drop = $apiL2snrCommonServiceObj->ushort2string($row["sw_drop"]);
+            $version = "SW_R" . $sw_rel . ".D" . $sw_drop;
         }
-        $result = $LatestVerValue;
+        else
+            $version = "";
 
         $mysqli->close();
-        return $result;
+        return $version;
     }
 
-    //HCU_SWVER对应数据库的访问
-    public function dbi_hcu_swver_inqury($swverid)
+    //更新指定设备到指定软件版本
+    public function dbi_hcu_swver_update($devlist, $version)
+    {
+
+    }
+
+    //获取HCU对应软件和数据库bin文件
+    public function dbi_hcu_swdb_bin_get($sw_rel, $sw_drop)
     {
         //建立连接
         $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
         if (!$mysqli) {
             die('Could not connect: ' . mysqli_error($mysqli));
         }
-        $result = $mysqli->query("SELECT * FROM `t_l3f4icm_swfactory` WHERE `swverid` = '$swverid'");
+        $result = $mysqli->query("SELECT * FROM `t_l3f4icm_swfactory` WHERE (`sw_rel` = '$sw_rel' AND `sw_drop` = '$sw_drop')");
 
         $LatestSwValue = "";
         $LatestDbValue = "";
@@ -316,7 +315,7 @@ class classDbiL3apF4icm
         return $result;
     }
 
-    //仪表控制，更新传感器信息
+    //仪表控制，更新传感器信息,发送传感器参数修改命令
     public function dbi_sensor_info_update($DevCode, $SensorCode, $status,$ParaList)
     {
         //建立连接
@@ -324,17 +323,129 @@ class classDbiL3apF4icm
         if (!$mysqli) {
             die('Could not connect: ' . mysqli_error($mysqli));
         }
-
         $mysqli->query("set character_set_results = utf8");
 
-        $query_str = "SELECT * FROM `t_l2sdk_iothcu_hcudevice` WHERE `devcode` = '$DevCode'";
+        $query_str = "SELECT * FROM `t_l3f4icm_sensorctrl` WHERE `deviceid` = '$DevCode' AND `sensortype` = '$SensorCode' ";
         $result = $mysqli->query($query_str);
-        if (($result != false) && ($result->num_rows)>0) {
-            $row = $result->fetch_array();
+        if (($result != false) && ($result->num_rows)>0)
+        {
+            //生成控制命令的控制字
+            $apiL2snrCommonServiceObj = new classApiL2snrCommonService();
+            if ($SensorCode == MFUN_L3APL_F3DM_S_TYPE_PM) {
+                $ctrl_key = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_CMDID_PM25_DATA);
+                $equip_id = $apiL2snrCommonServiceObj->byte2string(MFUN_L3APL_F4ICM_ID_EQUIP_PM);
+            }
+            elseif ($SensorCode == MFUN_L3APL_F3DM_S_TYPE_WINDSPD){
+                $ctrl_key = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_CMDID_WINDSPD_DATA);
+                $equip_id = $apiL2snrCommonServiceObj->byte2string(MFUN_L3APL_F4ICM_ID_EQUIP_WINDSPD);
+            }
+            elseif ($SensorCode == MFUN_L3APL_F3DM_S_TYPE_WINDDIR){
+                $ctrl_key = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_CMDID_WINDDIR_DATA);
+                $equip_id = $apiL2snrCommonServiceObj->byte2string(MFUN_L3APL_F4ICM_ID_EQUIP_WINDDIR);
+            }
+            elseif ($SensorCode == MFUN_L3APL_F3DM_S_TYPE_EMC){
+                $ctrl_key = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_CMDID_EMC_DATA);
+                $equip_id = $apiL2snrCommonServiceObj->byte2string(MFUN_L3APL_F4ICM_ID_EQUIP_EMC);
+            }
+            elseif ($SensorCode == MFUN_L3APL_F3DM_S_TYPE_TEMP){
+                $ctrl_key = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_CMDID_TEMP_DATA);
+                $equip_id = $apiL2snrCommonServiceObj->byte2string(MFUN_L3APL_F4ICM_ID_EQUIP_TEMP);
+            }
+            elseif ($SensorCode == MFUN_L3APL_F3DM_S_TYPE_HUMID){
+                $ctrl_key = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_CMDID_HUMID_DATA);
+                $equip_id = $apiL2snrCommonServiceObj->byte2string(MFUN_L3APL_F4ICM_ID_EQUIP_HUMID);
+            }
+            elseif ($SensorCode == MFUN_L3APL_F3DM_S_TYPE_NOISE){
+                $ctrl_key = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_CMDID_NOISE_DATA);
+                $equip_id = $apiL2snrCommonServiceObj->byte2string(MFUN_L3APL_F4ICM_ID_EQUIP_NOISE);
+            }
+            else{
+                $ctrl_key = "";
+                $equip_id = "";
+            }
 
+            $row = $result->fetch_array();  //这里暂时假定每个设备一种类型的传感器只有一个
+            if(!empty($status) AND ($status != $row['onoffstatus']))  //更新传感器开关状态
+            {
+                $optkey_switch_set = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_MODBUS_SWITCH_SET);
+                $resp = $mysqli->query("UPDATE `t_l3f4icm_sensorctrl` SET `onoffstatus` = '$status' WHERE (`deviceid` = '$DevCode' AND `sensortype` = '$SensorCode')");
+            }
+
+            $i = 0;
+            while($i < count($ParaList))
+            {
+                $value = $ParaList[$i]['value'];
+                if($ParaList[$i]['name'] == "MODBUS_Addr" AND $value != $row['modbus_addr']){
+                    $modebus_addr = $value;
+                    $optkey_modbus_set = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_MODBUS_ADDR_SET);
+                    $query_str = "UPDATE `t_l3f4icm_sensorctrl` SET `modbus_addr` = '$value' WHERE (`deviceid` = '$DevCode' AND `sensortype` = '$SensorCode')";
+                    $resp = $mysqli->query($query_str);
+                }
+                elseif($ParaList[$i]['name'] == "Measurement_Period" AND ($value != $row['meas_period'])){
+                    $meas_period = $value;
+                    $optkey_period_set = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_MODBUS_PERIOD_SET);
+                    $query_str = "UPDATE `t_l3f4icm_sensorctrl` SET `meas_period` = '$value' WHERE (`deviceid` = '$DevCode' AND `sensortype` = '$SensorCode')";
+                    $resp = $mysqli->query($query_str);
+                }
+                elseif($ParaList[$i]['name'] == "Samples_Interval" AND ($value != $row['sample_interval'])){
+                    $sample_interval = $value;
+                    $optkey_samples_set = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_MODBUS_SAMPLES_SET);
+                    $query_str = "UPDATE `t_l3f4icm_sensorctrl` SET `sample_interval` = '$value' WHERE (`deviceid` = '$DevCode' AND `sensortype` = '$SensorCode')";
+                    $resp = $mysqli->query($query_str);
+                }
+                elseif($ParaList[$i]['name'] == "Measurement_Times" AND ($value != $row['meas_times'])){
+                    $meas_times = $value;
+                    $optkey_times_set = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_MODBUS_TIMES_SET);
+                    $query_str = "UPDATE `t_l3f4icm_sensorctrl` SET `meas_times` = '$value' WHERE (`deviceid` = '$DevCode' AND `sensortype` = '$SensorCode')";
+                    $resp = $mysqli->query($query_str);
+                }
+                $i++;
+            }
+            if(!empty($ctrl_key) AND !empty($optkey_switch_set)){
+                if($status == "true")
+                    $switch = "01";
+                elseif($status == "false")
+                    $switch = "00";
+                $len = $apiL2snrCommonServiceObj->byte2string(strlen( $optkey_switch_set . $equip_id . $switch)/2);
+                $respCmd = $ctrl_key . $len . $optkey_switch_set . $equip_id . $switch;
+                $dbiL1vmCommonObj = new classDbiL1vmCommon();
+                $resp = $dbiL1vmCommonObj->dbi_cmdbuf_save_cmd(trim($DevCode), trim($respCmd));
+            }
+            if(!empty($ctrl_key)AND !empty($optkey_modbus_set)){
+                $modebus_addr = $apiL2snrCommonServiceObj->ushort2string($modebus_addr & 0xFFFF);
+                $len = $apiL2snrCommonServiceObj->byte2string(strlen( $optkey_modbus_set . $equip_id . $modebus_addr)/2);
+                $respCmd = $ctrl_key . $len . $optkey_modbus_set . $equip_id . $modebus_addr;
+                $dbiL1vmCommonObj = new classDbiL1vmCommon();
+                $resp = $dbiL1vmCommonObj->dbi_cmdbuf_save_cmd(trim($DevCode), trim($respCmd));
+            }
+            if(!empty($ctrl_key)AND !empty($optkey_period_set)){
+                $meas_period = $apiL2snrCommonServiceObj->ushort2string($meas_period & 0xFFFF);
+                $len = $apiL2snrCommonServiceObj->byte2string(strlen( $optkey_period_set . $equip_id . $meas_period)/2);
+                $respCmd = $ctrl_key . $len . $optkey_period_set . $equip_id . $meas_period;
+                $dbiL1vmCommonObj = new classDbiL1vmCommon();
+                $resp = $dbiL1vmCommonObj->dbi_cmdbuf_save_cmd(trim($DevCode), trim($respCmd));
+            }
+            if(!empty($ctrl_key) AND !empty($optkey_samples_set)){
+                $sample_interval = $apiL2snrCommonServiceObj->ushort2string($sample_interval & 0xFFFF);
+                $len = $apiL2snrCommonServiceObj->byte2string(strlen( $optkey_samples_set . $equip_id . $sample_interval)/2);
+                $respCmd = $ctrl_key . $len . $optkey_samples_set . $equip_id . $sample_interval;
+                $dbiL1vmCommonObj = new classDbiL1vmCommon();
+                $resp = $dbiL1vmCommonObj->dbi_cmdbuf_save_cmd(trim($DevCode), trim($respCmd));
+            }
+            if(!empty($ctrl_key) AND !empty($optkey_times_set)){
+                $meas_times = $apiL2snrCommonServiceObj->ushort2string($meas_times & 0xFFFF);
+                $len = $apiL2snrCommonServiceObj->byte2string(strlen( $optkey_times_set . $equip_id . $meas_times)/2);
+                $respCmd = $ctrl_key . $len . $optkey_times_set . $equip_id . $meas_times;
+                $dbiL1vmCommonObj = new classDbiL1vmCommon();
+                $resp = $dbiL1vmCommonObj->dbi_cmdbuf_save_cmd(trim($DevCode), trim($respCmd));
+            }
+
+            $resp = "Success";
         }
-
-
+        else
+            $resp = "";
+        $mysqli->close();
+        return $resp;
     }
 
 }

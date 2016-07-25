@@ -12,10 +12,10 @@
 -- --------------------------------------------------------
 
 --
--- 表的结构 `t_l2sdk_iothcu_hcudevice`
+-- 表的结构 `t_l2sdk_iothcu_inventory`
 --
 
-CREATE TABLE IF NOT EXISTS `t_l2sdk_iothcu_hcudevice` (
+CREATE TABLE IF NOT EXISTS `t_l2sdk_iothcu_inventory` (
   `devcode` char(20) NOT NULL,
   `statcode` char(20) DEFAULT NULL,
   `macaddr` char(20) DEFAULT NULL,
@@ -27,10 +27,10 @@ CREATE TABLE IF NOT EXISTS `t_l2sdk_iothcu_hcudevice` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
--- 转存表中的数据 `t_l2sdk_iothcu_hcudevice`
+-- 转存表中的数据 `t_l2sdk_iothcu_inventory`
 --
 
-INSERT INTO `t_l2sdk_iothcu_hcudevice` (`devcode`, `statcode`, `macaddr`, `ipaddr`, `switch`, `videourl`, `sensorlist`) VALUES
+INSERT INTO `t_l2sdk_iothcu_inventory` (`devcode`, `statcode`, `macaddr`, `ipaddr`, `switch`, `videourl`, `sensorlist`) VALUES
 ('HCU_SH_0301', '120101001', '', '', 'on', '', 'S_0001;S_0002;S_0003;S_0005;S_0006;S_0007;S_000A;'),
 ('HCU_SH_0302', '120101015', '', '', 'off', 'http://192.168.31.232:8000/avorion/avorion201606061346.h264', 'S_0001;S_0002;S_0003;S_0005;S_0006;S_0007;S_000A;'),
 ('HCU_SH_0305', '120101005', '', '', 'off', '', 'S_0002;S_0003;S_0005;S_0006;S_0007;'),
@@ -48,7 +48,7 @@ class classDbiL2sdkHcu
 
     }
 
-    //验证设备的合法性，输入的设备编号是否在HCU设备信息表（t_l2sdk_iothcu_hcudevice）中有记录
+    //验证设备的合法性，输入的设备编号是否在HCU设备信息表（t_l2sdk_iothcu_inventory）中有记录
     public function dbi_hcuDevice_valid_device($devcode)
     {
         $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
@@ -57,7 +57,7 @@ class classDbiL2sdkHcu
             die('Could not connect: ' . mysqli_error($mysqli));
         }
 
-        $result = $mysqli->query("SELECT `statcode` FROM `t_l2sdk_iothcu_hcudevice` WHERE (`devcode` = '$devcode')");
+        $result = $mysqli->query("SELECT `statcode` FROM `t_l2sdk_iothcu_inventory` WHERE (`devcode` = '$devcode')");
 
         if ($result->num_rows>0){
             $row = $result->fetch_array();
@@ -79,7 +79,7 @@ class classDbiL2sdkHcu
         {
             die('Could not connect: ' . mysqli_error($mysqli));
         }
-        $result = $mysqli->query("SELECT * FROM `t_l2sdk_iothcu_hcudevice` WHERE (`devcode` = '$deviceid'AND `macaddr` = '$mac') ");
+        $result = $mysqli->query("SELECT * FROM `t_l2sdk_iothcu_inventory` WHERE (`devcode` = '$deviceid'AND `macaddr` = '$mac') ");
         if ($result->num_rows>0)
             $result = true;
         else
@@ -99,7 +99,7 @@ class classDbiL2sdkHcu
         }
 
         //因为devcode和statcode已经检查存在,所以直接更新状态
-        $result = $mysqli->query("UPDATE `t_l2sdk_iothcu_hcudevice` SET `status` = '$status' WHERE `devcode` = '$deviceid' AND `statcode` = '$statcode'");
+        $result = $mysqli->query("UPDATE `t_l2sdk_iothcu_inventory` SET `status` = '$status' WHERE `devcode` = '$deviceid' AND `statcode` = '$statcode'");
 
         $mysqli->close();
         return $result;
@@ -114,7 +114,7 @@ class classDbiL2sdkHcu
         {
             die('Could not connect: ' . mysqli_error($mysqli));
         }
-        $result = $mysqli->query("SELECT `devcode` FROM `t_l2sdk_iothcu_hcudevice` WHERE 1");
+        $result = $mysqli->query("SELECT `devcode` FROM `t_l2sdk_iothcu_inventory` WHERE 1");
 
         $i=0;
         while($row = $result->fetch_array())
@@ -137,7 +137,7 @@ class classDbiL2sdkHcu
             die('Could not connect: ' . mysqli_error($mysqli));
         }
 
-        $query_str = "SELECT * FROM `t_l2sdk_iothcu_hcudevice` WHERE 1";
+        $query_str = "SELECT * FROM `t_l2sdk_iothcu_inventory` WHERE 1";
         $result = $mysqli->query($query_str);
         $total = $result->num_rows;
 
@@ -168,17 +168,17 @@ class classDbiL2sdkHcu
         $videourl = $devinfo["VideoURL"];
         $default_sensor = MFUN_L3APL_F3DM_S_TYPE_EMC.";";
 
-        $query_str = "SELECT * FROM `t_l2sdk_iothcu_hcudevice` WHERE `devcode` = '$devcode'";
+        $query_str = "SELECT * FROM `t_l2sdk_iothcu_inventory` WHERE `devcode` = '$devcode'";
         $result = $mysqli->query($query_str);
 
         if (($result->num_rows)>0) //重复，则覆盖
         {
-            $query_str = "UPDATE `t_l2sdk_iothcu_hcudevice` SET `statcode` = '$statcode',`switch` = '$devstatus',`videourl` = '$videourl' WHERE (`devcode` = '$devcode' )";
+            $query_str = "UPDATE `t_l2sdk_iothcu_inventory` SET `statcode` = '$statcode',`switch` = '$devstatus',`videourl` = '$videourl' WHERE (`devcode` = '$devcode' )";
             $result = $mysqli->query($query_str);
         }
         else //不存在，新增
         {
-            $query_str = "INSERT INTO `t_l2sdk_iothcu_hcudevice` (devcode,statcode,switch,videourl,sensorlist) VALUES ('$devcode','$statcode','$devstatus','$videourl','$default_sensor')";
+            $query_str = "INSERT INTO `t_l2sdk_iothcu_inventory` (devcode,statcode,switch,videourl,sensorlist) VALUES ('$devcode','$statcode','$devstatus','$videourl','$default_sensor')";
             $result = $mysqli->query($query_str);
         }
 

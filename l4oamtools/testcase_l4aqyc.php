@@ -164,8 +164,8 @@ if (TC_L4AQYC_UI == true) {
 
     echo " [TC L4AQYC: UserTable START]\n";
     $_GET["action"] = "UserTable";
-    $_GET["length"] = "11";
-    $_GET["startseq"] = "11";
+    $_GET["length"] = "5";
+    $_GET["startseq"] = "1";
     require("../l4aqycui/request.php");
     echo " [TC L4AQYC: UserTable END]\n";
 
@@ -178,26 +178,26 @@ if (TC_L4AQYC_UI == true) {
 
     echo " [TC L4AQYC: ProjectPGList START]\n";
     $_GET["action"] = "ProjectPGList";
-    $_GET["user"] = "11";
+    $_GET["user"] = "UID001";
     require("../l4aqycui/request.php");
     echo " [TC L4AQYC: ProjectPGList END]\n";
 
     echo " [TC L4AQYC: ProjectList START]\n";
     $_GET["action"] = "ProjectList";
-    $_GET["user"] = "11";
+    $_GET["user"] = "UID001";
     require("../l4aqycui/request.php");
     echo " [TC L4AQYC: ProjectList END]\n";
 
     echo " [TC L4AQYC: UserProj START]\n";
     $_GET["action"] = "UserProj";
-    $_GET["userid"] = "11";
+    $_GET["userid"] = "UID001";
     require("../l4aqycui/request.php");
     echo " [TC L4AQYC: UserProj END]\n";
 
     echo " [TC L4AQYC: PGTable START]\n";
     $_GET["action"] = "PGTable";
-    $_GET["length"] = "11";
-    $_GET["startseq"] = "11";
+    $_GET["length"] = "5";
+    $_GET["startseq"] = "1";
     require("../l4aqycui/request.php");
     echo " [TC L4AQYC: PGTable END]\n";
 
@@ -237,14 +237,14 @@ if (TC_L4AQYC_UI == true) {
 
     echo " [TC L4AQYC: PGProj START]\n";
     $_GET["action"] = "PGProj";
-    $_GET["id"] = "11";
+    $_GET["id"] = "PG_1111";
     require("../l4aqycui/request.php");
     echo " [TC L4AQYC: PGProj END]\n";
 
     echo " [TC L4AQYC: ProjTable START]\n";
     $_GET["action"] = "ProjTable";
-    $_GET["length"] = "11";
-    $_GET["startseq"] = "11";
+    $_GET["length"] = "5";
+    $_GET["startseq"] = "1";
     require("../l4aqycui/request.php");
     echo " [TC L4AQYC: ProjTable END]\n";
 
@@ -282,20 +282,20 @@ if (TC_L4AQYC_UI == true) {
 
     echo " [TC L4AQYC: ProjPoint START]\n";
     $_GET["action"] = "ProjPoint";
-    $_GET["user"] = "11";
+    $_GET["user"] = "UID001";
     require("../l4aqycui/request.php");
     echo " [TC L4AQYC: ProjPoint END]\n";
 
     echo " [TC L4AQYC: PointProj START]\n";
     $_GET["action"] = "PointProj";
-    $_GET["ProjCode"] = "11";
+    $_GET["ProjCode"] = "P_0001";
     require("../l4aqycui/request.php");
     echo " [TC L4AQYC: PointProj END]\n";
 
     echo " [TC L4AQYC: PointTable START]\n";
     $_GET["action"] = "PointTable";
-    $_GET["length"] = "11";
-    $_GET["startseq"] = "11";
+    $_GET["length"] = "5";
+    $_GET["startseq"] = "1";
     require("../l4aqycui/request.php");
     echo " [TC L4AQYC: PointTable END]\n";
 
@@ -350,14 +350,14 @@ if (TC_L4AQYC_UI == true) {
 
     echo " [TC L4AQYC: PointDev START]\n";
     $_GET["action"] = "PointDev";
-    $_GET["StatCode"] = "11";
+    $_GET["StatCode"] = "120101001";
     require("../l4aqycui/request.php");
     echo " [TC L4AQYC: PointDev END]\n";
 
     echo " [TC L4AQYC: DevTable START]\n";
     $_GET["action"] = "DevTable";
-    $_GET["length"] = "11";
-    $_GET["startseq"] = "11";
+    $_GET["length"] = "5";
+    $_GET["startseq"] = "1";
     require("../l4aqycui/request.php");
     echo " [TC L4AQYC: DevTable END]\n";
 
@@ -393,26 +393,26 @@ if (TC_L4AQYC_UI == true) {
 
     echo " [TC L4AQYC: DevAlarm START]\n";
     $_GET["action"] = "DevAlarm";
-    $_GET["StatCode"] = "11";
+    $_GET["StatCode"] = "120101001";
     require("../l4aqycui/request.php");
     echo " [TC L4AQYC: DevAlarm END]\n";
 
     echo " [TC L4AQYC: DevAlarm START]\n";
     $_GET["action"] = "DevAlarm";
-    $_GET["StatCode"] = "11";
+    $_GET["StatCode"] = "120101001";
     require("../l4aqycui/request.php");
     echo " [TC L4AQYC: DevAlarm END]\n";
 
     echo " [TC L4AQYC: MonitorList START]\n";
     $_GET["action"] = "MonitorList";
-    $_GET["id"] = "11";
+    $_GET["id"] = "UID001";
     require("../l4aqycui/request.php");
     echo " [TC L4AQYC: MonitorList END]\n";
 
     echo " [TC L4AQYC: AlarmQuery START]\n";
     $_GET["action"] = "AlarmQuery";
-    $_GET["id"] = "11";
-    $_GET["StatCode"] = "11";
+    $_GET["id"] = "UID001";
+    $_GET["StatCode"] = "120101001";
     $_GET["date"] = "11";
     $_GET["type"] = "11";
     require("../l4aqycui/request.php");
@@ -420,7 +420,7 @@ if (TC_L4AQYC_UI == true) {
 
     echo " [TC L4AQYC: AlarmType START]\n";
     $_GET["action"] = "AlarmType";
-    $_GET["user"] = "11";
+    $_GET["user"] = "UID001";
     require("../l4aqycui/request.php");
     echo " [TC L4AQYC: AlarmType END]\n";
 
@@ -433,22 +433,28 @@ if (TC_L4AQYC_UI == true) {
 
     echo " [TC L4AQYC: SensorList START]\n";
     $_GET["action"] = "SensorList";
-    $_GET["user"] = "11";
+    $_GET["user"] = "UID001";
     require("../l4aqycui/request.php");
     echo " [TC L4AQYC: SensorList END]\n";
 
     echo " [TC L4AQYC: DevSensor START]\n";
     $_GET["action"] = "DevSensor";
-    $_GET["DevCode"] = "11";
+    $_GET["DevCode"] = "HCU_SH_0301";
     require("../l4aqycui/request.php");
     echo " [TC L4AQYC: DevSensor END]\n";
 
     echo " [TC L4AQYC: SensorUpdate START]\n";
     $_GET["action"] = "SensorUpdate";
-    $_GET["DevCode"] = "11";
-    $_GET["SensorCode"] = "11";
-    $_GET["status"] = "11";
-    $_GET["ParaList"] = "11";
+    $_GET["DevCode"] = "HCU_SH_0301";
+    $_GET["SensorCode"] = "S_0001";
+    $_GET["status"] = "true";
+    $para_list = array();
+    $temp = array(
+        'name'=>"MODBUS_Addr",
+        'memo'=>"MODBUS地址",
+        'value'=>0x05);
+    array_push($para_list, $temp);
+    $_GET["ParaList"] = $para_list;
     require("../l4aqycui/request.php");
     echo " [TC L4AQYC: SensorUpdate END]\n";
 
@@ -487,7 +493,7 @@ if (TC_L4AQYC_UI == true) {
 
     echo " [TC L4AQYC: GetStaticMonitorTable START]\n";
     $_GET["action"] = "GetStaticMonitorTable";
-    $_GET["id"] = "11";
+    $_GET["id"] = "UID001";
     require("../l4aqycui/request.php");
     echo " [TC L4AQYC: GetStaticMonitorTable END]\n";
 
@@ -505,6 +511,19 @@ if (TC_L4AQYC_UI == true) {
     $_GET["id"] = "HCU_SH_0301_av201607201122.h264.mp4";
     require("../l4aqycui/request.php");
     echo " [TC L4AQYC: GetVideo END]\n";
+
+    echo " [TC L4AQYC: GetVersionList START]\n";
+    $_GET["action"] = "GetVersionList";
+    $_GET["id"] = "UID001";
+    require("../l4aqycui/request.php");
+    echo " [TC L4AQYC: GetVersionList END]\n";
+
+    echo " [TC L4AQYC: GetProjDevVersion START]\n";
+    $_GET["action"] = "GetProjDevVersion";
+    $_GET["id"] = "UID001";
+    $_GET["ProjCode"] = "P_0001";
+    require("../l4aqycui/request.php");
+    echo " [TC L4AQYC: GetProjDevVersion END]\n";
 
 //TEST CASE: L4AQYC-UI界面: END
 

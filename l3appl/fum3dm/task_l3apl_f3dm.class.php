@@ -397,26 +397,6 @@ class classTaskL3aplF3dm
         return $jsonencode;
     }
 
-    //TBD，功能待完善
-    function func_sensor_update_process($DevCode, $SensorCode, $status, $ParaList)
-    {
-        $uiF4icmDbObj = new classDbiL3apF4icm();
-        $resp = $uiF4icmDbObj->dbi_sensor_info_update($DevCode, $SensorCode, $status,$ParaList);
-        if (!empty($resp))
-            $retval=array(
-                'status'=>'true',
-                'msg'=>$resp
-            );
-        else
-            $retval=array(
-                'status'=>'false',
-                'msg'=>null
-            );
-        //$jsonencode = _encode($retval);
-        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
-        return $jsonencode;
-    }
-
     function func_get_static_monitor_table_process($id)
     {
         $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
@@ -687,20 +667,6 @@ class classTaskL3aplF3dm
             if (isset($msg["DevCode"])) $DevCode = $msg["DevCode"]; else  $DevCode = "";
             //具体处理函数
             $resp = $this->func_dev_sensor_process($DevCode);
-            $project = MFUN_PRJ_HCU_AQYCUI;
-        }
-
-        //功能Sensor update
-        elseif ($msgId == MSG_ID_L4AQYCUI_TO_L3F3_SENSORUPDATE)
-        {
-            //解开消息
-            if (isset($msg["DevCode"])) $DevCode = $msg["DevCode"]; else  $DevCode = "";
-            if (isset($msg["SensorCode"])) $SensorCode = $msg["SensorCode"]; else  $SensorCode = "";
-            if (isset($msg["status"])) $status = $msg["status"]; else  $status = "";
-            if (isset($msg["ParaList"])) $ParaList = $msg["ParaList"]; else  $ParaList = "";
-            $input = array("DevCode" => $DevCode, "SensorCode" => $SensorCode, "status" => $status, "ParaList" => $ParaList);
-            //具体处理函数
-            $resp = $this->func_sensor_update_process($DevCode, $SensorCode, $status, $ParaList);
             $project = MFUN_PRJ_HCU_AQYCUI;
         }
 

@@ -98,7 +98,6 @@ class classTaskL3aplF4icm
         $uiF3dmDbObj = new classDbiL3apF3dm(); //初始化一个UI DB对象
         $sitelist = $uiF3dmDbObj->dbi_proj_sitelist_req($projcode); //查询指定项目号下的所有监测点
 
-
         $i = 0;
         $devlist = array();
         while($i < count($sitelist)){
@@ -107,37 +106,67 @@ class classTaskL3aplF4icm
         }
 
         $j = 0;
+        $verlist = array();
         while($j < count($devlist)){
             $devcode = $devlist[$j]["name"];
-            $j++;
             $uiF4icmDbObj = new classDbiL3apF4icm(); //初始化一个UI DB对象
-            $latestver = $uiF4icmDbObj->dbi_latest_hcu_swver_inqury();
-
+            $latestver = $uiF4icmDbObj->dbi_latest_hcu_swver_inqury($devcode);
+            if (!empty($latestver)){
+                $temp = array(
+                    'DevCode' => $devcode,
+                    'ProjName' => ':',
+                    'version' => $latestver
+                );
+                array_push($verlist, $temp);
+            }
+            $j++;
         }
         //返回结果
-        $retval=array(
-            'status'=>'true',
-            'ret'=> $latestver
-        );
+        if(!empty($verlist))
+            $retval=array(
+                'status'=>'true',
+                'ret'=> $verlist
+            );
+        else
+            $retval=array(
+                'status'=>'false',
+                'ret'=> null
+            );
         $jsonencode = json_encode($retval);
         return $jsonencode;
     }
 
     //更新指定设备到指定的版本
-    function func_devsw_update_process($deviceid, $projectid)
+    function func_devsw_update_process($devlist, $version)
     {
         //获取最新版本, swbin和dbbin
         $uiF4icmDbObj = new classDbiL3apF4icm(); //初始化一个UI DB对象
-        $latestver = $uiF4icmDbObj->dbi_latest_hcu_swver_inqury();
-        $result = $uiF4icmDbObj->dbi_hcu_swver_inqury($latestver);
-
-        //发送软件版本到HCU网关
-
+        $result = $uiF4icmDbObj->dbi_hcu_swver_update($devlist, $version);
         //返回结果
-        $retval=array(
-            'status'=>'true',
-            'ret'=> ""
-        );
+        if($result)
+            $retval=array('status'=>'true');
+        else
+            $retval=array('status'=>'false');
+
+        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
+        return $jsonencode;
+    }
+
+    //传感器信息更新并发送HCU控制命令
+    function func_sensor_update_process($DevCode, $SensorCode, $status, $ParaList)
+    {
+        $uiF4icmDbObj = new classDbiL3apF4icm();
+        $resp = $uiF4icmDbObj->dbi_sensor_info_update($DevCode, $SensorCode, $status,$ParaList);
+        if (!empty($resp))
+            $retval=array(
+                'status'=>'true',
+                'msg'=>$resp
+            );
+        else
+            $retval=array(
+                'status'=>'false',
+                'msg'=>null
+            );
         //$jsonencode = _encode($retval);
         $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
         return $jsonencode;
@@ -184,7 +213,7 @@ class classTaskL3aplF4icm
         elseif ($msgId == MSG_ID_L4AQYCUI_TO_L3F4_DEVSW)
         {
             //解开消息
-            if (isset($msg["uid"])) $user = $msg["uid"]; else  $user = "";  //此处的UID是为了将来做权限控制
+            if (isset($msg["uid"])) $uid = $msg["uid"]; else  $uid = "";  //此处的UID是为了将来做权限控制
             if (isset($msg["ProjCode"])) $projcode = $msg["ProjCode"]; else  $projcode = "";
             //具体处理函数
             $resp = $this->func_devsw_version_process($projcode);
@@ -194,10 +223,11 @@ class classTaskL3aplF4icm
         elseif ($msgId == MSG_ID_L4AQYCUI_TO_L3F4_SWUPDATE)
         {
             //解开消息
-            if (isset($msg["deviceid"])) $deviceid = $msg["deviceid"]; else  $deviceid = "";
-            if (isset($msg["projectid"])) $projectid = $msg["projectid"]; else  $projectid = "";
+            if (isset($msg["uid"])) $uid = $msg["uid"]; else  $uid = "";  //此处的UID是为了将来做权限控制
+            if (isset($msg["list"])) $devlist = $msg["list"]; else  $devlist = "";
+            if (isset($msg["version"])) $version = $msg["version"]; else  $version = "";
             //具体处理函数
-            $resp = $this->func_devsw_update_process($deviceid, $projectid);
+            $resp = $this->func_devsw_update_process($devlist, $version);
             $project = MFUN_PRJ_HCU_AQYCUI;
         }
 
@@ -217,7 +247,19 @@ class classTaskL3aplF4icm
             $resp = $this->func_hcu_videoplay_process($videoid);
             $project = MFUN_PRJ_HCU_AQYCUI;
         }
-
+        //功能Sensor update
+        elseif ($msgId == MSG_ID_L4AQYCUI_TO_L3F4_SENSORUPDATE)
+        {
+            //解开消息
+            if (isset($msg["DevCode"])) $DevCode = $msg["DevCode"]; else  $DevCode = "";
+            if (isset($msg["SensorCode"])) $SensorCode = $msg["SensorCode"]; else  $SensorCode = "";
+            if (isset($msg["status"])) $status = $msg["status"]; else  $status = "";
+            if (isset($msg["ParaList"])) $ParaList = $msg["ParaList"]; else  $ParaList = "";
+            $input = array("DevCode" => $DevCode, "SensorCode" => $SensorCode, "status" => $status, "ParaList" => $ParaList);
+            //具体处理函数
+            $resp = $this->func_sensor_update_process($DevCode, $SensorCode, $status, $ParaList);
+            $project = MFUN_PRJ_HCU_AQYCUI;
+        }
 
         else{
             $resp = ""; //啥都不ECHO

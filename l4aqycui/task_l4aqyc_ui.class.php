@@ -1084,9 +1084,9 @@ class classTaskL4aqycUi
                     if (isset($_GET["DevCode"])) $DevCode = trim($_GET["DevCode"]); else  $DevCode = "";
                     if (isset($_GET["SensorCode"])) $SensorCode = trim($_GET["SensorCode"]); else  $SensorCode = "";
                     if (isset($_GET["status"])) $status = trim($_GET["status"]); else  $status = "";
-                    if (isset($_GET["ParaList"])) $ParaList = trim($_GET["ParaList"]); else  $ParaList = "";
+                    if (isset($_GET["ParaList"])) $ParaList = $_GET["ParaList"]; else  $ParaList = array();
                     $input = array("DevCode" => $DevCode, "SensorCode" => $SensorCode, "status" => $status, "ParaList" => $ParaList);
-                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM3DM, MSG_ID_L4AQYCUI_TO_L3F3_SENSORUPDATE, "MSG_ID_L4AQYCUI_TO_L3F3_SENSORUPDATE",$input);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM4ICM, MSG_ID_L4AQYCUI_TO_L3F4_SENSORUPDATE, "MSG_ID_L4AQYCUI_TO_L3F4_SENSORUPDATE",$input);
                     break;
 
                 /*
@@ -1243,17 +1243,6 @@ class classTaskL4aqycUi
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM4ICM, MSG_ID_L4AQYCUI_TO_L3F4_ALLSW, "MSG_ID_L4AQYCUI_TO_L3F4_ALLSW",$input);
                     break;
 
-                    $verlist = array();
-                    for ($i=0;$i<10;$i++){
-                        array_push($verlist,"Ver ".(string)($i+1).".00");
-                    }
-                    $retval=array(
-                        'status'=>'true',
-                        'ret'=> $verlist
-                    );
-                    $jsonencode = _encode($retval);
-                    echo $jsonencode; break;
-
                 /*
                    var ProjCode = data.ProjCode;
                    var projdev = new Array();
@@ -1280,25 +1269,6 @@ class classTaskL4aqycUi
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM4ICM, MSG_ID_L4AQYCUI_TO_L3F4_DEVSW, "MSG_ID_L4AQYCUI_TO_L3F4_DEVSW",$input);
                     break;
 
-                    $ProjCode = $_GET["ProjCode"];
-                    $projdev = array();
-                    for($i=0;$i<5;$i++){
-                        for($j=0;$j<4;$j++){
-                            $temp = array(
-                                'DevCode'=> $ProjCode."_".(string)$i."_".(string)$j,
-                                'ProjName'=> "测量点".(string)$i,
-                                'version'=> "Ver 1.00"
-                            );
-                            array_push($projdev,$temp);
-                        }
-                    }
-                    $retval=array(
-                        'status'=>'true',
-                        'ret'=> $projdev
-                    );
-                    $jsonencode = _encode($retval);
-                    echo $jsonencode; break;
-
                 /*
                     var usr = data.id;
                     var list = data.list;
@@ -1309,16 +1279,12 @@ class classTaskL4aqycUi
                     return JSON.stringify(retval);
                 */
                 case "UpdateDevVersion":
-
-                    $usr = $_GET["id"];
-                    $list = $_GET["list"];
-                    $version = $_GET["version"];
-                    $retval=array(
-                        'status'=>'true'
-                    );
-                    $jsonencode = _encode($retval);
-                    echo $jsonencode; break;
-
+                    if (isset($_GET["id"])) $uid = trim($_GET["id"]); else  $uid = "";
+                    if (isset($_GET["list"])) $list = trim($_GET["list"]); else  $list = "";
+                    if (isset($_GET["version"])) $version = trim($_GET["version"]); else  $version = "";
+                    $input = array("uid" => $uid, "list" => $list, "version" => $version);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM4ICM, MSG_ID_L4AQYCUI_TO_L3F4_SWUPDATE, "MSG_ID_L4AQYCUI_TO_L3F4_SWUPDATE",$input);
+                    break;
 
                 //require data structure:
                 /*var map={
@@ -1331,7 +1297,6 @@ class classTaskL4aqycUi
                    status:"true",
                    msg:""
                 };*/
-
                 case "HcuSwUpdate": //Delete the user
                     if (isset($_GET["deviceid"])) $deviceid = trim($_GET["deviceid"]); else  $deviceid = "";
                     if (isset($_GET["projectid"])) $projectid = trim($_GET["projectid"]); else  $projectid = "";

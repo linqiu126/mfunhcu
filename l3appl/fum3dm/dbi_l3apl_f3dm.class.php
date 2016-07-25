@@ -559,7 +559,7 @@ class classDbiL3apF3dm
 
         $mysqli->query("set character_set_results = utf8");
 
-        $query_str = "SELECT * FROM `t_l2sdk_iothcu_hcudevice` limit $start, $total";
+        $query_str = "SELECT * FROM `t_l2sdk_iothcu_inventory` limit $start, $total";
         $result = $mysqli->query($query_str);
 
         $hcutable = array();
@@ -645,7 +645,7 @@ class classDbiL3apF3dm
         $query_str = "DELETE FROM `t_l3f3dm_sitemapping` WHERE `statcode` = '$statcode'";  //删除项目和监测点的映射关系
         $result2 = $mysqli->query($query_str);
 
-        $query_str = "UPDATE `t_l2sdk_iothcu_hcudevice` SET `statcode` = '' WHERE (`statcode` = '$statcode' )"; //删除HCU设备表中的对应监测点号
+        $query_str = "UPDATE `t_l2sdk_iothcu_inventory` SET `statcode` = '' WHERE (`statcode` = '$statcode' )"; //删除HCU设备表中的对应监测点号
         $result3 = $mysqli->query($query_str);
 
         $result = $result1 and $result2 and $result3;
@@ -664,13 +664,16 @@ class classDbiL3apF3dm
             die('Could not connect: ' . mysqli_error($mysqli));
         }
 
-        $query_str = "DELETE FROM `t_l2sdk_iothcu_hcudevice` WHERE `devcode` = '$devcode'";  //删除HCU device信息表
+        $query_str = "DELETE FROM `t_l2sdk_iothcu_inventory` WHERE `devcode` = '$devcode'";  //删除HCU device信息表
         $result1 = $mysqli->query($query_str);
 
         $query_str = "UPDATE `t_l3f3dm_siteinfo` SET `devcode` = '' WHERE (`devcode` = '$devcode' )"; //删除监测点信息表中的HCU信息
         $result2 = $mysqli->query($query_str);
 
-        $result = $result1 and $result2;
+        $query_str = "DELETE FROM `t_l3f4icm_sensorctrl` WHERE `deviceid` = '$devcode'";  //删除Sensorctrl表中HUC信息
+        $result3 = $mysqli->query($query_str);
+
+        $result = $result1 and $result2 and $result3;
 
         $mysqli->close();
         return $result;
