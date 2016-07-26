@@ -230,6 +230,9 @@ Make By：ZJL
 > 视频播放功能测试代码完善，输出正确
 > ZJL: 修正apach中报出的几个小错误
 
+//= LZH, 2016 July.25, CURRENT_SW_DELIVERY R02.D35
+> UI界面增加仪表反控功能
+> 修改数据库swfactory和hwinventory表单，完善软件下载功能
 
 //待完善的功能
 1. 需要编制小型工具，支持工参数据，特别是图片内容的导入导出
