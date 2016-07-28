@@ -77,12 +77,12 @@ if (TC_IOT_HCU == true) {
 //TEST CASE: 测试图片存储的功能: START
     echo " [TC OTHERS: PICTURE STORAGE START]\n";
     $dbiObj = new classDbiL2snrHsmmp();
-    $data = addslashes(fread(fopen("C:\wamp\www\mfunhcu\l4oamtools\qrcode.png", "rb"), filesize("C:\wamp\www\mfunhcu\l4oamtools\qrcode.png")));
+    $data = addslashes(fread(fopen("C:\wamp\www\xhzn\mfunhcu\l4oamtools\qrcode.png", "rb"), filesize("C:\wamp\www\xhzn\mfunhcu\l4oamtools\qrcode.png")));
     $dbiObj->dbi_picture_data_save(1, 1, 1, $data, 1);
 //fclose($data);
 //读取操作
     $bindata = $dbiObj->dbi_latestPictureData_inqury(1);
-    $myfile = fopen("C:\wamp\www\mfunhcu\l4oamtools\aaapic.png", "w") or die("Unable to open file!");
+    $myfile = fopen("C:\wamp\www\xhzn\mfunhcu\l4oamtools\aaapic.png", "w") or die("Unable to open file!");
     fwrite($myfile, $bindata);
     fclose($myfile);
     echo " [TC OTHERS: PICTURE STORAGE END]\n";
@@ -92,9 +92,9 @@ if (TC_IOT_HCU == true) {
 //TEST CASE: 全局工程参数中图像的更新: START
     echo " [TC ENGPAR: UPDATE LOG PICTURE FILES START]\n";
     $dbiObj = new classDbiL1vmCommon();
-    $data = addslashes(fread(fopen("C:\wamp\www\mfunhcu\l4oamtools\qrcode.png", "rb"), filesize("C:\wamp\www\mfunhcu\l4oamtools\qrcode.png")));
+    $data = addslashes(fread(fopen("C:\wamp\www\xhzn\mfunhcu\l4oamtools\qrcode.png", "rb"), filesize("C:\wamp\www\xhzn\mfunhcu\l4oamtools\qrcode.png")));
     $project = MFUN_CURRENT_WORKING_PROGRAM_NAME_UNIQUE;
-    $filename = json_encode("C:\wamp\www\mfunhcu\l4oamtools\qrcode.png");
+    $filename = json_encode("C:\wamp\www\xhzn\mfunhcu\l4oamtools\qrcode.png");
     $filetype = "png";
     $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
     $result = $mysqli->query("UPDATE `t_l1vm_engpar` SET `filenamebg` = '$filename', `filetypebg` = '$filetype',`filedatabg` = '$data' WHERE (`project` = '$project')");
@@ -524,6 +524,18 @@ if (TC_L4AQYC_UI == true) {
     $_GET["ProjCode"] = "P_0001";
     require("../l4aqycui/request.php");
     echo " [TC L4AQYC: GetProjDevVersion END]\n";
+
+    echo " [TC L4AQYC: UpdateDevVersion START]\n";
+    $_GET["action"] = "UpdateDevVersion";
+    $_GET["id"] = "UID001";
+        $dev1 = "HCU_SH_0301";
+        $dev2 = "HCU_SH_0314";
+        $list = array();
+        array_push($list, $dev1); array_push($list, $dev2);
+    $_GET["list"] = $list;
+    $_GET["version"] = "SW_R01.D0066";
+    require("../l4aqycui/request.php");
+    echo " [TC L4AQYC: UpdateDevVersion END]\n";
 
 //TEST CASE: L4AQYC-UI界面: END
 

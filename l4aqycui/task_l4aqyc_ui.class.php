@@ -1280,7 +1280,7 @@ class classTaskL4aqycUi
                 */
                 case "UpdateDevVersion":
                     if (isset($_GET["id"])) $uid = trim($_GET["id"]); else  $uid = "";
-                    if (isset($_GET["list"])) $list = trim($_GET["list"]); else  $list = "";
+                    if (isset($_GET["list"])) $list = $_GET["list"]; else  $list = "";
                     if (isset($_GET["version"])) $version = trim($_GET["version"]); else  $version = "";
                     $input = array("uid" => $uid, "list" => $list, "version" => $version);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM4ICM, MSG_ID_L4AQYCUI_TO_L3F4_SWUPDATE, "MSG_ID_L4AQYCUI_TO_L3F4_SWUPDATE",$input);

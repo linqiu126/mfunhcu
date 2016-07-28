@@ -287,7 +287,21 @@ class classDbiL3apF4icm
     //更新指定设备到指定软件版本
     public function dbi_hcu_swver_update($devlist, $version)
     {
+        //生成控制命令的控制字
+        $apiL2snrCommonServiceObj = new classApiL2snrCommonService();
+        $ctrl_key = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_CMDID_SW_UPDATE);
+        $opt_key =  $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_OPT_SWUPDATE_REQ);
+        $len = $apiL2snrCommonServiceObj->byte2string(strlen($opt_key)/2 + strlen($version));
 
+        $i = 0;
+        while($i < count($devlist)){
+            $DevCode = $devlist[$i];
+            $respCmd = $ctrl_key . $len . $opt_key . $version;
+            $dbiL1vmCommonObj = new classDbiL1vmCommon();
+            $resp = $dbiL1vmCommonObj->dbi_cmdbuf_save_cmd(trim($DevCode), trim($respCmd));
+            $i++;
+        }
+        return $resp;
     }
 
     //获取HCU对应软件和数据库bin文件

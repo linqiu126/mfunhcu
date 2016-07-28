@@ -450,6 +450,8 @@ define("MFUN_HCU_MODBUS_TIMES_READ_ACK", 0x8B);
 //其他命令操作字
 define("MFUN_HCU_OPT_INVENTORY_REQ", 0x01);
 define("MFUN_HCU_OPT_INVENTORY_RESP", 0x81);
+define("MFUN_HCU_OPT_SWUPDATE_REQ", 0x01);
+define("MFUN_HCU_OPT_SWUPDATE_RESP", 0x81);
 define("MFUN_HCU_OPT_VEDIOLINK_REQ", 0x01);  //读取下位机存放的视频文件link
 define("MFUN_HCU_OPT_VEDIOLINK_RESP", 0x81); //返回下位机存放的视频文件link
 define("MFUN_HCU_OPT_VEDIOFILE_REQ", 0x02);   //命令下位机上传选中的视频文件
