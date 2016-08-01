@@ -27,7 +27,7 @@ class classTaskL2snrEmc
                 $resp = $this->wx_emcdata_req_process($deviceId, $content);
                 break;
             case MFUN_TECH_PLTF_HCUGX:
-                $raw_MsgHead = substr($content, 0, MFUN_HCU_MSG_HEAD_LENGTH);  //截取4Byte MsgHead
+                $raw_MsgHead = substr($content, 0, MFUN_HCU_MSG_HEAD_LENGTH);  //截取6Byte MsgHead
                 $msgHead = unpack(MFUN_HCU_MSG_HEAD_FORMAT, $raw_MsgHead);
 
                 $length = hexdec($msgHead['Len']) & 0xFF;

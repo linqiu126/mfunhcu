@@ -83,51 +83,18 @@ class classDbiL3apF4icm
         }
 
         //存储新记录，如果发现是已经存在的数据，则覆盖，否则新增
-        $result = $mysqli->query("SELECT * FROM `t_l3f4icm_sensorctrl` WHERE (`deviceid` = '$deviceid' AND `sensorid` = '$sensorid'");
+        $result = $mysqli->query("SELECT * FROM `t_l3f4icm_sensorctrl` WHERE (`deviceid` = '$deviceid' AND `sensor_sid` = '$sensorid'");
         if (($result != false) && ($result->num_rows)>0)   //重复，则覆盖
         {
-            $result=$mysqli->query("UPDATE `t_l3f4icm_sensorctrl` SET  `equid` = '$equid',`sensortype` = '$sensortype' WHERE (`deviceid` = '$deviceid' AND `sensorid` = '$sensorid')");
+            $result=$mysqli->query("UPDATE `t_l3f4icm_sensorctrl` SET  `equid` = '$equid',`sensortype` = '$sensortype' WHERE (`deviceid` = '$deviceid' AND `sensor_sid` = '$sensorid')");
         }
         else   //不存在，新增
         {
-            $result=$mysqli->query("INSERT INTO `t_l3f4icm_sensorctrl` (deviceid,sensorid,equid,sensortype)
+            $result=$mysqli->query("INSERT INTO `t_l3f4icm_sensorctrl` (deviceid,sensor_sid,equid,sensortype)
                     VALUES ('$deviceid','$sensorid','$equid','$sensortype')");
         }
         $mysqli->close();
         return $result;
-    }
-
-    //删除对应用户所有超过90天的数据
-    //缺省做成90天，如果参数错误，导致90天以内的数据强行删除，则不被认可
-    public function dbi_sensor_control_table_3mondel($deviceid, $sensorid, $days)
-    {
-        if ($days <90) $days = 90;  //不允许删除90天以内的数据
-        //建立连接
-        $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
-        if (!$mysqli)
-        {
-            die('Could not connect: ' . mysqli_error($mysqli));
-        }
-        $result = $mysqli->query("DELETE FROM `t_l3f4icm_sensorctrl` WHERE ((`deviceid` = '$deviceid' AND `sensorid` ='$sensorid') AND (TO_DAYS(NOW()) - TO_DAYS(`date`) > '$days'))");
-        $mysqli->close();
-        return $result;
-    }
-
-    public function dbi_sensor_control_table_inqury($sid)
-    {
-        $LatestValue = "";
-        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
-        if (!$mysqli) {
-            die('Could not connect: ' . mysqli_error($mysqli));
-        }
-        $result = $mysqli->query("SELECT * FROM `t_l3f4icm_sensorctrl` WHERE `sid` = '$sid'");
-        if (($result != false) && ($result->num_rows)>0)
-        {
-            $row = $result->fetch_array();
-            $LatestValue = $row['sensorid'];
-        }
-        $mysqli->close();
-        return $LatestValue;
     }
 
     public function dbi_hcu_vediolist_inqury($statcode, $date, $hour)
@@ -198,7 +165,7 @@ class classDbiL3apF4icm
             $dataflag = $row["dataflag"];
             $devCode = $row["deviceid"];
             $apiL2snrCommonServiceObj = new classApiL2snrCommonService();
-            if ($dataflag == MFUN_HCU_VIDEO_DATA_STATUS_NORMAL){
+            if ($dataflag == MFUN_HCU_VIDEO_DATA_STATUS_NORMAL OR $dataflag == MFUN_HCU_VIDEO_DATA_STATUS_FAIL){
                 $ctrl_key = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_CMDID_HSMMP_DATA);
                 $opt_key = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_OPT_VEDIOFILE_REQ);
                 $len = $apiL2snrCommonServiceObj->byte2string(strlen( $opt_key)/2 + strlen($videoid));
@@ -220,9 +187,6 @@ class classDbiL3apF4icm
             }
             elseif ($dataflag == MFUN_HCU_VIDEO_DATA_STATUS_READY){
                 $resp = "http://121.40.185.177/xhzn/avorion/" . $videoid;
-            }
-            elseif ($dataflag == MFUN_HCU_VIDEO_DATA_STATUS_FAIL){
-                $resp = "";
             }
             else
                 $resp = "";

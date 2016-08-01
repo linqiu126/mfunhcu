@@ -66,6 +66,17 @@ if (TC_IOT_HCU == true) {
     $GLOBALS["HTTP_RAW_POST_DATA"] = "<xml><ToUserName><![CDATA[AQ_HCU]]></ToUserName><FromUserName><![CDATA[HCU_SH_0305]]></FromUserName><CreateTime>1463066586</CreateTime><MsgType><![CDATA[hcu_text]]></MsgType><Content><![CDATA[201881050201130345000000004E000000000000000057318D70]]></Content><FuncFlag>0</FuncFlag></xml>";
     require("../l1mainentry/cloud_callback_hcu.php");
     echo " [TC IOT_HCU: EMC NEW END]\n";
+//视频HSMMP 2C
+    echo " [TC IOT_HCU: MFUN_HCU_OPT_VEDIOFILE_RESP START]\n";
+    $GLOBALS["HTTP_RAW_POST_DATA"] = "<xml><ToUserName><![CDATA[AQ_HCU]]></ToUserName><FromUserName><![CDATA[HCU_SH_0302]]></FromUserName><CreateTime>1463066586</CreateTime><MsgType><![CDATA[hcu_text]]></MsgType><Content><![CDATA[2C03820301]]></Content><FuncFlag>HCU_SH_0302_av201607201111.h264.mp4</FuncFlag></xml>";
+    require("../l1mainentry/cloud_callback_hcu.php");
+    echo " [TC IOT_HCU: MFUN_HCU_OPT_VEDIOFILE_RESP]\n";
+
+    echo " [TC IOT_HCU: MFUN_HCU_OPT_VEDIOLINK_RESP START]\n";
+    $GLOBALS["HTTP_RAW_POST_DATA"] = "<xml><ToUserName><![CDATA[AQ_HCU]]></ToUserName><FromUserName><![CDATA[HCU_SH_0302]]></FromUserName><CreateTime>1463066586</CreateTime><MsgType><![CDATA[hcu_text]]></MsgType><Content><![CDATA[2C15810B0245000000004E000000000000000057318D70]]></Content><FuncFlag>HCU_SH_0302_av201607201122.h264.mp4</FuncFlag></xml>";
+    require("../l1mainentry/cloud_callback_hcu.php");
+    echo " [TC IOT_HCU: MFUN_HCU_OPT_VEDIOLINK_RESP]\n";
+
 //中环保格式
     echo " [TC IOT_HCU: ZHB FORMAT START]\n";
     $GLOBALS["HTTP_RAW_POST_DATA"] = "##007020160619033803000___11111ZHB_NOMHCU_SH_0304_44444405556666a01000=139A,68BE";

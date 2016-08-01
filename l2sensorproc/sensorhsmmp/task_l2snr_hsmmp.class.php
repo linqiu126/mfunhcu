@@ -16,8 +16,11 @@ class classTaskL2snrHsmmp
 
     }
 
-    public function func_hsmmp_process($platform, $deviceId, $content,$funcFlag)
+    public function func_hsmmp_process($platform, $deviceId, $statCode, $msg)
     {
+        if(isset($msg['content'])) $content = $msg['content']; else $content = "";
+        if(isset($msg['funcFlag'])) $funcFlag = $msg['funcFlag']; else $funcFlag = "";
+
         switch($platform)
         {
             case MFUN_TECH_PLTF_WECHAT:   //微信有专门的video消息类型，这里暂时定义一个空操作保持结构的完整性
@@ -59,7 +62,7 @@ class classTaskL2snrHsmmp
                         $resp = $this->hcu_videolink_resp_process($deviceId, $data, $funcFlag);
                         break;
                     case MFUN_HCU_OPT_VEDIOFILE_RESP:
-                        $resp = $this->hcu_videofile_resp_process($deviceId, $data);
+                        $resp = $this->hcu_videofile_resp_process($deviceId, $data, $funcFlag);
                         break;
                     default:
                         $resp = "";
@@ -103,13 +106,12 @@ class classTaskL2snrHsmmp
         return $resp;
     }
 
-    private function hcu_videofile_resp_process($deviceId, $content)
+    private function hcu_videofile_resp_process($deviceId, $content, $funcFlag)
     {
-        $format = "A2Status/A35Video";
+        $format = "A2Type/A2Status";
         $data = unpack($format, $content);
-
         $status = hexdec($data["Status"]) & 0xFF;
-        $videoid = $data["Video"];
+        $videoid = $funcFlag;
         $dbiL2snrHsmmpObj = new classDbiL2snrHsmmp();
         $dbiL2snrHsmmpObj->dbi_video_data_status_update($deviceId, $status, $videoid);
 

@@ -189,7 +189,7 @@ class classTaskL2sdkIotHcu
                     "platform" => MFUN_TECH_PLTF_HCUGX,
                     "deviceId" => $deviceId,
                     "statCode" => $statCode,
-                    "content" => $content);
+                    "content" => array("content" =>$content, "funcFlag" => $funcFlag));
                 if ($parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L2SDK_IOT_HCU,
                         MFUN_TASK_ID_L2SENSOR_HSMMP,
                         MSG_ID_L2SDK_HCU_TO_L2SNR_HSMMP,
