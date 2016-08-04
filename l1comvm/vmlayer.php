@@ -396,7 +396,7 @@ class classTaskL1vmCoreRouter
         if (empty($msg) == true){
             $loggerObj->logger("NULL", "mfun_l1vm_task_main_entry", $log_time, "P: Nothing received");
             echo "";
-            return false;
+            //return false;
         }
 
         //然后发送从L1_MAIN_ENTRY接收到的消息到缓冲区中

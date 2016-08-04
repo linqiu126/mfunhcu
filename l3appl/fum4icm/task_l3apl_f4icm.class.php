@@ -52,8 +52,8 @@ class classTaskL3aplF4icm
             );
         else
             $retval=array(
-                'status'=>'false',
-                'ret'=> null
+                'status'=>'true',
+                'ret'=> array()
             );
         $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
         return $jsonencode;
@@ -129,8 +129,8 @@ class classTaskL3aplF4icm
             );
         else
             $retval=array(
-                'status'=>'false',
-                'ret'=> null
+                'status'=>'true',
+                'ret'=> array()
             );
         $jsonencode = json_encode($retval);
         return $jsonencode;

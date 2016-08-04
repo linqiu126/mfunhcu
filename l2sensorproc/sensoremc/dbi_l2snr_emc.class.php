@@ -215,7 +215,7 @@ class classDbiL2snrEmc
             $result = $mysqli->query("SELECT * FROM `t_l2snr_emcdata` WHERE (`deviceid` = '$deviceid')");
             while($row = $result->fetch_array())
             {
-                $getdate0 = date("ymd", strtotime($row['date']));
+                $getdate0 = date("ymd", strtotime($row['reportdate']));
                 $getdate = intval($getdate0);
                 if (($getdate <= $day0) &&  ($getdate >= $day90))
                 {
