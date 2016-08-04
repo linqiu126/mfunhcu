@@ -309,9 +309,9 @@ class classTaskL3aplF3dm
             );
         else
             $retval=array(
-                'status'=>'false',
+                'status'=>'true',
                 'id'=>$uid,
-                'ret'=> null
+                'ret'=> array()
             );
         //$jsonencode = _encode($retval);
         $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
@@ -330,8 +330,8 @@ class classTaskL3aplF3dm
             );
         else
             $retval=array(
-                'status'=>'false',
-                'typelist'=> null
+                'status'=>'true',
+                'typelist'=> array()
             );
         //$jsonencode = _encode($retval);
         $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
@@ -371,8 +371,8 @@ class classTaskL3aplF3dm
             );
         else
             $retval=array(
-                'status'=>'false',
-                'SensorList'=> null
+                'status'=>'true',
+                'SensorList'=> array()
             );
         //$jsonencode = _encode($retval);
         $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
@@ -390,8 +390,8 @@ class classTaskL3aplF3dm
             );
         else
             $retval=array(
-                'status'=>'false',
-                'ret'=>null
+                'status'=>'true',
+                'ret'=>array()
             );
         $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
         return $jsonencode;

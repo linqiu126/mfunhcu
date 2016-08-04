@@ -4393,10 +4393,10 @@ class classTaskL2sdkWechat
                         $click = 1;
                         $content = array();
                         $content[] = array("Title"=>"使劲戳，哎呦呦...", "Description"=>"", "PicUrl"=>"http://discuz.comli.com/weixin/weather/icon/cartoon.jpg", "Url" =>"");
-                        $content[] = array("Title"=>"辐射累积值", "Description"=>"", "PicUrl"=>"", "Url" =>"http://121.40.185.177/xhzn/mfunhcu//l4emcwxui/h5ui/EmcAllData.php?id=".$object->FromUserName);
-                        $content[] = array("Title"=>"PM2.5累积值", "Description"=>"", "PicUrl"=>"", "Url" =>"http://121.40.185.177/xhzn/mfunhcu//l4emcwxui/h5ui/PMAllData.php?id=".$object->FromUserName);
-                        $content[] = array("Title"=>"近一月辐射累计值", "Description"=>"", "PicUrl"=>"", "Url" =>"http://121.40.185.177/xhzn/mfunhcu//l4emcwxui/h5ui/EmcAccumulationInfo_1M.php?id=".$object->FromUserName);
-                        $content[] = array("Title"=>"近三月辐射累计值", "Description"=>"", "PicUrl"=>"", "Url" =>"http://121.40.185.177/xhzn/mfunhcu//l4emcwxui/h5ui/EmcAccumulationInfo_3M.php?id=".$object->FromUserName);
+                        $content[] = array("Title"=>"辐射累积值", "Description"=>"", "PicUrl"=>"", "Url" =>"http://121.40.185.177/xhzn/mfunhcu/l4emcwxui/h5ui/EmcAllData.php?id=".$object->FromUserName);
+                        $content[] = array("Title"=>"PM2.5累积值", "Description"=>"", "PicUrl"=>"", "Url" =>"http://121.40.185.177/xhzn/mfunhcu/l4emcwxui/h5ui/PMAllData.php?id=".$object->FromUserName);
+                        $content[] = array("Title"=>"近一月辐射累计值", "Description"=>"", "PicUrl"=>"", "Url" =>"http://121.40.185.177/xhzn/mfunhcu/l4emcwxui/h5ui/EmcAccumulationInfo_1M.php?id=".$object->FromUserName);
+                        $content[] = array("Title"=>"近三月辐射累计值", "Description"=>"", "PicUrl"=>"", "Url" =>"http://121.40.185.177/xhzn/mfunhcu/l4emcwxui/h5ui/EmcAccumulationInfo_3M.php?id=".$object->FromUserName);
                         break;
 
                     //Shanchun end

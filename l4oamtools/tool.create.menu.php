@@ -43,8 +43,7 @@ echo "<br>测试最新刷新的Token=<br>".$wxDevObj->access_token ."<br>";
 static $self_create_menu =
 '{"button":[
                 {"name":"测量",
-                    "sub_button":[{"type":"click","name":"PM2.5读取","key":"CLICK_PM25_READ"},
-                                  {"type":"click","name":"辐射读取","key":"CLICK_EMC_READ"},
+                    "sub_button":[{"type":"click","name":"辐射读取","key":"CLICK_EMC_READ"},
                                   {"type":"click","name":"历史数据","key":"CLICK__EMC_HIS"}]
                 },
 
@@ -59,7 +58,7 @@ static $self_create_menu =
                 {"name":"关于",
                     "sub_button":[{"type":"click","name":"版本信息","key":"CLICK_VERSION"},
                                   {"type":"click","name":"用户信息","key":"CLICK_USER"},
-                                  {"type":"view","name":"H5页面","url":"https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx32f73ab219f56efb&redirect_uri=http://mfuncard.sinaapp.com/wechat/l4emcwxui/h5ui/emch5.php&response_type=code&scope=snsapi_base&state=1#wechat_redirect"}]
+                                  {"type":"view","name":"H5页面","url":"https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx32f73ab219f56efb&redirect_uri=http://121.40.185.177/xhzn/mfunhcu/l4emcwxui/h5ui/emch5.php&response_type=code&scope=snsapi_base&state=1#wechat_redirect"}]
                 }
          ]
  }';

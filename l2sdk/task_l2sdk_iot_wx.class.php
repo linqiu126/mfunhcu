@@ -890,6 +890,9 @@ class classTaskL2sdkIotWx
             //手机微信界面上的CLICK命令
             //如果消息发送到EMC模块，则返回就为空，本模块不再处理，而留给了EMC模块进行处理
             case "CLICK_EMC_READ":
+                $ihuObj = new classTaskL2snrEmc();
+                $respContent = $ihuObj->func_emc_data_push_process($deviceId, $content);
+                /*
                 $msg = array("project" => $optType,
                     "log_from" => $fromUser,
                     "deviceId" => $deviceId,
@@ -901,11 +904,15 @@ class classTaskL2sdkIotWx
                         $msg) == false) $result = "Send to message buffer error";
                 else $result = "";
                 $respContent = $result;
+                */
                 break;
 
             //手机微信界面上的CLICK命令
             //如果消息发送到EMC模块，则返回就为空，本模块不再处理，而留给了PM25模块进行处理
             case "CLICK_PM25_READ":
+                $ihuObj = new classTaskL2snrPm25();
+                $respContent = $ihuObj->func_pm_data_push_process($deviceId, $content);
+                /*
                 $msg = array("project" => $optType,
                     "log_from" => $fromUser,
                     "deviceId" => $deviceId,
@@ -917,6 +924,7 @@ class classTaskL2sdkIotWx
                         $msg) == false) $result = "Send to message buffer error";
                 else $result = "";
                 $respContent = $result;
+                */
                 break;
 
             //手机微信界面上的CLICK命令

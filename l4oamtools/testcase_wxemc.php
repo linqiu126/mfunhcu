@@ -24,6 +24,12 @@ if (TC_EMCWX == true){
     require("../l1mainentry/cloud_callback_wechat.php");
     echo " [TC EMCWX: EMC DEVICE_EVENT END]\n";
 
+    echo " [TC EMCWX: WEIXIN CLICK_EMC_READ START]\n";
+    $GLOBALS["HTTP_RAW_POST_DATA"] = "<xml><ToUserName><![CDATA[gh_70c714952b02]]></ToUserName><FromUserName><![CDATA[oS0Chv-avCH7W4ubqOQAFXojYODY]]></FromUserName><CreateTime>1470315946</CreateTime><MsgType><![CDATA[event]]></MsgType><Event><![CDATA[CLICK]]></Event><EventKey><![CDATA[CLICK_EMC_READ]]></EventKey></xml>";
+    require("../l1mainentry/cloud_callback_wechat.php");
+    echo " [TC EMCWX: WEIXIN CLICK_EMC_READ END]\n";
+
+
 //EMCWX测试结束
 }
 

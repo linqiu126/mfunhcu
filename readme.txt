@@ -234,6 +234,12 @@ Make By：ZJL
 > UI界面增加仪表反控功能
 > 修改数据库swfactory和hwinventory表单，完善软件下载功能
 
+//= LZH, 2016 Aug.04, CURRENT_SW_DELIVERY R02.D36
+> 修改新框架下微信配置提交不成功的bug，新框架下微信配置cloud_callback_wechat提交成功
+> 修改AQYC界面上查询结果为空时返回false导致页面无效，退回登录界面的不合理操作
+> 修改微信EMC_READ click事件发送消息没有构造的bug
+> 修改微信菜单
+
 //待完善的功能
 1. 需要编制小型工具，支持工参数据，特别是图片内容的导入导出
 3. 恢复后台管理界面及相应工具
