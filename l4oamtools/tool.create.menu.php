@@ -43,22 +43,28 @@ echo "<br>测试最新刷新的Token=<br>".$wxDevObj->access_token ."<br>";
 static $self_create_menu =
 '{"button":[
                 {"name":"测量",
-                    "sub_button":[{"type":"click","name":"辐射读取","key":"CLICK_EMC_READ"},
+                    "sub_button":[{"type":"click","name":"当前辐射","key":"CLICK_EMC_READ"},
                                   {"type":"click","name":"历史数据","key":"CLICK__EMC_HIS"}]
                 },
 
                 {"name":"设置",
                      "sub_button":[{"type":"click","name":"绑定","key":"CLICK_BIND"},
                                    {"type":"click","name":"解绑","key":"CLICK_UNBIND"},
-                                   {"type":"click","name":"查询","key":"CLICK_BIND_INQ"},
-                                   {"type":"click","name":"Trace开","key":"CLICK_TRACE_ON"},
-                                   {"type":"click","name":"Trace关","key":"CLICK_TRACE_OFF"}]
+                                   {"type":"click","name":"查询","key":"CLICK_BIND_INQ"}]
                 },
 
                 {"name":"关于",
-                    "sub_button":[{"type":"click","name":"版本信息","key":"CLICK_VERSION"},
-                                  {"type":"click","name":"用户信息","key":"CLICK_USER"},
+                    "sub_button":[{"type":"click","name":"小慧科技","key":"CLICK_COMPANY"},
+                                  {"type":"click","name":"会员专区","key":"CLICK_MEMBER"},
+                                  {"type":"click","name":"微客服","key":"CLICK_HELP"},
                                   {"type":"view","name":"H5页面","url":"https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx32f73ab219f56efb&redirect_uri=http://121.40.185.177/xhzn/mfunhcu/l4emcwxui/h5ui/emch5.php&response_type=code&scope=snsapi_base&state=1#wechat_redirect"}]
+                }，
+
+                {"name":"工程菜单",
+                     "sub_button":[{"type":"click","name":"版本信息","key":"CLICK_VERSION"},
+                                   {"type":"click","name":"用户信息","key":"CLICK_USER"},
+                                   {"type":"click","name":"Trace开","key":"CLICK_TRACE_ON"},
+                                   {"type":"click","name":"Trace关","key":"CLICK_TRACE_OFF"}]
                 }
          ]
  }';

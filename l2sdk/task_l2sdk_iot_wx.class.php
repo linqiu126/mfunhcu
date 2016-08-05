@@ -523,11 +523,9 @@ class classTaskL2sdkIotWx
         $wx_trace = $logDbObj->dbi_LogSwitchInfo_inqury($fromUser);
         $result = "";
 
-        //推送打印收到的device消息给手机WX界面
-        if ($wx_trace == 1) {
-            $msgContent = "R:DEVICE_TEXT= " . $strContent;
-            $this->send_custom_message(trim($data->FromUserName), "text", $msgContent);  //使用API-CURL推送客服微信用户
-        }
+        //推送打印收到的device消息给手机WX界面,这里不判断trace开关状态，所有收到的消息都打印
+        $msgContent = "R:DEVICE_TEXT= " . $strContent;
+        $this->send_custom_message(trim($data->FromUserName), "text", $msgContent);  //使用API-CURL推送客服微信用户
 
         //调用统一的deviceTask处理入口函数
         $resp_msg = $this->ihu_device_L25_content_process($parObj, "device_text", $strContent, $fromUser, $deviceId);
