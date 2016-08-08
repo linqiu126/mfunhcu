@@ -41,6 +41,51 @@ class classL1MainEntrySocketListenServer
              global $argv;
              swoole_set_process_name("php {$argv[0]}: manager");
          });
+        //add port for UI
+        $port2 = $this->serv->listen("0.0.0.0", 9502, SWOOLE_SOCK_TCP);
+        /*$port2->set(array(
+            'open_length_check' => true,
+            'package_length_type' => 'N',
+            'package_length_offset' => 0,
+            'package_max_length' => 800,
+        ));*/
+        $port2->on('connect', function ($serv, $fd){
+            echo "Port2 Client:Connect.\n";
+        });
+
+        $port2->on('receive', function ($serv, $fd, $from_id, $data) {
+            $serv->send($fd, 'Port2 Swoole: '.$data);
+            //connect to mysql, reset all socketid
+             $mysqli = mysqli_connect("127.0.0.1", "TestUser", "123456", "bxxhl1l2l3");
+            if (!$mysqli ) {
+                echo "Error: Unable to connect to MySQL." . PHP_EOL;
+                echo "Debugging errno: " . mysqli_connect_errno() . PHP_EOL;
+                echo "Debugging error: " . mysqli_connect_error() . PHP_EOL;
+                exit;
+            }
+            echo "Success: A proper connection to MySQL was made! bxxhl1l2l3 database is great." . PHP_EOL;
+            
+            $query="select devcode,socketid from t_l2sdk_iothcu_inventory where devcode=\"$data\"";
+            $result=$mysqli->query($query);
+            if ($result) {
+                     if($result->num_rows>0){                                               //判断结果集中行的数目是否大于0
+                              while($row =$result->fetch_array() ){                        //循环输出结果集中的记录
+                                       echo ($row[0]).PHP_EOL;
+                                       echo ($row[1]).PHP_EOL;
+                                       //send current HCUs to all connected HCU
+                                       $serv->send( $row[1], "$row[0], This is hello from UI!" );
+                              }
+                     }
+            }else {
+                     echo "查询失败";
+            }
+
+            $serv->close($fd);
+        });
+
+        $port2->on('close', function ($serv, $fd) {
+            echo "Port2 Client: Close.\n";
+        });
         $this->serv->start();
         return;
     }
