@@ -5,7 +5,7 @@
  * Date: 2016/7/4
  * Time: 21:46
  */
-//include_once "../l1comvm/vmlayer.php";
+include_once "../l1comvm/vmlayer.php";
 
 class classTaskL2SocketListen
 {

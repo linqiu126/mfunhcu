@@ -27,6 +27,7 @@ include_once "../l2sdk/task_l2sdk_iot_wx.class.php";
 include_once "../l2sdk/task_l2sdk_iot_wx_jssdk.php";
 include_once "../l2sdk/task_l2sdk_nbiot_std_qg376.class.php";
 include_once "../l2sdk/task_l2sdk_nbiot_std_cj188.class.php";
+include_once "../l2socketlisten/task_l2socket_listen.class.php";
 include_once "../l2sensorproc/proccom/svr_l2snr_com.class.php";
 include_once "../l2sensorproc/sensorairprs/task_l2snr_airprs.class.php";
 include_once "../l2sensorproc/sensoremc/task_l2snr_emc.class.php";
