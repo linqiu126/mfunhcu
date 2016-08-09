@@ -4389,7 +4389,7 @@ class classTaskL2sdkWechat
                         break;
                     //Shanchun start: 处理前台自定义菜单Click事件，跳转到前台页面Url(传入openid),也可以用微信自定义菜单view类型获取openid后访问网页，但需要服务号
 
-                    case "CLICK__EMC_HIS":
+                    case "CLICK_EMC_HIS":
                         $click = 1;
                         $content = array();
                         $content[] = array("Title"=>"使劲戳，哎呦呦...", "Description"=>"", "PicUrl"=>"http://discuz.comli.com/weixin/weather/icon/cartoon.jpg", "Url" =>"");
@@ -4514,67 +4514,40 @@ class classTaskL2sdkWechat
 
 				$fromUser = trim($postObj->FromUserName);
 				$createTime = trim($postObj->CreateTime);
-				$log_time = date("Y-m-d H:i:s",$createTime);
-				$log_content = "R:".trim($msg);
-				$RX_TYPE = trim($postObj->MsgType);
+                $RX_TYPE = trim($postObj->MsgType);
+
+                //保存所有微信入口消息,这个功能可以在部署时关掉
+                $log_content = "R:".trim($msg);
+                $loggerObj->logger("MFUN_TASK_ID_L2SDK_WECHAT", "mfun_l2sdk_wechat_task_main_entry", $log_time, $log_content);
 
 				//消息类型分离
 				switch ($RX_TYPE)
 				{
 					case "event":
-						$project = MFUN_PRJ_IHU_EMCWX;
-						$this->logger($project,$fromUser,$log_time,$log_content);
-						$log_from = MFUN_CLOUD_WX;
 						$result = $this->receiveEvent($parObj, $postObj);
 						break;
-
 					case "text":
-						$project = MFUN_PRJ_IHU_EMCWX;
-						$this->logger($project,$fromUser,$log_time,$log_content);
-						$log_from = MFUN_CLOUD_WX;
 						$result = $this->receiveText($postObj);
 						break;
-
 					case "image":
-						$project = MFUN_PRJ_IHU_EMCWX;
-						$this->logger($project,$fromUser,$log_time,$log_content);
-						$log_from = MFUN_CLOUD_WX;
 						$result = $this->receiveImage($postObj);
 						break;
-
 					case "location":
-						$project = MFUN_PRJ_IHU_EMCWX;
-						$this->logger($project,$fromUser,$log_time,$log_content);
-						$log_from = MFUN_CLOUD_WX;
 						$result = $this->receiveLocation($postObj);
 						//$wxDevObj = new class_wx_IOT_sdk($this->appid, $this->appsecret);
 						//$result = $wxDevObj->receive_locationEvent($postObj);
 						break;
-
 					case "voice":
-						$project = MFUN_PRJ_IHU_EMCWX;
-						$this->logger($project,$fromUser,$log_time,$log_content);
-						$log_from = MFUN_CLOUD_WX;
 						$result = $this->receiveVoice($postObj);
 						break;
-
 					case "video":
-						$project = MFUN_PRJ_IHU_EMCWX;
-						$this->logger($project,$fromUser,$log_time,$log_content);
-						$log_from = MFUN_CLOUD_WX;
 						$result = $this->receiveVideo($postObj);
 						break;
-
 					case "link":
-						$project = MFUN_PRJ_IHU_EMCWX;
-						$this->logger($project,$fromUser,$log_time,$log_content);
-						$log_from = MFUN_CLOUD_WX;
 						$result = $this->receiveLink($postObj);
 						break;
-
 					case "device_text":  //智能硬件设备text消息，都转到IOT相关的CLASS中
 						$project = MFUN_PRJ_IHU_EMCWX;
-						$this->logger($project,$fromUser,$log_time,$log_content);
 						//$wxDevObj = new classTaskL2sdkIotWx($this->appid, $this->appsecret);
 						$log_from = MFUN_CLOUD_WX;
 						$platform = MFUN_TECH_PLTF_WECHAT_DEVICE_TEXT;

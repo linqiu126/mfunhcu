@@ -37,7 +37,8 @@ if (MFUN_WX_APPID =="wx1183be5c8f6a24b4")  //用于LZH的订阅号
     define ("MYC_openid", "oS0Chv0aebwN8O3-7v0hNAX7gy4c");
     define("MYC_deviceid","gh_70c714952b02_f8ac45cf39c447e9bb41dfd449796474");
     define("MYC_qrcode","http://we.qq.com/d/AQBLQKG-ekqCcmpZw5z91QExD6_TDwpzM1-SiC9z");
-    define("MYC_mac","D03972A5EFB5");
+    //define("MYC_mac","D03972A5EFB5");
+    define("MYC_mac","D03972A5EF29");
 
     define ("ZJL_openid", "oS0Chv-avCH7W4ubqOQAFXojYODY");
     define("ZJL_deviceid","gh_70c714952b02_8248307502397542f48a3775bcb234d4");

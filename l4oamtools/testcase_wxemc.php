@@ -15,7 +15,7 @@ if (TC_EMCWX == true){
     echo " [TC EMCWX: EMC DEVICE_TEXT START]\n";
 //$content = pack("H*", "FE01001C71212372010002206500403020101020304050607081800");
     $content = base64_encode(pack("H*", "201000220650040302010102030405060708"));
-    $GLOBALS["HTTP_RAW_POST_DATA"] = "<xml><ToUserName><![CDATA[IHU]]></ToUserName><FromUserName><![CDATA[oS0Chv3Uum1TZqHaCEb06AoBfCvY]]></FromUserName><CreateTime>1460039152</CreateTime><MsgType><![CDATA[device_text]]></MsgType><Content><![CDATA[" . $content . "]]></Content><FuncFlag>0</FuncFlag></xml>";
+    $GLOBALS["HTTP_RAW_POST_DATA"] = "<xml><ToUserName><![CDATA[IHU]]></ToUserName><FromUserName><![CDATA[oS0Chv3Uum1TZqHaCEb06AoBfCvY]]></FromUserName><DeviceID><![CDATA[gh_70c714952b02_8cd47e1f6141e49a4e45f4b807cf41fe]]></DeviceID>><CreateTime>1460039152</CreateTime><MsgType><![CDATA[device_text]]></MsgType><Content><![CDATA[" . $content . "]]></Content><FuncFlag>0</FuncFlag></xml>";
     require("../l1mainentry/cloud_callback_wechat.php");
     echo " [TC EMCWX: EMC DEVICE_TEXT END]\n";
 

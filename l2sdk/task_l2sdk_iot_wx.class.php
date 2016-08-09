@@ -859,6 +859,15 @@ class classTaskL2sdkIotWx
                 $transMsg = $this->xms_responseText($data->FromUserName, $data->ToUserName, "设置微信log打印开关OFF，Result=" . json_encode($result));
                 break;
 
+            case "CLICK_COMPANY":
+                $transMsg = "上海小慧智能科技有限公司";
+                break;
+            case "CLICK_MEMBER":
+                $transMsg = "欢迎加入会员专区";
+                break;
+            case "CLICK_HELP":
+                $transMsg = "您好，请问有什么需要帮助的？";
+                break;
             default:
                 $transMsg = $this->xms_responseText($data->FromUserName, $data->ToUserName,"收到未识别菜单EventKey值");
                 break;

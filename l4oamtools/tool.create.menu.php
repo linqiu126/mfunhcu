@@ -42,15 +42,12 @@ echo "<br>测试最新刷新的Token=<br>".$wxDevObj->access_token ."<br>";
 //Step2:测试创建微信界面上自定义的菜单
 static $self_create_menu =
 '{"button":[
-                {"name":"测量",
+                {"name":"操作",
                     "sub_button":[{"type":"click","name":"当前辐射","key":"CLICK_EMC_READ"},
-                                  {"type":"click","name":"历史数据","key":"CLICK__EMC_HIS"}]
-                },
-
-                {"name":"设置",
-                     "sub_button":[{"type":"click","name":"绑定","key":"CLICK_BIND"},
-                                   {"type":"click","name":"解绑","key":"CLICK_UNBIND"},
-                                   {"type":"click","name":"查询","key":"CLICK_BIND_INQ"}]
+                                  {"type":"click","name":"历史数据","key":"CLICK_EMC_HIS"},
+                                  {"type":"click","name":"绑定","key":"CLICK_BIND"},
+                                  {"type":"click","name":"解绑","key":"CLICK_UNBIND"},
+                                  {"type":"click","name":"查询","key":"CLICK_BIND_INQ"}]
                 },
 
                 {"name":"关于",
@@ -58,7 +55,7 @@ static $self_create_menu =
                                   {"type":"click","name":"会员专区","key":"CLICK_MEMBER"},
                                   {"type":"click","name":"微客服","key":"CLICK_HELP"},
                                   {"type":"view","name":"H5页面","url":"https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx32f73ab219f56efb&redirect_uri=http://121.40.185.177/xhzn/mfunhcu/l4emcwxui/h5ui/emch5.php&response_type=code&scope=snsapi_base&state=1#wechat_redirect"}]
-                }，
+                },
 
                 {"name":"工程菜单",
                      "sub_button":[{"type":"click","name":"版本信息","key":"CLICK_VERSION"},

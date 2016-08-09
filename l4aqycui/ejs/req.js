@@ -1,4 +1,4 @@
-﻿
+
     function database(data){
     var key = data.action;
     switch(key){

@@ -2,7 +2,7 @@
  * Created by hyj on 2016/5/30.
  */
 var wait_time_long =1500;
-var wait_time_middle = 3000;
+var wait_time_middle = 10000;
 var wait_time_short= 500;
 var cycle_time = 60000*5;
 var subtitle_speed = 20;
