@@ -19,29 +19,26 @@ class classL1MainEntrySocketListenServer
         $this->serv->set(array(
             'worker_num' => 1,
             'daemonize' => false,
-	        //'log_file' => '/home/hitpony/phpsocket/tasksample/swoole.log',
+            //'log_file' => '/home/hitpony/phpsocket/tasksample/swoole.log',
             'max_request' => 10000,
             'dispatch_mode' => 2,
             'debug_mode'=> 1,
             'task_worker_num' => 1
         ));
 
-        $this->serv->on('Start', array($this, 'onStart'));
-        $this->serv->on('Connect', array($this, 'onConnect'));
-        $this->serv->on('Receive', array($this, 'onReceive'));
-        $this->serv->on('Close', array($this, 'onClose'));
+        $this->serv->on('Start', array($this, 'my_onStart'));
+        $this->serv->on('Connect', array($this, 'my_onConnect'));
+        $this->serv->on('Receive', array($this, 'my_onReceive'));
+        $this->serv->on('Close', array($this, 'my_onClose'));
         //worker
         $this->serv->on('WorkerStart', array($this, 'my_onWorkerStart'));
         $this->serv->on('WorkerStop', array($this, 'my_onWorkerStop'));
-        // bind callback
-        $this->serv->on('Task', array($this, 'onTask'));
-        $this->serv->on('Finish', array($this, 'onFinish'));
+        //task_worker for mysql function
+        $this->serv->on('Task', array($this, 'my_onTask'));
+        $this->serv->on('Finish', array($this, 'my_onFinish'));
         //manager
-        $this->serv->on('ManagerStart', function($serv) {
-             global $argv;
-             swoole_set_process_name("php {$argv[0]}: manager");
-         });
-        //add port for UI
+        $this->serv->on('ManagerStart', array($this, 'my_onManagerStart'));
+        //port2 opened for UI command
         $port2 = $this->serv->listen("0.0.0.0", 9502, SWOOLE_SOCK_TCP);
         /*$port2->set(array(
             'open_length_check' => true,
@@ -49,54 +46,20 @@ class classL1MainEntrySocketListenServer
             'package_length_offset' => 0,
             'package_max_length' => 800,
         ));*/
-        $port2->on('connect', function ($serv, $fd){
-            echo "Port2 Client:Connect.\n";
-        });
-
-        $port2->on('receive', function ($serv, $fd, $from_id, $data) {
-            $serv->send($fd, 'Port2 Swoole: '.$data);
-            //connect to mysql, reset all socketid
-             $mysqli = mysqli_connect("127.0.0.1", "TestUser", "123456", "bxxhl1l2l3");
-            if (!$mysqli ) {
-                echo "Error: Unable to connect to MySQL." . PHP_EOL;
-                echo "Debugging errno: " . mysqli_connect_errno() . PHP_EOL;
-                echo "Debugging error: " . mysqli_connect_error() . PHP_EOL;
-                exit;
-            }
-            echo "Success: A proper connection to MySQL was made! bxxhl1l2l3 database is great." . PHP_EOL;
-            
-            $query="select devcode,socketid from t_l2sdk_iothcu_inventory where devcode=\"$data\"";
-            $result=$mysqli->query($query);
-            if ($result) {
-                     if($result->num_rows>0){                                               //判断结果集中行的数目是否大于0
-                              while($row =$result->fetch_array() ){                        //循环输出结果集中的记录
-                                       echo ($row[0]).PHP_EOL;
-                                       echo ($row[1]).PHP_EOL;
-                                       //send current HCUs to all connected HCU
-                                       $serv->send( $row[1], "$row[0], This is hello from UI!" );
-                              }
-                     }
-            }else {
-                     echo "查询失败";
-            }
-
-            $serv->close($fd);
-        });
-
-        $port2->on('close', function ($serv, $fd) {
-            echo "Port2 Client: Close.\n";
-        });
+        $port2->on('connect', array($this, 'port2_onConnect'));
+        $port2->on('receive', array($this, 'port2_onReceive'));
+        $port2->on('close', array($this, 'port2_onClose'));
+         
         $this->serv->start();
         return;
     }
 
-    public function onStart( $serv ) {
+    public function my_onStart( $serv ) {
         global $argv;
          swoole_set_process_name("php {$argv[0]}: master");
-         echo "MasterPid={$serv->master_pid}|Manager_pid={$serv->manager_pid}\n";
-         echo "Server: start.Swoole version is [".SWOOLE_VERSION."]\n";
+         echo "Swoole start: MasterPid={$serv->master_pid}|Manager_pid={$serv->manager_pid}\n";
          //$serv->addtimer(1000);
-         //connect to mysql, reset all socketid
+         //connect to mysql, reset all socketid to 0
          $mysqli = mysqli_connect("127.0.0.1", "TestUser", "123456", "bxxhl1l2l3");
         if (!$mysqli ) {
             echo "Error: Unable to connect to MySQL." . PHP_EOL;
@@ -104,123 +67,70 @@ class classL1MainEntrySocketListenServer
             echo "Debugging error: " . mysqli_connect_error() . PHP_EOL;
             exit;
         }
-        echo "Success: A proper connection to MySQL was made! bxxhl1l2l3 database is great." . PHP_EOL;
-        
-        $query="UPDATE t_l2sdk_iothcu_inventory  SET socketid = 0 WHERE socketid != 0"; //修改update，UPDATE 表名称 SET 列名称 = 新值 WHERE 列名称 = 某值
-        echo 'query sentence is:'.$query.PHP_EOL;
+        $query="UPDATE t_l2sdk_iothcu_inventory  SET socketid = 0 WHERE socketid != 0"; 
         $result=$mysqli->query($query);
         if ($result){
-                 echo "操作执行成功".PHP_EOL;
-                 echo "updated rows: ".$mysqli->affected_rows.PHP_EOL;
+                 echo "Swoole start: Swoole version is ".SWOOLE_VERSION.". All socketid reseted to 0, updated rows: ".$mysqli->affected_rows.PHP_EOL;
         }else {
-                 echo "操作执行失败".PHP_EOL;
+                 echo "Swoole start: Reset socketid failed!".PHP_EOL;
         }
         $mysqli->close();
-        
     }
 
-    public function onConnect( $serv, $fd, $from_id ) {
-        echo "Client fd={$fd} connected.\n";
+    public function my_onManagerStart($serv) {
+             global $argv;
+             swoole_set_process_name("php {$argv[0]}: manager");
+    }
+
+
+    public function my_onConnect( $serv, $fd, $from_id ) {
+        echo "Swoole worker: Client fd={$fd} connected.\n";
         $serv->send( $fd, "Hello {$fd}!" );
         
     }
     //入口函数挂载在这个函数体中，待测试
-    public function onReceive( swoole_server $serv, $fd, $from_id, $data ) {
-        echo "Get Message From Client {$fd}:{$data}\n";
-        echo "fd is:".$fd.PHP_EOL;
-        echo "data is:".$data.PHP_EOL;
+    public function my_onReceive( swoole_server $serv, $fd, $from_id, $data ) {
+        echo "Swoole worker: Get Message From Client {$fd} : {$data}\n";
         
         //a test to read from t_l2sdk_iothcu_inventory, devcode + socketid
-        //MySql connection test
-        $mysqli = mysqli_connect("127.0.0.1", "TestUser", "123456", "bxxhl1l2l3");
-        if (!$mysqli ) {
-            echo "Error: Unable to connect to MySQL." . PHP_EOL;
-            echo "Debugging errno: " . mysqli_connect_errno() . PHP_EOL;
-            echo "Debugging error: " . mysqli_connect_error() . PHP_EOL;
-            exit;
-        }
-        echo "Success: A proper connection to MySQL was made! bxxhl1l2l3 database is great." . PHP_EOL;
-        echo "Host information: " . mysqli_get_host_info($mysqli ) . PHP_EOL;
-        //Db connection to be closed at shutdown function
-
-        //update start
-        $query="UPDATE t_l2sdk_iothcu_inventory  SET socketid = $fd WHERE devcode = \"$data\""; //修改update，UPDATE 表名称 SET 列名称 = 新值 WHERE 列名称 = 某值
-        echo 'query sentence is:'.$query.PHP_EOL;
-        $result=$mysqli->query($query);
-        if ($result){
-                 echo "操作执行成功".PHP_EOL;
-                 echo "updated rows: ".$mysqli->affected_rows.PHP_EOL;
-        }else {
-                 echo "操作执行失败".PHP_EOL;
-        }
-        //update end
-
-        //select sample
-        $query="select devcode,socketid from t_l2sdk_iothcu_inventory where devcode=\"$data\"";
-        //echo 'select query sentence is:'.$query.PHP_EOL;
-        $result=$mysqli->query($query);
-        if ($result) {
-            if($result->num_rows>0){                                               //判断结果集中行的数目是否大于0
-                          while($row =$result->fetch_array() ){              //循环输出结果集中的记录
-                                   echo ($row[0]).PHP_EOL;
-                                   echo ($row[1]).PHP_EOL;
-                          }
-              }
+        //taskwait就是投递一条任务，这里直接传递SQL语句了
+        //然后阻塞等待SQL完成
+        $query="UPDATE t_l2sdk_iothcu_inventory  SET socketid = $fd WHERE devcode = \"$data\"";
+        $result = $serv->taskwait($query);
+        if ($result !== false) {
+            list($status, $db_res) = explode(':', $result, 2);
+            if ($status == 'OK') {
+                echo "Swoole worker: Client ".$data."'s socketid ".$fd." is stored in t_l2sdk_iothcu_inventory. Affacted_rows: ".$db_res.PHP_EOL;
+            } else {
+                echo "Swoole worker: Socketid store failed.";
+            }
+            return;
         } else {
-            echo "select action failed".PHP_EOL;
+            echo "Swoole worker: Socketid store timeout.";
         }
-        $query="select devcode,socketid from t_l2sdk_iothcu_inventory where socketid!=0";
-        $result=$mysqli->query($query);
-        if ($result) {
-                 if($result->num_rows>0){                                               //判断结果集中行的数目是否大于0
-                          while($row =$result->fetch_array() ){                        //循环输出结果集中的记录
-                                   echo ($row[0]).PHP_EOL;
-                                   echo ($row[1]).PHP_EOL;
-                                   //send current HCUs to all connected HCU
-                                   $serv->send( $row[1], "$row[0], This is hello from $data!" );
-                          }
-                 }
-        }else {
-                 echo "查询失败";
-        }
-        $result->free();
-        $mysqli->close();
-        //db end
 
         $msg = array(
             "serv" => $serv, "fd" => $fd, "fromid" => $from_id, "data" => $data);
         $obj = new classTaskL1vmCoreRouter();
         $obj->mfun_l1vm_task_main_entry(MFUN_MAIN_ENTRY_SOCKET_LISTEN, NULL, NULL, $msg);
-        // send a task to task worker.
-        //$param = array(
-        //	'fd' => $fd
-        //);
-        //$serv->task( json_encode( $param ) );
-        //echo "Continue Handle Worker\n";
     }
-    public function onClose( $serv, $fd, $from_id ) {
-        echo "Client {$fd} close connection\n";
-        $mysqli = mysqli_connect("127.0.0.1", "TestUser", "123456", "bxxhl1l2l3");
-        if (!$mysqli ) {
-            echo "Error: Unable to connect to MySQL." . PHP_EOL;
-            echo "Debugging errno: " . mysqli_connect_errno() . PHP_EOL;
-            echo "Debugging error: " . mysqli_connect_error() . PHP_EOL;
-            exit;
-        }
-        echo "Success: A proper connection to MySQL was made! bxxhl1l2l3 database is great." . PHP_EOL;
-        //update start
-        $query="UPDATE t_l2sdk_iothcu_inventory  SET socketid = 0 WHERE socketid = $fd"; //修改update，UPDATE 表名称 SET 列名称 = 新值 WHERE 列名称 = 某值
-        echo 'query sentence is:'.$query.PHP_EOL;
-        $result=$mysqli->query($query);
-        if ($result){
-                 echo "操作执行成功".PHP_EOL;
-                 echo "updated rows: ".$mysqli->affected_rows.PHP_EOL;
-        }else {
-                 echo "操作执行失败".PHP_EOL;
-        }
-        //update end
 
-        $mysqli->close();
+    public function my_onClose( $serv, $fd, $from_id ) {
+        echo "Swoole worker: Client {$fd} closed connection.".PHP_EOL;
+        //reset socketid in t_l2sdk_iothcu_inventory when connection closed.
+        $query="UPDATE t_l2sdk_iothcu_inventory  SET socketid = 0 WHERE socketid = $fd"; 
+        $result = $serv->taskwait($query);
+        if ($result !== false) {
+            list($status, $db_res) = explode(':', $result, 2);
+            if ($status == 'OK') {
+                echo "Swoole worker: Socketid ".$fd." is reseted to 0 in t_l2sdk_iothcu_inventory. Affacted_rows : ".$db_res.PHP_EOL;
+            } else {
+                echo "Swoole worker: Socketid".$fd." reset failed.".PHP_EOL;
+            }
+            return;
+        } else {
+            echo "Swoole worker: Socketid".$fd." reset timeout.".PHP_EOL;
+        }
     }
 
     public function my_onWorkerStart($serv, $worker_id)
@@ -231,29 +141,96 @@ class classL1MainEntrySocketListenServer
          } else {
              swoole_set_process_name("php {$argv[0]}: worker");
          }
-         //echo "WorkerStart|MasterPid={$serv->master_pid}|Manager_pid={$serv->manager_pid}|WorkerId=$worker_id\n";
-             //$serv->addtimer(500); //500ms
+        echo "Worker start: MasterPid={$serv->master_pid}|Manager_pid={$serv->manager_pid}|WorkerId=$worker_id\n";
+        //$serv->addtimer(500); //500ms
      }
 
-     public function my_onWorkerStop($serv, $worker_id)
-     {
-             echo "WorkerStop[$worker_id]|pid=".posix_getpid().".\n";
-     }
-
-    public function onTask($serv,$task_id,$from_id, $data) {
-    	echo "This Task {$task_id} from Worker {$from_id}\n";
-    	echo "Data: {$data}\n";
-    	for($i = 0 ; $i < 10 ; $i ++ ) {
-    		sleep(1);
-    		echo "Task {$task_id} Handle {$i} times...\n";
-    	}
-        $fd = json_decode( $data , true )['fd'];
-    	$serv->send( $fd , "Data in Task {$task_id}");
-    	return "Task {$task_id}'s result";
+    public function my_onWorkerStop($serv, $worker_id)
+    {
+        echo "WorkerStop[$worker_id]|pid=".posix_getpid().".\n";
     }
-    public function onFinish($serv,$task_id, $data) {
-    	echo "Task {$task_id} finish\n";
-    	echo "Result: {$data}\n";
+
+    public function my_onTask($serv, $task_id, $from_id, $sql)
+    {
+        static $link = null;
+        if ($link == null) {
+            $link = mysqli_connect("127.0.0.1", "TestUser", "123456", "bxxhl1l2l3");
+            if (!$link) {
+                $link = null;
+                $serv->finish("ER:" . mysqli_error($link));
+                return;
+            }
+        }
+        $result = $link->query($sql);//mysqli_result return resultset if the command is SELECT, SHOW, DESCRIBE, EXPLAIN, others will be TRUE instead
+        if (!$result) {
+            $serv->finish("ER:" . mysqli_error($link));
+            return;
+        }
+        $command = substr($sql, 0, 6);
+        //echo "command is ".$command.PHP_EOL;
+        switch ($command){
+            case "UPDATE":
+                $serv->finish("OK:".$link->affected_rows);
+                break;
+            case "SELECT":
+                $i=0;
+                 if($result->num_rows>0){                                               //判断结果集中行的数目是否大于0
+                          while($row =$result->fetch_array() ){                    
+                                   $data[$i]=$row;
+                                   $i++;
+                          }
+                 }
+                $result->free();
+                $serv->finish("OK:" . serialize($data));
+                break;
+        }        
+    }
+
+    public function my_onFinish($serv, $data)
+    {
+        echo "AsyncTask Finish:Connect.PID=" . posix_getpid() . PHP_EOL;
+    }
+
+    public  function port2_onConnect($serv, $fd){
+        echo "Swoole worker port2: Client {$fd} connected. ".PHP_EOL;
+    }
+
+    public function port2_onReceive($serv, $fd, $from_id, $data) {
+        $serv->send($fd, $data);
+        
+        $query="SELECT devcode,socketid from t_l2sdk_iothcu_inventory where devcode=\"$data\"";
+        $result = $serv->taskwait($query);
+        if ($result !== false) {
+            list($status, $db_res) = explode(':', $result, 2);
+            if ($status == 'OK') {
+                //数据库操作成功了，执行业务逻辑代码，这里就自动释放掉MySQL连接的占用
+                //$serv->send($fd, var_export(unserialize($db_res), true) . "\n");
+                $devcode=unserialize($db_res)[0]['devcode']; //restore to array
+                $socketid=unserialize($db_res)[0]['socketid'];
+                echo ("Swoole worker port2: Target {$devcode} received from UI.").PHP_EOL;
+                $sendresult = $serv->send($socketid, "This is hello from UI thru Swoole worker.".PHP_EOL);
+                if ($sendresult){
+                    echo ("Swoole worker port2: Message delivered to {$devcode}.").PHP_EOL;
+                } else {
+                    echo ("Swoole worker port2: Message delivery to {$devcode} failed.").PHP_EOL;
+                }
+                $serv->close($fd);
+            } else {
+                $serv->send($fd, $db_res);
+                echo ("Swoole worker port2: query mysql failed.").PHP_EOL;
+                $serv->close($fd);
+            }
+            return;
+        } else {
+            $serv->send($fd, "Error. Task timeout\n");
+            echo ("Swoole worker port2: query mysql timeout.").PHP_EOL;
+        }
+
+        $serv->close($fd);
+    }
+
+    public function port2_onClose($serv, $fd) {
+        echo "Swoole worker port2: Client {$fd} connection closed.".PHP_EOL;
     }
 }
 
