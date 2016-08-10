@@ -197,8 +197,8 @@ class classL1MainEntrySocketListenServer
 
     public function port2_onReceive($serv, $fd, $from_id, $data) {
         $serv->send($fd, $data);
-        
-        $query="SELECT devcode,socketid from t_l2sdk_iothcu_inventory where devcode=\"$data\"";
+        $arr = json_decode($data);
+        $query="SELECT devcode,socketid from t_l2sdk_iothcu_inventory where devcode=\"$arr[0]\"";
         $result = $serv->taskwait($query);
         if ($result !== false) {
             list($status, $db_res) = explode(':', $result, 2);
@@ -207,8 +207,8 @@ class classL1MainEntrySocketListenServer
                 //$serv->send($fd, var_export(unserialize($db_res), true) . "\n");
                 $devcode=unserialize($db_res)[0]['devcode']; //restore to array
                 $socketid=unserialize($db_res)[0]['socketid'];
-                echo ("Swoole worker port2: Target {$devcode} received from UI.").PHP_EOL;
-                $sendresult = $serv->send($socketid, "This is hello from UI thru Swoole worker.".PHP_EOL);
+                echo ("Swoole worker port2: Target {$devcode} received from UI, Command from UI thru Swoole worker is ").$arr[1].PHP_EOL;
+                $sendresult = $serv->send($socketid, $arr[1]);
                 if ($sendresult){
                     echo ("Swoole worker port2: Message delivered to {$devcode}.").PHP_EOL;
                 } else {
