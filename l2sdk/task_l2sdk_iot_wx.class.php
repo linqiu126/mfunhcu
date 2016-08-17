@@ -1198,7 +1198,8 @@ class classTaskL2sdkIotWx
                 $result = $wxDbObj->dbi_blebound_duplicate(CZ_openid, CZ_deviceid, CZ_openid, device_type);
                 if ($result == false)
                 {
-                    $result = $wxDbObj->dbi_blebound_save(CZ_openid, ZJL_deviceid, CZ_openid, device_type);
+                    //$result = $wxDbObj->dbi_blebound_save(CZ_openid, ZJL_deviceid, CZ_openid, device_type);
+                    $result = $wxDbObj->dbi_blebound_save(CZ_openid, CZ_deviceid, CZ_openid, device_type);
                     $this->send_custom_message(trim($data->FromUserName), "text","User-Device DB bind, Result= ".json_encode($result) );
                 }
                 else
