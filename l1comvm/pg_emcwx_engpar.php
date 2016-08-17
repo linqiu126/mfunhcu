@@ -45,7 +45,8 @@ if (MFUN_WX_APPID =="wx1183be5c8f6a24b4")  //用于LZH的订阅号
     define("ZJL_qrcode","http://we.qq.com/d/AQBLQKG-cFODzg6aCE5C92D1SKGHOirRJtBGwCmd");
     define("ZJL_mac","D03972A5EF27");
 
-    define ("CZ_openid", "oS0Chv9XjoSv9IvXI-ggBxpNVPck");
+    //define ("CZ_openid", "oS0Chv9XjoSv9IvXI-ggBxpNVPck"); CZ openid
+    define ("CZ_openid", "oS0ChvwWJOQsIk5xGsRPTQm00C3U"); // xiao xiong openid, replace cz's temporary
     define("CZ_deviceid","gh_70c714952b02_955677dfa6db7590f2033b20d3fbad8c");
     define("CZ_qrcode","http://we.qq.com/d/AQBLQKG-4i5gYb6vU8kM8cNnvx0Pg-sdIgXb0n17");
     define("CZ_mac","D03972A5EFF2");
