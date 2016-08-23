@@ -244,8 +244,12 @@ Make By：ZJL
 > 修改微信菜单
 > 爱启扬尘UI采用JS编译文件，去掉了路径依赖，可以部署在WWW下任意路径
 
-//= LZH, 2016 Aug.09, CURRENT_SW_DELIVERY R02.D38
+//= LZH, 2016 Aug.11, CURRENT_SW_DELIVERY R02.D38
 > 增加小慧云支持（http://121.40.118.33）
+
+//= LZH, 2016 Aug.23, CURRENT_SW_DELIVERY R02.D39
+> 增加小慧智能服务号支持，服务号和测试号分别创建新菜单
+> EMC微信H5页面支持
 
 //待完善的功能
 1. 需要编制小型工具，支持工参数据，特别是图片内容的导入导出
