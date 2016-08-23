@@ -40,8 +40,10 @@ echo "<br>测试最新刷新的Token=<br>".$wxDevObj->access_token ."<br>";
 
 
 //Step2:测试创建微信界面上自定义的菜单
-static $self_create_menu =
-'{"button":[
+if (MFUN_WX_APPID == "wx1183be5c8f6a24b4") //如果是测试号
+{
+    static $self_create_menu =
+    '{"button":[
                 {"name":"操作",
                     "sub_button":[{"type":"click","name":"当前辐射","key":"CLICK_EMC_READ"},
                                   {"type":"click","name":"历史数据","key":"CLICK_EMC_HIS"},
@@ -64,7 +66,25 @@ static $self_create_menu =
                                    {"type":"click","name":"Trace关","key":"CLICK_TRACE_OFF"}]
                 }
          ]
- }';
+    }';
+}
+elseif (MFUN_WX_APPID == "wxf2150c4d2941b2ab") //如果是正式小慧智能服务号
+{
+    static $self_create_menu =
+    '{"button":[
+                {
+                "type":"view","name":"辐射查看","url":"https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxf2150c4d2941b2ab&redirect_uri=http://121.40.118.33/mfunhcu/l4emcwxui/emcwx_h5/index.html&response_type=code&scope=snsapi_base&state=1#wechat_redirect"
+                },
+
+                {"name":"关于",
+                    "sub_button":[{"type":"click","name":"小慧科技","key":"CLICK_COMPANY"},
+                                  {"type":"click","name":"会员专区","key":"CLICK_MEMBER"},
+                                  {"type":"click","name":"微客服","key":"CLICK_HELP"}]
+                }
+         ]
+    }';
+}
+
 
 echo "<br>自定义菜单创建（先删再建-微信界面需要24小时更新，重新关注可立即刷新） <br><br>";
 
