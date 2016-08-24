@@ -160,10 +160,23 @@ class classL1MainEntrySocketListenServer
                 $serv->finish("ER:" . mysqli_error($link));
                 return;
             }
+        } else {
+            //try to resolve mysql has gone away problem
+            if(!mysql_ping($link)){
+                mysql_close($link); //注意：一定要先执行数据库关闭，这是关键
+                $link = mysqli_connect("127.0.0.1", "TestUser", "123456", "bxxhl1l2l3");
+                if (!$link) {
+                    $link = null;
+                    $serv->finish("ER:" . mysqli_error($link));
+                    return;
+                }
+            }
         }
+
         $result = $link->query($sql);//mysqli_result return resultset if the command is SELECT, SHOW, DESCRIBE, EXPLAIN, others will be TRUE instead
         if (!$result) {
             $serv->finish("ER:" . mysqli_error($link));
+            
             return;
         }
         $command = substr($sql, 0, 6);
