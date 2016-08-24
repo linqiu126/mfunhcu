@@ -221,11 +221,15 @@ class classL1MainEntrySocketListenServer
                 $devcode=unserialize($db_res)[0]['devcode']; //restore to array
                 $socketid=unserialize($db_res)[0]['socketid'];
                 echo ("Swoole worker port2: Target {$devcode} received from UI, Command from UI thru Swoole worker is ").$arr[1].PHP_EOL;
-                $sendresult = $serv->send($socketid, $arr[1]);
-                if ($sendresult){
-                    echo ("Swoole worker port2: Message delivered to {$devcode}.").PHP_EOL;
+                if ($socketid != 0){
+                    $sendresult = $serv->send($socketid, $arr[1]);
+                    if ($sendresult){
+                        echo ("Swoole worker port2: Message delivered to {$devcode}.").PHP_EOL;
+                    } else {
+                        echo ("Swoole worker port2: Message delivery to {$devcode} failed.").PHP_EOL;
+                    }
                 } else {
-                    echo ("Swoole worker port2: Message delivery to {$devcode} failed.").PHP_EOL;
+                    echo ("Swoole worker port2: sockid = 0, $devcode is offline.".PHP_EOL);
                 }
                 $serv->close($fd);
             } else {
