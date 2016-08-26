@@ -26,12 +26,22 @@ $wx_options = array(
 );
 $wxObj0 = new classTaskL2sdkWechat($wx_options);
 
+if (isset($_POST["deviceid"])){
+    $deviceid = trim($_POST["deviceid"]);
+    $devicetype = substr($deviceid, 0, 15);}
+else{
+    $deviceid = "";
+    $devicetype = "";
+}
+if (isset($_POST["openid"])) $openid = trim($_POST["openid"]); else  $openid = "";
+if (isset($_POST["mac"])) $mac = trim($_POST["mac"]); else  $mac = "";
+if (isset($_POST["qrcode"])) $qrcode = trim($_POST["qrcode"]); else  $qrcode = "";
 
-$deviceid = $_POST["deviceid"];
-$devicetype = substr($deviceid, 0, 15);
-$openid = $_POST["openid"];
-$mac = $_POST["mac"];
-$qrcode = $_POST["qrcode"];
+//$deviceid = $_POST["deviceid"];
+//$devicetype = substr($deviceid, 0, 15);
+//$openid = $_POST["openid"];
+//$mac = $_POST["mac"];
+//$qrcode = $_POST["qrcode"];
 echo "Input Device ID = " . $deviceid ."<br>";
 echo "Input Qrcode = " . $qrcode ."<br>";
 echo "Input Device Type = " . $devicetype ."<br>";

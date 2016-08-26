@@ -797,54 +797,7 @@ class classTaskL2sdkIotWx
                         $transMsg = $result;
                 }
                 break;
-            case "CLICK_PM25_READ":
-                $wxDbObj = new classDbiL2sdkWechat();
-                $dbi_info = $wxDbObj->dbi_blebound_query($data->FromUserName);
 
-                if ($dbi_info == false)
-                {
-                    $transMsg = $this->xms_responseText($data->FromUserName, $data->ToUserName, "No device bind for this user in database");
-                }
-                else
-                {
-                    //对PM2.5读取操作进行层三处理，构造可以发送给硬件设备的信息
-                    $msg_body = $this->ihu_device_L25_content_process($parObj, $data->EventKey, "", $data->FromUserName, $data->DeviceID);
-
-                    if (!empty($msg_body))
-                    {
-                        $i = 0;
-                        while ($i<count($dbi_info)) //考虑同一个用户绑定多个设备的情况,循环发送命令给该用户绑定的所有设备
-                        {
-                            $dev_table = $dbi_info[$i];
-                            //BYTE系列化处理在L3消息处理过程中已完成,推送数据到硬件设备
-                            $result = $this->trans_msgtodevice($dev_table["deviceType"], $dev_table["deviceID"], $dev_table["openID"], $msg_body);
-
-                            /*
-                            if ($result["errcode"] ==40001)  //防止偶然未知原因导致token失效，强制刷新token并再次发送
-                            {
-                                $this->compel_get_token($this->appid,$this->appsecret);
-                                $result = $this->trans_msgtodevice($dev_table["deviceType"], $dev_table["deviceID"], $dev_table["openID"], $msg_body);
-                            }
-                            */
-                            $i++;
-                        }
-                    }
-
-                    //推送回复消息给微信界面
-                    $logDbObj = new classDbiL1vmCommon();
-                    $wx_trace = $logDbObj->dbi_LogSwitchInfo_inqury($data->FromUserName);
-                    if ($wx_trace ==1)
-                    {
-                        $str_body = unpack('H*',$msg_body);
-                        $transMsg = $this->xms_responseText($data->FromUserName, $data->ToUserName,
-                            "Send PM2.5_PUSH to Device" . "\n Result= " .json_encode($result) . "\n Content= " . json_encode($str_body));
-                        //$transMsg = $this->send_custom_message(trim($data->FromUserName),"text",
-                        //    "Send PM2.5_PUSH to Device" . "\n Result= " .json_encode($result) . "\n Content= " . json_encode($str_body));
-                    }
-                    else
-                        $transMsg = $result;
-                }
-                break;
             case "CLICK_TRACE_ON":
                 $trace_set = 1;
                 $logDbObj = new classDbiL1vmCommon();
@@ -860,13 +813,13 @@ class classTaskL2sdkIotWx
                 break;
 
             case "CLICK_COMPANY":
-                $transMsg = "上海小慧智能科技有限公司";
+                $transMsg = $this->xms_responseText($data->FromUserName, $data->ToUserName,"上海小慧智能科技有限公司");
                 break;
             case "CLICK_MEMBER":
-                $transMsg = "欢迎加入会员专区";
+                $transMsg = $this->xms_responseText($data->FromUserName, $data->ToUserName,"欢迎加入会员专区");
                 break;
             case "CLICK_HELP":
-                $transMsg = "您好，请问有什么需要帮助的？";
+                $transMsg = $this->xms_responseText($data->FromUserName, $data->ToUserName,"您好，请问有什么需要帮助的？");
                 break;
             default:
                 $transMsg = $this->xms_responseText($data->FromUserName, $data->ToUserName,"收到未识别菜单EventKey值");
@@ -908,26 +861,6 @@ class classTaskL2sdkIotWx
                         MFUN_TASK_ID_L2SENSOR_EMC,
                         MSG_ID_L2SDK_EMCWX_TO_L2SNR_EMC_DATA_READ_INSTANT,
                         "MSG_ID_L2SDK_EMCWX_TO_L2SNR_EMC_DATA_READ_INSTANT",
-                        $msg) == false) $result = "Send to message buffer error";
-                else $result = "";
-                $respContent = $result;
-                */
-                break;
-
-            //手机微信界面上的CLICK命令
-            //如果消息发送到EMC模块，则返回就为空，本模块不再处理，而留给了PM25模块进行处理
-            case "CLICK_PM25_READ":
-                $ihuObj = new classTaskL2snrPm25();
-                $respContent = $ihuObj->func_pm_data_push_process($deviceId, $content);
-                /*
-                $msg = array("project" => $optType,
-                    "log_from" => $fromUser,
-                    "deviceId" => $deviceId,
-                    "content" => $content);
-                if ($parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L2SDK_IOT_WX,
-                        MFUN_TASK_ID_L2SENSOR_PM25,
-                        MSG_ID_L2SDK_EMCWX_TO_L2SNR_PM25_DATA_READ_INSTANT,
-                        "MSG_ID_L2SDK_EMCWX_TO_L2SNR_PM25_DATA_READ_INSTANT",
                         $msg) == false) $result = "Send to message buffer error";
                 else $result = "";
                 $respContent = $result;
