@@ -4519,6 +4519,8 @@ class classTaskL2sdkWechat
                 //保存所有微信入口消息,这个功能可以在部署时关掉
                 $log_content = "R:".trim($msg);
                 $loggerObj->logger("MFUN_TASK_ID_L2SDK_WECHAT", "mfun_l2sdk_wechat_task_main_entry", $log_time, $log_content);
+                $project = "";
+                $log_from = "";
 
 				//消息类型分离
 				switch ($RX_TYPE)

@@ -38,11 +38,11 @@ $wxDevObj = new classTaskL2sdkIotWx(MFUN_WX_APPID, MFUN_WX_APPSECRET);
 //实验Token是否已经被刷新
 echo "<br>测试最新刷新的Token=<br>".$wxDevObj->access_token ."<br>";
 
-
+$self_create_menu = array();
 //Step2:测试创建微信界面上自定义的菜单
 if (MFUN_WX_APPID == "wx1183be5c8f6a24b4") //如果是测试号
 {
-    static $self_create_menu =
+    $self_create_menu =
     '{"button":[
                 {"name":"操作",
                     "sub_button":[{"type":"click","name":"当前辐射","key":"CLICK_EMC_READ"},
@@ -62,7 +62,7 @@ if (MFUN_WX_APPID == "wx1183be5c8f6a24b4") //如果是测试号
 }
 elseif (MFUN_WX_APPID == "wxf2150c4d2941b2ab") //如果是正式小慧智能服务号
 {
-    static $self_create_menu =
+    $self_create_menu =
     '{"button":[
                 {"type":"view","name":"辐射查看","url":"http://121.40.118.33/mfunhcu/l4emcwxui/emcwx_h5/index.html"},
 
