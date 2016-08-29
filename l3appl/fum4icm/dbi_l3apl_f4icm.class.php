@@ -388,6 +388,12 @@ class classDbiL3apF4icm
                 $respCmd = $ctrl_key . $len . $optkey_switch_set . $equip_id . $switch;
                 $dbiL1vmCommonObj = new classDbiL1vmCommon();
                 $resp = $dbiL1vmCommonObj->dbi_cmdbuf_save_cmd(trim($DevCode), trim($respCmd));
+
+                //socket test start
+                $_GET['DevCode'] = $DevCode;
+                $_GET['respCmd'] = $respCmd;
+                include dirname(__FILE__).'/../../l2socketlisten/UIClient.php';
+                //socket test end
             }
             if(!empty($ctrl_key)AND !empty($optkey_modbus_set)){
                 $modebus_addr = $apiL2snrCommonServiceObj->ushort2string($modebus_addr & 0xFFFF);

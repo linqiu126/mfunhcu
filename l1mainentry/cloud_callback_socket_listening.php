@@ -18,10 +18,10 @@ class classL1MainEntrySocketListenServer
         $this->serv = new swoole_server("0.0.0.0", 9501);
         $this->serv->set(array(
             'worker_num' => 1,
-            'daemonize' => false,
+            'daemoclassL1MainEntrySocketListenServernize' => false,
             //'log_file' => '/home/hitpony/phpsocket/tasksample/swoole.log',
             'max_request' => 10000,
-            'dispatch_mode' => 2,
+            'dispaclassL1MainEntrySocketListenServertch_mode' => 2,
             'debug_mode'=> 1,
             'task_worker_num' => 1
         ));
@@ -109,7 +109,7 @@ class classL1MainEntrySocketListenServer
             echo "Swoole worker: Socketid store timeout.";
         }
 
-        $msg = array(
+        $msg = array(dbi_cmdbuf_save_cmd
             "serv" => $serv, "fd" => $fd, "fromid" => $from_id, "data" => $data);
         $obj = new classTaskL1vmCoreRouter();
         $obj->mfun_l1vm_task_main_entry(MFUN_MAIN_ENTRY_SOCKET_LISTEN, NULL, NULL, $msg);
@@ -166,7 +166,7 @@ class classL1MainEntrySocketListenServer
                 mysql_close($link); //注意：一定要先执行数据库关闭，这是关键
                 $link = mysqli_connect("127.0.0.1", "TestUser", "123456", "bxxhl1l2l3");
                 if (!$link) {
-                    $link = null;
+                    $link = nudbi_cmdbuf_save_cmdll;
                     $serv->finish("ER:" . mysqli_error($link));
                     return;
                 }
