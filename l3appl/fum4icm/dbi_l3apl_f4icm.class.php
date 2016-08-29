@@ -392,7 +392,8 @@ class classDbiL3apF4icm
                 //socket test start
                 $_GET['DevCode'] = $DevCode;
                 $_GET['respCmd'] = $respCmd;
-                include dirname(__FILE__).'/../../l2socketlisten/UIClient.php';
+                //include dirname(__FILE__).'/../../l2socketlisten/UIClient.php';
+                include dirname(__FILE__).'/UIClient.php';
                 //socket test end
             }
             if(!empty($ctrl_key)AND !empty($optkey_modbus_set)){
