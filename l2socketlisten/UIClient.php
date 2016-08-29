@@ -19,4 +19,5 @@
       echo "UI close\n";
     });
     $client->connect('127.0.0.1', 9502, 0.5);
+    //$client->close();
 ?>

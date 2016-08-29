@@ -348,7 +348,8 @@ if (TC_L4AQYC_UI == true) {
     $_GET["action"] = "SensorUpdate";
     $_GET["DevCode"] = "HCU_SH_0301";
     $_GET["SensorCode"] = "S_0001";
-    $_GET["status"] = "true";
+    //$_GET["status"] = "true";
+    $_GET["status"] = "false";
     $para_list = array();
     $temp = array(
         'name'=>"MODBUS_Addr",
