@@ -390,10 +390,10 @@ class classDbiL3apF4icm
                 $resp = $dbiL1vmCommonObj->dbi_cmdbuf_save_cmd(trim($DevCode), trim($respCmd));
 
                 //socket test start
-                $_GET['DevCode'] = $DevCode;
-                $_GET['respCmd'] = $respCmd;
+                $_GET['DevCode'] = trim($DevCode);
+                $_GET['respCmd'] = trim($respCmd);
                 //include dirname(__FILE__).'/../../l2socketlisten/UIClient.php';
-                require dirname(__FILE__).'/UIClient.php';
+                require dirname(__FILE__).'/UIClientsync.php';
                 //socket test end
             }
             if(!empty($ctrl_key)AND !empty($optkey_modbus_set)){
