@@ -528,7 +528,7 @@ class classTaskL2sdkIotWx
         $this->send_custom_message(trim($data->FromUserName), "text", $msgContent);  //使用API-CURL推送客服微信用户
 
         //调用统一的deviceTask处理入口函数
-        $resp_msg = $this->ihu_device_L25_content_process($parObj, "device_text", $strContent, $fromUser, $deviceId);
+        $resp_msg = $this->ihu_device_text_process($parObj, $fromUser, $deviceId, $strContent);
 
         //处理绑定用户，将相应信息通知给绑定的用户
         $wxDbObj = new classDbiL2sdkWechat();
@@ -577,7 +577,7 @@ class classTaskL2sdkIotWx
         $wxDbObj = new classDbiL2sdkWechat();
         switch ($data->Event)
         {
-            case "bind":
+            case "bind": //来自设备的bind事件，类似手环敲击进行绑定
                 $resp1 = "R:DEVICE_EVENT=bind\n";
                 $result = $wxDbObj->dbi_blebound_duplicate($data->FromUserName, $data->DeviceID, $data->OpenID, $data->DeviceType);
                 if ($result == true)
@@ -605,7 +605,7 @@ class classTaskL2sdkIotWx
                 $respMsg = $resp1 . $resp2 . $resp3;
                 break;
 
-            case "unbind":
+            case "unbind":  //来自设备的unbind事件
                 $result = $wxDbObj->dbi_blebound_delete($data->FromUserName);
                 $respMsg = "R:DEVICE_EVENT=unbind, Result= " . $result;
                 break;
@@ -614,14 +614,11 @@ class classTaskL2sdkIotWx
                 break;
         }
 
-        //因为是DEVICE_EVENT事件，设备内传输的L3信息应该是空的，这里保留设备L3消息相关处理
-        $event_resp = $this->ihu_device_L25_content_process($parObj, "device_text", $strContent, $data->FromUserName, $data->DeviceID);
-
         //会送给WX界面相应的TRACE消息
         $logDbObj = new classDbiL1vmCommon();
         $wx_trace = $logDbObj->dbi_LogSwitchInfo_inqury($data->FromUserName);
         if ($wx_trace == 1)
-            $transMsg = $this->send_custom_message(trim($data->FromUserName), "text", $respMsg . "\n" . json_encode($event_resp));
+            $transMsg = $this->send_custom_message(trim($data->FromUserName), "text", $respMsg);
         else
             $transMsg = $respMsg;
 
@@ -629,7 +626,7 @@ class classTaskL2sdkIotWx
     }
 
     //用户自己定义的微信点击菜单命令“event->CLICK”处理函数
-    public function receive_wx_device_click_message($parObj, $data)
+    public function receive_wx_menu_click_message($parObj, $data)
     {
         $result = "";
         switch($data->EventKey) {
@@ -647,7 +644,8 @@ class classTaskL2sdkIotWx
                 else
                 {
                     //对版本读取操作进行层三处理，构造可以发送给硬件设备的信息
-                    $msg_body = $this->ihu_device_L25_content_process($parObj, $data->EventKey, "", $data->FromUserName, $data->DeviceID);
+                    $ihuObj = new classApiL2snrCommonService();
+                    $msg_body = $ihuObj->func_version_push_process();
 
                     if (!empty($msg_body))
                     {
@@ -751,6 +749,7 @@ class classTaskL2sdkIotWx
                 break;
 
             case "CLICK_EMC_READ":
+                $deviceId = trim($data->DeviceID);
                 $wxDbObj = new classDbiL2sdkWechat();
                 $dbi_info = $wxDbObj->dbi_blebound_query($data->FromUserName);
 
@@ -761,7 +760,21 @@ class classTaskL2sdkIotWx
                 else
                 {
                     //对辐射强度瞬时读取操作进行层三处理，构造可以发送给硬件设备的信息
-                    $msg_body = $this->ihu_device_L25_content_process($parObj, $data->EventKey, "", $data->FromUserName, $data->DeviceID);
+                    $ihuObj = new classTaskL2snrEmc();
+                    $msg_body = $ihuObj->func_emc_data_push_process($deviceId, "");
+                    /*
+                    $msg = array("project" => $optType,
+                        "log_from" => $fromUser,
+                        "deviceId" => $deviceId,
+                        "content" => $content);
+                    if ($parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L2SDK_IOT_WX,
+                            MFUN_TASK_ID_L2SENSOR_EMC,
+                            MSG_ID_L2SDK_EMCWX_TO_L2SNR_EMC_DATA_READ_INSTANT,
+                            "MSG_ID_L2SDK_EMCWX_TO_L2SNR_EMC_DATA_READ_INSTANT",
+                            $msg) == false) $result = "Send to message buffer error";
+                    else $result = "";
+                    $respContent = $result;
+                    */
 
                     if (!empty($msg_body))
                     {
@@ -828,60 +841,8 @@ class classTaskL2sdkIotWx
         return $transMsg;
     }//End of receive_deviceClickCommand
 
-    //统一的device content处理入口函数
-    public function ihu_device_L25_content_process ($parObj, $optType, $content, $fromUser, $deviceId)
-    {
-        //赋初值
-        $respContent = "";
-
-        //根据操作内容进行分工
-        switch ($optType)
-        {
-            case "device_text":
-                $respContent = $this->ihu_device_L28_usercmd_text_process($parObj, $fromUser, $deviceId, $content);
-                break;
-            case "bind":
-                $respContent = $this->ihu_device_L28_syscmd_bind_process($parObj, $content);
-                break;
-            case "unbind":
-                $respContent = $this->ihu_device_L28_syscmd_unbind_process($parObj, $content);
-                break;
-
-            //手机微信界面上的CLICK命令
-            //如果消息发送到EMC模块，则返回就为空，本模块不再处理，而留给了EMC模块进行处理
-            case "CLICK_EMC_READ":
-                $ihuObj = new classTaskL2snrEmc();
-                $respContent = $ihuObj->func_emc_data_push_process($deviceId, $content);
-                /*
-                $msg = array("project" => $optType,
-                    "log_from" => $fromUser,
-                    "deviceId" => $deviceId,
-                    "content" => $content);
-                if ($parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L2SDK_IOT_WX,
-                        MFUN_TASK_ID_L2SENSOR_EMC,
-                        MSG_ID_L2SDK_EMCWX_TO_L2SNR_EMC_DATA_READ_INSTANT,
-                        "MSG_ID_L2SDK_EMCWX_TO_L2SNR_EMC_DATA_READ_INSTANT",
-                        $msg) == false) $result = "Send to message buffer error";
-                else $result = "";
-                $respContent = $result;
-                */
-                break;
-
-            //手机微信界面上的CLICK命令
-            case "CLICK_VERSION":
-                $ihuObj = new classApiL2snrCommonService();
-                $respContent = $ihuObj->func_version_push_process();
-                break;
-
-            default:
-                $respContent = "";
-                break;
-        }
-        return $respContent;
-    }
-
-    //Layer28 业务消息的处理函数，跳转到对应的业务处理模块
-    public function ihu_device_L28_usercmd_text_process($parObj, $fromUser, $deviceId, $content)
+     //设备业务消息的处理函数，跳转到对应的业务处理模块
+    public function ihu_device_text_process($parObj, $fromUser, $deviceId, $content)
     {
         //因为收到的Airsync数据消息头已经被微信处理掉，传递过来的消息体在上级函数中已经被处理成16制格式的字符串
         /*
@@ -907,7 +868,7 @@ class classTaskL2sdkIotWx
         switch ($ctrl_key)
         {
             case MFUN_IHU_CMDID_VERSION_SYNC:
-                //定时辐射强度处理
+                //版本同步消息处理
                 $ihuObj = new classApiL2snrCommonService();
                 $resp = $ihuObj->func_version_update_process(MFUN_TECH_PLTF_WECHAT, $deviceId, $data);
                 break;
@@ -935,59 +896,6 @@ class classTaskL2sdkIotWx
                 else $result = "";
                 //$ihuObj = new class_emc_service();
                 //$resp = $ihuObj->func_emc_process(MFUN_TECH_PLTF_WECHAT, $deviceId, $statCode, $data);
-                break;
-
-            case MFUN_IHU_CMDID_PM25_DATA:
-                //MODBUS数据处理
-                $msg = array("project" => MFUN_PRJ_IHU_EMCWX,
-                    "log_from" => $fromUser,
-                    "platform" => MFUN_TECH_PLTF_WECHAT,
-                    "deviceId" => $deviceId,
-                    "statCode" => $statCode,
-                    "content" => $data);
-                if ($parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L2SDK_IOT_WX,
-                        MFUN_TASK_ID_L2SENSOR_PM25,
-                        MSG_ID_L2SDK_EMCWX_TO_L2SNR_PM25_DATA_REPORT_TIMING,
-                        "MSG_ID_L2SDK_EMCWX_TO_L2SNR_PM25_DATA_REPORT_TIMING",
-                        $msg) == false) $result = "Send to message buffer error";
-                else $result = "";
-                //$ihuObj = new class_pmData_service();
-                //$resp = $ihuObj->func_pmData_process(MFUN_TECH_PLTF_WECHAT, $deviceId, $statCode, $data);
-                break;
-
-            case MFUN_IHU_CMDID_WINDSPD_DATA:
-                $msg = array("project" => MFUN_PRJ_IHU_EMCWX,
-                    "log_from" => $fromUser,
-                    "platform" => MFUN_TECH_PLTF_WECHAT,
-                    "deviceId" => $deviceId,
-                    "statCode" => $statCode,
-                    "content" => $data);
-                if ($parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L2SDK_IOT_WX,
-                        MFUN_TASK_ID_L2SENSOR_WINDSPD,
-                        MSG_ID_L2SDK_EMCWX_TO_L2SNR_WINDSPD_DATA_REPORT_TIMING,
-                        "MSG_ID_L2SDK_EMCWX_TO_L2SNR_WINDSPD_DATA_REPORT_TIMING",
-                        $msg) == false) $result = "Send to message buffer error";
-                else $result = "";
-
-                //$ihuObj = new class_windSpeed_service();
-                //$resp = $ihuObj->func_windSpeed_process(MFUN_TECH_PLTF_WECHAT, $deviceId, $statCode, $data);
-                break;
-
-            case MFUN_IHU_CMDID_WINDDIR_DATA:
-                $msg = array("project" => MFUN_PRJ_IHU_EMCWX,
-                    "log_from" => $fromUser,
-                    "platform" => MFUN_TECH_PLTF_WECHAT,
-                    "deviceId" => $deviceId,
-                    "statCode" => $statCode,
-                    "content" => $data);
-                if ($parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L2SDK_IOT_WX,
-                        MFUN_TASK_ID_L2SENSOR_WINDDIR,
-                        MSG_ID_L2SDK_EMCWX_TO_L2SNR_WINDDIR_DATA_REPORT_TIMING,
-                        "MSG_ID_L2SDK_EMCWX_TO_L2SNR_WINDDIR_DATA_REPORT_TIMING",
-                        $msg) == false) $result = "Send to message buffer error";
-                else $result = "";
-                //$ihuObj = new class_windDirection_service();
-                //$resp = $ihuObj->func_windDirection_process(MFUN_TECH_PLTF_WECHAT, $deviceId, $statCode, $data);
                 break;
 
             case MFUN_IHU_CMDID_TEMP_DATA:
@@ -1024,40 +932,11 @@ class classTaskL2sdkIotWx
                 //$resp = $ihuObj->func_humidity_process(MFUN_TECH_PLTF_WECHAT, $deviceId, $statCode, $data);
                 break;
 
-            case MFUN_IHU_CMDID_NOISE_DATA:
-                $msg = array("project" => MFUN_PRJ_IHU_EMCWX,
-                    "log_from" => $fromUser,
-                    "platform" => MFUN_TECH_PLTF_WECHAT,
-                    "deviceId" => $deviceId,
-                    "statCode" => $statCode,
-                    "content" => $data);
-                if ($parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L2SDK_IOT_WX,
-                        MFUN_TASK_ID_L2SENSOR_NOISE,
-                        MSG_ID_L2SDK_EMCWX_TO_L2SNR_NOISE_DATA_REPORT_TIMING,
-                        "MSG_ID_L2SDK_EMCWX_TO_L2SNR_NOISE_DATA_REPORT_TIMING",
-                        $msg) == false) $result = "Send to message buffer error";
-                else $result = "";
-                break;
-
             default:
-                $resp ="ERROR WX_IOT: invalid service type";
+                $resp ="ERROR WX_IOT: invalid device message type";
                 break;
         }
         return $resp;
-    }
-
-    //来自设备的bind事件，类似手环敲击进行绑定
-    private function ihu_device_L28_syscmd_bind_process($parObj, $content)
-    {
-        //目前假设是空包，所以不处理
-        return "";
-    }
-
-    //来自设备的unbind事件
-    private function ihu_device_L28_syscmd_unbind_process($parObj, $content)
-    {
-        //目前假设是空包，所以不处理
-        return "";
     }
 
     //强制绑定菜单处理函数，主要用于调试目的
@@ -1307,6 +1186,9 @@ class classTaskL2sdkIotWx
                 break;
             case MFUN_TECH_PLTF_WECHAT_DEVICE_EVENT:
                 $resp = $this->receive_wx_device_event_message($parObj, $content);
+                break;
+            case MFUN_TECH_PLTF_WECHAT_MENU_CLICK:
+                $resp = $this->receive_wx_menu_click_message($parObj, $content);
                 break;
             default:
                 $resp = "";

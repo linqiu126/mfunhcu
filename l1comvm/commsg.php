@@ -190,8 +190,14 @@ define("MSG_ID_L4AQYCUI_TO_L3F7_GETUSERMSG", $index++);
 define("MSG_ID_L4AQYCUI_TO_L3F7_SHOWUSERMSG", $index++);
 define("MSG_ID_L4AQYCUI_TO_L3F7_GETUSERIMG", $index++);
 define("MSG_ID_L4AQYCUI_TO_L3F7_CLEARUSERIMG", $index++);
+
 //L4EMCWXUI部分
 define("MSG_ID_L4EMCWXUI_CLICK_INCOMING", $index++);
+define("MSG_ID_L4EMCWXUI_TO_L3F0_EMCNOW", $index++);  //EMC H5界面请求当前辐射值
+define("MSG_ID_L4EMCWXUI_TO_L3F0_EMCHISTORY", $index++); //EMC H5界面请求历史辐射值
+define("MSG_ID_L4EMCWXUI_TO_L3F0_EMCALARM", $index++); //EMC H5界面请求辐射值warning，alarm门限
+define("MSG_ID_L4EMCWXUI_TO_L3F0_EMCTRACK", $index++); //EMC H5界面请求当前辐射记录地理轨迹
+
 //L4TBSWRUI部分
 define("MSG_ID_L4TBSWR_CLICK_INCOMING", $index++);
 
