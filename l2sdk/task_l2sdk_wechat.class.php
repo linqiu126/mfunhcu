@@ -4380,6 +4380,7 @@ class classTaskL2sdkWechat
                 $content = "扫描场景 ".$postObj->EventKey;
                 break;
             case "CLICK":
+                $click = 2;
                 $project = MFUN_PRJ_IHU_EMCWX;
                 $log_from = MFUN_CLOUD_WX;
                 $platform = MFUN_TECH_PLTF_WECHAT_MENU_CLICK;
@@ -4395,7 +4396,7 @@ class classTaskL2sdkWechat
                         MSG_ID_WECHAT_TO_L2SDK_IOT_WX_INCOMING,
                         "MSG_ID_WECHAT_TO_L2SDK_IOT_WX_INCOMING",
                         $msg) == false) $content = "Send to message buffer error";
-                else $content = "Receive a CLICK event" . $postObj->EventKey;
+                else $content = "";
 
                 /*
                 switch ($postObj->EventKey)

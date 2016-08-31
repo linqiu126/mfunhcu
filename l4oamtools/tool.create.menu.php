@@ -64,7 +64,7 @@ elseif (MFUN_WX_APPID == "wxf2150c4d2941b2ab") //如果是正式小慧智能服�
 {
     $self_create_menu =
     '{"button":[
-                {"type":"view","name":"辐射查看","url":"https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxf2150c4d2941b2ab&redirect_uri=http://121.40.118.33/mfunhcu/l4emcwxui/index.html&response_type=code&scope=snsapi_base&state=1#wechat_redirect"},
+                {"type":"view","name":"辐射查看","url":"https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxf2150c4d2941b2ab&redirect_uri=https://121.40.118.33/mfunhcu/l4emcwxui/index.html?response_type=code&scope=snsapi_base&state=1#wechat_redirect"},
 
                 {"name":"关于",
                     "sub_button":[{"type":"click","name":"小慧科技","key":"CLICK_COMPANY"},
