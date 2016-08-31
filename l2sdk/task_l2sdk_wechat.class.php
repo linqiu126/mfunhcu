@@ -4276,7 +4276,7 @@ class classTaskL2sdkWechat
     }
 
     //接收图片消息
-    public function receiveImage($object)
+    public function wechat_receiveImage($object)
     {
         $content = array("MediaId"=>$object->MediaId);
         $result = $this->transmitImage($object, $content);
@@ -4284,7 +4284,7 @@ class classTaskL2sdkWechat
     }
 
     //接收位置消息
-    public function receiveLocation($object)
+    public function wechat_receiveLocation($object)
     {
         $content = "你发送的是位置，纬度为：".$object->Location_X."；经度为：".$object->Location_Y."；缩放级别为：".$object->Scale."；位置为：".$object->Label;
         $result = $this->transmitText($object, $content);
@@ -4292,7 +4292,7 @@ class classTaskL2sdkWechat
     }
 
     //接收语音消息
-    public function receiveVoice($object)
+    public function wechat_receiveVoice($object)
     {
         if (isset($object->Recognition) && !empty($object->Recognition)){
             $content = "你刚才说的是：".$object->Recognition;
@@ -4306,7 +4306,7 @@ class classTaskL2sdkWechat
     }
 
     //接收视频消息
-    public function receiveVideo($object)
+    public function wechat_receiveVideo($object)
     {
         $content = array("MediaId"=>$object->MediaId, "ThumbMediaId"=>$object->ThumbMediaId, "Title"=>"", "Description"=>"");
         $result = $this->transmitVideo($object, $content);
@@ -4314,7 +4314,7 @@ class classTaskL2sdkWechat
     }
 
     //接收链接消息
-    public function receiveLink($object)
+    public function wechat_receiveLink($object)
     {
         $content = "你发送的是链接，标题为：".$object->Title."；内容为：".$object->Description."；链接地址为：".$object->Url;
         $result = $this->transmitText($object, $content);
@@ -4322,7 +4322,7 @@ class classTaskL2sdkWechat
     }
 
     //接收文本消息
-    public function receiveText($object)
+    public function wechat_receiveText($object)
     {
         $result= NULL;
         $keyword = trim($object->Content);
@@ -4363,24 +4363,42 @@ class classTaskL2sdkWechat
     }
 
     //接收事件消息
-    public function receiveEvent($parObj, $object)
+    public function wechat_receiveEvent($parObj, $postObj)
     {
         $result= NULL;
         $click = 0;
-        switch ($object->Event)
+        switch ($postObj->Event)
         {
             case "subscribe":
                 $content = "欢迎关注小慧科技-智能硬件测试";
-                $content .= (!empty($object->EventKey))?("\n来自二维码场景 ".str_replace("qrscene_","",$object->EventKey)):"";
+                $content .= (!empty($postObj->EventKey))?("\n来自二维码场景 ".str_replace("qrscene_","",$postObj->EventKey)):"";
                 break;
             case "unsubscribe":
                 $content = "取消关注";
                 break;
             case "SCAN":
-                $content = "扫描场景 ".$object->EventKey;
+                $content = "扫描场景 ".$postObj->EventKey;
                 break;
             case "CLICK":
-                switch ($object->EventKey)
+                $project = MFUN_PRJ_IHU_EMCWX;
+                $log_from = MFUN_CLOUD_WX;
+                $platform = MFUN_TECH_PLTF_WECHAT_MENU_CLICK;
+                //$wxDevObj = new classTaskL2sdkIotWx($this->appid, $this->appsecret);
+                //$wxDevObj->receive_wx_device_event_message($postObj);
+                //$result = "";
+                $msg = array("project" => $project,
+                    "log_from" => $log_from,
+                    "platform" => $platform,
+                    "content" => $postObj);
+                if ($parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L2SDK_WECHAT,
+                        MFUN_TASK_ID_L2SDK_IOT_WX,
+                        MSG_ID_WECHAT_TO_L2SDK_IOT_WX_INCOMING,
+                        "MSG_ID_WECHAT_TO_L2SDK_IOT_WX_INCOMING",
+                        $msg) == false) $content = "Send to message buffer error";
+                else $content = "Receive a CLICK event" . $postObj->EventKey;
+
+                /*
+                switch ($postObj->EventKey)
                 {
                     case "COMPANY":
                         $click = 1;
@@ -4393,53 +4411,51 @@ class classTaskL2sdkWechat
                         $click = 1;
                         $content = array();
                         $content[] = array("Title"=>"使劲戳，哎呦呦...", "Description"=>"", "PicUrl"=>"http://discuz.comli.com/weixin/weather/icon/cartoon.jpg", "Url" =>"");
-                        $content[] = array("Title"=>"辐射累积值", "Description"=>"", "PicUrl"=>"", "Url" =>"http://121.40.185.177/xhzn/mfunhcu/l4emcwxui/h5ui/EmcAllData.php?id=".$object->FromUserName);
-                        $content[] = array("Title"=>"PM2.5累积值", "Description"=>"", "PicUrl"=>"", "Url" =>"http://121.40.185.177/xhzn/mfunhcu/l4emcwxui/h5ui/PMAllData.php?id=".$object->FromUserName);
-                        $content[] = array("Title"=>"近一月辐射累计值", "Description"=>"", "PicUrl"=>"", "Url" =>"http://121.40.185.177/xhzn/mfunhcu/l4emcwxui/h5ui/EmcAccumulationInfo_1M.php?id=".$object->FromUserName);
-                        $content[] = array("Title"=>"近三月辐射累计值", "Description"=>"", "PicUrl"=>"", "Url" =>"http://121.40.185.177/xhzn/mfunhcu/l4emcwxui/h5ui/EmcAccumulationInfo_3M.php?id=".$object->FromUserName);
+                        $content[] = array("Title"=>"辐射累积值", "Description"=>"", "PicUrl"=>"", "Url" =>"http://121.40.185.177/xhzn/mfunhcu/l4emcwxui/h5ui/EmcAllData.php?id=".$postObj->FromUserName);
+                        $content[] = array("Title"=>"PM2.5累积值", "Description"=>"", "PicUrl"=>"", "Url" =>"http://121.40.185.177/xhzn/mfunhcu/l4emcwxui/h5ui/PMAllData.php?id=".$postObj->FromUserName);
+                        $content[] = array("Title"=>"近一月辐射累计值", "Description"=>"", "PicUrl"=>"", "Url" =>"http://121.40.185.177/xhzn/mfunhcu/l4emcwxui/h5ui/EmcAccumulationInfo_1M.php?id=".$postObj->FromUserName);
+                        $content[] = array("Title"=>"近三月辐射累计值", "Description"=>"", "PicUrl"=>"", "Url" =>"http://121.40.185.177/xhzn/mfunhcu/l4emcwxui/h5ui/EmcAccumulationInfo_3M.php?id=".$postObj->FromUserName);
                         break;
 
                     //Shanchun end
                     default:    //转到智能硬件菜单部分，这里的结构保持完整性
                         $click = 2;
                         $wxDevObj = new classTaskL2sdkIotWx($this->appid, $this->appsecret);
-                        $content = $wxDevObj->receive_wx_device_click_message($parObj, $object);
-                        //$content = "点击菜单：".$object->EventKey;
+                        $content = $wxDevObj->receive_wx_device_click_message($parObj, $postObj);
+                        //$content = "点击菜单：".$postObj->EventKey;
                         break;
-                }
+                }*/
                 break;
             case "LOCATION":
-
-                //$content = "纬度：" . $object->Latitude .";经度: " . $object->Longitude . "\n from=" . $object->FromUserName . "\n to=" .  $object->ToUserName;
+                //$content = "纬度：" . $postObj->Latitude .";经度: " . $postObj->Longitude . "\n from=" . $postObj->FromUserName . "\n to=" .  $postObj->ToUserName;
                 //$wxDevObj->xms_responseText($postObj->FromUserName,$postObj->ToUserName,json_encode($gps));
-                // $this->transmitText($object, $content);
-
+                // $this->transmitText($postObj, $content);
                 $click = 2;
                 $wxDevObj = new classTaskL2sdkIotWx($this->appid, $this->appsecret);
-                $content = $wxDevObj->receive_locationEvent($object); //网格化存储GPS信息
+                $content = $wxDevObj->receive_locationEvent($postObj); //网格化存储GPS信息
                 break;
             case "VIEW":
-                $content = "跳转链接 ".$object->EventKey;
+                $content = "跳转链接 ".$postObj->EventKey;
                 break;
             case "MASSSENDJOBFINISH":
-                $content = "消息ID：".$object->MsgID."，结果：".$object->Status."，粉丝数：".$object->TotalCount."，过滤：".$object->FilterCount."，发送成功：".$object->SentCount."，发送失败：".$object->ErrorCount;
+                $content = "消息ID：".$postObj->MsgID."，结果：".$postObj->Status."，粉丝数：".$postObj->TotalCount."，过滤：".$postObj->FilterCount."，发送成功：".$postObj->SentCount."，发送失败：".$postObj->ErrorCount;
                 break;
             default:
-                $content = "receive a new event: ".$object->Event;
+                $content = "receive a unknown event: ".$postObj->Event;
                 break;
         }
         if (($click ==0) || ($click == 1))
         {
             if (is_array($content)) {
                 if (isset($content[0])) {
-                    $result = $this->transmitNews($object, $content);
+                    $result = $this->transmitNews($postObj, $content);
                 } else if (isset($content['MusicUrl'])) {
-                    $result = $this->transmitMusic($object, $content);
+                    $result = $this->transmitMusic($postObj, $content);
                 }
             }
             else
             {
-                $result = $this->transmitText($object, $content);
+                $result = $this->transmitText($postObj, $content);
             }
         }
         else if ($click == 2)
@@ -4526,27 +4542,27 @@ class classTaskL2sdkWechat
 				switch ($RX_TYPE)
 				{
 					case "event":
-						$result = $this->receiveEvent($parObj, $postObj);
+						$result = $this->wechat_receiveEvent($parObj, $postObj);
 						break;
 					case "text":
-						$result = $this->receiveText($postObj);
+						$result = $this->wechat_receiveText($postObj);
 						break;
 					case "image":
-						$result = $this->receiveImage($postObj);
+						$result = $this->wechat_receiveImage($postObj);
 						break;
 					case "location":
-						$result = $this->receiveLocation($postObj);
+						$result = $this->wechat_receiveLocation($postObj);
 						//$wxDevObj = new class_wx_IOT_sdk($this->appid, $this->appsecret);
 						//$result = $wxDevObj->receive_locationEvent($postObj);
 						break;
 					case "voice":
-						$result = $this->receiveVoice($postObj);
+						$result = $this->wechat_receiveVoice($postObj);
 						break;
 					case "video":
-						$result = $this->receiveVideo($postObj);
+						$result = $this->wechat_receiveVideo($postObj);
 						break;
 					case "link":
-						$result = $this->receiveLink($postObj);
+						$result = $this->wechat_receiveLink($postObj);
 						break;
 					case "device_text":  //智能硬件设备text消息，都转到IOT相关的CLASS中
 						$project = MFUN_PRJ_IHU_EMCWX;
@@ -4569,7 +4585,6 @@ class classTaskL2sdkWechat
 
 					case "device_event": //智能硬件设备event消息，都转到IOT相关的CLASS中
 						$project = MFUN_PRJ_IHU_EMCWX;
-						$this->logger($project,$fromUser,$log_time,$log_content);
 						$log_from = MFUN_CLOUD_WX;
 						$platform = MFUN_TECH_PLTF_WECHAT_DEVICE_EVENT;
 						//$wxDevObj = new classTaskL2sdkIotWx($this->appid, $this->appsecret);
