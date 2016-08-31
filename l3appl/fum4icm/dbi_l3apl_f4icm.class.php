@@ -173,6 +173,10 @@ class classDbiL3apF4icm
                 //保存命令到CmdBuf
                 $dbiL1VmCommonObj = new classDbiL1vmCommon();
                 $dbiL1VmCommonObj->dbi_cmdbuf_save_cmd(trim($devCode), trim($cmdStr));
+                //通过socket向HCU转发命令
+                $_GET['DevCode'] = trim($devCode);
+                $_GET['respCmd'] = trim($cmdStr);
+                require dirname(__FILE__).'/UIClientsync.php';
 
                 //更新视频文件的状态
                 $dataflag = MFUN_HCU_VIDEO_DATA_STATUS_DOWNLOAD;
@@ -263,6 +267,10 @@ class classDbiL3apF4icm
             $respCmd = $ctrl_key . $len . $opt_key . $version;
             $dbiL1vmCommonObj = new classDbiL1vmCommon();
             $resp = $dbiL1vmCommonObj->dbi_cmdbuf_save_cmd(trim($DevCode), trim($respCmd));
+            //通过socket向HCU转发命令
+            $_GET['DevCode'] = trim($DevCode);
+            $_GET['respCmd'] = trim($respCmd);
+            require dirname(__FILE__).'/UIClientsync.php';
             $i++;
         }
         return $resp;
@@ -388,13 +396,10 @@ class classDbiL3apF4icm
                 $respCmd = $ctrl_key . $len . $optkey_switch_set . $equip_id . $switch;
                 $dbiL1vmCommonObj = new classDbiL1vmCommon();
                 $resp = $dbiL1vmCommonObj->dbi_cmdbuf_save_cmd(trim($DevCode), trim($respCmd));
-
-                //socket test start
+                //通过socket向HCU转发命令
                 $_GET['DevCode'] = trim($DevCode);
                 $_GET['respCmd'] = trim($respCmd);
-                //include dirname(__FILE__).'/../../l2socketlisten/UIClient.php';
                 require dirname(__FILE__).'/UIClientsync.php';
-                //socket test end
             }
             if(!empty($ctrl_key)AND !empty($optkey_modbus_set)){
                 $modebus_addr = $apiL2snrCommonServiceObj->ushort2string($modebus_addr & 0xFFFF);
@@ -402,6 +407,10 @@ class classDbiL3apF4icm
                 $respCmd = $ctrl_key . $len . $optkey_modbus_set . $equip_id . $modebus_addr;
                 $dbiL1vmCommonObj = new classDbiL1vmCommon();
                 $resp = $dbiL1vmCommonObj->dbi_cmdbuf_save_cmd(trim($DevCode), trim($respCmd));
+                //通过socket向HCU转发命令
+                $_GET['DevCode'] = trim($DevCode);
+                $_GET['respCmd'] = trim($respCmd);
+                require dirname(__FILE__).'/UIClientsync.php';
             }
             if(!empty($ctrl_key)AND !empty($optkey_period_set)){
                 $meas_period = $apiL2snrCommonServiceObj->ushort2string($meas_period & 0xFFFF);
@@ -409,6 +418,10 @@ class classDbiL3apF4icm
                 $respCmd = $ctrl_key . $len . $optkey_period_set . $equip_id . $meas_period;
                 $dbiL1vmCommonObj = new classDbiL1vmCommon();
                 $resp = $dbiL1vmCommonObj->dbi_cmdbuf_save_cmd(trim($DevCode), trim($respCmd));
+                //通过socket向HCU转发命令
+                $_GET['DevCode'] = trim($DevCode);
+                $_GET['respCmd'] = trim($respCmd);
+                require dirname(__FILE__).'/UIClientsync.php';
             }
             if(!empty($ctrl_key) AND !empty($optkey_samples_set)){
                 $sample_interval = $apiL2snrCommonServiceObj->ushort2string($sample_interval & 0xFFFF);
@@ -416,6 +429,10 @@ class classDbiL3apF4icm
                 $respCmd = $ctrl_key . $len . $optkey_samples_set . $equip_id . $sample_interval;
                 $dbiL1vmCommonObj = new classDbiL1vmCommon();
                 $resp = $dbiL1vmCommonObj->dbi_cmdbuf_save_cmd(trim($DevCode), trim($respCmd));
+                //通过socket向HCU转发命令
+                $_GET['DevCode'] = trim($DevCode);
+                $_GET['respCmd'] = trim($respCmd);
+                require dirname(__FILE__).'/UIClientsync.php';
             }
             if(!empty($ctrl_key) AND !empty($optkey_times_set)){
                 $meas_times = $apiL2snrCommonServiceObj->ushort2string($meas_times & 0xFFFF);
@@ -423,6 +440,10 @@ class classDbiL3apF4icm
                 $respCmd = $ctrl_key . $len . $optkey_times_set . $equip_id . $meas_times;
                 $dbiL1vmCommonObj = new classDbiL1vmCommon();
                 $resp = $dbiL1vmCommonObj->dbi_cmdbuf_save_cmd(trim($DevCode), trim($respCmd));
+                //通过socket向HCU转发命令
+                $_GET['DevCode'] = trim($DevCode);
+                $_GET['respCmd'] = trim($respCmd);
+                require dirname(__FILE__).'/UIClientsync.php';
             }
 
             $resp = "Success";

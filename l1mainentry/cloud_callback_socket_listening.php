@@ -56,12 +56,14 @@ class classL1MainEntrySocketListenServer
 
     public function my_onStart( $serv ) {
         global $argv;
-         swoole_set_process_name("php {$argv[0]}: master");
-         echo "Swoole start: MasterPid={$serv->master_pid}|Manager_pid={$serv->manager_pid}\n";
+        swoole_set_process_name("php {$argv[0]}: master");
+        echo date('Y/m/d H:i:s', time())." ";
+        echo "Swoole start: MasterPid={$serv->master_pid}|Manager_pid={$serv->manager_pid}\n";
          //$serv->addtimer(1000);
          //connect to mysql, reset all socketid to 0
          $mysqli = mysqli_connect("127.0.0.1", "TestUser", "123456", "bxxhl1l2l3");
         if (!$mysqli ) {
+            echo date('Y/m/d H:i:s', time())." ";
             echo "Error: Unable to connect to MySQL." . PHP_EOL;
             echo "Debugging errno: " . mysqli_connect_errno() . PHP_EOL;
             echo "Debugging error: " . mysqli_connect_error() . PHP_EOL;
@@ -70,9 +72,11 @@ class classL1MainEntrySocketListenServer
         $query="UPDATE t_l2sdk_iothcu_inventory  SET socketid = 0 WHERE socketid != 0"; 
         $result=$mysqli->query($query);
         if ($result){
-                 echo "Swoole start: Swoole version is ".SWOOLE_VERSION.". All socketid reseted to 0, updated rows: ".$mysqli->affected_rows.PHP_EOL;
+            echo date('Y/m/d H:i:s', time())." ";
+            echo "Swoole start: Swoole version is ".SWOOLE_VERSION.". All socketid reseted to 0, updated rows: ".$mysqli->affected_rows.PHP_EOL;
         }else {
-                 echo "Swoole start: Reset socketid failed!".PHP_EOL;
+            echo date('Y/m/d H:i:s', time())." ";
+            echo "Swoole start: Reset socketid failed!".PHP_EOL;
         }
         $mysqli->close();
     }
@@ -84,12 +88,14 @@ class classL1MainEntrySocketListenServer
 
 
     public function my_onConnect( $serv, $fd, $from_id ) {
+        echo date('Y/m/d H:i:s', time())." ";
         echo "Swoole worker: Client fd={$fd} connected.\n";
         $serv->send( $fd, "Hello {$fd}!" );
         
     }
     //入口函数挂载在这个函数体中，待测试
     public function my_onReceive( swoole_server $serv, $fd, $from_id, $data ) {
+        echo date('Y/m/d H:i:s', time())." ";
         echo "Swoole worker: Get Message From Client {$fd} : {$data}\n";
         
         //a test to read from t_l2sdk_iothcu_inventory, devcode + socketid
@@ -100,12 +106,15 @@ class classL1MainEntrySocketListenServer
         if ($result !== false) {
             list($status, $db_res) = explode(':', $result, 2);
             if ($status == 'OK') {
+                echo date('Y/m/d H:i:s', time())." ";
                 echo "Swoole worker: Client ".$data."'s socketid ".$fd." is stored in t_l2sdk_iothcu_inventory. Affacted_rows: ".$db_res.PHP_EOL;
             } else {
+                echo date('Y/m/d H:i:s', time())." ";
                 echo "Swoole worker: Socketid store failed.";
             }
             return;
         } else {
+            echo date('Y/m/d H:i:s', time())." ";
             echo "Swoole worker: Socketid store timeout.";
         }
 
@@ -122,12 +131,15 @@ class classL1MainEntrySocketListenServer
         if ($result !== false) {
             list($status, $db_res) = explode(':', $result, 2);
             if ($status == 'OK') {
+                echo date('Y/m/d H:i:s', time())." ";
                 echo "Swoole worker: Socketid ".$fd." is reseted to 0 in t_l2sdk_iothcu_inventory. Affacted_rows : ".$db_res.PHP_EOL;
             } else {
+                echo date('Y/m/d H:i:s', time())." ";
                 echo "Swoole worker: Socketid".$fd." reset failed.".PHP_EOL;
             }
             return;
         } else {
+            echo date('Y/m/d H:i:s', time())." ";
             echo "Swoole worker: Socketid".$fd." reset timeout.".PHP_EOL;
         }
     }
@@ -136,8 +148,10 @@ class classL1MainEntrySocketListenServer
      {
          global $argv;
          if($worker_id >= $serv->setting['worker_num']) {
+             echo date('Y/m/d H:i:s', time())." ";
              swoole_set_process_name("php {$argv[0]}: task_worker");
          } else {
+             echo date('Y/m/d H:i:s', time())." ";
              swoole_set_process_name("php {$argv[0]}: worker");
          }
         echo "Worker start: MasterPid={$serv->master_pid}|Manager_pid={$serv->manager_pid}|WorkerId=$worker_id\n";
@@ -146,6 +160,7 @@ class classL1MainEntrySocketListenServer
 
     public function my_onWorkerStop($serv, $worker_id)
     {
+        echo date('Y/m/d H:i:s', time())." ";
         echo "WorkerStop[$worker_id]|pid=".posix_getpid().".\n";
     }
 
@@ -204,10 +219,12 @@ class classL1MainEntrySocketListenServer
 
     public function my_onFinish($serv, $data)
     {
+        echo date('Y/m/d H:i:s', time())." ";
         echo "AsyncTask Finish:Connect.PID=" . posix_getpid() . PHP_EOL;
     }
 
     public  function port2_onConnect($serv, $fd){
+        echo date('Y/m/d H:i:s', time())." ";
         echo "Swoole worker port2: Client {$fd} connected. ".PHP_EOL;
     }
 
@@ -220,29 +237,35 @@ class classL1MainEntrySocketListenServer
             list($status, $db_res) = explode(':', $result, 2);
             if ($status == 'OK') {
                 //数据库操作成功了，执行业务逻辑代码，这里就自动释放掉MySQL连接的占用
-                //$serv->send($fd, var_export(unserialize($db_res), true) . "\n");
+                //$serv->send($fd, var_export(unserialize($db_res), true) .Y/m/d h:i:s a "\n");
                 $devcode=unserialize($db_res)[0]['devcode']; //restore to array
                 $socketid=unserialize($db_res)[0]['socketid'];
+                echo date('Y/m/d H:i:s', time())." ";
                 echo ("Swoole worker port2: Target {$devcode} received from UI, Command from UI thru Swoole worker is ").$arr[1].PHP_EOL;
                 if ($socketid != 0){
                     $sendresult = $serv->send($socketid, $arr[1]);
                     if ($sendresult){
+                        echo date('Y/m/d H:i:s', time())." ";
                         echo ("Swoole worker port2: Message delivered to {$devcode}.").PHP_EOL;
                     } else {
+                        echo date('Y/m/d H:i:s', time())." ";
                         echo ("Swoole worker port2: Message delivery to {$devcode} failed.").PHP_EOL;
                     }
                 } else {
+                    echo date('Y/m/d H:i:s', time())." ";
                     echo ("Swoole worker port2: sockid = 0, $devcode is offline.".PHP_EOL);
                 }
                 $serv->close($fd);
             } else {
                 $serv->send($fd, $db_res);
+                echo date('Y/m/d H:i:s', time())." ";
                 echo ("Swoole worker port2: query mysql failed.").PHP_EOL;
                 $serv->close($fd);
             }
             return;
         } else {
             $serv->send($fd, "Error. Task timeout\n");
+            echo date('Y/m/d H:i:s', time())." ";
             echo ("Swoole worker port2: query mysql timeout.").PHP_EOL;
         }
 
@@ -250,6 +273,7 @@ class classL1MainEntrySocketListenServer
     }
 
     public function port2_onClose($serv, $fd) {
+        echo date('Y/m/d H:i:s', time())." ";
         echo "Swoole worker port2: Client {$fd} connection closed.".PHP_EOL;
     }
 }
