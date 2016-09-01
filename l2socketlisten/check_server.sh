@@ -21,11 +21,11 @@ elif [ $ipaddr = $ipaiqi ]
 then
 	echo "aiqi yun";
 	cd /data/www/xhzn/mfunhcu/l1mainentry
-	php cloud_callback_socket_listening.php > /home/qiulin/swooleserver.log 2>&1
+	php cloud_callback_socket_listening.php > /home/qiulin/swooleserver.log 2>&1 &
 	echo $(date +%Y-%m-%d_%H:%M:%S)": Aiqiyun Swoole server restart done."
 else	
 	cd /var/www/html/mfunhcu/l1mainentry
-	php cloud_callback_socket_listening.php > /home/hitpony/swooleserver.log 2>&1
+	php cloud_callback_socket_listening.php > /home/hitpony/swooleserver.log 2>&1 &
 	echo $(date +%Y-%m-%d_%H:%M:%S)": Vmware Swoole server restart done."
 	#echo $(date +%Y-%m-%d_%H:%M:%S) >/data/log/restart.log
 fi
