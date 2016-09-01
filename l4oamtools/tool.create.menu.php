@@ -44,14 +44,14 @@ if (MFUN_WX_APPID == "wx1183be5c8f6a24b4") //如果是测试号
 {
     $self_create_menu =
     '{"button":[
-                {"name":"操作",
+                {"name":"调测工具",
                     "sub_button":[{"type":"click","name":"当前辐射","key":"CLICK_EMC_READ"},
                                   {"type":"click","name":"绑定","key":"CLICK_BIND"},
                                   {"type":"click","name":"解绑","key":"CLICK_UNBIND"},
                                   {"type":"click","name":"查询","key":"CLICK_BIND_INQ"}]
                 },
 
-                {"name":"工程菜单",
+                {"name":"生产工具",
                      "sub_button":[{"type":"click","name":"版本信息","key":"CLICK_VERSION"},
                                    {"type":"click","name":"用户信息","key":"CLICK_USER"},
                                    {"type":"click","name":"Trace开","key":"CLICK_TRACE_ON"},
@@ -64,7 +64,7 @@ elseif (MFUN_WX_APPID == "wxf2150c4d2941b2ab") //如果是正式小慧智能服�
 {
     $self_create_menu =
     '{"button":[
-                {"type":"view","name":"辐射查看","url":"http://121.40.118.33/mfunhcu/l4emcwxui/emcwx_h5/index.html"},
+                {"type":"view","name":"辐射查看","url":"https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxf2150c4d2941b2ab&redirect_uri=https://121.40.118.33/mfunhcu/l4emcwxui/index.html?response_type=code&scope=snsapi_base&state=1#wechat_redirect"},
 
                 {"name":"关于",
                     "sub_button":[{"type":"click","name":"小慧科技","key":"CLICK_COMPANY"},
@@ -75,6 +75,8 @@ elseif (MFUN_WX_APPID == "wxf2150c4d2941b2ab") //如果是正式小慧智能服�
     }';
 }
 
+
+//{"type":"view","name":"辐射查看","url":"http://121.40.118.33/mfunhcu/l4emcwxui/index.html"},
 
 echo "<br>自定义菜单创建（先删再建-微信界面需要24小时更新，重新关注可立即刷新） <br><br>";
 
