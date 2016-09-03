@@ -48,23 +48,25 @@ if (MFUN_WX_APPID == "wx1183be5c8f6a24b4") //如果是测试号
                     "sub_button":[{"type":"click","name":"当前辐射","key":"CLICK_EMC_READ"},
                                   {"type":"click","name":"绑定","key":"CLICK_BIND"},
                                   {"type":"click","name":"解绑","key":"CLICK_UNBIND"},
-                                  {"type":"click","name":"查询","key":"CLICK_BIND_INQ"}]
+                                  {"type":"click","name":"查询","key":"CLICK_BIND_INQ"},
+                                  {"type":"click","name":"Trace开","key":"CLICK_TRACE_ON"},
+                                  {"type":"click","name":"Trace关","key":"CLICK_TRACE_OFF"}]
                 },
-
                 {"name":"生产工具",
-                     "sub_button":[{"type":"click","name":"版本信息","key":"CLICK_VERSION"},
-                                   {"type":"click","name":"用户信息","key":"CLICK_USER"},
-                                   {"type":"click","name":"Trace开","key":"CLICK_TRACE_ON"},
-                                   {"type":"click","name":"Trace关","key":"CLICK_TRACE_OFF"}]
+                     "sub_button":[{"type":"scancode_waitmsg","name":"扫码","key":"QR_SCAN"},
+                                   {"type":"click","name":"版本信息","key":"CLICK_VERSION"},
+                                   {"type":"click","name":"用户信息","key":"CLICK_USER"}]
                 }
          ]
     }';
 }
+
+
 elseif (MFUN_WX_APPID == "wxf2150c4d2941b2ab") //如果是正式小慧智能服务号
 {
     $self_create_menu =
     '{"button":[
-                {"type":"view","name":"辐射查看","url":"https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxf2150c4d2941b2ab&redirect_uri=https://121.40.118.33/mfunhcu/l4emcwxui/index.html?response_type=code&scope=snsapi_base&state=1#wechat_redirect"},
+                {"type":"view","name":"辐射查看","url":"https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxf2150c4d2941b2ab&redirect_uri=http://121.40.118.33/mfunhcu/l4emcwxui/index.html?response_type=code&scope=snsapi_base&state=1#wechat_redirect"},
 
                 {"name":"关于",
                     "sub_button":[{"type":"click","name":"小慧科技","key":"CLICK_COMPANY"},

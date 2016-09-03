@@ -4565,6 +4565,10 @@ class classTaskL2sdkWechat
 					case "link":
 						$result = $this->wechat_receiveLink($postObj);
 						break;
+                    case "scancode_waitmsg":
+                        $result = "扫码类型 ". $postObj->ScanCodeInfo->ScanType." \n扫码结果：". $postObj->ScanCodeInfo->ScanResult;
+                        break;
+
 					case "device_text":  //智能硬件设备text消息，都转到IOT相关的CLASS中
 						$project = MFUN_PRJ_IHU_EMCWX;
 						//$wxDevObj = new classTaskL2sdkIotWx($this->appid, $this->appsecret);
@@ -4583,7 +4587,6 @@ class classTaskL2sdkWechat
 						//$wxDevObj->receive_wx_device_text_message($postObj);
 						//$result = "";
 						break;
-
 					case "device_event": //智能硬件设备event消息，都转到IOT相关的CLASS中
 						$project = MFUN_PRJ_IHU_EMCWX;
 						$log_from = MFUN_CLOUD_WX;
