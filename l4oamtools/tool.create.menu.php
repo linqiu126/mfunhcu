@@ -45,17 +45,18 @@ if (MFUN_WX_APPID == "wx1183be5c8f6a24b4") //如果是测试号
     $self_create_menu =
     '{"button":[
                 {"name":"调测工具",
-                    "sub_button":[{"type":"click","name":"当前辐射","key":"CLICK_EMC_READ"},
-                                  {"type":"click","name":"绑定","key":"CLICK_BIND"},
-                                  {"type":"click","name":"解绑","key":"CLICK_UNBIND"},
-                                  {"type":"click","name":"查询","key":"CLICK_BIND_INQ"},
+                    "sub_button":[
+                                  {"type":"click","name":"强制绑定","key":"CLICK_BIND"},
+                                  {"type":"click","name":"版本信息","key":"CLICK_VERSION"},
+                                  {"type":"click","name":"用户信息","key":"CLICK_USER"},
                                   {"type":"click","name":"Trace开","key":"CLICK_TRACE_ON"},
                                   {"type":"click","name":"Trace关","key":"CLICK_TRACE_OFF"}]
                 },
                 {"name":"生产工具",
-                     "sub_button":[{"type":"scancode_waitmsg","name":"扫码","key":"QR_SCAN"},
-                                   {"type":"click","name":"版本信息","key":"CLICK_VERSION"},
-                                   {"type":"click","name":"用户信息","key":"CLICK_USER"}]
+                     "sub_button":[{"type":"scancode_push","name":"扫码绑定","key":"QR_SCAN"},
+                                   {"type":"click","name":"解绑自己","key":"CLICK_UNBIND"},
+                                   {"type":"click","name":"绑定查询","key":"CLICK_BIND_INQ"},
+                                   {"type":"click","name":"辐射读取","key":"CLICK_EMC_READ"}]
                 }
          ]
     }';

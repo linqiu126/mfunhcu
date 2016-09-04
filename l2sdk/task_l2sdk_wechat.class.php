@@ -4376,6 +4376,9 @@ class classTaskL2sdkWechat
             case "unsubscribe":
                 $content = "取消关注";
                 break;
+            case "scancode_push":
+                $content = "扫码类型 ". $postObj->ScanCodeInfo->ScanType." \n扫码结果：". $postObj->ScanCodeInfo->ScanResult;
+                break;
             case "SCAN":
                 $content = "扫描场景 ".$postObj->EventKey;
                 break;
@@ -4565,10 +4568,6 @@ class classTaskL2sdkWechat
 					case "link":
 						$result = $this->wechat_receiveLink($postObj);
 						break;
-                    case "scancode_waitmsg":
-                        $result = "扫码类型 ". $postObj->ScanCodeInfo->ScanType." \n扫码结果：". $postObj->ScanCodeInfo->ScanResult;
-                        break;
-
 					case "device_text":  //智能硬件设备text消息，都转到IOT相关的CLASS中
 						$project = MFUN_PRJ_IHU_EMCWX;
 						//$wxDevObj = new classTaskL2sdkIotWx($this->appid, $this->appsecret);

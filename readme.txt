@@ -255,6 +255,10 @@ Make By：ZJL
 > 修改EMC微信H5界面功能使用新架构
 > 使用服务号微信公众平台开发 OAuth2.0网页授权认证, EMC微信H5网页授权获取用户基本信息(openid)
 
+//= LZH, 2016 Sep.04, CURRENT_SW_DELIVERY R02.D41
+> 修改EMC微信测试号菜单，增加生产工具的扫码绑定功能
+> 完善EMCWX测试case
+
 //待完善的功能
 1. 需要编制小型工具，支持工参数据，特别是图片内容的导入导出
 3. 恢复后台管理界面及相应工具
@@ -265,23 +269,6 @@ Make By：ZJL
 2. l3appl->fxyyy中，调用_encode函数出错，如何办？
     //$jsonencode = _encode($retval);
     $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 /**************************************************************************************
