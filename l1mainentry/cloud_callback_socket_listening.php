@@ -20,6 +20,8 @@ class classL1MainEntrySocketListenServer
             'worker_num' => 1,
             'daemonize' => false,
             //'log_file' => '/home/hitpony/phpsocket/tasksample/swoole.log',
+            'heartbeat_idle_time' => 600, //如果600秒内未向服务器发送任何数据，此连接将被强制关闭
+            'heartbeat_check_interval' => 60, //每60秒遍历一次
             'max_request' => 10000,
             'dispatch_mode' => 2,
             'debug_mode'=> 1,
@@ -124,6 +126,7 @@ class classL1MainEntrySocketListenServer
     }
 
     public function my_onClose( $serv, $fd, $from_id ) {
+        echo date('Y/m/d H:i:s', time())." ";
         echo "Swoole worker: Client {$fd} closed connection.".PHP_EOL;
         //reset socketid in t_l2sdk_iothcu_inventory when connection closed.
         $query="UPDATE t_l2sdk_iothcu_inventory  SET socketid = 0 WHERE socketid = $fd"; 
