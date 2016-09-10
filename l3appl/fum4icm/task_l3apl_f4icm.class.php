@@ -172,6 +172,26 @@ class classTaskL3aplF4icm
         return $jsonencode;
     }
 
+    //Camera信息更新并发送HCU控制命令
+    function func_get_camera_status_process($uid, $StatCode)
+    {
+        $uiF4icmDbObj = new classDbiL3apF4icm();
+        $resp = $uiF4icmDbObj->dbi_get_camera_status($uid, $StatCode);
+        if (!empty($resp))
+            $retval=array(
+                'status'=>'true',
+                'msg'=>$resp
+            );
+        else
+            $retval=array(
+                'status'=>'false',
+                'msg'=>null
+            );
+        //$jsonencode = _encode($retval);
+        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
+        return $jsonencode;
+    }
+
 
     /**************************************************************************************
      *                             任务入口函数                                           *
@@ -260,7 +280,17 @@ class classTaskL3aplF4icm
             $resp = $this->func_sensor_update_process($DevCode, $SensorCode, $status, $ParaList);
             $project = MFUN_PRJ_HCU_AQYCUI;
         }
-
+        //功能Get Camera Status
+        elseif ($msgId == MSG_ID_L4AQYCUI_TO_L3F4_GETCAMERASTATUS)
+        {
+            //解开消息
+            if (isset($_GET["id"])) $uid = trim($_GET["id"]); else  $uid = "";
+            if (isset($_GET["StatCode"])) $StatCode = trim($_GET["StatCode"]); else  $StatCode= "";
+            $input = array("uid" => $uid, "StatCode" => $StatCode);
+            //具体处理函数
+            $resp = $this->func_get_camera_status_process($uid, $StatCode);
+            $project = MFUN_PRJ_HCU_AQYCUI;
+        }
         else{
             $resp = ""; //啥都不ECHO
         }

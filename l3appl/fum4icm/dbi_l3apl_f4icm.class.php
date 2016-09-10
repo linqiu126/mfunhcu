@@ -173,10 +173,6 @@ class classDbiL3apF4icm
                 //保存命令到CmdBuf
                 $dbiL1VmCommonObj = new classDbiL1vmCommon();
                 $dbiL1VmCommonObj->dbi_cmdbuf_save_cmd(trim($devCode), trim($cmdStr));
-                //通过socket向HCU转发命令
-                $_GET['DevCode'] = trim($devCode);
-                $_GET['respCmd'] = trim($cmdStr);
-                require dirname(__FILE__).'/UIClientsync.php';
 
                 //更新视频文件的状态
                 $dataflag = MFUN_HCU_VIDEO_DATA_STATUS_DOWNLOAD;
@@ -184,6 +180,11 @@ class classDbiL3apF4icm
                 $result = $mysqli->query($query_str);
 
                 $resp = "downloading";
+
+                //通过socket向HCU转发命令
+                $_GET['DevCode'] = trim($devCode);
+                $_GET['respCmd'] = trim($cmdStr);
+                require dirname(__FILE__).'/UIClientsync.php';
             }
             elseif ($dataflag == MFUN_HCU_VIDEO_DATA_STATUS_DOWNLOAD){
                 //正在下载中又收到该视频文件的请求什么也不做，直接回复
@@ -400,6 +401,7 @@ class classDbiL3apF4icm
                 $_GET['DevCode'] = trim($DevCode);
                 $_GET['respCmd'] = trim($respCmd);
                 require dirname(__FILE__).'/UIClientsync.php';
+                //include "./UIClientsync.php";
             }
             if(!empty($ctrl_key)AND !empty($optkey_modbus_set)){
                 $modebus_addr = $apiL2snrCommonServiceObj->ushort2string($modebus_addr & 0xFFFF);
@@ -452,6 +454,46 @@ class classDbiL3apF4icm
             $resp = "";
         $mysqli->close();
         return $resp;
+    }
+
+    //Camera状态更新，取回当前照片
+    public dbi_get_camera_status($uid, $StatCode)
+    {
+        //建立连接
+    $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+    if (!$mysqli) {
+    die('Could not connect: ' . mysqli_error($mysqli));
+    }
+    $mysqli->query("set character_set_results = utf8");
+
+    //根据StatCode查找特定HCU
+    $query_str = "SELECT * FROM `t_l3f3dm_siteinfo` WHERE `statcode` = '$StatCode' ";
+    $result = $mysqli->query($query_str);
+
+    if (($result != false) && ($result->num_rows)>0)
+    {
+        //生成控制命令的控制字
+        $apiL2snrCommonServiceObj = new classApiL2snrCommonService();
+        $ctrl_key = $apiL2snrCommonServiceObj->byte2string(MFUN_IHU_CMDID_HSMMP_DATA);
+        $opt_key = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_OPT_VEDIOPIC_REQ);
+
+        $row = $result->fetch_array();  //statcode和devcode一一对应
+        $DevCode = $row['devcode'];
+
+        $len = $apiL2snrCommonServiceObj->byte2string(strlen($opt_key)/2);
+        $respCmd = $ctrl_key . $len . $opt_key;
+
+        //通过socket向HCU转发命令
+        $_GET['DevCode'] = trim($DevCode);
+        $_GET['respCmd'] = trim($respCmd);
+        require dirname(__FILE__).'/UIClientsync.php';
+
+        $resp = "Success";
+    }
+    else
+        $resp = "";
+    $mysqli->close();
+    return $resp;
     }
 
 }

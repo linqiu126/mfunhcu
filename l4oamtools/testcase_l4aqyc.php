@@ -348,8 +348,8 @@ if (TC_L4AQYC_UI == true) {
     $_GET["action"] = "SensorUpdate";
     $_GET["DevCode"] = "HCU_SH_0301";
     $_GET["SensorCode"] = "S_0001";
-    $_GET["status"] = "true";
-    //$_GET["status"] = "false";
+    //$_GET["status"] = "true";
+    $_GET["status"] = "false";
     $para_list = array();
     $temp = array(
         'name'=>"MODBUS_Addr",
@@ -438,6 +438,13 @@ if (TC_L4AQYC_UI == true) {
     $_GET["version"] = "SW_R01.D0066";
     require("../l4aqycui/request.php");
     echo " [TC L4AQYC: UpdateDevVersion END]\n";
+
+    echo " [TC L4AQYC: GetCameraStatus START]\n";
+    $_GET["action"] = "GetCameraStatus";
+    $_GET["id"] = "admin"; //暂时用admin用户名
+    $_GET["StatCode"] = "120101001"; //t_l3f3dm_siteinfo中对应HCU_SH_0301
+    require("../l4aqycui/request.php");
+    echo " [TC L4AQYC: GetCameraStatus END]\n";
 
 //TEST CASE: L4AQYC-UI界面: END
 

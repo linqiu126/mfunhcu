@@ -182,6 +182,8 @@ define("MSG_ID_L4AQYCUI_TO_L3F4_DEVSW", $index++);      //查询指定HCU设备�
 define("MSG_ID_L4AQYCUI_TO_L3F4_SWUPDATE", $index++);   //请求将指定的HCU设备软件更新到指定版本
 define("MSG_ID_L4AQYCUI_TO_L3F4_VIDEOLIST", $index++);  //查询某HCU设备指定日期的视频文件列表
 define("MSG_ID_L4AQYCUI_TO_L3F4_VIDEOPLAY", $index++);  //请求播放某指定视频文件
+define("MSG_ID_L4AQYCUI_TO_L3F4_GETCAMERASTATUS", $index++);  //查询垂直和水平角度，同时报告传一个照片给后台
+
 define("MSG_ID_L4AQYCUI_TO_L3F4_SENSORUPDATE", $index++);
 define("MSG_ID_L4AQYCUI_TO_L3F5_DEVALARM", $index++);
 define("MSG_ID_L4AQYCUI_TO_L3F5_ALARMQUERY", $index++);
@@ -462,7 +464,8 @@ define("MFUN_HCU_OPT_VEDIOLINK_REQ", 0x01);  //读取下位机存放的视频文
 define("MFUN_HCU_OPT_VEDIOLINK_RESP", 0x81); //返回下位机存放的视频文件link
 define("MFUN_HCU_OPT_VEDIOFILE_REQ", 0x02);   //命令下位机上传选中的视频文件
 define("MFUN_HCU_OPT_VEDIOFILE_RESP", 0x82);  //视频文件传输完成响应
-
+define("MFUN_HCU_OPT_VEDIOPIC_REQ", 0x07);   //mfunhcu向下位机取照片操作字
+define("MFUN_HCU_OPT_VEDIOPIC_RESP", 0x87);   //下位机取完照片之后完成相应
 
 /**************************************************************************************
  *                            NBIOT IPM376消息定义                                    *
