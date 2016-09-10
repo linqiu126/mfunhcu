@@ -457,7 +457,7 @@ class classDbiL3apF4icm
     }
 
     //Camera状态更新，取回当前照片
-    public dbi_get_camera_status($uid, $StatCode)
+    public function dbi_get_camera_status($uid, $StatCode)
     {
         //建立连接
     $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
