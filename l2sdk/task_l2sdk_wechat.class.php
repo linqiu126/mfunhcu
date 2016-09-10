@@ -4366,7 +4366,7 @@ class classTaskL2sdkWechat
     public function wechat_receiveEvent($parObj, $postObj)
     {
         $result= NULL;
-        $click = 0;
+        $scenario = 0;
         switch ($postObj->Event)
         {
             case "subscribe":
@@ -4377,13 +4377,30 @@ class classTaskL2sdkWechat
                 $content = "取消关注";
                 break;
             case "scancode_push":
-                $content = "扫码类型 ". $postObj->ScanCodeInfo->ScanType." \n扫码结果：". $postObj->ScanCodeInfo->ScanResult;
+                //$content = "扫码类型 ". $postObj->ScanCodeInfo->ScanType." \n扫码结果：". $postObj->ScanCodeInfo->ScanResult;
+                $scenario = 2;
+                $project = MFUN_PRJ_IHU_EMCWX;
+                $log_from = MFUN_CLOUD_WX;
+                $platform = MFUN_TECH_PLTF_WECHAT_DEVICE_EVENT;
+                //$wxDevObj = new classTaskL2sdkIotWx($this->appid, $this->appsecret);
+                //$wxDevObj->receive_wx_device_event_message($postObj);
+                //$result = "";
+                $msg = array("project" => $project,
+                    "log_from" => $log_from,
+                    "platform" => $platform,
+                    "content" => $postObj);
+                if ($parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L2SDK_WECHAT,
+                        MFUN_TASK_ID_L2SDK_IOT_WX,
+                        MSG_ID_WECHAT_TO_L2SDK_IOT_WX_INCOMING,
+                        "MSG_ID_WECHAT_TO_L2SDK_IOT_WX_INCOMING",
+                        $msg) == false) $content = "Send to message buffer error";
+                else $content = "";
                 break;
             case "SCAN":
                 $content = "扫描场景 ".$postObj->EventKey;
                 break;
             case "CLICK":
-                $click = 2;
+                $scenario = 2;
                 $project = MFUN_PRJ_IHU_EMCWX;
                 $log_from = MFUN_CLOUD_WX;
                 $platform = MFUN_TECH_PLTF_WECHAT_MENU_CLICK;
@@ -4405,14 +4422,14 @@ class classTaskL2sdkWechat
                 switch ($postObj->EventKey)
                 {
                     case "COMPANY":
-                        $click = 1;
+                        $scenario = 1;
                         $content = array();
                         $content[] = array("Title"=>"多图文1标题", "Description"=>"", "PicUrl"=>"http://discuz.comli.com/weixin/weather/icon/cartoon.jpg", "Url" =>"http://m.cnblogs.com/?u=txw1958");
                         break;
                     //Shanchun start: 处理前台自定义菜单Click事件，跳转到前台页面Url(传入openid),也可以用微信自定义菜单view类型获取openid后访问网页，但需要服务号
 
                     case "CLICK_EMC_HIS":
-                        $click = 1;
+                        $scenario = 1;
                         $content = array();
                         $content[] = array("Title"=>"使劲戳，哎呦呦...", "Description"=>"", "PicUrl"=>"http://discuz.comli.com/weixin/weather/icon/cartoon.jpg", "Url" =>"");
                         $content[] = array("Title"=>"辐射累积值", "Description"=>"", "PicUrl"=>"", "Url" =>"http://121.40.185.177/xhzn/mfunhcu/l4emcwxui/h5ui/EmcAllData.php?id=".$postObj->FromUserName);
@@ -4423,7 +4440,7 @@ class classTaskL2sdkWechat
 
                     //Shanchun end
                     default:    //转到智能硬件菜单部分，这里的结构保持完整性
-                        $click = 2;
+                        $scenario = 2;
                         $wxDevObj = new classTaskL2sdkIotWx($this->appid, $this->appsecret);
                         $content = $wxDevObj->receive_wx_device_click_message($parObj, $postObj);
                         //$content = "点击菜单：".$postObj->EventKey;
@@ -4434,7 +4451,7 @@ class classTaskL2sdkWechat
                 //$content = "纬度：" . $postObj->Latitude .";经度: " . $postObj->Longitude . "\n from=" . $postObj->FromUserName . "\n to=" .  $postObj->ToUserName;
                 //$wxDevObj->xms_responseText($postObj->FromUserName,$postObj->ToUserName,json_encode($gps));
                 // $this->transmitText($postObj, $content);
-                $click = 2;
+                $scenario = 2;
                 $wxDevObj = new classTaskL2sdkIotWx($this->appid, $this->appsecret);
                 $content = $wxDevObj->receive_locationEvent($postObj); //网格化存储GPS信息
                 break;
@@ -4448,7 +4465,7 @@ class classTaskL2sdkWechat
                 $content = "receive a unknown event: ".$postObj->Event;
                 break;
         }
-        if (($click ==0) || ($click == 1))
+        if (($scenario ==0) || ($scenario == 1))
         {
             if (is_array($content)) {
                 if (isset($content[0])) {
@@ -4462,7 +4479,7 @@ class classTaskL2sdkWechat
                 $result = $this->transmitText($postObj, $content);
             }
         }
-        else if ($click == 2)
+        else if ($scenario == 2)
         {
             $result = $content;
         }

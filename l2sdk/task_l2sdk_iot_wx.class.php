@@ -609,6 +609,11 @@ class classTaskL2sdkIotWx
                 $result = $wxDbObj->dbi_blebound_delete($data->FromUserName);
                 $respMsg = "R:DEVICE_EVENT=unbind, Result= " . $result;
                 break;
+            case "scancode_push": //用户扫描二维码事件
+                $qrcode = $data->ScanCodeInfo->ScanResult;
+                $fromUser = $data->FromUserName;
+                $respMsg = "扫码类型 ". $data->ScanCodeInfo->ScanType." \n扫码结果：". $data->ScanCodeInfo->ScanResult;
+                break;
             default:
                 $respMsg = "R:DEVICE_EVENT=unknown event, Result= ". $data->Event;
                 break;
@@ -861,6 +866,8 @@ class classTaskL2sdkIotWx
         $data = substr($content, MFUN_IHU_MSG_HEAD_LENGTH, $length - MFUN_IHU_MSG_HEAD_LENGTH); //截取消息数据域
         $ctrl_key = hexdec($msgHead['CmdId']) & 0xFFFF;
         */
+
+        $format = "A4MegicCode/A4Version/A4Len/";
         $ctrl_key = hexdec(substr(trim($content), 0, 2)) & 0xFF;
         $data = $content;
         $resp = "";
