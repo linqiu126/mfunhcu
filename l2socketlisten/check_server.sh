@@ -1,10 +1,10 @@
 #!/bin/bash -x
 count=`ps -fe |grep "cloud_callback_socket_listening.php" | grep -v "grep" | grep "master" | wc -l`
  
-echo "Current running swoole server master process number is "$count
+echo  $(date +%Y-%m-%d_%H:%M:%S)": Current running swoole server master process number is "$count >> /home/qiulin/check_server.log
 if [ $count -lt 1 ]; then
 ps -eaf |grep "cloud_callback_socket_listening.php" | grep -v "grep"| awk '{print $2}'|xargs kill -9
-fi
+#fi
 
 echo "Swoole server will start in 2 seconds."
 sleep 2
@@ -19,7 +19,7 @@ then
 	echo "xiaohui yun script to be done";
 elif [ $ipaddr = $ipaiqi ]
 then
-	echo "aiqi yun";
+	echo $(date +%Y-%m-%d_%H:%M:%S)": aiqi yun swoole server restarted." >> /home/qiulin/check_server.log;
 	cd /data/www/xhzn/mfunhcu/l1mainentry
 	php cloud_callback_socket_listening.php > /home/qiulin/swooleserver.log 2>&1 &
 	echo $(date +%Y-%m-%d_%H:%M:%S)": Aiqiyun Swoole server restart done."
@@ -28,4 +28,5 @@ else
 	php cloud_callback_socket_listening.php > /home/hitpony/swooleserver.log 2>&1 &
 	echo $(date +%Y-%m-%d_%H:%M:%S)": Vmware Swoole server restart done."
 	#echo $(date +%Y-%m-%d_%H:%M:%S) >/data/log/restart.log
+fi
 fi

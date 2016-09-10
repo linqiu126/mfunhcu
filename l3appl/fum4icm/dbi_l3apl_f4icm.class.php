@@ -179,6 +179,10 @@ class classDbiL3apF4icm
                 $query_str = "UPDATE `t_l2snr_hsmmpdata` SET `dataflag` = '$dataflag' WHERE (`deviceid` = '$devCode' AND `videourl` = '$videoid')";
                 $result = $mysqli->query($query_str);
 
+                //通过socket向HCU转发命令
+                $_GET['DevCode'] = trim($devCode);
+                $_GET['respCmd'] = trim($cmdStr);
+                require dirname(__FILE__).'/UIClientsync.php';
                 $resp = "downloading";
 
                 //通过socket向HCU转发命令

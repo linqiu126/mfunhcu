@@ -2,8 +2,10 @@
     $client = new swoole_client(SWOOLE_SOCK_TCP, SWOOLE_SOCK_ASYNC);
     $client->on("connect", function($cli) {
       	//$cli->send("hello world\n");
-	$DevCode = $_GET['DevCode'];
-	$respCmd = $_GET['respCmd'];
+	global $argv;
+	global $argc;
+	$DevCode = $argv[1];
+	$respCmd = $argv[2];
         $arr = array ($DevCode,$respCmd);
         $cli->send(json_encode($arr));
   	//$cli->send("shutdown");
