@@ -259,6 +259,10 @@ Make By：ZJL
 > 修改EMC微信测试号菜单，增加生产工具的扫码绑定功能
 > 完善EMCWX测试case
 
+//= QL, 2016 Sep.12, CURRENT_SW_DELIVERY R02.D42
+> Socket功能增加，实现PM25操控
+> GetCameraStatus功能的消息和相应函数增加
+
 //待完善的功能
 1. 需要编制小型工具，支持工参数据，特别是图片内容的导入导出
 3. 恢复后台管理界面及相应工具
