@@ -20,8 +20,8 @@ class classL1MainEntrySocketListenServer
             'worker_num' => 1,
             'daemonize' => false,
             //'log_file' => '/home/hitpony/phpsocket/tasksample/swoole.log',
-            'heartbeat_idle_time' => 600, //如果600秒内未向服务器发送任何数据，此连接将被强制关闭
-            'heartbeat_check_interval' => 60, //每60秒遍历一次
+            'heartbeat_idle_time' => 60, //只设置heartbeat_idle_time，未设置heartbeat_check_interval，底层将不会创建心跳检测线程，PHP代码中未来可以调用heartbeat方法手工处理超时的连接
+            //'heartbeat_check_interval' => 6, //每6秒遍历一次
             'max_request' => 10000,
             'dispatch_mode' => 2,
             'debug_mode'=> 1,

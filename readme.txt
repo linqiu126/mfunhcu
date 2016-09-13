@@ -263,6 +263,9 @@ Make By：ZJL
 > Socket功能增加，实现PM25操控
 > GetCameraStatus功能的消息和相应函数增加
 
+//= QL, 2016 Sep.13, CURRENT_SW_DELIVERY R02.D43
+> Socket只设置heartbeat_idle_time，未设置heartbeat_check_interval，底层将不会创建心跳检测线程，PHP代码中未来可以调用heartbeat方法手工处理超时的连接
+
 //待完善的功能
 1. 需要编制小型工具，支持工参数据，特别是图片内容的导入导出
 3. 恢复后台管理界面及相应工具
