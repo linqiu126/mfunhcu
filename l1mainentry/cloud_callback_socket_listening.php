@@ -18,8 +18,9 @@ class classL1MainEntrySocketListenServer
         $this->serv = new swoole_server("0.0.0.0", 9501);
         $this->serv->set(array(
             'worker_num' => 1,
-            'daemonize' => false,
-            //'log_file' => '/home/hitpony/phpsocket/tasksample/swoole.log',
+            'daemonize' => true,
+            //'log_file' => '/home/hitpony/swooleserver.log', //vmware环境使用
+            'log_file' => '/home/qiulin/swooleserver.log', //爱启云环境使用
             'heartbeat_idle_time' => 60, //只设置heartbeat_idle_time，未设置heartbeat_check_interval，底层将不会创建心跳检测线程，PHP代码中未来可以调用heartbeat方法手工处理超时的连接
             //'heartbeat_check_interval' => 6, //每6秒遍历一次
             'max_request' => 10000,
@@ -232,7 +233,9 @@ class classL1MainEntrySocketListenServer
     }
 
     public function port2_onReceive($serv, $fd, $from_id, $data) {
-        $serv->send($fd, $data);
+
+        $serv->send($fd, $data);//临时增加，等协商好之后修改
+
         $arr = json_decode($data);
         $query="SELECT devcode,socketid from t_l2sdk_iothcu_inventory where devcode=\"$arr[0]\"";
         $result = $serv->taskwait($query);
@@ -258,12 +261,12 @@ class classL1MainEntrySocketListenServer
                     echo date('Y/m/d H:i:s', time())." ";
                     echo ("Swoole worker port2: sockid = 0, $devcode is offline.".PHP_EOL);
                 }
-                $serv->close($fd);
+                //$serv->close($fd);
             } else {
                 $serv->send($fd, $db_res);
                 echo date('Y/m/d H:i:s', time())." ";
                 echo ("Swoole worker port2: query mysql failed.").PHP_EOL;
-                $serv->close($fd);
+                //$serv->close($fd);
             }
             return;
         } else {
@@ -272,7 +275,7 @@ class classL1MainEntrySocketListenServer
             echo ("Swoole worker port2: query mysql timeout.").PHP_EOL;
         }
 
-        $serv->close($fd);
+        //$serv->close($fd);
     }
 
     public function port2_onClose($serv, $fd) {

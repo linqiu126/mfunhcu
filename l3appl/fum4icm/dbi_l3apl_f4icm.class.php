@@ -9,6 +9,7 @@
 
 /*
 
+
 //该数据表单的逻辑是试图将所有的不同参数组成一个大表，通过SENSOR_ID来记录不同SENSOR的仪表操控状态
 //由于不同仪表的潜在操控参数不完全一样，这里是讲所有可能的仪表参数组合成为一个大表，而不再为不同仪表进行区分
 //如果涉及到区分，则需要通过具体的dbi函数来完成
@@ -64,6 +65,7 @@ INSERT INTO `t_l3f4icm_swfactory` (`sid`, `swverid`, `swverdescripition`, `issue
 (1, 'AQYC.R02.099', '飞凌335D Baseline, 基础功能完善，气象五参数，视频，支持基于树莓派的传感器', '2016-07-13', '', '');
 
 */
+
 
 class classDbiL3apF4icm
 {
@@ -179,16 +181,12 @@ class classDbiL3apF4icm
                 $query_str = "UPDATE `t_l2snr_hsmmpdata` SET `dataflag` = '$dataflag' WHERE (`deviceid` = '$devCode' AND `videourl` = '$videoid')";
                 $result = $mysqli->query($query_str);
 
-                //通过socket向HCU转发命令
-                $_GET['DevCode'] = trim($devCode);
-                $_GET['respCmd'] = trim($cmdStr);
-                require dirname(__FILE__).'/UIClientsync.php';
+                //通过9502端口建立tcp阻塞式socket连接，向HCU转发操控命令
+                $client = new socket_client_sync($DevCode, $respCmd);
+                $client->connect();
+
                 $resp = "downloading";
 
-                //通过socket向HCU转发命令
-                $_GET['DevCode'] = trim($devCode);
-                $_GET['respCmd'] = trim($cmdStr);
-                require dirname(__FILE__).'/UIClientsync.php';
             }
             elseif ($dataflag == MFUN_HCU_VIDEO_DATA_STATUS_DOWNLOAD){
                 //正在下载中又收到该视频文件的请求什么也不做，直接回复
@@ -272,10 +270,9 @@ class classDbiL3apF4icm
             $respCmd = $ctrl_key . $len . $opt_key . $version;
             $dbiL1vmCommonObj = new classDbiL1vmCommon();
             $resp = $dbiL1vmCommonObj->dbi_cmdbuf_save_cmd(trim($DevCode), trim($respCmd));
-            //通过socket向HCU转发命令
-            $_GET['DevCode'] = trim($DevCode);
-            $_GET['respCmd'] = trim($respCmd);
-            require dirname(__FILE__).'/UIClientsync.php';
+            //通过9502端口建立tcp阻塞式socket连接，向HCU转发操控命令
+            $client = new socket_client_sync($DevCode, $respCmd);
+            $client->connect();
             $i++;
         }
         return $resp;
@@ -401,11 +398,11 @@ class classDbiL3apF4icm
                 $respCmd = $ctrl_key . $len . $optkey_switch_set . $equip_id . $switch;
                 $dbiL1vmCommonObj = new classDbiL1vmCommon();
                 $resp = $dbiL1vmCommonObj->dbi_cmdbuf_save_cmd(trim($DevCode), trim($respCmd));
-                //通过socket向HCU转发命令
-                $_GET['DevCode'] = trim($DevCode);
-                $_GET['respCmd'] = trim($respCmd);
-                require dirname(__FILE__).'/UIClientsync.php';
-                //include "./UIClientsync.php";
+
+                //通过9502端口建立tcp阻塞式socket连接，向HCU转发操控命令
+                $client = new socket_client_sync($DevCode, $respCmd);
+                $client->connect();
+
             }
             if(!empty($ctrl_key)AND !empty($optkey_modbus_set)){
                 $modebus_addr = $apiL2snrCommonServiceObj->ushort2string($modebus_addr & 0xFFFF);
@@ -413,10 +410,9 @@ class classDbiL3apF4icm
                 $respCmd = $ctrl_key . $len . $optkey_modbus_set . $equip_id . $modebus_addr;
                 $dbiL1vmCommonObj = new classDbiL1vmCommon();
                 $resp = $dbiL1vmCommonObj->dbi_cmdbuf_save_cmd(trim($DevCode), trim($respCmd));
-                //通过socket向HCU转发命令
-                $_GET['DevCode'] = trim($DevCode);
-                $_GET['respCmd'] = trim($respCmd);
-                require dirname(__FILE__).'/UIClientsync.php';
+                //通过9502端口建立tcp阻塞式socket连接，向HCU转发操控命令
+                $client = new socket_client_sync($DevCode, $respCmd);
+                $client->connect();
             }
             if(!empty($ctrl_key)AND !empty($optkey_period_set)){
                 $meas_period = $apiL2snrCommonServiceObj->ushort2string($meas_period & 0xFFFF);
@@ -424,10 +420,9 @@ class classDbiL3apF4icm
                 $respCmd = $ctrl_key . $len . $optkey_period_set . $equip_id . $meas_period;
                 $dbiL1vmCommonObj = new classDbiL1vmCommon();
                 $resp = $dbiL1vmCommonObj->dbi_cmdbuf_save_cmd(trim($DevCode), trim($respCmd));
-                //通过socket向HCU转发命令
-                $_GET['DevCode'] = trim($DevCode);
-                $_GET['respCmd'] = trim($respCmd);
-                require dirname(__FILE__).'/UIClientsync.php';
+                //通过9502端口建立tcp阻塞式socket连接，向HCU转发操控命令
+                $client = new socket_client_sync($DevCode, $respCmd);
+                $client->connect();
             }
             if(!empty($ctrl_key) AND !empty($optkey_samples_set)){
                 $sample_interval = $apiL2snrCommonServiceObj->ushort2string($sample_interval & 0xFFFF);
@@ -435,10 +430,9 @@ class classDbiL3apF4icm
                 $respCmd = $ctrl_key . $len . $optkey_samples_set . $equip_id . $sample_interval;
                 $dbiL1vmCommonObj = new classDbiL1vmCommon();
                 $resp = $dbiL1vmCommonObj->dbi_cmdbuf_save_cmd(trim($DevCode), trim($respCmd));
-                //通过socket向HCU转发命令
-                $_GET['DevCode'] = trim($DevCode);
-                $_GET['respCmd'] = trim($respCmd);
-                require dirname(__FILE__).'/UIClientsync.php';
+                //通过9502端口建立tcp阻塞式socket连接，向HCU转发操控命令
+                $client = new socket_client_sync($DevCode, $respCmd);
+                $client->connect();
             }
             if(!empty($ctrl_key) AND !empty($optkey_times_set)){
                 $meas_times = $apiL2snrCommonServiceObj->ushort2string($meas_times & 0xFFFF);
@@ -446,10 +440,9 @@ class classDbiL3apF4icm
                 $respCmd = $ctrl_key . $len . $optkey_times_set . $equip_id . $meas_times;
                 $dbiL1vmCommonObj = new classDbiL1vmCommon();
                 $resp = $dbiL1vmCommonObj->dbi_cmdbuf_save_cmd(trim($DevCode), trim($respCmd));
-                //通过socket向HCU转发命令
-                $_GET['DevCode'] = trim($DevCode);
-                $_GET['respCmd'] = trim($respCmd);
-                require dirname(__FILE__).'/UIClientsync.php';
+                //通过9502端口建立tcp阻塞式socket连接，向HCU转发操控命令
+                $client = new socket_client_sync($DevCode, $respCmd);
+                $client->connect();
             }
 
             $resp = "Success";
@@ -487,10 +480,9 @@ class classDbiL3apF4icm
         $len = $apiL2snrCommonServiceObj->byte2string(strlen($opt_key)/2);
         $respCmd = $ctrl_key . $len . $opt_key;
 
-        //通过socket向HCU转发命令
-        $_GET['DevCode'] = trim($DevCode);
-        $_GET['respCmd'] = trim($respCmd);
-        require dirname(__FILE__).'/UIClientsync.php';
+        //通过9502端口建立tcp阻塞式socket连接，向HCU转发操控命令
+        $client = new socket_client_sync($DevCode, $respCmd);
+        $client->connect();
 
         $resp = "Success";
     }

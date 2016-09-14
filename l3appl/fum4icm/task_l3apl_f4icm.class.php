@@ -7,6 +7,7 @@
  */
 //include_once "../../l1comvm/vmlayer.php";
 include_once "dbi_l3apl_f4icm.class.php";
+require_once dirname(__FILE__)."/../../l2socketlisten/socket_client_sync.class.php";
 
 class classTaskL3aplF4icm
 {
