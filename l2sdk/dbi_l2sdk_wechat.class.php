@@ -227,6 +227,25 @@ class classDbiL2sdkWechat
         return $result;
     }
 
+    //验证微信蓝牙设备条码信息表中DeviceID对应的MAC地址的合法性
+    public function dbi_deviceqrcode_valid_qrcode($qrcode)
+    {
+        //建立连接
+        $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli)
+        {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $result = $mysqli->query("SELECT * FROM `t_l2sdk_wechat_deviceqrcode` WHERE (`qrcode` = '$qrcode'");
+        if ($result->num_rows>0)
+            $result = true;
+        else
+            $result = false;
+
+        $mysqli->close();
+        return $result;
+    }
+
     //寻找一个空的DEVICE_ID
     public function dbi_deviceqrcode_query_mac()
     {

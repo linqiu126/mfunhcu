@@ -528,7 +528,7 @@ class classTaskL2sdkIotWx
         $this->send_custom_message(trim($data->FromUserName), "text", $msgContent);  //使用API-CURL推送客服微信用户
 
         //调用统一的deviceTask处理入口函数
-        $resp_msg = $this->ihu_device_text_process($parObj, $fromUser, $deviceId, $strContent);
+        $resp_msg = $this->func_device_text_process($parObj, $fromUser, $deviceId, $strContent);
 
         //处理绑定用户，将相应信息通知给绑定的用户
         $wxDbObj = new classDbiL2sdkWechat();
@@ -563,7 +563,7 @@ class classTaskL2sdkIotWx
 
         //返回结果
         return $transMsg;
-    } //receive_deviceMessage处理结束
+    } //receive_wx_device_text_message处理结束
 
     //接收微信消息类型为“device_event”的处理函数，传入data为下位机发送的16进制码流
     public function receive_wx_device_event_message($parObj, $data)
@@ -577,7 +577,7 @@ class classTaskL2sdkIotWx
         $wxDbObj = new classDbiL2sdkWechat();
         switch ($data->Event)
         {
-            case "bind": //来自设备的bind事件，类似手环敲击进行绑定
+            case "bind": //来自设备的bind事件，类似手环敲击进行绑定或者微信扫二维码绑定
                 $resp1 = "R:DEVICE_EVENT=bind\n";
                 $result = $wxDbObj->dbi_blebound_duplicate($data->FromUserName, $data->DeviceID, $data->OpenID, $data->DeviceType);
                 if ($result == true)
@@ -612,7 +612,9 @@ class classTaskL2sdkIotWx
             case "scancode_push": //用户扫描二维码事件
                 $qrcode = $data->ScanCodeInfo->ScanResult;
                 $fromUser = $data->FromUserName;
-                $respMsg = "扫码类型 ". $data->ScanCodeInfo->ScanType." \n扫码结果：". $data->ScanCodeInfo->ScanResult;
+                $respMsg = "ScanType = ". $data->ScanCodeInfo->ScanType." \n ScanResult = ". $data->ScanCodeInfo->ScanResult;
+
+                $respMsg = $this->func_event_scancode_process($fromUser, $qrcode);
                 break;
             default:
                 $respMsg = "R:DEVICE_EVENT=unknown event, Result= ". $data->Event;
@@ -628,7 +630,7 @@ class classTaskL2sdkIotWx
             $transMsg = $respMsg;
 
         return $transMsg;
-    }
+    }//End of receive_wx_device_event_message
 
     //用户自己定义的微信点击菜单命令“event->CLICK”处理函数
     public function receive_wx_menu_click_message($parObj, $data)
@@ -684,7 +686,7 @@ class classTaskL2sdkIotWx
                 }
                 break;
             case "CLICK_BIND":
-                $transMsg = $this->click_bindCommand ($data); //强制绑定该用户，用于测试目的
+                $transMsg = $this->func_click_bindCommand ($data); //强制绑定该用户，用于测试目的
                 break;
             case "CLICK_BIND_INQ":
                 //增加第三方后台云的绑定状态
@@ -844,10 +846,10 @@ class classTaskL2sdkIotWx
                 break;
         }
         return $transMsg;
-    }//End of receive_deviceClickCommand
+    }//End of receive_wx_menu_click_message
 
      //设备业务消息的处理函数，跳转到对应的业务处理模块
-    public function ihu_device_text_process($parObj, $fromUser, $deviceId, $content)
+    public function func_device_text_process($parObj, $fromUser, $deviceId, $content)
     {
         //因为收到的Airsync数据消息头已经被微信处理掉，传递过来的消息体在上级函数中已经被处理成16制格式的字符串
         /*
@@ -867,9 +869,17 @@ class classTaskL2sdkIotWx
         $ctrl_key = hexdec($msgHead['CmdId']) & 0xFFFF;
         */
 
-        $format = "A4MegicCode/A4Version/A4Len/";
-        $ctrl_key = hexdec(substr(trim($content), 0, 2)) & 0xFF;
-        $data = $content;
+        $format = "A4megicCode/A4version/A4len/A4cmdid/A4seq/A4errorCode/A2ctrl_key/A4data";
+        $unpack_data = unpack($format, $content);
+
+        $length = hexdec($unpack_data['len']) & 0xFFFF;
+        $length =  $length * 2; //因为收到的消息为16进制字符，消息总长度等于length * 2
+        if ($length != strlen($content)) {
+            return "ERROR IOT_WX[IHU]: message length invalid";  //消息长度不合法，直接返回
+        }
+
+        $ctrl_key = hexdec($unpack_data['ctrl_key']) & 0xFF;
+        $data = $unpack_data['data'];
         $resp = "";
         $statCode = "";
         switch ($ctrl_key)
@@ -889,6 +899,9 @@ class classTaskL2sdkIotWx
                 break;
 
             case MFUN_IHU_CMDID_EMC_DATA://定时辐射强度处理
+                $msgContent = "EMC Value = " . $data;
+                $this->send_custom_message($fromUser, "text", $msgContent);  //使用API-CURL推送EMC测量值到微信用户
+
                 $msg = array("project" => MFUN_PRJ_IHU_EMCWX,
                     "log_from" => $fromUser,
                     "platform" => MFUN_TECH_PLTF_WECHAT,
@@ -946,8 +959,13 @@ class classTaskL2sdkIotWx
         return $resp;
     }
 
+    private function func_event_scancode_process($fromUser, $qrcode)
+    {
+
+    }
+
     //强制绑定菜单处理函数，主要用于调试目的
-    public function click_bindCommand ($data)
+    private function func_click_bindCommand ($data)
     {
         $wxDbObj = new classDbiL2sdkWechat();
         switch ($data->FromUserName){
@@ -1099,7 +1117,7 @@ class classTaskL2sdkIotWx
                 break;
         }
         return $transMsg;
-    } //end of click_bindCommand()
+    } //end of func_click_bindCommand()
 
 
     //接收微信消息类型为“event->LOCATION”的处理函数，获取微信当时的GPS地址

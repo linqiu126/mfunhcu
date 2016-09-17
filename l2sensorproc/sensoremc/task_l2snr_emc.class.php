@@ -60,15 +60,13 @@ class classTaskL2snrEmc
 
     private function wx_emcdata_req_process( $deviceId, $content)
     {
-        //$emc_value = hexdec(substr($content, 4, 4)) & 0xFFFFFFFF;
-        $format = "A2EmcCmd/A2Len/A4EmcValue/A12Time/A12Gps";
-        $data = unpack($format, $content);
-        $emc_value = hexdec($data['EmcValue']) & 0xFFFF;
+        //$format = "A2EmcCmd/A2Len/A4EmcValue/A12Time/A12Gps";
+        //$data = unpack($format, $content);
+        $emc_value = hexdec($content) & 0xFFFF;
         $report["format"] = 0;
         $report["value"] = $emc_value; //保持和HCU EMC_data的处理一致，增加数据格式
-        $emc_time = hexdec($data['Time']) & 0xFFFFFFFF;
-        $gps = hexdec($data['Gps']) & 0xFFFFFFFF;
-        //$emc_time = time(); //下位机暂时没有时间上报，取系统当前时间
+        $emc_time = time(); //下位机暂时没有时间上报，取系统当前时间
+        $gps = "";
         $sensorId = 1;
 
         $sDbObj = new classDbiL2snrEmc();
@@ -76,7 +74,6 @@ class classTaskL2snrEmc
         $sDbObj->dbi_emcData_delete_3monold($deviceId, $sensorId, MFUN_EMCWX_DATA_SAVE_DURATION_IN_DAYS);  //remove 90 days old data.
         $sDbObj->dbi_emcAccumulation_save($deviceId); //累计值计算，如果不是初次接收数据，而且日期没有改变，则该过程将非常快
 
-        //完全不需要返回？？？
         $resp = ""; //no response message
         return $resp;
     }

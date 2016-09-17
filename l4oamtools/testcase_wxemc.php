@@ -46,8 +46,9 @@ if (TC_EMCWX == true){
 
     //微信device_text消息
     echo " [TC EMCWX: EMC DEVICE_TEXT START]\n";
-    //$content = pack("H*", "FE01001C71212372010002206500403020101020304050607081800");
-    /*$content = base64_encode(pack("H*", "201000220650040302010102030405060708"));
+    //$content = base64_encode(pack("H*", "201000220650040302010102030405060708"));
+    $content = base64_encode(pack("H*", "FECF0001000F20810003000020036E"));
+
     $GLOBALS["HTTP_RAW_POST_DATA"] = "<xml><ToUserName><![CDATA[IHU]]></ToUserName>
                                         <FromUserName><![CDATA[oS0Chv3Uum1TZqHaCEb06AoBfCvY]]></FromUserName>
                                         <DeviceID><![CDATA[gh_70c714952b02_8cd47e1f6141e49a4e45f4b807cf41fe]]></DeviceID>
@@ -56,7 +57,7 @@ if (TC_EMCWX == true){
                                         <Content><![CDATA[" . $content . "]]></Content>
                                         <FuncFlag>0</FuncFlag>
                                       </xml>";
-    */
+    /*
     $GLOBALS["HTTP_RAW_POST_DATA"] = "<xml><ToUserName><![CDATA[gh_70c714952b02]]></ToUserName>
                                         <FromUserName><![CDATA[oS0Chv3Uum1TZqHaCEb06AoBfCvY]]></FromUserName>
                                         <CreateTime>1473082238</CreateTime>
@@ -68,6 +69,7 @@ if (TC_EMCWX == true){
                                         <MsgID>12571034008</MsgID>
                                         <OpenID><![CDATA[oS0Chv3Uum1TZqHaCEb06AoBfCvY]]></OpenID>
                                       </xml>";
+    */
     require("../l1mainentry/cloud_callback_wechat.php");
     echo " \n[TC EMCWX: EMC DEVICE_TEXT END]\n";
 
