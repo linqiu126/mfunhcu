@@ -899,7 +899,8 @@ class classTaskL2sdkIotWx
                 break;
 
             case MFUN_IHU_CMDID_EMC_DATA://定时辐射强度处理
-                $msgContent = "EMC Value = " . $data;
+                $data = hexdec($data) & 0xFFFF;
+                $msgContent = "EMC Value = " . $data . "mV";
                 $this->send_custom_message($fromUser, "text", $msgContent);  //使用API-CURL推送EMC测量值到微信用户
 
                 $msg = array("project" => MFUN_PRJ_IHU_EMCWX,
