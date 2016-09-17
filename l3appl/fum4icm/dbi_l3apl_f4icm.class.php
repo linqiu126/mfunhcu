@@ -182,7 +182,7 @@ class classDbiL3apF4icm
                 $result = $mysqli->query($query_str);
 
                 //通过9502端口建立tcp阻塞式socket连接，向HCU转发操控命令
-                $client = new socket_client_sync($DevCode, $respCmd);
+                $client = new socket_client_sync($devCode, $cmdStr);
                 $client->connect();
 
                 $resp = "downloading";

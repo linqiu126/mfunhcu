@@ -1221,7 +1221,7 @@ class classTaskL4aqycUi
                             return JSON.stringify(retval);
                         }
                 */
-                case "GetVideo":
+                //case "GetVideo":
                 case "GetVideo":
                     if (isset($_GET["id"])) $videoid = trim($_GET["id"]); else  $videoid = "";
                     $input = array("id" => $videoid);
