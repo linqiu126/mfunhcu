@@ -1320,6 +1320,60 @@
                 status:"true"
             }
             return JSON.stringify(retval);
+        case "GetCameraStatus":
+            var usr = data.id;
+            var StatCode = data.StatCode;
+            var videocode = GetRandomNum(1,5);
+            var camerastatus={
+                h:"120~",
+                v:"120~",
+                url:"./video/screenshot/"+videocode+".png"
+            }
+            var retval={
+                status:"true",
+                ret:camerastatus
+            }
+            return JSON.stringify(retval);
+        case "GetCameraUnit":
+            var camera={
+                v:"3~",
+                h:"3~"
+            }
+            var retval={
+                status:"true",
+                ret: camera
+            }
+            return JSON.stringify(retval);
+        case "CameraVAdj":
+            var usr = data.id;
+            var StatCode = data.StatCode;
+            var adj = data.adj;
+            var videocode = GetRandomNum(1,5);
+            var camerastatus={
+                h:"120~",
+                v:"120~",
+                url:"./video/screenshot/"+videocode+".png"
+            }
+            var retval={
+                status:"true",
+                ret:camerastatus
+            }
+            return JSON.stringify(retval);
+        case "CameraHAdj":
+            var usr = data.id;
+            var StatCode = data.StatCode;
+            var adj = data.adj;
+            var videocode = GetRandomNum(1,5);
+            var camerastatus={
+                h:"120~",
+                v:"120~",
+                url:"./video/screenshot/"+videocode+".png"
+            }
+            var retval={
+                status:"true",
+                ret:camerastatus
+            }
+            return JSON.stringify(retval);
         case "list":
             var query_key = data.key;
             var ret_number = GetRandomNum(10,50);

@@ -45,8 +45,6 @@ gulp.task('sass', function() {
 gulp.task("resourcecopy",function(){
     gulp.src("./image/*")
         .pipe(gulp.dest(option.buildPath+"/image/"));
-    gulp.src("./images/*")
-        .pipe(gulp.dest(option.buildPath+"/images/"));
     gulp.src("./img/*")
         .pipe(gulp.dest(option.buildPath+"/img/"));
     gulp.src("./resource/**/*")
@@ -59,7 +57,7 @@ gulp.task("resourcecopy",function(){
         .pipe(gulp.dest(option.buildPath+"/svg/"));
     gulp.src("./swf/*")
         .pipe(gulp.dest(option.buildPath+"/swf/"));
-    gulp.src("./video/*")
+    gulp.src("./video/**/*")
         .pipe(gulp.dest(option.buildPath+"/video/"));
     gulp.src("./screensaver/**/*")
         .pipe(gulp.dest(option.buildPath+"/screensaver/"));
@@ -82,47 +80,52 @@ gulp.task('scripts', function() {
         //.pipe(gulp.dest('./dist/js'))
         .pipe(rename('app.js'))
         .pipe(uglify())
-        .pipe(gulp.dest('./dist/js'));
+        .pipe(gulp.dest(option.buildPath+"/js/"));
     gulp.src('./js/hcu_util.js')
         .pipe(concat('hcu_util.js'))
         //.pipe(gulp.dest('./dist/js'))
         .pipe(rename('hcu_util.js'))
         .pipe(uglify())
-        .pipe(gulp.dest('./dist/js'));
+        .pipe(gulp.dest(option.buildPath+"/js/"));
     gulp.src('./js/login.js')
         .pipe(concat('login.js'))
        // .pipe(gulp.dest('./dist/js'))
         .pipe(rename('login.js'))
         .pipe(uglify())
-        .pipe(gulp.dest('./dist/js'));
+        .pipe(gulp.dest(option.buildPath+"/js/"));
     gulp.src('./js/nprogress.js')
         .pipe(concat('nprogress.js'))
         // .pipe(gulp.dest('./dist/js'))
         .pipe(rename('nprogress.js'))
         .pipe(uglify())
-        .pipe(gulp.dest('./dist/js'));
+        .pipe(gulp.dest(option.buildPath+"/js/"));
 
     gulp.src('./css/Login.css')
        // .pipe(concat('Login.css'))
         .pipe(rename('Login.css'))
         .pipe(minifycss())
-        .pipe(gulp.dest('./dist/css'));
+        .pipe(gulp.dest(option.buildPath+"/css/"));
     gulp.src('./css/nprogress.css')
        // .pipe(concat('nprogress.css'))
         .pipe(rename('nprogress.css'))
         .pipe(minifycss())
-        .pipe(gulp.dest('./dist/css'));
+        .pipe(gulp.dest(option.buildPath+"/css/"));
     gulp.src('./css/scope.css')
        // .pipe(concat('scope.css'))
         .pipe(rename('scope.css'))
         .pipe(minifycss())
-        .pipe(gulp.dest('./dist/css'));
+        .pipe(gulp.dest(option.buildPath+"/css/"));
+    gulp.src('./css/style.css')
+        // .pipe(concat('scope.css'))
+        .pipe(rename('style.css'))
+        .pipe(minifycss())
+        .pipe(gulp.dest(option.buildPath+"/css/"));
     gulp.src('./Login.html')
         .pipe(htmlmin(option_html))
-        .pipe(gulp.dest('./dist'));
+        .pipe(gulp.dest(option.buildPath));
     gulp.src('./scope.html')
         .pipe(htmlmin(option_html))
-        .pipe(gulp.dest('./dist'));
+        .pipe(gulp.dest(option.buildPath));
 });
 
 // д╛хохннЯ
