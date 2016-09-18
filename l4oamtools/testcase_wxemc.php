@@ -13,6 +13,18 @@ include_once "../l1comvm/vmlayer.php";
 if (TC_EMCWX == true){
 //EMCWX测试开始
 
+    //公众号关注事件
+    echo " [TC EMCWX: WEIXIN “subscribe” EVENT START]\n";
+    $GLOBALS["HTTP_RAW_POST_DATA"] = "<xml><ToUserName><![CDATA[gh_70c714952b02]]></ToUserName>
+                                        <FromUserName><![CDATA[oS0Chv3Uum1TZqHaCEb06AoBfCvY]]></FromUserName>
+                                        <CreateTime>1474206863</CreateTime>
+                                        <MsgType><![CDATA[event]]></MsgType>
+                                        <Event><![CDATA[subscribe]]></Event>
+                                        <EventKey><![CDATA[]]></EventKey>
+                                       </xml>";
+    require("../l1mainentry/cloud_callback_wechat.php");
+    echo " \n[TC EMCWX: WEIXIN “subscribe” EVENT END]\n";
+
     //微信device_event，bind
     echo " [TC EMCWX: WEIXIN “bind” EVENT START]\n";
     $GLOBALS["HTTP_RAW_POST_DATA"] = "<xml><ToUserName><![CDATA[gh_70c714952b02]]></ToUserName>
@@ -43,6 +55,20 @@ if (TC_EMCWX == true){
                                      </xml>";
     require("../l1mainentry/cloud_callback_wechat.php");
     echo " \n[TC EMCWX: WEIXIN “scancode_push” EVENT END]\n";
+
+    //微信位置更新“LOCATION”事件
+    echo " [TC EMCWX: WEIXIN “LOCATION” event START]\n";
+    $GLOBALS["HTTP_RAW_POST_DATA"] = "<xml><ToUserName><![CDATA[gh_70c714952b02]]></ToUserName>
+                                        <FromUserName><![CDATA[oS0Chv3Uum1TZqHaCEb06AoBfCvY]]></FromUserName>
+                                        <CreateTime>1474206866</CreateTime>
+                                        <MsgType><![CDATA[event]]></MsgType>
+                                        <Event><![CDATA[LOCATION]]></Event>
+                                        <Latitude>31.202703</Latitude>
+                                        <Longitude>121.514626</Longitude>
+                                        <Precision>30.000000</Precision>
+                                      </xml>";
+    require("../l1mainentry/cloud_callback_wechat.php");
+    echo " \n[TC EMCWX: WEIXIN “LOCATION” event END]\n";
 
     //微信device_text消息
     echo " [TC EMCWX: EMC DEVICE_TEXT START]\n";

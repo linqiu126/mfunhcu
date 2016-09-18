@@ -29,10 +29,11 @@ if (MFUN_WX_APPID =="wx1183be5c8f6a24b4")  //用于LZH的订阅号
     define("LZH_qrcode","http://we.qq.com/d/AQBLQKG-27gIDCKf03DmiwAXh27qptK_scSJJRAn");
     define("LZH_mac","D03972A5EF28");
 
-    define ("ZSC_openid", "oS0ChvxMQEtEhVdxJytcIab5FaHY");
-    define("ZSC_deviceid","gh_70c714952b02_961aeb4272962a376564617830334c23");
-    define("ZSC_qrcode","http://we.qq.com/d/AQBLQKG-DzKNi89E6XF8QsBUg_OTZqrSTvl80sd5");
-    define("ZSC_mac","D03972A5EF25");
+    //define ("ZSC_openid", "oS0ChvxMQEtEhVdxJytcIab5FaHY");
+    define ("CZ_openid", "oS0Chv9XjoSv9IvXI-ggBxpNVPck");
+    define("CZ_deviceid","gh_70c714952b02_961aeb4272962a376564617830334c23");
+    define("CZ_qrcode","http://we.qq.com/d/AQBLQKG-DzKNi89E6XF8QsBUg_OTZqrSTvl80sd5");
+    define("CZ_mac","D03972A5EF2A");
 
     define ("MYC_openid", "oS0Chv0aebwN8O3-7v0hNAX7gy4c");
     define("MYC_deviceid","gh_70c714952b02_f8ac45cf39c447e9bb41dfd449796474");
@@ -45,11 +46,10 @@ if (MFUN_WX_APPID =="wx1183be5c8f6a24b4")  //用于LZH的订阅号
     define("ZJL_qrcode","http://we.qq.com/d/AQBLQKG-cFODzg6aCE5C92D1SKGHOirRJtBGwCmd");
     define("ZJL_mac","D03972A5EF27");
 
-    //define ("CZ_openid", "oS0Chv9XjoSv9IvXI-ggBxpNVPck"); CZ openid
-    define ("CZ_openid", "oS0ChvwWJOQsIk5xGsRPTQm00C3U"); // xiao xiong openid, replace cz's temporary
-    define("CZ_deviceid","gh_70c714952b02_955677dfa6db7590f2033b20d3fbad8c");
-    define("CZ_qrcode","http://we.qq.com/d/AQBLQKG-4i5gYb6vU8kM8cNnvx0Pg-sdIgXb0n17");
-    define("CZ_mac","D03972A5EFF2");
+    define ("XPH_openid", "oS0ChvwWJOQsIk5xGsRPTQm00C3U");
+    define("XPH_deviceid","gh_70c714952b02_955677dfa6db7590f2033b20d3fbad8c");
+    define("XPH_qrcode","http://we.qq.com/d/AQBLQKG-4i5gYb6vU8kM8cNnvx0Pg-sdIgXb0n17");
+    define("XPH_mac","D03972A5EF30");
 
     define ("QL_openid", "oS0Chv_Z776kKJ3IeGr8CcpltoYs");
     define("QL_deviceid","gh_70c714952b02_0e152a3026ce99b8687b3a6368e12e26");
@@ -59,7 +59,7 @@ if (MFUN_WX_APPID =="wx1183be5c8f6a24b4")  //用于LZH的订阅号
     define ("JT_openid", "oS0Chv0v4eklqQNcaA7cJ_h8Nq4k");
     define("JT_deviceid","gh_70c714952b02_1b6034a2ce38851f999bacc493e3b992");
     define("JT_qrcode","http://we.qq.com/d/AQBLQKG-ksL4ZB14plxy0_pppMVsW9i96e6PzgSJ");
-    define("JT_mac","D03972A5EFF4");
+    define("JT_mac","D03972A5EF2C");
 }
 elseif(MFUN_WX_APPID =="wxf2150c4d2941b2ab") //用于小慧智能的服务号
 {
@@ -70,10 +70,11 @@ elseif(MFUN_WX_APPID =="wxf2150c4d2941b2ab") //用于小慧智能的服务号
     define("LZH_qrcode","http://we.qq.com/d/AQBLQKG-27gIDCKf03DmiwAXh27qptK_scSJJRAn");
     define("LZH_mac","D03972A5EF28");
 
-    define ("ZSC_openid", "oS0ChvxMQEtEhVdxJytcIab5FaHY");
-    define("ZSC_deviceid","gh_70c714952b02_961aeb4272962a376564617830334c23");
-    define("ZSC_qrcode","http://we.qq.com/d/AQBLQKG-DzKNi89E6XF8QsBUg_OTZqrSTvl80sd5");
-    define("ZSC_mac","D03972A5EF25");
+    //define ("ZSC_openid", "oS0ChvxMQEtEhVdxJytcIab5FaHY");
+    define ("CZ_openid", "oS0Chv9XjoSv9IvXI-ggBxpNVPck");
+    define("CZ_deviceid","gh_70c714952b02_961aeb4272962a376564617830334c23");
+    define("CZ_qrcode","http://we.qq.com/d/AQBLQKG-DzKNi89E6XF8QsBUg_OTZqrSTvl80sd5");
+    define("CZ_mac","D03972A5EF2A");
 
     define ("MYC_openid", "oS0Chv0aebwN8O3-7v0hNAX7gy4c");
     define("MYC_deviceid","gh_70c714952b02_f8ac45cf39c447e9bb41dfd449796474");
@@ -86,11 +87,10 @@ elseif(MFUN_WX_APPID =="wxf2150c4d2941b2ab") //用于小慧智能的服务号
     define("ZJL_qrcode","http://we.qq.com/d/AQBLQKG-cFODzg6aCE5C92D1SKGHOirRJtBGwCmd");
     define("ZJL_mac","D03972A5EF27");
 
-    //define ("CZ_openid", "oS0Chv9XjoSv9IvXI-ggBxpNVPck"); CZ openid
-    define ("CZ_openid", "oS0ChvwWJOQsIk5xGsRPTQm00C3U"); // xiao xiong openid, replace cz's temporary
-    define("CZ_deviceid","gh_70c714952b02_955677dfa6db7590f2033b20d3fbad8c");
-    define("CZ_qrcode","http://we.qq.com/d/AQBLQKG-4i5gYb6vU8kM8cNnvx0Pg-sdIgXb0n17");
-    define("CZ_mac","D03972A5EFF2");
+    define ("XPH_openid", "oS0ChvwWJOQsIk5xGsRPTQm00C3U");
+    define("XPH_deviceid","gh_70c714952b02_955677dfa6db7590f2033b20d3fbad8c");
+    define("XPH_qrcode","http://we.qq.com/d/AQBLQKG-4i5gYb6vU8kM8cNnvx0Pg-sdIgXb0n17");
+    define("XPH_mac","D03972A5EF30");
 
     define ("QL_openid", "oS0Chv_Z776kKJ3IeGr8CcpltoYs");
     define("QL_deviceid","gh_70c714952b02_0e152a3026ce99b8687b3a6368e12e26");
@@ -100,7 +100,7 @@ elseif(MFUN_WX_APPID =="wxf2150c4d2941b2ab") //用于小慧智能的服务号
     define ("JT_openid", "oS0Chv0v4eklqQNcaA7cJ_h8Nq4k");
     define("JT_deviceid","gh_70c714952b02_1b6034a2ce38851f999bacc493e3b992");
     define("JT_qrcode","http://we.qq.com/d/AQBLQKG-ksL4ZB14plxy0_pppMVsW9i96e6PzgSJ");
-    define("JT_mac","D03972A5EFF4");
+    define("JT_mac","D03972A5EF2C");
 }
 elseif(MFUN_WX_APPID =="wx32f73ab219f56efb") //用于ZJL的服务号
 {

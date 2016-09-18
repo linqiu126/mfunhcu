@@ -4370,8 +4370,7 @@ class classTaskL2sdkWechat
         switch ($postObj->Event)
         {
             case "subscribe":
-                $content = "欢迎关注小慧科技-智能硬件测试";
-                $content .= (!empty($postObj->EventKey))?("\n来自二维码场景 ".str_replace("qrscene_","",$postObj->EventKey)):"";
+                $content = "欢迎关注小慧智能-硬件测试";
                 break;
             case "unsubscribe":
                 $content = "取消关注";

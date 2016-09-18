@@ -510,56 +510,30 @@ class classTaskL2sdkIotWx
     /******************************************************************************************************************
      *                                               自定义API部分                                                     *
      ******************************************************************************************************************/
-    //接收微信消息类型为“device_text”的处理函数，传入data为下位机发送的16进制码流
+    //接收微信消息类型为“device_text”的处理函数，传入data为下位机Airsync发送的16进制码流
     public function receive_wx_device_text_message($parObj, $data)
     {
+        $transMsg = ""; //初始化
         //发送到L3的比特流还需要进行base64解码和16进制unpack
         $content = base64_decode($data->Content);
         $content = unpack('H*',$content);
         $strContent = strtoupper($content["1"]); //转换成16进制格式的字符串
         $fromUser = trim($data->FromUserName);
         $deviceId = trim($data->DeviceID);
+
+        //查询微信公众号trace打印开关
         $logDbObj = new classDbiL1vmCommon();
         $wx_trace = $logDbObj->dbi_LogSwitchInfo_inqury($fromUser);
-        $result = "";
 
-        //推送打印收到的device消息给手机WX界面,这里不判断trace开关状态，所有收到的消息都打印
+        //根据trace开关状态，推送打印收到的device消息给手机WX界面
         $msgContent = "R:DEVICE_TEXT= " . $strContent;
-        $this->send_custom_message(trim($data->FromUserName), "text", $msgContent);  //使用API-CURL推送客服微信用户
+        if ($wx_trace == 1 )
+            $transMsg = $this->send_custom_message(trim($data->FromUserName), "text", $msgContent);  //使用API-CURL推送客服微信用户
 
-        //调用统一的deviceTask处理入口函数
+        //调用统一的device_text处理函数，返回的消息只有处理出错告警，需要发送给绑定设备的消息都在调用函数中终结
         $resp_msg = $this->func_device_text_process($parObj, $fromUser, $deviceId, $strContent);
-
-        //处理绑定用户，将相应信息通知给绑定的用户
-        $wxDbObj = new classDbiL2sdkWechat();
-        $dbi_info = $wxDbObj->dbi_blebound_query($data->FromUserName);  //查询该用户是否是绑定用户
-        if ($dbi_info == true && !empty($resp_msg) )
-        {
-            $check = unpack('A5Hint', $resp_msg);
-            if($check['Hint'] == "ERROR") return $resp_msg;
-            //考虑同一个用户绑定多个设备的情况,循环发送response给该用户绑定的所有设
-            $i = 0;
-            while ($i < count($dbi_info))
-            {
-                $dev_table = $dbi_info[$i];
-                $result = $this->trans_msgtodevice($dev_table["deviceType"], $dev_table["deviceID"], $dev_table["openID"], $resp_msg);
-                //if ($result["errcode"] ==40001)  //防止偶然未知原因导致token失效，强制刷新token并再次发送 {
-                //    $this->compel_get_token($this->appid,$this->appsecret);
-                //    $result = $this->trans_msgtodevice($dev_table["deviceType"], $dev_table["deviceID"], $dev_table["openID"], $resp_msg);
-                //}
-                $i++;
-            }
-            //推送回复消息给微信界面
-            if ($wx_trace == 1){
-                $transMsg = $this->send_custom_message(trim($data->FromUserName), "text", "T:DEVICE_TEXT= " . $resp_msg . "\n Result= " . json_encode($result));
-            }
-            else{
-                $transMsg = $result;
-            }
-        } //绑定用户
-        else{
-            $transMsg = $resp_msg;
-        }//非绑定用户
+        if ($wx_trace == 1 && !empty($resp_msg))
+            $transMsg = $this->send_custom_message(trim($data->FromUserName), "text", $resp_msg);  //使用API-CURL推送客服微信用户
 
         //返回结果
         return $transMsg;
@@ -568,7 +542,7 @@ class classTaskL2sdkIotWx
     //接收微信消息类型为“device_event”的处理函数，传入data为下位机发送的16进制码流
     public function receive_wx_device_event_message($parObj, $data)
     {
-        //解码
+        //发送到L3的比特流还需要进行base64解码和16进制unpack
         $content = base64_decode($data->Content);
         $content = unpack('H*',$content);
         $strContent = strtoupper($content["1"]);//转换成16进制格式的字符串
@@ -614,7 +588,7 @@ class classTaskL2sdkIotWx
                 $fromUser = $data->FromUserName;
                 $respMsg = "ScanType = ". $data->ScanCodeInfo->ScanType." \n ScanResult = ". $data->ScanCodeInfo->ScanResult;
 
-                $respMsg = $this->func_event_scancode_process($fromUser, $qrcode);
+                //$respMsg = $this->func_event_scancode_process($fromUser, $qrcode);
                 break;
             default:
                 $respMsg = "R:DEVICE_EVENT=unknown event, Result= ". $data->Event;
@@ -913,10 +887,8 @@ class classTaskL2sdkIotWx
                         MFUN_TASK_ID_L2SENSOR_EMC,
                         MSG_ID_L2SDK_EMCWX_TO_L2SNR_EMC_DATA_REPORT_TIMING,
                         "MSG_ID_L2SDK_EMCWX_TO_L2SNR_EMC_DATA_REPORT_TIMING",
-                        $msg) == false) $result = "Send to message buffer error";
-                else $result = "";
-                //$ihuObj = new class_emc_service();
-                //$resp = $ihuObj->func_emc_process(MFUN_TECH_PLTF_WECHAT, $deviceId, $statCode, $data);
+                        $msg) == false) $resp = "ERROR IOT_WX[IHU]:Send to message buffer error";
+                else $resp = "";
                 break;
 
             case MFUN_IHU_CMDID_TEMP_DATA:
@@ -930,8 +902,8 @@ class classTaskL2sdkIotWx
                         MFUN_TASK_ID_L2SENSOR_TEMP,
                         MSG_ID_L2SDK_EMCWX_TO_L2SNR_TEMP_DATA_REPORT_TIMING,
                         "MSG_ID_L2SDK_EMCWX_TO_L2SNR_TEMP_DATA_REPORT_TIMING",
-                        $msg) == false) $result = "Send to message buffer error";
-                else $result = "";
+                        $msg) == false) $resp = "ERROR IOT_WX[IHU]:Send to message buffer error";
+                else $resp = "";
                 //$ihuObj = new class_temperature_service();
                 //$resp = $ihuObj->func_temperature_process(MFUN_TECH_PLTF_WECHAT, $deviceId, $statCode, $data);
                 break;
@@ -947,14 +919,14 @@ class classTaskL2sdkIotWx
                         MFUN_TASK_ID_L2SENSOR_HUMID,
                         MSG_ID_L2SDK_EMCWX_TO_L2SNR_HUMID_DATA_REPORT_TIMING,
                         "MSG_ID_L2SDK_EMCWX_TO_L2SNR_HUMID_DATA_REPORT_TIMING",
-                        $msg) == false) $result = "Send to message buffer error";
-                else $result = "";
+                        $msg) == false) $resp = "ERROR IOT_WX[IHU]:Send to message buffer error";
+                else $resp = "";
                 //$ihuObj = new class_humidity_service();
                 //$resp = $ihuObj->func_humidity_process(MFUN_TECH_PLTF_WECHAT, $deviceId, $statCode, $data);
                 break;
 
             default:
-                $resp ="ERROR WX_IOT: invalid device message type";
+                $resp ="ERROR IOT_WX[IHU]: invalid device message type";
                 break;
         }
         return $resp;
@@ -1093,21 +1065,21 @@ class classTaskL2sdkIotWx
                 $result = $this->getstat_qrcodebyOpenId($data->FromUserName);
                 $transMsg = $this->xms_responseText($data->FromUserName, $data->ToUserName,"Weixin get_bind_device , Result= " .json_encode($result));
                 break;
-            case ZSC_openid:
-                $result = $wxDbObj->dbi_blebound_duplicate(ZSC_openid, ZSC_deviceid, ZSC_openid, device_type);
+            case XPH_openid:
+                $result = $wxDbObj->dbi_blebound_duplicate(XPH_openid, XPH_deviceid, XPH_openid, device_type);
                 if ($result == false)
                 {
-                    $result = $wxDbObj->dbi_blebound_save(ZSC_openid, ZSC_deviceid, ZSC_openid, device_type);
+                    $result = $wxDbObj->dbi_blebound_save(XPH_openid, XPH_deviceid, XPH_openid, device_type);
                     $this->send_custom_message(trim($data->FromUserName), "text","User-Device DB bind, Result= ".json_encode($result) );
                 }
                 else
                     $this->send_custom_message(trim($data->FromUserName), "text","User-Device DB duplicated, no action");
 
-                $result = $wxDbObj->dbi_deviceqrcode_save(ZSC_deviceid, ZSC_qrcode, device_type, ZSC_mac);
+                $result = $wxDbObj->dbi_deviceqrcode_save(XPH_deviceid, XPH_qrcode, device_type, XPH_mac);
                 $this->send_custom_message(trim($data->FromUserName), "text","Qrcode-MAC DB bind, Result= " .json_encode($result));
 
-                $this->device_AuthBLE(ZSC_deviceid, ZSC_mac);
-                $result = $this->compel_bind(ZSC_deviceid, ZSC_openid);
+                $this->device_AuthBLE(XPH_deviceid, XPH_mac);
+                $result = $this->compel_bind(XPH_deviceid, XPH_openid);
                 $this->send_custom_message(trim($data->FromUserName), "text","Weixin User-Device compel_bind, Result= " .json_encode($result));
 
                 $result = $this->getstat_qrcodebyOpenId($data->FromUserName);
