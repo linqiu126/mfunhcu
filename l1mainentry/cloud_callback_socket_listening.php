@@ -18,11 +18,13 @@ class classL1MainEntrySocketListenServer
         $this->serv = new swoole_server("0.0.0.0", 9501);
         $this->serv->set(array(
             'worker_num' => 1,
-            'daemonize' => true,
-            //'log_file' => '/home/hitpony/swooleserver.log', //vmware环境使用
-            'log_file' => '/home/qiulin/swooleserver.log', //爱启云环境使用
-            'heartbeat_idle_time' => 60, //只设置heartbeat_idle_time，未设置heartbeat_check_interval，底层将不会创建心跳检测线程，PHP代码中未来可以调用heartbeat方法手工处理超时的连接
-            //'heartbeat_check_interval' => 6, //每6秒遍历一次
+            'daemonize' => false,
+            /*'daemonize' => true,
+            'log_file' => '/home/qiulin/swoole_server.log', //爱启云环境使用*/
+            /*'daemonize' => true,
+            'log_file' => '/home/hitpony/swoole_server.log', //vmware环境使用*/
+            'heartbeat_idle_time' => 600, //只设置heartbeat_idle_time，未设置heartbeat_check_interval，底层将不会创建心跳检测线程，PHP代码中未来可以调用heartbeat方法手工处理超时的连接
+            'heartbeat_check_interval' => 60, //每6秒遍历一次
             'max_request' => 10000,
             'dispatch_mode' => 2,
             'debug_mode'=> 1,
