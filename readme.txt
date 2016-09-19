@@ -270,6 +270,10 @@ Make By：ZJL
 > 改变原先require特定文件开启9502socket端口的做法，增加socket_client_sync.class类开启阻塞式tcp连接，目前先发后收，实现UI参数传递，
 > swoole server开启demonize参数，运行日志记录到log文件
 
+//= QL, 2016 Sep.19, CURRENT_SW_DELIVERY R02.D45
+> socket心跳重新开启，60秒遍历所有连接，600秒内没有传送，关闭连接
+> swoole server关闭demonize参数，利用crontab脚本来守护进程
+
 //待完善的功能
 1. 需要编制小型工具，支持工参数据，特别是图片内容的导入导出
 3. 恢复后台管理界面及相应工具
