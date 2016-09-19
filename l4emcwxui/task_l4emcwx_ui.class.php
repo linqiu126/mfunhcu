@@ -59,8 +59,8 @@ class classTaskL4emcwxUi
                         };
                         return JSON.stringify(retval);
                     */
-                    if (isset($_GET["id"])) $deviceId = trim($_GET["id"]); else $deviceId = "";
-                    $input = array("deviceid" => $deviceId);
+                    if (isset($_GET["id"])) $openid = trim($_GET["id"]); else $openid = "";
+                    $input = array("openid" => $openid);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4EMCWX_UI, MFUN_TASK_ID_L3APPL_FUM0WECHAT, MSG_ID_L4EMCWXUI_TO_L3F0_EMCNOW, "MSG_ID_L4EMCWXUI_TO_L3F0_EMCNOW",$input);
                     break;
                 case "personal_bracelet_radiation_alarm":
@@ -72,8 +72,8 @@ class classTaskL4emcwxUi
                     };
                     return JSON.stringify(retval);
                     */
-                    if (isset($_GET["id"])) $deviceId = trim($_GET["id"]); else $deviceId = "";
-                    $input = array("deviceid" => $deviceId);
+                    if (isset($_GET["id"])) $openid = trim($_GET["id"]); else $openid = "";
+                    $input = array("openid" => $openid);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4EMCWX_UI, MFUN_TASK_ID_L3APPL_FUM0WECHAT, MSG_ID_L4EMCWXUI_TO_L3F0_EMCALARM, "MSG_ID_L4EMCWXUI_TO_L3F0_EMCALARM",$input);
                     break;
                 case "personal_bracelet_radiation_history":
@@ -89,8 +89,8 @@ class classTaskL4emcwxUi
                         }
                         return JSON.stringify(retval);
                     */
-                    if (isset($_GET["id"])) $deviceId = trim($_GET["id"]); else $deviceId = "";
-                    $input = array("deviceid" => $deviceId);
+                    if (isset($_GET["id"])) $openid = trim($_GET["id"]); else $openid = "";
+                    $input = array("openid" => $openid);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4EMCWX_UI, MFUN_TASK_ID_L3APPL_FUM0WECHAT, MSG_ID_L4EMCWXUI_TO_L3F0_EMCHISTORY, "MSG_ID_L4EMCWXUI_TO_L3F0_EMCHISTORY",$input);
                     break;
                 case "personal_bracelet_radiation_track":
@@ -111,8 +111,8 @@ class classTaskL4emcwxUi
                         }
                         return JSON.stringify(retval);
                     */
-                    if (isset($_GET["id"])) $deviceId = trim($_GET["id"]); else $deviceId = "";
-                    $input = array("deviceid" => $deviceId);
+                    if (isset($_GET["id"])) $openid = trim($_GET["id"]); else $openid = "";
+                    $input = array("openid" => $openid);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4EMCWX_UI, MFUN_TASK_ID_L3APPL_FUM0WECHAT, MSG_ID_L4EMCWXUI_TO_L3F0_EMCTRACK, "MSG_ID_L4EMCWXUI_TO_L3F0_EMCTRACK",$input);
                     break;
                 default:

@@ -274,6 +274,10 @@ Make By：ZJL
 > socket心跳重新开启，60秒遍历所有连接，600秒内没有传送，关闭连接
 > swoole server关闭demonize参数，利用crontab脚本来守护进程
 
+//= LZH, 2016 Sep.19, CURRENT_SW_DELIVERY R02.D46
+> 修改微信公众号菜单，完善EMC网页显示功能
+> 完善扫描绑定功能，增加相应WXEMC测试case
+
 //待完善的功能
 1. 需要编制小型工具，支持工参数据，特别是图片内容的导入导出
 3. 恢复后台管理界面及相应工具

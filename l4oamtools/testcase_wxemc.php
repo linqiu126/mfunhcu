@@ -136,25 +136,25 @@ if (TC_EMCWX == true){
     //EMC H5界面测试case
     echo " [TC L4EMCWX: personal_bracelet_radiation_current START]\n";
     $_GET["action"] = "personal_bracelet_radiation_current";
-    $_GET["id"] = "gh_70c714952b02_8cd47e1f6141e49a4e45f4b807cf41fe";
+    $_GET["id"] = "oS0Chv3Uum1TZqHaCEb06AoBfCvY";
     require("../l4emcwxui/request.php");
     echo " \n[TC L4EMCWX: personal_bracelet_radiation_current END]\n";
 
     echo " [TC L4EMCWX: personal_bracelet_radiation_alarm START]\n";
     $_GET["action"] = "personal_bracelet_radiation_alarm";
-    $_GET["id"] = "gh_70c714952b02_8cd47e1f6141e49a4e45f4b807cf41fe";
+    $_GET["id"] = "oS0Chv3Uum1TZqHaCEb06AoBfCvY";
     require("../l4emcwxui/request.php");
     echo " \n[TC L4EMCWX: personal_bracelet_radiation_alarm END]\n";
 
     echo " [TC L4EMCWX: personal_bracelet_radiation_history START]\n";
     $_GET["action"] = "personal_bracelet_radiation_history";
-    $_GET["id"] = "gh_70c714952b02_8cd47e1f6141e49a4e45f4b807cf41fe";
+    $_GET["id"] = "oS0Chv3Uum1TZqHaCEb06AoBfCvY";
     require("../l4emcwxui/request.php");
     echo " \n[TC L4EMCWX: personal_bracelet_radiation_history END]\n";
 
     echo " [TC L4EMCWX: personal_bracelet_radiation_track START]\n";
     $_GET["action"] = "personal_bracelet_radiation_track";
-    $_GET["id"] = "gh_70c714952b02_8cd47e1f6141e49a4e45f4b807cf41fe";
+    $_GET["id"] = "oS0Chv3Uum1TZqHaCEb06AoBfCvY";
     require("../l4emcwxui/request.php");
     echo " \n[TC L4EMCWX: personal_bracelet_radiation_track END]\n";
 

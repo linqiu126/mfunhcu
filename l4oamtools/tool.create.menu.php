@@ -47,7 +47,7 @@ if (MFUN_WX_APPID == "wx1183be5c8f6a24b4") //如果是测试号
                 {"name":"调测工具",
                     "sub_button":[
                                   {"type":"click","name":"强制绑定","key":"CLICK_BIND"},
-                                  {"type":"click","name":"版本信息","key":"CLICK_VERSION"},
+                                  {"type":"click","name":"绑定查询","key":"CLICK_BIND_INQ"},
                                   {"type":"click","name":"用户信息","key":"CLICK_USER"},
                                   {"type":"click","name":"Trace开","key":"CLICK_TRACE_ON"},
                                   {"type":"click","name":"Trace关","key":"CLICK_TRACE_OFF"}]
@@ -55,7 +55,6 @@ if (MFUN_WX_APPID == "wx1183be5c8f6a24b4") //如果是测试号
                 {"name":"生产工具",
                      "sub_button":[{"type":"scancode_push","name":"扫码绑定","key":"QR_SCAN"},
                                    {"type":"click","name":"解绑自己","key":"CLICK_UNBIND"},
-                                   {"type":"click","name":"绑定查询","key":"CLICK_BIND_INQ"},
                                    {"type":"click","name":"辐射读取","key":"CLICK_EMC_READ"}]
                 }
          ]
@@ -67,7 +66,7 @@ elseif (MFUN_WX_APPID == "wxf2150c4d2941b2ab") //如果是正式小慧智能服�
 {
     $self_create_menu =
     '{"button":[
-                {"type":"view","name":"辐射查看","url":"https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxf2150c4d2941b2ab&redirect_uri=http://121.40.118.33/mfunhcu/l4emcwxui/index.html?response_type=code&scope=snsapi_base&state=1#wechat_redirect"},
+                {"type":"view","name":"辐射查看","url":"https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxf2150c4d2941b2ab&redirect_uri=http://h5.aiqiworld.com/xhzn/mfunhcu/l4emcwxui/index.html?response_type=code&scope=snsapi_base&state=1#wechat_redirect"},
 
                 {"name":"关于",
                     "sub_button":[{"type":"click","name":"小慧科技","key":"CLICK_COMPANY"},
@@ -78,7 +77,7 @@ elseif (MFUN_WX_APPID == "wxf2150c4d2941b2ab") //如果是正式小慧智能服�
     }';
 }
 
-
+//{"type":"click","name":"版本信息","key":"CLICK_VERSION"},
 //{"type":"view","name":"辐射查看","url":"http://121.40.118.33/mfunhcu/l4emcwxui/index.html"},
 
 echo "<br>自定义菜单创建（先删再建-微信界面需要24小时更新，重新关注可立即刷新） <br><br>";

@@ -40,28 +40,27 @@ class classTaskL3aplF0wechat
         return urlencode($elem);
     }
 
-    function func_get_emcnow_process($deviceId)
+    function func_get_emcnow_process($openid)
     {
         $uiF0wechatDbObj = new classDbiL3apF0wechat(); //初始化一个UI DB对象
+        $emcvalue = $uiF0wechatDbObj->dbi_get_current_emcvalue($openid);
+
         $retval = array(
             'status' => 'true',
-            'ret' => (string)rand(0, 255)
+            'ret' => $emcvalue
         );
         $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
         return $jsonencode;
     }
 
-    function func_get_emchistory_process($deviceId)
+    function func_get_emchistory_process($openid)
     {
         $uiF0wechatDbObj = new classDbiL3apF0wechat(); //初始化一个UI DB对象
+        $emc_history = $uiF0wechatDbObj->dbi_get_history_emcvalue($openid);
 
-        $retlist = array();
-        for ($i = 0; $i < 24; $i++) {
-            array_push($retlist, (string)rand(0, 255));
-        }
         $retval = array(
             'status' => 'true',
-            'ret' => $retlist
+            'ret' => $emc_history
         );
         $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
         return $jsonencode;
@@ -131,33 +130,33 @@ class classTaskL3aplF0wechat
         //功能:EMC H5界面请求当前辐射值
         if ($msgId == MSG_ID_L4EMCWXUI_TO_L3F0_EMCNOW){
             //解开消息
-            if (isset($msg["deviceid"])) $deviceId = $msg["deviceid"]; else  $deviceId = "";
+            if (isset($msg["openid"])) $openid = $msg["openid"]; else  $openid = "";
             //具体处理函数
-            $resp = $this->func_get_emcnow_process($deviceId);
+            $resp = $this->func_get_emcnow_process($openid);
             $project = MFUN_PRJ_IHU_EMCWX;
         }
         //功能:EMC H5界面请求历史辐射值
         elseif ($msgId == MSG_ID_L4EMCWXUI_TO_L3F0_EMCHISTORY){
             //解开消息
-            if (isset($msg["deviceid"])) $deviceId = $msg["deviceid"]; else  $deviceId = "";
+            if (isset($msg["openid"])) $openid = $msg["openid"]; else  $openid = "";
             //具体处理函数
-            $resp = $this->func_get_emchistory_process($deviceId);
+            $resp = $this->func_get_emchistory_process($openid);
             $project = MFUN_PRJ_IHU_EMCWX;
         }
         //功能:EMC H5界面请求辐射值warning，alarm门限
         elseif ($msgId == MSG_ID_L4EMCWXUI_TO_L3F0_EMCALARM){
             //解开消息
-            if (isset($msg["deviceid"])) $deviceId = $msg["deviceid"]; else  $deviceId = "";
+            if (isset($msg["openid"])) $openid = $msg["openid"]; else  $openid = "";
             //具体处理函数
-            $resp = $this->func_get_emcalarm_process($deviceId);
+            $resp = $this->func_get_emcalarm_process($openid);
             $project = MFUN_PRJ_IHU_EMCWX;
         }
         //功能:EMC H5界面请求当前辐射记录地理轨迹
         elseif ($msgId == MSG_ID_L4EMCWXUI_TO_L3F0_EMCTRACK){
             //解开消息
-            if (isset($msg["deviceid"])) $deviceId = $msg["deviceid"]; else  $deviceId = "";
+            if (isset($msg["openid"])) $openid = $msg["openid"]; else  $openid = "";
             //具体处理函数
-            $resp = $this->func_get_emctrack_process($deviceId);
+            $resp = $this->func_get_emctrack_process($openid);
             $project = MFUN_PRJ_IHU_EMCWX;
         }
 
