@@ -292,7 +292,7 @@ class classDbiL2snrEmc
     public function dbi_minreport_update_emc($devcode,$statcode,$timestamp,$data)
     {
         //建立连接
-        $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L5BI, MFUN_CLOUD_DBPORT);
+        $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
         if (!$mysqli)
         {
             die('Could not connect: ' . mysqli_error($mysqli));
@@ -305,17 +305,17 @@ class classDbiL2snrEmc
         $emc = $data["value"];
 
         //存储新记录，如果发现是已经存在的数据，则覆盖，否则新增
-        $result = $mysqli->query("SELECT * FROM `t_l2snr_minreport` WHERE (`devcode` = '$devcode' AND `statcode` = '$statcode'
-                                  AND `reportdate` = '$date' AND `hourminindex` = '$hourminindex')");
+        $query_str = "SELECT * FROM `t_l2snr_minreport` WHERE (`devcode` = '$devcode' AND `statcode` = '$statcode' AND `reportdate` = '$date' AND `hourminindex` = '$hourminindex')";
+        $result = $mysqli->query($query_str);
         if (($result != false) && ($result->num_rows)>0)   //重复，则覆盖
         {
-            $result=$mysqli->query("UPDATE `t_l2snr_minreport` SET `emcvalue` = '$emc'
-                          WHERE (`devcode` = '$devcode' AND `statcode` = '$statcode' AND `reportdate` = '$date' AND `hourminindex` = '$hourminindex')");
+            $query_str = "UPDATE `t_l2snr_minreport` SET `emcvalue` = '$emc' WHERE (`devcode` = '$devcode' AND `statcode` = '$statcode' AND `reportdate` = '$date' AND `hourminindex` = '$hourminindex')";
+            $result=$mysqli->query($query_str);
         }
         else   //不存在，新增
         {
-            $result = $mysqli->query("INSERT INTO `t_l2snr_minreport` (devcode,statcode,reportdate,hourminindex,emcvalue)
-                          VALUES ('$devcode','$statcode','$date', '$hourminindex','$emc')");
+            $query_str = "INSERT INTO `t_l2snr_minreport` (devcode,statcode,reportdate,hourminindex,emcvalue) VALUES ('$devcode','$statcode','$date', '$hourminindex','$emc')";
+            $result = $mysqli->query($query_str);
         }
         $mysqli->close();
         return $result;
