@@ -55,7 +55,9 @@ if (MFUN_WX_APPID == "wx1183be5c8f6a24b4") //如果是测试号
                 {"name":"生产工具",
                      "sub_button":[{"type":"scancode_push","name":"扫码绑定","key":"QR_SCAN"},
                                    {"type":"click","name":"解绑自己","key":"CLICK_UNBIND"},
-                                   {"type":"click","name":"辐射读取","key":"CLICK_EMC_READ"}]
+                                   {"type":"click","name":"瞬时读取","key":"CLICK_EMC_INSTANT_READ"},
+                                   {"type":"click","name":"周期读取(开)","key":"CLICK_EMC_PERIOD_READ_OPEN"},
+                                   {"type":"click","name":"周期读取(关)","key":"CLICK_EMC_PERIOD_READ_CLOSE"}]
                 }
          ]
     }';

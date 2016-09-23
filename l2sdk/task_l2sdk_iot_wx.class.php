@@ -615,49 +615,10 @@ class classTaskL2sdkIotWx
                 $transMsg = $this->xms_responseText($data->FromUserName, $data->ToUserName, "Appid = " . $this->appid . "\nTokenID = " . $this->access_token ."\nJS_ticket =" . $this->js_ticket);
                 break;
             case "CLICK_VERSION":
-                $wxDbObj = new classDbiL2sdkWechat();
-                $dbi_info = $wxDbObj->dbi_blebound_query($data->FromUserName);
-
-                if ($dbi_info == false)
-                {
-                    $transMsg = $this->xms_responseText($data->FromUserName, $data->ToUserName, "No device bind for this user in database");
-                }
-                else
-                {
-                    //对版本读取操作进行层三处理，构造可以发送给硬件设备的信息
-                    $ihuObj = new classApiL2snrCommonService();
-                    $msg_body = $ihuObj->func_version_push_process();
-
-                    if (!empty($msg_body))
-                    {
-                        $i = 0;
-                        while ($i<count($dbi_info)) //考虑同一个用户绑定多个设备的情况,循环发送命令给该用户绑定的所有设备
-                        {
-                            $dev_table = $dbi_info[$i];
-                            //BYTE系列化处理在L3消息处理过程中已完成，推送数据到硬件设备
-                            $result = $this->trans_msgtodevice($dev_table["deviceType"], $dev_table["deviceID"], $dev_table["openID"], $msg_body);
-                            /*
-                            if ($result["errcode"] ==40001)  //防止偶然未知原因导致token失效，强制刷新token并再次发送
-                            {
-                                $this->compel_get_token($this->appid,$this->appsecret);
-                                $result = $this->trans_msgtodevice($dev_table["deviceType"], $dev_table["deviceID"], $dev_table["openID"], $msg_body);
-                            }
-                            */
-                            $i++;
-                        }
-                    }
-                    //推送回复消息给微信界面
-                    $logDbObj = new classDbiL1vmCommon();
-                    $wx_trace = $logDbObj->dbi_LogSwitchInfo_inqury($data->FromUserName);
-                    if ($wx_trace ==1)
-                    {
-                        $str_body = unpack('H*',$msg_body);
-                        $transMsg = $this->xms_responseText($data->FromUserName, $data->ToUserName,
-                            "Send VERSION_PUSH to Device" ."\n Result= " .json_encode($result) . "\n Content= " . json_encode($str_body));
-                    }
-                    else
-                        $transMsg = $result;
-                }
+                $deviceId = trim($data->DeviceID);
+                $fromUser = trim($data->FromUserName);
+                $toUser = trim($data->ToUserName);
+                $transMsg = $this->func_click_version_read($deviceId, $fromUser, $toUser);
                 break;
             case "CLICK_BIND":
                 $transMsg = $this->func_click_bindCommand ($data); //强制绑定该用户，用于测试目的
@@ -729,67 +690,24 @@ class classTaskL2sdkIotWx
                 $transMsg = $this->xms_responseText($data->FromUserName, $data->ToUserName, $dbResp . " \n" . $wxResp);
                 break;
 
-            case "CLICK_EMC_READ":
+            case "CLICK_EMC_INSTANT_READ":
                 $deviceId = trim($data->DeviceID);
-                $wxDbObj = new classDbiL2sdkWechat();
-                $dbi_info = $wxDbObj->dbi_blebound_query($data->FromUserName);
+                $fromUser = trim($data->FromUserName);
+                $toUser = trim($data->ToUserName);
+                $transMsg = $this->func_click_emc_instant_read($deviceId, $fromUser, $toUser);
+                break;
+            case "CLICK_EMC_PERIOD_READ_OPEN":
+                $deviceId = trim($data->DeviceID);
+                $fromUser = trim($data->FromUserName);
+                $toUser = trim($data->ToUserName);
+                $transMsg = $this->func_click_emc_period_read_open($deviceId, $fromUser, $toUser);
+                break;
 
-                if ($dbi_info == false)
-                {
-                    $transMsg = $this->xms_responseText($data->FromUserName, $data->ToUserName, "No device bind for this user in database");
-                }
-                else
-                {
-                    //对辐射强度瞬时读取操作进行层三处理，构造可以发送给硬件设备的信息
-                    $ihuObj = new classTaskL2snrEmc();
-                    $msg_body = $ihuObj->func_emc_data_push_process($deviceId, "");
-                    /*
-                    $msg = array("project" => $optType,
-                        "log_from" => $fromUser,
-                        "deviceId" => $deviceId,
-                        "content" => $content);
-                    if ($parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L2SDK_IOT_WX,
-                            MFUN_TASK_ID_L2SENSOR_EMC,
-                            MSG_ID_L2SDK_EMCWX_TO_L2SNR_EMC_DATA_READ_INSTANT,
-                            "MSG_ID_L2SDK_EMCWX_TO_L2SNR_EMC_DATA_READ_INSTANT",
-                            $msg) == false) $result = "Send to message buffer error";
-                    else $result = "";
-                    $respContent = $result;
-                    */
-
-                    if (!empty($msg_body))
-                    {
-                        $i = 0;
-                        while ($i<count($dbi_info)) //考虑同一个用户绑定多个设备的情况,循环发送命令给该用户绑定的所有设备
-                        {
-                            $dev_table = $dbi_info[$i];
-                            //BYTE系列化处理在L3消息处理过程中已完成,推送数据到硬件设备
-                            $result = $this->trans_msgtodevice($dev_table["deviceType"], $dev_table["deviceID"], $dev_table["openID"], $msg_body);
-                            /*
-                            if ($result["errcode"] ==40001)  //防止偶然未知原因导致token失效，强制刷新token并再次发送
-                            {
-                                $this->compel_get_token($this->appid,$this->appsecret);
-                                $result = $this->trans_msgtodevice($dev_table["deviceType"], $dev_table["deviceID"], $dev_table["openID"], $msg_body);
-                            }
-                            */
-                            $i++;
-                        }
-                    }
-
-                    //推送回复消息给微信界面
-                    $logDbObj = new classDbiL1vmCommon();
-                    $wx_trace = $logDbObj->dbi_LogSwitchInfo_inqury($data->FromUserName);
-                    if ($wx_trace ==1)
-                    {
-                        $str_body = unpack('H*',$msg_body);
-                        $transMsg = $this->xms_responseText($data->FromUserName, $data->ToUserName,
-                            "Send EMC_PUSH to Device" ."\n Result= " .json_encode($result) . "\n Content= " . json_encode($str_body));
-                        //$transMsg = $this->send_custom_message(trim($data->FromUserName),"text",
-                        //    "Send EMC_PUSH to Device" ."\n Result= " .json_encode($result) . "\n Content= " . json_encode($str_body));
-                    }
-                    else
-                        $transMsg = $result;
-                }
+            case "CLICK_EMC_PERIOD_READ_CLOSE":
+                $deviceId = trim($data->DeviceID);
+                $fromUser = trim($data->FromUserName);
+                $toUser = trim($data->ToUserName);
+                $transMsg = $this->func_click_emc_period_read_close($deviceId, $fromUser, $toUser);
                 break;
 
             case "CLICK_TRACE_ON":
@@ -935,6 +853,254 @@ class classTaskL2sdkIotWx
     private function func_event_scancode_process($fromUser, $qrcode)
     {
 
+    }
+
+    private function func_click_version_read($deviceId, $fromUser, $toUser)
+    {
+        $result = "";
+        $wxDbObj = new classDbiL2sdkWechat();
+        $dbi_info = $wxDbObj->dbi_blebound_query($fromUser);
+
+        if ($dbi_info == false)
+        {
+            $transMsg = $this->xms_responseText($fromUser, $toUser, "No device bind for this user in database");
+        }
+        else
+        {
+            //对版本读取操作进行层三处理，构造可以发送给硬件设备的信息
+            $ihuObj = new classApiL2snrCommonService();
+            $msg_body = $ihuObj->func_version_push_process();
+
+            if (!empty($msg_body))
+            {
+                $i = 0;
+                while ($i<count($dbi_info)) //考虑同一个用户绑定多个设备的情况,循环发送命令给该用户绑定的所有设备
+                {
+                    $dev_table = $dbi_info[$i];
+                    //BYTE系列化处理在L3消息处理过程中已完成，推送数据到硬件设备
+                    $result = $this->trans_msgtodevice($dev_table["deviceType"], $dev_table["deviceID"], $dev_table["openID"], $msg_body);
+                    /*
+                    if ($result["errcode"] ==40001)  //防止偶然未知原因导致token失效，强制刷新token并再次发送
+                    {
+                        $this->compel_get_token($this->appid,$this->appsecret);
+                        $result = $this->trans_msgtodevice($dev_table["deviceType"], $dev_table["deviceID"], $dev_table["openID"], $msg_body);
+                    }
+                    */
+                    $i++;
+                }
+            }
+            //推送回复消息给微信界面
+            $logDbObj = new classDbiL1vmCommon();
+            $wx_trace = $logDbObj->dbi_LogSwitchInfo_inqury($fromUser);
+            if ($wx_trace ==1)
+            {
+                $str_body = unpack('H*',$msg_body);
+                $transMsg = $this->xms_responseText($fromUser, $toUser,
+                    "Send VERSION_PUSH to Device" ."\n Result= " .json_encode($result) . "\n Content= " . json_encode($str_body));
+            }
+            else
+                $transMsg = $result;
+        }
+
+        return $transMsg;
+    }
+
+    private function func_click_emc_instant_read($deviceId, $fromUser, $toUser)
+    {
+        $result = "";
+        $wxDbObj = new classDbiL2sdkWechat();
+        $dbi_info = $wxDbObj->dbi_blebound_query($fromUser);
+
+        if ($dbi_info == false)
+        {
+            $transMsg = $this->xms_responseText($fromUser, $toUser, "No device bind for this user in database");
+        }
+        else
+        {
+            //对辐射强度瞬时读取操作进行层三处理，构造可以发送给硬件设备的信息
+            $ihuObj = new classTaskL2snrEmc();
+            $msg_body = $ihuObj->func_emc_instant_read_process($deviceId, "");
+            /*
+            $msg = array("project" => $optType,
+                "log_from" => $fromUser,
+                "deviceId" => $deviceId,
+                "content" => $content);
+            if ($parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L2SDK_IOT_WX,
+                    MFUN_TASK_ID_L2SENSOR_EMC,
+                    MSG_ID_L2SDK_EMCWX_TO_L2SNR_EMC_DATA_READ_INSTANT,
+                    "MSG_ID_L2SDK_EMCWX_TO_L2SNR_EMC_DATA_READ_INSTANT",
+                    $msg) == false) $result = "Send to message buffer error";
+            else $result = "";
+            $respContent = $result;
+            */
+
+            if (!empty($msg_body))
+            {
+                $i = 0;
+                while ($i<count($dbi_info)) //考虑同一个用户绑定多个设备的情况,循环发送命令给该用户绑定的所有设备
+                {
+                    $dev_table = $dbi_info[$i];
+                    //BYTE系列化处理在L3消息处理过程中已完成,推送数据到硬件设备
+                    $result = $this->trans_msgtodevice($dev_table["deviceType"], $dev_table["deviceID"], $dev_table["openID"], $msg_body);
+                    /*
+                    if ($result["errcode"] ==40001)  //防止偶然未知原因导致token失效，强制刷新token并再次发送
+                    {
+                        $this->compel_get_token($this->appid,$this->appsecret);
+                        $result = $this->trans_msgtodevice($dev_table["deviceType"], $dev_table["deviceID"], $dev_table["openID"], $msg_body);
+                    }
+                    */
+                    $i++;
+                }
+            }
+
+            //推送回复消息给微信界面
+            $logDbObj = new classDbiL1vmCommon();
+            $wx_trace = $logDbObj->dbi_LogSwitchInfo_inqury($fromUser);
+            if ($wx_trace ==1)
+            {
+                $str_body = unpack('H*',$msg_body);
+                $transMsg = $this->xms_responseText($fromUser, $toUser,
+                    "Send device EMC_INSTANT_READ" ."\n Result= " .json_encode($result) . "\n Content= " . json_encode($str_body));
+                //$transMsg = $this->send_custom_message(trim($data->FromUserName),"text",
+                //    "Send EMC_PUSH to Device" ."\n Result= " .json_encode($result) . "\n Content= " . json_encode($str_body));
+            }
+            else
+                $transMsg = $result;
+        }
+
+        return $transMsg;
+    }
+
+    private function func_click_emc_period_read_open($deviceId, $fromUser, $toUser)
+    {
+        $result = "";
+        $wxDbObj = new classDbiL2sdkWechat();
+        $dbi_info = $wxDbObj->dbi_blebound_query($fromUser);
+
+        if ($dbi_info == false)
+        {
+            $transMsg = $this->xms_responseText($fromUser, $toUser, "No device bind for this user in database");
+        }
+        else
+        {
+            //对辐射强度瞬时读取操作进行层三处理，构造可以发送给硬件设备的信息
+            $ihuObj = new classTaskL2snrEmc();
+            $msg_body = $ihuObj->func_emc_period_read_open_process($deviceId, "");
+            /*
+            $msg = array("project" => $optType,
+                "log_from" => $fromUser,
+                "deviceId" => $deviceId,
+                "content" => $content);
+            if ($parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L2SDK_IOT_WX,
+                    MFUN_TASK_ID_L2SENSOR_EMC,
+                    MSG_ID_L2SDK_EMCWX_TO_L2SNR_EMC_DATA_READ_INSTANT,
+                    "MSG_ID_L2SDK_EMCWX_TO_L2SNR_EMC_DATA_READ_INSTANT",
+                    $msg) == false) $result = "Send to message buffer error";
+            else $result = "";
+            $respContent = $result;
+            */
+
+            if (!empty($msg_body))
+            {
+                $i = 0;
+                while ($i<count($dbi_info)) //考虑同一个用户绑定多个设备的情况,循环发送命令给该用户绑定的所有设备
+                {
+                    $dev_table = $dbi_info[$i];
+                    //BYTE系列化处理在L3消息处理过程中已完成,推送数据到硬件设备
+                    $result = $this->trans_msgtodevice($dev_table["deviceType"], $dev_table["deviceID"], $dev_table["openID"], $msg_body);
+                    /*
+                    if ($result["errcode"] ==40001)  //防止偶然未知原因导致token失效，强制刷新token并再次发送
+                    {
+                        $this->compel_get_token($this->appid,$this->appsecret);
+                        $result = $this->trans_msgtodevice($dev_table["deviceType"], $dev_table["deviceID"], $dev_table["openID"], $msg_body);
+                    }
+                    */
+                    $i++;
+                }
+            }
+
+            //推送回复消息给微信界面
+            $logDbObj = new classDbiL1vmCommon();
+            $wx_trace = $logDbObj->dbi_LogSwitchInfo_inqury($fromUser);
+            if ($wx_trace ==1)
+            {
+                $str_body = unpack('H*',$msg_body);
+                $transMsg = $this->xms_responseText($fromUser, $toUser,
+                    "Send device EMC_PERIOD_READ_OPEN" ."\n Result= " .json_encode($result) . "\n Content= " . json_encode($str_body));
+                //$transMsg = $this->send_custom_message(trim($data->FromUserName),"text",
+                //    "Send EMC_PUSH to Device" ."\n Result= " .json_encode($result) . "\n Content= " . json_encode($str_body));
+            }
+            else
+                $transMsg = $result;
+        }
+
+        return $transMsg;
+    }
+
+    private function func_click_emc_period_read_close($deviceId, $fromUser, $toUser)
+    {
+        $result = "";
+        $wxDbObj = new classDbiL2sdkWechat();
+        $dbi_info = $wxDbObj->dbi_blebound_query($fromUser);
+
+        if ($dbi_info == false)
+        {
+            $transMsg = $this->xms_responseText($fromUser, $toUser, "No device bind for this user in database");
+        }
+        else
+        {
+            //对辐射强度瞬时读取操作进行层三处理，构造可以发送给硬件设备的信息
+            $ihuObj = new classTaskL2snrEmc();
+            $msg_body = $ihuObj->func_emc_period_read_close_process($deviceId, "");
+            /*
+            $msg = array("project" => $optType,
+                "log_from" => $fromUser,
+                "deviceId" => $deviceId,
+                "content" => $content);
+            if ($parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L2SDK_IOT_WX,
+                    MFUN_TASK_ID_L2SENSOR_EMC,
+                    MSG_ID_L2SDK_EMCWX_TO_L2SNR_EMC_DATA_READ_INSTANT,
+                    "MSG_ID_L2SDK_EMCWX_TO_L2SNR_EMC_DATA_READ_INSTANT",
+                    $msg) == false) $result = "Send to message buffer error";
+            else $result = "";
+            $respContent = $result;
+            */
+
+            if (!empty($msg_body))
+            {
+                $i = 0;
+                while ($i<count($dbi_info)) //考虑同一个用户绑定多个设备的情况,循环发送命令给该用户绑定的所有设备
+                {
+                    $dev_table = $dbi_info[$i];
+                    //BYTE系列化处理在L3消息处理过程中已完成,推送数据到硬件设备
+                    $result = $this->trans_msgtodevice($dev_table["deviceType"], $dev_table["deviceID"], $dev_table["openID"], $msg_body);
+                    /*
+                    if ($result["errcode"] ==40001)  //防止偶然未知原因导致token失效，强制刷新token并再次发送
+                    {
+                        $this->compel_get_token($this->appid,$this->appsecret);
+                        $result = $this->trans_msgtodevice($dev_table["deviceType"], $dev_table["deviceID"], $dev_table["openID"], $msg_body);
+                    }
+                    */
+                    $i++;
+                }
+            }
+
+            //推送回复消息给微信界面
+            $logDbObj = new classDbiL1vmCommon();
+            $wx_trace = $logDbObj->dbi_LogSwitchInfo_inqury($fromUser);
+            if ($wx_trace ==1)
+            {
+                $str_body = unpack('H*',$msg_body);
+                $transMsg = $this->xms_responseText($fromUser, $toUser,
+                    "Send device EMC_PERIOD_READ_CLOSE" ."\n Result= " .json_encode($result) . "\n Content= " . json_encode($str_body));
+                //$transMsg = $this->send_custom_message(trim($data->FromUserName),"text",
+                //    "Send EMC_PUSH to Device" ."\n Result= " .json_encode($result) . "\n Content= " . json_encode($str_body));
+            }
+            else
+                $transMsg = $result;
+        }
+
+        return $transMsg;
     }
 
     //强制绑定菜单处理函数，主要用于调试目的

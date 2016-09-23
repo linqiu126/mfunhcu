@@ -115,12 +115,44 @@ class classTaskL2snrEmc
         return $resp;
     }
 
-    public function func_emc_data_push_process($deviceId, $content)
+    public function func_emc_instant_read_process($deviceId, $content)
     {
         $magicCode = "FECF";
         $version = "0001";
         $length = "000C";
-        $cmdid = $this->ushort2string(MFUN_IHU_CMDID_EMC_DATA_PUSH);
+        $cmdid = $this->ushort2string(MFUN_IHU_CMDID_EMC_INSTANT_READ);
+        $seq = "0000";
+        $errCode = "0000";
+
+        $msg_body = $magicCode . $version . $length . $cmdid . $seq . $errCode;
+
+        $hex_body = strtoupper(pack('H*',$msg_body));
+
+        return $hex_body;
+    }
+
+    public function func_emc_period_read_open_process($deviceId, $content)
+    {
+        $magicCode = "FECF";
+        $version = "0001";
+        $length = "000C";
+        $cmdid = $this->ushort2string(MFUN_IHU_CMDID_EMC_PERIOD_READ_OPEN);
+        $seq = "0000";
+        $errCode = "0000";
+
+        $msg_body = $magicCode . $version . $length . $cmdid . $seq . $errCode;
+
+        $hex_body = strtoupper(pack('H*',$msg_body));
+
+        return $hex_body;
+    }
+
+    public function func_emc_period_read_close_process($deviceId, $content)
+    {
+        $magicCode = "FECF";
+        $version = "0001";
+        $length = "000C";
+        $cmdid = $this->ushort2string(MFUN_IHU_CMDID_EMC_PERIOD_READ_CLOSE);
         $seq = "0000";
         $errCode = "0000";
 
