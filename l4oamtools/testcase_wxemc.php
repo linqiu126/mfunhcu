@@ -73,7 +73,8 @@ if (TC_EMCWX == true){
     //微信device_text消息
     echo " [TC EMCWX: EMC DEVICE_TEXT START]\n";
     //$content = base64_encode(pack("H*", "201000220650040302010102030405060708"));
-    $content = base64_encode(pack("H*", "FECF0001000E208100030000036E"));
+    $content = base64_encode(pack("H*", "FECF0001000E208100030000036E"));  //EMC data
+    $content = base64_encode(pack("H*", "FECF0001000D20850003000032"));  //Power status data
 
     $GLOBALS["HTTP_RAW_POST_DATA"] = "<xml><ToUserName><![CDATA[IHU]]></ToUserName>
                                         <FromUserName><![CDATA[oS0Chv3Uum1TZqHaCEb06AoBfCvY]]></FromUserName>

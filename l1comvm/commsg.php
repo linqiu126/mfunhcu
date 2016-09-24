@@ -363,7 +363,7 @@ define("MFUN_L2_FRAME_FORMAT_PREFIX_JD", "#$"); //JD数据格式
  *************************************************************************************/
 //L2处理消息的定义，用于处理微信头。由于微信后台服务器已经完成了这个消息体的处理，因而暂时没用，保留
 define("MFUN_IHU_MSG_HEAD_FORMAT", "A2MagicCode/A2Version/A4Length/A4CmdId/A2Seq/A2ErrCode");
-define("MFUN_IHU_MSG_HEAD_LENGTH", 24); //12 Byte
+define("MFUN_IHU_MSG_HEAD_LENGTH", 16); //8 Byte
 define("MFUN_IHU_L3_HEAD_MAGIC", 0xFE);
 define("MFUN_IHU_L3_HEAD_VERSION",0x01);
 define("MFUN_IHU_L3_HEAD_LENGTH", 0x08);

@@ -767,9 +767,10 @@ class classTaskL2sdkIotWx
         $data = substr($content, MFUN_IHU_MSG_HEAD_LENGTH, $length - MFUN_IHU_MSG_HEAD_LENGTH); //截取消息数据域
         $ctrl_key = hexdec($msgHead['CmdId']) & 0xFFFF;
         */
-
-        $format = "A4megicCode/A4version/A4len/A4cmdid/A4seq/A4errorCode/A4data";
-        $unpack_data = unpack($format, $content);
+        $msg_head = substr($content, 0, MFUN_IHU_MSG_HEAD_LENGTH);
+        $msg_body = substr($content, MFUN_IHU_MSG_HEAD_LENGTH);
+        $format = "A4megicCode/A4version/A4len/A4cmdid";
+        $unpack_data = unpack($format, $msg_head);
 
         $length = hexdec($unpack_data['len']) & 0xFFFF;
         $length =  $length * 2; //因为收到的消息为16进制字符，消息总长度等于length * 2
@@ -778,14 +779,15 @@ class classTaskL2sdkIotWx
         }
 
         $cmdid = hexdec($unpack_data['cmdid']) & 0xFFFF;
-        $data = $unpack_data['data'];
         $resp = "";
         $statCode = "";
         switch ($cmdid)
         {
             case MFUN_IHU_CMDID_EMC_DATA_RESP://定时辐射强度处理
-                $data = hexdec($data) & 0xFFFF;
-                $msgContent = "EMC Value = " . $data . "mV";
+                $format = "A4seq/A4errorCode/A4data";
+                $unpack_data = unpack($format, $msg_body);
+                $value = hexdec($unpack_data['data'])& 0xFFFF;
+                $msgContent = "EMC Value = " . $value . "mV";
                 $this->send_custom_message($fromUser, "text", $msgContent);  //使用API-CURL推送EMC测量值到微信用户
 
                 $msg = array("project" => MFUN_PRJ_IHU_EMCWX,
@@ -793,7 +795,7 @@ class classTaskL2sdkIotWx
                     "platform" => MFUN_TECH_PLTF_WECHAT,
                     "deviceId" => $deviceId,
                     "statCode" => $statCode,
-                    "content" => $data);
+                    "content" => $value);
                 if ($parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L2SDK_IOT_WX,
                         MFUN_TASK_ID_L2SENSOR_EMC,
                         MSG_ID_L2SDK_EMCWX_TO_L2SNR_EMC_DATA_REPORT_TIMING,
@@ -803,8 +805,10 @@ class classTaskL2sdkIotWx
                 break;
 
             case MFUN_IHU_CMDID_EMC_POWER_STATUS_RESP://电池电量响应处理
-                $data = hexdec($data) & 0xFFFF;
-                $msgContent = "Remain Power Value = " . $data . "%";
+                $format = "A4seq/A4errorCode/A2data";
+                $unpack_data = unpack($format, $msg_body);
+                $value = hexdec($unpack_data['data'])& 0xFF;
+                $msgContent = "Remain Power Value = " . $value . "%";
                 $this->send_custom_message($fromUser, "text", $msgContent);  //使用API-CURL推送EMC测量值到微信用户
 
                 //电池电量信息暂时不需要后台存储，只进行界面推送即可
