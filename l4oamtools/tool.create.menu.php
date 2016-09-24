@@ -53,7 +53,7 @@ if (MFUN_WX_APPID == "wx1183be5c8f6a24b4") //如果是测试号
                 {"name":"设置",
                     "sub_button":[
                                   {"type":"click","name":"周期读取(开)","key":"CLICK_EMC_PERIOD_READ_OPEN"},
-                                  {"type":"click","name":"周期读取(关)","key":"CLICK_EMC_PERIOD_READ_CLOSE"}，
+                                  {"type":"click","name":"周期读取(关)","key":"CLICK_EMC_PERIOD_READ_CLOSE"},
                                   {"type":"click","name":"Trace开","key":"CLICK_TRACE_ON"},
                                   {"type":"click","name":"Trace关","key":"CLICK_TRACE_OFF"}]
                 },
