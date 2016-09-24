@@ -48,7 +48,7 @@ if (MFUN_WX_APPID == "wx1183be5c8f6a24b4") //如果是测试号
                     "sub_button":[
                                   {"type":"click","name":"强制绑定","key":"CLICK_BIND"},
                                   {"type":"click","name":"绑定查询","key":"CLICK_BIND_INQ"},
-                                  {"type":"click","name":"用户信息","key":"CLICK_USER"},
+                                  {"type":"click","name":"电量查询","key":"CLICK_POWER_STATUS"},
                                   {"type":"click","name":"Trace开","key":"CLICK_TRACE_ON"},
                                   {"type":"click","name":"Trace关","key":"CLICK_TRACE_OFF"}]
                 },
@@ -79,6 +79,7 @@ elseif (MFUN_WX_APPID == "wxf2150c4d2941b2ab") //如果是正式小慧智能服�
     }';
 }
 
+//{"type":"click","name":"用户信息","key":"CLICK_USER"},
 //{"type":"click","name":"版本信息","key":"CLICK_VERSION"},
 //{"type":"view","name":"辐射查看","url":"http://121.40.118.33/mfunhcu/l4emcwxui/index.html"},
 

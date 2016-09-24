@@ -22,6 +22,7 @@ define("MSG_ID_L1VM_TO_L2SDK_IOT_JD_INCOMING", $index++);
 define("MSG_ID_L2SDK_HCU_TO_L2SNR_EMC", $index++);
 define("MSG_ID_L2SDK_EMCWX_TO_L2SNR_EMC_DATA_READ_INSTANT", $index++);
 define("MSG_ID_L2SDK_EMCWX_TO_L2SNR_EMC_DATA_REPORT_TIMING", $index++);
+define("MSG_ID_L2SDK_EMCWX_TO_L2SNR_POWER_STATUS_REPORT_TIMING", $index++);
 define("MSG_ID_L2SDK_HCU_TO_L2SNR_HSMMP", $index++);
 define("MSG_ID_L2SDK_EMCWX_TO_L2SNR_HSMMP_DATA_READ_INSTANT", $index++);
 define("MSG_ID_L2SDK_EMCWX_TO_L2SNR_HSMMP_DATA_REPORT_TIMING", $index++);
@@ -395,7 +396,11 @@ define("MFUN_IHU_CMDID_HCU_POLLING", 0xFD); //HCU命令轮询控制字
 define("MFUN_IHU_CMDID_EMC_INSTANT_READ", 0x2001); //临时定义给IHU测试,EMC瞬时读取命令
 define("MFUN_IHU_CMDID_EMC_PERIOD_READ_OPEN", 0x2002); //EMC周期读取开
 define("MFUN_IHU_CMDID_EMC_PERIOD_READ_CLOSE", 0x2003); //EMC周期读取关
+define("MFUN_IHU_CMDID_EMC_POWER_STATUS_REQ", 0x2005);  //设备电量查询
+
 define("MFUN_IHU_CMDID_EMC_DATA_RESP", 0x2081); //临时定义给IHU测试
+define("MFUN_IHU_CMDID_EMC_POWER_STATUS_RESP", 0x2085); //设备电量查询响应
+
 
 
 /**************************************************************************************
