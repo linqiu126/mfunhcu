@@ -48,7 +48,8 @@ if (MFUN_WX_APPID == "wx1183be5c8f6a24b4") //如果是测试号
                     "sub_button":[
                                   {"type":"click","name":"强制绑定","key":"CLICK_BIND"},
                                   {"type":"click","name":"绑定查询","key":"CLICK_BIND_INQ"},
-                                  {"type":"click","name":"解绑自己","key":"CLICK_UNBIND"}]
+                                  {"type":"click","name":"解绑自己","key":"CLICK_UNBIND"},
+                                  {"type":"click","name":"用户信息","key":"CLICK_USER"}]
                 },
                 {"name":"设置",
                     "sub_button":[

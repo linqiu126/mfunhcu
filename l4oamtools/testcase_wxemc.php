@@ -84,6 +84,19 @@ if (TC_EMCWX == true){
                                         <Content><![CDATA[" . $content . "]]></Content>
                                         <FuncFlag>0</FuncFlag>
                                       </xml>";
+
+    $GLOBALS["HTTP_RAW_POST_DATA"] = "<xml><ToUserName><![CDATA[gh_70c714952b02]]></ToUserName>
+                                        <FromUserName><![CDATA[oS0Chv3Uum1TZqHaCEb06AoBfCvY]]></FromUserName>
+                                        <CreateTime>1474899962</CreateTime>
+                                        <MsgType><![CDATA[device_text]]></MsgType>
+                                        <DeviceType><![CDATA[gh_70c714952b02]]></DeviceType>
+                                        <DeviceID><![CDATA[gh_70c714952b02_8cd47e1f6141e49a4e45f4b807cf41fe]]></DeviceID>
+                                        <Content><![CDATA[/s8AAQAOIIEACwAAAAA=]]></Content>
+                                        <SessionID>2150</SessionID>
+                                        <MsgID>13430170338</MsgID>
+                                        <OpenID><![CDATA[oS0Chv3Uum1TZqHaCEb06AoBfCvY]]></OpenID>
+                                     </xml>";
+
     /*
     $GLOBALS["HTTP_RAW_POST_DATA"] = "<xml><ToUserName><![CDATA[gh_70c714952b02]]></ToUserName>
                                         <FromUserName><![CDATA[oS0Chv3Uum1TZqHaCEb06AoBfCvY]]></FromUserName>
