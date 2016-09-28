@@ -114,8 +114,15 @@ class classDbiL2snrEmc
                         AND (`reportdate` = '$date' AND `hourminindex` = '$hourminindex'))");
         if (($result != false) && ($result->num_rows)>0)   //重复，则覆盖
         {
-            $result = $mysqli->query("UPDATE `t_l2snr_emcdata` SET `emcvalue` = '$emc',`altitude` = '$altitude',`flag_la` = '$flag_la',`latitude` = '$latitude',`flag_lo` = '$flag_lo',`longitude` = '$longitude'
-                      WHERE ((`deviceid` = '$deviceid' AND `sensorid` = '$sensorid') AND (`reportdate` = '$date' AND `hourminindex` = '$hourminindex'))");
+            if(!empty($gps)){
+                $query_str = "UPDATE `t_l2snr_emcdata` SET `emcvalue` = '$emc',`altitude` = '$altitude',`flag_la` = '$flag_la',`latitude` = '$latitude',`flag_lo` = '$flag_lo',`longitude` = '$longitude'
+                      WHERE (`deviceid` = '$deviceid' AND `reportdate` = '$date' AND `hourminindex` = '$hourminindex')";
+                $result = $mysqli->query($query_str);
+            }
+            else{
+                $query_str = "UPDATE `t_l2snr_emcdata` SET `emcvalue` = '$emc' WHERE (`deviceid` = '$deviceid' AND `reportdate` = '$date' AND `hourminindex` = '$hourminindex')";
+                $result = $mysqli->query($query_str);
+            }
         }
         else   //不存在，新增
         {

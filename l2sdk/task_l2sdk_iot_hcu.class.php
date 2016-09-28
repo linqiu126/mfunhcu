@@ -100,9 +100,6 @@ class classTaskL2sdkIotHcu
                         "MSG_ID_L2SDK_HCU_TO_L2SNR_EMC",
                         $msg) == false) $resp = "Send to message buffer error";
                 else $resp = "";
-
-                //$hcuObj = new classTaskL2snrEmc();
-                //$resp = $hcuObj->func_emc_process(MFUN_TECH_PLTF_HCUGX, $deviceId, $statCode, $content);
                 break;
 
             case MFUN_HCU_CMDID_PM25_DATA:

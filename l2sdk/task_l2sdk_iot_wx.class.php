@@ -511,15 +511,16 @@ class classTaskL2sdkIotWx
      *                                               自定义API部分                                                     *
      ******************************************************************************************************************/
     //接收微信消息类型为“device_text”的处理函数，传入data为下位机Airsync发送的16进制码流
-    public function receive_wx_device_text_message($parObj, $data)
+    public function receive_wx_device_text_message($parObj, $xmlmsg)
     {
         $transMsg = ""; //初始化
         //发送到L3的比特流还需要进行base64解码和16进制unpack
-        $content = base64_decode($data->Content);
+        $content = base64_decode($xmlmsg->Content);
         $content = unpack('H*',$content);
         $strContent = strtoupper($content["1"]); //转换成16进制格式的字符串
-        $fromUser = trim($data->FromUserName);
-        $deviceId = trim($data->DeviceID);
+        $fromUser = trim($xmlmsg->FromUserName);
+        $deviceId = trim($xmlmsg->DeviceID);
+        $timeStamp = trim($xmlmsg->CreateTime);
 
         //查询微信公众号trace打印开关
         $logDbObj = new classDbiL1vmCommon();
@@ -528,46 +529,46 @@ class classTaskL2sdkIotWx
         //根据trace开关状态，推送打印收到的device消息给手机WX界面
         $msgContent = "R:DEVICE_TEXT= " . $strContent;
         if ($wx_trace == 1 )
-            $transMsg = $this->send_custom_message(trim($data->FromUserName), "text", $msgContent);  //使用API-CURL推送客服微信用户
+            $transMsg = $this->send_custom_message(trim($xmlmsg->FromUserName), "text", $msgContent);  //使用API-CURL推送客服微信用户
 
         //调用统一的device_text处理函数，返回的消息只有处理出错告警，需要发送给绑定设备的消息都在调用函数中终结
-        $resp_msg = $this->func_device_text_process($parObj, $fromUser, $deviceId, $strContent);
+        $resp_msg = $this->func_device_text_process($parObj, $fromUser, $deviceId, $timeStamp, $strContent);
         if ($wx_trace == 1 && !empty($resp_msg))
-            $transMsg = $this->send_custom_message(trim($data->FromUserName), "text", $resp_msg);  //使用API-CURL推送客服微信用户
+            $transMsg = $this->send_custom_message(trim($xmlmsg->FromUserName), "text", $resp_msg);  //使用API-CURL推送客服微信用户
 
         //返回结果
         return $transMsg;
     } //receive_wx_device_text_message处理结束
 
     //接收微信消息类型为“device_event”的处理函数，传入data为下位机发送的16进制码流
-    public function receive_wx_device_event_message($parObj, $data)
+    public function receive_wx_device_event_message($parObj, $xmlmsg)
     {
         //发送到L3的比特流还需要进行base64解码和16进制unpack
-        $content = base64_decode($data->Content);
+        $content = base64_decode($xmlmsg->Content);
         $content = unpack('H*',$content);
         $strContent = strtoupper($content["1"]);//转换成16进制格式的字符串
 
         //这里有个假设：解绑来自于用户的操作，Event/Ubscribe和Event_device/Ubind是分离的
         $wxDbObj = new classDbiL2sdkWechat();
-        switch ($data->Event)
+        switch ($xmlmsg->Event)
         {
             case "bind": //来自设备的bind事件，类似手环敲击进行绑定或者微信扫二维码绑定
                 $resp1 = "R:DEVICE_EVENT=bind\n";
-                $result = $wxDbObj->dbi_blebound_duplicate($data->FromUserName, $data->DeviceID, $data->OpenID, $data->DeviceType);
+                $result = $wxDbObj->dbi_blebound_duplicate($xmlmsg->FromUserName, $xmlmsg->DeviceID, $xmlmsg->OpenID, $xmlmsg->DeviceType);
                 if ($result == true)
                     $resp2 = "Result= BLE device user bind duplicate, ";
                 else
                 {
-                    $wxDbObj->dbi_blebound_save($data->FromUserName, $data->DeviceID, $data->OpenID, $data->DeviceType);
+                    $wxDbObj->dbi_blebound_save($xmlmsg->FromUserName, $xmlmsg->DeviceID, $xmlmsg->OpenID, $xmlmsg->DeviceType);
                     $resp2 = "Result= BLE device user bind OK,";
                 }
-                $dbi_table = $wxDbObj->dbi_deviceqrcode_query($data->DeviceID,$data->DeviceType);
+                $dbi_table = $wxDbObj->dbi_deviceqrcode_query($xmlmsg->DeviceID,$xmlmsg->DeviceType);
                 if ($dbi_table == true)
                 {
                     if (!empty($dbi_table["mac"]))
                     {
                         $this->device_AuthBLE($dbi_table["deviceid"], $dbi_table["mac"]);
-                        $this->compel_bind($data->DeviceID, $data->OpenID);
+                        $this->compel_bind($xmlmsg->DeviceID, $xmlmsg->OpenID);
                         $resp3 = "Weixin device MAC bind OK";
                     }
                     else
@@ -580,26 +581,26 @@ class classTaskL2sdkIotWx
                 break;
 
             case "unbind":  //来自设备的unbind事件
-                $result = $wxDbObj->dbi_blebound_delete($data->FromUserName);
+                $result = $wxDbObj->dbi_blebound_delete($xmlmsg->FromUserName);
                 $respMsg = "R:DEVICE_EVENT=unbind, Result= " . $result;
                 break;
             case "scancode_push": //用户扫描二维码事件
-                $qrcode = $data->ScanCodeInfo->ScanResult;
-                $fromUser = $data->FromUserName;
-                $respMsg = "ScanType = ". $data->ScanCodeInfo->ScanType." \n ScanResult = ". $data->ScanCodeInfo->ScanResult;
+                $qrcode = $xmlmsg->ScanCodeInfo->ScanResult;
+                $fromUser = $xmlmsg->FromUserName;
+                $respMsg = "ScanType = ". $xmlmsg->ScanCodeInfo->ScanType." \n ScanResult = ". $xmlmsg->ScanCodeInfo->ScanResult;
 
                 //$respMsg = $this->func_event_scancode_process($fromUser, $qrcode);
                 break;
             default:
-                $respMsg = "R:DEVICE_EVENT=unknown event, Result= ". $data->Event;
+                $respMsg = "R:DEVICE_EVENT=unknown event, Result= ". $xmlmsg->Event;
                 break;
         }
 
         //会送给WX界面相应的TRACE消息
         $logDbObj = new classDbiL1vmCommon();
-        $wx_trace = $logDbObj->dbi_LogSwitchInfo_inqury($data->FromUserName);
+        $wx_trace = $logDbObj->dbi_LogSwitchInfo_inqury($xmlmsg->FromUserName);
         if ($wx_trace == 1)
-            $transMsg = $this->send_custom_message(trim($data->FromUserName), "text", $respMsg);
+            $transMsg = $this->send_custom_message(trim($xmlmsg->FromUserName), "text", $respMsg);
         else
             $transMsg = $respMsg;
 
@@ -607,26 +608,26 @@ class classTaskL2sdkIotWx
     }//End of receive_wx_device_event_message
 
     //用户自己定义的微信点击菜单命令“event->CLICK”处理函数
-    public function receive_wx_menu_click_message($parObj, $data)
+    public function receive_wx_menu_click_message($parObj, $xmlmsg)
     {
         $result = "";
-        switch($data->EventKey) {
+        switch($xmlmsg->EventKey) {
             case "CLICK_USER":
-                $transMsg = $this->xms_responseText($data->FromUserName, $data->ToUserName, "Appid = " . $this->appid . "\nTokenID = " . $this->access_token ."\nJS_ticket =" . $this->js_ticket);
+                $transMsg = $this->xms_responseText($xmlmsg->FromUserName, $xmlmsg->ToUserName, "Appid = " . $this->appid . "\nTokenID = " . $this->access_token ."\nJS_ticket =" . $this->js_ticket);
                 break;
             case "CLICK_VERSION":
-                $deviceId = trim($data->DeviceID);
-                $fromUser = trim($data->FromUserName);
-                $toUser = trim($data->ToUserName);
+                $deviceId = trim($xmlmsg->DeviceID);
+                $fromUser = trim($xmlmsg->FromUserName);
+                $toUser = trim($xmlmsg->ToUserName);
                 $transMsg = $this->func_click_version_read($deviceId, $fromUser, $toUser);
                 break;
             case "CLICK_BIND":
-                $transMsg = $this->func_click_bindCommand ($data); //强制绑定该用户，用于测试目的
+                $transMsg = $this->func_click_bindCommand ($xmlmsg); //强制绑定该用户，用于测试目的
                 break;
             case "CLICK_BIND_INQ":
                 //增加第三方后台云的绑定状态
                 $wxDbObj = new classDbiL2sdkWechat();
-                $result = $wxDbObj->dbi_blebound_query($data->FromUserName);
+                $result = $wxDbObj->dbi_blebound_query($xmlmsg->FromUserName);
                 if ($result == false)
                 {
                     $dbResp = "DB User-Device bind: None";
@@ -638,12 +639,12 @@ class classTaskL2sdkIotWx
                     $dbResp = "DB User-Device bind: Yes, MAC=" . json_encode($res["mac"]);
                 }
                 //再查微信云上的绑定状态
-                $result = $this->getstat_qrcodebyOpenId($data->FromUserName);
+                $result = $this->getstat_qrcodebyOpenId($xmlmsg->FromUserName);
                 /*
                 if ($result["errcode"] ==40001)  //防止偶然未知原因导致token失效，强制刷新token并再次发送
                 {
                     $this->compel_get_token($this->appid,$this->appsecret);
-                    $result = $this->getstat_qrcodebyOpenId($data->FromUserName);
+                    $result = $this->getstat_qrcodebyOpenId($xmlmsg->FromUserName);
                 }
                 */
                 if (count($result["device_list"]) == 0)
@@ -651,24 +652,24 @@ class classTaskL2sdkIotWx
                 else
                     $wxResp = "Weixin User get_bind_device, result=" . json_encode($result["device_list"]);
 
-                $transMsg = $this->xms_responseText($data->FromUserName, $data->ToUserName, $dbResp . " \n" . $wxResp);
+                $transMsg = $this->xms_responseText($xmlmsg->FromUserName, $xmlmsg->ToUserName, $dbResp . " \n" . $wxResp);
                 break;
             case "CLICK_UNBIND":
                 //先解绑微信云上的绑定状态
                 //这里就考虑一个设备，如果存储多个设备的话，需要多次解绑
-                $result = $this->getstat_qrcodebyOpenId($data->FromUserName);
+                $result = $this->getstat_qrcodebyOpenId($xmlmsg->FromUserName);
 
                 /*
                 if ($result["errcode"] ==40001)  //防止偶然未知原因导致token失效，强制刷新token并再次发送
                 {
                     $this->compel_get_token($this->appid,$this->appsecret);
-                    $result = $this->getstat_qrcodebyOpenId($data->FromUserName);
+                    $result = $this->getstat_qrcodebyOpenId($xmlmsg->FromUserName);
                 }
                 */
 
                 if (count($result["device_list"]) != 0)
                 {
-                    $result = $this->compel_unbind($result["device_list"][0]["device_id"], $data->FromUserName);
+                    $result = $this->compel_unbind($result["device_list"][0]["device_id"], $xmlmsg->FromUserName);
                     $wxResp = "Weixin User unbind one device, result=" .  json_encode($result);
                 }
                 else
@@ -677,78 +678,78 @@ class classTaskL2sdkIotWx
                 }
                 //再解绑第三方数据库的绑定状态
                 $wxDbObj = new classDbiL2sdkWechat();
-                $dbi_info = $wxDbObj->dbi_blebound_query($data->FromUserName);
+                $dbi_info = $wxDbObj->dbi_blebound_query($xmlmsg->FromUserName);
                 if ($dbi_info == false)
                 {
                     $dbResp = "No device bind for this user in database";
                 }
                 else
                 {
-                    $wxDbObj->dbi_blebound_delete($data->FromUserName); //解绑用户和device
+                    $wxDbObj->dbi_blebound_delete($xmlmsg->FromUserName); //解绑用户和device
                     $dbResp = "All device unbind for this user in database";
                 }
-                $transMsg = $this->xms_responseText($data->FromUserName, $data->ToUserName, $dbResp . " \n" . $wxResp);
+                $transMsg = $this->xms_responseText($xmlmsg->FromUserName, $xmlmsg->ToUserName, $dbResp . " \n" . $wxResp);
                 break;
 
             case "CLICK_EMC_INSTANT_READ":
-                $deviceId = trim($data->DeviceID);
-                $fromUser = trim($data->FromUserName);
-                $toUser = trim($data->ToUserName);
+                $deviceId = trim($xmlmsg->DeviceID);
+                $fromUser = trim($xmlmsg->FromUserName);
+                $toUser = trim($xmlmsg->ToUserName);
                 $transMsg = $this->func_click_emc_instant_read($deviceId, $fromUser, $toUser);
                 break;
             case "CLICK_EMC_PERIOD_READ_OPEN":
-                $deviceId = trim($data->DeviceID);
-                $fromUser = trim($data->FromUserName);
-                $toUser = trim($data->ToUserName);
+                $deviceId = trim($xmlmsg->DeviceID);
+                $fromUser = trim($xmlmsg->FromUserName);
+                $toUser = trim($xmlmsg->ToUserName);
                 $transMsg = $this->func_click_emc_period_read_open($deviceId, $fromUser, $toUser);
                 break;
 
             case "CLICK_EMC_PERIOD_READ_CLOSE":
-                $deviceId = trim($data->DeviceID);
-                $fromUser = trim($data->FromUserName);
-                $toUser = trim($data->ToUserName);
+                $deviceId = trim($xmlmsg->DeviceID);
+                $fromUser = trim($xmlmsg->FromUserName);
+                $toUser = trim($xmlmsg->ToUserName);
                 $transMsg = $this->func_click_emc_period_read_close($deviceId, $fromUser, $toUser);
                 break;
 
             case "CLICK_POWER_STATUS":
-                $deviceId = trim($data->DeviceID);
-                $fromUser = trim($data->FromUserName);
-                $toUser = trim($data->ToUserName);
+                $deviceId = trim($xmlmsg->DeviceID);
+                $fromUser = trim($xmlmsg->FromUserName);
+                $toUser = trim($xmlmsg->ToUserName);
                 $transMsg = $this->func_click_power_status_req($deviceId, $fromUser, $toUser);
                 break;
 
             case "CLICK_TRACE_ON":
                 $trace_set = 1;
                 $logDbObj = new classDbiL1vmCommon();
-                $result = $logDbObj->dbi_LogSwitchInfo_set($data->FromUserName,$trace_set);
-                $transMsg = $this->xms_responseText($data->FromUserName, $data->ToUserName, "设置微信log打印开关ON，Result=" . json_encode($result));
+                $result = $logDbObj->dbi_LogSwitchInfo_set($xmlmsg->FromUserName,$trace_set);
+                $transMsg = $this->xms_responseText($xmlmsg->FromUserName, $xmlmsg->ToUserName, "设置微信log打印开关ON，Result=" . json_encode($result));
                 break;
 
             case "CLICK_TRACE_OFF":
                 $trace_set = 0;
                 $logDbObj = new classDbiL1vmCommon();
-                $result = $logDbObj->dbi_LogSwitchInfo_set($data->FromUserName,$trace_set);
-                $transMsg = $this->xms_responseText($data->FromUserName, $data->ToUserName, "设置微信log打印开关OFF，Result=" . json_encode($result));
+                $result = $logDbObj->dbi_LogSwitchInfo_set($xmlmsg->FromUserName,$trace_set);
+                $transMsg = $this->xms_responseText($xmlmsg->FromUserName, $xmlmsg->ToUserName, "设置微信log打印开关OFF，Result=" . json_encode($result));
                 break;
 
             case "CLICK_COMPANY":
-                $transMsg = $this->xms_responseText($data->FromUserName, $data->ToUserName,"上海小慧智能科技有限公司");
+                $transMsg = $this->xms_responseText($xmlmsg->FromUserName, $xmlmsg->ToUserName,"上海小慧智能科技有限公司");
                 break;
             case "CLICK_MEMBER":
-                $transMsg = $this->xms_responseText($data->FromUserName, $data->ToUserName,"欢迎加入会员专区");
+                $transMsg = $this->xms_responseText($xmlmsg->FromUserName, $xmlmsg->ToUserName,"欢迎加入会员专区");
                 break;
             case "CLICK_HELP":
-                $transMsg = $this->xms_responseText($data->FromUserName, $data->ToUserName,"您好，请问有什么需要帮助的？");
+                $transMsg = $this->xms_responseText($xmlmsg->FromUserName, $xmlmsg->ToUserName,"您好，请问有什么需要帮助的？");
                 break;
             default:
-                $transMsg = $this->xms_responseText($data->FromUserName, $data->ToUserName,"收到未识别菜单EventKey值");
+                $transMsg = $this->xms_responseText($xmlmsg->FromUserName, $xmlmsg->ToUserName,"收到未识别菜单EventKey值");
                 break;
         }
         return $transMsg;
     }//End of receive_wx_menu_click_message
 
      //设备业务消息的处理函数，跳转到对应的业务处理模块
-    public function func_device_text_process($parObj, $fromUser, $deviceId, $content)
+    public function func_device_text_process($parObj, $fromUser, $deviceId, $timeStamp, $content)
     {
         //因为收到的Airsync数据消息头已经被微信处理掉，传递过来的消息体在上级函数中已经被处理成16制格式的字符串
         /*
@@ -795,6 +796,7 @@ class classTaskL2sdkIotWx
                     "platform" => MFUN_TECH_PLTF_WECHAT,
                     "deviceId" => $deviceId,
                     "statCode" => $statCode,
+                    "timeStamp" => $timeStamp,
                     "content" => $value);
                 if ($parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L2SDK_IOT_WX,
                         MFUN_TASK_ID_L2SENSOR_EMC,
@@ -833,16 +835,16 @@ class classTaskL2sdkIotWx
             case MFUN_IHU_CMDID_VERSION_SYNC:
                 //版本同步消息处理
                 $ihuObj = new classApiL2snrCommonService();
-                $resp = $ihuObj->func_version_update_process(MFUN_TECH_PLTF_WECHAT, $deviceId, $data);
+                $resp = $ihuObj->func_version_update_process(MFUN_TECH_PLTF_WECHAT, $deviceId, $msg_body);
                 break;
 
             case MFUN_IHU_CMDID_TIME_SYNC:
                 $ihuObj = new classApiL2snrCommonService();
-                $msg_body = $ihuObj->func_timeSync_process(MFUN_TECH_PLTF_WECHAT, $deviceId, $data);
+                $resp_msg = $ihuObj->func_timeSync_process(MFUN_TECH_PLTF_WECHAT, $deviceId, $msg_body);
                 if(!empty($msg_body))
-                    $resp = pack('H*',$msg_body);
+                    $resp = pack('H*',$resp_msg);
                 else
-                    $resp = $msg_body;
+                    $resp = $resp_msg;
                 break;
 
             case MFUN_IHU_CMDID_TEMP_DATA:
@@ -851,7 +853,7 @@ class classTaskL2sdkIotWx
                     "platform" => MFUN_TECH_PLTF_WECHAT,
                     "deviceId" => $deviceId,
                     "statCode" => $statCode,
-                    "content" => $data);
+                    "content" => $msg_body);
                 if ($parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L2SDK_IOT_WX,
                         MFUN_TASK_ID_L2SENSOR_TEMP,
                         MSG_ID_L2SDK_EMCWX_TO_L2SNR_TEMP_DATA_REPORT_TIMING,
@@ -868,7 +870,7 @@ class classTaskL2sdkIotWx
                     "platform" => MFUN_TECH_PLTF_WECHAT,
                     "deviceId" => $deviceId,
                     "statCode" => $statCode,
-                    "content" => $data);
+                    "content" => $msg_body);
                 if ($parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L2SDK_IOT_WX,
                         MFUN_TASK_ID_L2SENSOR_HUMID,
                         MSG_ID_L2SDK_EMCWX_TO_L2SNR_HUMID_DATA_REPORT_TIMING,
@@ -1365,9 +1367,9 @@ class classTaskL2sdkIotWx
     public function receive_locationEvent($data)
     {
         $user = $data->FromUserName;
-        $latitude = (float)($data->Latitude)*100000;
-        $longitude = (float)($data->Longitude)*10000;
-        $timestamp = time();
+        $latitude = trim($data->Latitude);
+        $longitude = trim($data->Longitude);
+        $timestamp = trim($data->CreateTime);
 
         $wxDbObj = new classDbiL2sdkWechat();
         $emcDbObj = new classDbiL2snrEmc();
@@ -1384,7 +1386,7 @@ class classTaskL2sdkIotWx
             {
                 $dev_table = $dbi_info[$i];
                 $deviceid = $dev_table["deviceID"];
-                $emcDbObj->dbi_emcdata_save_gps($timestamp, $user, $deviceid, $latitude,$longitude);
+                $emcDbObj->dbi_emcdata_save_gps($deviceid,$timestamp,$latitude,$longitude);
                 $i++;
             }
 

@@ -16,7 +16,7 @@ class classTaskL2snrEmc
 
     }
 
-    public function func_emc_process($platform, $deviceId, $statCode, $content)
+    public function func_emc_process($platform, $deviceId, $statCode, $timeStamp,$content)
     {
         switch($platform)
         {
@@ -24,7 +24,7 @@ class classTaskL2snrEmc
                 if (strlen($content) == 0) {
                     return "ERROR EMC_SERVICE[WX]: message length invalid";  //消息长度不合法，直接返回
                 }
-                $resp = $this->wx_emcdata_req_process($deviceId, $content);
+                $resp = $this->wx_emcdata_req_process($deviceId, $timeStamp, $content);
                 break;
             case MFUN_TECH_PLTF_HCUGX:
                 $raw_MsgHead = substr($content, 0, MFUN_HCU_MSG_HEAD_LENGTH);  //截取6Byte MsgHead
@@ -58,19 +58,18 @@ class classTaskL2snrEmc
         return $resp;
     }
 
-    private function wx_emcdata_req_process( $deviceId, $content)
+    private function wx_emcdata_req_process( $deviceId, $timeStamp, $content)
     {
         //$format = "A2EmcCmd/A2Len/A4EmcValue/A12Time/A12Gps";
         //$data = unpack($format, $content);
         $emc_value = hexdec($content) & 0xFFFF;
         $report["format"] = 0;
         $report["value"] = $emc_value; //保持和HCU EMC_data的处理一致，增加数据格式
-        $emc_time = time(); //下位机暂时没有时间上报，取系统当前时间
         $gps = "";
         $sensorId = 1;
 
         $sDbObj = new classDbiL2snrEmc();
-        $sDbObj->dbi_emcData_save($deviceId, $sensorId, $emc_time, $report, $gps);
+        $sDbObj->dbi_emcData_save($deviceId, $sensorId, $timeStamp, $report, $gps);
         $sDbObj->dbi_emcData_delete_3monold($deviceId, $sensorId, MFUN_EMCWX_DATA_SAVE_DURATION_IN_DAYS);  //remove 90 days old data.
         $sDbObj->dbi_emcAccumulation_save($deviceId); //累计值计算，如果不是初次接收数据，而且日期没有改变，则该过程将非常快
 
@@ -242,7 +241,7 @@ class classTaskL2snrEmc
             if (isset($msg["content"])) $content = $msg["content"];
 
             //具体处理函数
-            $resp = $this->func_emc_process($platform, $deviceId, $statCode, $content);
+            $resp = $this->func_emc_process($platform, $deviceId, $statCode, "", $content);
         }
         elseif ($msgId == MSG_ID_L2SDK_EMCWX_TO_L2SNR_EMC_DATA_READ_INSTANT)
         {
@@ -262,10 +261,11 @@ class classTaskL2snrEmc
             if (isset($msg["platform"])) $platform = $msg["platform"];
             if (isset($msg["deviceId"])) $deviceId = $msg["deviceId"];
             if (isset($msg["statCode"])) $statCode = $msg["statCode"];
+            if (isset($msg["timeStamp"])) $timeStamp = $msg["timeStamp"];
             if (isset($msg["content"])) $content = $msg["content"];
 
             //具体处理函数
-            $resp = $this->func_emc_process($platform, $deviceId, $statCode, $content);
+            $resp = $this->func_emc_process($platform, $deviceId, $statCode, $timeStamp, $content);
         }
         elseif ($msgId == MSG_ID_L2SDK_EMCWX_TO_L2SNR_POWER_STATUS_REPORT_TIMING)
         {
@@ -278,7 +278,7 @@ class classTaskL2snrEmc
             if (isset($msg["content"])) $content = $msg["content"];
 
             //具体处理函数
-            $resp = $this->func_emc_process($platform, $deviceId, $statCode, $content);
+            $resp = $this->func_emc_process($platform, $deviceId, $statCode, "", $content);
         }
         else{
             $resp = ""; //啥都不ECHO

@@ -87,7 +87,7 @@ if (TC_EMCWX == true){
 
     $GLOBALS["HTTP_RAW_POST_DATA"] = "<xml><ToUserName><![CDATA[gh_70c714952b02]]></ToUserName>
                                         <FromUserName><![CDATA[oS0Chv3Uum1TZqHaCEb06AoBfCvY]]></FromUserName>
-                                        <CreateTime>1474899962</CreateTime>
+                                        <CreateTime>1474904683</CreateTime>
                                         <MsgType><![CDATA[device_text]]></MsgType>
                                         <DeviceType><![CDATA[gh_70c714952b02]]></DeviceType>
                                         <DeviceID><![CDATA[gh_70c714952b02_8cd47e1f6141e49a4e45f4b807cf41fe]]></DeviceID>
