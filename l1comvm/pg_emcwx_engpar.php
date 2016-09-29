@@ -65,10 +65,15 @@ elseif(MFUN_WX_APPID =="wxf2150c4d2941b2ab") //用于小慧智能的服务号
 {
     define("device_type","gh_70c714952b02");
 
-    define ("LZH_openid", "oS0Chv3Uum1TZqHaCEb06AoBfCvY");
+    //20160929, temporary switch LZH by ZJL for customer live show
+    /*define ("LZH_openid", "oS0Chv3Uum1TZqHaCEb06AoBfCvY");
     define("LZH_deviceid","gh_70c714952b02_8cd47e1f6141e49a4e45f4b807cf41fe");
     define("LZH_qrcode","http://we.qq.com/d/AQBLQKG-27gIDCKf03DmiwAXh27qptK_scSJJRAn");
-    define("LZH_mac","D03972A5EF28");
+    define("LZH_mac","D03972A5EF28");*/
+    define ("ZJL_openid", "oS0Chv3Uum1TZqHaCEb06AoBfCvY");
+    define("ZJL_deviceid","gh_70c714952b02_8cd47e1f6141e49a4e45f4b807cf41fe");
+    define("ZJL_qrcode","http://we.qq.com/d/AQBLQKG-27gIDCKf03DmiwAXh27qptK_scSJJRAn");
+    define("ZJL_mac","D03972A5EF28");
 
     //define ("ZSC_openid", "oS0ChvxMQEtEhVdxJytcIab5FaHY");
     define ("CZ_openid", "oS0Chv9XjoSv9IvXI-ggBxpNVPck");
@@ -82,10 +87,15 @@ elseif(MFUN_WX_APPID =="wxf2150c4d2941b2ab") //用于小慧智能的服务号
     //define("MYC_mac","D03972A5EFB5");
     define("MYC_mac","D03972A5EF29");
 
-    define ("ZJL_openid", "oS0Chv-avCH7W4ubqOQAFXojYODY");
+    //20160929, temporary switch LZH by ZJL for customer live show
+    /*define ("ZJL_openid", "oS0Chv-avCH7W4ubqOQAFXojYODY");
     define("ZJL_deviceid","gh_70c714952b02_8248307502397542f48a3775bcb234d4");
     define("ZJL_qrcode","http://we.qq.com/d/AQBLQKG-cFODzg6aCE5C92D1SKGHOirRJtBGwCmd");
-    define("ZJL_mac","D03972A5EF27");
+    define("ZJL_mac","D03972A5EF27");*/
+    define ("LZH_openid", "oS0Chv-avCH7W4ubqOQAFXojYODY");
+    define("LZH_deviceid","gh_70c714952b02_8248307502397542f48a3775bcb234d4");
+    define("LZH_qrcode","http://we.qq.com/d/AQBLQKG-cFODzg6aCE5C92D1SKGHOirRJtBGwCmd");
+    define("LZH_mac","D03972A5EF27");
 
     define ("XPH_openid", "oS0ChvwWJOQsIk5xGsRPTQm00C3U");
     define("XPH_deviceid","gh_70c714952b02_955677dfa6db7590f2033b20d3fbad8c");
