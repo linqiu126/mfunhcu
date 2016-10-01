@@ -72,7 +72,7 @@ elseif (MFUN_WX_APPID == "wxf2150c4d2941b2ab") //如果是正式小慧智能服�
 {
     $self_create_menu =
     '{"button":[
-                {"type":"view","name":"辐射查看","url":"https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxf2150c4d2941b2ab&redirect_uri=http://www.hkrob.com/mfunhcu/l4emcwxui/index.html?response_type=code&scope=snsapi_base&state=1#wechat_redirect"},
+                {"type":"view","name":"辐射查看","url":"https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxf2150c4d2941b2ab&redirect_uri=www.hkrob.com/hyj/sport_react/index.html?response_type=code&scope=snsapi_base&state=1#wechat_redirect"},
 
                 {"name":"关于",
                     "sub_button":[{"type":"click","name":"小慧科技","key":"CLICK_COMPANY"},
@@ -86,6 +86,8 @@ elseif (MFUN_WX_APPID == "wxf2150c4d2941b2ab") //如果是正式小慧智能服�
 //{"type":"click","name":"用户信息","key":"CLICK_USER"},
 //{"type":"click","name":"版本信息","key":"CLICK_VERSION"},
 //{"type":"view","name":"辐射查看","url":"http://121.40.118.33/mfunhcu/l4emcwxui/index.html"},
+
+//{"type":"view","name":"辐射查看","url":"https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxf2150c4d2941b2ab&redirect_uri=http://www.hkrob.com/mfunhcu/l4emcwxui/index.html?response_type=code&scope=snsapi_base&state=1#wechat_redirect"},
 
 echo "<br>自定义菜单创建（先删再建-微信界面需要24小时更新，重新关注可立即刷新） <br><br>";
 
