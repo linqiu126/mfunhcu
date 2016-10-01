@@ -51,6 +51,12 @@ class classTaskL3aplF0wechat
             'status'=>'true',
             'ret'=>$openid
         );
+
+        //for debug
+        $file_txt = fopen("./log.txt",'w');
+        fwrite($file_txt,"code=".$code."#openid=".$openid."#");
+        fclose($file_txt);
+
         $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
         return $jsonencode;
     }
