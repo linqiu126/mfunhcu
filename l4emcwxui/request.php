@@ -5,7 +5,7 @@ require_once "dbi_l4emcwx_ui.class.php";
 //header("Content-type:text/html;charset=utf-8");
 //require '/php/req.php';
 
-//L4AQYCUI的入口起点
+//L4EMCWXUI的入口起点
 //这里的入参格式是跟前端界面商量约定好的
 if (isset($_GET["action"])){
     require("../l1mainentry/h5ui_entry_emcwx.php");

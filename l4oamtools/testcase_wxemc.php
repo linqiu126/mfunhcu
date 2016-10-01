@@ -183,6 +183,12 @@ if (TC_EMCWX == true){
     echo " \n[TC EMCWX: WEIXIN CLICK_EMC_PERIOD_READ_CLOSE END]\n";
 
     //EMC H5界面测试case
+    echo " [TC L4EMCWX: wechat_login START]\n";
+    $_GET["action"] = "wechat_login";
+    $_GET["code"] = "iCujwg6IdF96s0kxU2z0qp-iKsUaZutY9JmbHB6q_j2kbmJZFtigaeo0QIFl3KXDJ-YLNBqUERFhgJDOYrD8nQGapi_-cGAl9wKizC1D-QBSzHgSyvqL8exWxTcu1VMMVYZfAFAHKL";
+    require("../l4emcwxui/request.php");
+    echo " \n[TC L4EMCWX: wechat_login END]\n";
+
     echo " [TC L4EMCWX: personal_bracelet_radiation_current START]\n";
     $_GET["action"] = "personal_bracelet_radiation_current";
     $_GET["id"] = "oS0Chv3Uum1TZqHaCEb06AoBfCvY";

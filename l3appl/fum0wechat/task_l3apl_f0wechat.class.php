@@ -40,7 +40,22 @@ class classTaskL3aplF0wechat
         return urlencode($elem);
     }
 
-    function func_get_emcnow_process($openid)
+    private function func_get_emcuser_process($code)
+    {
+        $weixin =  file_get_contents("https://api.weixin.qq.com/sns/oauth2/access_token?appid=wxf2150c4d2941b2ab&secret=ab95997f454e04b77911c18d09807831&code=".$code."&grant_type=authorization_code");//通过access_token查询用户信息
+        $jsondecode = json_decode($weixin); //返回用户信息的JSON数据
+        $array = get_object_vars($jsondecode);
+        $openid = $array['openid']; //获取微信用户openid
+        if(!isset($openid)&&empty($openid)){ $openid="Not Autherized";}
+        $retval=array(
+            'status'=>'true',
+            'ret'=>$openid
+        );
+        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
+        return $jsonencode;
+    }
+
+    private function func_get_emcnow_process($openid)
     {
         $uiF0wechatDbObj = new classDbiL3apF0wechat(); //初始化一个UI DB对象
         $emcvalue = $uiF0wechatDbObj->dbi_get_current_emcvalue($openid);
@@ -53,7 +68,7 @@ class classTaskL3aplF0wechat
         return $jsonencode;
     }
 
-    function func_get_emchistory_process($openid)
+    private function func_get_emchistory_process($openid)
     {
         $uiF0wechatDbObj = new classDbiL3apF0wechat(); //初始化一个UI DB对象
         $emc_history = $uiF0wechatDbObj->dbi_get_history_emcvalue($openid);
@@ -66,7 +81,7 @@ class classTaskL3aplF0wechat
         return $jsonencode;
     }
 
-    function func_get_emcalarm_process($deviceId)
+    private function func_get_emcalarm_process($deviceId)
     {
         $uiF0wechatDbObj = new classDbiL3apF0wechat(); //初始化一个UI DB对象
 
@@ -79,7 +94,7 @@ class classTaskL3aplF0wechat
         return $jsonencode;
     }
 
-    function func_get_emctrack_process($deviceId)
+    private function func_get_emctrack_process($deviceId)
     {
         $uiF0wechatDbObj = new classDbiL3apF0wechat(); //初始化一个UI DB对象
 
@@ -127,8 +142,16 @@ class classTaskL3aplF0wechat
             return false;
         }
 
+        //功能:EMC H5界面请求当前微信用户OPEN ID
+        if ($msgId == MSG_ID_L4EMCWXUI_TO_L3F0_EMCUSER){
+            //解开消息
+            if (isset($msg["code"])) $code = $msg["code"]; else  $code = "";
+            //具体处理函数
+            $resp = $this->func_get_emcuser_process($code);
+            $project = MFUN_PRJ_IHU_EMCWX;
+        }
         //功能:EMC H5界面请求当前辐射值
-        if ($msgId == MSG_ID_L4EMCWXUI_TO_L3F0_EMCNOW){
+        elseif ($msgId == MSG_ID_L4EMCWXUI_TO_L3F0_EMCNOW){
             //解开消息
             if (isset($msg["openid"])) $openid = $msg["openid"]; else  $openid = "";
             //具体处理函数

@@ -50,6 +50,11 @@ class classTaskL4emcwxUi
             $resp = "";
             //这里是L4EMCWX与L3APPL功能之间的交换矩阵，从而让UI对应的多种不确定组合变换为L3APPL确定的功能组合
             switch ($msg) {
+                case "wechat_login":
+                    if (isset($_GET["code"])) $code = trim($_GET["code"]); else $code = "";
+                    $input = array("code" => $code);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4EMCWX_UI, MFUN_TASK_ID_L3APPL_FUM0WECHAT, MSG_ID_L4EMCWXUI_TO_L3F0_EMCUSER, "MSG_ID_L4EMCWXUI_TO_L3F0_EMCUSER",$input);
+                    break;
                 case "personal_bracelet_radiation_current":
                     /*
                         var device = data.id;
