@@ -64,6 +64,7 @@ include_once "../l3nbiotopr/task_l3nbiot_opr_meter.class.php";
 include_once "../l2timercron/task_l2timer_cron.class.php";
 include_once "../l4emcwxui/task_l4emcwx_ui.class.php";
 include_once "../l4aqycui/task_l4aqyc_ui.class.php";
+include_once "../l4cloudlockui/task_l4cloudlock_ui.class.php";
 include_once "../l4tbswrui/task_l4tbswr_ui.class.php";
 include_once "../l4nbiotipmui/task_l4nbiot_ipm_ui.class.php";
 include_once "../l4nbiotiwmui/task_l4nbiot_iwm_ui.class.php";
@@ -565,6 +566,19 @@ class classTaskL1vmCoreRouter
                 return false;
             }
 
+        }elseif($parObj == MFUN_MAIN_ENTRY_CLOUDLOCK_UI){
+            if ($this->mfun_l1vm_msg_send(MFUN_TASK_ID_L1VM,
+                    MFUN_TASK_ID_L4CLOUDLOCK_UI,
+                    MSG_ID_L4CLOUDLOCKUI_CLICK_INCOMING,
+                    "MSG_ID_L4CLOUDLOCKUI_CLICK_INCOMING",
+                    $msg) == false) {
+                $result = "Cloud: Send to message buffer error.";
+                $log_content = "P:" . json_encode($result);
+                $loggerObj->logger("MFUN_MAIN_ENTRY_AQYC_UI", "mfun_l1vm_task_main_entry", $log_time, $log_content);
+                echo trim($result);
+                return false;
+            }
+
         }elseif($parObj == MFUN_MAIN_ENTRY_TBSWR_UI){
             if ($this->mfun_l1vm_msg_send(MFUN_TASK_ID_L1VM,
                     MFUN_TASK_ID_L4TBSWR_UI,
@@ -904,6 +918,11 @@ class classTaskL1vmCoreRouter
                 case MFUN_TASK_ID_L4AQYC_UI:
                     $obj = new classTaskL4aqycUi();
                     $obj->mfun_l4aqyc_ui_task_main_entry($this, $result["msgId"], $result["msgName"], $result["msgBody"]);
+                    break;
+
+                case MFUN_TASK_ID_L4CLOUDLOCK_UI:
+                    $obj = new classTaskL4cloudlockUi();
+                    $obj->mfun_l4cloudlock_ui_task_main_entry($this, $result["msgId"], $result["msgName"], $result["msgBody"]);
                     break;
 
                 case MFUN_TASK_ID_L4EMCWX_UI:

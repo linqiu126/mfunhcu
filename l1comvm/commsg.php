@@ -194,6 +194,11 @@ define("MSG_ID_L4AQYCUI_TO_L3F7_SHOWUSERMSG", $index++);
 define("MSG_ID_L4AQYCUI_TO_L3F7_GETUSERIMG", $index++);
 define("MSG_ID_L4AQYCUI_TO_L3F7_CLEARUSERIMG", $index++);
 
+//L4CLOUDLOCK部分
+define("MSG_ID_L4CLOUDLOCKUI_CLICK_INCOMING", $index++);
+define("MSG_ID_L4CLOUDLOCKUI_TO_L3F4_HCULOCKSTATUS", $index++);  //查询云控锁状态
+define("MSG_ID_L4CLOUDLOCKUI_TO_L3F4_HCULOCKOPEN", $index++);  //打开云控锁
+
 //L4EMCWXUI部分
 define("MSG_ID_L4EMCWXUI_CLICK_INCOMING", $index++);
 define("MSG_ID_L4EMCWXUI_TO_L3F0_EMCUSER", $index++); //EMC H5界面请求当前微信用户的OPEN ID
@@ -430,6 +435,7 @@ define("MFUN_HCU_CMDID_TEMP_DATA", 0x28);  //MODBUS 温度命令字
 define("MFUN_HCU_CMDID_HUMID_DATA", 0x29);  //MODBUS 湿度命令字
 define("MFUN_HCU_CMDID_HSMMP_DATA", 0x2C);  //Video命令字
 define("MFUN_HCU_CMDID_NOISE_DATA", 0x2B);  //Noise命令字
+define("MFUN_HCU_CMDID_CLOUDLOCK_DATA", 0x30);  //Cloudlock命令字
 define("MFUN_HCU_CMDID_INVENTORY_DATA", 0xA0); //SW,HW 版本信息
 define("MFUN_HCU_CMDID_SW_UPDATE", 0xA1);   //HCU软件更新
 define("MFUN_HCU_CMDID_HEART_BEAT", 0xFE); //HCU心跳特殊控制字
@@ -474,6 +480,9 @@ define("MFUN_HCU_OPT_VEDIOFILE_REQ", 0x02);   //命令下位机上传选中的�
 define("MFUN_HCU_OPT_VEDIOFILE_RESP", 0x82);  //视频文件传输完成响应
 define("MFUN_HCU_OPT_VEDIOPIC_REQ", 0x07);   //mfunhcu向下位机取照片操作字
 define("MFUN_HCU_OPT_VEDIOPIC_RESP", 0x87);   //下位机取完照片之后完成相应
+define("MFUN_HCU_OPT_LOCK_STATUS", 0x01);  //HCU_Lock_Status
+define("MFUN_HCU_OPT_LOCK_OPEN", 0x02);    //HCU_Lock_Open
+
 
 /**************************************************************************************
  *                            NBIOT IPM376消息定义                                    *
