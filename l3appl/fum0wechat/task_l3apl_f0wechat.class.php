@@ -40,9 +40,26 @@ class classTaskL3aplF0wechat
         return urlencode($elem);
     }
 
+    //https请求（支持GET和POST）
+    protected function https_request($url, $data = null)
+    {
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, FALSE);
+        if (!empty($data)) {
+            curl_setopt($curl, CURLOPT_POST, 1);
+            curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+        }
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        $output = curl_exec($curl);
+        curl_close($curl);
+        return $output;
+    }
+
     private function func_get_emcuser_process($code)
     {
-        $weixin =  file_get_contents("https://api.weixin.qq.com/sns/oauth2/access_token?appid=wxf2150c4d2941b2ab&secret=ab95997f454e04b77911c18d09807831&code=".$code."&grant_type=authorization_code");//通过access_token查询用户信息
+        $weixin =  $this->https_request("https://api.weixin.qq.com/sns/oauth2/access_token?appid=wxf2150c4d2941b2ab&secret=ab95997f454e04b77911c18d09807831&code=".$code."&grant_type=authorization_code");//通过access_token查询用户信息
         $jsondecode = json_decode($weixin); //返回用户信息的JSON数据
         $array = get_object_vars($jsondecode);
         $openid = $array['openid']; //获取微信用户openid
