@@ -158,21 +158,23 @@ class classDbiL2sdkWechat
             die('Could not connect: ' . mysqli_error($mysqli));
         }
         //找到数据库中已有序号最大的，也许会出现序号(6 BYTE)用满的情况，这时应该考虑更新该算法，短期内不需要考虑这么复杂的情况
-        $result = $mysqli->query("SELECT * FROM `t_l2sdk_wechat_blebound` WHERE `fromuser` = '$fromUserName'");
+        $query_str = "SELECT * FROM `t_l2sdk_wechat_blebound` WHERE `fromuser` = '$fromUserName'";
+        $result = $mysqli->query($query_str);
+
         $i=0;
+        $resp = false; //初始化
         while($row = $result->fetch_array())
         {
-            $res[$i]["sid"] = $row['sid'];
-            $res[$i]["fromUserName"] = $row['fromuser'];
-            $res[$i]["deviceID"] = $row['deviceid'];
-            $res[$i]["openID"] = $row['openid'];
-            $res[$i]['deviceType'] = $row['devicetype'];
+            $resp[$i]["sid"] = $row['sid'];
+            $resp[$i]["fromUserName"] = $row['fromuser'];
+            $resp[$i]["deviceID"] = $row['deviceid'];
+            $resp[$i]["openID"] = $row['openid'];
+            $resp[$i]['deviceType'] = $row['devicetype'];
             $i++;
         }
-        if ($i == 0) $res = false;
 
         $mysqli->close();
-        return $res;
+        return $resp;
     }
 
     //查询绑定数据是否已经有了相同的记录，否则就不应该重新绑定并增加一条记录

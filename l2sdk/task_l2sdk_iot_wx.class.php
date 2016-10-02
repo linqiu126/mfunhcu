@@ -947,7 +947,7 @@ class classTaskL2sdkIotWx
     {
         $result = "";
         $wxDbObj = new classDbiL2sdkWechat();
-        $dbi_info = $wxDbObj->dbi_blebound_query($fromUser);
+        $dbi_info = $wxDbObj->dbi_blebound_query(trim($fromUser));
 
         if ($dbi_info == false)
         {
@@ -972,10 +972,9 @@ class classTaskL2sdkIotWx
             $respContent = $result;
             */
 
-            if (!empty($msg_body))
-            {
+            if (!empty($msg_body)) {
                 $i = 0;
-                while ($i<count($dbi_info)) //考虑同一个用户绑定多个设备的情况,循环发送命令给该用户绑定的所有设备
+                while ($i < count($dbi_info)) //考虑同一个用户绑定多个设备的情况,循环发送命令给该用户绑定的所有设备
                 {
                     $dev_table = $dbi_info[$i];
                     //BYTE系列化处理在L3消息处理过程中已完成,推送数据到硬件设备
@@ -989,18 +988,18 @@ class classTaskL2sdkIotWx
                     */
                     $i++;
                 }
-            }
 
-            //推送回复消息给微信界面
-            $logDbObj = new classDbiL1vmCommon();
-            $wx_trace = $logDbObj->dbi_LogSwitchInfo_inqury($fromUser);
-            if ($wx_trace ==1)
-            {
-                $str_body = unpack('H*',$msg_body);
-                $transMsg = $this->xms_responseText($fromUser, $toUser,
-                    "Send device EMC_INSTANT_READ" ."\n Result= " .json_encode($result) . "\n Content= " . json_encode($str_body));
-                //$transMsg = $this->send_custom_message(trim($data->FromUserName),"text",
-                //    "Send EMC_PUSH to Device" ."\n Result= " .json_encode($result) . "\n Content= " . json_encode($str_body));
+                //推送回复消息给微信界面
+                $logDbObj = new classDbiL1vmCommon();
+                $wx_trace = $logDbObj->dbi_LogSwitchInfo_inqury($fromUser);
+                if ($wx_trace == 1) {
+                    $str_body = unpack('H*', $msg_body);
+                    $transMsg = $this->xms_responseText($fromUser, $toUser,
+                        "Send device EMC_INSTANT_READ" . "\n Result= " . json_encode($result) . "\n Content= " . json_encode($str_body));
+                    //$transMsg = $this->send_custom_message(trim($data->FromUserName),"text",
+                    //    "Send EMC_PUSH to Device" ."\n Result= " .json_encode($result) . "\n Content= " . json_encode($str_body));
+                } else
+                    $transMsg = $result;
             }
             else
                 $transMsg = $result;

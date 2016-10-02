@@ -157,6 +157,15 @@ if (TC_EMCWX == true){
                                         <Event><![CDATA[CLICK]]></Event>
                                         <EventKey><![CDATA[CLICK_EMC_INSTANT_READ]]></EventKey>
                                       </xml>";
+
+    $GLOBALS["HTTP_RAW_POST_DATA"] = "<xml><ToUserName><![CDATA[gh_70c714952b02]]></ToUserName>
+                                        <FromUserName><![CDATA[oS0Chv0aebwN8O3-7v0hNAX7gy4c]]></FromUserName>
+                                        <CreateTime>1475388353</CreateTime>
+                                        <MsgType><![CDATA[event]]></MsgType>
+                                        <Event><![CDATA[CLICK]]></Event>
+                                        <EventKey><![CDATA[CLICK_EMC_INSTANT_READ]]></EventKey>
+                                        </xml>";
+
     require("../l1mainentry/cloud_callback_wechat.php");
     echo " \n[TC EMCWX: WEIXIN CLICK_EMC_INSTANT_READ END]\n";
 
@@ -185,7 +194,7 @@ if (TC_EMCWX == true){
     //EMC H5界面测试case
     echo " [TC L4EMCWX: wechat_login START]\n";
     $_GET["action"] = "wechat_login";
-    $_GET["code"] = "iCujwg6IdF96s0kxU2z0qp-iKsUaZutY9JmbHB6q_j2kbmJZFtigaeo0QIFl3KXDJ-YLNBqUERFhgJDOYrD8nQGapi_-cGAl9wKizC1D-QBSzHgSyvqL8exWxTcu1VMMVYZfAFAHKL";
+    $_GET["code"] = "001MGo242OUNvI0Vq55426Ol242MGo2e";
     require("../l4emcwxui/request.php");
     echo " \n[TC L4EMCWX: wechat_login END]\n";
 
