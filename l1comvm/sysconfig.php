@@ -277,16 +277,14 @@ if (isset($_SERVER['SERVER_NAME']))
         define("MFUN_CLOUD_DBPORT", 3306);           //缺省设置
         define("MFUN_CLOUD_DBHOST_S", "");          //无效
         //EMCWX应用定义
-        //define("MFUN_WX_APPID", "wxf2150c4d2941b2ab");  //小慧智能服务号AppID
-        //define("MFUN_WX_APPSECRET", "ab95997f454e04b77911c18d09807831");  //填写高级调用功能的app id, 请在微信开发模式后台查询
-        define("MFUN_WX_APPID", "wx1183be5c8f6a24b4");  //微信测试号AppID
-        define("MFUN_WX_APPSECRET", "d52a63064ed543c5eecae6c3df35be55");  //填写高级调用功能的app id, 请在微信开发模式后台查询
+        define("MFUN_WX_APPID", "wxf2150c4d2941b2ab");  //小慧智能服务号AppID
+        define("MFUN_WX_APPSECRET", "ab95997f454e04b77911c18d09807831");  //填写高级调用功能的app id, 请在微信开发模式后台查询
         define("MFUN_WX_ENCODINGAESKEY", "1NxQnLdUUOr4s1r0rnxfuhoRdF14C5NO79o6AknsIYE");   //填写加密用的EncodingAESKey，如接口为明文模式可忽略
 
         //测试公号的后台运行配置参数
         define("MFUN_WX_TOOL_SERVICENUM", "gh_70c714952b02");
-        define("MFUN_WX_TOOL_APPID", "wx1183be5c8f6a24b4");
-        define("MFUN_WX_TOOL_APPSECRET", "d52a63064ed543c5eecae6c3df35be55");
+        define("MFUN_WX_TOOL_APPID", "wxf2150c4d2941b2ab");
+        define("MFUN_WX_TOOL_APPSECRET", "ab95997f454e04b77911c18d09807831");
         define("MFUN_WX_TOOL_BLEMAC", "D03972A5EF27");
         //RabbitMQ消息队列定义
         define("MFUN_MQ_RABBIT_HOST", "127.0.0.1");
