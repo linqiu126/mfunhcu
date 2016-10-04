@@ -581,7 +581,8 @@ class classTaskL2sdkIotWx
                 break;
 
             case "unbind":  //来自设备的unbind事件
-                $result = $wxDbObj->dbi_blebound_delete($xmlmsg->FromUserName);
+                $wxDbObj->dbi_blebound_delete($xmlmsg->FromUserName);
+                $result = $this->compel_unbind($xmlmsg->DeviceID, $xmlmsg->FromUserName);
                 $respMsg = "R:DEVICE_EVENT=unbind, Result= " . $result;
                 break;
             case "scancode_push": //用户扫描二维码事件

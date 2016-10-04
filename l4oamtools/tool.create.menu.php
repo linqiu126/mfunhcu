@@ -74,7 +74,7 @@ elseif (MFUN_WX_APPID == "wxf2150c4d2941b2ab") //如果是正式小慧智能服�
     '{"button":[
                 {"type":"view","name":"辐射查看","url":"https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxf2150c4d2941b2ab&redirect_uri=http://www.hkrob.com/mfunhcu/l4emcwxui/index.html?response_type=code&scope=snsapi_base&state=1#wechat_redirect"},
 
-                {"type":"view","name":"智能云锁","url":"https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxf2150c4d2941b2ab&redirect_uri=http://www.hkrob.com/mfunhcu/l4cloudlockui/index.html?response_type=code&scope=snsapi_base&state=1#wechat_redirect"},
+                {"type":"view","name":"智能云锁","url":"http://www.hkrob.com/mfunhcu/l4cloudlockui/index.html"},
 
                 {"name":"关于",
                     "sub_button":[{"type":"click","name":"小慧科技","key":"CLICK_COMPANY"},

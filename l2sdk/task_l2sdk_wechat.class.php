@@ -4455,7 +4455,7 @@ class classTaskL2sdkWechat
                 $content = $wxDevObj->receive_locationEvent($postObj); //网格化存储GPS信息
                 break;
             case "VIEW":
-                $content = "跳转链接 ".$postObj->EventKey;
+                $content = $postObj->EventKey;
                 break;
             case "MASSSENDJOBFINISH":
                 $content = "消息ID：".$postObj->MsgID."，结果：".$postObj->Status."，粉丝数：".$postObj->TotalCount."，过滤：".$postObj->FilterCount."，发送成功：".$postObj->SentCount."，发送失败：".$postObj->ErrorCount;
