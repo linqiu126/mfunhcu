@@ -282,6 +282,10 @@ Make By：ZJL
 > 完善小慧智能服务号菜单以及EMC H5功能
 > 增加智能云锁任务
 
+//= LZH, 2016 Oct.07, CURRENT_SW_DELIVERY R02.D48
+> l4oamtool增加批量导入MAC，deviceID功能
+
+
 //待完善的功能
 1. 需要编制小型工具，支持工参数据，特别是图片内容的导入导出
 3. 恢复后台管理界面及相应工具

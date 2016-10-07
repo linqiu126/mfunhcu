@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <H1>WELCOME! 上海小慧智能科技欢迎您！<br><br></H1>
+</head>
+
+
+<body>
+
+<p>
+<H3>批量导入MAC地址和Device ID：</H3>
+
+<form action="tool.mac.upload.php" method="post"
+      enctype="multipart/form-data">
+    <label for="file">选择要导入的CSV文件：</label>
+    <input type="file" name="csvfile" id="csvfile" /> <br />
+    <input type="submit" name="submit" value="提交" />
+</form>
+
+</p>
+
+<p>
+<H3>后台强制绑定：</H3>
+<form action="tool.dev.bind.php" method="post">
+    硬件设备DeviceID：<input type="text" name="deviceid"><br>
+    硬件设备Qrcode：<input type="text" name="qrcode"><br>
+    硬件设备MAC：<input type="text" name="mac"><br>
+    微信用户OpenID：<input type="text" name="openid"><br>
+    <input type="submit">
+</form>
+</p>
+
+<p>
+<H3>强制刷新微信菜单：</H3>
+<form action="tool.create.menu.php" method="post">
+    <input type="submit">
+</form>
+</p>
+
+<p>
+<H3>根据MAC地址生成二维码，微信扫码后即关注，硬件蓝牙连通后自动绑定：</H3>
+<form action=" tool.qrcode.gen.php" method="post">
+    硬件MAC地址：<input type="text" name="mac_address"><br>
+    未来参数 一：<input type="number" name="parameter1"><br>
+    未来参数 二：<input type="date" name="parameter2"><br>
+    未来参数 三：<input type="radio" name="parameter3"><br>
+    未来参数 四：<input type="file" name="parameter4"><br>
+    未来参数 五：<input type="color" name="parameter5"><br>
+    未来参数 六：<input type="url" name="parameter6"><br>
+    未来参数 七：<input type="button" name="parameter7"><br>
+    <input type="submit">
+</form>
+</p>
+
+</body>
+</html>
