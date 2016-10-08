@@ -1468,7 +1468,7 @@ class classTaskL2sdkIotWx
         {
             $log_content = "T:" . json_encode($resp);
             $loggerObj->logger($project, $log_from, $log_time, $log_content);
-            echo trim($resp);
+            echo json_encode($resp);
         }
 
         //返回

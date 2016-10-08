@@ -201,11 +201,11 @@ define("MSG_ID_L4CLOUDLOCKUI_TO_L3F4_HCULOCKOPEN", $index++);  //打开云控锁
 
 //L4EMCWXUI部分
 define("MSG_ID_L4EMCWXUI_CLICK_INCOMING", $index++);
-define("MSG_ID_L4EMCWXUI_TO_L3F0_EMCUSER", $index++); //EMC H5界面请求当前微信用户的OPEN ID
-define("MSG_ID_L4EMCWXUI_TO_L3F0_EMCNOW", $index++);  //EMC H5界面请求当前辐射值
-define("MSG_ID_L4EMCWXUI_TO_L3F0_EMCHISTORY", $index++); //EMC H5界面请求历史辐射值
-define("MSG_ID_L4EMCWXUI_TO_L3F0_EMCALARM", $index++); //EMC H5界面请求辐射值warning，alarm门限
-define("MSG_ID_L4EMCWXUI_TO_L3F0_EMCTRACK", $index++); //EMC H5界面请求当前辐射记录地理轨迹
+define("MSG_ID_L4EMCWXUI_TO_L3WXOPR_EMCUSER", $index++); //EMC H5界面请求当前微信用户的OPEN ID
+define("MSG_ID_L4EMCWXUI_TO_L3WXOPR_EMCNOW", $index++);  //EMC H5界面请求当前辐射值
+define("MSG_ID_L4EMCWXUI_TO_L3WXOPR_EMCHISTORY", $index++); //EMC H5界面请求历史辐射值
+define("MSG_ID_L4EMCWXUI_TO_L3WXOPR_EMCALARM", $index++); //EMC H5界面请求辐射值warning，alarm门限
+define("MSG_ID_L4EMCWXUI_TO_L3WXOPR_EMCTRACK", $index++); //EMC H5界面请求当前辐射记录地理轨迹
 
 //L4TBSWRUI部分
 define("MSG_ID_L4TBSWR_CLICK_INCOMING", $index++);

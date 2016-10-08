@@ -48,7 +48,6 @@ include_once "../l2sensorproc/sensoripm/task_l2snr_ipm.class.php";
 include_once "../l2sensorproc/sensoriwm/task_l2snr_iwm.class.php";
 include_once "../l2sensorproc/sensorigm/task_l2snr_igm.class.php";
 include_once "../l2sensorproc/sensorihm/task_l2snr_ihm.class.php";
-include_once "../l3appl/fum0wechat/task_l3apl_f0wechat.class.php";
 include_once "../l3appl/fum1sym/task_l3apl_f1sym.class.php";
 include_once "../l3appl/fum2cm/task_l3apl_f2cm.class.php";
 include_once "../l3appl/fum3dm/task_l3apl_f3dm.class.php";
@@ -848,11 +847,6 @@ class classTaskL1vmCoreRouter
                 case MFUN_TASK_ID_L2SOCKET_LISTEN:
                     $obj = new classTaskL2SocketListen();
                     $obj->mfun_l2socket_listen_task_main_entry($this, $result["msgId"], $result["msgName"], $result["msgBody"]);
-                    break;
-
-                case MFUN_TASK_ID_L3APPL_FUM0WECHAT:
-                    $obj = new classTaskL3aplF0wechat();
-                    $obj->mfun_l3apl_f0wechat_task_main_entry($this, $result["msgId"], $result["msgName"], $result["msgBody"]);
                     break;
 
                 case MFUN_TASK_ID_L3APPL_FUM1SYM:

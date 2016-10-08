@@ -158,6 +158,7 @@ if (TC_EMCWX == true){
                                         <EventKey><![CDATA[CLICK_EMC_INSTANT_READ]]></EventKey>
                                       </xml>";
 
+    //小马的openid，数据库查找有问题
     $GLOBALS["HTTP_RAW_POST_DATA"] = "<xml><ToUserName><![CDATA[gh_70c714952b02]]></ToUserName>
                                         <FromUserName><![CDATA[oS0Chv0aebwN8O3-7v0hNAX7gy4c]]></FromUserName>
                                         <CreateTime>1475388353</CreateTime>
@@ -165,7 +166,16 @@ if (TC_EMCWX == true){
                                         <Event><![CDATA[CLICK]]></Event>
                                         <EventKey><![CDATA[CLICK_EMC_INSTANT_READ]]></EventKey>
                                         </xml>";
-
+    //WY的openid
+    /*
+    $GLOBALS["HTTP_RAW_POST_DATA"] = "<xml><ToUserName><![CDATA[gh_70c714952b02]]></ToUserName>
+                                        <FromUserName><![CDATA[oS0ChvzjHVx4urkipzc0EehuwQYE]]></FromUserName>
+                                        <CreateTime>1475388353</CreateTime>
+                                        <MsgType><![CDATA[event]]></MsgType>
+                                        <Event><![CDATA[CLICK]]></Event>
+                                        <EventKey><![CDATA[CLICK_EMC_INSTANT_READ]]></EventKey>
+                                        </xml>";
+    */
     require("../l1mainentry/cloud_callback_wechat.php");
     echo " \n[TC EMCWX: WEIXIN CLICK_EMC_INSTANT_READ END]\n";
 

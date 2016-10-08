@@ -53,7 +53,7 @@ class classTaskL4emcwxUi
                 case "wechat_login":
                     if (isset($_GET["code"])) $code = trim($_GET["code"]); else $code = "";
                     $input = array("code" => $code);
-                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4EMCWX_UI, MFUN_TASK_ID_L3APPL_FUM0WECHAT, MSG_ID_L4EMCWXUI_TO_L3F0_EMCUSER, "MSG_ID_L4EMCWXUI_TO_L3F0_EMCUSER",$input);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4EMCWX_UI, MFUN_TASK_ID_L3WX_OPR_EMC, MSG_ID_L4EMCWXUI_TO_L3WXOPR_EMCUSER, "MSG_ID_L4EMCWXUI_TO_L3WXOPR_EMCUSER",$input);
                     break;
                 case "personal_bracelet_radiation_current":
                     /*
@@ -66,7 +66,7 @@ class classTaskL4emcwxUi
                     */
                     if (isset($_GET["id"])) $openid = trim($_GET["id"]); else $openid = "";
                     $input = array("openid" => $openid);
-                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4EMCWX_UI, MFUN_TASK_ID_L3APPL_FUM0WECHAT, MSG_ID_L4EMCWXUI_TO_L3F0_EMCNOW, "MSG_ID_L4EMCWXUI_TO_L3F0_EMCNOW",$input);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4EMCWX_UI, MFUN_TASK_ID_L3WX_OPR_EMC, MSG_ID_L4EMCWXUI_TO_L3WXOPR_EMCNOW, "MSG_ID_L4EMCWXUI_TO_L3WXOPR_EMCNOW",$input);
                     break;
                 case "personal_bracelet_radiation_alarm":
                     /*
@@ -79,7 +79,7 @@ class classTaskL4emcwxUi
                     */
                     if (isset($_GET["id"])) $openid = trim($_GET["id"]); else $openid = "";
                     $input = array("openid" => $openid);
-                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4EMCWX_UI, MFUN_TASK_ID_L3APPL_FUM0WECHAT, MSG_ID_L4EMCWXUI_TO_L3F0_EMCALARM, "MSG_ID_L4EMCWXUI_TO_L3F0_EMCALARM",$input);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4EMCWX_UI, MFUN_TASK_ID_L3WX_OPR_EMC, MSG_ID_L4EMCWXUI_TO_L3WXOPR_EMCALARM, "MSG_ID_L4EMCWXUI_TO_L3WXOPR_EMCALARM",$input);
                     break;
                 case "personal_bracelet_radiation_history":
                     /*
@@ -96,7 +96,7 @@ class classTaskL4emcwxUi
                     */
                     if (isset($_GET["id"])) $openid = trim($_GET["id"]); else $openid = "";
                     $input = array("openid" => $openid);
-                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4EMCWX_UI, MFUN_TASK_ID_L3APPL_FUM0WECHAT, MSG_ID_L4EMCWXUI_TO_L3F0_EMCHISTORY, "MSG_ID_L4EMCWXUI_TO_L3F0_EMCHISTORY",$input);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4EMCWX_UI, MFUN_TASK_ID_L3WX_OPR_EMC, MSG_ID_L4EMCWXUI_TO_L3WXOPR_EMCHISTORY, "MSG_ID_L4EMCWXUI_TO_L3WXOPR_EMCHISTORY",$input);
                     break;
                 case "personal_bracelet_radiation_track":
                     /*
@@ -118,7 +118,7 @@ class classTaskL4emcwxUi
                     */
                     if (isset($_GET["id"])) $openid = trim($_GET["id"]); else $openid = "";
                     $input = array("openid" => $openid);
-                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4EMCWX_UI, MFUN_TASK_ID_L3APPL_FUM0WECHAT, MSG_ID_L4EMCWXUI_TO_L3F0_EMCTRACK, "MSG_ID_L4EMCWXUI_TO_L3F0_EMCTRACK",$input);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4EMCWX_UI, MFUN_TASK_ID_L3WX_OPR_EMC, MSG_ID_L4EMCWXUI_TO_L3WXOPR_EMCTRACK, "MSG_ID_L4EMCWXUI_TO_L3WXOPR_EMCTRACK",$input);
                     break;
                 default:
                     break;
