@@ -5,9 +5,7 @@
  * Date: 2016/6/20
  * Time: 22:59
  */
-include_once "../l1comvm/vmlayer.php";
-//require_once "../../l1comvm/sysconfig.php";
-
+//include_once "../../l1comvm/vmlayer.php";
 /*
 
 -- --------------------------------------------------------

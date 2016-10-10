@@ -613,19 +613,19 @@ class classTaskL2sdkIotWx
     {
         $result = "";
         switch($xmlmsg->EventKey) {
-            case "CLICK_USER":
+            case "CLICK_TEST_USER":
                 $transMsg = $this->xms_responseText($xmlmsg->FromUserName, $xmlmsg->ToUserName, "Appid = " . $this->appid . "\nTokenID = " . $this->access_token ."\nJS_ticket =" . $this->js_ticket);
                 break;
-            case "CLICK_VERSION":
+            case "CLICK_TEST_VERSION":
                 $deviceId = trim($xmlmsg->DeviceID);
                 $fromUser = trim($xmlmsg->FromUserName);
                 $toUser = trim($xmlmsg->ToUserName);
                 $transMsg = $this->func_click_version_read($deviceId, $fromUser, $toUser);
                 break;
-            case "CLICK_BIND":
+            case "CLICK_TEST_BIND":
                 $transMsg = $this->func_click_bindCommand ($xmlmsg); //强制绑定该用户，用于测试目的
                 break;
-            case "CLICK_BIND_INQ":
+            case "CLICK_TEST_BIND_INQ":
                 //增加第三方后台云的绑定状态
                 $wxDbObj = new classDbiL2sdkWechat();
                 $result = $wxDbObj->dbi_blebound_query($xmlmsg->FromUserName);
@@ -655,7 +655,8 @@ class classTaskL2sdkIotWx
 
                 $transMsg = $this->xms_responseText($xmlmsg->FromUserName, $xmlmsg->ToUserName, $dbResp . " \n" . $wxResp);
                 break;
-            case "CLICK_UNBIND":
+            case "CLICK_TEST_UNBIND":
+            case "CLICK_XHZN_UNBIND":
                 //先解绑微信云上的绑定状态
                 //这里就考虑一个设备，如果存储多个设备的话，需要多次解绑
                 $result = $this->getstat_qrcodebyOpenId($xmlmsg->FromUserName);
@@ -719,27 +720,27 @@ class classTaskL2sdkIotWx
                 $transMsg = $this->func_click_power_status_req($deviceId, $fromUser, $toUser);
                 break;
 
-            case "CLICK_TRACE_ON":
+            case "CLICK_TEST_TRACE_ON":
                 $trace_set = 1;
                 $logDbObj = new classDbiL1vmCommon();
                 $result = $logDbObj->dbi_LogSwitchInfo_set($xmlmsg->FromUserName,$trace_set);
                 $transMsg = $this->xms_responseText($xmlmsg->FromUserName, $xmlmsg->ToUserName, "设置微信log打印开关ON，Result=" . json_encode($result));
                 break;
 
-            case "CLICK_TRACE_OFF":
+            case "CLICK_TEST_TRACE_OFF":
                 $trace_set = 0;
                 $logDbObj = new classDbiL1vmCommon();
                 $result = $logDbObj->dbi_LogSwitchInfo_set($xmlmsg->FromUserName,$trace_set);
                 $transMsg = $this->xms_responseText($xmlmsg->FromUserName, $xmlmsg->ToUserName, "设置微信log打印开关OFF，Result=" . json_encode($result));
                 break;
 
-            case "CLICK_COMPANY":
+            case "CLICK_XHZN_COMPANY":
                 $transMsg = $this->xms_responseText($xmlmsg->FromUserName, $xmlmsg->ToUserName,"上海小慧智能科技有限公司");
                 break;
-            case "CLICK_MEMBER":
+            case "CLICK_XHZN_MEMBER":
                 $transMsg = $this->xms_responseText($xmlmsg->FromUserName, $xmlmsg->ToUserName,"欢迎加入会员专区");
                 break;
-            case "CLICK_HELP":
+            case "CLICK_XHZN_HELP":
                 $transMsg = $this->xms_responseText($xmlmsg->FromUserName, $xmlmsg->ToUserName,"您好，请问有什么需要帮助的？");
                 break;
             default:
@@ -1468,7 +1469,7 @@ class classTaskL2sdkIotWx
         {
             $log_content = "T:" . json_encode($resp);
             $loggerObj->logger($project, $log_from, $log_time, $log_content);
-            echo json_encode($resp);
+            echo $resp;
         }
 
         //返回

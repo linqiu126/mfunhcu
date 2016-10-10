@@ -133,7 +133,7 @@ if (TC_EMCWX == true){
                                         <CreateTime>1470315946</CreateTime>
                                         <MsgType><![CDATA[event]]></MsgType>
                                         <Event><![CDATA[CLICK]]></Event>
-                                        <EventKey><![CDATA[CLICK_COMPANY]]></EventKey>
+                                        <EventKey><![CDATA[CLICK_XHZN_COMPANY]]></EventKey>
                                      </xml>";
     require("../l1mainentry/cloud_callback_wechat.php");
     echo " \n[TC EMCWX: WEIXIN CLICK_COMPANY END]\n";
@@ -144,7 +144,7 @@ if (TC_EMCWX == true){
                                         <CreateTime>1472912904</CreateTime>
                                         <MsgType><![CDATA[event]]></MsgType>
                                         <Event><![CDATA[CLICK]]></Event>
-                                        <EventKey><![CDATA[CLICK_BIND_INQ]]></EventKey>
+                                        <EventKey><![CDATA[CLICK_TEST_BIND_INQ]]></EventKey>
                                       </xml>";
     require("../l1mainentry/cloud_callback_wechat.php");
     echo " \n[TC EMCWX: WEIXIN CLICK_BIND_INQ END]\n";

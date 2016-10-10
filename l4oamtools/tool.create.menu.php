@@ -46,21 +46,21 @@ if (MFUN_WX_APPID == "wx1183be5c8f6a24b4") //如果是测试号
     '{"button":[
                 {"name":"调测",
                     "sub_button":[
-                                  {"type":"click","name":"强制绑定","key":"CLICK_BIND"},
-                                  {"type":"click","name":"绑定查询","key":"CLICK_BIND_INQ"},
-                                  {"type":"click","name":"解绑自己","key":"CLICK_UNBIND"},
-                                  {"type":"click","name":"用户信息","key":"CLICK_USER"},
+                                  {"type":"click","name":"强制绑定","key":"CLICK_TEST_BIND"},
+                                  {"type":"click","name":"绑定查询","key":"CLICK_TEST_BIND_INQ"},
+                                  {"type":"click","name":"解绑自己","key":"CLICK_TEST_UNBIND"},
+                                  {"type":"click","name":"用户信息","key":"CLICK_TEST_USER"},
                                   {"type":"view","name":"智能云锁","url":"http://www.hkrob.com/mfunhcu/l4cloudlockui/index.html"}]
                 },
                 {"name":"设置",
                     "sub_button":[
                                   {"type":"click","name":"周期读取(开)","key":"CLICK_EMC_PERIOD_READ_OPEN"},
                                   {"type":"click","name":"周期读取(关)","key":"CLICK_EMC_PERIOD_READ_CLOSE"},
-                                  {"type":"click","name":"Trace开","key":"CLICK_TRACE_ON"},
-                                  {"type":"click","name":"Trace关","key":"CLICK_TRACE_OFF"}]
+                                  {"type":"click","name":"Trace开","key":"CLICK_TEST_TRACE_ON"},
+                                  {"type":"click","name":"Trace关","key":"CLICK_TEST_TRACE_OFF"}]
                 },
                 {"name":"生产",
-                     "sub_button":[{"type":"scancode_push","name":"扫码绑定","key":"QR_SCAN"},
+                     "sub_button":[{"type":"scancode_push","name":"扫码绑定","key":"TEST_QR_SCAN"},
                                    {"type":"click","name":"电量查询","key":"CLICK_POWER_STATUS"},
                                    {"type":"click","name":"瞬时读取","key":"CLICK_EMC_INSTANT_READ"}]
                 }
@@ -76,11 +76,11 @@ elseif (MFUN_WX_APPID == "wxf2150c4d2941b2ab") //如果是正式小慧智能服�
                 {"type":"view","name":"辐射查看","url":"https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxf2150c4d2941b2ab&redirect_uri=http://www.hkrob.com/mfunhcu/l4emcwxui/index.html?response_type=code&scope=snsapi_base&state=1#wechat_redirect"},
 
                 {"name":"我",
-                    "sub_button":[{"type":"scancode_push","name":"扫码绑定","key":"QR_SCAN"},
-                                  {"type":"click","name":"解绑自己","key":"CLICK_UNBIND"},
-                                  {"type":"click","name":"小慧科技","key":"CLICK_COMPANY"},
-                                  {"type":"click","name":"会员专区","key":"CLICK_MEMBER"},
-                                  {"type":"click","name":"微客服","key":"CLICK_HELP"}]
+                    "sub_button":[{"type":"scancode_push","name":"扫码绑定","key":"XHZN_QR_SCAN"},
+                                  {"type":"click","name":"解绑自己","key":"CLICK_XHZN_UNBIND"},
+                                  {"type":"click","name":"小慧科技","key":"CLICK_XHZN_COMPANY"},
+                                  {"type":"click","name":"会员专区","key":"CLICK_XHZN_MEMBER"},
+                                  {"type":"click","name":"微客服","key":"CLICK_XHZN_HELP"}]
                 }
          ]
     }';
