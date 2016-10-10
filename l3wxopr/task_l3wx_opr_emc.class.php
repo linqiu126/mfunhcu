@@ -5,7 +5,7 @@
  * Date: 2016/6/27
  * Time: 22:44
  */
-//include_once "../l1comvm/vmlayer.php";
+include_once "../l1comvm/vmlayer.php";
 include_once "dbi_l3wxopr.emc.class.php";
 
 class classTaskL3wxOprEmc
@@ -77,6 +77,29 @@ class classTaskL3wxOprEmc
     {
         $l3wxOprEmcDbObj = new classDbiL3wxOprEmc(); //初始化一个UI DB对象
         $emcvalue = $l3wxOprEmcDbObj->dbi_get_current_emcvalue($openid);
+
+        $wxDbObj = new classDbiL2sdkWechat();
+        $dbi_info = $wxDbObj->dbi_blebound_query(trim($openid));
+        if($dbi_info != false){
+            $ihuObj = new classTaskL2snrEmc();
+            $msg_body = $ihuObj->func_emc_instant_read_process("", "");
+
+            $i = 0;
+            while ($i < count($dbi_info)) //考虑同一个用户绑定多个设备的情况,循环发送命令给该用户绑定的所有设备
+            {
+                $dev_table = $dbi_info[$i];
+                //BYTE系列化处理在L3消息处理过程中已完成,推送数据到硬件设备
+                $result = $this->trans_msgtodevice($dev_table["deviceType"], $dev_table["deviceID"], $dev_table["openID"], $msg_body);
+                /*
+                if ($result["errcode"] ==40001)  //防止偶然未知原因导致token失效，强制刷新token并再次发送
+                {
+                    $this->compel_get_token($this->appid,$this->appsecret);
+                    $result = $this->trans_msgtodevice($dev_table["deviceType"], $dev_table["deviceID"], $dev_table["openID"], $msg_body);
+                }
+                */
+                $i++;
+            }
+        }
 
         $retval = array(
             'status' => 'true',
