@@ -80,6 +80,8 @@ class classTaskL3wxOprEmc
 
         $wxDbObj = new classDbiL2sdkWechat();
         $dbi_info = $wxDbObj->dbi_blebound_query(trim($openid));
+
+        $l2sdkIotWxObj = new classTaskL2sdkIotWx();
         if($dbi_info != false){
             $ihuObj = new classTaskL2snrEmc();
             $msg_body = $ihuObj->func_emc_instant_read_process("", "");
@@ -89,7 +91,7 @@ class classTaskL3wxOprEmc
             {
                 $dev_table = $dbi_info[$i];
                 //BYTE系列化处理在L3消息处理过程中已完成,推送数据到硬件设备
-                $result = $this->trans_msgtodevice($dev_table["deviceType"], $dev_table["deviceID"], $dev_table["openID"], $msg_body);
+                $result = $l2sdkIotWxObj->trans_msgtodevice($dev_table["deviceType"], $dev_table["deviceID"], $dev_table["openID"], $msg_body);
                 /*
                 if ($result["errcode"] ==40001)  //防止偶然未知原因导致token失效，强制刷新token并再次发送
                 {
