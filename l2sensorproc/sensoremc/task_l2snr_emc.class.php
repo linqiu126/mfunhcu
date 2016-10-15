@@ -62,7 +62,7 @@ class classTaskL2snrEmc
     {
         //$format = "A2EmcCmd/A2Len/A4EmcValue/A12Time/A12Gps";
         //$data = unpack($format, $content);
-        $emc_value = hexdec($content) & 0xFFFF;
+        $emc_value = $content; //注意，微信过来的EMC值已经在IOT_WX中进行了十进制转换，所有不需要再转换了
         $report["format"] = 0;
         $report["value"] = $emc_value; //保持和HCU EMC_data的处理一致，增加数据格式
         $gps = "";
@@ -84,7 +84,7 @@ class classTaskL2snrEmc
 
         $sensorId = hexdec($data['Equ']) & 0xFF;
         $report["format"] = hexdec($data['Format']) & 0xFF;
-        $report["value"] = hexdec($data['Emc']) & 0xFFFF;
+        $report["value"] = hexdec($data['Emc']) & 0xFFFF;  //转换成十进制
         $gps["flag_la"] = chr(hexdec($data['Flag_La']) & 0xFF);
         $gps["latitude"] = hexdec($data['Latitude']) & 0xFFFFFFFF;
         $gps["flag_lo"] = chr(hexdec($data['Flag_Lo']) & 0xFF);
