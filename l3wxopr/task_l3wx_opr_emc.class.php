@@ -92,13 +92,12 @@ class classTaskL3wxOprEmc
                 $dev_table = $dbi_info[$i];
                 //BYTE系列化处理在L3消息处理过程中已完成,推送数据到硬件设备
                 $result = $l2sdkIotWxObj->trans_msgtodevice($dev_table["deviceType"], $dev_table["deviceID"], $dev_table["openID"], $msg_body);
-                /*
+
                 if ($result["errcode"] ==40001)  //防止偶然未知原因导致token失效，强制刷新token并再次发送
                 {
-                    $this->compel_get_token($this->appid,$this->appsecret);
-                    $result = $this->trans_msgtodevice($dev_table["deviceType"], $dev_table["deviceID"], $dev_table["openID"], $msg_body);
+                    $l2sdkIotWxObj->invalid_token_compel_update($l2sdkIotWxObj->appid,$l2sdkIotWxObj->appsecret);
+                    $l2sdkIotWxObj->trans_msgtodevice($dev_table["deviceType"], $dev_table["deviceID"], $dev_table["openID"], $msg_body);
                 }
-                */
                 $i++;
             }
         }
