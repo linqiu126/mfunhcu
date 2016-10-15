@@ -569,6 +569,45 @@ class classDbiL3apF4icm
         $mysqli->close();
         return $resp;
     }
+
+    //TBSWR gettempstatus
+    public function dbi_tbswr_gettempstatus($uid, $StatCode)
+    {
+        //建立连接
+        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli) {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $mysqli->query("set character_set_results = utf8");
+
+        //根据StatCode查找特定HCU
+        $query_str = "SELECT * FROM `t_l3f3dm_siteinfo` WHERE `statcode` = '$StatCode' ";
+        $result = $mysqli->query($query_str);
+
+        if (($result != false) && ($result->num_rows)>0)
+        {
+            //生成控制命令的控制字
+            $apiL2snrCommonServiceObj = new classApiL2snrCommonService();
+            $ctrl_key = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_CMDID_TEMP_DATA);
+            $opt_key = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_OPT_TEMP_STATUS_REQ);
+
+            $row = $result->fetch_array();  //statcode和devcode一一对应
+            $DevCode = $row['devcode'];
+
+            $len = $apiL2snrCommonServiceObj->byte2string(strlen($opt_key)/2);
+            $respCmd = $ctrl_key . $len . $opt_key;
+
+            //通过9502端口建立tcp阻塞式socket连接，向HCU转发操控命令
+            $client = new socket_client_sync($DevCode, $respCmd);
+            $client->connect();
+
+            $resp = "Success";
+        }
+        else
+            $resp = "";
+        $mysqli->close();
+        return $resp;
+    }
 }
 
 ?>

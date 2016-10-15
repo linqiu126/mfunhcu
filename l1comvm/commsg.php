@@ -209,6 +209,7 @@ define("MSG_ID_L4EMCWXUI_TO_L3WXOPR_EMCTRACK", $index++); //EMC H5界面请求�
 
 //L4TBSWRUI部分
 define("MSG_ID_L4TBSWR_CLICK_INCOMING", $index++);
+define("MSG_ID_L4TBSWRUI_TO_L3F4_GETTEMPSTATUS", $index++);  //查询温度状态
 
 //L4NBIOTIPMUI部分
 define("MSG_ID_L4NBIOT_IPMUI_CLICK_INCOMING", $index++);
@@ -482,6 +483,8 @@ define("MFUN_HCU_OPT_VEDIOPIC_REQ", 0x07);   //mfunhcu向下位机取照片操�
 define("MFUN_HCU_OPT_VEDIOPIC_RESP", 0x87);   //下位机取完照片之后完成相应
 define("MFUN_HCU_OPT_LOCK_STATUS", 0x01);  //HCU_Lock_Status
 define("MFUN_HCU_OPT_LOCK_OPEN", 0x02);    //HCU_Lock_Open
+define("MFUN_HCU_OPT_TEMP_STATUS_REQ", 0x01); //读取hcu温度的状态
+define("MFUN_HCU_OPT_TEMP_STATUS_RESP", 0x81); //返回hcu温度的状态
 
 
 /**************************************************************************************
