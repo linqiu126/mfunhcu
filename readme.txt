@@ -285,6 +285,8 @@ Make By：ZJL
 //= LZH, 2016 Oct.07, CURRENT_SW_DELIVERY R02.D48
 > l4oamtool增加批量导入MAC，deviceID功能
 
+//= QL, 2016 Oct.15, CURRENT_SW_DELIVERY R02.D49
+> draft tbswr module done with draft test case passed
 
 //待完善的功能
 1. 需要编制小型工具，支持工参数据，特别是图片内容的导入导出
