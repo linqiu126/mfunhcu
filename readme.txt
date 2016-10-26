@@ -288,6 +288,11 @@ Make By：ZJL
 //= QL, 2016 Oct.15, CURRENT_SW_DELIVERY R02.D49
 > draft tbswr module done with draft test case passed
 
+//= LZH, 2016 Oct.26, CURRENT_SW_DELIVERY R02.D50
+> 清理代码，去掉表t_l3f3dm_sitemapping和表t_l3f2cm_projmapping
+> 修改数据表单的属性，将可以为空的字段设置成NULL
+> 数据库增加云控制锁项目表单
+
 //待完善的功能
 1. 需要编制小型工具，支持工参数据，特别是图片内容的导入导出
 3. 恢复后台管理界面及相应工具

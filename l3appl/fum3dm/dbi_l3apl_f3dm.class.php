@@ -55,44 +55,6 @@ INSERT INTO `t_l3f3dm_siteinfo` (`statcode`, `name`, `devcode`, `p_code`, `start
 -- --------------------------------------------------------
 
 --
--- 表的结构 `t_l3f3dm_sitemapping`
---
-
-CREATE TABLE IF NOT EXISTS `t_l3f3dm_sitemapping` (
-`sid` int(4) NOT NULL AUTO_INCREMENT,
-  `statcode` char(20) NOT NULL,
-  `p_code` char(20) NOT NULL,
-  PRIMARY KEY (`sid`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=20 ;
-
---
--- 转存表中的数据 `t_l3f3dm_sitemapping`
---
-
-INSERT INTO `t_l3f3dm_sitemapping` (`sid`, `statcode`, `p_code`) VALUES
-(1, '120101001', 'P_0001'),
-(2, '120101002', 'P_0002'),
-(3, '120101003', 'P_0003'),
-(4, '120101004', 'P_0004'),
-(5, '120101005', 'P_0005'),
-(6, '120101006', 'P_0006'),
-(7, '120101007', 'P_0007'),
-(8, '120101008', 'P_0008'),
-(9, '120101009', 'P_0009'),
-(10, '120101010', 'P_0010'),
-(11, '120101011', 'P_0011'),
-(12, '120101012', 'P_0012'),
-(13, '120101013', 'P_0013'),
-(14, '120101014', 'P_0014'),
-(15, '120101015', 'P_0015'),
-(16, '120101016', 'P_0016'),
-(17, '120101017', 'P_0017'),
-(18, '120101018', 'P_0018'),
-(19, '120101019', 'P_0019');
-
--- --------------------------------------------------------
-
---
 -- 表的结构 `t_l3f3dm_sum_currentreport`
 --
 
@@ -343,7 +305,7 @@ class classDbiL3apF3dm
         //把授权的项目组列表里对应的项目号也取出来追加到项目列表，获得该用户授权的完整项目列表
         for($i=0; $i<count($pg_list); $i++)
         {
-            $query_str = "SELECT `p_code` FROM `t_l3f3dm_sitemapping` WHERE `pg_code` = '$pg_list[$i]'";
+            $query_str = "SELECT `p_code` FROM `t_l3f2cm_projinfo` WHERE `pg_code` = '$pg_list[$i]'";
             $result = $mysqli->query($query_str);
             while($row = $result->fetch_array())
             {
@@ -357,7 +319,7 @@ class classDbiL3apF3dm
         $auth_list["stat_code"] = array();
         for($i=0; $i<count($p_list); $i++)
         {
-            $query_str = "SELECT `statcode` FROM `t_l3f3dm_sitemapping` WHERE `p_code` = '$p_list[$i]'";
+            $query_str = "SELECT `statcode` FROM `t_l3f3dm_siteinfo` WHERE `p_code` = '$p_list[$i]'";
             $result = $mysqli->query($query_str);
             while($row = $result->fetch_array())
             {
@@ -642,13 +604,10 @@ class classDbiL3apF3dm
         $query_str = "DELETE FROM `t_l3f3dm_siteinfo` WHERE `statcode` = '$statcode'";  //删除监测点信息表
         $result1 = $mysqli->query($query_str);
 
-        $query_str = "DELETE FROM `t_l3f3dm_sitemapping` WHERE `statcode` = '$statcode'";  //删除项目和监测点的映射关系
+        $query_str = "UPDATE `t_l2sdk_iothcu_inventory` SET `statcode` = '' WHERE (`statcode` = '$statcode' )"; //删除HCU设备表中的对应监测点号
         $result2 = $mysqli->query($query_str);
 
-        $query_str = "UPDATE `t_l2sdk_iothcu_inventory` SET `statcode` = '' WHERE (`statcode` = '$statcode' )"; //删除HCU设备表中的对应监测点号
-        $result3 = $mysqli->query($query_str);
-
-        $result = $result1 and $result2 and $result3;
+        $result = $result1 and $result2;
 
         $mysqli->close();
         return $result;

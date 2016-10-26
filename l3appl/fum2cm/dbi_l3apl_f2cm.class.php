@@ -83,53 +83,6 @@ INSERT INTO `t_l3f2cm_projgroup` (`pg_code`, `pg_name`, `owner`, `phone`, `depar
 ('PG_2222', '污水处理项目组', '李四', '13912349999', '污水项目组单位', '污水项目组单位地址', '该项目组管理所有污水处理项目的用户，项目以及相关权限');
 
 
-
--- --------------------------------------------------------
-
---
--- 表的结构 `t_l3f2cm_projmapping`
---
-
-CREATE TABLE IF NOT EXISTS `t_l3f2cm_projmapping` (
-  `sid` int(4) NOT NULL AUTO_INCREMENT,
-  `p_code` char(20) NOT NULL,
-  `pg_code` char(20) NOT NULL,
-  PRIMARY KEY (`sid`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=39 ;
-
---
--- 转存表中的数据 `t_l3f2cm_projmapping`
---
-
-INSERT INTO `t_l3f2cm_projmapping` (`sid`, `p_code`, `pg_code`) VALUES
-(1, 'P_0001', 'PG_1111'),
-(2, 'P_0002', 'PG_2222'),
-(5, 'P_0004', 'PG_1111'),
-(6, 'P_0006', 'PG_2222'),
-(7, 'P_0005', 'PG_1111'),
-(8, 'P_0007', 'PG_2222'),
-(9, 'P_0008', 'PG_2222'),
-(10, 'P_0009', 'PG_1111'),
-(11, 'P_0010', 'PG_2222'),
-(12, 'P_0003', 'PG_1111'),
-(13, 'P_0011', 'PG_1111'),
-(14, 'P_0012', 'PG_1111'),
-(15, 'P_0013', 'PG_1111'),
-(16, 'P_0014', 'PG_1111'),
-(17, 'P_0015', 'PG_1111'),
-(18, 'P_0018', 'PG_2222'),
-(19, 'P_0017', 'PG_2222'),
-(20, 'P_0016', 'PG_2222'),
-(36, 'P_0015', 'PG_3333'),
-(37, 'P_0017', 'PG_3333'),
-(38, 'P_0018', 'PG_3333');
-
-
-
-
-
-
-
  */
 
 class classDbiL3apF2cm
@@ -463,7 +416,7 @@ class classDbiL3apF2cm
         }
         $mysqli->query("set character_set_results = utf8");
 
-        $query_str = "SELECT * FROM `t_l3f2cm_projmapping` WHERE `pg_code` = '$pg_code' ";
+        $query_str = "SELECT * FROM `t_l3f2cm_projinfo` WHERE `pg_code` = '$pg_code' ";
         $result = $mysqli->query($query_str);
 
         $projlist = array();
@@ -515,19 +468,15 @@ class classDbiL3apF2cm
         {
             $query_str = "UPDATE `t_l3f2cm_projgroup` SET `pg_name` = '$pgname',`owner` = '$owner',`phone` = '$phone',`department` = '$department',
                           `addr` = '$addr', `backup` = '$stage' WHERE (`pg_code` = '$pgcode' )";
-            $result1 = $mysqli->query($query_str);
+            $result = $mysqli->query($query_str);
         }
         else //不存在，新增
         {
             $query_str = "INSERT INTO `t_l3f2cm_projgroup` (pg_code,pg_name,owner,phone,department,addr,backup)
                                   VALUES ('$pgcode','$pgname','$owner','$phone','$department', '$addr','$stage')";
 
-            $result1 = $mysqli->query($query_str);
+            $result = $mysqli->query($query_str);
         }
-
-        //如果存在，先删除项目组所有当前授权的项目list
-        $query_str = "DELETE FROM `t_l3f2cm_projmapping` WHERE `pg_code` = '$pgcode' ";
-        $result2 = $mysqli->query($query_str);
 
         //添加授权的项目list到该项目组
         if(!empty($projlist)){
@@ -535,13 +484,12 @@ class classDbiL3apF2cm
             while ($i < count($projlist))
             {
                 if(isset($projlist[$i]["id"])) $pcode = $projlist[$i]["id"]; else $pcode = "";
-                $query_str = "INSERT INTO `t_l3f2cm_projmapping` (p_code, pg_code) VALUE ('$pcode', '$pgcode')";
-                $result3 = $mysqli->query($query_str);
+                $query_str = "UPDATE `t_l3f2cm_projinfo` SET `pg_code` = '$pgcode' WHERE (`p_code` = '$pcode') ";
+                $result = $mysqli->query($query_str);
                 $i++;
             }
         }
 
-        $result = $result1 and $result2;
         $mysqli->close();
         return $result;
     }
@@ -601,7 +549,7 @@ class classDbiL3apF2cm
         $query_str = "DELETE FROM `t_l3f2cm_projgroup` WHERE `pg_code` = '$pgcode'";  //删除项目组信息表
         $result1 = $mysqli->query($query_str);
 
-        $query_str = "DELETE FROM `t_l3f2cm_projmapping` WHERE `pg_code` = '$pgcode'";  //删除项目组和项目的映射关系
+        $query_str = "UPDATE `t_l3f2cm_projinfo` SET `pg_code` = '' WHERE (`pg_code` = '$pgcode') "; //删除项目组和项目的映射关系
         $result2 = $mysqli->query($query_str);
 
         $result = $result1 and $result2;
