@@ -264,20 +264,20 @@ if (TC_L4AQYC_UI == true) {
 
     echo " [TC L4AQYC: DevNew START]\n";
     $_GET["action"] = "DevNew";
-    $_GET["DevCode"] = "11";
-    $_GET["StatCode"] = "11";
-    $_GET["StartTime"] = "11";
-    $_GET["PreEndTime"] = "11";
-    $_GET["EndTime"] = "11";
-    $_GET["DevStatus"] = "11";
-    $_GET["VideoURL"] = "11";
+    $_GET["DevCode"] = "HCU_SH_9999";
+    $_GET["StatCode"] = "120101007";
+    $_GET["StartTime"] = "1999-01-01";
+    $_GET["PreEndTime"] = "1999-01-01";
+    $_GET["EndTime"] = "1999-01-01";
+    $_GET["DevStatus"] = "true";
+    $_GET["VideoURL"] = "url//";
     require("../l4aqycui/request.php");
     echo " [TC L4AQYC: DevNew END]\n";
 
     echo " [TC L4AQYC: DevMod START]\n";
     $_GET["action"] = "DevMod";
-    $_GET["DevCode"] = "11";
-    $_GET["StatCode"] = "11";
+    $_GET["DevCode"] = "HCU_SH_0314";
+    $_GET["StatCode"] = "120101014";
     $_GET["StartTime"] = "11";
     $_GET["PreEndTime"] = "11";
     $_GET["EndTime"] = "11";

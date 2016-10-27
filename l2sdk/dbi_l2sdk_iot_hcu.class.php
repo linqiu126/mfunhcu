@@ -71,7 +71,7 @@ class classDbiL2sdkHcu
     }
 
     //验证HCU设备信息表中设备编号对应的MAC地址的合法性
-    public function dbi_hcuDevice_valid_mac($deviceid, $mac)
+    public function dbi_hcuDevice_valid_mac($devcode, $mac)
     {
         //建立连接
         $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
@@ -79,7 +79,7 @@ class classDbiL2sdkHcu
         {
             die('Could not connect: ' . mysqli_error($mysqli));
         }
-        $result = $mysqli->query("SELECT * FROM `t_l2sdk_iothcu_inventory` WHERE (`devcode` = '$deviceid'AND `macaddr` = '$mac') ");
+        $result = $mysqli->query("SELECT * FROM `t_l2sdk_iothcu_inventory` WHERE (`devcode` = '$devcode'AND `macaddr` = '$mac') ");
         if ($result->num_rows>0)
             $result = true;
         else
@@ -89,7 +89,7 @@ class classDbiL2sdkHcu
         return $result;
     }
 
-    public function dbi_hcuDevice_update_status($deviceid, $statcode, $status)
+    public function dbi_hcuDevice_update_status($devcode, $statcode, $status)
     {
         //建立连接
         $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
@@ -99,7 +99,7 @@ class classDbiL2sdkHcu
         }
 
         //因为devcode和statcode已经检查存在,所以直接更新状态
-        $result = $mysqli->query("UPDATE `t_l2sdk_iothcu_inventory` SET `status` = '$status' WHERE `devcode` = '$deviceid' AND `statcode` = '$statcode'");
+        $result = $mysqli->query("UPDATE `t_l2sdk_iothcu_inventory` SET `status` = '$status' WHERE `devcode` = '$devcode' AND `statcode` = '$statcode'");
 
         $mysqli->close();
         return $result;
@@ -159,26 +159,25 @@ class classDbiL2sdkHcu
         $devcode = $devinfo["DevCode"];
         $statcode = $devinfo["StatCode"];
         $starttime = $devinfo["StartTime"];
-        $preendtime = $devinfo["PreEndTime"];
+        $preendtime = $devinfo["PreEndTime"];  //！！！这个地方需要修改：预计结束时间和实际结束时间应该在项目信息里
         $endtime = $devinfo["EndTime"];
         if($devinfo["DevStatus"] == "true")
-            $devstatus = "on";
+            $devstatus = MFUN_L3APL_F3DM_DEVICE_STATUS_ON;
         else
-            $devstatus = "off";
+            $devstatus = MFUN_L3APL_F3DM_DEVICE_STATUS_OFF;
         $videourl = $devinfo["VideoURL"];
-        $default_sensor = MFUN_L3APL_F3DM_S_TYPE_EMC.";";
 
-        $query_str = "SELECT * FROM `t_l2sdk_iothcu_inventory` WHERE `devcode` = '$devcode'";
+        $query_str = "SELECT * FROM `t_l2sdk_iothcu_inventory` WHERE `devcode` = '$devcode'";  //更新设备表
         $result = $mysqli->query($query_str);
 
         if (($result->num_rows)>0) //重复，则覆盖
         {
-            $query_str = "UPDATE `t_l2sdk_iothcu_inventory` SET `statcode` = '$statcode',`switch` = '$devstatus',`videourl` = '$videourl' WHERE (`devcode` = '$devcode' )";
+            $query_str = "UPDATE `t_l2sdk_iothcu_inventory` SET `statcode` = '$statcode',`opendate` = '$starttime',`status` = '$devstatus',`videourl` = '$videourl' WHERE (`devcode` = '$devcode' )";
             $result = $mysqli->query($query_str);
         }
         else //不存在，新增
         {
-            $query_str = "INSERT INTO `t_l2sdk_iothcu_inventory` (devcode,statcode,switch,videourl,sensorlist) VALUES ('$devcode','$statcode','$devstatus','$videourl','$default_sensor')";
+            $query_str = "INSERT INTO `t_l2sdk_iothcu_inventory` (devcode,statcode,opendate,status,videourl) VALUES ('$devcode','$statcode','$starttime','$devstatus','$videourl')";
             $result = $mysqli->query($query_str);
         }
 

@@ -554,7 +554,7 @@ class classDbiL1vmCommon
     }
 
     //更新设备软,硬件版本
-    public function dbi_deviceVersion_update($deviceid, $hw_type, $hw_ver, $sw_rel, $sw_drop)
+    public function dbi_deviceVersion_update($devcode, $hw_type, $hw_ver, $sw_rel, $sw_drop)
     {
         //建立连接
         $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
@@ -563,16 +563,16 @@ class classDbiL1vmCommon
             die('Could not connect: ' . mysqli_error($mysqli));
         }
         //先检查是否存在，如果存在，就更新，否则创建
-        $result = $mysqli->query("SELECT * FROM `t_l2sdk_iothcu_inventory` WHERE `deviceid` = '$deviceid'");
+        $result = $mysqli->query("SELECT * FROM `t_l2sdk_iothcu_inventory` WHERE `devcode` = '$devcode'");
         if (($result->num_rows)>0)
         {
             $result=$mysqli->query("UPDATE `t_l2sdk_iothcu_inventory` SET `hw_type` = '$hw_type',`hw_ver` = '$hw_ver',`sw_rel` = '$sw_rel',`sw_drop` = '$sw_drop'
-                            WHERE `deviceid` = '$deviceid'");
+                            WHERE `devcode` = '$devcode'");
         }
         else
         {
-            $result=$mysqli->query("INSERT INTO `t_l2sdk_iothcu_inventory` (deviceid, hw_type, hw_ver, sw_rel,sw_drop)
-                          VALUES ('$deviceid', '$hw_type', '$hw_ver','$sw_rel','$sw_drop')");
+            $result=$mysqli->query("INSERT INTO `t_l2sdk_iothcu_inventory` (devcode, hw_type, hw_ver, sw_rel,sw_drop)
+                          VALUES ('$devcode', '$hw_type', '$hw_ver','$sw_rel','$sw_drop')");
         }
         $mysqli->close();
         return $result;

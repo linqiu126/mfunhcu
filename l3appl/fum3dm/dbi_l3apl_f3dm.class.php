@@ -531,11 +531,11 @@ class classDbiL3apF3dm
             $statcode = $row['statcode'];
             $macaddr = $row['macaddr'];
             $ipaddr = $row['ipaddr'];
-            $devstatus = $row['switch'];
+            $devstatus = $row['status'];
             $url = $row['videourl'];
-            if ($devstatus == "on")
+            if ($devstatus == MFUN_L3APL_F3DM_DEVICE_STATUS_ON)
                 $devstatus = "true";
-            elseif($devstatus == "off")
+            elseif($devstatus == MFUN_L3APL_F3DM_DEVICE_STATUS_OFF)
                 $devstatus = "false";
 
             $query_str = "SELECT * FROM `t_l3f3dm_siteinfo` WHERE `statcode` = '$statcode'";      //查询HCU设备对应监测点号
