@@ -194,10 +194,14 @@ define("MSG_ID_L4AQYCUI_TO_L3F7_SHOWUSERMSG", $index++);
 define("MSG_ID_L4AQYCUI_TO_L3F7_GETUSERIMG", $index++);
 define("MSG_ID_L4AQYCUI_TO_L3F7_CLEARUSERIMG", $index++);
 
-//L4CLOUDLOCK部分
-define("MSG_ID_L4CLOUDLOCKUI_CLICK_INCOMING", $index++);
-define("MSG_ID_L4CLOUDLOCKUI_TO_L3F4_HCULOCKSTATUS", $index++);  //查询云控锁状态
-define("MSG_ID_L4CLOUDLOCKUI_TO_L3F4_HCULOCKOPEN", $index++);  //打开云控锁
+//L4FHYS部分
+define("MSG_ID_L4FHYSUI_CLICK_INCOMING", $index++);
+define("MSG_ID_L4FHYSUI_TO_L3F3_DEVSENSOR", $index++);
+define("MSG_ID_L4FHYSUI_TO_L3F3_GETSTATICMONITORTABLE", $index++);
+define("MSG_ID_L4FHYSUI_TO_L3F5_DEVALARM", $index++);
+define("MSG_ID_L4FHYSUI_TO_L3F4_HCULOCKSTATUS", $index++);  //查询云控锁状态
+define("MSG_ID_L4FHYSUI_TO_L3F4_HCULOCKOPEN", $index++);  //打开云控锁
+
 
 //L4EMCWXUI部分
 define("MSG_ID_L4EMCWXUI_CLICK_INCOMING", $index++);
@@ -436,7 +440,7 @@ define("MFUN_HCU_CMDID_TEMP_DATA", 0x28);  //MODBUS 温度命令字
 define("MFUN_HCU_CMDID_HUMID_DATA", 0x29);  //MODBUS 湿度命令字
 define("MFUN_HCU_CMDID_HSMMP_DATA", 0x2C);  //Video命令字
 define("MFUN_HCU_CMDID_NOISE_DATA", 0x2B);  //Noise命令字
-define("MFUN_HCU_CMDID_CLOUDLOCK_DATA", 0x30);  //Cloudlock命令字
+define("MFUN_HCU_CMDID_FHYS_DATA", 0x30);  //Cloudlock命令字
 define("MFUN_HCU_CMDID_INVENTORY_DATA", 0xA0); //SW,HW 版本信息
 define("MFUN_HCU_CMDID_SW_UPDATE", 0xA1);   //HCU软件更新
 define("MFUN_HCU_CMDID_HEART_BEAT", 0xFE); //HCU心跳特殊控制字

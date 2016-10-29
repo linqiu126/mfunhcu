@@ -53,7 +53,7 @@ class classTaskL4tbswrUi
                     if (isset($_GET["id"])) $uid = trim($_GET["id"]); else  $uid = "";
                     if (isset($_GET["StatCode"])) $StatCode = trim($_GET["StatCode"]); else  $StatCode= "";
                     $input = array("uid" => $uid, "StatCode" => $StatCode);
-                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4CLOUDLOCK_UI, MFUN_TASK_ID_L3APPL_FUM4ICM, MSG_ID_L4TBSWRUI_TO_L3F4_GETTEMPSTATUS, "MSG_ID_L4TBSWRUI_TO_L3F4_GETTEMPSTATUS",$input);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4TBSWR_UI, MFUN_TASK_ID_L3APPL_FUM4ICM, MSG_ID_L4TBSWRUI_TO_L3F4_GETTEMPSTATUS, "MSG_ID_L4TBSWRUI_TO_L3F4_GETTEMPSTATUS",$input);
                     break;
 
                 /*$locked = 'true';

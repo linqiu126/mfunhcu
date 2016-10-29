@@ -533,9 +533,9 @@ class classDbiL3apF3dm
             $ipaddr = $row['ipaddr'];
             $devstatus = $row['status'];
             $url = $row['videourl'];
-            if ($devstatus == MFUN_L3APL_F3DM_DEVICE_STATUS_ON)
+            if ($devstatus == MFUN_L3APL_F3DM_DEVICE_STATUS_OPEN)
                 $devstatus = "true";
-            elseif($devstatus == MFUN_L3APL_F3DM_DEVICE_STATUS_OFF)
+            elseif($devstatus == MFUN_L3APL_F3DM_DEVICE_STATUS_CLOSE)
                 $devstatus = "false";
 
             $query_str = "SELECT * FROM `t_l3f3dm_siteinfo` WHERE `statcode` = '$statcode'";      //查询HCU设备对应监测点号
@@ -1322,6 +1322,353 @@ class classDbiL3apF3dm
 
         $mysqli->close();
         return $resp;
+    }
+
+    /*********************************智能云锁新增处理************************************************/
+
+    //UI GetStaticMonitorTable Request, 获取用户聚合数据
+    public function dbi_fhys_user_dataaggregate_req($uid)
+    {
+        //初始化返回值
+        $resp["column"] = array();
+        $resp['data'] = array();
+
+        //建立连接
+        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli) {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $mysqli->query("set character_set_results = utf8");
+
+        $auth_list["stat_code"] = array();
+        $auth_list["p_code"] = array();
+        $auth_list = $this->dbi_user_statproj_inqury($uid);
+
+        array_push($resp["column"], "站点编号");
+        array_push($resp["column"], "项目单位");
+        array_push($resp["column"], "区县");
+        array_push($resp["column"], "地址");
+        array_push($resp["column"], "负责人");
+        array_push($resp["column"], "联系电话");
+        array_push($resp["column"], "设备状态");
+        array_push($resp["column"], "门状态");
+        array_push($resp["column"], "锁状态");
+        array_push($resp["column"], "信号强度");
+        array_push($resp["column"], "剩余电量");
+        array_push($resp["column"], "震动告警");
+        array_push($resp["column"], "水浸告警");
+        array_push($resp["column"], "烟雾告警");
+        array_push($resp["column"], "温度");
+        array_push($resp["column"], "湿度");
+
+        for($i=0; $i<count($auth_list["stat_code"]); $i++)
+        {
+            $one_row = array();
+            $pcode = $auth_list["p_code"][$i];
+            $statcode = $auth_list["stat_code"][$i];
+            $query_str = "SELECT * FROM `t_l3f2cm_projinfo` WHERE `p_code` = '$pcode'";
+            $result = $mysqli->query($query_str);
+            if (($result->num_rows) > 0)
+            {
+                $row = $result->fetch_array();
+                array_push($one_row, $statcode);
+                array_push($one_row, $row["p_name"]);
+                array_push($one_row, $row["country"]);
+                array_push($one_row, $row["address"]);
+                array_push($one_row, $row["chargeman"]);
+                array_push($one_row, $row["telephone"]);
+            }
+            $query_str = "SELECT * FROM `t_l3f3dm_fhys_currentreport` WHERE `statcode` = '$statcode'";
+            $result = $mysqli->query($query_str);
+            if (($result->num_rows) > 0)
+            {
+                $row = $result->fetch_array();
+                //更新设备运行状态
+                $timestamp = strtotime($row["createtime"]);
+                $currenttime = time();
+                if ($currenttime > ($timestamp+180))  //如果最后一次测量报告距离现在已经超过3分钟
+                    array_push($one_row, "休眠中");
+                else
+                    array_push($one_row, "运行中");
+
+                //更新门运行状态
+                if($row["doorstat"] == MFUN_L3APL_F3DM_DEVICE_STATUS_OPEN)
+                    array_push($one_row, "正常打开");
+                elseif($row["doorstat"] == MFUN_L3APL_F3DM_DEVICE_STATUS_CLOSE)
+                    array_push($one_row, "正常关闭");
+                elseif($row["doorstat"] == MFUN_L3APL_F3DM_DEVICE_STATUS_ALARM)
+                    array_push($one_row, "暴力打开");
+                else array_push($one_row, "状态未知");
+                //更新锁运行状态
+                if($row["lockstat"] == MFUN_L3APL_F3DM_DEVICE_STATUS_OPEN)
+                    array_push($one_row, "正常打开");
+                elseif($row["lockstat"] == MFUN_L3APL_F3DM_DEVICE_STATUS_CLOSE)
+                    array_push($one_row, "正常关闭");
+                elseif($row["lockstat"] == MFUN_L3APL_F3DM_DEVICE_STATUS_ALARM)
+                    array_push($one_row, "暴力打开");
+                else array_push($one_row, "状态未知");
+
+                //更新GPRS信号强度
+                array_push($one_row, $row["siglevel"]);
+                //更新电池剩余电量
+                array_push($one_row, $row["battlevel"]);
+                //更新震动告警状态
+                if($row["vibralarm"] == MFUN_L3APL_F3DM_DEVICE_ALARM_YES)
+                    array_push($one_row, "有");
+                elseif($row["vibralarm"] == MFUN_L3APL_F3DM_DEVICE_ALARM_NO)
+                    array_push($one_row, "无");
+                else array_push($one_row, "未知");
+                //更新水浸告警状态
+                if($row["wateralarm"] == MFUN_L3APL_F3DM_DEVICE_ALARM_YES)
+                    array_push($one_row, "有");
+                elseif($row["wateralarm"] == MFUN_L3APL_F3DM_DEVICE_ALARM_NO)
+                    array_push($one_row, "无");
+                else array_push($one_row, "未知");
+                //更新烟雾告警状态
+                if($row["smokalarm"] == MFUN_L3APL_F3DM_DEVICE_ALARM_YES)
+                    array_push($one_row, "有");
+                elseif($row["smokalarm"] == MFUN_L3APL_F3DM_DEVICE_ALARM_NO)
+                    array_push($one_row, "无");
+                else array_push($one_row, "未知");
+                //更新温度
+                array_push($one_row, $row["temperature"]/10);
+                //更新湿度
+                array_push($one_row, $row["humidity"]/10);
+
+            }
+
+            array_push($resp['data'], $one_row);
+        }
+
+        $mysqli->close();
+        return $resp;
+    }
+
+    //UI DevAlarm Request, 获取当前的测量值，如果测量值超出范围，提示告警
+    public function dbi_fhys_dev_currentvalue_req($statcode)
+    {
+        //建立连接
+        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli) {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $mysqli->query("set character_set_results = utf8");
+
+        $query_str = "SELECT * FROM `t_l3f3dm_fhys_currentreport` WHERE `statcode` = '$statcode'";
+        $result = $mysqli->query($query_str);
+        if (($result->num_rows)>0)
+        {
+            $row = $result->fetch_array();  //暂时先这样处理，此处测量值计算要根据上报精度进行修改。。。。。
+            $humidity = $row['humidity']/1;
+            $temperature = $row['temperature']/1;
+            $battlevel = $row['battlevel']/1;
+            $siglevel = $row['siglevel']/1;
+
+            $currentvalue = array();
+
+            //更新集中器设备运行状态
+            $timestamp = strtotime($row["createtime"]);
+            $currenttime = time();
+            if ($currenttime > ($timestamp+180))  //如果最后一次测量报告距离现在已经超过3分钟
+            {
+                $devstat = "休眠中";
+                $alarm = "true";
+            } else {
+                $devstat = "运行中";
+                $alarm = "false";
+            }
+            $temp = array(
+                        'AlarmName'=> "设备状态：",
+                        'AlarmEName'=> "fibbox",
+                        'AlarmValue'=> $devstat,
+                        'AlarmUnit'=> "",
+                        'WarningTarget'=>$alarm);
+            array_push($currentvalue,$temp);
+
+            //更新门运行状态
+            if($row["doorstat"] == MFUN_L3APL_F3DM_DEVICE_STATUS_OPEN){
+                $doorstat = "正常打开";
+                $alarm = "true";
+            }
+            elseif($row["doorstat"] == MFUN_L3APL_F3DM_DEVICE_STATUS_CLOSE){
+                $doorstat = "正常关闭";
+                $alarm = "false";
+            }
+            elseif($row["doorstat"] == MFUN_L3APL_F3DM_DEVICE_STATUS_ALARM){
+                $doorstat = "暴力打开";
+                $alarm = "true";
+            }
+            else {
+                $doorstat = "状态未知";
+                $alarm = "true";
+            }
+            $temp = array(
+                        'AlarmName'=> "门状态：",
+                        'AlarmEName'=> "door",
+                        'AlarmValue'=> (string)$doorstat,
+                        'AlarmUnit'=> "",
+                        'WarningTarget'=>$alarm);
+            array_push($currentvalue,$temp);
+
+            //更新锁运行状态
+            if($row["lockstat"] == MFUN_L3APL_F3DM_DEVICE_STATUS_OPEN){
+                $lockstat = "正常打开";
+                $picname = "locko";
+                $alarm = "true";
+            }
+            elseif($row["lockstat"] == MFUN_L3APL_F3DM_DEVICE_STATUS_CLOSE){
+                $lockstat = "正常关闭";
+                $picname = "lockc";
+                $alarm = "false";
+            }
+            elseif($row["lockstat"] == MFUN_L3APL_F3DM_DEVICE_STATUS_ALARM){
+                $lockstat = "暴力打开";
+                $picname = "lockc";
+                $alarm = "true";
+            }
+            else{
+                $lockstat = "状态未知";
+                $picname = "lockc";
+                $alarm = "true";
+            }
+            $temp = array(
+                        'AlarmName'=> "锁状态：",
+                        'AlarmEName'=> (string)$picname,
+                        'AlarmValue'=> (string)$lockstat,
+                        'AlarmUnit'=> "",
+                        'WarningTarget'=>$alarm);
+            array_push($currentvalue,$temp);
+
+            //更新GPRS信号强度
+            if ($siglevel != NULL){
+                if ($siglevel < MFUN_L3APL_F3DM_TH_ALARM_GPRS)
+                    $alarm = "true";
+                else
+                    $alarm = "false";
+                $temp = array(
+                            'AlarmName'=>"GPRS信号强度：",
+                            'AlarmEName'=> "sig",
+                            'AlarmValue'=>(string)$siglevel,
+                            'AlarmUnit'=>"",
+                            'WarningTarget'=>$alarm);
+                array_push($currentvalue,$temp);
+            }
+
+            //更新电池剩余电量
+            if ($battlevel != NULL){
+                if ($battlevel < MFUN_L3APL_F3DM_TH_ALARM_BATT)
+                    $alarm = "true";
+                else
+                    $alarm = "false";
+                $temp = array(
+                            'AlarmName'=>"剩余电量：",
+                            'AlarmEName'=> "gprs",
+                            'AlarmValue'=>(string)$battlevel,
+                            'AlarmUnit'=>" %",
+                            'WarningTarget'=>$alarm);
+                array_push($currentvalue,$temp);
+            }
+
+            //更新震动告警状态
+            if($row["vibralarm"] == MFUN_L3APL_F3DM_DEVICE_ALARM_YES){
+                $vibralarm = "有";
+                $alarm = "true";
+            }
+            elseif($row["vibralarm"] == MFUN_L3APL_F3DM_DEVICE_ALARM_NO){
+                $vibralarm = "无";
+                $alarm = "false";
+            }
+            else{
+                $vibralarm = "状态未知";
+                $alarm = "true";
+            }
+            $temp = array(
+                        'AlarmName'=>"震动告警：",
+                        'AlarmEName'=> "vibr",
+                        'AlarmValue'=>(string)$vibralarm,
+                        'AlarmUnit'=>"",
+                        'WarningTarget'=>$alarm );
+            array_push($currentvalue,$temp);
+
+            //更新水浸告警状态
+            if($row["wateralarm"] == MFUN_L3APL_F3DM_DEVICE_ALARM_YES){
+                $wateralarm = "有";
+                $alarm = "true";
+            }
+            elseif($row["wateralarm"] == MFUN_L3APL_F3DM_DEVICE_ALARM_NO){
+                $wateralarm = "无";
+                $alarm = "false";
+            }
+            else{
+                $wateralarm = "未知";
+                $alarm = "true";
+            }
+            $temp = array(
+                'AlarmName'=>"水浸告警：",
+                'AlarmEName'=> "water",
+                'AlarmValue'=>(string)$wateralarm,
+                'AlarmUnit'=>"",
+                'WarningTarget'=>$alarm );
+            array_push($currentvalue,$temp);
+
+            //更新烟雾告警状态
+            if($row["smokalarm"] == MFUN_L3APL_F3DM_DEVICE_ALARM_YES){
+                $smokalarm = "有";
+                $alarm = "true";
+            }
+            elseif($row["smokalarm"] == MFUN_L3APL_F3DM_DEVICE_ALARM_NO){
+                $smokalarm = "无";
+                $alarm = "false";
+            }
+            else{
+                $smokalarm = "未知";
+                $alarm = "true";
+            }
+            $temp = array(
+                'AlarmName'=>"烟雾告警：",
+                'AlarmEName'=> "smok",
+                'AlarmValue'=>(string)$smokalarm,
+                'AlarmUnit'=>"",
+                'WarningTarget'=>$alarm );
+            array_push($currentvalue,$temp);
+
+            //更新温度
+            if ($temperature != NULL) {
+                if ($temperature > MFUN_L3APL_F3DM_TH_ALARM_TEMP)
+                    $alarm = "true";
+                else
+                    $alarm = "false";
+                $temp = array(
+                    'AlarmName' => "温度：",
+                    'AlarmEName' => "temp",
+                    'AlarmValue' => (string)$temperature,
+                    'AlarmUnit' => " 摄氏度",
+                    'WarningTarget' => $alarm
+                );
+                array_push($currentvalue, $temp);
+            }
+
+            //更新湿度
+            if ($humidity != NULL){
+                if ($humidity > MFUN_L3APL_F3DM_TH_ALARM_HUMID)
+                    $alarm = "true";
+                else
+                    $alarm = "false";
+                $temp = array(
+                    'AlarmName'=>"湿度：",
+                    'AlarmEName'=> "humi",
+                    'AlarmValue'=>(string)$humidity,
+                    'AlarmUnit'=>" %",
+                    'WarningTarget'=>$alarm
+                );
+                array_push($currentvalue,$temp);
+            }
+        }
+        else
+            $currentvalue = "";
+
+        $mysqli->close();
+        return $currentvalue;
     }
 
 

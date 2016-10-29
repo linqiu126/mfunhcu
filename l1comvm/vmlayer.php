@@ -14,6 +14,7 @@ include_once "../l1comvm/sysdim.php";
 include_once "../l1comvm/pg_emcwx_engpar.php";
 include_once "../l1comvm/pg_aqyc_engpar.php";
 include_once "../l1comvm/pg_tbswr_engpar.php";
+include_once "../l1comvm/pg_fhys_engpar.php";
 include_once "../l1comvm/sysversion.php";
 include_once "../l1comvm/sysmodule.php";
 include_once "../l1comvm/dbi_common.class.php";
@@ -63,7 +64,7 @@ include_once "../l3nbiotopr/task_l3nbiot_opr_meter.class.php";
 include_once "../l2timercron/task_l2timer_cron.class.php";
 include_once "../l4emcwxui/task_l4emcwx_ui.class.php";
 include_once "../l4aqycui/task_l4aqyc_ui.class.php";
-include_once "../l4cloudlockui/task_l4cloudlock_ui.class.php";
+include_once "../l4fhysui/task_l4fhys_ui.class.php";
 include_once "../l4tbswrui/task_l4tbswr_ui.class.php";
 include_once "../l4nbiotipmui/task_l4nbiot_ipm_ui.class.php";
 include_once "../l4nbiotiwmui/task_l4nbiot_iwm_ui.class.php";
@@ -565,11 +566,11 @@ class classTaskL1vmCoreRouter
                 return false;
             }
 
-        }elseif($parObj == MFUN_MAIN_ENTRY_CLOUDLOCK_UI){
+        }elseif($parObj == MFUN_MAIN_ENTRY_FHYS_UI){
             if ($this->mfun_l1vm_msg_send(MFUN_TASK_ID_L1VM,
-                    MFUN_TASK_ID_L4CLOUDLOCK_UI,
-                    MSG_ID_L4CLOUDLOCKUI_CLICK_INCOMING,
-                    "MSG_ID_L4CLOUDLOCKUI_CLICK_INCOMING",
+                    MFUN_TASK_ID_L4FHYS_UI,
+                    MSG_ID_L4FHYSUI_CLICK_INCOMING,
+                    "MSG_ID_L4FHYSUI_CLICK_INCOMING",
                     $msg) == false) {
                 $result = "Cloud: Send to message buffer error.";
                 $log_content = "P:" . json_encode($result);
@@ -914,9 +915,9 @@ class classTaskL1vmCoreRouter
                     $obj->mfun_l4aqyc_ui_task_main_entry($this, $result["msgId"], $result["msgName"], $result["msgBody"]);
                     break;
 
-                case MFUN_TASK_ID_L4CLOUDLOCK_UI:
-                    $obj = new classTaskL4cloudlockUi();
-                    $obj->mfun_l4cloudlock_ui_task_main_entry($this, $result["msgId"], $result["msgName"], $result["msgBody"]);
+                case MFUN_TASK_ID_L4FHYS_UI:
+                    $obj = new classTaskL4fhysUi();
+                    $obj->mfun_l4fhys_ui_task_main_entry($this, $result["msgId"], $result["msgName"], $result["msgBody"]);
                     break;
 
                 case MFUN_TASK_ID_L4EMCWX_UI:

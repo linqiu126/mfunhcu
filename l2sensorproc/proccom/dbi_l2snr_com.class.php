@@ -363,8 +363,8 @@ class classDbiL2snrCom
         {
             $temp = array(
                 'id' => $row['typeid'],
-                'name' => $row['name'],
-                'nickname' => $row['model'],  //to be update
+                'name' => $row['model'],
+                'nickname' => $row['name'],  //to be update
                 'memo' => $row['vendor'],
                 'code' => ""
             );
@@ -660,6 +660,45 @@ class classDbiL2snrCom
         $mysqli->close();
         return $resp;
     }
+
+    /*********************************智能云锁新增处理************************************************/
+
+    //UI AlarmType request, 获取所有需要生成告警数据表的传感器类型信息
+//UI DevSensor request, 获取所有传感器类型信息
+    public function dbi_fhys_dev_sensorinfo_req($devcode)
+    {
+        //建立连接
+        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli) {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $mysqli->query("set character_set_results = utf8");
+
+        $query_str = "SELECT * FROM `t_l3f4icm_sensorctrl` WHERE `deviceid` = '$devcode'";
+        $result = $mysqli->query($query_str);
+
+        $sensorinfo = array();
+        while($row = $result->fetch_array())
+        {
+            $typeid = $row['sensortype'];
+            $onoff = $row['onoffstatus'];
+
+            $paralist = array();
+
+            if((!empty($typeid)) AND (!empty($onoff))){
+                $temp = array(
+                    'id' => $typeid,
+                    'status' => $onoff,
+                    'para'=>$paralist
+                );
+            }
+            array_push($sensorinfo, $temp);
+        }
+
+        $mysqli->close();
+        return $sensorinfo;
+    }
+
 
 }
 

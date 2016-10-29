@@ -352,7 +352,7 @@ class classTaskL3aplF4icm
             $project = MFUN_PRJ_HCU_AQYCUI;
         }
         //功能HCU_Lock_Status
-        elseif ($msgId == MSG_ID_L4CLOUDLOCKUI_TO_L3F4_HCULOCKSTATUS)
+        elseif ($msgId == MSG_ID_L4FHYSUI_TO_L3F4_HCULOCKSTATUS)
         {
             //解开消息
             if (isset($_GET["id"])) $uid = trim($_GET["id"]); else  $uid = "";
@@ -363,7 +363,7 @@ class classTaskL3aplF4icm
             $project = MFUN_PRJ_HCU_AQYCUI;
         }
         //功能HCU_Lock_Open
-        elseif ($msgId == MSG_ID_L4CLOUDLOCKUI_TO_L3F4_HCULOCKOPEN)
+        elseif ($msgId == MSG_ID_L4FHYSUI_TO_L3F4_HCULOCKOPEN)
         {
             //解开消息
             if (isset($_GET["id"])) $uid = trim($_GET["id"]); else  $uid = "";

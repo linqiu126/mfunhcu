@@ -98,7 +98,25 @@ class classTaskL3aplF5fm
         return $jsonencode;
     }
 
-
+    /*********************************智能云锁新增处理************************************************/
+    function func_fhys_dev_alarm_process($StatCode)
+    {
+        $uiF3dmDbObj = new classDbiL3apF3dm(); //初始化一个UI DB对象
+        $alarmlist = $uiF3dmDbObj->dbi_fhys_dev_currentvalue_req($StatCode);
+        if(!empty($alarmlist))
+            $retval=array(
+                'status'=>'true',
+                'ret'=> $alarmlist
+            );
+        else
+            $retval=array(
+                'status'=>'true',
+                'ret'=> array()
+            );
+        //$jsonencode = _encode($retval);
+        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
+        return $jsonencode;
+    }
 
     /**************************************************************************************
      *                             任务入口函数                                           *
@@ -151,6 +169,16 @@ class classTaskL3aplF5fm
             $project = MFUN_PRJ_HCU_AQYCUI;
         }
 
+        /*********************************智能云锁新增处理************************************************/
+        //功能Dev Alarm
+        if ($msgId == MSG_ID_L4FHYSUI_TO_L3F5_DEVALARM)
+        {
+            //解开消息
+            if (isset($msg["StatCode"])) $StatCode = $msg["StatCode"]; else  $StatCode = "";
+            //具体处理函数
+            $resp = $this->func_fhys_dev_alarm_process($StatCode);
+            $project = MFUN_PRJ_HCU_FHYSUI;
+        }
 
         else{
             $resp = ""; //啥都不ECHO

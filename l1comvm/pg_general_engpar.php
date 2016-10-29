@@ -15,13 +15,12 @@ define("MFUN_L1VM_DBI_MAX_LOG_NUM", 5000);  //防止t_loginfo表单数据无限�
 define("MFUN_L3APL_F1SYM_SESSION_ID_LEN", 8); //UI界面session id字符串长度
 define("MFUN_L3APL_F1SYM_USER_ID_LEN", 6); //UI界面user id字符串长度
 define("MFUN_L3APL_F1SYM_UID_PREFIX", "UID");  //定义用户ID的特征字，用户ID必须以UID开头
-define("MFUN_L3APL_F3DM_DEVICE_STATUS_ON", "Y"); //设备工作正常
-define("MFUN_L3APL_F3DM_DEVICE_STATUS_OFF", "N");  //设备工作异常
-define("MFUN_L3APL_F3DM_DEVICE_STATUS_OPEN", "Y"); //设备（门，锁）打开
-define("MFUN_L3APL_F3DM_DEVICE_STATUS_CLOSE", "N");  //设备（门，锁）关闭
+define("MFUN_L3APL_F3DM_DEVICE_STATUS_OPEN", "Y"); //设备（门，锁）打开,设备正常运行
+define("MFUN_L3APL_F3DM_DEVICE_STATUS_CLOSE", "N");  //设备（门，锁）关闭，设备停止
 define("MFUN_L3APL_F3DM_DEVICE_STATUS_ALARM", "A");  //设备（门，锁）暴力打开
+define("MFUN_L3APL_F3DM_DEVICE_STATUS_SLEEP", "S");  //设备（门，锁）暴力打开
 define("MFUN_L3APL_F3DM_DEVICE_ALARM_YES", "Y");  //设备有告警
-define("MFUN_L3APL_F3DM_DEVICE_ALARM_N", "N");    //设备无告警
+define("MFUN_L3APL_F3DM_DEVICE_ALARM_NO", "N");    //设备无告警
 
 //项目类关键字
 define("MFUN_L3APL_F2CM_PG_CODE_PREFIX", "PG");   //定义项目组code的特征字，项目组code必须以“PG”开头
@@ -42,6 +41,9 @@ define("MFUN_L3APL_F3DM_TH_ALARM_PM25", 100);
 define("MFUN_L3APL_F3DM_TH_ALARM_WINDSPD", 20);
 define("MFUN_L3APL_F3DM_TH_ALARM_EMC", 100);
 define("MFUN_L3APL_F3DM_TH_ALARM_WINDDIR", 360);
+define("MFUN_L3APL_F3DM_TH_ALARM_GPRS", 50);
+define("MFUN_L3APL_F3DM_TH_ALARM_BATT", 30);
+
 
 //定义传感器类型
 define("MFUN_L3APL_F3DM_S_TYPE_PM", "S_0001");
