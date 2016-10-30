@@ -789,9 +789,11 @@ class classTaskL2sdkIotWx
                 $format = "A4seq/A4errorCode/A4data";
                 $unpack_data = unpack($format, $msg_body);
                 $value = hexdec($unpack_data['data'])& 0xFFFF;
-                $msgContent = "EMC Value = " . $value . "mV";
-                $this->send_custom_message($fromUser, "text", $msgContent);  //使用API-CURL推送EMC测量值到微信用户
-
+                if($this->appid == "wx1183be5c8f6a24b4")//如果是测试号，才进行消息推送
+                {
+                    $msgContent = "EMC Value = " . $value . "mV";
+                    $this->send_custom_message($fromUser, "text", $msgContent);  //使用API-CURL推送EMC测量值到微信用户
+                }
                 $msg = array("project" => MFUN_PRJ_IHU_EMCWX,
                     "log_from" => $fromUser,
                     "platform" => MFUN_TECH_PLTF_WECHAT,

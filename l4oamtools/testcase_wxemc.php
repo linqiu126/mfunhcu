@@ -110,19 +110,9 @@ if (TC_EMCWX == true){
                                         <OpenID><![CDATA[oS0Chv3Uum1TZqHaCEb06AoBfCvY]]></OpenID>
                                      </xml>";
 
-    /*
-    $GLOBALS["HTTP_RAW_POST_DATA"] = "<xml><ToUserName><![CDATA[gh_70c714952b02]]></ToUserName>
-                                        <FromUserName><![CDATA[oS0Chv3Uum1TZqHaCEb06AoBfCvY]]></FromUserName>
-                                        <CreateTime>1473082238</CreateTime>
-                                        <MsgType><![CDATA[device_text]]></MsgType>
-                                        <DeviceType><![CDATA[gh_70c714952b02]]></DeviceType>
-                                        <DeviceID><![CDATA[gh_70c714952b02_8cd47e1f6141e49a4e45f4b807cf41fe]]></DeviceID>
-                                        <Content><![CDATA[/s8AAQAbAAEAAwAASGVsbG8sIFdlQ2hhdCEA]]></Content>
-                                        <SessionID>1732</SessionID>
-                                        <MsgID>12571034008</MsgID>
-                                        <OpenID><![CDATA[oS0Chv3Uum1TZqHaCEb06AoBfCvY]]></OpenID>
-                                      </xml>";
-    */
+
+    $GLOBALS["HTTP_RAW_POST_DATA"] = "<xml><ToUserName><![CDATA[gh_4667dc241921]]></ToUserName><FromUserName><![CDATA[oMjZ7v_s-Y5R1fKTvBTzcMl9C65o]]></FromUserName><CreateTime>1477844120</CreateTime><MsgType><![CDATA[device_text]]></MsgType><DeviceType><![CDATA[gh_4667dc241921]]></DeviceType><DeviceID><![CDATA[gh_4667dc241921_e8c6e463debe1d01]]></DeviceID><Content><![CDATA[/s8AAQAPIIEAEwAAIAAA]]></Content><SessionID>2309</SessionID><MsgID>14600315373</MsgID><OpenID><![CDATA[oMjZ7v_s-Y5R1fKTvBTzcMl9C65o]]></OpenID></xml>";
+
     require("../l1mainentry/cloud_callback_wechat.php");
     echo " \n[TC EMCWX: EMC DEVICE_TEXT END]\n";
 
