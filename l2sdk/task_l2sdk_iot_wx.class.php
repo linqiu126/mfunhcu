@@ -626,6 +626,7 @@ class classTaskL2sdkIotWx
                 $transMsg = $this->func_click_bindCommand ($xmlmsg); //强制绑定该用户，用于测试目的
                 break;
             case "CLICK_TEST_BIND_INQ":
+            case "CLICK_XHZN_BIND_INQ":
                 //增加第三方后台云的绑定状态
                 $wxDbObj = new classDbiL2sdkWechat();
                 $result = $wxDbObj->dbi_blebound_query($xmlmsg->FromUserName);
