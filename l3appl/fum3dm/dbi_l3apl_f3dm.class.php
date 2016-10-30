@@ -1562,7 +1562,7 @@ class classDbiL3apF3dm
                     $alarm = "false";
                 $temp = array(
                             'AlarmName'=>"剩余电量：",
-                            'AlarmEName'=> "gprs",
+                            'AlarmEName'=> "batt",
                             'AlarmValue'=>(string)$battlevel,
                             'AlarmUnit'=>" %",
                             'WarningTarget'=>$alarm);
