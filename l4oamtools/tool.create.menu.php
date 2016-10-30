@@ -77,8 +77,7 @@ elseif (MFUN_WX_APPID == "wxf2150c4d2941b2ab") //如果是正式小慧智能服�
                 {"name":"我",
                     "sub_button":[{"type":"scancode_push","name":"扫码绑定","key":"XHZN_QR_SCAN"},
                                   {"type":"click","name":"解绑自己","key":"CLICK_XHZN_UNBIND"},
-                                  {"type":"click","name":"小慧科技","key":"CLICK_XHZN_COMPANY"},
-                                  {"type":"click","name":"会员专区","key":"CLICK_XHZN_MEMBER"},
+                                  {"type":"view","name":"小慧科技","url":"http://www.hkrob.com/home/index.html"},
                                   {"type":"click","name":"微客服","key":"CLICK_XHZN_HELP"}]
                 }
          ]
