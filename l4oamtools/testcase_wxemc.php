@@ -111,8 +111,17 @@ if (TC_EMCWX == true){
                                      </xml>";
 
 
-    $GLOBALS["HTTP_RAW_POST_DATA"] = "<xml><ToUserName><![CDATA[gh_4667dc241921]]></ToUserName><FromUserName><![CDATA[oMjZ7v_s-Y5R1fKTvBTzcMl9C65o]]></FromUserName><CreateTime>1477844120</CreateTime><MsgType><![CDATA[device_text]]></MsgType><DeviceType><![CDATA[gh_4667dc241921]]></DeviceType><DeviceID><![CDATA[gh_4667dc241921_e8c6e463debe1d01]]></DeviceID><Content><![CDATA[/s8AAQAPIIEAEwAAIAAA]]></Content><SessionID>2309</SessionID><MsgID>14600315373</MsgID><OpenID><![CDATA[oMjZ7v_s-Y5R1fKTvBTzcMl9C65o]]></OpenID></xml>";
-
+    $GLOBALS["HTTP_RAW_POST_DATA"] = "<xml><ToUserName><![CDATA[gh_4667dc241921]]></ToUserName>
+                                        <FromUserName><![CDATA[oMjZ7v_s-Y5R1fKTvBTzcMl9C65o]]></FromUserName>
+                                        <CreateTime>1477844120</CreateTime>
+                                        <MsgType><![CDATA[device_text]]></MsgType>
+                                        <DeviceType><![CDATA[gh_4667dc241921]]></DeviceType>
+                                        <DeviceID><![CDATA[gh_4667dc241921_e8c6e463debe1d01]]></DeviceID>
+                                        <Content><![CDATA[/s8AAQAPIIEAEwAAIAAA]]></Content>
+                                        <SessionID>2309</SessionID>
+                                        <MsgID>14600315373</MsgID>
+                                        <OpenID><![CDATA[oMjZ7v_s-Y5R1fKTvBTzcMl9C65o]]></OpenID>
+                                     </xml>";
     require("../l1mainentry/cloud_callback_wechat.php");
     echo " \n[TC EMCWX: EMC DEVICE_TEXT END]\n";
 
@@ -147,7 +156,7 @@ if (TC_EMCWX == true){
                                         <Event><![CDATA[CLICK]]></Event>
                                         <EventKey><![CDATA[CLICK_XHZN_UNBIND]]></EventKey>
                                       </xml>";
-    require("../l1mainentry/cloud_callback_wechat.php");
+    //require("../l1mainentry/cloud_callback_wechat.php");
     echo " \n[TC EMCWX: WEIXIN CLICK_XHZN_UNBIND END]\n";
 
     echo " [TC EMCWX: WEIXIN CLICK_EMC_INSTANT_READ START]\n";
@@ -211,7 +220,7 @@ if (TC_EMCWX == true){
 
     echo " [TC L4EMCWX: personal_bracelet_radiation_current START]\n";
     $_GET["action"] = "personal_bracelet_radiation_current";
-    $_GET["id"] = "oS0Chv3Uum1TZqHaCEb06AoBfCvY";
+    $_GET["id"] = "oMjZ7v_s-Y5R1fKTvBTzcMl9C65o";
     require("../l4emcwxui/request.php");
     echo " \n[TC L4EMCWX: personal_bracelet_radiation_current END]\n";
 

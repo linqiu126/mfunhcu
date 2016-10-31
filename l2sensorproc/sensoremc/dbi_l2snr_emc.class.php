@@ -96,11 +96,11 @@ class classDbiL2snrEmc
             $longitude = $gps["longitude"];
         }
         else{
-            $altitude = "";
-            $flag_la = "";
-            $latitude = "";
-            $flag_lo = "";
-            $longitude = "";
+            $altitude = 0;
+            $flag_la = "N";
+            $latitude = 0;
+            $flag_lo = "E";
+            $longitude = 0;
         }
 
         $emc = $data["value"];
@@ -126,8 +126,9 @@ class classDbiL2snrEmc
         }
         else   //不存在，新增
         {
-            $result = $mysqli->query("INSERT INTO `t_l2snr_emcdata` (deviceid,sensorid,emcvalue,reportdate,hourminindex,altitude,flag_la,latitude,flag_lo,longitude)
-                      VALUES ('$deviceid','$sensorid','$emc', '$date', '$hourminindex','$altitude', '$flag_la','$latitude', '$flag_lo','$longitude')");
+            $query_str = "INSERT INTO `t_l2snr_emcdata` (deviceid,sensorid,emcvalue,reportdate,hourminindex,altitude,flag_la,latitude,flag_lo,longitude)
+                      VALUES ('$deviceid','$sensorid','$emc', '$date', '$hourminindex','$altitude', '$flag_la','$latitude', '$flag_lo','$longitude')";
+            $result = $mysqli->query($query_str);
         }
         $mysqli->close();
         return $result;
