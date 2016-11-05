@@ -18,7 +18,7 @@ if (TC_L4TBSWR_UI == true) {
     $_GET["action"] = "GetTempStatus";
     $_GET["id"] = "admin"; //暂时用admin用户名
     $_GET["StatCode"] = "120101001"; //t_l3f3dm_siteinfo中对应HCU_SH_0301
-    require("../l4tbswrui/request.php");
+    //require("../l4tbswrui/request.php");
     echo " [TC L4TBSWR: GetTempStatus END]\n";
 
     //TEST CASE: L4TBSWR-UI界面: END

@@ -156,16 +156,16 @@ class classDbiL2snrPm25
         $pm10 = $data["pm10"];
 
         //存储新记录，如果发现是已经存在的数据，则覆盖，否则新增
-        $result = $mysqli->query("SELECT * FROM `t_l2snr_minreport` WHERE (`devcode` = '$devcode' AND `statcode` = '$statcode'
+        $result = $mysqli->query("SELECT * FROM `t_l2snr_aqyc_minreport` WHERE (`devcode` = '$devcode' AND `statcode` = '$statcode'
                                   AND `reportdate` = '$date' AND `hourminindex` = '$hourminindex')");
         if (($result != false) && ($result->num_rows)>0)  //重复，则覆盖
         {
-            $result=$mysqli->query("UPDATE `t_l2snr_minreport` SET `pm01` = '$pm01',`pm25` = '$pm25',`pm10` = '$pm10'
+            $result=$mysqli->query("UPDATE `t_l2snr_aqyc_minreport` SET `pm01` = '$pm01',`pm25` = '$pm25',`pm10` = '$pm10'
                           WHERE (`devcode` = '$devcode' AND `statcode` = '$statcode' AND `reportdate` = '$date' AND `hourminindex` = '$hourminindex')");
         }
         else   //不存在，新增
         {
-            $result=$mysqli->query("INSERT INTO `t_l2snr_minreport` (devcode,statcode,pm01,pm25,pm10,reportdate,hourminindex)
+            $result=$mysqli->query("INSERT INTO `t_l2snr_aqyc_minreport` (devcode,statcode,pm01,pm25,pm10,reportdate,hourminindex)
                                   VALUES ('$devcode', '$statcode', '$pm01','$pm25','$pm10','$date','$hourminindex')");
         }
         $mysqli->close();

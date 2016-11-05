@@ -313,16 +313,16 @@ class classDbiL2snrEmc
         $emc = $data["value"];
 
         //存储新记录，如果发现是已经存在的数据，则覆盖，否则新增
-        $query_str = "SELECT * FROM `t_l2snr_minreport` WHERE (`devcode` = '$devcode' AND `statcode` = '$statcode' AND `reportdate` = '$date' AND `hourminindex` = '$hourminindex')";
+        $query_str = "SELECT * FROM `t_l2snr_aqyc_minreport` WHERE (`devcode` = '$devcode' AND `statcode` = '$statcode' AND `reportdate` = '$date' AND `hourminindex` = '$hourminindex')";
         $result = $mysqli->query($query_str);
         if (($result != false) && ($result->num_rows)>0)   //重复，则覆盖
         {
-            $query_str = "UPDATE `t_l2snr_minreport` SET `emcvalue` = '$emc' WHERE (`devcode` = '$devcode' AND `statcode` = '$statcode' AND `reportdate` = '$date' AND `hourminindex` = '$hourminindex')";
+            $query_str = "UPDATE `t_l2snr_aqyc_minreport` SET `emcvalue` = '$emc' WHERE (`devcode` = '$devcode' AND `statcode` = '$statcode' AND `reportdate` = '$date' AND `hourminindex` = '$hourminindex')";
             $result=$mysqli->query($query_str);
         }
         else   //不存在，新增
         {
-            $query_str = "INSERT INTO `t_l2snr_minreport` (devcode,statcode,reportdate,hourminindex,emcvalue) VALUES ('$devcode','$statcode','$date', '$hourminindex','$emc')";
+            $query_str = "INSERT INTO `t_l2snr_aqyc_minreport` (devcode,statcode,reportdate,hourminindex,emcvalue) VALUES ('$devcode','$statcode','$date', '$hourminindex','$emc')";
             $result = $mysqli->query($query_str);
         }
         $mysqli->close();

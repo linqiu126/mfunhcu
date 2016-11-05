@@ -142,10 +142,10 @@ INSERT INTO `t_l2snr_hourreport` (`sid`, `devcode`, `statcode`, `reportdate`, `h
 -- --------------------------------------------------------
 
 --
--- 表的结构 `t_l2snr_minreport`
+-- 表的结构 `t_l2snr_aqyc_minreport`
 --
 
-CREATE TABLE IF NOT EXISTS `t_l2snr_minreport` (
+CREATE TABLE IF NOT EXISTS `t_l2snr_aqyc_minreport` (
   `sid` int(4) NOT NULL AUTO_INCREMENT,
   `devcode` char(20) NOT NULL,
   `statcode` char(20) NOT NULL,
@@ -167,10 +167,10 @@ CREATE TABLE IF NOT EXISTS `t_l2snr_minreport` (
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=55777 ;
 
 --
--- 转存表中的数据 `t_l2snr_minreport`
+-- 转存表中的数据 `t_l2snr_aqyc_minreport`
 --
 
-INSERT INTO `t_l2snr_minreport` (`sid`, `devcode`, `statcode`, `reportdate`, `hourminindex`, `emcvalue`, `pm01`, `pm25`, `pm10`, `noise`, `windspeed`, `winddirection`, `rain`, `temperature`, `humidity`, `airpressure`, `pmdataflag`) VALUES
+INSERT INTO `t_l2snr_aqyc_minreport` (`sid`, `devcode`, `statcode`, `reportdate`, `hourminindex`, `emcvalue`, `pm01`, `pm25`, `pm10`, `noise`, `windspeed`, `winddirection`, `rain`, `temperature`, `humidity`, `airpressure`, `pmdataflag`) VALUES
 (614, 'HCU_SH_0302', '120101002', '2016-04-21', 1387, 5655, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 700, 228, NULL, NULL),
 (615, 'HCU_SH_0302', '120101002', '2016-04-21', 1388, 4795, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 700, 228, NULL, NULL),
 (616, 'HCU_SH_0302', '120101002', '2016-04-21', 1389, 5247, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 702, 228, NULL, NULL),
@@ -488,7 +488,7 @@ class classDbiL2snrCom
         //查找在给定日期给定小时内该设备的所有记录
         $start = $hour*60;
         $end = ($hour+1)*60;
-        $result = $mysqli->query("SELECT * FROM `t_l2snr_minreport` WHERE `devcode` = '$devcode' AND `statcode` = '$statcode' AND
+        $result = $mysqli->query("SELECT * FROM `t_l2snr_aqyc_minreport` WHERE `devcode` = '$devcode' AND `statcode` = '$statcode' AND
                           (`hourminindex` >= '$start' AND `hourminindex` < '$end')");
 
         if ($result->num_rows < MFUN_L2SNR_COMAPI_HOUR_VALIDE_NUM )  //如果该日期指定的小时里分钟测量值小于最低要求值，则该小时平均值无效，直接返回
@@ -639,7 +639,7 @@ class classDbiL2snrCom
         array_push($resp["column"],"湿度");
         array_push($resp["column"],"噪声");
 
-        $query_str = "SELECT * FROM `t_l2snr_minreport` WHERE `statcode` = '$statcode'AND `reportdate`>= '$start' AND `reportdate`<= '$end'";
+        $query_str = "SELECT * FROM `t_l2snr_aqyc_minreport` WHERE `statcode` = '$statcode'AND `reportdate`>= '$start' AND `reportdate`<= '$end'";
         $result = $mysqli->query($query_str);
         while($info = $result->fetch_array())
         {

@@ -12,15 +12,9 @@ include_once "../l1comvm/sysconfig.php";
  *************************************************************************************/
 //通用项目标识
 define("MFUN_L1VM_DBI_MAX_LOG_NUM", 5000);  //防止t_loginfo表单数据无限制的增长，保留的最大记录数
-define("MFUN_L3APL_F1SYM_SESSION_ID_LEN", 8); //UI界面session id字符串长度
+define("MFUN_L3APL_F1SYM_SESSION_ID_LEN", 10); //UI界面session id字符串长度
 define("MFUN_L3APL_F1SYM_USER_ID_LEN", 6); //UI界面user id字符串长度
 define("MFUN_L3APL_F1SYM_UID_PREFIX", "UID");  //定义用户ID的特征字，用户ID必须以UID开头
-define("MFUN_L3APL_F3DM_DEVICE_STATUS_OPEN", "Y"); //设备（门，锁）打开,设备正常运行
-define("MFUN_L3APL_F3DM_DEVICE_STATUS_CLOSE", "N");  //设备（门，锁）关闭，设备停止
-define("MFUN_L3APL_F3DM_DEVICE_STATUS_ALARM", "A");  //设备（门，锁）暴力打开
-define("MFUN_L3APL_F3DM_DEVICE_STATUS_SLEEP", "S");  //设备（门，锁）暴力打开
-define("MFUN_L3APL_F3DM_DEVICE_ALARM_YES", "Y");  //设备有告警
-define("MFUN_L3APL_F3DM_DEVICE_ALARM_NO", "N");    //设备无告警
 
 //项目类关键字
 define("MFUN_L3APL_F2CM_PG_CODE_PREFIX", "PG");   //定义项目组code的特征字，项目组code必须以“PG”开头

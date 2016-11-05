@@ -9,11 +9,15 @@ include_once "../l1comvm/sysconfig.php";
 include_once "../l1comvm/pg_general_engpar.php";
 
 //FHYS系统常量
-define ("MFUN_HCU_FHYS_STATUS_OK", "Y");
-define ("MFUN_HCU_FHYS_STATUS_NOK", "N");
-define ("MFUN_HCU_FHYS_DOOR_OPEN", "Y");
-define ("MFUN_HCU_FHYS_DOOR_CLOSE", "N");
-define ("MFUN_HCU_FHYS_DOOR_ALARM", "A");
+define ("MFUN_HCU_FHYS_STATUS_OK", "Y");  //设备正常，运行中
+define ("MFUN_HCU_FHYS_STATUS_NOK", "N"); //设备异常，关闭中
+define ("MFUN_HCU_FHYS_STATUS_SLEEP", "S"); //设备休眠中
+define ("MFUN_HCU_FHYS_DOOR_OPEN", "Y");  //光交箱门打开
+define ("MFUN_HCU_FHYS_DOOR_CLOSE", "N"); //光交箱门关闭
+define ("MFUN_HCU_FHYS_DOOR_ALARM", "A"); //光交箱门暴力打开
+define ("MFUN_HCU_FHYS_LOCK_OPEN", "Y");  //智能云锁打开
+define ("MFUN_HCU_FHYS_LOCK_CLOSE", "N"); //智能云锁关闭
+define ("MFUN_HCU_FHYS_LOCK_ALARM", "A"); //智能云锁暴力打开
 define ("MFUN_HCU_FHYS_ALARM_YES", "Y");
 define ("MFUN_HCU_FHYS_ALARM_NO", "N");
 

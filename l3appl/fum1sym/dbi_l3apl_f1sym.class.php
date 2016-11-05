@@ -194,7 +194,7 @@ class classDbiL3apF1sym
         }
         return $str;
     }
-    
+
     //更新UI用户session ID
     private function updateSession ($uid, $sessionid)
     {
@@ -422,7 +422,7 @@ class classDbiL3apF1sym
         //$mysqli->query("set character_set_connection = utf8");
         $mysqli->query("SET NAMES utf8");
 
-        $uid = MFUN_L3APL_F1SYM_UID_PREFIX.$this->getRandomUid(3);  //UID的分配机制将来要重新考虑，避免重复
+        $uid = MFUN_L3APL_F1SYM_UID_PREFIX.$this->getRandomUid(MFUN_L3APL_F1SYM_USER_ID_LEN);  //UID的分配机制将来要重新考虑，避免重复
         $user = $userinfo["name"];
         $nick = $userinfo["nickname"];
         $pwd = $userinfo["password"];

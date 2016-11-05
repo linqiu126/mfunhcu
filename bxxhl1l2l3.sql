@@ -10076,11 +10076,11 @@ INSERT INTO `t_l2snr_lightstrdata` (`sid`, `deviceid`, `sensorid`, `lightstr`, `
 -- --------------------------------------------------------
 
 --
--- 表的结构 `t_l2snr_minreport`
+-- 表的结构 `t_l2snr_aqyc_minreport`
 --
 
-DROP TABLE IF EXISTS `t_l2snr_minreport`;
-CREATE TABLE IF NOT EXISTS `t_l2snr_minreport` (
+DROP TABLE IF EXISTS `t_l2snr_aqyc_minreport`;
+CREATE TABLE IF NOT EXISTS `t_l2snr_aqyc_minreport` (
   `sid` int(4) NOT NULL AUTO_INCREMENT,
   `devcode` char(20) NOT NULL,
   `statcode` char(20) NOT NULL,
@@ -10102,10 +10102,10 @@ CREATE TABLE IF NOT EXISTS `t_l2snr_minreport` (
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=116489 ;
 
 --
--- 转存表中的数据 `t_l2snr_minreport`
+-- 转存表中的数据 `t_l2snr_aqyc_minreport`
 --
 
-INSERT INTO `t_l2snr_minreport` (`sid`, `devcode`, `statcode`, `reportdate`, `hourminindex`, `emcvalue`, `pm01`, `pm25`, `pm10`, `noise`, `windspeed`, `winddirection`, `rain`, `temperature`, `humidity`, `airpressure`, `pmdataflag`) VALUES
+INSERT INTO `t_l2snr_aqyc_minreport` (`sid`, `devcode`, `statcode`, `reportdate`, `hourminindex`, `emcvalue`, `pm01`, `pm25`, `pm10`, `noise`, `windspeed`, `winddirection`, `rain`, `temperature`, `humidity`, `airpressure`, `pmdataflag`) VALUES
 (614, 'HCU_SH_0302', '120101002', '2016-04-21', 1387, 5655, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 700, 228, NULL, NULL),
 (615, 'HCU_SH_0302', '120101002', '2016-04-21', 1388, 4795, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 700, 228, NULL, NULL),
 (616, 'HCU_SH_0302', '120101002', '2016-04-21', 1389, 5247, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 702, 228, NULL, NULL),

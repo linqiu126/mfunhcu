@@ -143,16 +143,16 @@ class classDbiL2snrAlcohol
         $alcohol = $data["value"];
 
         //存储新记录，如果发现是已经存在的数据，则覆盖，否则新增
-        $result = $mysqli->query("SELECT * FROM `t_l2snr_minreport` WHERE (`devcode` = '$devcode' AND `statcode` = '$statcode'
+        $result = $mysqli->query("SELECT * FROM `t_l2snr_aqyc_minreport` WHERE (`devcode` = '$devcode' AND `statcode` = '$statcode'
                                   AND `reportdate` = '$date' AND `hourminindex` = '$hourminindex')");
         if (($result != false) && ($result->num_rows)>0)   //重复，则覆盖
         {
-            $result=$mysqli->query("UPDATE `t_l2snr_minreport` SET `alcohol` = '$alcohol'
+            $result=$mysqli->query("UPDATE `t_l2snr_aqyc_minreport` SET `alcohol` = '$alcohol'
                           WHERE (`devcode` = '$devcode' AND `statcode` = '$statcode' AND `reportdate` = '$date' AND `hourminindex` = '$hourminindex')");
         }
         else   //不存在，新增
         {
-            $result=$mysqli->query("INSERT INTO `t_l2snr_minreport` (devcode,statcode,alcohol,reportdate,hourminindex)
+            $result=$mysqli->query("INSERT INTO `t_l2snr_aqyc_minreport` (devcode,statcode,alcohol,reportdate,hourminindex)
                                   VALUES ('$devcode', '$statcode', '$alcohol','$date','$hourminindex')");
         }
         $mysqli->close();

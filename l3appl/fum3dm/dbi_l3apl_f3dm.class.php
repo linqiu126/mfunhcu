@@ -55,10 +55,10 @@ INSERT INTO `t_l3f3dm_siteinfo` (`statcode`, `name`, `devcode`, `p_code`, `start
 -- --------------------------------------------------------
 
 --
--- 表的结构 `t_l3f3dm_sum_currentreport`
+-- 表的结构 `t_l3f3dm_aqyc_currentreport`
 --
 
-CREATE TABLE IF NOT EXISTS `t_l3f3dm_sum_currentreport` (
+CREATE TABLE IF NOT EXISTS `t_l3f3dm_aqyc_currentreport` (
   `sid` int(4) NOT NULL AUTO_INCREMENT,
   `deviceid` char(50) NOT NULL,
   `statcode` char(20) NOT NULL,
@@ -78,10 +78,10 @@ CREATE TABLE IF NOT EXISTS `t_l3f3dm_sum_currentreport` (
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=17 ;
 
 --
--- 转存表中的数据 `t_l3f3dm_sum_currentreport`
+-- 转存表中的数据 `t_l3f3dm_aqyc_currentreport`
 --
 
-INSERT INTO `t_l3f3dm_sum_currentreport` (`sid`, `deviceid`, `statcode`, `createtime`, `emcvalue`, `pm01`, `pm25`, `pm10`, `noise`, `windspeed`, `winddirection`, `temperature`, `humidity`, `rain`, `airpressure`) VALUES
+INSERT INTO `t_l3f3dm_aqyc_currentreport` (`sid`, `deviceid`, `statcode`, `createtime`, `emcvalue`, `pm01`, `pm25`, `pm10`, `noise`, `windspeed`, `winddirection`, `temperature`, `humidity`, `rain`, `airpressure`) VALUES
 (2, 'HCU_SH_0301', '120101001', '2016-04-27 19:48:03', 5219, 231, 231, 637, 641, 0, 106, 188, 205, 0, 0),
 (15, 'HCU_SH_0302', '120101002', '2016-06-19 12:56:19', 5050, NULL, NULL, NULL, NULL, NULL, NULL, 451, 350, NULL, NULL),
 (6, 'HCU_SH_0305', '120101005', '2016-05-10 15:27:44', 4867, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
@@ -142,45 +142,45 @@ class classDbiL3apF3dm
             case "T_airpressure":
                 $airpressure = $data["value"];
                 //存储新记录，如果发现是已经存在的数据，则覆盖，否则新增
-                $result = $mysqli->query("SELECT * FROM `t_l3f3dm_sum_currentreport` WHERE (`deviceid` = '$deviceid' ");
+                $result = $mysqli->query("SELECT * FROM `t_l3f3dm_aqyc_currentreport` WHERE (`deviceid` = '$deviceid' ");
                 if (($result->num_rows)>0) {
-                    $result = $mysqli->query("UPDATE `t_l3f3dm_sum_currentreport` SET  `airpressure` = '$airpressure', `createtime` = '$currenttime' WHERE (`deviceid` = '$deviceid')");
+                    $result = $mysqli->query("UPDATE `t_l3f3dm_aqyc_currentreport` SET  `airpressure` = '$airpressure', `createtime` = '$currenttime' WHERE (`deviceid` = '$deviceid')");
                 }
                 else {
-                    $result = $mysqli->query("INSERT INTO `t_l3f3dm_sum_currentreport` (deviceid,statcode,createtime,airpressure) VALUES ('$deviceid','$statcode','$currenttime','$airpressure')");
+                    $result = $mysqli->query("INSERT INTO `t_l3f3dm_aqyc_currentreport` (deviceid,statcode,createtime,airpressure) VALUES ('$deviceid','$statcode','$currenttime','$airpressure')");
                 }
                 break;
             case "T_emcdata":
                 $emc = $data["value"];
                 //存储新记录，如果发现是已经存在的数据，则覆盖，否则新增
-                $result = $mysqli->query("SELECT * FROM `t_l3f3dm_sum_currentreport` WHERE (`deviceid` = '$deviceid')");
+                $result = $mysqli->query("SELECT * FROM `t_l3f3dm_aqyc_currentreport` WHERE (`deviceid` = '$deviceid')");
                 if (($result->num_rows)>0) {
-                    $result = $mysqli->query("UPDATE `t_l3f3dm_sum_currentreport` SET  `emcvalue` = '$emc', `createtime` = '$currenttime' WHERE (`deviceid` = '$deviceid')");
+                    $result = $mysqli->query("UPDATE `t_l3f3dm_aqyc_currentreport` SET  `emcvalue` = '$emc', `createtime` = '$currenttime' WHERE (`deviceid` = '$deviceid')");
                 }
                 else {
-                    $result = $mysqli->query("INSERT INTO `t_l3f3dm_sum_currentreport` (deviceid,statcode,createtime,emcvalue) VALUES ('$deviceid','$statcode','$currenttime','$emc')");
+                    $result = $mysqli->query("INSERT INTO `t_l3f3dm_aqyc_currentreport` (deviceid,statcode,createtime,emcvalue) VALUES ('$deviceid','$statcode','$currenttime','$emc')");
                 }
                 break;
             case "T_humidity":
                 $humidity = $data["value"];
                 //存储新记录，如果发现是已经存在的数据，则覆盖，否则新增
-                $result = $mysqli->query("SELECT * FROM `t_l3f3dm_sum_currentreport` WHERE (`deviceid` = '$deviceid' )");
+                $result = $mysqli->query("SELECT * FROM `t_l3f3dm_aqyc_currentreport` WHERE (`deviceid` = '$deviceid' )");
                 if (($result->num_rows)>0) {
-                    $result = $mysqli->query("UPDATE `t_l3f3dm_sum_currentreport` SET  `humidity` = '$humidity', `createtime` = '$currenttime' WHERE (`deviceid` = '$deviceid')");
+                    $result = $mysqli->query("UPDATE `t_l3f3dm_aqyc_currentreport` SET  `humidity` = '$humidity', `createtime` = '$currenttime' WHERE (`deviceid` = '$deviceid')");
                 }
                 else {
-                    $result = $mysqli->query("INSERT INTO `t_l3f3dm_sum_currentreport` (deviceid,statcode,createtime,humidity) VALUES ('$deviceid','$statcode','$currenttime','$humidity')");
+                    $result = $mysqli->query("INSERT INTO `t_l3f3dm_aqyc_currentreport` (deviceid,statcode,createtime,humidity) VALUES ('$deviceid','$statcode','$currenttime','$humidity')");
                 }
                 break;
             case "T_noise":
                 $noise = $data["value"];
                 //存储新记录，如果发现是已经存在的数据，则覆盖，否则新增
-                $result = $mysqli->query("SELECT * FROM `t_l3f3dm_sum_currentreport` WHERE (`deviceid` = '$deviceid' )");
+                $result = $mysqli->query("SELECT * FROM `t_l3f3dm_aqyc_currentreport` WHERE (`deviceid` = '$deviceid' )");
                 if (($result->num_rows)>0) {
-                    $result = $mysqli->query("UPDATE `t_l3f3dm_sum_currentreport` SET  `noise` = '$noise', `createtime` = '$currenttime' WHERE (`deviceid` = '$deviceid')");
+                    $result = $mysqli->query("UPDATE `t_l3f3dm_aqyc_currentreport` SET  `noise` = '$noise', `createtime` = '$currenttime' WHERE (`deviceid` = '$deviceid')");
                 }
                 else {
-                    $result = $mysqli->query("INSERT INTO `t_l3f3dm_sum_currentreport` (deviceid,statcode,createtime,noise) VALUES ('$deviceid','$statcode','$currenttime','$noise')");
+                    $result = $mysqli->query("INSERT INTO `t_l3f3dm_aqyc_currentreport` (deviceid,statcode,createtime,noise) VALUES ('$deviceid','$statcode','$currenttime','$noise')");
                 }
                 break;
             case "t_l2snr_pm25data";
@@ -189,56 +189,56 @@ class classDbiL3apF3dm
                 $pm10 = $data["pm10"];
 
                 //存储新记录，如果发现是已经存在的数据，则覆盖，否则新增
-                $result = $mysqli->query("SELECT * FROM `t_l3f3dm_sum_currentreport` WHERE (`deviceid` = '$deviceid')");
+                $result = $mysqli->query("SELECT * FROM `t_l3f3dm_aqyc_currentreport` WHERE (`deviceid` = '$deviceid')");
                 if (($result->num_rows)>0) {
-                    $result = $mysqli->query("UPDATE `t_l3f3dm_sum_currentreport` SET   `pm01` = '$pm01',`pm25` = '$pm25',`pm10` = '$pm10',`createtime` = '$currenttime' WHERE (`deviceid` = '$deviceid')");
+                    $result = $mysqli->query("UPDATE `t_l3f3dm_aqyc_currentreport` SET   `pm01` = '$pm01',`pm25` = '$pm25',`pm10` = '$pm10',`createtime` = '$currenttime' WHERE (`deviceid` = '$deviceid')");
                 }
                 else {
-                    $result = $mysqli->query("INSERT INTO `t_l3f3dm_sum_currentreport` (deviceid,statcode,createtime,pm01,pm25,pm10) VALUES ('$deviceid','$statcode','$currenttime','$pm01','$pm25','$pm10')");
+                    $result = $mysqli->query("INSERT INTO `t_l3f3dm_aqyc_currentreport` (deviceid,statcode,createtime,pm01,pm25,pm10) VALUES ('$deviceid','$statcode','$currenttime','$pm01','$pm25','$pm10')");
                 }
                 break;
             case "T_rain":
                 $rain = $data["value"];
                 //存储新记录，如果发现是已经存在的数据，则覆盖，否则新增
-                $result = $mysqli->query("SELECT * FROM `t_l3f3dm_sum_currentreport` WHERE (`deviceid` = '$deviceid' )");
+                $result = $mysqli->query("SELECT * FROM `t_l3f3dm_aqyc_currentreport` WHERE (`deviceid` = '$deviceid' )");
                 if (($result->num_rows)>0) {
-                    $result = $mysqli->query("UPDATE `t_l3f3dm_sum_currentreport` SET  `rain` = '$rain', `createtime` = '$currenttime' WHERE (`deviceid` = '$deviceid')");
+                    $result = $mysqli->query("UPDATE `t_l3f3dm_aqyc_currentreport` SET  `rain` = '$rain', `createtime` = '$currenttime' WHERE (`deviceid` = '$deviceid')");
                 }
                 else {
-                    $result = $mysqli->query("INSERT INTO `t_l3f3dm_sum_currentreport` (deviceid,statcode,createtime,rain) VALUES ('$deviceid','$statcode','$currenttime','$rain')");
+                    $result = $mysqli->query("INSERT INTO `t_l3f3dm_aqyc_currentreport` (deviceid,statcode,createtime,rain) VALUES ('$deviceid','$statcode','$currenttime','$rain')");
                 }
                 break;
             case "T_temperature":
                 $temperature = $data["value"];
                 //存储新记录，如果发现是已经存在的数据，则覆盖，否则新增
-                $result = $mysqli->query("SELECT * FROM `t_l3f3dm_sum_currentreport` WHERE (`deviceid` = '$deviceid' )");
+                $result = $mysqli->query("SELECT * FROM `t_l3f3dm_aqyc_currentreport` WHERE (`deviceid` = '$deviceid' )");
                 if (($result->num_rows)>0) {
-                    $result = $mysqli->query("UPDATE `t_l3f3dm_sum_currentreport` SET  `temperature` = '$temperature', `createtime` = '$currenttime' WHERE (`deviceid` = '$deviceid')");
+                    $result = $mysqli->query("UPDATE `t_l3f3dm_aqyc_currentreport` SET  `temperature` = '$temperature', `createtime` = '$currenttime' WHERE (`deviceid` = '$deviceid')");
                 }
                 else {
-                    $result = $mysqli->query("INSERT INTO `t_l3f3dm_sum_currentreport` (deviceid,statcode,createtime,temperature) VALUES ('$deviceid','$statcode','$currenttime','$temperature')");
+                    $result = $mysqli->query("INSERT INTO `t_l3f3dm_aqyc_currentreport` (deviceid,statcode,createtime,temperature) VALUES ('$deviceid','$statcode','$currenttime','$temperature')");
                 }
                 break;
             case "T_winddirection":
                 $winddirection = $data["value"];
                 //存储新记录，如果发现是已经存在的数据，则覆盖，否则新增
-                $result = $mysqli->query("SELECT * FROM `t_l3f3dm_sum_currentreport` WHERE (`deviceid` = '$deviceid' )");
+                $result = $mysqli->query("SELECT * FROM `t_l3f3dm_aqyc_currentreport` WHERE (`deviceid` = '$deviceid' )");
                 if (($result->num_rows)>0) {
-                    $result = $mysqli->query("UPDATE `t_l3f3dm_sum_currentreport` SET  `winddirection` = '$winddirection', `createtime` = '$currenttime' WHERE (`deviceid` = '$deviceid')");
+                    $result = $mysqli->query("UPDATE `t_l3f3dm_aqyc_currentreport` SET  `winddirection` = '$winddirection', `createtime` = '$currenttime' WHERE (`deviceid` = '$deviceid')");
                 }
                 else {
-                    $result = $mysqli->query("INSERT INTO `t_l3f3dm_sum_currentreport` (deviceid,statcode,createtime,winddirection) VALUES ('$deviceid','$statcode','$currenttime','$winddirection')");
+                    $result = $mysqli->query("INSERT INTO `t_l3f3dm_aqyc_currentreport` (deviceid,statcode,createtime,winddirection) VALUES ('$deviceid','$statcode','$currenttime','$winddirection')");
                 }
                 break;
             case "t_l2snr_windspd":
                 $windspeed = $data["value"];
                 //存储新记录，如果发现是已经存在的数据，则覆盖，否则新增
-                $result = $mysqli->query("SELECT * FROM `t_l3f3dm_sum_currentreport` WHERE (`deviceid` = '$deviceid' )");
+                $result = $mysqli->query("SELECT * FROM `t_l3f3dm_aqyc_currentreport` WHERE (`deviceid` = '$deviceid' )");
                 if (($result->num_rows)>0) {
-                    $result = $mysqli->query("UPDATE `t_l3f3dm_sum_currentreport` SET  `windspeed` = '$windspeed', `createtime` = '$currenttime' WHERE (`deviceid` = '$deviceid')");
+                    $result = $mysqli->query("UPDATE `t_l3f3dm_aqyc_currentreport` SET  `windspeed` = '$windspeed', `createtime` = '$currenttime' WHERE (`deviceid` = '$deviceid')");
                 }
                 else {
-                    $result = $mysqli->query("INSERT INTO `t_l3f3dm_sum_currentreport` (deviceid,statcode,createtime,windspeed) VALUES ('$deviceid','$statcode','$currenttime','$windspeed')");
+                    $result = $mysqli->query("INSERT INTO `t_l3f3dm_aqyc_currentreport` (deviceid,statcode,createtime,windspeed) VALUES ('$deviceid','$statcode','$currenttime','$windspeed')");
                 }
                 break;
             default:
@@ -533,9 +533,9 @@ class classDbiL3apF3dm
             $ipaddr = $row['ipaddr'];
             $devstatus = $row['status'];
             $url = $row['videourl'];
-            if ($devstatus == MFUN_L3APL_F3DM_DEVICE_STATUS_OPEN)
+            if ($devstatus == MFUN_HCU_AQYC_STATUS_ON)
                 $devstatus = "true";
-            elseif($devstatus == MFUN_L3APL_F3DM_DEVICE_STATUS_CLOSE)
+            elseif($devstatus == MFUN_HCU_AQYC_STATUS_OFF)
                 $devstatus = "false";
 
             $query_str = "SELECT * FROM `t_l3f3dm_siteinfo` WHERE `statcode` = '$statcode'";      //查询HCU设备对应监测点号
@@ -713,7 +713,7 @@ class classDbiL3apF3dm
         }
         $mysqli->query("set character_set_results = utf8");
 
-        $query_str = "SELECT * FROM `t_l3f3dm_sum_currentreport` WHERE `statcode` = '$statcode'";
+        $query_str = "SELECT * FROM `t_l3f3dm_aqyc_currentreport` WHERE `statcode` = '$statcode'";
         $result = $mysqli->query($query_str);
         if (($result->num_rows)>0)
         {
@@ -734,7 +734,7 @@ class classDbiL3apF3dm
 
                 $temp = array(
                     'AlarmName'=>"噪声",
-                    'AlarmEName'=> "Noise",
+                    'AlarmEName'=> "AQYC_noise",
                     'AlarmValue'=>(string)$noise,
                     'AlarmUnit'=>" 分贝",
                     'WarningTarget'=>$alarm
@@ -745,7 +745,7 @@ class classDbiL3apF3dm
             if ($winddir != NULL){
                 $temp = array(
                     'AlarmName'=>"风向",
-                    'AlarmEName'=> "WD",
+                    'AlarmEName'=> "AQYC_winddir",
                     'AlarmValue'=>(string)$winddir,
                     'AlarmUnit'=>" 度",
                     'WarningTarget'=>"false"
@@ -760,7 +760,7 @@ class classDbiL3apF3dm
                     $alarm = "false";
                 $temp = array(
                     'AlarmName'=>"湿度",
-                    'AlarmEName'=> "Wet",
+                    'AlarmEName'=> "AQYC_humi",
                     'AlarmValue'=>(string)$humidity,
                     'AlarmUnit'=>" %",
                     'WarningTarget'=>$alarm
@@ -775,7 +775,7 @@ class classDbiL3apF3dm
                     $alarm = "false";
                 $temp = array(
                     'AlarmName'=>"温度",
-                    'AlarmEName'=> "Temperature",
+                    'AlarmEName'=> "AQYC_temp",
                     'AlarmValue'=>(string)$temperature,
                     'AlarmUnit'=>" 摄氏度",
                     'WarningTarget'=>$alarm
@@ -790,7 +790,7 @@ class classDbiL3apF3dm
                     $alarm = "false";
                 $temp = array(
                     'AlarmName'=>"细颗粒物",
-                    'AlarmEName'=> "PM",
+                    'AlarmEName'=> "AQYC_pm2.5",
                     'AlarmValue'=>(string)$pm25,
                     'AlarmUnit'=>" 毫克/立方米",
                     'WarningTarget'=>$alarm
@@ -805,7 +805,7 @@ class classDbiL3apF3dm
                     $alarm = "false";
                 $temp = array(
                     'AlarmName'=>"风速",
-                    'AlarmEName'=> "WS",
+                    'AlarmEName'=> "AQYC_windspeed",
                     'AlarmValue'=>(string)$windspeed,
                     'AlarmUnit'=>" 公里/小时",
                     'WarningTarget'=>$alarm
@@ -1284,7 +1284,7 @@ class classDbiL3apF3dm
                 array_push($one_row, $row["chargeman"]);
                 array_push($one_row, $row["telephone"]);
             }
-            $query_str = "SELECT * FROM `t_l3f3dm_sum_currentreport` WHERE `statcode` = '$statcode'";
+            $query_str = "SELECT * FROM `t_l3f3dm_aqyc_currentreport` WHERE `statcode` = '$statcode'";
             $result = $mysqli->query($query_str);
             if (($result->num_rows) > 0)
             {
@@ -1392,19 +1392,19 @@ class classDbiL3apF3dm
                     array_push($one_row, "运行中");
 
                 //更新门运行状态
-                if($row["doorstat"] == MFUN_L3APL_F3DM_DEVICE_STATUS_OPEN)
+                if($row["doorstat"] == MFUN_HCU_FHYS_DOOR_OPEN)
                     array_push($one_row, "正常打开");
-                elseif($row["doorstat"] == MFUN_L3APL_F3DM_DEVICE_STATUS_CLOSE)
+                elseif($row["doorstat"] == MFUN_HCU_FHYS_DOOR_CLOSE)
                     array_push($one_row, "正常关闭");
-                elseif($row["doorstat"] == MFUN_L3APL_F3DM_DEVICE_STATUS_ALARM)
+                elseif($row["doorstat"] == MFUN_HCU_FHYS_DOOR_ALARM)
                     array_push($one_row, "暴力打开");
                 else array_push($one_row, "状态未知");
                 //更新锁运行状态
-                if($row["lockstat"] == MFUN_L3APL_F3DM_DEVICE_STATUS_OPEN)
+                if($row["lockstat"] == MFUN_HCU_FHYS_LOCK_OPEN)
                     array_push($one_row, "正常打开");
-                elseif($row["lockstat"] == MFUN_L3APL_F3DM_DEVICE_STATUS_CLOSE)
+                elseif($row["lockstat"] == MFUN_HCU_FHYS_LOCK_CLOSE)
                     array_push($one_row, "正常关闭");
-                elseif($row["lockstat"] == MFUN_L3APL_F3DM_DEVICE_STATUS_ALARM)
+                elseif($row["lockstat"] == MFUN_HCU_FHYS_LOCK_ALARM)
                     array_push($one_row, "暴力打开");
                 else array_push($one_row, "状态未知");
 
@@ -1413,21 +1413,21 @@ class classDbiL3apF3dm
                 //更新电池剩余电量
                 array_push($one_row, $row["battlevel"]);
                 //更新震动告警状态
-                if($row["vibralarm"] == MFUN_L3APL_F3DM_DEVICE_ALARM_YES)
+                if($row["vibralarm"] == MFUN_HCU_FHYS_ALARM_YES)
                     array_push($one_row, "有");
-                elseif($row["vibralarm"] == MFUN_L3APL_F3DM_DEVICE_ALARM_NO)
+                elseif($row["vibralarm"] == MFUN_HCU_FHYS_ALARM_NO)
                     array_push($one_row, "无");
                 else array_push($one_row, "未知");
                 //更新水浸告警状态
-                if($row["wateralarm"] == MFUN_L3APL_F3DM_DEVICE_ALARM_YES)
+                if($row["wateralarm"] == MFUN_HCU_FHYS_ALARM_YES)
                     array_push($one_row, "有");
-                elseif($row["wateralarm"] == MFUN_L3APL_F3DM_DEVICE_ALARM_NO)
+                elseif($row["wateralarm"] == MFUN_HCU_FHYS_ALARM_NO)
                     array_push($one_row, "无");
                 else array_push($one_row, "未知");
                 //更新烟雾告警状态
-                if($row["smokalarm"] == MFUN_L3APL_F3DM_DEVICE_ALARM_YES)
+                if($row["smokalarm"] == MFUN_HCU_FHYS_ALARM_YES)
                     array_push($one_row, "有");
-                elseif($row["smokalarm"] == MFUN_L3APL_F3DM_DEVICE_ALARM_NO)
+                elseif($row["smokalarm"] == MFUN_HCU_FHYS_ALARM_NO)
                     array_push($one_row, "无");
                 else array_push($one_row, "未知");
                 //更新温度
@@ -1479,22 +1479,22 @@ class classDbiL3apF3dm
             }
             $temp = array(
                         'AlarmName'=> "设备状态：",
-                        'AlarmEName'=> "fibbox",
+                        'AlarmEName'=> "FHYS_fibbox",
                         'AlarmValue'=> $devstat,
                         'AlarmUnit'=> "",
                         'WarningTarget'=>$alarm);
             array_push($currentvalue,$temp);
 
             //更新门运行状态
-            if($row["doorstat"] == MFUN_L3APL_F3DM_DEVICE_STATUS_OPEN){
+            if($row["doorstat"] == MFUN_HCU_FHYS_DOOR_OPEN){
                 $doorstat = "正常打开";
                 $alarm = "true";
             }
-            elseif($row["doorstat"] == MFUN_L3APL_F3DM_DEVICE_STATUS_CLOSE){
+            elseif($row["doorstat"] == MFUN_HCU_FHYS_DOOR_CLOSE){
                 $doorstat = "正常关闭";
                 $alarm = "false";
             }
-            elseif($row["doorstat"] == MFUN_L3APL_F3DM_DEVICE_STATUS_ALARM){
+            elseif($row["doorstat"] == MFUN_HCU_FHYS_DOOR_ALARM){
                 $doorstat = "暴力打开";
                 $alarm = "true";
             }
@@ -1504,31 +1504,31 @@ class classDbiL3apF3dm
             }
             $temp = array(
                         'AlarmName'=> "门状态：",
-                        'AlarmEName'=> "door",
+                        'AlarmEName'=> "FHYS_door",
                         'AlarmValue'=> (string)$doorstat,
                         'AlarmUnit'=> "",
                         'WarningTarget'=>$alarm);
             array_push($currentvalue,$temp);
 
             //更新锁运行状态
-            if($row["lockstat"] == MFUN_L3APL_F3DM_DEVICE_STATUS_OPEN){
+            if($row["lockstat"] == MFUN_HCU_FHYS_LOCK_OPEN){
                 $lockstat = "正常打开";
-                $picname = "locko";
+                $picname = "FHYS_locko";
                 $alarm = "true";
             }
-            elseif($row["lockstat"] == MFUN_L3APL_F3DM_DEVICE_STATUS_CLOSE){
+            elseif($row["lockstat"] == MFUN_HCU_FHYS_LOCK_CLOSE){
                 $lockstat = "正常关闭";
-                $picname = "lockc";
+                $picname = "FHYS_lockc";
                 $alarm = "false";
             }
-            elseif($row["lockstat"] == MFUN_L3APL_F3DM_DEVICE_STATUS_ALARM){
+            elseif($row["lockstat"] == MFUN_HCU_FHYS_LOCK_ALARM){
                 $lockstat = "暴力打开";
-                $picname = "lockc";
+                $picname = "FHYS_lockc";
                 $alarm = "true";
             }
             else{
                 $lockstat = "状态未知";
-                $picname = "lockc";
+                $picname = "FHYS_lockc";
                 $alarm = "true";
             }
             $temp = array(
@@ -1547,7 +1547,7 @@ class classDbiL3apF3dm
                     $alarm = "false";
                 $temp = array(
                             'AlarmName'=>"GPRS信号强度：",
-                            'AlarmEName'=> "sig",
+                            'AlarmEName'=> "FHYS_sig",
                             'AlarmValue'=>(string)$siglevel,
                             'AlarmUnit'=>"",
                             'WarningTarget'=>$alarm);
@@ -1562,7 +1562,7 @@ class classDbiL3apF3dm
                     $alarm = "false";
                 $temp = array(
                             'AlarmName'=>"剩余电量：",
-                            'AlarmEName'=> "batt",
+                            'AlarmEName'=> "FHYS_batt",
                             'AlarmValue'=>(string)$battlevel,
                             'AlarmUnit'=>" %",
                             'WarningTarget'=>$alarm);
@@ -1570,11 +1570,11 @@ class classDbiL3apF3dm
             }
 
             //更新震动告警状态
-            if($row["vibralarm"] == MFUN_L3APL_F3DM_DEVICE_ALARM_YES){
+            if($row["vibralarm"] == MFUN_HCU_FHYS_ALARM_YES){
                 $vibralarm = "有";
                 $alarm = "true";
             }
-            elseif($row["vibralarm"] == MFUN_L3APL_F3DM_DEVICE_ALARM_NO){
+            elseif($row["vibralarm"] == MFUN_HCU_FHYS_ALARM_NO){
                 $vibralarm = "无";
                 $alarm = "false";
             }
@@ -1584,18 +1584,18 @@ class classDbiL3apF3dm
             }
             $temp = array(
                         'AlarmName'=>"震动告警：",
-                        'AlarmEName'=> "vibr",
+                        'AlarmEName'=> "FHYS_vibr",
                         'AlarmValue'=>(string)$vibralarm,
                         'AlarmUnit'=>"",
                         'WarningTarget'=>$alarm );
             array_push($currentvalue,$temp);
 
             //更新水浸告警状态
-            if($row["wateralarm"] == MFUN_L3APL_F3DM_DEVICE_ALARM_YES){
+            if($row["wateralarm"] == MFUN_HCU_FHYS_ALARM_YES){
                 $wateralarm = "有";
                 $alarm = "true";
             }
-            elseif($row["wateralarm"] == MFUN_L3APL_F3DM_DEVICE_ALARM_NO){
+            elseif($row["wateralarm"] == MFUN_HCU_FHYS_ALARM_NO){
                 $wateralarm = "无";
                 $alarm = "false";
             }
@@ -1605,18 +1605,18 @@ class classDbiL3apF3dm
             }
             $temp = array(
                 'AlarmName'=>"水浸告警：",
-                'AlarmEName'=> "water",
+                'AlarmEName'=> "FHYS_water",
                 'AlarmValue'=>(string)$wateralarm,
                 'AlarmUnit'=>"",
                 'WarningTarget'=>$alarm );
             array_push($currentvalue,$temp);
 
             //更新烟雾告警状态
-            if($row["smokalarm"] == MFUN_L3APL_F3DM_DEVICE_ALARM_YES){
+            if($row["smokalarm"] == MFUN_HCU_FHYS_ALARM_YES){
                 $smokalarm = "有";
                 $alarm = "true";
             }
-            elseif($row["smokalarm"] == MFUN_L3APL_F3DM_DEVICE_ALARM_NO){
+            elseif($row["smokalarm"] == MFUN_HCU_FHYS_ALARM_NO){
                 $smokalarm = "无";
                 $alarm = "false";
             }
@@ -1626,7 +1626,7 @@ class classDbiL3apF3dm
             }
             $temp = array(
                 'AlarmName'=>"烟雾告警：",
-                'AlarmEName'=> "smok",
+                'AlarmEName'=> "FHYS_smok",
                 'AlarmValue'=>(string)$smokalarm,
                 'AlarmUnit'=>"",
                 'WarningTarget'=>$alarm );
@@ -1640,7 +1640,7 @@ class classDbiL3apF3dm
                     $alarm = "false";
                 $temp = array(
                     'AlarmName' => "温度：",
-                    'AlarmEName' => "temp",
+                    'AlarmEName' => "FHYS_temp",
                     'AlarmValue' => (string)$temperature,
                     'AlarmUnit' => " 摄氏度",
                     'WarningTarget' => $alarm
@@ -1656,7 +1656,7 @@ class classDbiL3apF3dm
                     $alarm = "false";
                 $temp = array(
                     'AlarmName'=>"湿度：",
-                    'AlarmEName'=> "humi",
+                    'AlarmEName'=> "FHYS_humi",
                     'AlarmValue'=>(string)$humidity,
                     'AlarmUnit'=>" %",
                     'WarningTarget'=>$alarm
