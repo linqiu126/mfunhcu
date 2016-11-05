@@ -20,13 +20,6 @@ if (TC_L4FHYS_UI == true) {
     require("../l4fhysui/request.php");
     echo " [TC L4FHYS: DevTable END]\n";
 
-    echo " [TC L4FHYS: GetCameraStatus START]\n";
-    $_GET["action"] = "GetCameraStatus";
-    $_GET["id"] = "admin"; //暂时用admin用户名
-    $_GET["StatCode"] = "120101001"; //t_l3f3dm_siteinfo中对应HCU_SH_0301
-    require("../l4fhysui/request.php");
-    echo " [TC L4FHYS: GetCameraStatus END]\n";
-
     //HCU_Lock_Status
     echo " [TC L4FHYS: HCU_Lock_Status START]\n";
     $_GET["action"] = "HCU_Lock_Status";

@@ -294,7 +294,12 @@ Make By：ZJL
 > 数据库增加云控制锁项目表单
 
 //= LZH, 2016 Oct.29, CURRENT_SW_DELIVERY R03.D01
-> 加入云控锁功能
+> 添加云控锁项目
+
+//= LZH, 2016 Nov.05, CURRENT_SW_DELIVERY R03.D02
+> 添加云控锁接口消息，全局量定义
+> 将l1comvm中全局消息常量按照工程重新组合
+> 清除testcase中的告警，现在除了需要用到swoole_client的case，本地windows环境测试无法运行外，所有case运行正常
 
 //待完善的功能
 1. dbi_devinfo_update（）需要修改，添加设备时预计结束时间和实际结束时间应该在项目信息里

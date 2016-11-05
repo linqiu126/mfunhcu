@@ -360,7 +360,7 @@ class classTaskL3aplF4icm
             $input = array("uid" => $uid, "StatCode" => $StatCode);
             //具体处理函数
             $resp = $this->func_hcu_lock_status_process($uid, $StatCode);
-            $project = MFUN_PRJ_HCU_AQYCUI;
+            $project = MFUN_PRJ_HCU_FHYSUI;
         }
         //功能HCU_Lock_Open
         elseif ($msgId == MSG_ID_L4FHYSUI_TO_L3F4_HCULOCKOPEN)
@@ -371,7 +371,7 @@ class classTaskL3aplF4icm
             $input = array("uid" => $uid, "StatCode" => $StatCode);
             //具体处理函数
             $resp = $this->func_hcu_lock_open_process($uid, $StatCode);
-            $project = MFUN_PRJ_HCU_AQYCUI;
+            $project = MFUN_PRJ_HCU_FHYSUI;
         }
         //功能TBSWR GetTempStatus
         elseif ($msgId == MSG_ID_L4TBSWRUI_TO_L3F4_GETTEMPSTATUS)

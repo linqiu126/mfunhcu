@@ -643,7 +643,8 @@ class classTaskL2sdkIotWx
                 //再查微信云上的绑定状态
                 $result = $this->getstat_qrcodebyOpenId($xmlmsg->FromUserName);
 
-                if ($result["errcode"] ==40001)  //防止偶然未知原因导致token失效，强制刷新token并再次发送
+                if (isset($result["errcode"])) $errcode = $result["errcode"]; else  $errcode = 0;
+                if ($errcode==40001)  //防止偶然未知原因导致token失效，强制刷新token并再次发送
                 {
                     $this->invalid_token_compel_update($this->appid,$this->appsecret);
                     $result = $this->getstat_qrcodebyOpenId($xmlmsg->FromUserName);
@@ -662,7 +663,8 @@ class classTaskL2sdkIotWx
                 //这里就考虑一个设备，如果存储多个设备的话，需要多次解绑
                 $result = $this->getstat_qrcodebyOpenId($xmlmsg->FromUserName);
 
-                if ($result["errcode"] ==40001)  //防止偶然未知原因导致token失效，强制刷新token并再次发送
+                if (isset($result["errcode"])) $errcode = $result["errcode"]; else  $errcode = 0;
+                if ($errcode==40001)  //防止偶然未知原因导致token失效，强制刷新token并再次发送
                 {
                     $this->invalid_token_compel_update($this->appid,$this->appsecret);
                     $result = $this->getstat_qrcodebyOpenId($xmlmsg->FromUserName);
@@ -921,7 +923,8 @@ class classTaskL2sdkIotWx
                     //BYTE系列化处理在L3消息处理过程中已完成，推送数据到硬件设备
                     $result = $this->trans_msgtodevice($dev_table["deviceType"], $dev_table["deviceID"], $dev_table["openID"], $msg_body);
 
-                    if ($result["errcode"] ==40001)  //防止偶然未知原因导致token失效，强制刷新token并再次发送
+                    if (isset($result["errcode"])) $errcode = $result["errcode"]; else  $errcode = 0;
+                    if ($errcode==40001)  //防止偶然未知原因导致token失效，强制刷新token并再次发送
                     {
                         $this->invalid_token_compel_update($this->appid,$this->appsecret);
                         $result = $this->trans_msgtodevice($dev_table["deviceType"], $dev_table["deviceID"], $dev_table["openID"], $msg_body);
@@ -983,7 +986,8 @@ class classTaskL2sdkIotWx
                     //BYTE系列化处理在L3消息处理过程中已完成,推送数据到硬件设备
                     $result = $this->trans_msgtodevice($dev_table["deviceType"], $dev_table["deviceID"], $dev_table["openID"], $msg_body);
 
-                    if ($result["errcode"] ==40001)  //防止偶然未知原因导致token失效，强制刷新token并再次发送
+                    if (isset($result["errcode"])) $errcode = $result["errcode"]; else  $errcode = 0;
+                    if ($errcode==40001)  //防止偶然未知原因导致token失效，强制刷新token并再次发送
                     {
                         $this->invalid_token_compel_update($this->appid,$this->appsecret);
                         $result = $this->trans_msgtodevice($dev_table["deviceType"], $dev_table["deviceID"], $dev_table["openID"], $msg_body);
@@ -1048,7 +1052,8 @@ class classTaskL2sdkIotWx
                     //BYTE系列化处理在L3消息处理过程中已完成,推送数据到硬件设备
                     $result = $this->trans_msgtodevice($dev_table["deviceType"], $dev_table["deviceID"], $dev_table["openID"], $msg_body);
 
-                    if ($result["errcode"] ==40001)  //防止偶然未知原因导致token失效，强制刷新token并再次发送
+                    if (isset($result["errcode"])) $errcode = $result["errcode"]; else  $errcode = 0;
+                    if ($errcode==40001)  //防止偶然未知原因导致token失效，强制刷新token并再次发送
                     {
                         $this->invalid_token_compel_update($this->appid,$this->appsecret);
                         $result = $this->trans_msgtodevice($dev_table["deviceType"], $dev_table["deviceID"], $dev_table["openID"], $msg_body);
@@ -1113,7 +1118,8 @@ class classTaskL2sdkIotWx
                     //BYTE系列化处理在L3消息处理过程中已完成,推送数据到硬件设备
                     $result = $this->trans_msgtodevice($dev_table["deviceType"], $dev_table["deviceID"], $dev_table["openID"], $msg_body);
 
-                    if ($result["errcode"] ==40001)  //防止偶然未知原因导致token失效，强制刷新token并再次发送
+                    if (isset($result["errcode"])) $errcode = $result["errcode"]; else  $errcode = 0;
+                    if ($errcode==40001)  //防止偶然未知原因导致token失效，强制刷新token并再次发送
                     {
                         $this->invalid_token_compel_update($this->appid,$this->appsecret);
                         $result = $this->trans_msgtodevice($dev_table["deviceType"], $dev_table["deviceID"], $dev_table["openID"], $msg_body);
@@ -1178,7 +1184,8 @@ class classTaskL2sdkIotWx
                     //BYTE系列化处理在L3消息处理过程中已完成,推送数据到硬件设备
                     $result = $this->trans_msgtodevice($dev_table["deviceType"], $dev_table["deviceID"], $dev_table["openID"], $msg_body);
 
-                    if ($result["errcode"] ==40001)  //防止偶然未知原因导致token失效，强制刷新token并再次发送
+                    if (isset($result["errcode"])) $errcode = $result["errcode"]; else  $errcode = 0;
+                    if ($errcode==40001)  //防止偶然未知原因导致token失效，强制刷新token并再次发送
                     {
                         $this->invalid_token_compel_update($this->appid,$this->appsecret);
                         $result = $this->trans_msgtodevice($dev_table["deviceType"], $dev_table["deviceID"], $dev_table["openID"], $msg_body);
@@ -1466,7 +1473,10 @@ class classTaskL2sdkIotWx
         {
             $log_content = "T:" . json_encode($resp);
             $loggerObj->logger($project, $log_from, $log_time, $log_content);
-            echo trim($resp);
+            if(is_array($resp))
+                echo(json_encode($resp));
+            else
+                echo trim($resp);
         }
 
         //返回

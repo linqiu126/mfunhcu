@@ -427,6 +427,15 @@ if (TC_L4AQYC_UI == true) {
     require("../l4aqycui/request.php");
     echo " [TC L4AQYC: GetProjDevVersion END]\n";
 
+    /* 该case用到swoole_client，本地windows环境测试无法运行*/
+    echo " [TC L4AQYC: GetCameraStatus START]\n";
+    $_GET["action"] = "GetCameraStatus";
+    $_GET["id"] = "admin"; //暂时用admin用户名
+    $_GET["StatCode"] = "120101001"; //t_l3f3dm_siteinfo中对应HCU_SH_0301
+    //require("../l4aqycui/request.php");
+    echo " [TC L4AQYC: GetCameraStatus END]\n";
+
+    /* 该case用到swoole_client，本地windows环境测试无法运行*/
     echo " [TC L4AQYC: UpdateDevVersion START]\n";
     $_GET["action"] = "UpdateDevVersion";
     $_GET["id"] = "UID001";
@@ -436,15 +445,8 @@ if (TC_L4AQYC_UI == true) {
         array_push($list, $dev1); array_push($list, $dev2);
     $_GET["list"] = $list;
     $_GET["version"] = "SW_R01.D0066";
-    require("../l4aqycui/request.php");
+    //require("../l4aqycui/request.php");
     echo " [TC L4AQYC: UpdateDevVersion END]\n";
-
-    echo " [TC L4AQYC: GetCameraStatus START]\n";
-    $_GET["action"] = "GetCameraStatus";
-    $_GET["id"] = "admin"; //暂时用admin用户名
-    $_GET["StatCode"] = "120101001"; //t_l3f3dm_siteinfo中对应HCU_SH_0301
-    require("../l4aqycui/request.php");
-    echo " [TC L4AQYC: GetCameraStatus END]\n";
 
 //TEST CASE: L4AQYC-UI界面: END
 

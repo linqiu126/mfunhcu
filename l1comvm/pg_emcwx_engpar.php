@@ -10,6 +10,50 @@ include_once "../l1comvm/pg_general_engpar.php";
 //require_once "../l1comvm/sysconfig.php";
 
 /**************************************************************************************
+ *                             IHU公共消息全局量定义                                  *
+ *************************************************************************************/
+//L2处理消息的定义，用于处理微信头。由于微信后台服务器已经完成了这个消息体的处理，因而暂时没用，保留
+define("MFUN_IHU_MSG_HEAD_FORMAT", "A2MagicCode/A2Version/A4Length/A4CmdId/A2Seq/A2ErrCode");
+define("MFUN_IHU_MSG_HEAD_LENGTH", 16); //8 Byte
+define("MFUN_IHU_L3_HEAD_MAGIC", 0xFE);
+define("MFUN_IHU_L3_HEAD_VERSION",0x01);
+define("MFUN_IHU_L3_HEAD_LENGTH", 0x08);
+define("MFUN_IHU_CMDID_SEND_TEXT_REQ", 0x1);    //HW -> CLOUD
+define("MFUN_IHU_CMDID_SEND_TEXT_RESP", 0x1001);   //CLOUD ->HW
+define("MFUN_IHU_CMDID_OPEN_LIGHT_PUSH", 0x2001);  //CLOUD ->HW
+define("MFUN_IHU_CMDID_CLOSE_LIGHT_PUSH", 0x2002);   //CLOUD ->HW
+define("MFUN_IHU_CMDID_HW_VERSION_REQ", 0x3001);
+define("MFUN_IHU_CMDID_HW_VERSION_RESP", 0x3002);
+define("MFUN_IHU_CMDID_HW_VERSION_PUSH", 0x3003);
+define("MFUN_IHU_CMDID_EMC_DATA_REV", 0x2712);
+define("MFUN_IHU_CMDID_OCH_DATA_REQ", 0x4010);  //酒精测试量
+define("MFUN_IHU_CMDID_OCH_DATA_RESP", 0x4011);
+
+//IHU下列L3控制字有效，功能已经实现
+define("MFUN_IHU_CMDID_VERSION_SYNC", 0xF0);   //IHU软，硬件版本查询命令字
+define("MFUN_IHU_CMDID_TIME_SYNC", 0xF2);    //时间同步命令字
+define("MFUN_IHU_CMDID_EMC_DATA", 0x20);   //电磁波辐射测量命令字
+define("MFUN_IHU_CMDID_PM25_DATA", 0x25);  //MODBUS 颗粒物命令字
+define("MFUN_IHU_CMDID_WINDSPD_DATA", 0x26);  //MODBUS 风速命令字
+define("MFUN_IHU_CMDID_WINDDIR_DATA", 0x27);  //MODBUS 风向命令字
+define("MFUN_IHU_CMDID_TEMP_DATA", 0x28);  //MODBUS 温度命令字
+define("MFUN_IHU_CMDID_HUMID_DATA", 0x29);  //MODBUS 湿度命令字
+define("MFUN_IHU_CMDID_HSMMP_DATA", 0x2C);  //Video命令字
+define("MFUN_IHU_CMDID_NOISE_DATA", 0x2B);  //Noise命令字
+define("MFUN_IHU_CMDID_INVENTORY_DATA", 0xA0); //SW,HW 版本信息
+define("MFUN_IHU_CMDID_SW_UPDATE", 0xA1);   //HCU软件更新
+define("MFUN_IHU_CMDID_HEART_BEAT", 0xFE); //HCU心跳特殊控制字
+define("MFUN_IHU_CMDID_HCU_POLLING", 0xFD); //HCU命令轮询控制字
+define("MFUN_IHU_CMDID_EMC_INSTANT_READ", 0x2001); //临时定义给IHU测试,EMC瞬时读取命令
+define("MFUN_IHU_CMDID_EMC_PERIOD_READ_OPEN", 0x2002); //EMC周期读取开
+define("MFUN_IHU_CMDID_EMC_PERIOD_READ_CLOSE", 0x2003); //EMC周期读取关
+define("MFUN_IHU_CMDID_EMC_POWER_STATUS_REQ", 0x2005);  //设备电量查询
+
+define("MFUN_IHU_CMDID_EMC_DATA_RESP", 0x2081); //临时定义给IHU测试
+define("MFUN_IHU_CMDID_EMC_POWER_STATUS_RESP", 0x2085); //设备电量查询响应
+
+
+/**************************************************************************************
  * EMCWX: 电磁辐射微信项目相关缺省配置参数                                            *
  *************************************************************************************/
 //正式测试公号/服务公号的配置参数

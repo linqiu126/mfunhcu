@@ -214,11 +214,43 @@ class classTaskL2sdkIotHcu
                 $resp ="HCU_IOT: Not yet support!";
                 break;
 
+            case MFUN_HCU_CMDID_FHYS_LOCK: //智能锁控制字
+                break;
+
+            case MFUN_HCU_CMDID_FHYS_DOOR://光交箱门控制字
+                break;
+
+            case MFUN_HCU_CMDID_FHYS_RFID://RFID控制字
+                break;
+
+            case MFUN_HCU_CMDID_FHYS_BLE://BLE控制字
+                break;
+
+            case MFUN_HCU_CMDID_FHYS_GPRS://GPRS控制字
+                break;
+
+            case MFUN_HCU_CMDID_FHYS_BATT://电池控制字
+                break;
+
+            case MFUN_HCU_CMDID_FHYS_VIBR://震动控制字
+                break;
+
+            case MFUN_HCU_CMDID_FHYS_SMOK://烟雾控制字
+                break;
+
+            case MFUN_HCU_CMDID_FHYS_WATER://水浸控制字
+                break;
+
+            case MFUN_HCU_CMDID_FHYS_TEMP://温度控制字
+                break;
+
+            case MFUN_HCU_CMDID_FHYS_HUMI://湿度控制字
+                break;
+
             default:
                 $resp ="HCU_IOT: invalid command type";
                 break;
         }
-
         //ECHO回去
         if (!empty($resp))
         {

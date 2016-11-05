@@ -369,112 +369,10 @@ define("MFUN_L2_FRAME_FORMAT_PREFIX_ZHB", "##"); //中环保数据格式，消�
 define("MFUN_L2_FRAME_FORMAT_PREFIX_APPLE", "$<"); //APPLE数据格式
 define("MFUN_L2_FRAME_FORMAT_PREFIX_JD", "#$"); //JD数据格式
 
-/**************************************************************************************
- *                             IHU公共消息全局量定义                                  *
- *************************************************************************************/
-//L2处理消息的定义，用于处理微信头。由于微信后台服务器已经完成了这个消息体的处理，因而暂时没用，保留
-define("MFUN_IHU_MSG_HEAD_FORMAT", "A2MagicCode/A2Version/A4Length/A4CmdId/A2Seq/A2ErrCode");
-define("MFUN_IHU_MSG_HEAD_LENGTH", 16); //8 Byte
-define("MFUN_IHU_L3_HEAD_MAGIC", 0xFE);
-define("MFUN_IHU_L3_HEAD_VERSION",0x01);
-define("MFUN_IHU_L3_HEAD_LENGTH", 0x08);
-define("MFUN_IHU_CMDID_SEND_TEXT_REQ", 0x1);    //HW -> CLOUD
-define("MFUN_IHU_CMDID_SEND_TEXT_RESP", 0x1001);   //CLOUD ->HW
-define("MFUN_IHU_CMDID_OPEN_LIGHT_PUSH", 0x2001);  //CLOUD ->HW
-define("MFUN_IHU_CMDID_CLOSE_LIGHT_PUSH", 0x2002);   //CLOUD ->HW
-define("MFUN_IHU_CMDID_HW_VERSION_REQ", 0x3001);
-define("MFUN_IHU_CMDID_HW_VERSION_RESP", 0x3002);
-define("MFUN_IHU_CMDID_HW_VERSION_PUSH", 0x3003);
-define("MFUN_IHU_CMDID_EMC_DATA_REV", 0x2712);
-define("MFUN_IHU_CMDID_OCH_DATA_REQ", 0x4010);  //酒精测试量
-define("MFUN_IHU_CMDID_OCH_DATA_RESP", 0x4011);
-
-//IHU下列L3控制字有效，功能已经实现
-define("MFUN_IHU_CMDID_VERSION_SYNC", 0xF0);   //IHU软，硬件版本查询命令字
-define("MFUN_IHU_CMDID_TIME_SYNC", 0xF2);    //时间同步命令字
-define("MFUN_IHU_CMDID_EMC_DATA", 0x20);   //电磁波辐射测量命令字
-define("MFUN_IHU_CMDID_PM25_DATA", 0x25);  //MODBUS 颗粒物命令字
-define("MFUN_IHU_CMDID_WINDSPD_DATA", 0x26);  //MODBUS 风速命令字
-define("MFUN_IHU_CMDID_WINDDIR_DATA", 0x27);  //MODBUS 风向命令字
-define("MFUN_IHU_CMDID_TEMP_DATA", 0x28);  //MODBUS 温度命令字
-define("MFUN_IHU_CMDID_HUMID_DATA", 0x29);  //MODBUS 湿度命令字
-define("MFUN_IHU_CMDID_HSMMP_DATA", 0x2C);  //Video命令字
-define("MFUN_IHU_CMDID_NOISE_DATA", 0x2B);  //Noise命令字
-define("MFUN_IHU_CMDID_INVENTORY_DATA", 0xA0); //SW,HW 版本信息
-define("MFUN_IHU_CMDID_SW_UPDATE", 0xA1);   //HCU软件更新
-define("MFUN_IHU_CMDID_HEART_BEAT", 0xFE); //HCU心跳特殊控制字
-define("MFUN_IHU_CMDID_HCU_POLLING", 0xFD); //HCU命令轮询控制字
-define("MFUN_IHU_CMDID_EMC_INSTANT_READ", 0x2001); //临时定义给IHU测试,EMC瞬时读取命令
-define("MFUN_IHU_CMDID_EMC_PERIOD_READ_OPEN", 0x2002); //EMC周期读取开
-define("MFUN_IHU_CMDID_EMC_PERIOD_READ_CLOSE", 0x2003); //EMC周期读取关
-define("MFUN_IHU_CMDID_EMC_POWER_STATUS_REQ", 0x2005);  //设备电量查询
-
-define("MFUN_IHU_CMDID_EMC_DATA_RESP", 0x2081); //临时定义给IHU测试
-define("MFUN_IHU_CMDID_EMC_POWER_STATUS_RESP", 0x2085); //设备电量查询响应
-
-
-
-/**************************************************************************************
- *                             HCU公共消息全局量定义                                  *
- *************************************************************************************/
-define("MFUN_HCU_MSG_HEAD_FORMAT", "A2Key/A2Len/A2Cmd");// 1B 控制字ctrl_key, 1B 长度length（除控制字和长度本身外），1B 操作字opt_key
-define("MFUN_HCU_MSG_HEAD_LENGTH", 6); //3 Byte
-
 define("MFUN_HCU_CMD_RESP_FAILURE",  0x00);  //HCU响应消息失败，
 define("MFUN_HCU_CMD_RESP_SUCCESS",  0x01);  //HCU响应消息成功
 
-//定义HCU视频文件状态，N-正常状态，文件名上传但文件本身没有上传；D-文件下载中；R-文件上传完成，可以随时播放; F-视频下载失败
-define ("MFUN_HCU_VIDEO_DATA_STATUS_NORMAL", "N");
-define ("MFUN_HCU_VIDEO_DATA_STATUS_DOWNLOAD", "D");
-define ("MFUN_HCU_VIDEO_DATA_STATUS_READY", "R");
-define ("MFUN_HCU_VIDEO_DATA_STATUS_FAIL", "F");
-
-//HCU下列L3控制字有效，功能已经实现
-define("MFUN_HCU_CMDID_VERSION_SYNC", 0xF0);   //IHU软，硬件版本查询命令字
-define("MFUN_HCU_CMDID_TIME_SYNC", 0xF2);    //时间同步命令字
-define("MFUN_HCU_CMDID_EMC_DATA", 0x20);   //电磁波辐射测量命令字
-define("MFUN_HCU_CMDID_PM25_DATA", 0x25);  //MODBUS 颗粒物命令字
-define("MFUN_HCU_CMDID_WINDSPD_DATA", 0x26);  //MODBUS 风速命令字
-define("MFUN_HCU_CMDID_WINDDIR_DATA", 0x27);  //MODBUS 风向命令字
-define("MFUN_HCU_CMDID_TEMP_DATA", 0x28);  //MODBUS 温度命令字
-define("MFUN_HCU_CMDID_HUMID_DATA", 0x29);  //MODBUS 湿度命令字
-define("MFUN_HCU_CMDID_HSMMP_DATA", 0x2C);  //Video命令字
-define("MFUN_HCU_CMDID_NOISE_DATA", 0x2B);  //Noise命令字
-define("MFUN_HCU_CMDID_FHYS_DATA", 0x30);  //Cloudlock命令字
-define("MFUN_HCU_CMDID_INVENTORY_DATA", 0xA0); //SW,HW 版本信息
-define("MFUN_HCU_CMDID_SW_UPDATE", 0xA1);   //HCU软件更新
-define("MFUN_HCU_CMDID_HEART_BEAT", 0xFE); //HCU心跳特殊控制字
-define("MFUN_HCU_CMDID_HCU_POLLING", 0xFD); //HCU命令轮询控制字
-define("MFUN_HCU_CMDID_EMC_DATA_PUSH", 0x2001); //临时定义给IHU测试
-define("MFUN_HCU_CMDID_EMC_DATA_RESP", 0x2081); //临时定义给IHU测试
-
-//MODBUS操作字，0x0开头表示下行从CLOUD到下位机
-define("MFUN_HCU_MODBUS_DATA_REQ", 0x01); //测量命令
-define("MFUN_HCU_MODBUS_SWITCH_SET", 0x02);
-define("MFUN_HCU_MODBUS_ADDR_SET", 0x03);
-define("MFUN_HCU_MODBUS_PERIOD_SET", 0x04);
-define("MFUN_HCU_MODBUS_SAMPLES_SET", 0x05);
-define("MFUN_HCU_MODBUS_TIMES_SET", 0x06);
-define("MFUN_HCU_MODBUS_SWITCH_READ", 0x07);
-define("MFUN_HCU_MODBUS_ADDR_READ", 0x08);
-define("MFUN_HCU_MODBUS_PERIOD_READ", 0x09);
-define("MFUN_HCU_MODBUS_SAMPLES_READ", 0x0A);
-define("MFUN_HCU_MODBUS_TIMES_READ", 0x0B);
-
-//MODBUS操作字，0x8开头表示下行从下位机到CLOUD
-define("MFUN_HCU_MODBUS_DATA_REPORT", 0x81);  //测量报告
-define("MFUN_HCU_MODBUS_SWITCH_SET_ACK", 0x82);
-define("MFUN_HCU_MODBUS_ADDR_SET_ACK", 0x83);
-define("MFUN_HCU_MODBUS_PERIOD_SET_ACK", 0x84);
-define("MFUN_HCU_MODBUS_SAMPLE_SET_ACK", 0x85);
-define("MFUN_HCU_MODBUS_TIMES_SET_ACK", 0x86);
-define("MFUN_HCU_MODBUS_SWITCH_READ_ACK", 0x87);
-define("MFUN_HCU_MODBUS_ADDR_READ_ACK", 0x88);
-define("MFUN_HCU_MODBUS_PERIOD_READ_ACK", 0x89);
-define("MFUN_HCU_MODBUS_SAMPLE_READ_ACK", 0x8A);
-define("MFUN_HCU_MODBUS_TIMES_READ_ACK", 0x8B);
-
-//其他命令操作字
+//公共命令操作字
 define("MFUN_HCU_OPT_INVENTORY_REQ", 0x01);
 define("MFUN_HCU_OPT_INVENTORY_RESP", 0x81);
 define("MFUN_HCU_OPT_SWUPDATE_REQ", 0x01);
@@ -485,10 +383,8 @@ define("MFUN_HCU_OPT_VEDIOFILE_REQ", 0x02);   //命令下位机上传选中的�
 define("MFUN_HCU_OPT_VEDIOFILE_RESP", 0x82);  //视频文件传输完成响应
 define("MFUN_HCU_OPT_VEDIOPIC_REQ", 0x07);   //mfunhcu向下位机取照片操作字
 define("MFUN_HCU_OPT_VEDIOPIC_RESP", 0x87);   //下位机取完照片之后完成相应
-define("MFUN_HCU_OPT_LOCK_STATUS", 0x01);  //HCU_Lock_Status
-define("MFUN_HCU_OPT_LOCK_OPEN", 0x02);    //HCU_Lock_Open
-define("MFUN_HCU_OPT_TEMP_STATUS_REQ", 0x01); //读取hcu温度的状态
-define("MFUN_HCU_OPT_TEMP_STATUS_RESP", 0x81); //返回hcu温度的状态
+define("MFUN_HCU_OPT_STATUS_REQ", 0x01); //读取下位机的状态
+define("MFUN_HCU_OPT_STATUS_RESP", 0x81); //返回下位机的状态
 
 
 /**************************************************************************************

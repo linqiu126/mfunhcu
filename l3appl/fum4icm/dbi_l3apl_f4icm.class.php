@@ -510,8 +510,8 @@ class classDbiL3apF4icm
         {
             //生成控制命令的控制字
             $apiL2snrCommonServiceObj = new classApiL2snrCommonService();
-            $ctrl_key = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_CMDID_FHYS_DATA);
-            $opt_key = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_OPT_LOCK_STATUS);
+            $ctrl_key = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_CMDID_FHYS_LOCK);
+            $opt_key = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_OPT_STATUS_REQ);
 
             $row = $result->fetch_array();  //statcode和devcode一一对应
             $DevCode = $row['devcode'];
@@ -549,8 +549,8 @@ class classDbiL3apF4icm
         {
             //生成控制命令的控制字
             $apiL2snrCommonServiceObj = new classApiL2snrCommonService();
-            $ctrl_key = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_CMDID_FHYS_DATA);
-            $opt_key = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_OPT_LOCK_OPEN);
+            $ctrl_key = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_CMDID_FHYS_LOCK);
+            $opt_key = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_OPT_FHYS_LOCK_OPEN);
 
             $row = $result->fetch_array();  //statcode和devcode一一对应
             $DevCode = $row['devcode'];
@@ -589,7 +589,7 @@ class classDbiL3apF4icm
             //生成控制命令的控制字
             $apiL2snrCommonServiceObj = new classApiL2snrCommonService();
             $ctrl_key = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_CMDID_TEMP_DATA);
-            $opt_key = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_OPT_TEMP_STATUS_REQ);
+            $opt_key = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_OPT_STATUS_REQ);
 
             $row = $result->fetch_array();  //statcode和devcode一一对应
             $DevCode = $row['devcode'];

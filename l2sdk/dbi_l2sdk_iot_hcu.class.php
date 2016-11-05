@@ -161,11 +161,11 @@ class classDbiL2sdkHcu
         $starttime = $devinfo["StartTime"];
         $preendtime = $devinfo["PreEndTime"];  //！！！这个地方需要修改：预计结束时间和实际结束时间应该在项目信息里
         $endtime = $devinfo["EndTime"];
-        if($devinfo["DevStatus"] == "true")
-            $devstatus = MFUN_L3APL_F3DM_DEVICE_STATUS_ON;
-        else
-            $devstatus = MFUN_L3APL_F3DM_DEVICE_STATUS_OFF;
         $videourl = $devinfo["VideoURL"];
+        if($devinfo["DevStatus"] == "true")
+            $devstatus = MFUN_HCU_AQYC_STATUS_ON;
+        else
+            $devstatus = MFUN_HCU_AQYC_STATUS_OFF;
 
         $query_str = "SELECT * FROM `t_l2sdk_iothcu_inventory` WHERE `devcode` = '$devcode'";  //更新设备表
         $result = $mysqli->query($query_str);
