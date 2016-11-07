@@ -301,6 +301,9 @@ Make By：ZJL
 > 将l1comvm中全局消息常量按照工程重新组合
 > 清除testcase中的告警，现在除了需要用到swoole_client的case，本地windows环境测试无法运行外，所有case运行正常
 
+//= LZH, 2016 Nov.07, CURRENT_SW_DELIVERY R03.D03
+> 创建云控锁所有l2sensorproc任务并添加相应消息
+
 //待完善的功能
 1. dbi_devinfo_update（）需要修改，添加设备时预计结束时间和实际结束时间应该在项目信息里
 2. 添加设备时没有选择该设备装配了那些传感器，sensorctrl表没有更新

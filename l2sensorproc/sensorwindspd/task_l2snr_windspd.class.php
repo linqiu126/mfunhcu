@@ -155,7 +155,7 @@ class classTaskL2snrWindspd
         $statCode = "";
         $content="";
 
-        if ($msgId == MSG_ID_L2SDK_HCU_TO_L2SNR_PM25)
+        if ($msgId == MSG_ID_L2SDK_HCU_TO_L2SNR_WINDSPD)
         {
             //解开消息
             if (isset($msg["project"])) $project = $msg["project"];

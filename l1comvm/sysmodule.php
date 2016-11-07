@@ -41,6 +41,14 @@ define("MFUN_TASK_ID_L2SENSOR_IPM", $taskIndex++);
 define("MFUN_TASK_ID_L2SENSOR_IGM", $taskIndex++);
 define("MFUN_TASK_ID_L2SENSOR_IWM", $taskIndex++);
 define("MFUN_TASK_ID_L2SENSOR_IHM", $taskIndex++);
+define("MFUN_TASK_ID_L2SENSOR_BATT", $taskIndex++);
+define("MFUN_TASK_ID_L2SENSOR_BLE", $taskIndex++);
+define("MFUN_TASK_ID_L2SENSOR_DOORLOCK", $taskIndex++);
+define("MFUN_TASK_ID_L2SENSOR_GPRS", $taskIndex++);
+define("MFUN_TASK_ID_L2SENSOR_RFID", $taskIndex++);
+define("MFUN_TASK_ID_L2SENSOR_SMOK", $taskIndex++);
+define("MFUN_TASK_ID_L2SENSOR_VIBR", $taskIndex++);
+define("MFUN_TASK_ID_L2SENSOR_WATER", $taskIndex++);
 define("MFUN_TASK_ID_L2TIMER_CRON", $taskIndex++);
 define("MFUN_TASK_ID_L2SOCKET_LISTEN", $taskIndex++);
 define("MFUN_TASK_ID_L3APPL_FUM1SYM", $taskIndex++);
@@ -112,6 +120,14 @@ class classConstL1vmSysTaskList
         MFUN_TASK_ID_L2SENSOR_IWM => array("NAME" => "MFUN_TASK_ID_L2SENSOR_IWM", "PRESENT" => true),
         MFUN_TASK_ID_L2SENSOR_IGM => array("NAME" => "MFUN_TASK_ID_L2SENSOR_IGM", "PRESENT" => true),
         MFUN_TASK_ID_L2SENSOR_IHM => array("NAME" => "MFUN_TASK_ID_L2SENSOR_IHM", "PRESENT" => true),
+        MFUN_TASK_ID_L2SENSOR_BATT => array("NAME" => "MFUN_TASK_ID_L2SENSOR_BATT", "PRESENT" => true),
+        MFUN_TASK_ID_L2SENSOR_BLE => array("NAME" => "MFUN_TASK_ID_L2SENSOR_BLE", "PRESENT" => true),
+        MFUN_TASK_ID_L2SENSOR_DOORLOCK => array("NAME" => "MFUN_TASK_ID_L2SENSOR_DOORLOCK", "PRESENT" => true),
+        MFUN_TASK_ID_L2SENSOR_GPRS => array("NAME" => "MFUN_TASK_ID_L2SENSOR_GPRS", "PRESENT" => true),
+        MFUN_TASK_ID_L2SENSOR_RFID => array("NAME" => "MFUN_TASK_ID_L2SENSOR_RFID", "PRESENT" => true),
+        MFUN_TASK_ID_L2SENSOR_SMOK => array("NAME" => "MFUN_TASK_ID_L2SENSOR_SMOK", "PRESENT" => true),
+        MFUN_TASK_ID_L2SENSOR_VIBR => array("NAME" => "MFUN_TASK_ID_L2SENSOR_VIBR", "PRESENT" => true),
+        MFUN_TASK_ID_L2SENSOR_WATER => array("NAME" => "MFUN_TASK_ID_L2SENSOR_WATER", "PRESENT" => true),
         MFUN_TASK_ID_L2TIMER_CRON => array("NAME" => "MFUN_TASK_ID_L2TIMER_CRON", "PRESENT" => true),
         MFUN_TASK_ID_L2SOCKET_LISTEN => array("NAME" => "MFUN_TASK_ID_L2SOCKET_LISTEN", "PRESENT" => true),
         MFUN_TASK_ID_L3APPL_FUM1SYM => array("NAME" => "MFUN_TASK_L3APPL_FUM1SYM", "PRESENT" => true),
@@ -177,6 +193,14 @@ class classConstL1vmSysTaskList
             $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_IWM]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_IGM]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_IHM]["PRESENT"] = true;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_BATT]["PRESENT"] = false;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_BLE]["PRESENT"] = false;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_DOORLOCK]["PRESENT"] = false;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_GPRS]["PRESENT"] = false;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_RFID]["PRESENT"] = false;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_SMOK]["PRESENT"] = false;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_VIBR]["PRESENT"] = false;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_WATER]["PRESENT"] = false;
             $mfunTaskArrayConst[MFUN_TASK_ID_L2TIMER_CRON]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L2SOCKET_LISTEN]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM1SYM]["PRESENT"] = true;
@@ -237,6 +261,14 @@ class classConstL1vmSysTaskList
             $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_IWM]["PRESENT"] = false;
             $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_IGM]["PRESENT"] = false;
             $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_IHM]["PRESENT"] = false;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_BATT]["PRESENT"] = false;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_BLE]["PRESENT"] = false;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_DOORLOCK]["PRESENT"] = false;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_GPRS]["PRESENT"] = false;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_RFID]["PRESENT"] = false;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_SMOK]["PRESENT"] = false;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_VIBR]["PRESENT"] = false;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_WATER]["PRESENT"] = false;
             $mfunTaskArrayConst[MFUN_TASK_ID_L2TIMER_CRON]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L2SOCKET_LISTEN]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM1SYM]["PRESENT"] = false;
@@ -297,6 +329,14 @@ class classConstL1vmSysTaskList
             $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_IWM]["PRESENT"] = false;
             $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_IGM]["PRESENT"] = false;
             $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_IHM]["PRESENT"] = false;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_BATT]["PRESENT"] = false;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_BLE]["PRESENT"] = false;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_DOORLOCK]["PRESENT"] = false;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_GPRS]["PRESENT"] = false;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_RFID]["PRESENT"] = false;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_SMOK]["PRESENT"] = false;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_VIBR]["PRESENT"] = false;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_WATER]["PRESENT"] = false;
             $mfunTaskArrayConst[MFUN_TASK_ID_L2TIMER_CRON]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L2SOCKET_LISTEN]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM1SYM]["PRESENT"] = true;
@@ -338,25 +378,33 @@ class classConstL1vmSysTaskList
             $mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_NBIOT_STD_CJ188]["PRESENT"] = false;
             $mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_NBIOT_LTEV]["PRESENT"] = false;
             $mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_NBIOT_AGC]["PRESENT"] = false;
-            $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_EMC]["PRESENT"] = true;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_EMC]["PRESENT"] = false;
             $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_HSMMP]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_HUMID]["PRESENT"] = true;
-            $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_NOISE]["PRESENT"] = true;
-            $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_PM25]["PRESENT"] = true;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_NOISE]["PRESENT"] = false;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_PM25]["PRESENT"] = false;
             $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_TEMP]["PRESENT"] = true;
-            $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_WINDDIR]["PRESENT"] = true;
-            $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_WINDSPD]["PRESENT"] = true;
-            $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_AIRPRS]["PRESENT"] = true;
-            $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_ALCOHOL]["PRESENT"] = true;
-            $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_CO1]["PRESENT"] = true;
-            $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_HCHO]["PRESENT"] = true;
-            $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_TOXICGAS]["PRESENT"] = true;
-            $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_LIGHTSTR]["PRESENT"] = true;
-            $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_RAIN]["PRESENT"] = true;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_WINDDIR]["PRESENT"] = false;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_WINDSPD]["PRESENT"] = false;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_AIRPRS]["PRESENT"] = false;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_ALCOHOL]["PRESENT"] = false;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_CO1]["PRESENT"] = false;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_HCHO]["PRESENT"] = false;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_TOXICGAS]["PRESENT"] = false;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_LIGHTSTR]["PRESENT"] = false;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_RAIN]["PRESENT"] = false;
             $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_IPM]["PRESENT"] = false;
             $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_IWM]["PRESENT"] = false;
             $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_IGM]["PRESENT"] = false;
             $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_IHM]["PRESENT"] = false;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_BATT]["PRESENT"] = true;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_BLE]["PRESENT"] = true;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_DOORLOCK]["PRESENT"] = true;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_GPRS]["PRESENT"] = true;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_RFID]["PRESENT"] = true;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_SMOK]["PRESENT"] = true;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_VIBR]["PRESENT"] = true;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_WATER]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L2TIMER_CRON]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L2SOCKET_LISTEN]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM1SYM]["PRESENT"] = true;
@@ -369,12 +417,12 @@ class classConstL1vmSysTaskList
             $mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM8PSM]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM9GISM]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUMXPRCM]["PRESENT"] = true;
-            $mfunTaskArrayConst[MFUN_TASK_ID_L3WX_OPR_EMC]["PRESENT"] = true;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L3WX_OPR_EMC]["PRESENT"] = false;
             $mfunTaskArrayConst[MFUN_TASK_ID_L3NBIOT_OPR_METER]["PRESENT"] = false;
             $mfunTaskArrayConst[MFUN_TASK_ID_L4AQYC_UI]["PRESENT"] = false;
             $mfunTaskArrayConst[MFUN_TASK_ID_L4FHYS_UI]["PRESENT"] = false;
-            $mfunTaskArrayConst[MFUN_TASK_ID_L4EMCWX_UI]["PRESENT"] = true;
-            $mfunTaskArrayConst[MFUN_TASK_ID_L4TBSWR_UI]["PRESENT"] = true;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L4EMCWX_UI]["PRESENT"] = false;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L4TBSWR_UI]["PRESENT"] = false;
             $mfunTaskArrayConst[MFUN_TASK_ID_L4NBIOT_IPM_UI]["PRESENT"] = false;
             $mfunTaskArrayConst[MFUN_TASK_ID_L4NBIOT_IGM_UI]["PRESENT"] = false;
             $mfunTaskArrayConst[MFUN_TASK_ID_L4NBIOT_IWM_UI]["PRESENT"] = false;
@@ -417,6 +465,14 @@ class classConstL1vmSysTaskList
             $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_IWM]["PRESENT"] = false;
             $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_IGM]["PRESENT"] = false;
             $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_IHM]["PRESENT"] = false;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_BATT]["PRESENT"] = false;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_BLE]["PRESENT"] = false;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_DOORLOCK]["PRESENT"] = false;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_GPRS]["PRESENT"] = false;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_RFID]["PRESENT"] = false;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_SMOK]["PRESENT"] = false;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_VIBR]["PRESENT"] = false;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_WATER]["PRESENT"] = false;
             $mfunTaskArrayConst[MFUN_TASK_ID_L2TIMER_CRON]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L2SOCKET_LISTEN]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM1SYM]["PRESENT"] = true;
@@ -477,6 +533,14 @@ class classConstL1vmSysTaskList
             $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_IWM]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_IGM]["PRESENT"] = false;
             $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_IHM]["PRESENT"] = false;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_BATT]["PRESENT"] = false;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_BLE]["PRESENT"] = false;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_DOORLOCK]["PRESENT"] = false;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_GPRS]["PRESENT"] = false;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_RFID]["PRESENT"] = false;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_SMOK]["PRESENT"] = false;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_VIBR]["PRESENT"] = false;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_WATER]["PRESENT"] = false;
             $mfunTaskArrayConst[MFUN_TASK_ID_L2TIMER_CRON]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L2SOCKET_LISTEN]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM1SYM]["PRESENT"] = true;
@@ -537,6 +601,14 @@ class classConstL1vmSysTaskList
             $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_IWM]["PRESENT"] = false;
             $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_IGM]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_IHM]["PRESENT"] = false;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_BATT]["PRESENT"] = false;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_BLE]["PRESENT"] = false;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_DOORLOCK]["PRESENT"] = false;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_GPRS]["PRESENT"] = false;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_RFID]["PRESENT"] = false;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_SMOK]["PRESENT"] = false;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_VIBR]["PRESENT"] = false;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_WATER]["PRESENT"] = false;
             $mfunTaskArrayConst[MFUN_TASK_ID_L2TIMER_CRON]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L2SOCKET_LISTEN]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM1SYM]["PRESENT"] = true;
@@ -597,6 +669,14 @@ class classConstL1vmSysTaskList
             $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_IWM]["PRESENT"] = false;
             $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_IGM]["PRESENT"] = false;
             $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_IHM]["PRESENT"] = true;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_BATT]["PRESENT"] = false;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_BLE]["PRESENT"] = false;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_DOORLOCK]["PRESENT"] = false;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_GPRS]["PRESENT"] = false;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_RFID]["PRESENT"] = false;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_SMOK]["PRESENT"] = false;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_VIBR]["PRESENT"] = false;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_WATER]["PRESENT"] = false;
             $mfunTaskArrayConst[MFUN_TASK_ID_L2TIMER_CRON]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L2SOCKET_LISTEN]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM1SYM]["PRESENT"] = true;
@@ -657,6 +737,14 @@ class classConstL1vmSysTaskList
             $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_IWM]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_IGM]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_IHM]["PRESENT"] = true;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_BATT]["PRESENT"] = true;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_BLE]["PRESENT"] = true;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_DOORLOCK]["PRESENT"] = true;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_GPRS]["PRESENT"] = true;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_RFID]["PRESENT"] = true;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_SMOK]["PRESENT"] = true;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_VIBR]["PRESENT"] = true;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_WATER]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L2TIMER_CRON]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L2SOCKET_LISTEN]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM1SYM]["PRESENT"] = true;
@@ -696,7 +784,7 @@ class classConstL1vmSysTaskList
             $mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_IOT_WX]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_IOT_WX_JSSDK]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_IOT_HCU]["PRESENT"] = true;
-            $mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_NBIOT_STD_QG376]["PRESENT"] = true;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_NBIOT_STD_QG376]["PRESENT"] = false;
             $mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_NBIOT_STD_CJ188]["PRESENT"] = false;
             $mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_NBIOT_LTEV]["PRESENT"] = false;
             $mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_NBIOT_AGC]["PRESENT"] = false;
@@ -715,10 +803,18 @@ class classConstL1vmSysTaskList
             $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_TOXICGAS]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_LIGHTSTR]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_RAIN]["PRESENT"] = true;
-            $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_IPM]["PRESENT"] = false;
-            $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_IWM]["PRESENT"] = false;
-            $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_IGM]["PRESENT"] = false;
-            $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_IHM]["PRESENT"] = false;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_IPM]["PRESENT"] = true;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_IWM]["PRESENT"] = true;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_IGM]["PRESENT"] = true;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_IHM]["PRESENT"] = true;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_BATT]["PRESENT"] = false;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_BLE]["PRESENT"] = false;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_DOORLOCK]["PRESENT"] = false;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_GPRS]["PRESENT"] = false;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_RFID]["PRESENT"] = false;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_SMOK]["PRESENT"] = false;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_VIBR]["PRESENT"] = false;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_WATER]["PRESENT"] = false;
             $mfunTaskArrayConst[MFUN_TASK_ID_L2TIMER_CRON]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L2SOCKET_LISTEN]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM1SYM]["PRESENT"] = true;

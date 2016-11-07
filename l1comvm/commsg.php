@@ -65,6 +65,14 @@ define("MSG_ID_L2SDK_EMCWX_TO_L2SNR_LIGHTSTR_DATA_REPORT_TIMING", $index++);
 define("MSG_ID_L2SDK_HCU_TO_L2SNR_RAIN", $index++);
 define("MSG_ID_L2SDK_EMCWX_TO_L2SNR_RAIN_DATA_READ_INSTANT", $index++);
 define("MSG_ID_L2SDK_EMCWX_TO_L2SNR_RAIN_DATA_REPORT_TIMING", $index++);
+define("MSG_ID_L2SDK_HCU_TO_L2SNR_DOORLOCK", $index++);
+define("MSG_ID_L2SDK_HCU_TO_L2SNR_BATT", $index++);
+define("MSG_ID_L2SDK_HCU_TO_L2SNR_BLE", $index++);
+define("MSG_ID_L2SDK_HCU_TO_L2SNR_GPRS", $index++);
+define("MSG_ID_L2SDK_HCU_TO_L2SNR_RFID", $index++);
+define("MSG_ID_L2SDK_HCU_TO_L2SNR_SMOK", $index++);
+define("MSG_ID_L2SDK_HCU_TO_L2SNR_VIBR", $index++);
+define("MSG_ID_L2SDK_HCU_TO_L2SNR_WATER", $index++);
 define("MSG_ID_L2SDK_WECHAT_DATA_COMING", $index++);
 define("MSG_ID_L2SDK_HCU_DATA_COMING", $index++);
 //L2SDK_JD消息部分
