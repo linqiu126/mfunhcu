@@ -2,7 +2,7 @@
 PATH="/bin:/usr/bin:/usr/sbin:/sbin"
 count=`ps -fe |grep "cloud_callback_socket_listening.php" | grep -v "grep" | grep "master" | wc -l`
 
-ipaddr=`LC_ALL=C ifconfig | grep 'inet '| grep -v '10.168' |grep -v '127'|cut -d: -f2 | awk '{ print $2}'`
+ipaddr=`LC_ALL=C ifconfig | grep 'inet '| grep -v '10.' |grep -v '127'|cut -d: -f2 | awk '{ print $2}'`
 ipxiaohui='121.40.118.33'
 ipaiqi='121.40.185.177'
 
