@@ -3,8 +3,8 @@
 /**
  * Created by PhpStorm.
  * User: QL
- * Date: 16-9-14
- * Time: 上午11:15
+ * Date: 16-11-10
+ * Time: 13:35
  */
 class socket_client_sync
 {

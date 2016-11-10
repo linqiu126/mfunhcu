@@ -22,7 +22,7 @@ fi
 #echo $(date +%Y-%m-%d_%H:%M:%S)" ipaddr is "$ipaddr >> $swoole_server_logfile
 #echo $(date +%Y-%m-%d_%H:%M:%S)" PATH is "$PATH >> $swoole_server_logfile
 
-echo  $(date +%Y-%m-%d_%H:%M:%S)" Swoole server master process number is "$count >> $swoole_server_logfile
+#echo  $(date +%Y-%m-%d_%H:%M:%S)" Swoole server master process number is "$count >> $swoole_server_logfile
 if [ $count -lt 1 ]
     then
     ps -eaf |grep "cloud_callback_socket_listening.php" | grep -v "grep"| awk '{print $2}'|xargs kill -9

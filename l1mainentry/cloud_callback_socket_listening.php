@@ -54,7 +54,11 @@ class classL1MainEntrySocketListenServer
         $port2->on('connect', array($this, 'port2_onConnect'));
         $port2->on('receive', array($this, 'port2_onReceive'));
         $port2->on('close', array($this, 'port2_onClose'));
-         
+
+        //port3 for FHYS 云控锁项目
+        $port3 = $this->serv->listen("0.0.0.0", 9503, SWOOLE_SOCK_UDP);
+        $port3->on('Packet', array($this, 'port3_onPacket'));
+
         $this->serv->start();
         return;
     }
@@ -106,7 +110,9 @@ class classL1MainEntrySocketListenServer
         //a test to read from t_l2sdk_iothcu_inventory, devcode + socketid
         //taskwait就是投递一条任务，这里直接传递SQL语句了
         //然后阻塞等待SQL完成
-        $query="UPDATE t_l2sdk_iothcu_inventory  SET socketid = $fd WHERE devcode = \"$data\"";
+
+        //20161110, QL, AQYC项目的代码先注释掉，供FHYC项目调试完再说
+        /*$query="UPDATE t_l2sdk_iothcu_inventory  SET socketid = $fd WHERE devcode = \"$data\"";
         $result = $serv->taskwait($query);
         if ($result !== false) {
             list($status, $db_res) = explode(':', $result, 2);
@@ -121,11 +127,15 @@ class classL1MainEntrySocketListenServer
         } else {
             echo date('Y/m/d H:i:s', time())." ";
             echo "Swoole worker: Socketid store timeout.";
-        }
+        }*/
 
-        $msg = array("serv" => $serv, "fd" => $fd, "fromid" => $from_id, "data" => $data);
+        /*$msg = array("serv" => $serv, "fd" => $fd, "fromid" => $from_id, "data" => $data);
         $obj = new classTaskL1vmCoreRouter();
-        $obj->mfun_l1vm_task_main_entry(MFUN_MAIN_ENTRY_SOCKET_LISTEN, NULL, NULL, $msg);
+        $obj->mfun_l1vm_task_main_entry(MFUN_MAIN_ENTRY_SOCKET_LISTEN, NULL, NULL, $msg);*/
+
+        //for FHYS云控锁项目
+        $obj = new classTaskL1vmCoreRouter();
+        $obj->mfun_l1vm_task_main_entry(MFUN_MAIN_ENTRY_IOT_HCU, MSG_ID_L2SDK_HCU_DATA_COMING, "MSG_ID_L2SDK_HCU_DATA_COMING", $data);
     }
 
     public function my_onClose( $serv, $fd, $from_id ) {
@@ -284,6 +294,15 @@ class classL1MainEntrySocketListenServer
         echo date('Y/m/d H:i:s', time())." ";
         echo "Swoole worker port2: Client {$fd} connection closed.".PHP_EOL;
     }
+
+    //FHYS云控锁
+    public function port3_onPacket($serv, $data, $addr) {
+        echo date('Y/m/d H:i:s', time())." ";
+        echo "Swoole worker port3: addr is $addr, data is $data.".PHP_EOL;
+        var_dump($addr);
+        $serv->sendto($addr['address'], $addr['port'], 'Swoole port3: ' . $data);
+    }
+
 }
 
 //该服务目前只能在AQ云下跑，其它的待开发完善
