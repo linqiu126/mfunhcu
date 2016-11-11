@@ -48,9 +48,11 @@ define("MFUN_HCU_CMDID_FHYS_TEMP", 0x49);       //温度控制字
 define("MFUN_HCU_CMDID_FHYS_HUMI", 0x4A);       //湿度控制字
 
 //FHYS操作字
-define("MFUN_HCU_OPT_FHYS_LOCK_OPEN", 0x02);    //云端开锁指令
+define("MFUN_HCU_OPT_FHYS_LOCKOPEN_PUSH", 0x02);    //云端开锁指令
 define("MFUN_HCU_OPT_FHYS_GPRS_IND", 0x82);     //GPRS信号强度指示
 define("MFUN_HCU_OPT_FHYS_BLE_IND", 0x82);      //BLE信号强度指示
+define("MFUN_HCU_OPT_FHYS_LOCKOPEN_REQ", 0x83);    //云端开锁指令
+
 
 
 /**************************************************************************************

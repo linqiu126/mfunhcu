@@ -1312,11 +1312,103 @@ class classTaskL4fhysUi
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM4ICM, MSG_ID_L4AQYCUI_TO_L3F4_GETCAMERASTATUS, "MSG_ID_L4AQYCUI_TO_L3F4_GETCAMERASTATUS",$input);
                     break;
 
-                case "HCU_Lock_open": //Open a lock
+                case "GetCameraUnit":
+
+                    break;
+                case "CameraVAdj":
+                    break;
+                case "CameraHAdj":
+                    break;
+
+                case "OpenLock": //Open a lock
                     if (isset($_GET["id"])) $uid = trim($_GET["id"]); else  $uid = "";
                     if (isset($_GET["StatCode"])) $StatCode = trim($_GET["StatCode"]); else  $StatCode= "";
                     $input = array("uid" => $uid, "StatCode" => $StatCode);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM4ICM, MSG_ID_L4FHYSUI_TO_L3F4_HCULOCKOPEN, "MSG_ID_L4FHYSUI_TO_L3F4_HCULOCKOPEN",$input);
+                    break;
+                case "UserKey":
+                    if (isset($_GET["userid"])) $userid = trim($_GET["userid"]); else  $userid = "";
+                    $input = array("uid" => $userid);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4FHYSUI_TO_L3F2_USERKEY, "MSG_ID_L4FHYSUI_TO_L3F2_USERKEY",$input);
+                    break;
+                case "ProjKeyList":
+                    if (isset($_GET["id"])) $uid = trim($_GET["id"]); else  $uid = "";
+                    $input = array("uid" => $uid);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4FHYSUI_TO_L3F2_PROJKEYLIST, "MSG_ID_L4FHYSUI_TO_L3F2_PROJKEYLIST",$input);
+                    break;
+                case "ProjKey":
+                    if (isset($_GET["ProjCode"])) $ProjCode = trim($_GET["ProjCode"]); else  $ProjCode = "";
+                    $input = array("ProjCode" => $ProjCode);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4FHYSUI_TO_L3F2_PROJKEY, "MSG_ID_L4FHYSUI_TO_L3F2_PROJKEY",$input);
+                    break;
+                case "ProjUserList":
+                    if (isset($_GET["id"])) $uid = trim($_GET["id"]); else  $uid = "";
+                    $input = array("uid" => $uid);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4FHYSUI_TO_L3F2_PROJUSERLIST, "MSG_ID_L4FHYSUI_TO_L3F2_PROJUSERLIST",$input);
+                    break;
+                case "KeyTable":
+                    if (isset($_GET["length"])) $length = trim($_GET["length"]); else  $length = "";
+                    if (isset($_GET["startseq"])) $startseq = trim($_GET["startseq"]); else  $startseq = "";
+                    $input = array("length" => $length, "startseq" => $startseq);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4FHYSUI_TO_L3F2_KEYTABLE, "MSG_ID_L4FHYSUI_TO_L3F2_KEYTABLE",$input);
+                    break;
+                case "KeyNew":
+                    if (isset($_GET["KeyCode"])) $KeyCode = trim($_GET["KeyCode"]); else  $KeyCode = "";
+                    if (isset($_GET["KeyName"])) $KeyName = trim($_GET["KeyName"]); else  $KeyName = "";
+                    if (isset($_GET["KeyProj"])) $KeyProj = trim($_GET["KeyProj"]); else  $KeyProj = "";
+                    if (isset($_GET["KeyType"])) $KeyType = trim($_GET["KeyType"]); else  $KeyType = "";
+                    if (isset($_GET["HardwareCode"])) $HardwareCode = trim($_GET["HardwareCode"]); else  $HardwareCode = "";
+                    if (isset($_GET["user"])) $user = trim($_GET["user"]); else  $user = "";
+                    if (isset($_GET["Memo"])) $memo = trim($_GET["Memo"]); else  $memo = "";
+                    $input = array("KeyCode" => $KeyCode, "KeyName" => $KeyName, "KeyProj" => $KeyProj, "KeyType" => $KeyType,
+                        "HardwareCode" => $HardwareCode, "user" => $user, "Memo" => $memo);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4FHYSUI_TO_L3F2_KEYNEW, "MSG_ID_L4FHYSUI_TO_L3F2_KEYNEW",$input);
+                    break;
+                case "KeyDel":
+                    if (isset($_GET["id"])) $keyid = trim($_GET["id"]); else  $keyid = "";
+                    if (isset($_GET["user"])) $userid = trim($_GET["user"]); else  $userid = "";
+                    $input = array("keyid" => $keyid, "userid" => $userid);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4FHYSUI_TO_L3F2_KEYDEL, "MSG_ID_L4FHYSUI_TO_L3F2_KEYDEL",$input);
+                    break;
+                case "DomainAuthlist":
+                    if (isset($_GET["DomainCode"])) $ProjCode = trim($_GET["DomainCode"]); else  $ProjCode = "";
+                    $input = array("ProjCode" => $ProjCode);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4FHYSUI_TO_L3F2_PROJAUTHLIST, "MSG_ID_L4FHYSUI_TO_L3F2_PROJAUTHLIST",$input);
+                    break;
+                case "KeyAuthlist":
+                    if (isset($_GET["KeyId"])) $keyid = trim($_GET["KeyId"]); else  $keyid = "";
+                    $input = array("keyid" => $keyid);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4FHYSUI_TO_L3F2_KEYAUTHLIST, "MSG_ID_L4FHYSUI_TO_L3F2_KEYAUTHLIST",$input);
+                    break;
+                case "KeyGrant":
+                    if (isset($_GET["id"])) $uid = trim($_GET["id"]); else  $uid = "";
+                    if (isset($_GET["KeyId"])) $keyid = trim($_GET["KeyId"]); else  $keyid = "";
+                    if (isset($_GET["UserId"])) $userid = trim($_GET["UserId"]); else  $userid = "";
+                    $input = array("id" => $uid, "keyid" => $keyid, "userid" => $userid);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4FHYSUI_TO_L3F2_KEYGRANT, "MSG_ID_L4FHYSUI_TO_L3F2_KEYGRANT",$input);
+                    break;
+                case "KeyAuthNew":
+                    if (isset($_GET["id"])) $uid = trim($_GET["id"]); else  $uid = "";
+                    if (isset($_GET["DomainCode"])) $authobjcode = trim($_GET["DomainCode"]); else  $authobjcode = "";
+                    if (isset($_GET["KeyId"])) $keyid = trim($_GET["KeyId"]); else  $keyid = "";
+                    if (isset($_GET["user"])) $user = trim($_GET["user"]); else  $user = "";
+                    if (isset($_GET["AuthWay"])) $authtype = trim($_GET["AuthWay"]); else  $authtype = "";
+                    $input = array("id" => $uid, "authobjcode" => $authobjcode, "keyid" => $keyid, "user" => $user, "authtype" => $authtype);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4FHYSUI_TO_L3F2_KEYAUTHNEW, "MSG_ID_L4FHYSUI_TO_L3F2_KEYAUTHNEW",$input);
+                    break;
+                case "KeyAuthDel":
+                    if (isset($_GET["id"])) $uid = trim($_GET["id"]); else  $uid = "";
+                    if (isset($_GET["AuthId"])) $authid = trim($_GET["AuthId"]); else  $authid = "";
+                    $input = array("uid" => $uid, "authid" => $authid);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4FHYSUI_TO_L3F2_KEYAUTHDEL, "MSG_ID_L4FHYSUI_TO_L3F2_KEYAUTHDEL",$input);
+                    break;
+                case "KeyHistory":
+                    if (isset($_GET["id"])) $uid = trim($_GET["id"]); else  $uid = "";
+                    if (isset($_GET["ProjCode"])) $projcode = trim($_GET["ProjCode"]); else  $projcode = "";
+                    if (isset($_GET["Time"])) $time = trim($_GET["Time"]); else  $time= "";
+                    if (isset($_GET["KeyWord"])) $keyword = trim($_GET["KeyWord"]); else  $keyword= "";
+                    $input = array("uid" => $uid, "projcode" => $projcode, "time" => $time, "keyword" => $keyword);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4FHYSUI_TO_L3F2_KEYHISTORY, "MSG_ID_L4FHYSUI_TO_L3F2_KEYHISTORY",$input);
                     break;
 
                 default:

@@ -850,6 +850,11 @@ class classTaskL1vmCoreRouter
                     $obj->mfun_l2socket_listen_task_main_entry($this, $result["msgId"], $result["msgName"], $result["msgBody"]);
                     break;
 
+                case MFUN_TASK_ID_L2SENSOR_DOORLOCK:
+                    $obj = new classTaskL2snrDoorlock();
+                    $obj->mfun_l2snr_doorlock_task_main_entry($this, $result["msgId"], $result["msgName"], $result["msgBody"]);
+                    break;
+
                 case MFUN_TASK_ID_L3APPL_FUM1SYM:
                     $obj = new classTaskL3aplF1sym();
                     $obj->mfun_l3apl_f1sym_task_main_entry($this, $result["msgId"], $result["msgName"], $result["msgBody"]);
