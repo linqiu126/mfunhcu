@@ -445,7 +445,7 @@ if (isset($_SERVER['SERVER_NAME']))
     else
     {
         //云后台定义
-        define("MFUN_CLOUD_HCU", "AQ_HCU"); //HCU后台云应用
+        define("MFUN_CLOUD_HCU", "XHZN_HCU"); //HCU后台云应用
         define("MFUN_CLOUD_WX", "PC_WX"); //微信后台云应用
         //主数据库定义
         define("MFUN_CLOUD_DBHOST", "localhost");    //连接的服务器地址
