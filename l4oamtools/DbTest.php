@@ -17,16 +17,16 @@ include_once "../l1comvm/vmlayer.php";
 //$path2 = pathinfo(__FILE__, PATHINFO_DIRNAME);
 //$path3 = $_SERVER['DOCUMENT_ROOT'];
 
-define ("TC_EMCWX", true);
+define ("TC_EMCWX", false);
 define ("TC_SOCKET", false);
 define ("TC_CRON", false);
 define ("TC_IOT_HCU", true);
-define ("TC_L4AQYC_UI", true);
-define ("TC_L4FHYS_UI", true);
-define ("TC_L4TBSWR_UI", true);
-define ("TC_NBIOT_CJ188_UL", true);
-define ("TC_NBIOT_CJ188_DL", true);
-define ("TC_NBIOT_QG376", true);
+define ("TC_L4AQYC_UI", false);
+define ("TC_L4FHYS_UI", false);
+define ("TC_L4TBSWR_UI", false);
+define ("TC_NBIOT_CJ188_UL", false);
+define ("TC_NBIOT_CJ188_DL", false);
+define ("TC_NBIOT_QG376", false);
 
 require("testcase_nbiot188.php");
 require("testcase_l4aqyc.php");
