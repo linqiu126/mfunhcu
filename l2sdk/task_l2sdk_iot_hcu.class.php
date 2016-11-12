@@ -49,13 +49,15 @@ class classTaskL2sdkIotHcu
             $statCode = $result;
         }
         //收到非本消息体该收到的消息
-        if ($toUser != MFUN_CLOUD_HCU){
+        /*
+        if ($toUser != MFUN_CLOUD_HCU ){
             $result = "HCU_IOT: XML message invalid ToUserName";
             $log_content = "T:" . json_encode($result);
             $loggerObj->logger($project, $log_from, $log_time, $log_content);
             echo trim($result);
             return true;
         }
+        */
 
         //解开key，处理CMDID
         $key = unpack('A2Key', $content);
