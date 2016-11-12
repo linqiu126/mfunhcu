@@ -48,9 +48,10 @@ class classTaskL2sdkIotHcu
         else{
             $statCode = $result;
         }
+
         //收到非本消息体该收到的消息
         if ($toUser != MFUN_CLOUD_HCU ){
-            $result = "HCU_IOT: XML message invalid ToUserName";
+            $result = "HCU_IOT: FHYS XML message invalid ToUserName";
             $log_content = "T:" . json_encode($result);
             $loggerObj->logger($project, $log_from, $log_time, $log_content);
             echo trim($result);
