@@ -16,10 +16,11 @@ if (TC_IOT_HCU == true) {
 //EMC 20
     echo " [TC IOT_HCU: EMC START]\n";
     $GLOBALS["HTTP_RAW_POST_DATA"] = "<xml><ToUserName><![CDATA[AQ_HCU]]></ToUserName><FromUserName><![CDATA[HCU_SH_0302]]></FromUserName><CreateTime>1460039152</CreateTime><MsgType><![CDATA[hcu_text]]></MsgType><Content><![CDATA[201881050201124945000000004E000000000000000057066DF0]]></Content><FuncFlag>0</FuncFlag></xml>";
-//$GLOBALS["HTTP_RAW_POST_DATA"] = $postStr;
-//$msg = $GLOBALS["HTTP_RAW_POST_DATA"];
-//$obj = new classTaskL1vmCoreRouter();
-//$obj->mfun_l1vm_task_main_entry(MFUN_MAIN_ENTRY_IOT_HCU, MSG_ID_L2SDK_HCU_DATA_COMING, "MSG_ID_L2SDK_HCU_DATA_COMING", $postStr);
+    //$GLOBALS["HTTP_RAW_POST_DATA"] = "<xml><ToUserName><![CDATA[AQ_HCU]]></ToUserName><FromUserName><![CDATA[HCU_SH_0301]]></FromUserName><CreateTime>1477323704</CreateTime><MsgType><![CDATA[hcu_text]]></MsgType><Content><![CDATA[400183]]></Content><FuncFlag>0</FuncFlag></xml>";
+    //$GLOBALS["HTTP_RAW_POST_DATA"] = $postStr;
+    //$msg = $GLOBALS["HTTP_RAW_POST_DATA"];
+    //$obj = new classTaskL1vmCoreRouter();
+    //$obj->mfun_l1vm_task_main_entry(MFUN_MAIN_ENTRY_IOT_HCU, MSG_ID_L2SDK_HCU_DATA_COMING, "MSG_ID_L2SDK_HCU_DATA_COMING", $postStr);
     require("../l1mainentry/cloud_callback_hcu.php");
     echo " [TC IOT_HCU: EMC END]\n";
 //PM 25
