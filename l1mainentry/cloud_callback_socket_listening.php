@@ -111,8 +111,11 @@ class classL1MainEntrySocketListenServer
         //taskwait就是投递一条任务，这里直接传递SQL语句了
         //然后阻塞等待SQL完成
 
-        //20161110, QL, AQYC项目的代码先注释掉，供FHYC项目调试完再说
-        /*$query="UPDATE t_l2sdk_iothcu_inventory  SET socketid = $fd WHERE devcode = \"$data\"";
+        //20161112, QL, AQYC项目的代码先注释掉，供FHYC项目调试完再说
+        $strpos = strpos($data,"HCU_");
+        $DevCode = substr($data, $strpos, 11);
+
+        $query="UPDATE t_l2sdk_iothcu_inventory  SET socketid = $fd WHERE devcode = \"$DevCode\"";
         $result = $serv->taskwait($query);
         if ($result !== false) {
             list($status, $db_res) = explode(':', $result, 2);
@@ -127,11 +130,11 @@ class classL1MainEntrySocketListenServer
         } else {
             echo date('Y/m/d H:i:s', time())." ";
             echo "Swoole worker: Socketid store timeout.";
-        }*/
+        }
 
         /*$msg = array("serv" => $serv, "fd" => $fd, "fromid" => $from_id, "data" => $data);
         $obj = new classTaskL1vmCoreRouter();
-        $obj->mfun_l1vm_task_main_entry(MFUN_MAIN_ENTRY_SOCKET_LISTEN, NULL, NULL, $msg);*/
+        $obj->mfun_l1vm_task_main_entry(MFUN_MAIN_ENTRY_SOCKET_LISTEN, NULL, NULL, $msg); */
 
         //for FHYS云控锁项目
         $obj = new classTaskL1vmCoreRouter();

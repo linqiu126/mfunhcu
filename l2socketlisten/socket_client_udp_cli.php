@@ -7,8 +7,6 @@
  */
 include "socket_client_udp.class.php";
 
-$DevCode = $argv[1];
-//$respCmd = $argv[2];
-$client = new socket_client_udp($DevCode);
+$client = new socket_client_udp();
 
 $client->sendto();
