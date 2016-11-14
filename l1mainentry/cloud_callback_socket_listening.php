@@ -121,12 +121,12 @@ class classL1MainEntrySocketListenServer
             list($status, $db_res) = explode(':', $result, 2);
             if ($status == 'OK') {
                 echo date('Y/m/d H:i:s', time())." ";
-                echo "Swoole worker: Client ".$data."'s socketid ".$fd." is stored in t_l2sdk_iothcu_inventory. Affacted_rows: ".$db_res.PHP_EOL;
+                echo "Swoole worker: Client ".$DevCode."'s socketid ".$fd." is stored in t_l2sdk_iothcu_inventory. Affacted_rows: ".$db_res.PHP_EOL;
             } else {
                 echo date('Y/m/d H:i:s', time())." ";
                 echo "Swoole worker: Socketid store failed.";
             }
-            return;
+            //return;
         } else {
             echo date('Y/m/d H:i:s', time())." ";
             echo "Swoole worker: Socketid store timeout.";
@@ -137,7 +137,9 @@ class classL1MainEntrySocketListenServer
         $obj->mfun_l1vm_task_main_entry(MFUN_MAIN_ENTRY_SOCKET_LISTEN, NULL, NULL, $msg); */
 
         //for FHYS云控锁项目
+        echo "before new";
         $obj = new classTaskL1vmCoreRouter();
+        echo "after new";
         $obj->mfun_l1vm_task_main_entry(MFUN_MAIN_ENTRY_IOT_HCU, MSG_ID_L2SDK_HCU_DATA_COMING, "MSG_ID_L2SDK_HCU_DATA_COMING", $data);
     }
 
