@@ -1074,12 +1074,6 @@ class classTaskL4fhysUi
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM3DM, MSG_ID_L4AQYCUI_TO_L3F3_SENSORLIST, "MSG_ID_L4AQYCUI_TO_L3F3_SENSORLIST",$input);
                     break;
 
-                case "DevSensor":
-                    if (isset($_GET["DevCode"])) $DevCode = trim($_GET["DevCode"]); else  $DevCode = "";
-                    $input = array("DevCode" => $DevCode);
-                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM3DM, MSG_ID_L4FHYSUI_TO_L3F3_DEVSENSOR, "MSG_ID_L4FHYSUI_TO_L3F3_DEVSENSOR",$input);
-                    break;
-
                 case "SensorUpdate":
                     if (isset($_GET["DevCode"])) $DevCode = trim($_GET["DevCode"]); else  $DevCode = "";
                     if (isset($_GET["SensorCode"])) $SensorCode = trim($_GET["SensorCode"]); else  $SensorCode = "";
@@ -1162,18 +1156,6 @@ class classTaskL4fhysUi
                     if (isset($_GET["id"])) $id = trim($_GET["id"]); else  $id = "";
                     $input = array("id" => $id);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM7ADS, MSG_ID_L4AQYCUI_TO_L3F7_CLEARUSERIMG, "MSG_ID_L4AQYCUI_TO_L3F7_CLEARUSERIMG",$input);
-                    break;
-
-                /*
-                var retval={
-                    status:"true",
-                    ColumnName: column_name,
-                    TableData:row_content
-                };*/
-                case "GetStaticMonitorTable":  //查询测量点聚合信息
-                    if (isset($_GET["id"])) $id = trim($_GET["id"]); else  $id = "";
-                    $input = array("id" => $id);
-                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM3DM, MSG_ID_L4FHYSUI_TO_L3F3_GETSTATICMONITORTABLE, "MSG_ID_L4FHYSUI_TO_L3F3_GETSTATICMONITORTABLE",$input);
                     break;
 
                 /*
@@ -1313,45 +1295,78 @@ class classTaskL4fhysUi
                     break;
 
                 case "GetCameraUnit":
-
                     break;
                 case "CameraVAdj":
                     break;
                 case "CameraHAdj":
                     break;
 
+/*********************************智能云锁新增处理 Start*********************************************/
+                case "DevSensor":
+                    if (isset($_GET["DevCode"])) $DevCode = trim($_GET["DevCode"]); else  $DevCode = "";
+                    $input = array("DevCode" => $DevCode);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM3DM, MSG_ID_L4FHYSUI_TO_L3F3_DEVSENSOR, "MSG_ID_L4FHYSUI_TO_L3F3_DEVSENSOR",$input);
+                    break;
+
+                    /*var retval={
+                    status:"true",
+                    ColumnName: column_name,
+                    TableData:row_content
+                    };*/
+                case "GetStaticMonitorTable":  //查询测量点聚合信息
+                    if (isset($_GET["id"])) $id = trim($_GET["id"]); else  $id = "";
+                    $input = array("id" => $id);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM3DM, MSG_ID_L4FHYSUI_TO_L3F3_GETSTATICMONITORTABLE, "MSG_ID_L4FHYSUI_TO_L3F3_GETSTATICMONITORTABLE",$input);
+                    break;
+
+                //开锁请求命令
                 case "OpenLock": //Open a lock
                     if (isset($_GET["id"])) $uid = trim($_GET["id"]); else  $uid = "";
-                    if (isset($_GET["StatCode"])) $StatCode = trim($_GET["StatCode"]); else  $StatCode= "";
-                    $input = array("uid" => $uid, "StatCode" => $StatCode);
-                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM4ICM, MSG_ID_L4FHYSUI_TO_L3F4_HCULOCKOPEN, "MSG_ID_L4FHYSUI_TO_L3F4_HCULOCKOPEN",$input);
+                    if (isset($_GET["StatCode"])) $statCode = trim($_GET["StatCode"]); else  $statCode= "";
+                    $input = array("uid" => $uid, "statcode" => $statCode);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM4ICM, MSG_ID_L4FHYSUI_TO_L3F4_LOCKOPEN, "MSG_ID_L4FHYSUI_TO_L3F4_LOCKOPEN",$input);
                     break;
+
+                //根据钥匙用户的ID查询该用户授权的钥匙列表
                 case "UserKey":
-                    if (isset($_GET["userid"])) $userid = trim($_GET["userid"]); else  $userid = "";
-                    $input = array("uid" => $userid);
+                    if (isset($_GET["id"])) $uid = trim($_GET["id"]); else  $uid = "";
+                    if (isset($_GET["userid"])) $keyuserid = trim($_GET["userid"]); else  $keyuserid = "";
+                    $input = array("uid" => $uid, "keyuserid" => $keyuserid);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4FHYSUI_TO_L3F2_USERKEY, "MSG_ID_L4FHYSUI_TO_L3F2_USERKEY",$input);
                     break;
+
+                //查询所有项目钥匙列表
                 case "ProjKeyList":
                     if (isset($_GET["id"])) $uid = trim($_GET["id"]); else  $uid = "";
                     $input = array("uid" => $uid);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4FHYSUI_TO_L3F2_PROJKEYLIST, "MSG_ID_L4FHYSUI_TO_L3F2_PROJKEYLIST",$input);
                     break;
+
+                //查询指定项目下的钥匙列表
                 case "ProjKey":
+                    if (isset($_GET["id"])) $uid = trim($_GET["id"]); else  $uid = "";
                     if (isset($_GET["ProjCode"])) $ProjCode = trim($_GET["ProjCode"]); else  $ProjCode = "";
-                    $input = array("ProjCode" => $ProjCode);
+                    $input = array("uid" => $uid, "ProjCode" => $ProjCode);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4FHYSUI_TO_L3F2_PROJKEY, "MSG_ID_L4FHYSUI_TO_L3F2_PROJKEY",$input);
                     break;
+
+                //查询所有项目钥匙用户列表
                 case "ProjUserList":
                     if (isset($_GET["id"])) $uid = trim($_GET["id"]); else  $uid = "";
                     $input = array("uid" => $uid);
-                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4FHYSUI_TO_L3F2_PROJUSERLIST, "MSG_ID_L4FHYSUI_TO_L3F2_PROJUSERLIST",$input);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4FHYSUI_TO_L3F2_PROJKEYUSERLIST, "MSG_ID_L4FHYSUI_TO_L3F2_PROJKEYUSERLIST",$input);
                     break;
+
+                //查询所有钥匙列表
                 case "KeyTable":
+                    if (isset($_GET["id"])) $uid = trim($_GET["id"]); else  $uid = "";
                     if (isset($_GET["length"])) $length = trim($_GET["length"]); else  $length = "";
                     if (isset($_GET["startseq"])) $startseq = trim($_GET["startseq"]); else  $startseq = "";
-                    $input = array("length" => $length, "startseq" => $startseq);
+                    $input = array("uid" => $uid, "length" => $length, "startseq" => $startseq);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4FHYSUI_TO_L3F2_KEYTABLE, "MSG_ID_L4FHYSUI_TO_L3F2_KEYTABLE",$input);
                     break;
+
+                //添加新钥匙
                 case "KeyNew":
                     if (isset($_GET["KeyCode"])) $KeyCode = trim($_GET["KeyCode"]); else  $KeyCode = "";
                     if (isset($_GET["KeyName"])) $KeyName = trim($_GET["KeyName"]); else  $KeyName = "";
@@ -1360,26 +1375,34 @@ class classTaskL4fhysUi
                     if (isset($_GET["HardwareCode"])) $HardwareCode = trim($_GET["HardwareCode"]); else  $HardwareCode = "";
                     if (isset($_GET["user"])) $user = trim($_GET["user"]); else  $user = "";
                     if (isset($_GET["Memo"])) $memo = trim($_GET["Memo"]); else  $memo = "";
-                    $input = array("KeyCode" => $KeyCode, "KeyName" => $KeyName, "KeyProj" => $KeyProj, "KeyType" => $KeyType,
-                        "HardwareCode" => $HardwareCode, "user" => $user, "Memo" => $memo);
+                    $input = array("uid" => $user, "keyid" => $KeyCode, "keyname" => $KeyName, "projcode" => $KeyProj, "keytype" => $KeyType,
+                        "hwcode" => $HardwareCode,  "memo" => $memo);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4FHYSUI_TO_L3F2_KEYNEW, "MSG_ID_L4FHYSUI_TO_L3F2_KEYNEW",$input);
                     break;
+
+                //删除钥匙
                 case "KeyDel":
                     if (isset($_GET["id"])) $keyid = trim($_GET["id"]); else  $keyid = "";
                     if (isset($_GET["user"])) $userid = trim($_GET["user"]); else  $userid = "";
                     $input = array("keyid" => $keyid, "userid" => $userid);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4FHYSUI_TO_L3F2_KEYDEL, "MSG_ID_L4FHYSUI_TO_L3F2_KEYDEL",$input);
                     break;
+
+                //查询授权对象（项目或者站点）下所有的授权信息列表
                 case "DomainAuthlist":
-                    if (isset($_GET["DomainCode"])) $ProjCode = trim($_GET["DomainCode"]); else  $ProjCode = "";
-                    $input = array("ProjCode" => $ProjCode);
-                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4FHYSUI_TO_L3F2_PROJAUTHLIST, "MSG_ID_L4FHYSUI_TO_L3F2_PROJAUTHLIST",$input);
+                    if (isset($_GET["DomainCode"])) $authobjcode = trim($_GET["DomainCode"]); else  $authobjcode = "";
+                    $input = array("authobjcode" => $authobjcode);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4FHYSUI_TO_L3F2_OBJAUTHLIST, "MSG_ID_L4FHYSUI_TO_L3F2_OBJAUTHLIST",$input);
                     break;
+
+                //查询某个KEY下的授权列表
                 case "KeyAuthlist":
                     if (isset($_GET["KeyId"])) $keyid = trim($_GET["KeyId"]); else  $keyid = "";
                     $input = array("keyid" => $keyid);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4FHYSUI_TO_L3F2_KEYAUTHLIST, "MSG_ID_L4FHYSUI_TO_L3F2_KEYAUTHLIST",$input);
                     break;
+
+                //将钥匙授予某人
                 case "KeyGrant":
                     if (isset($_GET["id"])) $uid = trim($_GET["id"]); else  $uid = "";
                     if (isset($_GET["KeyId"])) $keyid = trim($_GET["KeyId"]); else  $keyid = "";
@@ -1387,21 +1410,27 @@ class classTaskL4fhysUi
                     $input = array("id" => $uid, "keyid" => $keyid, "userid" => $userid);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4FHYSUI_TO_L3F2_KEYGRANT, "MSG_ID_L4FHYSUI_TO_L3F2_KEYGRANT",$input);
                     break;
+
+                //新建钥匙授权
                 case "KeyAuthNew":
                     if (isset($_GET["id"])) $uid = trim($_GET["id"]); else  $uid = "";
-                    if (isset($_GET["DomainCode"])) $authobjcode = trim($_GET["DomainCode"]); else  $authobjcode = "";
+                    if (isset($_GET["DomainId"])) $authobjcode = trim($_GET["DomainId"]); else  $authobjcode = "";
                     if (isset($_GET["KeyId"])) $keyid = trim($_GET["KeyId"]); else  $keyid = "";
-                    if (isset($_GET["user"])) $user = trim($_GET["user"]); else  $user = "";
+                    if (isset($_GET["user"])) $keyuserid = trim($_GET["user"]); else  $keyuserid = "";
                     if (isset($_GET["AuthWay"])) $authtype = trim($_GET["AuthWay"]); else  $authtype = "";
-                    $input = array("id" => $uid, "authobjcode" => $authobjcode, "keyid" => $keyid, "user" => $user, "authtype" => $authtype);
+                    $input = array("uid" => $uid, "authobjcode" => $authobjcode, "keyid" => $keyid, "keyuserid" => $keyuserid, "authtype" => $authtype);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4FHYSUI_TO_L3F2_KEYAUTHNEW, "MSG_ID_L4FHYSUI_TO_L3F2_KEYAUTHNEW",$input);
                     break;
+
+                //删除钥匙授权
                 case "KeyAuthDel":
                     if (isset($_GET["id"])) $uid = trim($_GET["id"]); else  $uid = "";
                     if (isset($_GET["AuthId"])) $authid = trim($_GET["AuthId"]); else  $authid = "";
                     $input = array("uid" => $uid, "authid" => $authid);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4FHYSUI_TO_L3F2_KEYAUTHDEL, "MSG_ID_L4FHYSUI_TO_L3F2_KEYAUTHDEL",$input);
                     break;
+
+                //开锁历史查询
                 case "KeyHistory":
                     if (isset($_GET["id"])) $uid = trim($_GET["id"]); else  $uid = "";
                     if (isset($_GET["ProjCode"])) $projcode = trim($_GET["ProjCode"]); else  $projcode = "";

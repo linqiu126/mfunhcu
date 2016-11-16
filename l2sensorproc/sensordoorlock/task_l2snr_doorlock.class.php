@@ -29,7 +29,7 @@ class classTaskL2snrDoorlock
         }
 
         $opt_key = hexdec($msgHead['Cmd']) & 0xFF;
-
+        $resp = "";
         if ($opt_key == MFUN_HCU_OPT_FHYS_LOCKOPEN_REQ){
             $uiF4icmDbObj = new classDbiL2snrDoorlock();
             $resp = $uiF4icmDbObj->dbi_hcu_lock_open("", $statCode);
@@ -37,45 +37,7 @@ class classTaskL2snrDoorlock
 
         return $resp;
     }
-    //H5 UI命令处理函数
-    function func_hcu_lock_status_process($uid, $StatCode)
-    {
-        $uiF4icmDbObj = new classDbiL2snrDoorlock();
-        $resp = $uiF4icmDbObj->dbi_hcu_lock_status($uid, $StatCode);
-        if (!empty($resp))
-            $retval=array(
-                'status'=>'true',
-                'msg'=>$resp
-            );
-        else
-            $retval=array(
-                'status'=>'false',
-                'msg'=>null
-            );
-        //$jsonencode = _encode($retval);
-        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
-        return $jsonencode;
-    }
 
-    //HCU_Lock_Open
-    function func_hcu_lock_open_process($uid, $StatCode)
-    {
-        $uiF4icmDbObj = new classDbiL2snrDoorlock();
-        $resp = $uiF4icmDbObj->dbi_hcu_lock_open($uid, $StatCode);
-        if (!empty($resp))
-            $retval=array(
-                'status'=>'true',
-                'msg'=>$resp
-            );
-        else
-            $retval=array(
-                'status'=>'false',
-                'msg'=>null
-            );
-        //$jsonencode = _encode($retval);
-        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
-        return $jsonencode;
-    }
 
 
     /**************************************************************************************
@@ -124,28 +86,7 @@ class classTaskL2snrDoorlock
             $resp = $this->func_doorlock_data_process($platform, $deviceId, $statCode, $content);
         }
 
-        //功能HCU_Lock_Status
-        elseif ($msgId == MSG_ID_L4FHYSUI_TO_L3F4_HCULOCKSTATUS)
-        {
-            //解开消息
-            if (isset($_GET["id"])) $uid = trim($_GET["id"]); else  $uid = "";
-            if (isset($_GET["StatCode"])) $StatCode = trim($_GET["StatCode"]); else  $StatCode= "";
-            $input = array("uid" => $uid, "StatCode" => $StatCode);
-            //具体处理函数
-            $resp = $this->func_hcu_lock_status_process($uid, $StatCode);
-            $project = MFUN_PRJ_HCU_FHYSUI;
-        }
-        //功能HCU_Lock_Open
-        elseif ($msgId == MSG_ID_L4FHYSUI_TO_L3F4_HCULOCKOPEN)
-        {
-            //解开消息
-            if (isset($_GET["id"])) $uid = trim($_GET["id"]); else  $uid = "";
-            if (isset($_GET["StatCode"])) $StatCode = trim($_GET["StatCode"]); else  $StatCode= "";
-            $input = array("uid" => $uid, "StatCode" => $StatCode);
-            //具体处理函数
-            $resp = $this->func_hcu_lock_open_process($uid, $StatCode);
-            $project = MFUN_PRJ_HCU_FHYSUI;
-        }
+
         //返回ECHO
         if (!empty($resp))
         {

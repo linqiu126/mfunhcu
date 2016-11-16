@@ -93,6 +93,18 @@ class classDbiL3apF2cm
 
     }
 
+    private function getRandomKeyid($strlen)
+    {
+
+        $str = "";
+        $str_pol = "0123456789";
+        $max = strlen($str_pol) - 1;
+        for ($i = 0; $i < $strlen; $i++) {
+            $str .= $str_pol[mt_rand(0, $max)];
+        }
+        return $str;
+    }
+
     /**********************************************************************************************************************
      *                          项目Project和项目组ProjectGroup相关操作DB API                                               *
      *********************************************************************************************************************/
@@ -132,7 +144,7 @@ class classDbiL3apF2cm
     }
 
     //UI PGTable request, 获取全部项目组列表信息
-    public function dbi_all_pgtable_req($start, $total)
+    public function dbi_all_pgtable_req($start, $query_length)
     {
         //建立连接
         $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
@@ -141,7 +153,7 @@ class classDbiL3apF2cm
         }
         $mysqli->query("set character_set_results = utf8");
 
-        $query_str = "SELECT * FROM `t_l3f2cm_projgroup` limit $start, $total";
+        $query_str = "SELECT * FROM `t_l3f2cm_projgroup` limit $start, $query_length";
         $result = $mysqli->query($query_str);
         $pgtable = array();
         while(($result !=false) && (($row = $result->fetch_array()) > 0))
@@ -536,7 +548,6 @@ class classDbiL3apF2cm
         return $result;
     }
 
-
     //UI PGDel request，项目组信息删除
     public function dbi_pginfo_delete($pgcode)
     {
@@ -553,6 +564,467 @@ class classDbiL3apF2cm
         $result2 = $mysqli->query($query_str);
 
         $result = $result1 and $result2;
+
+        $mysqli->close();
+        return $result;
+    }
+
+    /*********************************智能云锁新增处理 Start*********************************************/
+
+    public function dbi_project_userkey_process($keyuserid)
+    {
+        //建立连接
+        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli) {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $mysqli->query("set character_set_results = utf8");
+        $mysqli->query("SET NAMES utf8");
+
+        $query_str = "SELECT * FROM `t_l3f2cm_fhys_keyinfo` WHERE `keyuserid` = '$keyuserid'";
+        $result = $mysqli->query($query_str);
+
+        $user_keylist = array();
+        while($row = $result->fetch_array()){
+            $keyid = $row['keyid'];
+            $keyname = $row['keyname'];
+            $p_code = $row['p_code'];
+            $temp = array('id'=>$keyid, 'name'=>$keyname, 'domain'=>$p_code);
+            array_push($user_keylist,$temp);
+        }
+        $mysqli->close();
+        return $user_keylist;
+    }
+
+    public function dbi_all_projkey_process()
+    {
+        //建立连接
+        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli) {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $mysqli->query("set character_set_results = utf8");
+        $mysqli->query("SET NAMES utf8");
+
+        $query_str = "SELECT * FROM `t_l3f2cm_fhys_keyinfo` WHERE 1 ";
+        $result = $mysqli->query($query_str);
+
+        $all_keylist = array();
+        while($row = $result->fetch_array()){
+            $keyid = $row['keyid'];
+            $keyname = $row['keyname'];
+            $p_code = $row['p_code'];
+            $keyusername = $row['keyusername'];
+            $temp = array('id'=>$keyid, 'name'=>$keyname, 'ProjCode'=>$p_code, 'username'=>$keyusername);
+            array_push($all_keylist,$temp);
+        }
+        $mysqli->close();
+        return $all_keylist;
+    }
+
+    public function dbi_project_keylist_process($projCode)
+    {
+        //建立连接
+        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli) {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $mysqli->query("set character_set_results = utf8");
+        $mysqli->query("SET NAMES utf8");
+
+        $query_str = "SELECT * FROM `t_l3f2cm_fhys_keyinfo` WHERE `p_code` = '$projCode' ";
+        $result = $mysqli->query($query_str);
+
+        $proj_keylist = array();
+        while($row = $result->fetch_array()){
+            $keyid = $row['keyid'];
+            $keyname = $row['keyname'];
+            if($row['keyusername'] != "NULL")
+                $keyusername = $row['keyusername'];
+            else
+                $keyusername = "未授予";
+            $temp = array('id'=>$keyid, 'name'=>$keyname, 'username'=>$keyusername);
+            array_push($proj_keylist,$temp);
+        }
+        $mysqli->close();
+        return $proj_keylist;
+    }
+
+    public function dbi_all_projkeyuser_process()
+    {
+        //建立连接
+        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli) {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $mysqli->query("set character_set_results = utf8");
+        $mysqli->query("SET NAMES utf8");
+
+        $query_str = "SELECT * FROM `t_l3f2cm_fhys_keyinfo` WHERE 1 ";
+        $result = $mysqli->query($query_str);
+
+        $all_projuser = array();
+        while($row = $result->fetch_array()){
+            $keyuserid = $row['keyuserid'];
+            $keyusername = $row['keyusername'];
+            $p_code = $row['p_code'];
+
+            $temp = array('id'=>$keyuserid, 'name'=>$keyusername, 'ProjCode'=>$p_code);
+            array_push($all_projuser,$temp);
+        }
+        $mysqli->close();
+        return $all_projuser;
+    }
+
+    //查询钥匙总数
+    public function dbi_all_keynum_inqury()
+    {
+        //建立连接
+        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli) {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+
+        $query_str = "SELECT * FROM `t_l3f2cm_fhys_keyinfo` WHERE 1";
+        $result = $mysqli->query($query_str);
+        $total = $result->num_rows;
+
+        $mysqli->close();
+        return $total;
+    }
+
+    //UI ProjTable request, 获取全部项目列表信息
+    public function dbi_all_keytable_req($start, $query_length)
+    {
+        //建立连接
+        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli) {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $mysqli->query("set character_set_results = utf8");
+
+        $query_str = "SELECT * FROM `t_l3f2cm_fhys_keyinfo` limit $start, $query_length";
+        $result = $mysqli->query($query_str);
+
+        $keytable = array();
+        while($row = $result->fetch_array())
+        {
+            $projCode = $row['p_code'];
+            $projName = "";
+            $query_str = "SELECT * FROM `t_l3f2cm_projinfo` WHERE `p_code` = '$projCode' ";
+            $resp = $mysqli->query($query_str);
+            if(($resp->num_rows) > 0){
+                $resp_row = $resp->fetch_array();
+                $projName = $resp_row['p_name'];
+            }
+
+            $temp = array(
+                'KeyCode' => $row['keyid'],
+                'KeyName' => $row['keyname'],
+                'KeyType' => $row['keytype'],
+                'HardwareCode' => $row['hwcode'],
+                'KeyProj' => $projCode,
+                'KeyProjName' => $projName,
+                'KeyUser' => $row['keyuserid'],
+                'KeyUserName' => $row['keyusername'],
+                'Memo' => $row['memo']
+            );
+            array_push($keytable, $temp);
+        }
+
+        $mysqli->close();
+        return $keytable;
+    }
+
+    public function dbi_key_new_process($keyname,$keytype,$projcode,$hwcode,$memo)
+    {
+        //建立连接
+        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli) {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $mysqli->query("set character_set_results = utf8");
+        //$mysqli->query("set character_set_connection = utf8");
+        $mysqli->query("SET NAMES utf8");
+
+        $keyid = MFUN_L3APL_F2CM_KEY_PREFIX.$this->getRandomKeyid(MFUN_L3APL_F2CM_KEY_ID_LEN);  //KEYID的分配机制将来要重新考虑，避免重复
+
+        $keystatus = "N"; //默认新建的Key是没有启用的
+
+        //转换keytype
+        if ($keytype == "射频卡")
+            $keytype = MFUN_L3APL_F2CM_KEY_TYPE_RFID;
+        elseif ($keytype == "蓝牙")
+            $keytype = MFUN_L3APL_F2CM_KEY_TYPE_BLE;
+        elseif ($keytype == "用户账号")
+            $keytype = MFUN_L3APL_F2CM_KEY_TYPE_USER;
+        elseif ($keytype == "微信号")
+            $keytype = MFUN_L3APL_F2CM_KEY_TYPE_WECHAT;
+        elseif ($keytype == "身份证")
+            $keytype = MFUN_L3APL_F2CM_KEY_TYPE_IDCARD;
+        elseif ($keytype == "电话号码")
+            $keytype = MFUN_L3APL_F2CM_KEY_TYPE_PHONE;
+        else
+            $keytype = MFUN_L3APL_F2CM_KEY_TYPE_UNDEFINED;
+
+
+        $query_str = "INSERT INTO `t_l3f2cm_fhys_keyinfo` (keyid, keyname, p_code, keystatus, keytype, hwcode, memo)
+                                  VALUES ('$keyid','$keyname','$projcode','$keystatus','$keytype','$hwcode','$memo')";
+        $result = $mysqli->query($query_str);
+
+        $mysqli->close();
+        return $result;
+    }
+
+    public function dbi_key_del_process($keyid)
+    {
+        //建立连接
+        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli) {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $mysqli->query("set character_set_results = utf8");
+
+        $query_str = "DELETE FROM `t_l3f2cm_fhys_keyauth` WHERE `keyid` = '$keyid'";  //删除该钥匙的所有授权信息
+        $result = $mysqli->query($query_str);
+
+        $query_str = "DELETE FROM `t_l3f2cm_fhys_keyinfo` WHERE `keyid` = '$keyid'";  //删除钥匙信息
+        $result = $mysqli->query($query_str);
+
+        $mysqli->close();
+        return $result;
+    }
+
+    public function dbi_obj_authlist_process($authobjcode)
+    {
+        //建立连接
+        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli) {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $mysqli->query("set character_set_results = utf8");
+
+        $code_prefix = substr($authobjcode, MFUN_L3APL_F2CM_CODE_FORMAT_LEN);
+
+        $authlist = array();
+        if ($code_prefix == MFUN_L3APL_F2CM_PROJ_CODE_PREFIX)
+        {
+            $query_str = "SELECT * FROM `t_l3f2cm_fhys_keyauth` WHERE `authobjcode` = '$authobjcode' ";
+            $result = $mysqli->query($query_str);
+            while($row = $result->fetch_array()){
+                //初始化
+                $department = "";
+                $keyname = "";
+                $keyuserid = "";
+                $keyusername = "";
+
+                $authid = $row['sid'];
+                $keyid = $row['keyid'];
+                $authtype = $row['authtype'];
+
+                $query_str = "SELECT * FROM `t_l3f2cm_fhys_keyinfo` WHERE `keyid` = '$keyid' ";
+                $resp = $mysqli->query($query_str);
+                if(($resp->num_rows) > 0){
+                    $resp_row = $resp->fetch_array();
+                    $keyname = $resp_row['keyname'];
+                    $keyuserid = $resp_row['keyuserid'];
+                    $keyusername = $resp_row['keyusername'];
+                }
+
+                $query_str = "SELECT * FROM `t_l3f2cm_projinfo` WHERE `p_code` = '$authobjcode' ";
+                $resp = $mysqli->query($query_str);
+                if(($resp->num_rows) > 0){
+                    $resp_row = $resp->fetch_array();
+                    $department = $resp_row['department'];
+                }
+
+                $temp = array('AuthId' => (string)($authid),
+                    'DomainId' => $authobjcode,
+                    'DomainName' => $department,
+                    'KeyId' => $keyid,
+                    'KeyName' => $keyname,
+                    'UserId' => $keyuserid,
+                    'UserName' => $keyusername,
+                    'AuthWay' => $authtype);
+                array_push($authlist, $temp);
+            }
+        }
+        else{
+            $query_str = "SELECT * FROM `t_l3f2cm_fhys_keyauth` WHERE `authobjcode` = '$authobjcode' ";
+            $result = $mysqli->query($query_str);
+            while($row = $result->fetch_array()) {
+                //初始化
+                $department = "";
+                $keyname = "";
+                $keyuserid = "";
+                $keyusername = "";
+
+                $authid = $row['sid'];
+                $keyid = $row['keyid'];
+                $authtype = $row['authtype'];
+
+                $query_str = "SELECT * FROM `t_l3f2cm_fhys_keyinfo` WHERE `keyid` = '$keyid' ";
+                $resp = $mysqli->query($query_str);
+                if (($resp->num_rows) > 0) {
+                    $resp_row = $resp->fetch_array();
+                    $keyname = $resp_row['keyname'];
+                    $keyuserid = $resp_row['keyuserid'];
+                    $keyusername = $resp_row['keyusername'];
+                }
+
+                $query_str = "SELECT * FROM `t_l3f3dm_siteinfo` WHERE `statcode` = '$authobjcode' ";
+                $resp = $mysqli->query($query_str);
+                if (($resp->num_rows) > 0) {
+                    $resp_row = $resp->fetch_array();
+                    $department = $resp_row['name'];
+                }
+
+                $temp = array('AuthId' => (string)($authid),
+                              'DomainId' => $authobjcode,
+                              'DomainName' => $department,
+                              'KeyId' => $keyid,
+                              'KeyName' => $keyname,
+                              'UserId' => $keyuserid,
+                              'UserName' => $keyusername,
+                              'AuthWay' => $authtype);
+                array_push($authlist, $temp);
+            }
+        }
+        $mysqli->close();
+        return $authlist;
+    }
+
+    public function dbi_key_authlist_process($keyid)
+    {
+        //建立连接
+        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli) {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $mysqli->query("set character_set_results = utf8");
+
+        $authlist = array();
+        $query_str = "SELECT * FROM `t_l3f2cm_fhys_keyauth` WHERE `keyid` = '$keyid' ";
+        $result = $mysqli->query($query_str);
+        while($row = $result->fetch_array())
+        {
+            //初始化
+            $department = "";
+            $keyname = "";
+            $keyuserid = "";
+            $keyusername = "";
+
+            $authid = $row['sid'];
+            $authtype = $row['authtype'];
+            $authobjcode = $row['authobjcode'];
+
+            $query_str = "SELECT * FROM `t_l3f2cm_fhys_keyinfo` WHERE `keyid` = '$keyid' ";
+            $resp = $mysqli->query($query_str);
+            if(($resp->num_rows) > 0){
+                $resp_row = $resp->fetch_array();
+                $keyname = $resp_row['keyname'];
+                $keyuserid = $resp_row['keyuserid'];
+                $keyusername = $resp_row['keyusername'];
+            }
+
+            $code_prefix = substr($authobjcode, MFUN_L3APL_F2CM_CODE_FORMAT_LEN);
+            if ($code_prefix == MFUN_L3APL_F2CM_PROJ_CODE_PREFIX)
+            {
+                $query_str = "SELECT * FROM `t_l3f2cm_projinfo` WHERE `p_code` = '$authobjcode' ";
+                $resp = $mysqli->query($query_str);
+                if (($resp->num_rows) > 0) {
+                    $resp_row = $resp->fetch_array();
+                    $department = $resp_row['department'];
+                }
+            }
+            else
+            {
+                $query_str = "SELECT * FROM `t_l3f3dm_siteinfo` WHERE `statcode` = '$authobjcode' ";
+                $resp = $mysqli->query($query_str);
+                if (($resp->num_rows) > 0) {
+                    $resp_row = $resp->fetch_array();
+                    $department = $resp_row['name'];
+                }
+            }
+
+            $temp = array('AuthId' => (string)($authid),
+                'DomainId' => $authobjcode,
+                'DomainName' => $department,
+                'KeyId' => $keyid,
+                'KeyName' => $keyname,
+                'UserId' => $keyuserid,
+                'UserName' => $keyusername,
+                'AuthWay' => $authtype);
+            array_push($authlist, $temp);
+        }
+        $mysqli->close();
+        return $authlist;
+    }
+
+    public function dbi_key_grant_process($keyid, $keyuserid)
+    {
+        //建立连接
+        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli) {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $mysqli->query("set character_set_results = utf8");
+
+        //更新钥匙实际使用人
+        $query_str = "UPDATE `t_l3f2cm_fhys_keyinfo` SET `keyuserid` = '$keyuserid' WHERE (`keyid` = '$keyid') ";
+        $result = $mysqli->query($query_str);
+
+        $mysqli->close();
+        return $result;
+    }
+
+    public function dbi_key_authnew_process($keyid, $keyuserid, $authobjcode, $authtype, $validend)
+    {
+        //建立连接
+        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli) {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $mysqli->query("set character_set_results = utf8");
+
+        $code_prefix = substr($authobjcode, MFUN_L3APL_F2CM_CODE_FORMAT_LEN);
+        if ($code_prefix == MFUN_L3APL_F2CM_PROJ_CODE_PREFIX)
+            $authlevel = MFUN_L3APL_F2CM_AUTH_LEVEL_PROJ;
+        else
+            $authlevel = MFUN_L3APL_F2CM_AUTH_LEVEL_DEVICE;
+
+        $timestamp = time();
+        $validstart = date($timestamp);
+        if (!empty($validend)){
+            $authtype = MFUN_L3APL_F2CM_AUTH_TYPE_TIME;
+            $query_str = "INSERT INTO `t_l3f2cm_fhys_keyauth` (keyid, authlevel, authobjcode, authtype, validstart, validend)
+                                  VALUES ('$keyid','$authlevel','$authobjcode','$authtype','$validstart','$validend')";
+            $result = $mysqli->query($query_str);
+        }
+        else{
+            $authtype = MFUN_L3APL_F2CM_AUTH_TYPE_FOREVER;
+            $query_str = "INSERT INTO `t_l3f2cm_fhys_keyauth` (keyid, authlevel, authobjcode, authtype)
+                                  VALUES ('$keyid','$authlevel','$authobjcode','$authtype')";
+            $result = $mysqli->query($query_str);
+        }
+
+
+
+
+
+    }
+
+    public function dbi_key_authdel_process($authid)
+    {
+        //建立连接
+        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli) {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $mysqli->query("set character_set_results = utf8");
+
+        $query_str = "DELETE FROM `t_l3f2cm_fhys_keyauth` WHERE `sid` = '$authid'";  //删除一条授权信息
+        $result = $mysqli->query($query_str);
 
         $mysqli->close();
         return $result;
