@@ -17,9 +17,28 @@ class classTaskL2snrBle
 
     }
 
-    public function func_ble_data_process($platform, $deviceId, $statCode, $content)
+    public function func_ble_data_process($platform, $devCode, $statCode, $content)
     {
-        return true;
+        $raw_MsgHead = substr($content, 0, MFUN_HCU_MSG_HEAD_LENGTH);  //截取6Byte MsgHead
+        $msgHead = unpack(MFUN_HCU_MSG_HEAD_FORMAT, $raw_MsgHead);
+        $length = hexdec($msgHead['Len']) & 0xFF;
+        $length =  ($length+2) * 2; //因为收到的消息为16进制字符，消息总长度等于length＋1B控制字＋1B长度本身
+        if ($length != strlen($content)) {
+            return "ERROR FHYS_BLE: message length invalid";  //消息长度不合法，直接返回
+        }
+
+        $opt_key = hexdec($msgHead['Cmd']) & 0xFF;
+
+        if ($opt_key == MFUN_HCU_OPT_FHYS_BLESTAT_IND){
+            $data = substr($content, MFUN_HCU_MSG_HEAD_LENGTH, 2);
+            $data = hexdec($data) & 0xFF;
+            $classDbiL2snrBle = new classDbiL2snrBle();
+            $resp = $classDbiL2snrBle->dbi_hcu_ble_status_update($devCode, $statCode, $data);
+        }
+        else
+            $resp = "ERROR FHYS_BLE: Invalid Operation Command";
+
+        return $resp;
     }
 
 
@@ -49,22 +68,28 @@ class classTaskL2snrBle
             return false;
         }
 
-        //解开消息
+        //初始化消息内容
         $project= "";
         $log_from = "";
         $platform ="";
         $deviceId="";
         $statCode = "";
         $content="";
-        if (isset($msg["project"])) $project = $msg["project"];
-        if (isset($msg["log_from"])) $log_from = $msg["log_from"];
-        if (isset($msg["platform"])) $platform = $msg["platform"];
-        if (isset($msg["deviceId"])) $deviceId = $msg["deviceId"];
-        if (isset($msg["statCode"])) $statCode = $msg["statCode"];
-        if (isset($msg["content"])) $content = $msg["content"];
 
         //具体处理函数
-        $resp = $this->func_ble_data_process($platform, $deviceId, $statCode, $content);
+        if ($msgId == MSG_ID_L2SDK_HCU_TO_L2SNR_BLE)
+        {
+            if (isset($msg["project"])) $project = $msg["project"];
+            if (isset($msg["log_from"])) $log_from = $msg["log_from"];
+            if (isset($msg["platform"])) $platform = $msg["platform"];
+            if (isset($msg["deviceId"])) $deviceId = $msg["deviceId"];
+            if (isset($msg["statCode"])) $statCode = $msg["statCode"];
+            if (isset($msg["content"])) $content = $msg["content"];
+            $resp = $this->func_ble_data_process($platform, $deviceId, $statCode, $content);
+        }
+        else{
+            $resp = ""; //啥都不ECHO
+        }
 
         //返回ECHO
         if (!empty($resp))

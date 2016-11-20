@@ -395,6 +395,24 @@ class classTaskL3aplF2cm
         return $jsonencode;
     }
 
+    function func_key_mod_process($keyid,$keyname,$keytype,$projcode,$hwcode,$memo)
+    {
+        $uiF2cmDbObj = new classDbiL3apF2cm(); //初始化一个UI DB对象
+        $result = $uiF2cmDbObj->dbi_key_mod_process($keyid,$keyname,$keytype,$projcode,$hwcode,$memo);
+        if ($result == true)
+            $retval=array(
+                'status'=>"true",
+                'msg'=>"修改钥匙成功"
+            );
+        else
+            $retval=array(
+                'status'=>'true',
+                'msg'=>'修改钥匙失败'
+            );
+        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
+        return $jsonencode;
+    }
+
     function func_key_del_process($keyid)
     {
         $uiF2cmDbObj = new classDbiL3apF2cm(); //初始化一个UI DB对象
@@ -470,7 +488,7 @@ class classTaskL3aplF2cm
     function func_key_authnew_process($keyid, $keyuserid, $authobjcode, $authtype)
     {
         $uiF2cmDbObj = new classDbiL3apF2cm(); //初始化一个UI DB对象
-        $result = $uiF2cmDbObj->dbi_key_authnew_process($keyid, $keyuserid, $authobjcode, $authtype,"");
+        $result = $uiF2cmDbObj->dbi_key_authnew_process($keyid, $keyuserid, $authobjcode, $authtype);
         if ($result == true)
             $retval=array(
                 'status'=>"true",
@@ -737,10 +755,23 @@ class classTaskL3aplF2cm
             $resp = $this->func_key_new_process($keyname,$keytype,$projcode,$hwcode,$memo);
             $project = MFUN_PRJ_HCU_FHYSUI;
         }
+        elseif ($msgId == MSG_ID_L4FHYSUI_TO_L3F2_KEYMOD)
+        {
+            if (isset($msg["uid"])) $uid = trim($msg["uid"]); else  $uid = "";
+            if (isset($msg["keyid"])) $keyid = trim($msg["keyid"]); else  $keyid = "";
+            if (isset($msg["keyname"])) $keyname = trim($msg["keyname"]); else  $keyname = "";
+            if (isset($msg["projcode"])) $projcode = trim($msg["projcode"]); else  $projcode = "";
+            if (isset($msg["keytype"])) $keytype = trim($msg["keytype"]); else  $keytype = "";
+            if (isset($msg["hwcode"])) $hwcode = trim($msg["hwcode"]); else  $hwcode = "";
+            if (isset($msg["memo"])) $memo = trim($msg["memo"]); else  $memo = "";
+
+            $resp = $this->func_key_mod_process($keyid,$keyname,$keytype,$projcode,$hwcode,$memo);
+            $project = MFUN_PRJ_HCU_FHYSUI;
+        }
         elseif ($msgId == MSG_ID_L4FHYSUI_TO_L3F2_KEYDEL)
         {
             if (isset($msg["keyid"])) $keyid = trim($msg["keyid"]); else  $keyid = "";
-            if (isset($msg["userid"])) $userid = trim($msg["userid"]); else  $userid = "";
+            if (isset($msg["uid"])) $uid = trim($msg["uid"]); else  $uid = "";
 
             $resp = $this->func_key_del_process($keyid);
             $project = MFUN_PRJ_HCU_FHYSUI;

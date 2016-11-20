@@ -210,6 +210,7 @@ define("MSG_ID_L4FHYSUI_TO_L3F2_PROJKEY", $index++);
 define("MSG_ID_L4FHYSUI_TO_L3F2_PROJKEYUSERLIST", $index++);
 define("MSG_ID_L4FHYSUI_TO_L3F2_KEYTABLE", $index++);
 define("MSG_ID_L4FHYSUI_TO_L3F2_KEYNEW", $index++);
+define("MSG_ID_L4FHYSUI_TO_L3F2_KEYMOD", $index++);
 define("MSG_ID_L4FHYSUI_TO_L3F2_KEYDEL", $index++);
 define("MSG_ID_L4FHYSUI_TO_L3F2_OBJAUTHLIST", $index++);
 define("MSG_ID_L4FHYSUI_TO_L3F2_KEYAUTHLIST", $index++);

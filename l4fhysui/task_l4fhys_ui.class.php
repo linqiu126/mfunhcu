@@ -1380,11 +1380,24 @@ class classTaskL4fhysUi
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4FHYSUI_TO_L3F2_KEYNEW, "MSG_ID_L4FHYSUI_TO_L3F2_KEYNEW",$input);
                     break;
 
+                case "KeyMod":
+                    if (isset($_GET["KeyCode"])) $KeyCode = trim($_GET["KeyCode"]); else  $KeyCode = "";
+                    if (isset($_GET["KeyName"])) $KeyName = trim($_GET["KeyName"]); else  $KeyName = "";
+                    if (isset($_GET["KeyProj"])) $KeyProj = trim($_GET["KeyProj"]); else  $KeyProj = "";
+                    if (isset($_GET["KeyType"])) $KeyType = trim($_GET["KeyType"]); else  $KeyType = "";
+                    if (isset($_GET["HardwareCode"])) $HardwareCode = trim($_GET["HardwareCode"]); else  $HardwareCode = "";
+                    if (isset($_GET["user"])) $user = trim($_GET["user"]); else  $user = "";
+                    if (isset($_GET["Memo"])) $memo = trim($_GET["Memo"]); else  $memo = "";
+                    $input = array("uid" => $user, "keyid" => $KeyCode, "keyname" => $KeyName, "projcode" => $KeyProj, "keytype" => $KeyType,
+                        "hwcode" => $HardwareCode,  "memo" => $memo);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4FHYSUI_TO_L3F2_KEYMOD, "MSG_ID_L4FHYSUI_TO_L3F2_KEYMOD",$input);
+                    break;
+
                 //删除钥匙
                 case "KeyDel":
                     if (isset($_GET["id"])) $keyid = trim($_GET["id"]); else  $keyid = "";
-                    if (isset($_GET["user"])) $userid = trim($_GET["user"]); else  $userid = "";
-                    $input = array("keyid" => $keyid, "userid" => $userid);
+                    if (isset($_GET["user"])) $uid = trim($_GET["user"]); else  $uid = "";
+                    $input = array("keyid" => $keyid, "uid" => $uid);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4FHYSUI_TO_L3F2_KEYDEL, "MSG_ID_L4FHYSUI_TO_L3F2_KEYDEL",$input);
                     break;
 
@@ -1417,7 +1430,7 @@ class classTaskL4fhysUi
                     if (isset($_GET["DomainId"])) $authobjcode = trim($_GET["DomainId"]); else  $authobjcode = "";
                     if (isset($_GET["KeyId"])) $keyid = trim($_GET["KeyId"]); else  $keyid = "";
                     if (isset($_GET["user"])) $keyuserid = trim($_GET["user"]); else  $keyuserid = "";
-                    if (isset($_GET["AuthWay"])) $authtype = trim($_GET["AuthWay"]); else  $authtype = "";
+                    if (isset($_GET["Authway"])) $authtype = trim($_GET["Authway"]); else  $authtype = "";
                     $input = array("uid" => $uid, "authobjcode" => $authobjcode, "keyid" => $keyid, "keyuserid" => $keyuserid, "authtype" => $authtype);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4FHYSUI_TO_L3F2_KEYAUTHNEW, "MSG_ID_L4FHYSUI_TO_L3F2_KEYAUTHNEW",$input);
                     break;

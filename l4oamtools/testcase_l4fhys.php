@@ -13,12 +13,13 @@ include_once "../l1comvm/vmlayer.php";
  *************************************************************************************/
 if (TC_L4FHYS_UI == true) {
 
-    echo " [TC L4FHYS: DevTable START]\n";
-    $_GET["action"] = "DevTable";
-    $_GET["length"] = "5";
-    $_GET["startseq"] = "1";
+    echo " [TC L4FHYS: KeyAuthNew START]\n";
+    $_GET["action"] = "KeyAuthNew";
+    $_GET["DomainId"] = "P_0014";
+    $_GET["KeyId"] = "KEY278347";
+    $_GET["Authway"] = "2016-12-01";
     require("../l4fhysui/request.php");
-    echo " [TC L4FHYS: DevTable END]\n";
+    echo " [TC L4FHYS: KeyAuthNew END]\n";
 
     //HCU_Lock_Status
     echo " [TC L4FHYS: HCU_Lock_Status START]\n";

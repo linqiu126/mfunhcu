@@ -1339,6 +1339,7 @@ class classDbiL3apF3dm
             die('Could not connect: ' . mysqli_error($mysqli));
         }
         $mysqli->query("set character_set_results = utf8");
+        $mysqli->query("SET NAMES utf8");
 
         $auth_list["stat_code"] = array();
         $auth_list["p_code"] = array();
@@ -1398,7 +1399,8 @@ class classDbiL3apF3dm
                     array_push($one_row, "正常关闭");
                 elseif($row["doorstat"] == MFUN_HCU_FHYS_DOOR_ALARM)
                     array_push($one_row, "暴力打开");
-                else array_push($one_row, "状态未知");
+                else
+                    array_push($one_row, "状态未知");
                 //更新锁运行状态
                 if($row["lockstat"] == MFUN_HCU_FHYS_LOCK_OPEN)
                     array_push($one_row, "正常打开");
@@ -1406,7 +1408,8 @@ class classDbiL3apF3dm
                     array_push($one_row, "正常关闭");
                 elseif($row["lockstat"] == MFUN_HCU_FHYS_LOCK_ALARM)
                     array_push($one_row, "暴力打开");
-                else array_push($one_row, "状态未知");
+                else
+                    array_push($one_row, "状态未知");
 
                 //更新GPRS信号强度
                 array_push($one_row, $row["siglevel"]);
@@ -1453,6 +1456,7 @@ class classDbiL3apF3dm
             die('Could not connect: ' . mysqli_error($mysqli));
         }
         $mysqli->query("set character_set_results = utf8");
+        $mysqli->query("SET NAMES utf8");
 
         $query_str = "SELECT * FROM `t_l3f3dm_fhys_currentreport` WHERE `statcode` = '$statcode'";
         $result = $mysqli->query($query_str);

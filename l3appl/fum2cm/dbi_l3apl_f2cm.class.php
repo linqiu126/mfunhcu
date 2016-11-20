@@ -718,10 +718,28 @@ class classDbiL3apF2cm
                 $projName = $resp_row['p_name'];
             }
 
+            $keytype = $row['keytype'];
+            /*
+            if ($keytype == MFUN_L3APL_F2CM_KEY_TYPE_RFID)
+                $keytype = "RFID钥匙";
+            elseif ($keytype == MFUN_L3APL_F2CM_KEY_TYPE_BLE)
+                $keytype = "手机蓝牙钥匙";
+            elseif ($keytype == MFUN_L3APL_F2CM_KEY_TYPE_USER)
+                $keytype = "用户名钥匙";
+            elseif ($keytype == MFUN_L3APL_F2CM_KEY_TYPE_WECHAT)
+                $keytype = "微信号钥匙";
+            elseif ($keytype == MFUN_L3APL_F2CM_KEY_TYPE_IDCARD)
+                $keytype = "身份证钥匙";
+            elseif ($keytype == MFUN_L3APL_F2CM_KEY_TYPE_PHONE)
+                $keytype = "电话号码钥匙";
+            else
+                $keytype = "未知类型钥匙";
+            */
+
             $temp = array(
                 'KeyCode' => $row['keyid'],
                 'KeyName' => $row['keyname'],
-                'KeyType' => $row['keytype'],
+                'KeyType' => $keytype,
                 'HardwareCode' => $row['hwcode'],
                 'KeyProj' => $projCode,
                 'KeyProjName' => $projName,
@@ -744,7 +762,6 @@ class classDbiL3apF2cm
             die('Could not connect: ' . mysqli_error($mysqli));
         }
         $mysqli->query("set character_set_results = utf8");
-        //$mysqli->query("set character_set_connection = utf8");
         $mysqli->query("SET NAMES utf8");
 
         $keyid = MFUN_L3APL_F2CM_KEY_PREFIX.$this->getRandomKeyid(MFUN_L3APL_F2CM_KEY_ID_LEN);  //KEYID的分配机制将来要重新考虑，避免重复
@@ -752,6 +769,7 @@ class classDbiL3apF2cm
         $keystatus = "N"; //默认新建的Key是没有启用的
 
         //转换keytype
+        /*
         if ($keytype == "射频卡")
             $keytype = MFUN_L3APL_F2CM_KEY_TYPE_RFID;
         elseif ($keytype == "蓝牙")
@@ -766,10 +784,46 @@ class classDbiL3apF2cm
             $keytype = MFUN_L3APL_F2CM_KEY_TYPE_PHONE;
         else
             $keytype = MFUN_L3APL_F2CM_KEY_TYPE_UNDEFINED;
-
+        */
 
         $query_str = "INSERT INTO `t_l3f2cm_fhys_keyinfo` (keyid, keyname, p_code, keystatus, keytype, hwcode, memo)
                                   VALUES ('$keyid','$keyname','$projcode','$keystatus','$keytype','$hwcode','$memo')";
+        $result = $mysqli->query($query_str);
+
+        $mysqli->close();
+        return $result;
+    }
+
+    public function dbi_key_mod_process($keyid,$keyname,$keytype,$projcode,$hwcode,$memo)
+    {
+        //建立连接
+        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli) {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $mysqli->query("set character_set_results = utf8");
+        $mysqli->query("SET NAMES utf8");
+
+        //转换keytype
+        /*
+        if ($keytype == "射频卡")
+            $keytype = MFUN_L3APL_F2CM_KEY_TYPE_RFID;
+        elseif ($keytype == "蓝牙")
+            $keytype = MFUN_L3APL_F2CM_KEY_TYPE_BLE;
+        elseif ($keytype == "用户账号")
+            $keytype = MFUN_L3APL_F2CM_KEY_TYPE_USER;
+        elseif ($keytype == "微信号")
+            $keytype = MFUN_L3APL_F2CM_KEY_TYPE_WECHAT;
+        elseif ($keytype == "身份证")
+            $keytype = MFUN_L3APL_F2CM_KEY_TYPE_IDCARD;
+        elseif ($keytype == "电话号码")
+            $keytype = MFUN_L3APL_F2CM_KEY_TYPE_PHONE;
+        else
+            $keytype = MFUN_L3APL_F2CM_KEY_TYPE_UNDEFINED;
+        */
+
+        $query_str = "UPDATE `t_l3f2cm_fhys_keyinfo` SET `keyname` = '$keyname',`p_code` = '$projcode',`keytype` = '$keytype',
+                          `hwcode` = '$hwcode', `memo` = '$memo' WHERE (`keyid` = '$keyid' )";
         $result = $mysqli->query($query_str);
 
         $mysqli->close();
@@ -862,6 +916,12 @@ class classDbiL3apF2cm
                 $authid = $row['sid'];
                 $keyid = $row['keyid'];
                 $authtype = $row['authtype'];
+                if ($authtype == MFUN_L3APL_F2CM_AUTH_TYPE_TIME)
+                    $authtype = "时间授权";
+                elseif ($authtype == MFUN_L3APL_F2CM_AUTH_TYPE_NUMBER)
+                    $authtype = "次数授权";
+                elseif ($authtype == MFUN_L3APL_F2CM_AUTH_TYPE_FOREVER)
+                    $authtype = "永久授权";
 
                 $query_str = "SELECT * FROM `t_l3f2cm_fhys_keyinfo` WHERE `keyid` = '$keyid' ";
                 $resp = $mysqli->query($query_str);
@@ -917,6 +977,13 @@ class classDbiL3apF2cm
             $authid = $row['sid'];
             $authtype = $row['authtype'];
             $authobjcode = $row['authobjcode'];
+
+            if ($authtype == MFUN_L3APL_F2CM_AUTH_TYPE_TIME)
+                $authtype = "时间授权";
+            elseif ($authtype == MFUN_L3APL_F2CM_AUTH_TYPE_NUMBER)
+                $authtype = "次数授权";
+            elseif ($authtype == MFUN_L3APL_F2CM_AUTH_TYPE_FOREVER)
+                $authtype = "永久授权";
 
             $query_str = "SELECT * FROM `t_l3f2cm_fhys_keyinfo` WHERE `keyid` = '$keyid' ";
             $resp = $mysqli->query($query_str);
@@ -978,7 +1045,7 @@ class classDbiL3apF2cm
         return $result;
     }
 
-    public function dbi_key_authnew_process($keyid, $keyuserid, $authobjcode, $authtype, $validend)
+    public function dbi_key_authnew_process($keyid, $keyuserid, $authobjcode, $authtype)
     {
         //建立连接
         $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
@@ -987,15 +1054,16 @@ class classDbiL3apF2cm
         }
         $mysqli->query("set character_set_results = utf8");
 
-        $code_prefix = substr($authobjcode, MFUN_L3APL_F2CM_CODE_FORMAT_LEN);
+        $code_prefix = substr($authobjcode, 0, MFUN_L3APL_F2CM_CODE_FORMAT_LEN);
         if ($code_prefix == MFUN_L3APL_F2CM_PROJ_CODE_PREFIX)
             $authlevel = MFUN_L3APL_F2CM_AUTH_LEVEL_PROJ;
         else
             $authlevel = MFUN_L3APL_F2CM_AUTH_LEVEL_DEVICE;
 
         $timestamp = time();
-        $validstart = date($timestamp);
-        if (!empty($validend)){
+        $validstart = date("Y-m-d", $timestamp);
+        if (!empty($authtype)){
+            $validend = $authtype;
             $authtype = MFUN_L3APL_F2CM_AUTH_TYPE_TIME;
             $query_str = "INSERT INTO `t_l3f2cm_fhys_keyauth` (keyid, authlevel, authobjcode, authtype, validstart, validend)
                                   VALUES ('$keyid','$authlevel','$authobjcode','$authtype','$validstart','$validend')";
@@ -1008,11 +1076,9 @@ class classDbiL3apF2cm
             $result = $mysqli->query($query_str);
         }
 
-
-
-
-
-    }
+        $mysqli->close();
+        return $result;
+   }
 
     public function dbi_key_authdel_process($authid)
     {
