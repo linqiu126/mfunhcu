@@ -50,6 +50,7 @@ include_once "../l2sensorproc/sensoriwm/task_l2snr_iwm.class.php";
 include_once "../l2sensorproc/sensorigm/task_l2snr_igm.class.php";
 include_once "../l2sensorproc/sensorihm/task_l2snr_ihm.class.php";
 include_once "../l2sensorproc/sensorble/task_l2snr_ble.class.php";
+include_once "../l2sensorproc/sensorbatt/task_l2snr_batt.class.php";
 include_once "../l2sensorproc/sensordoorlock/task_l2snr_doorlock.class.php";
 include_once "../l2sensorproc/sensorgprs/task_l2snr_gprs.class.php";
 include_once "../l2sensorproc/sensorrfid/task_l2snr_rfid.class.php";
@@ -857,9 +858,44 @@ class classTaskL1vmCoreRouter
                     $obj->mfun_l2socket_listen_task_main_entry($this, $result["msgId"], $result["msgName"], $result["msgBody"]);
                     break;
 
+                case MFUN_TASK_ID_L2SENSOR_BATT:
+                    $obj = new classTaskL2snrBatt();
+                    $obj->mfun_l2snr_batt_task_main_entry($this, $result["msgId"], $result["msgName"], $result["msgBody"]);
+                    break;
+
+                case MFUN_TASK_ID_L2SENSOR_BLE:
+                    $obj = new classTaskL2snrBle();
+                    $obj->mfun_l2snr_ble_task_main_entry($this, $result["msgId"], $result["msgName"], $result["msgBody"]);
+                    break;
+
                 case MFUN_TASK_ID_L2SENSOR_DOORLOCK:
                     $obj = new classTaskL2snrDoorlock();
                     $obj->mfun_l2snr_doorlock_task_main_entry($this, $result["msgId"], $result["msgName"], $result["msgBody"]);
+                    break;
+
+                case MFUN_TASK_ID_L2SENSOR_GPRS:
+                    $obj = new classTaskL2snrGprs();
+                    $obj->mfun_l2snr_gprs_task_main_entry($this, $result["msgId"], $result["msgName"], $result["msgBody"]);
+                    break;
+
+                case MFUN_TASK_ID_L2SENSOR_RFID:
+                    $obj = new classTaskL2snrRfid();
+                    $obj->mfun_l2snr_rfid_task_main_entry($this, $result["msgId"], $result["msgName"], $result["msgBody"]);
+                    break;
+
+                case MFUN_TASK_ID_L2SENSOR_SMOK:
+                    $obj = new classTaskL2snrSmok();
+                    $obj->mfun_l2snr_smok_task_main_entry($this, $result["msgId"], $result["msgName"], $result["msgBody"]);
+                    break;
+
+                case MFUN_TASK_ID_L2SENSOR_VIBR:
+                    $obj = new classTaskL2snrVibr();
+                    $obj->mfun_l2snr_vibr_task_main_entry($this, $result["msgId"], $result["msgName"], $result["msgBody"]);
+                    break;
+
+                case MFUN_TASK_ID_L2SENSOR_WATER:
+                    $obj = new classTaskL2snrWater();
+                    $obj->mfun_l2snr_water_task_main_entry($this, $result["msgId"], $result["msgName"], $result["msgBody"]);
                     break;
 
                 case MFUN_TASK_ID_L3APPL_FUM1SYM:

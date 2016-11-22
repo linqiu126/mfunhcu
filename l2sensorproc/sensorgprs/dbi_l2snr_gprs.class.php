@@ -44,7 +44,7 @@ class classDbiL2snrGprs
 
         //更新当前聚合表
         $currenttime = date("Y-m-d H:i:s",$timestamp);
-        $result = $mysqli->query("SELECT * FROM `t_l3f3dm_fhys_currentreport` WHERE (`devcode` = '$devCode' ");
+        $result = $mysqli->query("SELECT * FROM `t_l3f3dm_fhys_currentreport` WHERE (`devcode` = '$devCode') ");
         if (($result->num_rows)>0) {
             $query_str = "UPDATE `t_l3f3dm_fhys_currentreport` SET  `gprsstat` = '$status', `createtime` = '$currenttime' WHERE (`devcode` = '$devCode')";
             $result = $mysqli->query($query_str);
@@ -111,7 +111,7 @@ class classDbiL2snrGprs
 
         //更新当前聚合表
         $currenttime = date("Y-m-d H:i:s",$timestamp);
-        $result = $mysqli->query("SELECT * FROM `t_l3f3dm_fhys_currentreport` WHERE (`devcode` = '$devCode' ");
+        $result = $mysqli->query("SELECT * FROM `t_l3f3dm_fhys_currentreport` WHERE (`devcode` = '$devCode') ");
         if (($result->num_rows)>0) {
             $query_str = "UPDATE `t_l3f3dm_fhys_currentreport` SET  `siglevel` = '$data', `createtime` = '$currenttime' WHERE (`devcode` = '$devCode')";
             $result = $mysqli->query($query_str);
