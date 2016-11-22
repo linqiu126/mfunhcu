@@ -137,9 +137,7 @@ class classL1MainEntrySocketListenServer
         $obj->mfun_l1vm_task_main_entry(MFUN_MAIN_ENTRY_SOCKET_LISTEN, NULL, NULL, $msg); */
 
         //for FHYS云控锁项目
-        echo "before new";
         $obj = new classTaskL1vmCoreRouter();
-        echo "after new";
         $obj->mfun_l1vm_task_main_entry(MFUN_MAIN_ENTRY_IOT_HCU, MSG_ID_L2SDK_HCU_DATA_COMING, "MSG_ID_L2SDK_HCU_DATA_COMING", $data);
     }
 

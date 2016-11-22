@@ -660,18 +660,28 @@ class classDbiL3apF2cm
         $mysqli->query("set character_set_results = utf8");
         $mysqli->query("SET NAMES utf8");
 
-        $query_str = "SELECT * FROM `t_l3f2cm_fhys_keyinfo` WHERE 1 ";
+        $query_str = "SELECT * FROM `t_l3f1sym_authlist` WHERE 1 ";
         $result = $mysqli->query($query_str);
 
         $all_projuser = array();
         while($row = $result->fetch_array()){
-            $keyuserid = $row['keyuserid'];
-            $keyusername = $row['keyusername'];
-            $p_code = $row['p_code'];
+            $auth_code = $row['auth_code'];
+            $code_prefix = substr($auth_code, 0, MFUN_L3APL_F2CM_CODE_FORMAT_LEN);
+            if ($code_prefix == MFUN_L3APL_F2CM_PROJ_CODE_PREFIX)  //项目号
+            {
+                $p_code = $auth_code;
+                $keyuserid = $row['uid'];
 
-            $temp = array('id'=>$keyuserid, 'name'=>$keyusername, 'ProjCode'=>$p_code);
-            array_push($all_projuser,$temp);
+                $query_str = "SELECT * FROM `t_l3f1sym_account` WHERE `uid` = '$keyuserid' ";
+                $resp = $mysqli->query($query_str);
+                $resp_row = $resp->fetch_array();
+                $keyusername = $resp_row['nick'];
+
+                $temp = array('id'=>$keyuserid, 'name'=>$keyusername, 'ProjCode'=>$p_code);
+                array_push($all_projuser,$temp);
+            }
         }
+
         $mysqli->close();
         return $all_projuser;
     }
@@ -858,7 +868,7 @@ class classDbiL3apF2cm
         }
         $mysqli->query("set character_set_results = utf8");
 
-        $code_prefix = substr($authobjcode, MFUN_L3APL_F2CM_CODE_FORMAT_LEN);
+        $code_prefix = substr($authobjcode, 0, MFUN_L3APL_F2CM_CODE_FORMAT_LEN);
 
         $authlist = array();
         if ($code_prefix == MFUN_L3APL_F2CM_PROJ_CODE_PREFIX)
@@ -875,6 +885,12 @@ class classDbiL3apF2cm
                 $authid = $row['sid'];
                 $keyid = $row['keyid'];
                 $authtype = $row['authtype'];
+                if ($authtype == MFUN_L3APL_F2CM_AUTH_TYPE_TIME)
+                    $authtype = "时间授权";
+                elseif ($authtype == MFUN_L3APL_F2CM_AUTH_TYPE_NUMBER)
+                    $authtype = "次数授权";
+                elseif ($authtype == MFUN_L3APL_F2CM_AUTH_TYPE_FOREVER)
+                    $authtype = "永久授权";
 
                 $query_str = "SELECT * FROM `t_l3f2cm_fhys_keyinfo` WHERE `keyid` = '$keyid' ";
                 $resp = $mysqli->query($query_str);
@@ -994,14 +1010,14 @@ class classDbiL3apF2cm
                 $keyusername = $resp_row['keyusername'];
             }
 
-            $code_prefix = substr($authobjcode, MFUN_L3APL_F2CM_CODE_FORMAT_LEN);
+            $code_prefix = substr($authobjcode, 0, MFUN_L3APL_F2CM_CODE_FORMAT_LEN);
             if ($code_prefix == MFUN_L3APL_F2CM_PROJ_CODE_PREFIX)
             {
                 $query_str = "SELECT * FROM `t_l3f2cm_projinfo` WHERE `p_code` = '$authobjcode' ";
                 $resp = $mysqli->query($query_str);
                 if (($resp->num_rows) > 0) {
                     $resp_row = $resp->fetch_array();
-                    $department = $resp_row['department'];
+                    $department = $resp_row['p_name']; //将来可以考虑取department
                 }
             }
             else
