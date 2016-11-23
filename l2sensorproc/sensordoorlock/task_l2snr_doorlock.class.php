@@ -17,11 +17,16 @@ class classTaskL2snrDoorlock
 
     }
 
-    public function func_doorlock_data_process($platform, $deviceId, $statCode, $content)
+    public function func_doorlock_data_process($platform, $devCode, $statCode, $msg)
     {
+        if(isset($msg['content'])) $content = $msg['content']; else $content = "";
+        if(isset($msg['funcFlag'])) $funcFlag = $msg['funcFlag']; else $funcFlag = "";
+
+        if(empty($content)){
+            return "ERROR FHYS_DOORCLOCK: message empty";  //消息内容为空，直接返回
+        }
         $raw_MsgHead = substr($content, 0, MFUN_HCU_MSG_HEAD_LENGTH);  //截取6Byte MsgHead
         $msgHead = unpack(MFUN_HCU_MSG_HEAD_FORMAT, $raw_MsgHead);
-
         $length = hexdec($msgHead['Len']) & 0xFF;
         $length =  ($length+2) * 2; //因为收到的消息为16进制字符，消息总长度等于length＋1B控制字＋1B长度本身
         if ($length != strlen($content)) {
@@ -29,53 +34,56 @@ class classTaskL2snrDoorlock
         }
 
         $opt_key = hexdec($msgHead['Cmd']) & 0xFF;
+        $resp = "";
+        switch ($opt_key)
+        {
+            case MFUN_HCU_OPT_FHYS_LOCKSTAT_IND:
+                $data = substr($content, MFUN_HCU_MSG_HEAD_LENGTH, 2);
+                $data = hexdec($data) & 0xFF;
+                $classDbiL2snrDoorlock = new classDbiL2snrDoorlock();
+                $resp = $classDbiL2snrDoorlock->dbi_hcu_lock_status_update($devCode, $statCode, $data);
+                break;
 
-        if ($opt_key == MFUN_HCU_OPT_FHYS_LOCKOPEN_REQ){
-            $uiF4icmDbObj = new classDbiL2snrDoorlock();
-            $resp = $uiF4icmDbObj->dbi_hcu_lock_open("", $statCode);
+            case MFUN_HCU_OPT_FHYS_USERID_LOCKOPEN_REQ:
+                $uiF4icmDbObj = new classDbiL2snrDoorlock();
+                $resp = $uiF4icmDbObj->dbi_hcu_userid_lock_open($devCode, $statCode,$funcFlag);
+                break;
+
+            case MFUN_HCU_OPT_FHYS_RFID_LOCKOPEN_REQ:
+                $uiF4icmDbObj = new classDbiL2snrDoorlock();
+                $resp = $uiF4icmDbObj->dbi_hcu_rfid_lock_open($devCode, $statCode,$funcFlag);
+                break;
+
+            case MFUN_HCU_OPT_FHYS_BLE_LOCKOPEN_REQ:
+                $uiF4icmDbObj = new classDbiL2snrDoorlock();
+                $resp = $uiF4icmDbObj->dbi_hcu_ble_lock_open($devCode, $statCode,$funcFlag);
+                break;
+
+            case MFUN_HCU_OPT_FHYS_WECHAT_LOCKOPEN_REQ:
+                $uiF4icmDbObj = new classDbiL2snrDoorlock();
+                $resp = $uiF4icmDbObj->dbi_hcu_wechat_lock_open($devCode, $statCode,$funcFlag);
+                break;
+
+            case MFUN_HCU_OPT_FHYS_IDCARD_LOCKOPEN_REQ:
+                $uiF4icmDbObj = new classDbiL2snrDoorlock();
+                $resp = $uiF4icmDbObj->dbi_hcu_idcard_lock_open($devCode, $statCode,$funcFlag);
+                break;
+
+            case MFUN_HCU_OPT_FHYS_DOORSTAT_IND:
+                $data = substr($content, MFUN_HCU_MSG_HEAD_LENGTH, 2);
+                $data = hexdec($data) & 0xFF;
+                $classDbiL2snrDoorlock = new classDbiL2snrDoorlock();
+                $resp = $classDbiL2snrDoorlock->dbi_hcu_door_status_update($devCode, $statCode, $data);
+                break;
+
+            default:
+                break;
+
         }
 
         return $resp;
     }
-    //H5 UI命令处理函数
-    function func_hcu_lock_status_process($uid, $StatCode)
-    {
-        $uiF4icmDbObj = new classDbiL2snrDoorlock();
-        $resp = $uiF4icmDbObj->dbi_hcu_lock_status($uid, $StatCode);
-        if (!empty($resp))
-            $retval=array(
-                'status'=>'true',
-                'msg'=>$resp
-            );
-        else
-            $retval=array(
-                'status'=>'false',
-                'msg'=>null
-            );
-        //$jsonencode = _encode($retval);
-        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
-        return $jsonencode;
-    }
 
-    //HCU_Lock_Open
-    function func_hcu_lock_open_process($uid, $StatCode)
-    {
-        $uiF4icmDbObj = new classDbiL2snrDoorlock();
-        $resp = $uiF4icmDbObj->dbi_hcu_lock_open($uid, $StatCode);
-        if (!empty($resp))
-            $retval=array(
-                'status'=>'true',
-                'msg'=>$resp
-            );
-        else
-            $retval=array(
-                'status'=>'false',
-                'msg'=>null
-            );
-        //$jsonencode = _encode($retval);
-        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
-        return $jsonencode;
-    }
 
 
     /**************************************************************************************
@@ -120,32 +128,15 @@ class classTaskL2snrDoorlock
             if (isset($msg["deviceId"])) $deviceId = $msg["deviceId"];
             if (isset($msg["statCode"])) $statCode = $msg["statCode"];
             if (isset($msg["content"])) $content = $msg["content"];
+
             //具体处理函数
             $resp = $this->func_doorlock_data_process($platform, $deviceId, $statCode, $content);
         }
+        else{
+            $resp = ""; //啥都不ECHO
+        }
 
-        //功能HCU_Lock_Status
-        elseif ($msgId == MSG_ID_L4FHYSUI_TO_L3F4_HCULOCKSTATUS)
-        {
-            //解开消息
-            if (isset($_GET["id"])) $uid = trim($_GET["id"]); else  $uid = "";
-            if (isset($_GET["StatCode"])) $StatCode = trim($_GET["StatCode"]); else  $StatCode= "";
-            $input = array("uid" => $uid, "StatCode" => $StatCode);
-            //具体处理函数
-            $resp = $this->func_hcu_lock_status_process($uid, $StatCode);
-            $project = MFUN_PRJ_HCU_FHYSUI;
-        }
-        //功能HCU_Lock_Open
-        elseif ($msgId == MSG_ID_L4FHYSUI_TO_L3F4_HCULOCKOPEN)
-        {
-            //解开消息
-            if (isset($_GET["id"])) $uid = trim($_GET["id"]); else  $uid = "";
-            if (isset($_GET["StatCode"])) $StatCode = trim($_GET["StatCode"]); else  $StatCode= "";
-            $input = array("uid" => $uid, "StatCode" => $StatCode);
-            //具体处理函数
-            $resp = $this->func_hcu_lock_open_process($uid, $StatCode);
-            $project = MFUN_PRJ_HCU_FHYSUI;
-        }
+
         //返回ECHO
         if (!empty($resp))
         {

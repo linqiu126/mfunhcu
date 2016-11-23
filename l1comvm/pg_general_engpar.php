@@ -13,7 +13,7 @@ include_once "../l1comvm/sysconfig.php";
 //通用项目标识
 define("MFUN_L1VM_DBI_MAX_LOG_NUM", 5000);  //防止t_loginfo表单数据无限制的增长，保留的最大记录数
 define("MFUN_L3APL_F1SYM_SESSION_ID_LEN", 10); //UI界面session id字符串长度
-define("MFUN_L3APL_F1SYM_USER_ID_LEN", 6); //UI界面user id字符串长度
+define("MFUN_L3APL_F1SYM_USER_ID_LEN", 6); //UI界面user id字符串长度=该值+3 （UID）
 define("MFUN_L3APL_F1SYM_UID_PREFIX", "UID");  //定义用户ID的特征字，用户ID必须以UID开头
 
 //项目类关键字
@@ -21,6 +21,24 @@ define("MFUN_L3APL_F2CM_PG_CODE_PREFIX", "PG");   //定义项目组code的特征
 define("MFUN_L3APL_F2CM_PROJ_CODE_PREFIX", "P_");  //定义项目code的特征字，项目code必须以“P_”开头
 define("MFUN_L3APL_F2CM_CODE_FORMAT_LEN", 2); //定义项目code和项目组code的特征字长度
 define("MFUN_L3APL_F1SYM_SESSIONID_VALID_TIME", 1800);  //Session ID有效时间为30分钟
+
+//FHYS项目关键字
+define("MFUN_L3APL_F2CM_KEY_PREFIX", "KEY");  //定义KEY ID的特征字，钥匙KEYID必须以KEY开头
+define("MFUN_L3APL_F2CM_KEY_ID_LEN", 6);     //UI界面key id字符串长度=该值+3（KEY)
+define("MFUN_L3APL_F2CM_KEY_TYPE_RFID", "R");
+define("MFUN_L3APL_F2CM_KEY_TYPE_BLE", "B");
+define("MFUN_L3APL_F2CM_KEY_TYPE_USER", "U");
+define("MFUN_L3APL_F2CM_KEY_TYPE_WECHAT", "W");
+define("MFUN_L3APL_F2CM_KEY_TYPE_IDCARD", "I");
+define("MFUN_L3APL_F2CM_KEY_TYPE_PHONE", "P");
+define("MFUN_L3APL_F2CM_KEY_TYPE_UNDEFINED", "N");
+
+define("MFUN_L3APL_F2CM_AUTH_LEVEL_PROJ", "P"); //项目级授权
+define("MFUN_L3APL_F2CM_AUTH_LEVEL_DEVICE", "D"); //单个站点(设备)级授权
+define("MFUN_L3APL_F2CM_AUTH_TYPE_NUMBER", "N");
+define("MFUN_L3APL_F2CM_AUTH_TYPE_TIME", "T");
+define("MFUN_L3APL_F2CM_AUTH_TYPE_FOREVER", "F");
+
 //ZHB关键字
 define("MFUN_L2SNR_COMAPI_HOUR_VALIDE_NUM", 54); // HCU环保标准：1小时采集的有效分钟数据应不少于 54个
 define("MFUN_L2SNR_COMAPI_DAY_VALIDE_NUM", 21);  // HCU环保标准：每日应有不少于21个有效小时均值的算术平均值为有效日均值

@@ -13,12 +13,56 @@ include_once "../l1comvm/vmlayer.php";
  *************************************************************************************/
 if (TC_L4FHYS_UI == true) {
 
-    echo " [TC L4FHYS: DevTable START]\n";
-    $_GET["action"] = "DevTable";
-    $_GET["length"] = "5";
-    $_GET["startseq"] = "1";
+    echo " [TC L4FHYS: UserKey START]\n";
+    $_GET["action"] = "UserKey";
+    $_GET["userid"] = "UID000001";
     require("../l4fhysui/request.php");
-    echo " [TC L4FHYS: DevTable END]\n";
+    echo " [TC L4FHYS: UserKey END]\n";
+
+    echo " [TC L4FHYS: ProjKeyList START]\n";
+    $_GET["action"] = "ProjKeyList";
+    $_GET["userid"] = "UID000001";
+    require("../l4fhysui/request.php");
+    echo " [TC L4FHYS: ProjKeyList END]\n";
+
+    echo " [TC L4FHYS: ProjKey START]\n";
+    $_GET["action"] = "ProjKey";
+    $_GET["ProjCode"] = "P_0014";
+    require("../l4fhysui/request.php");
+    echo " [TC L4FHYS: ProjKey END]\n";
+
+    echo " [TC L4FHYS: ProjUserList START]\n";
+    $_GET["action"] = "ProjUserList";
+    $_GET["id"] = "UID000001";
+    require("../l4fhysui/request.php");
+    echo " [TC L4FHYS: ProjUserList END]\n";
+
+    echo " [TC L4FHYS: KeyTable START]\n";
+    $_GET["action"] = "KeyTable";
+    $_GET["length"] = "15";
+    $_GET["startseq"] = "0";
+    require("../l4fhysui/request.php");
+    echo " [TC L4FHYS: KeyTable END]\n";
+
+    echo " [TC L4FHYS: DomainAuthlist START]\n";
+    $_GET["action"] = "DomainAuthlist";
+    $_GET["DomainCode"] = "P_0014";
+    require("../l4fhysui/request.php");
+    echo " [TC L4FHYS: DomainAuthlist END]\n";
+
+    echo " [TC L4FHYS: KeyAuthlist START]\n";
+    $_GET["action"] = "KeyAuthlist";
+    $_GET["KeyId"] = "KEY540970";
+    require("../l4fhysui/request.php");
+    echo " [TC L4FHYS: KeyAuthlist END]\n";
+
+    echo " [TC L4FHYS: KeyAuthNew START]\n";
+    $_GET["action"] = "KeyAuthNew";
+    $_GET["DomainId"] = "P_0014";
+    $_GET["KeyId"] = "KEY278347";
+    $_GET["Authway"] = "2016-12-01";
+    require("../l4fhysui/request.php");
+    echo " [TC L4FHYS: KeyAuthNew END]\n";
 
     //HCU_Lock_Status
     echo " [TC L4FHYS: HCU_Lock_Status START]\n";

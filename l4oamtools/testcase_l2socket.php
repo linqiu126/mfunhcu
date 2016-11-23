@@ -16,6 +16,11 @@ if (TC_SOCKET == true) {
     echo " [TC SOCKET: xxx START]\n";
 
     $data = "<xml><ToUserName><![CDATA[XHZN_HCU]]></ToUserName><FromUserName><![CDATA[HCU_CL_0301]]></FromUserName><CreateTime>1477323704</CreateTime><MsgType><![CDATA[hcu_text]]></MsgType><Content><![CDATA[400183]]></Content><FuncFlag>0</FuncFlag></xml>";
+<<<<<<< HEAD
+=======
+    $data = "<xml><ToUserName><![CDATA[XHZN_HCU]]></ToUserName><FromUserName><![CDATA[HCU_CL_0301]]></FromUserName><CreateTime>1477323704</CreateTime><MsgType><![CDATA[hcu_text]]></MsgType><Content><![CDATA[480182]]></Content><FuncFlag>XXX</FuncFlag></xml>";
+
+>>>>>>> a7586f0ead6ef54d832e2b8d677c62e0a37b2c19
     $obj = new classTaskL1vmCoreRouter();
     $obj->mfun_l1vm_task_main_entry(MFUN_MAIN_ENTRY_IOT_HCU, MSG_ID_L2SDK_HCU_DATA_COMING, "MSG_ID_L2SDK_HCU_DATA_COMING", $data);
 

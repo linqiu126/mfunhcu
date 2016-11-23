@@ -1224,7 +1224,7 @@ class classTaskL4aqycUi
                 //case "GetVideo":
                 case "GetVideo":
                     if (isset($_GET["id"])) $videoid = trim($_GET["id"]); else  $videoid = "";
-                    $input = array("id" => $videoid);
+                    $input = array("videoid" => $videoid);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM4ICM, MSG_ID_L4AQYCUI_TO_L3F4_VIDEOPLAY, "MSG_ID_L4AQYCUI_TO_L3F4_VIDEOPLAY",$input);
                     break;
                   /*
@@ -1307,9 +1307,16 @@ class classTaskL4aqycUi
 
                 case "GetCameraStatus": //Get camera vertical and horizontal angle and fetch a current photo
                     if (isset($_GET["id"])) $uid = trim($_GET["id"]); else  $uid = "";
-                    if (isset($_GET["StatCode"])) $StatCode = trim($_GET["StatCode"]); else  $StatCode= "";
-                    $input = array("uid" => $uid, "StatCode" => $StatCode);
+                    if (isset($_GET["StatCode"])) $statCode = trim($_GET["StatCode"]); else  $statCode= "";
+                    $input = array("uid" => $uid, "StatCode" => $statCode);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM4ICM, MSG_ID_L4AQYCUI_TO_L3F4_GETCAMERASTATUS, "MSG_ID_L4AQYCUI_TO_L3F4_GETCAMERASTATUS",$input);
+                    break;
+
+                case "GetCameraUnit":
+                    break;
+                case "CameraVAdj":
+                    break;
+                case "CameraHAdj":
                     break;
 
                 default:

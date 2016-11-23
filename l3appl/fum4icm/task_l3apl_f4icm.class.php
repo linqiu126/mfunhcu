@@ -193,12 +193,33 @@ class classTaskL3aplF4icm
         return $jsonencode;
     }
 
-
     //TBSWR GetTempStatus
     function func_tbswr_gettempstatus_process($uid, $StatCode)
     {
         $uiF4icmDbObj = new classDbiL3apF4icm();
         $resp = $uiF4icmDbObj->dbi_tbswr_gettempstatus($uid, $StatCode);
+        if (!empty($resp))
+            $retval=array(
+                'status'=>'true',
+                'msg'=>$resp
+            );
+        else
+            $retval=array(
+                'status'=>'false',
+                'msg'=>null
+            );
+        //$jsonencode = _encode($retval);
+        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
+        return $jsonencode;
+    }
+
+    /*********************************智能云锁新增处理 Start*********************************************/
+
+    //HCU_Lock_Open
+    function func_hcu_lock_open_process($uid, $StatCode)
+    {
+        $uiF4icmDbObj = new classDbiL2snrDoorlock();
+        $resp = $uiF4icmDbObj->dbi_hcu_lock_open($uid, $StatCode);
         if (!empty($resp))
             $retval=array(
                 'status'=>'true',
@@ -245,7 +266,7 @@ class classTaskL3aplF4icm
         if ($msgId == MSG_ID_L4AQYCUI_TO_L3F4_ALLSW)
         {
             //解开消息
-            if (isset($msg["uid"])) $user = $msg["uid"]; else  $user = "";  //此处的UID是为了将来做权限控制
+            if (isset($msg["uid"])) $uid = $msg["uid"]; else  $uid = "";  //此处的UID是为了将来做权限控制
             //具体处理函数
             $resp = $this->func_allsw_version_process();
             $project = MFUN_PRJ_HCU_AQYCUI;
@@ -275,16 +296,16 @@ class classTaskL3aplF4icm
         elseif ($msgId == MSG_ID_L4AQYCUI_TO_L3F4_VIDEOLIST)
         {
             if (isset($msg["id"])) $uid = $msg["id"]; else  $uid = "";
-            if (isset($msg["StatCode"])) $StatCode = $msg["StatCode"]; else  $StatCode = "";
+            if (isset($msg["StatCode"])) $statCode = $msg["StatCode"]; else  $statCode = "";
             if (isset($msg["date"])) $date = $msg["date"]; else  $date = "";
             if (isset($msg["hour"])) $hour = $msg["hour"]; else  $hour = "";
-            $resp = $this->func_hcu_videolist_process($StatCode, $date,$hour);
+            $resp = $this->func_hcu_videolist_process($statCode, $date,$hour);
             $project = MFUN_PRJ_HCU_AQYCUI;
         }
 
         elseif ($msgId == MSG_ID_L4AQYCUI_TO_L3F4_VIDEOPLAY)
         {
-            if (isset($msg["id"])) $videoid = $msg["id"]; else  $videoid = "";
+            if (isset($msg["videoid"])) $videoid = $msg["videoid"]; else  $videoid = "";
             $resp = $this->func_hcu_videoplay_process($videoid);
             $project = MFUN_PRJ_HCU_AQYCUI;
         }
@@ -305,13 +326,13 @@ class classTaskL3aplF4icm
         elseif ($msgId == MSG_ID_L4AQYCUI_TO_L3F4_GETCAMERASTATUS)
         {
             //解开消息
-            if (isset($_GET["id"])) $uid = trim($_GET["id"]); else  $uid = "";
-            if (isset($_GET["StatCode"])) $StatCode = trim($_GET["StatCode"]); else  $StatCode= "";
-            $input = array("uid" => $uid, "StatCode" => $StatCode);
+            if (isset($msg["uid"])) $uid = trim($msg["uid"]); else  $uid = "";
+            if (isset($msg["StatCode"])) $statCode = trim($msg["StatCode"]); else  $statCode= "";
             //具体处理函数
-            $resp = $this->func_get_camera_status_process($uid, $StatCode);
+            $resp = $this->func_get_camera_status_process($uid, $statCode);
             $project = MFUN_PRJ_HCU_AQYCUI;
         }
+
         //功能TBSWR GetTempStatus
         elseif ($msgId == MSG_ID_L4TBSWRUI_TO_L3F4_GETTEMPSTATUS)
         {
@@ -322,6 +343,18 @@ class classTaskL3aplF4icm
             //具体处理函数
             $resp = $this->func_tbswr_gettempstatus_process($uid, $StatCode);
             $project = MFUN_PRJ_HCU_AQYCUI;
+        }
+
+        /*********************************智能云锁新增处理 Start*********************************************/
+        //功能HCU_Lock_Open
+        elseif ($msgId == MSG_ID_L4FHYSUI_TO_L3F4_LOCKOPEN)
+        {
+            //解开消息
+            if (isset($msg["uid"])) $uid = trim($msg["uid"]); else  $uid = "";
+            if (isset($msg["statcode"])) $statcode = trim($msg["statcode"]); else  $statcode= "";
+            //具体处理函数
+            $resp = $this->func_hcu_lock_open_process($uid, $statcode);
+            $project = MFUN_PRJ_HCU_FHYSUI;
         }
 
         else{

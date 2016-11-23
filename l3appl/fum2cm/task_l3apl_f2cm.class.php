@@ -272,6 +272,254 @@ class classTaskL3aplF2cm
         return $jsonencode;
     }
 
+    /*********************************智能云锁新增处理 Start*********************************************/
+    function func_project_userkey_process($keyuserid)
+    {
+        $uiF2cmDbObj = new classDbiL3apF2cm(); //初始化一个UI DB对象
+        $user_keylist = $uiF2cmDbObj->dbi_project_userkey_process($keyuserid);
+        if (!empty($usr_keylist))
+            $retval=array(
+                'status'=>"true",
+                'ret'=>$user_keylist
+            );
+        else
+            $retval=array(
+                'status'=>'true',
+                'ret'=>'获取用户钥匙列表失败'
+            );
+        //$jsonencode = _encode($retval);
+        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
+        return $jsonencode;
+    }
+
+    function func_all_projkey_process()
+    {
+        $uiF2cmDbObj = new classDbiL3apF2cm(); //初始化一个UI DB对象
+        $all_projkey = $uiF2cmDbObj->dbi_all_projkey_process();
+        if (!empty($all_projkey))
+            $retval=array(
+                'status'=>"true",
+                'ret'=>$all_projkey
+            );
+        else
+            $retval=array(
+                'status'=>'true',
+                'ret'=>'获取所有钥匙列表失败'
+            );
+        //$jsonencode = _encode($retval);
+        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
+        return $jsonencode;
+    }
+
+    function func_project_keylist_process($projCode)
+    {
+        $uiF2cmDbObj = new classDbiL3apF2cm(); //初始化一个UI DB对象
+        $proj_keylist = $uiF2cmDbObj->dbi_project_keylist_process($projCode);
+        if (!empty($proj_keylist))
+            $retval=array(
+                'status'=>"true",
+                'ret'=>$proj_keylist
+            );
+        else
+            $retval=array(
+                'status'=>'true',
+                'ret'=>'获取项目钥匙列表失败'
+            );
+        //$jsonencode = _encode($retval);
+        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
+        return $jsonencode;
+    }
+
+    function func_all_projkeyuser_process()
+    {
+        $uiF2cmDbObj = new classDbiL3apF2cm(); //初始化一个UI DB对象
+        $all_projuser = $uiF2cmDbObj->dbi_all_projkeyuser_process();
+        if (!empty($all_projuser))
+            $retval=array(
+                'status'=>"true",
+                'ret'=>$all_projuser
+            );
+        else
+            $retval=array(
+                'status'=>'true',
+                'ret'=>'获取项目钥匙列表失败'
+            );
+        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
+        return $jsonencode;
+    }
+
+    function func_key_table_process($length, $startseq)
+    {
+        $uiF2cmDbObj = new classDbiL3apF2cm(); //初始化一个UI DB对象
+        $total = $uiF2cmDbObj->dbi_all_keynum_inqury();
+        $query_length = (int)($length);
+        $start = (int)($startseq);
+        if($query_length> $total-$start)
+            {$query_length = $total-$start;}
+        $key_table = $uiF2cmDbObj->dbi_all_keytable_req($start, $query_length);
+        if(!empty($key_table))
+            $retval=array(
+                'status'=>'true',
+                'start'=> (string)$start,
+                'total'=> (string)$total,
+                'length'=>(string)$query_length,
+                'ret'=> $key_table
+            );
+        else
+            $retval=array(
+                'status'=>'false',
+                'start'=> null,
+                'total'=> null,
+                'length'=>null,
+                'ret'=> null
+            );
+        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
+        return $jsonencode;
+    }
+
+    function func_key_new_process($keyname,$keytype,$projcode,$hwcode,$memo)
+    {
+        $uiF2cmDbObj = new classDbiL3apF2cm(); //初始化一个UI DB对象
+        $result = $uiF2cmDbObj->dbi_key_new_process($keyname,$keytype,$projcode,$hwcode,$memo);
+        if ($result == true)
+            $retval=array(
+                'status'=>"true",
+                'msg'=>"新建钥匙成功"
+            );
+        else
+            $retval=array(
+                'status'=>'true',
+                'msg'=>'新建钥匙失败'
+            );
+        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
+        return $jsonencode;
+    }
+
+    function func_key_mod_process($keyid,$keyname,$keytype,$projcode,$hwcode,$memo)
+    {
+        $uiF2cmDbObj = new classDbiL3apF2cm(); //初始化一个UI DB对象
+        $result = $uiF2cmDbObj->dbi_key_mod_process($keyid,$keyname,$keytype,$projcode,$hwcode,$memo);
+        if ($result == true)
+            $retval=array(
+                'status'=>"true",
+                'msg'=>"修改钥匙成功"
+            );
+        else
+            $retval=array(
+                'status'=>'true',
+                'msg'=>'修改钥匙失败'
+            );
+        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
+        return $jsonencode;
+    }
+
+    function func_key_del_process($keyid)
+    {
+        $uiF2cmDbObj = new classDbiL3apF2cm(); //初始化一个UI DB对象
+        $result = $uiF2cmDbObj->dbi_key_del_process($keyid);
+        if ($result == true)
+            $retval=array(
+                'status'=>"true",
+                'msg'=>"删除钥匙成功"
+            );
+        else
+            $retval=array(
+                'status'=>'true',
+                'msg'=>'删除钥匙失败'
+            );
+        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
+        return $jsonencode;
+    }
+
+    function func_obj_authlist_process($authobjcode)
+    {
+        $uiF2cmDbObj = new classDbiL3apF2cm(); //初始化一个UI DB对象
+        $authlist = $uiF2cmDbObj->dbi_obj_authlist_process($authobjcode);
+        if (!empty($authlist))
+            $retval=array(
+                'status'=>"true",
+                'ret'=> $authlist
+            );
+        else
+            $retval=array(
+                'status'=>'true',
+                'ret'=>""
+            );
+        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
+        return $jsonencode;
+    }
+
+    function func_key_authlist_process($keyid)
+    {
+        $uiF2cmDbObj = new classDbiL3apF2cm(); //初始化一个UI DB对象
+        $authlist = $uiF2cmDbObj->dbi_key_authlist_process($keyid);
+        if (!empty($authlist))
+            $retval=array(
+                'status'=>"true",
+                'ret'=> $authlist
+            );
+        else
+            $retval=array(
+                'status'=>'true',
+                'ret'=>""
+            );
+        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
+        return $jsonencode;
+    }
+
+    function func_key_grant_process($keyid, $userid)
+    {
+        $uiF2cmDbObj = new classDbiL3apF2cm(); //初始化一个UI DB对象
+        $result = $uiF2cmDbObj->dbi_key_grant_process($keyid, $userid);
+        if ($result == true)
+            $retval=array(
+                'status'=>"true",
+                'msg'=> "钥匙使用人授予成功"
+            );
+        else
+            $retval=array(
+                'status'=>'true',
+                'msg'=>"钥匙使用人授予失败"
+            );
+        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
+        return $jsonencode;
+    }
+
+    function func_key_authnew_process($keyid, $keyuserid, $authobjcode, $authtype)
+    {
+        $uiF2cmDbObj = new classDbiL3apF2cm(); //初始化一个UI DB对象
+        $result = $uiF2cmDbObj->dbi_key_authnew_process($keyid, $keyuserid, $authobjcode, $authtype);
+        if ($result == true)
+            $retval=array(
+                'status'=>"true",
+                'msg'=> "钥匙新建授权成功"
+            );
+        else
+            $retval=array(
+                'status'=>'true',
+                'msg'=>"钥匙新建授权失败"
+            );
+        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
+        return $jsonencode;
+    }
+
+    function func_key_authdel_process($authid)
+    {
+        $uiF2cmDbObj = new classDbiL3apF2cm(); //初始化一个UI DB对象
+        $result = $uiF2cmDbObj->dbi_key_authdel_process($authid);
+        if ($result == true)
+            $retval=array(
+                'status'=>"true",
+                'msg'=> "钥匙授权删除成功"
+            );
+        else
+            $retval=array(
+                'status'=>'true',
+                'msg'=>"钥匙授权删除失败"
+            );
+        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
+        return $jsonencode;
+    }
 
 
     /**************************************************************************************
@@ -450,6 +698,127 @@ class classTaskL3aplF2cm
             $project = MFUN_PRJ_HCU_AQYCUI;
         }
 
+        /*********************************智能云锁新增处理 Start*********************************************/
+        elseif ($msgId == MSG_ID_L4FHYSUI_TO_L3F2_USERKEY)
+        {
+            //解开消息
+            if (isset($msg["uid"])) $uid = $msg["uid"]; else  $uid = "";
+            if (isset($msg["keyuserid"])) $keyuserid = $msg["keyuserid"]; else  $keyuserid = "";
+            $resp = $this->func_project_userkey_process($keyuserid);
+            $project = MFUN_PRJ_HCU_FHYSUI;
+
+        }
+        elseif ($msgId == MSG_ID_L4FHYSUI_TO_L3F2_PROJKEYLIST)
+        {
+            //解开消息
+            if (isset($msg["uid"])) $uid = $msg["uid"]; else  $uid = "";
+
+            $resp = $this->func_all_projkey_process();
+            $project = MFUN_PRJ_HCU_FHYSUI;
+        }
+        elseif ($msgId == MSG_ID_L4FHYSUI_TO_L3F2_PROJKEY)
+        {
+            //解开消息
+            if (isset($msg["uid"])) $uid = $msg["uid"]; else  $uid = "";
+            if (isset($msg["ProjCode"])) $projCode = $msg["ProjCode"]; else  $projCode = "";
+            $resp = $this->func_project_keylist_process($projCode);
+            $project = MFUN_PRJ_HCU_FHYSUI;
+        }
+        elseif ($msgId == MSG_ID_L4FHYSUI_TO_L3F2_PROJKEYUSERLIST)
+        {
+            //解开消息
+            if (isset($msg["uid"])) $uid = $msg["uid"]; else  $uid = "";
+
+            $resp = $this->func_all_projkeyuser_process();
+            $project = MFUN_PRJ_HCU_FHYSUI;
+        }
+        elseif ($msgId == MSG_ID_L4FHYSUI_TO_L3F2_KEYTABLE)
+        {
+            //解开消息
+            if (isset($msg["uid"])) $uid = $msg["uid"]; else  $uid = "";
+            if (isset($msg["length"])) $length = $msg["length"]; else  $length = "";
+            if (isset($msg["startseq"])) $startseq = $msg["startseq"]; else  $startseq = "";
+
+            $resp = $this->func_key_table_process($length, $startseq);
+            $project = MFUN_PRJ_HCU_FHYSUI;
+        }
+        elseif ($msgId == MSG_ID_L4FHYSUI_TO_L3F2_KEYNEW)
+        {
+            if (isset($msg["uid"])) $uid = trim($msg["uid"]); else  $uid = "";
+            if (isset($msg["keyid"])) $keyid = trim($msg["keyid"]); else  $keyid = "";
+            if (isset($msg["keyname"])) $keyname = trim($msg["keyname"]); else  $keyname = "";
+            if (isset($msg["projcode"])) $projcode = trim($msg["projcode"]); else  $projcode = "";
+            if (isset($msg["keytype"])) $keytype = trim($msg["keytype"]); else  $keytype = "";
+            if (isset($msg["hwcode"])) $hwcode = trim($msg["hwcode"]); else  $hwcode = "";
+            if (isset($msg["memo"])) $memo = trim($msg["memo"]); else  $memo = "";
+
+            $resp = $this->func_key_new_process($keyname,$keytype,$projcode,$hwcode,$memo);
+            $project = MFUN_PRJ_HCU_FHYSUI;
+        }
+        elseif ($msgId == MSG_ID_L4FHYSUI_TO_L3F2_KEYMOD)
+        {
+            if (isset($msg["uid"])) $uid = trim($msg["uid"]); else  $uid = "";
+            if (isset($msg["keyid"])) $keyid = trim($msg["keyid"]); else  $keyid = "";
+            if (isset($msg["keyname"])) $keyname = trim($msg["keyname"]); else  $keyname = "";
+            if (isset($msg["projcode"])) $projcode = trim($msg["projcode"]); else  $projcode = "";
+            if (isset($msg["keytype"])) $keytype = trim($msg["keytype"]); else  $keytype = "";
+            if (isset($msg["hwcode"])) $hwcode = trim($msg["hwcode"]); else  $hwcode = "";
+            if (isset($msg["memo"])) $memo = trim($msg["memo"]); else  $memo = "";
+
+            $resp = $this->func_key_mod_process($keyid,$keyname,$keytype,$projcode,$hwcode,$memo);
+            $project = MFUN_PRJ_HCU_FHYSUI;
+        }
+        elseif ($msgId == MSG_ID_L4FHYSUI_TO_L3F2_KEYDEL)
+        {
+            if (isset($msg["keyid"])) $keyid = trim($msg["keyid"]); else  $keyid = "";
+            if (isset($msg["uid"])) $uid = trim($msg["uid"]); else  $uid = "";
+
+            $resp = $this->func_key_del_process($keyid);
+            $project = MFUN_PRJ_HCU_FHYSUI;
+        }
+        elseif ($msgId == MSG_ID_L4FHYSUI_TO_L3F2_OBJAUTHLIST)
+        {
+            if (isset($msg["authobjcode"])) $authobjcode = trim($msg["authobjcode"]); else  $authobjcode = "";
+
+            $resp = $this->func_obj_authlist_process($authobjcode);
+            $project = MFUN_PRJ_HCU_FHYSUI;
+        }
+        elseif ($msgId == MSG_ID_L4FHYSUI_TO_L3F2_KEYAUTHLIST)
+        {
+            if (isset($msg["keyid"])) $keyid = trim($msg["keyid"]); else  $keyid = "";
+
+            $resp = $this->func_key_authlist_process($keyid);
+            $project = MFUN_PRJ_HCU_FHYSUI;
+        }
+        elseif ($msgId == MSG_ID_L4FHYSUI_TO_L3F2_KEYGRANT)
+        {
+            if (isset($msg["keyid"])) $keyid = trim($msg["keyid"]); else  $keyid = "";
+            if (isset($msg["userid"])) $userid = trim($msg["userid"]); else  $userid = "";
+
+            $resp = $this->func_key_grant_process($keyid, $userid);
+            $project = MFUN_PRJ_HCU_FHYSUI;
+        }
+        elseif ($msgId == MSG_ID_L4FHYSUI_TO_L3F2_KEYAUTHNEW)
+        {
+            if (isset($msg["authobjcode"])) $authobjcode = trim($msg["authobjcode"]); else  $authobjcode = "";
+            if (isset($msg["keyid"])) $keyid = trim($msg["keyid"]); else  $keyid = "";
+            if (isset($msg["keyuserid"])) $keyuserid = trim($msg["keyuserid"]); else  $keyuserid = "";
+            if (isset($msg["authtype"])) $authtype = trim($msg["authtype"]); else  $authtype = "";
+
+            $resp = $this->func_key_authnew_process($keyid, $keyuserid, $authobjcode, $authtype);
+            $project = MFUN_PRJ_HCU_FHYSUI;
+        }
+        elseif ($msgId == MSG_ID_L4FHYSUI_TO_L3F2_KEYAUTHDEL)
+        {
+            if (isset($msg["authid"])) $authid = trim($msg["authid"]); else  $authid = "";
+
+            $resp = $this->func_key_authdel_process($authid);
+            $project = MFUN_PRJ_HCU_FHYSUI;
+        }
+        elseif ($msgId == MSG_ID_L4FHYSUI_TO_L3F2_KEYHISTORY)
+        {
+
+        }
 
         else{
             $resp = ""; //啥都不ECHO

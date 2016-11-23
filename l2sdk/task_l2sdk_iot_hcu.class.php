@@ -179,9 +179,6 @@ class classTaskL2sdkIotHcu
                 break;
 
             case MFUN_HCU_CMDID_HSMMP_DATA:
-                if (empty($funcFlag)){
-                    //return "HCU_IOT: video link empty";
-                }
                 $msg = array("project" => $project,
                     "log_from" => $log_from,
                     "platform" => MFUN_TECH_PLTF_HCUGX,
@@ -221,7 +218,7 @@ class classTaskL2sdkIotHcu
                     "platform" => MFUN_TECH_PLTF_HCUSTM,
                     "deviceId" => $deviceId,
                     "statCode" => $statCode,
-                    "content" => $content);
+                    "content" => array("content" =>$content, "funcFlag" => $funcFlag));
                 if ($parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L2SDK_IOT_HCU,
                         MFUN_TASK_ID_L2SENSOR_DOORLOCK,
                         MSG_ID_L2SDK_HCU_TO_L2SNR_DOORLOCK,
@@ -231,33 +228,153 @@ class classTaskL2sdkIotHcu
                 break;
 
             case MFUN_HCU_CMDID_FHYS_DOOR://光交箱门控制字
+                $msg = array("project" => $project,
+                    "log_from" => $log_from,
+                    "platform" => MFUN_TECH_PLTF_HCUSTM,
+                    "deviceId" => $deviceId,
+                    "statCode" => $statCode,
+                    "content" => array("content" =>$content, "funcFlag" => $funcFlag));
+                if ($parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L2SDK_IOT_HCU,
+                        MFUN_TASK_ID_L2SENSOR_DOORLOCK,
+                        MSG_ID_L2SDK_HCU_TO_L2SNR_DOORLOCK,
+                        "MSG_ID_L2SDK_HCU_TO_L2SNR_DOORLOCK",
+                        $msg) == false) $resp = "Send to message buffer error";
+                else $resp = "";
                 break;
 
             case MFUN_HCU_CMDID_FHYS_RFID://RFID控制字
+                $msg = array("project" => $project,
+                    "log_from" => $log_from,
+                    "platform" => MFUN_TECH_PLTF_HCUSTM,
+                    "deviceId" => $deviceId,
+                    "statCode" => $statCode,
+                    "content" => $content);
+                if ($parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L2SDK_IOT_HCU,
+                        MFUN_TASK_ID_L2SENSOR_RFID,
+                        MSG_ID_L2SDK_HCU_TO_L2SNR_RFID,
+                        "MSG_ID_L2SDK_HCU_TO_L2SNR_RFID",
+                        $msg) == false) $resp = "Send to message buffer error";
+                else $resp = "";
                 break;
 
             case MFUN_HCU_CMDID_FHYS_BLE://BLE控制字
+                $msg = array("project" => $project,
+                    "log_from" => $log_from,
+                    "platform" => MFUN_TECH_PLTF_HCUSTM,
+                    "deviceId" => $deviceId,
+                    "statCode" => $statCode,
+                    "content" => $content);
+                if ($parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L2SDK_IOT_HCU,
+                        MFUN_TASK_ID_L2SENSOR_BLE,
+                        MSG_ID_L2SDK_HCU_TO_L2SNR_BLE,
+                        "MSG_ID_L2SDK_HCU_TO_L2SNR_BLE",
+                        $msg) == false) $resp = "Send to message buffer error";
+                else $resp = "";
                 break;
 
             case MFUN_HCU_CMDID_FHYS_GPRS://GPRS控制字
+                $msg = array("project" => $project,
+                    "log_from" => $log_from,
+                    "platform" => MFUN_TECH_PLTF_HCUSTM,
+                    "deviceId" => $deviceId,
+                    "statCode" => $statCode,
+                    "content" => $content);
+                if ($parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L2SDK_IOT_HCU,
+                        MFUN_TASK_ID_L2SENSOR_GPRS,
+                        MSG_ID_L2SDK_HCU_TO_L2SNR_GPRS,
+                        "MSG_ID_L2SDK_HCU_TO_L2SNR_GPRS",
+                        $msg) == false) $resp = "Send to message buffer error";
+                else $resp = "";
                 break;
 
             case MFUN_HCU_CMDID_FHYS_BATT://电池控制字
+                $msg = array("project" => $project,
+                    "log_from" => $log_from,
+                    "platform" => MFUN_TECH_PLTF_HCUSTM,
+                    "deviceId" => $deviceId,
+                    "statCode" => $statCode,
+                    "content" => $content);
+                if ($parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L2SDK_IOT_HCU,
+                        MFUN_TASK_ID_L2SENSOR_BATT,
+                        MSG_ID_L2SDK_HCU_TO_L2SNR_BATT,
+                        "MSG_ID_L2SDK_HCU_TO_L2SNR_BATT",
+                        $msg) == false) $resp = "Send to message buffer error";
+                else $resp = "";
                 break;
 
             case MFUN_HCU_CMDID_FHYS_VIBR://震动控制字
+                $msg = array("project" => $project,
+                    "log_from" => $log_from,
+                    "platform" => MFUN_TECH_PLTF_HCUSTM,
+                    "deviceId" => $deviceId,
+                    "statCode" => $statCode,
+                    "content" => $content);
+                if ($parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L2SDK_IOT_HCU,
+                        MFUN_TASK_ID_L2SENSOR_VIBR,
+                        MSG_ID_L2SDK_HCU_TO_L2SNR_VIBR,
+                        "MSG_ID_L2SDK_HCU_TO_L2SNR_VIBR",
+                        $msg) == false) $resp = "Send to message buffer error";
+                else $resp = "";
                 break;
 
             case MFUN_HCU_CMDID_FHYS_SMOK://烟雾控制字
+                $msg = array("project" => $project,
+                    "log_from" => $log_from,
+                    "platform" => MFUN_TECH_PLTF_HCUSTM,
+                    "deviceId" => $deviceId,
+                    "statCode" => $statCode,
+                    "content" => $content);
+                if ($parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L2SDK_IOT_HCU,
+                        MFUN_TASK_ID_L2SENSOR_SMOK,
+                        MSG_ID_L2SDK_HCU_TO_L2SNR_SMOK,
+                        "MSG_ID_L2SDK_HCU_TO_L2SNR_SMOK",
+                        $msg) == false) $resp = "Send to message buffer error";
+                else $resp = "";
                 break;
 
             case MFUN_HCU_CMDID_FHYS_WATER://水浸控制字
+                $msg = array("project" => $project,
+                    "log_from" => $log_from,
+                    "platform" => MFUN_TECH_PLTF_HCUSTM,
+                    "deviceId" => $deviceId,
+                    "statCode" => $statCode,
+                    "content" => $content);
+                if ($parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L2SDK_IOT_HCU,
+                        MFUN_TASK_ID_L2SENSOR_WATER,
+                        MSG_ID_L2SDK_HCU_TO_L2SNR_WATER,
+                        "MSG_ID_L2SDK_HCU_TO_L2SNR_WATER",
+                        $msg) == false) $resp = "Send to message buffer error";
+                else $resp = "";
                 break;
 
             case MFUN_HCU_CMDID_FHYS_TEMP://温度控制字
+                $msg = array("project" => $project,
+                    "log_from" => $log_from,
+                    "platform" => MFUN_TECH_PLTF_HCUSTM,
+                    "deviceId" => $deviceId,
+                    "statCode" => $statCode,
+                    "content" => $content);
+                if ($parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L2SDK_IOT_HCU,
+                        MFUN_TASK_ID_L2SENSOR_TEMP,
+                        MSG_ID_L2SDK_HCU_TO_L2SNR_TEMP,
+                        "MSG_ID_L2SDK_HCU_TO_L2SNR_BLE",
+                        $msg) == false) $resp = "Send to message buffer error";
+                else $resp = "";
                 break;
 
             case MFUN_HCU_CMDID_FHYS_HUMI://湿度控制字
+                $msg = array("project" => $project,
+                    "log_from" => $log_from,
+                    "platform" => MFUN_TECH_PLTF_HCUSTM,
+                    "deviceId" => $deviceId,
+                    "statCode" => $statCode,
+                    "content" => $content);
+                if ($parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L2SDK_IOT_HCU,
+                        MFUN_TASK_ID_L2SENSOR_HUMID,
+                        MSG_ID_L2SDK_HCU_TO_L2SNR_HUMID,
+                        "MSG_ID_L2SDK_HCU_TO_L2SNR_HUMID",
+                        $msg) == false) $resp = "Send to message buffer error";
+                else $resp = "";
                 break;
 
             default:
