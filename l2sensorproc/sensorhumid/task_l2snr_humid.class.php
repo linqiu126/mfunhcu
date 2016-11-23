@@ -24,7 +24,7 @@ class classTaskL2snrHumid
                 $length = hexdec(substr($content, 2, 2)) & 0xFF;
                 $length = ($length + 2)*2; //消息总长度等于length＋1B 控制字＋1B长度本身
                 if ($length != strlen($content)){
-                    return "HUMIDITY_SERVICE[WX]: message length invalid";  //消息长度不合法，直接返回
+                    return "ERROR WECHAT_HUMI: message length invalid";  //消息长度不合法，直接返回
                 }
                 $sub_key = hexdec(substr($content, 4, 2)) & 0xFF;
                 switch ($sub_key) //MODBUS操作字处理
@@ -44,7 +44,7 @@ class classTaskL2snrHumid
                 $length = hexdec($msgHead['Len']) & 0xFF;
                 $length =  ($length+2) * 2; //因为收到的消息为16进制字符，消息总长度等于length＋1B控制字＋1B长度本身
                 if ($length != strlen($content)) {
-                    return "HUMIDITY_SERVICE[HCU]: message length invalid";  //消息长度不合法，直接返回
+                    return "ERROR HCUGX_HUMI: message length invalid";  //消息长度不合法，直接返回
                 }
                 $data = substr($content, MFUN_HCU_MSG_HEAD_LENGTH, $length - MFUN_HCU_MSG_HEAD_LENGTH);//截取消息数据域
 
@@ -58,6 +58,33 @@ class classTaskL2snrHumid
                         $resp = "";
                         break;
                 }
+                break;
+            case MFUN_TECH_PLTF_HCUSTM:
+                $raw_MsgHead = substr($content, 0, MFUN_HCU_MSG_HEAD_LENGTH);  //截取6Byte MsgHead
+                $msgHead = unpack(MFUN_HCU_MSG_HEAD_FORMAT, $raw_MsgHead);
+                $length = hexdec($msgHead['Len']) & 0xFF;
+                $length =  ($length+2) * 2; //因为收到的消息为16进制字符，消息总长度等于length＋1B控制字＋1B长度本身
+                if ($length != strlen($content)) {
+                    return "ERROR HCUSTM_HUMI: message length invalid";  //消息长度不合法，直接返回
+                }
+
+                $opt_key = hexdec($msgHead['Cmd']) & 0xFF;
+
+                if ($opt_key == MFUN_HCU_OPT_FHYS_HUMISTAT_IND){
+                    $data = substr($content, MFUN_HCU_MSG_HEAD_LENGTH, 2);
+                    $data = hexdec($data) & 0xFF;
+                    $classDbiL2snrHumid = new classDbiL2snrHumid();
+                    $resp = $classDbiL2snrHumid->dbi_hcu_fhys_humi_status_update($deviceId, $statCode, $data);
+                }
+                elseif ($opt_key == MFUN_HCU_OPT_FHYS_TEMPDATA_IND){
+                    $data = substr($content, MFUN_HCU_MSG_HEAD_LENGTH, 4);
+                    $data = hexdec($data) & 0xFFFF;
+                    $classDbiL2snrHumid = new classDbiL2snrHumid();
+                    $resp = $classDbiL2snrHumid->dbi_hcu_fhys_humi_data_process($deviceId, $statCode, $data);
+                }
+                else
+                    $resp = "ERROR HCUSTM_TEMP: Invalid Operation Command";
+
                 break;
             case MFUN_TECH_PLTF_JDIOT:
                 $resp = ""; //no response message
@@ -77,8 +104,8 @@ class classTaskL2snrHumid
         $ntimes =time();
         $gps = "";
 
-        $sDbObj = new classDbiL2snrHumid();
-        $sDbObj->dbi_humidity_data_save($deviceId,$devCode,$ntimes,$humidity,$gps);
+        $classDbiL2snrHumid = new classDbiL2snrHumid();
+        $classDbiL2snrHumid->dbi_humidity_data_save($deviceId,$devCode,$ntimes,$humidity,$gps);
 
         $resp = ""; //no response message
         return $resp;
@@ -99,21 +126,21 @@ class classTaskL2snrHumid
         $gps["altitude"] = hexdec($data['Altitude']) & 0xFFFFFFFF;
         $timeStamp = hexdec($data['Time']) & 0xFFFFFFFF;
 
-        $sDbObj = new classDbiL2snrHumid();
-        $sDbObj->dbi_humidity_data_save($deviceId, $sensorId, $timeStamp, $report,$gps);
+        $classDbiL2snrHumid = new classDbiL2snrHumid();
+        $classDbiL2snrHumid->dbi_humidity_data_save($deviceId, $sensorId, $timeStamp, $report,$gps);
         //该函数处理需要再完善，不确定是否可用
-        $sDbObj->dbi_humidData_delete_3monold($sensorId, $deviceId, MFUN_HCU_DATA_SAVE_DURATION_IN_DAYS);  //remove 90 days old data.
+        $classDbiL2snrHumid->dbi_humidData_delete_3monold($sensorId, $deviceId, MFUN_HCU_DATA_SAVE_DURATION_IN_DAYS);  //remove 90 days old data.
 
         //更新分钟测量报告聚合表
-        $sDbObj->dbi_minreport_update_humidity($deviceId,$statCode,$timeStamp,$report);
+        $classDbiL2snrHumid->dbi_minreport_update_humidity($deviceId,$statCode,$timeStamp,$report);
 
         //更新数据精度格式表
         $format = $report["format"];
-        $cDbObj = new classDbiL2snrCom();
-        $cDbObj->dbi_dataformat_update_format($deviceId,"T_humidity",$format);
+        $classDbiL2snrCom = new classDbiL2snrCom();
+        $classDbiL2snrCom->dbi_dataformat_update_format($deviceId,"T_humidity",$format);
         //更新瞬时测量值聚合表
-        $eDbObj = new classDbiL3apF3dm();
-        $eDbObj->dbi_currentreport_update_value($deviceId, $statCode, $timeStamp,"T_humidity", $report);
+        $classDbiL3apF3dm = new classDbiL3apF3dm();
+        $classDbiL3apF3dm->dbi_currentreport_update_value($deviceId, $statCode, $timeStamp,"T_humidity", $report);
 
         $resp = ""; //no response message
         return $resp;
