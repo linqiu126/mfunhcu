@@ -105,11 +105,17 @@ class classDbiL2snrDoorlock
             $apiL2snrCommonServiceObj = new classApiL2snrCommonService();
             $ctrl_key = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_CMDID_FHYS_LOCK);
             $opt_key = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_OPT_FHYS_USERID_LOCKOPEN_RESP);
-            //暂时只判断是否为空，将来要进行权限判断
-            if(empty($funcFlag))
-                $para = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_DATA_FHYS_LOCK_CLOSE);
-            else
+
+            $query_str = "SELECT * FROM `t_l3f3dm_fhys_currentreport` WHERE (`statcode` = '$statCode' AND `devcode` = '$devCode')";
+            $resp = $mysqli->query($query_str);
+            $resp_row = $resp->fetch_array();
+            $status = $resp_row["lockstat"];
+
+            //暂时只判断flag不为空且在闭锁状态才发送命令，将来要进行权限判断
+            if(!empty($funcFlag) AND $status == MFUN_HCU_FHYS_LOCK_CLOSE)
                 $para = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_DATA_FHYS_LOCK_OPEN);
+            else
+                $para = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_DATA_FHYS_LOCK_CLOSE);
 
             $len = $apiL2snrCommonServiceObj->byte2string(strlen($opt_key.$para)/2);
             $respCmd = $ctrl_key . $len . $opt_key . $para;
@@ -145,11 +151,17 @@ class classDbiL2snrDoorlock
             $apiL2snrCommonServiceObj = new classApiL2snrCommonService();
             $ctrl_key = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_CMDID_FHYS_LOCK);
             $opt_key = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_OPT_FHYS_RFID_LOCKOPEN_RESP);
-            //暂时只判断是否为空，将来要进行权限判断
-            if(empty($funcFlag))
-                $para = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_DATA_FHYS_LOCK_CLOSE);
-            else
+
+            $query_str = "SELECT * FROM `t_l3f3dm_fhys_currentreport` WHERE (`statcode` = '$statCode' AND `devcode` = '$devCode')";
+            $resp = $mysqli->query($query_str);
+            $resp_row = $resp->fetch_array();
+            $status = $resp_row["lockstat"];
+
+            //暂时只判断flag不为空且在闭锁状态才发送命令，将来要进行权限判断
+            if(!empty($funcFlag) AND $status == MFUN_HCU_FHYS_LOCK_CLOSE)
                 $para = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_DATA_FHYS_LOCK_OPEN);
+            else
+                $para = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_DATA_FHYS_LOCK_CLOSE);
 
             $len = $apiL2snrCommonServiceObj->byte2string(strlen($opt_key.$para)/2);
             $respCmd = $ctrl_key . $len . $opt_key . $para;
@@ -185,11 +197,17 @@ class classDbiL2snrDoorlock
             $apiL2snrCommonServiceObj = new classApiL2snrCommonService();
             $ctrl_key = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_CMDID_FHYS_LOCK);
             $opt_key = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_OPT_FHYS_BLE_LOCKOPEN_RESP);
-            //暂时只判断是否为空，将来要进行权限判断
-            if(empty($funcFlag))
-                $para = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_DATA_FHYS_LOCK_CLOSE);
-            else
+
+            $query_str = "SELECT * FROM `t_l3f3dm_fhys_currentreport` WHERE (`statcode` = '$statCode' AND `devcode` = '$devCode')";
+            $resp = $mysqli->query($query_str);
+            $resp_row = $resp->fetch_array();
+            $status = $resp_row["lockstat"];
+
+            //暂时只判断flag不为空且在闭锁状态才发送命令，将来要进行权限判断
+            if(!empty($funcFlag) AND $status == MFUN_HCU_FHYS_LOCK_CLOSE)
                 $para = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_DATA_FHYS_LOCK_OPEN);
+            else
+                $para = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_DATA_FHYS_LOCK_CLOSE);
 
             $len = $apiL2snrCommonServiceObj->byte2string(strlen($opt_key.$para)/2);
             $respCmd = $ctrl_key . $len . $opt_key . $para;
@@ -224,11 +242,17 @@ class classDbiL2snrDoorlock
             $apiL2snrCommonServiceObj = new classApiL2snrCommonService();
             $ctrl_key = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_CMDID_FHYS_LOCK);
             $opt_key = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_OPT_FHYS_WECHAT_LOCKOPEN_RESP);
-            //暂时只判断是否为空，将来要进行权限判断
-            if(empty($funcFlag))
-                $para = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_DATA_FHYS_LOCK_CLOSE);
-            else
+
+            $query_str = "SELECT * FROM `t_l3f3dm_fhys_currentreport` WHERE (`statcode` = '$statCode' AND `devcode` = '$devCode')";
+            $resp = $mysqli->query($query_str);
+            $resp_row = $resp->fetch_array();
+            $status = $resp_row["lockstat"];
+
+            //暂时只判断flag不为空且在闭锁状态才发送命令，将来要进行权限判断
+            if(!empty($funcFlag) AND $status == MFUN_HCU_FHYS_LOCK_CLOSE)
                 $para = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_DATA_FHYS_LOCK_OPEN);
+            else
+                $para = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_DATA_FHYS_LOCK_CLOSE);
 
             $len = $apiL2snrCommonServiceObj->byte2string(strlen($opt_key.$para)/2);
             $respCmd = $ctrl_key . $len . $opt_key . $para;
@@ -263,11 +287,17 @@ class classDbiL2snrDoorlock
             $apiL2snrCommonServiceObj = new classApiL2snrCommonService();
             $ctrl_key = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_CMDID_FHYS_LOCK);
             $opt_key = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_OPT_FHYS_IDCARD_LOCKOPEN_RESP);
-            //暂时只判断是否为空，将来要进行权限判断
-            if(empty($funcFlag))
-                $para = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_DATA_FHYS_LOCK_CLOSE);
-            else
+
+            $query_str = "SELECT * FROM `t_l3f3dm_fhys_currentreport` WHERE (`statcode` = '$statCode' AND `devcode` = '$devCode')";
+            $resp = $mysqli->query($query_str);
+            $resp_row = $resp->fetch_array();
+            $status = $resp_row["lockstat"];
+
+            //暂时只判断flag不为空且在闭锁状态才发送命令，将来要进行权限判断
+            if(!empty($funcFlag) AND $status == MFUN_HCU_FHYS_LOCK_CLOSE)
                 $para = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_DATA_FHYS_LOCK_OPEN);
+            else
+                $para = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_DATA_FHYS_LOCK_CLOSE);
 
             $len = $apiL2snrCommonServiceObj->byte2string(strlen($opt_key.$para)/2);
             $respCmd = $ctrl_key . $len . $opt_key . $para;

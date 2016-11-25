@@ -13,6 +13,14 @@ include_once "../l1comvm/vmlayer.php";
  *************************************************************************************/
 if (TC_L4FHYS_UI == true) {
 
+    //HCU_Lock_open
+    echo " [TC L4FHYS: Compel OpenLock START]\n";
+    $_GET["action"] = "OpenLock";
+    $_GET["id"] = "admin"; //暂时用admin用户名
+    $_GET["StatCode"] = "120101015"; //t_l3f3dm_siteinfo中对应HCU_SH_0301
+    require("../l4fhysui/request.php");
+    echo " [TC L4FHYS: Compel OpenLock END]\n";
+
     echo " [TC L4FHYS: UserKey START]\n";
     $_GET["action"] = "UserKey";
     $_GET["userid"] = "UID000001";
@@ -72,11 +80,4 @@ if (TC_L4FHYS_UI == true) {
     //require("../l4fhysui/request.php");
     echo " [TC L4FHYS: HCU_Lock_Status END]\n";
 
-    //HCU_Lock_open
-    echo " [TC L4FHYS: HCU_Lock_open START]\n";
-    $_GET["action"] = "HCU_Lock_open";
-    $_GET["id"] = "admin"; //暂时用admin用户名
-    $_GET["StatCode"] = "120101001"; //t_l3f3dm_siteinfo中对应HCU_SH_0301
-    //require("../l4fhysui/request.php");
-    echo " [TC L4FHYS: HCU_Lock_open END]\n";
 }

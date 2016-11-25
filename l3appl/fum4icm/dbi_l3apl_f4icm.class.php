@@ -531,6 +531,45 @@ class classDbiL3apF4icm
         $mysqli->close();
         return $resp;
     }
+
+    public function dbi_hcu_lock_compel_open($statCode)
+    {
+        //建立连接
+        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli) {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $mysqli->query("set character_set_results = utf8");
+
+        //确认要操作的设备在 HCU Inventory表中是否存在
+        $query_str = "SELECT * FROM `t_l2sdk_iothcu_inventory` WHERE (`statcode` = '$statCode')";
+        $result = $mysqli->query($query_str);
+
+        if (($result != false) && ($result->num_rows)>0)
+        {
+            $row = $result->fetch_array();
+            $devCode = $row["devcode"];
+            //生成控制命令的控制字
+            $apiL2snrCommonServiceObj = new classApiL2snrCommonService();
+            $ctrl_key = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_CMDID_FHYS_LOCK);
+            $opt_key = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_OPT_FHYS_FORCE_LOCKOPEN_CMD);
+            $para = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_DATA_FHYS_LOCK_OPEN);
+
+            $len = $apiL2snrCommonServiceObj->byte2string(strlen($opt_key.$para)/2);
+            $respCmd = $ctrl_key . $len . $opt_key . $para;
+
+            //通过9502端口建立tcp阻塞式socket连接，向HCU转发操控命令
+            $client = new socket_client_sync($devCode, $respCmd);
+            $client->connect();
+            $resp = "Lock open with UI command send success";
+        }
+        else
+            $resp = "Lock open with UI command send failure";
+
+        $mysqli->close();
+        return $resp;
+    }
+
 }
 
 ?>

@@ -216,10 +216,10 @@ class classTaskL3aplF4icm
     /*********************************智能云锁新增处理 Start*********************************************/
 
     //HCU_Lock_Open
-    function func_hcu_lock_open_process($uid, $StatCode)
+    function func_hcu_lock_compel_open($uid, $StatCode)
     {
-        $uiF4icmDbObj = new classDbiL2snrDoorlock();
-        $resp = $uiF4icmDbObj->dbi_hcu_lock_open($uid, $StatCode);
+        $uiF4icmDbObj = new classDbiL3apF4icm();
+        $resp = $uiF4icmDbObj->dbi_hcu_lock_compel_open($StatCode);
         if (!empty($resp))
             $retval=array(
                 'status'=>'true',
@@ -353,7 +353,7 @@ class classTaskL3aplF4icm
             if (isset($msg["uid"])) $uid = trim($msg["uid"]); else  $uid = "";
             if (isset($msg["statcode"])) $statcode = trim($msg["statcode"]); else  $statcode= "";
             //具体处理函数
-            $resp = $this->func_hcu_lock_open_process($uid, $statcode);
+            $resp = $this->func_hcu_lock_compel_open($uid, $statcode);
             $project = MFUN_PRJ_HCU_FHYSUI;
         }
 
