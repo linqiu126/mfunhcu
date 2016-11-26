@@ -151,7 +151,7 @@ class classDbiL2snrDoorlock
             //通过9502端口建立tcp阻塞式socket连接，向HCU转发操控命令
             $client = new socket_client_sync($devCode, $respCmd);
             $client->connect();
-            $resp = "Lock open with USERID send success";
+            $resp = "Lock open with USERID send success: " . $respCmd;
         }
         else
             $resp = "Lock open with USERID send failure";
@@ -204,7 +204,7 @@ class classDbiL2snrDoorlock
             //通过9502端口建立tcp阻塞式socket连接，向HCU转发操控命令
             $client = new socket_client_sync($devCode, $respCmd);
             $client->connect();
-            $resp = "Lock open with RFID send success";
+            $resp = "Lock open with RFID send success: ". $respCmd;
         }
         else
             $resp = "Lock open with RFID send failure";
@@ -257,7 +257,7 @@ class classDbiL2snrDoorlock
             //通过9502端口建立tcp阻塞式socket连接，向HCU转发操控命令
             $client = new socket_client_sync($devCode, $respCmd);
             $client->connect();
-            $resp = "Lock open with BLE send success";
+            $resp = "Lock open with BLE send success: ". $respCmd;
         }
         else
             $resp = "Lock open with BLE send failure";
@@ -309,7 +309,7 @@ class classDbiL2snrDoorlock
             //通过9502端口建立tcp阻塞式socket连接，向HCU转发操控命令
             $client = new socket_client_sync($devCode, $respCmd);
             $client->connect();
-            $resp = "Lock open with WECHAT send success";
+            $resp = "Lock open with WECHAT send success: ". $respCmd;
         }
         else
             $resp = "Lock open with WECHAT send failure";
@@ -361,7 +361,7 @@ class classDbiL2snrDoorlock
             //通过9502端口建立tcp阻塞式socket连接，向HCU转发操控命令
             $client = new socket_client_sync($devCode, $respCmd);
             $client->connect();
-            $resp = "Lock open with ID_CARD send success";
+            $resp = "Lock open with ID_CARD send success: ". $respCmd;
         }
         else
             $resp = "Lock open with ID_CARD send failure";
