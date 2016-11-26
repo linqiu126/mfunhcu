@@ -220,15 +220,15 @@ class classTaskL3aplF4icm
     {
         $uiF4icmDbObj = new classDbiL3apF4icm();
         $resp = $uiF4icmDbObj->dbi_hcu_lock_compel_open($uid, $StatCode);
-        if (!empty($resp))
+        if ($resp)
             $retval=array(
                 'status'=>'true',
-                'msg'=>$resp
+                'msg'=>"开锁授权成功，请通知现场人员按压手柄激活门锁"
             );
         else
             $retval=array(
                 'status'=>'false',
-                'msg'=>null
+                'msg'=>"本次开锁授权认证未通过，请联系管理人员"
             );
         //$jsonencode = _encode($retval);
         $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
