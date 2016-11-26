@@ -185,8 +185,15 @@ class classDbiL2snrDoorlock
             $resp_row = $resp->fetch_array();
             $status = $resp_row["lockstat"];
 
+            $query_str = "SELECT * FROM `t_l3f2cm_fhys_keyinfo` WHERE (`hwcode` = '$funcFlag')"; //暂时只判断是否有
+            $result = $mysqli->query($query_str);
+            if (($result != false) && ($result->num_rows)>0){
+                $funcFlag = true;
+            }
+            else
+                $funcFlag = false;
             //暂时只判断flag不为空且在闭锁状态才发送命令，将来要进行权限判断
-            if(!empty($funcFlag) AND $status == MFUN_HCU_FHYS_LOCK_CLOSE)
+            if($funcFlag && $status == MFUN_HCU_FHYS_LOCK_CLOSE)
                 $para = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_DATA_FHYS_LOCK_OPEN);
             else
                 $para = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_DATA_FHYS_LOCK_CLOSE);
@@ -231,8 +238,15 @@ class classDbiL2snrDoorlock
             $resp_row = $resp->fetch_array();
             $status = $resp_row["lockstat"];
 
+            $query_str = "SELECT * FROM `t_l3f2cm_fhys_keyinfo` WHERE (`hwcode` = '$funcFlag')"; //暂时只判断是否有
+            $result = $mysqli->query($query_str);
+            if (($result != false) && ($result->num_rows)>0){
+                $funcFlag = true;
+            }
+            else
+                $funcFlag = false;
             //暂时只判断flag不为空且在闭锁状态才发送命令，将来要进行权限判断
-            if(!empty($funcFlag) AND $status == MFUN_HCU_FHYS_LOCK_CLOSE)
+            if($funcFlag && $status == MFUN_HCU_FHYS_LOCK_CLOSE)
                 $para = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_DATA_FHYS_LOCK_OPEN);
             else
                 $para = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_DATA_FHYS_LOCK_CLOSE);
@@ -276,8 +290,15 @@ class classDbiL2snrDoorlock
             $resp_row = $resp->fetch_array();
             $status = $resp_row["lockstat"];
 
+            $query_str = "SELECT * FROM `t_l3f2cm_fhys_keyinfo` WHERE (`hwcode` = '$funcFlag')"; //暂时只判断是否有
+            $result = $mysqli->query($query_str);
+            if (($result != false) && ($result->num_rows)>0){
+                $funcFlag = true;
+            }
+            else
+                $funcFlag = false;
             //暂时只判断flag不为空且在闭锁状态才发送命令，将来要进行权限判断
-            if(!empty($funcFlag) AND $status == MFUN_HCU_FHYS_LOCK_CLOSE)
+            if($funcFlag && $status == MFUN_HCU_FHYS_LOCK_CLOSE)
                 $para = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_DATA_FHYS_LOCK_OPEN);
             else
                 $para = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_DATA_FHYS_LOCK_CLOSE);
@@ -321,8 +342,15 @@ class classDbiL2snrDoorlock
             $resp_row = $resp->fetch_array();
             $status = $resp_row["lockstat"];
 
+            $query_str = "SELECT * FROM `t_l3f2cm_fhys_keyinfo` WHERE (`hwcode` = '$funcFlag')"; //暂时只判断是否有
+            $result = $mysqli->query($query_str);
+            if (($result != false) && ($result->num_rows)>0){
+                $funcFlag = true;
+            }
+            else
+                $funcFlag = false;
             //暂时只判断flag不为空且在闭锁状态才发送命令，将来要进行权限判断
-            if(!empty($funcFlag) AND $status == MFUN_HCU_FHYS_LOCK_CLOSE)
+            if($funcFlag && $status == MFUN_HCU_FHYS_LOCK_CLOSE)
                 $para = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_DATA_FHYS_LOCK_OPEN);
             else
                 $para = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_DATA_FHYS_LOCK_CLOSE);
