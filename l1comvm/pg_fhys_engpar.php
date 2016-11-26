@@ -28,8 +28,8 @@ define ("MFUN_HCU_FHYS_ALARM_NO", "N");
 define ("MFUN_HCU_DATA_FHYS_STATUS_OK", 0x00); //设备状态正常或者门锁闭合
 define ("MFUN_HCU_DATA_FHYS_STATUS_NOK", 0x01); //设备状态异常或者门锁打开
 define ("MFUN_HCU_DATA_FHYS_STATUS_ALARM", 0x02); //设备告警或者门锁暴力打开
-define ("MFUN_HCU_DATA_FHYS_LOCK_OPEN", 0x01);  //开锁命令
-define ("MFUN_HCU_DATA_FHYS_LOCK_CLOSE", 0x00);  //闭锁命令
+define ("MFUN_HCU_DATA_FHYS_LOCK_OPEN", 0x00);  //开锁命令
+define ("MFUN_HCU_DATA_FHYS_LOCK_CLOSE", 0x01);  //闭锁命令
 
 //定义智能云锁所带传感器类型
 define("MFUN_L3APL_F3DM_CL_TYPE_DOOR", "CL_001");
