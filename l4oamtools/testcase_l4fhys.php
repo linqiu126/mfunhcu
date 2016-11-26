@@ -16,7 +16,7 @@ if (TC_L4FHYS_UI == true) {
     //HCU_Lock_open
     echo " [TC L4FHYS: Compel OpenLock START]\n";
     $_GET["action"] = "OpenLock";
-    $_GET["id"] = "admin"; //暂时用admin用户名
+    $_GET["id"] = "rcu4SoomAd"; //暂时用admin用户名
     $_GET["StatCode"] = "120101015"; //t_l3f3dm_siteinfo中对应HCU_SH_0301
     require("../l4fhysui/request.php");
     echo " [TC L4FHYS: Compel OpenLock END]\n";

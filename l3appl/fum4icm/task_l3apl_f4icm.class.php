@@ -219,7 +219,7 @@ class classTaskL3aplF4icm
     function func_hcu_lock_compel_open($uid, $StatCode)
     {
         $uiF4icmDbObj = new classDbiL3apF4icm();
-        $resp = $uiF4icmDbObj->dbi_hcu_lock_compel_open($StatCode);
+        $resp = $uiF4icmDbObj->dbi_hcu_lock_compel_open($uid, $StatCode);
         if (!empty($resp))
             $retval=array(
                 'status'=>'true',

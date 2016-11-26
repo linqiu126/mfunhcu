@@ -532,7 +532,7 @@ class classDbiL3apF4icm
         return $resp;
     }
 
-    public function dbi_hcu_lock_compel_open($statCode)
+    public function dbi_hcu_lock_compel_open($sessionid, $statCode)
     {
         //建立连接
         $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
@@ -541,7 +541,45 @@ class classDbiL3apF4icm
         }
         $mysqli->query("set character_set_results = utf8");
 
+        $query_str = "SELECT * FROM `t_l3f1sym_session` WHERE (`sessionid` = '$sessionid')";
+        $result = $mysqli->query($query_str);
+        if (($result != false) && ($result->num_rows)>0){
+            $row = $result->fetch_array();
+            $uid = $row["uid"];
+        }
+
+        $key_type = MFUN_L3APL_F2CM_KEY_TYPE_USER;
+        $query_str = "SELECT * FROM `t_l3f2cm_fhys_keyinfo` WHERE (`hwcode` = '$uid' AND `keytype` = '$key_type')";
+        $result = $mysqli->query($query_str);
+        if (($result != false) && ($result->num_rows)>0){
+            $row = $result->fetch_array();
+            $keyid = $row["keyid"];
+        }
+
+
+        //插入一条开锁授权
+        $authlevel = MFUN_L3APL_F2CM_AUTH_LEVEL_DEVICE;
+        $authtype = MFUN_L3APL_F2CM_AUTH_TYPE_NUMBER;
+        $validnum = 1; //单次授权
+
+        $query_str = "SELECT * FROM `t_l3f2cm_fhys_keyauth` WHERE (`keyid` = '$keyid' AND `authobjcode` = '$statCode' AND `authtype` = '$authtype')";
+        $result = $mysqli->query($query_str);
+        if (($result != false) && ($result->num_rows)>0){
+            $row = $result->fetch_array();
+            $validnum = $row['validnum'] + 1;
+            $query_str = "UPDATE `t_l3f2cm_fhys_keyauth` SET `validnum` = '$validnum' WHERE (`keyid` = '$keyid' AND `authobjcode` = '$statCode' AND `authtype` = '$authtype')";
+            $result = $mysqli->query($query_str);
+        }
+        else
+        {
+            $query_str = "INSERT INTO `t_l3f2cm_fhys_keyauth` (keyid, authlevel, authobjcode, authtype, validnum)
+                                  VALUES ('$keyid','$authlevel','$statCode','$authtype','$validnum')";
+            $result = $mysqli->query($query_str);
+        }
+
+
         //确认要操作的设备在 HCU Inventory表中是否存在
+        /*
         $query_str = "SELECT * FROM `t_l2sdk_iothcu_inventory` WHERE (`statcode` = '$statCode')";
         $result = $mysqli->query($query_str);
 
@@ -565,9 +603,10 @@ class classDbiL3apF4icm
         }
         else
             $resp = "Lock open with UI command send failure";
+        */
 
         $mysqli->close();
-        return $resp;
+        return $result;
     }
 
 }

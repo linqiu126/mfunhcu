@@ -111,8 +111,36 @@ class classDbiL2snrDoorlock
             $resp_row = $resp->fetch_array();
             $status = $resp_row["lockstat"];
 
+            $query_str = "SELECT * FROM `t_l3f2cm_fhys_keyinfo` WHERE (`hwcode` = '$funcFlag')"; //暂时只判断是否有
+            $result = $mysqli->query($query_str);
+            if (($result != false) && ($result->num_rows)>0){
+                $funcFlag = true;
+            }
+            else{
+                $anthtype = MFUN_L3APL_F2CM_AUTH_TYPE_NUMBER;
+                $query_str = "SELECT * FROM `t_l3f2cm_fhys_keyauth` WHERE (`authobjcode` = '$statCode' AND `authtype` = '$anthtype' AND `validnum` > 0)";
+                $resp = $mysqli->query($query_str);
+                if (($resp != false) && ($resp->num_rows)>0){
+                    $funcFlag = true;
+                    $resp_row = $resp->fetch_array();
+                    $remain_validnum = $resp_row["validnum"] -1;
+                    if($remain_validnum == 0) //有效次数为0后删除该条授权记录
+                    {
+                        $query_str = "DELETE FROM `t_l3f2cm_fhys_keyauth` WHERE (`authobjcode` = '$statCode' AND `authtype` = '$anthtype' ) ";
+                        $result = $mysqli->query($query_str);
+                    }
+                    else{
+                        $query_str = "UPDATE `t_l3f2cm_fhys_keyauth` SET  `validnum` = '$remain_validnum' WHERE (`authobjcode` = '$statCode' AND `authtype` = '$anthtype')";
+                        $result = $mysqli->query($query_str);
+                    }
+                }
+                else
+                    $funcFlag = false;
+            }
+
+
             //暂时只判断flag不为空且在闭锁状态才发送命令，将来要进行权限判断
-            if(!empty($funcFlag) AND $status == MFUN_HCU_FHYS_LOCK_CLOSE)
+            if($funcFlag && $status == MFUN_HCU_FHYS_LOCK_CLOSE)
                 $para = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_DATA_FHYS_LOCK_OPEN);
             else
                 $para = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_DATA_FHYS_LOCK_CLOSE);
