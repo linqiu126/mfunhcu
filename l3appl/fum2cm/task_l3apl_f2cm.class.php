@@ -324,7 +324,8 @@ class classTaskL3aplF2cm
         else
             $retval=array(
                 'status'=>'true',
-                'ret'=>'获取项目钥匙列表失败'
+                'ret'=>$proj_keylist
+                //'ret'=>'获取项目钥匙列表失败'
             );
         //$jsonencode = _encode($retval);
         $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);

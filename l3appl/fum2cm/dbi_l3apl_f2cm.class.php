@@ -490,7 +490,11 @@ class classDbiL3apF2cm
             $result = $mysqli->query($query_str);
         }
 
-        //添加授权的项目list到该项目组
+        //先把该项目组下面的原有的项目解绑
+        $query_str = "UPDATE `t_l3f2cm_projinfo` SET `pg_code` = '' WHERE (`pg_code` = '$pgcode') ";
+        $result = $mysqli->query($query_str);
+
+        //再把更新后授权的项目list到该项目组
         if(!empty($projlist)){
             $i = 0;
             while ($i < count($projlist))
