@@ -571,7 +571,7 @@ class classDbiL3apF2cm
 
     /*********************************智能云锁新增处理 Start*********************************************/
 
-    public function dbi_project_userkey_process($keyuserid)
+    public function dbi_project_userkey_process($uid)
     {
         //建立连接
         $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
@@ -581,7 +581,7 @@ class classDbiL3apF2cm
         $mysqli->query("set character_set_results = utf8");
         $mysqli->query("SET NAMES utf8");
 
-        $query_str = "SELECT * FROM `t_l3f2cm_fhys_keyinfo` WHERE `keyuserid` = '$keyuserid'";
+        $query_str = "SELECT * FROM `t_l3f2cm_fhys_keyinfo` WHERE `keyuserid` = '$uid'";
         $result = $mysqli->query($query_str);
 
         $user_keylist = array();

@@ -18,6 +18,81 @@ class classTaskL2sdkIotHcu
 
     }
 
+    public function dummy_data_response($fromUser)
+    {
+        $pHeader = "##"; //包头固定为“##”
+        $pduLen = "0058";  // = 20+5+7+12+6+4+4
+        $strDate = date('YmdHis',time());
+        $qn = $this->str_padding($strDate,20);
+        $st = "11111";
+        $cn = "ZHB_HRB";
+        $mn = $this->str_padding($fromUser,12);;  //HCU_SH_03010  ASSCII码484355 5F 5348 5F
+        $pw = "BXBXBX";
+        $pnum = "5555";
+        $pno = "6666";
+        $dataField = $qn . $st .$cn .$mn .$pw .$pnum . $pno;
+
+        $crc = strtoupper(dechex($this->crc16($dataField,$crc=0xffff)));
+        $cr = "0D"; //回车键CR
+        $lf = "0A"; //换行键LF
+        $pdu =  $pHeader .$pduLen .$dataField . $crc . $cr . $lf;
+        $resp = pack("A*",$pdu);
+        //var_dump($resp);
+
+        return $resp;
+    }
+
+    public function str_padding($strInput,$lenInput)
+    {
+        $padding = "_"; //填充字符
+        $len = strlen($strInput);
+        while ($len < $lenInput)
+        {
+            $strInput = $strInput . $padding;
+            $len++;
+        }
+
+        return $strInput;
+    }
+
+    public function crc16($string,$crc=0xffff) {
+
+        for ( $x=0; $x<strlen( $string ); $x++ ) {
+
+            $crc = $crc ^ ord( $string[$x] );
+            for ($y = 0; $y < 8; $y++) {
+
+                if ( ($crc & 0x0001) == 0x0001 )
+                    $crc = ( ($crc >> 1 ) ^ 0xA001 );
+                else
+                    $crc =    $crc >> 1;
+            }
+        }
+        return $crc;
+    }
+
+    public function crc_check($data, $crc)
+    {
+        $calc_crc = strtoupper(dechex($this->crc16($data, 0xffff)));
+
+        if ($calc_crc == $crc)
+            return true;
+        else
+            return false;
+    }
+
+    function getStrBetween($kw1,$mark1,$mark2)
+    {
+        $kw=$kw1;
+        $kw='123'.$kw.'123';
+        $st =stripos($kw,$mark1);
+        $ed =stripos($kw,$mark2);
+        if(($st==false||$ed==false)||$st>=$ed)
+            return 0;
+        $kw=substr($kw,($st+1),($ed-$st-1));
+        return $kw;
+    }
+
     //业务消息“XML格式”的处理函数，跳转到对应的业务处理模块
     public function receive_hcu_xmlMessage($parObj, $data, $project, $log_from)
     {
@@ -466,69 +541,6 @@ class classTaskL2sdkIotHcu
         return true;
     }//receive_hcu_ZhbMsg处理结束
 
-    public function dummy_data_response($fromUser)
-    {
-        $pHeader = "##"; //包头固定为“##”
-        $pduLen = "0058";  // = 20+5+7+12+6+4+4
-        $strDate = date('YmdHis',time());
-        $qn = $this->str_padding($strDate,20);
-        $st = "11111";
-        $cn = "ZHB_HRB";
-        $mn = $this->str_padding($fromUser,12);;  //HCU_SH_03010  ASSCII码484355 5F 5348 5F
-        $pw = "BXBXBX";
-        $pnum = "5555";
-        $pno = "6666";
-        $dataField = $qn . $st .$cn .$mn .$pw .$pnum . $pno;
-
-        $crc = strtoupper(dechex($this->crc16($dataField,$crc=0xffff)));
-        $cr = "0D"; //回车键CR
-        $lf = "0A"; //换行键LF
-        $pdu =  $pHeader .$pduLen .$dataField . $crc . $cr . $lf;
-        $resp = pack("A*",$pdu);
-        //var_dump($resp);
-
-        return $resp;
-    }
-
-    public function str_padding($strInput,$lenInput)
-    {
-        $padding = "_"; //填充字符
-        $len = strlen($strInput);
-        while ($len < $lenInput)
-        {
-            $strInput = $strInput . $padding;
-            $len++;
-        }
-
-        return $strInput;
-    }
-
-    public function crc16($string,$crc=0xffff) {
-
-        for ( $x=0; $x<strlen( $string ); $x++ ) {
-
-            $crc = $crc ^ ord( $string[$x] );
-            for ($y = 0; $y < 8; $y++) {
-
-                if ( ($crc & 0x0001) == 0x0001 )
-                    $crc = ( ($crc >> 1 ) ^ 0xA001 );
-                else
-                    $crc =    $crc >> 1;
-            }
-        }
-        return $crc;
-    }
-
-    public function crc_check($data, $crc)
-    {
-        $calc_crc = strtoupper(dechex($this->crc16($data, 0xffff)));
-
-        if ($calc_crc == $crc)
-            return true;
-        else
-            return false;
-    }
-
     public function receive_hcu_appleMessage($parObj, $project, $log_from, $msg)
     {
 
@@ -567,6 +579,9 @@ class classTaskL2sdkIotHcu
         $format = substr(trim($msg), 0, 2);
         switch ($format) {
             case MFUN_L2_FRAME_FORMAT_PREFIX_XML:
+                //FHYS测试时发现有多条xml消息粘连在一起的情况，此处加保护保证只取第一条完整xml消息
+                $msg = $this->getStrBetween($msg,"<xml>","</xml>");
+                $msg = "<" . $msg . "</xml>";
                 libxml_disable_entity_loader(true);  //prevent XML entity injection
                 $postObj = simplexml_load_string($msg, 'SimpleXMLElement');  //防止破坏CDATA的内容，进而影响智能硬件L3消息体
                 //$postObj = simplexml_load_string($postStr, 'SimpleXMLElement', LIBXML_NOCDATA);

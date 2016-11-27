@@ -1433,11 +1433,18 @@ class classDbiL3apF3dm
                 elseif($row["smokalarm"] == MFUN_HCU_FHYS_ALARM_NO)
                     array_push($one_row, "无");
                 else array_push($one_row, "未知");
-                //更新温度
-                array_push($one_row, $row["temperature"]/10);
-                //更新湿度
-                array_push($one_row, $row["humidity"]/10);
-
+                //更新温度, 16进制的字符，高2位为整数部分，低2位为小数部分
+                $temp = $row["temperature"];
+                $temp_h = hexdec(substr($temp, 0, 2)) & 0xFF;
+                $temp_l = hexdec(substr($temp, 2, 2)) & 0xFF;
+                $temperature = (string)$temp_h . "." . (string)$temp_l;
+                array_push($one_row, $temperature);
+                //更新湿度,16进制的字符，高2位为整数部分，低2位为小数部分
+                $humi = $row["humidity"];
+                $humi_h = hexdec(substr($humi, 0, 2)) & 0xFF;
+                $humi_l = hexdec(substr($humi, 2, 2)) & 0xFF;
+                $humidity = (string)$humi_h . "." . (string)$humi_l . "%";
+                array_push($one_row, $humidity);
             }
 
             array_push($resp['data'], $one_row);
@@ -1462,9 +1469,18 @@ class classDbiL3apF3dm
         $result = $mysqli->query($query_str);
         if (($result->num_rows)>0)
         {
-            $row = $result->fetch_array();  //暂时先这样处理，此处测量值计算要根据上报精度进行修改。。。。。
-            $humidity = $row['humidity']/1;
-            $temperature = $row['temperature']/1;
+            $row = $result->fetch_array();
+            //更新温度,16进制的字符，高2位为整数部分，低2位为小数部分
+            $temp = $row["temperature"];
+            $temp_h = hexdec(substr($temp, 0, 2)) & 0xFF;
+            $temp_l = hexdec(substr($temp, 2, 2)) & 0xFF;
+            $temperature = $temp_h + $temp_l/100;
+            //更新湿度,16进制的字符，高2位为整数部分，低2位为小数部分
+            $humi = $row["humidity"];
+            $humi_h = hexdec(substr($humi, 0, 2)) & 0xFF;
+            $humi_l = hexdec(substr($humi, 2, 2)) & 0xFF;
+            $humidity = $humi_h + $humi_l/100;
+            //暂时先这样处理，此处测量值计算要根据上报精度进行修改。。。。。
             $battlevel = $row['battlevel']/1;
             $siglevel = $row['siglevel']/1;
 

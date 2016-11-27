@@ -72,6 +72,12 @@ if (TC_L4FHYS_UI == true) {
     require("../l4fhysui/request.php");
     echo " [TC L4FHYS: KeyAuthNew END]\n";
 
+    echo " [TC L4FHYS: GetStaticMonitorTable START]\n";
+    $_GET["action"] = "GetStaticMonitorTable";
+    $_GET["id"] = "gCuv92Barf";
+    require("../l4fhysui/request.php");
+    echo " [TC L4FHYS: GetStaticMonitorTable END]\n";
+
     //HCU_Lock_Status
     echo " [TC L4FHYS: HCU_Lock_Status START]\n";
     $_GET["action"] = "HCU_Lock_Status";

@@ -76,9 +76,9 @@ class classTaskL2snrHumid
                     $classDbiL2snrHumid = new classDbiL2snrHumid();
                     $resp = $classDbiL2snrHumid->dbi_hcu_fhys_humi_status_update($deviceId, $statCode, $data);
                 }
-                elseif ($opt_key == MFUN_HCU_OPT_FHYS_TEMPDATA_IND){
+                elseif ($opt_key == MFUN_HCU_OPT_FHYS_HUMIDATA_IND){
                     $data = substr($content, MFUN_HCU_MSG_HEAD_LENGTH, 4);
-                    $data = hexdec($data) & 0xFFFF;
+                    //$data = hexdec($data) & 0xFFFF; //直接存成16进制的字符，高2位为整数部分，低2位为小数部分
                     $classDbiL2snrHumid = new classDbiL2snrHumid();
                     $resp = $classDbiL2snrHumid->dbi_hcu_fhys_humi_data_process($deviceId, $statCode, $data);
                 }

@@ -273,11 +273,11 @@ class classTaskL3aplF2cm
     }
 
     /*********************************智能云锁新增处理 Start*********************************************/
-    function func_project_userkey_process($keyuserid)
+    function func_project_userkey_process($uid)
     {
         $uiF2cmDbObj = new classDbiL3apF2cm(); //初始化一个UI DB对象
-        $user_keylist = $uiF2cmDbObj->dbi_project_userkey_process($keyuserid);
-        if (!empty($usr_keylist))
+        $user_keylist = $uiF2cmDbObj->dbi_project_userkey_process($uid);
+        if (!empty($user_keylist))
             $retval=array(
                 'status'=>"true",
                 'ret'=>$user_keylist
@@ -285,7 +285,8 @@ class classTaskL3aplF2cm
         else
             $retval=array(
                 'status'=>'true',
-                'ret'=>'获取用户钥匙列表失败'
+                'ret'=>$user_keylist
+                //'ret'=>'获取用户钥匙列表失败'
             );
         //$jsonencode = _encode($retval);
         $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
@@ -703,8 +704,7 @@ class classTaskL3aplF2cm
         {
             //解开消息
             if (isset($msg["uid"])) $uid = $msg["uid"]; else  $uid = "";
-            if (isset($msg["keyuserid"])) $keyuserid = $msg["keyuserid"]; else  $keyuserid = "";
-            $resp = $this->func_project_userkey_process($keyuserid);
+            $resp = $this->func_project_userkey_process($uid);
             $project = MFUN_PRJ_HCU_FHYSUI;
 
         }

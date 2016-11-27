@@ -1329,9 +1329,8 @@ class classTaskL4fhysUi
 
                 //根据钥匙用户的ID查询该用户授权的钥匙列表
                 case "UserKey":
-                    if (isset($_GET["id"])) $uid = trim($_GET["id"]); else  $uid = "";
-                    if (isset($_GET["userid"])) $keyuserid = trim($_GET["userid"]); else  $keyuserid = "";
-                    $input = array("uid" => $uid, "keyuserid" => $keyuserid);
+                    if (isset($_GET["userid"])) $uid = trim($_GET["userid"]); else  $uid = "";
+                    $input = array("uid" => $uid);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4FHYSUI_TO_L3F2_USERKEY, "MSG_ID_L4FHYSUI_TO_L3F2_USERKEY",$input);
                     break;
 
