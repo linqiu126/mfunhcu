@@ -66,9 +66,9 @@ if (TC_L4FHYS_UI == true) {
 
     echo " [TC L4FHYS: KeyAuthNew START]\n";
     $_GET["action"] = "KeyAuthNew";
-    $_GET["DomainId"] = "P_0014";
-    $_GET["KeyId"] = "KEY278347";
-    $_GET["Authway"] = "2016-12-01";
+    $_GET["id"] = "gCuv92Barf";
+    $auth = array("DomainId"=>"P_0014", "KeyId"=>"KEY278347", "Authway" =>"2016-12-01");
+    $_GET["Auth"] = $auth;
     require("../l4fhysui/request.php");
     echo " [TC L4FHYS: KeyAuthNew END]\n";
 
@@ -77,6 +77,14 @@ if (TC_L4FHYS_UI == true) {
     $_GET["id"] = "gCuv92Barf";
     require("../l4fhysui/request.php");
     echo " [TC L4FHYS: GetStaticMonitorTable END]\n";
+
+    echo " [TC L4FHYS: KeyHistory START]\n";
+    $_GET["action"] = "KeyHistory";
+    $_GET["id"] = "gCuv92Barf";
+    $condition = array("ProjCode"=>"P_0015", "Time"=>"7");
+    $_GET["condition"] = $condition;
+    require("../l4fhysui/request.php");
+    echo " [TC L4FHYS: KeyHistory END]\n";
 
     //HCU_Lock_Status
     echo " [TC L4FHYS: HCU_Lock_Status START]\n";

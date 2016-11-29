@@ -1426,11 +1426,8 @@ class classTaskL4fhysUi
                 //新建钥匙授权
                 case "KeyAuthNew":
                     if (isset($_GET["id"])) $uid = trim($_GET["id"]); else  $uid = "";
-                    if (isset($_GET["DomainId"])) $authobjcode = trim($_GET["DomainId"]); else  $authobjcode = "";
-                    if (isset($_GET["KeyId"])) $keyid = trim($_GET["KeyId"]); else  $keyid = "";
-                    if (isset($_GET["user"])) $keyuserid = trim($_GET["user"]); else  $keyuserid = "";
-                    if (isset($_GET["Authway"])) $authtype = trim($_GET["Authway"]); else  $authtype = "";
-                    $input = array("uid" => $uid, "authobjcode" => $authobjcode, "keyid" => $keyid, "keyuserid" => $keyuserid, "authtype" => $authtype);
+                    if (isset($_GET["Auth"])) $auth = $_GET["Auth"]; else  $auth = "";
+                    $input = array("uid" => $uid, "auth" => $auth);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4FHYSUI_TO_L3F2_KEYAUTHNEW, "MSG_ID_L4FHYSUI_TO_L3F2_KEYAUTHNEW",$input);
                     break;
 
@@ -1445,11 +1442,9 @@ class classTaskL4fhysUi
                 //开锁历史查询
                 case "KeyHistory":
                     if (isset($_GET["id"])) $uid = trim($_GET["id"]); else  $uid = "";
-                    if (isset($_GET["ProjCode"])) $projcode = trim($_GET["ProjCode"]); else  $projcode = "";
-                    if (isset($_GET["Time"])) $time = trim($_GET["Time"]); else  $time= "";
-                    if (isset($_GET["KeyWord"])) $keyword = trim($_GET["KeyWord"]); else  $keyword= "";
-                    $input = array("uid" => $uid, "projcode" => $projcode, "time" => $time, "keyword" => $keyword);
-                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4FHYSUI_TO_L3F2_KEYHISTORY, "MSG_ID_L4FHYSUI_TO_L3F2_KEYHISTORY",$input);
+                    if (isset($_GET["condition"])) $condition = $_GET["condition"]; else  $condition = "";
+                    $input = array("uid" => $uid, "condition" => $condition);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM3DM, MSG_ID_L4FHYSUI_TO_L3F3_KEYHISTORY, "MSG_ID_L4FHYSUI_TO_L3F3_KEYHISTORY",$input);
                     break;
 
                 default:

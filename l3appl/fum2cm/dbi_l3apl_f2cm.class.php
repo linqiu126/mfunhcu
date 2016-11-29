@@ -1065,7 +1065,7 @@ class classDbiL3apF2cm
         return $result;
     }
 
-    public function dbi_key_authnew_process($keyid, $keyuserid, $authobjcode, $authtype)
+    public function dbi_key_authnew_process($keyid, $authobjcode, $authtype)
     {
         //建立连接
         $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
@@ -1115,8 +1115,6 @@ class classDbiL3apF2cm
         $mysqli->close();
         return $result;
     }
-
-
 
 }
 

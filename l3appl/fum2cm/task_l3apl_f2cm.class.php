@@ -51,8 +51,8 @@ class classTaskL3aplF2cm
             );
         else
             $retval=array(
-                'status'=>'false',
-                'ret'=>null
+                'status'=>'true',
+                'ret'=>""
             );
         //$jsonencode = _encode($retval);
         $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
@@ -71,8 +71,8 @@ class classTaskL3aplF2cm
             );
         else
             $retval=array(
-                'status'=>'false',
-                'ret'=>null
+                'status'=>'true',
+                'ret'=>""
             );
         //$jsonencode = _encode($retval);
         $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
@@ -285,7 +285,7 @@ class classTaskL3aplF2cm
         else
             $retval=array(
                 'status'=>'true',
-                'ret'=>$user_keylist
+                'ret'=>""
                 //'ret'=>'获取用户钥匙列表失败'
             );
         //$jsonencode = _encode($retval);
@@ -305,7 +305,7 @@ class classTaskL3aplF2cm
         else
             $retval=array(
                 'status'=>'true',
-                'ret'=>'获取所有钥匙列表失败'
+                'ret'=>""
             );
         //$jsonencode = _encode($retval);
         $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
@@ -324,7 +324,7 @@ class classTaskL3aplF2cm
         else
             $retval=array(
                 'status'=>'true',
-                'ret'=>$proj_keylist
+                'ret'=>""
                 //'ret'=>'获取项目钥匙列表失败'
             );
         //$jsonencode = _encode($retval);
@@ -344,7 +344,8 @@ class classTaskL3aplF2cm
         else
             $retval=array(
                 'status'=>'true',
-                'ret'=>'获取项目钥匙列表失败'
+                'ret'=>""
+                //'ret'=>'获取项目钥匙用户列表失败'
             );
         $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
         return $jsonencode;
@@ -487,10 +488,10 @@ class classTaskL3aplF2cm
         return $jsonencode;
     }
 
-    function func_key_authnew_process($keyid, $keyuserid, $authobjcode, $authtype)
+    function func_key_authnew_process($keyid, $authobjcode, $authtype)
     {
         $uiF2cmDbObj = new classDbiL3apF2cm(); //初始化一个UI DB对象
-        $result = $uiF2cmDbObj->dbi_key_authnew_process($keyid, $keyuserid, $authobjcode, $authtype);
+        $result = $uiF2cmDbObj->dbi_key_authnew_process($keyid, $authobjcode, $authtype);
         if ($result == true)
             $retval=array(
                 'status'=>"true",
@@ -801,12 +802,16 @@ class classTaskL3aplF2cm
         }
         elseif ($msgId == MSG_ID_L4FHYSUI_TO_L3F2_KEYAUTHNEW)
         {
-            if (isset($msg["authobjcode"])) $authobjcode = trim($msg["authobjcode"]); else  $authobjcode = "";
-            if (isset($msg["keyid"])) $keyid = trim($msg["keyid"]); else  $keyid = "";
-            if (isset($msg["keyuserid"])) $keyuserid = trim($msg["keyuserid"]); else  $keyuserid = "";
-            if (isset($msg["authtype"])) $authtype = trim($msg["authtype"]); else  $authtype = "";
+            if (isset($msg["uid"])) $uid = trim($msg["uid"]); else  $uid = "";
+            if (isset($msg["auth"])) $auth = $msg["auth"]; else  $auth = "";
+            if (!empty($auth))
+            {
+                if (isset($auth["DomainId"])) $authobjcode = trim($auth["DomainId"]); else  $authobjcode = "";
+                if (isset($auth["KeyId"])) $keyid = trim($auth["KeyId"]); else  $keyid = "";
+                if (isset($auth["Authway"])) $authtype = trim($auth["Authway"]); else  $authtype = "";
+            }
 
-            $resp = $this->func_key_authnew_process($keyid, $keyuserid, $authobjcode, $authtype);
+            $resp = $this->func_key_authnew_process($keyid, $authobjcode, $authtype);
             $project = MFUN_PRJ_HCU_FHYSUI;
         }
         elseif ($msgId == MSG_ID_L4FHYSUI_TO_L3F2_KEYAUTHDEL)
@@ -815,10 +820,6 @@ class classTaskL3aplF2cm
 
             $resp = $this->func_key_authdel_process($authid);
             $project = MFUN_PRJ_HCU_FHYSUI;
-        }
-        elseif ($msgId == MSG_ID_L4FHYSUI_TO_L3F2_KEYHISTORY)
-        {
-
         }
 
         else{

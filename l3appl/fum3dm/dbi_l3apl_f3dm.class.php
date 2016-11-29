@@ -1691,6 +1691,98 @@ class classDbiL3apF3dm
         return $currentvalue;
     }
 
+    public function dbi_key_event_history_process($projCode, $duration)
+    {
+        //初始化返回值
+        $history["ColumnName"] = array();
+        $history['TableData'] = array();
+
+        //建立连接
+        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli) {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $mysqli->query("set character_set_results = utf8");
+        $mysqli->query("SET NAMES utf8");
+
+        array_push($history["ColumnName"], "序号");
+        array_push($history["ColumnName"], "工单号");
+        array_push($history["ColumnName"], "钥匙编号");
+        array_push($history["ColumnName"], "钥匙名称");
+        array_push($history["ColumnName"], "使用者工号");
+        array_push($history["ColumnName"], "使用者姓名");
+        array_push($history["ColumnName"], "事件类型");
+        array_push($history["ColumnName"], "站点名称");
+        array_push($history["ColumnName"], "事件日期");
+        array_push($history["ColumnName"], "事件时间");
+
+        $timestamp = time();
+        $start = intval(date("Ymd", $timestamp));
+        $end = $start;
+        if($duration == MFUN_L3APL_F2CM_EVENT_DURATION_DAY)
+            $end = intval(date("Ymd",strtotime('+1 day')));
+        elseif($duration == MFUN_L3APL_F2CM_EVENT_DURATION_WEEK)
+            $end = intval(date("Ymd",strtotime('+7 day')));
+        elseif($duration == MFUN_L3APL_F2CM_EVENT_DURATION_MONTH)
+            $end = intval(date("Ymd",strtotime('+30 day')));
+
+        $query_str = "SELECT * FROM `t_l3f3dm_siteinfo` WHERE `p_code` = '$projCode'";
+        $result = $mysqli->query($query_str);
+
+        while ($row = $result->fetch_array()){
+            $statcode = $row['statcode'];
+            $statname = $row['name'];
+            $query_str = "SELECT * FROM `t_l3fxprcm_fhys_locklog` WHERE (`statcode` = '$statcode')";
+            $resp = $mysqli->query($query_str);
+            while($resp_row = $resp->fetch_array()){
+                $sid = $resp_row['sid'];
+                $woid = $resp_row['woid'];
+                $keyid = $resp_row['keyid'];
+                $keyname = $resp_row['keyname'];
+                $keyuserid = $resp_row['keyuserid'];
+                $keyusername = $resp_row['keyusername'];
+                $eventtype = $resp_row['eventtype'];
+                if ($eventtype == MFUN_L3APL_F2CM_EVENT_TYPE_RFID)
+                    $eventtype = "RFID开锁";
+                elseif ($eventtype == MFUN_L3APL_F2CM_EVENT_TYPE_BLE)
+                    $eventtype = "蓝牙开锁";
+                elseif ($eventtype == MFUN_L3APL_F2CM_EVENT_TYPE_USER)
+                    $eventtype = "用户账号开锁";
+                elseif ($eventtype == MFUN_L3APL_F2CM_EVENT_TYPE_IDCARD)
+                    $eventtype = "身份证开锁";
+                elseif ($eventtype == MFUN_L3APL_F2CM_EVENT_TYPE_WECHAT)
+                    $eventtype = "微信开锁";
+                elseif ($eventtype == MFUN_L3APL_F2CM_EVENT_TYPE_PHONE)
+                    $eventtype = "电话号码开锁";
+                elseif ($eventtype == MFUN_L3APL_F2CM_EVENT_TYPE_XJ)
+                    $eventtype = "巡检事件";
+                else
+                    $eventtype = "未知事件";
+
+                $eventdate = $resp_row['eventdate'];
+                $eventtime = $resp_row['eventtime'];
+                $dateintval = intval(date('Ymd',strtotime($eventdate)));
+                $temp = array();
+                if($dateintval >= $start AND $dateintval < $end){
+                    array_push($temp, $sid);
+                    array_push($temp, $woid);
+                    array_push($temp, $keyid);
+                    array_push($temp, $keyname);
+                    array_push($temp, $keyuserid);
+                    array_push($temp, $keyusername);
+                    array_push($temp, $eventtype);
+                    array_push($temp, $statname);
+                    array_push($temp, $eventdate);
+                    array_push($temp, $eventtime);
+
+                    array_push($history['TableData'], $temp);
+                }
+            }
+        }
+
+        $mysqli->close();
+        return $history;
+    }
 
 }
 

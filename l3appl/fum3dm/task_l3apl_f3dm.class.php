@@ -462,6 +462,30 @@ class classTaskL3aplF3dm
         return $jsonencode;
     }
 
+
+    function func_key_event_history_process($projCode, $duration)
+    {
+        $uiF3dmDbObj = new classDbiL3apF3dm(); //初始化一个UI DB对象
+        $resp = $uiF3dmDbObj->dbi_key_event_history_process($projCode, $duration);
+        if (!empty($resp)){
+            $column_name = $resp["ColumnName"];
+            $row_content = $resp['TableData'];
+            $retval=array(
+                'status'=>"true",
+                'ColumnName'=> $column_name,
+                'TableData'=>$row_content
+            );
+        }
+        else
+            $retval=array(
+                'status' => "true",
+                'ColumnName' => "",
+                'TableData' => ""
+            );
+        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
+        return $jsonencode;
+    }
+
     /**************************************************************************************
      *                             任务入口函数                                           *
      *************************************************************************************/
@@ -740,6 +764,24 @@ class classTaskL3aplF3dm
             $resp = $this->func_fhys_get_static_monitor_table_process($id);
             $project = MFUN_PRJ_HCU_FHYSUI;
         }
+
+        //开锁事件历史记录
+        elseif ($msgId == MSG_ID_L4FHYSUI_TO_L3F3_KEYHISTORY)
+        {
+            if (isset($msg["uid"])) $uid = trim($msg["uid"]); else  $uid = "";
+            if (isset($msg["condition"])) $condition = $msg["condition"]; else  $condition = "";
+
+            $projCode = "";
+            $duration = "";
+            if (!empty($condition))
+            {
+                if (isset($condition["ProjCode"])) $projCode = trim($condition["ProjCode"]); else  $projCode = "";
+                if (isset($condition["Time"])) $duration = trim($condition["Time"]); else  $duration = "";
+            }
+            $resp = $this->func_key_event_history_process($projCode, $duration);
+            $project = MFUN_PRJ_HCU_FHYSUI;
+        }
+
 
         /*********************************智能云锁新增处理 End*********************************************/
 

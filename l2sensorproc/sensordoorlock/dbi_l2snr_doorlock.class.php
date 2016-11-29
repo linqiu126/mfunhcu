@@ -9,6 +9,38 @@
 class classDbiL2snrDoorlock
 {
 
+    private function dbi_hcu_event_log_process($keyid, $statCode, $eventtype)
+    {
+        //建立连接
+        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli) {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $mysqli->query("set character_set_results = utf8");
+        $mysqli->query("SET NAMES utf8");
+
+        //确认要操作的设备在 HCU Inventory表中是否存在
+        $query_str = "SELECT * FROM `t_l3f2cm_fhys_keyinfo` WHERE (`keyid` = '$keyid')";
+        $result = $mysqli->query($query_str);
+        if (($result != false) && ($result->num_rows)>0)
+        {
+            $row = $result->fetch_array();
+            $keyname = $row['keyname'];
+            $keyuserid = $row['keyuserid'];
+            $keyusername = $row['keyusername'];
+
+            $timestamp = time();
+            $eventdate = date("Y-m-d", $timestamp);
+            $eventtime = date("H:m:s", $timestamp);
+            $query_str = "INSERT INTO `t_l3fxprcm_fhys_locklog` (keyid,keyname,keyuserid,keyusername,eventtype,statcode,eventdate,eventtime)
+                              VALUES ('$keyid','$keyname','$keyuserid', '$keyusername', '$eventtype', '$statCode', '$eventdate', '$eventtime')";
+            $result = $mysqli->query($query_str);
+        }
+
+        $mysqli->close();
+        return $result;
+    }
+
     public function dbi_hcu_lock_status_update($devCode, $statCode, $data)
     {
         //建立连接
@@ -123,6 +155,10 @@ class classDbiL2snrDoorlock
                 if (($resp != false) && ($resp->num_rows)>0){
                     $funcFlag = true;
                     $resp_row = $resp->fetch_array();
+                    $keyid = $resp_row["keyid"];
+                    $event = MFUN_L3APL_F2CM_EVENT_TYPE_USER;
+                    $this->dbi_hcu_event_log_process($keyid, $statCode, $event); //保存开锁记录
+
                     $remain_validnum = $resp_row["validnum"] -1;
                     if($remain_validnum == 0) //有效次数为0后删除该条授权记录
                     {
