@@ -60,7 +60,8 @@ class classDbiL2snrWeight
         $currenttime = date("Y-m-d H:i:s",$timestamp);
         $result = $mysqli->query("SELECT * FROM `t_l3f3dm_bfsc_currentreport` WHERE (`devcode` = '$devCode') ");
         if (($result->num_rows)>0) {
-            $query_str = "UPDATE `t_l3f3dm_bfsc_currentreport` SET  `waterstat` = '$status', `createtime` = '$currenttime' WHERE (`devcode` = '$devCode')";
+            $query_str = "UPDATE `t_l3f3dm_bfsc_currentreport` SET  `devcode` = '$devCode', `statcode` = '$statCode', `createtime` = '$currenttime', `status` = '$status',
+                            `weight_01` = '$w01', `weight_02` = '$w02',`weight_03` = '$w03',`weight_04` = '$w04',`weight_05` = '$w05',`weight_06` = '$w06',`weight_07` = '$w07',`weight_08` = '$w08',`weight_09` = '$w09',`weight_10` = '$w10',`weight_11` = '$w11',`weight_12` = '$w12' WHERE (`devcode` = '$devCode')";
             $result = $mysqli->query($query_str);
         }
         else {
