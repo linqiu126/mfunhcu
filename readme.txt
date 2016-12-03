@@ -308,6 +308,11 @@ Make By：ZJL
 > 完成云控锁所有与下位机的接口消息
 > 添加云控锁UI界面的钥匙管理功能
 
+//= LZH, 2016 Dec.02, CURRENT_SW_DELIVERY R03.D05
+> FHYS功能完善，第一个deliver现场版本
+> 增加BFSC波峰组合秤项目
+
+
 //待完善的功能
 1. dbi_devinfo_update（）需要修改，添加设备时预计结束时间和实际结束时间应该在项目信息里
 2. 添加设备时没有选择该设备装配了那些传感器，sensorctrl表没有更新

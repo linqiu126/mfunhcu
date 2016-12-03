@@ -1324,6 +1324,96 @@ class classDbiL3apF3dm
         return $resp;
     }
 
+
+    /*********************************波峰组合秤新增处理************************************************/
+    //UI GetStaticMonitorTable Request, 获取用户聚合数据
+    public function dbi_bfsc_user_dataaggregate_req($uid)
+    {
+        //初始化返回值
+        $resp["column"] = array();
+        $resp['data'] = array();
+
+        //建立连接
+        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli) {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $mysqli->query("set character_set_results = utf8");
+        $mysqli->query("SET NAMES utf8");
+
+        $auth_list["stat_code"] = array();
+        $auth_list["p_code"] = array();
+        $auth_list = $this->dbi_user_statproj_inqury($uid);
+
+        array_push($resp["column"], "设备编号");
+        array_push($resp["column"], "设备状态");
+        array_push($resp["column"], "秤_01");
+        array_push($resp["column"], "秤_02");
+        array_push($resp["column"], "秤_03");
+        array_push($resp["column"], "秤_04");
+        array_push($resp["column"], "秤_05");
+        array_push($resp["column"], "秤_06");
+        array_push($resp["column"], "秤_07");
+        array_push($resp["column"], "秤_08");
+        array_push($resp["column"], "秤_09");
+        array_push($resp["column"], "秤_10");
+        array_push($resp["column"], "秤_11");
+        array_push($resp["column"], "秤_12");
+
+        for($i=0; $i<count($auth_list["stat_code"]); $i++)
+        {
+            $one_row = array();
+            $statcode = $auth_list["stat_code"][$i];
+
+            $query_str = "SELECT * FROM `t_l3f3dm_bfsc_currentreport` WHERE `statcode` = '$statcode'";
+            $result = $mysqli->query($query_str);
+            if (($result->num_rows) > 0)
+            {
+                $row = $result->fetch_array();
+                $devcode = $row["devcode"];
+                array_push($one_row, $devcode);
+                //更新设备运行状态
+                $timestamp = strtotime($row["createtime"]);
+                $currenttime = time();
+                if ($currenttime > ($timestamp+180))  //如果最后一次测量报告距离现在已经超过3分钟
+                    array_push($one_row, "休眠中");
+                else
+                    array_push($one_row, "运行中");
+
+                $w01 = $row["weight_01"];
+                $w02 = $row["weight_02"];
+                $w03 = $row["weight_03"];
+                $w04 = $row["weight_04"];
+                $w05 = $row["weight_05"];
+                $w06 = $row["weight_06"];
+                $w07 = $row["weight_07"];
+                $w08 = $row["weight_08"];
+                $w09 = $row["weight_09"];
+                $w10 = $row["weight_10"];
+                $w11 = $row["weight_11"];
+                $w12 = $row["weight_12"];
+
+                array_push($one_row, $w01);
+                array_push($one_row, $w02);
+                array_push($one_row, $w03);
+                array_push($one_row, $w04);
+                array_push($one_row, $w05);
+                array_push($one_row, $w06);
+                array_push($one_row, $w07);
+                array_push($one_row, $w08);
+                array_push($one_row, $w09);
+                array_push($one_row, $w10);
+                array_push($one_row, $w11);
+                array_push($one_row, $w12);
+            }
+
+            array_push($resp['data'], $one_row);
+        }
+
+        $mysqli->close();
+        return $resp;
+    }
+
     /*********************************智能云锁新增处理************************************************/
 
     //UI GetStaticMonitorTable Request, 获取用户聚合数据
@@ -1414,7 +1504,7 @@ class classDbiL3apF3dm
                 //更新GPRS信号强度
                 array_push($one_row, $row["siglevel"]);
                 //更新电池剩余电量
-                array_push($one_row, $row["battlevel"]);
+                array_push($one_row, $row["battlevel"]."%");
                 //更新震动告警状态
                 if($row["vibralarm"] == MFUN_HCU_FHYS_ALARM_YES)
                     array_push($one_row, "有");

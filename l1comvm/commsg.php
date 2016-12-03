@@ -65,6 +65,9 @@ define("MSG_ID_L2SDK_EMCWX_TO_L2SNR_LIGHTSTR_DATA_REPORT_TIMING", $index++);
 define("MSG_ID_L2SDK_HCU_TO_L2SNR_RAIN", $index++);
 define("MSG_ID_L2SDK_EMCWX_TO_L2SNR_RAIN_DATA_READ_INSTANT", $index++);
 define("MSG_ID_L2SDK_EMCWX_TO_L2SNR_RAIN_DATA_REPORT_TIMING", $index++);
+define("MSG_ID_L2SDK_WECHAT_DATA_COMING", $index++);
+define("MSG_ID_L2SDK_HCU_DATA_COMING", $index++);
+//FHYS智能云锁消息
 define("MSG_ID_L2SDK_HCU_TO_L2SNR_DOORLOCK", $index++);
 define("MSG_ID_L2SDK_HCU_TO_L2SNR_BATT", $index++);
 define("MSG_ID_L2SDK_HCU_TO_L2SNR_BLE", $index++);
@@ -73,8 +76,8 @@ define("MSG_ID_L2SDK_HCU_TO_L2SNR_RFID", $index++);
 define("MSG_ID_L2SDK_HCU_TO_L2SNR_SMOK", $index++);
 define("MSG_ID_L2SDK_HCU_TO_L2SNR_VIBR", $index++);
 define("MSG_ID_L2SDK_HCU_TO_L2SNR_WATER", $index++);
-define("MSG_ID_L2SDK_WECHAT_DATA_COMING", $index++);
-define("MSG_ID_L2SDK_HCU_DATA_COMING", $index++);
+//BFSC组合秤消息
+define("MSG_ID_L2SDK_HCU_TO_L2SNR_WEIGHT", $index++);
 //L2SDK_JD消息部分
 define("MSG_ID_L2SDK_JD_INCOMING", $index++);
 //L2SDK_APPLE消息部分
@@ -222,6 +225,10 @@ define("MSG_ID_L4FHYSUI_TO_L3F3_DEVSENSOR", $index++);  //原有AQYC消息修改
 define("MSG_ID_L4FHYSUI_TO_L3F3_GETSTATICMONITORTABLE", $index++);  //原有AQYC消息修改适配FHYS功能
 define("MSG_ID_L4FHYSUI_TO_L3F4_LOCKOPEN", $index++);
 define("MSG_ID_L4FHYSUI_TO_L3F5_DEVALARM", $index++);
+
+//for BFSC
+define("MSG_ID_L4BFSCUI_CLICK_INCOMING", $index++);
+define("MSG_ID_L4BFSCUI_TO_L3F3_GETSTATICMONITORTABLE", $index++);
 
 //L4EMCWXUI部分
 define("MSG_ID_L4EMCWXUI_CLICK_INCOMING", $index++);

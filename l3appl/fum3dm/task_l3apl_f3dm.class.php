@@ -420,6 +420,30 @@ class classTaskL3aplF3dm
         return $jsonencode;
     }
 
+    /*******************************波峰智能组合秤新增处理 Start****************************************/
+    function func_bfsc_get_static_monitor_table_process($id)
+    {
+        $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
+        $uiF3dmDbObj = new classDbiL3apF3dm(); //初始化一个UI DB对象
+        $uid = $uiF1symDbObj->dbi_session_check($id);
+        $result = $uiF3dmDbObj->dbi_bfsc_user_dataaggregate_req($uid);
+        if(!empty($result))
+            $retval=array(
+                'status'=>'true',
+                'ColumnName' => $result["column"],
+                'TableData' => $result["data"]
+            );
+        else
+            $retval=array(
+                'status'=>'false',
+                'ColumnName' => null,
+                'TableData' => null
+            );
+        //$jsonencode = _encode($retval);
+        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
+        return $jsonencode;
+    }
+
     /*********************************智能云锁新增处理************************************************/
     function func_fhys_dev_sensor_process($DevCode)
     {
@@ -742,6 +766,18 @@ class classTaskL3aplF3dm
             //具体处理函数
             $resp = $this->func_get_static_monitor_table_process($id);
             $project = MFUN_PRJ_HCU_AQYCUI;
+        }
+
+        /*********************************波峰智能组合秤新增处理 Start*********************************************/
+
+        //功能GetStaticMonitorTable
+        elseif ($msgId == MSG_ID_L4BFSCUI_TO_L3F3_GETSTATICMONITORTABLE)
+        {
+            //解开消息
+            if (isset($msg["id"])) $id = $msg["id"]; else  $id = "";
+            //具体处理函数
+            $resp = $this->func_bfsc_get_static_monitor_table_process($id);
+            $project = MFUN_PRJ_HCU_BFSCUI;
         }
 
         /*********************************智能云锁新增处理 Start*********************************************/

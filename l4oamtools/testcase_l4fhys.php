@@ -13,6 +13,13 @@ include_once "../l1comvm/vmlayer.php";
  *************************************************************************************/
 if (TC_L4FHYS_UI == true) {
 
+    //BFSC
+    echo " [TC L4BFSC: GetStaticMonitorTable START]\n";
+    $_GET["action"] = "GetStaticMonitorTable";
+    $_GET["id"] = "JCMP24znHk";
+    require("../l4bfscui/request.php");
+    echo " [TC L4BFSC: GetStaticMonitorTable END]\n";
+
     //HCU_Lock_open
     echo " [TC L4FHYS: Compel OpenLock START]\n";
     $_GET["action"] = "OpenLock";

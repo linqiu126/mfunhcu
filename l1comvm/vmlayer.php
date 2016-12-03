@@ -57,6 +57,7 @@ include_once "../l2sensorproc/sensorrfid/task_l2snr_rfid.class.php";
 include_once "../l2sensorproc/sensorsmok/task_l2snr_smok.class.php";
 include_once "../l2sensorproc/sensorvibr/task_l2snr_vibr.class.php";
 include_once "../l2sensorproc/sensorwater/task_l2snr_water.class.php";
+include_once "../l2sensorproc/sensorweight/task_l2snr_weight.class.php";
 include_once "../l3appl/fum1sym/task_l3apl_f1sym.class.php";
 include_once "../l3appl/fum2cm/task_l3apl_f2cm.class.php";
 include_once "../l3appl/fum3dm/task_l3apl_f3dm.class.php";
@@ -73,6 +74,7 @@ include_once "../l2timercron/task_l2timer_cron.class.php";
 include_once "../l4emcwxui/task_l4emcwx_ui.class.php";
 include_once "../l4aqycui/task_l4aqyc_ui.class.php";
 include_once "../l4fhysui/task_l4fhys_ui.class.php";
+include_once "../l4bfscui/task_l4bfsc_ui.class.php";
 include_once "../l4tbswrui/task_l4tbswr_ui.class.php";
 include_once "../l4nbiotipmui/task_l4nbiot_ipm_ui.class.php";
 include_once "../l4nbiotiwmui/task_l4nbiot_iwm_ui.class.php";
@@ -587,6 +589,19 @@ class classTaskL1vmCoreRouter
                 return false;
             }
 
+        }elseif($parObj == MFUN_MAIN_ENTRY_BFSC_UI){
+            if ($this->mfun_l1vm_msg_send(MFUN_TASK_ID_L1VM,
+                    MFUN_TASK_ID_L4BFSC_UI,
+                    MSG_ID_L4BFSCUI_CLICK_INCOMING,
+                    "MSG_ID_L4BFSCUI_CLICK_INCOMING",
+                    $msg) == false) {
+                $result = "Cloud: Send to message buffer error.";
+                $log_content = "P:" . json_encode($result);
+                $loggerObj->logger("MFUN_MAIN_ENTRY_BFSC_UI", "mfun_l1vm_task_main_entry", $log_time, $log_content);
+                echo trim($result);
+                return false;
+            }
+
         }elseif($parObj == MFUN_MAIN_ENTRY_TBSWR_UI){
             if ($this->mfun_l1vm_msg_send(MFUN_TASK_ID_L1VM,
                     MFUN_TASK_ID_L4TBSWR_UI,
@@ -898,6 +913,11 @@ class classTaskL1vmCoreRouter
                     $obj->mfun_l2snr_water_task_main_entry($this, $result["msgId"], $result["msgName"], $result["msgBody"]);
                     break;
 
+                case MFUN_TASK_ID_L2SENSOR_WEIGHT:
+                    $obj = new classTaskL2snrWeight();
+                    $obj->mfun_l2snr_weight_task_main_entry($this, $result["msgId"], $result["msgName"], $result["msgBody"]);
+                    break;
+
                 case MFUN_TASK_ID_L3APPL_FUM1SYM:
                     $obj = new classTaskL3aplF1sym();
                     $obj->mfun_l3apl_f1sym_task_main_entry($this, $result["msgId"], $result["msgName"], $result["msgBody"]);
@@ -964,8 +984,13 @@ class classTaskL1vmCoreRouter
                     break;
 
                 case MFUN_TASK_ID_L4FHYS_UI:
-                    $obj = new classTaskL4fhysUi();
-                    $obj->mfun_l4fhys_ui_task_main_entry($this, $result["msgId"], $result["msgName"], $result["msgBody"]);
+                $obj = new classTaskL4fhysUi();
+                $obj->mfun_l4fhys_ui_task_main_entry($this, $result["msgId"], $result["msgName"], $result["msgBody"]);
+                break;
+
+                case MFUN_TASK_ID_L4BFSC_UI:
+                    $obj = new classTaskL4bfscUi();
+                    $obj->mfun_l4bfsc_ui_task_main_entry($this, $result["msgId"], $result["msgName"], $result["msgBody"]);
                     break;
 
                 case MFUN_TASK_ID_L4EMCWX_UI:

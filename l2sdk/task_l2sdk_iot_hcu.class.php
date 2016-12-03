@@ -452,6 +452,21 @@ class classTaskL2sdkIotHcu
                 else $resp = "";
                 break;
 
+            case MFUN_HCU_CMDID_BFSC_WEIGHT://波峰智能组合秤控制字
+                $msg = array("project" => $project,
+                    "log_from" => $log_from,
+                    "platform" => MFUN_TECH_PLTF_HCUPI,
+                    "deviceId" => $deviceId,
+                    "statCode" => $statCode,
+                    "content" => $content);
+                if ($parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L2SDK_IOT_HCU,
+                        MFUN_TASK_ID_L2SENSOR_WEIGHT,
+                        MSG_ID_L2SDK_HCU_TO_L2SNR_WEIGHT,
+                        "MSG_ID_L2SDK_HCU_TO_L2SNR_WEIGHT",
+                        $msg) == false) $resp = "Send to message buffer error";
+                else $resp = "";
+                break;
+
             default:
                 $resp ="HCU_IOT: invalid command type";
                 break;

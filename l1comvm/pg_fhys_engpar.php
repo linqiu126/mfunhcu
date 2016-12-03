@@ -31,6 +31,9 @@ define ("MFUN_HCU_DATA_FHYS_STATUS_ALARM", 0x02); //设备告警或者门锁暴�
 define ("MFUN_HCU_DATA_FHYS_LOCK_OPEN", 0x00);  //开锁命令
 define ("MFUN_HCU_DATA_FHYS_LOCK_CLOSE", 0x01);  //闭锁命令
 
+define ("MFUN_HCU_BFSC_STATUS_OK", "Y");  //设备正常，运行中
+define ("MFUN_HCU_BFSC_STATUS_NOK", "N"); //设备异常，关闭中
+
 //定义智能云锁所带传感器类型
 define("MFUN_L3APL_F3DM_CL_TYPE_DOOR", "CL_001");
 define("MFUN_L3APL_F3DM_CL_TYPE_LOCK", "CL_002");
@@ -56,6 +59,9 @@ define("MFUN_HCU_CMDID_FHYS_SMOK", 0x47);       //烟雾控制字
 define("MFUN_HCU_CMDID_FHYS_WATER", 0x48);       //水浸控制字
 define("MFUN_HCU_CMDID_FHYS_TEMP", 0x49);       //温度控制字
 define("MFUN_HCU_CMDID_FHYS_HUMI", 0x4A);       //湿度控制字
+
+//BFSC控制字
+define("MFUN_HCU_CMDID_BFSC_WEIGHT", 0x3B);
 
 //锁操作字
 define("MFUN_HCU_OPT_FHYS_LOCKSTAT_IND", 0x81);
@@ -116,6 +122,10 @@ define("MFUN_HCU_OPT_FHYS_HUMISTAT_IND", 0x81);
 define("MFUN_HCU_OPT_FHYS_HUMISTAT_RESP", 0x01);
 define("MFUN_HCU_OPT_FHYS_HUMIDATA_IND", 0x82);
 define("MFUN_HCU_OPT_FHYS_HUMIDATA_RESP", 0x02);
+
+//组合秤操作字
+define("MFUN_HCU_OPT_BFSC_WEIGHTDATA_IND", 0x81);
+define("MFUN_HCU_OPT_BFSC_WEIGHTALARM_IND", 0x82);
 
 
 
