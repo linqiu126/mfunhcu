@@ -1809,14 +1809,14 @@ class classDbiL3apF3dm
         array_push($history["ColumnName"], "事件时间");
 
         $timestamp = time();
-        $start = intval(date("Ymd", $timestamp));
-        $end = $start;
+        $end = intval(date("Ymd", $timestamp));
+        $start = $end;
         if($duration == MFUN_L3APL_F2CM_EVENT_DURATION_DAY)
-            $end = intval(date("Ymd",strtotime('+1 day')));
+            $start = intval(date("Ymd",strtotime('-1 day')));
         elseif($duration == MFUN_L3APL_F2CM_EVENT_DURATION_WEEK)
-            $end = intval(date("Ymd",strtotime('+7 day')));
+            $start = intval(date("Ymd",strtotime('-7 day')));
         elseif($duration == MFUN_L3APL_F2CM_EVENT_DURATION_MONTH)
-            $end = intval(date("Ymd",strtotime('+30 day')));
+            $start = intval(date("Ymd",strtotime('-30 day')));
 
         $query_str = "SELECT * FROM `t_l3f3dm_siteinfo` WHERE `p_code` = '$projCode'";
         $result = $mysqli->query($query_str);
