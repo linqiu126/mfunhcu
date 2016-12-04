@@ -32,9 +32,11 @@ class classTaskL2snrWeight
             $classDbiL2snrWeight = new classDbiL2snrWeight();
             $resp = $classDbiL2snrWeight->dbi_hcu_weight_data_process($devCode, $statCode, $content);
         }
-        elseif ($opt_key == MFUN_HCU_OPT_BFSC_WEIGHTALARM_IND){
-            $classDbiL2snrWeight = new classDbiL2snrWeight();
-            $resp = $classDbiL2snrWeight->dbi_hcu_weight_alarm_process($devCode, $statCode);
+        elseif ($opt_key == MFUN_HCU_OPT_BFSC_WEIGHTSTART_RESP){
+            $resp = "BFSC weight start response receive";
+        }
+        elseif ($opt_key == MFUN_HCU_OPT_BFSC_WEIGHTSTOP_RESP){
+            $resp = "BFSC weight stop response receive";
         }
         else
             $resp = "ERROR FHYS_WATER: Invalid Operation Command";

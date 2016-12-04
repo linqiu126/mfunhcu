@@ -235,6 +235,23 @@ class classTaskL3aplF4icm
         return $jsonencode;
     }
 
+    /*********************************BFSC组合秤新增处理 Start*********************************************/
+    //HCU_Lock_Open
+    function func_hcu_weight_compel_open($uid, $StatCode)
+    {
+        $uiF4icmDbObj = new classDbiL3apF4icm();
+        $resp = $uiF4icmDbObj->dbi_hcu_weight_compel_open($uid, $StatCode);
+
+        $retval=array(
+            'status'=>'true',
+            'msg'=>$resp
+        );
+
+        //$jsonencode = _encode($retval);
+        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
+        return $jsonencode;
+    }
+
     /**************************************************************************************
      *                             任务入口函数                                           *
      *************************************************************************************/
@@ -355,6 +372,18 @@ class classTaskL3aplF4icm
             //具体处理函数
             $resp = $this->func_hcu_lock_compel_open($uid, $statcode);
             $project = MFUN_PRJ_HCU_FHYSUI;
+        }
+
+        /*********************************BFSC组合秤新增处理 Start*********************************************/
+        //功能HCU_Lock_Open
+        elseif ($msgId == MSG_ID_L4BFSCUI_TO_L3F4_WEIGHTOPEN)
+        {
+            //解开消息
+            if (isset($msg["uid"])) $uid = trim($msg["uid"]); else  $uid = "";
+            if (isset($msg["statcode"])) $statcode = trim($msg["statcode"]); else  $statcode= "";
+            //具体处理函数
+            $resp = $this->func_hcu_weight_compel_open($uid, $statcode);
+            $project = MFUN_PRJ_HCU_BFSCUI;
         }
 
         else{

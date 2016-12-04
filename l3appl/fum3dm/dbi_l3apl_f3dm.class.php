@@ -1345,6 +1345,7 @@ class classDbiL3apF3dm
         $auth_list["p_code"] = array();
         $auth_list = $this->dbi_user_statproj_inqury($uid);
 
+        array_push($resp["column"], "站点编号");
         array_push($resp["column"], "设备编号");
         array_push($resp["column"], "设备状态");
         array_push($resp["column"], "秤_01");
@@ -1371,6 +1372,7 @@ class classDbiL3apF3dm
             {
                 $row = $result->fetch_array();
                 $devcode = $row["devcode"];
+                array_push($one_row, $statcode);
                 array_push($one_row, $devcode);
                 //更新设备运行状态
                 $timestamp = strtotime($row["createtime"]);

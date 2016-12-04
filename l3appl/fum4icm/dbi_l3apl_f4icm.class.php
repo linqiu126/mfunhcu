@@ -609,6 +609,48 @@ class classDbiL3apF4icm
         return $result;
     }
 
+    public function dbi_hcu_weight_compel_open($sessionid, $statCode)
+    {
+        //建立连接
+        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli) {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $mysqli->query("set character_set_results = utf8");
+
+        $query_str = "SELECT * FROM `t_l3f1sym_session` WHERE (`sessionid` = '$sessionid')";
+        $result = $mysqli->query($query_str);
+        if (($result != false) && ($result->num_rows)>0){
+            $row = $result->fetch_array();
+            $uid = $row["uid"];
+        }
+
+
+        //确认要操作的设备在 HCU Inventory表中是否存在
+
+        $query_str = "SELECT * FROM `t_l2sdk_iothcu_inventory` WHERE (`statcode` = '$statCode')";
+        $result = $mysqli->query($query_str);
+
+        if (($result != false) && ($result->num_rows)>0)
+        {
+            $row = $result->fetch_array();
+            $devCode = $row["devcode"];
+            //生成控制命令的控制字
+            $respCmd = "3B0102";
+
+            //通过9502端口建立tcp阻塞式socket连接，向HCU转发操控命令
+            $client = new socket_client_sync($devCode, $respCmd);
+            $client->connect();
+            $resp = "BFSC weight open success";
+        }
+        else
+            $resp = "BFSC weight open failure";
+
+
+        $mysqli->close();
+        return $resp;
+    }
+
 }
 
 ?>
