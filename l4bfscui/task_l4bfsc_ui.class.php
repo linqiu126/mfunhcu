@@ -1321,21 +1321,34 @@ class classTaskL4bfscUi
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4BFSC_UI, MFUN_TASK_ID_L3APPL_FUM3DM, MSG_ID_L4BFSCUI_TO_L3F3_GETSTATICMONITORTABLE, "MSG_ID_L4BFSCUI_TO_L3F3_GETSTATICMONITORTABLE",$input);
                     break;
 
-                case "OpenLock": //临时用于BFSC打开组合秤
-                    if (isset($_GET["id"])) $uid = trim($_GET["id"]); else  $uid = "";
-                    if (isset($_GET["StatCode"])) $statCode = trim($_GET["StatCode"]); else  $statCode= "";
+                case "StartScale": //临时用于BFSC打开组合秤
+                    $statCode = ""; //初始化
+                    if (isset($_GET["user"])) $uid = trim($_GET["user"]); else  $uid = "";
+                    if (isset($_GET["body"])) $body = $_GET["body"]; else  $body= "";
+                    if (!empty($body))
+                        if (isset($body["StatCode"])) $statCode = trim($body["StatCode"]); else  $statCode = "";
                     $input = array("uid" => $uid, "statcode" => $statCode);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4BFSC_UI, MFUN_TASK_ID_L3APPL_FUM4ICM, MSG_ID_L4BFSCUI_TO_L3F4_WEIGHTOPEN, "MSG_ID_L4BFSCUI_TO_L3F4_WEIGHTOPEN",$input);
                     break;
 
+                case "StopScale": //临时用于BFSC关闭组合秤
+                    $statCode = ""; //初始化
+                    if (isset($_GET["user"])) $uid = trim($_GET["user"]); else  $uid = "";
+                    if (isset($_GET["body"])) $body = $_GET["body"]; else  $body= "";
+                    if (!empty($body))
+                        if (isset($body["StatCode"])) $statCode = trim($body["StatCode"]); else  $statCode = "";
+                    $input = array("uid" => $uid, "statcode" => $statCode);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4BFSC_UI, MFUN_TASK_ID_L3APPL_FUM4ICM, MSG_ID_L4BFSCUI_TO_L3F4_WEIGHTCLOSE, "MSG_ID_L4BFSCUI_TO_L3F4_WEIGHTCLOSE",$input);
+                    break;
+
                 //开锁请求命令
-                /*case "OpenLock": //Open a lock
+                case "OpenLock": //Open a lock
                     if (isset($_GET["id"])) $uid = trim($_GET["id"]); else  $uid = "";
                     if (isset($_GET["StatCode"])) $statCode = trim($_GET["StatCode"]); else  $statCode= "";
                     $input = array("uid" => $uid, "statcode" => $statCode);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM4ICM, MSG_ID_L4FHYSUI_TO_L3F4_LOCKOPEN, "MSG_ID_L4FHYSUI_TO_L3F4_LOCKOPEN",$input);
                     break;
-                */
+
                 //根据钥匙用户的ID查询该用户授权的钥匙列表
                 case "UserKey":
                     if (isset($_GET["userid"])) $uid = trim($_GET["userid"]); else  $uid = "";

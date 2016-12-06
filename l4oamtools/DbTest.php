@@ -22,20 +22,22 @@ define ("TC_SOCKET", false);
 define ("TC_CRON", false);
 define ("TC_IOT_HCU", false);
 define ("TC_L4AQYC_UI", false);
-define ("TC_L4FHYS_UI", true);
+define ("TC_L4FHYS_UI", false);
+define ("TC_L4BFSC_UI", true);
 define ("TC_L4TBSWR_UI", false);
 define ("TC_NBIOT_CJ188_UL", false);
 define ("TC_NBIOT_CJ188_DL", false);
 define ("TC_NBIOT_QG376", false);
 
-require("testcase_nbiot188.php");
+require("testcase_wxemc.php");
+require("testcase_l2socket.php");
+require("testcase_l2cron.php");
+require("testcase_hcuiot.php");
 require("testcase_l4aqyc.php");
 require("testcase_l4fhys.php");
+require("testcase_l4bfsc.php");
 require("testcase_l4tbswr.php");
-require("testcase_wxemc.php");
-require("testcase_hcuiot.php");
-require("testcase_l2cron.php");
-require("testcase_l2socket.php");
+require("testcase_nbiot188.php");
 
 
 /**************************************************************************************
