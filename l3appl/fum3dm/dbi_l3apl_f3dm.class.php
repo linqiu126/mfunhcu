@@ -250,30 +250,6 @@ class classDbiL3apF3dm
         return $result;
     }
 
-    //UI ProjDel request，项目信息删除
-    public function dbi_projinfo_delete($pcode)
-    {
-        //建立连接
-        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
-        if (!$mysqli) {
-            die('Could not connect: ' . mysqli_error($mysqli));
-        }
-
-        $query_str = "DELETE FROM `t_l3f2cm_projinfo` WHERE `p_code` = '$pcode'";  //删除项目信息表
-        $result1 = $mysqli->query($query_str);
-
-        $query_str = "DELETE FROM `t_l3f2cm_sitemapping` WHERE `p_code` = '$pcode'";  //删除项目和监测点的映射关系
-        $result2 = $mysqli->query($query_str);
-
-        $query_str = "UPDATE `t_l3f3dm_siteinfo` SET `p_code` = '' WHERE (`p_code` = '$pcode' )"; //删除监测点表中的对应项目号
-        $result3 = $mysqli->query($query_str);
-
-        $result = $result1 and $result2 and $result3;
-
-        $mysqli->close();
-        return $result;
-    }
-
     /**********************************************************************************************************************
      *                                          监测点及HCU设备相关操作DB API                                               *
      *********************************************************************************************************************/
@@ -470,20 +446,20 @@ class classDbiL3apF3dm
         $mysqli->query("set character_set_results = utf8");
         $mysqli->query("SET NAMES utf8");
 
-        $statcode = $siteinfo["StatCode"];
-        $statname = $siteinfo["StatName"];
-        $pcode = $siteinfo["ProjCode"];
-        $chargeman = $siteinfo["ChargeMan"];
-        $telephone = $siteinfo["Telephone"];
-        $longitude = $siteinfo["Longitude"];
-        $latitude = $siteinfo["Latitude"];
-        $department = $siteinfo["Department"];
-        $addr = $siteinfo["Address"];
-        $country = $siteinfo["Country"];
-        $street = $siteinfo["Street"];
-        $square = $siteinfo["Square"];
-        $starttime = $siteinfo["ProStartTime"];
-        $stage = $siteinfo["Stage"];
+        if (isset($siteinfo["StatCode"])) $statcode = trim($siteinfo["StatCode"]); else  $statcode = "";
+        if (isset($siteinfo["StatName"])) $statname = trim($siteinfo["StatName"]); else  $statname = "";
+        if (isset($siteinfo["ProjCode"])) $pcode = trim($siteinfo["ProjCode"]); else  $pcode = "";
+        if (isset($siteinfo["ChargeMan"])) $chargeman = trim($siteinfo["ChargeMan"]); else  $chargeman = "";
+        if (isset($siteinfo["Telephone"])) $telephone = trim($siteinfo["Telephone"]); else  $telephone = "";
+        if (isset($siteinfo["Longitude"])) $longitude = trim($siteinfo["Longitude"]); else  $longitude = "";
+        if (isset($siteinfo["Latitude"])) $latitude = trim($siteinfo["Latitude"]); else  $latitude = "";
+        if (isset($siteinfo["Department"])) $department = trim($siteinfo["Department"]); else  $department = "";
+        if (isset($siteinfo["Address"])) $addr = trim($siteinfo["Address"]); else  $addr = "";
+        if (isset($siteinfo["Country"])) $country = trim($siteinfo["Country"]); else  $country = "";
+        if (isset($siteinfo["Street"])) $street = trim($siteinfo["Street"]); else  $street = "";
+        if (isset($siteinfo["Square"])) $square = trim($siteinfo["Square"]); else  $square = "";
+        if (isset($siteinfo["ProStartTime"])) $starttime = trim($siteinfo["ProStartTime"]); else  $starttime = "";
+        if (isset($siteinfo["Stage"])) $stage = trim($siteinfo["Stage"]); else  $stage = "";
 
         $query_str = "SELECT * FROM `t_l3f3dm_siteinfo` WHERE `statcode` = '$statcode'";
         $result = $mysqli->query($query_str);
@@ -642,7 +618,7 @@ class classDbiL3apF3dm
      *                                                 地图显示相关操作DB API                                               *
      *********************************************************************************************************************/
     //UI MonitorList request, 获取该用户地图显示的所有监测点信息
-    public function dbi_map_sitetinfo_req($uid)
+    public function dbi_map_sitetinfo_req()
     {
         //建立连接
         $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
@@ -704,7 +680,7 @@ class classDbiL3apF3dm
      *                                                 传感器相关操作DB API                                                 *
      *********************************************************************************************************************/
     //UI DevAlarm Request, 获取当前的测量值，如果测量值超出范围，提示告警
-    public function dbi_dev_currentvalue_req($statcode)
+    public function dbi_aqyc_dev_currentvalue_req($statcode)
     {
         //建立连接
         $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
@@ -1236,7 +1212,7 @@ class classDbiL3apF3dm
     }
 
 //UI GetStaticMonitorTable Request, 获取用户聚合数据
-    public function dbi_user_dataaggregate_req($uid)
+    public function dbi_aqyc_user_dataaggregate_req($uid)
     {
         //初始化返回值
         $resp["column"] = array();
@@ -1783,7 +1759,7 @@ class classDbiL3apF3dm
         return $currentvalue;
     }
 
-    public function dbi_key_event_history_process($projCode, $duration)
+    public function dbi_key_event_history_process($condition)
     {
         //初始化返回值
         $history["ColumnName"] = array();
@@ -1796,6 +1772,9 @@ class classDbiL3apF3dm
         }
         $mysqli->query("set character_set_results = utf8");
         $mysqli->query("SET NAMES utf8");
+
+        if (isset($condition["ProjCode"])) $projCode = trim($condition["ProjCode"]); else  $projCode = "";
+        if (isset($condition["Time"])) $duration = trim($condition["Time"]); else  $duration = "";
 
         array_push($history["ColumnName"], "序号");
         array_push($history["ColumnName"], "工单号");

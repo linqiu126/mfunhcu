@@ -43,113 +43,111 @@ class classTaskL3aplF1sym
     function func_login_process($user, $pwd)
     {
         $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
-        $userinfo =$uiF1symDbObj->dbi_login_req($user, $pwd);
-        $jsonencode = json_encode($userinfo);
-        return $jsonencode;
-    }
+        $resp =$uiF1symDbObj->dbi_login_req($user, $pwd);
+        $body = $resp['body'];
+        $msg = $resp['msg'];
 
-    function func_userinfo_process($session)
-    {
-        $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
-        $userinfo =$uiF1symDbObj->dbi_userinfo_req($session);
-        if(!empty($userinfo))
-            $retval=array(
-                'status'=>'true',
-                'ret'=>$userinfo
-            );
+        if (!empty($body['key']))
+            $retval=array('status'=>"true",'auth'=>"true",'ret'=>$body,'msg'=>$msg);
         else
-            $retval=array(
-                'status'=>'false',
-                'ret'=>null
-            );
-        //$jsonencode = _encode($retval);
+            $retval=array('status'=>"false",'auth'=>"false",'ret'=>$body,'msg'=>$msg);
+
         $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
         return $jsonencode;
     }
 
-    function func_usernew_process($userinfo)
+    function func_userinfo_process($type, $user, $body)
+    {
+        if (isset($body["session"])) $sessionid = $body["session"]; else  $sessionid = "";
+
+        $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
+        //改消息特殊不做权限判断
+        $userinfo =$uiF1symDbObj->dbi_userinfo_req($sessionid);
+        $retval=array('status'=>"true",'auth'=>"true",'ret'=>$userinfo,'msg'=>"");
+
+        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
+        return $jsonencode;
+    }
+
+    function func_usernew_process($type, $user, $body)
     {
         $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
-        $result = $uiF1symDbObj->dbi_userinfo_new($userinfo);
-        if($result == true){
-            $retval=array(
-                'status'=>'true',
-                'msg'=>'用户新增成功'
-            );
+        $usercheck = $uiF1symDbObj->dbi_user_authcheck($type, $user);
+        if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
+            $result = $uiF1symDbObj->dbi_userinfo_new($body);
+            if($result == true)
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"用户新增成功");
+            else
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"用户新增失败");
         }
         else
-            $retval=array(
-                'status'=>'false',
-                'msg'=>'用户新增失败'
-            );
-        //$jsonencode = _encode($retval);
+            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>$usercheck['msg']);
+
         $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
         return $jsonencode;
     }
 
-    function func_usermod_process($userinfo)
+    function func_usermod_process($type, $user, $body)
     {
         $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
-        $result = $uiF1symDbObj->dbi_userinfo_update($userinfo);
-        if($result)
-            $retval=array(
-                'status'=>'true',
-                'msg'=>'用户信息更新成功'
-            );
+        $usercheck = $uiF1symDbObj->dbi_user_authcheck($type, $user);
+        if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
+            $result = $uiF1symDbObj->dbi_userinfo_update($body);
+            if($result == true)
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"用户信息更新成功");
+            else
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"用户信息更新失败");
+        }
         else
-            $retval=array(
-                'status'=>'false',
-                'msg'=>'用户信息更新失败'
-            );
-        //$jsonencode = _encode($retval);
+            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>$usercheck['msg']);
+
         $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
         return $jsonencode;
     }
 
-    function func_userdel_process($uid)
+    function func_userdel_process($type, $user, $body)
     {
+        if (isset($body["userid"])) $userid = $body["userid"]; else  $userid = "";
+
         $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
-        $result = $uiF1symDbObj->dbi_userinfo_delete($uid);
-        if($result == true)
-            $retval=array(
-                'status'=>'true',
-                'msg'=>'用户删除成功'
-            );
+        $usercheck = $uiF1symDbObj->dbi_user_authcheck($type, $user);
+        if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
+            $result = $uiF1symDbObj->dbi_userinfo_delete($userid);
+            if($result == true)
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"用户删除成功");
+            else
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"用户删除失败");
+        }
         else
-            $retval=array(
-                'status'=>'false',
-                'msg'=>'用户删除失败'
-            );
-        //$jsonencode = _encode($retval);
+            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>$usercheck['msg']);
+
         $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
         return $jsonencode;
     }
 
-    function func_usertable_process($length, $startseq)
+    function func_usertable_process($type, $user, $body)
     {
+        if (isset($body["length"])) $length = $body["length"]; else  $length = "";
+        if (isset($body["startseq"])) $startseq = $body["startseq"]; else  $startseq = "";
         $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
         $total = $uiF1symDbObj->dbi_usernum_inqury();
         $query_length = (int)($length);
         $start = (int)($startseq);
         if($query_length > $total-$start) $query_length = $total-$start;
-        $usertable = $uiF1symDbObj->dbi_usertable_req($start, $query_length);
-        if (!empty($usertable))
-            $retval=array(
-                'status'=>'true',
-                'start'=> (string)$start,
-                'total'=> (string)$total,
-                'length'=>(string)$query_length,
-                'ret'=> $usertable
-            );
+
+        $usercheck = $uiF1symDbObj->dbi_user_authcheck($type, $user);
+        if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
+            $usertable = $uiF1symDbObj->dbi_usertable_req($start, $query_length);
+            if(!empty($usertable)){
+                $ret = array('start'=> (string)$start,'total'=> (string)$total,'length'=>(string)$query_length,'usertable'=>$usertable);
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$ret,'msg'=>"用户表获取成功");
+            }
+            else
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>"用户表获取失败");
+        }
         else
-            $retval=array(
-                'status'=>'false',
-                'start'=> null,
-                'total'=> null,
-                'length'=>null,
-                'ret'=> null
-            );
-        //$jsonencode = _encode($retval);
+            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
+
         $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
         return $jsonencode;
     }
@@ -183,7 +181,7 @@ class classTaskL3aplF1sym
         }
 
         //功能Login
-        if ($msgId == MSG_ID_L4AQYCUI_TO_L3F1_LOGIN)
+        elseif ($msgId == MSG_ID_L4AQYCUI_TO_L3F1_LOGIN)
         {
             //解开消息
             if (isset($msg["user"])) $user = $msg["user"]; else  $user = "";
@@ -197,9 +195,11 @@ class classTaskL3aplF1sym
         elseif ($msgId == MSG_ID_L4AQYCUI_TO_L3F1_USERINFO)
         {
             //解开消息
-            if (isset($msg["session"])) $session = $msg["session"]; else  $session = "";
+            if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
+            if (isset($msg["user"])) $user = $msg["user"]; else  $user = "";
+            if (isset($msg["body"])) $body = $msg["body"]; else  $body = "";
             //具体处理函数
-            $resp = $this->func_userinfo_process($session);
+            $resp = $this->func_userinfo_process($type, $user, $body);
             $project = MFUN_PRJ_HCU_AQYCUI;
         }
 
@@ -207,18 +207,12 @@ class classTaskL3aplF1sym
         elseif ($msgId == MSG_ID_L4AQYCUI_TO_L3F1_USERNEW)
         {
             //解开消息
-            if (isset($msg["name"])) $name = $msg["name"]; else  $name = "";
-            if (isset($msg["nickname"])) $nickname = $msg["nickname"]; else  $nickname = "";
-            if (isset($msg["password"])) $password = $msg["password"]; else  $password = "";
-            if (isset($msg["mobile"])) $mobile = $msg["mobile"]; else  $mobile = "";
-            if (isset($msg["mail"])) $mail = $msg["mail"]; else  $mail = "";
             if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
-            if (isset($msg["memo"])) $memo = $msg["memo"]; else  $memo = "";
-            if (isset($msg["auth"])) $auth = $msg["auth"]; else  $auth = "";
-            $userinfo = array("name" => $name, "nickname" => $nickname, "password" => $password, "mobile" => $mobile,
-                "mail" => $mail, "type" => $type, "memo" => $memo, "auth" => $auth);
+            if (isset($msg["user"])) $user = $msg["user"]; else  $user = "";
+            if (isset($msg["body"])) $body = $msg["body"]; else  $body = "";
+
             //具体处理函数
-            $resp = $this->func_usernew_process($userinfo);
+            $resp = $this->func_usernew_process($type, $user, $body);
             $project = MFUN_PRJ_HCU_AQYCUI;
         }
 
@@ -226,19 +220,12 @@ class classTaskL3aplF1sym
         elseif ($msgId == MSG_ID_L4AQYCUI_TO_L3F1_USERMOD)
         {
             //解开消息
-            if (isset($msg["id"])) $id = $msg["id"]; else  $id = "";
-            if (isset($msg["name"])) $name = $msg["name"]; else  $name = "";
-            if (isset($msg["nickname"])) $nickname = $msg["nickname"]; else  $nickname = "";
-            if (isset($msg["password"])) $password = $msg["password"]; else  $password = "";
-            if (isset($msg["mobile"])) $mobile = $msg["mobile"]; else  $mobile = "";
-            if (isset($msg["mail"])) $mail = $msg["mail"]; else  $mail = "";
             if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
-            if (isset($msg["memo"])) $memo = $msg["memo"]; else  $memo = "";
-            if (isset($msg["auth"])) $auth = $msg["auth"]; else  $auth = "";
-            $userinfo = array("id" => $id, "name" => $name, "nickname" => $nickname, "password" => $password, "mobile" => $mobile,
-                "mail" => $mail, "type" => $type, "memo" => $memo, "auth" => $auth);
+            if (isset($msg["user"])) $user = $msg["user"]; else  $user = "";
+            if (isset($msg["body"])) $body = $msg["body"]; else  $body = "";
+
             //具体处理函数
-            $resp = $this->func_usermod_process($userinfo);
+            $resp = $this->func_usermod_process($type, $user, $body);
             $project = MFUN_PRJ_HCU_AQYCUI;
         }
 
@@ -246,9 +233,12 @@ class classTaskL3aplF1sym
         elseif ($msgId == MSG_ID_L4AQYCUI_TO_L3F1_USERDEL)
         {
             //解开消息
-            if (isset($msg["id"])) $id = $msg["id"]; else  $id = "";
+            if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
+            if (isset($msg["user"])) $user = $msg["user"]; else  $user = "";
+            if (isset($msg["body"])) $body = $msg["body"]; else  $body = "";
+
             //具体处理函数
-            $resp = $this->func_userdel_process($id);
+            $resp = $this->func_userdel_process($type, $user, $body);
             $project = MFUN_PRJ_HCU_AQYCUI;
         }
 
@@ -256,10 +246,12 @@ class classTaskL3aplF1sym
         elseif ($msgId == MSG_ID_L4AQYCUI_TO_L3F1_USERTABLE)
         {
             //解开消息
-            if (isset($msg["length"])) $length = $msg["length"]; else  $length = "";
-            if (isset($msg["startseq"])) $startseq = $msg["startseq"]; else  $startseq = "";
+            if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
+            if (isset($msg["user"])) $user = $msg["user"]; else  $user = "";
+            if (isset($msg["body"])) $body = $msg["body"]; else  $body = "";
+
             //具体处理函数
-            $resp = $this->func_usertable_process($length, $startseq);
+            $resp = $this->func_usertable_process($type, $user, $body);
             $project = MFUN_PRJ_HCU_AQYCUI;
         }
 

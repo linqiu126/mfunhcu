@@ -251,6 +251,47 @@ class classDbiL3apF1sym
         return $uid;
     }
 
+    public function dbi_user_authcheck($type, $sessionid)
+    {
+        //建立连接
+        $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli)
+        {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $mysqli->query("set character_set_results = utf8");
+
+        //初始化状态变量
+        $auth = "true";
+        $status = "true";
+        $msg = "";
+
+        $uid = $this->dbi_session_check($sessionid);
+        if (!empty($uid)){
+            $query_str = "SELECT * FROM `t_l3f1sym_account` WHERE `uid` = '$uid'";
+            $result = $mysqli->query($query_str);
+            if (($result->num_rows)>0) {
+                $row = $result->fetch_array();
+                $grade = intval($row['grade']);
+
+                //暂定grade=3或4的用户没有修改权限
+                if (($grade == MFUN_USER_GRADE_LEVEL_3 OR $grade == MFUN_USER_GRADE_LEVEL_4) AND ($type == "mod") ){
+                    $auth = "false";
+                    $msg = "对不起，您没有权限做此操作，请联系管理员";
+                }
+            }
+        }
+        else{
+            $auth = "fasle";
+            $status = "false";
+            $msg = "网页长时间没有操作，会话超时";
+        }
+
+        $authcheck = array('status' => $status,'auth' => $auth,'msg' => $msg);
+        $mysqli->close();
+        return $authcheck;
+    }
+
     //UI login request  用户登录请求
     public function dbi_login_req($name, $password)
     {
@@ -271,40 +312,28 @@ class classDbiL3apF1sym
             $row = $result->fetch_array();
             $pwd = $row['pwd'];
             $uid = $row['uid'];
-            $attribute = $row['attribute'];
-            if ($attribute == 'admin' or  $attribute == '管理员')
-                $admin = "true";
-            else
-                $admin = "false";
+            $admin = $row['admin'];
 
             if ($pwd == $password) {
                 $strlen = MFUN_L3APL_F1SYM_SESSION_ID_LEN;
                 $sessionid = $this->getRandomSid($strlen);
-                $userinfo = array(
-                    'status' => "true",
-                    'text' => "login success",
-                    'key' => $sessionid,
-                    'admin' => $admin);
+                $body = array('key'=> $sessionid, 'admin'=> $admin);
+                $msg = "登录成功";
                 $this->updateSession($uid, $sessionid);
             }
             else {
-                $userinfo = array(
-                    'status' => "false",
-                    'text' => "password invalid",
-                    'key' => null,
-                    'admin' => null);
+                $body = array('key'=> "", 'admin'=> "");
+                $msg = "登录失败，密码错误";
             }
         }
         else {
-            $userinfo = array(
-                'status' => "false",
-                'text' => "user name not exist",
-                'key' => null,
-                'admin' => null);
+            $body = array('key'=> "", 'admin'=> "");
+            $msg = "登录失败，用户名错误";
         }
+        $login_info = array('body' => $body,'msg' => $msg);
 
         $mysqli->close();
-        return $userinfo;
+        return $login_info;
     }
 
     //UI UserInfo request  获取当前登录用户信息
@@ -317,8 +346,9 @@ class classDbiL3apF1sym
             die('Could not connect: ' . mysqli_error($mysqli));
         }
         $mysqli->query("set character_set_results = utf8");
+        $mysqli->query("SET NAMES utf8");
 
-        $userinfo = ""; //初始化
+        $userinfo = array(); //初始化
 
         $query_str = "SELECT * FROM `t_l3f1sym_session` WHERE `sessionid` = '$sessionid'";
         $result = $mysqli->query($query_str);
@@ -335,17 +365,12 @@ class classDbiL3apF1sym
                 if (($result->num_rows)>0)
                 {
                     $row = $result->fetch_array();
-                    $attribute = $row['attribute'];
-                    if ($attribute == 'admin' or  $attribute == '管理员')
-                        $admin = "true";
-                    else
-                        $admin = "false";
-
-                    $userinfo = array(
-                        'id' => $sessionid,
-                        'name' => $row['user'],
-                        'admin' => $admin,
-                        'city' => $row['city'] );
+                    $grade_idx = $row['grade'];
+                    $city = $row['city'];
+                    $name = $row['user'];
+                    $taskObj = new classConstL1vmUserWebRight();
+                    $grade_info = $taskObj->mfun_vm_getUserGrade($grade_idx);
+                    $userinfo = array('id'=>$sessionid,'name'=>$name,'level'=>$grade_idx,'city'=>$city,'userauth'=>$grade_info);
                 }
             }
         }
@@ -387,18 +412,14 @@ class classDbiL3apF1sym
         $usertable = array();
         while (($result != false) && (($row = $result->fetch_array()) > 0))
         {
-            $attribute = $row['attribute'];
-            if ($attribute == 'admin' or  $attribute == '管理员')
-                $attribute = "true";
-            else
-                $attribute = "false";
+            $admin = $row['admin'];
             $temp = array(
                 'id' => $row['uid'],
                 'name' => $row['user'],
                 'nickname'=> $row['nick'],
                 'mobile' => $row['phone'],
                 'mail' => $row['email'],
-                'type' => $attribute,
+                'type' => $row['grade'],
                 'date' => $row['regdate'],
                 'memo' => $row['backup']
             );
@@ -423,32 +444,32 @@ class classDbiL3apF1sym
         $mysqli->query("SET NAMES utf8");
 
         $uid = MFUN_L3APL_F1SYM_UID_PREFIX.$this->getRandomUid(MFUN_L3APL_F1SYM_USER_ID_LEN);  //UID的分配机制将来要重新考虑，避免重复
-        $user = $userinfo["name"];
-        $nick = $userinfo["nickname"];
-        $pwd = $userinfo["password"];
-        $attribute = $userinfo["type"];
-        $phone = $userinfo["mobile"];
-        $email = $userinfo["mail"];
-        $regdate = date("Y-m-d", time());
-        $backup = $userinfo["memo"];
-        $city = "上海"; //暂定用户所在城市，将来需要修改
+        if (isset($userinfo["name"])) $user = trim($userinfo["name"]); else  $user = "";
+        if (isset($userinfo["nickname"])) $nick = trim($userinfo["nickname"]); else  $nick = "";
+        if (isset($userinfo["password"])) $pwd = trim($userinfo["password"]); else  $pwd = "";
+        if (isset($userinfo["type"])) $grade = trim($userinfo["type"]); else  $grade = "";
+        if (isset($userinfo["mobile"])) $phone = trim($userinfo["mobile"]); else  $phone = "";
+        if (isset($userinfo["mail"])) $email = trim($userinfo["mail"]); else  $email = "";
+        if (isset($userinfo["memo"])) $backup = trim($userinfo["memo"]); else  $backup = "";
+        if (isset($userinfo["auth"])) $auth = trim($userinfo["auth"]); else  $auth = "";
 
-        $auth = array();
-        $auth = $userinfo["auth"];
+        $regdate = date("Y-m-d", time());
+        $city = "上海"; //暂定用户所在城市，将来需要修改
+        $admin = "false";
 
         $query_str = "SELECT * FROM `t_l3f1sym_account` WHERE `user` = '$user'";
         $result = $mysqli->query($query_str);
 
         if (($result->num_rows)>0) //重复，则覆盖
         {
-            $query_str = "UPDATE `t_l3f1sym_account` SET `nick` = '$nick',`pwd` = '$pwd',`attribute` = '$attribute',`phone` = '$phone',`email` = '$email',
+            $query_str = "UPDATE `t_l3f1sym_account` SET `nick` = '$nick',`pwd` = '$pwd',`admin` = '$admin',`grade` = '$grade',`phone` = '$phone',`email` = '$email',
                           `regdate` = '$regdate', `city` = '$city',`backup` = '$backup' WHERE (`user` = '$user' )";
             $result = $mysqli->query($query_str);
         }
         else //不存在，新增
         {
-            $query_str = "INSERT INTO `t_l3f1sym_account` (uid,user,nick,pwd,attribute,phone,email,regdate,city,backup)
-                                  VALUES ('$uid','$user','$nick','$pwd','$attribute','$phone','$email', '$regdate','$city','$backup')";
+            $query_str = "INSERT INTO `t_l3f1sym_account` (uid,user,nick,pwd,admin,grade,phone,email,regdate,city,backup)
+                                  VALUES ('$uid','$user','$nick','$pwd','$admin','$grade','$phone','$email', '$regdate','$city','$backup')";
 
             $result = $mysqli->query($query_str);
         }
@@ -483,33 +504,26 @@ class classDbiL3apF1sym
         //$mysqli->query("set character_set_connection = utf8");
         $mysqli->query("SET NAMES utf8");
 
-        $uid = $userinfo["id"];
-        $user = $userinfo["name"];
-        $nick = $userinfo["nickname"];
-        $pwd = $userinfo["password"];
-        $phone = $userinfo["mobile"];
-        $email = $userinfo["mail"];
+        if (isset($userinfo["id"])) $uid = trim($userinfo["id"]); else  $uid = "";
+        if (isset($userinfo["name"])) $user = trim($userinfo["name"]); else  $user = "";
+        if (isset($userinfo["nickname"])) $nick = trim($userinfo["nickname"]); else  $nick = "";
+        if (isset($userinfo["password"])) $pwd = trim($userinfo["password"]); else  $pwd = "";
+        if (isset($userinfo["type"])) $grade = trim($userinfo["type"]); else  $grade = "";
+        if (isset($userinfo["mobile"])) $phone = trim($userinfo["mobile"]); else  $phone = "";
+        if (isset($userinfo["mail"])) $email = trim($userinfo["mail"]); else  $email = "";
+        if (isset($userinfo["memo"])) $backup = trim($userinfo["memo"]); else  $backup = "";
+        if (isset($userinfo["auth"])) $auth = trim($userinfo["auth"]); else  $auth = "";
         $regdate = date("Y-m-d", time());
-        $backup = $userinfo["memo"];
-        $auth = array();
-        $auth = $userinfo["auth"];
-
-        $attribute = $userinfo["type"];
-        if ($attribute == "true")
-            $attribute = "管理员";
-        else
-            $attribute = "用户";
-
 
         if (!empty($pwd)) //如果输入有密码，则覆盖
         {
-            $query_str = "UPDATE `t_l3f1sym_account` SET `user` = '$user',`nick` = '$nick',`pwd` = '$pwd',`attribute` = '$attribute',`phone` = '$phone',`email` = '$email',
+            $query_str = "UPDATE `t_l3f1sym_account` SET `user` = '$user',`nick` = '$nick',`pwd` = '$pwd',`grade` = '$grade',`phone` = '$phone',`email` = '$email',
                           `regdate` = '$regdate', `backup` = '$backup' WHERE (`uid` = '$uid' )";
             $result = $mysqli->query($query_str);
         }
         else
         {
-            $query_str = "UPDATE `t_l3f1sym_account` SET `user` = '$user',`nick` = '$nick',`attribute` = '$attribute',`phone` = '$phone',`email` = '$email',
+            $query_str = "UPDATE `t_l3f1sym_account` SET `user` = '$user',`nick` = '$nick',`grade` = '$grade',`phone` = '$phone',`email` = '$email',
                           `regdate` = '$regdate', `backup` = '$backup' WHERE (`uid` = '$uid' )";
             $result = $mysqli->query($query_str);
         }

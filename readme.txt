@@ -312,6 +312,10 @@ Make By：ZJL
 > FHYS功能完善，第一个deliver现场版本
 > 增加BFSC波峰组合秤项目
 
+//= LZH, 2016 Dec.11, CURRENT_SW_DELIVERY R03.D06
+> FHYS UI和后台MFUNHCU采样新接口定义
+> 登录功能调试OK，其他接口还在测试中，改动比较大，先git上传一次
+
 
 //待完善的功能
 1. dbi_devinfo_update（）需要修改，添加设备时预计结束时间和实际结束时间应该在项目信息里

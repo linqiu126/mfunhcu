@@ -40,80 +40,80 @@ class classTaskL3aplF5fm
         return urlencode($elem);
     }
 
-    function func_dev_alarm_process($StatCode)
+    function func_aqyc_dev_alarm_process($type, $user, $body)
     {
-        $uiF3dmDbObj = new classDbiL3apF3dm(); //初始化一个UI DB对象
-        $alarmlist = $uiF3dmDbObj->dbi_dev_currentvalue_req($StatCode);
-        if(!empty($alarmlist))
-            $retval=array(
-                'status'=>'true',
-                'ret'=> $alarmlist
-            );
+        if (isset($body["StatCode"])) $StatCode = $body["StatCode"]; else  $StatCode = "";
+
+        $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
+        $usercheck = $uiF1symDbObj->dbi_user_authcheck($type, $user);
+        if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
+            $uiF3dmDbObj = new classDbiL3apF3dm(); //初始化一个UI DB对象
+            $alarmlist = $uiF3dmDbObj->dbi_aqyc_dev_currentvalue_req($StatCode);
+            if(!empty($alarmlist))
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$alarmlist,'msg'=>"获取该站点下当前设备测量信息成功");
+            else
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>"获取该站点下当前设备测量信息失败");
+        }
         else
-            $retval=array(
-                'status'=>'true',
-                'ret'=> array()
-            );
-        //$jsonencode = _encode($retval);
+            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
+
         $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
         return $jsonencode;
     }
 
-    function func_alarm_query_process($id, $StatCode, $date, $type)
+    function func_alarm_query_process($type, $user, $body)
     {
-        $uiF3dmDbObj = new classDbiL3apF3dm(); //初始化一个UI DB对象
-        $result = $uiF3dmDbObj->dbi_dev_alarmhistory_req($StatCode, $date, $type);
-        if(!empty($result))
-            $retval= array(
-                'status'=>"true",
-                'StatCode'=> $StatCode,
-                'date'=> $date,
-                'AlarmName'=> $result["alarm_name"],
-                'AlarmUnit'=> $result["alarm_unit"],
-                'WarningTarget'=>$result["warning"],
-                'minute_head'=>$result["minute_head"],
-                'minute_alarm'=> $result["minute_alarm"],
-                'hour_head'=>$result["hour_head"],
-                'hour_alarm'=> $result["hour_alarm"],
-                'day_head'=>$result["day_head"],
-                'day_alarm'=> $result["day_alarm"]
-            );
+        if (isset($body["StatCode"])) $StatCode = $body["StatCode"]; else  $StatCode = "";
+        if (isset($body["date"])) $date = $body["date"]; else  $date = "";
+        if (isset($body["type"])) $alarmtype = $body["type"]; else  $alarmtype = "";
+
+        $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
+        $usercheck = $uiF1symDbObj->dbi_user_authcheck($type, $user);
+        if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
+            $uiF3dmDbObj = new classDbiL3apF3dm(); //初始化一个UI DB对象
+            $table = $uiF3dmDbObj->dbi_dev_alarmhistory_req($StatCode, $date, $alarmtype);
+            if(!empty($table)){
+                $ret = array('StatCode'=> $StatCode,
+                            'date'=> $date,
+                            'AlarmName'=> $table["alarm_name"],
+                            'AlarmUnit'=> $table["alarm_unit"],
+                            'WarningTarget'=>$table["warning"],
+                            'minute_head'=>$table["minute_head"],
+                            'minute_alarm'=> $table["minute_alarm"],
+                            'hour_head'=>$table["hour_head"],
+                            'hour_alarm'=> $table["hour_alarm"],
+                            'day_head'=>$table["day_head"],
+                            'day_alarm'=> $table["day_alarm"]);
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$ret,'msg'=>"查询历史告警数据成功");
+            }
+            else
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>"查询历史告警数据失败");
+        }
         else
-            $retval= array(
-                'status'=>"false",
-                'StatCode'=> $StatCode,
-                'date'=> $date,
-                'AlarmName'=> $type,
-                'AlarmUnit'=> null,
-                'WarningTarget'=> null,
-                'minute_head'=> null,
-                'minute_alarm'=> null,
-                'hour_head'=> null,
-                'hour_alarm'=> null,
-                'day_head'=> null,
-                'day_alarm'=> null
-            );
+            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
 
         $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
         return $jsonencode;
     }
 
     /*********************************智能云锁新增处理************************************************/
-    function func_fhys_dev_alarm_process($StatCode)
+    function func_fhys_dev_alarm_process($type, $user, $body)
     {
-        $uiF3dmDbObj = new classDbiL3apF3dm(); //初始化一个UI DB对象
-        $alarmlist = $uiF3dmDbObj->dbi_fhys_dev_currentvalue_req($StatCode);
-        if(!empty($alarmlist))
-            $retval=array(
-                'status'=>'true',
-                'ret'=> $alarmlist
-            );
+        if (isset($body["StatCode"])) $StatCode = $body["StatCode"]; else  $StatCode = "";
+
+        $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
+        $usercheck = $uiF1symDbObj->dbi_user_authcheck($type, $user);
+        if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
+            $uiF3dmDbObj = new classDbiL3apF3dm(); //初始化一个UI DB对象
+            $alarmlist = $uiF3dmDbObj->dbi_fhys_dev_currentvalue_req($StatCode);
+            if(!empty($alarmlist))
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$alarmlist,'msg'=>"获取该站点下当前设备测量信息成功");
+            else
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>"获取该站点下当前设备测量信息失败");
+        }
         else
-            $retval=array(
-                'status'=>'true',
-                'ret'=> array()
-            );
-        //$jsonencode = _encode($retval);
+            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
+
         $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
         return $jsonencode;
     }
@@ -128,6 +128,7 @@ class classTaskL3aplF5fm
         $log_time = date("Y-m-d H:i:s", time());
         $project ="";
 
+
         //入口消息内容判断
         if (empty($msg) == true) {
             $result = "Received null message body";
@@ -136,6 +137,13 @@ class classTaskL3aplF5fm
             echo trim($result);
             return false;
         }
+        else{
+            //解开消息
+            if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
+            if (isset($msg["user"])) $user = $msg["user"]; else  $user = "";
+            if (isset($msg["body"])) $body = $msg["body"]; else  $body = "";
+        }
+
         //多条消息发送到L3APPL_F5FM，这里潜在的消息太多，没法一个一个的判断，故而只检查上下界
         if (($msgId <= MSG_ID_MFUN_MIN) || ($msgId >= MSG_ID_MFUN_MAX)){
             $result = "Msgid or MsgName error";
@@ -146,26 +154,18 @@ class classTaskL3aplF5fm
         }
 
         //功能Dev Alarm
-        if ($msgId == MSG_ID_L4AQYCUI_TO_L3F5_DEVALARM)
+        elseif ($msgId == MSG_ID_L4AQYCUI_TO_L3F5_DEVALARM)
         {
-            //解开消息
-            if (isset($msg["StatCode"])) $StatCode = $msg["StatCode"]; else  $StatCode = "";
             //具体处理函数
-            $resp = $this->func_dev_alarm_process($StatCode);
+            $resp = $this->func_aqyc_dev_alarm_process($type, $user, $body);
             $project = MFUN_PRJ_HCU_AQYCUI;
         }
 
         //功能Alarm Query
         elseif ($msgId == MSG_ID_L4AQYCUI_TO_L3F5_ALARMQUERY)
         {
-            //解开消息
-            if (isset($msg["id"])) $id = $msg["id"]; else  $id = "";
-            if (isset($msg["StatCode"])) $StatCode = $msg["StatCode"]; else  $StatCode = "";
-            if (isset($msg["date"])) $date = $msg["date"]; else  $date = "";
-            if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
-            $input = array("id" => $id, "StatCode" => $StatCode, "date" => $date, "type" => $type);
             //具体处理函数
-            $resp = $this->func_alarm_query_process($id, $StatCode, $date, $type);
+            $resp = $this->func_alarm_query_process($type, $user, $body);
             $project = MFUN_PRJ_HCU_AQYCUI;
         }
 
@@ -173,10 +173,8 @@ class classTaskL3aplF5fm
         //功能Dev Alarm
         if ($msgId == MSG_ID_L4FHYSUI_TO_L3F5_DEVALARM)
         {
-            //解开消息
-            if (isset($msg["StatCode"])) $StatCode = $msg["StatCode"]; else  $StatCode = "";
             //具体处理函数
-            $resp = $this->func_fhys_dev_alarm_process($StatCode);
+            $resp = $this->func_fhys_dev_alarm_process($type, $user, $body);
             $project = MFUN_PRJ_HCU_FHYSUI;
         }
 

@@ -12,7 +12,39 @@ include_once "../l1comvm/vmlayer.php";
  *                             L4FHYS-UI TEST CASES                                   *
  *************************************************************************************/
 if (TC_L4FHYS_UI == true) {
+    //公共消息测试
+    echo " [TC L4FHYS: LOGIN START]\n";
+    $_GET["action"] = "login";
+    $_GET["name"] = "admin";
+    $_GET["password"] = "admin";
+    //require("../l4fhysui/request.php");
+    echo " [TC L4FHYS: LOGIN END]\n";
 
+    echo " [TC L4FHYS: USERINFO START]\n";
+    $_GET["action"] = "UserInfo";
+    $body = array('session' => "YKsHwCAJN3");
+    $_GET["type"] = "query";
+    $_GET["body"] = $body;
+    $_GET["user"] = "null";
+    require("../l4fhysui/request.php");
+    echo " [TC L4FHYS: USERINFO END]\n";
+
+    echo " [TC L4FHYS: USERNEW START]\n";
+    $_GET["action"] = "UserNew";
+    $body = array('name' => "aaa", 'nickname' => "bbb",'password' => "AAA",'mobile' => "139",'mail' => "aaa@139",'type' => "ZZZ",'name' => "ZZZ");
+
+    $_GET["name"] = "ZZZ";
+    $_GET["nickname"] = "ZZZ";
+    $_GET["password"] ="zzz";
+    $_GET["mobile"] ="zzz";
+    $_GET["mail"] ="zzz";
+    $_GET["type"] ="aa";
+    $_GET["memo"] ="zz";
+    $_GET["auth"] ="zz";
+    require("../l4fhysui/request.php");
+    echo " [TC L4FHYS: USERNEW END]\n";
+
+    //智能云锁专用消息测试
     echo " [TC L4FHYS: UserKey START]\n";
     $_GET["action"] = "UserKey";
     $_GET["userid"] = "UID000001";

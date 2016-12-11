@@ -99,7 +99,7 @@ class classDbiL3apF4icm
         return $result;
     }
 
-    public function dbi_hcu_vediolist_inqury($statcode, $date, $hour)
+    public function dbi_hcu_vediolist_inqury($input)
     {
         //查询监测点下的设备列表
         $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
@@ -107,6 +107,10 @@ class classDbiL3apF4icm
             die('Could not connect: ' . mysqli_error($mysqli));
         }
         $mysqli->query("set character_set_results = utf8");
+
+        if (isset($input["StatCode"])) $statcode = trim($input["StatCode"]); else  $statcode = "";
+        if (isset($input["date"])) $date = trim($input["date"]); else  $date = "";
+        if (isset($input["hour"])) $hour = trim($input["hour"]); else  $hour = "";
 
         $query_str = "SELECT * FROM `t_l3f3dm_siteinfo` WHERE `statcode` = '$statcode' ";
         $result = $mysqli->query($query_str);
@@ -304,7 +308,7 @@ class classDbiL3apF4icm
     }
 
     //仪表控制，更新传感器信息,发送传感器参数修改命令
-    public function dbi_sensor_info_update($DevCode, $SensorCode, $status,$ParaList)
+    public function dbi_sensor_info_update($input)
     {
         //建立连接
         $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
@@ -312,6 +316,11 @@ class classDbiL3apF4icm
             die('Could not connect: ' . mysqli_error($mysqli));
         }
         $mysqli->query("set character_set_results = utf8");
+
+        if (isset($input["DevCode"])) $DevCode = trim($input["DevCode"]); else  $DevCode = "";
+        if (isset($input["SensorCode"])) $SensorCode = trim($input["SensorCode"]); else  $SensorCode = "";
+        if (isset($input["status"])) $status = trim($input["status"]); else  $status = "";
+        if (isset($input["ParaList"])) $ParaList = $input["ParaList"]; else  $ParaList = array();
 
         $query_str = "SELECT * FROM `t_l3f4icm_sensorctrl` WHERE `deviceid` = '$DevCode' AND `sensortype` = '$SensorCode' ";
         $result = $mysqli->query($query_str);
@@ -454,7 +463,7 @@ class classDbiL3apF4icm
     }
 
     //Camera状态更新，取回当前照片
-    public function dbi_get_camera_status($uid, $StatCode)
+    public function dbi_get_camera_status($StatCode)
     {
         //建立连接
         $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
@@ -484,10 +493,10 @@ class classDbiL3apF4icm
             $client = new socket_client_sync($DevCode, $respCmd);
             $client->connect();
 
-            $resp = "Success";
+            $resp = true;
         }
         else
-            $resp = "";
+            $resp = false;
         $mysqli->close();
         return $resp;
     }

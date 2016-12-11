@@ -156,13 +156,15 @@ class classDbiL2sdkHcu
         $mysqli->query("set character_set_results = utf8");
         $mysqli->query("SET NAMES utf8");
 
-        $devcode = $devinfo["DevCode"];
-        $statcode = $devinfo["StatCode"];
-        $starttime = $devinfo["StartTime"];
-        $preendtime = $devinfo["PreEndTime"];  //！！！这个地方需要修改：预计结束时间和实际结束时间应该在项目信息里
-        $endtime = $devinfo["EndTime"];
-        $videourl = $devinfo["VideoURL"];
-        if($devinfo["DevStatus"] == "true")
+        if (isset($devinfo["DevCode"])) $devcode = trim($devinfo["DevCode"]); else  $devcode = "";
+        if (isset($devinfo["StatCode"])) $statcode = trim($devinfo["StatCode"]); else  $statcode = "";
+        if (isset($devinfo["StartTime"])) $starttime = trim($devinfo["StartTime"]); else  $starttime = "";
+        if (isset($devinfo["PreEndTime"])) $preendtime = trim($devinfo["PreEndTime"]); else  $preendtime = "";
+        if (isset($devinfo["EndTime"])) $endtime = trim($devinfo["EndTime"]); else  $endtime = "";
+        if (isset($devinfo["DevStatus"])) $devstatus = trim($devinfo["DevStatus"]); else  $devstatus = "";
+        if (isset($devinfo["VideoURL"])) $videourl = trim($devinfo["VideoURL"]); else  $videourl = "";
+
+        if($devstatus == "true")
             $devstatus = MFUN_HCU_AQYC_STATUS_ON;
         else
             $devstatus = MFUN_HCU_AQYC_STATUS_OFF;

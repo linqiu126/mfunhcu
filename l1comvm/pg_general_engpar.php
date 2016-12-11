@@ -92,4 +92,128 @@ if (MFUN_CURRENT_WORKING_PROGRAM_NAME_UNIQUE == MFUN_WORKING_PROGRAM_NAME_UNIQUE
     define ("MFUN_EMCWX_DATA_SAVE_DURATION_IN_DAYS", 90);
 }
 
+//定义用户权限级别
+define ("MFUN_USER_GRADE_LEVEL_0", 0);
+define ("MFUN_USER_GRADE_LEVEL_1", 1);
+define ("MFUN_USER_GRADE_LEVEL_2", 2);
+define ("MFUN_USER_GRADE_LEVEL_3", 3);
+define ("MFUN_USER_GRADE_LEVEL_4", 4);
+
+class classConstL1vmUserWebRight
+{
+    public static $mfunUserGradeArrayConst = array(
+        MFUN_USER_GRADE_LEVEL_0 => array(
+            'webauth'=>array(
+                        'UserManage' => 'true',
+                        'ParaManage' => 'true',
+                        'InstControl' => 'true',
+                        'PGManage' => 'true',
+                        'ProjManage' => 'true',
+                        'MPManage' => 'true',
+                        'DevManage' => 'true',
+                        'KeyManage' => 'true',
+                        'KeyAuth' => 'true',
+                        'KeyHistory' => 'true',
+                        'MPMonitor' => 'true',
+                        'MPStaticMonitorTable' => 'true',
+                        'WarningCheck' => 'true',
+                        'WarningHandle' => 'true',
+                        'InstConf' => 'true',
+                        'InstRead' => 'true'),
+            'query' => 'true',
+            'mod' => 'true'),
+        MFUN_USER_GRADE_LEVEL_1 => array(
+            'webauth'=>array(
+                'UserManage' => 'true',
+                'ParaManage' => 'true',
+                'InstControl' => 'true',
+                'PGManage' => 'true',
+                'ProjManage' => 'true',
+                'MPManage' => 'true',
+                'DevManage' => 'true',
+                'KeyManage' => 'true',
+                'KeyAuth' => 'true',
+                'KeyHistory' => 'true',
+                'MPMonitor' => 'true',
+                'MPStaticMonitorTable' => 'true',
+                'WarningCheck' => 'true',
+                'WarningHandle' => 'true',
+                'InstConf' => 'true',
+                'InstRead' => 'true'),
+            'query' => 'true',
+            'mod' => 'true'),
+        MFUN_USER_GRADE_LEVEL_2 => array(
+            'webauth'=>array(
+                'UserManage' => 'true',
+                'ParaManage' => 'true',
+                'InstControl' => 'true',
+                'PGManage' => 'true',
+                'ProjManage' => 'true',
+                'MPManage' => 'true',
+                'DevManage' => 'true',
+                'KeyManage' => 'true',
+                'KeyAuth' => 'true',
+                'KeyHistory' => 'true',
+                'MPMonitor' => 'true',
+                'MPStaticMonitorTable' => 'true',
+                'WarningCheck' => 'true',
+                'WarningHandle' => 'true',
+                'InstConf' => 'true',
+                'InstRead' => 'true'),
+            'query' => 'true',
+            'mod' => 'false'),
+        MFUN_USER_GRADE_LEVEL_3 => array(
+            'webauth'=>array(
+                'UserManage' => 'false',
+                'ParaManage' => 'false',
+                'InstControl' => 'true',
+                'PGManage' => 'true',
+                'ProjManage' => 'true',
+                'MPManage' => 'true',
+                'DevManage' => 'true',
+                'KeyManage' => 'true',
+                'KeyAuth' => 'false',
+                'KeyHistory' => 'true',
+                'MPMonitor' => 'true',
+                'MPStaticMonitorTable' => 'true',
+                'WarningCheck' => 'true',
+                'WarningHandle' => 'true',
+                'InstConf' => 'true',
+                'InstRead' => 'true'),
+            'query' => 'true',
+            'mod' => 'false'),
+        MFUN_USER_GRADE_LEVEL_4 => array(
+            'webauth'=>array(
+                'UserManage' => 'true',
+                'ParaManage' => 'true',
+                'InstControl' => 'true',
+                'PGManage' => 'true',
+                'ProjManage' => 'true',
+                'MPManage' => 'true',
+                'DevManage' => 'true',
+                'KeyManage' => 'true',
+                'KeyAuth' => 'true',
+                'KeyHistory' => 'true',
+                'MPMonitor' => 'true',
+                'MPStaticMonitorTable' => 'true',
+                'WarningCheck' => 'true',
+                'WarningHandle' => 'true',
+                'InstConf' => 'true',
+                'InstRead' => 'true'),
+            'query' => 'false',
+            'mod' => 'false'),
+        );
+    //通过TaskId读取TaskName
+    public static function mfun_vm_getUserGrade($gradeIndex)
+    {
+
+        if ($gradeIndex >= 0 AND $gradeIndex <=4) {
+            return self::$mfunUserGradeArrayConst[$gradeIndex];
+        }else {
+            return false;
+        }
+    }
+
+}
+
 ?>

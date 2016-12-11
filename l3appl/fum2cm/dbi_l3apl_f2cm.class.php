@@ -552,6 +552,30 @@ class classDbiL3apF2cm
         return $result;
     }
 
+    //UI ProjDel request，项目信息删除
+    public function dbi_projinfo_delete($pcode)
+    {
+        //建立连接
+        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli) {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+
+        $query_str = "DELETE FROM `t_l3f2cm_projinfo` WHERE `p_code` = '$pcode'";  //删除项目信息表
+        $result1 = $mysqli->query($query_str);
+
+        $query_str = "DELETE FROM `t_l3f2cm_sitemapping` WHERE `p_code` = '$pcode'";  //删除项目和监测点的映射关系
+        $result2 = $mysqli->query($query_str);
+
+        $query_str = "UPDATE `t_l3f3dm_siteinfo` SET `p_code` = '' WHERE (`p_code` = '$pcode' )"; //删除监测点表中的对应项目号
+        $result3 = $mysqli->query($query_str);
+
+        $result = $result1 and $result2 and $result3;
+
+        $mysqli->close();
+        return $result;
+    }
+
     //UI PGDel request，项目组信息删除
     public function dbi_pginfo_delete($pgcode)
     {
@@ -768,7 +792,7 @@ class classDbiL3apF2cm
         return $keytable;
     }
 
-    public function dbi_key_new_process($keyname,$keytype,$projcode,$hwcode,$memo)
+    public function dbi_key_new_process($keyinfo)
     {
         //建立连接
         $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
@@ -778,8 +802,14 @@ class classDbiL3apF2cm
         $mysqli->query("set character_set_results = utf8");
         $mysqli->query("SET NAMES utf8");
 
-        $keyid = MFUN_L3APL_F2CM_KEY_PREFIX.$this->getRandomKeyid(MFUN_L3APL_F2CM_KEY_ID_LEN);  //KEYID的分配机制将来要重新考虑，避免重复
+        //if (isset($keyinfo["KeyCode"])) $KeyCode = trim($keyinfo["KeyCode"]); else  $KeyCode = "";
+        if (isset($keyinfo["KeyName"])) $keyname = trim($keyinfo["KeyName"]); else  $keyname = "";
+        if (isset($keyinfo["KeyProj"])) $projcode = trim($keyinfo["KeyProj"]); else  $projcode = "";
+        if (isset($keyinfo["KeyType"])) $keytype = trim($keyinfo["KeyType"]); else  $keytype = "";
+        if (isset($keyinfo["HardwareCode"])) $hwcode = trim($keyinfo["HardwareCode"]); else  $hwcode = "";
+        if (isset($keyinfo["Memo"])) $memo = trim($keyinfo["Memo"]); else  $memo = "";
 
+        $keyid = MFUN_L3APL_F2CM_KEY_PREFIX.$this->getRandomKeyid(MFUN_L3APL_F2CM_KEY_ID_LEN);  //KEYID的分配机制将来要重新考虑，避免重复
         $keystatus = "N"; //默认新建的Key是没有启用的
 
         //转换keytype
@@ -808,7 +838,7 @@ class classDbiL3apF2cm
         return $result;
     }
 
-    public function dbi_key_mod_process($keyid,$keyname,$keytype,$projcode,$hwcode,$memo)
+    public function dbi_key_mod_process($keyinfo)
     {
         //建立连接
         $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
@@ -817,6 +847,13 @@ class classDbiL3apF2cm
         }
         $mysqli->query("set character_set_results = utf8");
         $mysqli->query("SET NAMES utf8");
+
+        if (isset($keyinfo["KeyCode"])) $keyid = trim($keyinfo["KeyCode"]); else  $keyid = "";
+        if (isset($keyinfo["KeyName"])) $keyname = trim($keyinfo["KeyName"]); else  $keyname = "";
+        if (isset($keyinfo["KeyProj"])) $projcode = trim($keyinfo["KeyProj"]); else  $projcode = "";
+        if (isset($keyinfo["KeyType"])) $keytype = trim($keyinfo["KeyType"]); else  $keytype = "";
+        if (isset($keyinfo["HardwareCode"])) $hwcode = trim($keyinfo["HardwareCode"]); else  $hwcode = "";
+        if (isset($keyinfo["Memo"])) $memo = trim($keyinfo["Memo"]); else  $memo = "";
 
         //转换keytype
         /*
@@ -1065,7 +1102,7 @@ class classDbiL3apF2cm
         return $result;
     }
 
-    public function dbi_key_authnew_process($keyid, $authobjcode, $authtype)
+    public function dbi_key_authnew_process($authinfo)
     {
         //建立连接
         $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
@@ -1073,6 +1110,10 @@ class classDbiL3apF2cm
             die('Could not connect: ' . mysqli_error($mysqli));
         }
         $mysqli->query("set character_set_results = utf8");
+
+        if (isset($authinfo["DomainId"])) $authobjcode = trim($authinfo["DomainId"]); else  $authobjcode = "";
+        if (isset($authinfo["KeyId"])) $keyid = trim($authinfo["KeyId"]); else  $keyid = "";
+        if (isset($authinfo["Authway"])) $authtype = trim($authinfo["Authway"]); else  $authtype = "";
 
         $code_prefix = substr($authobjcode, 0, MFUN_L3APL_F2CM_CODE_FORMAT_LEN);
         if ($code_prefix == MFUN_L3APL_F2CM_PROJ_CODE_PREFIX)

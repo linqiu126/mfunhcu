@@ -170,7 +170,7 @@ define("MSG_ID_L4AQYCUI_TO_L3F2_PGPROJ", $index++);
 define("MSG_ID_L4AQYCUI_TO_L3F2_PROJTABLE", $index++);
 define("MSG_ID_L4AQYCUI_TO_L3F2_PROJNEW", $index++);
 define("MSG_ID_L4AQYCUI_TO_L3F2_PROJMOD", $index++);
-define("MSG_ID_L4AQYCUI_TO_L3F3_PROJDEL", $index++);
+define("MSG_ID_L4AQYCUI_TO_L3F2_PROJDEL", $index++);
 define("MSG_ID_L4AQYCUI_TO_L3F3_PROJPOINT", $index++);
 define("MSG_ID_L4AQYCUI_TO_L3F3_POINTPROJ", $index++);
 define("MSG_ID_L4AQYCUI_TO_L3F3_POINTTABLE", $index++);

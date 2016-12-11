@@ -40,472 +40,455 @@ class classTaskL3aplF3dm
         return urlencode($elem);
     }
 
-    function func_project_del_process($ProjCode)
+    function func_project_point_process($type, $user, $body)
     {
-        $uiF3dmDbObj = new classDbiL3apF3dm(); //初始化一个UI DB对象
-        $result = $uiF3dmDbObj->dbi_projinfo_delete($ProjCode);
-        if ($result == true)
-            $retval=array(
-                'status'=>'true',
-                'msg'=>'成功删除一个项目'
-            );
+        $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
+        $usercheck = $uiF1symDbObj->dbi_user_authcheck($type, $user);
+        if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
+            $uiF3dmDbObj = new classDbiL3apF3dm(); //初始化一个UI DB对象
+            $sitelist = $uiF3dmDbObj->dbi_all_sitelist_req();
+            if(!empty($sitelist))
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$sitelist,'msg'=>"获取所有项目站点列表成功");
+            else
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>"获取所有项目站点列表失败");
+        }
         else
-            $retval=array(
-                'status'=>'false',
-                'msg'=>'删除一个项目失败'
-            );
-        //$jsonencode = _encode($retval);
+            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
+
         $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
         return $jsonencode;
     }
 
-    //传入的参数为假的，没用，因为如果不传参数的话，意味着msgBody为空，不符合VM的整体精神
-    function func_project_point_process($user)
+    function func_point_project_process($type, $user, $body)
     {
-        $uiF3dmDbObj = new classDbiL3apF3dm(); //初始化一个UI DB对象
-        $sitelist = $uiF3dmDbObj->dbi_all_sitelist_req();
-        if(!empty($sitelist))
-            $retval=array(
-                'status'=>'true',
-                'ret'=> $sitelist
-            );
+        if (isset($body["ProjCode"])) $ProjCode = $body["ProjCode"]; else  $ProjCode = "";
+
+        $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
+        $usercheck = $uiF1symDbObj->dbi_user_authcheck($type, $user);
+        if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
+            $uiF3dmDbObj = new classDbiL3apF3dm(); //初始化一个UI DB对象
+            $sitelist = $uiF3dmDbObj->dbi_proj_sitelist_req($ProjCode);
+            if(!empty($sitelist))
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$sitelist,'msg'=>"获取该项目下站点列表成功");
+            else
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>"获取该项目下站点列表失败");
+        }
         else
-            $retval=array(
-                'status'=>'false',
-                'ret'=> null
-            );
-        //$jsonencode = _encode($retval);
+            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
+
         $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
         return $jsonencode;
     }
 
-    function func_point_project_process($ProjCode)
+    function func_point_table_process($type, $user, $body)
     {
-        $uiF3dmDbObj = new classDbiL3apF3dm(); //初始化一个UI DB对象
-        $sitelist = $uiF3dmDbObj->dbi_proj_sitelist_req($ProjCode);
-        if(!empty($sitelist))
-            $retval=array(
-                'status'=>'true',
-                'ret'=> $sitelist
-            );
-        else
-            $retval=array(
-                'status'=>'true',
-                'ret'=> ""
-            );
-        //$jsonencode = _encode($retval);
-        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
-        return $jsonencode;
-    }
+        if (isset($body["length"])) $length = $body["length"]; else  $length = "";
+        if (isset($body["startseq"])) $startseq = $body["startseq"]; else  $startseq = "";
 
-    function func_point_table_process($length, $startseq)
-    {
         $uiF3dmDbObj = new classDbiL3apF3dm(); //初始化一个UI DB对象
         $total = $uiF3dmDbObj->dbi_all_sitenum_inqury();
         $query_length = (int)($length);
         $start = (int)($startseq);
-        if($query_length> $total-$start)
-        {$query_length = $total-$start;}
-        $sitetable = $uiF3dmDbObj->dbi_all_sitetable_req($start, $query_length);
-        if(!empty($sitetable))
-            $retval=array(
-                'status'=>'true',
-                'start'=> (string)$start,
-                'total'=> (string)$total,
-                'length'=>(string)$query_length,
-                'ret'=> $sitetable
-            );
+        if($query_length> $total-$start) {$query_length = $total-$start;}
+
+        $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
+        $usercheck = $uiF1symDbObj->dbi_user_authcheck($type, $user);
+        if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
+            $uiF3dmDbObj = new classDbiL3apF3dm(); //初始化一个UI DB对象
+            $sitetable = $uiF3dmDbObj->dbi_all_sitetable_req($start, $query_length);
+            if(!empty($sitetable)){
+                $ret = array('start'=> (string)$start,'total'=> (string)$total,'length'=>(string)$query_length,'pointtable'=>$sitetable);
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$ret,'msg'=>"获取站点列表成功");
+            }
+            else
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>"获取站点列表失败");
+        }
         else
-            $retval=array(
-                'status'=>'false',
-                'start'=> null,
-                'total'=> null,
-                'length'=>null,
-                'ret'=> null
-            );
-        //$jsonencode = _encode($retval);
+            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
+
         $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
         return $jsonencode;
     }
 
-    function func_point_new_process($siteinfo)
+    function func_point_new_process($type, $user, $body)
     {
-        $uiF3dmDbObj = new classDbiL3apF3dm(); //初始化一个UI DB对象
-        $result = $uiF3dmDbObj->dbi_siteinfo_update($siteinfo);
-        if ($result == true)
-            $retval=array(
-                'status'=>'true',
-                'msg'=>'新建监测点成功'
-            );
+        $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
+        $usercheck = $uiF1symDbObj->dbi_user_authcheck($type, $user);
+        if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
+            $uiF3dmDbObj = new classDbiL3apF3dm(); //初始化一个UI DB对象
+            $result = $uiF3dmDbObj->dbi_siteinfo_update($body);
+            if($result == true)
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"新建监测点成功");
+            else
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"新建监测点失败");
+        }
         else
-            $retval=array(
-                'status'=>'false',
-                'msg'=>'新建监测点失败'
-            );
+            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>$usercheck['msg']);
 
-        //$jsonencode = _encode($retval);
         $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
         return $jsonencode;
     }
 
-    function func_point_mod_process($siteinfo)
+    function func_point_mod_process($type, $user, $body)
     {
-        $uiF3dmDbObj = new classDbiL3apF3dm(); //初始化一个UI DB对象
-        $result = $uiF3dmDbObj->dbi_siteinfo_update($siteinfo);
-        if ($result == true)
-            $retval=array(
-                'status'=>'true',
-                'msg'=>'新修改监测点成功'
-            );
+        $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
+        $usercheck = $uiF1symDbObj->dbi_user_authcheck($type, $user);
+        if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
+            $uiF3dmDbObj = new classDbiL3apF3dm(); //初始化一个UI DB对象
+            $result = $uiF3dmDbObj->dbi_siteinfo_update($body);
+            if($result == true)
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"新修改监测点成功");
+            else
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"修改监测点失败");
+        }
         else
-            $retval=array(
-                'status'=>'false',
-                'msg'=>'修改监测点失败'
-            );
-        //$jsonencode = _encode($retval);
+            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>$usercheck['msg']);
+
         $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
         return $jsonencode;
     }
 
-    function func_point_del_process($StatCode)
+    function func_point_del_process($type, $user, $body)
     {
-        $uiF3dmDbObj = new classDbiL3apF3dm(); //初始化一个UI DB对象
-        $result = $uiF3dmDbObj->dbi_siteinfo_delete($StatCode);
-        if ($result)
-            $retval=array(
-                'status'=>'true',
-                'msg'=>'成功删除一个监测点'
-            );
+        if (isset($body["StatCode"])) $StatCode = $body["StatCode"]; else  $StatCode = "";
+
+        $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
+        $usercheck = $uiF1symDbObj->dbi_user_authcheck($type, $user);
+        if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
+            $uiF3dmDbObj = new classDbiL3apF3dm(); //初始化一个UI DB对象
+            $result = $uiF3dmDbObj->dbi_siteinfo_delete($StatCode);
+            if($result == true)
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"删除一个监测点成功");
+            else
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"删除一个监测点失败");
+        }
         else
-            $retval=array(
-                'status'=>'false',
-                'msg'=>'删除一个监测点失败'
-            );
-        //$jsonencode = _encode($retval);
+            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>$usercheck['msg']);
+
         $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
         return $jsonencode;
     }
 
-    function func_point_dev_process($StatCode)
+    function func_point_dev_process($type, $user, $body)
     {
-        $uiF3dmDbObj = new classDbiL3apF3dm(); //初始化一个UI DB对象
-        $devlist = $uiF3dmDbObj->dbi_site_devlist_req($StatCode);
-        if(!empty($devlist))
-            $retval=array(
-                'status'=>"true",
-                'ret'=> $devlist
-            );
+        if (isset($body["StatCode"])) $StatCode = $body["StatCode"]; else  $StatCode = "";
+
+        $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
+        $usercheck = $uiF1symDbObj->dbi_user_authcheck($type, $user);
+        if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
+            $uiF3dmDbObj = new classDbiL3apF3dm(); //初始化一个UI DB对象
+            $devlist = $uiF3dmDbObj->dbi_site_devlist_req($StatCode);
+            if(!empty($devlist))
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$devlist,'msg'=>"获取该站点下设备列表成功");
+            else
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>"获取该站点下设备列表失败");
+        }
         else
-            $retval=array(
-                'status'=>"true",
-                'ret'=> ""
-            );
-        //$jsonencode = _encode($retval);
+            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
+
         $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
         return $jsonencode;
     }
 
-    function func_dev_table_process($length, $startseq)
+    function func_dev_table_process($type, $user, $body)
     {
+        if (isset($body["length"])) $length = $body["length"]; else  $length = "";
+        if (isset($body["startseq"])) $startseq = $body["startseq"]; else  $startseq = "";
+
         $uiF3dmDbObj = new classDbiL3apF3dm(); //初始化一个UI DB对象
         $uiSdkDbObj = new classDbiL2sdkHcu();
         $total = $uiSdkDbObj->dbi_all_hcunum_inqury();
         $query_length = (int)($length);
         $start = (int)($startseq);
-        if($query_length> $total-$start)
-        {$query_length = $total-$start;}
-        $devtable = $uiF3dmDbObj->dbi_all_hcutable_req($start,$query_length);
-        if(!empty($devtable))
-            $retval=array(
-                'status'=>'true',
-                'start'=> (string)$start,
-                'total'=> (string)$total,
-                'length'=>(string)$query_length,
-                'ret'=> $devtable
-            );
+        if($query_length> $total-$start) {$query_length = $total-$start;}
+
+        $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
+        $usercheck = $uiF1symDbObj->dbi_user_authcheck($type, $user);
+        if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
+            $uiF3dmDbObj = new classDbiL3apF3dm(); //初始化一个UI DB对象
+            $devtable = $uiF3dmDbObj->dbi_all_hcutable_req($start,$query_length);
+            if(!empty($devtable)){
+                $ret = array('start'=> (string)$start,'total'=> (string)$total,'length'=>(string)$query_length,'devtable'=>$devtable);
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$ret,'msg'=>"获取设备列表成功");
+            }
+            else
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>"获取设备列表失败");
+        }
         else
-            $retval=array(
-                'status'=>'false',
-                'start'=> null,
-                'total'=> null,
-                'length'=>null,
-                'ret'=> null
-            );
-        //$jsonencode = _encode($retval);
+            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
+
         $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
         return $jsonencode;
     }
 
-    function func_dev_new_process($devinfo)
-    {
-        $uiSdkDbObj = new classDbiL2sdkHcu();
-        $result = $uiSdkDbObj->dbi_devinfo_update($devinfo);
-        if ($result == true)
-            $retval=array(
-                'status'=>'true',
-                'msg'=>'新增监测设备成功'
-            );
-        else
-            $retval=array(
-                'status'=>'false',
-                'msg'=>'新增监测设备失败'
-            );
-        $retval=array(
-            'status'=>'true',
-            'msg'=>''
-        );
-        //$jsonencode = _encode($retval);
-        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
-        return $jsonencode;
-    }
-
-    function func_dev_mod_process($devinfo)
-    {
-        $uiSdkDbObj = new classDbiL2sdkHcu();
-        $result = $uiSdkDbObj->dbi_devinfo_update($devinfo);
-        if ($result == true)
-            $retval=array(
-                'status'=>'true',
-                'msg'=>'修改监测设备信息成功'
-            );
-        else
-            $retval=array(
-                'status'=>'false',
-                'msg'=>'修改监测设备信息失败'
-            );
-        //$jsonencode = _encode($retval);
-        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
-        return $jsonencode;
-    }
-
-    function func_dev_del_process($DevCode)
-    {
-        $uiF3dmDbObj = new classDbiL3apF3dm(); //初始化一个UI DB对象
-        $result = $uiF3dmDbObj->dbi_deviceinfo_delete($DevCode);
-        if ($result)
-            $retval=array(
-                'status'=>'true',
-                'msg'=>'删除HCU设备成功'
-            );
-        else
-            $retval=array(
-                'status'=>'true',
-                'msg'=>'删除HCU设备失败'
-            );
-        //$jsonencode = _encode($retval);
-        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
-        return $jsonencode;
-    }
-
-    function func_monitor_list_process($uid)
-    {
-        $uiF3dmDbObj = new classDbiL3apF3dm(); //初始化一个UI DB对象
-        $stat_list = $uiF3dmDbObj->dbi_map_sitetinfo_req($uid);
-        if(!empty($stat_list))
-            $retval=array(
-                'status'=>'true',
-                'id'=>$uid,
-                'ret'=> $stat_list
-            );
-        else
-            $retval=array(
-                'status'=>'true',
-                'id'=>$uid,
-                'ret'=> array()
-            );
-        //$jsonencode = _encode($retval);
-        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
-        return $jsonencode;
-    }
-
-    //传入的参数为假的，没用，因为如果不传参数的话，意味着msgBody为空，不符合VM的整体精神
-    function func_sensor_type_list_process($user)
-    {
-        $uiL2snrDbObj = new classDbiL2snrCom();
-        $alarm_type = $uiL2snrDbObj->dbi_all_alarmtype_req();
-        if(!empty($alarm_type))
-            $retval=array(
-                'status'=>'true',
-                'typelist'=> $alarm_type
-            );
-        else
-            $retval=array(
-                'status'=>'true',
-                'typelist'=> array()
-            );
-        //$jsonencode = _encode($retval);
-        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
-        return $jsonencode;
-    }
-
-    function func_table_query_process($TableName, $Condition)
-    {
-        $uiL2snrDbObj = new classDbiL2snrCom();
-        $result = $uiL2snrDbObj->dbi_excel_historydata_req($Condition);
-        if(!empty($result))
-            $retval=array(
-                'status'=>'true',
-                'ColumnName' => $result["column"],
-                'TableData' => $result["data"]
-            );
-        else
-            $retval=array(
-                'status'=>'false',
-                'ColumnName' => null,
-                'TableData' => null
-            );
-        //$jsonencode = _encode($retval);
-        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
-        return $jsonencode;
-    }
-
-    //传入的参数为假的，没用，因为如果不传参数的话，意味着msgBody为空，不符合VM的整体精神
-    function func_sensor_list_process($user)
-    {
-        $uiL2snrDbObj = new classDbiL2snrCom();
-        $sensor_list = $uiL2snrDbObj->dbi_all_sensorlist_req();
-        if(!empty($sensor_list))
-            $retval=array(
-                'status'=>'true',
-                'SensorList'=> $sensor_list
-            );
-        else
-            $retval=array(
-                'status'=>'true',
-                'SensorList'=> array()
-            );
-        //$jsonencode = _encode($retval);
-        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
-        return $jsonencode;
-    }
-
-    function func_dev_sensor_process($DevCode)
-    {
-        $uiL2snrDbObj = new classDbiL2snrCom();
-        $sensorinfo = $uiL2snrDbObj->dbi_dev_sensorinfo_req($DevCode);
-        if(!empty($sensorinfo))
-            $retval=array(
-                'status'=>'true',
-                'ret'=>$sensorinfo
-            );
-        else
-            $retval=array(
-                'status'=>'true',
-                'ret'=>array()
-            );
-        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
-        return $jsonencode;
-    }
-
-    function func_get_static_monitor_table_process($id)
+    function func_dev_new_process($type, $user, $body)
     {
         $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
-        $uiF3dmDbObj = new classDbiL3apF3dm(); //初始化一个UI DB对象
-        $uid = $uiF1symDbObj->dbi_session_check($id);
-        $result = $uiF3dmDbObj->dbi_user_dataaggregate_req($uid);
-        if(!empty($result))
-            $retval=array(
-                'status'=>'true',
-                'ColumnName' => $result["column"],
-                'TableData' => $result["data"]
-            );
+        $usercheck = $uiF1symDbObj->dbi_user_authcheck($type, $user);
+        if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
+            $uiSdkDbObj = new classDbiL2sdkHcu();
+            $result = $uiSdkDbObj->dbi_devinfo_update($body);
+            if($result == true)
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"新增监测设备成功");
+            else
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"新增监测设备失败");
+        }
         else
-            $retval=array(
-                'status'=>'false',
-                'ColumnName' => null,
-                'TableData' => null
-            );
-        //$jsonencode = _encode($retval);
+            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>$usercheck['msg']);
+
+        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
+        return $jsonencode;
+    }
+
+    function func_dev_mod_process($type, $user, $body)
+    {
+        $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
+        $usercheck = $uiF1symDbObj->dbi_user_authcheck($type, $user);
+        if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
+            $uiSdkDbObj = new classDbiL2sdkHcu();
+            $result = $uiSdkDbObj->dbi_devinfo_update($body);
+            if($result == true)
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"修改监测设备信息成功");
+            else
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"修改监测设备信息失败");
+        }
+        else
+            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>$usercheck['msg']);
+
+        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
+        return $jsonencode;
+    }
+
+    function func_dev_del_process($type, $user, $body)
+    {
+        if (isset($body["DevCode"])) $DevCode = $body["DevCode"]; else  $DevCode = "";
+
+        $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
+        $usercheck = $uiF1symDbObj->dbi_user_authcheck($type, $user);
+        if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
+            $uiF3dmDbObj = new classDbiL3apF3dm(); //初始化一个UI DB对象
+            $result = $uiF3dmDbObj->dbi_deviceinfo_delete($DevCode);
+            if($result == true)
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"删除设备信息成功");
+            else
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"删除设备信息失败");
+        }
+        else
+            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>$usercheck['msg']);
+
+        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
+        return $jsonencode;
+    }
+
+    function func_monitor_list_process($type, $user, $body)
+    {
+        $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
+        $usercheck = $uiF1symDbObj->dbi_user_authcheck($type, $user);
+        if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
+            $uiF3dmDbObj = new classDbiL3apF3dm(); //初始化一个UI DB对象
+            $stat_list = $uiF3dmDbObj->dbi_map_sitetinfo_req();
+            if(!empty($stat_list))
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$stat_list,'msg'=>"获取地图监测列表成功");
+            else
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>"获取地图监测列表失败");
+        }
+        else
+            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
+
+        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
+        return $jsonencode;
+    }
+
+    function func_sensor_type_list_process($type, $user, $body)
+    {
+        $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
+        $usercheck = $uiF1symDbObj->dbi_user_authcheck($type, $user);
+        if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
+            $uiL2snrDbObj = new classDbiL2snrCom();
+            $alarm_type = $uiL2snrDbObj->dbi_all_alarmtype_req();
+            if(!empty($alarm_type))
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$alarm_type,'msg'=>"获取告警类型列表成功");
+            else
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>"获取告警类型列表失败");
+        }
+        else
+            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
+
+        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
+        return $jsonencode;
+    }
+
+    function func_table_query_process($type, $user, $body)
+    {
+        if (isset($body["Condition"])) $Condition = $body["Condition"]; else  $Condition = "";
+
+        $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
+        $usercheck = $uiF1symDbObj->dbi_user_authcheck($type, $user);
+        if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
+            $uiL2snrDbObj = new classDbiL2snrCom();
+            $result = $uiL2snrDbObj->dbi_excel_historydata_req($Condition);
+            if(!empty($result)){
+                $ret = array('ColumnName' => $result["column"],'TableData' => $result["data"]);
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$ret,'msg'=>"获取站点历史记录成功");
+            }
+            else
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>"获取站点历史记录失败");
+        }
+        else
+            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
+
+        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
+        return $jsonencode;
+    }
+
+    function func_sensor_list_process($type, $user, $body)
+    {
+        $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
+        $usercheck = $uiF1symDbObj->dbi_user_authcheck($type, $user);
+        if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
+            $uiL2snrDbObj = new classDbiL2snrCom();
+            $sensor_list = $uiL2snrDbObj->dbi_all_sensorlist_req();
+            if(!empty($sensor_list))
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$sensor_list,'msg'=>"获取传感器列表成功");
+            else
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>"获取传感器列表失败");
+        }
+        else
+            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
+
+        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
+        return $jsonencode;
+    }
+
+    function func_aqyc_dev_sensor_process($type, $user, $body)
+    {
+        if (isset($body["DevCode"])) $DevCode = $body["DevCode"]; else  $DevCode = "";
+
+        $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
+        $usercheck = $uiF1symDbObj->dbi_user_authcheck($type, $user);
+        if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
+            $uiL2snrDbObj = new classDbiL2snrCom();
+            $sensorinfo = $uiL2snrDbObj->dbi_aqyc_dev_sensorinfo_req($DevCode);
+            if(!empty($sensorinfo))
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$sensorinfo,'msg'=>"获取指定设备下传感器列表成功");
+            else
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>"获取指定设备下传感器列表失败");
+        }
+        else
+            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
+
+        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
+        return $jsonencode;
+    }
+
+    function func_aqyc_get_static_monitor_table_process($type, $user, $body)
+    {
+        $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
+        $usercheck = $uiF1symDbObj->dbi_user_authcheck($type, $user);
+        if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
+            $uid = $uiF1symDbObj->dbi_session_check($user);
+            $uiF3dmDbObj = new classDbiL3apF3dm(); //初始化一个UI DB对象
+            $resp = $uiF3dmDbObj->dbi_aqyc_user_dataaggregate_req($uid);
+            if(!empty($resp)){
+                $ret = array('ColumnName' => $resp["column"],'TableData' => $resp["data"]);
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$ret,'msg'=>"获取站点测量聚合表成功");
+            }
+            else
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>"获取站点测量聚合表失败");
+        }
+        else
+            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
+
         $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
         return $jsonencode;
     }
 
     /*******************************波峰智能组合秤新增处理 Start****************************************/
-    function func_bfsc_get_static_monitor_table_process($id)
+    function func_bfsc_get_static_monitor_table_process($type, $user, $body)
     {
         $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
-        $uiF3dmDbObj = new classDbiL3apF3dm(); //初始化一个UI DB对象
-        $uid = $uiF1symDbObj->dbi_session_check($id);
-        $result = $uiF3dmDbObj->dbi_bfsc_user_dataaggregate_req($uid);
-        if(!empty($result))
-            $retval=array(
-                'status'=>'true',
-                'ColumnName' => $result["column"],
-                'TableData' => $result["data"]
-            );
+        $usercheck = $uiF1symDbObj->dbi_user_authcheck($type, $user);
+        if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
+            $uid = $uiF1symDbObj->dbi_session_check($user);
+            $uiF3dmDbObj = new classDbiL3apF3dm(); //初始化一个UI DB对象
+            $resp = $uiF3dmDbObj->dbi_bfsc_user_dataaggregate_req($uid);
+            if(!empty($resp)){
+                $ret = array('ColumnName' => $resp["column"],'TableData' => $resp["data"]);
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$ret,'msg'=>"获取站点测量聚合表成功");
+            }
+            else
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>"获取站点测量聚合表失败");
+        }
         else
-            $retval=array(
-                'status'=>'false',
-                'ColumnName' => null,
-                'TableData' => null
-            );
-        //$jsonencode = _encode($retval);
+            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
+
         $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
         return $jsonencode;
     }
 
     /*********************************智能云锁新增处理************************************************/
-    function func_fhys_dev_sensor_process($DevCode)
+    function func_fhys_dev_sensor_process($type, $user, $body)
     {
-        $uiL2snrDbObj = new classDbiL2snrCom();
-        $sensorinfo = $uiL2snrDbObj->dbi_fhys_dev_sensorinfo_req($DevCode);
-        if(!empty($sensorinfo))
-            $retval=array(
-                'status'=>'true',
-                'ret'=>$sensorinfo
-            );
-        else
-            $retval=array(
-                'status'=>'true',
-                'ret'=>array()
-            );
-        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
-        return $jsonencode;
-    }
+        if (isset($body["DevCode"])) $DevCode = $body["DevCode"]; else  $DevCode = "";
 
-    function func_fhys_get_static_monitor_table_process($id)
-    {
         $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
-        $uiF3dmDbObj = new classDbiL3apF3dm(); //初始化一个UI DB对象
-        $uid = $uiF1symDbObj->dbi_session_check($id);
-        $result = $uiF3dmDbObj->dbi_fhys_user_dataaggregate_req($uid);
-        if(!empty($result))
-            $retval=array(
-                'status'=>'true',
-                'ColumnName' => $result["column"],
-                'TableData' => $result["data"]
-            );
-        else
-            $retval=array(
-                'status'=>'false',
-                'ColumnName' => null,
-                'TableData' => null
-            );
-        //$jsonencode = _encode($retval);
-        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
-        return $jsonencode;
-    }
-
-
-    function func_key_event_history_process($projCode, $duration)
-    {
-        $uiF3dmDbObj = new classDbiL3apF3dm(); //初始化一个UI DB对象
-        $resp = $uiF3dmDbObj->dbi_key_event_history_process($projCode, $duration);
-        if (!empty($resp)){
-            $column_name = $resp["ColumnName"];
-            $row_content = $resp['TableData'];
-            $retval=array(
-                'status'=>"true",
-                'ColumnName'=> $column_name,
-                'TableData'=>$row_content
-            );
+        $usercheck = $uiF1symDbObj->dbi_user_authcheck($type, $user);
+        if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
+            $uiL2snrDbObj = new classDbiL2snrCom();
+            $sensorinfo = $uiL2snrDbObj->dbi_fhys_dev_sensorinfo_req($DevCode);
+            if(!empty($sensorinfo))
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$sensorinfo,'msg'=>"获取指定设备下传感器列表成功");
+            else
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>"获取指定设备下传感器列表失败");
         }
         else
-            $retval=array(
-                'status' => "true",
-                'ColumnName' => "",
-                'TableData' => ""
-            );
+            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
+
+        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
+        return $jsonencode;
+    }
+
+    function func_fhys_get_static_monitor_table_process($type, $user, $body)
+    {
+        $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
+        $usercheck = $uiF1symDbObj->dbi_user_authcheck($type, $user);
+        if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
+            $uid = $uiF1symDbObj->dbi_session_check($user);
+            $uiF3dmDbObj = new classDbiL3apF3dm(); //初始化一个UI DB对象
+            $resp = $uiF3dmDbObj->dbi_fhys_user_dataaggregate_req($uid);
+            if(!empty($resp)){
+                $ret = array('ColumnName' => $resp["column"],'TableData' => $resp["data"]);
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$ret,'msg'=>"获取站点测量聚合表成功");
+            }
+            else
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>"获取站点测量聚合表失败");
+        }
+        else
+            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
+
+        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
+        return $jsonencode;
+    }
+
+
+    function func_key_event_history_process($type, $user, $body)
+    {
+        $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
+        $usercheck = $uiF1symDbObj->dbi_user_authcheck($type, $user);
+        if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
+            $uid = $uiF1symDbObj->dbi_session_check($user);
+            $uiF3dmDbObj = new classDbiL3apF3dm(); //初始化一个UI DB对象
+            $resp = $uiF3dmDbObj->dbi_key_event_history_process($body);
+            if(!empty($resp)){
+                $ret = array('ColumnName' => $resp["ColumnName"],'TableData' => $resp["TableData"]);
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$ret,'msg'=>"获取锁事件历史记录成功");
+            }
+            else
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>"获取锁事件历史记录失败");
+        }
+        else
+            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
+
         $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
         return $jsonencode;
     }
@@ -528,6 +511,13 @@ class classTaskL3aplF3dm
             echo trim($result);
             return false;
         }
+        else{
+            //解开消息
+            if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
+            if (isset($msg["user"])) $user = $msg["user"]; else  $user = "";
+            if (isset($msg["body"])) $body = $msg["body"]; else  $body = "";
+        }
+
         //多条消息发送到L3APPL_F3DM，这里潜在的消息太多，没法一个一个的判断，故而只检查上下界
         if (($msgId <= MSG_ID_MFUN_MIN) || ($msgId >= MSG_ID_MFUN_MAX)){
             $result = "Msgid or MsgName error";
@@ -537,234 +527,139 @@ class classTaskL3aplF3dm
             return false;
         }
 
-        //功能ProjDel
-        if ($msgId == MSG_ID_L4AQYCUI_TO_L3F3_PROJDEL)
-        {
-            //解开消息
-            if (isset($msg["ProjCode"])) $ProjCode = $msg["ProjCode"]; else  $ProjCode = "";
-            //具体处理函数
-            $resp = $this->func_project_del_process($ProjCode);
-            $project = MFUN_PRJ_HCU_AQYCUI;
-        }
-
         //功能Project Point 查询所有监控点列表
         elseif ($msgId == MSG_ID_L4AQYCUI_TO_L3F3_PROJPOINT)
         {
-            //解开消息
-            if (isset($msg["user"])) $user = $msg["user"]; else  $user = "";
+
             //具体处理函数
-            $resp = $this->func_project_point_process($user);
+            $resp = $this->func_project_point_process($type, $user, $body);
             $project = MFUN_PRJ_HCU_AQYCUI;
         }
 
         //功能Point project查询该项目下面对应监控点列表
         elseif ($msgId == MSG_ID_L4AQYCUI_TO_L3F3_POINTPROJ)
         {
-            //解开消息
-            if (isset($msg["ProjCode"])) $ProjCode = $msg["ProjCode"]; else  $ProjCode = "";
             //具体处理函数
-            $resp = $this->func_point_project_process($ProjCode);
+            $resp = $this->func_point_project_process($type, $user, $body);
             $project = MFUN_PRJ_HCU_AQYCUI;
         }
 
         //功能Point Table
         elseif ($msgId == MSG_ID_L4AQYCUI_TO_L3F3_POINTTABLE)
         {
-            //解开消息
-            if (isset($msg["length"])) $length = $msg["length"]; else  $length = "";
-            if (isset($msg["startseq"])) $startseq = $msg["startseq"]; else  $startseq = "";
-            //具体处理函数
-            $resp = $this->func_point_table_process($length, $startseq);
+            $resp = $this->func_point_table_process($type, $user, $body);
             $project = MFUN_PRJ_HCU_AQYCUI;
         }
 
         //功能Point New
         elseif ($msgId == MSG_ID_L4AQYCUI_TO_L3F3_POINTNEW)
         {
-            //解开消息
-            if (isset($msg["StatCode"])) $StatCode = $msg["StatCode"]; else  $StatCode = "";
-            if (isset($msg["StatName"])) $StatName = $msg["StatName"]; else  $StatName = "";
-            if (isset($msg["ProjCode"])) $ProjCode = $msg["ProjCode"]; else  $ProjCode = "";
-            if (isset($msg["ChargeMan"])) $ChargeMan = $msg["ChargeMan"]; else  $ChargeMan = "";
-            if (isset($msg["Telephone"])) $Telephone = $msg["Telephone"]; else  $Telephone = "";
-            if (isset($msg["Longitude"])) $Longitude = $msg["Longitude"]; else  $Longitude = "";
-            if (isset($msg["Latitude"])) $Latitude = $msg["Latitude"]; else  $Latitude = "";
-            if (isset($msg["Department"])) $Department = $msg["Department"]; else  $Department = "";
-            if (isset($msg["Address"])) $Address = $msg["Address"]; else  $Address = "";
-            if (isset($msg["Country"])) $Country = $msg["Country"]; else  $Country = "";
-            if (isset($msg["Street"])) $Street = $msg["Street"]; else  $Street = "";
-            if (isset($msg["Square"])) $Square = $msg["Square"]; else  $Square = "";
-            if (isset($msg["ProStartTime"])) $ProStartTime = $msg["ProStartTime"]; else  $ProStartTime = "";
-            if (isset($msg["Stage"])) $Stage = $msg["Stage"]; else  $Stage = "";
-            $siteinfo = array("StatCode" => $StatCode, "StatName" => $StatName, "ProjCode" => $ProjCode, "ChargeMan" => $ChargeMan, "Telephone" => $Telephone,
-                "Longitude" => $Longitude, "Latitude" => $Latitude, "Department" => $Department, "Address" => $Address, "Country" => $Country,
-                "Street" => $Street, "Square" => $Square, "ProStartTime" => $ProStartTime, "Stage" => $Stage);
             //具体处理函数
-            $resp = $this->func_point_new_process($siteinfo);
+            $resp = $this->func_point_new_process($type, $user, $body);
             $project = MFUN_PRJ_HCU_AQYCUI;
         }
 
         //功能Point Mod
         elseif ($msgId == MSG_ID_L4AQYCUI_TO_L3F3_POINTMOD)
         {
-            //解开消息
-            if (isset($msg["StatCode"])) $StatCode = $msg["StatCode"]; else  $StatCode = "";
-            if (isset($msg["StatName"])) $StatName = $msg["StatName"]; else  $StatName = "";
-            if (isset($msg["ProjCode"])) $ProjCode = $msg["ProjCode"]; else  $ProjCode = "";
-            if (isset($msg["ChargeMan"])) $ChargeMan = $msg["ChargeMan"]; else  $ChargeMan = "";
-            if (isset($msg["Telephone"])) $Telephone = $msg["Telephone"]; else  $Telephone = "";
-            if (isset($msg["Longitude"])) $Longitude = $msg["Longitude"]; else  $Longitude = "";
-            if (isset($msg["Latitude"])) $Latitude = $msg["Latitude"]; else  $Latitude = "";
-            if (isset($msg["Department"])) $Department = $msg["Department"]; else  $Department = "";
-            if (isset($msg["Address"])) $Address = $msg["Address"]; else  $Address = "";
-            if (isset($msg["Country"])) $Country = $msg["Country"]; else  $Country = "";
-            if (isset($msg["Street"])) $Street = $msg["Street"]; else  $Street = "";
-            if (isset($msg["Square"])) $Square = $msg["Square"]; else  $Square = "";
-            if (isset($msg["ProStartTime"])) $ProStartTime = $msg["ProStartTime"]; else  $ProStartTime = "";
-            if (isset($msg["Stage"])) $Stage = $msg["Stage"]; else  $Stage = "";
-            $siteinfo = array("StatCode" => $StatCode, "StatName" => $StatName, "ProjCode" => $ProjCode, "ChargeMan" => $ChargeMan, "Telephone" => $Telephone,
-                "Longitude" => $Longitude, "Latitude" => $Latitude, "Department" => $Department, "Address" => $Address, "Country" => $Country,
-                "Street" => $Street, "Square" => $Square, "ProStartTime" => $ProStartTime, "Stage" => $Stage);
             //具体处理函数
-            $resp = $this->func_point_mod_process($siteinfo);
+            $resp = $this->func_point_mod_process($type, $user, $body);
             $project = MFUN_PRJ_HCU_AQYCUI;
         }
 
         //功能Point Del
         elseif ($msgId == MSG_ID_L4AQYCUI_TO_L3F3_POINTDEL)
         {
-            //解开消息
-            if (isset($msg["StatCode"])) $StatCode = $msg["StatCode"]; else  $StatCode = "";
             //具体处理函数
-            $resp = $this->func_point_del_process($StatCode);
+            $resp = $this->func_point_del_process($type, $user, $body);
             $project = MFUN_PRJ_HCU_AQYCUI;
         }
 
         //功能Point Dev
         elseif ($msgId == MSG_ID_L4AQYCUI_TO_L3F3_POINTDEV)
         {
-            //解开消息
-            if (isset($msg["StatCode"])) $StatCode = $msg["StatCode"]; else  $StatCode = "";
             //具体处理函数
-            $resp = $this->func_point_dev_process($StatCode);
+            $resp = $this->func_point_dev_process($type, $user, $body);
             $project = MFUN_PRJ_HCU_AQYCUI;
         }
 
         //功能Dev Table
         elseif ($msgId == MSG_ID_L4AQYCUI_TO_L3F3_DEVTABLE)
         {
-            //解开消息
-            if (isset($msg["length"])) $length = $msg["length"]; else  $length = "";
-            if (isset($msg["startseq"])) $startseq = $msg["startseq"]; else  $startseq = "";
             //具体处理函数
-            $resp = $this->func_dev_table_process($length, $startseq);
+            $resp = $this->func_dev_table_process($type, $user, $body);
             $project = MFUN_PRJ_HCU_AQYCUI;
         }
 
         //功能Dev New
         elseif ($msgId == MSG_ID_L4AQYCUI_TO_L3F3_DEVNEW)
         {
-            //解开消息
-            if (isset($msg["DevCode"])) $DevCode = $msg["DevCode"]; else  $DevCode = "";
-            if (isset($msg["StatCode"])) $StatCode = $msg["StatCode"]; else  $StatCode = "";
-            if (isset($msg["StartTime"])) $StartTime = $msg["StartTime"]; else  $StartTime = "";
-            if (isset($msg["PreEndTime"])) $PreEndTime = $msg["PreEndTime"]; else  $PreEndTime = "";
-            if (isset($msg["EndTime"])) $EndTime = $msg["EndTime"]; else  $EndTime = "";
-            if (isset($msg["DevStatus"])) $DevStatus = $msg["DevStatus"]; else  $DevStatus = "";
-            if (isset($msg["VideoURL"])) $VideoURL = $msg["VideoURL"]; else  $VideoURL = "";
-            $devinfo = array("DevCode" => $DevCode, "StatCode" => $StatCode, "StartTime" => $StartTime, "PreEndTime" => $PreEndTime,
-                "EndTime" => $EndTime, "DevStatus" => $DevStatus, "VideoURL" => $VideoURL);
             //具体处理函数
-            $resp = $this->func_dev_new_process($devinfo);
+            $resp = $this->func_dev_new_process($type, $user, $body);
             $project = MFUN_PRJ_HCU_AQYCUI;
         }
 
         //功能Dev Mod
         elseif ($msgId == MSG_ID_L4AQYCUI_TO_L3F3_DEVMOD)
         {
-            //解开消息
-            if (isset($msg["DevCode"])) $DevCode = $msg["DevCode"]; else  $DevCode = "";
-            if (isset($msg["StatCode"])) $StatCode = $msg["StatCode"]; else  $StatCode = "";
-            if (isset($msg["StartTime"])) $StartTime = $msg["StartTime"]; else  $StartTime = "";
-            if (isset($msg["PreEndTime"])) $PreEndTime = $msg["PreEndTime"]; else  $PreEndTime = "";
-            if (isset($msg["EndTime"])) $EndTime = $msg["EndTime"]; else  $EndTime = "";
-            if (isset($msg["DevStatus"])) $DevStatus = $msg["DevStatus"]; else  $DevStatus = "";
-            if (isset($msg["VideoURL"])) $VideoURL = $msg["VideoURL"]; else  $VideoURL = "";
-            $devinfo = array("DevCode" => $DevCode, "StatCode" => $StatCode, "StartTime" => $StartTime, "PreEndTime" => $PreEndTime,
-                "EndTime" => $EndTime, "DevStatus" => $DevStatus, "VideoURL" => $VideoURL);
             //具体处理函数
-            $resp = $this->func_dev_mod_process($devinfo);
+            $resp = $this->func_dev_mod_process($type, $user, $body);
             $project = MFUN_PRJ_HCU_AQYCUI;
         }
 
         //功能Dev Del
         elseif ($msgId == MSG_ID_L4AQYCUI_TO_L3F3_DEVDEL)
         {
-            //解开消息
-            if (isset($msg["DevCode"])) $DevCode = $msg["DevCode"]; else  $DevCode = "";
             //具体处理函数
-            $resp = $this->func_dev_del_process($DevCode);
+            $resp = $this->func_dev_del_process($type, $user, $body);
             $project = MFUN_PRJ_HCU_AQYCUI;
         }
 
         //功能Monitor List
         elseif ($msgId == MSG_ID_L4AQYCUI_TO_L3F3_MONITORLIST)
         {
-            //解开消息
-            if (isset($msg["id"])) $id = $msg["id"]; else  $id = "";
             //具体处理函数
-            $resp = $this->func_monitor_list_process($id);
+            $resp = $this->func_monitor_list_process($type, $user, $body);
             $project = MFUN_PRJ_HCU_AQYCUI;
         }
 
         //功能Alarm Type, 获取所有传感器类型
         elseif ($msgId == MSG_ID_L4AQYCUI_TO_L3F3_ALARMTYPE)
         {
-            //解开消息
-            if (isset($msg["user"])) $user = $msg["user"]; else  $user = "";
             //具体处理函数
-            $resp = $this->func_sensor_type_list_process($user);
+            $resp = $this->func_sensor_type_list_process($type, $user, $body);
             $project = MFUN_PRJ_HCU_AQYCUI;
         }
 
         //功能Tabel Query
         elseif ($msgId == MSG_ID_L4AQYCUI_TO_L3F3_TABLEQUERY)
         {
-            //解开消息
-            if (isset($msg["TableName"])) $TableName = $msg["TableName"]; else  $TableName = "";
-            if (isset($msg["Condition"])) $Condition = $msg["Condition"]; else  $Condition = "";
             //具体处理函数
-            $resp = $this->func_table_query_process($TableName, $Condition);
+            $resp = $this->func_table_query_process($type, $user, $body);
             $project = MFUN_PRJ_HCU_AQYCUI;
         }
 
         //功能Sensor List
         elseif ($msgId == MSG_ID_L4AQYCUI_TO_L3F3_SENSORLIST)
         {
-            //解开消息
-            if (isset($msg["user"])) $user = $msg["user"]; else  $user = "";
             //具体处理函数
-            $resp = $this->func_sensor_list_process($user);
+            $resp = $this->func_sensor_list_process($type, $user, $body);
             $project = MFUN_PRJ_HCU_AQYCUI;
         }
 
         //功能Dev Sensor
         elseif ($msgId == MSG_ID_L4AQYCUI_TO_L3F3_DEVSENSOR)
         {
-            //解开消息
-            if (isset($msg["DevCode"])) $DevCode = $msg["DevCode"]; else  $DevCode = "";
             //具体处理函数
-            $resp = $this->func_dev_sensor_process($DevCode);
+            $resp = $this->func_aqyc_dev_sensor_process($type, $user, $body);
             $project = MFUN_PRJ_HCU_AQYCUI;
         }
 
         //功能GetStaticMonitorTable
         elseif ($msgId == MSG_ID_L4AQYCUI_TO_L3F3_GETSTATICMONITORTABLE)
         {
-            //解开消息
-            if (isset($msg["id"])) $id = $msg["id"]; else  $id = "";
             //具体处理函数
-            $resp = $this->func_get_static_monitor_table_process($id);
+            $resp = $this->func_aqyc_get_static_monitor_table_process($type, $user, $body);
             $project = MFUN_PRJ_HCU_AQYCUI;
         }
 
@@ -773,10 +668,8 @@ class classTaskL3aplF3dm
         //功能GetStaticMonitorTable
         elseif ($msgId == MSG_ID_L4BFSCUI_TO_L3F3_GETSTATICMONITORTABLE)
         {
-            //解开消息
-            if (isset($msg["id"])) $id = $msg["id"]; else  $id = "";
             //具体处理函数
-            $resp = $this->func_bfsc_get_static_monitor_table_process($id);
+            $resp = $this->func_bfsc_get_static_monitor_table_process($type, $user, $body);
             $project = MFUN_PRJ_HCU_BFSCUI;
         }
 
@@ -784,37 +677,23 @@ class classTaskL3aplF3dm
         //功能Dev Sensor
         elseif ($msgId == MSG_ID_L4FHYSUI_TO_L3F3_DEVSENSOR)
         {
-            //解开消息
-            if (isset($msg["DevCode"])) $DevCode = $msg["DevCode"]; else  $DevCode = "";
             //具体处理函数
-            $resp = $this->func_fhys_dev_sensor_process($DevCode);
+            $resp = $this->func_fhys_dev_sensor_process($type, $user, $body);
             $project = MFUN_PRJ_HCU_FHYSUI;
         }
 
         //功能GetStaticMonitorTable
         elseif ($msgId == MSG_ID_L4FHYSUI_TO_L3F3_GETSTATICMONITORTABLE)
         {
-            //解开消息
-            if (isset($msg["id"])) $id = $msg["id"]; else  $id = "";
             //具体处理函数
-            $resp = $this->func_fhys_get_static_monitor_table_process($id);
+            $resp = $this->func_fhys_get_static_monitor_table_process($type, $user, $body);
             $project = MFUN_PRJ_HCU_FHYSUI;
         }
 
         //开锁事件历史记录
         elseif ($msgId == MSG_ID_L4FHYSUI_TO_L3F3_KEYHISTORY)
         {
-            if (isset($msg["uid"])) $uid = trim($msg["uid"]); else  $uid = "";
-            if (isset($msg["condition"])) $condition = $msg["condition"]; else  $condition = "";
-
-            $projCode = "";
-            $duration = "";
-            if (!empty($condition))
-            {
-                if (isset($condition["ProjCode"])) $projCode = trim($condition["ProjCode"]); else  $projCode = "";
-                if (isset($condition["Time"])) $duration = trim($condition["Time"]); else  $duration = "";
-            }
-            $resp = $this->func_key_event_history_process($projCode, $duration);
+            $resp = $this->func_key_event_history_process($type, $user, $body);
             $project = MFUN_PRJ_HCU_FHYSUI;
         }
 

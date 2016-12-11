@@ -376,7 +376,7 @@ class classDbiL2snrCom
     }
 
     //UI DevSensor request, 获取所有传感器类型信息
-    public function dbi_dev_sensorinfo_req($devcode)
+    public function dbi_aqyc_dev_sensorinfo_req($devcode)
     {
         //建立连接
         $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
