@@ -216,6 +216,23 @@ class classTaskL3aplF4icm
         return $jsonencode;
     }
 
+    function func_get_camera_unit_process($type, $user, $body)
+    {
+        if (isset($body["StatCode"])) $StatCode = $body["StatCode"]; else  $StatCode = "";
+
+        $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
+        $usercheck = $uiF1symDbObj->dbi_user_authcheck($type, $user);
+        if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
+            $adj_unit=array('v'=>"3~",'h'=>"3~");
+            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$adj_unit,'msg'=>"success");
+        }
+        else
+            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
+
+        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
+        return $jsonencode;
+    }
+
     //TBSWR GetTempStatus
     function func_tbswr_gettempstatus_process($uid, $StatCode)
     {
@@ -371,6 +388,12 @@ class classTaskL3aplF4icm
         {
             //具体处理函数
             $resp = $this->func_get_camera_status_process($type, $user, $body);
+            $project = MFUN_PRJ_HCU_AQYCUI;
+        }
+        elseif ($msgId == MSG_ID_L4AQYCUI_TO_L3F4_GETCAMERAUNIT)
+        {
+            //具体处理函数
+            $resp = $this->func_get_camera_unit_process($type, $user, $body);
             $project = MFUN_PRJ_HCU_AQYCUI;
         }
 

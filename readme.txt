@@ -313,8 +313,11 @@ Make By：ZJL
 > 增加BFSC波峰组合秤项目
 
 //= LZH, 2016 Dec.11, CURRENT_SW_DELIVERY R03.D06
-> FHYS UI和后台MFUNHCU采样新接口定义
+> FHYS UI和后台MFUNHCU采用统一新消息结构定义
 > 登录功能调试OK，其他接口还在测试中，改动比较大，先git上传一次
+
+//= LZH, 2016 Dec.13, CURRENT_SW_DELIVERY R03.D07
+> FHYS UI和后台MFUNHCU新消息结构测试完成
 
 
 //待完善的功能

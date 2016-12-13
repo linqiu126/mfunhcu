@@ -557,6 +557,7 @@ class classDbiL3apF4icm
             $uid = $row["uid"];
         }
 
+        $keyid = "";
         $key_type = MFUN_L3APL_F2CM_KEY_TYPE_USER;
         $query_str = "SELECT * FROM `t_l3f2cm_fhys_keyinfo` WHERE (`hwcode` = '$uid' AND `keytype` = '$key_type')";
         $result = $mysqli->query($query_str);

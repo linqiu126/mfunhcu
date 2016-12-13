@@ -1,4 +1,5 @@
 <?php
+header("Content-type:text/html;charset=utf-8");
 /**
  * Created by PhpStorm.
  * User: MAMA
@@ -694,7 +695,7 @@ class classTaskL3aplF2cm
         }
 
         //功能ProjDel
-        if ($msgId == MSG_ID_L4AQYCUI_TO_L3F2_PROJDEL)
+        elseif ($msgId == MSG_ID_L4AQYCUI_TO_L3F2_PROJDEL)
         {
             //具体处理函数
             $resp = $this->func_project_del_process($type, $user, $body);

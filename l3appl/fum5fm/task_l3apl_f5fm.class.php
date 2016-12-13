@@ -105,9 +105,10 @@ class classTaskL3aplF5fm
         $usercheck = $uiF1symDbObj->dbi_user_authcheck($type, $user);
         if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
             $uiF3dmDbObj = new classDbiL3apF3dm(); //初始化一个UI DB对象
-            $alarmlist = $uiF3dmDbObj->dbi_fhys_dev_currentvalue_req($StatCode);
-            if(!empty($alarmlist))
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$alarmlist,'msg'=>"获取该站点下当前设备测量信息成功");
+            $resp = $uiF3dmDbObj->dbi_fhys_dev_currentvalue_req($StatCode);
+            if(!empty($resp)){
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$resp,'msg'=>"获取该站点下当前设备测量信息成功");
+            }
             else
                 $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>"获取该站点下当前设备测量信息失败");
         }
@@ -153,33 +154,27 @@ class classTaskL3aplF5fm
             return false;
         }
 
-        //功能Dev Alarm
-        elseif ($msgId == MSG_ID_L4AQYCUI_TO_L3F5_DEVALARM)
+        switch($msgId)
         {
-            //具体处理函数
-            $resp = $this->func_aqyc_dev_alarm_process($type, $user, $body);
-            $project = MFUN_PRJ_HCU_AQYCUI;
-        }
-
-        //功能Alarm Query
-        elseif ($msgId == MSG_ID_L4AQYCUI_TO_L3F5_ALARMQUERY)
-        {
-            //具体处理函数
-            $resp = $this->func_alarm_query_process($type, $user, $body);
-            $project = MFUN_PRJ_HCU_AQYCUI;
-        }
-
-        /*********************************智能云锁新增处理************************************************/
-        //功能Dev Alarm
-        if ($msgId == MSG_ID_L4FHYSUI_TO_L3F5_DEVALARM)
-        {
-            //具体处理函数
-            $resp = $this->func_fhys_dev_alarm_process($type, $user, $body);
-            $project = MFUN_PRJ_HCU_FHYSUI;
-        }
-
-        else{
-            $resp = ""; //啥都不ECHO
+            //功能Dev Alarm
+            case MSG_ID_L4AQYCUI_TO_L3F5_DEVALARM:
+                $resp = $this->func_aqyc_dev_alarm_process($type, $user, $body);
+                $project = MFUN_PRJ_HCU_AQYCUI;
+                break;
+            //功能Alarm Query
+            case MSG_ID_L4AQYCUI_TO_L3F5_ALARMQUERY:
+                $resp = $this->func_alarm_query_process($type, $user, $body);
+                $project = MFUN_PRJ_HCU_AQYCUI;
+                break;
+            /*********************************智能云锁新增处理************************************************/
+            //功能Dev Alarm
+            case MSG_ID_L4FHYSUI_TO_L3F5_DEVALARM:
+                $resp = $this->func_fhys_dev_alarm_process($type, $user, $body);
+                $project = MFUN_PRJ_HCU_FHYSUI;
+                break;
+            default:
+                $resp = ""; //啥都不ECHO
+                break;
         }
 
         //返回ECHO

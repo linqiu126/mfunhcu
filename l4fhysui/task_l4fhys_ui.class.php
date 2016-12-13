@@ -465,6 +465,12 @@ class classTaskL4fhysUi
                     break;
 
                 case "GetCameraUnit":
+                    if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
+                    if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
+                    if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
+
+                    $input = array("type" => $type,"user" => $user,"body" => $body);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM4ICM, MSG_ID_L4AQYCUI_TO_L3F4_GETCAMERAUNIT, "MSG_ID_L4AQYCUI_TO_L3F4_GETCAMERAUNIT",$input);
                     break;
                 case "CameraVAdj":
                     break;

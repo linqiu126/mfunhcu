@@ -1533,6 +1533,16 @@ class classDbiL3apF3dm
         $mysqli->query("set character_set_results = utf8");
         $mysqli->query("SET NAMES utf8");
 
+        $vcrlist = array();
+        $query_str = "SELECT * FROM `t_l2sdk_iothcu_inventory` WHERE `statcode` = '$statcode'";
+        $result = $mysqli->query($query_str);
+        if (($result->num_rows)>0) {
+            $row = $result->fetch_array();
+            $vcrname = "RTSP";
+            $vcrlink = $row['videourl'];
+            $vcrlist = array('vcrname'=>$vcrname, 'vcraddress'=>$vcrlink);
+        }
+
         $query_str = "SELECT * FROM `t_l3f3dm_fhys_currentreport` WHERE `statcode` = '$statcode'";
         $result = $mysqli->query($query_str);
         if (($result->num_rows)>0)
@@ -1755,8 +1765,10 @@ class classDbiL3apF3dm
         else
             $currentvalue = "";
 
+        $resp = array('StatCode'=>$statcode, 'alarmlist'=>$currentvalue, 'vcr'=>$vcrlist);
+
         $mysqli->close();
-        return $currentvalue;
+        return $resp;
     }
 
     public function dbi_key_event_history_process($condition)

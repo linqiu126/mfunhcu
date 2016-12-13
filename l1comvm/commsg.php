@@ -195,6 +195,7 @@ define("MSG_ID_L4AQYCUI_TO_L3F4_SWUPDATE", $index++);   //请求将指定的HCU�
 define("MSG_ID_L4AQYCUI_TO_L3F4_VIDEOLIST", $index++);  //查询某HCU设备指定日期的视频文件列表
 define("MSG_ID_L4AQYCUI_TO_L3F4_VIDEOPLAY", $index++);  //请求播放某指定视频文件
 define("MSG_ID_L4AQYCUI_TO_L3F4_GETCAMERASTATUS", $index++);  //查询垂直和水平角度，同时报告传一个照片给后台
+define("MSG_ID_L4AQYCUI_TO_L3F4_GETCAMERAUNIT", $index++);
 
 define("MSG_ID_L4AQYCUI_TO_L3F4_SENSORUPDATE", $index++);
 define("MSG_ID_L4AQYCUI_TO_L3F5_DEVALARM", $index++);

@@ -12,6 +12,8 @@ include_once "../l1comvm/vmlayer.php";
  *                             L4FHYS-UI TEST CASES                                   *
  *************************************************************************************/
 if (TC_L4FHYS_UI == true) {
+    $sessionid = "INGJoArGNL";
+
     //公共消息测试
     echo " [TC L4FHYS: LOGIN START]\n";
     $_GET["action"] = "login";
@@ -22,50 +24,109 @@ if (TC_L4FHYS_UI == true) {
 
     echo " [TC L4FHYS: USERINFO START]\n";
     $_GET["action"] = "UserInfo";
-    $body = array('session' => "YKsHwCAJN3");
+    $body = array('session' => $sessionid);
     $_GET["type"] = "query";
     $_GET["body"] = $body;
-    $_GET["user"] = "null";
+    $_GET["user"] = "";
     require("../l4fhysui/request.php");
-    echo " [TC L4FHYS: USERINFO END]\n";
+    echo " \n[TC L4FHYS: USERINFO END]\n";
 
     echo " [TC L4FHYS: USERNEW START]\n";
     $_GET["action"] = "UserNew";
-    $body = array('name' => "aaa", 'nickname' => "bbb",'password' => "AAA",'mobile' => "139",'mail' => "aaa@139",'type' => "ZZZ",'name' => "ZZZ");
-
-    $_GET["name"] = "ZZZ";
-    $_GET["nickname"] = "ZZZ";
-    $_GET["password"] ="zzz";
-    $_GET["mobile"] ="zzz";
-    $_GET["mail"] ="zzz";
-    $_GET["type"] ="aa";
-    $_GET["memo"] ="zz";
-    $_GET["auth"] ="zz";
+    $body = array('name' => "aaa", 'nickname' => "bbb",'password' => "AAA",'mobile' => "139",'mail' => "aaa@139",'type' => "1",'memo' => "ZZZ",'auth' => "");
+    $_GET["type"] = "mod";
+    $_GET["body"] = $body;
+    $_GET["user"] = $sessionid;
     require("../l4fhysui/request.php");
     echo " [TC L4FHYS: USERNEW END]\n";
+
+    echo " [TC L4FHYS: ProjTable START]\n";
+    $_GET["action"] = "ProjTable";
+    $body = array('startseq' => "0", 'length' => "10");
+    $_GET["type"] = "query";
+    $_GET["body"] = $body;
+    $_GET["user"] = $sessionid;
+    require("../l4fhysui/request.php");
+    echo " [TC L4FHYS: ProjTable END]\n";
+
+    echo " [TC L4FHYS: PGTable START]\n";
+    $_GET["action"] = "PGTable";
+    $body = array('startseq' => "0", 'length' => "10");
+    $_GET["type"] = "query";
+    $_GET["body"] = $body;
+    $_GET["user"] = $sessionid;
+    require("../l4fhysui/request.php");
+    echo " [TC L4FHYS: PGTable END]\n";
+
+    echo " [TC L4FHYS: MonitorList START]\n";
+    $_GET["action"] = "MonitorList";
+    $_GET["type"] = "query";
+    $_GET["user"] = $sessionid;
+    require("../l4fhysui/request.php");
+    echo " [TC L4FHYS: MonitorList END]\n";
+
+    echo " [TC L4FHYS: ProjectPGList START]\n";
+    $_GET["action"] = "ProjectPGList";
+    $_GET["type"] = "query";
+    $_GET["user"] = $sessionid;
+    require("../l4fhysui/request.php");
+    echo " [TC L4FHYS: ProjectPGList END]\n";
+
+    echo " [TC L4FHYS: UserProj START]\n";
+    $_GET["action"] = "UserProj";
+    $body = array('userid' => "UID000003");
+    $_GET["body"] = $body;
+    $_GET["type"] = "query";
+    $_GET["user"] = $sessionid;
+    require("../l4fhysui/request.php");
+    echo " [TC L4FHYS: UserProj END]\n";
+
+    echo " [TC L4FHYS: ProjectList START]\n";
+    $_GET["action"] = "ProjectList";
+    $_GET["type"] = "query";
+    $_GET["user"] = $sessionid;
+    require("../l4fhysui/request.php");
+    echo " [TC L4FHYS: ProjectList END]\n";
+
+    echo " [TC L4FHYS: DevAlarm START]\n";
+    $_GET["action"] = "DevAlarm";
+    $body = array('StatCode' => "120101015");
+    $_GET["body"] = $body;
+    $_GET["type"] = "query";
+    $_GET["user"] = $sessionid;
+    require("../l4fhysui/request.php");
+    echo " [TC L4FHYS: DevAlarm END]\n";
 
     //智能云锁专用消息测试
     echo " [TC L4FHYS: UserKey START]\n";
     $_GET["action"] = "UserKey";
-    $_GET["userid"] = "UID000001";
+    $body = array('userid' => "UID000003");
+    $_GET["body"] = $body;
+    $_GET["type"] = "query";
+    $_GET["user"] = $sessionid;
     require("../l4fhysui/request.php");
     echo " [TC L4FHYS: UserKey END]\n";
 
     echo " [TC L4FHYS: ProjKeyList START]\n";
     $_GET["action"] = "ProjKeyList";
-    $_GET["userid"] = "UID000001";
+    $_GET["type"] = "query";
+    $_GET["user"] = $sessionid;
     require("../l4fhysui/request.php");
     echo " [TC L4FHYS: ProjKeyList END]\n";
 
     echo " [TC L4FHYS: ProjKey START]\n";
     $_GET["action"] = "ProjKey";
-    $_GET["ProjCode"] = "P_0014";
+    $body = array('ProjCode' => "P_0015");
+    $_GET["body"] = $body;
+    $_GET["type"] = "query";
+    $_GET["user"] = $sessionid;
     require("../l4fhysui/request.php");
     echo " [TC L4FHYS: ProjKey END]\n";
 
     echo " [TC L4FHYS: ProjUserList START]\n";
     $_GET["action"] = "ProjUserList";
-    $_GET["id"] = "UID000001";
+    $_GET["type"] = "query";
+    $_GET["user"] = $sessionid;
     require("../l4fhysui/request.php");
     echo " [TC L4FHYS: ProjUserList END]\n";
 
