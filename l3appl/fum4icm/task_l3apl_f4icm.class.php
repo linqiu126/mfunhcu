@@ -8,6 +8,7 @@
 //include_once "../../l1comvm/vmlayer.php";
 include_once "dbi_l3apl_f4icm.class.php";
 require_once dirname(__FILE__)."/../../l2socketlisten/socket_client_sync.class.php";
+header("Content-type:text/html;charset=utf-8");
 
 class classTaskL3aplF4icm
 {
@@ -41,40 +42,19 @@ class classTaskL3aplF4icm
         return urlencode($elem);
     }
 
-    //查询指定监测点指定时间的视频列表
-    function func_hcu_videolist_process($type, $user, $body)
+    function func_hcu_camweb_process($type, $user, $body)
     {
-        $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
-        $usercheck = $uiF1symDbObj->dbi_user_authcheck($type, $user);
-        if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
-            $uiF4icmDbObj = new classDbiL3apF4icm();
-            $resp = $uiF4icmDbObj->dbi_hcu_vediolist_inqury($body);
-            if(!empty($resp))
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$resp,'msg'=>"获取指定时间视频列表成功");
-            else
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>"获取指定时间视频列表失败");
-        }
-        else
-            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
-
-        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
-        return $jsonencode;
-    }
-
-    //请求播放指定视频
-    function func_hcu_videoplay_process($type, $user, $body)
-    {
-        if (isset($body["videoid"])) $videoid = $body["videoid"]; else  $videoid = "";
+        if (isset($body["StatCode"])) $statcode = $body["StatCode"]; else  $statcode = "";
 
         $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
         $usercheck = $uiF1symDbObj->dbi_user_authcheck($type, $user);
         if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
             $uiF4icmDbObj = new classDbiL3apF4icm();
-            $resp = $uiF4icmDbObj->dbi_hcu_vedioplay_request($videoid);
+            $resp = $uiF4icmDbObj->dbi_get_hcu_camweb_link($statcode);
             if(!empty($resp))
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$resp,'msg'=>"播放指定视频成功");
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$resp,'msg'=>"获取视频摄像头WEB地址成功");
             else
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>"播放指定视频失败");
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>"获取视频摄像头WEB地址失败");
         }
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
@@ -99,7 +79,7 @@ class classTaskL3aplF4icm
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
 
-        $jsonencode = json_encode($retval);
+        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
         return $jsonencode;
     }
 
@@ -129,11 +109,7 @@ class classTaskL3aplF4icm
                 $uiF4icmDbObj = new classDbiL3apF4icm(); //初始化一个UI DB对象
                 $latestver = $uiF4icmDbObj->dbi_latest_hcu_swver_inqury($devcode);
                 if (!empty($latestver)) {
-                    $temp = array(
-                        'DevCode' => $devcode,
-                        'ProjName' => ':',
-                        'version' => $latestver
-                    );
+                    $temp = array('DevCode' => $devcode,'ProjName' => ':','version' => $latestver);
                     array_push($verlist, $temp);
                 }
                 $j++;
@@ -147,7 +123,7 @@ class classTaskL3aplF4icm
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
 
-        $jsonencode = json_encode($retval);
+        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
         return $jsonencode;
     }
 
@@ -186,6 +162,48 @@ class classTaskL3aplF4icm
                 $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$resp,'msg'=>"更新传感器信息成功");
             else
                 $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>"更新传感器信息失败");
+        }
+        else
+            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
+
+        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
+        return $jsonencode;
+    }
+
+    //查询指定监测点指定时间的视频列表
+    function func_hcu_videolist_process($type, $user, $body)
+    {
+        $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
+        $usercheck = $uiF1symDbObj->dbi_user_authcheck($type, $user);
+        if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
+            $uiF4icmDbObj = new classDbiL3apF4icm();
+            $resp = $uiF4icmDbObj->dbi_hcu_vediolist_inqury($body);
+            if(!empty($resp))
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$resp,'msg'=>"获取指定时间视频列表成功");
+            else
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>"获取指定时间视频列表失败");
+        }
+        else
+            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
+
+        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
+        return $jsonencode;
+    }
+
+    //请求播放指定视频
+    function func_hcu_videoplay_process($type, $user, $body)
+    {
+        if (isset($body["videoid"])) $videoid = $body["videoid"]; else  $videoid = "";
+
+        $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
+        $usercheck = $uiF1symDbObj->dbi_user_authcheck($type, $user);
+        if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
+            $uiF4icmDbObj = new classDbiL3apF4icm();
+            $resp = $uiF4icmDbObj->dbi_hcu_vedioplay_request($videoid);
+            if(!empty($resp))
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$resp,'msg'=>"播放指定视频成功");
+            else
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>"播放指定视频失败");
         }
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
@@ -363,7 +381,19 @@ class classTaskL3aplF4icm
             $resp = $this->func_devsw_update_process($type, $user, $body);
             $project = MFUN_PRJ_HCU_AQYCUI;
         }
-
+        //功能Sensor update
+        elseif ($msgId == MSG_ID_L4AQYCUI_TO_L3F4_SENSORUPDATE)
+        {
+            //具体处理函数
+            $resp = $this->func_sensor_update_process($type, $user, $body);
+            $project = MFUN_PRJ_HCU_AQYCUI;
+        }
+        elseif ($msgId == MSG_ID_L4AQYCUI_TO_L3F4_CAMWEB)
+        {
+            //具体处理函数
+            $resp = $this->func_hcu_camweb_process($type, $user, $body);
+            $project = MFUN_PRJ_HCU_AQYCUI;
+        }
         elseif ($msgId == MSG_ID_L4AQYCUI_TO_L3F4_VIDEOLIST)
         {
             //具体处理函数
@@ -374,13 +404,6 @@ class classTaskL3aplF4icm
         elseif ($msgId == MSG_ID_L4AQYCUI_TO_L3F4_VIDEOPLAY)
         {
             $resp = $this->func_hcu_videoplay_process($type, $user, $body);
-            $project = MFUN_PRJ_HCU_AQYCUI;
-        }
-        //功能Sensor update
-        elseif ($msgId == MSG_ID_L4AQYCUI_TO_L3F4_SENSORUPDATE)
-        {
-            //具体处理函数
-            $resp = $this->func_sensor_update_process($type, $user, $body);
             $project = MFUN_PRJ_HCU_AQYCUI;
         }
         //功能Get Camera Status

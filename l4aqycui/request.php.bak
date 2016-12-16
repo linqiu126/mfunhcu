@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 header("Content-type:text/html;charset=utf-8");
 #require '/php/req.php';
 function _encode($arr)
@@ -152,7 +152,24 @@ $retval=array(
 			'WarningCheck' => 'true',
 			'WarningHandle' => 'true',
 			'InstConf' => 'true',
-			'InstRead' => 'true'
+			'InstRead' => 'true',
+			'MPMonitorCard' => 'true',
+			'InstDesign' => 'true',
+			'InstControl' => 'true',
+			'InstSnapshot' => 'true',
+			'InstVideo' => 'true',
+			'AuditTarget' => 'true',
+			'AuditStability' => 'true',
+			'AuditAvailability' => 'true',
+			'AuditError' => 'true',
+			'AuditQuality' => 'true',
+			'GeoInfoQuery' => 'true',
+			'GeoTrendAnalysis' => 'true',
+			'GeoDisaterForecast' => 'true',
+			'GeoEmergencyDirect' => 'true',
+			'GeoDiffusionAnalysis' => 'true',
+			'ADConf' => 'true',
+			'WEBConf' => 'true'
 		);
 		$userauth=array(
 			'query' => 'true',
@@ -185,7 +202,24 @@ $retval=array(
 			'WarningCheck' => 'true',
 			'WarningHandle' => 'true',
 			'InstConf' => 'false',
-			'InstRead' => 'false'
+			'InstRead' => 'false',
+			'MPMonitorCard' => 'true',
+			'InstDesign' => 'true',
+			'InstControl' => 'true',
+			'InstSnapshot' => 'true',
+			'InstVideo' => 'true',
+			'AuditTarget' => 'true',
+			'AuditStability' => 'true',
+			'AuditAvailability' => 'true',
+			'AuditError' => 'true',
+			'AuditQuality' => 'true',
+			'GeoInfoQuery' => 'true',
+			'GeoTrendAnalysis' => 'true',
+			'GeoDisaterForecast' => 'true',
+			'GeoEmergencyDirect' => 'true',
+			'GeoDiffusionAnalysis' => 'true',
+			'ADConf' => 'true',
+			'WEBConf' => 'true'
 		);
 		$userauth=array(
 			'query' => 'true',
@@ -217,7 +251,24 @@ $retval=array(
 			'WarningCheck' => 'true',
 			'WarningHandle' => 'true',
 			'InstConf' => 'true',
-			'InstRead' => 'true'
+			'InstRead' => 'true',
+			'MPMonitorCard' => 'true',
+			'InstDesign' => 'true',
+			'InstControl' => 'true',
+			'InstSnapshot' => 'true',
+			'InstVideo' => 'true',
+			'AuditTarget' => 'true',
+			'AuditStability' => 'true',
+			'AuditAvailability' => 'true',
+			'AuditError' => 'true',
+			'AuditQuality' => 'true',
+			'GeoInfoQuery' => 'true',
+			'GeoTrendAnalysis' => 'true',
+			'GeoDisaterForecast' => 'true',
+			'GeoEmergencyDirect' => 'true',
+			'GeoDiffusionAnalysis' => 'true',
+			'ADConf' => 'true',
+			'WEBConf' => 'true'
 		);
 		$userauth=array(
 			'query' => 'true',
@@ -1501,7 +1552,7 @@ RESPONSE:
 		'WarningTarget'=>"false"
 	);
 	array_push($alarmlist,$map8);
-    $vcr_list= array();
+    $vcr_list= array();// HYJ should modify it to a stand alone address
     for($i=0;$i<10;$i++){
         $map=array(
            'vcrname'=> "录像".(string)$i,
@@ -2574,10 +2625,38 @@ RESPONSE:
     $jsonencode = _encode($retval);
 	echo $jsonencode; break;
     case "GetVideoList":
-    $usr = $_GET["id"];
-    $StatCode = $_GET["StatCode"];
-    $date = $_GET["date"];
-    $hour = $_GET["hour"];
+/*
+REQUEST:
+    var body={
+		StatCode:StatCode,
+		date:date,
+		hour:hour
+    };
+    var map={
+        action:"GetVideoList",
+		body:body,
+		type:"query",
+		user:usr.id
+    };
+RESPONSE:
+	$map = array(
+		'id'=>"Video_" .$StatCode . "_"  .$date ."_" .$hour ."_" .(string)$j,
+		'attr'=>"Video_" .$StatCode . "_"  .$date ."_" .$hour ."_" .(string)$j."视频属性"
+	);
+	array_push($VideoList,$map);
+    
+    $retval=array(
+        'status'=>'true',
+        'ret'=> $VideoList,
+		'msg'=>'success',
+		'auth'=>'true'
+    );
+*/
+    $body_in = $_GET['body'];
+    $usr = $_GET["user"];
+    $StatCode = $body_in["StatCode"];
+    $date = $body_in["date"];
+    $hour = $body_in["hour"];
     $VideoList = array();
     for($j=0;$j<5;$j++) {
 
@@ -3532,6 +3611,46 @@ RESPONSE:
 	$body=array(
         'ColumnName'=> $column_name,
         'TableData'=>$row_content
+	);
+    $retval=array(
+        'status'=>'true',
+		'ret'=>$body,
+		'msg'=>'success',
+		'auth'=>'true'
+    );
+    $jsonencode = _encode($retval);
+	echo $jsonencode; break;
+	case "GetVideoCameraWeb":
+	/*
+	REQUEST:
+	    var body={
+    	KeyCode:keyid,
+    	UserId:userid
+        };
+        var map={
+            action:"GetVideoCameraWeb",
+            body:body,
+            type:"mod",
+            user:usr.id
+        };
+    RESPONSE:
+    	$body=array(
+            'video'=> "http://127.0.0.1/dist/video/video_view.html",
+            'camera'=>"http://127.0.0.1/dist/video/camera_view.html"
+    	);
+        $retval=array(
+            'status'=>'true',
+    		'ret'=>$body,
+    		'msg'=>'success',
+    		'auth'=>'true'
+        );
+    */
+	$usr = $_GET["user"];
+	$body_in = $_GET["body"];
+	$statcode=$body_in ['StatCode'];
+	$body=array(
+        'video'=> "http://127.0.0.1/dist/video/video_view.html",
+        'camera'=>"http://127.0.0.1/dist/video/camera_view.html"
 	);
     $retval=array(
         'status'=>'true',

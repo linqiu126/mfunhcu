@@ -688,6 +688,23 @@ class classDbiL3apF3dm
             die('Could not connect: ' . mysqli_error($mysqli));
         }
         $mysqli->query("set character_set_results = utf8");
+        $mysqli->query("SET NAMES utf8");
+
+        $vcrname = array();
+        $vcrlink = array();
+        $vcrlist = array();
+        $query_str = "SELECT * FROM `t_l2sdk_iothcu_inventory` WHERE `statcode` = '$statcode'";
+        $result = $mysqli->query($query_str);
+        if (($result->num_rows)>0) {
+            $row = $result->fetch_array();
+            array_push($vcrname,"RTSP");
+            array_push($vcrname,"CAMCTRL");
+            $rtsp = $row['videourl'];
+            $cam_ctrl = $row['camctrl'];
+            array_push($vcrlink,$rtsp);
+            array_push($vcrlink,$cam_ctrl);
+            $vcrlist = array('vcrname'=>$vcrname, 'vcraddress'=>$vcrlink);
+        }
 
         $query_str = "SELECT * FROM `t_l3f3dm_aqyc_currentreport` WHERE `statcode` = '$statcode'";
         $result = $mysqli->query($query_str);
@@ -792,8 +809,10 @@ class classDbiL3apF3dm
         else
             $currentvalue = "";
 
+        $resp = array('StatCode'=>$statcode, 'alarmlist'=>$currentvalue, 'vcr'=>$vcrlist);
+
         $mysqli->close();
-        return $currentvalue;
+        return $resp;
     }
 
     //UI AlarmQuery Request, 获取告警历史数据
@@ -1533,13 +1552,19 @@ class classDbiL3apF3dm
         $mysqli->query("set character_set_results = utf8");
         $mysqli->query("SET NAMES utf8");
 
+        $vcrname = array();
+        $vcrlink = array();
         $vcrlist = array();
         $query_str = "SELECT * FROM `t_l2sdk_iothcu_inventory` WHERE `statcode` = '$statcode'";
         $result = $mysqli->query($query_str);
         if (($result->num_rows)>0) {
             $row = $result->fetch_array();
-            $vcrname = "RTSP";
-            $vcrlink = $row['videourl'];
+            array_push($vcrname,"RTSP");
+            array_push($vcrname,"CAMCTRL");
+            $rtsp = $row['videourl'];
+            $cam_ctrl = $row['camctrl'];
+            array_push($vcrlink,$rtsp);
+            array_push($vcrlink,$cam_ctrl);
             $vcrlist = array('vcrname'=>$vcrname, 'vcraddress'=>$vcrlink);
         }
 

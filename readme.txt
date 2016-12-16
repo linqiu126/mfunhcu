@@ -319,6 +319,10 @@ Make By：ZJL
 //= LZH, 2016 Dec.13, CURRENT_SW_DELIVERY R03.D07
 > FHYS UI和后台MFUNHCU新消息结构测试完成
 
+//= LZH, 2016 Dec.16, CURRENT_SW_DELIVERY R03.D08
+> AQYC UI和后台MFUNHCU新消息结构测试完成
+> 修改视频和摄像头控制处理
+
 
 //待完善的功能
 1. dbi_devinfo_update（）需要修改，添加设备时预计结束时间和实际结束时间应该在项目信息里

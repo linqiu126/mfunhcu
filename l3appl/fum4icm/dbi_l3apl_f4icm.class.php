@@ -99,116 +99,6 @@ class classDbiL3apF4icm
         return $result;
     }
 
-    public function dbi_hcu_vediolist_inqury($input)
-    {
-        //查询监测点下的设备列表
-        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
-        if (!$mysqli) {
-            die('Could not connect: ' . mysqli_error($mysqli));
-        }
-        $mysqli->query("set character_set_results = utf8");
-
-        if (isset($input["StatCode"])) $statcode = trim($input["StatCode"]); else  $statcode = "";
-        if (isset($input["date"])) $date = trim($input["date"]); else  $date = "";
-        if (isset($input["hour"])) $hour = trim($input["hour"]); else  $hour = "";
-
-        $query_str = "SELECT * FROM `t_l3f3dm_siteinfo` WHERE `statcode` = '$statcode' ";
-        $result = $mysqli->query($query_str);
-
-        $devlist = array();
-        while($row = $result->fetch_array())
-        {
-            $temp = array(
-                'statcode' => $row['statcode'],
-                'name' =>  $row['name'],
-                'devcode' => $row['devcode']
-            );
-            array_push($devlist, $temp);
-        }
-
-        $videolist = array();
-        if(!empty($devlist)){
-            $i = 0;
-            $format = "A11Hcuid/A1Conj/A2Key/A8Date/A2Hour/A2Min/A9Fix";  //HCU_SH_0304_av201607202130.h264.mp4
-            while ($i < count($devlist)){
-                $deviceid = $devlist[$i]['devcode'];
-                $start = $hour * 60;
-                $end = $hour * 60 + 59;
-                $query_str = "SELECT * FROM `t_l2snr_hsmmpdata` WHERE `deviceid` = '$deviceid' AND `reportdate` = '$date'
-                                  AND `hourminindex` >= '$start' AND `hourminindex` < '$end' ";
-                $result = $mysqli->query($query_str);
-                while($row = $result->fetch_array()){
-                    $videourl = $row['videourl'];
-                    //$videourl = strrchr($videourl, '/');
-                    $data = unpack($format, $videourl);
-
-                    $temp = array(
-                        'id'=> $videourl,
-                        'attr'=> $devlist[$i]['name']."_视频".$data["Date"]."_".$data["Hour"].":".$data["Min"]
-                    );
-                    array_push($videolist, $temp);
-                }
-                $i++;
-            }
-        }
-        $mysqli->close();
-        return $videolist;
-    }
-
-    public function dbi_hcu_vedioplay_request($videoid)
-    {
-        //查询该视频文件当前状态，是否已经下载，是否正在下载
-        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
-        if (!$mysqli) {
-            die('Could not connect: ' . mysqli_error($mysqli));
-        }
-        $mysqli->query("set character_set_results = utf8");
-
-        $query_str = "SELECT * FROM `t_l2snr_hsmmpdata` WHERE `videourl` = '$videoid' ";
-        $result = $mysqli->query($query_str);
-        if (($result->num_rows)>0) {
-            $row = $result->fetch_array();
-            $dataflag = $row["dataflag"];
-            $devCode = $row["deviceid"];
-            $apiL2snrCommonServiceObj = new classApiL2snrCommonService();
-            if ($dataflag == MFUN_HCU_VIDEO_DATA_STATUS_NORMAL OR $dataflag == MFUN_HCU_VIDEO_DATA_STATUS_FAIL){
-                $ctrl_key = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_CMDID_HSMMP_DATA);
-                $opt_key = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_OPT_VEDIOFILE_REQ);
-                $len = $apiL2snrCommonServiceObj->byte2string(strlen( $opt_key)/2 + strlen($videoid));
-                $cmdStr = $ctrl_key . $len . $opt_key . $videoid;
-                //保存命令到CmdBuf
-                $dbiL1VmCommonObj = new classDbiL1vmCommon();
-                $dbiL1VmCommonObj->dbi_cmdbuf_save_cmd(trim($devCode), trim($cmdStr));
-
-                //更新视频文件的状态
-                $dataflag = MFUN_HCU_VIDEO_DATA_STATUS_DOWNLOAD;
-                $query_str = "UPDATE `t_l2snr_hsmmpdata` SET `dataflag` = '$dataflag' WHERE (`deviceid` = '$devCode' AND `videourl` = '$videoid')";
-                $result = $mysqli->query($query_str);
-
-                //通过9502端口建立tcp阻塞式socket连接，向HCU转发操控命令
-                $client = new socket_client_sync($devCode, $cmdStr);
-                $client->connect();
-
-                $resp = "downloading";
-
-            }
-            elseif ($dataflag == MFUN_HCU_VIDEO_DATA_STATUS_DOWNLOAD){
-                //正在下载中又收到该视频文件的请求什么也不做，直接回复
-                $resp = "downloading";
-            }
-            elseif ($dataflag == MFUN_HCU_VIDEO_DATA_STATUS_READY){
-                $resp = "http://121.40.185.177/xhzn/avorion/" . $videoid;
-            }
-            else
-                $resp = "";
-        }
-        else
-            $resp = "";
-
-        $mysqli->close();
-        return $resp;
-    }
-
     //查询所有可用SW版本
     public function dbi_hcu_allsw_inqury()
     {
@@ -462,6 +352,141 @@ class classDbiL3apF4icm
         return $resp;
     }
 
+    public function dbi_get_hcu_camweb_link($statcode)
+    {
+        //建立连接
+        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli) {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $mysqli->query("set character_set_results = utf8");
+        $mysqli->query("SET NAMES utf8");
+
+        $camweb = array();
+        $query_str = "SELECT * FROM `t_l2sdk_iothcu_inventory` WHERE `statcode` = '$statcode'";
+        $result = $mysqli->query($query_str);
+        if (($result->num_rows)>0) {
+            $row = $result->fetch_array();
+            $rtsp = $row['videourl'];
+            $cam_ctrl = $row['camctrl'];
+
+            $camweb = array('video'=>$rtsp, 'camera'=>$cam_ctrl);
+        }
+
+        $mysqli->close();
+        return $camweb;
+    }
+
+    public function dbi_hcu_vediolist_inqury($input)
+    {
+        //查询监测点下的设备列表
+        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli) {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $mysqli->query("set character_set_results = utf8");
+
+        if (isset($input["StatCode"])) $statcode = trim($input["StatCode"]); else  $statcode = "";
+        if (isset($input["date"])) $date = trim($input["date"]); else  $date = "";
+        if (isset($input["hour"])) $hour = trim($input["hour"]); else  $hour = "";
+
+        $query_str = "SELECT * FROM `t_l3f3dm_siteinfo` WHERE `statcode` = '$statcode' ";
+        $result = $mysqli->query($query_str);
+
+        $devlist = array();
+        while($row = $result->fetch_array())
+        {
+            $temp = array(
+                'statcode' => $row['statcode'],
+                'name' =>  $row['name'],
+                'devcode' => $row['devcode']
+            );
+            array_push($devlist, $temp);
+        }
+
+        $videolist = array();
+        if(!empty($devlist)){
+            $i = 0;
+            $format = "A11Hcuid/A1Conj/A2Key/A8Date/A2Hour/A2Min/A9Fix";  //HCU_SH_0304_av201607202130.h264.mp4
+            while ($i < count($devlist)){
+                $deviceid = $devlist[$i]['devcode'];
+                $start = $hour * 60;
+                $end = $hour * 60 + 59;
+                $query_str = "SELECT * FROM `t_l2snr_hsmmpdata` WHERE `deviceid` = '$deviceid' AND `reportdate` = '$date'
+                                  AND `hourminindex` >= '$start' AND `hourminindex` < '$end' ";
+                $result = $mysqli->query($query_str);
+                while($row = $result->fetch_array()){
+                    $videourl = $row['videourl'];
+                    //$videourl = strrchr($videourl, '/');
+                    $data = unpack($format, $videourl);
+
+                    $temp = array(
+                        'id'=> $videourl,
+                        'attr'=> $devlist[$i]['name']."_视频".$data["Date"]."_".$data["Hour"].":".$data["Min"]
+                    );
+                    array_push($videolist, $temp);
+                }
+                $i++;
+            }
+        }
+        $mysqli->close();
+        return $videolist;
+    }
+
+    public function dbi_hcu_vedioplay_request($videoid)
+    {
+        //查询该视频文件当前状态，是否已经下载，是否正在下载
+        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli) {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $mysqli->query("set character_set_results = utf8");
+
+        $query_str = "SELECT * FROM `t_l2snr_hsmmpdata` WHERE `videourl` = '$videoid' ";
+        $result = $mysqli->query($query_str);
+        if (($result->num_rows)>0) {
+            $row = $result->fetch_array();
+            $dataflag = $row["dataflag"];
+            $devCode = $row["deviceid"];
+            $apiL2snrCommonServiceObj = new classApiL2snrCommonService();
+            if ($dataflag == MFUN_HCU_VIDEO_DATA_STATUS_NORMAL OR $dataflag == MFUN_HCU_VIDEO_DATA_STATUS_FAIL){
+                $ctrl_key = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_CMDID_HSMMP_DATA);
+                $opt_key = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_OPT_VEDIOFILE_REQ);
+                $len = $apiL2snrCommonServiceObj->byte2string(strlen( $opt_key)/2 + strlen($videoid));
+                $cmdStr = $ctrl_key . $len . $opt_key . $videoid;
+                //保存命令到CmdBuf
+                $dbiL1VmCommonObj = new classDbiL1vmCommon();
+                $dbiL1VmCommonObj->dbi_cmdbuf_save_cmd(trim($devCode), trim($cmdStr));
+
+                //更新视频文件的状态
+                $dataflag = MFUN_HCU_VIDEO_DATA_STATUS_DOWNLOAD;
+                $query_str = "UPDATE `t_l2snr_hsmmpdata` SET `dataflag` = '$dataflag' WHERE (`deviceid` = '$devCode' AND `videourl` = '$videoid')";
+                $result = $mysqli->query($query_str);
+
+                //通过9502端口建立tcp阻塞式socket连接，向HCU转发操控命令
+                $client = new socket_client_sync($devCode, $cmdStr);
+                $client->connect();
+
+                $resp = "downloading";
+
+            }
+            elseif ($dataflag == MFUN_HCU_VIDEO_DATA_STATUS_DOWNLOAD){
+                //正在下载中又收到该视频文件的请求什么也不做，直接回复
+                $resp = "downloading";
+            }
+            elseif ($dataflag == MFUN_HCU_VIDEO_DATA_STATUS_READY){
+                $resp = "http://121.40.185.177/xhzn/avorion/" . $videoid;
+            }
+            else
+                $resp = "";
+        }
+        else
+            $resp = "";
+
+        $mysqli->close();
+        return $resp;
+    }
+
     //Camera状态更新，取回当前照片
     public function dbi_get_camera_status($StatCode)
     {
@@ -541,6 +566,7 @@ class classDbiL3apF4icm
         return $resp;
     }
 
+    /*********************************智能云锁新增处理 Start*********************************************/
     public function dbi_hcu_lock_compel_open($sessionid, $statCode)
     {
         //建立连接
@@ -619,6 +645,7 @@ class classDbiL3apF4icm
         return $result;
     }
 
+    /*********************************BFSC组合秤新增处理 Start*********************************************/
     public function dbi_hcu_weight_compel_open($sessionid, $statCode)
     {
         //建立连接

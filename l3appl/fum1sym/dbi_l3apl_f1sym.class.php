@@ -504,7 +504,7 @@ class classDbiL3apF1sym
         //$mysqli->query("set character_set_connection = utf8");
         $mysqli->query("SET NAMES utf8");
 
-        if (isset($userinfo["id"])) $uid = trim($userinfo["id"]); else  $uid = "";
+        if (isset($userinfo["userid"])) $uid = trim($userinfo["userid"]); else  $uid = "";
         if (isset($userinfo["name"])) $user = trim($userinfo["name"]); else  $user = "";
         if (isset($userinfo["nickname"])) $nick = trim($userinfo["nickname"]); else  $nick = "";
         if (isset($userinfo["password"])) $pwd = trim($userinfo["password"]); else  $pwd = "";
@@ -512,7 +512,7 @@ class classDbiL3apF1sym
         if (isset($userinfo["mobile"])) $phone = trim($userinfo["mobile"]); else  $phone = "";
         if (isset($userinfo["mail"])) $email = trim($userinfo["mail"]); else  $email = "";
         if (isset($userinfo["memo"])) $backup = trim($userinfo["memo"]); else  $backup = "";
-        if (isset($userinfo["auth"])) $auth = trim($userinfo["auth"]); else  $auth = "";
+        if (isset($userinfo["auth"])) $auth = $userinfo["auth"]; else  $auth = "";
         $regdate = date("Y-m-d", time());
 
         if (!empty($pwd)) //如果输入有密码，则覆盖
@@ -530,7 +530,7 @@ class classDbiL3apF1sym
 
 
         $query_str = "DELETE FROM `t_l3f1sym_authlist` WHERE `uid` = '$uid' ";  //先删除当前所有授权的项目或者项目组list
-        $result = $mysqli->query($query_str);
+        $mysqli->query($query_str);
 
         if(!empty($auth)){
             $i = 0;
@@ -538,7 +538,7 @@ class classDbiL3apF1sym
             {
                 if (isset($auth[$i]["id"])) $authcode = $auth[$i]["id"]; else $authcode = "";
                 $query_str = "INSERT INTO `t_l3f1sym_authlist` (uid, auth_code) VALUE ('$uid', '$authcode')";
-                $result = $mysqli->query($query_str);
+                $mysqli->query($query_str);
                 $i++;
             }
         }
