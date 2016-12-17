@@ -12,63 +12,151 @@ include_once "../l1comvm/vmlayer.php";
  *                             L4AQYC-UI TEST CASES                                   *
  *************************************************************************************/
 if (TC_L4AQYC_UI == true) {
+    $sessionid = "ZoSnQeP6RM";
+    $uerid = "UID000001";
+    $statcode = "120101015";
+
     //TEST CASE: L4AQYC-UI界面: START
+
+    //公共消息测试
     echo " [TC L4AQYC: LOGIN START]\n";
     $_GET["action"] = "login";
-    $_GET["name"] = "admin";
-    $_GET["password"] = "admin";
-    require("../l4aqycui/request.php");
-//$obj = new classTaskL1vmCoreRouter();
-//$obj->mfun_l1vm_task_main_entry(MFUN_MAIN_ENTRY_AQYC_UI, MSG_ID_L2SDK_HCU_DATA_COMING, "MSG_ID_L2SDK_HCU_DATA_COMING", $_GET["action"]);
+    $_GET["name"] = "testcase";
+    $_GET["password"] = "testcase";
+    //require("../l4aqycui/request.php");
     echo " [TC L4AQYC: LOGIN END]\n";
 
     echo " [TC L4AQYC: USERINFO START]\n";
     $_GET["action"] = "UserInfo";
-    $_GET["session"] = 1;
+    $body = array('session' => $sessionid);
+    $_GET["type"] = "query";
+    $_GET["body"] = $body;
+    $_GET["user"] = "";
     require("../l4aqycui/request.php");
-//$obj = new classTaskL1vmCoreRouter();
-//$obj->mfun_l1vm_task_main_entry(MFUN_MAIN_ENTRY_AQYC_UI, MSG_ID_L2SDK_HCU_DATA_COMING, "MSG_ID_L2SDK_HCU_DATA_COMING", $_GET["action"]);
-    echo " [TC L4AQYC: USERINFO END]\n";
+    echo " \n[TC L4AQYC: USERINFO END]\n";
 
     echo " [TC L4AQYC: USERNEW START]\n";
     $_GET["action"] = "UserNew";
-    $_GET["name"] = "ZZZ";
-    $_GET["nickname"] = "ZZZ";
-    $_GET["password"] ="zzz";
-    $_GET["mobile"] ="zzz";
-    $_GET["mail"] ="zzz";
-    $_GET["type"] ="aa";
-    $_GET["memo"] ="zz";
-    $_GET["auth"] ="zz";
+    $body = array('name' => "aaa", 'nickname' => "bbb",'password' => "AAA",'mobile' => "139",'mail' => "aaa@139",'type' => "1",'memo' => "ZZZ",'auth' => "");
+    $_GET["type"] = "mod";
+    $_GET["body"] = $body;
+    $_GET["user"] = $sessionid;
     require("../l4aqycui/request.php");
     echo " [TC L4AQYC: USERNEW END]\n";
 
+    echo " [TC L4AQYC: ProjTable START]\n";
+    $_GET["action"] = "ProjTable";
+    $body = array('startseq' => "0", 'length' => "10");
+    $_GET["type"] = "query";
+    $_GET["body"] = $body;
+    $_GET["user"] = $sessionid;
+    require("../l4aqycui/request.php");
+    echo " [TC L4AQYC: ProjTable END]\n";
+
+    echo " [TC L4AQYC: PGTable START]\n";
+    $_GET["action"] = "PGTable";
+    $body = array('startseq' => "0", 'length' => "10");
+    $_GET["type"] = "query";
+    $_GET["body"] = $body;
+    $_GET["user"] = $sessionid;
+    require("../l4aqycui/request.php");
+    echo " [TC L4AQYC: PGTable END]\n";
+
+    echo " [TC L4AQYC: MonitorList START]\n";
+    $_GET["action"] = "MonitorList";
+    $_GET["type"] = "query";
+    $_GET["user"] = $sessionid;
+    require("../l4aqycui/request.php");
+    echo " [TC L4AQYC: MonitorList END]\n";
+
+    echo " [TC L4AQYC: ProjectPGList START]\n";
+    $_GET["action"] = "ProjectPGList";
+    $_GET["type"] = "query";
+    $_GET["user"] = $sessionid;
+    require("../l4aqycui/request.php");
+    echo " [TC L4AQYC: ProjectPGList END]\n";
+
+    echo " [TC L4AQYC: UserProj START]\n";
+    $_GET["action"] = "UserProj";
+    $body = array('userid' => $uerid);
+    $_GET["body"] = $body;
+    $_GET["type"] = "query";
+    $_GET["user"] = $sessionid;
+    require("../l4aqycui/request.php");
+    echo " [TC L4AQYC: UserProj END]\n";
+
+    echo " [TC L4AQYC: ProjectList START]\n";
+    $_GET["action"] = "ProjectList";
+    $_GET["type"] = "query";
+    $_GET["user"] = $sessionid;
+    require("../l4aqycui/request.php");
+    echo " [TC L4AQYC: ProjectList END]\n";
+
+    echo " [TC L4AQYC: DevAlarm START]\n";
+    $_GET["action"] = "DevAlarm";
+    $body = array('StatCode' => $statcode);
+    $_GET["body"] = $body;
+    $_GET["type"] = "query";
+    $_GET["user"] = $sessionid;
+    require("../l4aqycui/request.php");
+    echo " [TC L4AQYC: DevAlarm END]\n";
+
     echo " [TC L4AQYC: UserMod START]\n";
     $_GET["action"] = "UserMod";
-    $_GET["id"] = "11";
-    $_GET["name"] = "ZZZ";
-    $_GET["nickname"] = "ZZZ";
-    $_GET["password"] ="zzz";
-    $_GET["mobile"] ="zzz";
-    $_GET["mail"] ="zzz";
-    $_GET["type"] ="aa";
-    $_GET["memo"] ="zz";
-    $_GET["auth"] ="zz";
+    $body = array('userid'=>$uerid,'name' => "bbb", 'nickname' => "bbb",'password' => "BBB",'mobile' => "139",'mail' => "aaa@139",'type' => "4",'memo' => "ZZZ",'auth' => "");
+    $_GET["type"] = "mod";
+    $_GET["body"] = $body;
+    $_GET["user"] = $sessionid;
     require("../l4aqycui/request.php");
     echo " [TC L4AQYC: UserMod END]\n";
 
     echo " [TC L4AQYC: UserDel START]\n";
-    $_GET["action"] = "UserMod";
-    $_GET["id"] = "11";
+    $_GET["action"] = "UserDel";
+    $body = array('userid' => $uerid);
+    $_GET["body"] = $body;
+    $_GET["type"] = "mod";
+    $_GET["user"] = $sessionid;
     require("../l4aqycui/request.php");
     echo " [TC L4AQYC: UserDel END]\n";
 
     echo " [TC L4AQYC: UserTable START]\n";
     $_GET["action"] = "UserTable";
-    $_GET["length"] = "5";
-    $_GET["startseq"] = "1";
+    $body = array('startseq' => "0", 'length' => "10");
+    $_GET["type"] = "query";
+    $_GET["body"] = $body;
+    $_GET["user"] = $sessionid;
     require("../l4aqycui/request.php");
     echo " [TC L4AQYC: UserTable END]\n";
+
+    echo " [TC L4AQYC: GetStaticMonitorTable START]\n";
+    $_GET["action"] = "GetStaticMonitorTable";
+    $_GET["type"] = "query";
+    $_GET["user"] = $sessionid;
+    require("../l4aqycui/request.php");
+    echo " [TC L4AQYC: GetStaticMonitorTable END]\n";
+
+    echo " [TC L4AQYC: GetVideoCameraWeb START]\n";
+    $_GET["action"] = "GetVideoCameraWeb";
+    $body = array('StatCode' => $statcode);
+    $_GET["body"] = $body;
+    $_GET["type"] = "query";
+    $_GET["user"] = $sessionid;
+    require("../l4aqycui/request.php");
+    echo " [TC L4AQYC: GetVideoCameraWeb END]\n";
+
+    echo " [TC L4AQYC: AlarmQuery START]\n";
+    $_GET["action"] = "AlarmQuery";
+    $body = array('StatCode' => $statcode,'date'=>"2016-12-17",'type'=>"1");
+    $_GET["body"] = $body;
+    $_GET["type"] = "query";
+    $_GET["user"] = $sessionid;
+    require("../l4aqycui/request.php");
+    echo " [TC L4AQYC: AlarmQuery END]\n";
+
+
+
+
+
 
     echo " [TC L4AQYC: HcuSwUpdate START]\n";
     $_GET["action"] = "HcuSwUpdate";
@@ -76,31 +164,6 @@ if (TC_L4AQYC_UI == true) {
     $_GET["projectid"] = "11";
     require("../l4aqycui/request.php");
     echo " [TC L4AQYC: HcuSwUpdate END]\n";
-
-    echo " [TC L4AQYC: ProjectPGList START]\n";
-    $_GET["action"] = "ProjectPGList";
-    $_GET["user"] = "UID001";
-    require("../l4aqycui/request.php");
-    echo " [TC L4AQYC: ProjectPGList END]\n";
-
-    echo " [TC L4AQYC: ProjectList START]\n";
-    $_GET["action"] = "ProjectList";
-    $_GET["user"] = "UID001";
-    require("../l4aqycui/request.php");
-    echo " [TC L4AQYC: ProjectList END]\n";
-
-    echo " [TC L4AQYC: UserProj START]\n";
-    $_GET["action"] = "UserProj";
-    $_GET["userid"] = "UID001";
-    require("../l4aqycui/request.php");
-    echo " [TC L4AQYC: UserProj END]\n";
-
-    echo " [TC L4AQYC: PGTable START]\n";
-    $_GET["action"] = "PGTable";
-    $_GET["length"] = "5";
-    $_GET["startseq"] = "1";
-    require("../l4aqycui/request.php");
-    echo " [TC L4AQYC: PGTable END]\n";
 
     echo " [TC L4AQYC: PGNew START]\n";
     $_GET["action"] = "PGNew";
@@ -142,12 +205,6 @@ if (TC_L4AQYC_UI == true) {
     require("../l4aqycui/request.php");
     echo " [TC L4AQYC: PGProj END]\n";
 
-    echo " [TC L4AQYC: ProjTable START]\n";
-    $_GET["action"] = "ProjTable";
-    $_GET["length"] = "5";
-    $_GET["startseq"] = "1";
-    require("../l4aqycui/request.php");
-    echo " [TC L4AQYC: ProjTable END]\n";
 
     echo " [TC L4AQYC: ProjNew START]\n";
     $_GET["action"] = "ProjNew";
@@ -292,33 +349,6 @@ if (TC_L4AQYC_UI == true) {
     require("../l4aqycui/request.php");
     echo " [TC L4AQYC: DevDel END]\n";
 
-    echo " [TC L4AQYC: DevAlarm START]\n";
-    $_GET["action"] = "DevAlarm";
-    $_GET["StatCode"] = "120101001";
-    require("../l4aqycui/request.php");
-    echo " [TC L4AQYC: DevAlarm END]\n";
-
-    echo " [TC L4AQYC: DevAlarm START]\n";
-    $_GET["action"] = "DevAlarm";
-    $_GET["StatCode"] = "120101001";
-    require("../l4aqycui/request.php");
-    echo " [TC L4AQYC: DevAlarm END]\n";
-
-    echo " [TC L4AQYC: MonitorList START]\n";
-    $_GET["action"] = "MonitorList";
-    $_GET["id"] = "UID001";
-    require("../l4aqycui/request.php");
-    echo " [TC L4AQYC: MonitorList END]\n";
-
-    echo " [TC L4AQYC: AlarmQuery START]\n";
-    $_GET["action"] = "AlarmQuery";
-    $_GET["id"] = "UID001";
-    $_GET["StatCode"] = "120101001";
-    $_GET["date"] = "11";
-    $_GET["type"] = "11";
-    require("../l4aqycui/request.php");
-    echo " [TC L4AQYC: AlarmQuery END]\n";
-
     echo " [TC L4AQYC: AlarmType START]\n";
     $_GET["action"] = "AlarmType";
     $_GET["user"] = "UID001";
@@ -392,12 +422,6 @@ if (TC_L4AQYC_UI == true) {
     $_GET["id"] = "11";
     require("../l4aqycui/request.php");
     echo " [TC L4AQYC: ClearUserImg END]\n";
-
-    echo " [TC L4AQYC: GetStaticMonitorTable START]\n";
-    $_GET["action"] = "GetStaticMonitorTable";
-    $_GET["id"] = "UID001";
-    require("../l4aqycui/request.php");
-    echo " [TC L4AQYC: GetStaticMonitorTable END]\n";
 
     echo " [TC L4AQYC: GetVideoList START]\n";
     $_GET["action"] = "GetVideoList";

@@ -180,83 +180,74 @@ class classTaskL3aplF1sym
             return false;
         }
 
-        //功能Login
-        elseif ($msgId == MSG_ID_L4AQYCUI_TO_L3F1_LOGIN)
+        switch($msgId)
         {
-            //解开消息
-            if (isset($msg["user"])) $user = $msg["user"]; else  $user = "";
-            if (isset($msg["pwd"])) $pwd = $msg["pwd"]; else  $pwd = "";
-            //具体处理函数
-            $resp = $this->func_login_process($user, $pwd);
-            $project = MFUN_PRJ_HCU_AQYCUI;
-        }
+            case MSG_ID_L4AQYCUI_TO_L3F1_LOGIN:  //功能Login
+                //解开消息
+                if (isset($msg["user"])) $user = $msg["user"]; else  $user = "";
+                if (isset($msg["pwd"])) $pwd = $msg["pwd"]; else  $pwd = "";
+                //具体处理函数
+                $resp = $this->func_login_process($user, $pwd);
+                $project = MFUN_PRJ_HCU_AQYCUI;
+                break;
 
-        //功能UserInfo
-        elseif ($msgId == MSG_ID_L4AQYCUI_TO_L3F1_USERINFO)
-        {
-            //解开消息
-            if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
-            if (isset($msg["user"])) $user = $msg["user"]; else  $user = "";
-            if (isset($msg["body"])) $body = $msg["body"]; else  $body = "";
-            //具体处理函数
-            $resp = $this->func_userinfo_process($type, $user, $body);
-            $project = MFUN_PRJ_HCU_AQYCUI;
-        }
+            case MSG_ID_L4AQYCUI_TO_L3F1_USERINFO://功能UserInfo
+                //解开消息
+                if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
+                if (isset($msg["user"])) $user = $msg["user"]; else  $user = "";
+                if (isset($msg["body"])) $body = $msg["body"]; else  $body = "";
+                //具体处理函数
+                $resp = $this->func_userinfo_process($type, $user, $body);
+                $project = MFUN_PRJ_HCU_AQYCUI;
+                break;
 
-        //功能UserNew
-        elseif ($msgId == MSG_ID_L4AQYCUI_TO_L3F1_USERNEW)
-        {
-            //解开消息
-            if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
-            if (isset($msg["user"])) $user = $msg["user"]; else  $user = "";
-            if (isset($msg["body"])) $body = $msg["body"]; else  $body = "";
+            case MSG_ID_L4AQYCUI_TO_L3F1_USERNEW://功能UserNew
+                //解开消息
+                if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
+                if (isset($msg["user"])) $user = $msg["user"]; else  $user = "";
+                if (isset($msg["body"])) $body = $msg["body"]; else  $body = "";
 
-            //具体处理函数
-            $resp = $this->func_usernew_process($type, $user, $body);
-            $project = MFUN_PRJ_HCU_AQYCUI;
-        }
+                //具体处理函数
+                $resp = $this->func_usernew_process($type, $user, $body);
+                $project = MFUN_PRJ_HCU_AQYCUI;
+                break;
 
-        //功能UserMod
-        elseif ($msgId == MSG_ID_L4AQYCUI_TO_L3F1_USERMOD)
-        {
-            //解开消息
-            if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
-            if (isset($msg["user"])) $user = $msg["user"]; else  $user = "";
-            if (isset($msg["body"])) $body = $msg["body"]; else  $body = "";
+            case MSG_ID_L4AQYCUI_TO_L3F1_USERMOD://功能UserMod
+                //解开消息
+                if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
+                if (isset($msg["user"])) $user = $msg["user"]; else  $user = "";
+                if (isset($msg["body"])) $body = $msg["body"]; else  $body = "";
 
-            //具体处理函数
-            $resp = $this->func_usermod_process($type, $user, $body);
-            $project = MFUN_PRJ_HCU_AQYCUI;
-        }
+                //具体处理函数
+                $resp = $this->func_usermod_process($type, $user, $body);
+                $project = MFUN_PRJ_HCU_AQYCUI;
+                break;
 
-        //功能UserDel
-        elseif ($msgId == MSG_ID_L4AQYCUI_TO_L3F1_USERDEL)
-        {
-            //解开消息
-            if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
-            if (isset($msg["user"])) $user = $msg["user"]; else  $user = "";
-            if (isset($msg["body"])) $body = $msg["body"]; else  $body = "";
+            case MSG_ID_L4AQYCUI_TO_L3F1_USERDEL://功能UserDel
+                //解开消息
+                if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
+                if (isset($msg["user"])) $user = $msg["user"]; else  $user = "";
+                if (isset($msg["body"])) $body = $msg["body"]; else  $body = "";
 
-            //具体处理函数
-            $resp = $this->func_userdel_process($type, $user, $body);
-            $project = MFUN_PRJ_HCU_AQYCUI;
-        }
+                //具体处理函数
+                $resp = $this->func_userdel_process($type, $user, $body);
+                $project = MFUN_PRJ_HCU_AQYCUI;
+                break;
 
-        //功能UserTable
-        elseif ($msgId == MSG_ID_L4AQYCUI_TO_L3F1_USERTABLE)
-        {
-            //解开消息
-            if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
-            if (isset($msg["user"])) $user = $msg["user"]; else  $user = "";
-            if (isset($msg["body"])) $body = $msg["body"]; else  $body = "";
+            case MSG_ID_L4AQYCUI_TO_L3F1_USERTABLE://功能UserTable
+                //解开消息
+                if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
+                if (isset($msg["user"])) $user = $msg["user"]; else  $user = "";
+                if (isset($msg["body"])) $body = $msg["body"]; else  $body = "";
 
-            //具体处理函数
-            $resp = $this->func_usertable_process($type, $user, $body);
-            $project = MFUN_PRJ_HCU_AQYCUI;
-        }
+                //具体处理函数
+                $resp = $this->func_usertable_process($type, $user, $body);
+                $project = MFUN_PRJ_HCU_AQYCUI;
+                break;
 
-        else{
-            $resp = ""; //啥都不ECHO
+            default:
+                $resp = ""; //啥都不ECHO
+                break;
         }
 
         //返回ECHO

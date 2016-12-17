@@ -218,31 +218,31 @@ class classDbiL3apF4icm
         {
             //生成控制命令的控制字
             $apiL2snrCommonServiceObj = new classApiL2snrCommonService();
-            if ($SensorCode == MFUN_L3APL_F3DM_S_TYPE_PM) {
+            if ($SensorCode == MFUN_L3APL_F3DM_AQYC_STYPE_PM) {
                 $ctrl_key = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_CMDID_PM25_DATA);
                 $equip_id = $apiL2snrCommonServiceObj->byte2string(MFUN_L3APL_F4ICM_ID_EQUIP_PM);
             }
-            elseif ($SensorCode == MFUN_L3APL_F3DM_S_TYPE_WINDSPD){
+            elseif ($SensorCode == MFUN_L3APL_F3DM_AQYC_STYPE_WINDSPD){
                 $ctrl_key = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_CMDID_WINDSPD_DATA);
                 $equip_id = $apiL2snrCommonServiceObj->byte2string(MFUN_L3APL_F4ICM_ID_EQUIP_WINDSPD);
             }
-            elseif ($SensorCode == MFUN_L3APL_F3DM_S_TYPE_WINDDIR){
+            elseif ($SensorCode == MFUN_L3APL_F3DM_AQYC_STYPE_WINDDIR){
                 $ctrl_key = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_CMDID_WINDDIR_DATA);
                 $equip_id = $apiL2snrCommonServiceObj->byte2string(MFUN_L3APL_F4ICM_ID_EQUIP_WINDDIR);
             }
-            elseif ($SensorCode == MFUN_L3APL_F3DM_S_TYPE_EMC){
+            elseif ($SensorCode == MFUN_L3APL_F3DM_AQYC_STYPE_EMC){
                 $ctrl_key = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_CMDID_EMC_DATA);
                 $equip_id = $apiL2snrCommonServiceObj->byte2string(MFUN_L3APL_F4ICM_ID_EQUIP_EMC);
             }
-            elseif ($SensorCode == MFUN_L3APL_F3DM_S_TYPE_TEMP){
+            elseif ($SensorCode == MFUN_L3APL_F3DM_AQYC_STYPE_TEMP){
                 $ctrl_key = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_CMDID_TEMP_DATA);
                 $equip_id = $apiL2snrCommonServiceObj->byte2string(MFUN_L3APL_F4ICM_ID_EQUIP_TEMP);
             }
-            elseif ($SensorCode == MFUN_L3APL_F3DM_S_TYPE_HUMID){
+            elseif ($SensorCode == MFUN_L3APL_F3DM_AQYC_STYPE_HUMID){
                 $ctrl_key = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_CMDID_HUMID_DATA);
                 $equip_id = $apiL2snrCommonServiceObj->byte2string(MFUN_L3APL_F4ICM_ID_EQUIP_HUMID);
             }
-            elseif ($SensorCode == MFUN_L3APL_F3DM_S_TYPE_NOISE){
+            elseif ($SensorCode == MFUN_L3APL_F3DM_AQYC_STYPE_NOISE){
                 $ctrl_key = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_CMDID_NOISE_DATA);
                 $equip_id = $apiL2snrCommonServiceObj->byte2string(MFUN_L3APL_F4ICM_ID_EQUIP_NOISE);
             }

@@ -184,7 +184,6 @@ define("MSG_ID_L4AQYCUI_TO_L3F3_DEVNEW", $index++);
 define("MSG_ID_L4AQYCUI_TO_L3F3_DEVMOD", $index++);
 define("MSG_ID_L4AQYCUI_TO_L3F3_DEVDEL", $index++);
 define("MSG_ID_L4AQYCUI_TO_L3F3_MONITORLIST", $index++);
-define("MSG_ID_L4AQYCUI_TO_L3F3_ALARMTYPE", $index++);
 define("MSG_ID_L4AQYCUI_TO_L3F3_TABLEQUERY", $index++);
 define("MSG_ID_L4AQYCUI_TO_L3F3_SENSORLIST", $index++);
 define("MSG_ID_L4AQYCUI_TO_L3F3_DEVSENSOR", $index++);
@@ -197,8 +196,8 @@ define("MSG_ID_L4AQYCUI_TO_L3F4_VIDEOLIST", $index++);  //查询某HCU设备指�
 define("MSG_ID_L4AQYCUI_TO_L3F4_VIDEOPLAY", $index++);  //请求播放某指定视频文件
 define("MSG_ID_L4AQYCUI_TO_L3F4_GETCAMERASTATUS", $index++);  //查询垂直和水平角度，同时报告传一个照片给后台
 define("MSG_ID_L4AQYCUI_TO_L3F4_GETCAMERAUNIT", $index++);
-
 define("MSG_ID_L4AQYCUI_TO_L3F4_SENSORUPDATE", $index++);
+define("MSG_ID_L4AQYCUI_TO_L3F5_ALARMTYPE", $index++);
 define("MSG_ID_L4AQYCUI_TO_L3F5_DEVALARM", $index++);
 define("MSG_ID_L4AQYCUI_TO_L3F5_ALARMQUERY", $index++);
 define("MSG_ID_L4AQYCUI_TO_L3F7_SETUSERMSG", $index++);
@@ -223,9 +222,11 @@ define("MSG_ID_L4FHYSUI_TO_L3F2_KEYGRANT", $index++);
 define("MSG_ID_L4FHYSUI_TO_L3F2_KEYAUTHNEW", $index++);
 define("MSG_ID_L4FHYSUI_TO_L3F2_KEYAUTHDEL", $index++);
 define("MSG_ID_L4FHYSUI_TO_L3F3_KEYHISTORY", $index++);
+define("MSG_ID_L4FHYSUI_TO_L3F3_SENSORLIST", $index++);
 define("MSG_ID_L4FHYSUI_TO_L3F3_DEVSENSOR", $index++);  //原有AQYC消息修改适配FHYS功能
 define("MSG_ID_L4FHYSUI_TO_L3F3_GETSTATICMONITORTABLE", $index++);  //原有AQYC消息修改适配FHYS功能
 define("MSG_ID_L4FHYSUI_TO_L3F4_LOCKOPEN", $index++);
+define("MSG_ID_L4FHYSUI_TO_L3F5_ALARMTYPE",$index++);
 define("MSG_ID_L4FHYSUI_TO_L3F5_DEVALARM", $index++);
 
 //for BFSC

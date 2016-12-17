@@ -451,7 +451,7 @@ class classDbiL3apF1sym
         if (isset($userinfo["mobile"])) $phone = trim($userinfo["mobile"]); else  $phone = "";
         if (isset($userinfo["mail"])) $email = trim($userinfo["mail"]); else  $email = "";
         if (isset($userinfo["memo"])) $backup = trim($userinfo["memo"]); else  $backup = "";
-        if (isset($userinfo["auth"])) $auth = trim($userinfo["auth"]); else  $auth = "";
+        if (isset($userinfo["auth"])) $auth = $userinfo["auth"]; else  $auth = "";
 
         $regdate = date("Y-m-d", time());
         $city = "上海"; //暂定用户所在城市，将来需要修改

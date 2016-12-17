@@ -177,44 +177,36 @@ class classTaskL3aplF7ads
             return false;
         }
 
-        //功能Set User Message
-        elseif ($msgId == MSG_ID_L4AQYCUI_TO_L3F7_SETUSERMSG)
+        switch($msgId)
         {
-            //具体处理函数
-            $resp = $this->func_set_user_msg_process($type, $user, $body);
-            $project = MFUN_PRJ_HCU_AQYCUI;
-        }
+            case MSG_ID_L4AQYCUI_TO_L3F7_SETUSERMSG://功能Set User Message
+                $resp = $this->func_set_user_msg_process($type, $user, $body);
+                $project = MFUN_PRJ_HCU_AQYCUI;
+                break;
 
-        //功能Get User Message
-        elseif ($msgId == MSG_ID_L4AQYCUI_TO_L3F7_GETUSERMSG)
-        {
-            $resp = $this->func_get_user_msg_process($type, $user, $body);
-            $project = MFUN_PRJ_HCU_AQYCUI;
-        }
+            case MSG_ID_L4AQYCUI_TO_L3F7_GETUSERMSG://功能Get User Message
+                $resp = $this->func_get_user_msg_process($type, $user, $body);
+                $project = MFUN_PRJ_HCU_AQYCUI;
+                break;
 
-        //功能Show User Message
-        elseif ($msgId == MSG_ID_L4AQYCUI_TO_L3F7_SHOWUSERMSG)
-        {
-            $resp = $this->func_show_user_msg_process($type, $user, $body);
-            $project = MFUN_PRJ_HCU_AQYCUI;
-        }
+            case MSG_ID_L4AQYCUI_TO_L3F7_SHOWUSERMSG://功能Show User Message
+                $resp = $this->func_show_user_msg_process($type, $user, $body);
+                $project = MFUN_PRJ_HCU_AQYCUI;
+                break;
 
-        //功能Get User Image
-        elseif ($msgId == MSG_ID_L4AQYCUI_TO_L3F7_GETUSERIMG)
-        {
-            $resp = $this->func_get_user_image_process($type, $user, $body);
-            $project = MFUN_PRJ_HCU_AQYCUI;
-        }
+            case MSG_ID_L4AQYCUI_TO_L3F7_GETUSERIMG://功能Get User Image
+                $resp = $this->func_get_user_image_process($type, $user, $body);
+                $project = MFUN_PRJ_HCU_AQYCUI;
+                break;
 
-        //功能Clear User Image
-        elseif ($msgId == MSG_ID_L4AQYCUI_TO_L3F7_CLEARUSERIMG)
-        {
-            $resp = $this->func_clear_user_image_process($type, $user, $body);
-            $project = MFUN_PRJ_HCU_AQYCUI;
-        }
+            case MSG_ID_L4AQYCUI_TO_L3F7_CLEARUSERIMG://功能Clear User Image
+                $resp = $this->func_clear_user_image_process($type, $user, $body);
+                $project = MFUN_PRJ_HCU_AQYCUI;
+                break;
 
-        else{
-            $resp = ""; //啥都不ECHO
+            default:
+                $resp = ""; //啥都不ECHO
+                break;
         }
 
         //返回ECHO

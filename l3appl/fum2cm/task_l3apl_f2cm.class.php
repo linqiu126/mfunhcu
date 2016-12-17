@@ -606,172 +606,137 @@ class classTaskL3aplF2cm
             return false;
         }
 
-        //功能Project Pg List
-        elseif ($msgId == MSG_ID_L4AQYCUI_TO_L3F2_PROJECTPGLIST)
+        switch($msgId)
         {
-            //具体处理函数
-            $resp = $this->func_project_pglist_process($type, $user, $body);
-            $project = MFUN_PRJ_HCU_AQYCUI;
-        }
+            case MSG_ID_L4AQYCUI_TO_L3F2_PROJECTPGLIST://功能Project Pg List
+                $resp = $this->func_project_pglist_process($type, $user, $body);
+                $project = MFUN_PRJ_HCU_AQYCUI;
+                break;
 
-        //功能Project List
-        elseif ($msgId == MSG_ID_L4AQYCUI_TO_L3F2_PROJECTLIST)
-        {
-            //具体处理函数
-            $resp = $this->func_project_list_process($type, $user, $body);
-            $project = MFUN_PRJ_HCU_AQYCUI;
-        }
+            case MSG_ID_L4AQYCUI_TO_L3F2_PROJECTLIST://功能Project List
+                $resp = $this->func_project_list_process($type, $user, $body);
+                $project = MFUN_PRJ_HCU_AQYCUI;
+                break;
 
-        //功能User Project
-        elseif ($msgId == MSG_ID_L4AQYCUI_TO_L3F2_USERPROJ)
-        {
-            //具体处理函数
-            $resp = $this->func_user_project_list_process($type, $user, $body);
-            $project = MFUN_PRJ_HCU_AQYCUI;
-        }
+            case MSG_ID_L4AQYCUI_TO_L3F2_USERPROJ://功能User Project
+                $resp = $this->func_user_project_list_process($type, $user, $body);
+                $project = MFUN_PRJ_HCU_AQYCUI;
+                break;
 
-        //功能PG Table
-        elseif ($msgId == MSG_ID_L4AQYCUI_TO_L3F2_PGTABLE)
-        {
-            //具体处理函数
-            $resp = $this->func_pg_table_process($type, $user, $body);
-            $project = MFUN_PRJ_HCU_AQYCUI;
-        }
+            case MSG_ID_L4AQYCUI_TO_L3F2_PGTABLE://功能PG Table
+                $resp = $this->func_pg_table_process($type, $user, $body);
+                $project = MFUN_PRJ_HCU_AQYCUI;
+                break;
 
-        //功能PG New
-        elseif ($msgId == MSG_ID_L4AQYCUI_TO_L3F2_PGNEW)
-        {
-            //具体处理函数
-            $resp = $this->func_pg_new_process($type, $user, $body);
-            $project = MFUN_PRJ_HCU_AQYCUI;
-        }
+            case MSG_ID_L4AQYCUI_TO_L3F2_PGNEW://功能PG New
+                $resp = $this->func_pg_new_process($type, $user, $body);
+                $project = MFUN_PRJ_HCU_AQYCUI;
+                break;
 
-        //功能PG Mod
-        elseif ($msgId == MSG_ID_L4AQYCUI_TO_L3F2_PGMOD)
-        {
-            //具体处理函数
-            $resp = $this->func_pg_mod_process($type, $user, $body);
-            $project = MFUN_PRJ_HCU_AQYCUI;
-        }
+            case MSG_ID_L4AQYCUI_TO_L3F2_PGMOD://功能PG Mod
+                $resp = $this->func_pg_mod_process($type, $user, $body);
+                $project = MFUN_PRJ_HCU_AQYCUI;
+                break;
 
-        //功能PG Del
-        elseif ($msgId == MSG_ID_L4AQYCUI_TO_L3F2_PGDEL)
-        {
-            //具体处理函数
-            $resp = $this->func_pg_del_process($type, $user, $body);
-            $project = MFUN_PRJ_HCU_AQYCUI;
-        }
+            case MSG_ID_L4AQYCUI_TO_L3F2_PGDEL://功能PG Del
+                $resp = $this->func_pg_del_process($type, $user, $body);
+                $project = MFUN_PRJ_HCU_AQYCUI;
+                break;
 
-        //功能PG Project
-        elseif ($msgId == MSG_ID_L4AQYCUI_TO_L3F2_PGPROJ)
-        {
-            //具体处理函数
-            $resp = $this->func_pg_project_process($type, $user, $body);
-            $project = MFUN_PRJ_HCU_AQYCUI;
-        }
+            case MSG_ID_L4AQYCUI_TO_L3F2_PGPROJ://功能PG Project
+                $resp = $this->func_pg_project_process($type, $user, $body);
+                $project = MFUN_PRJ_HCU_AQYCUI;
+                break;
 
-        //功能Project Table
-        elseif ($msgId == MSG_ID_L4AQYCUI_TO_L3F2_PROJTABLE)
-        {
-            //具体处理函数
-            $resp = $this->func_project_table_process($type, $user, $body);
-            $project = MFUN_PRJ_HCU_AQYCUI;
-        }
+            case MSG_ID_L4AQYCUI_TO_L3F2_PROJTABLE://功能Project Table
+                $resp = $this->func_project_table_process($type, $user, $body);
+                $project = MFUN_PRJ_HCU_AQYCUI;
+                break;
 
-        //功能ProjNew
-        elseif ($msgId == MSG_ID_L4AQYCUI_TO_L3F2_PROJNEW)
-        {
-            //具体处理函数
-            $resp = $this->func_project_new_process($type, $user, $body);
-            $project = MFUN_PRJ_HCU_AQYCUI;
-        }
+            case MSG_ID_L4AQYCUI_TO_L3F2_PROJNEW://功能ProjNew
+                $resp = $this->func_project_new_process($type, $user, $body);
+                $project = MFUN_PRJ_HCU_AQYCUI;
+                break;
 
-        //功能ProjMod
-        elseif ($msgId == MSG_ID_L4AQYCUI_TO_L3F2_PROJMOD)
-        {
-            //具体处理函数
-            $resp = $this->func_project_mod_process($type, $user, $body);
-            $project = MFUN_PRJ_HCU_AQYCUI;
-        }
+            case MSG_ID_L4AQYCUI_TO_L3F2_PROJMOD://功能ProjMod
+                $resp = $this->func_project_mod_process($type, $user, $body);
+                $project = MFUN_PRJ_HCU_AQYCUI;
+                break;
 
-        //功能ProjDel
-        elseif ($msgId == MSG_ID_L4AQYCUI_TO_L3F2_PROJDEL)
-        {
-            //具体处理函数
-            $resp = $this->func_project_del_process($type, $user, $body);
-            $project = MFUN_PRJ_HCU_AQYCUI;
-        }
+            case MSG_ID_L4AQYCUI_TO_L3F2_PROJDEL://功能ProjDel
+                $resp = $this->func_project_del_process($type, $user, $body);
+                $project = MFUN_PRJ_HCU_AQYCUI;
+                break;
 
-        /*********************************智能云锁新增处理 Start*********************************************/
-        elseif ($msgId == MSG_ID_L4FHYSUI_TO_L3F2_USERKEY)
-        {
-            $resp = $this->func_project_userkey_process($type, $user, $body);
-            $project = MFUN_PRJ_HCU_FHYSUI;
+            /*********************************智能云锁新增处理 Start*********************************************/
+            case MSG_ID_L4FHYSUI_TO_L3F2_USERKEY:
+                $resp = $this->func_project_userkey_process($type, $user, $body);
+                $project = MFUN_PRJ_HCU_FHYSUI;
+                break;
 
-        }
-        elseif ($msgId == MSG_ID_L4FHYSUI_TO_L3F2_PROJKEYLIST)
-        {
-            $resp = $this->func_all_projkey_process($type, $user, $body);
-            $project = MFUN_PRJ_HCU_FHYSUI;
-        }
-        elseif ($msgId == MSG_ID_L4FHYSUI_TO_L3F2_PROJKEY)
-        {
-            $resp = $this->func_project_keylist_process($type, $user, $body);
-            $project = MFUN_PRJ_HCU_FHYSUI;
-        }
-        elseif ($msgId == MSG_ID_L4FHYSUI_TO_L3F2_PROJKEYUSERLIST)
-        {
-            $resp = $this->func_all_projkeyuser_process($type, $user, $body);
-            $project = MFUN_PRJ_HCU_FHYSUI;
-        }
-        elseif ($msgId == MSG_ID_L4FHYSUI_TO_L3F2_KEYTABLE)
-        {
-            $resp = $this->func_key_table_process($type, $user, $body);
-            $project = MFUN_PRJ_HCU_FHYSUI;
-        }
-        elseif ($msgId == MSG_ID_L4FHYSUI_TO_L3F2_KEYNEW)
-        {
-            $resp = $this->func_key_new_process($type, $user, $body);
-            $project = MFUN_PRJ_HCU_FHYSUI;
-        }
-        elseif ($msgId == MSG_ID_L4FHYSUI_TO_L3F2_KEYMOD)
-        {
-            $resp = $this->func_key_mod_process($type, $user, $body);
-            $project = MFUN_PRJ_HCU_FHYSUI;
-        }
-        elseif ($msgId == MSG_ID_L4FHYSUI_TO_L3F2_KEYDEL)
-        {
-            $resp = $this->func_key_del_process($type, $user, $body);
-            $project = MFUN_PRJ_HCU_FHYSUI;
-        }
-        elseif ($msgId == MSG_ID_L4FHYSUI_TO_L3F2_OBJAUTHLIST)
-        {
-            $resp = $this->func_obj_authlist_process($type, $user, $body);
-            $project = MFUN_PRJ_HCU_FHYSUI;
-        }
-        elseif ($msgId == MSG_ID_L4FHYSUI_TO_L3F2_KEYAUTHLIST)
-        {
-            $resp = $this->func_key_authlist_process($type, $user, $body);
-            $project = MFUN_PRJ_HCU_FHYSUI;
-        }
-        elseif ($msgId == MSG_ID_L4FHYSUI_TO_L3F2_KEYGRANT)
-        {
-            $resp = $this->func_key_grant_process($type, $user, $body);
-            $project = MFUN_PRJ_HCU_FHYSUI;
-        }
-        elseif ($msgId == MSG_ID_L4FHYSUI_TO_L3F2_KEYAUTHNEW)
-        {
-            $resp = $this->func_key_authnew_process($type, $user, $body);
-            $project = MFUN_PRJ_HCU_FHYSUI;
-        }
-        elseif ($msgId == MSG_ID_L4FHYSUI_TO_L3F2_KEYAUTHDEL)
-        {
-            $resp = $this->func_key_authdel_process($type, $user, $body);
-            $project = MFUN_PRJ_HCU_FHYSUI;
-        }
+            case MSG_ID_L4FHYSUI_TO_L3F2_PROJKEYLIST:
+                $resp = $this->func_all_projkey_process($type, $user, $body);
+                $project = MFUN_PRJ_HCU_FHYSUI;
+                break;
 
-        else{
-            $resp = ""; //啥都不ECHO
+            case MSG_ID_L4FHYSUI_TO_L3F2_PROJKEY:
+                $resp = $this->func_project_keylist_process($type, $user, $body);
+                $project = MFUN_PRJ_HCU_FHYSUI;
+                break;
+
+            case MSG_ID_L4FHYSUI_TO_L3F2_PROJKEYUSERLIST:
+                $resp = $this->func_all_projkeyuser_process($type, $user, $body);
+                $project = MFUN_PRJ_HCU_FHYSUI;
+                break;
+
+            case MSG_ID_L4FHYSUI_TO_L3F2_KEYTABLE:
+                $resp = $this->func_key_table_process($type, $user, $body);
+                $project = MFUN_PRJ_HCU_FHYSUI;
+                break;
+
+            case MSG_ID_L4FHYSUI_TO_L3F2_KEYNEW:
+                $resp = $this->func_key_new_process($type, $user, $body);
+                $project = MFUN_PRJ_HCU_FHYSUI;
+                break;
+
+            case MSG_ID_L4FHYSUI_TO_L3F2_KEYMOD:
+                $resp = $this->func_key_mod_process($type, $user, $body);
+                $project = MFUN_PRJ_HCU_FHYSUI;
+                break;
+
+            case MSG_ID_L4FHYSUI_TO_L3F2_KEYDEL:
+                $resp = $this->func_key_del_process($type, $user, $body);
+                $project = MFUN_PRJ_HCU_FHYSUI;
+                break;
+
+            case MSG_ID_L4FHYSUI_TO_L3F2_OBJAUTHLIST:
+                $resp = $this->func_obj_authlist_process($type, $user, $body);
+                $project = MFUN_PRJ_HCU_FHYSUI;
+                break;
+
+            case MSG_ID_L4FHYSUI_TO_L3F2_KEYAUTHLIST:
+                $resp = $this->func_key_authlist_process($type, $user, $body);
+                $project = MFUN_PRJ_HCU_FHYSUI;
+                break;
+
+            case MSG_ID_L4FHYSUI_TO_L3F2_KEYGRANT:
+                $resp = $this->func_key_grant_process($type, $user, $body);
+                $project = MFUN_PRJ_HCU_FHYSUI;
+                break;
+
+            case MSG_ID_L4FHYSUI_TO_L3F2_KEYAUTHNEW:
+                $resp = $this->func_key_authnew_process($type, $user, $body);
+                $project = MFUN_PRJ_HCU_FHYSUI;
+                break;
+
+            case MSG_ID_L4FHYSUI_TO_L3F2_KEYAUTHDEL:
+                $resp = $this->func_key_authdel_process($type, $user, $body);
+                $project = MFUN_PRJ_HCU_FHYSUI;
+                break;
+
+            default :
+                $resp = ""; //啥都不ECHO
+                break;
         }
 
         //返回ECHO

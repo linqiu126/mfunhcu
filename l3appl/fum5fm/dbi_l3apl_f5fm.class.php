@@ -104,6 +104,35 @@ class classDbiL3apF5fm
         return $LatestValue;
     }
 
+
+    //UI AlarmType request, 获取所有需要生成告警数据表的传感器类型信息
+    public function dbi_all_alarmtype_req($type)
+    {
+        //建立连接
+        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli) {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $mysqli->query("set character_set_results = utf8");
+
+        $query_str = "SELECT * FROM `t_l2snr_sensortype` WHERE 1";
+        $result = $mysqli->query($query_str);
+
+        $alarm_type = array();
+        while(($result != false) && (($row = $result->fetch_array()) > 0))
+        {
+            $type_check = $row['typeid'];
+            $tye_prefix =  substr($type_check, 0, MFUN_L3APL_F3DM_SENSOR_TYPE_PREFIX_LEN);
+            if ($tye_prefix == $type) {
+                $temp = array('id' => $row['typeid'],'name' => $row['name']);
+                array_push($alarm_type, $temp);
+            }
+        }
+
+        $mysqli->close();
+        return $alarm_type;
+    }
+
 }
 
 ?>

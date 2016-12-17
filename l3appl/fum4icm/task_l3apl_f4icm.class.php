@@ -361,110 +361,92 @@ class classTaskL3aplF4icm
             return false;
         }
 
-        elseif ($msgId == MSG_ID_L4AQYCUI_TO_L3F4_ALLSW)
+        switch($msgId)
         {
-            //具体处理函数
-            $resp = $this->func_allsw_version_process($type, $user, $body);
-            $project = MFUN_PRJ_HCU_AQYCUI;
-        }
+            case MSG_ID_L4AQYCUI_TO_L3F4_ALLSW:
+                $resp = $this->func_allsw_version_process($type, $user, $body);
+                $project = MFUN_PRJ_HCU_AQYCUI;
+                break;
 
-        elseif ($msgId == MSG_ID_L4AQYCUI_TO_L3F4_DEVSW)
-        {
-            //具体处理函数
-            $resp = $this->func_devsw_version_process($type, $user, $body);
-            $project = MFUN_PRJ_HCU_AQYCUI;
-        }
+            case MSG_ID_L4AQYCUI_TO_L3F4_DEVSW:
+                $resp = $this->func_devsw_version_process($type, $user, $body);
+                $project = MFUN_PRJ_HCU_AQYCUI;
+                break;
 
-        elseif ($msgId == MSG_ID_L4AQYCUI_TO_L3F4_SWUPDATE)
-        {
-            //具体处理函数
-            $resp = $this->func_devsw_update_process($type, $user, $body);
-            $project = MFUN_PRJ_HCU_AQYCUI;
-        }
-        //功能Sensor update
-        elseif ($msgId == MSG_ID_L4AQYCUI_TO_L3F4_SENSORUPDATE)
-        {
-            //具体处理函数
-            $resp = $this->func_sensor_update_process($type, $user, $body);
-            $project = MFUN_PRJ_HCU_AQYCUI;
-        }
-        elseif ($msgId == MSG_ID_L4AQYCUI_TO_L3F4_CAMWEB)
-        {
-            //具体处理函数
-            $resp = $this->func_hcu_camweb_process($type, $user, $body);
-            $project = MFUN_PRJ_HCU_AQYCUI;
-        }
-        elseif ($msgId == MSG_ID_L4AQYCUI_TO_L3F4_VIDEOLIST)
-        {
-            //具体处理函数
-            $resp = $this->func_hcu_videolist_process($type, $user, $body);
-            $project = MFUN_PRJ_HCU_AQYCUI;
-        }
+            case MSG_ID_L4AQYCUI_TO_L3F4_SWUPDATE:
+                $resp = $this->func_devsw_update_process($type, $user, $body);
+                $project = MFUN_PRJ_HCU_AQYCUI;
+                break;
 
-        elseif ($msgId == MSG_ID_L4AQYCUI_TO_L3F4_VIDEOPLAY)
-        {
-            $resp = $this->func_hcu_videoplay_process($type, $user, $body);
-            $project = MFUN_PRJ_HCU_AQYCUI;
-        }
-        //功能Get Camera Status
-        elseif ($msgId == MSG_ID_L4AQYCUI_TO_L3F4_GETCAMERASTATUS)
-        {
-            //具体处理函数
-            $resp = $this->func_get_camera_status_process($type, $user, $body);
-            $project = MFUN_PRJ_HCU_AQYCUI;
-        }
-        elseif ($msgId == MSG_ID_L4AQYCUI_TO_L3F4_GETCAMERAUNIT)
-        {
-            //具体处理函数
-            $resp = $this->func_get_camera_unit_process($type, $user, $body);
-            $project = MFUN_PRJ_HCU_AQYCUI;
-        }
+            case MSG_ID_L4AQYCUI_TO_L3F4_SENSORUPDATE://功能Sensor update
+                $resp = $this->func_sensor_update_process($type, $user, $body);
+                $project = MFUN_PRJ_HCU_AQYCUI;
+                break;
 
-        /*********************************TBSWR新增处理 Start*********************************************/
-        //功能TBSWR GetTempStatus
-        elseif ($msgId == MSG_ID_L4TBSWRUI_TO_L3F4_GETTEMPSTATUS)
-        {
-            //解开消息
-            if (isset($_GET["id"])) $uid = trim($_GET["id"]); else  $uid = "";
-            if (isset($_GET["StatCode"])) $StatCode = trim($_GET["StatCode"]); else  $StatCode= "";
-            $input = array("uid" => $uid, "StatCode" => $StatCode);
-            //具体处理函数
-            $resp = $this->func_tbswr_gettempstatus_process($uid, $StatCode);
-            $project = MFUN_PRJ_HCU_AQYCUI;
-        }
+            case MSG_ID_L4AQYCUI_TO_L3F4_CAMWEB:
+                $resp = $this->func_hcu_camweb_process($type, $user, $body);
+                $project = MFUN_PRJ_HCU_AQYCUI;
+                break;
 
-        /*********************************智能云锁新增处理 Start*********************************************/
-        //功能HCU_Lock_Open
-        elseif ($msgId == MSG_ID_L4FHYSUI_TO_L3F4_LOCKOPEN)
-        {
-            //具体处理函数
-            $resp = $this->func_hcu_lock_compel_open($type, $user, $body);
-            $project = MFUN_PRJ_HCU_FHYSUI;
-        }
+            case MSG_ID_L4AQYCUI_TO_L3F4_VIDEOLIST:
+                $resp = $this->func_hcu_videolist_process($type, $user, $body);
+                $project = MFUN_PRJ_HCU_AQYCUI;
+                break;
 
-        /*********************************BFSC组合秤新增处理 Start*********************************************/
-        //功能HCU_Lock_Open
-        elseif ($msgId == MSG_ID_L4BFSCUI_TO_L3F4_WEIGHTOPEN)
-        {
-            //解开消息
-            if (isset($msg["uid"])) $uid = trim($msg["uid"]); else  $uid = "";
-            if (isset($msg["statcode"])) $statcode = trim($msg["statcode"]); else  $statcode= "";
-            //具体处理函数
-            $resp = $this->func_hcu_weight_compel_open($uid, $statcode);
-            $project = MFUN_PRJ_HCU_BFSCUI;
-        }
-        elseif ($msgId == MSG_ID_L4BFSCUI_TO_L3F4_WEIGHTCLOSE)
-        {
-            //解开消息
-            if (isset($msg["uid"])) $uid = trim($msg["uid"]); else  $uid = "";
-            if (isset($msg["statcode"])) $statcode = trim($msg["statcode"]); else  $statcode= "";
-            //具体处理函数
-            $resp = $this->func_hcu_weight_compel_close($uid, $statcode);
-            $project = MFUN_PRJ_HCU_BFSCUI;
-        }
+            case MSG_ID_L4AQYCUI_TO_L3F4_VIDEOPLAY:
+                $resp = $this->func_hcu_videoplay_process($type, $user, $body);
+                $project = MFUN_PRJ_HCU_AQYCUI;
+                break;
 
-        else{
-            $resp = ""; //啥都不ECHO
+            case MSG_ID_L4AQYCUI_TO_L3F4_GETCAMERASTATUS://功能Get Camera Status
+                $resp = $this->func_get_camera_status_process($type, $user, $body);
+                $project = MFUN_PRJ_HCU_AQYCUI;
+                break;
+
+            case MSG_ID_L4AQYCUI_TO_L3F4_GETCAMERAUNIT:
+                $resp = $this->func_get_camera_unit_process($type, $user, $body);
+                $project = MFUN_PRJ_HCU_AQYCUI;
+                break;
+
+/*********************************TBSWR新增处理 Start*********************************************/
+            case MSG_ID_L4TBSWRUI_TO_L3F4_GETTEMPSTATUS://功能TBSWR GetTempStatus,暂时放个例子，待后面修改
+                //解开消息
+                if (isset($_GET["id"])) $uid = trim($_GET["id"]); else  $uid = "";
+                if (isset($_GET["StatCode"])) $StatCode = trim($_GET["StatCode"]); else  $StatCode= "";
+                $input = array("uid" => $uid, "StatCode" => $StatCode);
+                //具体处理函数
+                $resp = $this->func_tbswr_gettempstatus_process($uid, $StatCode);
+                $project = MFUN_PRJ_HCU_AQYCUI;
+                break;
+
+/*********************************智能云锁新增处理 Start*********************************************/
+            case MSG_ID_L4FHYSUI_TO_L3F4_LOCKOPEN://功能HCU_Lock_Open
+                $resp = $this->func_hcu_lock_compel_open($type, $user, $body);
+                $project = MFUN_PRJ_HCU_FHYSUI;
+                break;
+
+/*********************************BFSC组合秤新增处理 Start*********************************************/
+            case MSG_ID_L4BFSCUI_TO_L3F4_WEIGHTOPEN:
+                //解开消息
+                if (isset($msg["uid"])) $uid = trim($msg["uid"]); else  $uid = "";
+                if (isset($msg["statcode"])) $statcode = trim($msg["statcode"]); else  $statcode= "";
+                //具体处理函数
+                $resp = $this->func_hcu_weight_compel_open($uid, $statcode);
+                $project = MFUN_PRJ_HCU_BFSCUI;
+                break;
+
+            case MSG_ID_L4BFSCUI_TO_L3F4_WEIGHTCLOSE:
+                //解开消息
+                if (isset($msg["uid"])) $uid = trim($msg["uid"]); else  $uid = "";
+                if (isset($msg["statcode"])) $statcode = trim($msg["statcode"]); else  $statcode= "";
+                //具体处理函数
+                $resp = $this->func_hcu_weight_compel_close($uid, $statcode);
+                $project = MFUN_PRJ_HCU_BFSCUI;
+                break;
+
+            default:
+                $resp = ""; //啥都不ECHO
+                break;
         }
 
         //返回ECHO

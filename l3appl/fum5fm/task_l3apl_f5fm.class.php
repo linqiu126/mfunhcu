@@ -61,7 +61,7 @@ class classTaskL3aplF5fm
         return $jsonencode;
     }
 
-    function func_alarm_query_process($type, $user, $body)
+    function func_aqyc_alarm_query_process($type, $user, $body)
     {
         if (isset($body["StatCode"])) $StatCode = $body["StatCode"]; else  $StatCode = "";
         if (isset($body["date"])) $date = $body["date"]; else  $date = "";
@@ -71,7 +71,7 @@ class classTaskL3aplF5fm
         $usercheck = $uiF1symDbObj->dbi_user_authcheck($type, $user);
         if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
             $uiF3dmDbObj = new classDbiL3apF3dm(); //初始化一个UI DB对象
-            $table = $uiF3dmDbObj->dbi_dev_alarmhistory_req($StatCode, $date, $alarmtype);
+            $table = $uiF3dmDbObj->dbi_aqyc_dev_alarmhistory_req($StatCode, $date, $alarmtype);
             if(!empty($table)){
                 $ret = array('StatCode'=> $StatCode,
                             'date'=> $date,
@@ -96,7 +96,47 @@ class classTaskL3aplF5fm
         return $jsonencode;
     }
 
+    function func_aqyc_alarmtype_list_process($type, $user, $body)
+    {
+        $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
+        $usercheck = $uiF1symDbObj->dbi_user_authcheck($type, $user);
+        if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
+            $uiF5fmDbObj = new classDbiL3apF5fm();
+            $sensor_type = MFUN_L3APL_F3DM_AQYC_STYPE_PREFIX;
+            $alarm_type = $uiF5fmDbObj->dbi_all_alarmtype_req($sensor_type);
+            if(!empty($alarm_type))
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$alarm_type,'msg'=>"获取告警类型列表成功");
+            else
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>"获取告警类型列表失败");
+        }
+        else
+            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
+
+        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
+        return $jsonencode;
+    }
+
     /*********************************智能云锁新增处理************************************************/
+    function func_fhys_alarmtype_list_process($type, $user, $body)
+    {
+        $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
+        $usercheck = $uiF1symDbObj->dbi_user_authcheck($type, $user);
+        if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
+            $uiF5fmDbObj = new classDbiL3apF5fm();
+            $sensor_type = MFUN_L3APL_F3DM_FHYS_STYPE_PREFIX;
+            $alarm_type = $uiF5fmDbObj->dbi_all_alarmtype_req($sensor_type);
+            if(!empty($alarm_type))
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$alarm_type,'msg'=>"获取告警类型列表成功");
+            else
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>"获取告警类型列表失败");
+        }
+        else
+            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
+
+        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
+        return $jsonencode;
+    }
+
     function func_fhys_dev_alarm_process($type, $user, $body)
     {
         if (isset($body["StatCode"])) $StatCode = $body["StatCode"]; else  $StatCode = "";
@@ -161,17 +201,32 @@ class classTaskL3aplF5fm
                 $resp = $this->func_aqyc_dev_alarm_process($type, $user, $body);
                 $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
+
             //功能Alarm Query
             case MSG_ID_L4AQYCUI_TO_L3F5_ALARMQUERY:
-                $resp = $this->func_alarm_query_process($type, $user, $body);
+                $resp = $this->func_aqyc_alarm_query_process($type, $user, $body);
                 $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
-            /*********************************智能云锁新增处理************************************************/
+
+            //功能Alarm Type, 获取所有告警传感器类型
+            case MSG_ID_L4AQYCUI_TO_L3F5_ALARMTYPE:
+                $resp = $this->func_aqyc_alarmtype_list_process($type, $user, $body);
+                $project = MFUN_PRJ_HCU_AQYCUI;
+                break;
+
+/*********************************智能云锁新增处理************************************************/
             //功能Dev Alarm
             case MSG_ID_L4FHYSUI_TO_L3F5_DEVALARM:
                 $resp = $this->func_fhys_dev_alarm_process($type, $user, $body);
                 $project = MFUN_PRJ_HCU_FHYSUI;
                 break;
+
+            //功能Alarm Type, 获取所有告警传感器类型
+            case MSG_ID_L4FHYSUI_TO_L3F5_ALARMTYPE:
+                $resp = $this->func_fhys_alarmtype_list_process($type, $user, $body);
+                $project = MFUN_PRJ_HCU_FHYSUI;
+                break;
+
             default:
                 $resp = ""; //啥都不ECHO
                 break;

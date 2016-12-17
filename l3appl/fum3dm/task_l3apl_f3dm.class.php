@@ -299,25 +299,6 @@ class classTaskL3aplF3dm
         return $jsonencode;
     }
 
-    function func_sensor_type_list_process($type, $user, $body)
-    {
-        $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
-        $usercheck = $uiF1symDbObj->dbi_user_authcheck($type, $user);
-        if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
-            $uiL2snrDbObj = new classDbiL2snrCom();
-            $alarm_type = $uiL2snrDbObj->dbi_all_alarmtype_req();
-            if(!empty($alarm_type))
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$alarm_type,'msg'=>"获取告警类型列表成功");
-            else
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>"获取告警类型列表失败");
-        }
-        else
-            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
-
-        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
-        return $jsonencode;
-    }
-
     function func_table_query_process($type, $user, $body)
     {
         if (isset($body["Condition"])) $Condition = $body["Condition"]; else  $Condition = "";
@@ -341,13 +322,14 @@ class classTaskL3aplF3dm
         return $jsonencode;
     }
 
-    function func_sensor_list_process($type, $user, $body)
+    function func_aqyc_sensor_list_process($type, $user, $body)
     {
         $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
         $usercheck = $uiF1symDbObj->dbi_user_authcheck($type, $user);
         if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
             $uiL2snrDbObj = new classDbiL2snrCom();
-            $sensor_list = $uiL2snrDbObj->dbi_all_sensorlist_req();
+            $sensor_type = MFUN_L3APL_F3DM_AQYC_STYPE_PREFIX;
+            $sensor_list = $uiL2snrDbObj->dbi_all_sensorlist_req($sensor_type);
             if(!empty($sensor_list))
                 $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$sensor_list,'msg'=>"获取传感器列表成功");
             else
@@ -427,6 +409,26 @@ class classTaskL3aplF3dm
     }
 
     /*********************************智能云锁新增处理************************************************/
+    function func_fhys_sensor_list_process($type, $user, $body)
+    {
+        $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
+        $usercheck = $uiF1symDbObj->dbi_user_authcheck($type, $user);
+        if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
+            $uiL2snrDbObj = new classDbiL2snrCom();
+            $sensor_type= MFUN_L3APL_F3DM_FHYS_STYPE_PREFIX;
+            $sensor_list = $uiL2snrDbObj->dbi_all_sensorlist_req($sensor_type);
+            if(!empty($sensor_list))
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$sensor_list,'msg'=>"获取传感器列表成功");
+            else
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>"获取传感器列表失败");
+        }
+        else
+            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
+
+        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
+        return $jsonencode;
+    }
+
     function func_fhys_dev_sensor_process($type, $user, $body)
     {
         if (isset($body["DevCode"])) $DevCode = $body["DevCode"]; else  $DevCode = "";
@@ -527,181 +529,117 @@ class classTaskL3aplF3dm
             return false;
         }
 
-        //功能Project Point 查询所有监控点列表
-        elseif ($msgId == MSG_ID_L4AQYCUI_TO_L3F3_PROJPOINT)
+        switch($msgId)
         {
+            case MSG_ID_L4AQYCUI_TO_L3F3_PROJPOINT://功能Project Point 查询所有监控点列表
+                $resp = $this->func_project_point_process($type, $user, $body);
+                $project = MFUN_PRJ_HCU_AQYCUI;
+                break;
 
-            //具体处理函数
-            $resp = $this->func_project_point_process($type, $user, $body);
-            $project = MFUN_PRJ_HCU_AQYCUI;
-        }
+            case MSG_ID_L4AQYCUI_TO_L3F3_POINTPROJ://功能Point project查询该项目下面对应监控点列表
+                $resp = $this->func_point_project_process($type, $user, $body);
+                $project = MFUN_PRJ_HCU_AQYCUI;
+                break;
 
-        //功能Point project查询该项目下面对应监控点列表
-        elseif ($msgId == MSG_ID_L4AQYCUI_TO_L3F3_POINTPROJ)
-        {
-            //具体处理函数
-            $resp = $this->func_point_project_process($type, $user, $body);
-            $project = MFUN_PRJ_HCU_AQYCUI;
-        }
+            case MSG_ID_L4AQYCUI_TO_L3F3_POINTTABLE://功能Point Table
+                $resp = $this->func_point_table_process($type, $user, $body);
+                $project = MFUN_PRJ_HCU_AQYCUI;
+                break;
 
-        //功能Point Table
-        elseif ($msgId == MSG_ID_L4AQYCUI_TO_L3F3_POINTTABLE)
-        {
-            $resp = $this->func_point_table_process($type, $user, $body);
-            $project = MFUN_PRJ_HCU_AQYCUI;
-        }
+            case MSG_ID_L4AQYCUI_TO_L3F3_POINTNEW://功能Point New
+                $resp = $this->func_point_new_process($type, $user, $body);
+                $project = MFUN_PRJ_HCU_AQYCUI;
+                break;
 
-        //功能Point New
-        elseif ($msgId == MSG_ID_L4AQYCUI_TO_L3F3_POINTNEW)
-        {
-            //具体处理函数
-            $resp = $this->func_point_new_process($type, $user, $body);
-            $project = MFUN_PRJ_HCU_AQYCUI;
-        }
+            case MSG_ID_L4AQYCUI_TO_L3F3_POINTMOD://功能Point Mod
+                $resp = $this->func_point_mod_process($type, $user, $body);
+                $project = MFUN_PRJ_HCU_AQYCUI;
+                break;
 
-        //功能Point Mod
-        elseif ($msgId == MSG_ID_L4AQYCUI_TO_L3F3_POINTMOD)
-        {
-            //具体处理函数
-            $resp = $this->func_point_mod_process($type, $user, $body);
-            $project = MFUN_PRJ_HCU_AQYCUI;
-        }
+            case MSG_ID_L4AQYCUI_TO_L3F3_POINTDEL://功能Point Del
+                $resp = $this->func_point_del_process($type, $user, $body);
+                $project = MFUN_PRJ_HCU_AQYCUI;
+                break;
 
-        //功能Point Del
-        elseif ($msgId == MSG_ID_L4AQYCUI_TO_L3F3_POINTDEL)
-        {
-            //具体处理函数
-            $resp = $this->func_point_del_process($type, $user, $body);
-            $project = MFUN_PRJ_HCU_AQYCUI;
-        }
+            case MSG_ID_L4AQYCUI_TO_L3F3_POINTDEV://功能Point Dev
+                $resp = $this->func_point_dev_process($type, $user, $body);
+                $project = MFUN_PRJ_HCU_AQYCUI;
+                break;
 
-        //功能Point Dev
-        elseif ($msgId == MSG_ID_L4AQYCUI_TO_L3F3_POINTDEV)
-        {
-            //具体处理函数
-            $resp = $this->func_point_dev_process($type, $user, $body);
-            $project = MFUN_PRJ_HCU_AQYCUI;
-        }
+            case MSG_ID_L4AQYCUI_TO_L3F3_DEVTABLE://功能Dev Table
+                $resp = $this->func_dev_table_process($type, $user, $body);
+                $project = MFUN_PRJ_HCU_AQYCUI;
+                break;
 
-        //功能Dev Table
-        elseif ($msgId == MSG_ID_L4AQYCUI_TO_L3F3_DEVTABLE)
-        {
-            //具体处理函数
-            $resp = $this->func_dev_table_process($type, $user, $body);
-            $project = MFUN_PRJ_HCU_AQYCUI;
-        }
+            case MSG_ID_L4AQYCUI_TO_L3F3_DEVNEW://功能Dev New
+                $resp = $this->func_dev_new_process($type, $user, $body);
+                $project = MFUN_PRJ_HCU_AQYCUI;
+                break;
 
-        //功能Dev New
-        elseif ($msgId == MSG_ID_L4AQYCUI_TO_L3F3_DEVNEW)
-        {
-            //具体处理函数
-            $resp = $this->func_dev_new_process($type, $user, $body);
-            $project = MFUN_PRJ_HCU_AQYCUI;
-        }
+            case MSG_ID_L4AQYCUI_TO_L3F3_DEVMOD://功能Dev Mod
+                $resp = $this->func_dev_mod_process($type, $user, $body);
+                $project = MFUN_PRJ_HCU_AQYCUI;
+                break;
 
-        //功能Dev Mod
-        elseif ($msgId == MSG_ID_L4AQYCUI_TO_L3F3_DEVMOD)
-        {
-            //具体处理函数
-            $resp = $this->func_dev_mod_process($type, $user, $body);
-            $project = MFUN_PRJ_HCU_AQYCUI;
-        }
+            case MSG_ID_L4AQYCUI_TO_L3F3_DEVDEL://功能Dev Del
+                $resp = $this->func_dev_del_process($type, $user, $body);
+                $project = MFUN_PRJ_HCU_AQYCUI;
+                break;
 
-        //功能Dev Del
-        elseif ($msgId == MSG_ID_L4AQYCUI_TO_L3F3_DEVDEL)
-        {
-            //具体处理函数
-            $resp = $this->func_dev_del_process($type, $user, $body);
-            $project = MFUN_PRJ_HCU_AQYCUI;
-        }
+            case MSG_ID_L4AQYCUI_TO_L3F3_MONITORLIST://功能Monitor List
+                $resp = $this->func_monitor_list_process($type, $user, $body);
+                $project = MFUN_PRJ_HCU_AQYCUI;
+                break;
 
-        //功能Monitor List
-        elseif ($msgId == MSG_ID_L4AQYCUI_TO_L3F3_MONITORLIST)
-        {
-            //具体处理函数
-            $resp = $this->func_monitor_list_process($type, $user, $body);
-            $project = MFUN_PRJ_HCU_AQYCUI;
-        }
+            case MSG_ID_L4AQYCUI_TO_L3F3_TABLEQUERY://功能Tabel Query
+                $resp = $this->func_table_query_process($type, $user, $body);
+                $project = MFUN_PRJ_HCU_AQYCUI;
+                break;
 
-        //功能Alarm Type, 获取所有传感器类型
-        elseif ($msgId == MSG_ID_L4AQYCUI_TO_L3F3_ALARMTYPE)
-        {
-            //具体处理函数
-            $resp = $this->func_sensor_type_list_process($type, $user, $body);
-            $project = MFUN_PRJ_HCU_AQYCUI;
-        }
+            case MSG_ID_L4AQYCUI_TO_L3F3_SENSORLIST://功能Sensor List
+                $resp = $this->func_aqyc_sensor_list_process($type, $user, $body);
+                $project = MFUN_PRJ_HCU_AQYCUI;
+                break;
 
-        //功能Tabel Query
-        elseif ($msgId == MSG_ID_L4AQYCUI_TO_L3F3_TABLEQUERY)
-        {
-            //具体处理函数
-            $resp = $this->func_table_query_process($type, $user, $body);
-            $project = MFUN_PRJ_HCU_AQYCUI;
-        }
+            case MSG_ID_L4AQYCUI_TO_L3F3_DEVSENSOR://功能Dev Sensor
+                $resp = $this->func_aqyc_dev_sensor_process($type, $user, $body);
+                $project = MFUN_PRJ_HCU_AQYCUI;
+                break;
 
-        //功能Sensor List
-        elseif ($msgId == MSG_ID_L4AQYCUI_TO_L3F3_SENSORLIST)
-        {
-            //具体处理函数
-            $resp = $this->func_sensor_list_process($type, $user, $body);
-            $project = MFUN_PRJ_HCU_AQYCUI;
-        }
+            case MSG_ID_L4AQYCUI_TO_L3F3_GETSTATICMONITORTABLE://功能GetStaticMonitorTable
+                $resp = $this->func_aqyc_get_static_monitor_table_process($type, $user, $body);
+                $project = MFUN_PRJ_HCU_AQYCUI;
+                break;
 
-        //功能Dev Sensor
-        elseif ($msgId == MSG_ID_L4AQYCUI_TO_L3F3_DEVSENSOR)
-        {
-            //具体处理函数
-            $resp = $this->func_aqyc_dev_sensor_process($type, $user, $body);
-            $project = MFUN_PRJ_HCU_AQYCUI;
-        }
+/*********************************波峰智能组合秤新增处理 Start*********************************************/
+            case MSG_ID_L4BFSCUI_TO_L3F3_GETSTATICMONITORTABLE://功能GetStaticMonitorTable
+                $resp = $this->func_bfsc_get_static_monitor_table_process($type, $user, $body);
+                $project = MFUN_PRJ_HCU_BFSCUI;
+                break;
+/*************************************智能云锁新增处理 Start*********************************************/
+            case MSG_ID_L4FHYSUI_TO_L3F3_SENSORLIST://功能Sensor List
+                $resp = $this->func_fhys_sensor_list_process($type, $user, $body);
+                $project = MFUN_PRJ_HCU_FHYSUI;
+                break;
 
-        //功能GetStaticMonitorTable
-        elseif ($msgId == MSG_ID_L4AQYCUI_TO_L3F3_GETSTATICMONITORTABLE)
-        {
-            //具体处理函数
-            $resp = $this->func_aqyc_get_static_monitor_table_process($type, $user, $body);
-            $project = MFUN_PRJ_HCU_AQYCUI;
-        }
+            case MSG_ID_L4FHYSUI_TO_L3F3_DEVSENSOR://功能Dev Sensor
+                $resp = $this->func_fhys_dev_sensor_process($type, $user, $body);
+                $project = MFUN_PRJ_HCU_FHYSUI;
+                break;
 
-        /*********************************波峰智能组合秤新增处理 Start*********************************************/
+            case MSG_ID_L4FHYSUI_TO_L3F3_GETSTATICMONITORTABLE://功能GetStaticMonitorTable
+                $resp = $this->func_fhys_get_static_monitor_table_process($type, $user, $body);
+                $project = MFUN_PRJ_HCU_FHYSUI;
+                break;
 
-        //功能GetStaticMonitorTable
-        elseif ($msgId == MSG_ID_L4BFSCUI_TO_L3F3_GETSTATICMONITORTABLE)
-        {
-            //具体处理函数
-            $resp = $this->func_bfsc_get_static_monitor_table_process($type, $user, $body);
-            $project = MFUN_PRJ_HCU_BFSCUI;
-        }
+            case MSG_ID_L4FHYSUI_TO_L3F3_KEYHISTORY://开锁事件历史记录
+                $resp = $this->func_key_event_history_process($type, $user, $body);
+                $project = MFUN_PRJ_HCU_FHYSUI;
+                break;
 
-        /*********************************智能云锁新增处理 Start*********************************************/
-        //功能Dev Sensor
-        elseif ($msgId == MSG_ID_L4FHYSUI_TO_L3F3_DEVSENSOR)
-        {
-            //具体处理函数
-            $resp = $this->func_fhys_dev_sensor_process($type, $user, $body);
-            $project = MFUN_PRJ_HCU_FHYSUI;
-        }
-
-        //功能GetStaticMonitorTable
-        elseif ($msgId == MSG_ID_L4FHYSUI_TO_L3F3_GETSTATICMONITORTABLE)
-        {
-            //具体处理函数
-            $resp = $this->func_fhys_get_static_monitor_table_process($type, $user, $body);
-            $project = MFUN_PRJ_HCU_FHYSUI;
-        }
-
-        //开锁事件历史记录
-        elseif ($msgId == MSG_ID_L4FHYSUI_TO_L3F3_KEYHISTORY)
-        {
-            $resp = $this->func_key_event_history_process($type, $user, $body);
-            $project = MFUN_PRJ_HCU_FHYSUI;
-        }
-
-
-        /*********************************智能云锁新增处理 End*********************************************/
-
-        else{
-            $resp = ""; //啥都不ECHO
+            default :
+                $resp = ""; //啥都不ECHO
+                break;
         }
 
         //返回ECHO

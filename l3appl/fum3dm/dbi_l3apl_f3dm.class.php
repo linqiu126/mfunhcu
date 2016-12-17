@@ -816,7 +816,7 @@ class classDbiL3apF3dm
     }
 
     //UI AlarmQuery Request, 获取告警历史数据
-    public function dbi_dev_alarmhistory_req($statcode, $date, $alarm_type)
+    public function dbi_aqyc_dev_alarmhistory_req($statcode, $date, $alarm_type)
     {
         //建立连接
         $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
@@ -834,7 +834,7 @@ class classDbiL3apF3dm
         }
 
         switch($alarm_type) {
-            case MFUN_L3APL_F3DM_S_TYPE_PM:
+            case MFUN_L3APL_F3DM_AQYC_STYPE_PM:
                 $resp["alarm_name"] = "细颗粒物";
                 $resp["alarm_unit"] = "毫克/立方米";
                 $resp["warning"] = MFUN_L3APL_F3DM_TH_ALARM_PM25;
@@ -890,7 +890,7 @@ class classDbiL3apF3dm
                 }
                 break;
 
-            case MFUN_L3APL_F3DM_S_TYPE_WINDSPD:
+            case MFUN_L3APL_F3DM_AQYC_STYPE_WINDSPD:
                 $resp["alarm_name"] = "风速";
                 $resp["alarm_unit"] = "千米/小时";
                 $resp["warning"] = MFUN_L3APL_F3DM_TH_ALARM_WINDSPD;
@@ -945,7 +945,7 @@ class classDbiL3apF3dm
                 }
                 break;
 
-            case MFUN_L3APL_F3DM_S_TYPE_WINDDIR:
+            case MFUN_L3APL_F3DM_AQYC_STYPE_WINDDIR:
                 $resp["alarm_name"] = "风向";
                 $resp["alarm_unit"] = "度";
                 $resp["warning"] = MFUN_L3APL_F3DM_TH_ALARM_WINDDIR;
@@ -1000,7 +1000,7 @@ class classDbiL3apF3dm
                 }
                 break;
 
-            case MFUN_L3APL_F3DM_S_TYPE_EMC:
+            case MFUN_L3APL_F3DM_AQYC_STYPE_EMC:
                 $resp["alarm_name"] = "电磁辐射";
                 $resp["alarm_unit"] = "毫瓦/平方毫米";
                 $resp["warning"] = MFUN_L3APL_F3DM_TH_ALARM_EMC;
@@ -1055,7 +1055,7 @@ class classDbiL3apF3dm
                 }
                 break;
 
-            case MFUN_L3APL_F3DM_S_TYPE_TEMP:
+            case MFUN_L3APL_F3DM_AQYC_STYPE_TEMP:
                 $resp["alarm_name"] = "温度";
                 $resp["alarm_unit"] = "摄氏度";
                 $resp["warning"] = MFUN_L3APL_F3DM_TH_ALARM_TEMP;
@@ -1110,7 +1110,7 @@ class classDbiL3apF3dm
                 }
                 break;
 
-            case MFUN_L3APL_F3DM_S_TYPE_HUMID:
+            case MFUN_L3APL_F3DM_AQYC_STYPE_HUMID:
                 $resp["alarm_name"] = "湿度";
                 $resp["alarm_unit"] = "%";
                 $resp["warning"] = MFUN_L3APL_F3DM_TH_ALARM_HUMID;
@@ -1165,7 +1165,7 @@ class classDbiL3apF3dm
                 }
                 break;
 
-            case MFUN_L3APL_F3DM_S_TYPE_NOISE:
+            case MFUN_L3APL_F3DM_AQYC_STYPE_NOISE:
                 $resp["alarm_name"] = "噪声";
                 $resp["alarm_unit"] = "分贝";
                 $resp["warning"] = MFUN_L3APL_F3DM_TH_ALARM_NOISE;
@@ -1281,36 +1281,38 @@ class classDbiL3apF3dm
             }
             $query_str = "SELECT * FROM `t_l3f3dm_aqyc_currentreport` WHERE `statcode` = '$statcode'";
             $result = $mysqli->query($query_str);
+            //初始化返回值，确保数据库没有测试报告的情况下界面返回数据长度不报错
+            $pm25 = 0;
+            $temperature = 0;
+            $humidity = 0;
+            $noise = 0;
+            $windspeed = 0;
+            $winddir = 0;
+            $status = "停止";
             if (($result->num_rows) > 0)
             {
                 $row = $result->fetch_array();
-                array_push($one_row, $row["pm25"]/10);
-                array_push($one_row, $row["temperature"]/10);
-                array_push($one_row, $row["humidity"]/10);
-                array_push($one_row, $row["noise"]/100);
-                array_push($one_row, $row["windspeed"]/10);
-                array_push($one_row, $row["winddirection"]);
+                $pm25 =  $row["pm25"]/10;
+                $temperature = $row["temperature"]/10;
+                $humidity = $row["humidity"]/10;
+                $noise = $row["noise"]/100;
+                $windspeed = $row["windspeed"]/10;
+                $winddir = $row["winddirection"];
 
                 $timestamp = strtotime($row["createtime"]);
                 $currenttime = time();
                 if ($currenttime > ($timestamp+180))  //如果最后一次测量报告距离现在已经超过3分钟
-                    array_push($one_row, "停止");
+                    $status = "停止";
                 else
-                    array_push($one_row, "运行");
-
+                    $status = "运行";
             }
-
-            /*
-                        $query_str = "SELECT * FROM `t_hcudevice` WHERE `statcode` = '$statcode'";
-                        $result = $mysqli->query($query_str);
-                        if (($result->num_rows) > 0) {
-                            $row = $result->fetch_array();
-                            if ($row["switch"] == "on")
-                                array_push($one_row, "运行");
-                            elseif ($row["switch"] == "off")
-                                array_push($one_row, "停止");
-                        }
-            */
+            array_push($one_row, $pm25);
+            array_push($one_row, $temperature);
+            array_push($one_row, $humidity);
+            array_push($one_row, $noise);
+            array_push($one_row, $windspeed);
+            array_push($one_row, $winddir);
+            array_push($one_row, $status);
 
             array_push($resp['data'], $one_row);
         }
@@ -1363,6 +1365,20 @@ class classDbiL3apF3dm
 
             $query_str = "SELECT * FROM `t_l3f3dm_bfsc_currentreport` WHERE `statcode` = '$statcode'";
             $result = $mysqli->query($query_str);
+            //初始化返回值，确保数据库没有测试报告的情况下界面返回数据长度不报错
+            $status = "休眠中";
+            $w01 = 0;
+            $w02 = 0;
+            $w03 = 0;
+            $w04 = 0;
+            $w05 = 0;
+            $w06 = 0;
+            $w07 = 0;
+            $w08 = 0;
+            $w09 = 0;
+            $w10 = 0;
+            $w11 = 0;
+            $w12 = 0;
             if (($result->num_rows) > 0)
             {
                 $row = $result->fetch_array();
@@ -1373,9 +1389,9 @@ class classDbiL3apF3dm
                 $timestamp = strtotime($row["createtime"]);
                 $currenttime = time();
                 if ($currenttime > ($timestamp+180))  //如果最后一次测量报告距离现在已经超过3分钟
-                    array_push($one_row, "休眠中");
+                    $status = "休眠中";
                 else
-                    array_push($one_row, "运行中");
+                    $status = "运行中";
 
                 $w01 = $row["weight_01"];
                 $w02 = $row["weight_02"];
@@ -1389,21 +1405,20 @@ class classDbiL3apF3dm
                 $w10 = $row["weight_10"];
                 $w11 = $row["weight_11"];
                 $w12 = $row["weight_12"];
-
-                array_push($one_row, $w01);
-                array_push($one_row, $w02);
-                array_push($one_row, $w03);
-                array_push($one_row, $w04);
-                array_push($one_row, $w05);
-                array_push($one_row, $w06);
-                array_push($one_row, $w07);
-                array_push($one_row, $w08);
-                array_push($one_row, $w09);
-                array_push($one_row, $w10);
-                array_push($one_row, $w11);
-                array_push($one_row, $w12);
             }
-
+            array_push($one_row, $status);
+            array_push($one_row, $w01);
+            array_push($one_row, $w02);
+            array_push($one_row, $w03);
+            array_push($one_row, $w04);
+            array_push($one_row, $w05);
+            array_push($one_row, $w06);
+            array_push($one_row, $w07);
+            array_push($one_row, $w08);
+            array_push($one_row, $w09);
+            array_push($one_row, $w10);
+            array_push($one_row, $w11);
+            array_push($one_row, $w12);
             array_push($resp['data'], $one_row);
         }
 
@@ -1468,6 +1483,17 @@ class classDbiL3apF3dm
             }
             $query_str = "SELECT * FROM `t_l3f3dm_fhys_currentreport` WHERE `statcode` = '$statcode'";
             $result = $mysqli->query($query_str);
+            //初始化返回值，确保数据库没有测试报告的情况下界面返回数据长度不报错
+            $dev_status = "状态未知";
+            $door_status = "状态未知";
+            $lock_status = "状态未知";
+            $sig_level = "0";
+            $batt_level = "0"."%";
+            $vibr_alarm = "未知";
+            $water_alarm = "未知";
+            $smok_alarm = "未知";
+            $temperature = "0";
+            $humidity = "0%";
             if (($result->num_rows) > 0)
             {
                 $row = $result->fetch_array();
@@ -1475,64 +1501,70 @@ class classDbiL3apF3dm
                 $timestamp = strtotime($row["createtime"]);
                 $currenttime = time();
                 if ($currenttime > ($timestamp+180))  //如果最后一次测量报告距离现在已经超过3分钟
-                    array_push($one_row, "休眠中");
+                    $dev_status = "休眠中";
                 else
-                    array_push($one_row, "运行中");
+                    $dev_status = "运行中";
 
                 //更新门运行状态
                 if($row["doorstat"] == MFUN_HCU_FHYS_DOOR_OPEN)
-                    array_push($one_row, "正常打开");
+                    $door_status = "正常打开";
                 elseif($row["doorstat"] == MFUN_HCU_FHYS_DOOR_CLOSE)
-                    array_push($one_row, "正常关闭");
+                    $door_status = "正常关闭";
                 elseif($row["doorstat"] == MFUN_HCU_FHYS_DOOR_ALARM)
-                    array_push($one_row, "暴力打开");
-                else
-                    array_push($one_row, "状态未知");
+                    $door_status = "暴力打开";
+
                 //更新锁运行状态
                 if($row["lockstat"] == MFUN_HCU_FHYS_LOCK_OPEN)
-                    array_push($one_row, "正常打开");
+                    $lock_status = "正常打开";
                 elseif($row["lockstat"] == MFUN_HCU_FHYS_LOCK_CLOSE)
-                    array_push($one_row, "正常关闭");
+                    $lock_status = "正常关闭";
                 elseif($row["lockstat"] == MFUN_HCU_FHYS_LOCK_ALARM)
-                    array_push($one_row, "暴力打开");
-                else
-                    array_push($one_row, "状态未知");
+                    $lock_status = "暴力打开";
 
                 //更新GPRS信号强度
-                array_push($one_row, $row["siglevel"]);
+                $sig_level = $row["siglevel"];
                 //更新电池剩余电量
-                array_push($one_row, $row["battlevel"]."%");
+                $batt_level = $row["battlevel"]."%";
                 //更新震动告警状态
                 if($row["vibralarm"] == MFUN_HCU_FHYS_ALARM_YES)
-                    array_push($one_row, "有");
+                    $vibr_alarm = "有";
                 elseif($row["vibralarm"] == MFUN_HCU_FHYS_ALARM_NO)
-                    array_push($one_row, "无");
-                else array_push($one_row, "未知");
+                    $vibr_alarm = "无";
+
                 //更新水浸告警状态
                 if($row["wateralarm"] == MFUN_HCU_FHYS_ALARM_YES)
-                    array_push($one_row, "有");
+                    $water_alarm = "有";
                 elseif($row["wateralarm"] == MFUN_HCU_FHYS_ALARM_NO)
-                    array_push($one_row, "无");
-                else array_push($one_row, "未知");
+                    $water_alarm = "无";
+
                 //更新烟雾告警状态
                 if($row["smokalarm"] == MFUN_HCU_FHYS_ALARM_YES)
-                    array_push($one_row, "有");
+                    $smok_alarm = "有";
                 elseif($row["smokalarm"] == MFUN_HCU_FHYS_ALARM_NO)
-                    array_push($one_row, "无");
-                else array_push($one_row, "未知");
+                    $smok_alarm = "无";
+
                 //更新温度, 16进制的字符，高2位为整数部分，低2位为小数部分
                 $temp = $row["temperature"];
                 $temp_h = hexdec(substr($temp, 0, 2)) & 0xFF;
                 $temp_l = hexdec(substr($temp, 2, 2)) & 0xFF;
                 $temperature = (string)$temp_h . "." . (string)$temp_l;
-                array_push($one_row, $temperature);
+
                 //更新湿度,16进制的字符，高2位为整数部分，低2位为小数部分
                 $humi = $row["humidity"];
                 $humi_h = hexdec(substr($humi, 0, 2)) & 0xFF;
                 $humi_l = hexdec(substr($humi, 2, 2)) & 0xFF;
                 $humidity = (string)$humi_h . "." . (string)$humi_l . "%";
-                array_push($one_row, $humidity);
             }
+            array_push($one_row, $dev_status);
+            array_push($one_row, $door_status);
+            array_push($one_row, $lock_status);
+            array_push($one_row, $sig_level);
+            array_push($one_row, $batt_level);
+            array_push($one_row, $vibr_alarm);
+            array_push($one_row, $water_alarm);
+            array_push($one_row, $smok_alarm);
+            array_push($one_row, $temperature);
+            array_push($one_row, $humidity);
 
             array_push($resp['data'], $one_row);
         }

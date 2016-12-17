@@ -12,17 +12,19 @@ include_once "../l1comvm/pg_general_engpar.php";
 /**************************************************************************************
  *                             HCU公共消息全局量定义                                  *
  *************************************************************************************/
-define("MFUN_HCU_MSG_HEAD_FORMAT", "A2Key/A2Len/A2Cmd");// 1B 控制字ctrl_key, 1B 长度length（除控制字和长度本身外），1B 操作字opt_key
-define("MFUN_HCU_MSG_HEAD_LENGTH", 6); //3 Byte
-
-//定义HCU视频文件状态，N-正常状态，文件名上传但文件本身没有上传；D-文件下载中；R-文件上传完成，可以随时播放; F-视频下载失败
-define ("MFUN_HCU_VIDEO_DATA_STATUS_NORMAL", "N");
-define ("MFUN_HCU_VIDEO_DATA_STATUS_DOWNLOAD", "D");
-define ("MFUN_HCU_VIDEO_DATA_STATUS_READY", "R");
-define ("MFUN_HCU_VIDEO_DATA_STATUS_FAIL", "F");
 //HCU设备状态
 define ("MFUN_HCU_AQYC_STATUS_ON", "Y");
 define ("MFUN_HCU_AQYC_STATUS_OFF", "N");
+
+
+//定义传感器类型
+define("MFUN_L3APL_F3DM_AQYC_STYPE_PM", "YC_001");
+define("MFUN_L3APL_F3DM_AQYC_STYPE_WINDSPD", "YC_002");
+define("MFUN_L3APL_F3DM_AQYC_STYPE_WINDDIR", "YC_003");
+define("MFUN_L3APL_F3DM_AQYC_STYPE_EMC", "YC_005");
+define("MFUN_L3APL_F3DM_AQYC_STYPE_TEMP", "YC_006");
+define("MFUN_L3APL_F3DM_AQYC_STYPE_HUMID", "YC_007");
+define("MFUN_L3APL_F3DM_AQYC_STYPE_NOISE", "YC_00A");
 
 //HCU下列L3控制字有效，功能已经实现
 define("MFUN_HCU_CMDID_VERSION_SYNC", 0xF0);   //IHU软，硬件版本查询命令字
