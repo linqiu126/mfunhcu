@@ -239,7 +239,8 @@ if (isset($_SERVER['SERVER_NAME']))
         define("MFUN_CLOUD_DBHOST", "127.0.0.1");    //连接的服务器地址
         define("MFUN_CLOUD_DBUSER", "root");     //连接数据库的用户名
         define("MFUN_CLOUD_DBPSW", "aiqiMySQL@321");        //连接数据库的密码
-        define("MFUN_CLOUD_DBNAME_L1L2L3", "bxxhl1l2l3");         //连接的数据库名称
+        define("MFUN_CLOUD_DBNAME_L1L2L3", "bxxhl1l2l3");         //连接的业务数据库名称
+        define("MFUN_CLOUD_DBNAME_DEBUG", "bxxhl1vmlog");         //连接的log数据库名称
         define("MFUN_CLOUD_DBNAME_L4EMCWX", "bxxhl4emcwx");         //连接的数据库名称
         define("MFUN_CLOUD_DBNAME_L4AQYC", "bxxhl4aqyc");         //连接的数据库名称
         define("MFUN_CLOUD_DBNAME_L4TBSWR", "bxxhl4tbswr");         //连接的数据库名称
@@ -276,6 +277,7 @@ if (isset($_SERVER['SERVER_NAME']))
         define("MFUN_CLOUD_DBUSER", "root");     //连接数据库的用户名
         define("MFUN_CLOUD_DBPSW", "bxxhbxxh");        //连接数据库的密码
         define("MFUN_CLOUD_DBNAME_L1L2L3", "bxxhl1l2l3");         //连接的数据库名称
+        define("MFUN_CLOUD_DBNAME_DEBUG", "bxxhl1vmlog");         //连接的log数据库名称
         define("MFUN_CLOUD_DBNAME_L4EMCWX", "bxxhl4emcwx");         //连接的数据库名称
         define("MFUN_CLOUD_DBNAME_L4AQYC", "bxxhl4aqyc");         //连接的数据库名称
         define("MFUN_CLOUD_DBNAME_L4TBSWR", "bxxhl4tbswr");         //连接的数据库名称
@@ -313,6 +315,7 @@ if (isset($_SERVER['SERVER_NAME']))
         define("MFUN_CLOUD_DBUSER", "root");     //连接数据库的用户名
         define("MFUN_CLOUD_DBPSW", "smoon");        //连接数据库的密码
         define("MFUN_CLOUD_DBNAME_L1L2L3", "bxxhl1l2l3");         //连接的数据库名称
+        define("MFUN_CLOUD_DBNAME_DEBUG", "bxxhl1vmlog");         //连接的log数据库名称
         define("MFUN_CLOUD_DBNAME_L4EMCWX", "bxxhl4emcwx");         //连接的数据库名称
         define("MFUN_CLOUD_DBNAME_L4AQYC", "bxxhl4aqyc");         //连接的数据库名称
         define("MFUN_CLOUD_DBNAME_L4TBSWR", "bxxhl4tbswr");         //连接的数据库名称
@@ -349,6 +352,7 @@ if (isset($_SERVER['SERVER_NAME']))
         define("MFUN_CLOUD_DBUSER", "root");     //连接数据库的用户名
         define("MFUN_CLOUD_DBPSW", "smoon");        //连接数据库的密码
         define("MFUN_CLOUD_DBNAME_L1L2L3", "bxxhl1l2l3");         //连接的数据库名称
+        define("MFUN_CLOUD_DBNAME_DEBUG", "bxxhl1vmlog");         //连接的log数据库名称
         define("MFUN_CLOUD_DBNAME_L4EMCWX", "bxxhl4emcwx");         //连接的数据库名称
         define("MFUN_CLOUD_DBNAME_L4AQYC", "bxxhl4aqyc");         //连接的数据库名称
         define("MFUN_CLOUD_DBNAME_L4TBSWR", "bxxhl4tbswr");         //连接的数据库名称
@@ -385,6 +389,7 @@ if (isset($_SERVER['SERVER_NAME']))
         define("MFUN_CLOUD_DBUSER", "root");     //连接数据库的用户名
         define("MFUN_CLOUD_DBPSW", "smoon");        //连接数据库的密码
         define("MFUN_CLOUD_DBNAME_L1L2L3", "bxxhl1l2l3");         //连接的数据库名称
+        define("MFUN_CLOUD_DBNAME_DEBUG", "bxxhl1vmlog");         //连接的log数据库名称
         define("MFUN_CLOUD_DBNAME_L4EMCWX", "bxxhl4emcwx");         //连接的数据库名称
         define("MFUN_CLOUD_DBNAME_L4AQYC", "bxxhl4aqyc");         //连接的数据库名称
         define("MFUN_CLOUD_DBNAME_L4TBSWR", "bxxhl4tbswr");         //连接的数据库名称
@@ -419,6 +424,7 @@ if (isset($_SERVER['SERVER_NAME']))
         define("MFUN_CLOUD_DBUSER", "TestUser");     //连接数据库的用户名
         define("MFUN_CLOUD_DBPSW", "123456");        //连接数据库的密码
         define("MFUN_CLOUD_DBNAME_L1L2L3", "bxxhl1l2l3");         //连接的数据库名称
+        define("MFUN_CLOUD_DBNAME_DEBUG", "bxxhl1vmlog");         //连接的log数据库名称
         define("MFUN_CLOUD_DBNAME_L4EMCWX", "bxxhl4emcwx");         //连接的数据库名称
         define("MFUN_CLOUD_DBNAME_L4AQYC", "bxxhl4aqyc");         //连接的数据库名称
         define("MFUN_CLOUD_DBNAME_L4TBSWR", "bxxhl4tbswr");         //连接的数据库名称
@@ -455,6 +461,7 @@ if (isset($_SERVER['SERVER_NAME']))
         define("MFUN_CLOUD_DBUSER", "TestUser");     //连接数据库的用户名
         define("MFUN_CLOUD_DBPSW", "123456");        //连接数据库的密码
         define("MFUN_CLOUD_DBNAME_L1L2L3", "bxxhl1l2l3");         //连接的数据库名称
+        define("MFUN_CLOUD_DBNAME_DEBUG", "bxxhl1vmlog");         //连接的log数据库名称
         define("MFUN_CLOUD_DBNAME_L4EMCWX", "bxxhl4emcwx");         //连接的数据库名称
         define("MFUN_CLOUD_DBNAME_L4AQYC", "bxxhl4aqyc");         //连接的数据库名称
         define("MFUN_CLOUD_DBNAME_L4TBSWR", "bxxhl4tbswr");         //连接的数据库名称
@@ -490,6 +497,7 @@ if (isset($_SERVER['SERVER_NAME']))
     define("MFUN_CLOUD_DBUSER", "TestUser");     //连接数据库的用户名
     define("MFUN_CLOUD_DBPSW", "123456");        //连接数据库的密码
     define("MFUN_CLOUD_DBNAME_L1L2L3", "bxxhl1l2l3");         //连接的数据库名称
+    define("MFUN_CLOUD_DBNAME_DEBUG", "bxxhl1vmlog");         //连接的log数据库名称
     define("MFUN_CLOUD_DBNAME_L4EMCWX", "bxxhl4emcwx");         //连接的数据库名称
     define("MFUN_CLOUD_DBNAME_L4AQYC", "bxxhl4aqyc");         //连接的数据库名称
     define("MFUN_CLOUD_DBNAME_L4TBSWR", "bxxhl4tbswr");         //连接的数据库名称

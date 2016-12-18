@@ -469,7 +469,16 @@ class classTaskL4aqycUi
                 case "CameraHAdj":
                     break;
 
-                /*以下3条消息是公用，要考虑不同项目的适配*/
+                case "GetAuditStabilityTable":
+                    if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
+                    if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
+                    if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
+
+                    $input = array("type" => $type,"user" => $user,"body" => $body);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM3DM, MSG_ID_L4AQYCUI_TO_L3F3_STABILITYTABLE, "MSG_ID_L4AQYCUI_TO_L3F3_STABILITYTABLE",$input);
+                    break;
+
+                /*以下5条消息是公用，要考虑不同项目的适配*/
                 case "DevAlarm":  //获取当前的测量值，如果测量值超出范围，提示告警
                     if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
                     if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";

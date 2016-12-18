@@ -8,6 +8,35 @@
 include_once "../l1comvm/sysconfig.php";
 include_once "../l1comvm/pg_general_engpar.php";
 
+//FHYS项目关键字
+define("MFUN_L3APL_F2CM_KEY_PREFIX", "KEY");  //定义KEY ID的特征字，钥匙KEYID必须以KEY开头
+define("MFUN_L3APL_F2CM_KEY_ID_LEN", 6);     //UI界面key id字符串长度=该值+3（KEY)
+define("MFUN_L3APL_F2CM_KEY_TYPE_RFID", "R");
+define("MFUN_L3APL_F2CM_KEY_TYPE_BLE", "B");
+define("MFUN_L3APL_F2CM_KEY_TYPE_USER", "U");
+define("MFUN_L3APL_F2CM_KEY_TYPE_WECHAT", "W");
+define("MFUN_L3APL_F2CM_KEY_TYPE_IDCARD", "I");
+define("MFUN_L3APL_F2CM_KEY_TYPE_PHONE", "P");
+define("MFUN_L3APL_F2CM_KEY_TYPE_UNDEFINED", "N");
+
+define("MFUN_L3APL_F2CM_AUTH_LEVEL_PROJ", "P"); //项目级授权
+define("MFUN_L3APL_F2CM_AUTH_LEVEL_DEVICE", "D"); //单个站点(设备)级授权
+define("MFUN_L3APL_F2CM_AUTH_TYPE_NUMBER", "N");
+define("MFUN_L3APL_F2CM_AUTH_TYPE_TIME", "T");
+define("MFUN_L3APL_F2CM_AUTH_TYPE_FOREVER", "F");
+
+define("MFUN_L3APL_F2CM_EVENT_TYPE_RFID", "R"); //RFID开锁事件
+define("MFUN_L3APL_F2CM_EVENT_TYPE_BLE", "B");
+define("MFUN_L3APL_F2CM_EVENT_TYPE_USER", "U");
+define("MFUN_L3APL_F2CM_EVENT_TYPE_WECHAT", "W");
+define("MFUN_L3APL_F2CM_EVENT_TYPE_IDCARD", "I");
+define("MFUN_L3APL_F2CM_EVENT_TYPE_PHONE", "P");
+define("MFUN_L3APL_F2CM_EVENT_TYPE_XJ", "X");  //巡检事件
+
+define("MFUN_L3APL_F2CM_EVENT_DURATION_DAY", "1");
+define("MFUN_L3APL_F2CM_EVENT_DURATION_WEEK", "7");
+define("MFUN_L3APL_F2CM_EVENT_DURATION_MONTH", "30");
+
 //FHYS系统常量
 define ("MFUN_HCU_FHYS_TIME_GRID_SIZE", 1); //每分钟一条记录
 
@@ -59,9 +88,6 @@ define("MFUN_HCU_CMDID_FHYS_SMOK", 0x47);       //烟雾控制字
 define("MFUN_HCU_CMDID_FHYS_WATER", 0x48);       //水浸控制字
 define("MFUN_HCU_CMDID_FHYS_TEMP", 0x49);       //温度控制字
 define("MFUN_HCU_CMDID_FHYS_HUMI", 0x4A);       //湿度控制字
-
-//BFSC控制字
-define("MFUN_HCU_CMDID_BFSC_WEIGHT", 0x3B);
 
 //锁操作字
 define("MFUN_HCU_OPT_FHYS_LOCKSTAT_IND", 0x81);

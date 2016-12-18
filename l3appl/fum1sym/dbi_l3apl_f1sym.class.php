@@ -239,8 +239,11 @@ class classDbiL3apF1sym
             $row = $result->fetch_array();
             $lastupdate = $row['lastupdate'];
             $currenttime = time();
-            if($currenttime < ($lastupdate + MFUN_L3APL_F1SYM_SESSIONID_VALID_TIME))
+            if($currenttime < ($lastupdate + MFUN_L3APL_F1SYM_SESSIONID_VALID_TIME)){
                 $uid = $row['uid'];
+                $query_str = "UPDATE `t_l3f1sym_session` SET `lastupdate` = '$currenttime' WHERE (`sessionid` = '$sessionid')"; //更新一下session时间
+                $mysqli->query($query_str);
+            }
             else
                 $uid = "";
         }

@@ -467,7 +467,7 @@ class classDbiL1vmCommon
     //存储logger信息，以便用于调试任务
     public function dbi_log_process_save($project,$fromuser,$createtime,$log_content)
     {
-        $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_DEBUG, MFUN_CLOUD_DBPORT);
         if (!$mysqli)
         {
             die('Could not connect: ' . mysqli_error($mysqli));
@@ -507,7 +507,7 @@ class classDbiL1vmCommon
     public function dbi_logtrace_module_inqury($moudleId)
     {
         //建立连接
-        $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_DEBUG, MFUN_CLOUD_DBPORT);
         if (!$mysqli)
         {
             die('Could not connect: ' . mysqli_error($mysqli));
@@ -532,7 +532,7 @@ class classDbiL1vmCommon
     public function dbi_logtrace_msg_inqury($msgId)
     {
         //建立连接
-        $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_DEBUG, MFUN_CLOUD_DBPORT);
         if (!$mysqli)
         {
             die('Could not connect: ' . mysqli_error($mysqli));
@@ -626,7 +626,7 @@ class classDbiL1vmCommon
     //设置数据库中该用户微信log开关状态
     public function dbi_LogSwitchInfo_set($user,$switch_set)
     {
-        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_DEBUG, MFUN_CLOUD_DBPORT);
         if (!$mysqli) {
             die('Could not connect: ' . mysqli_error($mysqli));
         }
@@ -650,7 +650,7 @@ class classDbiL1vmCommon
     public function dbi_LogSwitchInfo_inqury($user)
     {
         $switch_info = 0;
-        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_DEBUG, MFUN_CLOUD_DBPORT);
         if (!$mysqli) {
             die('Could not connect: ' . mysqli_error($mysqli));
         }
