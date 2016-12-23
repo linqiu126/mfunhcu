@@ -432,7 +432,7 @@ class classTaskL2sdkIotHcu
                 if ($parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L2SDK_IOT_HCU,
                         MFUN_TASK_ID_L2SENSOR_TEMP,
                         MSG_ID_L2SDK_HCU_TO_L2SNR_TEMP,
-                        "MSG_ID_L2SDK_HCU_TO_L2SNR_BLE",
+                        "MSG_ID_L2SDK_HCU_TO_L2SNR_TEMP",
                         $msg) == false) $resp = "Send to message buffer error";
                 else $resp = "";
                 break;

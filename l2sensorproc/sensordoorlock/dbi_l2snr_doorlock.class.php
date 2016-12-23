@@ -16,7 +16,6 @@ class classDbiL2snrDoorlock
         if (!$mysqli) {
             die('Could not connect: ' . mysqli_error($mysqli));
         }
-        $mysqli->query("set character_set_results = utf8");
         $mysqli->query("SET NAMES utf8");
 
         //确认要操作的设备在 HCU Inventory表中是否存在
@@ -48,7 +47,7 @@ class classDbiL2snrDoorlock
         if (!$mysqli) {
             die('Could not connect: ' . mysqli_error($mysqli));
         }
-        $mysqli->query("set character_set_results = utf8");
+        $mysqli->query("SET NAMES utf8");
 
         if ($data == MFUN_HCU_DATA_FHYS_STATUS_OK)
             $status = MFUN_HCU_FHYS_LOCK_CLOSE;
@@ -125,7 +124,7 @@ class classDbiL2snrDoorlock
         if (!$mysqli) {
             die('Could not connect: ' . mysqli_error($mysqli));
         }
-        $mysqli->query("set character_set_results = utf8");
+        $mysqli->query("SET NAMES utf8");
 
         //确认要操作的设备在 HCU Inventory表中是否存在
         $query_str = "SELECT * FROM `t_l2sdk_iothcu_inventory` WHERE (`statcode` = '$statCode' AND `devcode` = '$devCode')";
@@ -203,7 +202,7 @@ class classDbiL2snrDoorlock
         if (!$mysqli) {
             die('Could not connect: ' . mysqli_error($mysqli));
         }
-        $mysqli->query("set character_set_results = utf8");
+        $mysqli->query("SET NAMES utf8");
 
         //确认要操作的设备在 HCU Inventory表中是否存在
         $query_str = "SELECT * FROM `t_l2sdk_iothcu_inventory` WHERE (`statcode` = '$statCode' AND `devcode` = '$devCode')";
@@ -256,7 +255,7 @@ class classDbiL2snrDoorlock
         if (!$mysqli) {
             die('Could not connect: ' . mysqli_error($mysqli));
         }
-        $mysqli->query("set character_set_results = utf8");
+        $mysqli->query("SET NAMES utf8");
 
         //确认要操作的设备在 HCU Inventory表中是否存在
         $query_str = "SELECT * FROM `t_l2sdk_iothcu_inventory` WHERE (`statcode` = '$statCode' AND `devcode` = '$devCode')";
@@ -308,7 +307,7 @@ class classDbiL2snrDoorlock
         if (!$mysqli) {
             die('Could not connect: ' . mysqli_error($mysqli));
         }
-        $mysqli->query("set character_set_results = utf8");
+        $mysqli->query("SET NAMES utf8");
 
         //确认要操作的设备在 HCU Inventory表中是否存在
         $query_str = "SELECT * FROM `t_l2sdk_iothcu_inventory` WHERE (`statcode` = '$statCode' AND `devcode` = '$devCode')";
@@ -360,7 +359,7 @@ class classDbiL2snrDoorlock
         if (!$mysqli) {
             die('Could not connect: ' . mysqli_error($mysqli));
         }
-        $mysqli->query("set character_set_results = utf8");
+        $mysqli->query("SET NAMES utf8");
 
         //确认要操作的设备在 HCU Inventory表中是否存在
         $query_str = "SELECT * FROM `t_l2sdk_iothcu_inventory` WHERE (`statcode` = '$statCode' AND `devcode` = '$devCode')";
@@ -413,7 +412,7 @@ class classDbiL2snrDoorlock
         if (!$mysqli) {
             die('Could not connect: ' . mysqli_error($mysqli));
         }
-        $mysqli->query("set character_set_results = utf8");
+        $mysqli->query("SET NAMES utf8");
 
         if ($data == MFUN_HCU_DATA_FHYS_STATUS_OK)
             $status = MFUN_HCU_FHYS_DOOR_CLOSE;

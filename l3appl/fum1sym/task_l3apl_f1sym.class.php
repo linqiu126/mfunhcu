@@ -6,6 +6,7 @@
  * Time: 22:31
  */
 //include_once "../../l1comvm/vmlayer.php";
+header("Content-type:text/html;charset=utf-8");
 include_once "dbi_l3apl_f1sym.class.php";
 
 class classTaskL3aplF1sym
@@ -52,8 +53,7 @@ class classTaskL3aplF1sym
         else
             $retval=array('status'=>"false",'auth'=>"false",'ret'=>$body,'msg'=>$msg);
 
-        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
-        return $jsonencode;
+        return $retval;
     }
 
     function func_userinfo_process($type, $user, $body)
@@ -65,8 +65,7 @@ class classTaskL3aplF1sym
         $userinfo =$uiF1symDbObj->dbi_userinfo_req($sessionid);
         $retval=array('status'=>"true",'auth'=>"true",'ret'=>$userinfo,'msg'=>"");
 
-        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
-        return $jsonencode;
+        return $retval;
     }
 
     function func_usernew_process($type, $user, $body)
@@ -83,8 +82,7 @@ class classTaskL3aplF1sym
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>$usercheck['msg']);
 
-        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
-        return $jsonencode;
+        return $retval;
     }
 
     function func_usermod_process($type, $user, $body)
@@ -101,8 +99,7 @@ class classTaskL3aplF1sym
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>$usercheck['msg']);
 
-        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
-        return $jsonencode;
+        return $retval;
     }
 
     function func_userdel_process($type, $user, $body)
@@ -121,8 +118,7 @@ class classTaskL3aplF1sym
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>$usercheck['msg']);
 
-        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
-        return $jsonencode;
+        return $retval;
     }
 
     function func_usertable_process($type, $user, $body)
@@ -148,8 +144,7 @@ class classTaskL3aplF1sym
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
 
-        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
-        return $jsonencode;
+        return $retval;
     }
 
 
@@ -253,9 +248,10 @@ class classTaskL3aplF1sym
         //返回ECHO
         if (!empty($resp))
         {
-            $log_content = "T:" . json_encode($resp);
+            $jsonencode = json_encode($resp, JSON_UNESCAPED_UNICODE);
+            $log_content = "T:" . $jsonencode;
             $loggerObj->logger($project, "MFUN_TASK_ID_L3APPL_FUM1SYM", $log_time, $log_content);
-            echo trim($resp);
+            echo trim($jsonencode);
         }
 
         //返回

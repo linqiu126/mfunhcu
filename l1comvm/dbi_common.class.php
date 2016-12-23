@@ -472,6 +472,7 @@ class classDbiL1vmCommon
         {
             die('Could not connect: ' . mysqli_error($mysqli));
         }
+        $mysqli->query("SET NAMES utf8");
 
         $sysver = MFUN_CURRENT_VERSION;
         $sysprog = MFUN_CURRENT_WORKING_PROGRAM_NAME_UNIQUE;
@@ -562,6 +563,8 @@ class classDbiL1vmCommon
         {
             die('Could not connect: ' . mysqli_error($mysqli));
         }
+        $mysqli->query("SET NAMES utf8");
+
         //先检查是否存在，如果存在，就更新，否则创建
         $result = $mysqli->query("SELECT * FROM `t_l2sdk_iothcu_inventory` WHERE `devcode` = '$devcode'");
         if (($result->num_rows)>0)
@@ -587,6 +590,7 @@ class classDbiL1vmCommon
         {
             die('Could not connect: ' . mysqli_error($mysqli));
         }
+        $mysqli->query("SET NAMES utf8");
 
         $timestamp = time();
         $cmdtime = date("Y-m-d H:m:s",$timestamp);
@@ -630,6 +634,7 @@ class classDbiL1vmCommon
         if (!$mysqli) {
             die('Could not connect: ' . mysqli_error($mysqli));
         }
+        $mysqli->query("SET NAMES utf8");
 
         $result = $mysqli->query("SELECT * FROM `t_l1vm_logwechatswitch` WHERE `user` = '$user'");
 

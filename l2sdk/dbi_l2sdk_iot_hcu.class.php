@@ -153,7 +153,6 @@ class classDbiL2sdkHcu
         if (!$mysqli) {
             die('Could not connect: ' . mysqli_error($mysqli));
         }
-        $mysqli->query("set character_set_results = utf8");
         $mysqli->query("SET NAMES utf8");
 
         if (isset($devinfo["DevCode"])) $devcode = trim($devinfo["DevCode"]); else  $devcode = "";

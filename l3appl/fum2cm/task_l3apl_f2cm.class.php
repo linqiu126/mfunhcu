@@ -1,5 +1,4 @@
 <?php
-header("Content-type:text/html;charset=utf-8");
 /**
  * Created by PhpStorm.
  * User: MAMA
@@ -7,6 +6,7 @@ header("Content-type:text/html;charset=utf-8");
  * Time: 22:32
  */
 //include_once "../../l1comvm/vmlayer.php";
+header("Content-type:text/html;charset=utf-8");
 include_once "dbi_l3apl_f2cm.class.php";
 
 class classTaskL3aplF2cm
@@ -56,8 +56,7 @@ class classTaskL3aplF2cm
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
 
-        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
-        return $jsonencode;
+        return $retval;
     }
 
     function func_project_list_process($type, $user, $body)
@@ -75,8 +74,7 @@ class classTaskL3aplF2cm
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
 
-        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
-        return $jsonencode;
+        return $retval;
     }
 
     function func_user_project_list_process($type, $user, $body)
@@ -96,8 +94,7 @@ class classTaskL3aplF2cm
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
 
-        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
-        return $jsonencode;
+        return $retval;
     }
 
     function func_pg_table_process($type, $user, $body)
@@ -126,8 +123,7 @@ class classTaskL3aplF2cm
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
 
-        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
-        return $jsonencode;
+        return $retval;
     }
 
     function func_pg_new_process($type, $user, $body)
@@ -145,8 +141,7 @@ class classTaskL3aplF2cm
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>$usercheck['msg']);
 
-        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
-        return $jsonencode;
+        return $retval;
     }
 
     function func_pg_mod_process($type, $user, $body)
@@ -164,8 +159,7 @@ class classTaskL3aplF2cm
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>$usercheck['msg']);
 
-        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
-        return $jsonencode;
+        return $retval;
     }
 
     function func_pg_del_process($type, $user, $body)
@@ -185,8 +179,7 @@ class classTaskL3aplF2cm
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>$usercheck['msg']);
 
-        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
-        return $jsonencode;
+        return $retval;
     }
 
     function func_pg_project_process($type, $user, $body)
@@ -206,8 +199,7 @@ class classTaskL3aplF2cm
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
 
-        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
-        return $jsonencode;
+        return $retval;
     }
 
     function func_project_table_process($type, $user, $body)
@@ -235,8 +227,7 @@ class classTaskL3aplF2cm
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
 
-        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
-        return $jsonencode;
+        return $retval;
     }
 
     function func_project_new_process($type, $user, $body)
@@ -254,8 +245,7 @@ class classTaskL3aplF2cm
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>$usercheck['msg']);
 
-        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
-        return $jsonencode;
+        return $retval;
     }
 
     function func_project_mod_process($type, $user, $body)
@@ -273,8 +263,7 @@ class classTaskL3aplF2cm
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>$usercheck['msg']);
 
-        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
-        return $jsonencode;
+        return $retval;
     }
 
     function func_project_del_process($type, $user, $body)
@@ -294,8 +283,7 @@ class classTaskL3aplF2cm
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>$usercheck['msg']);
 
-        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
-        return $jsonencode;
+        return $retval;
     }
 
     /*********************************智能云锁新增处理 Start*********************************************/
@@ -316,8 +304,7 @@ class classTaskL3aplF2cm
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
 
-        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
-        return $jsonencode;
+        return $retval;
     }
 
     function func_all_projkey_process($type, $user, $body)
@@ -335,8 +322,7 @@ class classTaskL3aplF2cm
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
 
-        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
-        return $jsonencode;
+        return $retval;
     }
 
     function func_project_keylist_process($type, $user, $body)
@@ -356,8 +342,7 @@ class classTaskL3aplF2cm
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
 
-        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
-        return $jsonencode;
+        return $retval;
     }
 
     function func_all_projkeyuser_process($type, $user, $body)
@@ -375,8 +360,7 @@ class classTaskL3aplF2cm
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
 
-        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
-        return $jsonencode;
+        return $retval;
     }
 
     function func_key_table_process($type, $user, $body)
@@ -404,8 +388,7 @@ class classTaskL3aplF2cm
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
 
-        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
-        return $jsonencode;
+        return $retval;
     }
 
     function func_key_new_process($type, $user, $body)
@@ -423,8 +406,7 @@ class classTaskL3aplF2cm
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>$usercheck['msg']);
 
-        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
-        return $jsonencode;
+        return $retval;
     }
 
     function func_key_mod_process($type, $user, $body)
@@ -442,8 +424,7 @@ class classTaskL3aplF2cm
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>$usercheck['msg']);
 
-        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
-        return $jsonencode;
+        return $retval;
     }
 
     function func_key_del_process($type, $user, $body)
@@ -463,8 +444,7 @@ class classTaskL3aplF2cm
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>$usercheck['msg']);
 
-        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
-        return $jsonencode;
+        return $retval;
     }
 
     function func_obj_authlist_process($type, $user, $body)
@@ -484,8 +464,7 @@ class classTaskL3aplF2cm
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
 
-        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
-        return $jsonencode;
+        return $retval;
     }
 
     function func_key_authlist_process($type, $user, $body)
@@ -505,8 +484,7 @@ class classTaskL3aplF2cm
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
 
-        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
-        return $jsonencode;
+        return $retval;
     }
 
     function func_key_grant_process($type, $user, $body)
@@ -527,8 +505,7 @@ class classTaskL3aplF2cm
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>$usercheck['msg']);
 
-        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
-        return $jsonencode;
+        return $retval;
     }
 
     function func_key_authnew_process($type, $user, $body)
@@ -546,8 +523,7 @@ class classTaskL3aplF2cm
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>$usercheck['msg']);
 
-        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
-        return $jsonencode;
+        return $retval;
     }
 
     function func_key_authdel_process($type, $user, $body)
@@ -567,8 +543,7 @@ class classTaskL3aplF2cm
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>$usercheck['msg']);
 
-        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
-        return $jsonencode;
+        return $retval;
     }
 
 
@@ -742,9 +717,10 @@ class classTaskL3aplF2cm
         //返回ECHO
         if (!empty($resp))
         {
-            $log_content = "T:" . json_encode($resp);
+            $jsonencode = json_encode($resp, JSON_UNESCAPED_UNICODE);
+            $log_content = "T:" . $jsonencode;
             $loggerObj->logger($project, "MFUN_TASK_ID_L3APPL_FUM2CM", $log_time, $log_content);
-            echo trim($resp); //这里需要编码送出去，跟其他处理方式还不太一样
+            echo trim($jsonencode);
         }
 
         //返回

@@ -5,6 +5,7 @@
  * Date: 2016/6/20
  * Time: 22:59
  */
+header("Content-type:text/html;charset=utf-8");
 //include_once "../../l1comvm/vmlayer.php";
 
 /*
@@ -151,7 +152,7 @@ class classDbiL3apF2cm
         if (!$mysqli) {
             die('Could not connect: ' . mysqli_error($mysqli));
         }
-        $mysqli->query("set character_set_results = utf8");
+        $mysqli->query("SET NAMES utf8");
 
         $query_str = "SELECT * FROM `t_l3f2cm_projgroup` limit $start, $query_length";
         $result = $mysqli->query($query_str);
@@ -183,7 +184,7 @@ class classDbiL3apF2cm
         if (!$mysqli) {
             die('Could not connect: ' . mysqli_error($mysqli));
         }
-        $mysqli->query("set character_set_results = utf8");
+        $mysqli->query("SET NAMES utf8");
 
         $query_str = "SELECT * FROM `t_l3f2cm_projinfo` limit $start, $total";
         $result = $mysqli->query($query_str);
@@ -217,7 +218,7 @@ class classDbiL3apF2cm
         if (!$mysqli) {
             die('Could not connect: ' . mysqli_error($mysqli));
         }
-        $mysqli->query("set character_set_results = utf8");
+        $mysqli->query("SET NAMES utf8");
 
         $list = array();
         $query_str = "SELECT * FROM `t_l3f2cm_projgroup` WHERE 1 ";
@@ -254,7 +255,7 @@ class classDbiL3apF2cm
         if (!$mysqli) {
             die('Could not connect: ' . mysqli_error($mysqli));
         }
-        $mysqli->query("set character_set_results = utf8");
+        $mysqli->query("SET NAMES utf8");
 
         $list = array();
 
@@ -281,7 +282,7 @@ class classDbiL3apF2cm
         if (!$mysqli) {
             die('Could not connect: ' . mysqli_error($mysqli));
         }
-        $mysqli->query("set character_set_results = utf8");
+        $mysqli->query("SET NAMES utf8");
 
         $query_str = "SELECT * FROM `t_l3f1sym_authlist` WHERE `uid` = '$uid' ";
         $result = $mysqli->query($query_str);
@@ -320,7 +321,7 @@ class classDbiL3apF2cm
         if (!$mysqli) {
             die('Could not connect: ' . mysqli_error($mysqli));
         }
-        $mysqli->query("set character_set_results = utf8");
+        $mysqli->query("SET NAMES utf8");
 
         $query_str = "SELECT * FROM `t_l3f1sym_authlist` WHERE `uid` = '$uid' ";
         $result = $mysqli->query($query_str);
@@ -369,7 +370,7 @@ class classDbiL3apF2cm
         if (!$mysqli) {
             die('Could not connect: ' . mysqli_error($mysqli));
         }
-        $mysqli->query("set character_set_results = utf8");
+        $mysqli->query("SET NAMES utf8");
 
         $query_str = "SELECT * FROM `t_l3f1sym_authlist` WHERE `uid` = '$uid' ";
         $result = $mysqli->query($query_str);
@@ -426,7 +427,7 @@ class classDbiL3apF2cm
         if (!$mysqli) {
             die('Could not connect: ' . mysqli_error($mysqli));
         }
-        $mysqli->query("set character_set_results = utf8");
+        $mysqli->query("SET NAMES utf8");
 
         $query_str = "SELECT * FROM `t_l3f2cm_projinfo` WHERE `pg_code` = '$pg_code' ";
         $result = $mysqli->query($query_str);
@@ -460,7 +461,6 @@ class classDbiL3apF2cm
         if (!$mysqli) {
             die('Could not connect: ' . mysqli_error($mysqli));
         }
-        $mysqli->query("set character_set_results = utf8");
         $mysqli->query("SET NAMES utf8");
 
         //$session = $pginfo["user"];
@@ -518,7 +518,6 @@ class classDbiL3apF2cm
         if (!$mysqli) {
             die('Could not connect: ' . mysqli_error($mysqli));
         }
-        $mysqli->query("set character_set_results = utf8");
         $mysqli->query("SET NAMES utf8");
 
         //$session = $projinfo["user"];
@@ -606,7 +605,6 @@ class classDbiL3apF2cm
         if (!$mysqli) {
             die('Could not connect: ' . mysqli_error($mysqli));
         }
-        $mysqli->query("set character_set_results = utf8");
         $mysqli->query("SET NAMES utf8");
 
         $query_str = "SELECT * FROM `t_l3f2cm_fhys_keyinfo` WHERE `keyuserid` = '$uid'";
@@ -631,7 +629,6 @@ class classDbiL3apF2cm
         if (!$mysqli) {
             die('Could not connect: ' . mysqli_error($mysqli));
         }
-        $mysqli->query("set character_set_results = utf8");
         $mysqli->query("SET NAMES utf8");
 
         $query_str = "SELECT * FROM `t_l3f2cm_fhys_keyinfo` WHERE 1 ";
@@ -657,7 +654,6 @@ class classDbiL3apF2cm
         if (!$mysqli) {
             die('Could not connect: ' . mysqli_error($mysqli));
         }
-        $mysqli->query("set character_set_results = utf8");
         $mysqli->query("SET NAMES utf8");
 
         $query_str = "SELECT * FROM `t_l3f2cm_fhys_keyinfo` WHERE `p_code` = '$projCode' ";
@@ -685,7 +681,6 @@ class classDbiL3apF2cm
         if (!$mysqli) {
             die('Could not connect: ' . mysqli_error($mysqli));
         }
-        $mysqli->query("set character_set_results = utf8");
         $mysqli->query("SET NAMES utf8");
 
         $query_str = "SELECT * FROM `t_l3f1sym_authlist` WHERE 1 ";
@@ -739,7 +734,7 @@ class classDbiL3apF2cm
         if (!$mysqli) {
             die('Could not connect: ' . mysqli_error($mysqli));
         }
-        $mysqli->query("set character_set_results = utf8");
+        $mysqli->query("SET NAMES utf8");
 
         $query_str = "SELECT * FROM `t_l3f2cm_fhys_keyinfo` limit $start, $query_length";
         $result = $mysqli->query($query_str);
@@ -799,7 +794,6 @@ class classDbiL3apF2cm
         if (!$mysqli) {
             die('Could not connect: ' . mysqli_error($mysqli));
         }
-        $mysqli->query("set character_set_results = utf8");
         $mysqli->query("SET NAMES utf8");
 
         //if (isset($keyinfo["KeyCode"])) $KeyCode = trim($keyinfo["KeyCode"]); else  $KeyCode = "";
@@ -845,7 +839,6 @@ class classDbiL3apF2cm
         if (!$mysqli) {
             die('Could not connect: ' . mysqli_error($mysqli));
         }
-        $mysqli->query("set character_set_results = utf8");
         $mysqli->query("SET NAMES utf8");
 
         if (isset($keyinfo["KeyCode"])) $keyid = trim($keyinfo["KeyCode"]); else  $keyid = "";
@@ -888,7 +881,7 @@ class classDbiL3apF2cm
         if (!$mysqli) {
             die('Could not connect: ' . mysqli_error($mysqli));
         }
-        $mysqli->query("set character_set_results = utf8");
+        $mysqli->query("SET NAMES utf8");
 
         $query_str = "DELETE FROM `t_l3f2cm_fhys_keyauth` WHERE `keyid` = '$keyid'";  //删除该钥匙的所有授权信息
         $result = $mysqli->query($query_str);
@@ -907,7 +900,7 @@ class classDbiL3apF2cm
         if (!$mysqli) {
             die('Could not connect: ' . mysqli_error($mysqli));
         }
-        $mysqli->query("set character_set_results = utf8");
+        $mysqli->query("SET NAMES utf8");
 
         $code_prefix = substr($authobjcode, 0, MFUN_L3APL_F2CM_CODE_FORMAT_LEN);
 
@@ -1018,7 +1011,7 @@ class classDbiL3apF2cm
         if (!$mysqli) {
             die('Could not connect: ' . mysqli_error($mysqli));
         }
-        $mysqli->query("set character_set_results = utf8");
+        $mysqli->query("SET NAMES utf8");
 
         $authlist = array();
         $query_str = "SELECT * FROM `t_l3f2cm_fhys_keyauth` WHERE `keyid` = '$keyid' ";
@@ -1092,7 +1085,7 @@ class classDbiL3apF2cm
         if (!$mysqli) {
             die('Could not connect: ' . mysqli_error($mysqli));
         }
-        $mysqli->query("set character_set_results = utf8");
+        $mysqli->query("SET NAMES utf8");
 
         //更新钥匙实际使用人
         $query_str = "UPDATE `t_l3f2cm_fhys_keyinfo` SET `keyuserid` = '$keyuserid' WHERE (`keyid` = '$keyid') ";
@@ -1109,7 +1102,7 @@ class classDbiL3apF2cm
         if (!$mysqli) {
             die('Could not connect: ' . mysqli_error($mysqli));
         }
-        $mysqli->query("set character_set_results = utf8");
+        $mysqli->query("SET NAMES utf8");
 
         if (isset($authinfo["DomainId"])) $authobjcode = trim($authinfo["DomainId"]); else  $authobjcode = "";
         if (isset($authinfo["KeyId"])) $keyid = trim($authinfo["KeyId"]); else  $keyid = "";
@@ -1148,7 +1141,7 @@ class classDbiL3apF2cm
         if (!$mysqli) {
             die('Could not connect: ' . mysqli_error($mysqli));
         }
-        $mysqli->query("set character_set_results = utf8");
+        $mysqli->query("SET NAMES utf8");
 
         $query_str = "DELETE FROM `t_l3f2cm_fhys_keyauth` WHERE `sid` = '$authid'";  //删除一条授权信息
         $result = $mysqli->query($query_str);

@@ -5,6 +5,7 @@
  * Date: 2016/6/20
  * Time: 23:00
  */
+header("Content-type:text/html;charset=utf-8");
 //include_once "../../l1comvm/vmlayer.php";
 
 /*
@@ -261,7 +262,7 @@ class classDbiL3apF3dm
         if (!$mysqli) {
             die('Could not connect: ' . mysqli_error($mysqli));
         }
-        $mysqli->query("set character_set_results = utf8");
+        $mysqli->query("SET NAMES utf8");
 
         //查询该用户授权的项目和项目组列表
         $query_str = "SELECT `auth_code` FROM `t_l3f1sym_authlist` WHERE `uid` = '$uid'";
@@ -336,7 +337,7 @@ class classDbiL3apF3dm
         if (!$mysqli) {
             die('Could not connect: ' . mysqli_error($mysqli));
         }
-        $mysqli->query("set character_set_results = utf8");
+        $mysqli->query("SET NAMES utf8");
 
         $query_str = "SELECT * FROM `t_l3f3dm_siteinfo` WHERE 1 ";
         $result = $mysqli->query($query_str);
@@ -364,7 +365,7 @@ class classDbiL3apF3dm
         if (!$mysqli) {
             die('Could not connect: ' . mysqli_error($mysqli));
         }
-        $mysqli->query("set character_set_results = utf8");
+        $mysqli->query("SET NAMES utf8");
 
         $query_str = "SELECT * FROM `t_l3f3dm_siteinfo` WHERE `p_code` = '$p_code' ";
         $result = $mysqli->query($query_str);
@@ -392,7 +393,7 @@ class classDbiL3apF3dm
         if (!$mysqli) {
             die('Could not connect: ' . mysqli_error($mysqli));
         }
-        $mysqli->query("set character_set_results = utf8");
+        $mysqli->query("SET NAMES utf8");
 
         $query_str = "SELECT * FROM `t_l3f3dm_siteinfo` limit $start, $total";
         $result = $mysqli->query($query_str);
@@ -443,7 +444,6 @@ class classDbiL3apF3dm
         if (!$mysqli) {
             die('Could not connect: ' . mysqli_error($mysqli));
         }
-        $mysqli->query("set character_set_results = utf8");
         $mysqli->query("SET NAMES utf8");
 
         if (isset($siteinfo["StatCode"])) $statcode = trim($siteinfo["StatCode"]); else  $statcode = "";
@@ -495,7 +495,7 @@ class classDbiL3apF3dm
             die('Could not connect: ' . mysqli_error($mysqli));
         }
 
-        $mysqli->query("set character_set_results = utf8");
+        $mysqli->query("SET NAMES utf8");
 
         $query_str = "SELECT * FROM `t_l2sdk_iothcu_inventory` limit $start, $total";
         $result = $mysqli->query($query_str);
@@ -546,7 +546,7 @@ class classDbiL3apF3dm
         if (!$mysqli) {
             die('Could not connect: ' . mysqli_error($mysqli));
         }
-        $mysqli->query("set character_set_results = utf8");
+        $mysqli->query("SET NAMES utf8");
 
         $query_str = "SELECT * FROM `t_l3f3dm_siteinfo` WHERE `statcode` = '$statcode' ";
         $result = $mysqli->query($query_str);
@@ -625,7 +625,7 @@ class classDbiL3apF3dm
         if (!$mysqli) {
             die('Could not connect: ' . mysqli_error($mysqli));
         }
-        $mysqli->query("set character_set_results = utf8");
+        $mysqli->query("SET NAMES utf8");
 
         $query_str = "SELECT * FROM `t_l3f2cm_projinfo` WHERE 1";
         $result = $mysqli->query($query_str);
@@ -687,7 +687,6 @@ class classDbiL3apF3dm
         if (!$mysqli) {
             die('Could not connect: ' . mysqli_error($mysqli));
         }
-        $mysqli->query("set character_set_results = utf8");
         $mysqli->query("SET NAMES utf8");
 
         $vcrname = array();
@@ -823,7 +822,7 @@ class classDbiL3apF3dm
         if (!$mysqli) {
             die('Could not connect: ' . mysqli_error($mysqli));
         }
-        $mysqli->query("set character_set_results = utf8");
+        $mysqli->query("SET NAMES utf8");
 
         //根据监测点号查找对应的设备号
         $query_str = "SELECT * FROM `t_l3f3dm_siteinfo` WHERE `statcode` = '$statcode'";
@@ -1242,7 +1241,7 @@ class classDbiL3apF3dm
         if (!$mysqli) {
             die('Could not connect: ' . mysqli_error($mysqli));
         }
-        $mysqli->query("set character_set_results = utf8");
+        $mysqli->query("SET NAMES utf8");
 
         $auth_list["stat_code"] = array();
         $auth_list["p_code"] = array();
@@ -1335,7 +1334,6 @@ class classDbiL3apF3dm
         if (!$mysqli) {
             die('Could not connect: ' . mysqli_error($mysqli));
         }
-        $mysqli->query("set character_set_results = utf8");
         $mysqli->query("SET NAMES utf8");
 
         $auth_list["stat_code"] = array();
@@ -1440,7 +1438,6 @@ class classDbiL3apF3dm
         if (!$mysqli) {
             die('Could not connect: ' . mysqli_error($mysqli));
         }
-        $mysqli->query("set character_set_results = utf8");
         $mysqli->query("SET NAMES utf8");
 
         $auth_list["stat_code"] = array();
@@ -1581,7 +1578,6 @@ class classDbiL3apF3dm
         if (!$mysqli) {
             die('Could not connect: ' . mysqli_error($mysqli));
         }
-        $mysqli->query("set character_set_results = utf8");
         $mysqli->query("SET NAMES utf8");
 
         $vcrname = array();
@@ -1839,7 +1835,6 @@ class classDbiL3apF3dm
         if (!$mysqli) {
             die('Could not connect: ' . mysqli_error($mysqli));
         }
-        $mysqli->query("set character_set_results = utf8");
         $mysqli->query("SET NAMES utf8");
 
         if (isset($condition["ProjCode"])) $projCode = trim($condition["ProjCode"]); else  $projCode = "";

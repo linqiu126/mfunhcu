@@ -16,7 +16,7 @@ class classDbiL2snrWeight
         if (!$mysqli) {
             die('Could not connect: ' . mysqli_error($mysqli));
         }
-        $mysqli->query("set character_set_results = utf8");
+        $mysqli->query("SET NAMES utf8");
 
         $format = "A2Cmd/A2Len/A2Opt/A2Num/A8W01/A8W02/A8W03/A8W04/A8W05/A8W06/A8W07/A8W08/A8W09/A8W10/A8W11/A8W12";
         $data = unpack($format, $content);
@@ -81,7 +81,7 @@ class classDbiL2snrWeight
         if (!$mysqli) {
             die('Could not connect: ' . mysqli_error($mysqli));
         }
-        $mysqli->query("set character_set_results = utf8");
+        $mysqli->query("SET NAMES utf8");
 
         $status = MFUN_HCU_FHYS_ALARM_YES;
         $timestamp = time();

@@ -5,6 +5,7 @@
  * Date: 2016/6/20
  * Time: 23:01
  */
+header("Content-type:text/html;charset=utf-8");
 //include_once "../../l1comvm/vmlayer.php";
 
 /*

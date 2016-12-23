@@ -6,6 +6,7 @@
  * Time: 22:35
  */
 //include_once "../../l1comvm/vmlayer.php";
+header("Content-type:text/html;charset=utf-8");
 include_once "dbi_l3apl_f5fm.class.php";
 
 class classTaskL3aplF5fm
@@ -57,8 +58,7 @@ class classTaskL3aplF5fm
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
 
-        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
-        return $jsonencode;
+        return $retval;
     }
 
     function func_aqyc_alarm_query_process($type, $user, $body)
@@ -92,8 +92,7 @@ class classTaskL3aplF5fm
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
 
-        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
-        return $jsonencode;
+        return $retval;
     }
 
     function func_aqyc_alarmtype_list_process($type, $user, $body)
@@ -112,8 +111,7 @@ class classTaskL3aplF5fm
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
 
-        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
-        return $jsonencode;
+        return $retval;
     }
 
     /*********************************智能云锁新增处理************************************************/
@@ -133,8 +131,7 @@ class classTaskL3aplF5fm
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
 
-        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
-        return $jsonencode;
+        return $retval;
     }
 
     function func_fhys_dev_alarm_process($type, $user, $body)
@@ -155,8 +152,7 @@ class classTaskL3aplF5fm
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
 
-        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
-        return $jsonencode;
+        return $retval;
     }
 
     /**************************************************************************************
@@ -235,9 +231,10 @@ class classTaskL3aplF5fm
         //返回ECHO
         if (!empty($resp))
         {
-            $log_content = "T:" . json_encode($resp);
+            $jsonencode = json_encode($resp, JSON_UNESCAPED_UNICODE);
+            $log_content = "T:" . $jsonencode;
             $loggerObj->logger($project, "MFUN_TASK_ID_L3APPL_FUM5FM", $log_time, $log_content);
-            echo trim($resp); //这里需要编码送出去，跟其他处理方式还不太一样
+            echo trim($jsonencode); //这里需要编码送出去，跟其他处理方式还不太一样
         }
 
         //返回

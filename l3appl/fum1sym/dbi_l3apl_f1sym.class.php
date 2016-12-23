@@ -5,6 +5,7 @@
  * Date: 2016/6/20
  * Time: 22:59
  */
+header("Content-type:text/html;charset=utf-8");
 include_once "../l1comvm/vmlayer.php";
 //require_once "../../l1comvm/sysconfig.php";
 /*
@@ -231,7 +232,7 @@ class classDbiL3apF1sym
         {
             die('Could not connect: ' . mysqli_error($mysqli));
         }
-        $mysqli->query("set character_set_results = utf8");
+        $mysqli->query("SET NAMES utf8");
 
         $query_str = "SELECT * FROM `t_l3f1sym_session` WHERE `sessionid` = '$sessionid'";
         $result = $mysqli->query($query_str);
@@ -262,7 +263,7 @@ class classDbiL3apF1sym
         {
             die('Could not connect: ' . mysqli_error($mysqli));
         }
-        $mysqli->query("set character_set_results = utf8");
+        $mysqli->query("SET NAMES utf8");
 
         //初始化状态变量
         $auth = "true";
@@ -304,7 +305,6 @@ class classDbiL3apF1sym
         {
             die('Could not connect: ' . mysqli_error($mysqli));
         }
-        $mysqli->query("set character_set_results = utf8");
         $mysqli->query("SET NAMES utf8");
 
         //先检查用户名是否存在
@@ -348,7 +348,6 @@ class classDbiL3apF1sym
         {
             die('Could not connect: ' . mysqli_error($mysqli));
         }
-        $mysqli->query("set character_set_results = utf8");
         $mysqli->query("SET NAMES utf8");
 
         $userinfo = array(); //初始化
@@ -407,7 +406,7 @@ class classDbiL3apF1sym
         if (!$mysqli) {
             die('Could not connect: ' . mysqli_error($mysqli));
         }
-        $mysqli->query("set character_set_results = utf8");
+        $mysqli->query("SET NAMES utf8");
 
         $query_str = "SELECT * FROM `t_l3f1sym_account` limit $uid_start, $uid_total";
         $result = $mysqli->query($query_str);
@@ -442,7 +441,6 @@ class classDbiL3apF1sym
         if (!$mysqli) {
             die('Could not connect: ' . mysqli_error($mysqli));
         }
-        $mysqli->query("set character_set_results = utf8");
         //$mysqli->query("set character_set_connection = utf8");
         $mysqli->query("SET NAMES utf8");
 
@@ -503,7 +501,6 @@ class classDbiL3apF1sym
         if (!$mysqli) {
             die('Could not connect: ' . mysqli_error($mysqli));
         }
-        $mysqli->query("set character_set_results = utf8");
         //$mysqli->query("set character_set_connection = utf8");
         $mysqli->query("SET NAMES utf8");
 

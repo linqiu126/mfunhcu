@@ -6,6 +6,7 @@
  * Time: 22:37
  */
 //include_once "../../l1comvm/vmlayer.php";
+header("Content-type:text/html;charset=utf-8");
 include_once "dbi_l3apl_f7ads.class.php";
 
 class classTaskL3aplF7ads
@@ -55,8 +56,7 @@ class classTaskL3aplF7ads
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
 
-        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
-       return $jsonencode;
+        return $retval;
     }
 
     //TBD，功能待完善
@@ -74,8 +74,7 @@ class classTaskL3aplF7ads
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
 
-        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
-        return $jsonencode;
+        return $retval;
     }
 
     //TBD，功能待完善
@@ -95,8 +94,7 @@ class classTaskL3aplF7ads
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>$usercheck['msg']);
 
-        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
-        return $jsonencode;
+        return $retval;
     }
 
     //TBD，功能待完善
@@ -121,8 +119,7 @@ class classTaskL3aplF7ads
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
 
-        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
-        return $jsonencode;
+        return $retval;
     }
 
     //TBD，功能待完善
@@ -138,8 +135,7 @@ class classTaskL3aplF7ads
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>$usercheck['msg']);
 
-        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
-        return $jsonencode;
+        return $retval;
     }
 
 
@@ -212,9 +208,10 @@ class classTaskL3aplF7ads
         //返回ECHO
         if (!empty($resp))
         {
-            $log_content = "T:" . json_encode($resp);
+            $jsonencode = json_encode($resp, JSON_UNESCAPED_UNICODE);
+            $log_content = "T:" . $jsonencode;
             $loggerObj->logger($project, "MFUN_TASK_ID_L3APPL_FUM7ADS", $log_time, $log_content);
-            echo trim($resp); //这里需要编码送出去，跟其他处理方式还不太一样
+            echo trim($jsonencode); //这里需要编码送出去，跟其他处理方式还不太一样
         }
 
         //返回

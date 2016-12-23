@@ -326,7 +326,7 @@ class classDbiL2snrCom
         if (!$mysqli) {
             die('Could not connect: ' . mysqli_error($mysqli));
         }
-        $mysqli->query("set character_set_results = utf8");
+        $mysqli->query("SET NAMES utf8");
 
         $query_str = "SELECT * FROM `t_l2snr_sensortype` WHERE 1";
         $result = $mysqli->query($query_str);
@@ -360,7 +360,7 @@ class classDbiL2snrCom
         if (!$mysqli) {
             die('Could not connect: ' . mysqli_error($mysqli));
         }
-        $mysqli->query("set character_set_results = utf8");
+        $mysqli->query("SET NAMES utf8");
 
         $query_str = "SELECT * FROM `t_l3f4icm_sensorctrl` WHERE `deviceid` = '$devcode'";
         $result = $mysqli->query($query_str);
@@ -584,7 +584,7 @@ class classDbiL2snrCom
         if (!$mysqli) {
             die('Could not connect: ' . mysqli_error($mysqli));
         }
-        $mysqli->query("set character_set_results = utf8");
+        $mysqli->query("SET NAMES utf8");
 
         $session = "";
         $statcode = "";
@@ -648,7 +648,7 @@ class classDbiL2snrCom
         if (!$mysqli) {
             die('Could not connect: ' . mysqli_error($mysqli));
         }
-        $mysqli->query("set character_set_results = utf8");
+        $mysqli->query("SET NAMES utf8");
 
         $query_str = "SELECT * FROM `t_l3f4icm_sensorctrl` WHERE `deviceid` = '$devcode'";
         $result = $mysqli->query($query_str);

@@ -6,6 +6,7 @@
  * Time: 22:34
  */
 //include_once "../../l1comvm/vmlayer.php";
+header("Content-type:text/html;charset=utf-8");
 include_once "dbi_l3apl_f3dm.class.php";
 
 class classTaskL3aplF3dm
@@ -55,8 +56,7 @@ class classTaskL3aplF3dm
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
 
-        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
-        return $jsonencode;
+        return $retval;
     }
 
     function func_point_project_process($type, $user, $body)
@@ -76,8 +76,7 @@ class classTaskL3aplF3dm
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
 
-        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
-        return $jsonencode;
+        return $retval;
     }
 
     function func_point_table_process($type, $user, $body)
@@ -106,8 +105,7 @@ class classTaskL3aplF3dm
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
 
-        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
-        return $jsonencode;
+        return $retval;
     }
 
     function func_point_new_process($type, $user, $body)
@@ -125,8 +123,7 @@ class classTaskL3aplF3dm
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>$usercheck['msg']);
 
-        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
-        return $jsonencode;
+        return $retval;
     }
 
     function func_point_mod_process($type, $user, $body)
@@ -144,8 +141,7 @@ class classTaskL3aplF3dm
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>$usercheck['msg']);
 
-        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
-        return $jsonencode;
+        return $retval;
     }
 
     function func_point_del_process($type, $user, $body)
@@ -165,8 +161,7 @@ class classTaskL3aplF3dm
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>$usercheck['msg']);
 
-        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
-        return $jsonencode;
+        return $retval;
     }
 
     function func_point_dev_process($type, $user, $body)
@@ -186,8 +181,7 @@ class classTaskL3aplF3dm
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
 
-        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
-        return $jsonencode;
+        return $retval;
     }
 
     function func_dev_table_process($type, $user, $body)
@@ -217,8 +211,7 @@ class classTaskL3aplF3dm
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
 
-        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
-        return $jsonencode;
+        return $retval;
     }
 
     function func_dev_new_process($type, $user, $body)
@@ -236,8 +229,7 @@ class classTaskL3aplF3dm
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>$usercheck['msg']);
 
-        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
-        return $jsonencode;
+        return $retval;
     }
 
     function func_dev_mod_process($type, $user, $body)
@@ -255,8 +247,7 @@ class classTaskL3aplF3dm
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>$usercheck['msg']);
 
-        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
-        return $jsonencode;
+        return $retval;
     }
 
     function func_dev_del_process($type, $user, $body)
@@ -276,8 +267,7 @@ class classTaskL3aplF3dm
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>$usercheck['msg']);
 
-        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
-        return $jsonencode;
+        return $retval;
     }
 
     function func_monitor_list_process($type, $user, $body)
@@ -295,8 +285,7 @@ class classTaskL3aplF3dm
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
 
-        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
-        return $jsonencode;
+        return $retval;
     }
 
     function func_table_query_process($type, $user, $body)
@@ -318,8 +307,7 @@ class classTaskL3aplF3dm
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
 
-        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
-        return $jsonencode;
+        return $retval;
     }
 
     function func_aqyc_sensor_list_process($type, $user, $body)
@@ -338,8 +326,7 @@ class classTaskL3aplF3dm
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
 
-        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
-        return $jsonencode;
+        return $retval;
     }
 
     function func_aqyc_dev_sensor_process($type, $user, $body)
@@ -359,8 +346,7 @@ class classTaskL3aplF3dm
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
 
-        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
-        return $jsonencode;
+        return $retval;
     }
 
     function func_aqyc_get_static_monitor_table_process($type, $user, $body)
@@ -381,8 +367,7 @@ class classTaskL3aplF3dm
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
 
-        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
-        return $jsonencode;
+        return $retval;
     }
 
     /*******************************波峰智能组合秤新增处理 Start****************************************/
@@ -404,8 +389,7 @@ class classTaskL3aplF3dm
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
 
-        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
-        return $jsonencode;
+        return $retval;
     }
 
     /*********************************智能云锁新增处理************************************************/
@@ -425,8 +409,7 @@ class classTaskL3aplF3dm
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
 
-        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
-        return $jsonencode;
+        return $retval;
     }
 
     function func_fhys_dev_sensor_process($type, $user, $body)
@@ -446,8 +429,7 @@ class classTaskL3aplF3dm
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
 
-        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
-        return $jsonencode;
+        return $retval;
     }
 
     function func_fhys_get_static_monitor_table_process($type, $user, $body)
@@ -468,8 +450,7 @@ class classTaskL3aplF3dm
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
 
-        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
-        return $jsonencode;
+        return $retval;
     }
 
 
@@ -491,8 +472,7 @@ class classTaskL3aplF3dm
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
 
-        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
-        return $jsonencode;
+        return $retval;
     }
 
     /**************************************************************************************
@@ -645,9 +625,10 @@ class classTaskL3aplF3dm
         //返回ECHO
         if (!empty($resp))
         {
-            $log_content = "T:" . json_encode($resp);
+            $jsonencode = json_encode($resp, JSON_UNESCAPED_UNICODE);
+            $log_content = "T:" . $jsonencode;
             $loggerObj->logger($project, "MFUN_TASK_ID_L3APPL_FUM3DM", $log_time, $log_content);
-            echo trim($resp); //这里需要编码送出去，跟其他处理方式还不太一样
+            echo trim($jsonencode); //这里需要编码送出去，跟其他处理方式还不太一样
         }
 
         //返回

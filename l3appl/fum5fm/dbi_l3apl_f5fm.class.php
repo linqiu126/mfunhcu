@@ -5,6 +5,7 @@
  * Date: 2016/6/20
  * Time: 23:00
  */
+header("Content-type:text/html;charset=utf-8");
 //include_once "../../l1comvm/vmlayer.php";
 
 /*
@@ -113,7 +114,7 @@ class classDbiL3apF5fm
         if (!$mysqli) {
             die('Could not connect: ' . mysqli_error($mysqli));
         }
-        $mysqli->query("set character_set_results = utf8");
+        $mysqli->query("SET NAMES utf8");
 
         $query_str = "SELECT * FROM `t_l2snr_sensortype` WHERE 1";
         $result = $mysqli->query($query_str);

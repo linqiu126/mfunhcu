@@ -174,7 +174,7 @@ class classDbiL2snrTemp
         if (!$mysqli) {
             die('Could not connect: ' . mysqli_error($mysqli));
         }
-        $mysqli->query("set character_set_results = utf8");
+        $mysqli->query("SET NAMES utf8");
 
         if ($data == MFUN_HCU_DATA_FHYS_STATUS_OK)
             $status = MFUN_HCU_FHYS_STATUS_OK;
@@ -247,7 +247,7 @@ class classDbiL2snrTemp
         if (!$mysqli) {
             die('Could not connect: ' . mysqli_error($mysqli));
         }
-        $mysqli->query("set character_set_results = utf8");
+        $mysqli->query("SET NAMES utf8");
 
         $timestamp = time();
         $date = intval(date("ymd", $timestamp));

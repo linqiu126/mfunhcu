@@ -24,7 +24,7 @@ class classDbiL3wxOprEmc
         {
             die('Could not connect: ' . mysqli_error($mysqli));
         }
-        $mysqli->query("set character_set_results = utf8");
+        $mysqli->query("SET NAMES utf8");
 
         $emcvalue = 0;
         $query_str = "SELECT * FROM `t_l2sdk_wechat_blebound` WHERE `openid` = '$openid'";
@@ -60,7 +60,7 @@ class classDbiL3wxOprEmc
         {
             die('Could not connect: ' . mysqli_error($mysqli));
         }
-        $mysqli->query("set character_set_results = utf8");
+        $mysqli->query("SET NAMES utf8");
 
         $valuelist = array(); //初始化EMC
         $query_str = "SELECT * FROM `t_l2sdk_wechat_blebound` WHERE `openid` = '$openid'";

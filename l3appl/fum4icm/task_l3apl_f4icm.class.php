@@ -59,8 +59,7 @@ class classTaskL3aplF4icm
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
 
-        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
-        return $jsonencode;
+        return $retval;
     }
 
     //查询所有可用的软件版本列表
@@ -79,8 +78,7 @@ class classTaskL3aplF4icm
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
 
-        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
-        return $jsonencode;
+        return $retval;
     }
 
     //查询指定项目下所有设备的当前版本信息
@@ -123,8 +121,7 @@ class classTaskL3aplF4icm
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
 
-        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
-        return $jsonencode;
+        return $retval;
     }
 
     //更新指定设备到指定的版本
@@ -146,8 +143,7 @@ class classTaskL3aplF4icm
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>$usercheck['msg']);
 
-        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
-        return $jsonencode;
+        return $retval;
     }
 
     //传感器信息更新并发送HCU控制命令
@@ -166,8 +162,7 @@ class classTaskL3aplF4icm
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
 
-        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
-        return $jsonencode;
+        return $retval;
     }
 
     //查询指定监测点指定时间的视频列表
@@ -186,8 +181,7 @@ class classTaskL3aplF4icm
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
 
-        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
-        return $jsonencode;
+        return $retval;
     }
 
     //请求播放指定视频
@@ -208,8 +202,7 @@ class classTaskL3aplF4icm
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
 
-        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
-        return $jsonencode;
+        return $retval;
     }
 
     //Camera信息更新并发送HCU控制命令
@@ -230,8 +223,7 @@ class classTaskL3aplF4icm
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>$usercheck['msg']);
 
-        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
-        return $jsonencode;
+        return $retval;
     }
 
     function func_get_camera_unit_process($type, $user, $body)
@@ -247,8 +239,7 @@ class classTaskL3aplF4icm
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
 
-        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
-        return $jsonencode;
+        return $retval;
     }
 
     //TBSWR GetTempStatus
@@ -267,8 +258,7 @@ class classTaskL3aplF4icm
                 'msg'=>null
             );
         //$jsonencode = _encode($retval);
-        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
-        return $jsonencode;
+        return $retval;
     }
 
     /*********************************智能云锁新增处理 Start*********************************************/
@@ -291,8 +281,7 @@ class classTaskL3aplF4icm
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>$usercheck['msg']);
 
-        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
-        return $jsonencode;
+        return $retval;
     }
 
     /*********************************BFSC组合秤新增处理 Start*********************************************/
@@ -306,9 +295,7 @@ class classTaskL3aplF4icm
             'msg'=>$resp
         );
 
-        //$jsonencode = _encode($retval);
-        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
-        return $jsonencode;
+        return $retval;
     }
 
     function func_hcu_weight_compel_close($uid, $StatCode)
@@ -321,9 +308,7 @@ class classTaskL3aplF4icm
             'msg'=>$resp
         );
 
-        //$jsonencode = _encode($retval);
-        $jsonencode = json_encode($retval, JSON_UNESCAPED_UNICODE);
-        return $jsonencode;
+        return $retval;
     }
 
 
@@ -452,9 +437,10 @@ class classTaskL3aplF4icm
         //返回ECHO
         if (!empty($resp))
         {
-            $log_content = "T:" . json_encode($resp);
+            $jsonencode = json_encode($resp, JSON_UNESCAPED_UNICODE);
+            $log_content = "T:" . $jsonencode;
             $loggerObj->logger($project, "MFUN_TASK_ID_L3APPL_FUM4ICM", $log_time, $log_content);
-            echo trim($resp); //这里需要编码送出去，跟其他处理方式还不太一样
+            echo trim($jsonencode); //这里需要编码送出去，跟其他处理方式还不太一样
         }
 
         //返回

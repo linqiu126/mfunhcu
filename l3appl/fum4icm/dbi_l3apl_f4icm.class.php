@@ -5,6 +5,7 @@
  * Date: 2016/6/20
  * Time: 23:00
  */
+header("Content-type:text/html;charset=utf-8");
 //include_once "../../l1comvm/vmlayer.php";
 
 /*
@@ -205,7 +206,7 @@ class classDbiL3apF4icm
         if (!$mysqli) {
             die('Could not connect: ' . mysqli_error($mysqli));
         }
-        $mysqli->query("set character_set_results = utf8");
+        $mysqli->query("SET NAMES utf8");
 
         if (isset($input["DevCode"])) $DevCode = trim($input["DevCode"]); else  $DevCode = "";
         if (isset($input["SensorCode"])) $SensorCode = trim($input["SensorCode"]); else  $SensorCode = "";
@@ -359,7 +360,6 @@ class classDbiL3apF4icm
         if (!$mysqli) {
             die('Could not connect: ' . mysqli_error($mysqli));
         }
-        $mysqli->query("set character_set_results = utf8");
         $mysqli->query("SET NAMES utf8");
 
         $camweb = array();
@@ -384,7 +384,7 @@ class classDbiL3apF4icm
         if (!$mysqli) {
             die('Could not connect: ' . mysqli_error($mysqli));
         }
-        $mysqli->query("set character_set_results = utf8");
+        $mysqli->query("SET NAMES utf8");
 
         if (isset($input["StatCode"])) $statcode = trim($input["StatCode"]); else  $statcode = "";
         if (isset($input["date"])) $date = trim($input["date"]); else  $date = "";
@@ -440,7 +440,7 @@ class classDbiL3apF4icm
         if (!$mysqli) {
             die('Could not connect: ' . mysqli_error($mysqli));
         }
-        $mysqli->query("set character_set_results = utf8");
+        $mysqli->query("SET NAMES utf8");
 
         $query_str = "SELECT * FROM `t_l2snr_hsmmpdata` WHERE `videourl` = '$videoid' ";
         $result = $mysqli->query($query_str);
@@ -495,7 +495,7 @@ class classDbiL3apF4icm
         if (!$mysqli) {
         die('Could not connect: ' . mysqli_error($mysqli));
         }
-        $mysqli->query("set character_set_results = utf8");
+        $mysqli->query("SET NAMES utf8");
 
         //根据StatCode查找特定HCU
         $query_str = "SELECT * FROM `t_l3f3dm_siteinfo` WHERE `statcode` = '$StatCode' ";
@@ -535,7 +535,7 @@ class classDbiL3apF4icm
         if (!$mysqli) {
             die('Could not connect: ' . mysqli_error($mysqli));
         }
-        $mysqli->query("set character_set_results = utf8");
+        $mysqli->query("SET NAMES utf8");
 
         //根据StatCode查找特定HCU
         $query_str = "SELECT * FROM `t_l3f3dm_siteinfo` WHERE `statcode` = '$StatCode' ";
@@ -574,7 +574,7 @@ class classDbiL3apF4icm
         if (!$mysqli) {
             die('Could not connect: ' . mysqli_error($mysqli));
         }
-        $mysqli->query("set character_set_results = utf8");
+        $mysqli->query("SET NAMES utf8");
 
         $query_str = "SELECT * FROM `t_l3f1sym_session` WHERE (`sessionid` = '$sessionid')";
         $result = $mysqli->query($query_str);
@@ -653,7 +653,7 @@ class classDbiL3apF4icm
         if (!$mysqli) {
             die('Could not connect: ' . mysqli_error($mysqli));
         }
-        $mysqli->query("set character_set_results = utf8");
+        $mysqli->query("SET NAMES utf8");
 
         $query_str = "SELECT * FROM `t_l3f1sym_session` WHERE (`sessionid` = '$sessionid')";
         $result = $mysqli->query($query_str);
@@ -695,7 +695,7 @@ class classDbiL3apF4icm
         if (!$mysqli) {
             die('Could not connect: ' . mysqli_error($mysqli));
         }
-        $mysqli->query("set character_set_results = utf8");
+        $mysqli->query("SET NAMES utf8");
 
         $query_str = "SELECT * FROM `t_l3f1sym_session` WHERE (`sessionid` = '$sessionid')";
         $result = $mysqli->query($query_str);

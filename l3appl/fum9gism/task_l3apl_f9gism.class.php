@@ -6,6 +6,7 @@
  * Time: 22:39
  */
 //include_once "../../l1comvm/vmlayer.php";
+header("Content-type:text/html;charset=utf-8");
 include_once "dbi_l3apl_f9gism.class.php";
 
 class classTaskL3aplF9gism
