@@ -398,7 +398,7 @@ class classDbiL3apF4icm
         {
             $temp = array(
                 'statcode' => $row['statcode'],
-                'name' =>  $row['name'],
+                'name' =>  $row['statname'],
                 'devcode' => $row['devcode']
             );
             array_push($devlist, $temp);
@@ -498,7 +498,7 @@ class classDbiL3apF4icm
         $mysqli->query("SET NAMES utf8");
 
         //根据StatCode查找特定HCU
-        $query_str = "SELECT * FROM `t_l3f3dm_siteinfo` WHERE `statcode` = '$StatCode' ";
+        $query_str = "SELECT * FROM `t_l2sdk_iothcu_inventory` WHERE `statcode` = '$StatCode' ";
         $result = $mysqli->query($query_str);
 
         if (($result != false) && ($result->num_rows)>0)
@@ -538,7 +538,7 @@ class classDbiL3apF4icm
         $mysqli->query("SET NAMES utf8");
 
         //根据StatCode查找特定HCU
-        $query_str = "SELECT * FROM `t_l3f3dm_siteinfo` WHERE `statcode` = '$StatCode' ";
+        $query_str = "SELECT * FROM `t_l2sdk_iothcu_inventory` WHERE `statcode` = '$StatCode' ";
         $result = $mysqli->query($query_str);
 
         if (($result != false) && ($result->num_rows)>0)

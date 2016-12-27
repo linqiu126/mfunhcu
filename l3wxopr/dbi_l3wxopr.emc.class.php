@@ -9,12 +9,6 @@
 
 class classDbiL3wxOprEmc
 {
-    //构造函数
-    public function __construct()
-    {
-
-    }
-
     //根据用户openid查询该用户绑定设备的当前EMC值
     public function dbi_get_current_emcvalue($openid)
     {

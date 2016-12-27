@@ -9,6 +9,46 @@
 include_once "../l1comvm/vmlayer.php";
 
 /**************************************************************************************
+ *                             L4FHYS-WECHAT TEST CASES                               *
+ *************************************************************************************/
+if (TC_L4FHYS_WECHAT == true) {
+
+    echo " [TC L4FHYS_WECHAT: HCU_Wechat_Login START]\n";
+    $_GET["action"] = "HCU_Wechat_Login";
+    $_GET["type"] = "query";
+    $body = array('code' => 'openid');
+    $_GET["body"] = $body;
+    $_GET["user"] = "null";
+    //require("../l4fhyswechat/request.php");
+    echo " [TC L4FHYS_WECHAT: HCU_Wechat_Login END]\n";
+
+    echo " [TC L4FHYS_WECHAT: HCU_Lock_Query START]\n";
+    $_GET["action"] = "HCU_Lock_Query";
+    $_GET["type"] = "query";
+    $_GET["user"] = "UID000001";
+    require("../l4fhyswechat/request.php");
+    echo " [TC L4FHYS_WECHAT: HCU_Lock_Query END]\n";
+
+    echo " [TC L4FHYS_WECHAT: HCU_Lock_Status START]\n";
+    $_GET["action"] = "HCU_Lock_Status";
+    $_GET["type"] = "query";
+    $body = array('statcode' => '120101002');
+    $_GET["body"] = $body;
+    $_GET["user"] = "UID000001";
+    require("../l4fhyswechat/request.php");
+    echo " [TC L4FHYS_WECHAT: HCU_Lock_Status END]\n";
+
+    echo " [TC L4FHYS_WECHAT: HCU_Lock_open START]\n";
+    $_GET["action"] = "HCU_Lock_open";
+    $_GET["type"] = "query";
+    $body = array('statcode' => '120101002');
+    $_GET["body"] = $body;
+    $_GET["user"] = "UID000001";
+    require("../l4fhyswechat/request.php");
+    echo " [TC L4FHYS_WECHAT: HCU_Lock_open END]\n";
+
+}
+/**************************************************************************************
  *                             L4FHYS-UI TEST CASES                                   *
  *************************************************************************************/
 if (TC_L4FHYS_UI == true) {

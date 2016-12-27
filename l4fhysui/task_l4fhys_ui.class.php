@@ -669,7 +669,7 @@ class classTaskL4fhysUi
         if (!empty($resp))
         {
             $log_content = "T:" . json_encode($resp);
-            $loggerObj->logger("L4FHYSUI", "MFUN_TASK_ID_L4FHYS_UI", $log_time, $log_content);
+            $loggerObj->logger("MFUN_TASK_ID_L4FHYS_UI", "mfun_l4fhys_ui_task_main_entry", $log_time, $log_content);
             echo trim($resp);
         }
 

@@ -234,7 +234,7 @@ class classTaskL3wxOprEmc
         if (!empty($resp))
         {
             $log_content = "T:" . json_encode($resp);
-            $loggerObj->logger($project, "MFUN_TASK_ID_L3WX_OPR_EMC", $log_time, $log_content);
+            $loggerObj->logger($project, "mfun_l3wx_opr_emc_task_main_entry", $log_time, $log_content);
             echo trim($resp); //这里需要编码送出去，跟其他处理方式还不太一样
         }
 

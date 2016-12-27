@@ -323,6 +323,10 @@ Make By：ZJL
 > AQYC UI和后台MFUNHCU新消息结构测试完成
 > 修改视频和摄像头控制处理
 
+//= LZH, 2016 Dec.27, CURRENT_SW_DELIVERY R03.D09
+> 添加FHYS微信开锁界面
+> 调整t_l3f2cm_projinfo和t_l3f3dm_siteinfo表单，使项目和站点1对多映射逻辑更合理
+
 
 //待完善的功能
 1. dbi_devinfo_update（）需要修改，添加设备时预计结束时间和实际结束时间应该在项目信息里

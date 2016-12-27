@@ -69,11 +69,13 @@ include_once "../l3appl/fum8psm/task_l3apl_f8psm.class.php";
 include_once "../l3appl/fum9gism/task_l3apl_f9gism.class.php";
 include_once "../l3appl/fumxprcm/task_l3apl_fxprcm.class.php";
 include_once "../l3wxopr/task_l3wx_opr_emc.class.php";
+include_once "../l3wxopr/task_l3wx_opr_fhys.class.php";
 include_once "../l3nbiotopr/task_l3nbiot_opr_meter.class.php";
 include_once "../l2timercron/task_l2timer_cron.class.php";
 include_once "../l4emcwxui/task_l4emcwx_ui.class.php";
 include_once "../l4aqycui/task_l4aqyc_ui.class.php";
 include_once "../l4fhysui/task_l4fhys_ui.class.php";
+include_once "../l4fhyswechat/task_l4fhys_wechat.class.php";
 include_once "../l4bfscui/task_l4bfsc_ui.class.php";
 include_once "../l4tbswrui/task_l4tbswr_ui.class.php";
 include_once "../l4nbiotipmui/task_l4nbiot_ipm_ui.class.php";
@@ -413,267 +415,300 @@ class classTaskL1vmCoreRouter
         }
 
         //然后发送从L1_MAIN_ENTRY接收到的消息到缓冲区中
-        if($parObj == MFUN_MAIN_ENTRY_WECHAT) {
-            if ($this->mfun_l1vm_msg_send(MFUN_TASK_ID_L1VM,
+        switch($parObj)
+        {
+            case MFUN_MAIN_ENTRY_WECHAT:
+                $resp = $this->mfun_l1vm_msg_send(MFUN_TASK_ID_L1VM,
                     MFUN_TASK_ID_L2SDK_WECHAT,
                     MSG_ID_L1VM_TO_L2SDK_WECHAT_INCOMING,
                     "MSG_ID_L1VM_TO_L2SDK_WECHAT_INCOMING",
-                    $msg) == false
-            ) {
-                $result = "Cloud: Send to message buffer error.";
-                $log_content = "P:" . json_encode($result);
-                $loggerObj->logger("MFUN_MAIN_ENTRY_WECHAT", "mfun_l1vm_task_main_entry", $log_time, $log_content);
-                echo trim($result);
-                return false;
-            }
-
-        }elseif ($parObj == MFUN_MAIN_ENTRY_IOT_HCU){
-            if ($this->mfun_l1vm_msg_send(MFUN_TASK_ID_L1VM,
+                    $msg);
+                if ($resp == false){
+                    $result = "Cloud: Send to message buffer error.";
+                    $log_content = "P:" . json_encode($result);
+                    $loggerObj->logger("MFUN_MAIN_ENTRY_WECHAT", "mfun_l1vm_task_main_entry", $log_time, $log_content);
+                    echo trim($result);
+                    return false;
+                }
+                break;
+            case MFUN_MAIN_ENTRY_IOT_HCU:
+                $resp = $this->mfun_l1vm_msg_send(MFUN_TASK_ID_L1VM,
                     MFUN_TASK_ID_L2SDK_IOT_HCU,
                     MSG_ID_L1VM_TO_L2SDK_IOT_HCU_INCOMING,
                     "MSG_ID_L1VM_TO_L2SDK_IOT_HCU_INCOMING",
-                    $msg) == false){
-                $result = "Cloud: Send to message buffer error.";
-                $log_content = "P:" . json_encode($result);
-                $loggerObj->logger("MFUN_MAIN_ENTRY_HCU_IOT", "mfun_l1vm_task_main_entry", $log_time, $log_content);
-                echo trim($result);
-                return false;
-            }
-
-        }elseif ($parObj == MFUN_MAIN_ENTRY_JINGDONG){
-            if ($this->mfun_l1vm_msg_send(MFUN_TASK_ID_L1VM,
+                    $msg);
+                if ($resp == false){
+                    $result = "Cloud: Send to message buffer error.";
+                    $log_content = "P:" . json_encode($result);
+                    $loggerObj->logger("MFUN_MAIN_ENTRY_HCU_IOT", "mfun_l1vm_task_main_entry", $log_time, $log_content);
+                    echo trim($result);
+                    return false;
+                }
+                break;
+            case MFUN_MAIN_ENTRY_JINGDONG:
+                $resp = $this->mfun_l1vm_msg_send(MFUN_TASK_ID_L1VM,
                     MFUN_TASK_ID_L2SDK_IOT_JD,
                     MSG_ID_L2SDK_JD_INCOMING,
                     "MSG_ID_L2SDK_JD_INCOMING",
-                    $msg) == false){
-                $result = "Cloud: Send to message buffer error.";
-                $log_content = "P:" . json_encode($result);
-                $loggerObj->logger("MFUN_MAIN_ENTRY_JINGDONG", "mfun_l1vm_task_main_entry", $log_time, $log_content);
-                echo trim($result);
-                return false;
-            }
-
-        }elseif ($parObj == MFUN_MAIN_ENTRY_APPLE){
-            if ($this->mfun_l1vm_msg_send(MFUN_TASK_ID_L1VM,
+                    $msg);
+                if ($resp == false){
+                    $result = "Cloud: Send to message buffer error.";
+                    $log_content = "P:" . json_encode($result);
+                    $loggerObj->logger("MFUN_MAIN_ENTRY_JINGDONG", "mfun_l1vm_task_main_entry", $log_time, $log_content);
+                    echo trim($result);
+                    return false;
+                }
+                break;
+            case MFUN_MAIN_ENTRY_APPLE:
+                $resp = $this->mfun_l1vm_msg_send(MFUN_TASK_ID_L1VM,
                     MFUN_TASK_ID_L2SDK_IOT_APPLE,
                     MSG_ID_L2SDK_APPLE_INCOMING,
                     "MSG_ID_L2SDK_APPLE_INCOMING",
-                    $msg) == false){
-                $result = "Cloud: Send to message buffer error.";
-                $log_content = "P:" . json_encode($result);
-                $loggerObj->logger("MFUN_MAIN_ENTRY_APPLE", "mfun_l1vm_task_main_entry", $log_time, $log_content);
-                echo trim($result);
-                return false;
-            }
-
-        }elseif($parObj == MFUN_MAIN_ENTRY_CRON){
-            if ($msg == MSG_ID_L2TIMER_CRON_1MIN_COMING) $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L1VM, MFUN_TASK_ID_L2TIMER_CRON, MSG_ID_L2TIMER_CRON_1MIN_COMING, "MSG_ID_L2TIMER_CRON_60SEC_COMING", MSG_ID_L2TIMER_CRON_1MIN_COMING);
-            elseif ($msg == MSG_ID_L2TIMER_CRON_3MIN_COMING) $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L1VM, MFUN_TASK_ID_L2TIMER_CRON, MSG_ID_L2TIMER_CRON_3MIN_COMING, "MSG_ID_L2TIMER_CRON_180SEC_COMING", MSG_ID_L2TIMER_CRON_3MIN_COMING);
-            elseif ($msg == MSG_ID_L2TIMER_CRON_10MIN_COMING) $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L1VM, MFUN_TASK_ID_L2TIMER_CRON, MSG_ID_L2TIMER_CRON_10MIN_COMING, "MSG_ID_L2TIMER_CRON_10MIN_COMING", MSG_ID_L2TIMER_CRON_10MIN_COMING);
-            elseif ($msg == MSG_ID_L2TIMER_CRON_30MIN_COMING) $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L1VM, MFUN_TASK_ID_L2TIMER_CRON, MSG_ID_L2TIMER_CRON_30MIN_COMING, "MSG_ID_L2TIMER_CRON_30MIN_COMING", MSG_ID_L2TIMER_CRON_30MIN_COMING);
-            elseif ($msg == MSG_ID_L2TIMER_CRON_1HOUR_COMING) $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L1VM, MFUN_TASK_ID_L2TIMER_CRON, MSG_ID_L2TIMER_CRON_1HOUR_COMING, "MSG_ID_L2TIMER_CRON_1HOUR_COMING", MSG_ID_L2TIMER_CRON_1HOUR_COMING);
-            elseif ($msg == MSG_ID_L2TIMER_CRON_6HOUR_COMING) $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L1VM, MFUN_TASK_ID_L2TIMER_CRON, MSG_ID_L2TIMER_CRON_6HOUR_COMING, "MSG_ID_L2TIMER_CRON_6HOUR_COMING", MSG_ID_L2TIMER_CRON_6HOUR_COMING);
-            elseif ($msg == MSG_ID_L2TIMER_CRON_24HOUR_COMING) $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L1VM, MFUN_TASK_ID_L2TIMER_CRON, MSG_ID_L2TIMER_CRON_24HOUR_COMING, "MSG_ID_L2TIMER_CRON_24HOUR_COMING", MSG_ID_L2TIMER_CRON_24HOUR_COMING);
-            elseif ($msg == MSG_ID_L2TIMER_CRON_2DAY_COMING) $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L1VM, MFUN_TASK_ID_L2TIMER_CRON, MSG_ID_L2TIMER_CRON_2DAY_COMING, "MSG_ID_L2TIMER_CRON_2DAY_COMING", MSG_ID_L2TIMER_CRON_2DAY_COMING);
-            elseif ($msg == MSG_ID_L2TIMER_CRON_7DAY_COMING) $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L1VM, MFUN_TASK_ID_L2TIMER_CRON, MSG_ID_L2TIMER_CRON_7DAY_COMING, "MSG_ID_L2TIMER_CRON_7DAY_COMING", MSG_ID_L2TIMER_CRON_7DAY_COMING);
-            elseif ($msg == MSG_ID_L2TIMER_CRON_30DAY_COMING) $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L1VM, MFUN_TASK_ID_L2TIMER_CRON, MSG_ID_L2TIMER_CRON_30DAY_COMING, "MSG_ID_L2TIMER_CRON_30DAY_COMING", MSG_ID_L2TIMER_CRON_30DAY_COMING);
-            else {
-                $result = "Cloud: Send to message buffer error.";
-                $log_content = "P:" . json_encode($result);
-                $loggerObj->logger("MFUN_TASK_ID_L2TIMER_CRON", "mfun_l1vm_task_main_entry", $log_time, $log_content);
-                echo trim($result);
-                return false;
-            }
-
-        }elseif($parObj == MFUN_MAIN_ENTRY_SOCKET_LISTEN){//暂时不用干啥，由钩子函数发送给MAIN_ENTRY，然后直接执行相应内容
-            if ($this->mfun_l1vm_msg_send(MFUN_TASK_ID_L1VM,
+                    $msg);
+                if ($resp == false){
+                    $result = "Cloud: Send to message buffer error.";
+                    $log_content = "P:" . json_encode($result);
+                    $loggerObj->logger("MFUN_MAIN_ENTRY_APPLE", "mfun_l1vm_task_main_entry", $log_time, $log_content);
+                    echo trim($result);
+                    return false;
+                }
+                    break;
+            case MFUN_MAIN_ENTRY_CRON:
+                if ($msg == MSG_ID_L2TIMER_CRON_1MIN_COMING) $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L1VM, MFUN_TASK_ID_L2TIMER_CRON, MSG_ID_L2TIMER_CRON_1MIN_COMING, "MSG_ID_L2TIMER_CRON_60SEC_COMING", MSG_ID_L2TIMER_CRON_1MIN_COMING);
+                elseif ($msg == MSG_ID_L2TIMER_CRON_3MIN_COMING) $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L1VM, MFUN_TASK_ID_L2TIMER_CRON, MSG_ID_L2TIMER_CRON_3MIN_COMING, "MSG_ID_L2TIMER_CRON_180SEC_COMING", MSG_ID_L2TIMER_CRON_3MIN_COMING);
+                elseif ($msg == MSG_ID_L2TIMER_CRON_10MIN_COMING) $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L1VM, MFUN_TASK_ID_L2TIMER_CRON, MSG_ID_L2TIMER_CRON_10MIN_COMING, "MSG_ID_L2TIMER_CRON_10MIN_COMING", MSG_ID_L2TIMER_CRON_10MIN_COMING);
+                elseif ($msg == MSG_ID_L2TIMER_CRON_30MIN_COMING) $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L1VM, MFUN_TASK_ID_L2TIMER_CRON, MSG_ID_L2TIMER_CRON_30MIN_COMING, "MSG_ID_L2TIMER_CRON_30MIN_COMING", MSG_ID_L2TIMER_CRON_30MIN_COMING);
+                elseif ($msg == MSG_ID_L2TIMER_CRON_1HOUR_COMING) $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L1VM, MFUN_TASK_ID_L2TIMER_CRON, MSG_ID_L2TIMER_CRON_1HOUR_COMING, "MSG_ID_L2TIMER_CRON_1HOUR_COMING", MSG_ID_L2TIMER_CRON_1HOUR_COMING);
+                elseif ($msg == MSG_ID_L2TIMER_CRON_6HOUR_COMING) $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L1VM, MFUN_TASK_ID_L2TIMER_CRON, MSG_ID_L2TIMER_CRON_6HOUR_COMING, "MSG_ID_L2TIMER_CRON_6HOUR_COMING", MSG_ID_L2TIMER_CRON_6HOUR_COMING);
+                elseif ($msg == MSG_ID_L2TIMER_CRON_24HOUR_COMING) $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L1VM, MFUN_TASK_ID_L2TIMER_CRON, MSG_ID_L2TIMER_CRON_24HOUR_COMING, "MSG_ID_L2TIMER_CRON_24HOUR_COMING", MSG_ID_L2TIMER_CRON_24HOUR_COMING);
+                elseif ($msg == MSG_ID_L2TIMER_CRON_2DAY_COMING) $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L1VM, MFUN_TASK_ID_L2TIMER_CRON, MSG_ID_L2TIMER_CRON_2DAY_COMING, "MSG_ID_L2TIMER_CRON_2DAY_COMING", MSG_ID_L2TIMER_CRON_2DAY_COMING);
+                elseif ($msg == MSG_ID_L2TIMER_CRON_7DAY_COMING) $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L1VM, MFUN_TASK_ID_L2TIMER_CRON, MSG_ID_L2TIMER_CRON_7DAY_COMING, "MSG_ID_L2TIMER_CRON_7DAY_COMING", MSG_ID_L2TIMER_CRON_7DAY_COMING);
+                elseif ($msg == MSG_ID_L2TIMER_CRON_30DAY_COMING) $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L1VM, MFUN_TASK_ID_L2TIMER_CRON, MSG_ID_L2TIMER_CRON_30DAY_COMING, "MSG_ID_L2TIMER_CRON_30DAY_COMING", MSG_ID_L2TIMER_CRON_30DAY_COMING);
+                else {
+                    $result = "Cloud: Send to message buffer error.";
+                    $log_content = "P:" . json_encode($result);
+                    $loggerObj->logger("MFUN_MAIN_ENTRY_CRON", "mfun_l1vm_task_main_entry", $log_time, $log_content);
+                    echo trim($result);
+                    return false;
+                }
+                    break;
+            case MFUN_MAIN_ENTRY_SOCKET_LISTEN://暂时不用干啥，由钩子函数发送给MAIN_ENTRY，然后直接执行相应内容
+                $resp = $this->mfun_l1vm_msg_send(MFUN_TASK_ID_L1VM,
                     MFUN_TASK_ID_L2SOCKET_LISTEN,
                     MSG_ID_L2SOCKET_LISTEN_DATA_COMING,
                     "MSG_ID_L2SOCKET_LISTEN_DATA_COMING",
-                    $msg) == false) {
-                $result = "Cloud: Send to message buffer error.";
-                $log_content = "P:" . json_encode($result);
-                $loggerObj->logger("MFUN_TASK_ID_L2SOCKET_LISTEN", "mfun_l1vm_task_main_entry", $log_time, $log_content);
-                echo trim($result);
-                return false;
-            }
-
-        }elseif($parObj == MFUN_MAIN_ENTRY_NBIOT_STD_QG376){
-            if ($this->mfun_l1vm_msg_send(MFUN_TASK_ID_L1VM,
+                    $msg);
+                if ($resp == false){
+                    $result = "Cloud: Send to message buffer error.";
+                    $log_content = "P:" . json_encode($result);
+                    $loggerObj->logger("MFUN_MAIN_ENTRY_SOCKET_LISTEN", "mfun_l1vm_task_main_entry", $log_time, $log_content);
+                    echo trim($result);
+                    return false;
+                }
+                break;
+            case MFUN_MAIN_ENTRY_NBIOT_STD_QG376:
+                $resp = $this->mfun_l1vm_msg_send(MFUN_TASK_ID_L1VM,
                     MFUN_TASK_ID_L2SDK_NBIOT_STD_QG376,
                     MSG_ID_L2SDK_NBIOT_STD_QG376_INCOMING,
                     "MSG_ID_L2SDK_NBIOT_STD_QG376_INCOMING",
-                    $msg) == false) {
-                $result = "Cloud: Send to message buffer error.";
-                $log_content = "P:" . json_encode($result);
-                $loggerObj->logger("MFUN_TASK_ID_L2SDK_NBIOT_STD_QG376", "mfun_l1vm_task_main_entry", $log_time, $log_content);
-                echo trim($result);
-                return false;
-            }
-
-        }elseif($parObj == MFUN_MAIN_ENTRY_NBIOT_STD_CJ188){
-            if ($this->mfun_l1vm_msg_send(MFUN_TASK_ID_L1VM,
+                    $msg);
+                if ($resp == false){
+                    $result = "Cloud: Send to message buffer error.";
+                    $log_content = "P:" . json_encode($result);
+                    $loggerObj->logger("MFUN_MAIN_ENTRY_NBIOT_STD_QG376", "mfun_l1vm_task_main_entry", $log_time, $log_content);
+                    echo trim($result);
+                    return false;
+                }
+                break;
+            case MFUN_MAIN_ENTRY_NBIOT_STD_CJ188:
+                $resp = $this->mfun_l1vm_msg_send(MFUN_TASK_ID_L1VM,
                     MFUN_TASK_ID_L2SDK_NBIOT_STD_CJ188,
                     MSG_ID_L2SDK_NBIOT_STD_CJ188_INCOMING,
                     "MSG_ID_L2SDK_NBIOT_STD_CJ188_INCOMING",
-                    $msg) == false) {
-                $result = "Cloud: Send to message buffer error.";
-                $log_content = "P:" . json_encode($result);
-                $loggerObj->logger("MFUN_TASK_ID_L2SDK_NBIOT_STD_CJ188", "mfun_l1vm_task_main_entry", $log_time, $log_content);
-                echo trim($result);
-                return false;
-            }
-
-        }elseif($parObj == MFUN_MAIN_ENTRY_NBIOT_LTEV){
-            if ($this->mfun_l1vm_msg_send(MFUN_TASK_ID_L1VM,
+                    $msg);
+                if ($resp == false){
+                    $result = "Cloud: Send to message buffer error.";
+                    $log_content = "P:" . json_encode($result);
+                    $loggerObj->logger("MFUN_MAIN_ENTRY_NBIOT_STD_CJ188", "mfun_l1vm_task_main_entry", $log_time, $log_content);
+                    echo trim($result);
+                    return false;
+                }
+                break;
+            case MFUN_MAIN_ENTRY_NBIOT_LTEV:
+                $resp = $this->mfun_l1vm_msg_send(MFUN_TASK_ID_L1VM,
                     MFUN_TASK_ID_L2SDK_NBIOT_LTEV,
                     MSG_ID_L2SDK_NBIOT_LTEV_INCOMING,
                     "MSG_ID_L2SDK_NBIOT_LTEV_INCOMING",
-                    $msg) == false) {
-                $result = "Cloud: Send to message buffer error.";
-                $log_content = "P:" . json_encode($result);
-                $loggerObj->logger("MFUN_TASK_ID_L2SDK_NBIOT_LTEV", "mfun_l1vm_task_main_entry", $log_time, $log_content);
-                echo trim($result);
-                return false;
-            }
-
-        }elseif($parObj == MFUN_MAIN_ENTRY_NBIOT_AGC){
-            if ($this->mfun_l1vm_msg_send(MFUN_TASK_ID_L1VM,
+                    $msg) ;
+                if ($resp == false){
+                    $result = "Cloud: Send to message buffer error.";
+                    $log_content = "P:" . json_encode($result);
+                    $loggerObj->logger("MFUN_MAIN_ENTRY_NBIOT_LTEV", "mfun_l1vm_task_main_entry", $log_time, $log_content);
+                    echo trim($result);
+                    return false;
+                }
+                break;
+            case MFUN_MAIN_ENTRY_NBIOT_AGC:
+                $resp = $this->mfun_l1vm_msg_send(MFUN_TASK_ID_L1VM,
                     MFUN_TASK_ID_L2SDK_NBIOT_AGC,
                     MSG_ID_L2SDK_NBIOT_AGC_INCOMING,
                     "MSG_ID_L2SDK_NBIOT_AGC_INCOMING",
-                    $msg) == false) {
-                $result = "Cloud: Send to message buffer error.";
-                $log_content = "P:" . json_encode($result);
-                $loggerObj->logger("MFUN_TASK_ID_L2SDK_NBIOT_AGC", "mfun_l1vm_task_main_entry", $log_time, $log_content);
-                echo trim($result);
-                return false;
-            }
-
-        }elseif($parObj == MFUN_MAIN_ENTRY_EMCWX_UI){
-            if ($this->mfun_l1vm_msg_send(MFUN_TASK_ID_L1VM,
+                    $msg);
+                if ($resp == false){
+                    $result = "Cloud: Send to message buffer error.";
+                    $log_content = "P:" . json_encode($result);
+                    $loggerObj->logger("MFUN_MAIN_ENTRY_NBIOT_AGC", "mfun_l1vm_task_main_entry", $log_time, $log_content);
+                    echo trim($result);
+                    return false;
+                }
+                break;
+            case MFUN_MAIN_ENTRY_EMCWX_UI:
+                $resp = $this->mfun_l1vm_msg_send(MFUN_TASK_ID_L1VM,
                     MFUN_TASK_ID_L4EMCWX_UI,
                     MSG_ID_L4EMCWXUI_CLICK_INCOMING,
                     "MSG_ID_L4EMCWXUI_CLICK_INCOMING",
-                    $msg) == false) {
-                $result = "Cloud: Send to message buffer error.";
-                $log_content = "P:" . json_encode($result);
-                $loggerObj->logger("MFUN_TASK_ID_L4EMCWX_UI", "mfun_l1vm_task_main_entry", $log_time, $log_content);
-                echo trim($result);
-                return false;
-            }
-
-        }elseif($parObj == MFUN_MAIN_ENTRY_AQYC_UI){
-            if ($this->mfun_l1vm_msg_send(MFUN_TASK_ID_L1VM,
+                    $msg);
+                if ($resp == false){
+                    $result = "Cloud: Send to message buffer error.";
+                    $log_content = "P:" . json_encode($result);
+                    $loggerObj->logger("MFUN_MAIN_ENTRY_EMCWX_UI", "mfun_l1vm_task_main_entry", $log_time, $log_content);
+                    echo trim($result);
+                    return false;
+                }
+                break;
+            case MFUN_MAIN_ENTRY_AQYC_UI:
+                $resp = $this->mfun_l1vm_msg_send(MFUN_TASK_ID_L1VM,
                     MFUN_TASK_ID_L4AQYC_UI,
                     MSG_ID_L4AQYCUI_CLICK_INCOMING,
                     "MSG_ID_L4AQYCUI_CLICK_INCOMING",
-                    $msg) == false) {
-                $result = "Cloud: Send to message buffer error.";
-                $log_content = "P:" . json_encode($result);
-                $loggerObj->logger("MFUN_MAIN_ENTRY_AQYC_UI", "mfun_l1vm_task_main_entry", $log_time, $log_content);
-                echo trim($result);
-                return false;
-            }
-
-        }elseif($parObj == MFUN_MAIN_ENTRY_FHYS_UI){
-            if ($this->mfun_l1vm_msg_send(MFUN_TASK_ID_L1VM,
+                    $msg);
+                if ($resp == false){
+                    $result = "Cloud: Send to message buffer error.";
+                    $log_content = "P:" . json_encode($result);
+                    $loggerObj->logger("MFUN_MAIN_ENTRY_AQYC_UI", "mfun_l1vm_task_main_entry", $log_time, $log_content);
+                    echo trim($result);
+                    return false;
+                }
+                break;
+            case MFUN_MAIN_ENTRY_FHYS_UI:
+                $resp = $this->mfun_l1vm_msg_send(MFUN_TASK_ID_L1VM,
                     MFUN_TASK_ID_L4FHYS_UI,
                     MSG_ID_L4FHYSUI_CLICK_INCOMING,
                     "MSG_ID_L4FHYSUI_CLICK_INCOMING",
-                    $msg) == false) {
-                $result = "Cloud: Send to message buffer error.";
-                $log_content = "P:" . json_encode($result);
-                $loggerObj->logger("MFUN_MAIN_ENTRY_AQYC_UI", "mfun_l1vm_task_main_entry", $log_time, $log_content);
-                echo trim($result);
-                return false;
-            }
-
-        }elseif($parObj == MFUN_MAIN_ENTRY_BFSC_UI){
-            if ($this->mfun_l1vm_msg_send(MFUN_TASK_ID_L1VM,
-                    MFUN_TASK_ID_L4BFSC_UI,
-                    MSG_ID_L4BFSCUI_CLICK_INCOMING,
-                    "MSG_ID_L4BFSCUI_CLICK_INCOMING",
-                    $msg) == false) {
-                $result = "Cloud: Send to message buffer error.";
-                $log_content = "P:" . json_encode($result);
-                $loggerObj->logger("MFUN_MAIN_ENTRY_BFSC_UI", "mfun_l1vm_task_main_entry", $log_time, $log_content);
-                echo trim($result);
-                return false;
-            }
-
-        }elseif($parObj == MFUN_MAIN_ENTRY_TBSWR_UI){
-            if ($this->mfun_l1vm_msg_send(MFUN_TASK_ID_L1VM,
+                    $msg);
+                if ($resp == false){
+                    $result = "Cloud: Send to message buffer error.";
+                    $log_content = "P:" . json_encode($result);
+                    $loggerObj->logger("MFUN_MAIN_ENTRY_FHYS_UI", "mfun_l1vm_task_main_entry", $log_time, $log_content);
+                    echo trim($result);
+                    return false;
+                }
+                break;
+            case MFUN_MAIN_ENTRY_FHYS_WECHAT:
+                $resp = $this->mfun_l1vm_msg_send(MFUN_TASK_ID_L1VM,
+                    MFUN_TASK_ID_L4FHYS_WECHAT,
+                    MSG_ID_L4FHYS_WECHAT_CLICK_INCOMING,
+                    "MSG_ID_L4FHYS_WECHAT_CLICK_INCOMING",
+                    $msg);
+                if ($resp == false){
+                    $result = "Cloud: Send to message buffer error.";
+                    $log_content = "P:" . json_encode($result);
+                    $loggerObj->logger("MFUN_MAIN_ENTRY_FHYS_WECHAT", "mfun_l1vm_task_main_entry", $log_time, $log_content);
+                    echo trim($result);
+                    return false;
+                }
+                break;
+            case MFUN_MAIN_ENTRY_BFSC_UI:
+                $resp = $this->mfun_l1vm_msg_send(MFUN_TASK_ID_L1VM,
+                MFUN_TASK_ID_L4BFSC_UI,
+                MSG_ID_L4BFSCUI_CLICK_INCOMING,
+                "MSG_ID_L4BFSCUI_CLICK_INCOMING",
+                $msg);
+                if ($resp == false){
+                    $result = "Cloud: Send to message buffer error.";
+                    $log_content = "P:" . json_encode($result);
+                    $loggerObj->logger("MFUN_MAIN_ENTRY_BFSC_UI", "mfun_l1vm_task_main_entry", $log_time, $log_content);
+                    echo trim($result);
+                    return false;
+                }
+                break;
+            case MFUN_MAIN_ENTRY_TBSWR_UI:
+                $resp = $this->mfun_l1vm_msg_send(MFUN_TASK_ID_L1VM,
                     MFUN_TASK_ID_L4TBSWR_UI,
                     MSG_ID_L4TBSWR_CLICK_INCOMING,
                     "MSG_ID_L4TBSWR_CLICK_INCOMING",
-                    $msg) == false) {
-                $result = "Cloud: Send to message buffer error.";
-                $log_content = "P:" . json_encode($result);
-                $loggerObj->logger("MFUN_TASK_ID_L4TBSWR_UI", "mfun_l1vm_task_main_entry", $log_time, $log_content);
-                echo trim($result);
-                return false;
-            }
-
-        }elseif($parObj == MFUN_MAIN_ENTRY_NBIOT_IPM_UI){
-            if ($this->mfun_l1vm_msg_send(MFUN_TASK_ID_L1VM,
+                    $msg);
+                if ($resp == false){
+                    $result = "Cloud: Send to message buffer error.";
+                    $log_content = "P:" . json_encode($result);
+                    $loggerObj->logger("MFUN_MAIN_ENTRY_TBSWR_UI", "mfun_l1vm_task_main_entry", $log_time, $log_content);
+                    echo trim($result);
+                    return false;
+                }
+                break;
+            case MFUN_MAIN_ENTRY_NBIOT_IPM_UI:
+                $resp = $this->mfun_l1vm_msg_send(MFUN_TASK_ID_L1VM,
                     MFUN_TASK_ID_L4NBIOT_IPM_UI,
                     MSG_ID_L4NBIOT_IPMUI_CLICK_INCOMING,
                     "MSG_ID_L4NBIOT_IPMUI_CLICK_INCOMING",
-                    $msg) == false) {
-                $result = "Cloud: Send to message buffer error.";
-                $log_content = "P:" . json_encode($result);
-                $loggerObj->logger("MFUN_TASK_ID_L4NBIOT_IPM_UI", "mfun_l1vm_task_main_entry", $log_time, $log_content);
-                echo trim($result);
-                return false;
-            }
-
-        }elseif($parObj == MFUN_MAIN_ENTRY_NBIOT_IWM_UI){
-            if ($this->mfun_l1vm_msg_send(MFUN_TASK_ID_L1VM,
+                    $msg);
+                if ($resp == false){
+                    $result = "Cloud: Send to message buffer error.";
+                    $log_content = "P:" . json_encode($result);
+                    $loggerObj->logger("MFUN_MAIN_ENTRY_NBIOT_IPM_UI", "mfun_l1vm_task_main_entry", $log_time, $log_content);
+                    echo trim($result);
+                    return false;
+                }
+                break;
+            case MFUN_MAIN_ENTRY_NBIOT_IWM_UI:
+                $resp = $this->mfun_l1vm_msg_send(MFUN_TASK_ID_L1VM,
                     MFUN_TASK_ID_L4NBIOT_IWM_UI,
                     MSG_ID_L4NBIOT_IWMUI_CLICK_INCOMING,
                     "MSG_ID_L4NBIOT_IWMUI_CLICK_INCOMING",
-                    $msg) == false) {
-                $result = "Cloud: Send to message buffer error.";
-                $log_content = "P:" . json_encode($result);
-                $loggerObj->logger("MFUN_TASK_ID_L4NBIOT_IWM_UI", "mfun_l1vm_task_main_entry", $log_time, $log_content);
-                echo trim($result);
-                return false;
-            }
-
-        }elseif($parObj == MFUN_MAIN_ENTRY_NBIOT_IGM_UI){
-            if ($this->mfun_l1vm_msg_send(MFUN_TASK_ID_L1VM,
+                    $msg);
+                if ($resp == false){
+                    $result = "Cloud: Send to message buffer error.";
+                    $log_content = "P:" . json_encode($result);
+                    $loggerObj->logger("MFUN_MAIN_ENTRY_NBIOT_IWM_UI", "mfun_l1vm_task_main_entry", $log_time, $log_content);
+                    echo trim($result);
+                    return false;
+                }
+                break;
+            case MFUN_MAIN_ENTRY_NBIOT_IGM_UI:
+                $resp = $this->mfun_l1vm_msg_send(MFUN_TASK_ID_L1VM,
                     MFUN_TASK_ID_L4NBIOT_IGM_UI,
                     MSG_ID_L4NBIOT_IGMUI_CLICK_INCOMING,
                     "MSG_ID_L4NBIOT_IGMUI_CLICK_INCOMING",
-                    $msg) == false) {
-                $result = "Cloud: Send to message buffer error.";
-                $log_content = "P:" . json_encode($result);
-                $loggerObj->logger("MFUN_TASK_ID_L4NBIOT_IGM_UI", "mfun_l1vm_task_main_entry", $log_time, $log_content);
-                echo trim($result);
-                return false;
-            }
-
-        }elseif($parObj == MFUN_MAIN_ENTRY_NBIOT_IHM_UI){
-            if ($this->mfun_l1vm_msg_send(MFUN_TASK_ID_L1VM,
+                    $msg);
+                if ($resp == false){
+                    $result = "Cloud: Send to message buffer error.";
+                    $log_content = "P:" . json_encode($result);
+                    $loggerObj->logger("MFUN_MAIN_ENTRY_NBIOT_IGM_UI", "mfun_l1vm_task_main_entry", $log_time, $log_content);
+                    echo trim($result);
+                    return false;
+                }
+                break;
+            case MFUN_MAIN_ENTRY_NBIOT_IHM_UI:
+                $resp = $this->mfun_l1vm_msg_send(MFUN_TASK_ID_L1VM,
                     MFUN_TASK_ID_L4NBIOT_IHM_UI,
                     MSG_ID_L4NBIOT_IHMUI_CLICK_INCOMING,
                     "MSG_ID_L4NBIOT_IHMUI_CLICK_INCOMING",
-                    $msg) == false) {
-                $result = "Cloud: Send to message buffer error.";
-                $log_content = "P:" . json_encode($result);
-                $loggerObj->logger("MFUN_TASK_ID_L4NBIOT_IHM_UI", "mfun_l1vm_task_main_entry", $log_time, $log_content);
-                echo trim($result);
-                return false;
-            }
-
-        }elseif($parObj == MFUN_MAIN_ENTRY_DIRECT_IN){   //本来就不需要处理，因为消息已经发送进队列了
-
-        //}elseif($parObj == $this){  //Do nothing so far
-
-        }else{
-
+                    $msg);
+                if ($resp == false){
+                    $result = "Cloud: Send to message buffer error.";
+                    $log_content = "P:" . json_encode($result);
+                    $loggerObj->logger("MFUN_MAIN_ENTRY_NBIOT_IHM_UI", "mfun_l1vm_task_main_entry", $log_time, $log_content);
+                    echo trim($result);
+                    return false;
+                }
+                break;
+            case MFUN_MAIN_ENTRY_DIRECT_IN://本来就不需要处理，因为消息已经发送进队列了
+                //Do nothing so far
+                break;
+            default :
+                break;
         }
+
 
         //最后进入循环读取阶段
         //$this做为父CLASS的指针传到被调用任务的CLASS的主入口中去，是为了调用本CLASS的HCU_MSG_SEND函数及其空间，不然无法
@@ -973,6 +1008,11 @@ class classTaskL1vmCoreRouter
                     $obj->mfun_l3wx_opr_emc_task_main_entry($this, $result["msgId"], $result["msgName"], $result["msgBody"]);
                     break;
 
+                case MFUN_TASK_ID_L3WX_OPR_FHYS:
+                    $obj = new classTaskL3wxOprFhys();
+                    $obj->mfun_l3wx_opr_fhys_task_main_entry($this, $result["msgId"], $result["msgName"], $result["msgBody"]);
+                    break;
+
                 case MFUN_TASK_ID_L3NBIOT_OPR_METER:
                     $obj = new classTaskL3nbiotOprMeter();
                     $obj->mfun_l3nbiot_opr_meter_task_main_entry($this, $result["msgId"], $result["msgName"], $result["msgBody"]);
@@ -984,9 +1024,14 @@ class classTaskL1vmCoreRouter
                     break;
 
                 case MFUN_TASK_ID_L4FHYS_UI:
-                $obj = new classTaskL4fhysUi();
-                $obj->mfun_l4fhys_ui_task_main_entry($this, $result["msgId"], $result["msgName"], $result["msgBody"]);
-                break;
+                    $obj = new classTaskL4fhysUi();
+                    $obj->mfun_l4fhys_ui_task_main_entry($this, $result["msgId"], $result["msgName"], $result["msgBody"]);
+                    break;
+
+                case MFUN_TASK_ID_L4FHYS_WECHAT:
+                    $obj = new classTaskL4fhysWechat();
+                    $obj->mfun_l4fhys_wechat_task_main_entry($this, $result["msgId"], $result["msgName"], $result["msgBody"]);
+                    break;
 
                 case MFUN_TASK_ID_L4BFSC_UI:
                     $obj = new classTaskL4bfscUi();

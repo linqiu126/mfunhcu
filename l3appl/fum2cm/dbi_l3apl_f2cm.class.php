@@ -986,7 +986,7 @@ class classDbiL3apF2cm
                 $resp = $mysqli->query($query_str);
                 if (($resp->num_rows) > 0) {
                     $resp_row = $resp->fetch_array();
-                    $department = $resp_row['name'];
+                    $department = $resp_row['statname'];
                 }
 
                 $temp = array('AuthId' => (string)($authid),
@@ -1045,22 +1045,22 @@ class classDbiL3apF2cm
             }
 
             $code_prefix = substr($authobjcode, 0, MFUN_L3APL_F2CM_CODE_FORMAT_LEN);
-            if ($code_prefix == MFUN_L3APL_F2CM_PROJ_CODE_PREFIX)
+            if ($code_prefix == MFUN_L3APL_F2CM_PROJ_CODE_PREFIX) //项目级授权
             {
                 $query_str = "SELECT * FROM `t_l3f2cm_projinfo` WHERE `p_code` = '$authobjcode' ";
                 $resp = $mysqli->query($query_str);
                 if (($resp->num_rows) > 0) {
                     $resp_row = $resp->fetch_array();
-                    $department = $resp_row['p_name']; //将来可以考虑取department
+                    $department = $resp_row['p_name']; //取项目名称
                 }
             }
-            else
+            else //站点级授权
             {
                 $query_str = "SELECT * FROM `t_l3f3dm_siteinfo` WHERE `statcode` = '$authobjcode' ";
                 $resp = $mysqli->query($query_str);
                 if (($resp->num_rows) > 0) {
                     $resp_row = $resp->fetch_array();
-                    $department = $resp_row['name'];
+                    $department = $resp_row['statname'];  //取站点名称
                 }
             }
 

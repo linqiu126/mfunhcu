@@ -62,11 +62,13 @@ define("MFUN_TASK_ID_L3APPL_FUM7ADS", $taskIndex++);
 define("MFUN_TASK_ID_L3APPL_FUM8PSM", $taskIndex++);
 define("MFUN_TASK_ID_L3APPL_FUM9GISM", $taskIndex++);
 define("MFUN_TASK_ID_L3APPL_FUMXPRCM", $taskIndex++);
-define("MFUN_TASK_ID_L3WX_OPR_EMC", $taskIndex++);       //用于微信H5界面处理L3 task
+define("MFUN_TASK_ID_L3WX_OPR_EMC", $taskIndex++);  //用于EMC微信H5界面处理L3 task
+define("MFUN_TASK_ID_L3WX_OPR_FHYS", $taskIndex++); //用于FHYS微信H5界面处理L3 task
 define("MFUN_TASK_ID_L3NBIOT_OPR_METER", $taskIndex++);
 
 define("MFUN_TASK_ID_L4AQYC_UI", $taskIndex++);
 define("MFUN_TASK_ID_L4FHYS_UI", $taskIndex++);
+define("MFUN_TASK_ID_L4FHYS_WECHAT", $taskIndex++);
 define("MFUN_TASK_ID_L4BFSC_UI", $taskIndex++);
 define("MFUN_TASK_ID_L4EMCWX_UI", $taskIndex++);
 define("MFUN_TASK_ID_L4TBSWR_UI", $taskIndex++);
@@ -144,9 +146,11 @@ class classConstL1vmSysTaskList
         MFUN_TASK_ID_L3APPL_FUM9GISM => array("NAME" => "MFUN_TASK_L3APPL_FUM9GISM", "PRESENT" => true),
         MFUN_TASK_ID_L3APPL_FUMXPRCM => array("NAME" => "MFUN_TASK_L3APPL_FUMXPRCM", "PRESENT" => true),
         MFUN_TASK_ID_L3WX_OPR_EMC => array("NAME" => "MFUN_TASK_ID_L3WX_OPR_EMC", "PRESENT" => true),
+        MFUN_TASK_ID_L3WX_OPR_FHYS => array("NAME" => "MFUN_TASK_ID_L3WX_OPR_FHYS", "PRESENT" => true),
         MFUN_TASK_ID_L3NBIOT_OPR_METER => array("NAME" => "MFUN_TASK_ID_L3NBIOT_OPR_METER", "PRESENT" => true),
         MFUN_TASK_ID_L4AQYC_UI => array("NAME" => "MFUN_TASK_L4AQYC_UI", "PRESENT" => true),
         MFUN_TASK_ID_L4FHYS_UI => array("NAME" => "MFUN_TASK_L4FHYS_UI", "PRESENT" => true),
+        MFUN_TASK_ID_L4FHYS_WECHAT => array("NAME" => "MFUN_TASK_ID_L4FHYS_WECHAT", "PRESENT" => true),
         MFUN_TASK_ID_L4BFSC_UI => array("NAME" => "MFUN_TASK_L4BFSC_UI", "PRESENT" => true),
         MFUN_TASK_ID_L4EMCWX_UI => array("NAME" => "MFUN_TASK_L4EMCWX_UI", "PRESENT" => true),
         MFUN_TASK_ID_L4TBSWR_UI => array("NAME" => "MFUN_TASK_L4TBSWR_UI", "PRESENT" => true),
@@ -219,9 +223,11 @@ class classConstL1vmSysTaskList
             $mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM9GISM]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUMXPRCM]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L3WX_OPR_EMC]["PRESENT"] = true;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L3WX_OPR_FHYS]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L3NBIOT_OPR_METER]["PRESENT"] = false;
             $mfunTaskArrayConst[MFUN_TASK_ID_L4AQYC_UI]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L4FHYS_UI]["PRESENT"] = true;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L4FHYS_WECHAT]["PRESENT"] = false;
             $mfunTaskArrayConst[MFUN_TASK_ID_L4EMCWX_UI]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L4TBSWR_UI]["PRESENT"] = false;
             $mfunTaskArrayConst[MFUN_TASK_ID_L4NBIOT_IPM_UI]["PRESENT"] = false;
@@ -288,9 +294,11 @@ class classConstL1vmSysTaskList
             $mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM9GISM]["PRESENT"] = false;
             $mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUMXPRCM]["PRESENT"] = false;
             $mfunTaskArrayConst[MFUN_TASK_ID_L3WX_OPR_EMC]["PRESENT"] = true;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L3WX_OPR_FHYS]["PRESENT"] = false;
             $mfunTaskArrayConst[MFUN_TASK_ID_L3NBIOT_OPR_METER]["PRESENT"] = false;
             $mfunTaskArrayConst[MFUN_TASK_ID_L4AQYC_UI]["PRESENT"] = false;
             $mfunTaskArrayConst[MFUN_TASK_ID_L4FHYS_UI]["PRESENT"] = false;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L4FHYS_WECHAT]["PRESENT"] = false;
             $mfunTaskArrayConst[MFUN_TASK_ID_L4EMCWX_UI]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L4TBSWR_UI]["PRESENT"] = false;
             $mfunTaskArrayConst[MFUN_TASK_ID_L4NBIOT_IPM_UI]["PRESENT"] = false;
@@ -357,9 +365,11 @@ class classConstL1vmSysTaskList
             $mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM9GISM]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUMXPRCM]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L3WX_OPR_EMC]["PRESENT"] = true;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L3WX_OPR_FHYS]["PRESENT"] = false;
             $mfunTaskArrayConst[MFUN_TASK_ID_L3NBIOT_OPR_METER]["PRESENT"] = false;
             $mfunTaskArrayConst[MFUN_TASK_ID_L4AQYC_UI]["PRESENT"] = false;
             $mfunTaskArrayConst[MFUN_TASK_ID_L4FHYS_UI]["PRESENT"] = false;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L4FHYS_WECHAT]["PRESENT"] = false;
             $mfunTaskArrayConst[MFUN_TASK_ID_L4EMCWX_UI]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L4TBSWR_UI]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L4NBIOT_IPM_UI]["PRESENT"] = false;
@@ -426,9 +436,11 @@ class classConstL1vmSysTaskList
             $mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM9GISM]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUMXPRCM]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L3WX_OPR_EMC]["PRESENT"] = false;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L3WX_OPR_FHYS]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L3NBIOT_OPR_METER]["PRESENT"] = false;
             $mfunTaskArrayConst[MFUN_TASK_ID_L4AQYC_UI]["PRESENT"] = false;
-            $mfunTaskArrayConst[MFUN_TASK_ID_L4FHYS_UI]["PRESENT"] = false;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L4FHYS_UI]["PRESENT"] = true;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L4FHYS_WECHAT]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L4EMCWX_UI]["PRESENT"] = false;
             $mfunTaskArrayConst[MFUN_TASK_ID_L4TBSWR_UI]["PRESENT"] = false;
             $mfunTaskArrayConst[MFUN_TASK_ID_L4NBIOT_IPM_UI]["PRESENT"] = false;
@@ -495,9 +507,11 @@ class classConstL1vmSysTaskList
             $mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM9GISM]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUMXPRCM]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L3WX_OPR_EMC]["PRESENT"] = true;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L3WX_OPR_FHYS]["PRESENT"] = false;
             $mfunTaskArrayConst[MFUN_TASK_ID_L3NBIOT_OPR_METER]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L4AQYC_UI]["PRESENT"] = false;
             $mfunTaskArrayConst[MFUN_TASK_ID_L4FHYS_UI]["PRESENT"] = false;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L4FHYS_WECHAT]["PRESENT"] = false;
             $mfunTaskArrayConst[MFUN_TASK_ID_L4EMCWX_UI]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L4TBSWR_UI]["PRESENT"] = false;
             $mfunTaskArrayConst[MFUN_TASK_ID_L4NBIOT_IPM_UI]["PRESENT"] = true;
@@ -564,9 +578,11 @@ class classConstL1vmSysTaskList
             $mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM9GISM]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUMXPRCM]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L3WX_OPR_EMC]["PRESENT"] = true;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L3WX_OPR_FHYS]["PRESENT"] = false;
             $mfunTaskArrayConst[MFUN_TASK_ID_L3NBIOT_OPR_METER]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L4AQYC_UI]["PRESENT"] = false;
             $mfunTaskArrayConst[MFUN_TASK_ID_L4FHYS_UI]["PRESENT"] = false;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L4FHYS_WECHAT]["PRESENT"] = false;
             $mfunTaskArrayConst[MFUN_TASK_ID_L4EMCWX_UI]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L4TBSWR_UI]["PRESENT"] = false;
             $mfunTaskArrayConst[MFUN_TASK_ID_L4NBIOT_IPM_UI]["PRESENT"] = false;
@@ -633,9 +649,11 @@ class classConstL1vmSysTaskList
             $mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM9GISM]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUMXPRCM]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L3WX_OPR_EMC]["PRESENT"] = true;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L3WX_OPR_FHYS]["PRESENT"] = false;
             $mfunTaskArrayConst[MFUN_TASK_ID_L3NBIOT_OPR_METER]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L4AQYC_UI]["PRESENT"] = false;
             $mfunTaskArrayConst[MFUN_TASK_ID_L4FHYS_UI]["PRESENT"] = false;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L4FHYS_WECHAT]["PRESENT"] = false;
             $mfunTaskArrayConst[MFUN_TASK_ID_L4EMCWX_UI]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L4TBSWR_UI]["PRESENT"] = false;
             $mfunTaskArrayConst[MFUN_TASK_ID_L4NBIOT_IPM_UI]["PRESENT"] = false;
@@ -702,9 +720,11 @@ class classConstL1vmSysTaskList
             $mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM9GISM]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUMXPRCM]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L3WX_OPR_EMC]["PRESENT"] = true;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L3WX_OPR_FHYS]["PRESENT"] = false;
             $mfunTaskArrayConst[MFUN_TASK_ID_L3NBIOT_OPR_METER]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L4AQYC_UI]["PRESENT"] = false;
             $mfunTaskArrayConst[MFUN_TASK_ID_L4FHYS_UI]["PRESENT"] = false;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L4FHYS_WECHAT]["PRESENT"] = false;
             $mfunTaskArrayConst[MFUN_TASK_ID_L4EMCWX_UI]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L4TBSWR_UI]["PRESENT"] = false;
             $mfunTaskArrayConst[MFUN_TASK_ID_L4NBIOT_IPM_UI]["PRESENT"] = false;
@@ -771,9 +791,11 @@ class classConstL1vmSysTaskList
             $mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM9GISM]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUMXPRCM]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L3WX_OPR_EMC]["PRESENT"] = true;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L3WX_OPR_FHYS]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L3NBIOT_OPR_METER]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L4AQYC_UI]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L4FHYS_UI]["PRESENT"] = true;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L4FHYS_WECHAT]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L4BFSC_UI]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L4EMCWX_UI]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L4TBSWR_UI]["PRESENT"] = true;
@@ -843,9 +865,11 @@ class classConstL1vmSysTaskList
             $mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM9GISM]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUMXPRCM]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L3WX_OPR_EMC]["PRESENT"] = true;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L3WX_OPR_FHYS]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L3NBIOT_OPR_METER]["PRESENT"] = false;
             $mfunTaskArrayConst[MFUN_TASK_ID_L4AQYC_UI]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L4FHYS_UI]["PRESENT"] = true;
+            $mfunTaskArrayConst[MFUN_TASK_ID_L4FHYS_WECHAT]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L4EMCWX_UI]["PRESENT"] = true;
             $mfunTaskArrayConst[MFUN_TASK_ID_L4TBSWR_UI]["PRESENT"] = false;
             $mfunTaskArrayConst[MFUN_TASK_ID_L4NBIOT_IPM_UI]["PRESENT"] = false;

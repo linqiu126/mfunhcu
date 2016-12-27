@@ -112,7 +112,7 @@ class classDbiL3apF3dm
         {
             die('Could not connect: ' . mysqli_error($mysqli));
         }
-        $result = $mysqli->query("SELECT * FROM `t_l3f3dm_siteinfo` WHERE `devcode` = '$deviceid'");
+        $result = $mysqli->query("SELECT * FROM `t_l2sdk_iothcu_inventory` WHERE `devcode` = '$deviceid'");
         if ($result->num_rows>0)
         {
             $row = $result->fetch_array();
@@ -347,7 +347,7 @@ class classDbiL3apF3dm
         {
             $temp = array(
                 'id' => $row['statcode'],
-                'name' => $row['name'],
+                'name' => $row['statname'],
                 'ProjCode' => $row['p_code']
             );
             array_push($sitelist, $temp);
@@ -375,7 +375,7 @@ class classDbiL3apF3dm
         {
             $temp = array(
                 'id' => $row['statcode'],
-                'name' => $row['name'],
+                'name' => $row['statname'],
                 'ProjCode' => $p_code
             );
             array_push($sitelist, $temp);
@@ -401,34 +401,23 @@ class classDbiL3apF3dm
         $sitetable = array();
         while($row = $result->fetch_array())
         {
-            $pcode = $row['p_code'];
-            $statcode = $row['statcode'];
-            $statname = $row['name'];
-            $longitude = $row['longitude'];
-            $latitude = $row['latitude'];
-
-            $query_str = "SELECT * FROM `t_l3f2cm_projinfo` WHERE `p_code` = '$pcode'";      //查询监测点对应的项目号
-            $resp = $mysqli->query($query_str);
-            if (($resp->num_rows)>0) {
-                $info = $resp->fetch_array();
-                $temp = array(
-                    'StatCode' => $statcode,
-                    'StatName' => $statname,
-                    'ProjCode' => $info['p_code'],
-                    'ChargeMan' => $info['chargeman'],
-                    'Telephone' => $info['telephone'],
-                    'Longitude' => $longitude,
-                    'Latitude' => $latitude,
-                    'Department' => $info['department'],
-                    'Address' => $info['address'],
-                    'Country' => $info['country'],
-                    'Street' => $info['street'],
-                    'Square' => $info['square'],
-                    'ProStartTime' => $info['starttime'],
-                    'Stage' => $info['stage']
-                );
-                array_push($sitetable, $temp);
-            }
+            $temp = array(
+                'StatCode' => $row['statcode'],
+                'StatName' => $row['statname'],
+                'ProjCode' => $row['p_code'],
+                'ChargeMan' => $row['chargeman'],
+                'Telephone' => $row['telephone'],
+                'Longitude' => $row['longitude'],
+                'Latitude' => $row['latitude'],
+                'Department' => $row['department'],
+                'Address' => $row['address'],
+                'Country' => $row['country'],
+                'Street' => $row['street'],
+                'Square' => $row['square'],
+                'ProStartTime' => $row['starttime'],
+                'Stage' => $row['memo']
+            );
+            array_push($sitetable, $temp);
         }
 
         $mysqli->close();
@@ -459,29 +448,30 @@ class classDbiL3apF3dm
         if (isset($siteinfo["Street"])) $street = trim($siteinfo["Street"]); else  $street = "";
         if (isset($siteinfo["Square"])) $square = trim($siteinfo["Square"]); else  $square = "";
         if (isset($siteinfo["ProStartTime"])) $starttime = trim($siteinfo["ProStartTime"]); else  $starttime = "";
-        if (isset($siteinfo["Stage"])) $stage = trim($siteinfo["Stage"]); else  $stage = "";
+        if (isset($siteinfo["Stage"])) $memo = trim($siteinfo["Stage"]); else  $memo = "";
+
+        //暂时初始化的值，将来需要调整
+        $altitude = 0;
+        $flag_la = "N";
+        $flag_lo = "E";
 
         $query_str = "SELECT * FROM `t_l3f3dm_siteinfo` WHERE `statcode` = '$statcode'";
         $result = $mysqli->query($query_str);
 
         if (($result->num_rows)>0) //重复，则覆盖
         {
-            $query_str = "UPDATE `t_l3f3dm_siteinfo` SET `name` = '$statname',`p_code` = '$pcode',`starttime` = '$starttime',
-                          `latitude` = '$latitude',`longitude` = '$longitude' WHERE (`statcode` = '$statcode' )";
-            $result1 = $mysqli->query($query_str);
+            $query_str = "UPDATE `t_l3f3dm_siteinfo` SET `statname` = '$statname',`p_code` = '$pcode',`chargeman` = '$chargeman',`telephone` = '$telephone',`department` = '$department',
+                          `country` = '$country',`street` = '$street',`address` = '$addr',`starttime` = '$starttime',`square` = '$square',`altitude` = '$altitude',
+                          `flag_la` = '$flag_la',`latitude` = '$latitude',`flag_lo` = '$flag_lo',`longitude` = '$longitude',`memo` = '$memo'  WHERE (`statcode` = '$statcode' )";
+            $result = $mysqli->query($query_str);
         }
         else //不存在，新增
         {
-            $query_str = "INSERT INTO `t_l3f3dm_siteinfo` (statcode,name,p_code,starttime,latitude,longitude)
-                                  VALUES ('$statcode','$statname','$pcode','$starttime','$latitude', '$longitude')";
-
-            $result1 = $mysqli->query($query_str);
+            $query_str = "INSERT INTO `t_l3f3dm_siteinfo` (statcode,statname,p_code,chargeman,telephone,department,country,street,address,starttime,square,altitude,flag_la,latitude,flag_lo,longitude,memo)
+                                  VALUES ('$statcode','$statname','$pcode','$chargeman','$telephone','$department','$country','$street','$addr','$starttime','$square','$altitude','$flag_la','$latitude','$flag_lo','$longitude','$memo')";
+            $result = $mysqli->query($query_str);
         }
 
-        $query_str = "UPDATE `t_l3f2cm_projinfo` SET `country` = '$country',`street` = '$street',`square` = '$square' WHERE (`p_code` = '$pcode' )";
-        $result2 = $mysqli->query($query_str);
-
-        $result = $result1 AND $result2;
         $mysqli->close();
         return $result;
     }
@@ -523,8 +513,8 @@ class classDbiL3apF3dm
                     'StatCode' => $statcode,
                     'ProjCode' => $info['p_code'],
                     'StartTime' => $info['starttime'],
-                    'PreEndTime' => "",  //需要确认
-                    'EndTime' => "",
+                    'PreEndTime' => "",  //TBD
+                    'EndTime' => "",     //TBD
                     'DevStatus' => $devstatus,
                     'VideoURL' => $url,
                     'MAC' => $macaddr,
@@ -602,13 +592,10 @@ class classDbiL3apF3dm
         $query_str = "DELETE FROM `t_l2sdk_iothcu_inventory` WHERE `devcode` = '$devcode'";  //删除HCU device信息表
         $result1 = $mysqli->query($query_str);
 
-        $query_str = "UPDATE `t_l3f3dm_siteinfo` SET `devcode` = '' WHERE (`devcode` = '$devcode' )"; //删除监测点信息表中的HCU信息
+        $query_str = "DELETE FROM `t_l3f4icm_sensorctrl` WHERE `deviceid` = '$devcode'";  //删除Sensorctrl表中HUC信息
         $result2 = $mysqli->query($query_str);
 
-        $query_str = "DELETE FROM `t_l3f4icm_sensorctrl` WHERE `deviceid` = '$devcode'";  //删除Sensorctrl表中HUC信息
-        $result3 = $mysqli->query($query_str);
-
-        $result = $result1 and $result2 and $result3;
+        $result = $result1 and $result2;
 
         $mysqli->close();
         return $result;
@@ -634,14 +621,6 @@ class classDbiL3apF3dm
         while($row = $result->fetch_array())
         {
             $pcode = $row['p_code'];
-            $chargeman = $row['chargeman'];
-            $phone = $row['telephone'];
-            $department = $row['department'];
-            $addr = $row['address'];
-            $country = $row['country'];
-            $street = $row['street'];
-            $square = $row['square'];
-            $stage = $row['stage'];
 
             $query_str = "SELECT * FROM `t_l3f3dm_siteinfo` WHERE `p_code` = '$pcode'";      //查询监测点对应的项目号
             $resp = $mysqli->query($query_str);
@@ -653,20 +632,20 @@ class classDbiL3apF3dm
 
                 $temp = array(
                     'StatCode' => $info['statcode'],
-                    'StatName' => $info['name'],
-                    'ChargeMan' => $chargeman,
-                    'Telephone' => $phone,
-                    'Department' => $department,
-                    'Address' => $addr,
-                    'Country' => $country,
-                    'Street' => $street,
-                    'Square' => $square,
+                    'StatName' => $info['statname'],
+                    'ChargeMan' => $info['chargeman'],
+                    'Telephone' => $info['telephone'],
+                    'Department' => $info['department'],
+                    'Address' => $info['address'],
+                    'Country' => $info['country'],
+                    'Street' => $info['street'],
+                    'Square' => $info['square'],
                     'Flag_la' => $info['flag_la'],
                     'Latitude' => $latitude,
                     'Flag_lo' =>  $info['flag_lo'],
                     'Longitude' => $longitude,
                     'ProStartTime' => $info['starttime'],
-                    'Stage' => $stage
+                    'Stage' => $info['memo'],
                 );
                 array_push($sitelist, $temp);
             }
@@ -825,7 +804,7 @@ class classDbiL3apF3dm
         $mysqli->query("SET NAMES utf8");
 
         //根据监测点号查找对应的设备号
-        $query_str = "SELECT * FROM `t_l3f3dm_siteinfo` WHERE `statcode` = '$statcode'";
+        $query_str = "SELECT * FROM `t_l2sdk_iothcu_inventory` WHERE `statcode` = '$statcode'";
         $result = $mysqli->query($query_str);
         if (($result->num_rows) > 0) {
             $row = $result->fetch_array();
@@ -1248,6 +1227,7 @@ class classDbiL3apF3dm
         $auth_list = $this->dbi_user_statproj_inqury($uid);
 
         array_push($resp["column"], "监测点编号");
+        array_push($resp["column"], "监测点名称");
         array_push($resp["column"], "项目单位");
         array_push($resp["column"], "区县");
         array_push($resp["column"], "地址");
@@ -1266,13 +1246,14 @@ class classDbiL3apF3dm
             $one_row = array();
             $pcode = $auth_list["p_code"][$i];
             $statcode = $auth_list["stat_code"][$i];
-            $query_str = "SELECT * FROM `t_l3f2cm_projinfo` WHERE `p_code` = '$pcode'";
+            $query_str = "SELECT * FROM `t_l3f3dm_siteinfo` WHERE `statcode` = '$statcode'";
             $result = $mysqli->query($query_str);
             if (($result->num_rows) > 0)
             {
                 $row = $result->fetch_array();
                 array_push($one_row, $statcode);
-                array_push($one_row, $row["p_name"]);
+                array_push($one_row, $row["statname"]);
+                array_push($one_row, $row["department"]);
                 array_push($one_row, $row["country"]);
                 array_push($one_row, $row["address"]);
                 array_push($one_row, $row["chargeman"]);
@@ -1445,7 +1426,7 @@ class classDbiL3apF3dm
         $auth_list = $this->dbi_user_statproj_inqury($uid);
 
         array_push($resp["column"], "站点编号");
-        array_push($resp["column"], "项目单位");
+        array_push($resp["column"], "站点名称");
         array_push($resp["column"], "区县");
         array_push($resp["column"], "地址");
         array_push($resp["column"], "负责人");
@@ -1464,15 +1445,14 @@ class classDbiL3apF3dm
         for($i=0; $i<count($auth_list["stat_code"]); $i++)
         {
             $one_row = array();
-            $pcode = $auth_list["p_code"][$i];
             $statcode = $auth_list["stat_code"][$i];
-            $query_str = "SELECT * FROM `t_l3f2cm_projinfo` WHERE `p_code` = '$pcode'";
+            $query_str = "SELECT * FROM `t_l3f3dm_siteinfo` WHERE `statcode` = '$statcode'";
             $result = $mysqli->query($query_str);
             if (($result->num_rows) > 0)
             {
                 $row = $result->fetch_array();
                 array_push($one_row, $statcode);
-                array_push($one_row, $row["p_name"]);
+                array_push($one_row, $row["statname"]);
                 array_push($one_row, $row["country"]);
                 array_push($one_row, $row["address"]);
                 array_push($one_row, $row["chargeman"]);
@@ -1866,7 +1846,7 @@ class classDbiL3apF3dm
 
         while ($row = $result->fetch_array()){
             $statcode = $row['statcode'];
-            $statname = $row['name'];
+            $statname = $row['statname'];
             $query_str = "SELECT * FROM `t_l3fxprcm_fhys_locklog` WHERE (`statcode` = '$statcode')";
             $resp = $mysqli->query($query_str);
             while($resp_row = $resp->fetch_array()){
