@@ -538,7 +538,7 @@ class classDbiL3apF3dm
         }
         $mysqli->query("SET NAMES utf8");
 
-        $query_str = "SELECT * FROM `t_l3f3dm_siteinfo` WHERE `statcode` = '$statcode' ";
+        $query_str = "SELECT * FROM `t_l2sdk_iothcu_inventory` WHERE `statcode` = '$statcode' ";
         $result = $mysqli->query($query_str);
 
         $devlist = array();

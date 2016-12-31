@@ -4562,9 +4562,13 @@ class classTaskL2sdkWechat
 				switch ($RX_TYPE)
 				{
 					case "event":
+                        $project = MFUN_PRJ_IHU_EMCWX;
+                        $log_from = MFUN_CLOUD_WX;
 						$result = $this->wechat_receiveEvent($parObj, $postObj);
 						break;
 					case "text":
+                        $project = MFUN_PRJ_IHU_EMCWX;
+                        $log_from = MFUN_CLOUD_WX;
 						$result = $this->wechat_receiveText($postObj);
 						break;
 					case "image":

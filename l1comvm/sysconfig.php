@@ -230,7 +230,7 @@ if (isset($_SERVER['SERVER_NAME']))
         define("MFUN_MQ_RABBIT_QUEUE", "q_linvo");
         define("MFUN_MQ_RABBIT_ROUTE_KEY", "key_1");
 
-    } elseif ($_SERVER['SERVER_NAME'] == "121.40.185.177") //爱启云
+    } elseif ($_SERVER['SERVER_NAME'] == "www.aiqiworld.com") //爱启云"121.40.185.177"
     {
         //云后台定义
         define("MFUN_CLOUD_HCU", "AQ_HCU"); //HCU后台云应用
@@ -267,7 +267,7 @@ if (isset($_SERVER['SERVER_NAME']))
         define("MFUN_MQ_RABBIT_QUEUE", "q_linvo");
         define("MFUN_MQ_RABBIT_ROUTE_KEY", "key_1");
 
-    }elseif ($_SERVER['SERVER_NAME'] == "121.40.118.33") //小慧智能云
+    }elseif ($_SERVER['SERVER_NAME'] == "www.hkrob.com") //小慧智能云 "121.40.118.33"
     {
         //云后台定义
         define("MFUN_CLOUD_HCU", "XHZN_HCU"); //HCU后台云应用

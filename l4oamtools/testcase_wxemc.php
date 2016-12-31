@@ -80,6 +80,14 @@ if (TC_EMCWX == true){
                                         <EventKey><![CDATA[https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxf2150c4d2941b2ab&redirect_uri=http://www.hkrob.com/mfunhcu/l4emcwxui/index.html?response_type=code&scope=snsapi_base&state=1#wechat_redirect]]></EventKey>
                                         <MenuId>414775299</MenuId>
                                      </xml>";
+    /*$GLOBALS["HTTP_RAW_POST_DATA"] ="<xml><ToUserName><![CDATA[gh_4667dc241921]]></ToUserName>
+                                        <FromUserName><![CDATA[oMjZ7v_s-Y5R1fKTvBTzcMl9C65o]]></FromUserName>
+                                        <CreateTime>1483163309</CreateTime>
+                                        <MsgType><![CDATA[event]]></MsgType>
+                                        <Event><![CDATA[VIEW]]></Event>
+                                        <EventKey><![CDATA[https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxf2150c4d2941b2ab&redirect_uri=http://www.hkrob.com/mfunhcu/l4fhyswechat/index.html?response_type=code&scope=snsapi_base&state=1#wechat_redirect]]></EventKey>
+                                        <MenuId>416339768</MenuId>
+                                        </xml>";*/
     require("../l1mainentry/cloud_callback_wechat.php");
     echo " \n[TC EMCWX: WEIXIN “VIEW” event END]\n";
 
