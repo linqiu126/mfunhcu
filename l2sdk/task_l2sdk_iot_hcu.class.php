@@ -302,6 +302,21 @@ class classTaskL2sdkIotHcu
                 else $resp = "";
                 break;
 
+            case MFUN_HCU_CMDID_FHYS_BOX: //光交箱状态聚合控制字
+                $msg = array("project" => $project,
+                    "log_from" => $log_from,
+                    "platform" => MFUN_TECH_PLTF_HCUSTM,
+                    "deviceId" => $deviceId,
+                    "statCode" => $statCode,
+                    "content" => array("content" =>$content, "funcFlag" => $funcFlag));
+                if ($parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L2SDK_IOT_HCU,
+                        MFUN_TASK_ID_L2SENSOR_DOORLOCK,
+                        MSG_ID_L2SDK_HCU_TO_L2SNR_BOXSTAT,
+                        "MSG_ID_L2SDK_HCU_TO_L2SNR_BOXSTAT",
+                        $msg) == false) $resp = "Send to message buffer error";
+                else $resp = "";
+                break;
+
             case MFUN_HCU_CMDID_FHYS_DOOR://光交箱门控制字
                 $msg = array("project" => $project,
                     "log_from" => $log_from,

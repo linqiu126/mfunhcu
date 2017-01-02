@@ -69,6 +69,7 @@ define("MSG_ID_L2SDK_WECHAT_DATA_COMING", $index++);
 define("MSG_ID_L2SDK_HCU_DATA_COMING", $index++);
 //FHYS智能云锁消息
 define("MSG_ID_L2SDK_HCU_TO_L2SNR_DOORLOCK", $index++);
+define("MSG_ID_L2SDK_HCU_TO_L2SNR_BOXSTAT", $index++);
 define("MSG_ID_L2SDK_HCU_TO_L2SNR_BATT", $index++);
 define("MSG_ID_L2SDK_HCU_TO_L2SNR_BLE", $index++);
 define("MSG_ID_L2SDK_HCU_TO_L2SNR_GPRS", $index++);

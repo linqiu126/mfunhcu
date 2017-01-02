@@ -479,6 +479,166 @@ class classDbiL2snrDoorlock
         return $resp;
     }
 
+    public function dbi_hcu_doorlock_statreport_process($devCode, $statCode, $data)
+    {
+        //建立连接
+        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli) {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $mysqli->query("SET NAMES utf8");
+
+        $format = "A2lock1/A2lock2/A2door1/A2door2/A2rfid/A2ble/A2gprs/A2batt/A4temp/A4humi/A2vibr/A2smok/A2water/A2tilt";
+        $msg= unpack($format, $data);
+
+        if ($msg['lock1'] == MFUN_HCU_DATA_FHYS_STATUS_OK)
+            $lock1 = MFUN_HCU_FHYS_LOCK_CLOSE;
+        elseif ($msg['lock1'] == MFUN_HCU_DATA_FHYS_STATUS_NOK)
+            $lock1 = MFUN_HCU_FHYS_LOCK_OPEN;
+        elseif ($msg['lock1'] == MFUN_HCU_DATA_FHYS_STATUS_ALARM)
+            $lock1 = MFUN_HCU_FHYS_LOCK_ALARM;
+        else
+            $lock1 =MFUN_HCU_FHYS_STATUS_UNKNOWN;
+
+        if ($msg['lock2'] == MFUN_HCU_DATA_FHYS_STATUS_OK)
+            $lock2 = MFUN_HCU_FHYS_LOCK_CLOSE;
+        elseif ($msg['lock2'] == MFUN_HCU_DATA_FHYS_STATUS_NOK)
+            $lock2 = MFUN_HCU_FHYS_LOCK_OPEN;
+        elseif ($msg['lock2'] == MFUN_HCU_DATA_FHYS_STATUS_ALARM)
+            $lock2 = MFUN_HCU_FHYS_LOCK_ALARM;
+        else
+            $lock2 =MFUN_HCU_FHYS_STATUS_UNKNOWN;
+
+        if ($msg['door1'] == MFUN_HCU_DATA_FHYS_STATUS_OK)
+            $door1 = MFUN_HCU_FHYS_DOOR_CLOSE;
+        elseif ($msg['door1'] == MFUN_HCU_DATA_FHYS_STATUS_NOK)
+            $door1 = MFUN_HCU_FHYS_DOOR_OPEN;
+        elseif ($msg['door1'] == MFUN_HCU_DATA_FHYS_STATUS_ALARM)
+            $door1 = MFUN_HCU_FHYS_DOOR_ALARM;
+        else
+            $door1 =MFUN_HCU_FHYS_STATUS_UNKNOWN;
+
+        if ($msg['door2'] == MFUN_HCU_DATA_FHYS_STATUS_OK)
+            $door2 = MFUN_HCU_FHYS_DOOR_CLOSE;
+        elseif ($msg['door2'] == MFUN_HCU_DATA_FHYS_STATUS_NOK)
+            $door2 = MFUN_HCU_FHYS_DOOR_OPEN;
+        elseif ($msg['door2'] == MFUN_HCU_DATA_FHYS_STATUS_ALARM)
+            $door2 = MFUN_HCU_FHYS_DOOR_ALARM;
+        else
+            $door2 =MFUN_HCU_FHYS_STATUS_UNKNOWN;
+
+        if ($msg['rfid'] == MFUN_HCU_DATA_FHYS_STATUS_OK)
+            $rfid = MFUN_HCU_FHYS_STATUS_OK;
+        elseif ($msg['rfid'] == MFUN_HCU_DATA_FHYS_STATUS_NOK)
+            $rfid = MFUN_HCU_FHYS_STATUS_NOK;
+        else
+            $rfid = MFUN_HCU_FHYS_STATUS_UNKNOWN;
+
+        if ($msg['ble'] == MFUN_HCU_DATA_FHYS_STATUS_OK)
+            $ble = MFUN_HCU_FHYS_STATUS_OK;
+        elseif ($msg['ble'] == MFUN_HCU_DATA_FHYS_STATUS_NOK)
+            $ble = MFUN_HCU_FHYS_STATUS_NOK;
+        else
+            $ble = MFUN_HCU_FHYS_STATUS_UNKNOWN;
+
+        $gprs =hexdec($msg['gprs']) & 0xFF;
+        $batt = hexdec($msg['batt']) & 0xFF;
+        $temperature = $msg['temp'];
+        $humi = $msg['humi'];
+
+        if ($msg['vibr'] == MFUN_HCU_DATA_FHYS_STATUS_OK)
+            $vibr = MFUN_HCU_FHYS_STATUS_OK;
+        elseif ($msg['vibr'] == MFUN_HCU_DATA_FHYS_STATUS_NOK)
+            $vibr = MFUN_HCU_FHYS_STATUS_NOK;
+        else
+            $vibr = MFUN_HCU_FHYS_STATUS_UNKNOWN;
+
+        if ($msg['smok'] == MFUN_HCU_DATA_FHYS_STATUS_OK)
+            $smok = MFUN_HCU_FHYS_STATUS_OK;
+        elseif ($msg['smok'] == MFUN_HCU_DATA_FHYS_STATUS_NOK)
+            $smok = MFUN_HCU_FHYS_STATUS_NOK;
+        else
+            $smok = MFUN_HCU_FHYS_STATUS_UNKNOWN;
+
+        if ($msg['water'] == MFUN_HCU_DATA_FHYS_STATUS_OK)
+            $water = MFUN_HCU_FHYS_STATUS_OK;
+        elseif ($msg['water'] == MFUN_HCU_DATA_FHYS_STATUS_NOK)
+            $water = MFUN_HCU_FHYS_STATUS_NOK;
+        else
+            $water = MFUN_HCU_FHYS_STATUS_UNKNOWN;
+
+        if ($msg['tilt'] == MFUN_HCU_DATA_FHYS_STATUS_OK)
+            $tilt = MFUN_HCU_FHYS_STATUS_OK;
+        elseif ($msg['tilt'] == MFUN_HCU_DATA_FHYS_STATUS_NOK)
+            $tilt = MFUN_HCU_FHYS_STATUS_NOK;
+        else
+            $tilt = MFUN_HCU_FHYS_STATUS_UNKNOWN;
+
+        $timestamp = time();
+        $date = intval(date("ymd", $timestamp));
+        $temp = getdate($timestamp);
+        $hourminindex = intval(($temp["hours"] * 60 + floor($temp["minutes"]/MFUN_HCU_FHYS_TIME_GRID_SIZE)));
+        //更新分钟报告表
+        $result = $mysqli->query("SELECT * FROM `t_l2snr_fhys_minreport` WHERE (( `devcode` = '$devCode' AND `statcode` = '$statCode')
+                        AND (`reportdate` = '$date' AND `hourminindex` = '$hourminindex'))");
+        if (($result != false) && ($result->num_rows)>0)   //重复，则覆盖
+        {
+            $query_str = "UPDATE `t_l2snr_fhys_minreport` SET `doorstat` = '$door1', `lockstat` = '$lock1',`blestat` = '$ble',`rfidstat` = '$rfid',`siglevel` = '$gprs',
+                            `battlevel` = '$batt',`temperature` = '$temperature',`humidity` = '$humi',`smokalarm` = '$smok',`wateralarm` = '$water',`vibralarm` = '$vibr'
+                            WHERE (`devcode` = '$devCode' AND `statcode` = '$statCode' AND `reportdate` = '$date' AND `hourminindex` = '$hourminindex')";
+            $result = $mysqli->query($query_str);
+        }
+        else
+        {
+            $query_str = "INSERT INTO `t_l2snr_fhys_minreport` (devcode,statcode,reportdate,hourminindex,doorstat,lockstat,blestat,rfidstat,siglevel,battlevel,temperature,humidity,smokalarm, wateralarm,vibralarm)
+                            VALUES ('$devCode','$statCode','$date','$hourminindex','$door1','$lock1','$ble','$rfid','$gprs','$batt','$temperature','$humi','$smok','$water','$vibr')";
+            $result = $mysqli->query($query_str);
+        }
+
+        //更新当前聚合表
+        $currenttime = date("Y-m-d H:i:s",$timestamp);
+        $result = $mysqli->query("SELECT * FROM `t_l3f3dm_fhys_currentreport` WHERE (`devcode` = '$devCode') ");
+        if (($result->num_rows)>0) {
+            $result = $mysqli->query("UPDATE `t_l3f3dm_fhys_currentreport` SET  `doorstat` = '$door1', `lockstat` = '$lock1',`blestat` = '$ble',`rfidstat` = '$rfid',`siglevel` = '$gprs',
+                            `battlevel` = '$batt',`temperature` = '$temperature',`humidity` = '$humi',`smokalarm` = '$smok',`wateralarm` = '$water',`vibralarm` = '$vibr'`createtime` = '$currenttime'
+                            WHERE (`devcode` = '$devCode')");
+        }
+        else {
+            $result = $mysqli->query("INSERT INTO `t_l3f3dm_fhys_currentreport` (devcode,statcode,createtime,doorstat,lockstat,blestat,rfidstat,siglevel,battlevel,temperature,humidity,smokalarm, wateralarm,vibralarm)
+                            VALUES ('$devCode','$statCode','$currenttime','$door1','$lock1','$ble','$rfid','$gprs','$batt','$temperature','$humi','$smok','$water','$vibr')");
+        }
+
+        if ($result == true)
+            $resp_data = MFUN_HCU_DATA_FHYS_STATUS_OK;
+        else
+            $resp_data = MFUN_HCU_DATA_FHYS_STATUS_NOK;
+
+        $query_str = "SELECT * FROM `t_l2sdk_iothcu_inventory` WHERE (`statcode` = '$statCode' AND `devcode` = '$devCode')";
+        $result = $mysqli->query($query_str);
+
+        if (($result != false) && ($result->num_rows)>0) {
+            //生成控制命令的控制字
+            $apiL2snrCommonServiceObj = new classApiL2snrCommonService();
+            $ctrl_key = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_CMDID_FHYS_BOX);
+            $opt_key = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_OPT_FHYS_BOXSTAT_RESP);
+            $para = $apiL2snrCommonServiceObj->byte2string($resp_data);
+
+            $len = $apiL2snrCommonServiceObj->byte2string(strlen($para) / 2);
+            $respCmd = $ctrl_key . $opt_key . $len . $para;
+
+            //通过9502端口建立tcp阻塞式socket连接，向HCU转发操控命令
+            $client = new socket_client_sync($devCode, $respCmd);
+            $client->connect();
+            $resp = "Box status response send success";
+        }
+        else
+            $resp = "Box status response send failure";
+
+        $mysqli->close();
+        return $resp;//返回Response
+    }
+
+
 }
 
 ?>

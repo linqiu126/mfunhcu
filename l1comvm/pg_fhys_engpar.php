@@ -88,8 +88,11 @@ define("MFUN_HCU_CMDID_FHYS_SMOK", 0x47);       //烟雾控制字
 define("MFUN_HCU_CMDID_FHYS_WATER", 0x48);       //水浸控制字
 define("MFUN_HCU_CMDID_FHYS_TEMP", 0x49);       //温度控制字
 define("MFUN_HCU_CMDID_FHYS_HUMI", 0x4A);       //湿度控制字
+define("MFUN_HCU_CMDID_FHYS_BOX", 0x4C);        //光交箱状态聚合控制字
 
 //锁操作字
+define("MFUN_HCU_OPT_FHYS_BOXSTAT_IND", 0x81);
+define("MFUN_HCU_OPT_FHYS_BOXSTAT_RESP", 0x01);
 define("MFUN_HCU_OPT_FHYS_LOCKSTAT_IND", 0x81);
 define("MFUN_HCU_OPT_FHYS_LOCKSTAT_RESP", 0x01);
 define("MFUN_HCU_OPT_FHYS_USERID_LOCKOPEN_REQ", 0x82);

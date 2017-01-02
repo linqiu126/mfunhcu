@@ -17,7 +17,7 @@ class classTaskL2snrDoorlock
 
     }
 
-    public function func_doorlock_data_process($platform, $devCode, $statCode, $msg)
+    private function func_doorlock_data_process($platform, $devCode, $statCode, $msg)
     {
         if(isset($msg['content'])) $content = $msg['content']; else $content = "";
         if(isset($msg['funcFlag'])) $funcFlag = $msg['funcFlag']; else $funcFlag = "";
@@ -84,6 +84,28 @@ class classTaskL2snrDoorlock
         return $resp;
     }
 
+    private function func_doorlock_statreport_process($platform, $devCode, $statCode, $msg)
+    {
+        if(isset($msg['content'])) $content = $msg['content']; else $content = "";
+        if(isset($msg['funcFlag'])) $funcFlag = $msg['funcFlag']; else $funcFlag = "";
+
+        if(empty($content)){
+            return "ERROR FHYS_DOORCLOCK: message empty";  //消息内容为空，直接返回
+        }
+        $raw_MsgHead = substr($content, 0, MFUN_HCU_MSG_HEAD_LENGTH);  //截取6Byte MsgHead
+        $msgHead = unpack("A2Key/A2Opt/A2Len", $raw_MsgHead);
+        $length = hexdec($msgHead['Len']) & 0xFF;
+        $length =  ($length+3) * 2; //因为收到的消息为16进制字符，消息总长度等于length＋1B控制字＋1B长度本身
+        if ($length != strlen($content)) {
+            return "ERROR FHYS_DOORCLOCK: message length invalid";  //消息长度不合法，直接返回
+        }
+        $data = substr($content, MFUN_HCU_MSG_HEAD_LENGTH, $length);
+        $classDbiL2snrDoorlock = new classDbiL2snrDoorlock();
+        $resp = $classDbiL2snrDoorlock->dbi_hcu_doorlock_statreport_process($devCode, $statCode, $data);
+
+        return $resp;
+    }
+
 
 
     /**************************************************************************************
@@ -131,6 +153,18 @@ class classTaskL2snrDoorlock
 
             //具体处理函数
             $resp = $this->func_doorlock_data_process($platform, $deviceId, $statCode, $content);
+        }
+        elseif ($msgId == MSG_ID_L2SDK_HCU_TO_L2SNR_BOXSTAT){
+            //解开消息
+            if (isset($msg["project"])) $project = $msg["project"];
+            if (isset($msg["log_from"])) $log_from = $msg["log_from"];
+            if (isset($msg["platform"])) $platform = $msg["platform"];
+            if (isset($msg["deviceId"])) $deviceId = $msg["deviceId"];
+            if (isset($msg["statCode"])) $statCode = $msg["statCode"];
+            if (isset($msg["content"])) $content = $msg["content"];
+
+            //具体处理函数
+            $resp = $this->func_doorlock_statreport_process($platform, $deviceId, $statCode, $content);
         }
         else{
             $resp = ""; //啥都不ECHO
