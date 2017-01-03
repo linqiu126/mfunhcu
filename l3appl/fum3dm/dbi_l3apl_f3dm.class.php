@@ -1301,6 +1301,69 @@ class classDbiL3apF3dm
         return $resp;
     }
 
+    public function dbi_aqyc_performance_table_req($uid)
+    {
+        //初始化返回值
+        $resp["column"] = array();
+        $resp['data'] = array();
+
+        //建立连接
+        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli) {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $mysqli->query("SET NAMES utf8");
+
+        $auth_list["stat_code"] = array();
+        $auth_list["p_code"] = array();
+        $auth_list = $this->dbi_user_statproj_inqury($uid);
+
+        array_push($resp["column"], "监测点编号");
+        array_push($resp["column"], "监测点名称");
+        array_push($resp["column"], "项目单位");
+        array_push($resp["column"], "区县");
+        array_push($resp["column"], "地址");
+        array_push($resp["column"], "负责人");
+        array_push($resp["column"], "联系电话");
+        array_push($resp["column"], "性能参数");
+
+
+        for($i=0; $i<count($auth_list["stat_code"]); $i++)
+        {
+            $one_row = array();
+            $pcode = $auth_list["p_code"][$i];
+            $statcode = $auth_list["stat_code"][$i];
+            $query_str = "SELECT * FROM `t_l3f3dm_siteinfo` WHERE `statcode` = '$statcode'";
+            $result = $mysqli->query($query_str);
+            if (($result->num_rows) > 0)
+            {
+                $row = $result->fetch_array();
+                array_push($one_row, $statcode);
+                array_push($one_row, $row["statname"]);
+                array_push($one_row, $row["department"]);
+                array_push($one_row, $row["country"]);
+                array_push($one_row, $row["address"]);
+                array_push($one_row, $row["chargeman"]);
+                array_push($one_row, $row["telephone"]);
+            }
+            $query_str = "SELECT * FROM `t_l3f3dm_aqyc_currentreport` WHERE `statcode` = '$statcode'";
+            $result = $mysqli->query($query_str);
+            //初始化返回值，确保数据库没有测试报告的情况下界面返回数据长度不报错
+            $pm25 = 0;
+
+            if (($result->num_rows) > 0)
+            {
+                $row = $result->fetch_array();
+                $pm25 =  $row["pm25"]/10;
+            }
+            array_push($one_row, $pm25);
+            array_push($resp['data'], $one_row);
+        }
+
+        $mysqli->close();
+        return $resp;
+    }
+
 
     /*********************************波峰组合秤新增处理************************************************/
     //UI GetStaticMonitorTable Request, 获取用户聚合数据

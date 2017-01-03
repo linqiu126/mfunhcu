@@ -114,6 +114,27 @@ class classTaskL3aplF5fm
         return $retval;
     }
 
+    function func_aqyc_current_alarmtable_process($type, $user, $body)
+    {
+        $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
+        $usercheck = $uiF1symDbObj->dbi_user_authcheck($type, $user);
+        if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
+            $uid = $uiF1symDbObj->dbi_session_check($user);
+            $uiF3dmDbObj = new classDbiL3apF3dm(); //初始化一个UI DB对象
+            $resp = $uiF3dmDbObj->dbi_aqyc_current_alarmtable_req($uid);
+            if(!empty($resp)){
+                $ret = array('ColumnName' => $resp["column"],'TableData' => $resp["data"]);
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$ret,'msg'=>"获取当前告警站点列表成功");
+            }
+            else
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>"获取当前告警站点列表失败");
+        }
+        else
+            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
+
+        return $retval;
+    }
+
     /*********************************智能云锁新增处理************************************************/
     function func_fhys_alarmtype_list_process($type, $user, $body)
     {
@@ -207,6 +228,12 @@ class classTaskL3aplF5fm
             //功能Alarm Type, 获取所有告警传感器类型
             case MSG_ID_L4AQYCUI_TO_L3F5_ALARMTYPE:
                 $resp = $this->func_aqyc_alarmtype_list_process($type, $user, $body);
+                $project = MFUN_PRJ_HCU_AQYCUI;
+                break;
+
+            //告警处理
+            case MSG_ID_L4AQYCUI_TO_L3F5_ALARMPROCESS:
+                $resp = $this->func_aqyc_current_alarmtable_process($type, $user, $body);
                 $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 
