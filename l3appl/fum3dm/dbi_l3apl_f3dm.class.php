@@ -605,7 +605,7 @@ class classDbiL3apF3dm
      *                                                 地图显示相关操作DB API                                               *
      *********************************************************************************************************************/
     //UI MonitorList request, 获取该用户地图显示的所有监测点信息
-    public function dbi_map_sitetinfo_req()
+    public function dbi_map_sitetinfo_req($uid)
     {
         //建立连接
         $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
@@ -614,15 +614,16 @@ class classDbiL3apF3dm
         }
         $mysqli->query("SET NAMES utf8");
 
-        $query_str = "SELECT * FROM `t_l3f2cm_projinfo` WHERE 1";
-        $result = $mysqli->query($query_str);
+        $auth_list["stat_code"] = array();
+        $auth_list["p_code"] = array();
+        $auth_list = $this->dbi_user_statproj_inqury($uid);
 
         $sitelist = array();
-        while($row = $result->fetch_array())
+        for($i=0; $i<count($auth_list["stat_code"]); $i++)
         {
-            $pcode = $row['p_code'];
+            $statcode = $auth_list['stat_code'][$i];
 
-            $query_str = "SELECT * FROM `t_l3f3dm_siteinfo` WHERE `p_code` = '$pcode'";      //查询监测点对应的项目号
+            $query_str = "SELECT * FROM `t_l3f3dm_siteinfo` WHERE `statcode` = '$statcode'";      //查询监测点对应的项目号
             $resp = $mysqli->query($query_str);
             if (($resp->num_rows)>0) {
                 $info = $resp->fetch_array();

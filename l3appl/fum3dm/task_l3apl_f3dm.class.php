@@ -275,8 +275,9 @@ class classTaskL3aplF3dm
         $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
         $usercheck = $uiF1symDbObj->dbi_user_authcheck($type, $user);
         if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
+            $uid = $uiF1symDbObj->dbi_session_check($user);
             $uiF3dmDbObj = new classDbiL3apF3dm(); //初始化一个UI DB对象
-            $stat_list = $uiF3dmDbObj->dbi_map_sitetinfo_req();
+            $stat_list = $uiF3dmDbObj->dbi_map_sitetinfo_req($uid);
             if(!empty($stat_list))
                 $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$stat_list,'msg'=>"获取地图监测列表成功");
             else
