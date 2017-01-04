@@ -84,22 +84,79 @@ class classDbiL3apF6pm
         return $result;
     }
 
-    public function dbi_perform_data_inqury($sid)
+    public function dbi_aqyc_performance_table_req($uid)
     {
-        $LatestValue = "";
+        //初始化返回值
+        $resp["column"] = array();
+        $resp['data'] = array();
+
+        //建立连接
         $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
         if (!$mysqli) {
             die('Could not connect: ' . mysqli_error($mysqli));
         }
-        $result = $mysqli->query("SELECT * FROM `t_l3f6pm_perfdata` WHERE `sid` = '$sid'");
-        if (($result != false) && ($result->num_rows)>0)
+        $mysqli->query("SET NAMES utf8");
+
+        $auth_list["stat_code"] = array();
+        $auth_list["p_code"] = array();
+        $dbiL3apF3dmObj = new classDbiL3apF3dm();
+        $auth_list = $dbiL3apF3dmObj->dbi_user_statproj_inqury($uid);
+
+        array_push($resp["column"], "设备编号");
+        array_push($resp["column"], "监测点编号");
+        array_push($resp["column"], "监测点名称");
+        array_push($resp["column"], "项目单位");
+        array_push($resp["column"], "区县");
+        array_push($resp["column"], "地址");
+        array_push($resp["column"], "负责人");
+        array_push($resp["column"], "联系电话");
+        array_push($resp["column"], "稳定性指标");
+        array_push($resp["column"], "系统错误次数");
+
+
+        for($i=0; $i<count($auth_list["stat_code"]); $i++)
         {
-            $row = $result->fetch_array();
-            $LatestValue = $row['stability'];
+            $one_row = array();
+            $pcode = $auth_list["p_code"][$i];
+            $statcode = $auth_list["stat_code"][$i];
+
+            $query_str = "SELECT * FROM `t_l3f6pm_perfdata` WHERE `statcode` = '$statcode'";
+            $result = $mysqli->query($query_str);
+            //初始化返回值，确保数据库没有测试报告的情况下界面返回数据长度不报错
+            $stability = 0;
+            $errcnt =0;
+            if (($result->num_rows) > 0)
+            {
+                $row = $result->fetch_array();
+                $devcode = $row["devcode"];
+                $stability =  $row["stability"];
+                $errcnt = $row["errcnt"];
+
+                $query_str = "SELECT * FROM `t_l3f3dm_siteinfo` WHERE `statcode` = '$statcode'";
+                $result = $mysqli->query($query_str);
+                if (($result->num_rows) > 0)
+                {
+                    $row = $result->fetch_array();
+                    array_push($one_row, $devcode);
+                    array_push($one_row, $statcode);
+                    array_push($one_row, $row["statname"]);
+                    array_push($one_row, $row["department"]);
+                    array_push($one_row, $row["country"]);
+                    array_push($one_row, $row["address"]);
+                    array_push($one_row, $row["chargeman"]);
+                    array_push($one_row, $row["telephone"]);
+                    array_push($one_row, $stability);
+                    array_push($one_row, $errcnt);
+                }
+            }
+
+            array_push($resp['data'], $one_row);
         }
+
         $mysqli->close();
-        return $LatestValue;
+        return $resp;
     }
+
 
 }
 ?>

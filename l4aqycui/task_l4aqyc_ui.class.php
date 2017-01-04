@@ -484,7 +484,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
                     $input = array("type" => $type,"user" => $user,"body" => $body);
-                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM3DM, MSG_ID_L4AQYCUI_TO_L3F3_STABILITYTABLE, "MSG_ID_L4AQYCUI_TO_L3F3_STABILITYTABLE",$input);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM6PM, MSG_ID_L4AQYCUI_TO_L3F6_PERFORMANCETABLE, "MSG_ID_L4AQYCUI_TO_L3F6_PERFORMANCETABLE",$input);
                     break;
 
                 /*以下5条消息是公用，要考虑不同项目的适配*/

@@ -12,7 +12,7 @@ include_once "../l1comvm/vmlayer.php";
  *                             L4AQYC-UI TEST CASES                                   *
  *************************************************************************************/
 if (TC_L4AQYC_UI == true) {
-    $sessionid = "ZoSnQeP6RM";
+    $sessionid = "fqZVOPY2cZ";
     $uerid = "UID000001";
     $statcode = "120101015";
 
@@ -153,10 +153,15 @@ if (TC_L4AQYC_UI == true) {
     require("../l4aqycui/request.php");
     echo " [TC L4AQYC: AlarmQuery END]\n";
 
+    echo " [TC L4AQYC: GetAuditStabilityTable START]\n";
+    $_GET["action"] = "GetAuditStabilityTable";
+    $_GET["type"] = "query";
+    $_GET["user"] = $sessionid;
+    require("../l4aqycui/request.php");
+    echo " [TC L4AQYC: GetAuditStabilityTable END]\n";
 
 
-
-
+//以下testcase还没有改造完成
 
     echo " [TC L4AQYC: HcuSwUpdate START]\n";
     $_GET["action"] = "HcuSwUpdate";

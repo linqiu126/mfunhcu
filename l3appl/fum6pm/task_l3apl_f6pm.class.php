@@ -41,13 +41,26 @@ class classTaskL3aplF6pm
         return urlencode($elem);
     }
 
-    function func_xxx_process($user)
+    function func_aqyc_get_performance_table_process($type, $user, $body)
     {
         $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
-        $jsonencode = json_encode($uiF1symDbObj);
-        return $jsonencode;
-    }
+        $usercheck = $uiF1symDbObj->dbi_user_authcheck($type, $user);
+        if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
+            $uid = $uiF1symDbObj->dbi_session_check($user);
+            $uiF6pmDbObj = new classDbiL3apF6pm(); //初始化一个UI DB对象
+            $resp = $uiF6pmDbObj->dbi_aqyc_performance_table_req($uid);
+            if(!empty($resp)){
+                $ret = array('ColumnName' => $resp["column"],'TableData' => $resp["data"]);
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$ret,'msg'=>"获取站点性能统计表成功");
+            }
+            else
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>"获取站点性能统计表失败");
+        }
+        else
+            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
 
+        return $retval;
+    }
 
 
     /**************************************************************************************
@@ -68,6 +81,13 @@ class classTaskL3aplF6pm
             echo trim($result);
             return false;
         }
+        else{
+            //解开消息
+            if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
+            if (isset($msg["user"])) $user = $msg["user"]; else  $user = "";
+            if (isset($msg["body"])) $body = $msg["body"]; else  $body = "";
+        }
+
         //多条消息发送到L3APPL_F6PM，这里潜在的消息太多，没法一个一个的判断，故而只检查上下界
         if (($msgId <= MSG_ID_MFUN_MIN) || ($msgId >= MSG_ID_MFUN_MAX)){
             $result = "Msgid or MsgName error";
@@ -77,26 +97,24 @@ class classTaskL3aplF6pm
             return false;
         }
 
-        //功能Login
-        if ($msgId == MSG_ID_L4AQYCUI_TO_L3F1_LOGIN)
+        switch($msgId)
         {
-            //解开消息
-            if (isset($msg["user"])) $user = $msg["user"]; else  $user = "";
-            //具体处理函数
-            $resp = $this->func_xxx_process($user);
-            $project = MFUN_PRJ_HCU_AQYCUI;
-        }
-
-        else{
-            $resp = ""; //啥都不ECHO
+            case MSG_ID_L4AQYCUI_TO_L3F6_PERFORMANCETABLE:
+                $resp = $this->func_aqyc_get_performance_table_process($type, $user, $body);
+                $project = MFUN_PRJ_HCU_AQYCUI;
+                break;
+            default :
+                $resp = ""; //啥都不ECHO
+                break;
         }
 
         //返回ECHO
         if (!empty($resp))
         {
-            $log_content = "T:" . json_encode($resp);
+            $jsonencode = json_encode($resp, JSON_UNESCAPED_UNICODE);
+            $log_content = "T:" . $jsonencode;
             $loggerObj->logger(MFUN_PRJ_HCU_AQYCUI, "MFUN_TASK_ID_L3APPL_FUM6PM", $log_time, $log_content);
-            echo trim($resp); //这里需要编码送出去，跟其他处理方式还不太一样
+            echo trim($jsonencode); //这里需要编码送出去，跟其他处理方式还不太一样
         }
 
         //返回
