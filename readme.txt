@@ -327,6 +327,8 @@ Make By：ZJL
 > 添加FHYS微信开锁界面
 > 调整t_l3f2cm_projinfo和t_l3f3dm_siteinfo表单，使项目和站点1对多映射逻辑更合理
 
+//= QL, 2017 Jan.5, CURRENT_SW_DELIVERY R03.D10
+> 增加hcu performance性能统计功能
 
 //待完善的功能
 1. dbi_devinfo_update（）需要修改，添加设备时预计结束时间和实际结束时间应该在项目信息里

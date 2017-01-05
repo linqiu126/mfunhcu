@@ -49,6 +49,33 @@ class classApiL2snrCommonService
         return $resp;
     }
 
+    public function func_hcuPerformance_process($deviceId, $statCode, $content)
+    {
+        $format = "A2CmdId/A2Len/A2OptId/A2CmdIdBackType/A4CurlConnAttempt/A4CurlConnFailCnt/A4CurlDiscCnt/A4SocketDiscCnt/A4PmTaskRestartCnt/A4CPUOccupyCnt/A4MemOccupyCnt/A4DiskOccupyCnt/A8createtime";
+        $data = unpack($format, $content);
+
+        $CmdId = hexdec($data['CmdId']) & 0xFF;
+        $Len = hexdec($data['Len']) & 0xFF;
+        $OptId = hexdec($data['OptId']) & 0xFF;
+        $CmdIdBackType = hexdec($data['CmdIdBackType']) & 0xFF;
+        $CurlConnAttempt = hexdec($data['CurlConnAttempt']) & 0xFFFF;
+        $CurlConnFailCnt = hexdec($data['CurlConnFailCnt']) & 0xFFFF;
+        $CurlDiscCnt = hexdec($data['CurlDiscCnt']) & 0xFFFF;
+        $SocketDiscCnt = hexdec($data['SocketDiscCnt']) & 0xFFFF;
+        $PmTaskRestartCnt = hexdec($data['PmTaskRestartCnt']) & 0xFFFF;
+        $CPUOccupyCnt = hexdec($data['CPUOccupyCnt']) & 0xFFFF;
+        $MemOccupyCnt = hexdec($data['MemOccupyCnt']) & 0xFFFF;
+        $DiskOccupyCnt = hexdec($data['DiskOccupyCnt']) & 0xFFFF;
+        $createtime = hexdec($data['createtime']) & 0xFFFFFFFF;
+
+        $cDbObj = new classDbiL1vmCommon();
+
+        $resp = $cDbObj->dbi_hcu_performance_data_save($deviceId, $statCode, $CurlConnAttempt, $CurlConnFailCnt, $CurlDiscCnt, $SocketDiscCnt, $PmTaskRestartCnt, $CPUOccupyCnt, $MemOccupyCnt, $DiskOccupyCnt, $createtime);
+
+
+        return $resp;
+    }
+
     public function func_version_update_process($platform,$deviceId, $content)
     {
         $mac = hexdec(substr($content, 4, 12)) & 0xFFFFFFFFFFFF;
