@@ -49,6 +49,100 @@ class classDbiL3apF5fm
 
     }
 
+
+    //查询该站点是否正处于告警状态
+    private function dbi_site_alarm_check($statcode)
+    {
+        //建立连接
+        $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli)
+        {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+
+        $result = $mysqli->query("SELECT * FROM `t_l3f3dm_aqyc_currentreport` WHERE `statcode` = '$statcode'");
+        if ($result->num_rows>0){
+            $row = $result->fetch_array();
+            $pm25 = $row['pm25']/1;
+            $windspeed = $row['windspeed']/1;
+            $noise = $row['noise']/1;
+            $temperature = $row['temperature']/1;
+            $humidity = $row['humidity']/1;
+        }
+        else{
+            $pm25 = 0;
+            $windspeed = 0;
+            $noise = 0;
+            $temperature = 0;
+            $humidity = 0;
+        }
+
+        //PM2.5，噪声或温度任意一个超标，这显示该站点告警
+        if(($pm25>MFUN_L3APL_F3DM_TH_ALARM_PM25) OR ($noise)>MFUN_L3APL_F3DM_TH_ALARM_NOISE OR ($temperature)>MFUN_L3APL_F3DM_TH_ALARM_TEMP )
+            $resp = true;
+        else
+            $resp = false;
+
+        $mysqli->close();
+        return $resp;
+    }
+
+
+    //获取该用户授权站点中当前存在告警站点的地图显示信息
+    public function dbi_alarm_map_sitetinfo_req($uid)
+    {
+        //建立连接
+        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli) {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $mysqli->query("SET NAMES utf8");
+
+        $auth_list["stat_code"] = array();
+        $auth_list["p_code"] = array();
+        $auth_list = $this->dbi_user_statproj_inqury($uid);
+
+        $sitelist = array();
+        for($i=0; $i<count($auth_list["stat_code"]); $i++)
+        {
+            $statcode = $auth_list['stat_code'][$i];
+
+            $query_str = "SELECT * FROM `t_l3f3dm_siteinfo` WHERE `statcode` = '$statcode'";      //查询监测点对应的项目号
+            $resp = $mysqli->query($query_str);
+            if (($resp->num_rows)>0) {
+                $alarm_check = $this->dbi_site_alarm_check($statcode);
+                if ($alarm_check){
+                    $info = $resp->fetch_array();
+
+                    $latitude = ($info['latitude'])/1000000;  //百度地图经纬度转换
+                    $longitude =  ($info['longitude'])/1000000;
+
+                    $temp = array(
+                        'StatCode' => $info['statcode'],
+                        'StatName' => $info['statname'],
+                        'ChargeMan' => $info['chargeman'],
+                        'Telephone' => $info['telephone'],
+                        'Department' => $info['department'],
+                        'Address' => $info['address'],
+                        'Country' => $info['country'],
+                        'Street' => $info['street'],
+                        'Square' => $info['square'],
+                        'Flag_la' => $info['flag_la'],
+                        'Latitude' => $latitude,
+                        'Flag_lo' =>  $info['flag_lo'],
+                        'Longitude' => $longitude,
+                        'ProStartTime' => $info['starttime'],
+                        'Stage' => $info['memo'],
+                    );
+                    array_push($sitelist, $temp);
+                }
+            }
+        }
+
+        $mysqli->close();
+        return $sitelist;
+    }
+
     public function dbi_alarm_data_save($sid, $alarmdesc)
     {
         //建立连接

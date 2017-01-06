@@ -105,13 +105,16 @@ class classDbiL3apF6pm
         array_push($resp["column"], "设备编号");
         array_push($resp["column"], "监测点编号");
         array_push($resp["column"], "监测点名称");
-        array_push($resp["column"], "项目单位");
-        array_push($resp["column"], "区县");
         array_push($resp["column"], "地址");
-        array_push($resp["column"], "负责人");
-        array_push($resp["column"], "联系电话");
-        array_push($resp["column"], "稳定性指标");
-        array_push($resp["column"], "系统错误次数");
+        array_push($resp["column"], "报告时间");
+        array_push($resp["column"], "CurlConnAttempt");
+        array_push($resp["column"], "CurlConnFailCnt");
+        array_push($resp["column"], "CurlDiscCnt");
+        array_push($resp["column"], "SocketDiscCnt");
+        array_push($resp["column"], "PmTaskRestartCnt");
+        array_push($resp["column"], "CPUOccupyCnt");
+        array_push($resp["column"], "MemOccupyCnt");
+        array_push($resp["column"], "DiskOccupyCnt");
 
 
         for($i=0; $i<count($auth_list["stat_code"]); $i++)
@@ -122,15 +125,21 @@ class classDbiL3apF6pm
 
             $query_str = "SELECT * FROM `t_l3f6pm_perfdata` WHERE `statcode` = '$statcode'";
             $result = $mysqli->query($query_str);
-            //初始化返回值，确保数据库没有测试报告的情况下界面返回数据长度不报错
-            $stability = 0;
-            $errcnt =0;
+
             if (($result->num_rows) > 0)
             {
                 $row = $result->fetch_array();
                 $devcode = $row["devcode"];
-                $stability =  $row["stability"];
-                $errcnt = $row["errcnt"];
+                $createtime =  $row["createtime"];
+                $curlConnAttempt = $row["CurlConnAttempt"];
+                $curlConnFailCnt = $row["CurlConnFailCnt"];
+                $curlDiscCnt = $row["CurlDiscCnt"];
+                $socketDiscCnt = $row["SocketDiscCnt"];
+                $pmTaskRestartCnt = $row["PmTaskRestartCnt"];
+                $cpuOccupyCnt = $row["CPUOccupyCnt"];
+                $memOccupyCnt = $row["MemOccupyCnt"];
+                $diskOccupyCnt = $row["DiskOccupyCnt"];
+
 
                 $query_str = "SELECT * FROM `t_l3f3dm_siteinfo` WHERE `statcode` = '$statcode'";
                 $result = $mysqli->query($query_str);
@@ -140,13 +149,16 @@ class classDbiL3apF6pm
                     array_push($one_row, $devcode);
                     array_push($one_row, $statcode);
                     array_push($one_row, $row["statname"]);
-                    array_push($one_row, $row["department"]);
-                    array_push($one_row, $row["country"]);
                     array_push($one_row, $row["address"]);
-                    array_push($one_row, $row["chargeman"]);
-                    array_push($one_row, $row["telephone"]);
-                    array_push($one_row, $stability);
-                    array_push($one_row, $errcnt);
+                    array_push($one_row, $createtime);
+                    array_push($one_row, $curlConnAttempt);
+                    array_push($one_row, $curlConnFailCnt);
+                    array_push($one_row, $curlDiscCnt);
+                    array_push($one_row, $socketDiscCnt);
+                    array_push($one_row, $pmTaskRestartCnt);
+                    array_push($one_row, $cpuOccupyCnt);
+                    array_push($one_row, $memOccupyCnt);
+                    array_push($one_row, $diskOccupyCnt);
                 }
             }
 

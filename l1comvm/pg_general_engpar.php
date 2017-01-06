@@ -37,12 +37,6 @@ define ("MFUN_HCU_VIDEO_DATA_STATUS_FAIL", "F");
 //BFSC控制字
 define("MFUN_HCU_CMDID_BFSC_WEIGHT", 0x3B);
 
-//ZHB关键字
-define("MFUN_L2SNR_COMAPI_HOUR_VALIDE_NUM", 54); // HCU环保标准：1小时采集的有效分钟数据应不少于 54个
-define("MFUN_L2SNR_COMAPI_DAY_VALIDE_NUM", 21);  // HCU环保标准：每日应有不少于21个有效小时均值的算术平均值为有效日均值
-define("MFUN_L2SDK_IOTHCU_ZHB_HRB_FRAME","ZHB_HRB");  //中环保协议帧格式：心跳帧
-define("MFUN_L2SDK_IOTHCU_ZHB_NOM_FRAME","ZHB_NOM");  //中环保协议帧格式：正常数据帧
-
 //定义各测量值告警门限
 define("MFUN_L3APL_F3DM_TH_ALARM_NOISE", 80);
 define("MFUN_L3APL_F3DM_TH_ALARM_HUMID", 50);
