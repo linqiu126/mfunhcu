@@ -18,6 +18,10 @@ define("MFUN_L2SNR_COMAPI_DAY_VALIDE_NUM", 21);  // HCU环保标准：每日应�
 define("MFUN_L2SDK_IOTHCU_ZHB_HRB_FRAME","ZHB_HRB");  //中环保协议帧格式：心跳帧
 define("MFUN_L2SDK_IOTHCU_ZHB_NOM_FRAME","ZHB_NOM");  //中环保协议帧格式：正常数据帧
 
+//HCU_ID命名常量定义
+define ("MFUN_HCU_NAME_HWTYPE_PREFIX", "G201_");
+define ("MFUN_HCU_NAME_PROJ_PREFIX", "AQYC_");
+
 //HCU设备状态
 define ("MFUN_HCU_AQYC_STATUS_ON", "Y");
 define ("MFUN_HCU_AQYC_STATUS_OFF", "N");
