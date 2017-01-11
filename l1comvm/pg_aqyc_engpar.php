@@ -51,6 +51,7 @@ define("MFUN_HCU_CMDID_INVENTORY_DATA", 0xA0); //SW,HW 版本信息
 define("MFUN_HCU_CMDID_SW_UPDATE", 0xA1);   //HCU软件更新
 define("MFUN_HCU_CMDID_HEART_BEAT", 0xFE); //HCU心跳特殊控制字
 define("MFUN_HCU_CMDID_HCU_POLLING", 0xFD); //HCU命令轮询控制字
+define("MFUN_HCU_CMDID_HCU_ALARM_DATA", 0xB0); //HCU Alarm Data控制字
 define("MFUN_HCU_CMDID_HCU_PERFORMANCE", 0xB1); //HCU Performance控制字
 
 //MODBUS操作字，0x0开头表示下行从CLOUD到下位机

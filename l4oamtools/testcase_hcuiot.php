@@ -14,6 +14,12 @@ include_once "../l1comvm/vmlayer.php";
 if (TC_IOT_HCU == true) {
 //TEST CASE: IOT_HCU基础数据测试用例集: START
 
+//Alarm Data
+    echo " [TC IOT_HCU: Alarm Data START]\n";
+    $GLOBALS["HTTP_RAW_POST_DATA"] = "<xml><ToUserName><![CDATA[XHZN_HCU]]></ToUserName><FromUserName><![CDATA[HCU_SH_0305]]></FromUserName><CreateTime>1483764977</CreateTime><MsgType><![CDATA[hcu_alarm]]></MsgType><Content><![CDATA[B00B81410100010006587074F1]]></Content><FuncFlag>0</FuncFlag></xml>";
+    require("../l1mainentry/cloud_callback_hcu.php");
+    echo " [TC IOT_HCU: Alarm Data END]\n";
+
 //Performance Statistcis
     echo " [TC IOT_HCU: Performance Statistics START]\n";
     $GLOBALS["HTTP_RAW_POST_DATA"] = "<xml><ToUserName><![CDATA[XHZN_HCU]]></ToUserName><FromUserName><![CDATA[HCU_SH_0305]]></FromUserName><CreateTime>1483588568</CreateTime><MsgType><![CDATA[hcu_pm]]></MsgType><Content><![CDATA[B110810200010000000000000000000000000000586DC3D8]]></Content><FuncFlag>0</FuncFlag></xml>";

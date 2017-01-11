@@ -168,6 +168,11 @@ class classTaskL2sdkIotHcu
                 $resp = $hcuObj->func_hcuPerformance_process($deviceId, $statCode, $content);
                 break;
 
+            case MFUN_HCU_CMDID_HCU_ALARM_DATA:
+                $hcuObj = new classApiL2snrCommonService();
+                $resp = $hcuObj->func_hcuAlarmData_process($deviceId, $statCode, $content);
+                break;
+
             case MFUN_HCU_CMDID_EMC_DATA:  //定时辐射强度处理
                 $msg = array("project" => $project,
                     "log_from" => $log_from,
@@ -661,6 +666,12 @@ class classTaskL2sdkIotHcu
                         $this->receive_hcu_xmlMessage($parObj, $postObj, $project, $log_from);
                         break;
                     case "hcu_pm":
+                        $project = MFUN_PRJ_HCU_XML;
+                        $loggerObj->logger($project, $fromUser, $log_time, $log_content);
+                        $log_from = $fromUser;
+                        $this->receive_hcu_xmlMessage($parObj, $postObj, $project, $log_from);
+                        break;
+                    case "hcu_alarm":
                         $project = MFUN_PRJ_HCU_XML;
                         $loggerObj->logger($project, $fromUser, $log_time, $log_content);
                         $log_from = $fromUser;

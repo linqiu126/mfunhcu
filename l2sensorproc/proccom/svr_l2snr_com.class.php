@@ -49,6 +49,27 @@ class classApiL2snrCommonService
         return $resp;
     }
 
+    public function func_hcuAlarmData_process($deviceId, $statCode, $content)
+    {
+        $format = "A2CmdId/A2Len/A2OptId/A2CmdIdBackType/A4AlarmType/A4AlarmDisc/A2SensorId/A8AlarmTime";
+        $data = unpack($format, $content);
+
+        $CmdId = hexdec($data['CmdId']) & 0xFF;
+        $Len = hexdec($data['Len']) & 0xFF;
+        $OptId = hexdec($data['OptId']) & 0xFF;
+        $CmdIdBackType = hexdec($data['CmdIdBackType']) & 0xFF;
+        $AlarmType = hexdec($data['AlarmType']) & 0xFFFF;
+        $AlarmDisc = hexdec($data['AlarmDisc']) & 0xFFFF;
+        $SensorId = hexdec($data['SensorId']) & 0xFF;
+        $AlarmTime = hexdec($data['AlarmTime']) & 0xFFFFFFFF;
+
+        $cDbObj = new classDbiL1vmCommon();
+
+        $resp = $cDbObj->dbi_hcu_alarm_data_save($deviceId, $statCode, $AlarmType, $AlarmDisc, $SensorId, $AlarmTime);
+
+        return $resp;
+    }
+
     public function func_hcuPerformance_process($deviceId, $statCode, $content)
     {
         $format = "A2CmdId/A2Len/A2OptId/A2CmdIdBackType/A4CurlConnAttempt/A4CurlConnFailCnt/A4CurlDiscCnt/A4SocketDiscCnt/A4PmTaskRestartCnt/A4CPUOccupyCnt/A4MemOccupyCnt/A4DiskOccupyCnt/A8createtime";
@@ -71,7 +92,6 @@ class classApiL2snrCommonService
         $cDbObj = new classDbiL1vmCommon();
 
         $resp = $cDbObj->dbi_hcu_performance_data_save($deviceId, $statCode, $CurlConnAttempt, $CurlConnFailCnt, $CurlDiscCnt, $SocketDiscCnt, $PmTaskRestartCnt, $CPUOccupyCnt, $MemOccupyCnt, $DiskOccupyCnt, $createtime);
-
 
         return $resp;
     }

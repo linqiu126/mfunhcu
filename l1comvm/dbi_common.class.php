@@ -618,6 +618,24 @@ class classDbiL1vmCommon
         return $result;
     }
 
+    //HCU Data数据存储
+    public function dbi_hcu_alarm_data_save($deviceId, $statCode, $AlarmType, $AlarmDisc, $SensorId, $AlarmTime)
+    {
+        //建立连接
+        $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli)
+        {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $mysqli->query("SET NAMES utf8");
+
+        $AlarmTime = date("Y-m-d H:m:s",$AlarmTime);
+        $result=$mysqli->query("INSERT INTO `t_l3f5fm_alarmdata`(`alarmsrc`, `alarmtype`, `alarmdesc`, `tsgen`) VALUES ('$deviceId', '$AlarmType', '$AlarmDisc', '$AlarmTime')");
+
+        $mysqli->close();
+        return $result;
+    }
+
     //HCU控制命令查询
     public function dbi_cmdbuf_inquiry_cmd($deviceid)
     {
