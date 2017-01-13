@@ -330,6 +330,13 @@ Make By：ZJL
 //= QL, 2017 Jan.5, CURRENT_SW_DELIVERY R03.D10
 > 增加hcu performance性能统计功能
 
+//= QL, 2017 Jan.11, CURRENT_SW_DELIVERY R03.D11
+> 增加hcu alarm data上报功能
+
+//= QL, 2017 Jan.13, CURRENT_SW_DELIVERY R03.D12
+> 丰富hcu inventory data上报功能，增加db version字段的存入，增加mac地址的传递
+> 关于mac地址和hcu name之间的匹配逻辑，后续待讨论和完善
+
 //待完善的功能
 1. dbi_devinfo_update（）需要修改，添加设备时预计结束时间和实际结束时间应该在项目信息里
 2. 添加设备时没有选择该设备装配了那些传感器，sensorctrl表没有更新

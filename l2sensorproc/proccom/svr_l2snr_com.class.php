@@ -138,7 +138,7 @@ class classApiL2snrCommonService
     public function func_inventory_data_process($platform,$deviceId, $content)
     {
         //$format = "A2Key/A2Len/A2Opt/A2Type/A6Uuid/A2HW_Tpye/A4HW_Ver/A2SW_Rel/A4SW_Drop";
-        $format = "A2Key/A2Len/A2Opt/A2Type/A2HW_Tpye/A4HW_Ver/A2SW_Rel/A4SW_Drop";
+        $format = "A2Key/A2Len/A2Opt/A2Type/A34MAC_Addr/A2HW_Type/A4HW_Ver/A2SW_Rel/A4SW_Drop/A4DB_Ver";
         $data = unpack($format, $content);
 
         $length = hexdec($data['Len']) & 0xFF;
@@ -147,14 +147,15 @@ class classApiL2snrCommonService
             return "COMMON_SERVICE[HCU]: Inventory message length invalid";  //消息长度不合法，直接返回
         }
 
-        $mac = hexdec($data['Uuid']) & 0xFFFFFFFFFFFF;
-        $hw_type = hexdec($data['HW_Tpye']) & 0xFF;
+        $mac = pack("H*",$data['MAC_Addr']);
+        $hw_type = hexdec($data['HW_Type']) & 0xFF;
         $hw_ver = hexdec($data['HW_Ver']) & 0xFFFF;
         $sw_rel = hexdec($data['SW_Rel']) & 0xFF;
         $sw_drop = hexdec($data['SW_Drop']) & 0xFFFF;
+        $db_ver = hexdec($data['DB_Ver']) & 0xFFFF;
 
         $cDbObj = new classDbiL1vmCommon();
-        $cDbObj->dbi_deviceVersion_update($deviceId,$hw_type,$hw_ver,$sw_rel,$sw_drop);
+        $cDbObj->dbi_deviceVersion_update($deviceId,$mac,$hw_type,$hw_ver,$sw_rel,$sw_drop, $db_ver);
 
         /*
         switch($platform)
