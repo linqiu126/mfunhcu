@@ -502,6 +502,11 @@ class classTaskL2sdkIotHcu
             $log_content = "T:" . json_encode($resp);
             $loggerObj->logger($project, $log_from, $log_time, $log_content);
             echo trim($resp);
+            $DevCode = $log_from;
+            $respCmd = trim($resp);
+            $client = new socket_client_sync($DevCode, $respCmd);
+
+            $client->connect();
         }
 
         //返回

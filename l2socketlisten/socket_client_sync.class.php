@@ -30,9 +30,9 @@ class socket_client_sync
         $arr = array ($this->DevCode,$this->respCmd);
         $this->client->send(json_encode($arr));
 
-        $message = $this->client->recv();
-        echo date('Y/m/d H:i:s', time())." ";
-        echo "Get Message From Server:{$message}\n";
+        //$message = $this->client->recv();
+        //echo date('Y/m/d H:i:s', time())." ";
+        //echo "Get Message From Server:{$message}\n";
 
     }
 }

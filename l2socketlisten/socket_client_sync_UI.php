@@ -7,7 +7,7 @@
  */
 include "socket_client_sync.class.php";
 
-$DevCode = "HCU_SH_0301";
+$DevCode = "HCU_SH_0302";
 $respCmd = "1234567890";
 $client = new socket_client_sync($DevCode, $respCmd);
 
