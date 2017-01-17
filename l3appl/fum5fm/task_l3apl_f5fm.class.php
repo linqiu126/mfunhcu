@@ -135,18 +135,18 @@ class classTaskL3aplF5fm
         return $retval;
     }
 
-    function func_alarm_map_siteinfo_process($type, $user, $body)
+    function func_alarm_monitor_list_process($type, $user, $body)
     {
         $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
         $usercheck = $uiF1symDbObj->dbi_user_authcheck($type, $user);
         if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
             $uid = $uiF1symDbObj->dbi_session_check($user);
             $uiF5fmDbObj = new classDbiL3apF5fm(); //初始化一个UI DB对象
-            $stat_list = $uiF5fmDbObj->dbi_alarm_map_sitetinfo_req($uid);
+            $stat_list = $uiF5fmDbObj->dbi_map_alarm_sitetinfo_req($uid);
             if(!empty($stat_list))
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$stat_list,'msg'=>"获取告警地图监测列表成功");
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$stat_list,'msg'=>"获取地图告警监测列表成功");
             else
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>"获取告警地图监测列表失败");
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>"获取地图告警监测列表失败");
         }
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
@@ -253,6 +253,11 @@ class classTaskL3aplF5fm
             //告警处理
             case MSG_ID_L4AQYCUI_TO_L3F5_ALARMPROCESS:
                 $resp = $this->func_aqyc_current_alarmtable_process($type, $user, $body);
+                $project = MFUN_PRJ_HCU_AQYCUI;
+                break;
+
+            case MSG_ID_L4AQYCUI_TO_L3F5_ALARMMONITORLIST:
+                $resp = $this->func_alarm_monitor_list_process($type, $user, $body);
                 $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 

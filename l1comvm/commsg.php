@@ -198,9 +198,16 @@ define("MSG_ID_L4AQYCUI_TO_L3F4_VIDEOPLAY", $index++);  //请求播放某指定�
 define("MSG_ID_L4AQYCUI_TO_L3F4_GETCAMERASTATUS", $index++);  //查询垂直和水平角度，同时报告传一个照片给后台
 define("MSG_ID_L4AQYCUI_TO_L3F4_GETCAMERAUNIT", $index++);
 define("MSG_ID_L4AQYCUI_TO_L3F4_SENSORUPDATE", $index++);
+define("MSG_ID_L4AQYCUI_TO_L3F4_SWVERINFO", $index++);
+define("MSG_ID_L4AQYCUI_TO_L3F4_SWUPDATESTRATEGYLIST", $index++);
+define("MSG_ID_L4AQYCUI_TO_L3F4_SWBASECHANGE", $index++);
+define("MSG_ID_L4AQYCUI_TO_L3F4_DEVSWSTRATEGYCHANGE", $index++);
+define("MSG_ID_L4AQYCUI_TO_L3F4_PROJSWSTRATEGYCHANGE", $index++);
+define("MSG_ID_L4AQYCUI_TO_L3F4_PROJSWSTRATEGYGET", $index++);
 define("MSG_ID_L4AQYCUI_TO_L3F5_ALARMTYPE", $index++);
 define("MSG_ID_L4AQYCUI_TO_L3F5_DEVALARM", $index++);
 define("MSG_ID_L4AQYCUI_TO_L3F5_ALARMQUERY", $index++);
+define("MSG_ID_L4AQYCUI_TO_L3F5_ALARMMONITORLIST", $index++);
 define("MSG_ID_L4AQYCUI_TO_L3F5_ALARMPROCESS", $index++);
 define("MSG_ID_L4AQYCUI_TO_L3F6_PERFORMANCETABLE", $index++);
 define("MSG_ID_L4AQYCUI_TO_L3F7_SETUSERMSG", $index++);

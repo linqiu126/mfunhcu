@@ -49,6 +49,61 @@ class classDbiL3apF5fm
 
     }
 
+    //查询用户授权的stat_code和proj_code list
+    public function dbi_user_statproj_inqury($uid)
+    {
+        //建立连接
+        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli) {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $mysqli->query("SET NAMES utf8");
+
+        //查询该用户授权的项目和项目组列表
+        $query_str = "SELECT `auth_code` FROM `t_l3f1sym_authlist` WHERE `uid` = '$uid'";
+        $result = $mysqli->query($query_str);
+        $p_list = array();
+        $pg_list = array();
+        while($row = $result->fetch_array())
+        {
+            $temp = $row["auth_code"];
+            $fromat = substr($temp, 0, MFUN_L3APL_F2CM_CODE_FORMAT_LEN);
+            if($fromat == MFUN_L3APL_F2CM_PROJ_CODE_PREFIX)
+                array_push($p_list,$temp);
+            elseif ($fromat == MFUN_L3APL_F2CM_PG_CODE_PREFIX)
+                array_push($pg_list,$temp);
+        }
+
+        //把授权的项目组列表里对应的项目号也取出来追加到项目列表，获得该用户授权的完整项目列表
+        for($i=0; $i<count($pg_list); $i++)
+        {
+            $query_str = "SELECT `p_code` FROM `t_l3f2cm_projinfo` WHERE `pg_code` = '$pg_list[$i]'";
+            $result = $mysqli->query($query_str);
+            while($row = $result->fetch_array())
+            {
+                $temp = $row["p_code"];
+                array_push($p_list,$temp);
+            }
+        }
+
+        //查询授权项目号下对应的所有监测点code
+        $auth_list["p_code"] = array();
+        $auth_list["stat_code"] = array();
+        for($i=0; $i<count($p_list); $i++)
+        {
+            $query_str = "SELECT `statcode` FROM `t_l3f3dm_siteinfo` WHERE `p_code` = '$p_list[$i]'";
+            $result = $mysqli->query($query_str);
+            while($row = $result->fetch_array())
+            {
+                $temp = $row["statcode"];
+                array_push($auth_list["stat_code"] ,$temp);
+                array_push($auth_list["p_code"] ,$p_list[$i]);
+            }
+        }
+
+        $mysqli->close();
+        return $auth_list;
+    }
 
     //查询该站点是否正处于告警状态
     private function dbi_site_alarm_check($statcode)
@@ -89,7 +144,7 @@ class classDbiL3apF5fm
 
 
     //获取该用户授权站点中当前存在告警站点的地图显示信息
-    public function dbi_alarm_map_sitetinfo_req($uid)
+    public function dbi_map_alarm_sitetinfo_req($uid)
     {
         //建立连接
         $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
