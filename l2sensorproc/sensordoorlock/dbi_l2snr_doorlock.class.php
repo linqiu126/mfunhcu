@@ -599,13 +599,15 @@ class classDbiL2snrDoorlock
         $currenttime = date("Y-m-d H:i:s",$timestamp);
         $result = $mysqli->query("SELECT * FROM `t_l3f3dm_fhys_currentreport` WHERE (`devcode` = '$devCode') ");
         if (($result->num_rows)>0) {
-            $result = $mysqli->query("UPDATE `t_l3f3dm_fhys_currentreport` SET  `doorstat` = '$door1', `lockstat` = '$lock1',`blestat` = '$ble',`rfidstat` = '$rfid',`siglevel` = '$gprs',
-                            `battlevel` = '$batt',`temperature` = '$temperature',`humidity` = '$humi',`smokalarm` = '$smok',`wateralarm` = '$water',`vibralarm` = '$vibr'`createtime` = '$currenttime'
-                            WHERE (`devcode` = '$devCode')");
+            $query_str = "UPDATE `t_l3f3dm_fhys_currentreport` SET  `doorstat` = '$door1', `lockstat` = '$lock1',`blestat` = '$ble',`rfidstat` = '$rfid',`siglevel` = '$gprs',
+                            `battlevel` = '$batt',`temperature` = '$temperature',`humidity` = '$humi',`smokalarm` = '$smok',`wateralarm` = '$water',`vibralarm` = '$vibr',`createtime` = '$currenttime'
+                            WHERE (`devcode` = '$devCode')";
+            $result = $mysqli->query($query_str);
         }
         else {
-            $result = $mysqli->query("INSERT INTO `t_l3f3dm_fhys_currentreport` (devcode,statcode,createtime,doorstat,lockstat,blestat,rfidstat,siglevel,battlevel,temperature,humidity,smokalarm, wateralarm,vibralarm)
-                            VALUES ('$devCode','$statCode','$currenttime','$door1','$lock1','$ble','$rfid','$gprs','$batt','$temperature','$humi','$smok','$water','$vibr')");
+            $query_str = "INSERT INTO `t_l3f3dm_fhys_currentreport` (devcode,statcode,createtime,doorstat,lockstat,blestat,rfidstat,siglevel,battlevel,temperature,humidity,smokalarm, wateralarm,vibralarm)
+                            VALUES ('$devCode','$statCode','$currenttime','$door1','$lock1','$ble','$rfid','$gprs','$batt','$temperature','$humi','$smok','$water','$vibr')";
+            $result = $mysqli->query($query_str);
         }
 
         if ($result == true)
@@ -620,11 +622,10 @@ class classDbiL2snrDoorlock
             //生成控制命令的控制字
             $apiL2snrCommonServiceObj = new classApiL2snrCommonService();
             $ctrl_key = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_CMDID_FHYS_BOX);
-            $opt_key = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_OPT_FHYS_BOXSTAT_RESP);
             $para = $apiL2snrCommonServiceObj->byte2string($resp_data);
 
             $len = $apiL2snrCommonServiceObj->byte2string(strlen($para) / 2);
-            $respCmd = $ctrl_key . $opt_key . $len . $para;
+            $respCmd = $ctrl_key . $len . $para;
 
             //通过9502端口建立tcp阻塞式socket连接，向HCU转发操控命令
             $client = new socket_client_sync($devCode, $respCmd);

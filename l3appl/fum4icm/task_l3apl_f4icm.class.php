@@ -146,6 +146,67 @@ class classTaskL3aplF4icm
         return $retval;
     }
 
+    //新软件升级处理程序
+    //查询三条软件版本基线信息
+    function func_swver_info_process($type, $user, $body)
+    {
+        $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
+        $usercheck = $uiF1symDbObj->dbi_user_authcheck($type, $user);
+        if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
+            $uiF4icmDbObj = new classDbiL3apF4icm();
+            $resp = $uiF4icmDbObj->dbi_swver_info_process();
+            if(!empty($resp))
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$resp,'msg'=>"查询软件版本基线信息成功");
+            else
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>"查询软件版本基线信息失败");
+        }
+        else
+            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
+
+        return $retval;
+    }
+
+    function func_swver_update_strategy_list_process($type, $user, $body)
+    {
+        if (isset($body["ProjCode"])) $pcode = $body["ProjCode"]; else  $pcode = "";
+
+        $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
+        $usercheck = $uiF1symDbObj->dbi_user_authcheck($type, $user);
+        if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
+            $uiF4icmDbObj = new classDbiL3apF4icm();
+            $resp = $uiF4icmDbObj->dbi_swver_update_strategy_list_process($pcode);
+            if(!empty($resp))
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$resp,'msg'=>"获取软件版本更新策略信息列表成功");
+            else
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>"获取软件版本更新策略信息列表失败");
+        }
+        else
+            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
+
+        return $retval;
+    }
+
+    function func_proj_swver_strategy_change_process($type, $user, $body)
+    {
+        if (isset($body["ProjCode"])) $pcode = $body["ProjCode"]; else  $pcode = "";
+        if (isset($body["UpdateLine"])) $sw_base = $body["UpdateLine"]; else  $sw_base = "";
+
+        $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
+        $usercheck = $uiF1symDbObj->dbi_user_authcheck($type, $user);
+        if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
+            $uiF4icmDbObj = new classDbiL3apF4icm();
+            $resp = $uiF4icmDbObj->dbi_proj_swver_strategy_change_process($pcode, $sw_base);
+            if($resp == true)
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"修改项目软件版本策略成功");
+            else
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"修改项目软件版本策略失败");
+        }
+        else
+            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>$usercheck['msg']);
+
+        return $retval;
+    }
+
     //传感器信息更新并发送HCU控制命令
     function func_sensor_update_process($type, $user, $body)
     {
@@ -362,6 +423,29 @@ class classTaskL3aplF4icm
                 $resp = $this->func_devsw_update_process($type, $user, $body);
                 $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
+            //以上为老的软件升级消息，暂时保留。
+            //新的软件升级机制，以项目为单位，定义3条软件版本基线
+            case MSG_ID_L4AQYCUI_TO_L3F4_SWVERINFO: //获取软件3条版本基线的最新说明
+                $resp = $this->func_swver_info_process($type, $user, $body);
+                $project = MFUN_PRJ_HCU_AQYCUI;
+                break;
+            //获取指定项目下所有设备的软件更新策略，包括软件版本，版本基线，是否允许自动更新
+            case MSG_ID_L4AQYCUI_TO_L3F4_SWUPDATESTRATEGYLIST:
+                $resp = $this->func_swver_update_strategy_list_process($type, $user, $body);
+                $project = MFUN_PRJ_HCU_AQYCUI;
+                break;
+            case MSG_ID_L4AQYCUI_TO_L3F4_SWBASECHANGE:
+                $resp = $this->func_proj_swver_strategy_change_process($type, $user, $body);
+                $project = MFUN_PRJ_HCU_AQYCUI;
+                break;
+            case MSG_ID_L4AQYCUI_TO_L3F4_DEVSWSTRATEGYCHANGE:
+                break;
+            case MSG_ID_L4AQYCUI_TO_L3F4_PROJSWSTRATEGYCHANGE:
+                $resp = $this->func_proj_swver_strategy_change_process($type, $user, $body);
+                $project = MFUN_PRJ_HCU_AQYCUI;
+                break;
+            case MSG_ID_L4AQYCUI_TO_L3F4_PROJSWSTRATEGYGET:
+               break;
 
             case MSG_ID_L4AQYCUI_TO_L3F4_SENSORUPDATE://功能Sensor update
                 $resp = $this->func_sensor_update_process($type, $user, $body);

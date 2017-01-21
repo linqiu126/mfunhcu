@@ -92,14 +92,14 @@ class classTaskL2snrDoorlock
         if(empty($content)){
             return "ERROR FHYS_DOORCLOCK: message empty";  //消息内容为空，直接返回
         }
-        $raw_MsgHead = substr($content, 0, MFUN_HCU_MSG_HEAD_LENGTH);  //截取6Byte MsgHead
-        $msgHead = unpack("A2Key/A2Opt/A2Len", $raw_MsgHead);
+        $raw_MsgHead = substr($content, 0, MFUN_HCU_MSG_HEAD_LENGTH-2);  //截取6Byte MsgHead
+        $msgHead = unpack("A2Key/A2Len", $raw_MsgHead);
         $length = hexdec($msgHead['Len']) & 0xFF;
-        $length =  ($length+3) * 2; //因为收到的消息为16进制字符，消息总长度等于length＋1B控制字＋1B长度本身
+        $length =  ($length+2) * 2; //因为收到的消息为16进制字符，消息总长度等于length＋1B控制字＋1B长度本身
         if ($length != strlen($content)) {
             return "ERROR FHYS_DOORCLOCK: message length invalid";  //消息长度不合法，直接返回
         }
-        $data = substr($content, MFUN_HCU_MSG_HEAD_LENGTH, $length);
+        $data = substr($content, MFUN_HCU_MSG_HEAD_LENGTH-2, $length);
         $classDbiL2snrDoorlock = new classDbiL2snrDoorlock();
         $resp = $classDbiL2snrDoorlock->dbi_hcu_doorlock_statreport_process($devCode, $statCode, $data);
 
@@ -125,7 +125,7 @@ class classTaskL2snrDoorlock
             echo trim($result);
             return false;
         }
-        if (($msgId != MSG_ID_L2SDK_HCU_TO_L2SNR_DOORLOCK) || ($msgName != "MSG_ID_L2SDK_HCU_TO_L2SNR_DOORLOCK")){
+        if (($msgId != MSG_ID_L2SDK_HCU_TO_L2SNR_DOORLOCK) && ($msgId != MSG_ID_L2SDK_HCU_TO_L2SNR_BOXSTAT)){
             $result = "Msgid or MsgName error";
             $log_content = "P:" . json_encode($result);
             $loggerObj->logger("MFUN_TASK_ID_L2SNR_DOORLOCK", "mfun_l2snr_doorlock_task_main_entry", $log_time, $log_content);

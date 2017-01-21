@@ -189,6 +189,7 @@ define("MSG_ID_L4AQYCUI_TO_L3F3_TABLEQUERY", $index++);
 define("MSG_ID_L4AQYCUI_TO_L3F3_SENSORLIST", $index++);
 define("MSG_ID_L4AQYCUI_TO_L3F3_DEVSENSOR", $index++);
 define("MSG_ID_L4AQYCUI_TO_L3F3_GETSTATICMONITORTABLE", $index++);
+define("MSG_ID_L4AQYCUI_TO_L3F3_ALARMHANDLETABLE", $index++);
 define("MSG_ID_L4AQYCUI_TO_L3F4_ALLSW", $index++);      //查询所有可用的软件版本
 define("MSG_ID_L4AQYCUI_TO_L3F4_DEVSW", $index++);      //查询指定HCU设备当前版本
 define("MSG_ID_L4AQYCUI_TO_L3F4_SWUPDATE", $index++);   //请求将指定的HCU设备软件更新到指定版本

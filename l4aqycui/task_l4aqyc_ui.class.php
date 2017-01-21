@@ -496,6 +496,7 @@ class classTaskL4aqycUi
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM6PM, MSG_ID_L4AQYCUI_TO_L3F6_PERFORMANCETABLE, "MSG_ID_L4AQYCUI_TO_L3F6_PERFORMANCETABLE",$input);
                     break;
 
+                //获取软件3条版本基线的最新说明
                 case "VersionInformation":
                     if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
                     if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
@@ -505,6 +506,7 @@ class classTaskL4aqycUi
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM4ICM, MSG_ID_L4AQYCUI_TO_L3F4_SWVERINFO, "MSG_ID_L4AQYCUI_TO_L3F4_SWVERINFO",$input);
                     break;
 
+                //获取指定项目下所有设备的软件更新策略，包括软件版本，版本基线，是否允许自动更新
                 case "ProjUpdateStrategyList":
                     if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
                     if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
@@ -548,6 +550,15 @@ class classTaskL4aqycUi
 
                     $input = array("type" => $type,"user" => $user,"body" => $body);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM4ICM, MSG_ID_L4AQYCUI_TO_L3F4_PROJSWSTRATEGYGET, "MSG_ID_L4AQYCUI_TO_L3F4_PROJSWSTRATEGYGET",$input);
+                    break;
+
+                case "GetWarningHandleListTable":
+                    if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
+                    if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
+                    if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
+
+                    $input = array("type" => $type,"user" => $user,"body" => $body);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM3DM, MSG_ID_L4AQYCUI_TO_L3F3_ALARMHANDLETABLE, "MSG_ID_L4AQYCUI_TO_L3F3_ALARMHANDLETABLE",$input);
                     break;
 
                 /*以下5条消息是公用，要考虑不同项目的适配*/

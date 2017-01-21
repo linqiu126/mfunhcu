@@ -198,6 +198,120 @@ class classDbiL3apF4icm
         return $result;
     }
 
+    //查询所有可用SW版本
+    public function dbi_swver_info_process()
+    {
+        //建立连接
+        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli) {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $mysqli->query("SET NAMES utf8");
+
+        $query_str = "SELECT * FROM `t_l3f4icm_swfactory` WHERE (`issuedate` = (SELECT MAX(`issuedate`) FROM `t_l3f4icm_swfactory` where `sw_base` = '1' )) AND (`sw_base` = '1')";
+        $result = $mysqli->query($query_str);
+        $verlist = array();
+        if(($result != false) && ($result->num_rows)>0) {
+            $row = $result->fetch_array();
+            $version = $row['swverdescription']."; 发布日期：".$row['issuedate'];
+            array_push($verlist, $version);
+        }
+
+        $query_str = "SELECT * FROM `t_l3f4icm_swfactory` WHERE (`issuedate` = (SELECT MAX(`issuedate`) FROM `t_l3f4icm_swfactory` where `sw_base` = '2' )) AND (`sw_base` = '2')";
+        $result = $mysqli->query($query_str);
+        if(($result != false) && ($result->num_rows)>0) {
+            $row = $result->fetch_array();
+            $version = $row['swverdescription']."; 发布日期：".$row['issuedate'];
+            array_push($verlist, $version);
+        }
+
+        $query_str = "SELECT * FROM `t_l3f4icm_swfactory` WHERE (`issuedate` = (SELECT MAX(`issuedate`) FROM `t_l3f4icm_swfactory` where `sw_base` = '3' )) AND (`sw_base` = '3')";
+        $result = $mysqli->query($query_str);
+        if(($result != false) && ($result->num_rows)>0){
+            $row = $result->fetch_array();
+            $version = $row['swverdescription']."; 发布日期：".$row['issuedate'];
+            array_push($verlist, $version);
+        }
+
+        $mysqli->close();
+        return $verlist;
+    }
+
+    public function dbi_swver_update_strategy_list_process($pcode)
+    {
+        //初始化返回值
+        $strategy_list['ColumnName'] = array();
+        $strategy_list['TableData'] = array();
+
+        //建立连接
+        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli) {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $mysqli->query("SET NAMES utf8");
+
+        array_push($strategy_list["ColumnName"], "设备编号");
+        array_push($strategy_list["ColumnName"], "自动更新");
+        array_push($strategy_list["ColumnName"], "硬件版本");
+        array_push($strategy_list["ColumnName"], "数据库版本");
+        array_push($strategy_list["ColumnName"], "软件版本");
+        array_push($strategy_list["ColumnName"], "版本基线");
+
+        $query_str = "SELECT * FROM `t_l3f3dm_siteinfo` WHERE `p_code` = '$pcode'";
+        $result = $mysqli->query($query_str);
+        while ($row = $result->fetch_array()) {
+            $statcode = $row["statcode"];
+            $query_str = "SELECT * FROM `t_l2sdk_iothcu_inventory` WHERE (`statcode` = '$statcode')";
+            $resp = $mysqli->query($query_str);
+            $one_row = array();
+            while($resp_row = $resp->fetch_array()){
+                $devcode = $resp_row["devcode"];
+                $hw_type = $resp_row["hw_type"];
+                $hw_ver = $resp_row["hw_ver"];
+                $sw_rel = $resp_row["sw_rel"];
+                $hw_drop = $resp_row["sw_drop"];
+                $ver_base = $resp_row["ver_base"];
+                $db_ver = $resp_row["hcu_db_ver"];
+                $auto_update = $resp_row["hcu_sw_autoupdate"];
+
+                array_push($one_row, $devcode);
+                if ($auto_update == 1)
+                    array_push($one_row, "Y");
+                else
+                    array_push($one_row, "N");
+                array_push($one_row, "HW_"."T".$hw_type.".V".$hw_ver);
+                array_push($one_row, "DB_"."V".$db_ver);
+                array_push($one_row, "SW_"."R".$sw_rel.".D".$hw_drop);
+                if ($ver_base == 1)
+                    array_push($one_row, "稳定版");
+                elseif($ver_base == 2)
+                    array_push($one_row, "测试版");
+                else
+                    array_push($one_row, "补丁版");
+            }
+            array_push($strategy_list['TableData'] , $one_row);
+        }
+
+        $mysqli->close();
+        return $strategy_list;
+    }
+
+    public function dbi_proj_swver_strategy_change_process($pcode, $sw_base)
+    {
+        //建立连接
+        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli) {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $mysqli->query("SET NAMES utf8");
+
+        $query_str = "UPDATE `t_l3f2cm_projinfo` SET `sw_base` = '$sw_base' WHERE (`p_code` = '$pcode')";
+        $result = $mysqli->query($query_str);
+
+        $mysqli->close();
+        return $result;
+    }
+
     //仪表控制，更新传感器信息,发送传感器参数修改命令
     public function dbi_sensor_info_update($input)
     {
