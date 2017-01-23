@@ -68,12 +68,12 @@ class classDbiL2snrDoorlock
                         AND (`reportdate` = '$date' AND `hourminindex` = '$hourminindex'))");
         if (($result != false) && ($result->num_rows)>0)   //重复，则覆盖
         {
-            $query_str = "UPDATE `t_l2snr_fhys_minreport` SET `lockstat` = '$status' WHERE (`devcode` = '$devCode' AND `statcode` = '$statCode' AND `reportdate` = '$date' AND `hourminindex` = '$hourminindex')";
+            $query_str = "UPDATE `t_l2snr_fhys_minreport` SET `lock_1` = '$status' WHERE (`devcode` = '$devCode' AND `statcode` = '$statCode' AND `reportdate` = '$date' AND `hourminindex` = '$hourminindex')";
             $result = $mysqli->query($query_str);
         }
         else
         {
-            $query_str = "INSERT INTO `t_l2snr_fhys_minreport` (devcode,statcode,lockstat,reportdate,hourminindex) VALUES ('$devCode','$statCode','$status', '$date', '$hourminindex')";
+            $query_str = "INSERT INTO `t_l2snr_fhys_minreport` (devcode,statcode,lock_1,reportdate,hourminindex) VALUES ('$devCode','$statCode','$status', '$date', '$hourminindex')";
             $result = $mysqli->query($query_str);
         }
 
@@ -433,12 +433,12 @@ class classDbiL2snrDoorlock
         if (($result != false) && ($result->num_rows)>0)   //重复，则覆盖
         {
 
-            $query_str = "UPDATE `t_l2snr_fhys_minreport` SET `doorstat` = '$status' WHERE (`devcode` = '$devCode' AND `statcode` = '$statCode' AND `reportdate` = '$date' AND `hourminindex` = '$hourminindex')";
+            $query_str = "UPDATE `t_l2snr_fhys_minreport` SET `door_1` = '$status' WHERE (`devcode` = '$devCode' AND `statcode` = '$statCode' AND `reportdate` = '$date' AND `hourminindex` = '$hourminindex')";
             $result = $mysqli->query($query_str);
         }
         else
         {
-            $query_str = "INSERT INTO `t_l2snr_fhys_minreport` (devcode,statcode,doorstat,reportdate,hourminindex) VALUES ('$devCode','$statCode','$status', '$date', '$hourminindex')";
+            $query_str = "INSERT INTO `t_l2snr_fhys_minreport` (devcode,statcode,door_1,reportdate,hourminindex) VALUES ('$devCode','$statCode','$status', '$date', '$hourminindex')";
             $result = $mysqli->query($query_str);
         }
 
@@ -583,15 +583,15 @@ class classDbiL2snrDoorlock
                         AND (`reportdate` = '$date' AND `hourminindex` = '$hourminindex'))");
         if (($result != false) && ($result->num_rows)>0)   //重复，则覆盖
         {
-            $query_str = "UPDATE `t_l2snr_fhys_minreport` SET `doorstat` = '$door1', `lockstat` = '$lock1',`blestat` = '$ble',`rfidstat` = '$rfid',`siglevel` = '$gprs',
+            $query_str = "UPDATE `t_l2snr_fhys_minreport` SET `door_1` = '$door1',`door_2` = '$door2',`lock_1` = '$lock1',`lock_2` = '$lock2',`blestat` = '$ble',`rfidstat` = '$rfid',`siglevel` = '$gprs',
                             `battlevel` = '$batt',`temperature` = '$temperature',`humidity` = '$humi',`smokalarm` = '$smok',`wateralarm` = '$water',`vibralarm` = '$vibr'
                             WHERE (`devcode` = '$devCode' AND `statcode` = '$statCode' AND `reportdate` = '$date' AND `hourminindex` = '$hourminindex')";
             $result = $mysqli->query($query_str);
         }
         else
         {
-            $query_str = "INSERT INTO `t_l2snr_fhys_minreport` (devcode,statcode,reportdate,hourminindex,doorstat,lockstat,blestat,rfidstat,siglevel,battlevel,temperature,humidity,smokalarm, wateralarm,vibralarm)
-                            VALUES ('$devCode','$statCode','$date','$hourminindex','$door1','$lock1','$ble','$rfid','$gprs','$batt','$temperature','$humi','$smok','$water','$vibr')";
+            $query_str = "INSERT INTO `t_l2snr_fhys_minreport` (devcode,statcode,reportdate,hourminindex,door_1,door_2,lock_1,lock_2,blestat,rfidstat,siglevel,battlevel,temperature,humidity,smokalarm, wateralarm,vibralarm)
+                            VALUES ('$devCode','$statCode','$date','$hourminindex','$door1','$door2','$lock1','$lock2','$ble','$rfid','$gprs','$batt','$temperature','$humi','$smok','$water','$vibr')";
             $result = $mysqli->query($query_str);
         }
 
@@ -599,14 +599,14 @@ class classDbiL2snrDoorlock
         $currenttime = date("Y-m-d H:i:s",$timestamp);
         $result = $mysqli->query("SELECT * FROM `t_l3f3dm_fhys_currentreport` WHERE (`devcode` = '$devCode') ");
         if (($result->num_rows)>0) {
-            $query_str = "UPDATE `t_l3f3dm_fhys_currentreport` SET  `doorstat` = '$door1', `lockstat` = '$lock1',`blestat` = '$ble',`rfidstat` = '$rfid',`siglevel` = '$gprs',
+            $query_str = "UPDATE `t_l3f3dm_fhys_currentreport` SET  `door_1` = '$door1',`door_2` = '$door2',`lock_1` = '$lock1',`lock_2` = '$lock2',`blestat` = '$ble',`rfidstat` = '$rfid',`siglevel` = '$gprs',
                             `battlevel` = '$batt',`temperature` = '$temperature',`humidity` = '$humi',`smokalarm` = '$smok',`wateralarm` = '$water',`vibralarm` = '$vibr',`createtime` = '$currenttime'
                             WHERE (`devcode` = '$devCode')";
             $result = $mysqli->query($query_str);
         }
         else {
-            $query_str = "INSERT INTO `t_l3f3dm_fhys_currentreport` (devcode,statcode,createtime,doorstat,lockstat,blestat,rfidstat,siglevel,battlevel,temperature,humidity,smokalarm, wateralarm,vibralarm)
-                            VALUES ('$devCode','$statCode','$currenttime','$door1','$lock1','$ble','$rfid','$gprs','$batt','$temperature','$humi','$smok','$water','$vibr')";
+            $query_str = "INSERT INTO `t_l3f3dm_fhys_currentreport` (devcode,statcode,createtime,door_1,door_2,lock_1,lock_2,blestat,rfidstat,siglevel,battlevel,temperature,humidity,smokalarm, wateralarm,vibralarm)
+                            VALUES ('$devCode','$statCode','$currenttime','$door1','$door2','$lock1','$lock2','$ble','$rfid','$gprs','$batt','$temperature','$humi','$smok','$water','$vibr')";
             $result = $mysqli->query($query_str);
         }
 
