@@ -93,8 +93,259 @@ class classTaskL2sdkIotHcu
         return $kw;
     }
 
+    private function receive_hcu_heart_beat_xmlmsg($parObj, $data, $project, $log_from)
+    {
+        //定义本入口函数的logger处理对象及函数
+        $loggerObj = new classApiL1vmFuncCom();
+        $log_time = date("Y-m-d H:i:s", time());
+
+        $toUser = trim($data->ToUserName);
+        $deviceId = trim($data->FromUserName);
+        $createTime = trim($data->CreateTime);  //暂时不处理，后面增加时间合法性的判断
+        $content = trim($data->Content);
+        $funcFlag = trim($data->FuncFlag);
+
+        //取DB中的硬件信息，判断基本信息
+        $cDbObj = new classDbiL2sdkHcu();
+        $result = $cDbObj->dbi_hcuDevice_valid_device($deviceId); //FromUserName对应每个HCU硬件的设备编号
+        if (empty($result)){
+            $result = "HCU_IOT: invalid device ID";
+            $log_content = "T:" . json_encode($result);
+            $loggerObj->logger($project, $log_from, $log_time, $log_content);
+            echo trim($result);
+            return true;
+        }
+        else{
+            $statCode = $result;
+        }
+
+        //收到非本消息体该收到的消息
+        if ($toUser != MFUN_CLOUD_HCU ){
+            $result = "HCU_IOT: FHYS XML message invalid ToUserName";
+            $log_content = "T:" . json_encode($result);
+            $loggerObj->logger($project, $log_from, $log_time, $log_content);
+            echo trim($result);
+            return true;
+        }
+
+        //解开key，处理CMDID
+        $key = unpack('A2Key', $content);
+        $ctrl_key = hexdec($key['Key'])& 0xFF;
+        if($ctrl_key == MFUN_HCU_CMDID_HEART_BEAT){
+            $hcuObj = new classApiL2snrCommonService();
+            $resp = $hcuObj->func_heartBeat_process();
+        }
+        else
+            $resp ="HCU_IOT: invalid command type";
+
+        if (!empty($resp))//ECHO回去
+        {
+            $log_content = "T:" . json_encode($resp);
+            $loggerObj->logger($project, $log_from, $log_time, $log_content);
+            echo trim($resp);
+            $DevCode = $log_from;
+            $respCmd = trim($resp);
+            $client = new socket_client_sync($DevCode, $respCmd);
+            $client->connect();
+        }
+        //返回
+        return true;
+    }
+
+    private function receive_hcu_command_xmlmsg($parObj, $data, $project, $log_from)
+    {
+        //定义本入口函数的logger处理对象及函数
+        $loggerObj = new classApiL1vmFuncCom();
+        $log_time = date("Y-m-d H:i:s", time());
+
+        $toUser = trim($data->ToUserName);
+        $deviceId = trim($data->FromUserName);
+        $createTime = trim($data->CreateTime);  //暂时不处理，后面增加时间合法性的判断
+        $content = trim($data->Content);
+        $funcFlag = trim($data->FuncFlag);
+
+        //取DB中的硬件信息，判断基本信息
+        $cDbObj = new classDbiL2sdkHcu();
+        $result = $cDbObj->dbi_hcuDevice_valid_device($deviceId); //FromUserName对应每个HCU硬件的设备编号
+        if (empty($result)){
+            $result = "HCU_IOT: invalid device ID";
+            $log_content = "T:" . json_encode($result);
+            $loggerObj->logger($project, $log_from, $log_time, $log_content);
+            echo trim($result);
+            return true;
+        }
+        else{
+            $statCode = $result;
+        }
+
+        //收到非本消息体该收到的消息
+        if ($toUser != MFUN_CLOUD_HCU ){
+            $result = "HCU_IOT: FHYS XML message invalid ToUserName";
+            $log_content = "T:" . json_encode($result);
+            $loggerObj->logger($project, $log_from, $log_time, $log_content);
+            echo trim($result);
+            return true;
+        }
+
+        //解开key，处理CMDID
+        $key = unpack('A2Key', $content);
+        $ctrl_key = hexdec($key['Key'])& 0xFF;
+        switch ($ctrl_key) {
+            case MFUN_HCU_CMDID_VERSION_SYNC:
+                $hcuObj = new classApiL2snrCommonService();
+                $resp = $hcuObj->func_version_update_process(MFUN_TECH_PLTF_HCUGX, $deviceId, $content);
+                break;
+            case MFUN_HCU_CMDID_TIME_SYNC:
+                $hcuObj = new classApiL2snrCommonService();
+                $resp = $hcuObj->func_timeSync_process(MFUN_TECH_PLTF_HCUGX, $deviceId, $data);
+                break;
+            case MFUN_HCU_CMDID_INVENTORY_DATA:
+                $hcuObj = new classApiL2snrCommonService();
+                $resp = $hcuObj->func_inventory_data_process(MFUN_TECH_PLTF_HCUGX, $deviceId, $content);
+                break;
+            case MFUN_HCU_CMDID_HCU_POLLING:
+                $hcuObj = new classApiL2snrCommonService();
+                $resp = $hcuObj->func_hcuPolling_process($deviceId);
+                break;
+            default:
+                $resp ="HCU_IOT: invalid command type";
+                break;
+        }
+
+        if (!empty($resp))//ECHO回去
+        {
+            $log_content = "T:" . json_encode($resp);
+            $loggerObj->logger($project, $log_from, $log_time, $log_content);
+            echo trim($resp);
+            $DevCode = $log_from;
+            $respCmd = trim($resp);
+            $client = new socket_client_sync($DevCode, $respCmd);
+            $client->connect();
+        }
+        //返回
+        return true;
+    }
+
+    private function receive_hcu_pm_xmlmsg($parObj, $data, $project, $log_from)
+    {
+        //定义本入口函数的logger处理对象及函数
+        $loggerObj = new classApiL1vmFuncCom();
+        $log_time = date("Y-m-d H:i:s", time());
+
+        $toUser = trim($data->ToUserName);
+        $deviceId = trim($data->FromUserName);
+        $createTime = trim($data->CreateTime);  //暂时不处理，后面增加时间合法性的判断
+        $content = trim($data->Content);
+        $funcFlag = trim($data->FuncFlag);
+
+        //取DB中的硬件信息，判断基本信息
+        $cDbObj = new classDbiL2sdkHcu();
+        $result = $cDbObj->dbi_hcuDevice_valid_device($deviceId); //FromUserName对应每个HCU硬件的设备编号
+        if (empty($result)){
+            $result = "HCU_IOT: invalid device ID";
+            $log_content = "T:" . json_encode($result);
+            $loggerObj->logger($project, $log_from, $log_time, $log_content);
+            echo trim($result);
+            return true;
+        }
+        else{
+            $statCode = $result;
+        }
+
+        //收到非本消息体该收到的消息
+        if ($toUser != MFUN_CLOUD_HCU ){
+            $result = "HCU_IOT: FHYS XML message invalid ToUserName";
+            $log_content = "T:" . json_encode($result);
+            $loggerObj->logger($project, $log_from, $log_time, $log_content);
+            echo trim($result);
+            return true;
+        }
+
+        //解开key，处理CMDID
+        $key = unpack('A2Key', $content);
+        $ctrl_key = hexdec($key['Key'])& 0xFF;
+        if($ctrl_key == MFUN_HCU_CMDID_HCU_PERFORMANCE){
+            $hcuObj = new classApiL2snrCommonService();
+            $resp = $hcuObj->func_hcuPerformance_process($deviceId, $statCode, $content);
+        }
+        else
+            $resp ="HCU_IOT: invalid command type";
+
+        if (!empty($resp))//ECHO回去
+        {
+            $log_content = "T:" . json_encode($resp);
+            $loggerObj->logger($project, $log_from, $log_time, $log_content);
+            echo trim($resp);
+            $DevCode = $log_from;
+            $respCmd = trim($resp);
+            $client = new socket_client_sync($DevCode, $respCmd);
+            $client->connect();
+        }
+        //返回
+        return true;
+    }
+
+    private function receive_hcu_alarm_xmlmsg($parObj, $data, $project, $log_from)
+    {
+        //定义本入口函数的logger处理对象及函数
+        $loggerObj = new classApiL1vmFuncCom();
+        $log_time = date("Y-m-d H:i:s", time());
+
+        $toUser = trim($data->ToUserName);
+        $deviceId = trim($data->FromUserName);
+        $createTime = trim($data->CreateTime);  //暂时不处理，后面增加时间合法性的判断
+        $content = trim($data->Content);
+        $funcFlag = trim($data->FuncFlag);
+
+        //取DB中的硬件信息，判断基本信息
+        $cDbObj = new classDbiL2sdkHcu();
+        $result = $cDbObj->dbi_hcuDevice_valid_device($deviceId); //FromUserName对应每个HCU硬件的设备编号
+        if (empty($result)){
+            $result = "HCU_IOT: invalid device ID";
+            $log_content = "T:" . json_encode($result);
+            $loggerObj->logger($project, $log_from, $log_time, $log_content);
+            echo trim($result);
+            return true;
+        }
+        else{
+            $statCode = $result;
+        }
+
+        //收到非本消息体该收到的消息
+        if ($toUser != MFUN_CLOUD_HCU ){
+            $result = "HCU_IOT: FHYS XML message invalid ToUserName";
+            $log_content = "T:" . json_encode($result);
+            $loggerObj->logger($project, $log_from, $log_time, $log_content);
+            echo trim($result);
+            return true;
+        }
+
+        //解开key，处理CMDID
+        $key = unpack('A2Key', $content);
+        $ctrl_key = hexdec($key['Key'])& 0xFF;
+        if($ctrl_key == MFUN_HCU_CMDID_HCU_ALARM_DATA){
+            $hcuObj = new classApiL2snrCommonService();
+            $resp = $hcuObj->func_hcuAlarmData_process($deviceId, $statCode, $content);
+        }
+        else
+            $resp ="HCU_IOT: invalid command type";
+
+        if (!empty($resp))//ECHO回去
+        {
+            $log_content = "T:" . json_encode($resp);
+            $loggerObj->logger($project, $log_from, $log_time, $log_content);
+            echo trim($resp);
+            $DevCode = $log_from;
+            $respCmd = trim($resp);
+            $client = new socket_client_sync($DevCode, $respCmd);
+            $client->connect();
+        }
+        //返回
+        return true;
+    }
+
     //业务消息“XML格式”的处理函数，跳转到对应的业务处理模块
-    public function receive_hcu_xmlMessage($parObj, $data, $project, $log_from)
+    private function receive_hcu_text_xmlmsg($parObj, $data, $project, $log_from)
     {
         //定义本入口函数的logger处理对象及函数
         $loggerObj = new classApiL1vmFuncCom();
@@ -134,45 +385,11 @@ class classTaskL2sdkIotHcu
         }
 
         //解开key，处理CMDID
-        $key = unpack('A2Key', $content);
-        $ctrl_key = hexdec($key['Key'])& 0xFF;
-        switch ($ctrl_key)
+        $key = unpack('A2Cmd/A2Opt', $content);
+        $cmd_key = hexdec($key['Cmd'])& 0xFF;
+        $opt_key = hexdec($key['Opt'])& 0xFF;
+        switch ($cmd_key)
         {
-            case MFUN_HCU_CMDID_VERSION_SYNC:
-                $hcuObj = new classApiL2snrCommonService();
-                $resp = $hcuObj->func_version_update_process(MFUN_TECH_PLTF_HCUGX, $deviceId, $content);
-                break;
-
-            case MFUN_HCU_CMDID_TIME_SYNC:
-                $hcuObj = new classApiL2snrCommonService();
-                $resp = $hcuObj->func_timeSync_process(MFUN_TECH_PLTF_HCUGX, $deviceId, $data);
-                break;
-
-            case MFUN_HCU_CMDID_INVENTORY_DATA:
-                $hcuObj = new classApiL2snrCommonService();
-                $resp = $hcuObj->func_inventory_data_process(MFUN_TECH_PLTF_HCUGX,$deviceId, $content);
-                break;
-
-            case MFUN_HCU_CMDID_HEART_BEAT:
-                $hcuObj = new classApiL2snrCommonService();
-                $resp = $hcuObj->func_heartBeat_process();
-                break;
-
-            case MFUN_HCU_CMDID_HCU_POLLING:
-                $hcuObj = new classApiL2snrCommonService();
-                $resp = $hcuObj->func_hcuPolling_process($deviceId);
-                break;
-
-            case MFUN_HCU_CMDID_HCU_PERFORMANCE:
-                $hcuObj = new classApiL2snrCommonService();
-                $resp = $hcuObj->func_hcuPerformance_process($deviceId, $statCode, $content);
-                break;
-
-            case MFUN_HCU_CMDID_HCU_ALARM_DATA:
-                $hcuObj = new classApiL2snrCommonService();
-                $resp = $hcuObj->func_hcuAlarmData_process($deviceId, $statCode, $content);
-                break;
-
             case MFUN_HCU_CMDID_EMC_DATA:  //定时辐射强度处理
                 $msg = array("project" => $project,
                     "log_from" => $log_from,
@@ -492,6 +709,74 @@ class classTaskL2sdkIotHcu
                 else $resp = "";
                 break;
 
+            case HUITP_CMDID_uni_ccl_lock:
+                $msg = array("project" => $project,
+                    "log_from" => $log_from,
+                    "platform" => MFUN_TECH_PLTF_HCUSTM,
+                    "deviceId" => $deviceId,
+                    "statCode" => $statCode,
+                    "content" => array("content" =>$content, "funcFlag" => $funcFlag));
+                if ($opt_key == HUITP_OPTID_uni_data_resp){
+                    if ($parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L2SDK_IOT_HCU,
+                            MFUN_TASK_ID_L2SENSOR_DOORLOCK,
+                            HUITP_MSGID_uni_ccl_lock_resp,
+                            "HUITP_MSGID_uni_ccl_lock_resp",
+                            $msg) == false) $resp = "Send to message buffer error";
+                    else $resp = "";
+                }
+                elseif ($opt_key == HUITP_OPTID_uni_data_report){
+                    if ($parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L2SDK_IOT_HCU,
+                            MFUN_TASK_ID_L2SENSOR_DOORLOCK,
+                            HUITP_MSGID_uni_ccl_lock_report,
+                            "HUITP_MSGID_uni_ccl_lock_report",
+                            $msg) == false) $resp = "Send to message buffer error";
+                    else $resp = "";
+                }
+                elseif ($opt_key == HUITP_OPTID_uni_auth_inq){
+                    if ($parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L2SDK_IOT_HCU,
+                            MFUN_TASK_ID_L2SENSOR_DOORLOCK,
+                            HUITP_MSGID_uni_ccl_lock_auth_inq,
+                            "HUITP_MSGID_uni_ccl_lock_auth_inq",
+                            $msg) == false) $resp = "Send to message buffer error";
+                    else $resp = "";
+                }
+                elseif ($opt_key == HUITP_OPTID_uni_auth_resp){
+                    if ($parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L2SDK_IOT_HCU,
+                            MFUN_TASK_ID_L2SENSOR_DOORLOCK,
+                            HUITP_MSGID_uni_ccl_lock_auth_resp,
+                            "HUITP_MSGID_uni_ccl_lock_auth_resp",
+                            $msg) == false) $resp = "Send to message buffer error";
+                    else $resp = "";
+                }
+                else $resp = "";
+                break;
+
+            case HUITP_CMDID_uni_ccl_state:
+                $msg = array("project" => $project,
+                    "log_from" => $log_from,
+                    "platform" => MFUN_TECH_PLTF_HCUSTM,
+                    "deviceId" => $deviceId,
+                    "statCode" => $statCode,
+                    "content" => array("content" =>$content, "funcFlag" => $funcFlag));
+                if ($opt_key == HUITP_OPTID_uni_data_resp){
+                    if ($parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L2SDK_IOT_HCU,
+                            MFUN_TASK_ID_L2SENSOR_DOORLOCK,
+                            HUITP_MSGID_uni_ccl_state_resp,
+                            "HUITP_MSGID_uni_ccl_state_resp",
+                            $msg) == false) $resp = "Send to message buffer error";
+                    else $resp = "";
+                }
+                elseif ($opt_key == HUITP_OPTID_uni_data_report){
+                    if ($parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L2SDK_IOT_HCU,
+                            MFUN_TASK_ID_L2SENSOR_DOORLOCK,
+                            HUITP_MSGID_uni_ccl_state_report,
+                            "HUITP_MSGID_uni_ccl_state_report",
+                            $msg) == false) $resp = "Send to message buffer error";
+                    else $resp = "";
+                }
+                else $resp = "";
+                break;
+
             default:
                 $resp ="HCU_IOT: invalid command type";
                 break;
@@ -650,37 +935,37 @@ class classTaskL2sdkIotHcu
                         $project = MFUN_PRJ_HCU_XML;
                         $loggerObj->logger($project, $fromUser, $log_time, $log_content);
                         $log_from = $fromUser;
-                        $this->receive_hcu_xmlMessage($parObj, $postObj, $project, $log_from);
+                        $this->receive_hcu_text_xmlmsg($parObj, $postObj, $project, $log_from);
                         break;
                     case "hcu_heart_beat":
                         $project = MFUN_PRJ_HCU_XML;
                         $loggerObj->logger($project, $fromUser, $log_time, $log_content);
                         $log_from = $fromUser;
-                        $this->receive_hcu_xmlMessage($parObj, $postObj, $project, $log_from);
+                        $this->receive_hcu_heart_beat_xmlmsg($parObj, $postObj, $project, $log_from);
                         break;
                     case "hcu_command":
                         $project = MFUN_PRJ_HCU_XML;
                         $loggerObj->logger($project, $fromUser, $log_time, $log_content);
                         $log_from = $fromUser;
-                        $this->receive_hcu_xmlMessage($parObj, $postObj, $project, $log_from);
+                        $this->receive_hcu_command_xmlmsg($parObj, $postObj, $project, $log_from);
                         break;
                     case "hcu_polling":
                         $project = MFUN_PRJ_HCU_XML;
                         $loggerObj->logger($project, $fromUser, $log_time, $log_content);
                         $log_from = $fromUser;
-                        $this->receive_hcu_xmlMessage($parObj, $postObj, $project, $log_from);
+                        $this->receive_hcu_command_xmlmsg($parObj, $postObj, $project, $log_from);
                         break;
                     case "hcu_pm":
                         $project = MFUN_PRJ_HCU_XML;
                         $loggerObj->logger($project, $fromUser, $log_time, $log_content);
                         $log_from = $fromUser;
-                        $this->receive_hcu_xmlMessage($parObj, $postObj, $project, $log_from);
+                        $this->receive_hcu_pm_xmlmsg($parObj, $postObj, $project, $log_from);
                         break;
                     case "hcu_alarm":
                         $project = MFUN_PRJ_HCU_XML;
                         $loggerObj->logger($project, $fromUser, $log_time, $log_content);
                         $log_from = $fromUser;
-                        $this->receive_hcu_xmlMessage($parObj, $postObj, $project, $log_from);
+                        $this->receive_hcu_alarm_xmlmsg($parObj, $postObj, $project, $log_from);
                         break;
                     default:
                         //收内容存储

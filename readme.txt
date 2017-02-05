@@ -337,6 +337,11 @@ Make By：ZJL
 > 丰富hcu inventory data上报功能，增加db version字段的存入，增加mac地址的传递
 > 关于mac地址和hcu name之间的匹配逻辑，后续待讨论和完善
 
+//= LZH, 2017 Feb.05, CURRENT_SW_DELIVERY R03.D13
+> FHYS第二版调试，增加4C聚合状态报告
+> AQYC UI功能完善
+> 增加HUITP协议消息定义
+
 //待完善的功能
 1. dbi_devinfo_update（）需要修改，添加设备时预计结束时间和实际结束时间应该在项目信息里
 2. 添加设备时没有选择该设备装配了那些传感器，sensorctrl表没有更新

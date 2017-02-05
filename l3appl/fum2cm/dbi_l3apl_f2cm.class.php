@@ -1116,17 +1116,17 @@ class classDbiL3apF2cm
 
         $timestamp = time();
         $validstart = date("Y-m-d", $timestamp);
-        if (!empty($authtype)){
+        if ($authtype =='always'){
+            $authtype = MFUN_L3APL_F2CM_AUTH_TYPE_FOREVER;
+            $query_str = "INSERT INTO `t_l3f2cm_fhys_keyauth` (keyid, authlevel, authobjcode, authtype)
+                                  VALUES ('$keyid','$authlevel','$authobjcode','$authtype')";
+            $result = $mysqli->query($query_str);
+        }
+        else{
             $validend = $authtype;
             $authtype = MFUN_L3APL_F2CM_AUTH_TYPE_TIME;
             $query_str = "INSERT INTO `t_l3f2cm_fhys_keyauth` (keyid, authlevel, authobjcode, authtype, validstart, validend)
                                   VALUES ('$keyid','$authlevel','$authobjcode','$authtype','$validstart','$validend')";
-            $result = $mysqli->query($query_str);
-        }
-        else{
-            $authtype = MFUN_L3APL_F2CM_AUTH_TYPE_FOREVER;
-            $query_str = "INSERT INTO `t_l3f2cm_fhys_keyauth` (keyid, authlevel, authobjcode, authtype)
-                                  VALUES ('$keyid','$authlevel','$authobjcode','$authtype')";
             $result = $mysqli->query($query_str);
         }
 

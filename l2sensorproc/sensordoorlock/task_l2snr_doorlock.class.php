@@ -106,6 +106,28 @@ class classTaskL2snrDoorlock
         return $resp;
     }
 
+    private function func_huitp_msg_uni_ccl_state_report($platform, $devCode, $statCode, $msg)
+    {
+        if(isset($msg['content'])) $content = $msg['content']; else $content = "";
+        if(isset($msg['funcFlag'])) $funcFlag = $msg['funcFlag']; else $funcFlag = "";
+
+        if(empty($content)){
+            return "ERROR FHYS_DOORCLOCK: message empty";  //消息内容为空，直接返回
+        }
+        $raw_MsgHead = substr($content, 0, MFUN_HUITP_MSG_HEAD_LENGTH);  //截取4Byte MsgHead
+        $msgHead = unpack(MFUN_HUITP_MSG_HEAD_FORMAT, $raw_MsgHead);
+        $length = hexdec($msgHead['Len']) & 0xFFFF;
+        $length =  ($length+4) * 2; //因为收到的消息为16进制字符，消息总长度等于length＋2B MsgId＋2B Len
+        if ($length != strlen($content)) {
+            return "ERROR FHYS_DOORCLOCK: message length invalid";  //消息长度不合法，直接返回
+        }
+        $data = substr($content, MFUN_HUITP_MSG_HEAD_LENGTH, $length);
+        $classDbiL2snrDoorlock = new classDbiL2snrDoorlock();
+        $resp = $classDbiL2snrDoorlock->dbi_huitp_msg_uni_ccl_state_report($devCode, $statCode, $data);
+
+        return $resp;
+    }
+
 
 
     /**************************************************************************************
@@ -117,6 +139,14 @@ class classTaskL2snrDoorlock
         $loggerObj = new classApiL1vmFuncCom();
         $log_time = date("Y-m-d H:i:s", time());
 
+        //初始化消息内容
+        $project= "";
+        $log_from = "";
+        $platform ="";
+        $deviceId="";
+        $statCode = "";
+        $content="";
+
         //入口消息内容判断
         if (empty($msg) == true) {
             $result = "Received null message body";
@@ -125,7 +155,17 @@ class classTaskL2snrDoorlock
             echo trim($result);
             return false;
         }
-        if (($msgId != MSG_ID_L2SDK_HCU_TO_L2SNR_DOORLOCK) && ($msgId != MSG_ID_L2SDK_HCU_TO_L2SNR_BOXSTAT)){
+        else{
+            //解开消息
+            if (isset($msg["project"])) $project = $msg["project"];
+            if (isset($msg["log_from"])) $log_from = $msg["log_from"];
+            if (isset($msg["platform"])) $platform = $msg["platform"];
+            if (isset($msg["deviceId"])) $deviceId = $msg["deviceId"];
+            if (isset($msg["statCode"])) $statCode = $msg["statCode"];
+            if (isset($msg["content"])) $content = $msg["content"];
+        }
+
+        if (($msgId != MSG_ID_L2SDK_HCU_TO_L2SNR_DOORLOCK) && ($msgId != MSG_ID_L2SDK_HCU_TO_L2SNR_BOXSTAT)&& ($msgId != HUITP_MSGID_uni_ccl_state_report)){
             $result = "Msgid or MsgName error";
             $log_content = "P:" . json_encode($result);
             $loggerObj->logger("MFUN_TASK_ID_L2SNR_DOORLOCK", "mfun_l2snr_doorlock_task_main_entry", $log_time, $log_content);
@@ -133,43 +173,23 @@ class classTaskL2snrDoorlock
             return false;
         }
 
-        //赋初值
-        $project= "";
-        $log_from = "";
-        $platform ="";
-        $deviceId="";
-        $statCode = "";
-        $content="";
-
-
-        if ($msgId == MSG_ID_L2SDK_HCU_TO_L2SNR_DOORLOCK) {
-            //解开消息
-            if (isset($msg["project"])) $project = $msg["project"];
-            if (isset($msg["log_from"])) $log_from = $msg["log_from"];
-            if (isset($msg["platform"])) $platform = $msg["platform"];
-            if (isset($msg["deviceId"])) $deviceId = $msg["deviceId"];
-            if (isset($msg["statCode"])) $statCode = $msg["statCode"];
-            if (isset($msg["content"])) $content = $msg["content"];
-
-            //具体处理函数
-            $resp = $this->func_doorlock_data_process($platform, $deviceId, $statCode, $content);
+        switch($msgId)
+        {
+            case MSG_ID_L2SDK_HCU_TO_L2SNR_DOORLOCK:
+                //具体处理函数
+                $resp = $this->func_doorlock_data_process($platform, $deviceId, $statCode, $content);
+                break;
+            case MSG_ID_L2SDK_HCU_TO_L2SNR_BOXSTAT:
+                //具体处理函数
+                $resp = $this->func_doorlock_statreport_process($platform, $deviceId, $statCode, $content);
+                break;
+            case HUITP_MSGID_uni_ccl_state_report:
+                $resp = $this->func_huitp_msg_uni_ccl_state_report($platform, $deviceId, $statCode, $content);
+                break;
+            default:
+                $resp = ""; //啥都不ECHO
+                break;
         }
-        elseif ($msgId == MSG_ID_L2SDK_HCU_TO_L2SNR_BOXSTAT){
-            //解开消息
-            if (isset($msg["project"])) $project = $msg["project"];
-            if (isset($msg["log_from"])) $log_from = $msg["log_from"];
-            if (isset($msg["platform"])) $platform = $msg["platform"];
-            if (isset($msg["deviceId"])) $deviceId = $msg["deviceId"];
-            if (isset($msg["statCode"])) $statCode = $msg["statCode"];
-            if (isset($msg["content"])) $content = $msg["content"];
-
-            //具体处理函数
-            $resp = $this->func_doorlock_statreport_process($platform, $deviceId, $statCode, $content);
-        }
-        else{
-            $resp = ""; //啥都不ECHO
-        }
-
 
         //返回ECHO
         if (!empty($resp))

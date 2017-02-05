@@ -40,6 +40,82 @@ class classDbiL2snrDoorlock
         return $result;
     }
 
+    private function dbi_hcu_lock_keyauth_check($keyid, $statcode)
+    {
+        //建立连接
+        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli) {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $mysqli->query("SET NAMES utf8");
+
+        $authckeck = false;
+        $query_str = "SELECT * FROM `t_l3f2cm_fhys_keyauth` WHERE (`keyid` = '$keyid')";
+        $result = $mysqli->query($query_str);
+        while ($row = $result->fetch_array())
+        {
+            $sid = $row['sid'];
+            $authlevel = $row['authlevel'];
+            $authobjcode = $row['authobjcode'];
+            $authtype = $row['authtype'];
+            $validnum = $row['validnum'];
+            $validend = $row['validend'];
+
+            //如果该钥匙授权是项目级授权，查询该站点是否属于授权项目
+            if ($authlevel == MFUN_L3APL_F2CM_AUTH_LEVEL_PROJ)
+            {
+                $query_str = " SELECT * FROM `t_l3f3dm_siteinfo` WHERE (`statcode` = '$statcode' AND `p_code` = '$authobjcode' ) ";
+                $resp = $mysqli->query($query_str);
+                if (($resp != false) && ($resp->num_rows)>0)
+                    $authobjcode = $statcode;
+            }
+
+            if ($authobjcode == $statcode)
+            {
+                switch ($authtype)
+                {
+                    case MFUN_L3APL_F2CM_AUTH_TYPE_NUMBER:
+                        $remain_validnum = $validnum - 1;
+                        if ($remain_validnum == 0){
+                            $query_str = "DELETE FROM `t_l3f2cm_fhys_keyauth` WHERE (`sid` = '$sid') ";
+                            $resp = $mysqli->query($query_str);
+                            $authckeck = true;
+                        }
+                        else{
+                            $query_str = "UPDATE `t_l3f2cm_fhys_keyauth` SET  `validnum` = '$remain_validnum' WHERE (`sid` = '$sid')";
+                            $resp = $mysqli->query($query_str);
+                            $authckeck = true;
+                        }
+                        break;
+                    case MFUN_L3APL_F2CM_AUTH_TYPE_TIME:
+                        $timestamp = time();
+                        $current_date = intval(date("Ymd", $timestamp));
+                        $validend = intval(date('Ymd',strtotime($validend)));
+                        if ($current_date > $validend){
+                            $query_str = "DELETE FROM `t_l3f2cm_fhys_keyauth` WHERE (`sid` = '$sid') ";
+                            $resp = $mysqli->query($query_str);
+                            $authckeck = false;
+                        }
+                        else
+                            $authckeck = true;
+                        break;
+                    case MFUN_L3APL_F2CM_AUTH_TYPE_FOREVER:
+                        $authckeck = true;
+                        break;
+                    default:
+                        $authckeck = false;
+                        break;
+                }
+            }
+            else
+                $authckeck = false;
+
+            if ($authckeck == true) //如何验证授权通过就直接返回，否则继续遍历
+                return $authckeck;
+        }
+        return $authckeck;
+    }
+
     public function dbi_hcu_lock_status_update($devCode, $statCode, $data)
     {
         //建立连接
@@ -137,45 +213,17 @@ class classDbiL2snrDoorlock
             $ctrl_key = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_CMDID_FHYS_LOCK);
             $opt_key = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_OPT_FHYS_USERID_LOCKOPEN_RESP);
 
-            $query_str = "SELECT * FROM `t_l3f3dm_fhys_currentreport` WHERE (`statcode` = '$statCode' AND `devcode` = '$devCode')";
+            $auth_check = false;
+            $key_type = MFUN_L3APL_F2CM_KEY_TYPE_USER;
+            $query_str = "SELECT * FROM `t_l3f2cm_fhys_keyinfo` WHERE (`hwcode` = '$funcFlag' AND `keytype` = '$key_type')"; //暂时只判断是否有
             $resp = $mysqli->query($query_str);
-            $resp_row = $resp->fetch_array();
-            $status = $resp_row["lockstat"];
-
-            $query_str = "SELECT * FROM `t_l3f2cm_fhys_keyinfo` WHERE (`hwcode` = '$funcFlag')"; //暂时只判断是否有
-            $result = $mysqli->query($query_str);
-            if (($result != false) && ($result->num_rows)>0){
-                $funcFlag = true;
-            }
-            else{
-                $anthtype = MFUN_L3APL_F2CM_AUTH_TYPE_NUMBER;
-                $query_str = "SELECT * FROM `t_l3f2cm_fhys_keyauth` WHERE (`authobjcode` = '$statCode' AND `authtype` = '$anthtype' AND `validnum` > 0)";
-                $resp = $mysqli->query($query_str);
-                if (($resp != false) && ($resp->num_rows)>0){
-                    $funcFlag = true;
-                    $resp_row = $resp->fetch_array();
-                    $keyid = $resp_row["keyid"];
-                    $event = MFUN_L3APL_F2CM_EVENT_TYPE_USER;
-                    $this->dbi_hcu_event_log_process($keyid, $statCode, $event); //保存开锁记录
-
-                    $remain_validnum = $resp_row["validnum"] -1;
-                    if($remain_validnum == 0) //有效次数为0后删除该条授权记录
-                    {
-                        $query_str = "DELETE FROM `t_l3f2cm_fhys_keyauth` WHERE (`authobjcode` = '$statCode' AND `authtype` = '$anthtype' ) ";
-                        $result = $mysqli->query($query_str);
-                    }
-                    else{
-                        $query_str = "UPDATE `t_l3f2cm_fhys_keyauth` SET  `validnum` = '$remain_validnum' WHERE (`authobjcode` = '$statCode' AND `authtype` = '$anthtype')";
-                        $result = $mysqli->query($query_str);
-                    }
-                }
-                else
-                    $funcFlag = false;
+            if (($resp != false) && ($resp->num_rows)>0){
+                $row = $resp->fetch_array();
+                $keyid = $row['keyid'];
+                $auth_check = $this->dbi_hcu_lock_keyauth_check($keyid, $statCode);
             }
 
-
-            //暂时只判断flag不为空且在闭锁状态才发送命令，将来要进行权限判断
-            if($funcFlag && $status == MFUN_HCU_FHYS_LOCK_CLOSE)
+            if($auth_check == true)
                 $para = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_DATA_FHYS_LOCK_OPEN);
             else
                 $para = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_DATA_FHYS_LOCK_CLOSE);
@@ -215,20 +263,17 @@ class classDbiL2snrDoorlock
             $ctrl_key = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_CMDID_FHYS_LOCK);
             $opt_key = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_OPT_FHYS_RFID_LOCKOPEN_RESP);
 
-            $query_str = "SELECT * FROM `t_l3f3dm_fhys_currentreport` WHERE (`statcode` = '$statCode' AND `devcode` = '$devCode')";
+            $auth_check = false;
+            $key_type = MFUN_L3APL_F2CM_KEY_TYPE_RFID;
+            $query_str = "SELECT * FROM `t_l3f2cm_fhys_keyinfo` WHERE (`hwcode` = '$funcFlag' AND `keytype` = '$key_type')"; //暂时只判断是否有
             $resp = $mysqli->query($query_str);
-            $resp_row = $resp->fetch_array();
-            $status = $resp_row["lockstat"];
-
-            $query_str = "SELECT * FROM `t_l3f2cm_fhys_keyinfo` WHERE (`hwcode` = '$funcFlag')"; //暂时只判断是否有
-            $result = $mysqli->query($query_str);
-            if (($result != false) && ($result->num_rows)>0){
-                $funcFlag = true;
+            if (($resp != false) && ($resp->num_rows)>0){
+                $row = $resp->fetch_array();
+                $keyid = $row['keyid'];
+                $auth_check = $this->dbi_hcu_lock_keyauth_check($keyid, $statCode);
             }
-            else
-                $funcFlag = false;
-            //暂时只判断flag不为空且在闭锁状态才发送命令，将来要进行权限判断
-            if($funcFlag && $status == MFUN_HCU_FHYS_LOCK_CLOSE)
+
+            if($auth_check == true)
                 $para = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_DATA_FHYS_LOCK_OPEN);
             else
                 $para = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_DATA_FHYS_LOCK_CLOSE);
@@ -268,20 +313,17 @@ class classDbiL2snrDoorlock
             $ctrl_key = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_CMDID_FHYS_LOCK);
             $opt_key = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_OPT_FHYS_BLE_LOCKOPEN_RESP);
 
-            $query_str = "SELECT * FROM `t_l3f3dm_fhys_currentreport` WHERE (`statcode` = '$statCode' AND `devcode` = '$devCode')";
+            $auth_check = false;
+            $key_type = MFUN_L3APL_F2CM_KEY_TYPE_BLE;
+            $query_str = "SELECT * FROM `t_l3f2cm_fhys_keyinfo` WHERE (`hwcode` = '$funcFlag' AND `keytype` = '$key_type')"; //暂时只判断是否有
             $resp = $mysqli->query($query_str);
-            $resp_row = $resp->fetch_array();
-            $status = $resp_row["lockstat"];
-
-            $query_str = "SELECT * FROM `t_l3f2cm_fhys_keyinfo` WHERE (`hwcode` = '$funcFlag')"; //暂时只判断是否有
-            $result = $mysqli->query($query_str);
-            if (($result != false) && ($result->num_rows)>0){
-                $funcFlag = true;
+            if (($resp != false) && ($resp->num_rows)>0){
+                $row = $resp->fetch_array();
+                $keyid = $row['keyid'];
+                $auth_check = $this->dbi_hcu_lock_keyauth_check($keyid, $statCode);
             }
-            else
-                $funcFlag = false;
-            //暂时只判断flag不为空且在闭锁状态才发送命令，将来要进行权限判断
-            if($funcFlag && $status == MFUN_HCU_FHYS_LOCK_CLOSE)
+
+            if($auth_check == true)
                 $para = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_DATA_FHYS_LOCK_OPEN);
             else
                 $para = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_DATA_FHYS_LOCK_CLOSE);
@@ -320,20 +362,17 @@ class classDbiL2snrDoorlock
             $ctrl_key = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_CMDID_FHYS_LOCK);
             $opt_key = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_OPT_FHYS_WECHAT_LOCKOPEN_RESP);
 
-            $query_str = "SELECT * FROM `t_l3f3dm_fhys_currentreport` WHERE (`statcode` = '$statCode' AND `devcode` = '$devCode')";
+            $auth_check = false;
+            $key_type = MFUN_L3APL_F2CM_KEY_TYPE_WECHAT;
+            $query_str = "SELECT * FROM `t_l3f2cm_fhys_keyinfo` WHERE (`hwcode` = '$funcFlag' AND `keytype` = '$key_type')"; //暂时只判断是否有
             $resp = $mysqli->query($query_str);
-            $resp_row = $resp->fetch_array();
-            $status = $resp_row["lockstat"];
-
-            $query_str = "SELECT * FROM `t_l3f2cm_fhys_keyinfo` WHERE (`hwcode` = '$funcFlag')"; //暂时只判断是否有
-            $result = $mysqli->query($query_str);
-            if (($result != false) && ($result->num_rows)>0){
-                $funcFlag = true;
+            if (($resp != false) && ($resp->num_rows)>0){
+                $row = $resp->fetch_array();
+                $keyid = $row['keyid'];
+                $auth_check = $this->dbi_hcu_lock_keyauth_check($keyid, $statCode);
             }
-            else
-                $funcFlag = false;
-            //暂时只判断flag不为空且在闭锁状态才发送命令，将来要进行权限判断
-            if($funcFlag && $status == MFUN_HCU_FHYS_LOCK_CLOSE)
+
+            if($auth_check == true)
                 $para = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_DATA_FHYS_LOCK_OPEN);
             else
                 $para = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_DATA_FHYS_LOCK_CLOSE);
@@ -372,20 +411,17 @@ class classDbiL2snrDoorlock
             $ctrl_key = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_CMDID_FHYS_LOCK);
             $opt_key = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_OPT_FHYS_IDCARD_LOCKOPEN_RESP);
 
-            $query_str = "SELECT * FROM `t_l3f3dm_fhys_currentreport` WHERE (`statcode` = '$statCode' AND `devcode` = '$devCode')";
+            $auth_check = false;
+            $key_type = MFUN_L3APL_F2CM_KEY_TYPE_IDCARD;
+            $query_str = "SELECT * FROM `t_l3f2cm_fhys_keyinfo` WHERE (`hwcode` = '$funcFlag' AND `keytype` = '$key_type')"; //暂时只判断是否有
             $resp = $mysqli->query($query_str);
-            $resp_row = $resp->fetch_array();
-            $status = $resp_row["lockstat"];
-
-            $query_str = "SELECT * FROM `t_l3f2cm_fhys_keyinfo` WHERE (`hwcode` = '$funcFlag')"; //暂时只判断是否有
-            $result = $mysqli->query($query_str);
-            if (($result != false) && ($result->num_rows)>0){
-                $funcFlag = true;
+            if (($resp != false) && ($resp->num_rows)>0){
+                $row = $resp->fetch_array();
+                $keyid = $row['keyid'];
+                $auth_check = $this->dbi_hcu_lock_keyauth_check($keyid, $statCode);
             }
-            else
-                $funcFlag = false;
-            //暂时只判断flag不为空且在闭锁状态才发送命令，将来要进行权限判断
-            if($funcFlag && $status == MFUN_HCU_FHYS_LOCK_CLOSE)
+
+            if($auth_check == true)
                 $para = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_DATA_FHYS_LOCK_OPEN);
             else
                 $para = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_DATA_FHYS_LOCK_CLOSE);
@@ -637,6 +673,11 @@ class classDbiL2snrDoorlock
 
         $mysqli->close();
         return $resp;//返回Response
+    }
+
+    public function dbi_huitp_msg_uni_ccl_state_report($devCode, $statCode, $data)
+    {
+
     }
 
 
