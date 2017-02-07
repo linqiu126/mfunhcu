@@ -923,14 +923,63 @@ class classTaskL2sdkIotHcu
                         <Content><![CDATA[%s]]></Content>
                         <FuncFlag>0</FuncFlag></xml>";
 
+                //XML消息解码
+                $toUser = trim($postObj->ToUserName);
                 $fromUser = trim($postObj->FromUserName);
                 $createTime = trim($postObj->CreateTime);
+                $msgType = trim($postObj->MsgType);
+                $content = trim($postObj->Content);
+                $funcFlag = trim($postObj->FuncFlag);
+
                 $log_time = date("Y-m-d H:i:s",$createTime);
                 $log_content = "R:" . trim($msg);
-                $RX_TYPE = trim($postObj->MsgType);
 
-                //消息或者说帧类型分离
-                switch ($RX_TYPE) {
+                //消息或者说帧类型分离，l2SDK只进行协议类型解码，不对消息的content进行处理，判断协议类型后发送给专门的l2codec任务处理
+                switch ($msgType)
+                {
+                    case "huitp_text"://HUITP消息处理
+                        $project = MFUN_PRJ_HCU_XML;
+                        $log_from = $fromUser;
+                        //定义本入口函数的logger处理对象及函数
+                        $loggerObj = new classApiL1vmFuncCom();
+
+                        //取DB中的硬件信息，判断基本信息
+                        $l2sdkHcuDbObj = new classDbiL2sdkHcu();
+                        $result = $l2sdkHcuDbObj->dbi_hcuDevice_valid_device($fromUser); //FromUserName对应每个HCU硬件的设备编号
+                        if (empty($result)){
+                            $result = "HCU_IOT: invalid device ID";
+                            $log_content = "T:" . json_encode($result);
+                            $loggerObj->logger($project, $log_from, $log_time, $log_content);
+                            return true;
+                        }
+                        else{
+                            $statCode = $result;
+                        }
+
+                        //收到非本消息体该收到的消息
+                        if ($toUser != MFUN_CLOUD_HCU ){
+                            $result = "HCU_IOT: FHYS XML message invalid ToUserName";
+                            $log_content = "T:" . json_encode($result);
+                            $loggerObj->logger($project, $log_from, $log_time, $log_content);
+                            echo trim($result);
+                            return true;
+                        }
+                        $msg = array("project" => $project,
+                            "log_from" => $log_from,
+                            "platform" => MFUN_TECH_PLTF_HCUSTM,
+                            "deviceId" => $fromUser,
+                            "statCode" => $statCode,
+                            "content" => $content,
+                            "funcFlag" => $funcFlag);
+                        if ($parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L2SDK_IOT_HCU,
+                                MFUN_TASK_ID_L2SENSOR_HUMID,
+                                MSG_ID_L2SDK_HCU_TO_L2SNR_HUMID,
+                                "MSG_ID_L2SDK_HCU_TO_L2SNR_HUMID",
+                                $msg) == false) $resp = "Send to message buffer error";
+                        else $resp = "";
+                        break;
+
+                    //以下是基于老的消息的函数处理，为了保持现有业务的平稳运行，暂时保持不动。等HUITP编解码模块测试完整后再进行改造
                     case "hcu_text":
                         $project = MFUN_PRJ_HCU_XML;
                         $loggerObj->logger($project, $fromUser, $log_time, $log_content);

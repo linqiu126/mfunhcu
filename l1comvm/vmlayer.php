@@ -19,7 +19,9 @@ include_once "../l1comvm/sysversion.php";
 include_once "../l1comvm/sysmodule.php";
 include_once "../l1comvm/dbi_common.class.php";
 include_once "../l1comvm/func_comapi.class.php";
-include_once "../l1comvm/huitp_msg.php";
+//HUITP任务模块
+include_once "../l2codec/huitp_msg.php";
+include_once "../l2codec/task_huitp_msg_codec.php";
 //包含所有的任务模块，不然无法调用
 include_once "../l2sdk/task_l2sdk_iot_hcu.class.php";
 include_once "../l2sdk/task_l2sdk_wechat.class.php";

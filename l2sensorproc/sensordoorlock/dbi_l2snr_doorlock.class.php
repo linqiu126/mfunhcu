@@ -223,8 +223,11 @@ class classDbiL2snrDoorlock
                 $auth_check = $this->dbi_hcu_lock_keyauth_check($keyid, $statCode);
             }
 
-            if($auth_check == true)
+            if($auth_check == true){
                 $para = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_DATA_FHYS_LOCK_OPEN);
+                $event = MFUN_L3APL_F2CM_EVENT_TYPE_USER;
+                $this->dbi_hcu_event_log_process($keyid, $statCode, $event); //保存开锁记录
+            }
             else
                 $para = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_DATA_FHYS_LOCK_CLOSE);
 
@@ -273,8 +276,11 @@ class classDbiL2snrDoorlock
                 $auth_check = $this->dbi_hcu_lock_keyauth_check($keyid, $statCode);
             }
 
-            if($auth_check == true)
+            if($auth_check == true){
                 $para = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_DATA_FHYS_LOCK_OPEN);
+                $event = MFUN_L3APL_F2CM_EVENT_TYPE_RFID;
+                $this->dbi_hcu_event_log_process($keyid, $statCode, $event); //保存开锁记录
+            }
             else
                 $para = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_DATA_FHYS_LOCK_CLOSE);
 
@@ -323,8 +329,11 @@ class classDbiL2snrDoorlock
                 $auth_check = $this->dbi_hcu_lock_keyauth_check($keyid, $statCode);
             }
 
-            if($auth_check == true)
+            if($auth_check == true){
                 $para = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_DATA_FHYS_LOCK_OPEN);
+                $event = MFUN_L3APL_F2CM_EVENT_TYPE_BLE;
+                $this->dbi_hcu_event_log_process($keyid, $statCode, $event); //保存开锁记录
+            }
             else
                 $para = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_DATA_FHYS_LOCK_CLOSE);
 
@@ -372,8 +381,11 @@ class classDbiL2snrDoorlock
                 $auth_check = $this->dbi_hcu_lock_keyauth_check($keyid, $statCode);
             }
 
-            if($auth_check == true)
+            if($auth_check == true){
                 $para = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_DATA_FHYS_LOCK_OPEN);
+                $event = MFUN_L3APL_F2CM_EVENT_TYPE_WECHAT;
+                $this->dbi_hcu_event_log_process($keyid, $statCode, $event); //保存开锁记录
+            }
             else
                 $para = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_DATA_FHYS_LOCK_CLOSE);
 
@@ -421,8 +433,11 @@ class classDbiL2snrDoorlock
                 $auth_check = $this->dbi_hcu_lock_keyauth_check($keyid, $statCode);
             }
 
-            if($auth_check == true)
+            if($auth_check == true){
                 $para = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_DATA_FHYS_LOCK_OPEN);
+                $event = MFUN_L3APL_F2CM_EVENT_TYPE_IDCARD;
+                $this->dbi_hcu_event_log_process($keyid, $statCode, $event); //保存开锁记录
+            }
             else
                 $para = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_DATA_FHYS_LOCK_CLOSE);
 

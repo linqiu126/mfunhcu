@@ -22,6 +22,7 @@ define("MFUN_TASK_ID_L2SDK_NBIOT_STD_QG376", $taskIndex++);  //基于376的规�
 define("MFUN_TASK_ID_L2SDK_NBIOT_STD_CJ188", $taskIndex++);//基于CJ188规范
 define("MFUN_TASK_ID_L2SDK_NBIOT_LTEV", $taskIndex++);    //车联网
 define("MFUN_TASK_ID_L2SDK_NBIOT_AGC", $taskIndex++);     //农业用途
+define("MFUN_TASK_ID_L2CODEC_HUITP",$taskIndex++); //HUITP 编解码任务模块
 define("MFUN_TASK_ID_L2SENSOR_EMC", $taskIndex++);
 define("MFUN_TASK_ID_L2SENSOR_HSMMP", $taskIndex++);
 define("MFUN_TASK_ID_L2SENSOR_HUMID", $taskIndex++);
