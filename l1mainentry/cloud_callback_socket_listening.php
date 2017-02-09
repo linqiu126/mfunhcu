@@ -112,8 +112,11 @@ class classL1MainEntrySocketListenServer
         //然后阻塞等待SQL完成
 
         //20161112, QL, AQYC项目的代码先注释掉，供FHYC项目调试完再说
-        $strpos = strpos($data,"HCU_");
-        $DevCode = substr($data, $strpos, 11);
+        //$strpos = strpos($data,"HCU_");
+        //$DevCode = substr($data, $strpos, 11);
+
+        $xml = simplexml_load_string($data);
+        $DevCode = (string) $xml->FromUserName;
 
         $query="UPDATE t_l2sdk_iothcu_inventory  SET socketid = $fd WHERE devcode = \"$DevCode\"";
         $result = $serv->taskwait($query);
