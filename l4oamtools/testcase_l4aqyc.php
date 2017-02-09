@@ -12,11 +12,21 @@ include_once "../l1comvm/vmlayer.php";
  *                             L4AQYC-UI TEST CASES                                   *
  *************************************************************************************/
 if (TC_L4AQYC_UI == true) {
-    $sessionid = "jZM4H7puHs";
+    $sessionid = "Bvlbk2ShCw";
     $uerid = "UID000001";
     $statcode = "120101015";
+    $projcode = "P_0002";
 
     //TEST CASE: L4AQYC-UI界面: START
+
+    echo " [TC L4AQYC: GetProjUpdateStrategy START]\n";
+    $_GET["action"] = "GetProjUpdateStrategy";
+    $_GET["type"] = "query";
+    $body = array('ProjCode' => $projcode);
+    $_GET["body"] = $body;
+    $_GET["user"] = $sessionid;
+    require("../l4aqycui/request.php");
+    echo " [TC L4AQYC: GetProjUpdateStrategy END]\n";
 
     //公共消息测试
     echo " [TC L4AQYC: LOGIN START]\n";

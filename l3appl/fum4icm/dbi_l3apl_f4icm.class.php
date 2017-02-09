@@ -237,7 +237,7 @@ class classDbiL3apF4icm
         return $verlist;
     }
 
-    public function dbi_swver_update_strategy_list_process($pcode)
+    public function dbi_proj_su_strategy_list_process($pcode)
     {
         //初始化返回值
         $strategy_list['ColumnName'] = array();
@@ -296,7 +296,7 @@ class classDbiL3apF4icm
         return $strategy_list;
     }
 
-    public function dbi_proj_swver_strategy_change_process($pcode, $sw_base)
+    public function dbi_proj_swbase_change_process($pcode, $sw_base)
     {
         //建立连接
         $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
@@ -310,6 +310,74 @@ class classDbiL3apF4icm
 
         $mysqli->close();
         return $result;
+    }
+
+    public function dbi_dev_su_strategy_change_process($statCode, $autoUpdate)
+    {
+        //建立连接
+        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli) {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $mysqli->query("SET NAMES utf8");
+
+        if ($autoUpdate == true)
+            $autoUpdate = 1;
+        else
+            $autoUpdate = 0;
+
+        $query_str = "UPDATE `t_l2sdk_iothcu_inventory` SET `hcu_sw_autoupdate` = '$autoUpdate', `hcu_db_autoupdate` = '$autoUpdate' WHERE (`statcode` = '$statCode')";
+        $result = $mysqli->query($query_str);
+
+        $mysqli->close();
+        return $result;
+    }
+
+    public function dbi_proj_su_strategy_change_process($projCode, $autoUpdate)
+    {
+        //建立连接
+        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli) {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $mysqli->query("SET NAMES utf8");
+
+        if ($autoUpdate == true)
+            $autoUpdate = 1;
+        else
+            $autoUpdate = 0;
+
+        $query_str = "SELECT * FROM `t_l3f3dm_siteinfo` WHERE (`p_code` = '$projCode')";
+        $result = $mysqli->query($query_str);
+        while ($row = $result->fetch_array()){
+            $statCode = $row['statcode'];
+            $query_str = "UPDATE `t_l2sdk_iothcu_inventory` SET `hcu_sw_autoupdate` = '$autoUpdate', `hcu_db_autoupdate` = '$autoUpdate' WHERE (`statcode` = '$statCode')";
+            $resp = $mysqli->query($query_str);
+        }
+
+        $mysqli->close();
+        return $result;
+    }
+
+    public function dbi_proj_su_strategy_get_process($projCode)
+    {
+        //建立连接
+        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli) {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $mysqli->query("SET NAMES utf8");
+
+        $sw_base = "";
+        $query_str = "SELECT * FROM `t_l3f2cm_projinfo` WHERE (`p_code` = '$projCode')";
+        $result = $mysqli->query($query_str);
+        if (($result != false) && ($result->num_rows)>0){
+            $row = $result->fetch_array();
+            $sw_base = $row['sw_base'];
+        }
+
+        $mysqli->close();
+        return $sw_base;
     }
 
     //仪表控制，更新传感器信息,发送传感器参数修改命令

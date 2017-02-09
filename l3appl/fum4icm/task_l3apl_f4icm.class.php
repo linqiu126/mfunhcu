@@ -166,19 +166,19 @@ class classTaskL3aplF4icm
         return $retval;
     }
 
-    function func_swver_update_strategy_list_process($type, $user, $body)
+    function func_proj_su_strategy_list_process($type, $user, $body)
     {
-        if (isset($body["ProjCode"])) $pcode = $body["ProjCode"]; else  $pcode = "";
+        if (isset($body["ProjCode"])) $projCode = $body["ProjCode"]; else  $projCode = "";
 
         $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
         $usercheck = $uiF1symDbObj->dbi_user_authcheck($type, $user);
         if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
             $uiF4icmDbObj = new classDbiL3apF4icm();
-            $resp = $uiF4icmDbObj->dbi_swver_update_strategy_list_process($pcode);
+            $resp = $uiF4icmDbObj->dbi_proj_su_strategy_list_process($projCode);
             if(!empty($resp))
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$resp,'msg'=>"获取软件版本更新策略信息列表成功");
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$resp,'msg'=>"获取项目软件版本更新策略信息列表成功");
             else
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>"获取软件版本更新策略信息列表失败");
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>"获取项目软件版本更新策略信息列表失败");
         }
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
@@ -186,23 +186,89 @@ class classTaskL3aplF4icm
         return $retval;
     }
 
-    function func_proj_swver_strategy_change_process($type, $user, $body)
+    function func_proj_swbase_change_process($type, $user, $body)
     {
-        if (isset($body["ProjCode"])) $pcode = $body["ProjCode"]; else  $pcode = "";
+        if (isset($body["ProjCode"])) $projCode = $body["ProjCode"]; else  $projCode = "";
         if (isset($body["UpdateLine"])) $sw_base = $body["UpdateLine"]; else  $sw_base = "";
 
         $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
         $usercheck = $uiF1symDbObj->dbi_user_authcheck($type, $user);
         if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
             $uiF4icmDbObj = new classDbiL3apF4icm();
-            $resp = $uiF4icmDbObj->dbi_proj_swver_strategy_change_process($pcode, $sw_base);
+            $resp = $uiF4icmDbObj->dbi_proj_swbase_change_process($projCode, $sw_base);
             if($resp == true)
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"修改项目软件版本策略成功");
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"修改项目软件版本基线成功");
             else
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"修改项目软件版本策略失败");
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"修改项目软件版本基线失败");
         }
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>$usercheck['msg']);
+
+        return $retval;
+    }
+
+    function func_dev_su_strategy_change_process($type, $user, $body)
+    {
+        if (isset($body["StatCode"])) $statCode = $body["StatCode"]; else  $statCode = "";
+        if (isset($body["AutoUpdate"])) $autoUpdate = $body["AutoUpdate"]; else  $autoUpdate = "";
+
+        $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
+        $usercheck = $uiF1symDbObj->dbi_user_authcheck($type, $user);
+        if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
+            $uiF4icmDbObj = new classDbiL3apF4icm();
+            $resp = $uiF4icmDbObj->dbi_dev_su_strategy_change_process($statCode, $autoUpdate);
+            if($resp == true)
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"修改站点软件更新策略成功");
+            else
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"修改站点软件更新策略失败");
+        }
+        else
+            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>$usercheck['msg']);
+
+        return $retval;
+    }
+
+    function func_proj_su_strategy_change_process($type, $user, $body)
+    {
+        if (isset($body["ProjCode"])) $projCode = $body["ProjCode"]; else  $projCode = "";
+        if (isset($body["AutoUpdate"])) $autoUpdate = $body["AutoUpdate"]; else  $autoUpdate = "";
+
+        $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
+        $usercheck = $uiF1symDbObj->dbi_user_authcheck($type, $user);
+        if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
+            $uiF4icmDbObj = new classDbiL3apF4icm();
+            $resp = $uiF4icmDbObj->dbi_proj_su_strategy_change_process($projCode, $autoUpdate);
+            if($resp == true)
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"修改项目软件更新策略成功");
+            else
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"修改项目软件更新策略失败");
+        }
+        else
+            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>$usercheck['msg']);
+
+        return $retval;
+    }
+
+    function func_proj_su_strategy_get_process($type, $user, $body)
+    {
+        if (isset($body["ProjCode"])) $projCode = $body["ProjCode"]; else  $projCode = "";
+
+        $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
+        $usercheck = $uiF1symDbObj->dbi_user_authcheck($type, $user);
+        if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
+            $uiF4icmDbObj = new classDbiL3apF4icm();
+            $resp = $uiF4icmDbObj->dbi_proj_su_strategy_get_process($projCode);
+            if(!empty($resp)){
+                $body=array('VersionLine' => $resp);
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$body,'msg'=>"获取项目软件版本基线成功");
+            }
+            else{
+                $body=array('VersionLine' => $resp);
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$body,'msg'=>"获取项目软件版本基线失败");
+            }
+        }
+        else
+            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
 
         return $retval;
     }
@@ -430,21 +496,27 @@ class classTaskL3aplF4icm
                 $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
             //获取指定项目下所有设备的软件更新策略，包括软件版本，版本基线，是否允许自动更新
-            case MSG_ID_L4AQYCUI_TO_L3F4_SWUPDATESTRATEGYLIST:
-                $resp = $this->func_swver_update_strategy_list_process($type, $user, $body);
+            case MSG_ID_L4AQYCUI_TO_L3F4_PROJSUSTRATEGY:
+                $resp = $this->func_proj_su_strategy_list_process($type, $user, $body);
                 $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
-            case MSG_ID_L4AQYCUI_TO_L3F4_SWBASECHANGE:
-                $resp = $this->func_proj_swver_strategy_change_process($type, $user, $body);
+            //修改项目软件基线策略
+            case MSG_ID_L4AQYCUI_TO_L3F4_PROJSWBASECHANGE:
+                $resp = $this->func_proj_swbase_change_process($type, $user, $body);
                 $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
-            case MSG_ID_L4AQYCUI_TO_L3F4_DEVSWSTRATEGYCHANGE:
-                break;
-            case MSG_ID_L4AQYCUI_TO_L3F4_PROJSWSTRATEGYCHANGE:
-                $resp = $this->func_proj_swver_strategy_change_process($type, $user, $body);
+            //修改某站点软件更新策略
+            case MSG_ID_L4AQYCUI_TO_L3F4_DEVSUSTRATEGYCHANGE:
+                $resp = $this->func_dev_su_strategy_change_process($type, $user, $body);
                 $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
-            case MSG_ID_L4AQYCUI_TO_L3F4_PROJSWSTRATEGYGET:
+            case MSG_ID_L4AQYCUI_TO_L3F4_PROJSUSTRATEGYCHANGE:
+                $resp = $this->func_proj_su_strategy_change_process($type, $user, $body);
+                $project = MFUN_PRJ_HCU_AQYCUI;
+                break;
+            case MSG_ID_L4AQYCUI_TO_L3F4_PROJSUSTRATEGYGET:
+                $resp = $this->func_proj_su_strategy_get_process($type, $user, $body);
+                $project = MFUN_PRJ_HCU_AQYCUI;
                break;
 
             case MSG_ID_L4AQYCUI_TO_L3F4_SENSORUPDATE://功能Sensor update

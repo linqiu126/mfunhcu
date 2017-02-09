@@ -513,43 +513,47 @@ class classTaskL4aqycUi
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
                     $input = array("type" => $type,"user" => $user,"body" => $body);
-                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM4ICM, MSG_ID_L4AQYCUI_TO_L3F4_SWUPDATESTRATEGYLIST, "MSG_ID_L4AQYCUI_TO_L3F4_SWUPDATESTRATEGYLIST",$input);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM4ICM, MSG_ID_L4AQYCUI_TO_L3F4_PROJSUSTRATEGY, "MSG_ID_L4AQYCUI_TO_L3F4_PROJSUSTRATEGY",$input);
                     break;
 
+                //修改项目软件版本基线
                 case "ProjVersionStrategyChange":
                     if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
                     if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
                     $input = array("type" => $type,"user" => $user,"body" => $body);
-                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM4ICM, MSG_ID_L4AQYCUI_TO_L3F4_SWBASECHANGE, "MSG_ID_L4AQYCUI_TO_L3F4_SWBASECHANGE",$input);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM4ICM, MSG_ID_L4AQYCUI_TO_L3F4_PROJSWBASECHANGE, "MSG_ID_L4AQYCUI_TO_L3F4_SWBASECHANGE",$input);
                     break;
 
+                //修改某站点软件更新策略
                 case "PointUpdateStrategyChange":
                     if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
                     if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
                     $input = array("type" => $type,"user" => $user,"body" => $body);
-                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM4ICM, MSG_ID_L4AQYCUI_TO_L3F4_DEVSWSTRATEGYCHANGE, "MSG_ID_L4AQYCUI_TO_L3F4_DEVSWSTRATEGYCHANGE",$input);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM4ICM, MSG_ID_L4AQYCUI_TO_L3F4_DEVSUSTRATEGYCHANGE, "MSG_ID_L4AQYCUI_TO_L3F4_DEVSUSTRATEGYCHANGE",$input);
                     break;
 
+                //修改某项目软件更新策略
                 case "ProjUpdateStrategyChange":
                     if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
                     if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
                     $input = array("type" => $type,"user" => $user,"body" => $body);
-                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM4ICM, MSG_ID_L4AQYCUI_TO_L3F4_PROJSWSTRATEGYCHANGE, "MSG_ID_L4AQYCUI_TO_L3F4_PROJSWSTRATEGYCHANGE",$input);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM4ICM, MSG_ID_L4AQYCUI_TO_L3F4_PROJSUSTRATEGYCHANGE, "MSG_ID_L4AQYCUI_TO_L3F4_PROJSUSTRATEGYCHANGE",$input);
                     break;
 
+                //获取某项目软件更新策略
                 case "GetProjUpdateStrategy":
                     if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
                     if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
                     $input = array("type" => $type,"user" => $user,"body" => $body);
-                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM4ICM, MSG_ID_L4AQYCUI_TO_L3F4_PROJSWSTRATEGYGET, "MSG_ID_L4AQYCUI_TO_L3F4_PROJSWSTRATEGYGET",$input);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM4ICM, MSG_ID_L4AQYCUI_TO_L3F4_PROJSUSTRATEGYGET, "MSG_ID_L4AQYCUI_TO_L3F4_PROJSUSTRATEGYGET",$input);
                     break;
 
                 case "GetWarningHandleListTable":
