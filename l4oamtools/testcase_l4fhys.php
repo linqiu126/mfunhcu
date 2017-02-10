@@ -52,7 +52,14 @@ if (TC_L4FHYS_WECHAT == true) {
  *                             L4FHYS-UI TEST CASES                                   *
  *************************************************************************************/
 if (TC_L4FHYS_UI == true) {
-    $sessionid = "INGJoArGNL";
+    $sessionid = "HcWaX95prv";
+
+    echo " [TC L4FHYS: GetStaticMonitorTable START]\n";
+    $_GET["action"] = "GetStaticMonitorTable";
+    $_GET["type"] = "query";
+    $_GET["user"] = $sessionid;
+    require("../l4fhysui/request.php");
+    echo " [TC L4FHYS: GetStaticMonitorTable END]\n";
 
     //公共消息测试
     echo " [TC L4FHYS: LOGIN START]\n";
