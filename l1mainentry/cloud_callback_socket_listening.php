@@ -115,8 +115,18 @@ class classL1MainEntrySocketListenServer
         //$strpos = strpos($data,"HCU_");
         //$DevCode = substr($data, $strpos, 11);
 
-        $xml = simplexml_load_string($data);
-        $DevCode = (string) $xml->FromUserName;
+	//$xml = simplexml_load_string($data);
+        //$DevCode = (string) $xml->FromUserName;
+	$xml_parser = xml_parser_create();   
+	if(!xml_parse($xml_parser,$data,true)){
+		xml_parser_free($xml_parser);
+	    $DevCode = $data;
+	    }else {
+    		$xml = simplexml_load_string($data);
+	        $DevCode = (string) $xml->FromUserName;
+	        xml_parser_free($xml_parser);
+	    }
+
 
         $query="UPDATE t_l2sdk_iothcu_inventory  SET socketid = $fd WHERE devcode = \"$DevCode\"";
         $result = $serv->taskwait($query);
