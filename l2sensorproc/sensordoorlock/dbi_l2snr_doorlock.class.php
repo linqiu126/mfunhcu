@@ -145,16 +145,17 @@ class classDbiL2snrDoorlock
             if (($resp != false) && ($resp->num_rows)>0){
                 $row = $resp->fetch_array();
                 $sid = $row['sid'];
+                $keyid = $row['keyid'];
                 $remain_validnum = $row['validnum'] - 1;
                 if ($remain_validnum == 0){
                     $query_str = "DELETE FROM `t_l3f2cm_fhys_keyauth` WHERE (`sid` = '$sid') ";
                     $resp = $mysqli->query($query_str);
-                    $authckeck = true;
+                    $auth_check = true;
                 }
                 else{
                     $query_str = "UPDATE `t_l3f2cm_fhys_keyauth` SET  `validnum` = '$remain_validnum' WHERE (`sid` = '$sid')";
                     $resp = $mysqli->query($query_str);
-                    $authckeck = true;
+                    $auth_check = true;
                 }
             }
 
