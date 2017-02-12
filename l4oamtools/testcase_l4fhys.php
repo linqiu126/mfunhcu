@@ -25,7 +25,7 @@ if (TC_L4FHYS_WECHAT == true) {
     echo " [TC L4FHYS_WECHAT: HCU_Lock_Query START]\n";
     $_GET["action"] = "HCU_Lock_Query";
     $_GET["type"] = "query";
-    $_GET["user"] = "UID000001";
+    $_GET["user"] = "UID771073";
     require("../l4fhyswechat/request.php");
     echo " [TC L4FHYS_WECHAT: HCU_Lock_Query END]\n";
 
@@ -34,7 +34,7 @@ if (TC_L4FHYS_WECHAT == true) {
     $_GET["type"] = "query";
     $body = array('statcode' => '120101002');
     $_GET["body"] = $body;
-    $_GET["user"] = "UID000001";
+    $_GET["user"] = "UID771073";
     require("../l4fhyswechat/request.php");
     echo " [TC L4FHYS_WECHAT: HCU_Lock_Status END]\n";
 
@@ -43,7 +43,7 @@ if (TC_L4FHYS_WECHAT == true) {
     $_GET["type"] = "query";
     $body = array('statcode' => '120101002');
     $_GET["body"] = $body;
-    $_GET["user"] = "UID000001";
+    $_GET["user"] = "UID771073";
     require("../l4fhyswechat/request.php");
     echo " [TC L4FHYS_WECHAT: HCU_Lock_open END]\n";
 
@@ -52,7 +52,16 @@ if (TC_L4FHYS_WECHAT == true) {
  *                             L4FHYS-UI TEST CASES                                   *
  *************************************************************************************/
 if (TC_L4FHYS_UI == true) {
-    $sessionid = "HcWaX95prv";
+    $sessionid = "bKuRHebJ2Y";
+
+    echo " [TC L4FHYS: DomainAuthlist START]\n";
+    $_GET["action"] = "DomainAuthlist";
+    $_GET["type"] = "query";
+    $body = array('DomainCode' => "P_0010");
+    $_GET["body"] = $body;
+    $_GET["user"] = $sessionid;
+    require("../l4fhysui/request.php");
+    echo " [TC L4FHYS: DomainAuthlist END]\n";
 
     echo " [TC L4FHYS: GetStaticMonitorTable START]\n";
     $_GET["action"] = "GetStaticMonitorTable";

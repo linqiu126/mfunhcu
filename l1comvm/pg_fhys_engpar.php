@@ -40,8 +40,8 @@ define("MFUN_L3APL_F2CM_EVENT_DURATION_MONTH", "30");
 //FHYS系统常量
 define ("MFUN_HCU_FHYS_TIME_GRID_SIZE", 1); //每分钟一条记录
 
-define ("MFUN_HCU_FHYS_STATUS_OK", "Y");  //设备正常，运行中
-define ("MFUN_HCU_FHYS_STATUS_NOK", "N"); //设备异常，关闭中
+define ("MFUN_HCU_FHYS_ALARM_YES", "Y");
+define ("MFUN_HCU_FHYS_ALARM_NO", "N");
 define ("MFUN_HCU_FHYS_STATUS_SLEEP", "S"); //设备休眠中
 define ("MFUN_HCU_FHYS_STATUS_UNKNOWN", "U"); //未知状态
 
@@ -51,8 +51,7 @@ define ("MFUN_HCU_FHYS_DOOR_ALARM", "A"); //光交箱门暴力打开
 define ("MFUN_HCU_FHYS_LOCK_OPEN", "Y");  //智能云锁打开
 define ("MFUN_HCU_FHYS_LOCK_CLOSE", "N"); //智能云锁关闭
 define ("MFUN_HCU_FHYS_LOCK_ALARM", "A"); //智能云锁暴力打开
-define ("MFUN_HCU_FHYS_ALARM_YES", "Y");
-define ("MFUN_HCU_FHYS_ALARM_NO", "N");
+
 //下位机的数据常量
 define ("MFUN_HCU_DATA_FHYS_STATUS_OK", 0x00); //设备状态正常或者门锁闭合
 define ("MFUN_HCU_DATA_FHYS_STATUS_NOK", 0x01); //设备状态异常或者门锁打开

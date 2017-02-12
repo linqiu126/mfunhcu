@@ -116,82 +116,6 @@ class classDbiL2snrDoorlock
         return $authckeck;
     }
 
-    public function dbi_hcu_lock_status_update($devCode, $statCode, $data)
-    {
-        //建立连接
-        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
-        if (!$mysqli) {
-            die('Could not connect: ' . mysqli_error($mysqli));
-        }
-        $mysqli->query("SET NAMES utf8");
-
-        if ($data == MFUN_HCU_DATA_FHYS_STATUS_OK)
-            $status = MFUN_HCU_FHYS_LOCK_CLOSE;
-        elseif ($data == MFUN_HCU_DATA_FHYS_STATUS_NOK)
-            $status = MFUN_HCU_FHYS_LOCK_OPEN;
-        elseif ($data == MFUN_HCU_DATA_FHYS_STATUS_ALARM)
-            $status = MFUN_HCU_FHYS_LOCK_ALARM;
-        else
-            $status =MFUN_HCU_FHYS_STATUS_UNKNOWN;
-
-        $timestamp = time();
-        $date = intval(date("ymd", $timestamp));
-        $temp = getdate($timestamp);
-        $hourminindex = intval(($temp["hours"] * 60 + floor($temp["minutes"]/MFUN_HCU_FHYS_TIME_GRID_SIZE)));
-
-        //更新分钟报告表
-        $result = $mysqli->query("SELECT * FROM `t_l2snr_fhys_minreport` WHERE (( `devcode` = '$devCode' AND `statcode` = '$statCode')
-                        AND (`reportdate` = '$date' AND `hourminindex` = '$hourminindex'))");
-        if (($result != false) && ($result->num_rows)>0)   //重复，则覆盖
-        {
-            $query_str = "UPDATE `t_l2snr_fhys_minreport` SET `lock_1` = '$status' WHERE (`devcode` = '$devCode' AND `statcode` = '$statCode' AND `reportdate` = '$date' AND `hourminindex` = '$hourminindex')";
-            $result = $mysqli->query($query_str);
-        }
-        else
-        {
-            $query_str = "INSERT INTO `t_l2snr_fhys_minreport` (devcode,statcode,lock_1,reportdate,hourminindex) VALUES ('$devCode','$statCode','$status', '$date', '$hourminindex')";
-            $result = $mysqli->query($query_str);
-        }
-
-        //更新当前聚合表
-        $currenttime = date("Y-m-d H:i:s",$timestamp);
-        $result = $mysqli->query("SELECT * FROM `t_l3f3dm_fhys_currentreport` WHERE (`devcode` = '$devCode') ");
-        if (($result->num_rows)>0) {
-            $query_str = "UPDATE `t_l3f3dm_fhys_currentreport` SET  `lockstat` = '$status', `createtime` = '$currenttime' WHERE (`devcode` = '$devCode')";
-            $result = $mysqli->query($query_str);
-        }
-        else {
-            $query_str = "INSERT INTO `t_l3f3dm_fhys_currentreport` (devcode,statcode,createtime,lockstat) VALUES ('$devCode','$statCode','$currenttime','$status')";
-            $result = $mysqli->query($query_str);
-        }
-
-        //返回Response
-        $query_str = "SELECT * FROM `t_l2sdk_iothcu_inventory` WHERE (`statcode` = '$statCode' AND `devcode` = '$devCode')";
-        $result = $mysqli->query($query_str);
-
-        if (($result != false) && ($result->num_rows)>0)
-        {
-            //生成控制命令的控制字
-            $apiL2snrCommonServiceObj = new classApiL2snrCommonService();
-            $ctrl_key = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_CMDID_FHYS_LOCK);
-            $opt_key = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_OPT_FHYS_LOCKSTAT_RESP);
-            $para = $apiL2snrCommonServiceObj->byte2string($data);
-
-            $len = $apiL2snrCommonServiceObj->byte2string(strlen($opt_key.$para)/2);
-            $respCmd = $ctrl_key . $len . $opt_key . $para;
-
-            //通过9502端口建立tcp阻塞式socket连接，向HCU转发操控命令
-            $client = new socket_client_sync($devCode, $respCmd);
-            $client->connect();
-            $resp = "Lock status response send success";
-        }
-        else
-            $resp = "Lock status response send failure";
-
-        $mysqli->close();
-        return $resp;
-    }
-
     //HCU_Lock_Open
     public function dbi_hcu_userid_lock_open($devCode, $statCode,$funcFlag)
     {
@@ -213,14 +137,25 @@ class classDbiL2snrDoorlock
             $ctrl_key = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_CMDID_FHYS_LOCK);
             $opt_key = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_OPT_FHYS_USERID_LOCKOPEN_RESP);
 
+            //暂时只判断是否有针对该站点的有效次数授权
             $auth_check = false;
-            $key_type = MFUN_L3APL_F2CM_KEY_TYPE_USER;
-            $query_str = "SELECT * FROM `t_l3f2cm_fhys_keyinfo` WHERE (`hwcode` = '$funcFlag' AND `keytype` = '$key_type')"; //暂时只判断是否有
+            $auth_type = MFUN_L3APL_F2CM_AUTH_TYPE_NUMBER;
+            $query_str = "SELECT * FROM `t_l3f2cm_fhys_keyauth` WHERE (`authobjcode` = '$statCode' AND `authtype` = '$auth_type')";
             $resp = $mysqli->query($query_str);
             if (($resp != false) && ($resp->num_rows)>0){
                 $row = $resp->fetch_array();
-                $keyid = $row['keyid'];
-                $auth_check = $this->dbi_hcu_lock_keyauth_check($keyid, $statCode);
+                $sid = $row['sid'];
+                $remain_validnum = $row['validnum'] - 1;
+                if ($remain_validnum == 0){
+                    $query_str = "DELETE FROM `t_l3f2cm_fhys_keyauth` WHERE (`sid` = '$sid') ";
+                    $resp = $mysqli->query($query_str);
+                    $authckeck = true;
+                }
+                else{
+                    $query_str = "UPDATE `t_l3f2cm_fhys_keyauth` SET  `validnum` = '$remain_validnum' WHERE (`sid` = '$sid')";
+                    $resp = $mysqli->query($query_str);
+                    $authckeck = true;
+                }
             }
 
             if($auth_check == true){
@@ -456,6 +391,82 @@ class classDbiL2snrDoorlock
         return $resp;
     }
 
+    public function dbi_hcu_lock_status_update($devCode, $statCode, $data)
+    {
+        //建立连接
+        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli) {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $mysqli->query("SET NAMES utf8");
+
+        if ($data == MFUN_HCU_DATA_FHYS_STATUS_OK)
+            $status = MFUN_HCU_FHYS_LOCK_CLOSE;
+        elseif ($data == MFUN_HCU_DATA_FHYS_STATUS_NOK)
+            $status = MFUN_HCU_FHYS_LOCK_OPEN;
+        elseif ($data == MFUN_HCU_DATA_FHYS_STATUS_ALARM)
+            $status = MFUN_HCU_FHYS_LOCK_ALARM;
+        else
+            $status =MFUN_HCU_FHYS_STATUS_UNKNOWN;
+
+        $timestamp = time();
+        $date = intval(date("ymd", $timestamp));
+        $temp = getdate($timestamp);
+        $hourminindex = intval(($temp["hours"] * 60 + floor($temp["minutes"]/MFUN_HCU_FHYS_TIME_GRID_SIZE)));
+
+        //更新分钟报告表
+        $result = $mysqli->query("SELECT * FROM `t_l2snr_fhys_minreport` WHERE (( `devcode` = '$devCode' AND `statcode` = '$statCode')
+                        AND (`reportdate` = '$date' AND `hourminindex` = '$hourminindex'))");
+        if (($result != false) && ($result->num_rows)>0)   //重复，则覆盖
+        {
+            $query_str = "UPDATE `t_l2snr_fhys_minreport` SET `lock_1` = '$status' WHERE (`devcode` = '$devCode' AND `statcode` = '$statCode' AND `reportdate` = '$date' AND `hourminindex` = '$hourminindex')";
+            $result = $mysqli->query($query_str);
+        }
+        else
+        {
+            $query_str = "INSERT INTO `t_l2snr_fhys_minreport` (devcode,statcode,lock_1,reportdate,hourminindex) VALUES ('$devCode','$statCode','$status', '$date', '$hourminindex')";
+            $result = $mysqli->query($query_str);
+        }
+
+        //更新当前聚合表
+        $currenttime = date("Y-m-d H:i:s",$timestamp);
+        $result = $mysqli->query("SELECT * FROM `t_l3f3dm_fhys_currentreport` WHERE (`devcode` = '$devCode') ");
+        if (($result->num_rows)>0) {
+            $query_str = "UPDATE `t_l3f3dm_fhys_currentreport` SET  `lockstat` = '$status', `createtime` = '$currenttime' WHERE (`devcode` = '$devCode')";
+            $result = $mysqli->query($query_str);
+        }
+        else {
+            $query_str = "INSERT INTO `t_l3f3dm_fhys_currentreport` (devcode,statcode,createtime,lockstat) VALUES ('$devCode','$statCode','$currenttime','$status')";
+            $result = $mysqli->query($query_str);
+        }
+
+        //返回Response
+        $query_str = "SELECT * FROM `t_l2sdk_iothcu_inventory` WHERE (`statcode` = '$statCode' AND `devcode` = '$devCode')";
+        $result = $mysqli->query($query_str);
+
+        if (($result != false) && ($result->num_rows)>0)
+        {
+            //生成控制命令的控制字
+            $apiL2snrCommonServiceObj = new classApiL2snrCommonService();
+            $ctrl_key = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_CMDID_FHYS_LOCK);
+            $opt_key = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_OPT_FHYS_LOCKSTAT_RESP);
+            $para = $apiL2snrCommonServiceObj->byte2string($data);
+
+            $len = $apiL2snrCommonServiceObj->byte2string(strlen($opt_key.$para)/2);
+            $respCmd = $ctrl_key . $len . $opt_key . $para;
+
+            //通过9502端口建立tcp阻塞式socket连接，向HCU转发操控命令
+            $client = new socket_client_sync($devCode, $respCmd);
+            $client->connect();
+            $resp = "Lock status response send success";
+        }
+        else
+            $resp = "Lock status response send failure";
+
+        $mysqli->close();
+        return $resp;
+    }
+
     public function dbi_hcu_door_status_update($devCode, $statCode, $data)
     {
         //建立连接
@@ -579,16 +590,16 @@ class classDbiL2snrDoorlock
             $door2 =MFUN_HCU_FHYS_STATUS_UNKNOWN;
 
         if ($msg['rfid'] == MFUN_HCU_DATA_FHYS_STATUS_OK)
-            $rfid = MFUN_HCU_FHYS_STATUS_OK;
+            $rfid = MFUN_HCU_FHYS_ALARM_NO;
         elseif ($msg['rfid'] == MFUN_HCU_DATA_FHYS_STATUS_NOK)
-            $rfid = MFUN_HCU_FHYS_STATUS_NOK;
+            $rfid = MFUN_HCU_FHYS_ALARM_YES;
         else
             $rfid = MFUN_HCU_FHYS_STATUS_UNKNOWN;
 
         if ($msg['ble'] == MFUN_HCU_DATA_FHYS_STATUS_OK)
-            $ble = MFUN_HCU_FHYS_STATUS_OK;
+            $ble = MFUN_HCU_FHYS_ALARM_NO;
         elseif ($msg['ble'] == MFUN_HCU_DATA_FHYS_STATUS_NOK)
-            $ble = MFUN_HCU_FHYS_STATUS_NOK;
+            $ble = MFUN_HCU_FHYS_ALARM_YES;
         else
             $ble = MFUN_HCU_FHYS_STATUS_UNKNOWN;
 
@@ -598,30 +609,30 @@ class classDbiL2snrDoorlock
         $humi = $msg['humi'];
 
         if ($msg['vibr'] == MFUN_HCU_DATA_FHYS_STATUS_OK)
-            $vibr = MFUN_HCU_FHYS_STATUS_OK;
+            $vibr = MFUN_HCU_FHYS_ALARM_NO;
         elseif ($msg['vibr'] == MFUN_HCU_DATA_FHYS_STATUS_NOK)
-            $vibr = MFUN_HCU_FHYS_STATUS_NOK;
+            $vibr = MFUN_HCU_FHYS_ALARM_YES;
         else
             $vibr = MFUN_HCU_FHYS_STATUS_UNKNOWN;
 
         if ($msg['smok'] == MFUN_HCU_DATA_FHYS_STATUS_OK)
-            $smok = MFUN_HCU_FHYS_STATUS_OK;
+            $smok = MFUN_HCU_FHYS_ALARM_NO;
         elseif ($msg['smok'] == MFUN_HCU_DATA_FHYS_STATUS_NOK)
-            $smok = MFUN_HCU_FHYS_STATUS_NOK;
+            $smok = MFUN_HCU_FHYS_ALARM_YES;
         else
             $smok = MFUN_HCU_FHYS_STATUS_UNKNOWN;
 
         if ($msg['water'] == MFUN_HCU_DATA_FHYS_STATUS_OK)
-            $water = MFUN_HCU_FHYS_STATUS_OK;
+            $water = MFUN_HCU_FHYS_ALARM_NO;
         elseif ($msg['water'] == MFUN_HCU_DATA_FHYS_STATUS_NOK)
-            $water = MFUN_HCU_FHYS_STATUS_NOK;
+            $water = MFUN_HCU_FHYS_ALARM_YES;
         else
             $water = MFUN_HCU_FHYS_STATUS_UNKNOWN;
 
         if ($msg['tilt'] == MFUN_HCU_DATA_FHYS_STATUS_OK)
-            $tilt = MFUN_HCU_FHYS_STATUS_OK;
+            $tilt = MFUN_HCU_FHYS_ALARM_NO;
         elseif ($msg['tilt'] == MFUN_HCU_DATA_FHYS_STATUS_NOK)
-            $tilt = MFUN_HCU_FHYS_STATUS_NOK;
+            $tilt = MFUN_HCU_FHYS_ALARM_YES;
         else
             $tilt = MFUN_HCU_FHYS_STATUS_UNKNOWN;
 

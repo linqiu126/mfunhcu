@@ -44,7 +44,8 @@ class classDbiL3wxOprFhys
 
         $keyid = ""; //初始化
         $lock_list = array();
-        $query_str = "SELECT * FROM `t_l3f2cm_fhys_keyinfo` WHERE (`keyuserid` = '$user') ";
+        $key_type = MFUN_L3APL_F2CM_KEY_TYPE_WECHAT;
+        $query_str = "SELECT * FROM `t_l3f2cm_fhys_keyinfo` WHERE (`keyuserid` = '$user' AND `keytype` = '$key_type') ";
         $result = $mysqli->query($query_str);
         if (($result->num_rows)>0) {
             $row = $result->fetch_array();
@@ -107,8 +108,9 @@ class classDbiL3wxOprFhys
         $result = $mysqli->query($query_str);
         if (($result->num_rows)>0) {
             $row = $result->fetch_array();
-            $lockstatus = $row['lockstat'];
-            if ($lockstatus == MFUN_HCU_FHYS_LOCK_OPEN)
+            $lock_1 = $row['lock_1'];
+            $lock_2 = $row['lock_2'];
+            if ($lock_1 == MFUN_HCU_FHYS_LOCK_OPEN AND $lock_2 == MFUN_HCU_FHYS_LOCK_OPEN)
                 $lockstatus = true;
             else
                 $lockstatus = false;

@@ -19,9 +19,9 @@ class classDbiL2snrWater
         $mysqli->query("SET NAMES utf8");
 
         if ($data == MFUN_HCU_DATA_FHYS_STATUS_OK)
-            $status = MFUN_HCU_FHYS_STATUS_OK;
+            $status = MFUN_HCU_FHYS_ALARM_NO;
         elseif ($data == MFUN_HCU_DATA_FHYS_STATUS_NOK)
-            $status = MFUN_HCU_FHYS_STATUS_NOK;
+            $status = MFUN_HCU_FHYS_ALARM_YES;
         else
             $status = MFUN_HCU_FHYS_STATUS_UNKNOWN;
         $timestamp = time();
