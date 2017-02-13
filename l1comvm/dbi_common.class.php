@@ -619,7 +619,7 @@ class classDbiL1vmCommon
     }
 
     //HCU Data数据存储
-    public function dbi_hcu_alarm_data_save($deviceId, $statCode, $AlarmType, $AlarmDisc, $SensorId, $AlarmTime)
+    public function dbi_hcu_alarm_data_save($deviceId, $statCode, $EquipmentId, $AlarmType, $AlarmDescription, $AlarmServerity, $AlarmClearFlag, $AlarmTime, $PictureName)
     {
         //建立连接
         $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
@@ -630,7 +630,7 @@ class classDbiL1vmCommon
         $mysqli->query("SET NAMES utf8");
 
         $AlarmTime = date("Y-m-d H:m:s",$AlarmTime);
-        $result=$mysqli->query("INSERT INTO `t_l3f5fm_alarmdata`(`alarmsrc`, `alarmtype`, `alarmdesc`, `tsgen`) VALUES ('$deviceId', '$AlarmType', '$AlarmDisc', '$AlarmTime')");
+        $result=$mysqli->query("INSERT INTO `bxxhl1l2l3`.`t_l3f5fm_alarmdata` (`devcode`, `equipmentid`, `alarmtype`, `alarmdesc`, `alarmseverity`, `alarmclearflag`, `timestamp`, `picturename`) VALUES ('$deviceId', '$EquipmentId', '$AlarmType', '$AlarmDescription', '$AlarmServerity', '$AlarmClearFlag', '$AlarmTime', '$PictureName')");
 
         $mysqli->close();
         return $result;

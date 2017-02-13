@@ -14,21 +14,21 @@ include_once "../l1comvm/vmlayer.php";
 if (TC_IOT_HCU == true) {
 //TEST CASE: IOT_HCU基础数据测试用例集: START
 
-//HCU Inventory Data
-    echo " [TC IOT_HCU: Inventory Data START]\n";
-    $GLOBALS["HTTP_RAW_POST_DATA"] = "<xml><ToUserName><![CDATA[XHZN_HCU]]></ToUserName><FromUserName><![CDATA[HCU_SH_0305]]></FromUserName><CreateTime>1483765031</CreateTime><MsgType><![CDATA[hcu_command]]></MsgType><Content><![CDATA[A01B810242383A32373A45423A37323A30453A39430200030100880088]]></Content><FuncFlag>0</FuncFlag></xml>";
-    require("../l1mainentry/cloud_callback_hcu.php");
-    echo " [TC IOT_HCU: Inventory Data END]\n";
-
 //Alarm Data
     echo " [TC IOT_HCU: Alarm Data START]\n";
-    $GLOBALS["HTTP_RAW_POST_DATA"] = "<xml><ToUserName><![CDATA[XHZN_HCU]]></ToUserName><FromUserName><![CDATA[HCU_SH_0305]]></FromUserName><CreateTime>1483764977</CreateTime><MsgType><![CDATA[hcu_alarm]]></MsgType><Content><![CDATA[B00B81410100010006587074F1]]></Content><FuncFlag>0</FuncFlag></xml>";
+    $GLOBALS["HTTP_RAW_POST_DATA"] = "<xml><ToUserName><![CDATA[XHZN_HCU]]></ToUserName><FromUserName><![CDATA[HCU_G201_AQYC_SH001]]></FromUserName><CreateTime>1486961349</CreateTime><MsgType><![CDATA[hcu_alarm]]></MsgType><Content><![CDATA[B00C810101030008010158A13AC5]]></Content><FuncFlag>HCU_G201_AQYC_SH001_hk1486961335</FuncFlag></xml>";
     require("../l1mainentry/cloud_callback_hcu.php");
     echo " [TC IOT_HCU: Alarm Data END]\n";
 
+//HCU Inventory Data
+    echo " [TC IOT_HCU: Inventory Data START]\n";
+    $GLOBALS["HTTP_RAW_POST_DATA"] = "<xml><ToUserName><![CDATA[XHZN_HCU]]></ToUserName><FromUserName><![CDATA[HCU_G201_AQYC_SH001]]></FromUserName><CreateTime>1483765031</CreateTime><MsgType><![CDATA[hcu_command]]></MsgType><Content><![CDATA[A01B810242383A32373A45423A37323A30453A39430200030100880088]]></Content><FuncFlag>0</FuncFlag></xml>";
+    require("../l1mainentry/cloud_callback_hcu.php");
+    echo " [TC IOT_HCU: Inventory Data END]\n";
+
 //Performance Statistcis
     echo " [TC IOT_HCU: Performance Statistics START]\n";
-    $GLOBALS["HTTP_RAW_POST_DATA"] = "<xml><ToUserName><![CDATA[XHZN_HCU]]></ToUserName><FromUserName><![CDATA[HCU_SH_0305]]></FromUserName><CreateTime>1483588568</CreateTime><MsgType><![CDATA[hcu_pm]]></MsgType><Content><![CDATA[B110810200010000000000000000000000000000586DC3D8]]></Content><FuncFlag>0</FuncFlag></xml>";
+    $GLOBALS["HTTP_RAW_POST_DATA"] = "<xml><ToUserName><![CDATA[XHZN_HCU]]></ToUserName><FromUserName><![CDATA[HCU_G201_AQYC_SH001]]></FromUserName><CreateTime>1483588568</CreateTime><MsgType><![CDATA[hcu_pm]]></MsgType><Content><![CDATA[B110810200010000000000000000000000000000586DC3D8]]></Content><FuncFlag>0</FuncFlag></xml>";
     require("../l1mainentry/cloud_callback_hcu.php");
     echo " [TC IOT_HCU: Performance Statistics END]\n";
 
@@ -76,7 +76,7 @@ if (TC_IOT_HCU == true) {
 //Heart Beat, modification to realize heart beat thru socket
     echo " [TC IOT_HCU: HEART BEAT START]\n";
     //$GLOBALS["HTTP_RAW_POST_DATA"] = "<xml><ToUserName><![CDATA[AQ_HCU]]></ToUserName><FromUserName><![CDATA[HCU_SH_0301]]></FromUserName><CreateTime>1457872409</CreateTime><MsgType><![CDATA[hcu_heart_beat]]></MsgType><Content><![CDATA[FE00]]></Content><FuncFlag>0</FuncFlag></xml>";
-    $GLOBALS["HTTP_RAW_POST_DATA"] = "<xml><ToUserName><![CDATA[XHZN_HCU]]></ToUserName><FromUserName><![CDATA[HCU_SH_0305]]></FromUserName><CreateTime>1484375859</CreateTime><MsgType><![CDATA[hcu_heart_beat]]></MsgType><Content><![CDATA[FE00]]></Content><FuncFlag>0</FuncFlag></xml>";
+    $GLOBALS["HTTP_RAW_POST_DATA"] = "<xml><ToUserName><![CDATA[XHZN_HCU]]></ToUserName><FromUserName><![CDATA[HCU_G201_AQYC_SH001]]></FromUserName><CreateTime>1484375859</CreateTime><MsgType><![CDATA[hcu_heart_beat]]></MsgType><Content><![CDATA[FE00]]></Content><FuncFlag>0</FuncFlag></xml>";
 
     require("../l1mainentry/cloud_callback_hcu.php");
     echo " [TC IOT_HCU: HEART BEAT END]\n";
@@ -87,7 +87,7 @@ if (TC_IOT_HCU == true) {
     echo " [TC IOT_HCU: CMD POOLING END]\n";
 //EMC 20
     echo " [TC IOT_HCU: EMC NEW START]\n";
-    $GLOBALS["HTTP_RAW_POST_DATA"] = "<xml><ToUserName><![CDATA[AQ_HCU]]></ToUserName><FromUserName><![CDATA[HCU_SH_0305]]></FromUserName><CreateTime>1463066586</CreateTime><MsgType><![CDATA[hcu_text]]></MsgType><Content><![CDATA[201881050201130345000000004E000000000000000057318D70]]></Content><FuncFlag>0</FuncFlag></xml>";
+    $GLOBALS["HTTP_RAW_POST_DATA"] = "<xml><ToUserName><![CDATA[AQ_HCU]]></ToUserName><FromUserName><![CDATA[HCU_G201_AQYC_SH001]]></FromUserName><CreateTime>1463066586</CreateTime><MsgType><![CDATA[hcu_text]]></MsgType><Content><![CDATA[201881050201130345000000004E000000000000000057318D70]]></Content><FuncFlag>0</FuncFlag></xml>";
     require("../l1mainentry/cloud_callback_hcu.php");
     echo " [TC IOT_HCU: EMC NEW END]\n";
 

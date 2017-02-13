@@ -325,7 +325,7 @@ class classTaskL2sdkIotHcu
         $ctrl_key = hexdec($key['Key'])& 0xFF;
         if($ctrl_key == MFUN_HCU_CMDID_HCU_ALARM_DATA){
             $hcuObj = new classApiL2snrCommonService();
-            $resp = $hcuObj->func_hcuAlarmData_process($deviceId, $statCode, $content);
+            $resp = $hcuObj->func_hcuAlarmData_process($deviceId, $statCode, $content, $funcFlag);
         }
         else
             $resp ="HCU_IOT: invalid command type";

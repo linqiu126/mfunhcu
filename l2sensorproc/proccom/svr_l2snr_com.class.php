@@ -49,24 +49,26 @@ class classApiL2snrCommonService
         return $resp;
     }
 
-    public function func_hcuAlarmData_process($deviceId, $statCode, $content)
+    public function func_hcuAlarmData_process($deviceId, $statCode, $content, $PictureName)
     {
-        $format = "A2CmdId/A2Len/A2OptId/A2CmdIdBackType/A4AlarmType/A4AlarmDisc/A2SensorId/A8AlarmTime";
+        $format = "A2CmdId/A2Length/A2OptionId/A2EquipmentId/A2CmdIdBackType/A2AlarmType/A4AlarmDescription/A2AlarmServerity/A2AlarmClearFlag/A8AlarmTime";
         $data = unpack($format, $content);
 
         $CmdId = hexdec($data['CmdId']) & 0xFF;
-        $Len = hexdec($data['Len']) & 0xFF;
-        $OptId = hexdec($data['OptId']) & 0xFF;
+        $Length = hexdec($data['Length']) & 0xFF;
+        $OptionId = hexdec($data['OptionId']) & 0xFF;
+        $EquipmentId = hexdec($data['EquipmentId']) & 0xFF;
         $CmdIdBackType = hexdec($data['CmdIdBackType']) & 0xFF;
-        $AlarmType = hexdec($data['AlarmType']) & 0xFFFF;
-        $AlarmDisc = hexdec($data['AlarmDisc']) & 0xFFFF;
-        $SensorId = hexdec($data['SensorId']) & 0xFF;
+        $AlarmType = hexdec($data['AlarmType']) & 0xFF;
+        $AlarmDescription = hexdec($data['AlarmDescription']) & 0xFFFF;
+        $AlarmServerity = hexdec($data['AlarmServerity']) & 0xFF;
+        $AlarmClearFlag = hexdec($data['AlarmClearFlag']) & 0xFF;
         $AlarmTime = hexdec($data['AlarmTime']) & 0xFFFFFFFF;
 
         $cDbObj = new classDbiL1vmCommon();
 
-        $resp = $cDbObj->dbi_hcu_alarm_data_save($deviceId, $statCode, $AlarmType, $AlarmDisc, $SensorId, $AlarmTime);
-
+        //$resp = $cDbObj->dbi_hcu_alarm_data_save($deviceId, $statCode, $AlarmType, $AlarmDescription, $SensorId, $AlarmTime);
+        $resp = $cDbObj->dbi_hcu_alarm_data_save($deviceId, $statCode, $EquipmentId, $AlarmType, $AlarmDescription, $AlarmServerity, $AlarmClearFlag, $AlarmTime, $PictureName);
         return $resp;
     }
 
