@@ -2038,7 +2038,7 @@ class classDbiL3apF3dm
                 $eventtime = $resp_row['eventtime'];
                 $dateintval = intval(date('Ymd',strtotime($eventdate)));
                 $temp = array();
-                if($dateintval >= $start AND $dateintval < $end){
+                if($dateintval >= $start AND $dateintval <= $end){
                     array_push($temp, $sid);
                     array_push($temp, $woid);
                     array_push($temp, $keyid);

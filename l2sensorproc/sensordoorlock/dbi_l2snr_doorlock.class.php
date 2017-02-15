@@ -637,6 +637,17 @@ class classDbiL2snrDoorlock
         else
             $tilt = MFUN_HCU_FHYS_STATUS_UNKNOWN;
 
+
+        if(($lock1==MFUN_HCU_FHYS_LOCK_OPEN AND $door1 == MFUN_HCU_FHYS_DOOR_CLOSE) OR ($lock1==MFUN_HCU_FHYS_LOCK_CLOSE AND $door1 == MFUN_HCU_FHYS_DOOR_OPEN) OR
+            ($lock2==MFUN_HCU_FHYS_LOCK_OPEN AND $door2 == MFUN_HCU_FHYS_DOOR_CLOSE) OR ($lock2==MFUN_HCU_FHYS_LOCK_CLOSE AND $door2 == MFUN_HCU_FHYS_DOOR_OPEN) OR
+            $water == MFUN_HCU_FHYS_ALARM_YES OR $smok == MFUN_HCU_FHYS_ALARM_YES)
+            $alarm_level = MFUN_HCU_FHYS_ALARM_LEVEL_H;
+        elseif(($lock1==MFUN_HCU_FHYS_LOCK_OPEN AND $door1 == MFUN_HCU_FHYS_DOOR_OPEN) OR ($lock2==MFUN_HCU_FHYS_LOCK_OPEN AND $door2 == MFUN_HCU_FHYS_DOOR_OPEN) OR
+            $vibr == MFUN_HCU_FHYS_ALARM_YES)
+            $alarm_level = MFUN_HCU_FHYS_ALARM_LEVEL_M;
+        else
+            $alarm_level = MFUN_HCU_FHYS_ALARM_LEVEL_0;
+
         $timestamp = time();
         $date = intval(date("ymd", $timestamp));
         $temp = getdate($timestamp);
@@ -662,14 +673,14 @@ class classDbiL2snrDoorlock
         $currenttime = date("Y-m-d H:i:s",$timestamp);
         $result = $mysqli->query("SELECT * FROM `t_l3f3dm_fhys_currentreport` WHERE (`devcode` = '$devCode') ");
         if (($result->num_rows)>0) {
-            $query_str = "UPDATE `t_l3f3dm_fhys_currentreport` SET  `door_1` = '$door1',`door_2` = '$door2',`lock_1` = '$lock1',`lock_2` = '$lock2',`blestat` = '$ble',`rfidstat` = '$rfid',`siglevel` = '$gprs',
+            $query_str = "UPDATE `t_l3f3dm_fhys_currentreport` SET `alarmlevel` = '$alarm_level', `door_1` = '$door1',`door_2` = '$door2',`lock_1` = '$lock1',`lock_2` = '$lock2',`blestat` = '$ble',`rfidstat` = '$rfid',`siglevel` = '$gprs',
                             `battlevel` = '$batt',`temperature` = '$temperature',`humidity` = '$humi',`smokalarm` = '$smok',`wateralarm` = '$water',`vibralarm` = '$vibr',`createtime` = '$currenttime'
                             WHERE (`devcode` = '$devCode')";
             $result = $mysqli->query($query_str);
         }
         else {
-            $query_str = "INSERT INTO `t_l3f3dm_fhys_currentreport` (devcode,statcode,createtime,door_1,door_2,lock_1,lock_2,blestat,rfidstat,siglevel,battlevel,temperature,humidity,smokalarm, wateralarm,vibralarm)
-                            VALUES ('$devCode','$statCode','$currenttime','$door1','$door2','$lock1','$lock2','$ble','$rfid','$gprs','$batt','$temperature','$humi','$smok','$water','$vibr')";
+            $query_str = "INSERT INTO `t_l3f3dm_fhys_currentreport` (devcode,statcode,createtime,alarmlevel,door_1,door_2,lock_1,lock_2,blestat,rfidstat,siglevel,battlevel,temperature,humidity,smokalarm, wateralarm,vibralarm)
+                            VALUES ('$devCode','$statCode','$currenttime','$alarm_level','$door1','$door2','$lock1','$lock2','$ble','$rfid','$gprs','$batt','$temperature','$humi','$smok','$water','$vibr')";
             $result = $mysqli->query($query_str);
         }
 

@@ -45,6 +45,11 @@ define ("MFUN_HCU_FHYS_ALARM_NO", "N");
 define ("MFUN_HCU_FHYS_STATUS_SLEEP", "S"); //设备休眠中
 define ("MFUN_HCU_FHYS_STATUS_UNKNOWN", "U"); //未知状态
 
+define ("MFUN_HCU_FHYS_ALARM_LEVEL_0", "0"); //告警级别0，正常无告警
+define ("MFUN_HCU_FHYS_ALARM_LEVEL_L", "1"); //告警级别1，告警级别Low
+define ("MFUN_HCU_FHYS_ALARM_LEVEL_M", "2"); //告警级别2，告警级别Middle
+define ("MFUN_HCU_FHYS_ALARM_LEVEL_H", "3"); //告警级别3，告警级别High
+
 define ("MFUN_HCU_FHYS_DOOR_OPEN", "Y");  //光交箱门打开
 define ("MFUN_HCU_FHYS_DOOR_CLOSE", "N"); //光交箱门关闭
 define ("MFUN_HCU_FHYS_DOOR_ALARM", "A"); //光交箱门暴力打开

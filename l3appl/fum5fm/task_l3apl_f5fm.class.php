@@ -135,7 +135,7 @@ class classTaskL3aplF5fm
         return $retval;
     }
 
-    function func_alarm_monitor_list_process($type, $user, $body)
+    function func_aqyc_alarm_monitor_list_process($type, $user, $body)
     {
         $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
         $usercheck = $uiF1symDbObj->dbi_user_authcheck($type, $user);
@@ -188,6 +188,27 @@ class classTaskL3aplF5fm
             }
             else
                 $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>"获取该站点下当前设备测量信息失败");
+        }
+        else
+            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
+
+        return $retval;
+    }
+
+    function func_fhys_get_alarm_handle_table_process($type, $user, $body)
+    {
+        $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
+        $usercheck = $uiF1symDbObj->dbi_user_authcheck($type, $user);
+        if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
+            $uid = $uiF1symDbObj->dbi_session_check($user);
+            $uiF5fmDbObj = new classDbiL3apF5fm(); //初始化一个UI DB对象
+            $resp = $uiF5fmDbObj->dbi_fhys_alarm_handle_table_req($uid);
+            if(!empty($resp)){
+                $ret = array('ColumnName' => $resp["column"],'TableData' => $resp["data"]);
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$ret,'msg'=>"获取告警站点列表成功");
+            }
+            else
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>"获取告警站点列表失败");
         }
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
@@ -257,7 +278,7 @@ class classTaskL3aplF5fm
                 break;
 
             case MSG_ID_L4AQYCUI_TO_L3F5_ALARMMONITORLIST:
-                $resp = $this->func_alarm_monitor_list_process($type, $user, $body);
+                $resp = $this->func_aqyc_alarm_monitor_list_process($type, $user, $body);
                 $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 
@@ -271,6 +292,11 @@ class classTaskL3aplF5fm
             //功能Alarm Type, 获取所有告警传感器类型
             case MSG_ID_L4FHYSUI_TO_L3F5_ALARMTYPE:
                 $resp = $this->func_fhys_alarmtype_list_process($type, $user, $body);
+                $project = MFUN_PRJ_HCU_FHYSUI;
+                break;
+
+            case MSG_ID_L4FHYSUI_TO_L3F5_GETALARMHANDLETABLE:
+                $resp = $this->func_fhys_get_alarm_handle_table_process($type, $user, $body);
                 $project = MFUN_PRJ_HCU_FHYSUI;
                 break;
 
