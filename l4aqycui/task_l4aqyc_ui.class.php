@@ -52,7 +52,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["name"])) $name = trim($_GET["name"]); else $name = "";
                     if (isset($_GET["password"])) $pwd = trim($_GET["password"]); else $pwd = "";
                     $input = array("user" => $name, "pwd" => $pwd);
-                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM1SYM, MSG_ID_L4AQYCUI_TO_L3F1_LOGIN, "MSG_ID_L4AQYCUI_TO_L3F1_LOGIN",$input);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM1SYM, MSG_ID_L4AQYCUI_TO_L3F1_LOGIN, "MSG_ID_L4AQYCUI_TO_L3F1_LOGIN",$input);
                     break;
 
                 case "UserInfo":    // get User Information after login
@@ -61,7 +61,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
                     $input = array("type" => $type, "user" => $user,"body" => $body);
-                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM1SYM, MSG_ID_L4AQYCUI_TO_L3F1_USERINFO, "MSG_ID_L4AQYCUI_TO_L3F1_USERINFO",$input);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM1SYM, MSG_ID_L4AQYCUI_TO_L3F1_USERINFO, "MSG_ID_L4AQYCUI_TO_L3F1_USERINFO",$input);
                     break;
 
                 case "UserNew": //Add new user
@@ -70,7 +70,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
                     $input = array("type" => $type, "user" => $user,"body" => $body);
-                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM1SYM, MSG_ID_L4AQYCUI_TO_L3F1_USERNEW, "MSG_ID_L4AQYCUI_TO_L3F1_USERNEW",$input);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM1SYM, MSG_ID_L4AQYCUI_TO_L3F1_USERNEW, "MSG_ID_L4AQYCUI_TO_L3F1_USERNEW",$input);
                     break;
 
                 case "UserMod":  //modify user
@@ -79,7 +79,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
                     $input = array("type" => $type, "user" => $user,"body" => $body);
-                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM1SYM, MSG_ID_L4AQYCUI_TO_L3F1_USERMOD, "MSG_ID_L4AQYCUI_TO_L3F1_USERMOD",$input);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM1SYM, MSG_ID_L4AQYCUI_TO_L3F1_USERMOD, "MSG_ID_L4AQYCUI_TO_L3F1_USERMOD",$input);
                     break;
 
                 case "UserDel": //Delete the user
@@ -88,7 +88,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
                     $input = array("type" => $type,"user" => $user,"body" => $body);
-                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM1SYM, MSG_ID_L4AQYCUI_TO_L3F1_USERDEL, "MSG_ID_L4AQYCUI_TO_L3F1_USERDEL",$input);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM1SYM, MSG_ID_L4AQYCUI_TO_L3F1_USERDEL, "MSG_ID_L4AQYCUI_TO_L3F1_USERDEL",$input);
                     break;
 
                 case "UserTable": //查询所有用户信息表
@@ -97,7 +97,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
                     $input = array("type" => $type,"user" => $user,"body" => $body);
-                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM1SYM, MSG_ID_L4AQYCUI_TO_L3F1_USERTABLE, "MSG_ID_L4AQYCUI_TO_L3F1_USERTABLE",$input);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM1SYM, MSG_ID_L4AQYCUI_TO_L3F1_USERTABLE, "MSG_ID_L4AQYCUI_TO_L3F1_USERTABLE",$input);
                     break;
 
                 case "ProjectPGList":  //Get the Project & Project Group list which will be use in user auth
@@ -106,7 +106,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
                     $input = array("type" => $type,"user" => $user,"body" => $body);
-                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4AQYCUI_TO_L3F2_PROJECTPGLIST, "MSG_ID_L4AQYCUI_TO_L3F2_PROJECTPGLIST",$input);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4AQYCUI_TO_L3F2_PROJECTPGLIST, "MSG_ID_L4AQYCUI_TO_L3F2_PROJECTPGLIST",$input);
                     break;
 
                 case "ProjectList":   //Get the Project list
@@ -115,7 +115,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
                     $input = array("type" => $type,"user" => $user,"body" => $body);
-                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4AQYCUI_TO_L3F2_PROJECTLIST, "MSG_ID_L4AQYCUI_TO_L3F2_PROJECTLIST",$input);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4AQYCUI_TO_L3F2_PROJECTLIST, "MSG_ID_L4AQYCUI_TO_L3F2_PROJECTLIST",$input);
                     break;
 
                 case "UserProj":    // query project list belong to one user
@@ -124,7 +124,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
                     $input = array("type" => $type,"user" => $user,"body" => $body);
-                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4AQYCUI_TO_L3F2_USERPROJ, "MSG_ID_L4AQYCUI_TO_L3F2_USERPROJ",$input);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4AQYCUI_TO_L3F2_USERPROJ, "MSG_ID_L4AQYCUI_TO_L3F2_USERPROJ",$input);
                     break;
 
                 case "PGTable":    // query project group table
@@ -133,7 +133,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
                     $input = array("type" => $type,"user" => $user,"body" => $body);
-                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4AQYCUI_TO_L3F2_PGTABLE, "MSG_ID_L4AQYCUI_TO_L3F2_PGTABLE",$input);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4AQYCUI_TO_L3F2_PGTABLE, "MSG_ID_L4AQYCUI_TO_L3F2_PGTABLE",$input);
                     break;
 
                 case "PGNew":  //创建新的项目组
@@ -142,7 +142,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
                     $input = array("type" => $type,"user" => $user,"body" => $body);
-                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4AQYCUI_TO_L3F2_PGNEW, "MSG_ID_L4AQYCUI_TO_L3F2_PGNEW",$input);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4AQYCUI_TO_L3F2_PGNEW, "MSG_ID_L4AQYCUI_TO_L3F2_PGNEW",$input);
                     break;
 
                 case "PGMod":  //修改项目组信息
@@ -151,7 +151,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
                     $input = array("type" => $type,"user" => $user,"body" => $body);
-                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4AQYCUI_TO_L3F2_PGMOD, "MSG_ID_L4AQYCUI_TO_L3F2_PGMOD",$input);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4AQYCUI_TO_L3F2_PGMOD, "MSG_ID_L4AQYCUI_TO_L3F2_PGMOD",$input);
                     break;
 
                 case "PGDel":  //删除项目组信息
@@ -160,7 +160,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
                     $input = array("type" => $type,"user" => $user,"body" => $body);
-                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4AQYCUI_TO_L3F2_PGDEL, "MSG_ID_L4AQYCUI_TO_L3F2_PGDEL",$input);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4AQYCUI_TO_L3F2_PGDEL, "MSG_ID_L4AQYCUI_TO_L3F2_PGDEL",$input);
                     break;
 
                 case "PGProj":    // 查询属于项目组的所有项目列表
@@ -169,7 +169,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
                     $input = array("type" => $type,"user" => $user,"body" => $body);
-                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4AQYCUI_TO_L3F2_PGPROJ, "MSG_ID_L4AQYCUI_TO_L3F2_PGPROJ",$input);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4AQYCUI_TO_L3F2_PGPROJ, "MSG_ID_L4AQYCUI_TO_L3F2_PGPROJ",$input);
                     break;
 
                 case "ProjTable":    // query project table
@@ -178,7 +178,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
                     $input = array("type" => $type,"user" => $user,"body" => $body);
-                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4AQYCUI_TO_L3F2_PROJTABLE, "MSG_ID_L4AQYCUI_TO_L3F2_PROJTABLE",$input);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4AQYCUI_TO_L3F2_PROJTABLE, "MSG_ID_L4AQYCUI_TO_L3F2_PROJTABLE",$input);
                     break;
 
                 case "ProjNew": //创建新的项目信息
@@ -187,7 +187,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
                     $input = array("type" => $type,"user" => $user,"body" => $body);
-                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4AQYCUI_TO_L3F2_PROJNEW, "MSG_ID_L4AQYCUI_TO_L3F2_PROJNEW",$input);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4AQYCUI_TO_L3F2_PROJNEW, "MSG_ID_L4AQYCUI_TO_L3F2_PROJNEW",$input);
                     break;
 
                 case "ProjMod": //修改项目信息
@@ -196,7 +196,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
                     $input = array("type" => $type,"user" => $user,"body" => $body);
-                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4AQYCUI_TO_L3F2_PROJMOD, "MSG_ID_L4AQYCUI_TO_L3F2_PROJMOD",$input);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4AQYCUI_TO_L3F2_PROJMOD, "MSG_ID_L4AQYCUI_TO_L3F2_PROJMOD",$input);
                     break;
 
                 case "ProjDel":  //删除一个项目
@@ -205,7 +205,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
                     $input = array("type" => $type,"user" => $user,"body" => $body);
-                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4AQYCUI_TO_L3F2_PROJDEL, "MSG_ID_L4AQYCUI_TO_L3F2_PROJDEL",$input);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4AQYCUI_TO_L3F2_PROJDEL, "MSG_ID_L4AQYCUI_TO_L3F2_PROJDEL",$input);
                     break;
 
                 case "ProjPoint":   //查询所有监控点列表
@@ -214,7 +214,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
                     $input = array("type" => $type,"user" => $user,"body" => $body);
-                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM3DM, MSG_ID_L4AQYCUI_TO_L3F3_PROJPOINT, "MSG_ID_L4AQYCUI_TO_L3F3_PROJPOINT",$input);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM3DM, MSG_ID_L4AQYCUI_TO_L3F3_PROJPOINT, "MSG_ID_L4AQYCUI_TO_L3F3_PROJPOINT",$input);
                     break;
 
                 case "PointProj": //查询该项目下面对应监控点列表
@@ -223,7 +223,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
                     $input = array("type" => $type,"user" => $user,"body" => $body);
-                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM3DM, MSG_ID_L4AQYCUI_TO_L3F3_POINTPROJ, "MSG_ID_L4AQYCUI_TO_L3F3_POINTPROJ",$input);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM3DM, MSG_ID_L4AQYCUI_TO_L3F3_POINTPROJ, "MSG_ID_L4AQYCUI_TO_L3F3_POINTPROJ",$input);
                     break;
 
                 case "PointTable":  //查询所有监控点信息
@@ -232,7 +232,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
                     $input = array("type" => $type,"user" => $user,"body" => $body);
-                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM3DM, MSG_ID_L4AQYCUI_TO_L3F3_POINTTABLE, "MSG_ID_L4AQYCUI_TO_L3F3_POINTTABLE",$input);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM3DM, MSG_ID_L4AQYCUI_TO_L3F3_POINTTABLE, "MSG_ID_L4AQYCUI_TO_L3F3_POINTTABLE",$input);
                     break;
 
                 case "PointDetail":
@@ -245,7 +245,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
                     $input = array("type" => $type,"user" => $user,"body" => $body);
-                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM3DM, MSG_ID_L4AQYCUI_TO_L3F3_POINTNEW, "MSG_ID_L4AQYCUI_TO_L3F3_POINTNEW",$input);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM3DM, MSG_ID_L4AQYCUI_TO_L3F3_POINTNEW, "MSG_ID_L4AQYCUI_TO_L3F3_POINTNEW",$input);
                     break;
 
                 case "PointMod"://修改监测点信息
@@ -254,7 +254,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
                     $input = array("type" => $type,"user" => $user,"body" => $body);
-                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM3DM, MSG_ID_L4AQYCUI_TO_L3F3_POINTMOD, "MSG_ID_L4AQYCUI_TO_L3F3_POINTMOD",$input);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM3DM, MSG_ID_L4AQYCUI_TO_L3F3_POINTMOD, "MSG_ID_L4AQYCUI_TO_L3F3_POINTMOD",$input);
                     break;
 
                 case "PointDel":  //删除一个监测点
@@ -263,7 +263,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
                     $input = array("type" => $type,"user" => $user,"body" => $body);
-                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM3DM, MSG_ID_L4AQYCUI_TO_L3F3_POINTDEL, "MSG_ID_L4AQYCUI_TO_L3F3_POINTDEL",$input);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM3DM, MSG_ID_L4AQYCUI_TO_L3F3_POINTDEL, "MSG_ID_L4AQYCUI_TO_L3F3_POINTDEL",$input);
                     break;
 
                 case "PointDev": //查询监测点下的HCU设备列表
@@ -272,7 +272,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
                     $input = array("type" => $type,"user" => $user,"body" => $body);
-                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM3DM, MSG_ID_L4AQYCUI_TO_L3F3_POINTDEV, "MSG_ID_L4AQYCUI_TO_L3F3_POINTDEV",$input);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM3DM, MSG_ID_L4AQYCUI_TO_L3F3_POINTDEV, "MSG_ID_L4AQYCUI_TO_L3F3_POINTDEV",$input);
                     break;
 
                 case "DevTable": //查询HCU设备列表信息
@@ -281,7 +281,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
                     $input = array("type" => $type,"user" => $user,"body" => $body);
-                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM3DM, MSG_ID_L4AQYCUI_TO_L3F3_DEVTABLE, "MSG_ID_L4AQYCUI_TO_L3F3_DEVTABLE",$input);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM3DM, MSG_ID_L4AQYCUI_TO_L3F3_DEVTABLE, "MSG_ID_L4AQYCUI_TO_L3F3_DEVTABLE",$input);
                     break;
 
                 case "DevNew":  //创建新的HCU信息
@@ -290,7 +290,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
                     $input = array("type" => $type,"user" => $user,"body" => $body);
-                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM3DM, MSG_ID_L4AQYCUI_TO_L3F3_DEVNEW, "MSG_ID_L4AQYCUI_TO_L3F3_DEVNEW",$input);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM3DM, MSG_ID_L4AQYCUI_TO_L3F3_DEVNEW, "MSG_ID_L4AQYCUI_TO_L3F3_DEVNEW",$input);
                     break;
 
                 case "DevMod": //修改监测设备信息
@@ -299,7 +299,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
                     $input = array("type" => $type,"user" => $user,"body" => $body);
-                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM3DM, MSG_ID_L4AQYCUI_TO_L3F3_DEVMOD, "MSG_ID_L4AQYCUI_TO_L3F3_DEVMOD",$input);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM3DM, MSG_ID_L4AQYCUI_TO_L3F3_DEVMOD, "MSG_ID_L4AQYCUI_TO_L3F3_DEVMOD",$input);
                     break;
 
                 case "DevDel":  //删除HCU设备
@@ -308,7 +308,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
                     $input = array("type" => $type,"user" => $user,"body" => $body);
-                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM3DM, MSG_ID_L4AQYCUI_TO_L3F3_DEVDEL, "MSG_ID_L4AQYCUI_TO_L3F3_DEVDEL",$input);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM3DM, MSG_ID_L4AQYCUI_TO_L3F3_DEVDEL, "MSG_ID_L4AQYCUI_TO_L3F3_DEVDEL",$input);
                     break;
 
                 case "MonitorList":      // get monitorList in map by user id
@@ -317,7 +317,25 @@ class classTaskL4aqycUi
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
                     $input = array("type" => $type,"user" => $user,"body" => $body);
-                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM3DM, MSG_ID_L4AQYCUI_TO_L3F3_MONITORLIST, "MSG_ID_L4AQYCUI_TO_L3F3_MONITORLIST",$input);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM3DM, MSG_ID_L4AQYCUI_TO_L3F3_MONITORLIST, "MSG_ID_L4AQYCUI_TO_L3F3_MONITORLIST",$input);
+                    break;
+
+                case "Favourite_list": //获取用户常用站点
+                    if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
+                    if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
+                    if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
+
+                    $input = array("type" => $type,"user" => $user,"body" => $body);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM3DM, MSG_ID_L4AQYCUI_TO_L3F3_FAVOURITELIST, "MSG_ID_L4AQYCUI_TO_L3F3_FAVOURITELIST",$input);
+                    break;
+
+                case "Favourite_count":
+                    if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
+                    if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
+                    if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
+
+                    $input = array("type" => $type,"user" => $user,"body" => $body);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM3DM, MSG_ID_L4AQYCUI_TO_L3F3_FAVOURITECOUNT, "MSG_ID_L4AQYCUI_TO_L3F3_FAVOURITECOUNT",$input);
                     break;
 
                 case "MonitorAlarmList":      // get alarm monitorList in map by user id
@@ -326,7 +344,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
                     $input = array("type" => $type,"user" => $user,"body" => $body);
-                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM5FM, MSG_ID_L4AQYCUI_TO_L3F5_ALARMMONITORLIST, "MSG_ID_L4AQYCUI_TO_L3F5_ALARMMONITORLIST",$input);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM5FM, MSG_ID_L4AQYCUI_TO_L3F5_ALARMMONITORLIST, "MSG_ID_L4AQYCUI_TO_L3F5_ALARMMONITORLIST",$input);
                     break;
 
                 case "AlarmQuery": //查询一个监测点历史告警数据 minute/hour/day
@@ -335,7 +353,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
                     $input = array("type" => $type,"user" => $user,"body" => $body);
-                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM5FM, MSG_ID_L4AQYCUI_TO_L3F5_ALARMQUERY, "MSG_ID_L4AQYCUI_TO_L3F5_ALARMQUERY",$input);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM5FM, MSG_ID_L4AQYCUI_TO_L3F5_ALARMQUERY, "MSG_ID_L4AQYCUI_TO_L3F5_ALARMQUERY",$input);
                     break;
 
                 case "AlarmProcess"://告警处理，暂时只是聚合显示当前告警站点列表
@@ -344,7 +362,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
                     $input = array("type" => $type,"user" => $user,"body" => $body);
-                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM5FM, MSG_ID_L4AQYCUI_TO_L3F5_ALARMPROCESS, "MSG_ID_L4AQYCUI_TO_L3F5_ALARMPROCESS",$input);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM5FM, MSG_ID_L4AQYCUI_TO_L3F5_ALARMPROCESS, "MSG_ID_L4AQYCUI_TO_L3F5_ALARMPROCESS",$input);
                     break;
 
                 case "TableQuery"://导出某站点历史数据
@@ -353,7 +371,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
                     $input = array("type" => $type,"user" => $user,"body" => $body);
-                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM3DM, MSG_ID_L4AQYCUI_TO_L3F3_TABLEQUERY, "MSG_ID_L4AQYCUI_TO_L3F3_TABLEQUERY",$input);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM3DM, MSG_ID_L4AQYCUI_TO_L3F3_TABLEQUERY, "MSG_ID_L4AQYCUI_TO_L3F3_TABLEQUERY",$input);
                     break;
 
                 case "SensorUpdate":
@@ -581,7 +599,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
                     $input = array("type" => $type,"user" => $user,"body" => $body);
-                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM5FM, MSG_ID_L4AQYCUI_TO_L3F5_ALARMTYPE, "MSG_ID_L4AQYCUI_TO_L3F5_ALARMTYPE",$input);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM5FM, MSG_ID_L4AQYCUI_TO_L3F5_ALARMTYPE, "MSG_ID_L4AQYCUI_TO_L3F5_ALARMTYPE",$input);
                     break;
 
                 case "SensorList":
@@ -590,7 +608,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
                     $input = array("type" => $type,"user" => $user,"body" => $body);
-                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM3DM, MSG_ID_L4AQYCUI_TO_L3F3_SENSORLIST, "MSG_ID_L4AQYCUI_TO_L3F3_SENSORLIST",$input);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM3DM, MSG_ID_L4AQYCUI_TO_L3F3_SENSORLIST, "MSG_ID_L4AQYCUI_TO_L3F3_SENSORLIST",$input);
                     break;
 
                 case "DevSensor": //查询设备下传感器列表
@@ -619,7 +637,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
                     $input = array("type" => $type,"user" => $user,"body" => $body);
-                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM4ICM, MSG_ID_L4FHYSUI_TO_L3F4_LOCKOPEN, "MSG_ID_L4FHYSUI_TO_L3F4_LOCKOPEN",$input);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM4ICM, MSG_ID_L4FHYSUI_TO_L3F4_LOCKOPEN, "MSG_ID_L4FHYSUI_TO_L3F4_LOCKOPEN",$input);
                     break;
 
                 //根据钥匙用户的ID查询该用户授权的钥匙列表
@@ -629,7 +647,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
                     $input = array("type" => $type,"user" => $user,"body" => $body);
-                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4FHYSUI_TO_L3F2_USERKEY, "MSG_ID_L4FHYSUI_TO_L3F2_USERKEY",$input);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4FHYSUI_TO_L3F2_USERKEY, "MSG_ID_L4FHYSUI_TO_L3F2_USERKEY",$input);
                     break;
 
                 //查询所有项目钥匙列表
@@ -639,7 +657,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
                     $input = array("type" => $type,"user" => $user,"body" => $body);
-                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4FHYSUI_TO_L3F2_PROJKEYLIST, "MSG_ID_L4FHYSUI_TO_L3F2_PROJKEYLIST",$input);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4FHYSUI_TO_L3F2_PROJKEYLIST, "MSG_ID_L4FHYSUI_TO_L3F2_PROJKEYLIST",$input);
                     break;
 
                 //查询指定项目下的钥匙列表
@@ -649,7 +667,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
                     $input = array("type" => $type,"user" => $user,"body" => $body);
-                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4FHYSUI_TO_L3F2_PROJKEY, "MSG_ID_L4FHYSUI_TO_L3F2_PROJKEY",$input);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4FHYSUI_TO_L3F2_PROJKEY, "MSG_ID_L4FHYSUI_TO_L3F2_PROJKEY",$input);
                     break;
 
                 //查询所有项目钥匙用户列表
@@ -659,7 +677,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
                     $input = array("type" => $type,"user" => $user,"body" => $body);
-                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4FHYSUI_TO_L3F2_PROJKEYUSERLIST, "MSG_ID_L4FHYSUI_TO_L3F2_PROJKEYUSERLIST",$input);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4FHYSUI_TO_L3F2_PROJKEYUSERLIST, "MSG_ID_L4FHYSUI_TO_L3F2_PROJKEYUSERLIST",$input);
                     break;
 
                 //查询所有钥匙列表
@@ -669,7 +687,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
                     $input = array("type" => $type,"user" => $user,"body" => $body);
-                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4FHYSUI_TO_L3F2_KEYTABLE, "MSG_ID_L4FHYSUI_TO_L3F2_KEYTABLE",$input);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4FHYSUI_TO_L3F2_KEYTABLE, "MSG_ID_L4FHYSUI_TO_L3F2_KEYTABLE",$input);
                     break;
 
                 //添加新钥匙
@@ -679,7 +697,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
                     $input = array("type" => $type,"user" => $user,"body" => $body);
-                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4FHYSUI_TO_L3F2_KEYNEW, "MSG_ID_L4FHYSUI_TO_L3F2_KEYNEW",$input);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4FHYSUI_TO_L3F2_KEYNEW, "MSG_ID_L4FHYSUI_TO_L3F2_KEYNEW",$input);
                     break;
 
                 case "KeyMod":
@@ -688,7 +706,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
                     $input = array("type" => $type,"user" => $user,"body" => $body);
-                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4FHYSUI_TO_L3F2_KEYMOD, "MSG_ID_L4FHYSUI_TO_L3F2_KEYMOD",$input);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4FHYSUI_TO_L3F2_KEYMOD, "MSG_ID_L4FHYSUI_TO_L3F2_KEYMOD",$input);
                     break;
 
                 //删除钥匙
@@ -698,7 +716,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
                     $input = array("type" => $type,"user" => $user,"body" => $body);
-                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4FHYSUI_TO_L3F2_KEYDEL, "MSG_ID_L4FHYSUI_TO_L3F2_KEYDEL",$input);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4FHYSUI_TO_L3F2_KEYDEL, "MSG_ID_L4FHYSUI_TO_L3F2_KEYDEL",$input);
                     break;
 
                 //查询授权对象（项目或者站点）下所有的授权信息列表
@@ -708,7 +726,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
                     $input = array("type" => $type,"user" => $user,"body" => $body);
-                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4FHYSUI_TO_L3F2_OBJAUTHLIST, "MSG_ID_L4FHYSUI_TO_L3F2_OBJAUTHLIST",$input);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4FHYSUI_TO_L3F2_OBJAUTHLIST, "MSG_ID_L4FHYSUI_TO_L3F2_OBJAUTHLIST",$input);
                     break;
 
                 //查询某个KEY下的授权列表
@@ -718,7 +736,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
                     $input = array("type" => $type,"user" => $user,"body" => $body);
-                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4FHYSUI_TO_L3F2_KEYAUTHLIST, "MSG_ID_L4FHYSUI_TO_L3F2_KEYAUTHLIST",$input);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4FHYSUI_TO_L3F2_KEYAUTHLIST, "MSG_ID_L4FHYSUI_TO_L3F2_KEYAUTHLIST",$input);
                     break;
 
                 //将钥匙授予某人
@@ -728,7 +746,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
                     $input = array("type" => $type,"user" => $user,"body" => $body);
-                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4FHYSUI_TO_L3F2_KEYGRANT, "MSG_ID_L4FHYSUI_TO_L3F2_KEYGRANT",$input);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4FHYSUI_TO_L3F2_KEYGRANT, "MSG_ID_L4FHYSUI_TO_L3F2_KEYGRANT",$input);
                     break;
 
                 //新建钥匙授权
@@ -738,7 +756,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
                     $input = array("type" => $type,"user" => $user,"body" => $body);
-                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4FHYSUI_TO_L3F2_KEYAUTHNEW, "MSG_ID_L4FHYSUI_TO_L3F2_KEYAUTHNEW",$input);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4FHYSUI_TO_L3F2_KEYAUTHNEW, "MSG_ID_L4FHYSUI_TO_L3F2_KEYAUTHNEW",$input);
                     break;
 
                 //删除钥匙授权
@@ -748,7 +766,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
                     $input = array("type" => $type,"user" => $user,"body" => $body);
-                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4FHYSUI_TO_L3F2_KEYAUTHDEL, "MSG_ID_L4FHYSUI_TO_L3F2_KEYAUTHDEL",$input);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4FHYSUI_TO_L3F2_KEYAUTHDEL, "MSG_ID_L4FHYSUI_TO_L3F2_KEYAUTHDEL",$input);
                     break;
 
                 //开锁历史查询
@@ -758,7 +776,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
                     $input = array("type" => $type,"user" => $user,"body" => $body);
-                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM3DM, MSG_ID_L4FHYSUI_TO_L3F3_KEYHISTORY, "MSG_ID_L4FHYSUI_TO_L3F3_KEYHISTORY",$input);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM3DM, MSG_ID_L4FHYSUI_TO_L3F3_KEYHISTORY, "MSG_ID_L4FHYSUI_TO_L3F3_KEYHISTORY",$input);
                     break;
 
                 default:

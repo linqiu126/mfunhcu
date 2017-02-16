@@ -289,6 +289,73 @@ class classTaskL3aplF3dm
         return $retval;
     }
 
+    function func_favourite_list_process($type, $user, $body)
+    {
+        $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
+        $usercheck = $uiF1symDbObj->dbi_user_authcheck($type, $user);
+        if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
+            $uid = $uiF1symDbObj->dbi_session_check($user);
+            //$uiF3dmDbObj = new classDbiL3apF3dm(); //初始化一个UI DB对象
+            //$stat_list = $uiF3dmDbObj->dbi_map_sitetinfo_req($uid);
+            $stat_list = array();
+            $map1=array(
+                'StatCode'=>"120101001",
+                'StatName'=>"浦东环球金融中心工程",
+                'ChargeMan'=>"张三",
+                'Telephone'=>"13912345678",
+                'Department'=>"",
+                'Address'=>"世纪大道100号",
+                'Country'=>"浦东新区",
+                'Street'=>"",
+                'Square'=>"40000",
+                'Flag_la'=>"N",
+                'Latitude'=>"31.240246",
+                'Flag_lo'=>"E",
+                'Longitude'=>"121.514168",
+                'ProStartTime'=>"2015-01-01",
+                'Stage'=>""
+            );
+            array_push($stat_list,$map1);
+
+            $map4= array(
+                'StatCode'=>"120101004",
+                'StatName'=>"金桥创科园",
+                'ChargeMan'=>"李四",
+                'Telephone'=>"13912345678",
+                'Department'=>"",
+                'Address'=>"桂桥路255号",
+                'Country'=>"浦东新区",
+                'Street'=>"",
+                'Square'=>"0",
+                'Flag_la'=>"N",
+                'Latitude'=>"31.248271",
+                'Flag_lo'=>"E",
+                'Longitude'=>"121.615476",
+                'ProStartTime'=>"2016-04-01",
+                'Stage'=>""
+            );
+            array_push($stat_list,$map4);
+
+            if(!empty($stat_list))
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$stat_list,'msg'=>"获取地图监测列表成功");
+            else
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>"获取地图监测列表失败");
+        }
+        else
+            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
+
+        return $retval;
+    }
+
+    function func_favourite_count_process($type, $user, $body) //临时处理函数
+    {
+        $retval=array('status'=>'true',
+            'msg'=>'success',
+            'auth'=>'true');
+
+        return $retval;
+    }
+
     function func_historydata_table_query_process($type, $user, $body) //查询某站点历史数据
     {
         if (isset($body["Condition"])) $Condition = $body["Condition"]; else  $Condition = "";
@@ -590,6 +657,16 @@ class classTaskL3aplF3dm
 
             case MSG_ID_L4AQYCUI_TO_L3F3_MONITORLIST://功能Monitor List
                 $resp = $this->func_monitor_list_process($type, $user, $body);
+                $project = MFUN_PRJ_HCU_AQYCUI;
+                break;
+
+            case MSG_ID_L4AQYCUI_TO_L3F3_FAVOURITELIST:
+                $resp = $this->func_favourite_list_process($type, $user, $body);
+                $project = MFUN_PRJ_HCU_AQYCUI;
+                break;
+
+            case MSG_ID_L4AQYCUI_TO_L3F3_FAVOURITECOUNT:
+                $resp = $this->func_favourite_count_process($type, $user, $body);
                 $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 

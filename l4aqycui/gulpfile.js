@@ -13,7 +13,7 @@ var clean = require('gulp-clean');
 var htmlmin = require('gulp-htmlmin');
 var option = {
 
-    buildPath: "./dist"
+    buildPath: "../www/dist"
 }
 var option_html = {
     collapseWhitespace:true,
@@ -105,6 +105,11 @@ gulp.task('scripts', function() {
         .pipe(rename('Login.css'))
         .pipe(minifycss())
         .pipe(gulp.dest(option.buildPath+"/css/"));
+    gulp.src('./css/login_other.css')
+        // .pipe(concat('Login.css'))
+        .pipe(rename('login_other.css'))
+        .pipe(minifycss())
+        .pipe(gulp.dest(option.buildPath+"/css/"));
     gulp.src('./css/nprogress.css')
        // .pipe(concat('nprogress.css'))
         .pipe(rename('nprogress.css'))
@@ -121,6 +126,9 @@ gulp.task('scripts', function() {
         .pipe(minifycss())
         .pipe(gulp.dest(option.buildPath+"/css/"));
     gulp.src('./Login.html')
+        .pipe(htmlmin(option_html))
+        .pipe(gulp.dest(option.buildPath));
+    gulp.src('./login_other.html')
         .pipe(htmlmin(option_html))
         .pipe(gulp.dest(option.buildPath));
     gulp.src('./scope.html')

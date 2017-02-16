@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="text/html; charset=gbk">
+    <title>RTSP</title>
+    <script src="../resource/js/jquery.min.js"></script>
+    <script>
+        function getrtspaddress(){
+            var url = document.location.toString();
+            if(url.indexOf("address=")!=-1){
+                var arrUrl= url.split("address=");
+                var scope_value = arrUrl[1];
+                //log("code="+scope_value);
+                if(scope_value.length>0 ){
+                    return scope_value;
+                }
+            }
+            return "";
+        }
+        function buildcontent(address){
+            if(address.length<=0){
+                $("body").append("无法找到视频地址");
+                return;
+            }else{
+                var txt = "<object type='application/x-vlc-plugin' pluginspage='http://www.videolan.org/' id='vlc' events='false' width='640' height='480'>"+
+                        "<param name='mrl' value='"+address+"' />"+
+                        "<param name='volume' value='50' />"+
+                        "<param name='autoplay' value='true' />"+
+                        "<param name='loop' value='false' />"+
+                        "<param name='fullscreen' value='false' />"+
+                        "<param name='controls' value='false' />"+
+                        "</object>";
+                $("body").append(txt);
+                return;
+            }
+        }
+    </script>
+</head>
+
+<body>
+<!--div style="text-align: center;">
+    <video style="transform: rotate(0deg);" id="v1" controls="controls" onmouseover="this.play()" height="480" width="640">
+        <source src="rtsp://admin:Bxxh!123@ngrok.hkrob.com:30102/ISAPI/Streaming/Channels/1">      html5 video
+    </video>
+</div>
+<script>
+    var video = document.getElementsByTagName('video')[0];
+</script>
+<div style="text-align: center;">
+    <button onclick="video.play()"> &#9654; </button>
+    <button onclick="video.pause()"> &#9724; </button>
+    <button onclick="video.volume += 0.25">Volume Up</button>
+    <button onclick="video.volume -= 0.25">Volume Down</button>
+    <button onclick="video.muted = true">Mute</button>
+    <button onclick="video.muted = false">Unmute</button>
+    <button onclick="rotateMe()"> Start Rotation</button>
+    <button onclick="int=window.clearInterval(int);resetRotation()"> Stop Rotation</button>
+</div-->
+    <div id="body">
+        <!--object type='application/x-vlc-plugin' pluginspage="http://www.videolan.org/" id='vlc' events='false' width="640" height="480">
+            <param name='mrl' value='rtsp://admin:Bxxh!123@ngrok.hkrob.com:30102/ISAPI/Streaming/Channels/1' />
+            <param name='volume' value='50' />
+            <param name='autoplay' value='true' />
+            <param name='loop' value='false' />
+            <param name='fullscreen' value='false' />
+            <param name='controls' value='false' />
+        </object-->
+    </div>
+<script>
+    var address  = getrtspaddress();
+    buildcontent(address);
+</script>
+</body>
+</html>

@@ -320,6 +320,24 @@ class classTaskL4fhysUi
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM3DM, MSG_ID_L4AQYCUI_TO_L3F3_MONITORLIST, "MSG_ID_L4AQYCUI_TO_L3F3_MONITORLIST",$input);
                     break;
 
+                case "Favourite_list": //获取用户常用站点
+                    if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
+                    if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
+                    if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
+
+                    $input = array("type" => $type,"user" => $user,"body" => $body);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM3DM, MSG_ID_L4AQYCUI_TO_L3F3_FAVOURITELIST, "MSG_ID_L4AQYCUI_TO_L3F3_FAVOURITELIST",$input);
+                    break;
+
+                case "Favourite_count":
+                    if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
+                    if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
+                    if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
+
+                    $input = array("type" => $type,"user" => $user,"body" => $body);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM3DM, MSG_ID_L4AQYCUI_TO_L3F3_FAVOURITECOUNT, "MSG_ID_L4AQYCUI_TO_L3F3_FAVOURITECOUNT",$input);
+                    break;
+
                 case "AlarmQuery": //查询一个监测点历史告警数据 minute/hour/day
                     if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
                     if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
