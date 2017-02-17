@@ -742,6 +742,7 @@ class classTaskL2sdkIotWx
                 $transMsg = $this->xms_responseText($xmlmsg->FromUserName, $xmlmsg->ToUserName,"欢迎加入会员专区");
                 break;
             case "CLICK_XHZN_HELP":
+            case "CLICK_FHYS_HELP":
                 $transMsg = $this->xms_responseText($xmlmsg->FromUserName, $xmlmsg->ToUserName,"您好，请问有什么需要帮助的？");
                 break;
             default:

@@ -87,10 +87,10 @@ elseif (MFUN_WX_APPID == "wxd054d0d6bae92d04") //如果是FOHA服务号
 {
     $self_create_menu =
         '{"button":[
-                {"type":"view","name":"云控锁","url":"https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxd054d0d6bae92d04&redirect_uri=http://120.26.105.35/mfunhcu/l4fhyswechat/index.html?response_type=code&scope=snsapi_base&state=1#wechat_redirect"},
+                {"type":"view","name":"光交箱云控平台","url":"https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxd054d0d6bae92d04&redirect_uri=http://120.26.105.35/mfunhcu/l4fhyswechat/index.html?response_type=code&scope=snsapi_base&state=1#wechat_redirect"},
 
                 {"name":"我",
-                    "sub_button":[{"type":"click","name":"帮助","key":"CLICK_XHZN_HELP"},
+                    "sub_button":[{"type":"click","name":"帮助","key":"CLICK_FHYS_HELP"},
                                   {"type":"view","name":"上海阜华","url":"http://www.foha.com.cn"}]
                 }
          ]

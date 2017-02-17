@@ -4370,7 +4370,7 @@ class classTaskL2sdkWechat
         switch ($postObj->Event)
         {
             case "subscribe":
-                $content = "欢迎关注小慧智能-硬件测试";
+                $content = "欢迎关注";
                 break;
             case "unsubscribe":
                 $content = "取消关注";
