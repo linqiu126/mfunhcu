@@ -2,15 +2,21 @@
 PATH="/bin:/usr/bin:/usr/sbin:/sbin"
 count=`ps -fe |grep "cloud_callback_socket_listening.php" | grep -v "grep" | grep "master" | wc -l`
 
-ipaddr=`LC_ALL=C ifconfig | grep 'inet '| grep -v '10.' |grep -v '127'|cut -d: -f2 | awk '{ print $2}'`
+#ipaddr=`LC_ALL=C ifconfig | grep 'inet '| grep -v '10.' |grep -v '127'|cut -d: -f2 | awk '{ print $2}'`
+ipaddr=`LC_ALL=C ifconfig | grep 'inet '|grep -v '127'|cut -d: -f2 | awk '{ print $2}' | awk 'NR==2{print}'`
 ipxiaohui='121.40.118.33'
 ipaiqi='121.40.185.177'
+ipfumei='120.26.105.35'
 
-if [ $ipaddr = $ipxiaohui ]
+if [ "$ipaddr" = "$ipxiaohui" ]
 then
     swoole_server_logfile='/home/swoole_server.log'
     mfunhcu_l1mainentry_directory='/var/www/html/mfunhcu/l1mainentry'
-elif [ $ipaddr = $ipaiqi ]
+elif [ "$ipaddr" = "$ipfumei" ]
+then
+    swoole_server_logfile='/root/swoole_server.log'
+    mfunhcu_l1mainentry_directory='/var/www/html/mfunhcu/l1mainentry'
+elif [ "$ipaddr" = "$ipaiqi" ]
 then
     swoole_server_logfile='/home/qiulin/swoole_server.log'
     mfunhcu_l1mainentry_directory='/data/www/xhzn/mfunhcu/l1mainentry'
