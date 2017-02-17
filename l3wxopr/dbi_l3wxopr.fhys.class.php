@@ -27,6 +27,9 @@ class classDbiL3wxOprFhys
             $row = $result->fetch_array();
             $userinfo = array('username'=>$row['keyusername'], 'userid'=>$row['keyuserid']);
         }
+        else{
+
+        }
 
         $mysqli->close();
         return $userinfo;
