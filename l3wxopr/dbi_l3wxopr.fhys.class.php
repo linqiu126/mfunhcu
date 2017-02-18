@@ -110,6 +110,7 @@ class classDbiL3wxOprFhys
                 $query_str = "INSERT INTO `t_l3f2cm_fhys_keyinfo` (keyid,keyname,p_code,keyuserid,keyusername,keystatus,keytype,hwcode,memo)
                                       VALUES ('$keyid','$keyname','$pcode','$userid','$username','$keystatus','$keytype','$openid','$memo')";
                 $result = $mysqli->query($query_str);
+                $i++;
             }
             $msg = "用户微信钥匙绑定成功";
         }
