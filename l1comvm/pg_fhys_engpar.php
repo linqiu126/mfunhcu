@@ -57,6 +57,9 @@ define ("MFUN_HCU_FHYS_LOCK_OPEN", "Y");  //智能云锁打开
 define ("MFUN_HCU_FHYS_LOCK_CLOSE", "N"); //智能云锁关闭
 define ("MFUN_HCU_FHYS_LOCK_ALARM", "A"); //智能云锁暴力打开
 
+define ("MFUN_HCU_FHYS_KEY_VALID", "Y");  //虚拟钥匙有效，已授予用户
+define ("MFUN_HCU_FHYS_KEY_INVALID", "N"); //虚拟钥匙无效，未授予用户
+
 //下位机的数据常量
 define ("MFUN_HCU_DATA_FHYS_STATUS_OK", 0x00); //设备状态正常或者门锁闭合
 define ("MFUN_HCU_DATA_FHYS_STATUS_NOK", 0x01); //设备状态异常或者门锁打开

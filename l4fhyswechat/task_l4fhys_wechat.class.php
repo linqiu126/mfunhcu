@@ -56,6 +56,14 @@ class classTaskL4fhysWechat
                     $input = array("type" => $type,"user" => $user,"body" => $body);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_WECHAT, MFUN_TASK_ID_L3WX_OPR_FHYS, MSG_ID_FHYSWECHAT_TO_L3WXOPR_LOGIN, "MSG_ID_FHYSWECHAT_TO_L3WXOPR_LOGIN",$input);
                     break;
+                case "HCU_Wechat_Bonding":
+                    if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
+                    if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
+                    if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
+
+                    $input = array("type" => $type,"user" => $user,"body" => $body);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_WECHAT, MFUN_TASK_ID_L3WX_OPR_FHYS, MSG_ID_FHYSWECHAT_TO_L3WXOPR_USERBIND, "MSG_ID_FHYSWECHAT_TO_L3WXOPR_USERBIND",$input);
+                    break;
                 case "HCU_Lock_Query": //Query How many lock is autherized to user,response is a list of StatCode and Name and Location and so on
                     if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
                     if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";

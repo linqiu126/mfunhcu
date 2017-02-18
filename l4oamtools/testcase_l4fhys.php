@@ -22,6 +22,15 @@ if (TC_L4FHYS_WECHAT == true) {
     //require("../l4fhyswechat/request.php");
     echo " [TC L4FHYS_WECHAT: HCU_Wechat_Login END]\n";
 
+    echo " [TC L4FHYS_WECHAT: HCU_Wechat_Bonding START]\n";
+    $_GET["action"] = "HCU_Wechat_Bonding";
+    $_GET["type"] = "query";
+    $body = array('code' =>'openid','username'=>'foha','userid'=>'UID771073');
+    $_GET["body"] = $body;
+    $_GET["user"] = "UID771073";
+    require("../l4fhyswechat/request.php");
+    echo " [TC L4FHYS_WECHAT: HCU_Wechat_Bonding END]\n";
+
     echo " [TC L4FHYS_WECHAT: HCU_Lock_Query START]\n";
     $_GET["action"] = "HCU_Lock_Query";
     $_GET["type"] = "query";

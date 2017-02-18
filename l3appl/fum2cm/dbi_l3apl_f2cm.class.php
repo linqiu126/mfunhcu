@@ -804,7 +804,7 @@ class classDbiL3apF2cm
         if (isset($keyinfo["Memo"])) $memo = trim($keyinfo["Memo"]); else  $memo = "";
 
         $keyid = MFUN_L3APL_F2CM_KEY_PREFIX.$this->getRandomKeyid(MFUN_L3APL_F2CM_KEY_ID_LEN);  //KEYID的分配机制将来要重新考虑，避免重复
-        $keystatus = "N"; //默认新建的Key是没有启用的
+        $keystatus = MFUN_HCU_FHYS_KEY_INVALID; //默认新建的Key是没有启用的，未授予用户
 
         //转换keytype
         /*

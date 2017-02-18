@@ -61,7 +61,10 @@ class classTaskL3wxOprFhys
     {
         if (isset($body["code"])) $code = $body["code"]; else  $code = "";
 
-        $weixin =  $this->https_request("https://api.weixin.qq.com/sns/oauth2/access_token?appid=wxf2150c4d2941b2ab&secret=ab95997f454e04b77911c18d09807831&code=".$code."&grant_type=authorization_code");//通过access_token查询用户信息
+        //获取不同微信服务号的参数
+        $appid = MFUN_WX_APPID;
+        $appsecret = MFUN_WX_APPSECRET;
+        $weixin =  $this->https_request("https://api.weixin.qq.com/sns/oauth2/access_token?appid=".$appid."&secret=".$appsecret."&code=".$code."&grant_type=authorization_code");//通过access_token查询用户信息
         $jsondecode = json_decode($weixin); //返回用户信息的JSON数据
         $array = get_object_vars($jsondecode);
         if(isset($array['openid'])){
@@ -71,10 +74,39 @@ class classTaskL3wxOprFhys
             if(!empty($userinfo))
                 $retval=array('status'=>'true','auth'=>'true','ret'=>$userinfo);
             else
-                $retval=array('status'=>'true','auth'=>'flase','ret'=>"");
+                $retval=array('status'=>'false','auth'=>'true','ret'=>"");
         }
         else
             $retval=array('status'=>'false','auth'=>'flase','ret'=>"");
+
+        return $retval;
+    }
+
+    private function func_fhys_wechat_userbind($type, $user, $body)
+    {
+        if (isset($body["code"])) $code = $body["code"]; else  $code = "";
+        if (isset($body["username"])) $username = $body["username"]; else  $username = "";
+        if (isset($body["password"])) $password = $body["password"]; else  $password = "";
+
+        //获取不同微信服务号的参数
+        $appid = MFUN_WX_APPID;
+        $appsecret = MFUN_WX_APPSECRET;
+        $weixin =  $this->https_request("https://api.weixin.qq.com/sns/oauth2/access_token?appid=".$appid."&secret=".$appsecret."&code=".$code."&grant_type=authorization_code");//通过access_token查询用户信息
+        $jsondecode = json_decode($weixin); //返回用户信息的JSON数据
+        $array = get_object_vars($jsondecode);
+        if(isset($array['openid'])){
+            $openid = $array['openid']; //获取微信用户openid
+            $l3wxOprFhysDbObj = new classDbiL3wxOprFhys(); //初始化一个UI DB对象
+            $bindinfo = $l3wxOprFhysDbObj->dbi_fhyswechat_userbind($openid,$username,$password);
+            if($bindinfo['usercheck'] == true){
+                $userinfo = array('username'=>$bindinfo['username'],'userid'=>$bindinfo['userid']);
+                $retval=array('status'=>'true','auth'=>'true','ret'=>$userinfo,'msg'=>$bindinfo['msg']);
+            }
+            else
+                $retval=array('status'=>'false','auth'=>'true','ret'=>'','msg'=>$bindinfo['msg']);
+        }
+        else
+            $retval=array('status'=>'false','auth'=>'flase','ret'=>'','msg'=>"微信操作超时，请退出重新登录");
 
         return $retval;
     }
@@ -157,19 +189,23 @@ class classTaskL3wxOprFhys
         {
             case MSG_ID_FHYSWECHAT_TO_L3WXOPR_LOGIN:
                 $resp = $this->func_fhys_wechat_login($type, $user, $body);
-                $project = MFUN_PRJ_HCU_FHYSUI;
+                $project = MFUN_PRJ_HCU_FHYSWX;
+                break;
+            case MSG_ID_FHYSWECHAT_TO_L3WXOPR_USERBIND:
+                $resp = $this->func_fhys_wechat_userbind($type, $user, $body);
+                $project = MFUN_PRJ_HCU_FHYSWX;
                 break;
             case MSG_ID_FHYSWECHAT_TO_L3WXOPR_LOCKQUERY:
                 $resp = $this->func_fhys_wechat_lockquery($type, $user, $body);
-                $project = MFUN_PRJ_HCU_FHYSUI;
+                $project = MFUN_PRJ_HCU_FHYSWX;
                 break;
             case MSG_ID_FHYSWECHAT_TO_L3WXOPR_LOCKSTATUS:
                 $resp = $this->func_fhys_wechat_lockstatus($type, $user, $body);
-                $project = MFUN_PRJ_HCU_FHYSUI;
+                $project = MFUN_PRJ_HCU_FHYSWX;
                 break;
             case MSG_ID_FHYSWECHAT_TO_L3WXOPR_LOCKOPEN:
                 $resp = $this->func_fhys_wechat_lockopen($type, $user, $body);
-                $project = MFUN_PRJ_HCU_FHYSUI;
+                $project = MFUN_PRJ_HCU_FHYSWX;
                 break;
             default:
                 $resp = ""; //啥都不ECHO
