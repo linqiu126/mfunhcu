@@ -630,7 +630,7 @@ class classDbiL1vmCommon
         $mysqli->query("SET NAMES utf8");
 
         $AlarmTime = date("Y-m-d H:m:s",$AlarmTime);
-        $result=$mysqli->query("INSERT INTO `bxxhl1l2l3`.`t_l3f5fm_alarmdata` (`devcode`, `equipmentid`, `alarmtype`, `alarmdesc`, `alarmseverity`, `alarmclearflag`, `timestamp`, `picturename`) VALUES ('$deviceId', '$EquipmentId', '$AlarmType', '$AlarmDescription', '$AlarmServerity', '$AlarmClearFlag', '$AlarmTime', '$PictureName')");
+        $result=$mysqli->query("INSERT INTO `bxxhl1l2l3`.`t_l3f5fm_aqyc_alarmdata` (`devcode`, `equipmentid`, `alarmtype`, `alarmdesc`, `alarmseverity`, `alarmclearflag`, `timestamp`, `picturename`) VALUES ('$deviceId', '$EquipmentId', '$AlarmType', '$AlarmDescription', '$AlarmServerity', '$AlarmClearFlag', '$AlarmTime', '$PictureName')");
 
         $mysqli->close();
         return $result;

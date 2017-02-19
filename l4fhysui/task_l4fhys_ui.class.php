@@ -533,6 +533,24 @@ class classTaskL4fhysUi
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM5FM, MSG_ID_L4FHYSUI_TO_L3F5_GETALARMHANDLETABLE, "MSG_ID_L4FHYSUI_TO_L3F5_GETALARMHANDLETABLE",$input);
                     break;
 
+                case "AlarmHandle":
+                    if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
+                    if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
+                    if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
+
+                    $input = array("type" => $type,"user" => $user,"body" => $body);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM5FM, MSG_ID_L4FHYSUI_TO_L3F5_ALARMHANDLE, "MSG_ID_L4FHYSUI_TO_L3F5_ALARMHANDLE",$input);
+                    break;
+
+                case "AlarmClose":
+                    if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
+                    if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
+                    if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
+
+                    $input = array("type" => $type,"user" => $user,"body" => $body);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM5FM, MSG_ID_L4FHYSUI_TO_L3F5_ALARMCLOSE, "MSG_ID_L4FHYSUI_TO_L3F5_ALARMCLOSE",$input);
+                    break;
+
                 //开锁请求命令
                 case "OpenLock": //Open a lock
                     if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";

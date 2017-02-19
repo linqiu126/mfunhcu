@@ -17,7 +17,7 @@ class classTaskL3aplF5fm
 
     }
 
-    function _encode($arr)
+    private function _encode($arr)
     {
         $na = array();
         foreach ( $arr as $k => $value ) {
@@ -26,7 +26,7 @@ class classTaskL3aplF5fm
         return addcslashes(urldecode(json_encode($na)),"\r\n");
     }
 
-    function _urlencode($elem)
+    private function _urlencode($elem)
     {
         $na = 0;
         if(is_array($elem)&&(!empty($elem))){
@@ -41,7 +41,7 @@ class classTaskL3aplF5fm
         return urlencode($elem);
     }
 
-    function func_aqyc_dev_alarm_process($type, $user, $body)
+    private function func_aqyc_dev_alarm_process($type, $user, $body)
     {
         if (isset($body["StatCode"])) $StatCode = $body["StatCode"]; else  $StatCode = "";
 
@@ -61,7 +61,7 @@ class classTaskL3aplF5fm
         return $retval;
     }
 
-    function func_aqyc_alarm_query_process($type, $user, $body)
+    private function func_aqyc_alarm_query_process($type, $user, $body)
     {
         if (isset($body["StatCode"])) $StatCode = $body["StatCode"]; else  $StatCode = "";
         if (isset($body["date"])) $date = $body["date"]; else  $date = "";
@@ -95,7 +95,7 @@ class classTaskL3aplF5fm
         return $retval;
     }
 
-    function func_aqyc_alarmtype_list_process($type, $user, $body)
+    private function func_aqyc_alarmtype_list_process($type, $user, $body)
     {
         $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
         $usercheck = $uiF1symDbObj->dbi_user_authcheck($type, $user);
@@ -114,7 +114,7 @@ class classTaskL3aplF5fm
         return $retval;
     }
 
-    function func_aqyc_current_alarmtable_process($type, $user, $body)
+    private function func_aqyc_current_alarmtable_process($type, $user, $body)
     {
         $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
         $usercheck = $uiF1symDbObj->dbi_user_authcheck($type, $user);
@@ -135,7 +135,7 @@ class classTaskL3aplF5fm
         return $retval;
     }
 
-    function func_aqyc_alarm_monitor_list_process($type, $user, $body)
+    private function func_aqyc_alarm_monitor_list_process($type, $user, $body)
     {
         $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
         $usercheck = $uiF1symDbObj->dbi_user_authcheck($type, $user);
@@ -155,7 +155,7 @@ class classTaskL3aplF5fm
     }
 
     /*********************************智能云锁新增处理************************************************/
-    function func_fhys_alarmtype_list_process($type, $user, $body)
+    private function func_fhys_alarmtype_list_process($type, $user, $body)
     {
         $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
         $usercheck = $uiF1symDbObj->dbi_user_authcheck($type, $user);
@@ -174,7 +174,7 @@ class classTaskL3aplF5fm
         return $retval;
     }
 
-    function func_fhys_dev_alarm_process($type, $user, $body)
+    private function func_fhys_dev_alarm_process($type, $user, $body)
     {
         if (isset($body["StatCode"])) $StatCode = $body["StatCode"]; else  $StatCode = "";
 
@@ -195,7 +195,7 @@ class classTaskL3aplF5fm
         return $retval;
     }
 
-    function func_fhys_get_alarm_handle_table_process($type, $user, $body)
+    private function func_fhys_get_alarm_handle_table_process($type, $user, $body)
     {
         $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
         $usercheck = $uiF1symDbObj->dbi_user_authcheck($type, $user);
@@ -212,6 +212,50 @@ class classTaskL3aplF5fm
         }
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
+
+        return $retval;
+    }
+
+    private function func_fhys_alarm_handle_process($type, $user, $body)
+    {
+        if (isset($body["StatCode"])) $statcode = $body["StatCode"]; else  $statcode = "";
+        if (isset($body["Mobile"])) $mobile = $body["Mobile"]; else  $mobile = "";
+        if (isset($body["Action"])) $action = $body["Action"]; else  $action = "";
+
+        $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
+        $usercheck = $uiF1symDbObj->dbi_user_authcheck($type, $user);
+        if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
+            $uid = $uiF1symDbObj->dbi_session_check($user);
+            $uiF5fmDbObj = new classDbiL3apF5fm(); //初始化一个UI DB对象
+            $result = $uiF5fmDbObj->dbi_fhys_alarm_handle_process($statcode,$mobile,$action);
+            if($result == true)
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"告警处理成功");
+            else
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"告警处理失败");
+        }
+        else
+            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"超时退出");
+
+        return $retval;
+    }
+
+    private function func_fhys_alarm_close_process($type, $user, $body)
+    {
+        if (isset($body["StatCode"])) $statcode = $body["StatCode"]; else  $statcode = "";
+
+        $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
+        $usercheck = $uiF1symDbObj->dbi_user_authcheck($type, $user);
+        if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
+            $uid = $uiF1symDbObj->dbi_session_check($user);
+            $uiF5fmDbObj = new classDbiL3apF5fm(); //初始化一个UI DB对象
+            $result = $uiF5fmDbObj->dbi_fhys_alarm_close_process($uid,$statcode);
+            if($result == true)
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"告警关闭成功");
+            else
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"告警关闭失败");
+        }
+        else
+            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"超时退出");
 
         return $retval;
     }
@@ -297,6 +341,16 @@ class classTaskL3aplF5fm
 
             case MSG_ID_L4FHYSUI_TO_L3F5_GETALARMHANDLETABLE:
                 $resp = $this->func_fhys_get_alarm_handle_table_process($type, $user, $body);
+                $project = MFUN_PRJ_HCU_FHYSUI;
+                break;
+
+            case MSG_ID_L4FHYSUI_TO_L3F5_ALARMHANDLE:
+                $resp = $this->func_fhys_alarm_handle_process($type, $user, $body);
+                $project = MFUN_PRJ_HCU_FHYSUI;
+                break;
+
+            case MSG_ID_L4FHYSUI_TO_L3F5_ALARMCLOSE:
+                $resp = $this->func_fhys_alarm_close_process($type, $user, $body);
                 $project = MFUN_PRJ_HCU_FHYSUI;
                 break;
 

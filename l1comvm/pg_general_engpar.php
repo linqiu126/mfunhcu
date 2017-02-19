@@ -176,7 +176,7 @@ class classConstL1vmUserWebRight
             'query' => 'false',
             'mod' => 'false'),
         );
-    //通过TaskId读取TaskName
+    //通过授权级别获取详细授权菜单信息
     public static function mfun_vm_getUserGrade($gradeIndex)
     {
 

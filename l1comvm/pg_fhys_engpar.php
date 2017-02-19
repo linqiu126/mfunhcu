@@ -40,6 +40,10 @@ define("MFUN_L3APL_F2CM_EVENT_DURATION_MONTH", "30");
 //FHYS系统常量
 define ("MFUN_HCU_FHYS_TIME_GRID_SIZE", 1); //每分钟一条记录
 
+define ("MFUN_HCU_FHYS_ALARM_PROC_FLAG_Y", "Y"); //告警已经处理，等待关闭
+define ("MFUN_HCU_FHYS_ALARM_PROC_FLAG_N", "N"); //告警未处理
+define ("MFUN_HCU_FHYS_ALARM_PROC_FLAG_C", "C"); //告警已经处理关闭
+
 define ("MFUN_HCU_FHYS_ALARM_YES", "Y");
 define ("MFUN_HCU_FHYS_ALARM_NO", "N");
 define ("MFUN_HCU_FHYS_STATUS_SLEEP", "S"); //设备休眠中
@@ -164,6 +168,21 @@ define("MFUN_HCU_OPT_BFSC_WEIGHTDATA_IND", 0x81);
 define("MFUN_HCU_OPT_BFSC_WEIGHTSTART_RESP", 0x82);
 define("MFUN_HCU_OPT_BFSC_WEIGHTSTOP_RESP", 0x83);
 
+define ("MFUN_HCU_FHYS_ALARM_NONE", 0x00); //正常无告警
+define ("MFUN_HCU_FHYS_ALARM_DOOR1_OPEN", 0x01); //门-1暴力打开
+define ("MFUN_HCU_FHYS_ALARM_DOOR2_OPEN", 0x02); //门-2暴力打开
+define ("MFUN_HCU_FHYS_ALARM_DOOR3_OPEN", 0x03); //门-3暴力打开
+define ("MFUN_HCU_FHYS_ALARM_DOOR4_OPEN", 0x04); //门-4暴力打开
+define ("MFUN_HCU_FHYS_ALARM_LOCK1_OPEN", 0x05); //锁-1暴力打开
+define ("MFUN_HCU_FHYS_ALARM_LOCK2_OPEN", 0x06); //锁-2暴力打开
+define ("MFUN_HCU_FHYS_ALARM_LOCK3_OPEN", 0x07); //锁-3暴力打开
+define ("MFUN_HCU_FHYS_ALARM_LOCK4_OPEN", 0x08); //锁-4暴力打开
+define ("MFUN_HCU_FHYS_ALARM_SMOK", 0x09); //烟雾报警
+define ("MFUN_HCU_FHYS_ALARM_WATER", 0x0A); //水浸报警
+define ("MFUN_HCU_FHYS_ALARM_VIBR", 0x0B); //震动报警
+define ("MFUN_HCU_FHYS_ALARM_LOW_SIG", 0x0C); //GPRS信号强度弱
+define ("MFUN_HCU_FHYS_ALARM_LOW_BATT", 0x0D); //低电量告警
+define ("MFUN_HCU_FHYS_ALARM_CODE_MAX", 0x0E); //Alarmcode的最大值，如有新alarmcode添加，该值要顺延
 
 
 
@@ -173,6 +192,38 @@ define("MFUN_HCU_OPT_BFSC_WEIGHTSTOP_RESP", 0x83);
 //定义数据保存不删的时间长度
 if (MFUN_CURRENT_WORKING_PROGRAM_NAME_UNIQUE == MFUN_WORKING_PROGRAM_NAME_UNIQUE_FHYS){
     define ("MFUN_HCU_DATA_SAVE_DURATION_IN_DAYS", 90);
+}
+
+class classConstFhysEngpar
+{
+    public static $mfunFhysAlarmCode=array(
+        MFUN_HCU_FHYS_ALARM_NONE => '工作正常',
+        MFUN_HCU_FHYS_ALARM_DOOR1_OPEN => '门-1暴力打开',
+        MFUN_HCU_FHYS_ALARM_DOOR2_OPEN => '门-2暴力打开',
+        MFUN_HCU_FHYS_ALARM_DOOR3_OPEN => '门-3暴力打开',
+        MFUN_HCU_FHYS_ALARM_DOOR4_OPEN => '门-4暴力打开',
+        MFUN_HCU_FHYS_ALARM_LOCK1_OPEN => '锁-1暴力打开',
+        MFUN_HCU_FHYS_ALARM_LOCK2_OPEN => '锁-2暴力打开',
+        MFUN_HCU_FHYS_ALARM_LOCK3_OPEN => '锁-3暴力打开',
+        MFUN_HCU_FHYS_ALARM_LOCK4_OPEN => '锁-4暴力打开',
+        MFUN_HCU_FHYS_ALARM_SMOK => '烟雾报警',
+        MFUN_HCU_FHYS_ALARM_WATER => '水浸报警',
+        MFUN_HCU_FHYS_ALARM_VIBR => '震动报警',
+        MFUN_HCU_FHYS_ALARM_LOW_SIG => 'GPRS信号强度弱',
+        MFUN_HCU_FHYS_ALARM_LOW_BATT => '低电量告警'
+    );
+
+    //通过授权级别获取详细授权菜单信息
+    public static function mfun_hcu_fhys_getAlarmDescription($alarmcode)
+    {
+
+        if ($alarmcode >= 0 AND $alarmcode <MFUN_HCU_FHYS_ALARM_CODE_MAX) {
+            return self::$mfunFhysAlarmCode[$alarmcode];
+        }else {
+            return false;
+        }
+    }
+
 }
 
 ?>

@@ -16,10 +16,10 @@ header("Content-type:text/html;charset=utf-8");
 
 -- --------------------------------------------------------
 --
--- 表的结构 `t_l3f5fm_alarmdata`
+-- 表的结构 `t_l3f5fm_aqyc_alarmdata`
 --
 
-CREATE TABLE IF NOT EXISTS `t_l3f5fm_alarmdata` (
+CREATE TABLE IF NOT EXISTS `t_l3f5fm_aqyc_alarmdata` (
   `sid` int(4) NOT NULL AUTO_INCREMENT,
   `alarmsrc` int(4) NOT NULL,
   `alarmtype` char(20) NOT NULL,
@@ -32,10 +32,10 @@ CREATE TABLE IF NOT EXISTS `t_l3f5fm_alarmdata` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 --
--- 转存表中的数据 `t_l3f5fm_alarmdata`
+-- 转存表中的数据 `t_l3f5fm_aqyc_alarmdata`
 --
 
-INSERT INTO `t_l3f5fm_alarmdata` (`sid`, `alarmdesc`) VALUES
+INSERT INTO `t_l3f5fm_aqyc_alarmdata` (`sid`, `alarmdesc`) VALUES
 (1, 'Cloud HCU inter-link failure.');
 
 */
@@ -208,14 +208,14 @@ class classDbiL3apF5fm
         }
 
         //存储新记录，如果发现是已经存在的数据，则覆盖，否则新增
-        $result = $mysqli->query("SELECT * FROM `t_l3f5fm_alarmdata` WHERE (`sid` = '$sid'");
+        $result = $mysqli->query("SELECT * FROM `t_l3f5fm_aqyc_alarmdata` WHERE (`sid` = '$sid'");
         if (($result != false) && ($result->num_rows)>0)   //重复，则覆盖
         {
-            $result=$mysqli->query("UPDATE `t_l3f5fm_alarmdata` SET  `alarmdesc` = '$alarmdesc' WHERE (`sid` = '$sid')");
+            $result=$mysqli->query("UPDATE `t_l3f5fm_aqyc_alarmdata` SET  `alarmdesc` = '$alarmdesc' WHERE (`sid` = '$sid')");
         }
         else   //不存在，新增
         {
-            $result=$mysqli->query("INSERT INTO `t_l3f5fm_alarmdata` (sid, alarmdesc) VALUES ('$sid', '$alarmdesc')");
+            $result=$mysqli->query("INSERT INTO `t_l3f5fm_aqyc_alarmdata` (sid, alarmdesc) VALUES ('$sid', '$alarmdesc')");
         }
         $mysqli->close();
         return $result;
@@ -232,7 +232,7 @@ class classDbiL3apF5fm
         {
             die('Could not connect: ' . mysqli_error($mysqli));
         }
-        $result = $mysqli->query("DELETE FROM `t_l3f5fm_alarmdata` WHERE ((`sid` = '$sid') AND (TO_DAYS(NOW()) - TO_DAYS(`date`) > '$days'))");
+        $result = $mysqli->query("DELETE FROM `t_l3f5fm_aqyc_alarmdata` WHERE ((`sid` = '$sid') AND (TO_DAYS(NOW()) - TO_DAYS(`date`) > '$days'))");
         $mysqli->close();
         return $result;
     }
@@ -244,7 +244,7 @@ class classDbiL3apF5fm
         if (!$mysqli) {
             die('Could not connect: ' . mysqli_error($mysqli));
         }
-        $result = $mysqli->query("SELECT * FROM `t_l3f5fm_alarmdata` WHERE `sid` = '$sid'");
+        $result = $mysqli->query("SELECT * FROM `t_l3f5fm_aqyc_alarmdata` WHERE `sid` = '$sid'");
         if (($result != false) && ($result->num_rows)>0)
         {
             $row = $result->fetch_array();
@@ -393,25 +393,34 @@ class classDbiL3apF5fm
         $auth_list = $this->dbi_user_statproj_inqury($uid);
 
         array_push($resp["column"], "站点编号");
+        array_push($resp["column"], "告警标志");
         array_push($resp["column"], "站点名称");
         array_push($resp["column"], "区县");
         array_push($resp["column"], "地址");
         array_push($resp["column"], "负责人");
         array_push($resp["column"], "联系电话");
         array_push($resp["column"], "告警级别");
-        array_push($resp["column"], "门-1状态");
-        array_push($resp["column"], "门-2状态");
-        array_push($resp["column"], "锁-1状态");
-        array_push($resp["column"], "锁-2状态");
-        array_push($resp["column"], "信号强度");
-        array_push($resp["column"], "剩余电量");
-        array_push($resp["column"], "温度");
-        array_push($resp["column"], "湿度");
-        array_push($resp["column"], "震动告警");
-        array_push($resp["column"], "水浸告警");
-        array_push($resp["column"], "烟雾告警");
+        array_push($resp["column"], "告警描述");
+        array_push($resp["column"], "告警产生时间");
+        array_push($resp["column"], "告警关闭时间");
+        array_push($resp["column"], "告警处理");
+
+        //初始化返回值，确保数据库查询不到的情况下界面返回数据长度不报错
+        $statcode = "";
+        $statname = "";
+        $country = "";
+        $address = "";
+        $chargeman = "";
+        $telephone = "";
+        $alarmflag = "";
+        $alarmseverity = "";
+        $alarmdescription = "";
+        $tsgen = "";
+        $tsclose = "";
+        $alarmproc = "";
 
 
+        $objFhysAlarm = new classConstFhysEngpar();
         for($i=0; $i<count($auth_list["stat_code"]); $i++)
         {
             $one_row = array();
@@ -421,129 +430,85 @@ class classDbiL3apF5fm
             if (($result->num_rows) > 0)
             {
                 $row = $result->fetch_array();
-                array_push($one_row, $statcode);
-                array_push($one_row, $row["statname"]);
-                array_push($one_row, $row["country"]);
-                array_push($one_row, $row["address"]);
-                array_push($one_row, $row["chargeman"]);
-                array_push($one_row, $row["telephone"]);
+                $statname = $row["statname"];
+                $country = $row["country"];
+                $address = $row["address"];
+                $chargeman = $row["chargeman"];
+                $telephone = $row["telephone"];
             }
-            $query_str = "SELECT * FROM `t_l3f3dm_fhys_currentreport` WHERE `statcode` = '$statcode'";
+            $alarmflag = MFUN_HCU_FHYS_ALARM_PROC_FLAG_C;
+            $query_str = "SELECT * FROM `t_l3f5fm_fhys_alarmdata` WHERE (`statcode` = '$statcode' AND `alarmflag` != '$alarmflag')"; //授权站点中尚未关闭的告警
             $result = $mysqli->query($query_str);
-            //初始化返回值，确保数据库没有测试报告的情况下界面返回数据长度不报错
-            $alarm_level = MFUN_HCU_FHYS_ALARM_LEVEL_0;
-            $alarm_text = "无告警";
-            $door_1 = "状态未知";
-            $door_2 = "状态未知";
-            $lock_1 = "状态未知";
-            $lock_2 = "状态未知";
-            $sig_level = "0";
-            $batt_level = "0"."%";
-            $vibr_alarm = "未知";
-            $water_alarm = "未知";
-            $smok_alarm = "未知";
-            $temperature = "0";
-            $humidity = "0%";
-
             if (($result->num_rows) > 0)
             {
                 $row = $result->fetch_array();
-                //更新设备运行状态
-                $alarm_level = $row["alarmlevel"];
-                if($alarm_level == MFUN_HCU_FHYS_ALARM_LEVEL_H)
-                    $alarm_text = "严重告警";
-                elseif($alarm_level == MFUN_HCU_FHYS_ALARM_LEVEL_M)
-                    $alarm_text = "中级告警";
-                elseif($alarm_level == MFUN_HCU_FHYS_ALARM_LEVEL_L)
-                    $alarm_text = "轻微告警";
-                else
-                    $alarm_text = "无告警";
+                $alarmflag = $row["alarmflag"];
+                $alarmseverity = $row["alarmseverity"];
+                $alarmcode = hexdec($row["alarmcode"]) & 0xFF ;
+                $alarmdescription = $objFhysAlarm->mfun_hcu_fhys_getAlarmDescription($alarmcode);
+                $tsgen = $row["tsgen"];
+                $tsclose = $row["tsclose"];
+                $alarmproc = $row["alarmproc"];
 
-                //更新门运行状态
-                if($row["door_1"] == MFUN_HCU_FHYS_DOOR_OPEN)
-                    $door_1 = "正常打开";
-                elseif($row["door_1"] == MFUN_HCU_FHYS_DOOR_CLOSE)
-                    $door_1 = "正常关闭";
-                elseif($row["door_1"] == MFUN_HCU_FHYS_DOOR_ALARM)
-                    $door_1 = "暴力打开";
+                array_push($one_row, $statcode);
+                array_push($one_row, $alarmflag);
+                array_push($one_row, $statname);
+                array_push($one_row, $country);
+                array_push($one_row, $address);
+                array_push($one_row, $chargeman);
+                array_push($one_row, $telephone);
+                array_push($one_row, $alarmseverity);
+                array_push($one_row, $alarmdescription);
+                array_push($one_row, $tsgen);
+                array_push($one_row, $tsclose);
+                array_push($one_row, $alarmproc);
 
-                if($row["door_2"] == MFUN_HCU_FHYS_DOOR_OPEN)
-                    $door_2 = "正常打开";
-                elseif($row["door_2"] == MFUN_HCU_FHYS_DOOR_CLOSE)
-                    $door_2 = "正常关闭";
-                elseif($row["door_2"] == MFUN_HCU_FHYS_DOOR_ALARM)
-                    $door_2 = "暴力打开";
-
-                //更新锁运行状态
-                if($row["lock_1"] == MFUN_HCU_FHYS_LOCK_OPEN)
-                    $lock_1 = "正常打开";
-                elseif($row["lock_1"] == MFUN_HCU_FHYS_LOCK_CLOSE)
-                    $lock_1 = "正常关闭";
-                elseif($row["lock_1"] == MFUN_HCU_FHYS_LOCK_ALARM)
-                    $lock_1 = "暴力打开";
-
-                if($row["lock_2"] == MFUN_HCU_FHYS_LOCK_OPEN)
-                    $lock_2 = "正常打开";
-                elseif($row["lock_2"] == MFUN_HCU_FHYS_LOCK_CLOSE)
-                    $lock_2 = "正常关闭";
-                elseif($row["lock_2"] == MFUN_HCU_FHYS_LOCK_ALARM)
-                    $lock_2 = "暴力打开";
-
-                //更新GPRS信号强度
-                $sig_level = $row["siglevel"];
-
-                //更新电池剩余电量
-                $batt_level = $row["battlevel"]."%";
-
-                //更新温度, 16进制的字符，高2位为整数部分，低2位为小数部分
-                $temp = $row["temperature"];
-                $temp_h = hexdec(substr($temp, 0, 2)) & 0xFF;
-                $temp_l = hexdec(substr($temp, 2, 2)) & 0xFF;
-                $temperature = (string)$temp_h . "." . (string)$temp_l;
-
-                //更新湿度,16进制的字符，高2位为整数部分，低2位为小数部分
-                $humi = $row["humidity"];
-                $humi_h = hexdec(substr($humi, 0, 2)) & 0xFF;
-                $humi_l = hexdec(substr($humi, 2, 2)) & 0xFF;
-                $humidity = (string)$humi_h . "." . (string)$humi_l . "%";
-
-                //更新震动告警状态
-                if($row["vibralarm"] == MFUN_HCU_FHYS_ALARM_YES)
-                    $vibr_alarm = "有";
-                elseif($row["vibralarm"] == MFUN_HCU_FHYS_ALARM_NO)
-                    $vibr_alarm = "无";
-
-                //更新水浸告警状态
-                if($row["wateralarm"] == MFUN_HCU_FHYS_ALARM_YES)
-                    $water_alarm = "有";
-                elseif($row["wateralarm"] == MFUN_HCU_FHYS_ALARM_NO)
-                    $water_alarm = "无";
-
-                //更新烟雾告警状态
-                if($row["smokalarm"] == MFUN_HCU_FHYS_ALARM_YES)
-                    $smok_alarm = "有";
-                elseif($row["smokalarm"] == MFUN_HCU_FHYS_ALARM_NO)
-                    $smok_alarm = "无";
-            }
-            array_push($one_row, $alarm_text);
-            array_push($one_row, $door_1);
-            array_push($one_row, $door_2);
-            array_push($one_row, $lock_1);
-            array_push($one_row, $lock_2);
-            array_push($one_row, $sig_level);
-            array_push($one_row, $batt_level);
-            array_push($one_row, $temperature);
-            array_push($one_row, $humidity);
-            array_push($one_row, $vibr_alarm);
-            array_push($one_row, $water_alarm);
-            array_push($one_row, $smok_alarm);
-
-            if($alarm_level != MFUN_HCU_FHYS_ALARM_LEVEL_0 )
                 array_push($resp['data'], $one_row);
+            }
         }
 
         $mysqli->close();
         return $resp;
+    }
+
+    public function dbi_fhys_alarm_handle_process($statcode,$mobile,$action)
+    {
+        //建立连接
+        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli) {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $mysqli->query("SET NAMES utf8");
+
+        $timestamp = time();
+        $currenttime = date("Y-m-d H:i:s",$timestamp);
+        $alarmflag = MFUN_HCU_FHYS_ALARM_PROC_FLAG_Y;
+        $alarmproc = $currenttime . ":发送信息（".$action."）到手机".$mobile;
+        $query_str = "UPDATE `t_l3f5fm_fhys_alarmdata` SET `alarmflag` = '$alarmflag', `alarmproc` = '$alarmproc' WHERE (`statcode` = '$statcode')";
+        $result = $mysqli->query($query_str);
+
+        $mysqli->close();
+        return $result;
+    }
+
+    public function dbi_fhys_alarm_close_process($uid,$statcode)
+    {
+        //建立连接
+        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli) {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $mysqli->query("SET NAMES utf8");
+
+        $timestamp = time();
+        $currenttime = date("Y-m-d H:i:s",$timestamp);
+        $alarmflag = MFUN_HCU_FHYS_ALARM_PROC_FLAG_C;
+        $alarmproc = $currenttime . ":操作员（".$uid."）关闭告警";
+        $query_str = "UPDATE `t_l3f5fm_fhys_alarmdata` SET `alarmflag` = '$alarmflag', `alarmproc` = '$alarmproc', `tsclose` = '$currenttime', WHERE (`statcode` = '$statcode')";
+        $result = $mysqli->query($query_str);
+
+        $mysqli->close();
+        return $result;
     }
 
 

@@ -61,7 +61,7 @@ if (TC_L4FHYS_WECHAT == true) {
  *                             L4FHYS-UI TEST CASES                                   *
  *************************************************************************************/
 if (TC_L4FHYS_UI == true) {
-    $sessionid = "mue1uPdDq1";
+    $sessionid = "tTE75R0B1X";
 
     echo " [TC L4FHYS: GetWarningHandleListTable START]\n";
     $_GET["action"] = "GetWarningHandleListTable";
