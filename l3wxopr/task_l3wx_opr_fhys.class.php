@@ -72,9 +72,9 @@ class classTaskL3wxOprFhys
             $l3wxOprFhysDbObj = new classDbiL3wxOprFhys(); //初始化一个UI DB对象
             $userinfo = $l3wxOprFhysDbObj->dbi_fhyswechat_get_userinfo($openid);
             if(!empty($userinfo))
-                $retval=array('status'=>'true','auth'=>'true','ret'=>$userinfo);
+                $retval=array('status'=>'true','auth'=>'true','ret'=>$userinfo); //如果已经绑定则返回绑定用户信息
             else
-                $retval=array('status'=>'false','auth'=>'true','ret'=>"");
+                $retval=array('status'=>'false','auth'=>'true','ret'=>$openid); //如果没有绑定则返回微信用户的openid，用于下一步的绑定操作
         }
         else
             $retval=array('status'=>'false','auth'=>'flase','ret'=>"");
