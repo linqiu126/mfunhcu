@@ -84,7 +84,7 @@ class classTaskL3wxOprFhys
 
     private function func_fhys_wechat_userbind($type, $user, $body)
     {
-        if (isset($body["openid"])) $openid = $body["openid"]; else  $openid = "";
+        if (isset($body["code"])) $openid = $body["code"]; else  $openid = "";
         if (isset($body["username"])) $username = $body["username"]; else  $username = "";
         if (isset($body["password"])) $password = $body["password"]; else  $password = "";
 

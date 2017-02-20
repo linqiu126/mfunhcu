@@ -166,7 +166,7 @@ if (isset($_SERVER['SERVER_NAME']))
             define("MFUN_MQ_RABBIT_QUEUE", "q_linvo");
             define("MFUN_MQ_RABBIT_ROUTE_KEY", "key_1");
             break;
-        case "120.26.105.35": //FOHA云
+        case "www.foome.com.cn": //FOHA云 120.26.105.35
             define("MFUN_CLOUD_HCU", "XHZN_HCU"); //HCU后台云应用
             define("MFUN_CLOUD_WX", "XHZN_WX"); //微信后台云应用
             //主数据库定义
