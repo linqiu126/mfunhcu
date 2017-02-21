@@ -393,7 +393,7 @@ class classDbiL3apF5fm
         $auth_list = $this->dbi_user_statproj_inqury($uid);
 
         array_push($resp["column"], "站点编号");
-        array_push($resp["column"], "告警标志");
+        array_push($resp["column"], "处理状态");
         array_push($resp["column"], "站点名称");
         array_push($resp["column"], "区县");
         array_push($resp["column"], "地址");
