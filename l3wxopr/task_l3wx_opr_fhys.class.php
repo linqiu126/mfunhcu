@@ -110,9 +110,9 @@ class classTaskL3wxOprFhys
         $l3wxOprFhysDbObj = new classDbiL3wxOprFhys(); //初始化一个UI DB对象
         $locklist = $l3wxOprFhysDbObj->dbi_fhyswechat_get_locklist($user);
         if(!empty($locklist))
-            $retval=array('status'=>'true','auth'=>'true','msg'=>"success",'ret'=>$locklist);
+            $retval=array('status'=>'true','auth'=>'true','ret'=>$locklist,'msg'=>"授权站点列表获取成功",);
         else
-            $retval=array('status'=>'false','auth'=>'false','msg'=>"failure",'ret'=>$locklist);
+            $retval=array('status'=>'true','auth'=>'false','ret'=>$locklist,'msg'=>"没有授权站点，请登录后台给该微信钥匙授权相应站点");
 
         return $retval;
     }

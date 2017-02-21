@@ -345,6 +345,10 @@ Make By：ZJL
 //= QL, 2017 Feb.14, CURRENT_SW_DELIVERY R03.D14
 > 增加对于alarm消息的解析，根据PM25阀值触发录像开启、关闭，拍摄照片，并回传参数
 
+//= LZH, 2017 Feb.21, CURRENT_SW_DELIVERY R03.D15
+> FHYS功能完善，增加微信开锁，蓝牙开锁和RFID开锁功能，增加告警处理功能
+> AQYC根据客户反馈UI功能完善
+
 //待完善的功能
 1. dbi_devinfo_update（）需要修改，添加设备时预计结束时间和实际结束时间应该在项目信息里
 2. 添加设备时没有选择该设备装配了那些传感器，sensorctrl表没有更新

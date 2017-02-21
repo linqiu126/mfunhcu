@@ -89,7 +89,7 @@ elseif (MFUN_WX_APPID == "wxd054d0d6bae92d04") //如果是FOHA服务号
         '{"button":[
                 {"type":"view","name":"光交箱云控平台","url":"https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxd054d0d6bae92d04&redirect_uri=http://www.foome.com.cn/mfunhcu/l4fhyswechat/index.html?response_type=code&scope=snsapi_base&state=1#wechat_redirect"},
 
-                {"name":"我",
+                {"name":"关于",
                     "sub_button":[{"type":"click","name":"帮助","key":"CLICK_FHYS_HELP"},
                                   {"type":"view","name":"上海阜华","url":"http://www.foha.com.cn"}]
                 }
