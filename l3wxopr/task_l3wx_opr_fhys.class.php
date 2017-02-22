@@ -112,7 +112,7 @@ class classTaskL3wxOprFhys
         if(!empty($locklist))
             $retval=array('status'=>'true','auth'=>'true','ret'=>$locklist,'msg'=>"授权站点列表获取成功",);
         else
-            $retval=array('status'=>'true','auth'=>'false','ret'=>$locklist,'msg'=>"没有授权站点，请登录后台给该微信钥匙授权相应站点");
+            $retval=array('status'=>'true','auth'=>'true','ret'=>$locklist,'msg'=>"没有授权站点，请登录后台给该微信钥匙授权相应站点");
 
         return $retval;
     }
