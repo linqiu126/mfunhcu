@@ -423,7 +423,6 @@ class classDbiL3apF5fm
         $objFhysAlarm = new classConstFhysEngpar();
         for($i=0; $i<count($auth_list["stat_code"]); $i++)
         {
-            $one_row = array();
             $statcode = $auth_list["stat_code"][$i];
             $query_str = "SELECT * FROM `t_l3f3dm_siteinfo` WHERE `statcode` = '$statcode'";
             $result = $mysqli->query($query_str);
@@ -439,9 +438,9 @@ class classDbiL3apF5fm
             $alarmflag = MFUN_HCU_FHYS_ALARM_PROC_FLAG_C;
             $query_str = "SELECT * FROM `t_l3f5fm_fhys_alarmdata` WHERE (`statcode` = '$statcode' AND `alarmflag` != '$alarmflag')"; //授权站点中尚未关闭的告警
             $result = $mysqli->query($query_str);
-            if (($result->num_rows) > 0)
+            while($row = $result->fetch_array())
             {
-                $row = $result->fetch_array();
+                $one_row = array();
                 $alarmflag = $row["alarmflag"];
                 $alarmseverity = $row["alarmseverity"];
                 $alarmcode = hexdec($row["alarmcode"]) & 0xFF ;
@@ -488,7 +487,7 @@ class classDbiL3apF5fm
         $result = $mysqli->query($query_str);
 
         $mysqli->close();
-        return $result;
+        return $alarmproc;
     }
 
     public function dbi_fhys_alarm_close_process($uid,$statcode)
@@ -502,9 +501,9 @@ class classDbiL3apF5fm
 
         $timestamp = time();
         $currenttime = date("Y-m-d H:i:s",$timestamp);
-        $alarmflag = MFUN_HCU_FHYS_ALARM_PROC_FLAG_C;
+        $closeflag = MFUN_HCU_FHYS_ALARM_PROC_FLAG_C;
         $alarmproc = $currenttime . ":操作员（".$uid."）关闭告警";
-        $query_str = "UPDATE `t_l3f5fm_fhys_alarmdata` SET `alarmflag` = '$alarmflag', `alarmproc` = '$alarmproc', `tsclose` = '$currenttime', WHERE (`statcode` = '$statcode')";
+        $query_str = "UPDATE `t_l3f5fm_fhys_alarmdata` SET `alarmflag` = '$closeflag', `alarmproc` = '$alarmproc', `tsclose` = '$currenttime' WHERE (`statcode` = '$statcode' AND `alarmflag` != '$closeflag')";
         $result = $mysqli->query($query_str);
 
         $mysqli->close();

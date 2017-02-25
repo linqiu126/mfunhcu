@@ -8,6 +8,12 @@
 include_once "../l1comvm/sysconfig.php";
 include_once "../l1comvm/pg_general_engpar.php";
 
+//FHYS项目用于短信通知的系统常量定义
+define("MFUN_HCU_FHYS_LEXIN_URL","http://www.lx198.com/sdk/send?");  //乐信短信平台请求地址
+define("MFUN_HCU_FHYS_LEXIN_ACCNAME","accName=18616271103");  //用户名(乐信登录账号)
+define("MFUN_HCU_FHYS_LEXIN_ACCPWD","accPwd=E10ADC3949BA59ABBE56E057F20F883E");  //密码123456(乐信登录密码32位MD5加密后转大写)
+define("MFUN_HCU_FHYS_LEXIN_SIGNATURE","【阜华光交箱云平台】"); //短信签名
+
 //FHYS项目关键字
 define("MFUN_L3APL_F2CM_KEY_PREFIX", "KEY");  //定义KEY ID的特征字，钥匙KEYID必须以KEY开头
 define("MFUN_L3APL_F2CM_KEY_ID_LEN", 6);     //UI界面key id字符串长度=该值+3（KEY)
@@ -180,9 +186,10 @@ define ("MFUN_HCU_FHYS_ALARM_LOCK4_OPEN", 0x08); //锁-4暴力打开
 define ("MFUN_HCU_FHYS_ALARM_SMOK", 0x09); //烟雾报警
 define ("MFUN_HCU_FHYS_ALARM_WATER", 0x0A); //水浸报警
 define ("MFUN_HCU_FHYS_ALARM_VIBR", 0x0B); //震动报警
-define ("MFUN_HCU_FHYS_ALARM_LOW_SIG", 0x0C); //GPRS信号强度弱
-define ("MFUN_HCU_FHYS_ALARM_LOW_BATT", 0x0D); //低电量告警
-define ("MFUN_HCU_FHYS_ALARM_CODE_MAX", 0x0E); //Alarmcode的最大值，如有新alarmcode添加，该值要顺延
+define ("MFUN_HCU_FHYS_ALARM_TILT", 0x0C);  //倾斜报警
+define ("MFUN_HCU_FHYS_ALARM_LOW_SIG", 0x0D); //GPRS信号强度弱
+define ("MFUN_HCU_FHYS_ALARM_LOW_BATT", 0x0E); //低电量告警
+define ("MFUN_HCU_FHYS_ALARM_CODE_MAX", 0x0F); //Alarmcode的最大值，如有新alarmcode添加，该值要顺延
 
 
 
@@ -209,6 +216,7 @@ class classConstFhysEngpar
         MFUN_HCU_FHYS_ALARM_SMOK => '烟雾报警',
         MFUN_HCU_FHYS_ALARM_WATER => '水浸报警',
         MFUN_HCU_FHYS_ALARM_VIBR => '震动报警',
+        MFUN_HCU_FHYS_ALARM_TILT => '箱体倾斜报警',
         MFUN_HCU_FHYS_ALARM_LOW_SIG => 'GPRS信号强度弱',
         MFUN_HCU_FHYS_ALARM_LOW_BATT => '低电量告警'
     );

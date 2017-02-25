@@ -231,7 +231,7 @@ class classTaskL2sdkIotWx
     }
 
     //https请求（支持GET和POST）
-    protected function https_request($url, $data = null)
+    public function https_request($url, $data = null)  //protected function
     {
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_URL, $url);

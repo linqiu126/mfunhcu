@@ -78,7 +78,7 @@ class classTaskL3wxOprFhys
                 $retval=array('status'=>'false','auth'=>'true','ret'=>array('wechatid'=>$openid));
         }
         else
-            $retval=array('status'=>'false','auth'=>'flase','ret'=>"");
+            $retval=array('status'=>'false','auth'=>'true','ret'=>array('wechatid'=>"fail"));
 
         return $retval;
     }

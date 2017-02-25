@@ -61,7 +61,16 @@ if (TC_L4FHYS_WECHAT == true) {
  *                             L4FHYS-UI TEST CASES                                   *
  *************************************************************************************/
 if (TC_L4FHYS_UI == true) {
-    $sessionid = "tTE75R0B1X";
+    $sessionid = "iNOPTZgd0Q";
+
+    echo " [TC L4FHYS: AlarmClose START]\n";
+    $_GET["action"] = "AlarmClose";
+    $_GET["type"] = "query";
+    $body = array('StatCode' => "120101004");
+    $_GET["body"] = $body;
+    $_GET["user"] = $sessionid;
+    require("../l4fhysui/request.php");
+    echo " [TC L4FHYS: AlarmClose END]\n";
 
     echo " [TC L4FHYS: GetWarningHandleListTable START]\n";
     $_GET["action"] = "GetWarningHandleListTable";
@@ -69,6 +78,15 @@ if (TC_L4FHYS_UI == true) {
     $_GET["user"] = $sessionid;
     require("../l4fhysui/request.php");
     echo " [TC L4FHYS: GetWarningHandleListTable END]\n";
+
+    echo " [TC L4FHYS: AlarmHandle START]\n";
+    $_GET["action"] = "AlarmHandle";
+    $_GET["type"] = "query";
+    $body = array('StatCode' => "120101002",'Mobile'=>"13917334681",'Action'=>"快来抢红包");
+    $_GET["body"] = $body;
+    $_GET["user"] = $sessionid;
+    require("../l4fhysui/request.php");
+    echo " [TC L4FHYS: AlarmHandle END]\n";
 
     echo " [TC L4FHYS: DomainAuthlist START]\n";
     $_GET["action"] = "DomainAuthlist";

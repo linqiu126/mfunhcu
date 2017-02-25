@@ -637,24 +637,61 @@ class classDbiL2snrDoorlock
         else
             $tilt = MFUN_HCU_FHYS_STATUS_UNKNOWN;
 
+        //告警处理, 根据客户要求为简化告警处理,告警记录以站点为单位,每次只记录最高等级的告警,同一等级的告警只记录一项,人工处理关闭的告警记录将保存.
+        if ($lock1==MFUN_HCU_FHYS_LOCK_OPEN AND $door1 == MFUN_HCU_FHYS_DOOR_CLOSE){
+            $alarm_code = MFUN_HCU_FHYS_ALARM_LOCK1_OPEN;
+            $alarm_severity = MFUN_HCU_FHYS_ALARM_LEVEL_H;
+        }
+        elseif ($lock1==MFUN_HCU_FHYS_LOCK_CLOSE AND $door1 == MFUN_HCU_FHYS_DOOR_OPEN){
+            $alarm_code = MFUN_HCU_FHYS_ALARM_DOOR1_OPEN;
+            $alarm_severity = MFUN_HCU_FHYS_ALARM_LEVEL_H;
+        }
+        elseif ($lock2==MFUN_HCU_FHYS_LOCK_OPEN AND $door2 == MFUN_HCU_FHYS_DOOR_CLOSE){
+            $alarm_code = MFUN_HCU_FHYS_ALARM_LOCK2_OPEN;
+            $alarm_severity = MFUN_HCU_FHYS_ALARM_LEVEL_H;
+        }
+        elseif ($lock2==MFUN_HCU_FHYS_LOCK_CLOSE AND $door2 == MFUN_HCU_FHYS_DOOR_OPEN){
+            $alarm_code = MFUN_HCU_FHYS_ALARM_DOOR2_OPEN;
+            $alarm_severity = MFUN_HCU_FHYS_ALARM_LEVEL_H;
+        }
+        elseif ($water == MFUN_HCU_FHYS_ALARM_YES){
+            $alarm_code = MFUN_HCU_FHYS_ALARM_WATER;
+            $alarm_severity = MFUN_HCU_FHYS_ALARM_LEVEL_H;
+        }
+        elseif ($smok == MFUN_HCU_FHYS_ALARM_YES){
+            $alarm_code = MFUN_HCU_FHYS_ALARM_SMOK;
+            $alarm_severity = MFUN_HCU_FHYS_ALARM_LEVEL_H;
+        }
+        elseif ($tilt == MFUN_HCU_FHYS_ALARM_YES){
+            $alarm_code = MFUN_HCU_FHYS_ALARM_SMOK;
+            $alarm_severity = MFUN_HCU_FHYS_ALARM_LEVEL_M;
+        }
+        elseif ($vibr == MFUN_HCU_FHYS_ALARM_YES){
+            $alarm_code = MFUN_HCU_FHYS_ALARM_VIBR;
+            $alarm_severity = MFUN_HCU_FHYS_ALARM_LEVEL_M;
+        }
+        elseif ($batt < MFUN_L3APL_F3DM_TH_ALARM_BATT){
+            $alarm_code = MFUN_HCU_FHYS_ALARM_LOW_BATT;
+            $alarm_severity = MFUN_HCU_FHYS_ALARM_LEVEL_M;
+        }
+        elseif ($gprs < MFUN_L3APL_F3DM_TH_ALARM_GPRS){
+            $alarm_code = MFUN_HCU_FHYS_ALARM_LOW_SIG;
+            $alarm_severity = MFUN_HCU_FHYS_ALARM_LEVEL_L;
+        }
+        else{
+            $alarm_code = MFUN_HCU_FHYS_ALARM_NONE;
+            $alarm_severity = MFUN_HCU_FHYS_ALARM_LEVEL_0;
+        }
 
-        if(($lock1==MFUN_HCU_FHYS_LOCK_OPEN AND $door1 == MFUN_HCU_FHYS_DOOR_CLOSE) OR ($lock1==MFUN_HCU_FHYS_LOCK_CLOSE AND $door1 == MFUN_HCU_FHYS_DOOR_OPEN) OR
-            ($lock2==MFUN_HCU_FHYS_LOCK_OPEN AND $door2 == MFUN_HCU_FHYS_DOOR_CLOSE) OR ($lock2==MFUN_HCU_FHYS_LOCK_CLOSE AND $door2 == MFUN_HCU_FHYS_DOOR_OPEN) OR
-            $water == MFUN_HCU_FHYS_ALARM_YES OR $smok == MFUN_HCU_FHYS_ALARM_YES)
-            $alarm_level = MFUN_HCU_FHYS_ALARM_LEVEL_H;
-        elseif(($lock1==MFUN_HCU_FHYS_LOCK_OPEN AND $door1 == MFUN_HCU_FHYS_DOOR_OPEN) OR ($lock2==MFUN_HCU_FHYS_LOCK_OPEN AND $door2 == MFUN_HCU_FHYS_DOOR_OPEN) OR
-            $vibr == MFUN_HCU_FHYS_ALARM_YES)
-            $alarm_level = MFUN_HCU_FHYS_ALARM_LEVEL_M;
-        else
-            $alarm_level = MFUN_HCU_FHYS_ALARM_LEVEL_0;
 
         $timestamp = time();
         $date = intval(date("ymd", $timestamp));
         $temp = getdate($timestamp);
         $hourminindex = intval(($temp["hours"] * 60 + floor($temp["minutes"]/MFUN_HCU_FHYS_TIME_GRID_SIZE)));
         //更新分钟报告表
-        $result = $mysqli->query("SELECT * FROM `t_l2snr_fhys_minreport` WHERE (( `devcode` = '$devCode' AND `statcode` = '$statCode')
-                        AND (`reportdate` = '$date' AND `hourminindex` = '$hourminindex'))");
+        $query_str ="SELECT * FROM `t_l2snr_fhys_minreport` WHERE (( `devcode` = '$devCode' AND `statcode` = '$statCode')
+                        AND (`reportdate` = '$date' AND `hourminindex` = '$hourminindex'))";
+        $result = $mysqli->query($query_str);
         if (($result != false) && ($result->num_rows)>0)   //重复，则覆盖
         {
             $query_str = "UPDATE `t_l2snr_fhys_minreport` SET `door_1` = '$door1',`door_2` = '$door2',`lock_1` = '$lock1',`lock_2` = '$lock2',`blestat` = '$ble',`rfidstat` = '$rfid',`siglevel` = '$gprs',
@@ -671,16 +708,39 @@ class classDbiL2snrDoorlock
 
         //更新当前聚合表
         $currenttime = date("Y-m-d H:i:s",$timestamp);
-        $result = $mysqli->query("SELECT * FROM `t_l3f3dm_fhys_currentreport` WHERE (`devcode` = '$devCode') ");
+        $result = $mysqli->query("SELECT * FROM `t_l3f3dm_fhys_currentreport` WHERE (`devcode` = '$devCode' AND `statcode` = '$statCode') ");
         if (($result->num_rows)>0) {
-            $query_str = "UPDATE `t_l3f3dm_fhys_currentreport` SET `alarmlevel` = '$alarm_level', `door_1` = '$door1',`door_2` = '$door2',`lock_1` = '$lock1',`lock_2` = '$lock2',`blestat` = '$ble',`rfidstat` = '$rfid',`siglevel` = '$gprs',
+            $query_str = "UPDATE `t_l3f3dm_fhys_currentreport` SET  `door_1` = '$door1',`door_2` = '$door2',`lock_1` = '$lock1',`lock_2` = '$lock2',`blestat` = '$ble',`rfidstat` = '$rfid',`siglevel` = '$gprs',
                             `battlevel` = '$batt',`temperature` = '$temperature',`humidity` = '$humi',`smokalarm` = '$smok',`wateralarm` = '$water',`vibralarm` = '$vibr',`createtime` = '$currenttime'
                             WHERE (`devcode` = '$devCode')";
             $result = $mysqli->query($query_str);
         }
         else {
-            $query_str = "INSERT INTO `t_l3f3dm_fhys_currentreport` (devcode,statcode,createtime,alarmlevel,door_1,door_2,lock_1,lock_2,blestat,rfidstat,siglevel,battlevel,temperature,humidity,smokalarm, wateralarm,vibralarm)
-                            VALUES ('$devCode','$statCode','$currenttime','$alarm_level','$door1','$door2','$lock1','$lock2','$ble','$rfid','$gprs','$batt','$temperature','$humi','$smok','$water','$vibr')";
+            $query_str = "INSERT INTO `t_l3f3dm_fhys_currentreport` (devcode,statcode,createtime,door_1,door_2,lock_1,lock_2,blestat,rfidstat,siglevel,battlevel,temperature,humidity,smokalarm, wateralarm,vibralarm)
+                            VALUES ('$devCode','$statCode','$currenttime','$door1','$door2','$lock1','$lock2','$ble','$rfid','$gprs','$batt','$temperature','$humi','$smok','$water','$vibr')";
+            $result = $mysqli->query($query_str);
+        }
+
+        //更新告警记录表
+        $update_flag = false;
+        $query_str = "SELECT * FROM `t_l3f5fm_fhys_alarmdata` WHERE (`devcode` = '$devCode' AND `statcode` = '$statCode') ";
+        $result = $mysqli->query($query_str);
+        while($row = $result->fetch_array()){
+            $alarm_flag = $row['alarmflag'];
+            $old_severity = hexdec($row['alarmseverity']) & 0xFF;
+            $new_severity = hexdec($alarm_severity) & 0xFF;
+            if ($alarm_flag == "MFUN_HCU_FHYS_ALARM_PROC_FLAG_N" AND $old_severity <= $new_severity) { //如果该站点有未处理告警且新告警级别更为严重则更新这条记录
+                $query_str = "UPDATE `t_l3f5fm_fhys_alarmdata` SET  `alarmseverity` = '$alarm_severity',`alarmcode` = '$alarm_code',`tsgen` = '$currenttime' WHERE (`devcode` = '$devCode')";
+                $result = $mysqli->query($query_str);
+                $update_flag = true;
+            }
+        }
+        if ($update_flag == false) //没有可更新的告警记录则新插入一条
+        {
+            $alarm_flag = MFUN_HCU_FHYS_ALARM_PROC_FLAG_N;
+            $alarm_proc = "新增告警，等待处理中";
+            $query_str = "INSERT INTO `t_l3f5fm_fhys_alarmdata` (devcode,statcode,alarmflag,alarmseverity,alarmcode,tsgen,alarmproc)
+                            VALUES ('$devCode','$statCode','$alarm_flag','$alarm_severity','$alarm_code','$currenttime','$alarm_proc')";
             $result = $mysqli->query($query_str);
         }
 
