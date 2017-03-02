@@ -353,6 +353,29 @@ class classDbiL2sdkWechat
         return $result;
     }
 
+    public function dbi_site_location_inqury($statcode)
+    {
+        //建立连接
+        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli) {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $mysqli->query("SET NAMES utf8");
+        $query_str = "SELECT * FROM `t_l3f3dm_siteinfo` WHERE `statcode` = '$statcode' ";
+        $result = $mysqli->query($query_str);
+        $location = array();
+        if (($result->num_rows) > 0) {
+            $row = $result->fetch_array();
+            $statname = $row['statname'];
+            $longitude = $row['longitude'];
+            $latitude = $row['latitude'];
+            $location = array('statname'=>$statname, 'longitude'=>$longitude, 'latitude'=>$latitude);
+        }
+
+        $mysqli->close();
+        return $location;
+    }
+
     //Shanchun Start 通过FromUserName查询DeviceID
     public function dbi_deviceid_inqury($user)
     {

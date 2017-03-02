@@ -19,6 +19,32 @@ define("MFUN_L3APL_F1SYM_SESSION_ID_LEN", 10); //UI界面session id字符串长�
 define("MFUN_L3APL_F1SYM_USER_ID_LEN", 6); //UI界面user id字符串长度=该值+3 （UID）
 define("MFUN_L3APL_F1SYM_UID_PREFIX", "UID");  //定义用户ID的特征字，用户ID必须以UID开头
 
+//Socket通讯有关常量定义
+define("MFUN_SWOOLE_SOCKET_STD_XML_HTTP", 9501); //原有XML协议swoole socket server HTTP端口
+define("MFUN_SWOOLE_SOCKET_STD_XML_TCP", 9502);  //原有XML协议swoole socket server TCP端口
+define("MFUN_SWOOLE_SOCKET_STD_XML_UDP", 9503); //原有XML协议swoole socket server UDP端口
+define("MFUN_SWOOLE_SOCKET_STD_ZHB_HTTP", 9501); //原有ZHB协议swoole socket server HTTP端口
+define("MFUN_SWOOLE_SOCKET_STD_ZHB_TCP", 9502);  //原有ZHB协议swoole socket server TCP端口
+define("MFUN_SWOOLE_SOCKET_STD_ZHB_UDP", 9503); //原有ZHB协议swoole socket server UDP端口
+define("MFUN_SWOOLE_SOCKET_HUITP_XML_HTTP", 9510); //新HUITP XML协议swoole socket server HTTP端口
+define("MFUN_SWOOLE_SOCKET_HUITP_XML_TCP", 9511);  //新HUITP XML协议swoole socket server TCP端口
+define("MFUN_SWOOLE_SOCKET_HUITP_XML_UDP", 9512); //新HUITP XML协议swoole socket server UDP端口
+define("MFUN_SWOOLE_SOCKET_ZHB_HJT212_HTTP", 9513); //新ZHB HJT212协议swoole socket server HTTP端口
+define("MFUN_SWOOLE_SOCKET_ZHB_HJT212_TCP", 9514);  //新ZHB HJT212协议swoole socket server TCP端口
+define("MFUN_SWOOLE_SOCKET_ZHB_HJT212_UDP", 9515); //新ZHB HJT212协议swoole socket server UDP端口
+define("MFUN_SWOOLE_SOCKET_HUITP_JSON_HTTP", 9516); //新HUITP JSON协议swoole socket server HTTP端口
+define("MFUN_SWOOLE_SOCKET_HUITP_JSON_TCP", 9517);  //新HUITP JSON协议swoole socket server TCP端口
+define("MFUN_SWOOLE_SOCKET_HUITP_JSON_UDP", 9518); //新HUITP JSON协议swoole socket server UDP端口
+define("MFUN_SWOOLE_SOCKET_NBIOT_CJ188_HTTP", 9519); //NBIOT_CJ188协议swoole socket server HTTP端口
+define("MFUN_SWOOLE_SOCKET_NBIOT_CJ188_TCP", 9520);  //NBIOT_CJ188协议swoole socket server TCP端口
+define("MFUN_SWOOLE_SOCKET_NBIOT_CJ188_UDP", 9521); //NBIOT_CJ188协议swoole socket server UDP端口
+define("MFUN_SWOOLE_SOCKET_NBIOT_QG376_HTTP", 9522); //NBIOT_QG376协议swoole socket server HTTP端口
+define("MFUN_SWOOLE_SOCKET_NBIOT_QG376_TCP", 9523);  //NBIOT_QG376协议swoole socket server TCP端口
+define("MFUN_SWOOLE_SOCKET_NBIOT_QG376_UDP", 9524); //NBIOT_QG376协议swoole socket server UDP端口
+
+define("MFUN_SWOOLE_SOCKET_DATA_STREAM_FTP", 9550); //DATA_STREAM协议swoole socket server FTP端口
+
+
 //项目类关键字
 define("MFUN_L3APL_F2CM_PG_CODE_PREFIX", "PG");   //定义项目组code的特征字，项目组code必须以“PG”开头
 define("MFUN_L3APL_F2CM_PROJ_CODE_PREFIX", "P_");  //定义项目code的特征字，项目code必须以“P_”开头
@@ -125,7 +151,7 @@ class classConstL1vmUserWebRight
                 'MPManage' => 'true',
                 'DevManage' => 'true',
                 'KeyManage' => 'true',
-                'KeyAuth' => 'true',
+                'KeyAuth' => 'false',
                 'KeyHistory' => 'true',
                 'MPMonitor' => 'true',
                 'MPStaticMonitorTable' => 'true',

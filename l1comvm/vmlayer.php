@@ -790,6 +790,11 @@ class classTaskL1vmCoreRouter
                     $obj->mfun_l2sdk_iot_hcu_task_main_entry($this, $result["msgId"], $result["msgName"], $result["msgBody"]);
                     break;
 
+                case MFUN_TASK_ID_L2SDK_IOT_HUITP:
+                    $obj = new classTaskL2sdkIotHuitp();
+                    $obj->mfun_l2sdk_iot_huitp_task_main_entry($this, $result["msgId"], $result["msgName"], $result["msgBody"]);
+                    break;
+
                 case MFUN_TASK_ID_L2SDK_NBIOT_STD_QG376:
                     $obj = new classTaskL2sdkNbiotStdQg376();
                     $obj->mfun_l2sdk_nbiot_std_qg376_task_main_entry($this, $result["msgId"], $result["msgName"], $result["msgBody"]);

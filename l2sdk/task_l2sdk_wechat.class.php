@@ -4143,6 +4143,23 @@ class classTaskL2sdkWechat
         return $result;
     }
 
+    private function transmitLocation($object, $loc_x, $loc_y, $label)
+    {
+        $xmlTpl ="<xml>
+                    <ToUserName><![CDATA[%s]]></ToUserName>
+                    <FromUserName><![CDATA[%s]]></FromUserName>
+                    <CreateTime>%s</CreateTime>
+                    <MsgType><![CDATA[location]]></MsgType>
+                    <Location_X>%s</Location_X>
+                    <Location_Y>%s</Location_Y>
+                    <Scale>13</Scale>
+                    <Label><![CDATA[%s]]></Label>
+                </xml>";
+
+        $result = sprintf($xmlTpl, $object->FromUserName, $object->ToUserName, time(), $loc_x, $loc_y, $label);
+        return $result;
+    }
+
     //回复图片消息
     private function transmitImage($object, $imageArray)
     {
@@ -4326,6 +4343,20 @@ class classTaskL2sdkWechat
     {
         $result= NULL;
         $keyword = trim($object->Content);
+
+        //根据输入站点号查出地理坐标然后推送位置信息
+        $dbiL2sdkWechatObj = new classDbiL2sdkWechat();
+        $resp = $dbiL2sdkWechatObj->dbi_site_location_inqury($keyword);
+        if (!empty($resp)){
+            $loc_x = $resp['longitude'];
+            $loc_y = $resp['latitude'];
+            $label = $resp['statname'];
+            $result = $this->transmitLocation($object, $loc_x, $loc_y, $label);
+        }
+        else
+            $result = $this->transmitText($object, "请输入正确站点代码");
+
+        /*
         //多客服人工回复模式
         if (strstr($keyword, "您好") || strstr($keyword, "你好") || strstr($keyword, "在吗")){
             $result = $this->transmitService($object);
@@ -4358,7 +4389,8 @@ class classTaskL2sdkWechat
             }else{
                 $result = $this->transmitText($object, $content);
             }
-        }
+        }*/
+
         return $result;
     }
 

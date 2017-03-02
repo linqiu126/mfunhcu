@@ -1021,7 +1021,7 @@ class classTaskL2sdkIotHcu
                         $project = "NULL";
                         $loggerObj->logger($project, $fromUser, $log_time, $log_content);
                         $log_from = "CLOUD_NONE";
-                        $result = "[XML_FORMAT]unknown message type: " . $RX_TYPE;
+                        $result = "[XML_FORMAT]unknown message type: " . $msgType;
                         //差错返回
                         $log_content = "T:" . json_encode($result);
                         $loggerObj->logger($project, $log_from, $log_time, $log_content);
