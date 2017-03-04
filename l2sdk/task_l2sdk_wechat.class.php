@@ -4152,11 +4152,12 @@ class classTaskL2sdkWechat
                     <MsgType><![CDATA[location]]></MsgType>
                     <Location_X>%s</Location_X>
                     <Location_Y>%s</Location_Y>
-                    <Scale>13</Scale>
+                    <Scale>16</Scale>
                     <Label><![CDATA[%s]]></Label>
-                </xml>";
+                  </xml>";
 
         $result = sprintf($xmlTpl, $object->FromUserName, $object->ToUserName, time(), $loc_x, $loc_y, $label);
+
         return $result;
     }
 
@@ -4348,8 +4349,8 @@ class classTaskL2sdkWechat
         $dbiL2sdkWechatObj = new classDbiL2sdkWechat();
         $resp = $dbiL2sdkWechatObj->dbi_site_location_inqury($keyword);
         if (!empty($resp)){
-            $loc_x = $resp['longitude'];
-            $loc_y = $resp['latitude'];
+            $loc_x = (string)(intval($resp['latitude'])/1000000);
+            $loc_y = (string)(intval($resp['longitude'])/1000000);
             $label = $resp['statname'];
             $result = $this->transmitLocation($object, $loc_x, $loc_y, $label);
         }
@@ -4676,7 +4677,8 @@ class classTaskL2sdkWechat
 		{
 			$timestamp = time();
 			$log_time = date("Y-m-d H:i:s", $timestamp);
-			$log_content = "T:". json_encode($result);
+            $jsonencode = json_encode($result, JSON_UNESCAPED_UNICODE);
+            $log_content = "T:" . $jsonencode;
 			$this->logger($project,$log_from, $log_time, $log_content);
 			echo trim($result);
 		}

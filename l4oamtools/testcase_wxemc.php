@@ -13,6 +13,15 @@ include_once "../l1comvm/vmlayer.php";
 if (TC_EMCWX == true){
 //EMCWX测试开始
 
+    $GLOBALS["HTTP_RAW_POST_DATA"] = "<xml><ToUserName><![CDATA[gh_4667dc241921]]></ToUserName>
+                                        <FromUserName><![CDATA[oMjZ7v_s-Y5R1fKTvBTzcMl9C65o]]></FromUserName>
+                                        <CreateTime>1488459310</CreateTime>
+                                        <MsgType><![CDATA[text]]></MsgType>
+                                        <Content><![CDATA[120101002]]></Content>
+                                        <MsgId>6392884058293815710</MsgId>
+                                    </xml>";
+    require("../l1mainentry/cloud_callback_wechat.php");
+
     //公众号关注事件
     echo " [TC EMCWX: WEIXIN “subscribe” EVENT START]\n";
     $GLOBALS["HTTP_RAW_POST_DATA"] = "<xml><ToUserName><![CDATA[gh_70c714952b02]]></ToUserName>

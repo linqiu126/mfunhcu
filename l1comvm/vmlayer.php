@@ -20,9 +20,9 @@ include_once "../l1comvm/sysmodule.php";
 include_once "../l1comvm/dbi_common.class.php";
 include_once "../l1comvm/func_comapi.class.php";
 //HUITP任务模块
-include_once "../l2codec/huitp_msg_dict.php";
-include_once "../l2codec/huitp_ie_dict.php";
-include_once "../l2codec/task_huitp_msg_codec.php";
+include_once "../l2codec/l2codec_huitp_msg_dict.php";
+include_once "../l2codec/l2codec_huitp_ie_dict.php";
+include_once "../l2codec/task_l2codec_huitp_xml.class.php";
 //包含所有的任务模块，不然无法调用
 include_once "../l2sdk/task_l2sdk_iot_hcu.class.php";
 include_once "../l2sdk/task_l2sdk_wechat.class.php";

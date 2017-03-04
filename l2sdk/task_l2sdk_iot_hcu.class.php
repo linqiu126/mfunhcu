@@ -344,6 +344,51 @@ class classTaskL2sdkIotHcu
         return true;
     }
 
+    private function receive_hcu_picdata_xmlmsg($parObj, $data, $project, $log_from)
+    {
+        //定义本入口函数的logger处理对象及函数
+        $loggerObj = new classApiL1vmFuncCom();
+        $log_time = date("Y-m-d H:i:s", time());
+
+        //目前HCU发送的数据已经是ASCII码，不需要再进行解码
+        //$content = base64_decode($data->Content);
+        //$content = unpack('H*',$content);
+        //$strContent = strtoupper($content["1"]); //转换成16进制格式的字符串
+        $toUser = trim($data->ToUserName);
+        $deviceId = trim($data->FromUserName);
+        $createTime = trim($data->CreateTime);  //暂时不处理，后面增加时间合法性的判断
+        $content = trim($data->Content);
+        $funcFlag = trim($data->FuncFlag);
+
+        //取DB中的硬件信息，判断基本信息
+        $cDbObj = new classDbiL2sdkHcu();
+        $result = $cDbObj->dbi_hcuDevice_valid_device($deviceId); //FromUserName对应每个HCU硬件的设备编号
+        if (empty($result)){
+            $result = "HCU_IOT: invalid device ID";
+            $log_content = "T:" . json_encode($result);
+            $loggerObj->logger($project, $log_from, $log_time, $log_content);
+            echo trim($result);
+            return true;
+        }
+        else{
+            $statCode = $result;
+        }
+
+        //收到非本消息体该收到的消息
+        if ($toUser != MFUN_CLOUD_HCU ){
+            $result = "HCU_IOT: FHYS XML message invalid ToUserName";
+            $log_content = "T:" . json_encode($result);
+            $loggerObj->logger($project, $log_from, $log_time, $log_content);
+            echo trim($result);
+            return true;
+        }
+
+
+
+
+
+    }
+
     //业务消息“XML格式”的处理函数，跳转到对应的业务处理模块
     private function receive_hcu_text_xmlmsg($parObj, $data, $project, $log_from)
     {
@@ -909,6 +954,7 @@ class classTaskL2sdkIotHcu
         $format = substr(trim($msg), 0, 2);
         switch ($format) {
             case MFUN_L2_FRAME_FORMAT_PREFIX_XML:
+                $log_content = "R:" . trim($msg);
                 //FHYS测试时发现有多条xml消息粘连在一起的情况，此处加保护保证只取第一条完整xml消息
                 $msg = $this->getStrBetween($msg,"<xml>","</xml>");
                 $msg = "<" . $msg . "</xml>";
@@ -932,7 +978,6 @@ class classTaskL2sdkIotHcu
                 $funcFlag = trim($postObj->FuncFlag);
 
                 $log_time = date("Y-m-d H:i:s",$createTime);
-                $log_content = "R:" . trim($msg);
 
                 //消息或者说帧类型分离，l2SDK只进行协议类型解码，不对消息的content进行处理，判断协议类型后发送给专门的l2codec任务处理
                 switch ($msgType)
@@ -985,6 +1030,12 @@ class classTaskL2sdkIotHcu
                         $loggerObj->logger($project, $fromUser, $log_time, $log_content);
                         $log_from = $fromUser;
                         $this->receive_hcu_text_xmlmsg($parObj, $postObj, $project, $log_from);
+                        break;
+                    case "hcu_pic":
+                        $project = MFUN_PRJ_HCU_XML;
+                        $loggerObj->logger($project, $fromUser, $log_time, $log_content);
+                        $log_from = $fromUser;
+                        //$this->receive_hcu_picdata_xmlmsg($parObj, $postObj, $project, $log_from);
                         break;
                     case "hcu_heart_beat":
                         $project = MFUN_PRJ_HCU_XML;
