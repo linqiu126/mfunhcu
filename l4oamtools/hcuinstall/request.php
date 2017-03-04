@@ -39,106 +39,29 @@ $payload = json_decode($request_body,true);
 //echo $payload;
 $key=$payload["action"];
 //echo $key;
-switch ($key){
-    case "HCU_Wechat_Login": //Use Wechat to login the Server, response is the userID in system.
-/*
-     var body = {code : code};
-     var map={
-     action:"HCU_Wechat_Login",
-     type:"query",
-     body: body,
-     user:"null"
-     };
-    * */
-        $body=$payload["body"];
-        $code = $body['code'];
-        $openid = "12312312312312312312";
-        if(!isset($openid)&&empty($openid)){ $openid="Not Autherized";}
-        $user=array(
-            'username'=> 'Liuzehong',
-            'userid'=>'123123123'
-        );
-        $retval=array(
-            'status'=>'true',
-            'auth'=>'true',
-            'ret'=>$user
-        );
-
-        $jsonencode = _encode($retval);
-        echo $jsonencode; break;
-    case "HCU_Lock_Query": //Query How many lock is autherized to user,response is a list of StatCode and Name and Location and so on
-    /*
-        var listreq = {
-            action:"HCU_Lock_Query",
-            type:"query",
-            user:app_handle.getuser()
-        }
-    */
-        $retlist =array();
-        for($i=1;$i<20;$i++){
-            $map= array(
-                'statcode'=>'12312'.(string)$i,
-                'lockname'=>'Lock['.(string)$i.']',
-                'lockdetail'=>'xxxxx'.(string)$i.'sssss',
-                'longitude'=>(string)$i,
-                'latitude'=>(string)$i
-            );
-            array_push($retlist,$map);
-        }
-        $retval=array(
-            'status'=>'true',
-            'auth'=>'true',
-            'msg'=>'',
-            'ret'=>($retlist)
-        );
-        $jsonencode = _encode($retval);
-        echo $jsonencode; break;
-    case "HCU_Lock_Status": //Query A Lock status by statCode.
-            $body=$payload["body"];
-            $id=$payload["user"];
-            $statcode=$body["statcode"];
-            $temp = rand(0,10);
-            $locked = 'true';
-            if($temp == 5){
-                $locked = 'false';
-            }
-
-
-            $retval=array(
-                'status'=>'true',
-                'auth'=>'true',
-                'msg'=>'',
-                'ret'=>$locked
-            );
-            $jsonencode = _encode($retval);
-            echo $jsonencode; break;
-    case "HCU_Lock_open": //Open a lock
-            $body=$payload["body"];
-            $id=$payload["user"];
-            $statcode=$body["statcode"];
-            $retval=array(
-                'status'=>'true',
-                'auth'=>'true',
-                'msg'=>'123456'
-            );
-            $jsonencode = _encode($retval);
-            echo $jsonencode; break;
-    case "HCU_Lock_close": //Close a lock
+switch ($key)
+{
     case "HCU_Lock_Activate": //Open a lock
-            $body=$payload["body"];
-            $code=$body["code"];
-            $ret_stat = "false";
-            $i=_getfilecounts('./upload/'.$code.'/');
-            if($i>=2) $ret_stat = "true";
-            $retval=array(
-                'status'=>$ret_stat,
-                'auth'=>'true',
-                'msg'=>'123456'
-            );
-            $jsonencode = _encode($retval);
-            echo $jsonencode; break;
+        $body=$payload["body"];
+        $devcode=$body["code"];
+        $latitude=$body["latitude"];
+        $longitude=$body["longitude"];
+        $uiF3dmDbObj = new classDbiL3apF3dm(); //初始化一个UI DB对象
+        $result = $uiF3dmDbObj->dbi_siteinfo_update_gps($devcode, $latitude, $longitude);
+
+        $ret_stat = "false";
+        $pic_num=_getfilecounts('./upload/'.$devcode.'/');
+        if($pic_num>=2 AND $result==true) $ret_stat = "true";
+        $retval=array(
+            'status'=>$ret_stat,
+            'auth'=>'true',
+            'msg'=>'站点激活，照片上传成功'
+        );
+        $jsonencode = _encode($retval);
+        echo $jsonencode;
+        break;
 	default:
-	break;
+	    break;
 }
 
 
