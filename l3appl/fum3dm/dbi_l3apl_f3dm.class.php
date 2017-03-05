@@ -1602,7 +1602,7 @@ class classDbiL3apF3dm
                 //更新设备运行状态
                 $timestamp = strtotime($row["createtime"]);
                 $currenttime = time();
-                if ($currenttime > ($timestamp+180))  //如果最后一次测量报告距离现在已经超过3分钟
+                if ($currenttime > ($timestamp + MFUN_HCU_FHYS_SLEEP_DURATION))  //如果最后一次测量报告距离现在已经超过休眠间隔门限
                     $dev_status = "休眠中";
                 else
                     $dev_status = "运行中";

@@ -28,7 +28,7 @@ if (TC_L4FHYS_WECHAT == true) {
     $body = array('code' =>'openid','username'=>'foha','password'=>'ldvEsNFp8i4kI89hFPtYEz2iHJo');
     $_GET["body"] = $body;
     $_GET["user"] = "UID771073";
-    require("../l4fhyswechat/request.php");
+    //require("../l4fhyswechat/request.php");
     echo " [TC L4FHYS_WECHAT: HCU_Wechat_Bonding END]\n";
 
     echo " [TC L4FHYS_WECHAT: HCU_Lock_Query START]\n";

@@ -146,30 +146,135 @@ class classDbiL3wxOprFhys
             while(($result !=false) && (($row = $result->fetch_array()) > 0)) {
                 $authlevel = $row['authlevel'];
                 $authobjcode = $row['authobjcode'];
+                //如果是项目级授权
                 if ($authlevel == MFUN_L3APL_F2CM_AUTH_LEVEL_PROJ){
                     $query_str = "SELECT * FROM `t_l3f3dm_siteinfo` WHERE (`p_code` = '$authobjcode') ";
-                    $resp = $mysqli->query($query_str);
-                    while(($resp !=false) && (($resp_row = $resp->fetch_array()) > 0)) {
+                    $site_resp = $mysqli->query($query_str);
+                    while(($site_resp !=false) && (($site_row = $site_resp->fetch_array()) > 0)) {
+                        //初始化
+                        $dev_status = "状态未知";
+                        $door_1 = "状态未知";
+                        $door_2 = "状态未知";
+                        $lock_1 = "状态未知";
+                        $lock_2 = "状态未知";
+                        $statcode = $site_row['statcode'];
+                        $query_str = "SELECT * FROM `t_l3f3dm_fhys_currentreport` WHERE `statcode` = '$statcode'";
+                        $status = $mysqli->query($query_str);
+                        if (($status->num_rows) > 0) {
+                            $status_row = $status->fetch_array();
+                            //更新设备运行状态
+                            $timestamp = strtotime($status_row["createtime"]);
+                            $currenttime = time();
+                            if ($currenttime > ($timestamp + MFUN_HCU_FHYS_SLEEP_DURATION))  //如果最后一次测量报告距离现在已经超过休眠间隔门限
+                                $dev_status = "休眠中";
+                            else
+                                $dev_status = "运行中";
+
+                            //更新门运行状态
+                            if ($status_row["door_1"] == MFUN_HCU_FHYS_DOOR_OPEN)
+                                $door_1 = "正常打开";
+                            elseif ($status_row["door_1"] == MFUN_HCU_FHYS_DOOR_CLOSE)
+                                $door_1 = "正常关闭";
+                            elseif ($status_row["door_1"] == MFUN_HCU_FHYS_DOOR_ALARM)
+                                $door_1 = "暴力打开";
+
+                            if ($status_row["door_2"] == MFUN_HCU_FHYS_DOOR_OPEN)
+                                $door_2 = "正常打开";
+                            elseif ($status_row["door_2"] == MFUN_HCU_FHYS_DOOR_CLOSE)
+                                $door_2 = "正常关闭";
+                            elseif ($status_row["door_2"] == MFUN_HCU_FHYS_DOOR_ALARM)
+                                $door_2 = "暴力打开";
+
+                            //更新锁运行状态
+                            if ($status_row["lock_1"] == MFUN_HCU_FHYS_LOCK_OPEN)
+                                $lock_1 = "正常打开";
+                            elseif ($status_row["lock_1"] == MFUN_HCU_FHYS_LOCK_CLOSE)
+                                $lock_1 = "正常关闭";
+                            elseif ($status_row["lock_1"] == MFUN_HCU_FHYS_LOCK_ALARM)
+                                $lock_1 = "暴力打开";
+
+                            if ($status_row["lock_2"] == MFUN_HCU_FHYS_LOCK_OPEN)
+                                $lock_2 = "正常打开";
+                            elseif ($status_row["lock_2"] == MFUN_HCU_FHYS_LOCK_CLOSE)
+                                $lock_2 = "正常关闭";
+                            elseif ($status_row["lock_2"] == MFUN_HCU_FHYS_LOCK_ALARM)
+                                $lock_2 = "暴力打开";
+                        }
+
+                        $detailinfo = "站点地址:".$site_row['address']."; 设备状态:".$dev_status."; 门-1:".$door_1."; 门-2:".$door_2."; 锁-1:".$lock_1."; 锁-2:".$lock_2;
+
                         $temp = array(
-                                        'statcode'=>$resp_row['statcode'],
-                                        'lockname'=>$resp_row['statname'],
-                                        'lockdetail'=>$resp_row['address'],
-                                        'longitude'=>$resp_row['longitude'],
-                                        'latitude'=>$resp_row['latitude']
+                                        'statcode'=>$statcode,
+                                        'lockname'=>$site_row['statname'],
+                                        'lockdetail'=>$detailinfo,
+                                        'longitude'=>(string)($site_row['longitude']/1000000),
+                                        'latitude'=>(string)($site_row['latitude']/1000000)
                                     );
                         array_push($lock_list, $temp);
                     }
                 }
+                //如果是设备级授权
                 elseif ($authlevel == MFUN_L3APL_F2CM_AUTH_LEVEL_DEVICE){
                     $query_str = "SELECT * FROM `t_l3f3dm_siteinfo` WHERE (`statcode` = '$authobjcode') ";
                     $resp = $mysqli->query($query_str);
-                    while(($resp !=false) && (($resp_row = $resp->fetch_array()) > 0)) {
+                    while(($resp !=false) && (($site_row = $resp->fetch_array()) > 0)) {
+                        //初始化
+                        $dev_status = "状态未知";
+                        $door_1 = "状态未知";
+                        $door_2 = "状态未知";
+                        $lock_1 = "状态未知";
+                        $lock_2 = "状态未知";
+                        $statcode = $site_row['statcode'];
+                        $query_str = "SELECT * FROM `t_l3f3dm_fhys_currentreport` WHERE `statcode` = '$statcode'";
+                        $status = $mysqli->query($query_str);
+                        if (($status->num_rows) > 0) {
+                            $status_row = $status->fetch_array();
+                            //更新设备运行状态
+                            $timestamp = strtotime($status_row["createtime"]);
+                            $currenttime = time();
+                            if ($currenttime > ($timestamp + MFUN_HCU_FHYS_SLEEP_DURATION))  //如果最后一次测量报告距离现在已经超过休眠间隔门限
+                                $dev_status = "休眠中";
+                            else
+                                $dev_status = "运行中";
+
+                            //更新门运行状态
+                            if ($status_row["door_1"] == MFUN_HCU_FHYS_DOOR_OPEN)
+                                $door_1 = "正常打开";
+                            elseif ($status_row["door_1"] == MFUN_HCU_FHYS_DOOR_CLOSE)
+                                $door_1 = "正常关闭";
+                            elseif ($status_row["door_1"] == MFUN_HCU_FHYS_DOOR_ALARM)
+                                $door_1 = "暴力打开";
+
+                            if ($status_row["door_2"] == MFUN_HCU_FHYS_DOOR_OPEN)
+                                $door_2 = "正常打开";
+                            elseif ($status_row["door_2"] == MFUN_HCU_FHYS_DOOR_CLOSE)
+                                $door_2 = "正常关闭";
+                            elseif ($status_row["door_2"] == MFUN_HCU_FHYS_DOOR_ALARM)
+                                $door_2 = "暴力打开";
+
+                            //更新锁运行状态
+                            if ($status_row["lock_1"] == MFUN_HCU_FHYS_LOCK_OPEN)
+                                $lock_1 = "正常打开";
+                            elseif ($status_row["lock_1"] == MFUN_HCU_FHYS_LOCK_CLOSE)
+                                $lock_1 = "正常关闭";
+                            elseif ($status_row["lock_1"] == MFUN_HCU_FHYS_LOCK_ALARM)
+                                $lock_1 = "暴力打开";
+
+                            if ($status_row["lock_2"] == MFUN_HCU_FHYS_LOCK_OPEN)
+                                $lock_2 = "正常打开";
+                            elseif ($status_row["lock_2"] == MFUN_HCU_FHYS_LOCK_CLOSE)
+                                $lock_2 = "正常关闭";
+                            elseif ($status_row["lock_2"] == MFUN_HCU_FHYS_LOCK_ALARM)
+                                $lock_2 = "暴力打开";
+                        }
+                        $detailinfo = "站点地址:".$site_row['address']."; 设备状态:".$dev_status."; 门-1:".$door_1."; 门-2:".$door_2."; 锁-1:".$lock_1."; 锁-2:".$lock_2;
+
                         $temp = array(
-                            'statcode'=>$resp_row['statcode'],
-                            'lockname'=>$resp_row['statname'],
-                            'lockdetail'=>$resp_row['address'],
-                            'longitude'=>$resp_row['longitude'],
-                            'latitude'=>$resp_row['latitude']
+                            'statcode'=>$statcode,
+                            'lockname'=>$site_row['statname'],
+                            'lockdetail'=>$detailinfo,
+                            'longitude'=>(string)($site_row['longitude']/1000000),
+                            'latitude'=>(string)($site_row['latitude']/1000000)
                         );
                         array_push($lock_list, $temp);
                     }

@@ -6,7 +6,7 @@
  * Time: 15:02
  */
 
-include_once "huitp_msg_dict.php";
+include_once "l2codec_huitp_msg_dict.php";
 
 class classHuitpMsgDecode
 {
