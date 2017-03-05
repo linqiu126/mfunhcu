@@ -1383,7 +1383,7 @@ class classTaskL2sdkIotWx
 
         if ($dbi_info == false)
         {
-            $transMsg = $this->xms_responseText($data->FromUserName, $data->ToUserName, "数据库中该用户未绑定设备\n".$data->FromUserName);
+            //$transMsg = $this->xms_responseText($data->FromUserName, $data->ToUserName, "数据库中该用户未绑定设备\n".$data->FromUserName);
         }
         else
         {

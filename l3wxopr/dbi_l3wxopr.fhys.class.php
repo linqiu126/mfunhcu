@@ -207,8 +207,8 @@ class classDbiL3wxOprFhys
                                         'statcode'=>$statcode,
                                         'lockname'=>$site_row['statname'],
                                         'lockdetail'=>$detailinfo,
-                                        'longitude'=>(string)($site_row['longitude']/1000000),
-                                        'latitude'=>(string)($site_row['latitude']/1000000)
+                                        'latitude'=>(string)($site_row['latitude']/1000000),
+                                        'longitude'=>(string)($site_row['longitude']/1000000)
                                     );
                         array_push($lock_list, $temp);
                     }
@@ -273,8 +273,8 @@ class classDbiL3wxOprFhys
                             'statcode'=>$statcode,
                             'lockname'=>$site_row['statname'],
                             'lockdetail'=>$detailinfo,
-                            'longitude'=>(string)($site_row['longitude']/1000000),
-                            'latitude'=>(string)($site_row['latitude']/1000000)
+                            'latitude'=>(string)($site_row['latitude']/1000000),
+                            'longitude'=>(string)($site_row['longitude']/1000000)
                         );
                         array_push($lock_list, $temp);
                     }
