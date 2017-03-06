@@ -1,4 +1,6 @@
 <?php
+
+//include_once "../../l1comvm/vmlayer.php";
 header("Content-type:text/html;charset=utf-8");
 function _getfilecounts($ff){
     if(!file_exists($ff)) return 0;
@@ -48,6 +50,11 @@ switch ($key)
         $longitude=$body["longitude"];
         $uiF3dmDbObj = new classDbiL3apF3dm(); //初始化一个UI DB对象
         $result = $uiF3dmDbObj->dbi_siteinfo_update_gps($devcode, $latitude, $longitude);
+
+        $loggerObj = new classApiL1vmFuncCom();
+        $log_time = date("Y-m-d H:i:s", time());
+        $log_content = "R:Latitude=".$latitude.";Longitude=".$longitude."Result=".$result;
+        $loggerObj->logger("MFUN_TASK_ID_L4OAMTOOLS", "HCU_Lock_Activate", $log_time, $log_content);
 
         $ret_stat = "false";
         $pic_num=_getfilecounts('./upload/'.$devcode.'/');

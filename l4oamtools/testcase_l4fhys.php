@@ -56,6 +56,16 @@ if (TC_L4FHYS_WECHAT == true) {
     require("../l4fhyswechat/request.php");
     echo " [TC L4FHYS_WECHAT: HCU_Lock_open END]\n";
 
+    //L4OAMTOOLS test case
+    echo " [TC L4OAMTOOLS: HCU_Lock_Activate START]\n";
+    $_GET["action"] = "HCU_Lock_Activate";
+    $_GET["type"] = "query";
+    $body = array('code' => 'HCU_CL_0301','latitude'=>'31.209018','longitude'=>'121.521740');
+    $_GET["body"] = $body;
+    $_GET["user"] = "UID771073";
+    require("../l4oamtools/hcuinstall/request.php");
+    echo " [TC L4OAMTOOLS: HCU_Lock_Activate END]\n";
+
 }
 /**************************************************************************************
  *                             L4FHYS-UI TEST CASES                                   *
