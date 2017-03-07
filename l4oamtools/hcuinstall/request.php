@@ -1,6 +1,6 @@
 <?php
 
-//include_once "../../l1comvm/vmlayer.php";
+include_once "../../l1comvm/vmlayer.php";
 header("Content-type:text/html;charset=utf-8");
 function _getfilecounts($ff){
     if(!file_exists($ff)) return 0;
