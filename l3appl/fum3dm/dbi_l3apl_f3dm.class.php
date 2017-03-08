@@ -496,7 +496,7 @@ class classDbiL3apF3dm
 
         $flag_la = "N";
         $flag_lo = "E";
-        $query_str = "UPDATE `t_l3f3dm_siteinfo` SET `flag_la` = '$flag_la', `latitude` = '$latitude',`$flag_lo` = '$flag_lo',`longitude` = '$longitude' WHERE (`statcode` = '$statcode' )";
+        $query_str = "UPDATE `t_l3f3dm_siteinfo` SET `flag_la` = '$flag_la', `latitude` = '$latitude',`flag_lo` = '$flag_lo',`longitude` = '$longitude' WHERE (`statcode` = '$statcode' )";
         $result = $mysqli->query($query_str);
 
         $mysqli->close();

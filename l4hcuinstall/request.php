@@ -1,6 +1,12 @@
 <?php
+/**
+ * Created by PhpStorm.
+ * User: LZH
+ * Date: 2017/03/02
+ * Time: 12:16
+ */
 
-include_once "../../l1comvm/vmlayer.php";
+include_once "../l1comvm/vmlayer.php";
 header("Content-type:text/html;charset=utf-8");
 function _getfilecounts($ff){
     if(!file_exists($ff)) return 0;
@@ -53,17 +59,15 @@ switch ($key)
 
         $loggerObj = new classApiL1vmFuncCom();
         $log_time = date("Y-m-d H:i:s", time());
-        $log_content = "R:Latitude=".$latitude.";Longitude=".$longitude."Result=".$result;
+        $log_content = $devcode."R:Latitude=".$latitude.";Longitude=".$longitude."Result=".$result;
         $loggerObj->logger("MFUN_TASK_ID_L4OAMTOOLS", "HCU_Lock_Activate", $log_time, $log_content);
 
-        $ret_stat = "false";
-        $pic_num=_getfilecounts('./upload/'.$devcode.'/');
-        if($pic_num>=2 AND $result==true) $ret_stat = "true";
-        $retval=array(
-            'status'=>$ret_stat,
-            'auth'=>'true',
-            'msg'=>'站点激活，照片上传成功'
-        );
+        $pic_num=_getfilecounts('./upload/'.$devcode.'/'); //查询该站点是否上传照片
+        if($pic_num>=2 AND $result==true)
+            $retval=array('status'=>'true','auth'=>'true','msg'=>'站点激活，照片上传成功');
+        else
+            $retval=array('status'=>'false','auth'=>'true','msg'=>'站点未激活');
+
         $jsonencode = _encode($retval);
         echo $jsonencode;
         break;
