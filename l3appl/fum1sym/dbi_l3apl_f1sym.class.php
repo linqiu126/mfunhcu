@@ -6,7 +6,7 @@
  * Time: 22:59
  */
 header("Content-type:text/html;charset=utf-8");
-//include_once "../../l1comvm/vmlayer.php";
+include_once "../l1comvm/vmlayer.php";  //此处include不可修改！！！
 //require_once "../../l1comvm/sysconfig.php";
 /*
 

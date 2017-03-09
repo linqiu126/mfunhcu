@@ -52,8 +52,8 @@ switch ($key)
     case "HCU_Lock_Activate": //Open a lock
         $body=$payload["body"];
         $devcode=$body["code"];
-        $latitude=$body["latitude"];
-        $longitude=$body["longitude"];
+        $latitude=(string)($body["latitude"]*1000000);
+        $longitude=(string)($body["longitude"]*1000000);
         $uiF3dmDbObj = new classDbiL3apF3dm(); //初始化一个UI DB对象
         $result = $uiF3dmDbObj->dbi_siteinfo_update_gps($devcode, $latitude, $longitude);
 
