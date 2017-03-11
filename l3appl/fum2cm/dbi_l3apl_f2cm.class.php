@@ -1150,6 +1150,99 @@ class classDbiL3apF2cm
         return $result;
     }
 
+    //用于FHYS临时纤芯资源管理
+    public function dbi_fhys_get_rtutable_req($uid)
+    {
+        //初始化返回值
+        $resp["column"] = array();
+        $resp['data'] = array();
+
+        //建立连接
+        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli) {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $mysqli->query("SET NAMES utf8");
+        //填充表头
+        array_push($resp["column"], "RTU代码");
+        array_push($resp["column"], "RTU名称");
+        array_push($resp["column"], "IP地址");
+        array_push($resp["column"], "端口");
+        array_push($resp["column"], "超时");
+        array_push($resp["column"], "槽位数");
+        array_push($resp["column"], "机房代码");
+        array_push($resp["column"], "数据采集器代码");
+        array_push($resp["column"], "备注");
+
+        $query_str = "SELECT * FROM `t_l3f2cm_fhys_rtu` WHERE 1";
+        $result = $mysqli->query($query_str);
+        while ($row = $result->fetch_array())
+        {
+            $one_row = array();//初始化
+
+            array_push($one_row, $row["rtucode"]);
+            array_push($one_row, $row["rtuname"]);
+            array_push($one_row, $row["ipaddr"]);
+            array_push($one_row, $row["port"]);
+            array_push($one_row, $row["timeout"]);
+            array_push($one_row, $row["slot"]);
+            array_push($one_row, $row["roomcode"]);
+            array_push($one_row, $row["collector"]);
+            array_push($one_row, $row["backup"]);
+
+            array_push($resp['data'], $one_row);
+        }
+
+        $mysqli->close();
+        return $resp;
+    }
+
+    public function dbi_fhys_get_otdrtable_req($uid)
+    {
+        //初始化返回值
+        $resp["column"] = array();
+        $resp['data'] = array();
+
+        //建立连接
+        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli) {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $mysqli->query("SET NAMES utf8");
+        //填充表头
+        array_push($resp["column"], "OTDR代码");
+        array_push($resp["column"], "OTDR名称");
+        array_push($resp["column"], "IP地址");
+        array_push($resp["column"], "端口");
+        array_push($resp["column"], "RTU代码");
+        array_push($resp["column"], "RTU槽位");
+        array_push($resp["column"], "读取信息命令格式");
+        array_push($resp["column"], "数据采集器代码");
+        array_push($resp["column"], "备注");
+
+        $query_str = "SELECT * FROM `t_l3f2cm_fhys_otdr` WHERE 1";
+        $result = $mysqli->query($query_str);
+        while ($row = $result->fetch_array())
+        {
+            $one_row = array();//初始化
+
+            array_push($one_row, $row["otdrcode"]);
+            array_push($one_row, $row["otdrname"]);
+            array_push($one_row, $row["ipaddr"]);
+            array_push($one_row, $row["port"]);
+            array_push($one_row, $row["rtucode"]);
+            array_push($one_row, $row["rtuslot"]);
+            array_push($one_row, $row["cmdformat"]);
+            array_push($one_row, $row["collector"]);
+            array_push($one_row, $row["backup"]);
+
+            array_push($resp['data'], $one_row);
+        }
+
+        $mysqli->close();
+        return $resp;
+    }
+
 }
 
 ?>

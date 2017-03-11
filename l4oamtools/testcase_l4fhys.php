@@ -71,7 +71,14 @@ if (TC_L4FHYS_WECHAT == true) {
  *                             L4FHYS-UI TEST CASES                                   *
  *************************************************************************************/
 if (TC_L4FHYS_UI == true) {
-    $sessionid = "iNOPTZgd0Q";
+    $sessionid = "J9QnCailLT";
+
+    echo " [TC L4FHYS: GetOTDRTable START]\n";
+    $_GET["action"] = "GetOTDRTable";
+    $_GET["type"] = "query";
+    $_GET["user"] = $sessionid;
+    require("../l4fhysui/request.php");
+    echo " [TC L4FHYS: GetOTDRTable END]\n";
 
     echo " [TC L4FHYS: AlarmClose START]\n";
     $_GET["action"] = "AlarmClose";

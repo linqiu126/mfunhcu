@@ -546,6 +546,48 @@ class classTaskL3aplF2cm
         return $retval;
     }
 
+    //用于FHYS临时纤芯资源管理
+    function func_get_rtutable_process($type, $user, $body)
+    {
+        $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
+        $usercheck = $uiF1symDbObj->dbi_user_authcheck($type, $user);
+        if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
+            $uid = $uiF1symDbObj->dbi_session_check($user);
+            $uiF2cmDbObj = new classDbiL3apF2cm(); //初始化一个UI DB对象
+            $resp = $uiF2cmDbObj->dbi_fhys_get_rtutable_req($uid);
+            if(!empty($resp)){
+                $ret = array('ColumnName' => $resp["column"],'TableData' => $resp["data"]);
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$ret,'msg'=>"获取RTU表成功");
+            }
+            else
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>"获取RTU表失败");
+        }
+        else
+            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
+
+        return $retval;
+    }
+    //用于FHYS临时纤芯资源管理
+    function func_get_otdrtable_process($type, $user, $body)
+    {
+        $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
+        $usercheck = $uiF1symDbObj->dbi_user_authcheck($type, $user);
+        if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
+            $uid = $uiF1symDbObj->dbi_session_check($user);
+            $uiF2cmDbObj = new classDbiL3apF2cm(); //初始化一个UI DB对象
+            $resp = $uiF2cmDbObj->dbi_fhys_get_otdrtable_req($uid);
+            if(!empty($resp)){
+                $ret = array('ColumnName' => $resp["column"],'TableData' => $resp["data"]);
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$ret,'msg'=>"获取OTDR表成功");
+            }
+            else
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>"获取OTDR表失败");
+        }
+        else
+            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
+
+        return $retval;
+    }
 
     /**************************************************************************************
      *                             任务入口函数                                           *
@@ -706,6 +748,16 @@ class classTaskL3aplF2cm
 
             case MSG_ID_L4FHYSUI_TO_L3F2_KEYAUTHDEL:
                 $resp = $this->func_key_authdel_process($type, $user, $body);
+                $project = MFUN_PRJ_HCU_FHYSUI;
+                break;
+
+            case MSG_ID_L4FHYSUI_TO_L3F2_RTUTABLE:
+                $resp = $this->func_get_rtutable_process($type, $user, $body);
+                $project = MFUN_PRJ_HCU_FHYSUI;
+                break;
+
+            case MSG_ID_L4FHYSUI_TO_L3F2_OTDRTABLE:
+                $resp = $this->func_get_otdrtable_process($type, $user, $body);
                 $project = MFUN_PRJ_HCU_FHYSUI;
                 break;
 
