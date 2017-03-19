@@ -131,16 +131,19 @@ class classDbiL3wxOprFhys
         $mysqli->query("SET NAMES utf8");
 
         $keyid = ""; //初始化
-        $lock_list = array();
+        $key_list = array();
+        $auth_list = array();
         $key_type = MFUN_L3APL_F2CM_KEY_TYPE_WECHAT;
         $query_str = "SELECT * FROM `t_l3f2cm_fhys_keyinfo` WHERE (`keyuserid` = '$user' AND `keytype` = '$key_type') ";
         $result = $mysqli->query($query_str);
-        if (($result->num_rows)>0) {
-            $row = $result->fetch_array();
+        while (($result !=false) && (($row = $result->fetch_array()) > 0)) {
             $keyid = $row['keyid'];
+            array_push($key_list, $keyid);
         }
 
-        if(!empty($keyid)){
+        $i = 0;
+        while($i < count($key_list)){
+            $keyid = $key_list[$i];
             $query_str = "SELECT * FROM `t_l3f2cm_fhys_keyauth` WHERE (`keyid` = '$keyid') ";
             $result = $mysqli->query($query_str);
             while(($result !=false) && (($row = $result->fetch_array()) > 0)) {
@@ -210,7 +213,7 @@ class classDbiL3wxOprFhys
                                         'latitude'=>(string)($site_row['latitude']/1000000),
                                         'longitude'=>(string)($site_row['longitude']/1000000)
                                     );
-                        array_push($lock_list, $temp);
+                        array_push($auth_list, $temp);
                     }
                 }
                 //如果是设备级授权
@@ -276,14 +279,15 @@ class classDbiL3wxOprFhys
                             'latitude'=>(string)($site_row['latitude']/1000000),
                             'longitude'=>(string)($site_row['longitude']/1000000)
                         );
-                        array_push($lock_list, $temp);
+                        array_push($auth_list, $temp);
                     }
                 }
             }
+            $i++;
         }
 
         $mysqli->close();
-        return $lock_list;
+        return $auth_list;
     }
 
     public function dbi_fhyswechat_get_lockstatus($user, $statcode)

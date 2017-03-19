@@ -46,7 +46,7 @@ class classL1MainEntrySocketListenServer
         $this->serv->on('ManagerStart', array($this, 'my_onManagerStart'));
 
         //port2 opened for UI command
-        $port2 = $this->serv->listen("0.0.0.0", MFUN_SWOOLE_SOCKET_STD_XML_TCP, MFUN_SWOOLE_SOCKET_STD_XML_TCP);
+        $port2 = $this->serv->listen("0.0.0.0", MFUN_SWOOLE_SOCKET_STD_XML_TCP, SWOOLE_SOCK_TCP);
         /*$port2->set(array(
             'open_length_check' => true,
             'package_length_type' => 'N',
@@ -58,7 +58,7 @@ class classL1MainEntrySocketListenServer
         $port2->on('close', array($this, 'port2_onClose'));
 
         //port3 for FHYS 云控锁项目
-        $port3 = $this->serv->listen("0.0.0.0", MFUN_SWOOLE_SOCKET_STD_XML_UDP, MFUN_SWOOLE_SOCKET_STD_XML_UDP);
+        $port3 = $this->serv->listen("0.0.0.0", MFUN_SWOOLE_SOCKET_STD_XML_UDP, SWOOLE_SOCK_UDP);
         $port3->on('Packet', array($this, 'port3_onPacket'));
 
         $this->serv->start();

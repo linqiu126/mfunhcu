@@ -25,6 +25,7 @@ include_once "../l2codec/l2codec_huitp_ie_dict.php";
 include_once "../l2codec/task_l2codec_huitp_xml.class.php";
 //包含所有的任务模块，不然无法调用
 include_once "../l2sdk/task_l2sdk_iot_hcu.class.php";
+include_once "../l2sdk/task_l2sdk_iot_huitp.class.php";
 include_once "../l2sdk/task_l2sdk_wechat.class.php";
 include_once "../l2sdk/task_l2sdk_iot_apple.class.php";
 include_once "../l2sdk/task_l2sdk_iot_jd.class.php";
@@ -449,6 +450,20 @@ class classTaskL1vmCoreRouter
                     return false;
                 }
                 break;
+            case MFUN_MAIN_ENTRY_IOT_HUITP:
+                $resp = $this->mfun_l1vm_msg_send(MFUN_TASK_ID_L1VM,
+                    MFUN_TASK_ID_L2SDK_IOT_HUITP,
+                    MSG_ID_L1VM_TO_L2SDK_IOT_HUITP_INCOMING,
+                    "MSG_ID_L1VM_TO_L2SDK_IOT_HUITP_INCOMING",
+                    $msg);
+                if ($resp == false){
+                    $result = "Cloud: Send to message buffer error.";
+                    $log_content = "P:" . json_encode($result);
+                    $loggerObj->logger("MFUN_MAIN_ENTRY_IOT_HUITP", "mfun_l1vm_task_main_entry", $log_time, $log_content);
+                    echo trim($result);
+                    return false;
+                }
+                break;
             case MFUN_MAIN_ENTRY_JINGDONG:
                 $resp = $this->mfun_l1vm_msg_send(MFUN_TASK_ID_L1VM,
                     MFUN_TASK_ID_L2SDK_IOT_JD,
@@ -793,6 +808,11 @@ class classTaskL1vmCoreRouter
                 case MFUN_TASK_ID_L2SDK_IOT_HUITP:
                     $obj = new classTaskL2sdkIotHuitp();
                     $obj->mfun_l2sdk_iot_huitp_task_main_entry($this, $result["msgId"], $result["msgName"], $result["msgBody"]);
+                    break;
+
+                case MFUN_TASK_ID_L2CODEC_HUITP:
+                    $obj = new classTaskL2codecHuitpXml();
+                    $obj->mfun_l2codec_huitp_xml_task_main_entry($this, $result["msgId"], $result["msgName"], $result["msgBody"]);
                     break;
 
                 case MFUN_TASK_ID_L2SDK_NBIOT_STD_QG376:

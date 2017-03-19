@@ -82,12 +82,6 @@ class classTaskL2sdkIotHuitp
         $log_time = date("Y-m-d H:i:s",$createTime);
         $log_content = "R:" . trim($msg);
 
-        //将socket id和设备ID（fromUser）进行绑定
-        if(!empty($socketid) AND !empty($fromUser)){
-
-        }
-
-
         //消息或者说帧类型分离，l2SDK只进行协议类型解码，不对消息的content进行处理，判断协议类型后发送给专门的l2codec任务处理
         switch ($msgType)
         {
@@ -106,8 +100,12 @@ class classTaskL2sdkIotHuitp
                     $loggerObj->logger($project, $log_from, $log_time, $log_content);
                     return true;
                 }
-                else{
-                    $statCode = $result;
+
+                $statCode = $result;
+                //将socket id和设备ID（fromUser）进行绑定
+                if(!empty($socketid) AND !empty($statCode)){
+                    $dbiL2sdkHuitpObj = new classDbiL2sdkHuitp();
+                    $dbiL2sdkHuitpObj->dbi_huitp_huc_socketid_update($fromUser, $socketid);
                 }
 
                 //收到非本消息体该收到的消息
@@ -119,12 +117,11 @@ class classTaskL2sdkIotHuitp
                     return true;
                 }
                 $msg = array("project" => $project,
-                    "log_from" => $log_from,
-                    "platform" => MFUN_TECH_PLTF_HCUSTM,
-                    "deviceId" => $fromUser,
-                    "statCode" => $statCode,
-                    "content" => $content,
-                    "funcFlag" => $funcFlag);
+                            "platform" => MFUN_TECH_PLTF_HCUSTM,
+                            "devCode" => $fromUser,
+                            "statCode" => $statCode,
+                            "content" => $content,
+                            "funcFlag" => $funcFlag);
                 if ($parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L2SDK_IOT_HUITP,
                         MFUN_TASK_ID_L2CODEC_HUITP,
                         MSG_ID_L2SDK_IOT_HUITP_TO_L2CODEC_HUITP,
@@ -149,12 +146,12 @@ class classTaskL2sdkIotHuitp
 
         //处理结果
         //由于消息的分布发送到各个任务模块中去了，这里不再统一处理ECHO返回，而由各个任务模块单独完成
-        if (!empty($result)) {
+        if (!empty($resp)) {
             $timestamp = time();
             $log_time = date("Y-m-d H:i:s", $timestamp);
-            $log_content = "T:" . json_encode($result);
+            $log_content = "T:" . json_encode($resp);
             $loggerObj->logger($project, $log_from, $log_time, $log_content);
-            echo trim($result);
+            echo trim($resp);
         }
 
         //结束，返回

@@ -522,9 +522,10 @@ class classDbiL3apF3dm
         {
             $devcode = $row['devcode'];
             $statcode = $row['statcode'];
-            $macaddr = $row['macaddr'];
-            $ipaddr = $row['ipaddr'];
+            $macaddr = $row['macaddr_eth0'];
+            $ipaddr = $row['ip_wlan0'];
             $devstatus = $row['status'];
+            $starttime = $row['opendate'];
             $url = $row['videourl'];
             if ($devstatus == MFUN_HCU_AQYC_STATUS_ON)
                 $devstatus = "true";
@@ -539,7 +540,7 @@ class classDbiL3apF3dm
                     'DevCode' => $devcode,
                     'StatCode' => $statcode,
                     'ProjCode' => $info['p_code'],
-                    'StartTime' => $info['starttime'],
+                    'StartTime' => $starttime, //$info['starttime'], 取用HCU_inventory表中HCU开通时间
                     'PreEndTime' => "",  //TBD
                     'EndTime' => "",     //TBD
                     'DevStatus' => $devstatus,

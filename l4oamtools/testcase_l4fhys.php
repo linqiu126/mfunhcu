@@ -34,7 +34,7 @@ if (TC_L4FHYS_WECHAT == true) {
     echo " [TC L4FHYS_WECHAT: HCU_Lock_Query START]\n";
     $_GET["action"] = "HCU_Lock_Query";
     $_GET["type"] = "query";
-    $_GET["user"] = "UID771073";
+    $_GET["user"] = "UID980138";
     require("../l4fhyswechat/request.php");
     echo " [TC L4FHYS_WECHAT: HCU_Lock_Query END]\n";
 
