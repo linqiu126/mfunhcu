@@ -40,7 +40,7 @@ class classDbiL3wxOprFhys
             $username = $row['keyusername'];
             $userid = $row['keyuserid'];
             if (!empty($username) AND !empty($userid)){  //如果该微信钥匙已经绑定
-                $userinfo = array('username'=>$username, 'userid'=>$userid);
+                $userinfo = array('username'=>$username, 'userid'=>$userid, 'wechatid'=>$openid);
             }
             else{
                 $memo = "临时微信虚拟钥匙，暂未绑定";
