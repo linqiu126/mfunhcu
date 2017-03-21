@@ -107,8 +107,10 @@ class classTaskL3wxOprFhys
 
     private function func_fhys_wechat_lockquery($type, $user, $body)
     {
+        if (isset($body["key"])) $openid = $body["key"]; else  $openid = "";
+
         $l3wxOprFhysDbObj = new classDbiL3wxOprFhys(); //初始化一个UI DB对象
-        $locklist = $l3wxOprFhysDbObj->dbi_fhyswechat_get_locklist($user);
+        $locklist = $l3wxOprFhysDbObj->dbi_fhyswechat_get_locklist($user, $openid);
         if(!empty($locklist))
             $retval=array('status'=>'true','auth'=>'true','ret'=>$locklist,'msg'=>"授权站点列表获取成功",);
         else

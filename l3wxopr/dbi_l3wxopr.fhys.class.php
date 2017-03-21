@@ -120,7 +120,7 @@ class classDbiL3wxOprFhys
         return $bindinfo;
     }
 
-    public function dbi_fhyswechat_get_locklist($user)
+    public function dbi_fhyswechat_get_locklist($user, $openid)
     {
         //建立连接
         $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
@@ -134,7 +134,7 @@ class classDbiL3wxOprFhys
         $key_list = array();
         $auth_list = array();
         $key_type = MFUN_L3APL_F2CM_KEY_TYPE_WECHAT;
-        $query_str = "SELECT * FROM `t_l3f2cm_fhys_keyinfo` WHERE (`keyuserid` = '$user' AND `keytype` = '$key_type') ";
+        $query_str = "SELECT * FROM `t_l3f2cm_fhys_keyinfo` WHERE (`keyuserid` = '$user' AND `keytype` = '$key_type' AND `hwcode` = '$openid') ";
         $result = $mysqli->query($query_str);
         while (($result !=false) && (($row = $result->fetch_array()) > 0)) {
             $keyid = $row['keyid'];
