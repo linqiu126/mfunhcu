@@ -1087,8 +1087,14 @@ class classDbiL3apF2cm
         }
         $mysqli->query("SET NAMES utf8");
 
+        $query_str = "SELECT * FROM `t_l3f1sym_account` WHERE `uid` = '$keyuserid'";
+        $result = $mysqli->query($query_str);
+        if (($result->num_rows)>0) {
+            $row = $result->fetch_array();
+            $keyusername = $row['user'];
+        }
         //更新钥匙实际使用人
-        $query_str = "UPDATE `t_l3f2cm_fhys_keyinfo` SET `keyuserid` = '$keyuserid' WHERE (`keyid` = '$keyid') ";
+        $query_str = "UPDATE `t_l3f2cm_fhys_keyinfo` SET `keyuserid` = '$keyuserid',`keyusername` = '$keyusername' WHERE (`keyid` = '$keyid') ";
         $result = $mysqli->query($query_str);
 
         $mysqli->close();

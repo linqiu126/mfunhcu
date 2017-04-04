@@ -8,6 +8,17 @@
 
 class classDbiL2snrDoorlock
 {
+    private function getRandomKeyid($strlen)
+    {
+
+        $str = "";
+        $str_pol = "0123456789";
+        $max = strlen($str_pol) - 1;
+        for ($i = 0; $i < $strlen; $i++) {
+            $str .= $str_pol[mt_rand(0, $max)];
+        }
+        return $str;
+    }
 
     private function dbi_hcu_event_log_process($keyid, $statCode, $eventtype)
     {
@@ -264,6 +275,22 @@ class classDbiL2snrDoorlock
                 $keyid = $row['keyid'];
                 $auth_check = $this->dbi_hcu_lock_keyauth_check($keyid, $statCode);
             }
+            else{ //为该MAC地址生成一把蓝牙虚拟钥匙
+                $keyid = MFUN_L3APL_F2CM_KEY_PREFIX.$this->getRandomKeyid(MFUN_L3APL_F2CM_KEY_ID_LEN);  //KEYID的分配机制将来要重新考虑，避免重复
+                $query_str = "SELECT * FROM `t_l3f3dm_siteinfo` WHERE `statcode` = '$statCode' ";
+                $resp = $mysqli->query($query_str);
+                if (($resp->num_rows) > 0) {
+                    $resp_row = $resp->fetch_array();
+                    $pcode = $resp_row['p_code'];
+                }
+                $keyname = "蓝牙钥匙-".$funcFlag;
+                $keytype = MFUN_L3APL_F2CM_KEY_TYPE_BLE;
+                $keystatus = MFUN_HCU_FHYS_KEY_INVALID;
+                $memo = "系统自动生成的蓝牙虚拟钥匙，暂未授权";
+                $query_str = "INSERT INTO `t_l3f2cm_fhys_keyinfo` (keyid,keyname,p_code,keystatus,keytype,hwcode,memo)
+                                      VALUES ('$keyid','$keyname','$pcode','$keystatus','$keytype','$funcFlag','$memo')";
+                $result = $mysqli->query($query_str);
+            }
 
             if($auth_check == true){
                 $para = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_DATA_FHYS_LOCK_OPEN);
@@ -405,8 +432,8 @@ class classDbiL2snrDoorlock
             $status = MFUN_HCU_FHYS_LOCK_CLOSE;
         elseif ($data == MFUN_HCU_DATA_FHYS_STATUS_NOK)
             $status = MFUN_HCU_FHYS_LOCK_OPEN;
-        elseif ($data == MFUN_HCU_DATA_FHYS_STATUS_ALARM)
-            $status = MFUN_HCU_FHYS_LOCK_ALARM;
+        elseif ($data == MFUN_HCU_DATA_FHYS_STATUS_NULL)
+            $status = MFUN_HCU_FHYS_LOCK_NULL;
         else
             $status =MFUN_HCU_FHYS_STATUS_UNKNOWN;
 
@@ -481,8 +508,8 @@ class classDbiL2snrDoorlock
             $status = MFUN_HCU_FHYS_DOOR_CLOSE;
         elseif ($data == MFUN_HCU_DATA_FHYS_STATUS_NOK)
             $status = MFUN_HCU_FHYS_DOOR_OPEN;
-        elseif ($data == MFUN_HCU_DATA_FHYS_STATUS_ALARM)
-            $status = MFUN_HCU_FHYS_DOOR_ALARM;
+        elseif ($data == MFUN_HCU_DATA_FHYS_STATUS_NULL)
+            $status = MFUN_HCU_FHYS_DOOR_NULL;
         else
             $status =MFUN_HCU_FHYS_STATUS_UNKNOWN;
         $timestamp = time();
@@ -554,41 +581,55 @@ class classDbiL2snrDoorlock
         $format = "A2lock1/A2lock2/A2door1/A2door2/A2rfid/A2ble/A2gprs/A2batt/A4temp/A4humi/A2vibr/A2smok/A2water/A2tilt";
         $msg= unpack($format, $data);
 
-        if ($msg['lock1'] == MFUN_HCU_DATA_FHYS_STATUS_OK)
+        if (($msg['lock1'] == MFUN_HCU_DATA_FHYS_STATUS_OK) AND ($msg['door1'] == MFUN_HCU_DATA_FHYS_STATUS_OK)){
             $lock1 = MFUN_HCU_FHYS_LOCK_CLOSE;
-        elseif ($msg['lock1'] == MFUN_HCU_DATA_FHYS_STATUS_NOK)
-            $lock1 = MFUN_HCU_FHYS_LOCK_OPEN;
-        elseif ($msg['lock1'] == MFUN_HCU_DATA_FHYS_STATUS_ALARM)
-            $lock1 = MFUN_HCU_FHYS_LOCK_ALARM;
-        else
-            $lock1 =MFUN_HCU_FHYS_STATUS_UNKNOWN;
-
-        if ($msg['lock2'] == MFUN_HCU_DATA_FHYS_STATUS_OK)
-            $lock2 = MFUN_HCU_FHYS_LOCK_CLOSE;
-        elseif ($msg['lock2'] == MFUN_HCU_DATA_FHYS_STATUS_NOK)
-            $lock2 = MFUN_HCU_FHYS_LOCK_OPEN;
-        elseif ($msg['lock2'] == MFUN_HCU_DATA_FHYS_STATUS_ALARM)
-            $lock2 = MFUN_HCU_FHYS_LOCK_ALARM;
-        else
-            $lock2 =MFUN_HCU_FHYS_STATUS_UNKNOWN;
-
-        if ($msg['door1'] == MFUN_HCU_DATA_FHYS_STATUS_OK)
             $door1 = MFUN_HCU_FHYS_DOOR_CLOSE;
-        elseif ($msg['door1'] == MFUN_HCU_DATA_FHYS_STATUS_NOK)
+        }
+        elseif (($msg['lock1'] == MFUN_HCU_DATA_FHYS_STATUS_NOK) AND ($msg['door1'] == MFUN_HCU_DATA_FHYS_STATUS_NOK)){
+            $lock1 = MFUN_HCU_FHYS_LOCK_OPEN;
             $door1 = MFUN_HCU_FHYS_DOOR_OPEN;
-        elseif ($msg['door1'] == MFUN_HCU_DATA_FHYS_STATUS_ALARM)
+        }
+        elseif(($msg['lock1'] == MFUN_HCU_DATA_FHYS_STATUS_OK) AND ($msg['door1'] == MFUN_HCU_DATA_FHYS_STATUS_NOK)){
+            $lock1 = MFUN_HCU_FHYS_LOCK_CLOSE;
             $door1 = MFUN_HCU_FHYS_DOOR_ALARM;
-        else
+        }
+        elseif(($msg['lock1'] == MFUN_HCU_DATA_FHYS_STATUS_NOK) AND ($msg['door1'] == MFUN_HCU_DATA_FHYS_STATUS_OK)){
+            $lock1 = MFUN_HCU_FHYS_LOCK_ALARM;
+            $door1 = MFUN_HCU_FHYS_DOOR_CLOSE;
+        }
+        elseif(($msg['lock1'] == MFUN_HCU_DATA_FHYS_STATUS_NULL) OR ($msg['door1'] == MFUN_HCU_DATA_FHYS_STATUS_NULL)){
+            $lock1 = MFUN_HCU_FHYS_LOCK_NULL;
+            $door1 = MFUN_HCU_FHYS_LOCK_NULL;
+        }
+        else{
+            $lock1 =MFUN_HCU_FHYS_STATUS_UNKNOWN;
             $door1 =MFUN_HCU_FHYS_STATUS_UNKNOWN;
+        }
 
-        if ($msg['door2'] == MFUN_HCU_DATA_FHYS_STATUS_OK)
+        if (($msg['lock2'] == MFUN_HCU_DATA_FHYS_STATUS_OK) AND ($msg['door2'] == MFUN_HCU_DATA_FHYS_STATUS_OK)){
+            $lock2 = MFUN_HCU_FHYS_LOCK_CLOSE;
             $door2 = MFUN_HCU_FHYS_DOOR_CLOSE;
-        elseif ($msg['door2'] == MFUN_HCU_DATA_FHYS_STATUS_NOK)
+        }
+        elseif (($msg['lock2'] == MFUN_HCU_DATA_FHYS_STATUS_NOK) AND ($msg['door2'] == MFUN_HCU_DATA_FHYS_STATUS_NOK)){
+            $lock2 = MFUN_HCU_FHYS_LOCK_OPEN;
             $door2 = MFUN_HCU_FHYS_DOOR_OPEN;
-        elseif ($msg['door2'] == MFUN_HCU_DATA_FHYS_STATUS_ALARM)
+        }
+        elseif(($msg['lock2'] == MFUN_HCU_DATA_FHYS_STATUS_OK) AND ($msg['door2'] == MFUN_HCU_DATA_FHYS_STATUS_NOK)){
+            $lock2 = MFUN_HCU_FHYS_LOCK_CLOSE;
             $door2 = MFUN_HCU_FHYS_DOOR_ALARM;
-        else
+        }
+        elseif(($msg['lock2'] == MFUN_HCU_DATA_FHYS_STATUS_NOK) AND ($msg['door2'] == MFUN_HCU_DATA_FHYS_STATUS_OK)){
+            $lock2 = MFUN_HCU_FHYS_LOCK_ALARM;
+            $door2 = MFUN_HCU_FHYS_DOOR_CLOSE;
+        }
+        elseif(($msg['lock2'] == MFUN_HCU_DATA_FHYS_STATUS_NULL) OR ($msg['door2'] == MFUN_HCU_DATA_FHYS_STATUS_NULL)){
+            $lock2 = MFUN_HCU_FHYS_LOCK_NULL;
+            $door2 = MFUN_HCU_FHYS_LOCK_NULL;
+        }
+        else{
+            $lock2 =MFUN_HCU_FHYS_STATUS_UNKNOWN;
             $door2 =MFUN_HCU_FHYS_STATUS_UNKNOWN;
+        }
 
         if ($msg['rfid'] == MFUN_HCU_DATA_FHYS_STATUS_OK)
             $rfid = MFUN_HCU_FHYS_ALARM_NO;
@@ -682,7 +723,6 @@ class classDbiL2snrDoorlock
             $alarm_code = MFUN_HCU_FHYS_ALARM_NONE;
             $alarm_severity = MFUN_HCU_FHYS_ALARM_LEVEL_0;
         }
-
 
         $timestamp = time();
         $date = intval(date("ymd", $timestamp));

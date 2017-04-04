@@ -62,12 +62,14 @@ define ("MFUN_HCU_FHYS_ALARM_LEVEL_L", "1"); //告警级别1，告警级别Low
 define ("MFUN_HCU_FHYS_ALARM_LEVEL_M", "2"); //告警级别2，告警级别Middle
 define ("MFUN_HCU_FHYS_ALARM_LEVEL_H", "3"); //告警级别3，告警级别High
 
-define ("MFUN_HCU_FHYS_DOOR_OPEN", "Y");  //光交箱门打开
-define ("MFUN_HCU_FHYS_DOOR_CLOSE", "N"); //光交箱门关闭
+define ("MFUN_HCU_FHYS_DOOR_OPEN", "O");  //光交箱门打开
+define ("MFUN_HCU_FHYS_DOOR_CLOSE", "C"); //光交箱门关闭
 define ("MFUN_HCU_FHYS_DOOR_ALARM", "A"); //光交箱门暴力打开
-define ("MFUN_HCU_FHYS_LOCK_OPEN", "Y");  //智能云锁打开
-define ("MFUN_HCU_FHYS_LOCK_CLOSE", "N"); //智能云锁关闭
+define ("MFUN_HCU_FHYS_DOOR_NULL", "N"); //设备未安装
+define ("MFUN_HCU_FHYS_LOCK_OPEN", "O");  //智能云锁打开
+define ("MFUN_HCU_FHYS_LOCK_CLOSE", "C"); //智能云锁关闭
 define ("MFUN_HCU_FHYS_LOCK_ALARM", "A"); //智能云锁暴力打开
+define ("MFUN_HCU_FHYS_LOCK_NULL", "N"); //设备未安装
 
 define ("MFUN_HCU_FHYS_KEY_VALID", "Y");  //虚拟钥匙有效，已授予用户
 define ("MFUN_HCU_FHYS_KEY_INVALID", "N"); //虚拟钥匙无效，未授予用户
@@ -75,7 +77,7 @@ define ("MFUN_HCU_FHYS_KEY_INVALID", "N"); //虚拟钥匙无效，未授予用�
 //下位机的数据常量
 define ("MFUN_HCU_DATA_FHYS_STATUS_OK", 0x00); //设备状态正常或者门锁闭合
 define ("MFUN_HCU_DATA_FHYS_STATUS_NOK", 0x01); //设备状态异常或者门锁打开
-define ("MFUN_HCU_DATA_FHYS_STATUS_ALARM", 0x02); //设备告警或者门锁暴力打开
+define ("MFUN_HCU_DATA_FHYS_STATUS_NULL", 0x02); //设备为空或门锁没有安装
 define ("MFUN_HCU_DATA_FHYS_LOCK_OPEN", 0x00);  //开锁命令
 define ("MFUN_HCU_DATA_FHYS_LOCK_CLOSE", 0x01);  //闭锁命令
 

@@ -295,51 +295,12 @@ class classTaskL3aplF3dm
         $usercheck = $uiF1symDbObj->dbi_user_authcheck($type, $user);
         if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
             $uid = $uiF1symDbObj->dbi_session_check($user);
-            //$uiF3dmDbObj = new classDbiL3apF3dm(); //初始化一个UI DB对象
-            //$stat_list = $uiF3dmDbObj->dbi_map_sitetinfo_req($uid);
-            $stat_list = array();
-            $map1=array(
-                'StatCode'=>"120101001",
-                'StatName'=>"浦东环球金融中心工程",
-                'ChargeMan'=>"张三",
-                'Telephone'=>"13912345678",
-                'Department'=>"",
-                'Address'=>"世纪大道100号",
-                'Country'=>"浦东新区",
-                'Street'=>"",
-                'Square'=>"40000",
-                'Flag_la'=>"N",
-                'Latitude'=>"31.240246",
-                'Flag_lo'=>"E",
-                'Longitude'=>"121.514168",
-                'ProStartTime'=>"2015-01-01",
-                'Stage'=>""
-            );
-            array_push($stat_list,$map1);
-
-            $map4= array(
-                'StatCode'=>"120101004",
-                'StatName'=>"金桥创科园",
-                'ChargeMan'=>"李四",
-                'Telephone'=>"13912345678",
-                'Department'=>"",
-                'Address'=>"桂桥路255号",
-                'Country'=>"浦东新区",
-                'Street'=>"",
-                'Square'=>"0",
-                'Flag_la'=>"N",
-                'Latitude'=>"31.248271",
-                'Flag_lo'=>"E",
-                'Longitude'=>"121.615476",
-                'ProStartTime'=>"2016-04-01",
-                'Stage'=>""
-            );
-            array_push($stat_list,$map4);
-
+            $uiF3dmDbObj = new classDbiL3apF3dm(); //初始化一个UI DB对象
+            $stat_list = $uiF3dmDbObj->dbi_favourite_list_process($uid);
             if(!empty($stat_list))
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$stat_list,'msg'=>"获取地图监测列表成功");
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$stat_list,'msg'=>"获取常用站点列表成功");
             else
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>"获取地图监测列表失败");
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>"获取常用站点列表失败");
         }
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
@@ -349,9 +310,21 @@ class classTaskL3aplF3dm
 
     function func_favourite_count_process($type, $user, $body) //临时处理函数
     {
-        $retval=array('status'=>'true',
-            'msg'=>'success',
-            'auth'=>'true');
+        if (isset($body["StatCode"])) $statCode = $body["StatCode"]; else  $statCode = "";
+
+        $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
+        $usercheck = $uiF1symDbObj->dbi_user_authcheck($type, $user);
+        if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
+            $uid = $uiF1symDbObj->dbi_session_check($user);
+            $uiF3dmDbObj = new classDbiL3apF3dm(); //初始化一个UI DB对象
+            $result = $uiF3dmDbObj->dbi_favourite_count_process($uid, $statCode);
+            if($result == true)
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"添加常用站点成功");
+            else
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"添加常用站点失败");
+        }
+        else
+            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>$usercheck['msg']);
 
         return $retval;
     }
