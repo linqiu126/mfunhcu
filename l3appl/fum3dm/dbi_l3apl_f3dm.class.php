@@ -696,8 +696,18 @@ class classDbiL3apF3dm
         $result = $mysqli->query($query_str);
         $total = $result->num_rows;
         if($total < MFUN_L3APL_F2CM_FAVOURSITE_MAX_NUM){ //新增一个站点
-            $query_str = "INSERT INTO `t_l3f2cm_favourlist` (uid,statcode,createtime) VALUES ('$uid','$statCode','$currenttime')";
-            $result = $mysqli->query($query_str);
+            $query_str = "SELECT * FROM `t_l3f2cm_favourlist` WHERE (`uid` = '$uid' AND `statcode` = '$statCode')";
+            $resp = $mysqli->query($query_str);
+            if (($resp->num_rows)>0){//如果有重复，则更新这个站点的点击日期
+                $row = $resp->fetch_array();
+                $sid = $row['sid'];
+                $query_str = "UPDATE `t_l3f2cm_favourlist` SET `createtime` = '$currenttime' WHERE (`sid` = '$sid' )";
+                $result = $mysqli->query($query_str);
+            }
+            else{
+                $query_str = "INSERT INTO `t_l3f2cm_favourlist` (uid,statcode,createtime) VALUES ('$uid','$statCode','$currenttime')";
+                $result = $mysqli->query($query_str);
+            }
         }
         else{//替换一个时间最早的站点
             $query_str = "SELECT * FROM `t_l3f2cm_favourlist` WHERE (`createtime` = (SELECT MIN(`createtime`) FROM `t_l3f2cm_favourlist` where `uid` = '$uid' )) AND (`uid` = '$uid')";
