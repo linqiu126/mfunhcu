@@ -348,7 +348,8 @@ class classTaskL2sdkIotHcu
     {
         //定义本入口函数的logger处理对象及函数
         $loggerObj = new classApiL1vmFuncCom();
-        $log_time = date("Y-m-d H:i:s", time());
+        $timestamp = time();
+        $log_time = date("Y-m-d H:i:s", $timestamp);
 
         //目前HCU发送的数据已经是ASCII码，不需要再进行解码
         //$content = base64_decode($data->Content);
@@ -357,7 +358,7 @@ class classTaskL2sdkIotHcu
         $toUser = trim($data->ToUserName);
         $deviceId = trim($data->FromUserName);
         $createTime = trim($data->CreateTime);  //暂时不处理，后面增加时间合法性的判断
-        $content = trim($data->Content);
+        $content = base64_decode(trim($data->Content));
         $funcFlag = trim($data->FuncFlag);
 
         //取DB中的硬件信息，判断基本信息
@@ -383,9 +384,33 @@ class classTaskL2sdkIotHcu
             return true;
         }
 
+        $file_type = ".jpg";
+        if ($funcFlag == "01"){ //第一包数据，创建一个新JPG文件
+            if(!file_exists('./upload/'.$statCode)) {$result = mkdir('./upload/'.$statCode.'/', 0777, true);}
+            $filename = './upload/'.$statCode.'/'.$statCode . "_" . $timestamp . $file_type;
+            $newfile = fopen($filename, "wb+") or die("Unable to open file!");
+            fwrite($newfile, $content);
+            fclose($newfile);
+        }
+        else{ //往最新的文件里追加写内容
+            $lastfile_time = 0; //初始化
+            $lastfile_name = "";
+            $file_path = './upload/'.$statCode.'/';
+            if(!file_exists($file_path)) return false; //如果目录下没有文件，直接返回
+            foreach(glob($file_path."*".$file_type) as $filename) {
+                if (!(is_dir($filename))) { //是个文件而不是目录
+                    $filetime = filemtime($filename);
+                    if ($filetime >= $lastfile_time){
+                        $lastfile_time = $filetime;
+                        $lastfile_name = $filename;
+                    }
+                }
+            }
 
-
-
+            $oldfile = fopen($lastfile_name, "ab") or die("Unable to open file!");
+            fwrite($oldfile, $content);
+            fclose($oldfile);
+        }
 
     }
 
@@ -978,6 +1003,8 @@ class classTaskL2sdkIotHcu
                 $funcFlag = trim($postObj->FuncFlag);
 
                 $log_time = date("Y-m-d H:i:s",$createTime);
+                //定义本入口函数的logger处理对象及函数
+                $loggerObj = new classApiL1vmFuncCom();
 
                 //消息或者说帧类型分离，l2SDK只进行协议类型解码，不对消息的content进行处理，判断协议类型后发送给专门的l2codec任务处理
                 switch ($msgType)
@@ -985,8 +1012,6 @@ class classTaskL2sdkIotHcu
                     case "huitp_text"://HUITP消息处理
                         $project = MFUN_PRJ_HCU_XML;
                         $log_from = $fromUser;
-                        //定义本入口函数的logger处理对象及函数
-                        $loggerObj = new classApiL1vmFuncCom();
 
                         //取DB中的硬件信息，判断基本信息
                         $l2sdkHcuDbObj = new classDbiL2sdkHcu();
@@ -1033,9 +1058,9 @@ class classTaskL2sdkIotHcu
                         break;
                     case "hcu_pic":
                         $project = MFUN_PRJ_HCU_XML;
-                        $loggerObj->logger($project, $fromUser, $log_time, $log_content);
                         $log_from = $fromUser;
-                        //$this->receive_hcu_picdata_xmlmsg($parObj, $postObj, $project, $log_from);
+                        $loggerObj->logger($project, $log_from, $log_time, $log_content);
+                        $this->receive_hcu_picdata_xmlmsg($parObj, $postObj, $project, $log_from);
                         break;
                     case "hcu_heart_beat":
                         $project = MFUN_PRJ_HCU_XML;
