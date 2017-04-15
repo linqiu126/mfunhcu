@@ -358,7 +358,8 @@ class classTaskL2sdkIotHcu
         $toUser = trim($data->ToUserName);
         $deviceId = trim($data->FromUserName);
         $createTime = trim($data->CreateTime);  //暂时不处理，后面增加时间合法性的判断
-        $content = base64_decode(trim($data->Content));
+        $data_str = trim($data->Content);
+        $content = pack("H*", $data_str);
         $funcFlag = trim($data->FuncFlag);
 
         //取DB中的硬件信息，判断基本信息
@@ -386,10 +387,12 @@ class classTaskL2sdkIotHcu
 
         $file_type = ".jpg";
         if ($funcFlag == "01"){ //第一包数据，创建一个新JPG文件
-            if(!file_exists('./upload/'.$statCode)) {$result = mkdir('./upload/'.$statCode.'/', 0777, true);}
+            if(!file_exists('./upload/'.$statCode)) {$result = mkdir('./upload/'.$statCode.'/',0777,true);}
             $filename = './upload/'.$statCode.'/'.$statCode . "_" . $timestamp . $file_type;
             $newfile = fopen($filename, "wb+") or die("Unable to open file!");
-            fwrite($newfile, $content);
+            $reselt = fwrite($newfile, $content);
+            if ($result)
+                $loggerObj->logger($project, $log_from, $log_time, "上传新图片文件".$filename);
             fclose($newfile);
         }
         else{ //往最新的文件里追加写内容
@@ -408,7 +411,7 @@ class classTaskL2sdkIotHcu
             }
 
             $oldfile = fopen($lastfile_name, "ab") or die("Unable to open file!");
-            fwrite($oldfile, $content);
+            $result = fwrite($oldfile, $content);
             fclose($oldfile);
         }
 
