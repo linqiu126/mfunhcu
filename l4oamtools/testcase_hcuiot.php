@@ -119,7 +119,7 @@ if (TC_IOT_HCU == true) {
     echo " [TC OTHERS: PICTURE STORAGE START]\n";
     $dbiObj = new classDbiL2snrHsmmp();
     $data = addslashes(fread(fopen("C:\wamp\www\mfunhcu\l4oamtools\xhzn.png", "rb"), filesize("C:\wamp\www\mfunhcu\l4oamtools\xhzn.png")));
-    $dbiObj->dbi_picture_data_save(1, 1, 1, $data, 1);
+    $dbiObj->dbi_picture_data_save(1, 1, $data);
 //fclose($data);
 //读取操作
     $bindata = $dbiObj->dbi_latestPictureData_inqury(1);

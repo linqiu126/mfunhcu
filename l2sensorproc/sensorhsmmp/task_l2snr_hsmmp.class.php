@@ -16,11 +16,8 @@ class classTaskL2snrHsmmp
 
     }
 
-    public function func_hsmmp_process($platform, $deviceId, $statCode, $msg)
+    public function func_hsmmp_process($platform, $project, $deviceId, $statCode, $content,$funcFlag)
     {
-        if(isset($msg['content'])) $content = $msg['content']; else $content = "";
-        if(isset($msg['funcFlag'])) $funcFlag = $msg['funcFlag']; else $funcFlag = "";
-
         switch($platform)
         {
             case MFUN_TECH_PLTF_WECHAT:   //微信有专门的video消息类型，这里暂时定义一个空操作保持结构的完整性
@@ -68,6 +65,51 @@ class classTaskL2snrHsmmp
                         $resp = "";
                         break;
                 }
+                break;
+            case MFUN_TECH_PLTF_HCUSTM: //HCU单片机STM32平台
+                $loggerObj = new classApiL1vmFuncCom();
+                $timestamp = time();
+                $log_time = date("Y-m-d H:i:s", $timestamp);
+                $file_type = ".jpg";
+                $result = "";
+                if ($funcFlag == "01"){ //第一包数据，创建一个新JPG文件
+                    if(!file_exists('./upload/'.$statCode))
+                        $result = mkdir('./upload/'.$statCode.'/',0777,true);
+                    $filename = './upload/'.$statCode.'/'.$statCode . "_" . $timestamp . $file_type;
+                    $newfile = fopen($filename, "wb+") or die("Unable to open file!");
+                    $filesize = fwrite($newfile, $content);
+                    fclose($newfile);
+                    if ($filesize){
+                        $loggerObj->logger($project, $deviceId, $log_time, "上传新图片文件".$filename);
+                        $dbiL2snrHsmmpObj = new classDbiL2snrHsmmp();
+                        $result = $dbiL2snrHsmmpObj->dbi_picture_link_save($statCode, $deviceId, $timestamp, $filename,$filesize);
+                    }
+                }
+                else{ //往最新的文件里追加写内容
+                    $lastfile_time = 0; //初始化
+                    $lastfile_name = "";
+                    $file_path = './upload/'.$statCode.'/';
+                    if(!file_exists($file_path)) return false; //如果目录下没有文件，直接返回
+                    foreach(glob($file_path."*".$file_type) as $filename) {
+                        if (!(is_dir($filename))) { //是个文件而不是目录
+                            $filetime = filemtime($filename);
+                            if ($filetime >= $lastfile_time){
+                                $lastfile_time = $filetime;
+                                $lastfile_name = $filename;
+                            }
+                        }
+                    }
+
+                    $oldfile = fopen($lastfile_name, "ab") or die("Unable to open file!");
+                    $filesize = fwrite($oldfile, $content);
+                    fclose($oldfile);
+                    if ($filesize){
+                        $dbiL2snrHsmmpObj = new classDbiL2snrHsmmp();
+                        $result = $dbiL2snrHsmmpObj->dbi_picture_filesize_update($statCode, $deviceId, $timestamp, $lastfile_name, $filesize);
+                    }
+                }
+
+                $resp = "";
                 break;
             case MFUN_TECH_PLTF_JDIOT:
                 $resp = ""; //no response message
@@ -145,21 +187,23 @@ class classTaskL2snrHsmmp
         }
 
         //解开消息
-        $project= "";
+        $project = "";
         $log_from = "";
-        $platform ="";
-        $deviceId="";
+        $platform = "";
+        $deviceId = "";
         $statCode = "";
-        $content="";
+        $content = "";
+        $funcFlag = "";
         if (isset($msg["project"])) $project = $msg["project"];
         if (isset($msg["log_from"])) $log_from = $msg["log_from"];
         if (isset($msg["platform"])) $platform = $msg["platform"];
         if (isset($msg["deviceId"])) $deviceId = $msg["deviceId"];
         if (isset($msg["statCode"])) $statCode = $msg["statCode"];
         if (isset($msg["content"])) $content = $msg["content"];
+        if (isset($msg["funcFlag"])) $funcFlag = $msg["funcFlag"];
 
         //具体处理函数
-        $resp = $this->func_hsmmp_process($platform, $deviceId, $statCode, $content);
+        $resp = $this->func_hsmmp_process($platform, $project, $deviceId, $statCode, $content,$funcFlag);
 
         //返回ECHO
         if (!empty($resp))
