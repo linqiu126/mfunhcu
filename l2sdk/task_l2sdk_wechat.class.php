@@ -4657,6 +4657,60 @@ class classTaskL2sdkWechat
 								$msg) == false) $result = "Send to message buffer error";
 						else $result = "";
 						break;
+                    //handling of huitp from hcu
+                    case "hcu_huitp": //HUITP curl entrance
+                        $huitpObj = new classTaskL2codecHuitpXml();
+                        $msgId = MSG_ID_L2SDK_IOT_HUITP_TO_L2CODEC_HUITP;
+                        $msgName = "MSG_ID_L2SDK_IOT_HUITP_TO_L2CODEC_HUITP";
+
+                        $project = trim($postObj->ToUserName);
+                        $devCode = trim($postObj->FromUserName);
+
+                        //query statCode thru devCode from t_l2sdk_iothcu_inventory
+                        $cDbObj = new classDbiL2sdkHcu();
+                        $result = $cDbObj->dbi_hcuDevice_valid_device($devCode); //FromUserName对应每个HCU硬件的设备编号
+                        if (empty($result)){
+                            $result = "HCU_IOT: invalid device ID";
+                            $log_content = "T:" . json_encode($result);
+                            $loggerObj->logger($project, $log_from, $log_time, $log_content);
+                            echo trim($result);
+                            return true;
+                        }
+                        else{
+                            $statCode = $result;
+                        }
+
+                        $content = trim($postObj->Content);
+                        $funcFlag = trim($postObj->FuncFlag);
+
+                        $msg = array("project" => $project,
+                            "devCode" => $devCode,
+                            "statCode" => $statCode,
+                            "content" => $content,
+                            "funcFlag" => $funcFlag);
+
+                        $result = $huitpObj->mfun_l2codec_huitp_xml_task_main_entry($parObj, $msgId, $msgName, $msg);
+
+                        //test start, throw $result to related tasks, below is the sample of noise
+                        $log_from = MFUN_CLOUD_WX;
+                        $msg = array("project" => $project,
+                            "log_from" => $log_from,
+                            "platform" => MFUN_TECH_PLTF_HCUGX,
+                            "deviceId" => $devCode,
+                            "statCode" => $statCode,
+                            //put array $result to content
+                            "content" => $result[1]);
+                        if ($parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L2SDK_IOT_HCU,
+                                MFUN_TASK_ID_L2SENSOR_NOISE,
+                                MSG_ID_L2CODEC_TO_L2SNR_NOISE,
+                                "MSG_ID_L2CODEC_TO_L2SNR_NOISE",
+                                $msg) == false) $resp = "Send to message buffer error";
+                        else $resp = "";
+
+
+                        //test end
+
+                        break;
 
 					default:
 						$project = "NULL";
