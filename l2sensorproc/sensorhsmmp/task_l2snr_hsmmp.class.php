@@ -73,13 +73,14 @@ class classTaskL2snrHsmmp
                 $file_type = ".jpg";
                 $result = "";
                 if ($funcFlag == "01"){ //第一包数据，创建一个新JPG文件
-                    if(!file_exists('./upload/'.$statCode))
-                        $result = mkdir('./upload/'.$statCode.'/',0777,true);
-                    $filename = './upload/'.$statCode.'/'.$statCode . "_" . $timestamp . $file_type;
+                    if(!file_exists('../../avorion/'.$statCode))
+                        $result = mkdir('../../avorion/'.$statCode.'/',0777,true);
+                    $filename = '../../avorion/'.$statCode.'/'.$statCode . "_" . $timestamp . $file_type;
                     $newfile = fopen($filename, "wb+") or die("Unable to open file!");
                     $filesize = fwrite($newfile, $content);
                     fclose($newfile);
                     if ($filesize){
+                        $filename = '/'.$statCode.'/'.$statCode . "_" . $timestamp . $file_type;
                         $loggerObj->logger($project, $deviceId, $log_time, "上传新图片文件".$filename);
                         $dbiL2snrHsmmpObj = new classDbiL2snrHsmmp();
                         $result = $dbiL2snrHsmmpObj->dbi_picture_link_save($statCode, $deviceId, $timestamp, $filename,$filesize);
@@ -88,8 +89,8 @@ class classTaskL2snrHsmmp
                 else{ //往最新的文件里追加写内容
                     $lastfile_time = 0; //初始化
                     $lastfile_name = "";
-                    $file_path = './upload/'.$statCode.'/';
-                    if(!file_exists($file_path)) return false; //如果目录下没有文件，直接返回
+                    $file_path = '../../avorion/'.$statCode.'/';
+
                     foreach(glob($file_path."*".$file_type) as $filename) {
                         if (!(is_dir($filename))) { //是个文件而不是目录
                             $filetime = filemtime($filename);
@@ -100,12 +101,16 @@ class classTaskL2snrHsmmp
                         }
                     }
 
-                    $oldfile = fopen($lastfile_name, "ab") or die("Unable to open file!");
-                    $filesize = fwrite($oldfile, $content);
-                    fclose($oldfile);
-                    if ($filesize){
-                        $dbiL2snrHsmmpObj = new classDbiL2snrHsmmp();
-                        $result = $dbiL2snrHsmmpObj->dbi_picture_filesize_update($statCode, $deviceId, $timestamp, $lastfile_name, $filesize);
+                    if (!empty($lastfile_name)){
+                        $oldfile = fopen($lastfile_name, "ab") or die("Unable to open file!");
+                        $filesize = fwrite($oldfile, $content);
+                        fclose($oldfile);
+                        if ($filesize){
+                            $pos = strrpos($lastfile_name, '/', -(MFUN_HCU_FHYS_PIC_FILE_LEN+2));
+                            $filename = substr($lastfile_name, $pos);
+                            $dbiL2snrHsmmpObj = new classDbiL2snrHsmmp();
+                            $result = $dbiL2snrHsmmpObj->dbi_picture_filesize_update($statCode, $deviceId, $timestamp, $filename, $filesize);
+                        }
                     }
                 }
 

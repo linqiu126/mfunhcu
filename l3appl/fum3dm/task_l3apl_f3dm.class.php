@@ -515,7 +515,6 @@ class classTaskL3aplF3dm
         return $retval;
     }
 
-
     function func_key_event_history_process($type, $user, $body)
     {
         $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
@@ -530,6 +529,26 @@ class classTaskL3aplF3dm
             }
             else
                 $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>"获取锁事件历史记录失败");
+        }
+        else
+            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
+
+        return $retval;
+    }
+
+    function func_point_picture_process($type, $user, $body)
+    {
+        if (isset($body["StatCode"])) $statcode = $body["StatCode"]; else  $statcode = "";
+
+        $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
+        $usercheck = $uiF1symDbObj->dbi_user_authcheck($type, $user);
+        if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
+            $uiF3dmDbObj = new classDbiL3apF3dm(); //初始化一个UI DB对象
+            $pic_list = $uiF3dmDbObj->dbi_point_picture_process($statcode);
+            if(!empty($pic_list))
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$pic_list,'msg'=>"获取指定站点的照片列表成功");
+            else
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>"获取指定站点的照片列表失败");
         }
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
@@ -691,6 +710,11 @@ class classTaskL3aplF3dm
 
             case MSG_ID_L4FHYSUI_TO_L3F3_KEYHISTORY://开锁事件历史记录
                 $resp = $this->func_key_event_history_process($type, $user, $body);
+                $project = MFUN_PRJ_HCU_FHYSUI;
+                break;
+
+            case MSG_ID_L4FHYSUI_TO_L3F3_POINTPICTURE:
+                $resp = $this->func_point_picture_process($type, $user, $body);
                 $project = MFUN_PRJ_HCU_FHYSUI;
                 break;
 

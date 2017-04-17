@@ -2222,6 +2222,34 @@ class classDbiL3apF3dm
         return $history;
     }
 
+    public function dbi_point_picture_process($statcode)
+    {
+        //建立连接
+        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli) {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $mysqli->query("SET NAMES utf8");
+
+        $query_str = "SELECT * FROM `t_l2snr_picturedata` WHERE `statcode` = '$statcode' ";
+        $result = $mysqli->query($query_str);
+
+        $pic_list = array();
+        while($row = $result->fetch_array())
+        {
+            $file_url = $row['filename'];
+            $file_name = substr($file_url, -MFUN_HCU_FHYS_PIC_FILE_LEN);
+            $temp = array(
+                'name' => $file_name,
+                'url' => $file_url
+            );
+            array_push($pic_list, $temp);
+        }
+
+        $mysqli->close();
+        return $pic_list;
+    }
+
 }
 
 ?>

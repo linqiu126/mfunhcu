@@ -283,7 +283,7 @@ class classDbiL2snrHsmmp
         $stamp = getdate($timestamp);
         $hourminindex = intval(($stamp["hours"] * 60 + floor($stamp["minutes"]/MFUN_TIME_GRID_SIZE)));
 
-        $query_str = "SELECT * FROM `t_l2snr_picturedata` WHERE (`statcode` = '$statcode' AND `reportdate` = '$date' AND `filename` = '$filename')";
+        $query_str = "SELECT * FROM `t_l2snr_picturedata` WHERE (`statcode` = '$statcode' AND `filename` = '$filename')";
         $result = $mysqli->query($query_str);
         if (($result != false) && ($result->num_rows)>0) {
             $row = $result->fetch_array();
