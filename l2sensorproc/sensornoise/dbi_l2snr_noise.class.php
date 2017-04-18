@@ -96,6 +96,38 @@ class classDbiL2snrNoise
         return $result;
     }
 
+    public function dbi_noise_huitp_data_save($deviceid,$data)
+    {
+        //建立连接
+        $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli)
+        {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+
+        //存储新记录，如果发现是已经存在的数据，则覆盖，否则新增
+        /*$result = $mysqli->query("SELECT * FROM `t_l2snr_noisedata` WHERE (`deviceid` = '$deviceid' AND `sensorid` = '$sensorid'
+                                  AND `reportdate` = '$date' AND `hourminindex` = '$hourminindex')");
+        if (($result != false) && ($result->num_rows)>0)   //重复，则覆盖
+        {
+            $result=$mysqli->query("UPDATE `t_l2snr_noisedata` SET `noise` = '$noise',`altitude` = '$altitude',`flag_la` = '$flag_la',`latitude` = '$latitude',`flag_lo` = '$flag_lo',`longitude` = '$longitude'
+                          WHERE (`deviceid` = '$deviceid' AND `sensorid` = '$sensorid' AND `reportdate` = '$date' AND `hourminindex` = '$hourminindex')");
+        }
+        else   //不存在，新增
+        {
+            $result=$mysqli->query("INSERT INTO `t_l2snr_noisedata` (deviceid,sensorid,noise,reportdate,hourminindex,altitude,flag_la,latitude,flag_lo,longitude)
+                                  VALUES ('$deviceid','$sensorid','$noise','$date','$hourminindex','$altitude', '$flag_la','$latitude', '$flag_lo','$longitude')");
+        }*/
+
+        //duplidated record check should be added
+        //huitp noise data store
+        $noise = $data;
+        $result=$mysqli->query("UPDATE `t_l2snr_noisedata` SET `noise` = '$noise' WHERE (`deviceid` = '$deviceid' )");
+
+        $mysqli->close();
+        return $result;
+    }
+
     //删除对应用户所有超过90天的数据
     //缺省做成90天，如果参数错误，导致90天以内的数据强行删除，则不被认可
     public function dbi_noiseData_delete_3monold($deviceid, $sensorid,$days)

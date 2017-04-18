@@ -87,10 +87,18 @@ class classTaskL2snrNoise
                 break;
             case MFUN_TECH_PLTF_HCUGX:
                 //20170415, QL to be done
-                $data = substr($content, MFUN_HCU_MSG_HEAD_LENGTH, $length - MFUN_HCU_MSG_HEAD_LENGTH);//截取消息数据域
 
-                $opt_key = hexdec($msgHead['Cmd']) & 0xFF;
-                switch ($opt_key) //MODBUS操作字处理
+                $opt_key = $content['HUITP_IEID_uni_noise_value']['ieId'];
+                $noiseValue = $content['HUITP_IEID_uni_noise_value']['noiseValue'];
+                $dataFormat = pow(10,$content['HUITP_IEID_uni_noise_value']['dataFormat']);
+                $data = hexdec($noiseValue) / $dataFormat;
+
+                //$opt_key = hexdec($opt_key) & 0xFF;
+
+                //should we add ieId value switch below? or directly store noise value?
+                //how to match $opt_key with MFUN_HCU_MODBUS_DATA_REPORT
+
+                /*switch ($opt_key) //MODBUS操作字处理
                 {
                     case MFUN_HCU_MODBUS_DATA_REPORT:
                         $resp = $this->hcu_noise_req_huitp_process($deviceId, $statCode, $data);
@@ -98,7 +106,10 @@ class classTaskL2snrNoise
                     default:
                         $resp = "";
                         break;
-                }
+                }*/
+
+                $resp = $this->hcu_noise_req_huitp_process($deviceId, $statCode, $data);
+
                 break;
             case MFUN_TECH_PLTF_JDIOT:
                 $resp = ""; //no response message
@@ -164,7 +175,7 @@ class classTaskL2snrNoise
 
     private function hcu_noise_req_huitp_process( $deviceId,$statCode,$content)
     {
-        $format = "A2Equ/A2Type/A2Format/A8Noise/A2Flag_Lo/A8Longitude/A2Flag_La/A8Latitude/A8Altitude/A8Time";
+        /*$format = "A2Equ/A2Type/A2Format/A8Noise/A2Flag_Lo/A8Longitude/A2Flag_La/A8Latitude/A8Altitude/A8Time";
         $data = unpack($format, $content);
 
         $sensorId = hexdec($data['Equ']) & 0xFF;
@@ -175,23 +186,23 @@ class classTaskL2snrNoise
         $gps["flag_lo"] = chr(hexdec($data['Flag_Lo']) & 0xFF);
         $gps["longitude"] = hexdec($data['Longitude']) & 0xFFFFFFFF;
         $gps["altitude"] = hexdec($data['Altitude']) & 0xFFFFFFFF;
-        $timeStamp = hexdec($data['Time']) & 0xFFFFFFFF;
+        $timeStamp = hexdec($data['Time']) & 0xFFFFFFFF;*/
 
         $sDbObj = new classDbiL2snrNoise();
-        $sDbObj->dbi_noise_data_save($deviceId, $sensorId, $timeStamp, $report,$gps);
+        $sDbObj->dbi_noise_huitp_data_save($deviceId, $content);
         //该函数处理需要再完善，不确定是否可用
-        $sDbObj->dbi_noiseData_delete_3monold($sensorId, $deviceId, MFUN_HCU_DATA_SAVE_DURATION_IN_DAYS);  //remove 90 days old data.
+        //$sDbObj->dbi_noiseData_delete_3monold($sensorId, $deviceId, MFUN_HCU_DATA_SAVE_DURATION_IN_DAYS);  //remove 90 days old data.
 
         //更新分钟测量报告聚合表
-        $sDbObj->dbi_minreport_update_noise($deviceId,$statCode,$timeStamp,$report);
+        //$sDbObj->dbi_minreport_update_noise($deviceId,$statCode,$timeStamp,$report);
 
         //更新数据精度格式表
-        $format = $report["format"];
-        $cDbObj = new classDbiL2snrCom();
-        $cDbObj->dbi_dataformat_update_format($deviceId,"T_noise",$format);
+        //$format = $report["format"];
+        //$cDbObj = new classDbiL2snrCom();
+        //$cDbObj->dbi_dataformat_update_format($deviceId,"T_noise",$format);
         //更新瞬时测量值聚合表
-        $cDbObj = new classDbiL3apF3dm();
-        $cDbObj->dbi_currentreport_update_value($deviceId, $statCode, $timeStamp,"T_noise", $report);
+        //$cDbObj = new classDbiL3apF3dm();
+        //$cDbObj->dbi_currentreport_update_value($deviceId, $statCode, $timeStamp,"T_noise", $report);
 
         $resp = ""; //no response message
         return $resp;
