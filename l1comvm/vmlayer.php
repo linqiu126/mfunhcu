@@ -88,7 +88,7 @@ include_once "../l4nbiotiwmui/task_l4nbiot_iwm_ui.class.php";
 include_once "../l4nbiotigmui/task_l4nbiot_igm_ui.class.php";
 include_once "../l4nbiotihmui/task_l4nbiot_ihm_ui.class.php";
 include_once "../l5bi/task_bi_service.class.php";
-date_default_timezone_set('prc'); //设置北京时间为系统的缺省时间
+date_default_timezone_set('PRC'); //设置北京时间为系统的缺省时间
 
 
 class classTaskL1vmCoreRouter

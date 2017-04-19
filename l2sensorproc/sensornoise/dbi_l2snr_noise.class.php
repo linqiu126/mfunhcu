@@ -96,7 +96,7 @@ class classDbiL2snrNoise
         return $result;
     }
 
-    public function dbi_noise_huitp_data_save($deviceid,$data)
+    public function dbi_noise_huitp_data_save($deviceid,$timeStamp, $noiseValue)
     {
         //建立连接
         $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
@@ -105,24 +105,20 @@ class classDbiL2snrNoise
             die('Could not connect: ' . mysqli_error($mysqli));
         }
 
+        $date = intval(date("ymd", $timeStamp));
+        $stamp = getdate($timeStamp);
+        $hourminindex = intval(($stamp["hours"] * 60 + floor($stamp["minutes"]/MFUN_TIME_GRID_SIZE)));
+
         //存储新记录，如果发现是已经存在的数据，则覆盖，否则新增
-        /*$result = $mysqli->query("SELECT * FROM `t_l2snr_noisedata` WHERE (`deviceid` = '$deviceid' AND `sensorid` = '$sensorid'
-                                  AND `reportdate` = '$date' AND `hourminindex` = '$hourminindex')");
+        $result = $mysqli->query("SELECT * FROM `t_l2snr_noisedata` WHERE (`deviceid` = '$deviceid' AND `reportdate` = '$date' AND `hourminindex` = '$hourminindex')");
         if (($result != false) && ($result->num_rows)>0)   //重复，则覆盖
         {
-            $result=$mysqli->query("UPDATE `t_l2snr_noisedata` SET `noise` = '$noise',`altitude` = '$altitude',`flag_la` = '$flag_la',`latitude` = '$latitude',`flag_lo` = '$flag_lo',`longitude` = '$longitude'
-                          WHERE (`deviceid` = '$deviceid' AND `sensorid` = '$sensorid' AND `reportdate` = '$date' AND `hourminindex` = '$hourminindex')");
+            $result=$mysqli->query("UPDATE `t_l2snr_noisedata` SET `noise` = '$noiseValue', WHERE (`deviceid` = '$deviceid' AND `reportdate` = '$date' AND `hourminindex` = '$hourminindex')");
         }
         else   //不存在，新增
         {
-            $result=$mysqli->query("INSERT INTO `t_l2snr_noisedata` (deviceid,sensorid,noise,reportdate,hourminindex,altitude,flag_la,latitude,flag_lo,longitude)
-                                  VALUES ('$deviceid','$sensorid','$noise','$date','$hourminindex','$altitude', '$flag_la','$latitude', '$flag_lo','$longitude')");
-        }*/
-
-        //duplidated record check should be added
-        //huitp noise data store
-        $noise = $data;
-        $result=$mysqli->query("UPDATE `t_l2snr_noisedata` SET `noise` = '$noise' WHERE (`deviceid` = '$deviceid' )");
+            $result=$mysqli->query("INSERT INTO `t_l2snr_noisedata` (deviceid,noise,reportdate,hourminindex) VALUES ('$deviceid','$noiseValue','$date','$hourminindex')");
+        }
 
         $mysqli->close();
         return $result;
@@ -140,6 +136,22 @@ class classDbiL2snrNoise
             die('Could not connect: ' . mysqli_error($mysqli));
         }
         $result = $mysqli->query("DELETE FROM `t_l2snr_noisedata` WHERE ((`deviceid` = '$deviceid' AND `sensorid` ='$sensorid') AND (TO_DAYS(NOW()) - TO_DAYS(`date`) > '$days'))");
+        $mysqli->close();
+        return $result;
+    }
+
+    //删除对应用户所有超过90天的数据
+    //缺省做成90天，如果参数错误，导致90天以内的数据强行删除，则不被认可
+    public function dbi_noiseData_huitp_delete_3monold($deviceid, $days)
+    {
+        if ($days <90) $days = 90;  //不允许删除90天以内的数据
+        //建立连接
+        $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli)
+        {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $result = $mysqli->query("DELETE FROM `t_l2snr_noisedata` WHERE ((`deviceid` = '$deviceid' ) AND (TO_DAYS(NOW()) - TO_DAYS(`date`) > '$days'))");
         $mysqli->close();
         return $result;
     }
@@ -175,6 +187,38 @@ class classDbiL2snrNoise
         $hourminindex = intval(($stamp["hours"] * 60 + floor($stamp["minutes"]/MFUN_TIME_GRID_SIZE)));
 
         $noise = $data["value"];
+
+        //存储新记录，如果发现是已经存在的数据，则覆盖，否则新增
+        $result = $mysqli->query("SELECT * FROM `t_l2snr_aqyc_minreport` WHERE (`devcode` = '$devcode' AND `statcode` = '$statcode'
+                                  AND `reportdate` = '$date' AND `hourminindex` = '$hourminindex')");
+        if (($result != false) && ($result->num_rows)>0)   //重复，则覆盖
+        {
+            $result=$mysqli->query("UPDATE `t_l2snr_aqyc_minreport` SET `noise` = '$noise'
+                          WHERE (`devcode` = '$devcode' AND `statcode` = '$statcode' AND `reportdate` = '$date' AND `hourminindex` = '$hourminindex')");
+        }
+        else   //不存在，新增
+        {
+            $result=$mysqli->query("INSERT INTO `t_l2snr_aqyc_minreport` (devcode,statcode,noise,reportdate,hourminindex)
+                                  VALUES ('$devcode', '$statcode', '$noise','$date','$hourminindex')");
+        }
+        $mysqli->close();
+        return $result;
+    }
+
+    public function dbi_minreport_huitp_update_noise($devcode,$statcode,$timeStamp,$noise)
+    {
+        //建立连接
+        $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli)
+        {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+
+        $date = intval(date("ymd", $timeStamp));
+        $stamp = getdate($timeStamp);
+        $hourminindex = intval(($stamp["hours"] * 60 + floor($stamp["minutes"]/MFUN_TIME_GRID_SIZE)));
+
+        //$noise = $data["value"];
 
         //存储新记录，如果发现是已经存在的数据，则覆盖，否则新增
         $result = $mysqli->query("SELECT * FROM `t_l2snr_aqyc_minreport` WHERE (`devcode` = '$devcode' AND `statcode` = '$statcode'

@@ -594,7 +594,7 @@ class classL2codecHuitpIeDict
 
           //噪声Noise
           HUITP_IEID_uni_noise_min                        => "",
-          HUITP_IEID_uni_noise_value                      => array("format"=>"A4ieId/A4ieLen/A2dataFormat/A8noiseValue","name"=>"HUITP_IEID_uni_noise_value"),
+          HUITP_IEID_uni_noise_value                      => array("format"=>"A4ieId/A4ieLen/A2dataFormat/A8noiseValue/A8timeStamp","name"=>"HUITP_IEID_uni_noise_value"),
 
           //相机Camer or audio high speed
           HUITP_IEID_uni_hsmmp_min                        => array("format"=>"A4ieId/A4ieLen","name"=>""),

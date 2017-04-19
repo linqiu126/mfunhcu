@@ -16,7 +16,7 @@ if (TC_EMCWX == true){
 
     //HUITP Noise Data
     echo " [TC IOT_HCU: HUITP Noise Data START]\n";
-    $GLOBALS["HTTP_RAW_POST_DATA"] = "<xml><ToUserName><![CDATA[XHZN_HCU]]></ToUserName><FromUserName><![CDATA[HCU_G201_AQYC_SH001]]></FromUserName><CreateTime>1491059984</CreateTime><MsgType><![CDATA[hcu_huitp]]></MsgType><Content><![CDATA[2B81000E00030001012B00000502000001B2]]></Content><FuncFlag>0</FuncFlag></xml>";
+    $GLOBALS["HTTP_RAW_POST_DATA"] = "<xml><ToUserName><![CDATA[XHZN_HCU]]></ToUserName><FromUserName><![CDATA[HCU_G201_AQYC_SH001]]></FromUserName><CreateTime>1492518479</CreateTime><MsgType><![CDATA[hcu_huitp]]></MsgType><Content><![CDATA[2B81001200030001012B00000902000001B258F6064F]]></Content><FuncFlag>0</FuncFlag></xml>";
     require("../l1mainentry/cloud_callback_wechat.php");
     echo " [TC IOT_HCU: HUITP Noise Data END]\n";
 

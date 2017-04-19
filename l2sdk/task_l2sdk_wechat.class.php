@@ -4691,7 +4691,7 @@ class classTaskL2sdkWechat
 
                         $result = $huitpObj->mfun_l2codec_huitp_xml_task_main_entry($parObj, $msgId, $msgName, $msg);
 
-                        //test start, throw $result to related tasks, below is the sample of noise
+                        //Throw $result to related tasks, below is the sample of noise
                         $log_from = MFUN_CLOUD_WX;
                         $msg = array("project" => $project,
                             "log_from" => $log_from,
@@ -4707,8 +4707,8 @@ class classTaskL2sdkWechat
                                 $msg) == false) $resp = "Send to message buffer error";
                         else $resp = "";
 
-
-                        //test end
+                        //convert array to string
+                        $result = self::json_encode($result);
 
                         break;
 

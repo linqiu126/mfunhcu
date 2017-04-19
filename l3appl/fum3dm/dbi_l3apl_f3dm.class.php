@@ -251,6 +251,130 @@ class classDbiL3apF3dm
         return $result;
     }
 
+    public function dbi_currentreport_huitp_update_value($deviceid, $statcode, $timeStamp, $type, $data)
+    {
+        //建立连接
+        $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli)
+        {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+
+        $currenttime = date("Y-m-d H:i:s",$timeStamp);
+
+        switch($type)
+        {
+            case "T_airpressure":
+                $airpressure = $data["value"];
+                //存储新记录，如果发现是已经存在的数据，则覆盖，否则新增
+                $result = $mysqli->query("SELECT * FROM `t_l3f3dm_aqyc_currentreport` WHERE (`deviceid` = '$deviceid' ");
+                if (($result->num_rows)>0) {
+                    $result = $mysqli->query("UPDATE `t_l3f3dm_aqyc_currentreport` SET  `airpressure` = '$airpressure', `createtime` = '$currenttime' WHERE (`deviceid` = '$deviceid')");
+                }
+                else {
+                    $result = $mysqli->query("INSERT INTO `t_l3f3dm_aqyc_currentreport` (deviceid,statcode,createtime,airpressure) VALUES ('$deviceid','$statcode','$currenttime','$airpressure')");
+                }
+                break;
+            case "T_emcdata":
+                $emc = $data["value"];
+                //存储新记录，如果发现是已经存在的数据，则覆盖，否则新增
+                $result = $mysqli->query("SELECT * FROM `t_l3f3dm_aqyc_currentreport` WHERE (`deviceid` = '$deviceid')");
+                if (($result->num_rows)>0) {
+                    $result = $mysqli->query("UPDATE `t_l3f3dm_aqyc_currentreport` SET  `emcvalue` = '$emc', `createtime` = '$currenttime' WHERE (`deviceid` = '$deviceid')");
+                }
+                else {
+                    $result = $mysqli->query("INSERT INTO `t_l3f3dm_aqyc_currentreport` (deviceid,statcode,createtime,emcvalue) VALUES ('$deviceid','$statcode','$currenttime','$emc')");
+                }
+                break;
+            case "T_humidity":
+                $humidity = $data["value"];
+                //存储新记录，如果发现是已经存在的数据，则覆盖，否则新增
+                $result = $mysqli->query("SELECT * FROM `t_l3f3dm_aqyc_currentreport` WHERE (`deviceid` = '$deviceid' )");
+                if (($result->num_rows)>0) {
+                    $result = $mysqli->query("UPDATE `t_l3f3dm_aqyc_currentreport` SET  `humidity` = '$humidity', `createtime` = '$currenttime' WHERE (`deviceid` = '$deviceid')");
+                }
+                else {
+                    $result = $mysqli->query("INSERT INTO `t_l3f3dm_aqyc_currentreport` (deviceid,statcode,createtime,humidity) VALUES ('$deviceid','$statcode','$currenttime','$humidity')");
+                }
+                break;
+            case "T_noise":
+                $noise = $data;
+                //存储新记录，如果发现是已经存在的数据，则覆盖，否则新增
+                $result = $mysqli->query("SELECT * FROM `t_l3f3dm_aqyc_currentreport` WHERE (`deviceid` = '$deviceid' )");
+                if (($result->num_rows)>0) {
+                    $result = $mysqli->query("UPDATE `t_l3f3dm_aqyc_currentreport` SET  `noise` = '$noise', `createtime` = '$currenttime' WHERE (`deviceid` = '$deviceid')");
+                }
+                else {
+                    $result = $mysqli->query("INSERT INTO `t_l3f3dm_aqyc_currentreport` (deviceid,statcode,createtime,noise) VALUES ('$deviceid','$statcode','$currenttime','$noise')");
+                }
+                break;
+            case "t_l2snr_pm25data";
+                $pm01 = $data["pm01"];
+                $pm25 = $data["pm25"];
+                $pm10 = $data["pm10"];
+
+                //存储新记录，如果发现是已经存在的数据，则覆盖，否则新增
+                $result = $mysqli->query("SELECT * FROM `t_l3f3dm_aqyc_currentreport` WHERE (`deviceid` = '$deviceid')");
+                if (($result->num_rows)>0) {
+                    $result = $mysqli->query("UPDATE `t_l3f3dm_aqyc_currentreport` SET   `pm01` = '$pm01',`pm25` = '$pm25',`pm10` = '$pm10',`createtime` = '$currenttime' WHERE (`deviceid` = '$deviceid')");
+                }
+                else {
+                    $result = $mysqli->query("INSERT INTO `t_l3f3dm_aqyc_currentreport` (deviceid,statcode,createtime,pm01,pm25,pm10) VALUES ('$deviceid','$statcode','$currenttime','$pm01','$pm25','$pm10')");
+                }
+                break;
+            case "T_rain":
+                $rain = $data["value"];
+                //存储新记录，如果发现是已经存在的数据，则覆盖，否则新增
+                $result = $mysqli->query("SELECT * FROM `t_l3f3dm_aqyc_currentreport` WHERE (`deviceid` = '$deviceid' )");
+                if (($result->num_rows)>0) {
+                    $result = $mysqli->query("UPDATE `t_l3f3dm_aqyc_currentreport` SET  `rain` = '$rain', `createtime` = '$currenttime' WHERE (`deviceid` = '$deviceid')");
+                }
+                else {
+                    $result = $mysqli->query("INSERT INTO `t_l3f3dm_aqyc_currentreport` (deviceid,statcode,createtime,rain) VALUES ('$deviceid','$statcode','$currenttime','$rain')");
+                }
+                break;
+            case "T_temperature":
+                $temperature = $data["value"];
+                //存储新记录，如果发现是已经存在的数据，则覆盖，否则新增
+                $result = $mysqli->query("SELECT * FROM `t_l3f3dm_aqyc_currentreport` WHERE (`deviceid` = '$deviceid' )");
+                if (($result->num_rows)>0) {
+                    $result = $mysqli->query("UPDATE `t_l3f3dm_aqyc_currentreport` SET  `temperature` = '$temperature', `createtime` = '$currenttime' WHERE (`deviceid` = '$deviceid')");
+                }
+                else {
+                    $result = $mysqli->query("INSERT INTO `t_l3f3dm_aqyc_currentreport` (deviceid,statcode,createtime,temperature) VALUES ('$deviceid','$statcode','$currenttime','$temperature')");
+                }
+                break;
+            case "T_winddirection":
+                $winddirection = $data["value"];
+                //存储新记录，如果发现是已经存在的数据，则覆盖，否则新增
+                $result = $mysqli->query("SELECT * FROM `t_l3f3dm_aqyc_currentreport` WHERE (`deviceid` = '$deviceid' )");
+                if (($result->num_rows)>0) {
+                    $result = $mysqli->query("UPDATE `t_l3f3dm_aqyc_currentreport` SET  `winddirection` = '$winddirection', `createtime` = '$currenttime' WHERE (`deviceid` = '$deviceid')");
+                }
+                else {
+                    $result = $mysqli->query("INSERT INTO `t_l3f3dm_aqyc_currentreport` (deviceid,statcode,createtime,winddirection) VALUES ('$deviceid','$statcode','$currenttime','$winddirection')");
+                }
+                break;
+            case "t_l2snr_windspd":
+                $windspeed = $data["value"];
+                //存储新记录，如果发现是已经存在的数据，则覆盖，否则新增
+                $result = $mysqli->query("SELECT * FROM `t_l3f3dm_aqyc_currentreport` WHERE (`deviceid` = '$deviceid' )");
+                if (($result->num_rows)>0) {
+                    $result = $mysqli->query("UPDATE `t_l3f3dm_aqyc_currentreport` SET  `windspeed` = '$windspeed', `createtime` = '$currenttime' WHERE (`deviceid` = '$deviceid')");
+                }
+                else {
+                    $result = $mysqli->query("INSERT INTO `t_l3f3dm_aqyc_currentreport` (deviceid,statcode,createtime,windspeed) VALUES ('$deviceid','$statcode','$currenttime','$windspeed')");
+                }
+                break;
+            default:
+                $result = "COMMON_DB: invaild data type";
+                break;
+        }
+
+        $mysqli->close();
+        return $result;
+    }
+
     /**********************************************************************************************************************
      *                                          监测点及HCU设备相关操作DB API                                               *
      *********************************************************************************************************************/
