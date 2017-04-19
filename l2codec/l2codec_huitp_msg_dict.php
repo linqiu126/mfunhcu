@@ -871,7 +871,8 @@ class classL2codecHuitpMsgDict
         HUITP_MSGID_uni_humid_min => array(),  //0x2900
         HUITP_MSGID_uni_humid_data_req => array("0" => HUITP_IEID_uni_com_req),  //0x2900
         HUITP_MSGID_uni_humid_data_resp => array("0" => HUITP_IEID_uni_com_req),  //0x2980
-        HUITP_MSGID_uni_humid_data_report => array("0" => HUITP_IEID_uni_com_req),  //0x2981
+        HUITP_MSGID_uni_humid_data_report => array("0" => HUITP_IEID_uni_com_req,
+                                                    "1" => HUITP_IEID_uni_humid_value),  //0x2981
         HUITP_MSGID_uni_humid_data_confirm => array("0" => HUITP_IEID_uni_com_req),  //0x2901
         HUITP_MSGID_uni_humid_ctrl_req => array("0" => HUITP_IEID_uni_com_req),  //0x2902
         HUITP_MSGID_uni_humid_ctrl_resp => array("0" => HUITP_IEID_uni_com_req),  //0x2982

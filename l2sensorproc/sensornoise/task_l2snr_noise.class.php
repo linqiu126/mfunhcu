@@ -164,7 +164,7 @@ class classTaskL2snrNoise
 
         $sDbObj = new classDbiL2snrNoise();
         $sDbObj->dbi_noise_huitp_data_save($deviceId, $timeStamp, $noiseValue);
-        //该函数处理需要再完善，不确定是否可用 to be done, QL
+        //该函数处理需要再完善，不确定是否可用
         $sDbObj->dbi_noiseData_huitp_delete_3monold($deviceId, MFUN_HCU_DATA_SAVE_DURATION_IN_DAYS);  //remove 90 days old data.
 
         //更新分钟测量报告聚合表

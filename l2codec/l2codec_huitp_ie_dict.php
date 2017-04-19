@@ -586,7 +586,7 @@ class classL2codecHuitpIeDict
 
           //湿度Humidity
           HUITP_IEID_uni_humid_min                        => "",
-          HUITP_IEID_uni_humid_value                      => array("format"=>"A4ieId/A4ieLen","name"=>""),
+          HUITP_IEID_uni_humid_value                      => array("format"=>"A4ieId/A4ieLen/A2dataFormat/A8humidValue/A8timeStamp","name"=>"HUITP_IEID_uni_humid_value"),
 
           //气压Air pressure
           HUITP_IEID_uni_airprs_min                       => "",

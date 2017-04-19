@@ -4700,10 +4700,21 @@ class classTaskL2sdkWechat
                             "statCode" => $statCode,
                             //put array $result to content
                             "content" => $result[1]);
+
+                        //case1: noise
+                        /*$temp_destId = MFUN_TASK_ID_L2SENSOR_NOISE;
+                        $temp_msgId = MSG_ID_L2CODEC_TO_L2SNR_NOISE;
+                        $temp_msgName = "MSG_ID_L2CODEC_TO_L2SNR_NOISE";*/
+
+                        //case2: humidity
+                        $temp_destId = MFUN_TASK_ID_L2SENSOR_HUMID;
+                        $temp_msgId = MSG_ID_L2CODEC_TO_L2SNR_HUMIDITY;
+                        $temp_msgName = "MSG_ID_L2CODEC_TO_L2SNR_HUMIDITY";
+
                         if ($parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L2SDK_IOT_HCU,
-                                MFUN_TASK_ID_L2SENSOR_NOISE,
-                                MSG_ID_L2CODEC_TO_L2SNR_NOISE,
-                                "MSG_ID_L2CODEC_TO_L2SNR_NOISE",
+                                $temp_destId,
+                                $temp_msgId,
+                                $temp_msgName,
                                 $msg) == false) $resp = "Send to message buffer error";
                         else $resp = "";
 

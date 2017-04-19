@@ -14,6 +14,12 @@ if (TC_EMCWX == true){
 //EMCWX测试开始
 
 
+    //HUITP Humidity Data
+    echo " [TC IOT_HCU: HUITP Humidity Data START]\n";
+    $GLOBALS["HTTP_RAW_POST_DATA"] = "<xml><ToUserName><![CDATA[XHZN_HCU]]></ToUserName><FromUserName><![CDATA[HCU_G201_AQYC_SH001]]></FromUserName><CreateTime>1492506345</CreateTime><MsgType><![CDATA[hcu_huitp]]></MsgType><Content><![CDATA[29810012000300010129000009010000567858F5D6E9]]></Content><FuncFlag>0</FuncFlag></xml>";
+    require("../l1mainentry/cloud_callback_wechat.php");
+    echo " [TC IOT_HCU: HUITP Humidity Data END]\n";
+
     //HUITP Noise Data
     echo " [TC IOT_HCU: HUITP Noise Data START]\n";
     $GLOBALS["HTTP_RAW_POST_DATA"] = "<xml><ToUserName><![CDATA[XHZN_HCU]]></ToUserName><FromUserName><![CDATA[HCU_G201_AQYC_SH001]]></FromUserName><CreateTime>1492518479</CreateTime><MsgType><![CDATA[hcu_huitp]]></MsgType><Content><![CDATA[2B81001200030001012B00000902000001B258F6064F]]></Content><FuncFlag>0</FuncFlag></xml>";

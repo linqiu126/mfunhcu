@@ -21,7 +21,8 @@ define("MSG_ID_L1VM_TO_L2SDK_IOT_APPLE_INCOMING", $index++);
 define("MSG_ID_L1VM_TO_L2SDK_IOT_JD_INCOMING", $index++);
 define("MSG_ID_L1VM_TO_L2SDK_IOT_HUITP_INCOMING", $index++);
 define("MSG_ID_L2SDK_IOT_HUITP_TO_L2CODEC_HUITP", $index++);
-define("MSG_ID_L2CODEC_TO_L2SNR_NOISE", $index++); //send huitp result to related task
+define("MSG_ID_L2CODEC_TO_L2SNR_NOISE", $index++); //send huitp result to noise task
+define("MSG_ID_L2CODEC_TO_L2SNR_HUMIDITY", $index++); //send huitp result to humidity task
 
 define("MSG_ID_L2SDK_HCU_TO_L2SNR_EMC", $index++);
 define("MSG_ID_L2SDK_EMCWX_TO_L2SNR_EMC_DATA_READ_INSTANT", $index++);
