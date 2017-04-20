@@ -97,6 +97,35 @@ class classDbiL2snrTemp
         return $result;
     }
 
+    public function dbi_temperature_huitp_data_save($deviceid,$timestamp,$data)
+    {
+        //建立连接
+        $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli)
+        {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+
+        $date = intval(date("ymd", $timestamp));
+        $stamp = getdate($timestamp);
+        $hourminindex = intval(($stamp["hours"] * 60 + floor($stamp["minutes"]/MFUN_TIME_GRID_SIZE)));
+
+        $temperature = $data;
+
+        //存储新记录，如果发现是已经存在的数据，则覆盖，否则新增
+        $result = $mysqli->query("SELECT * FROM `t_l2snr_tempdata` WHERE (`deviceid` = '$deviceid' AND `reportdate` = '$date' AND `hourminindex` = '$hourminindex')");
+        if (($result != false) && ($result->num_rows)>0)   //重复，则覆盖
+        {
+            $result=$mysqli->query("UPDATE `t_l2snr_tempdata` SET `temperature` = '$temperature' WHERE (`deviceid` = '$deviceid' AND `reportdate` = '$date' AND `hourminindex` = '$hourminindex')");
+        }
+        else   //不存在，新增
+        {
+            $result=$mysqli->query("INSERT INTO `t_l2snr_tempdata` (deviceid,temperature,reportdate,hourminindex) VALUES ('$deviceid','$temperature','$date','$hourminindex')");
+        }
+        $mysqli->close();
+        return $result;
+    }
+
     //删除对应用户所有超过90天的数据
     //缺省做成90天，如果参数错误，导致90天以内的数据强行删除，则不被认可
     public function dbi_tempData_delete_3monold($deviceid, $sensorid, $days)
@@ -111,6 +140,23 @@ class classDbiL2snrTemp
         //尝试使用一次性删除技巧，结果非常好!!!
         $result = $mysqli->query("DELETE FROM `t_l2snr_tempdata` WHERE ((`deviceid` = '$deviceid' AND `sensorid` = '$sensorid')
                       AND (TO_DAYS(NOW()) - TO_DAYS(`reportdate`) > '$days'))");
+        $mysqli->close();
+        return $result;
+    }
+
+    //删除对应用户所有超过90天的数据
+    //缺省做成90天，如果参数错误，导致90天以内的数据强行删除，则不被认可
+    public function dbi_tempData_huitp_delete_3monold($deviceid, $days)
+    {
+        if ($days <90) $days = 90;  //不允许删除90天以内的数据
+        //建立连接
+        $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli)
+        {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        //尝试使用一次性删除技巧，结果非常好!!!
+        $result = $mysqli->query("DELETE FROM `t_l2snr_tempdata` WHERE ((`deviceid` = '$deviceid' ) AND (TO_DAYS(NOW()) - TO_DAYS(`reportdate`) > '$days'))");
         $mysqli->close();
         return $result;
     }
@@ -146,6 +192,38 @@ class classDbiL2snrTemp
         $hourminindex = intval(($stamp["hours"] * 60 + floor($stamp["minutes"]/MFUN_TIME_GRID_SIZE)));
 
         $temperature = $data["value"];
+
+        //存储新记录，如果发现是已经存在的数据，则覆盖，否则新增
+        $result = $mysqli->query("SELECT * FROM `t_l2snr_aqyc_minreport` WHERE (`devcode` = '$devcode' AND `statcode` = '$statcode'
+                                  AND `reportdate` = '$date' AND `hourminindex` = '$hourminindex')");
+        if (($result != false) && ($result->num_rows)>0)   //重复，则覆盖
+        {
+            $result=$mysqli->query("UPDATE `t_l2snr_aqyc_minreport` SET `temperature` = '$temperature'
+                          WHERE (`devcode` = '$devcode' AND `statcode` = '$statcode' AND `reportdate` = '$date' AND `hourminindex` = '$hourminindex')");
+        }
+        else   //不存在，新增
+        {
+            $result=$mysqli->query("INSERT INTO `t_l2snr_aqyc_minreport` (devcode,statcode,temperature,reportdate,hourminindex)
+                                  VALUES ('$devcode', '$statcode', '$temperature','$date','$hourminindex')");
+        }
+        $mysqli->close();
+        return $result;
+    }
+
+    public function dbi_minreport_huitp_update_temperature($devcode,$statcode,$timestamp,$data)
+    {
+        //建立连接
+        $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli)
+        {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+
+        $date = intval(date("ymd", $timestamp));
+        $stamp = getdate($timestamp);
+        $hourminindex = intval(($stamp["hours"] * 60 + floor($stamp["minutes"]/MFUN_TIME_GRID_SIZE)));
+
+        $temperature = $data;
 
         //存储新记录，如果发现是已经存在的数据，则覆盖，否则新增
         $result = $mysqli->query("SELECT * FROM `t_l2snr_aqyc_minreport` WHERE (`devcode` = '$devcode' AND `statcode` = '$statcode'

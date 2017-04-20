@@ -72,6 +72,33 @@ class classApiL2snrCommonService
         return $resp;
     }
 
+    public function func_hcuAlarmData_huitp_process($devCode, $statCode, $data)
+    {
+        $AlarmType = hexdec($data[1]['HUITP_IEID_uni_alarm_info_element']['alarmType']) & 0xFFFF;
+        $AlarmServerity = hexdec($data[1]['HUITP_IEID_uni_alarm_info_element']['alarmServerity']) & 0xFF;
+        $AlarmClearFlag = hexdec($data[1]['HUITP_IEID_uni_alarm_info_element']['alarmClearFlag']) & 0xFF;
+        $EquipmentId = hexdec($data[1]['HUITP_IEID_uni_alarm_info_element']['equID']) & 0xFFFFFFFF;
+        $AlarmTime = hexdec($data[1]['HUITP_IEID_uni_alarm_info_element']['timeStamp']) & 0xFFFFFFFF;
+
+        //$AlarmDescription = $data[1]['HUITP_IEID_uni_alarm_info_element']['alarmDesc'];
+        function Hex2String($hex){
+            $string='';
+            for ($i=0; $i < strlen($hex)-1; $i+=2){
+                $string .= chr(hexdec($hex[$i].$hex[$i+1]));
+            }
+            return $string;
+        }
+        $AlarmDescription = Hex2String($data[1]['HUITP_IEID_uni_alarm_info_element']['alarmDesc']);
+
+        //new
+        $CauseId = hexdec($data[1]['HUITP_IEID_uni_alarm_info_element']['causeId']) & 0xFFFFFFFF;
+        $AlarmContent = hexdec($data[1]['HUITP_IEID_uni_alarm_info_element']['alarmContent']) & 0xFFFFFFFF;
+
+        $cDbObj = new classDbiL1vmCommon();
+        $resp = $cDbObj->dbi_hcu_alarm_huitp_data_save($devCode, $statCode, $EquipmentId, $AlarmType, $AlarmDescription, $AlarmServerity, $AlarmClearFlag, $AlarmTime, $CauseId, $AlarmContent);
+        return $resp;
+    }
+
     public function func_hcuPerformance_process($deviceId, $statCode, $content)
     {
         $format = "A2CmdId/A2Len/A2OptId/A2CmdIdBackType/A4CurlConnAttempt/A4CurlConnFailCnt/A4CurlDiscCnt/A4SocketDiscCnt/A4PmTaskRestartCnt/A4CPUOccupyCnt/A4MemOccupyCnt/A4DiskOccupyCnt/A8createtime";
@@ -94,6 +121,24 @@ class classApiL2snrCommonService
         $cDbObj = new classDbiL1vmCommon();
 
         $resp = $cDbObj->dbi_hcu_performance_data_save($deviceId, $statCode, $CurlConnAttempt, $CurlConnFailCnt, $CurlDiscCnt, $SocketDiscCnt, $PmTaskRestartCnt, $CPUOccupyCnt, $MemOccupyCnt, $DiskOccupyCnt, $createtime);
+
+        return $resp;
+    }
+
+    public function func_hcuPerformance_huitp_process($deviceId, $statCode, $data)
+    {
+        $PmTaskRestartCnt = hexdec($data[1]['HUITP_IEID_uni_performance_info_element']['restartCnt']) & 0xFFFFFFFF;
+        $CurlConnAttempt = hexdec($data[1]['HUITP_IEID_uni_performance_info_element']['networkConnCnt']) & 0xFFFFFFFF;
+        $CurlConnFailCnt = hexdec($data[1]['HUITP_IEID_uni_performance_info_element']['networkConnFailCnt']) & 0xFFFFFFFF;
+        $CurlDiscCnt = hexdec($data[1]['HUITP_IEID_uni_performance_info_element']['networkDiscCnt']) & 0xFFFFFFFF;
+        $SocketDiscCnt = hexdec($data[1]['HUITP_IEID_uni_performance_info_element']['socketDiscCnt']) & 0xFFFFFFFF;
+        $CPUOccupyCnt = hexdec($data[1]['HUITP_IEID_uni_performance_info_element']['cpuOccupy']) & 0xFFFFFFFF;
+        $MemOccupyCnt = hexdec($data[1]['HUITP_IEID_uni_performance_info_element']['memOccupy']) & 0xFFFFFFFF;
+        $DiskOccupyCnt = hexdec($data[1]['HUITP_IEID_uni_performance_info_element']['diskOccupy']) & 0xFFFFFFFF;
+        $createtime = hexdec($data[1]['HUITP_IEID_uni_performance_info_element']['timeStamp']) & 0xFFFFFFFF;
+
+        $cDbObj = new classDbiL1vmCommon();
+        $resp = $cDbObj->dbi_hcu_performance_huitp_data_save($deviceId, $statCode, $CurlConnAttempt, $CurlConnFailCnt, $CurlDiscCnt, $SocketDiscCnt, $PmTaskRestartCnt, $CPUOccupyCnt, $MemOccupyCnt, $DiskOccupyCnt, $createtime);
 
         return $resp;
     }

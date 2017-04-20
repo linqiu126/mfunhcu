@@ -70,6 +70,46 @@ class classTaskL2snrWindspd
         return $resp;
     }
 
+    public function func_windSpeed_huitp_process($platform, $deviceId, $statCode, $content)
+    {
+        switch($platform)
+        {
+            case MFUN_TECH_PLTF_WECHAT:
+                $length = hexdec(substr($content, 2, 2)) & 0xFF;
+                $length = ($length + 2)*2; //消息总长度等于length＋1B 控制字＋1B长度本身
+                if ($length != strlen($content)){
+                    return "WINDSPEED_SERVICE[WX]: message length invalid";  //消息长度不合法，直接返回
+                }
+                $sub_key = hexdec(substr($content, 4, 2)) & 0xFF;
+                switch ($sub_key) //MODBUS操作字处理
+                {
+                    case MFUN_HCU_MODBUS_DATA_REPORT:
+                        $resp = $this->wx_windspeed_req_process($deviceId, $content);
+                        break;
+                    default:
+                        $resp = "";
+                        break;
+                }
+                break;
+            case MFUN_TECH_PLTF_HCUGX:
+                $windspd = $content[1]['HUITP_IEID_uni_windspd_value']['windspdValue'];
+                $dataFormat = pow(10,$content[1]['HUITP_IEID_uni_windspd_value']['dataFormat']);
+                $windspdValue = hexdec($windspd) / $dataFormat;
+                $timeStamp = $content[1]['HUITP_IEID_uni_windspd_value']['timeStamp'];
+
+                $resp = $this->hcu_windspeed_req_huitp_process($deviceId, $statCode, $timeStamp, $windspdValue);
+                break;
+            case MFUN_TECH_PLTF_JDIOT:
+                $resp = ""; //no response message
+                break;
+            default:
+                $resp = "WINDSPEED_SERVICE: PLTF invalid";
+                break;
+
+        }
+        return $resp;
+    }
+
     private function wx_windspeed_req_process( $deviceId, $content)
     {
         $windSpeed =  hexdec(substr($content, 6, 4)) & 0xFFFF;
@@ -119,6 +159,25 @@ class classTaskL2snrWindspd
         return $resp;
     }
 
+    private function hcu_windspeed_req_huitp_process( $deviceId,$statCode,$timeStamp, $windspdValue)
+    {
+        $timeStamp = hexdec($timeStamp) & 0xFFFFFFFF;
+
+        $sDbObj = new classDbiL2snrWindspd();
+        $sDbObj->dbi_windSpeed_huitp_data_save($deviceId, $timeStamp, $windspdValue);
+        $sDbObj->dbi_windspdData_huitp_delete_3monold($deviceId, MFUN_HCU_DATA_SAVE_DURATION_IN_DAYS);  //remove 90 days old data.
+
+        //更新分钟测量报告聚合表
+        $sDbObj->dbi_minreport_huitp_update_windspeed($deviceId,$statCode,$timeStamp,$windspdValue);
+
+        //更新瞬时测量值聚合表
+        $eDbObj = new classDbiL3apF3dm();
+        $eDbObj->dbi_currentreport_update_value($deviceId, $statCode, $timeStamp,"T_windspeed", $windspdValue);
+
+        $resp = ""; //no response message
+        return $resp;
+    }
+
 
     
     /**************************************************************************************
@@ -139,7 +198,7 @@ class classTaskL2snrWindspd
             return false;
         }
         //多条消息发送到PM25
-        if (($msgId != MSG_ID_L2SDK_HCU_TO_L2SNR_WINDSPD) && ($msgId != MSG_ID_L2SDK_EMCWX_TO_L2SNR_WINDSPD_DATA_READ_INSTANT) && ($msgId != MSG_ID_L2SDK_EMCWX_TO_L2SNR_WINDSPD_DATA_REPORT_TIMING)){
+        if (($msgId != MSG_ID_L2SDK_HCU_TO_L2SNR_WINDSPD) && ($msgId != MSG_ID_L2SDK_EMCWX_TO_L2SNR_WINDSPD_DATA_READ_INSTANT) && ($msgId != MSG_ID_L2SDK_EMCWX_TO_L2SNR_WINDSPD_DATA_REPORT_TIMING)&& ($msgId != MSG_ID_L2CODEC_TO_L2SNR_WINDSPD)){
             $result = "Msgid or MsgName error";
             $log_content = "P:" . json_encode($result);
             $loggerObj->logger("MFUN_TASK_ID_L2SNR_WINDSPD", "mfun_l2snr_windspd_task_main_entry", $log_time, $log_content);
@@ -190,6 +249,19 @@ class classTaskL2snrWindspd
 
             //具体处理函数
             $resp = $this->func_windSpeed_process($platform, $deviceId, $statCode, $content);
+        }
+        elseif ($msgId == MSG_ID_L2CODEC_TO_L2SNR_WINDSPD)
+        {
+            //解开消息
+            if (isset($msg["project"])) $project = $msg["project"];
+            if (isset($msg["log_from"])) $log_from = $msg["log_from"];
+            if (isset($msg["platform"])) $platform = $msg["platform"];
+            if (isset($msg["deviceId"])) $deviceId = $msg["deviceId"];
+            if (isset($msg["statCode"])) $statCode = $msg["statCode"];
+            if (isset($msg["content"])) $content = $msg["content"];
+
+            //具体处理函数
+            $resp = $this->func_windSpeed_huitp_process($platform, $deviceId, $statCode, $content);
         }
         else{
             $resp = ""; //啥都不ECHO

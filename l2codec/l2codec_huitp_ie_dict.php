@@ -403,13 +403,15 @@ define("HUITP_IEID_uni_sw_package_max", 0xA100);
 
 //ALARM REPORT
 define("HUITP_IEID_uni_alarm_info_min", 0xB000);
-define("HUITP_IEID_uni_alarm_info_type", 0xB000);
+//define("HUITP_IEID_uni_alarm_info_type", 0xB000);
+define("HUITP_IEID_uni_alarm_info_element", 0xB000);
 define("HUITP_IEID_uni_alarm_info_value", 0xB001);
 define("HUITP_IEID_uni_alarm_info_max", 0xB001);
 
 //PM Report
 define("HUITP_IEID_uni_performance_info_min", 0xB100);
-define("HUITP_IEID_uni_performance_info_type", 0xB100);
+//define("HUITP_IEID_uni_performance_info_type", 0xB100);
+define("HUITP_IEID_uni_performance_info_element", 0xB100);
 define("HUITP_IEID_uni_performance_info_value", 0xB101);
 define("HUITP_IEID_uni_performance_info_max", 0xB101);
 
@@ -568,21 +570,21 @@ class classL2codecHuitpIeDict
 
           //PM1/2.5/10
           HUITP_IEID_uni_pm25_min                         => "",
-          HUITP_IEID_uni_pm01_value                       => array("format"=>"A4ieId/A4ieLen","name"=>""),
-          HUITP_IEID_uni_pm25_value                       => array("format"=>"A4ieId/A4ieLen","name"=>""),
-          HUITP_IEID_uni_pm10_value                       => array("format"=>"A4ieId/A4ieLen","name"=>""),
+          HUITP_IEID_uni_pm01_value                       => array("format"=>"A4ieId/A4ieLen/A2dataFormat/A8pm01Value/A8timeStamp","name"=>"HUITP_IEID_uni_pm01_value"),
+          HUITP_IEID_uni_pm25_value                       => array("format"=>"A4ieId/A4ieLen/A2dataFormat/A8pm25Value/A8timeStamp","name"=>"HUITP_IEID_uni_pm25_value"),
+          HUITP_IEID_uni_pm10_value                       => array("format"=>"A4ieId/A4ieLen/A2dataFormat/A8pm10Value/A8timeStamp","name"=>"HUITP_IEID_uni_pm10_value"),
 
           //风速Wind Speed
           HUITP_IEID_uni_windspd_min                      => "",
-          HUITP_IEID_uni_windspd_value                    => array("format"=>"A4ieId/A4ieLen","name"=>""),
+          HUITP_IEID_uni_windspd_value                    => array("format"=>"A4ieId/A4ieLen/A2dataFormat/A8windspdValue/A8timeStamp","name"=>"HUITP_IEID_uni_windspd_value"),
 
           //风向Wind Direction
           HUITP_IEID_uni_winddir_min                      => "n",
-          HUITP_IEID_uni_winddir_value                    => array("format"=>"A4ieId/A4ieLen","name"=>""),
+          HUITP_IEID_uni_winddir_value                    => array("format"=>"A4ieId/A4ieLen/A2dataFormat/A8winddirValue/A8timeStamp","name"=>"HUITP_IEID_uni_winddir_value"),
 
           //温度Temperature
           HUITP_IEID_uni_temp_min                         => "",
-          HUITP_IEID_uni_temp_value                       => array("format"=>"A4ieId/A4ieLen","name"=>""),
+          HUITP_IEID_uni_temp_value                       => array("format"=>"A4ieId/A4ieLen/A2dataFormat/A8tempValue/A8timeStamp","name"=>"HUITP_IEID_uni_temp_value"),
 
           //湿度Humidity
           HUITP_IEID_uni_humid_min                        => "",
@@ -797,12 +799,14 @@ class classL2codecHuitpIeDict
 
           //ALARM REPORT
           HUITP_IEID_uni_alarm_info_min                   => "",
-          HUITP_IEID_uni_alarm_info_type                  => array("format"=>"A4ieId/A4ieLen","name"=>""),
+          //HUITP_IEID_uni_alarm_info_type                  => array("format"=>"A4ieId/A4ieLen","name"=>""),
+          HUITP_IEID_uni_alarm_info_element               => array("format"=>"A4ieId/A4ieLen/A4alarmType/A2alarmServerity/A2alarmClearFlag/A8equID/A8causeId/A8alarmContent/A200alarmDesc/A8timeStamp","name"=>"HUITP_IEID_uni_alarm_info_element"),
           HUITP_IEID_uni_alarm_info_value                 => array("format"=>"A4ieId/A4ieLen","name"=>""),
 
           //PM Report
           HUITP_IEID_uni_performance_info_min             => "",
-          HUITP_IEID_uni_performance_info_type            => array("format"=>"A4ieId/A4ieLen","name"=>""),
+          //HUITP_IEID_uni_performance_info_type            => array("format"=>"A4ieId/A4ieLen","name"=>""),
+          HUITP_IEID_uni_performance_info_element         => array("format"=>"A4ieId/A4ieLen/A8restartCnt/A8networkConnCnt/A8networkConnFailCnt/A8networkDiscCnt/A8socketDiscCnt/A8cpuOccupy/A8memOccupy/A8diskOccupy/A8timeStamp","name"=>"HUITP_IEID_uni_performance_info_element"),
           HUITP_IEID_uni_performance_info_value           => array("format"=>"A4ieId/A4ieLen","name"=>""),
 
           //设备基本信息

@@ -831,7 +831,10 @@ class classL2codecHuitpMsgDict
         HUITP_MSGID_uni_pm25_min => array(),  //0x2500
         HUITP_MSGID_uni_pm25_data_req => array("0" => HUITP_IEID_uni_com_req),  //0x2500
         HUITP_MSGID_uni_pm25_data_resp => array("0" => HUITP_IEID_uni_com_req),  //0x2580
-        HUITP_MSGID_uni_pm25_data_report => array("0" => HUITP_IEID_uni_com_req),  //0x2581
+        HUITP_MSGID_uni_pm25_data_report => array("0" => HUITP_IEID_uni_com_req,
+                                                "1" => HUITP_IEID_uni_pm01_value,
+                                                "2" => HUITP_IEID_uni_pm25_value,
+                                                "3" => HUITP_IEID_uni_pm10_value),  //0x2581
         HUITP_MSGID_uni_pm25_data_confirm => array("0" => HUITP_IEID_uni_com_req),  //0x2501
         HUITP_MSGID_uni_pm25_ctrl_req => array("0" => HUITP_IEID_uni_com_req),  //0x2502
         HUITP_MSGID_uni_pm25_ctrl_resp => array("0" => HUITP_IEID_uni_com_req),  //0x2582
@@ -844,7 +847,8 @@ class classL2codecHuitpMsgDict
         HUITP_MSGID_uni_windspd_min => array(),  //0x2600
         HUITP_MSGID_uni_windspd_data_req => array("0" => HUITP_IEID_uni_com_req),  //0x2600
         HUITP_MSGID_uni_windspd_data_resp => array("0" => HUITP_IEID_uni_com_req),  //0x2680
-        HUITP_MSGID_uni_windspd_data_report => array("0" => HUITP_IEID_uni_com_req),  //0x2681
+        HUITP_MSGID_uni_windspd_data_report => array("0" => HUITP_IEID_uni_com_req,
+                                                    "1" => HUITP_IEID_uni_windspd_value),  //0x2681
         HUITP_MSGID_uni_windspd_data_confirm => array("0" => HUITP_IEID_uni_com_req),  //0x2601
         HUITP_MSGID_uni_windspd_ctrl_req => array("0" => HUITP_IEID_uni_com_req),  //0x2602
         HUITP_MSGID_uni_windspd_ctrl_resp => array("0" => HUITP_IEID_uni_com_req),  //0x2682
@@ -853,7 +857,8 @@ class classL2codecHuitpMsgDict
         HUITP_MSGID_uni_winddir_min => array(),  //0x2700
         HUITP_MSGID_uni_winddir_data_req => array("0" => HUITP_IEID_uni_com_req),  //0x2700
         HUITP_MSGID_uni_winddir_data_resp => array("0" => HUITP_IEID_uni_com_req),  //0x2780
-        HUITP_MSGID_uni_winddir_data_report => array("0" => HUITP_IEID_uni_com_req),  //0x2781
+        HUITP_MSGID_uni_winddir_data_report => array("0" => HUITP_IEID_uni_com_req,
+                                                    "1" => HUITP_IEID_uni_winddir_value),  //0x2781
         HUITP_MSGID_uni_winddir_data_confirm => array("0" => HUITP_IEID_uni_com_req),  //0x2701
         HUITP_MSGID_uni_winddir_ctrl_req => array("0" => HUITP_IEID_uni_com_req),  //0x2702
         HUITP_MSGID_uni_winddir_ctrl_resp => array("0" => HUITP_IEID_uni_com_req),  //0x2782
@@ -862,7 +867,8 @@ class classL2codecHuitpMsgDict
         HUITP_MSGID_uni_temp_min => array(),  //0x2800
         HUITP_MSGID_uni_temp_data_req => array("0" => HUITP_IEID_uni_com_req),  //0x2800
         HUITP_MSGID_uni_temp_data_resp => array("0" => HUITP_IEID_uni_com_req),  //0x2880
-        HUITP_MSGID_uni_temp_data_report => array("0" => HUITP_IEID_uni_com_req),  //0x2881
+        HUITP_MSGID_uni_temp_data_report => array("0" => HUITP_IEID_uni_com_req,
+                                                 "1" => HUITP_IEID_uni_temp_value),  //0x2881
         HUITP_MSGID_uni_temp_data_confirm => array("0" => HUITP_IEID_uni_com_req),  //0x2801
         HUITP_MSGID_uni_temp_ctrl_req => array("0" => HUITP_IEID_uni_com_req),  //0x2802
         HUITP_MSGID_uni_temp_ctrl_resp => array("0" => HUITP_IEID_uni_com_req),  //0x2882
@@ -1246,14 +1252,16 @@ class classL2codecHuitpMsgDict
         HUITP_MSGID_uni_alarm_info_min => array(),  //0xB000
         HUITP_MSGID_uni_alarm_info_req => array("0" => HUITP_IEID_uni_com_req),  //0xB000
         HUITP_MSGID_uni_alarm_info_resp => array("0" => HUITP_IEID_uni_com_req),  //0xB080
-        HUITP_MSGID_uni_alarm_info_report => array("0" => HUITP_IEID_uni_com_req),  //0xB081
+        HUITP_MSGID_uni_alarm_info_report => array("0" => HUITP_IEID_uni_com_req,
+                                                    "1" => HUITP_IEID_uni_alarm_info_element),  //0xB081
         HUITP_MSGID_uni_alarm_info_confirm => array("0" => HUITP_IEID_uni_com_req),  //0xB001
 
         //PM Report
         HUITP_MSGID_uni_performance_info_min => array(),  //0xB100
         HUITP_MSGID_uni_performance_info_req => array("0" => HUITP_IEID_uni_com_req),  //0xB100
         HUITP_MSGID_uni_performance_info_resp => array("0" => HUITP_IEID_uni_com_req),  //0xB180
-        HUITP_MSGID_uni_performance_info_report => array("0" => HUITP_IEID_uni_com_req),  //0xB181
+        HUITP_MSGID_uni_performance_info_report => array("0" => HUITP_IEID_uni_com_req,
+                                                        "1" => HUITP_IEID_uni_performance_info_element),  //0xB181
         HUITP_MSGID_uni_performance_info_confirm => array("0" => HUITP_IEID_uni_com_req),  //0xB101
 
         //设备基本信息

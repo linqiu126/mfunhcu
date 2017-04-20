@@ -119,11 +119,11 @@ class classTaskL2snrHumid
                 break;
             case MFUN_TECH_PLTF_HCUGX:
 
-                $opt_key = $content['HUITP_IEID_uni_humid_value']['ieId'];
-                $humid = $content['HUITP_IEID_uni_humid_value']['humidValue'];
-                $dataFormat = pow(10,$content['HUITP_IEID_uni_humid_value']['dataFormat']);
+                $opt_key = $content[1]['HUITP_IEID_uni_humid_value']['ieId'];
+                $humid = $content[1]['HUITP_IEID_uni_humid_value']['humidValue'];
+                $dataFormat = pow(10,$content[1]['HUITP_IEID_uni_humid_value']['dataFormat']);
                 $humidValue = hexdec($humid) / $dataFormat;
-                $timeStamp = $content['HUITP_IEID_uni_humid_value']['timeStamp'];
+                $timeStamp = $content[1]['HUITP_IEID_uni_humid_value']['timeStamp'];
 
                 $resp = $this->hcu_humidity_req_huitp_process($deviceId, $statCode, $timeStamp, $humidValue);
 

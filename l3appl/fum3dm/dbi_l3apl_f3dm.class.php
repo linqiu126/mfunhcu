@@ -184,7 +184,7 @@ class classDbiL3apF3dm
                     $result = $mysqli->query("INSERT INTO `t_l3f3dm_aqyc_currentreport` (deviceid,statcode,createtime,noise) VALUES ('$deviceid','$statcode','$currenttime','$noise')");
                 }
                 break;
-            case "t_l2snr_pm25data";
+            case "T_pmdata";
                 $pm01 = $data["pm01"];
                 $pm25 = $data["pm25"];
                 $pm10 = $data["pm10"];
@@ -210,7 +210,7 @@ class classDbiL3apF3dm
                 }
                 break;
             case "T_temperature":
-                $temperature = $data["value"];
+                $temperature = $data;
                 //存储新记录，如果发现是已经存在的数据，则覆盖，否则新增
                 $result = $mysqli->query("SELECT * FROM `t_l3f3dm_aqyc_currentreport` WHERE (`deviceid` = '$deviceid' )");
                 if (($result->num_rows)>0) {
@@ -221,7 +221,7 @@ class classDbiL3apF3dm
                 }
                 break;
             case "T_winddirection":
-                $winddirection = $data["value"];
+                $winddirection = $data;
                 //存储新记录，如果发现是已经存在的数据，则覆盖，否则新增
                 $result = $mysqli->query("SELECT * FROM `t_l3f3dm_aqyc_currentreport` WHERE (`deviceid` = '$deviceid' )");
                 if (($result->num_rows)>0) {
@@ -231,8 +231,8 @@ class classDbiL3apF3dm
                     $result = $mysqli->query("INSERT INTO `t_l3f3dm_aqyc_currentreport` (deviceid,statcode,createtime,winddirection) VALUES ('$deviceid','$statcode','$currenttime','$winddirection')");
                 }
                 break;
-            case "t_l2snr_windspd":
-                $windspeed = $data["value"];
+            case "T_windspeed":
+                $windspeed = $data;
                 //存储新记录，如果发现是已经存在的数据，则覆盖，否则新增
                 $result = $mysqli->query("SELECT * FROM `t_l3f3dm_aqyc_currentreport` WHERE (`deviceid` = '$deviceid' )");
                 if (($result->num_rows)>0) {

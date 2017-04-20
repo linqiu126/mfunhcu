@@ -23,6 +23,10 @@ define("MSG_ID_L1VM_TO_L2SDK_IOT_HUITP_INCOMING", $index++);
 define("MSG_ID_L2SDK_IOT_HUITP_TO_L2CODEC_HUITP", $index++);
 define("MSG_ID_L2CODEC_TO_L2SNR_NOISE", $index++); //send huitp result to noise task
 define("MSG_ID_L2CODEC_TO_L2SNR_HUMIDITY", $index++); //send huitp result to humidity task
+define("MSG_ID_L2CODEC_TO_L2SNR_PM25", $index++); //send huitp result to pm25 task
+define("MSG_ID_L2CODEC_TO_L2SNR_TEMP", $index++); //send huitp result to temperature task
+define("MSG_ID_L2CODEC_TO_L2SNR_WINDDIR", $index++); //send huitp result to winddir task
+define("MSG_ID_L2CODEC_TO_L2SNR_WINDSPD", $index++); //send huitp result to windspd task
 
 define("MSG_ID_L2SDK_HCU_TO_L2SNR_EMC", $index++);
 define("MSG_ID_L2SDK_EMCWX_TO_L2SNR_EMC_DATA_READ_INSTANT", $index++);

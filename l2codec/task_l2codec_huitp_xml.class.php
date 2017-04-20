@@ -72,7 +72,7 @@ class classTaskL2codecHuitpXml
             return false;
         }
 
-        $l2codecHuitpMsgDictObj = new classL2codecHuitpMsgDict;
+        $l2codecHuitpMsgDictObj = new classL2codecHuitpMsgDict();
         $huitpIeArray = $l2codecHuitpMsgDictObj->mfun_l2codec_getHuitpIeArray($huitpMsgId);
         if ($huitpIeArray == false){
             $loggerObj->logger("MFUN_TASK_ID_L2CODEC_HUITP", "mfun_l2codec_huitp_xml_task_main_entry", $log_time, "I: Received invalid HUITP message ID");

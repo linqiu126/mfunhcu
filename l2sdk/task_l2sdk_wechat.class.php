@@ -4699,7 +4699,7 @@ class classTaskL2sdkWechat
                             "deviceId" => $devCode,
                             "statCode" => $statCode,
                             //put array $result to content
-                            "content" => $result[1]);
+                            "content" => $result);
 
                         //case1: noise
                         /*$temp_destId = MFUN_TASK_ID_L2SENSOR_NOISE;
@@ -4707,18 +4707,45 @@ class classTaskL2sdkWechat
                         $temp_msgName = "MSG_ID_L2CODEC_TO_L2SNR_NOISE";*/
 
                         //case2: humidity
-                        $temp_destId = MFUN_TASK_ID_L2SENSOR_HUMID;
+                        /*$temp_destId = MFUN_TASK_ID_L2SENSOR_HUMID;
                         $temp_msgId = MSG_ID_L2CODEC_TO_L2SNR_HUMIDITY;
-                        $temp_msgName = "MSG_ID_L2CODEC_TO_L2SNR_HUMIDITY";
+                        $temp_msgName = "MSG_ID_L2CODEC_TO_L2SNR_HUMIDITY";*/
 
-                        if ($parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L2SDK_IOT_HCU,
+                        //case3: pm25
+                        /*$temp_destId = MFUN_TASK_ID_L2SENSOR_PM25;
+                        $temp_msgId = MSG_ID_L2CODEC_TO_L2SNR_PM25;
+                        $temp_msgName = "MSG_ID_L2CODEC_TO_L2SNR_PM25";*/
+
+                        //case4: temperature
+                        /*$temp_destId = MFUN_TASK_ID_L2SENSOR_TEMP;
+                        $temp_msgId = MSG_ID_L2CODEC_TO_L2SNR_TEMP;
+                        $temp_msgName = "MSG_ID_L2CODEC_TO_L2SNR_TEMP";*/
+
+                        //case5: winddir
+                        /*$temp_destId = MFUN_TASK_ID_L2SENSOR_WINDDIR;
+                        $temp_msgId = MSG_ID_L2CODEC_TO_L2SNR_WINDDIR;
+                        $temp_msgName = "MSG_ID_L2CODEC_TO_L2SNR_WINDDIR";*/
+
+                        //case6: windspd
+                        /*$temp_destId = MFUN_TASK_ID_L2SENSOR_WINDSPD;
+                        $temp_msgId = MSG_ID_L2CODEC_TO_L2SNR_WINDSPD;
+                        $temp_msgName = "MSG_ID_L2CODEC_TO_L2SNR_WINDSPD";*/
+                        /*if ($parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L2SDK_IOT_HCU,
                                 $temp_destId,
                                 $temp_msgId,
                                 $temp_msgName,
                                 $msg) == false) $resp = "Send to message buffer error";
-                        else $resp = "";
+                        else $resp = "";*/
 
-                        //convert array to string
+                        //case7: alarm
+                        /*$hcuObj = new classApiL2snrCommonService();
+                        $resp = $hcuObj->func_hcuAlarmData_huitp_process($devCode, $statCode, $result);*/
+
+                        //case8: pm
+                        $hcuObj = new classApiL2snrCommonService();
+                        $resp = $hcuObj->func_hcuPerformance_huitp_process($devCode, $statCode, $result);
+
+                        //convert array to string for log function
                         $result = self::json_encode($result);
 
                         break;

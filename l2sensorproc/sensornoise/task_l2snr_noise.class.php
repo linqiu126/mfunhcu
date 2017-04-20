@@ -87,11 +87,11 @@ class classTaskL2snrNoise
                 break;
             case MFUN_TECH_PLTF_HCUGX:
 
-                $opt_key = $content['HUITP_IEID_uni_noise_value']['ieId'];
-                $noise = $content['HUITP_IEID_uni_noise_value']['noiseValue'];
-                $dataFormat = pow(10,$content['HUITP_IEID_uni_noise_value']['dataFormat']);
+                $opt_key = $content[1]['HUITP_IEID_uni_noise_value']['ieId'];
+                $noise = $content[1]['HUITP_IEID_uni_noise_value']['noiseValue'];
+                $dataFormat = pow(10,$content[1]['HUITP_IEID_uni_noise_value']['dataFormat']);
                 $noiseValue = hexdec($noise) / $dataFormat;
-                $timeStamp = $content['HUITP_IEID_uni_noise_value']['timeStamp'];
+                $timeStamp = $content[1]['HUITP_IEID_uni_noise_value']['timeStamp'];
 
                 $resp = $this->hcu_noise_req_huitp_process($deviceId, $statCode, $timeStamp, $noiseValue);
 
