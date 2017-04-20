@@ -390,7 +390,8 @@ define("HUITP_IEID_uni_itf_485_max", 0x5B00);
 
 //软件清单
 define("HUITP_IEID_uni_inventory_min", 0xA000);
-define("HUITP_IEID_uni_inventory_hw_type", 0xA000);
+//define("HUITP_IEID_uni_inventory_hw_type", 0xA000);
+define("HUITP_IEID_uni_inventory_element", 0xA000);
 define("HUITP_IEID_uni_inventory_hw_id", 0xA001);
 define("HUITP_IEID_uni_inventory_sw_rel", 0xA002);
 define("HUITP_IEID_uni_inventory_sw_ver", 0xA003);
@@ -788,7 +789,8 @@ class classL2codecHuitpIeDict
 
           //软件清单
           HUITP_IEID_uni_inventory_min                    => "",
-          HUITP_IEID_uni_inventory_hw_type                => array("format"=>"A4ieId/A4ieLen","name"=>""),
+          //HUITP_IEID_uni_inventory_hw_type                => array("format"=>"A4ieId/A4ieLen","name"=>""),
+          HUITP_IEID_uni_inventory_element                => array("format"=>"A4ieId/A4ieLen/A4hwType/A4hwId/A4swRel/A4swVer/A2upgradeFlag/A100desc/A8timeStamp","name"=>"HUITP_IEID_uni_inventory_element"),
           HUITP_IEID_uni_inventory_hw_id                  => array("format"=>"A4ieId/A4ieLen","name"=>""),
           HUITP_IEID_uni_inventory_sw_rel                 => array("format"=>"A4ieId/A4ieLen","name"=>""),
           HUITP_IEID_uni_inventory_sw_ver                 => array("format"=>"A4ieId/A4ieLen","name"=>""),

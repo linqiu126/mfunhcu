@@ -581,6 +581,35 @@ class classDbiL1vmCommon
         return $result;
     }
 
+    public function dbi_deviceVersion_huitp_update($devcode, $hw_type,$hw_ver,$sw_rel,$sw_drop, $upgradeFlag,$desc,$timeStamp)
+    {
+        //maybe used later
+        $timeStamp = date("Y-m-d H:m:s",$timeStamp);
+
+        //建立连接
+        $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli)
+        {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $mysqli->query("SET NAMES utf8");
+
+        //先检查是否存在，如果存在，就更新，否则创建
+        $result = $mysqli->query("SELECT * FROM `t_l2sdk_iothcu_inventory` WHERE `devcode` = '$devcode'");
+        if (($result->num_rows)>0)
+        {
+            $result=$mysqli->query("UPDATE `t_l2sdk_iothcu_inventory` SET `hw_type` = '$hw_type',`hw_ver` = '$hw_ver',`sw_rel` = '$sw_rel',`sw_drop` = '$sw_drop', `hcu_sw_autoupdate` = '$upgradeFlag', `desc` = '$desc'
+                            WHERE `devcode` = '$devcode'");
+        }
+        else
+        {
+            $result=$mysqli->query("INSERT INTO `t_l2sdk_iothcu_inventory` (devcode, hw_type, hw_ver, sw_rel,sw_drop, hcu_sw_autoupdate, desc)
+                          VALUES ('$devcode', '$hw_type', '$hw_ver','$sw_rel','$sw_drop', '$upgradeFlag', '$desc')");
+        }
+        $mysqli->close();
+        return $result;
+    }
+
     //HCU控制命令缓存
     public function dbi_cmdbuf_save_cmd($deviceid, $cmd)
     {

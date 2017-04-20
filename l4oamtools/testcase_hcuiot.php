@@ -14,6 +14,12 @@ include_once "../l1comvm/vmlayer.php";
 if (TC_IOT_HCU == true) {
 //TEST CASE: IOT_HCU基础数据测试用例集: START
 
+//HCU Inventory Data
+    echo " [TC IOT_HCU: Inventory Data START]\n";
+    $GLOBALS["HTTP_RAW_POST_DATA"] = "<xml><ToUserName><![CDATA[XHZN_HCU]]></ToUserName><FromUserName><![CDATA[HCU_G201_AQYC_SH001]]></FromUserName><CreateTime>1483765031</CreateTime><MsgType><![CDATA[hcu_command]]></MsgType><Content><![CDATA[A01B810242383A32373A45423A37323A30453A39430200030100880088]]></Content><FuncFlag>0</FuncFlag></xml>";
+    require("../l1mainentry/cloud_callback_hcu.php");
+    echo " [TC IOT_HCU: Inventory Data END]\n";
+
 //Alarm Data
     echo " [TC IOT_HCU: Alarm Data START]\n";
     $GLOBALS["HTTP_RAW_POST_DATA"] = "<xml><ToUserName><![CDATA[XHZN_HCU]]></ToUserName><FromUserName><![CDATA[HCU_G201_AQYC_SH001]]></FromUserName><CreateTime>1486961349</CreateTime><MsgType><![CDATA[hcu_alarm]]></MsgType><Content><![CDATA[B00C810101030008010158A13AC5]]></Content><FuncFlag>HCU_G201_AQYC_SH001_hk1486961335</FuncFlag></xml>";
@@ -26,12 +32,6 @@ if (TC_IOT_HCU == true) {
     $GLOBALS["HTTP_RAW_POST_DATA"] = "<xml><ToUserName><![CDATA[XHZN_HCU]]></ToUserName><FromUserName><![CDATA[HCU_SH_0301]]></FromUserName><CreateTime>1457872731</CreateTime><MsgType><![CDATA[hcu_text]]></MsgType><Content><![CDATA[2B1A810A02020000028B000000000000000000000000000056E55F5B]]></Content><FuncFlag>0</FuncFlag></xml>";
     require("../l1mainentry/cloud_callback_hcu.php");
     echo " [TC IOT_HCU: NOISE END]\n";
-
-//HCU Inventory Data
-    echo " [TC IOT_HCU: Inventory Data START]\n";
-    $GLOBALS["HTTP_RAW_POST_DATA"] = "<xml><ToUserName><![CDATA[XHZN_HCU]]></ToUserName><FromUserName><![CDATA[HCU_G201_AQYC_SH001]]></FromUserName><CreateTime>1483765031</CreateTime><MsgType><![CDATA[hcu_command]]></MsgType><Content><![CDATA[A01B810242383A32373A45423A37323A30453A39430200030100880088]]></Content><FuncFlag>0</FuncFlag></xml>";
-    require("../l1mainentry/cloud_callback_hcu.php");
-    echo " [TC IOT_HCU: Inventory Data END]\n";
 
 //Performance Statistcis
     echo " [TC IOT_HCU: Performance Statistics START]\n";

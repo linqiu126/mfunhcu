@@ -1238,7 +1238,8 @@ class classL2codecHuitpMsgDict
         HUITP_MSGID_uni_inventory_min => array(),  //0xA000
         HUITP_MSGID_uni_inventory_req => array("0" => HUITP_IEID_uni_com_req),  //0xA000
         HUITP_MSGID_uni_inventory_resp => array("0" => HUITP_IEID_uni_com_req),  //0xA080
-        HUITP_MSGID_uni_inventory_report => array("0" => HUITP_IEID_uni_com_req),  //0xA081
+        HUITP_MSGID_uni_inventory_report => array("0" => HUITP_IEID_uni_com_req,
+                                                "1" => HUITP_IEID_uni_inventory_element),  //0xA081
         HUITP_MSGID_uni_inventory_confirm => array("0" => HUITP_IEID_uni_com_req),  //0xA001
 
         //软件版本体

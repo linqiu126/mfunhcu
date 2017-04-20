@@ -4742,8 +4742,12 @@ class classTaskL2sdkWechat
                         $resp = $hcuObj->func_hcuAlarmData_huitp_process($devCode, $statCode, $result);*/
 
                         //case8: pm
+                        /*$hcuObj = new classApiL2snrCommonService();
+                        $resp = $hcuObj->func_hcuPerformance_huitp_process($devCode, $statCode, $result);*/
+
+                        //case: sw inventory
                         $hcuObj = new classApiL2snrCommonService();
-                        $resp = $hcuObj->func_hcuPerformance_huitp_process($devCode, $statCode, $result);
+                        $resp = $hcuObj->func_inventory_huitp_data_process($devCode, $result);
 
                         //convert array to string for log function
                         $result = self::json_encode($result);

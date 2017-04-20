@@ -237,6 +237,34 @@ class classApiL2snrCommonService
 
     }
 
+    public function func_inventory_huitp_data_process($deviceId, $data)
+    {
+        $hw_type = hexdec($data[1]['HUITP_IEID_uni_inventory_element']['hwType']) & 0xFFFF;
+        $hw_ver = hexdec($data[1]['HUITP_IEID_uni_inventory_element']['hwId']) & 0xFFFF;
+        $sw_rel = hexdec($data[1]['HUITP_IEID_uni_inventory_element']['swRel']) & 0xFFFF;
+        $sw_drop = hexdec($data[1]['HUITP_IEID_uni_inventory_element']['swVer']) & 0xFFFF;
+        $upgradeFlag = hexdec($data[1]['HUITP_IEID_uni_inventory_element']['upgradeFlag']) & 0xFFFF;
+        $timeStamp = hexdec($data[1]['HUITP_IEID_uni_inventory_element']['timeStamp']) & 0xFFFFFFFF;
+
+        //$desc = $data[1]['HUITP_IEID_uni_inventory_element']['desc'];
+        function Hex2String($hex){
+            $string='';
+            for ($i=0; $i < strlen($hex)-1; $i+=2){
+                $string .= chr(hexdec($hex[$i].$hex[$i+1]));
+            }
+            return $string;
+        }
+        $desc = Hex2String($data[1]['HUITP_IEID_uni_inventory_element']['desc']);
+
+        $cDbObj = new classDbiL1vmCommon();
+        $cDbObj->dbi_deviceVersion_huitp_update($deviceId,$hw_type,$hw_ver,$sw_rel,$sw_drop, $upgradeFlag,$desc,$timeStamp);
+
+        $resp = "";
+        return $resp;
+
+    }
+
+
     public function func_version_push_process()
     {
         $cmdid = $this->byte2string(MFUN_HCU_CMDID_VERSION_SYNC);
