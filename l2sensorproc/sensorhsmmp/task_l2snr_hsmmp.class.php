@@ -80,7 +80,8 @@ class classTaskL2snrHsmmp
                     $filesize = fwrite($newfile, $content);
                     fclose($newfile);
                     if ($filesize){
-                        $filename = '/'.$statCode.'/'.$statCode . "_" . $timestamp . $file_type;
+                        $file_dir = dirname(dirname(dirname(dirname(__FILE__))))."/avorion";
+                        $filename = $file_dir . '/'.$statCode.'/'.$statCode . "_" . $timestamp . $file_type;
                         $loggerObj->logger($project, $deviceId, $log_time, "上传新图片文件".$filename);
                         $dbiL2snrHsmmpObj = new classDbiL2snrHsmmp();
                         $result = $dbiL2snrHsmmpObj->dbi_picture_link_save($statCode, $deviceId, $timestamp, $filename,$filesize);

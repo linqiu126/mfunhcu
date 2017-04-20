@@ -1333,11 +1333,12 @@ class classL2codecHuitpMsgDict
         MFUN_TASK_ID_L2SDK_IOT_WX => array(),
         MFUN_TASK_ID_L2SDK_IOT_WX_JSSDK => array(),
         MFUN_TASK_ID_L2SDK_IOT_HCU => array(),
-        MFUN_TASK_ID_L2SDK_IOT_HUITP => array(),
         MFUN_TASK_ID_L2SDK_NBIOT_STD_QG376 => array(),
         MFUN_TASK_ID_L2SDK_NBIOT_STD_CJ188 => array(),
         MFUN_TASK_ID_L2SDK_NBIOT_LTEV => array(),
         MFUN_TASK_ID_L2SDK_NBIOT_AGC => array(),
+        MFUN_TASK_ID_L2SDK_IOT_HUITP => array(),
+        MFUN_TASK_ID_L2CODEC_HUITP => array(),
         MFUN_TASK_ID_L2SENSOR_EMC => array(),
         MFUN_TASK_ID_L2SENSOR_HSMMP => array(),
         MFUN_TASK_ID_L2SENSOR_HUMID => array(),
@@ -1381,8 +1382,32 @@ class classL2codecHuitpMsgDict
         MFUN_TASK_ID_L2SENSOR_WEIGHT => array(), //BFSC组合秤
         MFUN_TASK_ID_L2TIMER_CRON => array(),
         MFUN_TASK_ID_L2SOCKET_LISTEN => array(),
-        MFUN_TASK_ID_L2CODEC_HUITP => array(),
-
+        MFUN_TASK_ID_L2SENSOR_WEIGHT => array(), //BFSC组合秤
+        MFUN_TASK_ID_L3APPL_FUM1SYM => array(),
+        MFUN_TASK_ID_L3APPL_FUM2CM => array(),
+        MFUN_TASK_ID_L3APPL_FUM3DM => array(),
+        MFUN_TASK_ID_L3APPL_FUM4ICM => array(),
+        MFUN_TASK_ID_L3APPL_FUM5FM => array(),
+        MFUN_TASK_ID_L3APPL_FUM6PM => array(),
+        MFUN_TASK_ID_L3APPL_FUM7ADS => array(),
+        MFUN_TASK_ID_L3APPL_FUM8PSM => array(),
+        MFUN_TASK_ID_L3APPL_FUM9GISM => array(),
+        MFUN_TASK_ID_L3APPL_FUMXPRCM => array(),
+        MFUN_TASK_ID_L3WX_OPR_EMC => array(),  //用于EMC微信H5界面处理L3 task
+        MFUN_TASK_ID_L3WX_OPR_FHYS => array(), //用于FHYS微信H5界面处理L3 task
+        MFUN_TASK_ID_L3NBIOT_OPR_METER => array(),
+        MFUN_TASK_ID_L4AQYC_UI => array(),
+        MFUN_TASK_ID_L4FHYS_UI => array(),
+        MFUN_TASK_ID_L4FHYS_WECHAT => array(),
+        MFUN_TASK_ID_L4BFSC_UI => array(),
+        MFUN_TASK_ID_L4EMCWX_UI => array(),
+        MFUN_TASK_ID_L4TBSWR_UI => array(),
+        MFUN_TASK_ID_L4NBIOT_IPM_UI => array(),
+        MFUN_TASK_ID_L4NBIOT_IGM_UI => array(),
+        MFUN_TASK_ID_L4NBIOT_IWM_UI => array(),
+        MFUN_TASK_ID_L4NBIOT_IHM_UI => array(),
+        MFUN_TASK_ID_L4OAMTOOLS => array(),
+        MFUN_TASK_ID_L5BI => array(),
         MFUN_TASK_ID_MAX => array(),
         MFUN_TASK_ID_NULL => array(),
     );
@@ -1397,6 +1422,22 @@ class classL2codecHuitpMsgDict
         }
     }
 
+    public static function mfun_l2codec_getHuitpDestTaskId($msgId)
+    {
+        $taskId = 0;
+        while ($taskId < MFUN_TASK_ID_MAX)
+        {
+            $msgArray = array();
+            $msgArray = self::$mfunL2codecTaskMsgArrayConst[$taskId];
+            for($i=0; $i < count($msgArray); $i++){
+                if ($msgArray[$i] == $msgId)
+                    return $taskId;
+            }
+            $taskId++;
+        }
+        return false;
+
+    }
 
 
 }
