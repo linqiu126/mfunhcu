@@ -16,6 +16,7 @@ define("MFUN_HCU_FHYS_LEXIN_SIGNATURE","【阜华光交箱云平台】"); //短�
 
 //FHYS项目关键字
 define("MFUN_HCU_FHYS_SLEEP_DURATION", 300); //如果最后一次测量报告距离现在已经超过5x60秒
+define("MFUN_HCU_FHYS_PIC_FILE_LEN", 24);  //120101002_1492346492.jpg
 
 define("MFUN_L3APL_F2CM_KEY_PREFIX", "KEY");  //定义KEY ID的特征字，钥匙KEYID必须以KEY开头
 define("MFUN_L3APL_F2CM_KEY_ID_LEN", 6);     //UI界面key id字符串长度=该值+3（KEY)
@@ -62,12 +63,14 @@ define ("MFUN_HCU_FHYS_ALARM_LEVEL_L", "1"); //告警级别1，告警级别Low
 define ("MFUN_HCU_FHYS_ALARM_LEVEL_M", "2"); //告警级别2，告警级别Middle
 define ("MFUN_HCU_FHYS_ALARM_LEVEL_H", "3"); //告警级别3，告警级别High
 
-define ("MFUN_HCU_FHYS_DOOR_OPEN", "Y");  //光交箱门打开
-define ("MFUN_HCU_FHYS_DOOR_CLOSE", "N"); //光交箱门关闭
+define ("MFUN_HCU_FHYS_DOOR_OPEN", "O");  //光交箱门打开
+define ("MFUN_HCU_FHYS_DOOR_CLOSE", "C"); //光交箱门关闭
 define ("MFUN_HCU_FHYS_DOOR_ALARM", "A"); //光交箱门暴力打开
-define ("MFUN_HCU_FHYS_LOCK_OPEN", "Y");  //智能云锁打开
-define ("MFUN_HCU_FHYS_LOCK_CLOSE", "N"); //智能云锁关闭
+define ("MFUN_HCU_FHYS_DOOR_NULL", "N"); //设备未安装
+define ("MFUN_HCU_FHYS_LOCK_OPEN", "O");  //智能云锁打开
+define ("MFUN_HCU_FHYS_LOCK_CLOSE", "C"); //智能云锁关闭
 define ("MFUN_HCU_FHYS_LOCK_ALARM", "A"); //智能云锁暴力打开
+define ("MFUN_HCU_FHYS_LOCK_NULL", "N"); //设备未安装
 
 define ("MFUN_HCU_FHYS_KEY_VALID", "Y");  //虚拟钥匙有效，已授予用户
 define ("MFUN_HCU_FHYS_KEY_INVALID", "N"); //虚拟钥匙无效，未授予用户
@@ -75,7 +78,7 @@ define ("MFUN_HCU_FHYS_KEY_INVALID", "N"); //虚拟钥匙无效，未授予用�
 //下位机的数据常量
 define ("MFUN_HCU_DATA_FHYS_STATUS_OK", 0x00); //设备状态正常或者门锁闭合
 define ("MFUN_HCU_DATA_FHYS_STATUS_NOK", 0x01); //设备状态异常或者门锁打开
-define ("MFUN_HCU_DATA_FHYS_STATUS_ALARM", 0x02); //设备告警或者门锁暴力打开
+define ("MFUN_HCU_DATA_FHYS_STATUS_NULL", 0x02); //设备为空或门锁没有安装
 define ("MFUN_HCU_DATA_FHYS_LOCK_OPEN", 0x00);  //开锁命令
 define ("MFUN_HCU_DATA_FHYS_LOCK_CLOSE", 0x01);  //闭锁命令
 

@@ -53,6 +53,7 @@ define("MFUN_L3APL_F3DM_FHYS_STYPE_PREFIX", "CL"); //FHYS传感器类型特征�
 define("MFUN_L3APL_F3DM_AQYC_STYPE_PREFIX", "YC"); //AQYC传感器类型特征字
 define("MFUN_L3APL_F3DM_SENSOR_TYPE_PREFIX_LEN", 2);
 define("MFUN_L3APL_F1SYM_SESSIONID_VALID_TIME", 600);  //Session ID有效时间为10分钟
+define("MFUN_L3APL_F2CM_FAVOURSITE_MAX_NUM", 5); //最大常用站点数量
 
 define("MFUN_HCU_MSG_HEAD_FORMAT", "A2Key/A2Len/A2Cmd");// 1B 控制字ctrl_key, 1B 长度length（除控制字和长度本身外），1B 操作字opt_key
 define("MFUN_HCU_MSG_HEAD_LENGTH", 6); //3 Byte
@@ -68,14 +69,14 @@ define("MFUN_HCU_CMDID_BFSC_WEIGHT", 0x3B);
 
 //定义各测量值告警门限
 define("MFUN_L3APL_F3DM_TH_ALARM_NOISE", 80);
-define("MFUN_L3APL_F3DM_TH_ALARM_HUMID", 50);
+define("MFUN_L3APL_F3DM_TH_ALARM_HUMID", 80);
 define("MFUN_L3APL_F3DM_TH_ALARM_TEMP", 45);
 define("MFUN_L3APL_F3DM_TH_ALARM_PM25", 100);
 define("MFUN_L3APL_F3DM_TH_ALARM_WINDSPD", 20);
 define("MFUN_L3APL_F3DM_TH_ALARM_EMC", 100);
 define("MFUN_L3APL_F3DM_TH_ALARM_WINDDIR", 360);
 define("MFUN_L3APL_F3DM_TH_ALARM_GPRS", 10); //GPRS信号弱告警门限
-define("MFUN_L3APL_F3DM_TH_ALARM_BATT", 10); //低电量告警门限
+define("MFUN_L3APL_F3DM_TH_ALARM_BATT", 5); //低电量告警门限
 
 //传感器 EQUIPMENT ID定义
 define ("MFUN_L3APL_F4ICM_ID_EQUIP_PM", 0x01);

@@ -92,6 +92,7 @@ class classDbiL2snrHsmmp
         {
             die('Could not connect: ' . mysqli_error($mysqli));
         }
+        $mysqli->query("SET NAMES utf8");
 
         $date = intval(date("ymd", $timestamp));
         $stamp = getdate($timestamp);
@@ -141,6 +142,7 @@ class classDbiL2snrHsmmp
         {
             die('Could not connect: ' . mysqli_error($mysqli));
         }
+        $mysqli->query("SET NAMES utf8");
 
         if ($status == MFUN_HCU_CMD_RESP_FAILURE)
             $dataflag = MFUN_HCU_VIDEO_DATA_STATUS_FAIL;
@@ -212,9 +214,7 @@ class classDbiL2snrHsmmp
         return $resp;
     }
 
-
-
-    public function dbi_picture_data_save($deviceid, $sensorid, $timestamp, $bindata, $gps)
+    public function dbi_picture_data_save($statcode, $timestamp, $bindata)
     {
         //建立连接
         $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
@@ -222,46 +222,84 @@ class classDbiL2snrHsmmp
         {
             die('Could not connect: ' . mysqli_error($mysqli));
         }
+        $mysqli->query("SET NAMES utf8");
 
         $date = intval(date("ymd", $timestamp));
         $stamp = getdate($timestamp);
         $hourminindex = intval(($stamp["hours"] * 60 + floor($stamp["minutes"]/MFUN_TIME_GRID_SIZE)));
 
-        if(!empty($gps)){
-            $altitude = $gps["altitude"];
-            $flag_la = $gps["flag_la"];
-            $latitude = $gps["latitude"];
-            $flag_lo = $gps["flag_lo"];
-            $longitude = $gps["longitude"];
-        }
-        else{
-            $altitude = "";
-            $flag_la = "";
-            $latitude = "";
-            $flag_lo = "";
-            $longitude = "";
-        }
-
         //存储新记录，如果发现是已经存在的数据，则覆盖，否则新增
-        $result = $mysqli->query("SELECT * FROM `t_l2snr_picturedata` WHERE (`deviceid` = '$deviceid' AND `sensorid` = '$sensorid'
-                                  AND `reportdate` = '$date' AND `hourminindex` = '$hourminindex')");
+        $query_str = "SELECT * FROM `t_l2snr_picturedata` WHERE (`statcode` = '$statcode' AND `reportdate` = '$date' AND `hourminindex` = '$hourminindex')";
+        $result = $mysqli->query($query_str);
         if (($result != false) && ($result->num_rows)>0)   //重复，则覆盖
         {
-            $result=$mysqli->query("UPDATE `t_l2snr_picturedata` SET `bindata` = '$bindata',`altitude` = '$altitude',`flag_la` = '$flag_la',`latitude` = '$latitude',`flag_lo` = '$flag_lo',`longitude` = '$longitude'
-                    WHERE (`deviceid` = '$deviceid' AND `sensorid` = '$sensorid' AND `reportdate` = '$date' AND `hourminindex` = '$hourminindex')");
+            $query_str = "UPDATE `t_l2snr_picturedata` SET `bindata` = '$bindata' WHERE (`statcode` = '$statcode' AND `reportdate` = '$date' AND `hourminindex` = '$hourminindex')";
+            $result=$mysqli->query($query_str);
         }
         else   //不存在，新增
         {
-            $result=$mysqli->query("INSERT INTO `t_l2snr_picturedata` (deviceid,sensorid,bindata,reportdate,hourminindex,altitude,flag_la,latitude,flag_lo,longitude)
-                    VALUES ('$deviceid','$sensorid','$bindata','$date','$hourminindex','$altitude', '$flag_la','$latitude', '$flag_lo','$longitude')");
+            $query_str = "INSERT INTO `t_l2snr_picturedata` (statcode,bindata,reportdate,hourminindex) VALUES ('$statcode','$bindata','$date','$hourminindex')";
+            $result=$mysqli->query($query_str);
         }
+        $mysqli->close();
+        return $result;
+    }
+
+    public function dbi_picture_link_save($statcode, $deviceId, $timestamp, $filelink, $filesize)
+    {
+        //建立连接
+        $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli)
+        {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $mysqli->query("SET NAMES utf8");
+
+        $date = intval(date("ymd", $timestamp));
+        $stamp = getdate($timestamp);
+        $hourminindex = intval(($stamp["hours"] * 60 + floor($stamp["minutes"]/MFUN_TIME_GRID_SIZE)));
+
+        $filetype = "JPG";
+        $filesize = (int)$filesize;
+        $description = $deviceId."上传的照片";
+        $query_str = "INSERT INTO `t_l2snr_picturedata` (statcode,filename,filetype,filesize,filedescription,reportdate,hourminindex) VALUES ('$statcode','$filelink','$filetype','$filesize','$description','$date','$hourminindex')";
+        $result=$mysqli->query($query_str);
+
+        $mysqli->close();
+        return $result;
+    }
+
+    public function dbi_picture_filesize_update($statcode, $deviceId, $timestamp, $filename, $filesize)
+    {
+        //建立连接
+        $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli)
+        {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $mysqli->query("SET NAMES utf8");
+
+        $date = intval(date("ymd", $timestamp));
+        $stamp = getdate($timestamp);
+        $hourminindex = intval(($stamp["hours"] * 60 + floor($stamp["minutes"]/MFUN_TIME_GRID_SIZE)));
+
+        $query_str = "SELECT * FROM `t_l2snr_picturedata` WHERE (`statcode` = '$statcode' AND `filename` = '$filename')";
+        $result = $mysqli->query($query_str);
+        if (($result != false) && ($result->num_rows)>0) {
+            $row = $result->fetch_array();
+            $oldsize = (int)$row['filesize'];
+            $newsize = (int)$filesize + $oldsize;
+            $query_str = "UPDATE `t_l2snr_picturedata` SET `filesize` = '$newsize', `hourminindex` = '$hourminindex' WHERE (`statcode` = '$statcode' AND `filename` = '$filename')";
+            $result=$mysqli->query($query_str);
+        }
+
         $mysqli->close();
         return $result;
     }
 
     //删除对应用户所有超过90天的数据
     //缺省做成90天，如果参数错误，导致90天以内的数据强行删除，则不被认可
-    public function dbi_pictureData_delete_3monold($deviceid, $sensorid,$days)
+    public function dbi_pictureData_delete_3monold($statcode, $days)
     {
         if ($days <90) $days = 90;  //不允许删除90天以内的数据
         //建立连接
@@ -270,13 +308,13 @@ class classDbiL2snrHsmmp
         {
             die('Could not connect: ' . mysqli_error($mysqli));
         }
-        $result = $mysqli->query("DELETE FROM `t_l2snr_picturedata` WHERE ((`deviceid` = '$deviceid' AND `sensorid` ='$sensorid') AND (TO_DAYS(NOW()) - TO_DAYS(`date`) > '$days'))");
+        $result = $mysqli->query("DELETE FROM `t_l2snr_picturedata` WHERE (`statcode` = '$statcode'  AND (TO_DAYS(NOW()) - TO_DAYS(`date`) > '$days'))");
         $mysqli->close();
         return $result;
     }
 
     //读取最新的bindata数据
-    public function dbi_latestPictureData_inqury($deviceid)
+    public function dbi_latestPictureData_inqury($statcode)
     {
         $LatestPictureValue = "";
         $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
@@ -284,7 +322,7 @@ class classDbiL2snrHsmmp
             die('Could not connect: ' . mysqli_error($mysqli));
         }
 
-        $result = $mysqli->query("SELECT * FROM `t_l2snr_picturedata` WHERE `deviceid` = '$deviceid'");
+        $result = $mysqli->query("SELECT * FROM `t_l2snr_picturedata` WHERE `statcode` = '$statcode'");
         if (($result != false) && ($result->num_rows)>0)
         {
             $row = $result->fetch_array();

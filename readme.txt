@@ -353,6 +353,11 @@ Make By：ZJL
 > FHYS功能完善，修复微信开锁bug，socket listening bug
 > 增加HUITP消息，IE字典，完善HUITP消息解码功能，测试OK
 
+//= LZH, 2017 Apr.08, CURRENT_SW_DELIVERY R03.D17
+> 增加FHYS常用站点功能
+> 更新FHYS状态报告消息，增加锁未安装状态
+> 添加FHYS蓝牙钥匙自动生成功能
+
 //待完善的功能
 1. dbi_devinfo_update（）需要修改，添加设备时预计结束时间和实际结束时间应该在项目信息里
 2. 添加设备时没有选择该设备装配了那些传感器，sensorctrl表没有更新

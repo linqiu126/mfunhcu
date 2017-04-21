@@ -71,7 +71,16 @@ if (TC_L4FHYS_WECHAT == true) {
  *                             L4FHYS-UI TEST CASES                                   *
  *************************************************************************************/
 if (TC_L4FHYS_UI == true) {
-    $sessionid = "J9QnCailLT";
+    $sessionid = "bERu5jozlk";
+
+    echo " [TC L4FHYS: Favourite_count START]\n";
+    $_GET["action"] = "Favourite_count";
+    $_GET["type"] = "query";
+    $body = array('StatCode' => "120101005");
+    $_GET["body"] = $body;
+    $_GET["user"] = $sessionid;
+    require("../l4fhysui/request.php");
+    echo " [TC L4FHYS: Favourite_count END]\n";
 
     echo " [TC L4FHYS: GetOTDRTable START]\n";
     $_GET["action"] = "GetOTDRTable";

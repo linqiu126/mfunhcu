@@ -4346,6 +4346,7 @@ class classTaskL2sdkWechat
         $keyword = trim($object->Content);
 
         //根据输入站点号查出地理坐标然后推送位置信息
+        /*
         $dbiL2sdkWechatObj = new classDbiL2sdkWechat();
         $resp = $dbiL2sdkWechatObj->dbi_site_location_inqury($keyword);
         if (!empty($resp)){
@@ -4356,8 +4357,8 @@ class classTaskL2sdkWechat
         }
         else
             $result = $this->transmitText($object, "请输入正确站点代码");
+        */
 
-        /*
         //多客服人工回复模式
         if (strstr($keyword, "您好") || strstr($keyword, "你好") || strstr($keyword, "在吗")){
             $result = $this->transmitService($object);
@@ -4390,7 +4391,7 @@ class classTaskL2sdkWechat
             }else{
                 $result = $this->transmitText($object, $content);
             }
-        }*/
+        }
 
         return $result;
     }

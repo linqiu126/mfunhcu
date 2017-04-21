@@ -246,6 +246,7 @@ define("MSG_ID_L4FHYSUI_TO_L3F2_KEYAUTHDEL", $index++);
 define("MSG_ID_L4FHYSUI_TO_L3F3_KEYHISTORY", $index++);
 define("MSG_ID_L4FHYSUI_TO_L3F3_SENSORLIST", $index++);
 define("MSG_ID_L4FHYSUI_TO_L3F3_DEVSENSOR", $index++);  //原有AQYC消息修改适配FHYS功能
+define("MSG_ID_L4FHYSUI_TO_L3F3_POINTPICTURE", $index++); //FHYS新增站点图片消息
 define("MSG_ID_L4FHYSUI_TO_L3F3_GETSTATICMONITORTABLE", $index++);  //原有AQYC消息修改适配FHYS功能
 define("MSG_ID_L4FHYSUI_TO_L3F2_RTUTABLE", $index++); //用于FHYS临时纤芯资源管理
 define("MSG_ID_L4FHYSUI_TO_L3F2_OTDRTABLE", $index++);

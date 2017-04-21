@@ -180,6 +180,8 @@ class classDbiL3wxOprFhys
                                 $door_1 = "正常关闭";
                             elseif ($status_row["door_1"] == MFUN_HCU_FHYS_DOOR_ALARM)
                                 $door_1 = "暴力打开";
+                            elseif ($status_row["door_1"] == MFUN_HCU_FHYS_DOOR_NULL)
+                                $door_1 = "未安装";
 
                             if ($status_row["door_2"] == MFUN_HCU_FHYS_DOOR_OPEN)
                                 $door_2 = "正常打开";
@@ -187,6 +189,8 @@ class classDbiL3wxOprFhys
                                 $door_2 = "正常关闭";
                             elseif ($status_row["door_2"] == MFUN_HCU_FHYS_DOOR_ALARM)
                                 $door_2 = "暴力打开";
+                            elseif ($status_row["door_2"] == MFUN_HCU_FHYS_DOOR_NULL)
+                                $door_2 = "未安装";
 
                             //更新锁运行状态
                             if ($status_row["lock_1"] == MFUN_HCU_FHYS_LOCK_OPEN)
@@ -195,6 +199,8 @@ class classDbiL3wxOprFhys
                                 $lock_1 = "正常关闭";
                             elseif ($status_row["lock_1"] == MFUN_HCU_FHYS_LOCK_ALARM)
                                 $lock_1 = "暴力打开";
+                            elseif ($status_row["lock_1"] == MFUN_HCU_FHYS_LOCK_NULL)
+                                $lock_1 = "未安装";
 
                             if ($status_row["lock_2"] == MFUN_HCU_FHYS_LOCK_OPEN)
                                 $lock_2 = "正常打开";
@@ -202,6 +208,8 @@ class classDbiL3wxOprFhys
                                 $lock_2 = "正常关闭";
                             elseif ($status_row["lock_2"] == MFUN_HCU_FHYS_LOCK_ALARM)
                                 $lock_2 = "暴力打开";
+                            elseif ($status_row["lock_2"] == MFUN_HCU_FHYS_LOCK_NULL)
+                                $lock_2 = "未安装";
                         }
 
                         $detailinfo = "站点地址:".$site_row['address']."; 设备状态:".$dev_status."; 门-1:".$door_1."; 门-2:".$door_2."; 锁-1:".$lock_1."; 锁-2:".$lock_2;
@@ -247,6 +255,8 @@ class classDbiL3wxOprFhys
                                 $door_1 = "正常关闭";
                             elseif ($status_row["door_1"] == MFUN_HCU_FHYS_DOOR_ALARM)
                                 $door_1 = "暴力打开";
+                            elseif ($status_row["door_1"] == MFUN_HCU_FHYS_DOOR_NULL)
+                                $door_1 = "未安装";
 
                             if ($status_row["door_2"] == MFUN_HCU_FHYS_DOOR_OPEN)
                                 $door_2 = "正常打开";
@@ -254,6 +264,8 @@ class classDbiL3wxOprFhys
                                 $door_2 = "正常关闭";
                             elseif ($status_row["door_2"] == MFUN_HCU_FHYS_DOOR_ALARM)
                                 $door_2 = "暴力打开";
+                            elseif ($status_row["door_2"] == MFUN_HCU_FHYS_DOOR_NULL)
+                                $door_2 = "未安装";
 
                             //更新锁运行状态
                             if ($status_row["lock_1"] == MFUN_HCU_FHYS_LOCK_OPEN)
@@ -262,6 +274,8 @@ class classDbiL3wxOprFhys
                                 $lock_1 = "正常关闭";
                             elseif ($status_row["lock_1"] == MFUN_HCU_FHYS_LOCK_ALARM)
                                 $lock_1 = "暴力打开";
+                            elseif ($status_row["lock_1"] == MFUN_HCU_FHYS_LOCK_NULL)
+                                $lock_1 = "未安装";
 
                             if ($status_row["lock_2"] == MFUN_HCU_FHYS_LOCK_OPEN)
                                 $lock_2 = "正常打开";
@@ -269,6 +283,8 @@ class classDbiL3wxOprFhys
                                 $lock_2 = "正常关闭";
                             elseif ($status_row["lock_2"] == MFUN_HCU_FHYS_LOCK_ALARM)
                                 $lock_2 = "暴力打开";
+                            elseif ($status_row["lock_2"] == MFUN_HCU_FHYS_LOCK_NULL)
+                                $lock_2 = "未安装";
                         }
                         $detailinfo = "站点地址:".$site_row['address']."; 设备状态:".$dev_status."; 门-1:".$door_1."; 门-2:".$door_2."; 锁-1:".$lock_1."; 锁-2:".$lock_2;
 

@@ -707,9 +707,6 @@ class classDbiL3apF3dm
         return $devlist;
     }
 
-
-
-
     //UI PointDel request，删除一个监测点
     public function dbi_siteinfo_delete($statcode)
     {
@@ -780,8 +777,8 @@ class classDbiL3apF3dm
             if (($resp->num_rows)>0) {
                 $info = $resp->fetch_array();
 
-                $latitude = ($info['latitude'])/1000000;  //百度地图经纬度转换
-                $longitude =  ($info['longitude'])/1000000;
+                $latitude = (string)(($info['latitude'])/1000000);  //百度地图经纬度转换
+                $longitude = (string)(($info['longitude'])/1000000);
 
                 $temp = array(
                     'StatCode' => $info['statcode'],
@@ -804,6 +801,95 @@ class classDbiL3apF3dm
             }
         }
 
+        $mysqli->close();
+        return $sitelist;
+    }
+
+    public function dbi_favourite_count_process($uid, $statCode)
+    {
+        //建立连接
+        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli) {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $mysqli->query("SET NAMES utf8");
+
+        $timestamp = time();
+        $currenttime = date("Y-m-d H:i:s",$timestamp);
+        $query_str = "SELECT * FROM `t_l3f2cm_favourlist` WHERE `uid` = '$uid'";
+        $result = $mysqli->query($query_str);
+        $total = $result->num_rows;
+        if($total < MFUN_L3APL_F2CM_FAVOURSITE_MAX_NUM){ //新增一个站点
+            $query_str = "SELECT * FROM `t_l3f2cm_favourlist` WHERE (`uid` = '$uid' AND `statcode` = '$statCode')";
+            $resp = $mysqli->query($query_str);
+            if (($resp->num_rows)>0){//如果有重复，则更新这个站点的点击日期
+                $row = $resp->fetch_array();
+                $sid = $row['sid'];
+                $query_str = "UPDATE `t_l3f2cm_favourlist` SET `createtime` = '$currenttime' WHERE (`sid` = '$sid' )";
+                $result = $mysqli->query($query_str);
+            }
+            else{
+                $query_str = "INSERT INTO `t_l3f2cm_favourlist` (uid,statcode,createtime) VALUES ('$uid','$statCode','$currenttime')";
+                $result = $mysqli->query($query_str);
+            }
+        }
+        else{//替换一个时间最早的站点
+            $query_str = "SELECT * FROM `t_l3f2cm_favourlist` WHERE (`createtime` = (SELECT MIN(`createtime`) FROM `t_l3f2cm_favourlist` where `uid` = '$uid' )) AND (`uid` = '$uid')";
+            $result = $mysqli->query($query_str);
+            if (($result->num_rows)>0) {
+                $row = $result->fetch_array();
+                $sid = $row['sid'];
+                $query_str = "UPDATE `t_l3f2cm_favourlist` SET `uid` = '$uid',`statcode` = '$statCode', `createtime` = '$currenttime' WHERE (`sid` = '$sid' )";
+                $result = $mysqli->query($query_str);
+            }
+        }
+        $mysqli->close();
+        return $result;
+    }
+
+    public function dbi_favourite_list_process($uid)
+    {
+        //建立连接
+        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli) {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $mysqli->query("SET NAMES utf8");
+
+        $sitelist = array();
+        $query_str = "SELECT * FROM `t_l3f2cm_favourlist` WHERE `uid` = '$uid'";
+        $result = $mysqli->query($query_str);
+        while ($row = $result->fetch_array()){
+            $statcode = $row['statcode'];
+
+            $query_str = "SELECT * FROM `t_l3f3dm_siteinfo` WHERE `statcode` = '$statcode'";      //查询监测点对应的项目号
+            $resp = $mysqli->query($query_str);
+            if (($resp->num_rows)>0) {
+                $info = $resp->fetch_array();
+
+                $latitude = (string)(($info['latitude'])/1000000);  //百度地图经纬度转换
+                $longitude = (string)(($info['longitude'])/1000000);
+
+                $temp = array(
+                    'StatCode' => $info['statcode'],
+                    'StatName' => $info['statname'],
+                    'ChargeMan' => $info['chargeman'],
+                    'Telephone' => $info['telephone'],
+                    'Department' => $info['department'],
+                    'Address' => $info['address'],
+                    'Country' => $info['country'],
+                    'Street' => $info['street'],
+                    'Square' => $info['square'],
+                    'Flag_la' => $info['flag_la'],
+                    'Latitude' => $latitude,
+                    'Flag_lo' =>  $info['flag_lo'],
+                    'Longitude' => $longitude,
+                    'ProStartTime' => $info['starttime'],
+                    'Stage' => $info['memo'],
+                );
+                array_push($sitelist, $temp);
+            }
+        }
         $mysqli->close();
         return $sitelist;
     }
@@ -1714,7 +1800,7 @@ class classDbiL3apF3dm
             $lock_1 = "状态未知";
             $lock_2 = "状态未知";
             $sig_level = "0";
-            $batt_level = "0"."%";
+            $batt_level = "0V";
             $vibr_alarm = "未知";
             $water_alarm = "未知";
             $smok_alarm = "未知";
@@ -1739,6 +1825,8 @@ class classDbiL3apF3dm
                     $door_1 = "正常关闭";
                 elseif($row["door_1"] == MFUN_HCU_FHYS_DOOR_ALARM)
                     $door_1 = "暴力打开";
+                elseif($row["door_1"] == MFUN_HCU_FHYS_DOOR_NULL)
+                    $door_1 = "未安装";
 
                 if($row["door_2"] == MFUN_HCU_FHYS_DOOR_OPEN)
                     $door_2 = "正常打开";
@@ -1746,6 +1834,8 @@ class classDbiL3apF3dm
                     $door_2 = "正常关闭";
                 elseif($row["door_2"] == MFUN_HCU_FHYS_DOOR_ALARM)
                     $door_2 = "暴力打开";
+                elseif($row["door_2"] == MFUN_HCU_FHYS_DOOR_NULL)
+                    $door_2 = "未安装";
 
                 //更新锁运行状态
                 if($row["lock_1"] == MFUN_HCU_FHYS_LOCK_OPEN)
@@ -1754,6 +1844,8 @@ class classDbiL3apF3dm
                     $lock_1 = "正常关闭";
                 elseif($row["lock_1"] == MFUN_HCU_FHYS_LOCK_ALARM)
                     $lock_1 = "暴力打开";
+                elseif($row["lock_1"] == MFUN_HCU_FHYS_LOCK_NULL)
+                    $lock_1 = "未安装";
 
                 if($row["lock_2"] == MFUN_HCU_FHYS_LOCK_OPEN)
                     $lock_2 = "正常打开";
@@ -1761,24 +1853,27 @@ class classDbiL3apF3dm
                     $lock_2 = "正常关闭";
                 elseif($row["lock_2"] == MFUN_HCU_FHYS_LOCK_ALARM)
                     $lock_2 = "暴力打开";
+                elseif($row["lock_2"] == MFUN_HCU_FHYS_LOCK_NULL)
+                    $lock_2 = "未安装";
 
                 //更新GPRS信号强度
                 $sig_level = $row["siglevel"];
 
                 //更新电池剩余电量
-                $batt_level = $row["battlevel"]."%";
+                $batt_level = (string)($row["battlevel"]/10) . "V";
 
                 //更新温度, 16进制的字符，高2位为整数部分，低2位为小数部分
                 $temp = $row["temperature"];
                 $temp_h = hexdec(substr($temp, 0, 2)) & 0xFF;
                 $temp_l = hexdec(substr($temp, 2, 2)) & 0xFF;
-                $temperature = (string)$temp_h . "." . (string)$temp_l;
+                $temperature = (string)($temp_h + $temp_l/100);
+
 
                 //更新湿度,16进制的字符，高2位为整数部分，低2位为小数部分
                 $humi = $row["humidity"];
                 $humi_h = hexdec(substr($humi, 0, 2)) & 0xFF;
                 $humi_l = hexdec(substr($humi, 2, 2)) & 0xFF;
-                $humidity = (string)$humi_h . "." . (string)$humi_l . "%";
+                $humidity = (string)($humi_h + $humi_l/100). "%";
 
                 //更新震动告警状态
                 if($row["vibralarm"] == MFUN_HCU_FHYS_ALARM_YES)
@@ -1859,9 +1954,9 @@ class classDbiL3apF3dm
             $humi_h = hexdec(substr($humi, 0, 2)) & 0xFF;
             $humi_l = hexdec(substr($humi, 2, 2)) & 0xFF;
             $humidity = $humi_h + $humi_l/100;
-            //暂时先这样处理，此处测量值计算要根据上报精度进行修改。。。。。
-            $battlevel = $row['battlevel']/1;
-            $siglevel = $row['siglevel']/1;
+            //剩余电量上报值除以10为电压值
+            $battlevel = $row['battlevel']/10;
+            $siglevel = $row['siglevel']; //RSSI
 
             $currentvalue = array();
 
@@ -1884,38 +1979,58 @@ class classDbiL3apF3dm
                         'WarningTarget'=>$alarm);
             array_push($currentvalue,$temp);
 
-            //更新门-1, 锁-1运行状态
-            if($row["door_1"] == MFUN_HCU_FHYS_DOOR_OPEN AND $row["lock_1"] == MFUN_HCU_FHYS_LOCK_OPEN){
+            //更新门-1运行状态
+            if($row["door_1"] == MFUN_HCU_FHYS_DOOR_OPEN){
                 $door_1_status = "正常打开";
                 $door_1_alarm = "true";
                 $door_1_picname = "FHYS_door";
+            }
+            elseif($row["door_1"] == MFUN_HCU_FHYS_DOOR_CLOSE){
+                $door_1_status = "正常关闭";
+                $door_1_alarm = "false";
+                $door_1_picname = "FHYS_door";
+            }
+            elseif($row["door_1"] == MFUN_HCU_FHYS_DOOR_ALARM){
+                $door_1_status = "暴力开门";
+                $door_1_alarm = "true";
+                $door_1_picname = "FHYS_door";
+            }
+            elseif($row["door_1"] == MFUN_HCU_FHYS_DOOR_NULL){
+                $door_1_status = "未安装";
+                $door_1_alarm = "false";
+                $door_1_picname = "FHYS_door";
+            }
+            else{
+                $door_1_status = "状态未知";
+                $door_1_alarm = "false";
+                $door_1_picname = "FHYS_door";
+            }
+
+            //更新锁-1运行状态
+            if($row["lock_1"] == MFUN_HCU_FHYS_LOCK_OPEN){
                 $lock_1_status = "正常打开";
                 $lock_1_alarm = "true";
                 $lock_1_picname = "FHYS_locko";
             }
-            elseif($row["door_1"] == MFUN_HCU_FHYS_DOOR_CLOSE AND $row["lock_1"] == MFUN_HCU_FHYS_LOCK_CLOSE){
-                $door_1_status = "正常关闭";
-                $door_1_alarm = "false";
-                $door_1_picname = "FHYS_door";
+            elseif($row["lock_1"] == MFUN_HCU_FHYS_LOCK_CLOSE){
                 $lock_1_status = "正常关闭";
                 $lock_1_alarm = "false";
                 $lock_1_picname = "FHYS_lockc";
             }
-            elseif($row["door_1"] == MFUN_HCU_FHYS_DOOR_OPEN AND $row["lock_1"] == MFUN_HCU_FHYS_LOCK_CLOSE){
-                $door_1_status = "暴力开门";
-                $door_1_alarm = "true";
-                $door_1_picname = "FHYS_door";
-                $lock_1_status = "正常关闭";
-                $lock_1_alarm = "false";
-                $lock_1_picname = "FHYS_lockc";
-            }
-            elseif($row["door_1"] == MFUN_HCU_FHYS_DOOR_CLOSE AND $row["lock_1"] == MFUN_HCU_FHYS_LOCK_OPEN){
-                $door_1_status = "正常关闭";
-                $door_1_alarm = "false";
-                $door_1_picname = "FHYS_door";
+            elseif($row["lock_1"] == MFUN_HCU_FHYS_LOCK_ALARM){
                 $lock_1_status = "暴力开锁";
                 $lock_1_alarm = "true";
                 $lock_1_picname = "FHYS_locko";
+            }
+            elseif($row["lock_1"] == MFUN_HCU_FHYS_LOCK_NULL){
+                $lock_1_status = "未安装";
+                $lock_1_alarm = "false";
+                $lock_1_picname = "FHYS_lockc";
+            }
+            else{
+                $lock_1_status = "状态未知";
+                $lock_1_alarm = "false";
+                $lock_1_picname = "FHYS_lockc";
             }
 
             $temp = array(
@@ -1933,38 +2048,58 @@ class classDbiL3apF3dm
                         'WarningTarget'=>$lock_1_alarm);
             array_push($currentvalue,$temp);
 
-            //更新门-2, 锁-2运行状态
-            if($row["door_2"] == MFUN_HCU_FHYS_DOOR_OPEN AND $row["lock_2"] == MFUN_HCU_FHYS_LOCK_OPEN){
+            //更新门-2运行状态
+            if($row["door_2"] == MFUN_HCU_FHYS_DOOR_OPEN){
                 $door_2_status = "正常打开";
                 $door_2_alarm = "true";
                 $door_2_picname = "FHYS_door";
+            }
+            elseif($row["door_2"] == MFUN_HCU_FHYS_DOOR_CLOSE){
+                $door_2_status = "正常关闭";
+                $door_2_alarm = "false";
+                $door_2_picname = "FHYS_door";
+            }
+            elseif($row["door_2"] == MFUN_HCU_FHYS_DOOR_ALARM){
+                $door_2_status = "暴力开门";
+                $door_2_alarm = "true";
+                $door_2_picname = "FHYS_door";
+            }
+            elseif($row["door_2"] == MFUN_HCU_FHYS_DOOR_NULL){
+                $door_2_status = "未安装";
+                $door_2_alarm = "false";
+                $door_2_picname = "FHYS_door";
+            }
+            else{
+                $door_2_status = "状态未知";
+                $door_2_alarm = "false";
+                $door_2_picname = "FHYS_door";
+            }
+
+            //更新锁-2运行状态
+            if($row["lock_2"] == MFUN_HCU_FHYS_LOCK_OPEN){
                 $lock_2_status = "正常打开";
                 $lock_2_alarm = "true";
                 $lock_2_picname = "FHYS_locko";
             }
-            elseif($row["door_2"] == MFUN_HCU_FHYS_DOOR_CLOSE AND $row["lock_2"] == MFUN_HCU_FHYS_LOCK_CLOSE){
-                $door_2_status = "正常关闭";
-                $door_2_alarm = "false";
-                $door_2_picname = "FHYS_door";
+            elseif($row["lock_2"] == MFUN_HCU_FHYS_LOCK_CLOSE){
                 $lock_2_status = "正常关闭";
                 $lock_2_alarm = "false";
                 $lock_2_picname = "FHYS_lockc";
             }
-            elseif($row["door_2"] == MFUN_HCU_FHYS_DOOR_OPEN AND $row["lock_2"] == MFUN_HCU_FHYS_LOCK_CLOSE){
-                $door_2_status = "暴力开门";
-                $door_2_alarm = "true";
-                $door_2_picname = "FHYS_door";
-                $lock_2_status = "正常关闭";
-                $lock_2_alarm = "false";
-                $lock_2_picname = "FHYS_lockc";
-            }
-            elseif($row["door_2"] == MFUN_HCU_FHYS_DOOR_CLOSE AND $row["lock_2"] == MFUN_HCU_FHYS_LOCK_OPEN){
-                $door_2_status = "正常关闭";
-                $door_2_alarm = "false";
-                $door_2_picname = "FHYS_door";
+            elseif($row["lock_2"] == MFUN_HCU_FHYS_LOCK_ALARM){
                 $lock_2_status = "暴力开锁";
                 $lock_2_alarm = "true";
                 $lock_2_picname = "FHYS_locko";
+            }
+            elseif($row["lock_2"] == MFUN_HCU_FHYS_LOCK_NULL){
+                $lock_2_status = "未安装";
+                $lock_2_alarm = "false";
+                $lock_2_picname = "FHYS_lockc";
+            }
+            else{
+                $lock_2_status = "状态未知";
+                $lock_2_alarm = "false";
+                $lock_2_picname = "FHYS_lockc";
             }
 
             $temp = array(
@@ -2006,8 +2141,8 @@ class classDbiL3apF3dm
                 $temp = array(
                             'AlarmName'=>"剩余电量：",
                             'AlarmEName'=> "FHYS_batt",
-                            'AlarmValue'=>(string)$battlevel,
-                            'AlarmUnit'=>" %",
+                            'AlarmValue'=>(string)($battlevel),
+                            'AlarmUnit'=>" V",
                             'WarningTarget'=>$alarm);
                 array_push($currentvalue,$temp);
             }
@@ -2209,6 +2344,34 @@ class classDbiL3apF3dm
 
         $mysqli->close();
         return $history;
+    }
+
+    public function dbi_point_picture_process($statcode)
+    {
+        //建立连接
+        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli) {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $mysqli->query("SET NAMES utf8");
+
+        $query_str = "SELECT * FROM `t_l2snr_picturedata` WHERE `statcode` = '$statcode' ";
+        $result = $mysqli->query($query_str);
+
+        $pic_list = array();
+        while($row = $result->fetch_array())
+        {
+            $file_url = $row['filename'];
+            $file_name = substr($file_url, -MFUN_HCU_FHYS_PIC_FILE_LEN);
+            $temp = array(
+                'name' => $file_name,
+                'url' => $file_url
+            );
+            array_push($pic_list, $temp);
+        }
+
+        $mysqli->close();
+        return $pic_list;
     }
 
 }
