@@ -196,7 +196,7 @@ class classTaskL2snrNoise
             return false;
         }
         //多条消息发送到PM25
-        if (($msgId != MSG_ID_L2SDK_HCU_TO_L2SNR_NOISE) && ($msgId != MSG_ID_L2SDK_EMCWX_TO_L2SNR_NOISE_DATA_READ_INSTANT) && ($msgId != MSG_ID_L2SDK_EMCWX_TO_L2SNR_NOISE_DATA_REPORT_TIMING) && ($msgId != MSG_ID_L2CODEC_TO_L2SNR_NOISE)){
+        if (($msgId != MSG_ID_L2SDK_HCU_TO_L2SNR_NOISE) && ($msgId != MSG_ID_L2SDK_EMCWX_TO_L2SNR_NOISE_DATA_READ_INSTANT) && ($msgId != MSG_ID_L2SDK_EMCWX_TO_L2SNR_NOISE_DATA_REPORT_TIMING) && ($msgId != HUITP_MSGID_uni_noise_data_report)){
             $result = "Msgid or MsgName error";
             $log_content = "P:" . json_encode($result);
             $loggerObj->logger("MFUN_TASK_ID_L2SNR_NOISE", "mfun_l2snr_noise_task_main_entry", $log_time, $log_content);
@@ -247,7 +247,7 @@ class classTaskL2snrNoise
             //具体处理函数
             $resp = $this->func_noise_process($platform, $deviceId, $statCode, $content);
         }
-        elseif ($msgId == MSG_ID_L2CODEC_TO_L2SNR_NOISE)
+        elseif ($msgId == HUITP_MSGID_uni_noise_data_report)
         {
             //解开消息
             if (isset($msg["project"])) $project = $msg["project"];

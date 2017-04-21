@@ -72,6 +72,14 @@ class classApiL2snrCommonService
         return $resp;
     }
 
+    private function Hex2String($hex){
+        $string='';
+        for ($i=0; $i < strlen($hex)-1; $i+=2){
+            $string .= chr(hexdec($hex[$i].$hex[$i+1]));
+        }
+        return $string;
+    }
+
     public function func_hcuAlarmData_huitp_process($devCode, $statCode, $data)
     {
         $AlarmType = hexdec($data[1]['HUITP_IEID_uni_alarm_info_element']['alarmType']) & 0xFFFF;
@@ -81,14 +89,7 @@ class classApiL2snrCommonService
         $AlarmTime = hexdec($data[1]['HUITP_IEID_uni_alarm_info_element']['timeStamp']) & 0xFFFFFFFF;
 
         //$AlarmDescription = $data[1]['HUITP_IEID_uni_alarm_info_element']['alarmDesc'];
-        function Hex2String($hex){
-            $string='';
-            for ($i=0; $i < strlen($hex)-1; $i+=2){
-                $string .= chr(hexdec($hex[$i].$hex[$i+1]));
-            }
-            return $string;
-        }
-        $AlarmDescription = Hex2String($data[1]['HUITP_IEID_uni_alarm_info_element']['alarmDesc']);
+        $AlarmDescription = $this->Hex2String($data[1]['HUITP_IEID_uni_alarm_info_element']['alarmDesc']);
 
         //new
         $CauseId = hexdec($data[1]['HUITP_IEID_uni_alarm_info_element']['causeId']) & 0xFFFFFFFF;
@@ -247,14 +248,7 @@ class classApiL2snrCommonService
         $timeStamp = hexdec($data[1]['HUITP_IEID_uni_inventory_element']['timeStamp']) & 0xFFFFFFFF;
 
         //$desc = $data[1]['HUITP_IEID_uni_inventory_element']['desc'];
-        function Hex2String($hex){
-            $string='';
-            for ($i=0; $i < strlen($hex)-1; $i+=2){
-                $string .= chr(hexdec($hex[$i].$hex[$i+1]));
-            }
-            return $string;
-        }
-        $desc = Hex2String($data[1]['HUITP_IEID_uni_inventory_element']['desc']);
+        $desc = $this->Hex2String($data[1]['HUITP_IEID_uni_inventory_element']['desc']);
 
         $cDbObj = new classDbiL1vmCommon();
         $cDbObj->dbi_deviceVersion_huitp_update($deviceId,$hw_type,$hw_ver,$sw_rel,$sw_drop, $upgradeFlag,$desc,$timeStamp);

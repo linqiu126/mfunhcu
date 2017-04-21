@@ -267,7 +267,7 @@ class classTaskL2snrPm25
             return false;
         }
         //多条消息发送到PM25
-        if (($msgId != MSG_ID_L2SDK_HCU_TO_L2SNR_PM25) && ($msgId != MSG_ID_L2SDK_EMCWX_TO_L2SNR_PM25_DATA_READ_INSTANT) && ($msgId != MSG_ID_L2SDK_EMCWX_TO_L2SNR_PM25_DATA_REPORT_TIMING)&& ($msgId != MSG_ID_L2CODEC_TO_L2SNR_PM25)){
+        if (($msgId != MSG_ID_L2SDK_HCU_TO_L2SNR_PM25) && ($msgId != MSG_ID_L2SDK_EMCWX_TO_L2SNR_PM25_DATA_READ_INSTANT) && ($msgId != MSG_ID_L2SDK_EMCWX_TO_L2SNR_PM25_DATA_REPORT_TIMING)&& ($msgId != HUITP_MSGID_uni_pm25_data_report)){
             $result = "Msgid or MsgName error";
             $log_content = "P:" . json_encode($result);
             $loggerObj->logger("MFUN_TASK_ID_L2SNR_PM25", "mfun_l2snr_pm25_task_main_entry", $log_time, $log_content);
@@ -319,7 +319,7 @@ class classTaskL2snrPm25
             //具体处理函数
             $resp = $this->func_pm25_data_process($platform, $deviceId, $statCode, $content);
         }
-        elseif ($msgId == MSG_ID_L2CODEC_TO_L2SNR_PM25)
+        elseif ($msgId == HUITP_MSGID_uni_pm25_data_report)
         {
             //解开消息
             if (isset($msg["project"])) $project = $msg["project"];

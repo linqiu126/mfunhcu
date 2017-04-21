@@ -252,7 +252,7 @@ class classTaskL2snrHumid
             echo trim($result);
             return false;
         }
-        if (($msgId != MSG_ID_L2SDK_HCU_TO_L2SNR_HUMID) && ($msgName != "MSG_ID_L2SDK_HCU_TO_L2SNR_HUMID") && ($msgId != MSG_ID_L2CODEC_TO_L2SNR_HUMIDITY)){
+        if (($msgId != MSG_ID_L2SDK_HCU_TO_L2SNR_HUMID) && ($msgName != "MSG_ID_L2SDK_HCU_TO_L2SNR_HUMID") && ($msgId != HUITP_MSGID_uni_humid_data_report)){
             $result = "Msgid or MsgName error";
             $log_content = "P:" . json_encode($result);
             $loggerObj->logger("MFUN_TASK_ID_L2SNR_HUMID", "mfun_l2snr_humid_task_main_entry", $log_time, $log_content);
@@ -278,7 +278,7 @@ class classTaskL2snrHumid
         if ($msgId == MSG_ID_L2SDK_HCU_TO_L2SNR_HUMID){
             $resp = $this->func_humidity_process($platform, $deviceId, $statCode, $content);
         }
-        elseif ($msgId == MSG_ID_L2CODEC_TO_L2SNR_HUMIDITY){
+        elseif ($msgId == HUITP_MSGID_uni_humid_data_report){
             $resp = $this->func_humidity_huitp_process($platform, $deviceId, $statCode, $content);
         }
         else{

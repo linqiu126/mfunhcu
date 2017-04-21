@@ -108,7 +108,11 @@ class classTaskL2codecHuitpXml
             $i++;
         }
 
+        //$unpackedHuitpIeArray[0] is useless for the moment, replace it with huitpMsgId
+        $unpackedHuitpIeArray[0]=$huitpMsgId;
+
         return $unpackedHuitpIeArray;
+
     }//end of mfun_l2codec_huitp_xml_task_main_entry
 
 }

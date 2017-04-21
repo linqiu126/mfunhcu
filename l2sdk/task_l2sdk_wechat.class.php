@@ -4692,15 +4692,44 @@ class classTaskL2sdkWechat
 
                         $result = $huitpObj->mfun_l2codec_huitp_xml_task_main_entry($parObj, $msgId, $msgName, $msg);
 
-                        //Throw $result to related tasks, below is the sample of noise
-                        $log_from = MFUN_CLOUD_WX;
-                        $msg = array("project" => $project,
-                            "log_from" => $log_from,
-                            "platform" => MFUN_TECH_PLTF_HCUGX,
-                            "deviceId" => $devCode,
-                            "statCode" => $statCode,
-                            //put array $result to content
-                            "content" => $result);
+                        $huitpMsgId = $result[0]; //Retrieved from mfun_l2codec_huitp_xml_task_main_entry()
+
+                        switch($huitpMsgId) {
+                            case HUITP_MSGID_uni_alarm_info_report:
+                                $hcuObj = new classApiL2snrCommonService();
+                                $resp = $hcuObj->func_hcuAlarmData_huitp_process($devCode, $statCode, $result);
+                                break;
+
+                            case HUITP_MSGID_uni_performance_info_report:
+                                $hcuObj = new classApiL2snrCommonService();
+                                $resp = $hcuObj->func_hcuPerformance_huitp_process($devCode, $statCode, $result);
+                                break;
+
+                            case HUITP_MSGID_uni_inventory_report:
+                                $hcuObj = new classApiL2snrCommonService();
+                                $resp = $hcuObj->func_inventory_huitp_data_process($devCode, $result);
+                                break;
+
+                            default:
+                                //Throw $result to related tasks, solution for noise, humidity, pm25, temperature, winddir, windspd
+                                $l2codecHuitpMsgDictObj = new classL2codecHuitpMsgDict();
+                                $huitp_destId = $l2codecHuitpMsgDictObj->mfun_l2codec_getHuitpDestTaskId($huitpMsgId);
+                                $huitp_msgName = "huitp_to_noise_humid_pm25_temp_winddir_windspd";
+                                $log_from = MFUN_CLOUD_WX;
+                                $msg = array("project" => $project,
+                                    "log_from" => $log_from,
+                                    "platform" => MFUN_TECH_PLTF_HCUGX,
+                                    "deviceId" => $devCode,
+                                    "statCode" => $statCode,
+                                    //put array $result to content
+                                    "content" => $result);
+                                if ($parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L2SDK_IOT_HCU,
+                                        $huitp_destId,
+                                        $huitpMsgId,
+                                        $huitp_msgName,
+                                        $msg) == false) $resp = "Send to message buffer error";
+                                else $resp = "";
+                       }
 
                         //case1: noise
                         /*$temp_destId = MFUN_TASK_ID_L2SENSOR_NOISE;
@@ -4746,9 +4775,9 @@ class classTaskL2sdkWechat
                         /*$hcuObj = new classApiL2snrCommonService();
                         $resp = $hcuObj->func_hcuPerformance_huitp_process($devCode, $statCode, $result);*/
 
-                        //case: sw inventory
-                        $hcuObj = new classApiL2snrCommonService();
-                        $resp = $hcuObj->func_inventory_huitp_data_process($devCode, $result);
+                        //case9: sw inventory
+                        /*$hcuObj = new classApiL2snrCommonService();
+                        $resp = $hcuObj->func_inventory_huitp_data_process($devCode, $result);*/
 
                         //convert array to string for log function
                         $result = self::json_encode($result);
