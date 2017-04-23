@@ -14,14 +14,14 @@ then
     mfunhcu_l1mainentry_directory='/var/www/html/mfunhcu/l1mainentry'
 elif [ "$ipaddr" = "$ipfumei" ]
 then
-    swoole_server_logfile='/fuhua/swoole_server.log'
+    swoole_server_logfile='/home/fuhua/swoole_server.log'
     mfunhcu_l1mainentry_directory='/var/www/html/mfunhcu/l1mainentry'
 elif [ "$ipaddr" = "$ipaiqi" ]
 then
     swoole_server_logfile='/home/qiulin/swoole_server.log'
     mfunhcu_l1mainentry_directory='/data/www/xhzn/mfunhcu/l1mainentry'
 else
-    swoole_server_logfile='/home/hitpony/swoole_server.log'
+    swoole_server_logfile='/home/pi/swoole_server.log'
     mfunhcu_l1mainentry_directory='/var/www/html/mfunhcu/l1mainentry'
 fi
 
