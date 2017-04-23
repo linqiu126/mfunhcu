@@ -16,7 +16,7 @@ define("MFUN_HCU_FHYS_LEXIN_SIGNATURE","【阜华光交箱云平台】"); //短�
 
 //FHYS项目关键字
 define("MFUN_HCU_FHYS_SLEEP_DURATION", 300); //如果最后一次测量报告距离现在已经超过5x60秒
-define("MFUN_HCU_FHYS_PIC_FILE_LEN", 24);  //120101002_1492346492.jpg
+define("MFUN_HCU_FHYS_PIC_BASE_DIR", "avorion/");
 
 define("MFUN_L3APL_F2CM_KEY_PREFIX", "KEY");  //定义KEY ID的特征字，钥匙KEYID必须以KEY开头
 define("MFUN_L3APL_F2CM_KEY_ID_LEN", 6);     //UI界面key id字符串长度=该值+3（KEY)

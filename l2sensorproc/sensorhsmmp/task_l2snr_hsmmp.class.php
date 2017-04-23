@@ -80,8 +80,8 @@ class classTaskL2snrHsmmp
                     $filesize = fwrite($newfile, $content);
                     fclose($newfile);
                     if ($filesize){
-                        $file_dir = dirname(dirname(dirname(dirname(__FILE__))))."/avorion";
-                        $filename = $file_dir . '/'.$statCode.'/'.$statCode . "_" . $timestamp . $file_type;
+                        //$base_dir = str_replace( '\\' , '/' , realpath(dirname(__FILE__).'/../../../avorion'));
+                        $filename = MFUN_HCU_FHYS_PIC_BASE_DIR .$statCode.'/'.$statCode . "_" . $timestamp . $file_type;
                         $loggerObj->logger($project, $deviceId, $log_time, "上传新图片文件".$filename);
                         $dbiL2snrHsmmpObj = new classDbiL2snrHsmmp();
                         $result = $dbiL2snrHsmmpObj->dbi_picture_link_save($statCode, $deviceId, $timestamp, $filename,$filesize);
@@ -107,7 +107,7 @@ class classTaskL2snrHsmmp
                         $filesize = fwrite($oldfile, $content);
                         fclose($oldfile);
                         if ($filesize){
-                            $pos = strrpos($lastfile_name, '/', -(MFUN_HCU_FHYS_PIC_FILE_LEN+2));
+                            $pos = strrpos($lastfile_name, MFUN_HCU_FHYS_PIC_BASE_DIR);
                             $filename = substr($lastfile_name, $pos);
                             $dbiL2snrHsmmpObj = new classDbiL2snrHsmmp();
                             $result = $dbiL2snrHsmmpObj->dbi_picture_filesize_update($statCode, $deviceId, $timestamp, $filename, $filesize);
