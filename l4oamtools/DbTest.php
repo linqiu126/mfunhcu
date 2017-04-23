@@ -17,8 +17,8 @@ include_once "../l1comvm/vmlayer.php";
 //$path2 = pathinfo(__FILE__, PATHINFO_DIRNAME);
 //$path3 = $_SERVER['DOCUMENT_ROOT'];
 
-define ("TC_EMCWX", true);
-define ("TC_SOCKET", false);
+define ("TC_EMCWX", false);
+define ("TC_SOCKET", true);
 define ("TC_CRON", false);
 define ("TC_IOT_HCU", true);
 define ("TC_L4AQYC_UI", false);
