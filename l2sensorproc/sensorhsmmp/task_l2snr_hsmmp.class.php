@@ -91,10 +91,9 @@ class classTaskL2snrHsmmp
                     $lastfile_time = 0; //初始化
                     $lastfile_name = "";
                     $file_path = '../../avorion/'.$statCode.'/';
-
                     foreach(glob($file_path."*".$file_type) as $filename) {
                         if (!(is_dir($filename))) { //是个文件而不是目录
-                            $filetime = filemtime($filename);
+                            $filetime = filemtime($filename);  //获取文件修改时间
                             if ($filetime >= $lastfile_time){
                                 $lastfile_time = $filetime;
                                 $lastfile_name = $filename;
