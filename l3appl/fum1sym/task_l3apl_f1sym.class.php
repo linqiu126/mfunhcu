@@ -75,9 +75,9 @@ class classTaskL3aplF1sym
         if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
             $result = $uiF1symDbObj->dbi_userinfo_new($body);
             if($result == true)
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"用户新增成功");
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"Add new user success");
             else
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"用户新增失败");
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"Add new user failure");
         }
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>$usercheck['msg']);
@@ -92,9 +92,9 @@ class classTaskL3aplF1sym
         if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
             $result = $uiF1symDbObj->dbi_userinfo_update($body);
             if($result == true)
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"用户信息更新成功");
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"User info update success");
             else
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"用户信息更新失败");
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"User info update failure");
         }
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>$usercheck['msg']);
@@ -111,9 +111,9 @@ class classTaskL3aplF1sym
         if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
             $result = $uiF1symDbObj->dbi_userinfo_delete($userid);
             if($result == true)
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"用户删除成功");
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"User delete success");
             else
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"用户删除失败");
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"User delete failure");
         }
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>$usercheck['msg']);
@@ -136,10 +136,10 @@ class classTaskL3aplF1sym
             $usertable = $uiF1symDbObj->dbi_usertable_req($start, $query_length);
             if(!empty($usertable)){
                 $ret = array('start'=> (string)$start,'total'=> (string)$total,'length'=>(string)$query_length,'usertable'=>$usertable);
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$ret,'msg'=>"用户表获取成功");
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$ret,'msg'=>"Get user table success");
             }
             else
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>"用户表获取失败");
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>"Get user table failure");
         }
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);

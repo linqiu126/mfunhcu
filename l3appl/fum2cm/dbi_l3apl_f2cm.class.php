@@ -666,7 +666,7 @@ class classDbiL3apF2cm
             if($row['keyusername'] != "NULL")
                 $keyusername = $row['keyusername'];
             else
-                $keyusername = "未授予";
+                $keyusername = "non-authorized";
             $temp = array('id'=>$keyid, 'name'=>$keyname, 'username'=>$keyusername);
             array_push($proj_keylist,$temp);
         }
@@ -920,11 +920,11 @@ class classDbiL3apF2cm
                 $keyid = $row['keyid'];
                 $authtype = $row['authtype'];
                 if ($authtype == MFUN_L3APL_F2CM_AUTH_TYPE_TIME)
-                    $authtype = "时间授权";
+                    $authtype = "AUTH_TYPE_TIME";
                 elseif ($authtype == MFUN_L3APL_F2CM_AUTH_TYPE_NUMBER)
-                    $authtype = "次数授权";
+                    $authtype = "AUTH_TYPE_NUMBER";
                 elseif ($authtype == MFUN_L3APL_F2CM_AUTH_TYPE_FOREVER)
-                    $authtype = "永久授权";
+                    $authtype = "AUTH_TYPE_FOREVER";
 
                 $query_str = "SELECT * FROM `t_l3f2cm_fhys_keyinfo` WHERE `keyid` = '$keyid' ";
                 $resp = $mysqli->query($query_str);
@@ -967,11 +967,11 @@ class classDbiL3apF2cm
                 $keyid = $row['keyid'];
                 $authtype = $row['authtype'];
                 if ($authtype == MFUN_L3APL_F2CM_AUTH_TYPE_TIME)
-                    $authtype = "时间授权";
+                    $authtype = "AUTH_TYPE_TIME";
                 elseif ($authtype == MFUN_L3APL_F2CM_AUTH_TYPE_NUMBER)
-                    $authtype = "次数授权";
+                    $authtype = "AUTH_TYPE_NUMBER";
                 elseif ($authtype == MFUN_L3APL_F2CM_AUTH_TYPE_FOREVER)
-                    $authtype = "永久授权";
+                    $authtype = "AUTH_TYPE_FOREVER";
 
                 $query_str = "SELECT * FROM `t_l3f2cm_fhys_keyinfo` WHERE `keyid` = '$keyid' ";
                 $resp = $mysqli->query($query_str);
@@ -1029,11 +1029,11 @@ class classDbiL3apF2cm
             $authobjcode = $row['authobjcode'];
 
             if ($authtype == MFUN_L3APL_F2CM_AUTH_TYPE_TIME)
-                $authtype = "时间授权";
+                $authtype = "AUTH_TYPE_TIME";
             elseif ($authtype == MFUN_L3APL_F2CM_AUTH_TYPE_NUMBER)
-                $authtype = "次数授权";
+                $authtype = "AUTH_TYPE_NUMBER";
             elseif ($authtype == MFUN_L3APL_F2CM_AUTH_TYPE_FOREVER)
-                $authtype = "永久授权";
+                $authtype = "AUTH_TYPE_FOREVER";
 
             $query_str = "SELECT * FROM `t_l3f2cm_fhys_keyinfo` WHERE `keyid` = '$keyid' ";
             $resp = $mysqli->query($query_str);
@@ -1170,15 +1170,15 @@ class classDbiL3apF2cm
         }
         $mysqli->query("SET NAMES utf8");
         //填充表头
-        array_push($resp["column"], "RTU代码");
-        array_push($resp["column"], "RTU名称");
-        array_push($resp["column"], "IP地址");
-        array_push($resp["column"], "端口");
-        array_push($resp["column"], "超时");
-        array_push($resp["column"], "槽位数");
-        array_push($resp["column"], "机房代码");
-        array_push($resp["column"], "数据采集器代码");
-        array_push($resp["column"], "备注");
+        array_push($resp["column"], "RTU-Code");
+        array_push($resp["column"], "RTU-Name");
+        array_push($resp["column"], "IP-Addr");
+        array_push($resp["column"], "Port");
+        array_push($resp["column"], "Timeout");
+        array_push($resp["column"], "Slot-Num");
+        array_push($resp["column"], "Room-Code");
+        array_push($resp["column"], "Collector-Code");
+        array_push($resp["column"], "Memo");
 
         $query_str = "SELECT * FROM `t_l3f2cm_fhys_rtu` WHERE 1";
         $result = $mysqli->query($query_str);
@@ -1216,15 +1216,15 @@ class classDbiL3apF2cm
         }
         $mysqli->query("SET NAMES utf8");
         //填充表头
-        array_push($resp["column"], "OTDR代码");
-        array_push($resp["column"], "OTDR名称");
-        array_push($resp["column"], "IP地址");
-        array_push($resp["column"], "端口");
-        array_push($resp["column"], "RTU代码");
-        array_push($resp["column"], "RTU槽位");
-        array_push($resp["column"], "读取信息命令格式");
-        array_push($resp["column"], "数据采集器代码");
-        array_push($resp["column"], "备注");
+        array_push($resp["column"], "OTDR-Code");
+        array_push($resp["column"], "OTDR-Name");
+        array_push($resp["column"], "IP-Addr");
+        array_push($resp["column"], "Port");
+        array_push($resp["column"], "RTU-Code");
+        array_push($resp["column"], "RTU-Slot");
+        array_push($resp["column"], "Read-Format");
+        array_push($resp["column"], "Collector-Code");
+        array_push($resp["column"], "Memo");
 
         $query_str = "SELECT * FROM `t_l3f2cm_fhys_otdr` WHERE 1";
         $result = $mysqli->query($query_str);

@@ -401,9 +401,9 @@ class classTaskL3aplF4icm
             $uiF4icmDbObj = new classDbiL3apF4icm();
             $result = $uiF4icmDbObj->dbi_hcu_lock_compel_open($user, $StatCode);
             if($result == true)
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"开锁授权成功，请通知现场人员按压手柄激活门锁");
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"Lock open authorized success, please push the lock button");
             else
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"本次开锁授权认证未通过，请联系管理人员");
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"Lock open authorized failure");
         }
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>$usercheck['msg']);

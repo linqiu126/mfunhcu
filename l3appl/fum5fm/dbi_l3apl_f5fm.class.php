@@ -392,18 +392,18 @@ class classDbiL3apF5fm
         $auth_list["p_code"] = array();
         $auth_list = $this->dbi_user_statproj_inqury($uid);
 
-        array_push($resp["column"], "站点编号");
-        array_push($resp["column"], "处理状态");
-        array_push($resp["column"], "站点名称");
-        array_push($resp["column"], "区县");
-        array_push($resp["column"], "地址");
-        array_push($resp["column"], "负责人");
-        array_push($resp["column"], "联系电话");
-        array_push($resp["column"], "告警级别");
-        array_push($resp["column"], "告警描述");
-        array_push($resp["column"], "告警产生时间");
-        array_push($resp["column"], "告警关闭时间");
-        array_push($resp["column"], "告警处理");
+        array_push($resp["column"], "SiteCode");
+        array_push($resp["column"], "Status");
+        array_push($resp["column"], "SiteName");
+        array_push($resp["column"], "City");
+        array_push($resp["column"], "Addr");
+        array_push($resp["column"], "ChargeMan");
+        array_push($resp["column"], "Phone");
+        array_push($resp["column"], "Severity");
+        array_push($resp["column"], "Description");
+        array_push($resp["column"], "CreateTime");
+        array_push($resp["column"], "CloseTime");
+        array_push($resp["column"], "Procedure");
 
         //初始化返回值，确保数据库查询不到的情况下界面返回数据长度不报错
         $statcode = "";
@@ -482,7 +482,7 @@ class classDbiL3apF5fm
         $timestamp = time();
         $currenttime = date("Y-m-d H:i:s",$timestamp);
         $alarmflag = MFUN_HCU_FHYS_ALARM_PROC_FLAG_Y;
-        $alarmproc = $currenttime . ":发送信息（".$action."）到手机".$mobile;
+        $alarmproc = $currenttime . ":Send SMS（".$action."）to Phone ".$mobile;
         $query_str = "UPDATE `t_l3f5fm_fhys_alarmdata` SET `alarmflag` = '$alarmflag', `alarmproc` = '$alarmproc' WHERE (`statcode` = '$statcode')";
         $result = $mysqli->query($query_str);
 
@@ -502,7 +502,7 @@ class classDbiL3apF5fm
         $timestamp = time();
         $currenttime = date("Y-m-d H:i:s",$timestamp);
         $closeflag = MFUN_HCU_FHYS_ALARM_PROC_FLAG_C;
-        $alarmproc = $currenttime . ":操作员（".$uid."）关闭告警";
+        $alarmproc = $currenttime . ":User（".$uid."） close the alarm";
         $query_str = "UPDATE `t_l3f5fm_fhys_alarmdata` SET `alarmflag` = '$closeflag', `alarmproc` = '$alarmproc', `tsclose` = '$currenttime' WHERE (`statcode` = '$statcode' AND `alarmflag` != '$closeflag')";
         $result = $mysqli->query($query_str);
 

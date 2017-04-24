@@ -49,9 +49,9 @@ class classTaskL3aplF2cm
             $uiF2cmDbObj = new classDbiL3apF2cm(); //初始化一个UI DB对象
             $proj_pg_list = $uiF2cmDbObj->dbi_all_projpglist_req();
             if(!empty($proj_pg_list))
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$proj_pg_list,'msg'=>"获取项目项目组列表成功");
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$proj_pg_list,'msg'=>"Get Project-Group table success");
             else
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>"获取项目项目组列表失败");
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>"Get Project-Group table failure");
         }
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
@@ -67,9 +67,9 @@ class classTaskL3aplF2cm
             $uiF2cmDbObj = new classDbiL3apF2cm(); //初始化一个UI DB对象
             $projlist = $uiF2cmDbObj->dbi_all_projlist_req();
             if(!empty($projlist))
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$projlist,'msg'=>"获取项目列表成功");
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$projlist,'msg'=>"Get project table success");
             else
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>"获取项目列表失败");
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>"Get project table failure");
         }
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
@@ -87,9 +87,9 @@ class classTaskL3aplF2cm
             $uiF2cmDbObj = new classDbiL3apF2cm(); //初始化一个UI DB对象
             $userproj = $uiF2cmDbObj->dbi_user_projpglist_req($userid);
             if(!empty($userproj))
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$userproj,'msg'=>"获取用户所属项目列表成功");
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$userproj,'msg'=>"Get User-Project table success");
             else
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>"获取用户所属项目列表失败");
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>"Get User-Project table failure");
         }
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
@@ -115,10 +115,10 @@ class classTaskL3aplF2cm
             $pgtable = $uiF2cmDbObj->dbi_all_pgtable_req($start, $query_length);
             if(!empty($pgtable)){
                 $ret = array('start'=> (string)$start,'total'=> (string)$total,'length'=>(string)$query_length,'pgtable'=>$pgtable);
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$ret,'msg'=>"项目组表获取成功");
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$ret,'msg'=>"Get PG table success");
             }
             else
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>"项目组获取失败");
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>"Get PG table failure");
         }
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
@@ -134,9 +134,9 @@ class classTaskL3aplF2cm
             $uiF2cmDbObj = new classDbiL3apF2cm(); //初始化一个UI DB对象
             $result = $uiF2cmDbObj->dbi_pginfo_update($body);
             if($result == true)
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"项目组新增成功");
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"Add new PG success");
             else
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"项目组新增失败");
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"Add new PG failure");
         }
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>$usercheck['msg']);
@@ -152,9 +152,9 @@ class classTaskL3aplF2cm
             $uiF2cmDbObj = new classDbiL3apF2cm(); //初始化一个UI DB对象
             $result = $uiF2cmDbObj->dbi_pginfo_update($body);
             if($result == true)
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"项目组信息修改成功");
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"Update PG info success");
             else
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"项目组信息修改失败");
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"Update PG info failure");
         }
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>$usercheck['msg']);
@@ -172,9 +172,9 @@ class classTaskL3aplF2cm
             $uiF2cmDbObj = new classDbiL3apF2cm(); //初始化一个UI DB对象
             $result = $uiF2cmDbObj->dbi_pginfo_delete($pgid);
             if($result == true)
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"删除一个项目组成功");
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"Delete a PG success");
             else
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"删除一个项目组失败");
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"Delete a PG failure");
         }
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>$usercheck['msg']);
@@ -192,9 +192,9 @@ class classTaskL3aplF2cm
             $uiF2cmDbObj = new classDbiL3apF2cm(); //初始化一个UI DB对象
             $projlist = $uiF2cmDbObj->dbi_pg_projlist_req($pgid);
             if(!empty($projlist))
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$projlist,'msg'=>"获取项目组下项目列表成功");
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$projlist,'msg'=>"Get PG-Project table success");
             else
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>"获取项目组下项目列表失败");
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>"Get PG-Project table failure");
         }
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
@@ -219,10 +219,10 @@ class classTaskL3aplF2cm
             $projtable = $uiF2cmDbObj->dbi_all_projtable_req($start, $query_length);
             if(!empty($projtable)){
                 $ret = array('start'=> (string)$start,'total'=> (string)$total,'length'=>(string)$query_length,'projtable'=>$projtable);
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$ret,'msg'=>"项目列表获取成功");
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$ret,'msg'=>"Get Project table success");
             }
             else
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>"项目列表获取失败");
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>"Get Project table failure");
         }
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
@@ -238,9 +238,9 @@ class classTaskL3aplF2cm
             $uiF2cmDbObj = new classDbiL3apF2cm(); //初始化一个UI DB对象
             $result = $uiF2cmDbObj->dbi_projinfo_update($body);
             if($result == true)
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"新项目创建成功");
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"Add new project success");
             else
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"新项目创建失败");
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"Add new project failure");
         }
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>$usercheck['msg']);
@@ -256,9 +256,9 @@ class classTaskL3aplF2cm
             $uiF2cmDbObj = new classDbiL3apF2cm(); //初始化一个UI DB对象
             $result = $uiF2cmDbObj->dbi_projinfo_update($body);
             if($result == true)
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"项目信息修改成功");
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"Update project info success");
             else
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"项目信息修改失败");
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"Update project info failure");
         }
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>$usercheck['msg']);
@@ -276,9 +276,9 @@ class classTaskL3aplF2cm
             $uiF2cmDbObj = new classDbiL3apF2cm(); //初始化一个UI DB对象
             $result = $uiF2cmDbObj->dbi_projinfo_delete($ProjCode);
             if($result == true)
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"删除一个项目成功");
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"Delete a project success");
             else
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"删除一个项目失败");
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"Delete a project failure");
         }
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>$usercheck['msg']);
@@ -297,9 +297,9 @@ class classTaskL3aplF2cm
             $uiF2cmDbObj = new classDbiL3apF2cm(); //初始化一个UI DB对象
             $user_keylist = $uiF2cmDbObj->dbi_project_userkey_process($uid);
             if(!empty($user_keylist))
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$user_keylist,'msg'=>"获取用户钥匙列表成功");
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$user_keylist,'msg'=>"Get User-Key table success");
             else
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>"获取用户钥匙列表失败");
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>"Get User-Key table failure");
         }
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
@@ -315,9 +315,9 @@ class classTaskL3aplF2cm
             $uiF2cmDbObj = new classDbiL3apF2cm(); //初始化一个UI DB对象
             $all_projkey = $uiF2cmDbObj->dbi_all_projkey_process();
             if(!empty($all_projkey))
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$all_projkey,'msg'=>"查询所有项目钥匙列表成功");
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$all_projkey,'msg'=>"Get Project-Key table success");
             else
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>"查询所有项目钥匙列表失败");
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>"Get Project-Key table failure");
         }
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
@@ -335,9 +335,9 @@ class classTaskL3aplF2cm
             $uiF2cmDbObj = new classDbiL3apF2cm(); //初始化一个UI DB对象
             $proj_keylist = $uiF2cmDbObj->dbi_project_keylist_process($projCode);
             if(!empty($proj_keylist))
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$proj_keylist,'msg'=>"获取项目钥匙列表成功");
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$proj_keylist,'msg'=>"Get Key list success");
             else
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>"获取项目钥匙列表失败");
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>"Get Key list failure");
         }
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
@@ -353,9 +353,9 @@ class classTaskL3aplF2cm
             $uiF2cmDbObj = new classDbiL3apF2cm(); //初始化一个UI DB对象
             $all_keyuser = $uiF2cmDbObj->dbi_all_projkeyuser_process();
             if(!empty($all_keyuser))
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$all_keyuser,'msg'=>"获取项目钥匙用户列表成功");
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$all_keyuser,'msg'=>"Get Key user table success");
             else
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>"获取项目钥匙用户列表失败");
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>"Get Key-user table failure");
         }
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
@@ -380,10 +380,10 @@ class classTaskL3aplF2cm
             $key_table = $uiF2cmDbObj->dbi_all_keytable_req($start, $query_length);
             if(!empty($key_table)){
                 $ret = array('start'=> (string)$start,'total'=> (string)$total,'length'=>(string)$query_length,'keytable'=>$key_table);
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$ret,'msg'=>"钥匙列表获取成功");
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$ret,'msg'=>"Get Key table success");
             }
             else
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>"钥匙列表获取失败");
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>"Get Key table failure");
         }
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
@@ -399,9 +399,9 @@ class classTaskL3aplF2cm
             $uiF2cmDbObj = new classDbiL3apF2cm(); //初始化一个UI DB对象
             $result = $uiF2cmDbObj->dbi_key_new_process($body);
             if($result == true)
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"新建钥匙成功");
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"Add new Key success");
             else
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"新建钥匙失败");
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"Add new Key failure");
         }
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>$usercheck['msg']);
@@ -417,9 +417,9 @@ class classTaskL3aplF2cm
             $uiF2cmDbObj = new classDbiL3apF2cm(); //初始化一个UI DB对象
             $result = $uiF2cmDbObj->dbi_key_mod_process($body);
             if($result == true)
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"修改钥匙成功");
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"Update Key info success");
             else
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"修改钥匙失败");
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"Update Key info failure");
         }
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>$usercheck['msg']);
@@ -437,9 +437,9 @@ class classTaskL3aplF2cm
             $uiF2cmDbObj = new classDbiL3apF2cm(); //初始化一个UI DB对象
             $result = $uiF2cmDbObj->dbi_key_del_process($keyid);
             if($result == true)
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"删除钥匙成功");
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"Delete a Key success");
             else
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"删除钥匙失败");
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"Delete a Key failure");
         }
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>$usercheck['msg']);
@@ -457,9 +457,9 @@ class classTaskL3aplF2cm
             $uiF2cmDbObj = new classDbiL3apF2cm(); //初始化一个UI DB对象
             $authlist = $uiF2cmDbObj->dbi_obj_authlist_process($authobjcode);
             if(!empty($authlist))
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$authlist,'msg'=>"查询授权对象下所有的授权信息列表成功");
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$authlist,'msg'=>"Get Object-Auth list success");
             else
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>"查询授权对象下所有的授权信息列表失败");
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>"Get Object-Auth list failure");
         }
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
@@ -477,9 +477,9 @@ class classTaskL3aplF2cm
             $uiF2cmDbObj = new classDbiL3apF2cm(); //初始化一个UI DB对象
             $authlist = $uiF2cmDbObj->dbi_key_authlist_process($keyid);
             if(!empty($authlist))
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$authlist,'msg'=>"获取指定钥匙下授权信息列表成功");
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$authlist,'msg'=>"Get Key-Auth list success");
             else
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>"获取指定钥匙下授权信息列表失败");
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>"Get Key-Auth list failure");
         }
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
@@ -498,9 +498,9 @@ class classTaskL3aplF2cm
             $uiF2cmDbObj = new classDbiL3apF2cm(); //初始化一个UI DB对象
             $result = $uiF2cmDbObj->dbi_key_grant_process($keyid, $userid);
             if($result == true)
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"钥匙使用人授予成功");
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"Key-User grant success");
             else
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"钥匙使用人授予失败");
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"Key-User grant failure");
         }
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>$usercheck['msg']);
@@ -516,9 +516,9 @@ class classTaskL3aplF2cm
             $uiF2cmDbObj = new classDbiL3apF2cm(); //初始化一个UI DB对象
             $result = $uiF2cmDbObj->dbi_key_authnew_process($body);
             if($result == true)
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"钥匙新建授权成功");
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"Add Key-Auth success");
             else
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"钥匙新建授权失败");
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"Add Key-Auth failure");
         }
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>$usercheck['msg']);
@@ -536,9 +536,9 @@ class classTaskL3aplF2cm
             $uiF2cmDbObj = new classDbiL3apF2cm(); //初始化一个UI DB对象
             $result = $uiF2cmDbObj->dbi_key_authdel_process($authid);
             if($result == true)
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"钥匙授权删除成功");
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"Delete Key-Auth success");
             else
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"钥匙授权删除失败");
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"Delete Key-Auth failure");
         }
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>$usercheck['msg']);
@@ -557,10 +557,10 @@ class classTaskL3aplF2cm
             $resp = $uiF2cmDbObj->dbi_fhys_get_rtutable_req($uid);
             if(!empty($resp)){
                 $ret = array('ColumnName' => $resp["column"],'TableData' => $resp["data"]);
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$ret,'msg'=>"获取RTU表成功");
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$ret,'msg'=>"Get RTU table success");
             }
             else
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>"获取RTU表失败");
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>"Get RTU table failure");
         }
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
@@ -578,10 +578,10 @@ class classTaskL3aplF2cm
             $resp = $uiF2cmDbObj->dbi_fhys_get_otdrtable_req($uid);
             if(!empty($resp)){
                 $ret = array('ColumnName' => $resp["column"],'TableData' => $resp["data"]);
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$ret,'msg'=>"获取OTDR表成功");
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$ret,'msg'=>"Get OTDR table success");
             }
             else
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>"获取OTDR表失败");
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>"Get OTDR table failure");
         }
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);

@@ -19,14 +19,14 @@
       }
       return urlencode($elem);
     }
-	$num=count($_FILES['file-zh']['name']);   //计算上传文件的个数
-	if(!file_exists('./upload/'.$id)) {mkdir('./upload/'.$id.'/');}
+	$num=count($_FILES['file-zh']['name']);   //锟斤拷锟斤拷锟较达拷锟侥硷拷锟侥革拷锟斤拷
+	if(!file_exists('../../avorion/'.$id)) {mkdir('../../avorion/'.$id.'/');}
 	for($i=0;$i<$num;$i++)
 	{
 
 		   		if($_FILES['file-zh']['name'][$i]!=''&&is_uploaded_file($_FILES['file-zh']['tmp_name'][$i]))
 		   		{
-				  $fname='./upload/'.$id.'/'.(string)(time()).$_FILES['file-zh']['name'][$i];
+				  $fname='../../avorion/'.$id.'/'.(string)(time()).$_FILES['file-zh']['name'][$i];
 				  move_uploaded_file($_FILES['file-zh']['tmp_name'][$i],$fname);
 				  $retval=array(
                   		'status'=>"true",

@@ -464,9 +464,9 @@ class classTaskL3aplF3dm
             $sensor_type= MFUN_L3APL_F3DM_FHYS_STYPE_PREFIX;
             $sensor_list = $uiL2snrDbObj->dbi_all_sensorlist_req($sensor_type);
             if(!empty($sensor_list))
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$sensor_list,'msg'=>"获取传感器列表成功");
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$sensor_list,'msg'=>"Get sensor list success");
             else
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>"获取传感器列表失败");
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>"Get sensor list");
         }
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
@@ -484,9 +484,9 @@ class classTaskL3aplF3dm
             $uiL2snrDbObj = new classDbiL2snrCom();
             $sensorinfo = $uiL2snrDbObj->dbi_fhys_dev_sensorinfo_req($DevCode);
             if(!empty($sensorinfo))
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$sensorinfo,'msg'=>"获取指定设备下传感器列表成功");
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$sensorinfo,'msg'=>"Get Device-Sensor table success");
             else
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>"获取指定设备下传感器列表失败");
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>"Get Device-Sensor table failure");
         }
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
@@ -504,10 +504,10 @@ class classTaskL3aplF3dm
             $resp = $uiF3dmDbObj->dbi_fhys_user_dataaggregate_req($uid);
             if(!empty($resp)){
                 $ret = array('ColumnName' => $resp["column"],'TableData' => $resp["data"]);
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$ret,'msg'=>"获取站点测量聚合表成功");
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$ret,'msg'=>"Get site measurement table success");
             }
             else
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>"获取站点测量聚合表失败");
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>"Get site measurement table failure");
         }
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
@@ -526,10 +526,10 @@ class classTaskL3aplF3dm
             $resp = $uiF3dmDbObj->dbi_key_event_history_process($body);
             if(!empty($resp)){
                 $ret = array('ColumnName' => $resp["ColumnName"],'TableData' => $resp["TableData"]);
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$ret,'msg'=>"获取锁事件历史记录成功");
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$ret,'msg'=>"Get event history success");
             }
             else
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>"获取锁事件历史记录失败");
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>"Get event history failure");
         }
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);

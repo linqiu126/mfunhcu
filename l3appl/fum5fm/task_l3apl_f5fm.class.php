@@ -164,9 +164,9 @@ class classTaskL3aplF5fm
             $sensor_type = MFUN_L3APL_F3DM_FHYS_STYPE_PREFIX;
             $alarm_type = $uiF5fmDbObj->dbi_all_alarmtype_req($sensor_type);
             if(!empty($alarm_type))
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$alarm_type,'msg'=>"获取告警类型列表成功");
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$alarm_type,'msg'=>"Get Alarm type table success");
             else
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>"获取告警类型列表失败");
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>"Get Alarm type table failure");
         }
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
@@ -184,10 +184,10 @@ class classTaskL3aplF5fm
             $uiF3dmDbObj = new classDbiL3apF3dm(); //初始化一个UI DB对象
             $resp = $uiF3dmDbObj->dbi_fhys_dev_currentvalue_req($StatCode);
             if(!empty($resp)){
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$resp,'msg'=>"获取该站点下当前设备测量信息成功");
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$resp,'msg'=>"Get current report success");
             }
             else
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>"获取该站点下当前设备测量信息失败");
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>"Get current report failure");
         }
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
@@ -205,10 +205,10 @@ class classTaskL3aplF5fm
             $resp = $uiF5fmDbObj->dbi_fhys_alarm_handle_table_req($uid);
             if(!empty($resp)){
                 $ret = array('ColumnName' => $resp["column"],'TableData' => $resp["data"]);
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$ret,'msg'=>"获取告警站点列表成功");
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$ret,'msg'=>"Get alarm site success");
             }
             else
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>"获取告警站点列表失败");
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>"Get alarm site failure");
         }
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
@@ -238,12 +238,12 @@ class classTaskL3aplF5fm
             $alarm_proc = $uiF5fmDbObj->dbi_fhys_alarm_handle_process($statcode,$mobile,$action);
 
             if(!empty($alarm_proc))
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"告警处理成功");
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"Alarm process success");
             else
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"告警处理失败");
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"Alarm process failure");
         }
         else
-            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"超时退出");
+            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"Exit with timeout");
 
         return $retval;
     }
@@ -259,12 +259,12 @@ class classTaskL3aplF5fm
             $uiF5fmDbObj = new classDbiL3apF5fm(); //初始化一个UI DB对象
             $result = $uiF5fmDbObj->dbi_fhys_alarm_close_process($uid,$statcode);
             if($result == true)
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"告警关闭成功");
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"Alarm close success");
             else
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"告警关闭失败");
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"Alarm close failure");
         }
         else
-            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"超时退出");
+            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"Exit with timeout");
 
         return $retval;
     }

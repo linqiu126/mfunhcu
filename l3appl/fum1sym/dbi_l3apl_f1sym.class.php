@@ -281,14 +281,14 @@ class classDbiL3apF1sym
                 //暂定grade=3或4的用户没有修改权限
                 if (($grade == MFUN_USER_GRADE_LEVEL_3 OR $grade == MFUN_USER_GRADE_LEVEL_4) AND ($type == "mod") ){
                     $auth = "false";
-                    $msg = "对不起，您没有权限做此操作，请联系管理员";
+                    $msg = "Sorry, you have no right";
                 }
             }
         }
         else{
             $auth = "fasle";
             $status = "false";
-            $msg = "网页长时间没有操作，会话超时";
+            $msg = "Session timeout, please login again";
         }
 
         $authcheck = array('status' => $status,'auth' => $auth,'msg' => $msg);
@@ -321,17 +321,17 @@ class classDbiL3apF1sym
                 $strlen = MFUN_L3APL_F1SYM_SESSION_ID_LEN;
                 $sessionid = $this->getRandomSid($strlen);
                 $body = array('key'=> $sessionid, 'admin'=> $admin);
-                $msg = "登录成功";
+                $msg = "Login success";
                 $this->updateSession($uid, $sessionid);
             }
             else {
                 $body = array('key'=> "", 'admin'=> "");
-                $msg = "登录失败，密码错误";
+                $msg = "Login failure, password error";
             }
         }
         else {
             $body = array('key'=> "", 'admin'=> "");
-            $msg = "登录失败，用户名错误";
+            $msg = "Login failure, user name error";
         }
         $login_info = array('body' => $body,'msg' => $msg);
 
