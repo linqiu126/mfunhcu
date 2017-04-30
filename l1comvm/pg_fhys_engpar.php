@@ -16,7 +16,8 @@ define("MFUN_HCU_FHYS_LEXIN_SIGNATURE","【阜华光交箱云平台】"); //短�
 
 //FHYS项目关键字
 define("MFUN_HCU_FHYS_SLEEP_DURATION", 300); //如果最后一次测量报告距离现在已经超过5x60秒
-define("MFUN_HCU_FHYS_PIC_BASE_DIR", "avorion/");
+define("MFUN_HCU_FHYS_PIC_BASE_DIR", "../../avorion/");
+define("MFUN_HCU_FHYS_PIC_FOLDER_NAME", "avorion/");
 
 define("MFUN_L3APL_F2CM_KEY_PREFIX", "KEY");  //定义KEY ID的特征字，钥匙KEYID必须以KEY开头
 define("MFUN_L3APL_F2CM_KEY_ID_LEN", 6);     //UI界面key id字符串长度=该值+3（KEY)
@@ -75,6 +76,8 @@ define ("MFUN_HCU_FHYS_LOCK_NULL", "N"); //设备未安装
 
 define ("MFUN_HCU_FHYS_KEY_VALID", "Y");  //虚拟钥匙有效，已授予用户
 define ("MFUN_HCU_FHYS_KEY_INVALID", "N"); //虚拟钥匙无效，未授予用户
+define ("MFUN_HCU_FHYS_RFID_NULL", "00000000");  //无效RFID
+define ("MFUN_HCU_FHYS_BLEMAC_NULL", "000000000000");  //无效BLE MAC
 
 //下位机的数据常量
 define ("MFUN_HCU_DATA_FHYS_STATUS_OK", 0x00); //设备状态正常或者门锁闭合
@@ -111,7 +114,8 @@ define("MFUN_HCU_CMDID_FHYS_SMOK", 0x47);       //烟雾控制字
 define("MFUN_HCU_CMDID_FHYS_WATER", 0x48);       //水浸控制字
 define("MFUN_HCU_CMDID_FHYS_TEMP", 0x49);       //温度控制字
 define("MFUN_HCU_CMDID_FHYS_HUMI", 0x4A);       //湿度控制字
-define("MFUN_HCU_CMDID_FHYS_BOX", 0x4C);        //光交箱状态聚合控制字
+define("MFUN_HCU_CMDID_FHYS_BOXOPEN", 0x4B);    //光交箱开锁控制字
+define("MFUN_HCU_CMDID_FHYS_BOXSTATUS", 0x4C);  //光交箱状态聚合控制字
 
 //锁操作字
 define("MFUN_HCU_OPT_FHYS_BOXSTAT_IND", 0x81);

@@ -2361,8 +2361,8 @@ class classDbiL3apF3dm
         $pic_list = array();
         while($row = $result->fetch_array())
         {
-            $file_url = $row['filename'];
-            $file_name = substr($file_url, -MFUN_HCU_FHYS_PIC_FILE_LEN);
+            $file_name = $row['filename'];
+            $file_url = MFUN_HCU_FHYS_PIC_FOLDER_NAME.$statcode.'/'.$file_name;
             $temp = array(
                 'name' => $file_name,
                 'url' => $file_url

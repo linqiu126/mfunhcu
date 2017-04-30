@@ -84,7 +84,7 @@ class classTaskL2snrDoorlock
         return $resp;
     }
 
-    private function func_doorlock_statreport_process($platform, $devCode, $statCode, $msg)
+    private function func_doorlock_boxstatus_process($platform, $devCode, $statCode, $msg)
     {
         if(isset($msg['content'])) $content = $msg['content']; else $content = "";
         if(isset($msg['funcFlag'])) $funcFlag = $msg['funcFlag']; else $funcFlag = "";
@@ -92,7 +92,7 @@ class classTaskL2snrDoorlock
         if(empty($content)){
             return "ERROR FHYS_DOORCLOCK: message empty";  //消息内容为空，直接返回
         }
-        $raw_MsgHead = substr($content, 0, MFUN_HCU_MSG_HEAD_LENGTH-2);  //截取6Byte MsgHead
+        $raw_MsgHead = substr($content, 0, MFUN_HCU_MSG_HEAD_LENGTH-2);  //截取4Byte MsgHead
         $msgHead = unpack("A2Key/A2Len", $raw_MsgHead);
         $length = hexdec($msgHead['Len']) & 0xFF;
         $length =  ($length+2) * 2; //因为收到的消息为16进制字符，消息总长度等于length＋1B控制字＋1B长度本身
@@ -101,7 +101,29 @@ class classTaskL2snrDoorlock
         }
         $data = substr($content, MFUN_HCU_MSG_HEAD_LENGTH-2, $length);
         $classDbiL2snrDoorlock = new classDbiL2snrDoorlock();
-        $resp = $classDbiL2snrDoorlock->dbi_hcu_doorlock_statreport_process($devCode, $statCode, $data);
+        $resp = $classDbiL2snrDoorlock->dbi_hcu_doorlock_boxstatus_process($devCode, $statCode, $data);
+
+        return $resp;
+    }
+
+    private function func_doorlock_boxopen_process($platform, $devCode, $statCode, $msg)
+    {
+        if(isset($msg['content'])) $content = $msg['content']; else $content = "";
+        if(isset($msg['funcFlag'])) $funcFlag = $msg['funcFlag']; else $funcFlag = "";
+
+        if(empty($content)){
+            return "ERROR FHYS_DOORCLOCK: message empty";  //消息内容为空，直接返回
+        }
+        $raw_MsgHead = substr($content, 0, MFUN_HCU_MSG_HEAD_LENGTH-2);  //截取4Byte MsgHead
+        $msgHead = unpack("A2Key/A2Len", $raw_MsgHead);
+        $length = hexdec($msgHead['Len']) & 0xFF;
+        $length =  ($length+2) * 2; //因为收到的消息为16进制字符，消息总长度等于length＋1B控制字＋1B长度本身
+        if ($length != strlen($content)) {
+            return "ERROR FHYS_DOORCLOCK: message length invalid";  //消息长度不合法，直接返回
+        }
+        $data = substr($content, MFUN_HCU_MSG_HEAD_LENGTH-2, $length);
+        $classDbiL2snrDoorlock = new classDbiL2snrDoorlock();
+        $resp = $classDbiL2snrDoorlock->dbi_hcu_doorlock_boxopen_process($devCode, $statCode, $data);
 
         return $resp;
     }
@@ -165,7 +187,7 @@ class classTaskL2snrDoorlock
             if (isset($msg["content"])) $content = $msg["content"];
         }
 
-        if (($msgId != MSG_ID_L2SDK_HCU_TO_L2SNR_DOORLOCK) && ($msgId != MSG_ID_L2SDK_HCU_TO_L2SNR_BOXSTAT)&& ($msgId != HUITP_MSGID_uni_ccl_state_report)){
+        if (($msgId != MSG_ID_L2SDK_HCU_TO_L2SNR_DOORLOCK)&&($msgId != MSG_ID_L2SDK_HCU_TO_L2SNR_BOXSTATUS)&&($msgId != MSG_ID_L2SDK_HCU_TO_L2SNR_BOXOPEN)&&($msgId != HUITP_MSGID_uni_ccl_state_report)){
             $result = "Msgid or MsgName error";
             $log_content = "P:" . json_encode($result);
             $loggerObj->logger("MFUN_TASK_ID_L2SNR_DOORLOCK", "mfun_l2snr_doorlock_task_main_entry", $log_time, $log_content);
@@ -179,9 +201,13 @@ class classTaskL2snrDoorlock
                 //具体处理函数
                 $resp = $this->func_doorlock_data_process($platform, $deviceId, $statCode, $content);
                 break;
-            case MSG_ID_L2SDK_HCU_TO_L2SNR_BOXSTAT:
+            case MSG_ID_L2SDK_HCU_TO_L2SNR_BOXSTATUS:
                 //具体处理函数
-                $resp = $this->func_doorlock_statreport_process($platform, $deviceId, $statCode, $content);
+                $resp = $this->func_doorlock_boxstatus_process($platform, $deviceId, $statCode, $content);
+                break;
+            case MSG_ID_L2SDK_HCU_TO_L2SNR_BOXOPEN:
+                //具体处理函数
+                $resp = $this->func_doorlock_boxopen_process($platform, $deviceId, $statCode, $content);
                 break;
             case HUITP_MSGID_uni_ccl_state_report:
                 $resp = $this->func_huitp_msg_uni_ccl_state_report($platform, $deviceId, $statCode, $content);

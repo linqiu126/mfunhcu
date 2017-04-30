@@ -569,7 +569,7 @@ class classDbiL2snrDoorlock
         return $resp;
     }
 
-    public function dbi_hcu_doorlock_statreport_process($devCode, $statCode, $data)
+    public function dbi_hcu_doorlock_boxstatus_process($devCode, $statCode, $data)
     {
         //建立连接
         $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
@@ -795,7 +795,7 @@ class classDbiL2snrDoorlock
         if (($result != false) && ($result->num_rows)>0) {
             //生成控制命令的控制字
             $apiL2snrCommonServiceObj = new classApiL2snrCommonService();
-            $ctrl_key = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_CMDID_FHYS_BOX);
+            $ctrl_key = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_CMDID_FHYS_BOXSTATUS);
             $para = $apiL2snrCommonServiceObj->byte2string($resp_data);
 
             $len = $apiL2snrCommonServiceObj->byte2string(strlen($para) / 2);
@@ -813,9 +813,176 @@ class classDbiL2snrDoorlock
         return $resp;//返回Response
     }
 
+    public function dbi_hcu_doorlock_boxopen_process($devCode, $statCode, $data)
+    {
+        //建立连接
+        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli) {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $mysqli->query("SET NAMES utf8");
+
+        //确认要操作的设备在 HCU Inventory表中是否存在
+        $query_str = "SELECT * FROM `t_l2sdk_iothcu_inventory` WHERE (`statcode` = '$statCode' AND `devcode` = '$devCode')";
+        $result = $mysqli->query($query_str);
+        if ($result == false){
+            $resp = "Look open rejected as device invaild";
+            return $resp;
+        }
+
+        $auth_check = false; //初始化
+        $format = "A8rfid/A12blemac";
+        $msg= unpack($format, $data);
+        if ($msg['rfid'] != MFUN_HCU_FHYS_RFID_NULL)//判断是否检测到RFID开锁请求
+        {
+            $rfid = $msg['rfid'];
+            //生成控制命令的控制字
+            $apiL2snrCommonServiceObj = new classApiL2snrCommonService();
+            $ctrl_key = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_CMDID_FHYS_BOXOPEN);
+            $opt_key = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_OPT_FHYS_RFID_LOCKOPEN_RESP);
+
+            $keyid = "";
+            $key_type = MFUN_L3APL_F2CM_KEY_TYPE_RFID;
+            $query_str = "SELECT * FROM `t_l3f2cm_fhys_keyinfo` WHERE (`hwcode` = '$rfid' AND `keytype` = '$key_type')"; //暂时只判断是否有
+            $resp = $mysqli->query($query_str);
+            if (($resp != false) && ($resp->num_rows)>0){
+                $row = $resp->fetch_array();
+                $keyid = $row['keyid'];
+                $auth_check = $this->dbi_hcu_lock_keyauth_check($keyid, $statCode);
+            }
+
+            if($auth_check == true){
+                $para = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_DATA_FHYS_LOCK_OPEN);
+                $event = MFUN_L3APL_F2CM_EVENT_TYPE_RFID;
+                $this->dbi_hcu_event_log_process($keyid, $statCode, $event); //保存开锁记录
+                $resp_msg = "Lock open with RFID success: ";
+            }
+            else{
+                $para = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_DATA_FHYS_LOCK_CLOSE);
+                $resp_msg = "Lock open with RFID failure: ";
+            }
+
+            $len = $apiL2snrCommonServiceObj->byte2string(strlen($opt_key.$para)/2);
+            $respCmd = $ctrl_key . $len . $opt_key . $para;
+
+            //通过9502端口建立tcp阻塞式socket连接，向HCU转发操控命令
+            $client = new socket_client_sync($devCode, $respCmd);
+            $client->connect();
+            $resp = $resp_msg . $respCmd;
+        }
+
+        if (($msg['blemac'] != MFUN_HCU_FHYS_BLEMAC_NULL) AND ($auth_check == false))//判断是否检测到BLE开锁请求且RFID开锁没有授权
+        {
+            $blemac = $msg['blemac'];
+            //生成控制命令的控制字
+            $apiL2snrCommonServiceObj = new classApiL2snrCommonService();
+            $ctrl_key = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_CMDID_FHYS_BOXOPEN);
+            $opt_key = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_OPT_FHYS_BLE_LOCKOPEN_RESP);
+
+            $auth_check = false;
+            $key_type = MFUN_L3APL_F2CM_KEY_TYPE_BLE;
+            $query_str = "SELECT * FROM `t_l3f2cm_fhys_keyinfo` WHERE (`hwcode` = '$blemac' AND `keytype` = '$key_type')"; //暂时只判断是否有
+            $resp = $mysqli->query($query_str);
+            if (($resp != false) && ($resp->num_rows)>0){
+                $row = $resp->fetch_array();
+                $keyid = $row['keyid'];
+                $auth_check = $this->dbi_hcu_lock_keyauth_check($keyid, $statCode);
+            }
+            else{ //为该MAC地址生成一把蓝牙虚拟钥匙
+                $keyid = MFUN_L3APL_F2CM_KEY_PREFIX.$this->getRandomKeyid(MFUN_L3APL_F2CM_KEY_ID_LEN);  //KEYID的分配机制将来要重新考虑，避免重复
+                $query_str = "SELECT * FROM `t_l3f3dm_siteinfo` WHERE `statcode` = '$statCode' ";
+                $resp = $mysqli->query($query_str);
+                if (($resp->num_rows) > 0) {
+                    $resp_row = $resp->fetch_array();
+                    $pcode = $resp_row['p_code'];
+                }
+                $keyname = "蓝牙钥匙-".$blemac;
+                $keytype = MFUN_L3APL_F2CM_KEY_TYPE_BLE;
+                $keystatus = MFUN_HCU_FHYS_KEY_INVALID;
+                $memo = "系统自动生成的蓝牙虚拟钥匙，暂未授权";
+                $query_str = "INSERT INTO `t_l3f2cm_fhys_keyinfo` (keyid,keyname,p_code,keystatus,keytype,hwcode,memo)
+                                      VALUES ('$keyid','$keyname','$pcode','$keystatus','$keytype','$blemac','$memo')";
+                $result = $mysqli->query($query_str);
+            }
+
+            if($auth_check == true){
+                $para = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_DATA_FHYS_LOCK_OPEN);
+                $event = MFUN_L3APL_F2CM_EVENT_TYPE_BLE;
+                $this->dbi_hcu_event_log_process($keyid, $statCode, $event); //保存开锁记录
+                $resp_msg = "Lock open with BLE success: ";
+            }
+            else{
+                $para = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_DATA_FHYS_LOCK_CLOSE);
+                $resp_msg = "Lock open with BLE failure: ";
+            }
+
+
+            $len = $apiL2snrCommonServiceObj->byte2string(strlen($opt_key.$para)/2);
+            $respCmd = $ctrl_key . $len . $opt_key . $para;
+
+            //通过9502端口建立tcp阻塞式socket连接，向HCU转发操控命令
+            $client = new socket_client_sync($devCode, $respCmd);
+            $client->connect();
+            $resp = $resp_msg. $respCmd;
+        }
+
+        if ($auth_check == false)//如果RFID和BLE开锁认证都不通过，看看是否有有用户名开锁授权
+        {
+            //生成控制命令的控制字
+            $apiL2snrCommonServiceObj = new classApiL2snrCommonService();
+            $ctrl_key = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_CMDID_FHYS_BOXOPEN);
+            $opt_key = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_OPT_FHYS_USERID_LOCKOPEN_RESP);
+
+            //暂时只判断是否有针对该站点的有效次数授权
+            $auth_check = false;
+            $keyid = "";
+            $auth_type = MFUN_L3APL_F2CM_AUTH_TYPE_NUMBER;
+            $query_str = "SELECT * FROM `t_l3f2cm_fhys_keyauth` WHERE (`authobjcode` = '$statCode' AND `authtype` = '$auth_type')";
+            $resp = $mysqli->query($query_str);
+            if (($resp != false) && ($resp->num_rows)>0){
+                $row = $resp->fetch_array();
+                $sid = $row['sid'];
+                $keyid = $row['keyid'];
+                $remain_validnum = $row['validnum'] - 1;
+                if ($remain_validnum == 0){
+                    $query_str = "DELETE FROM `t_l3f2cm_fhys_keyauth` WHERE (`sid` = '$sid') ";
+                    $resp = $mysqli->query($query_str);
+                    $auth_check = true;
+                }
+                else{
+                    $query_str = "UPDATE `t_l3f2cm_fhys_keyauth` SET  `validnum` = '$remain_validnum' WHERE (`sid` = '$sid')";
+                    $resp = $mysqli->query($query_str);
+                    $auth_check = true;
+                }
+            }
+
+            if($auth_check == true){
+                $para = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_DATA_FHYS_LOCK_OPEN);
+                $event = MFUN_L3APL_F2CM_EVENT_TYPE_USER;
+                $this->dbi_hcu_event_log_process($keyid, $statCode, $event); //保存开锁记录
+                $resp_msg = "Lock open with USERID success: ";
+            }
+            else{
+                $para = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_DATA_FHYS_LOCK_CLOSE);
+                $resp_msg = "Lock open with USERID failure: ";
+            }
+
+            $len = $apiL2snrCommonServiceObj->byte2string(strlen($opt_key.$para)/2);
+            $respCmd = $ctrl_key . $len . $opt_key . $para;
+
+            //通过9502端口建立tcp阻塞式socket连接，向HCU转发操控命令
+            $client = new socket_client_sync($devCode, $respCmd);
+            $client->connect();
+            $resp = $resp_msg . $respCmd;
+        }
+
+        $mysqli->close();
+        return $resp;//返回Response
+    }
+
     public function dbi_huitp_msg_uni_ccl_state_report($devCode, $statCode, $data)
     {
-
+        return true;
     }
 
 

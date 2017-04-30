@@ -627,6 +627,37 @@ class classTaskL2sdkIotHcu
                 $resp ="HCU_IOT: Not yet support!";
                 break;
 
+            case MFUN_HCU_CMDID_FHYS_BOXSTATUS: //光交箱状态聚合控制字
+                $msg = array("project" => $project,
+                    "log_from" => $log_from,
+                    "platform" => MFUN_TECH_PLTF_HCUSTM,
+                    "deviceId" => $deviceId,
+                    "statCode" => $statCode,
+                    "content" => array("content" =>$content, "funcFlag" => $funcFlag));
+                if ($parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L2SDK_IOT_HCU,
+                        MFUN_TASK_ID_L2SENSOR_DOORLOCK,
+                        MSG_ID_L2SDK_HCU_TO_L2SNR_BOXSTATUS,
+                        "MSG_ID_L2SDK_HCU_TO_L2SNR_BOXSTATUS",
+                        $msg) == false) $resp = "Send to message buffer error";
+                else $resp = "";
+                break;
+
+            case MFUN_HCU_CMDID_FHYS_BOXOPEN: //光交箱门锁开启请求控制字
+                $msg = array("project" => $project,
+                    "log_from" => $log_from,
+                    "platform" => MFUN_TECH_PLTF_HCUSTM,
+                    "deviceId" => $deviceId,
+                    "statCode" => $statCode,
+                    "content" => array("content" =>$content, "funcFlag" => $funcFlag));
+                if ($parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L2SDK_IOT_HCU,
+                        MFUN_TASK_ID_L2SENSOR_DOORLOCK,
+                        MSG_ID_L2SDK_HCU_TO_L2SNR_BOXOPEN,
+                        "MSG_ID_L2SDK_HCU_TO_L2SNR_BOXOPEN",
+                        $msg) == false) $resp = "Send to message buffer error";
+                else $resp = "";
+                break;
+
+            //**以下FHYS控制为了兼容老版本，一定时间后可以删除**
             case MFUN_HCU_CMDID_FHYS_LOCK: //智能锁控制字
                 $msg = array("project" => $project,
                     "log_from" => $log_from,
@@ -638,21 +669,6 @@ class classTaskL2sdkIotHcu
                         MFUN_TASK_ID_L2SENSOR_DOORLOCK,
                         MSG_ID_L2SDK_HCU_TO_L2SNR_DOORLOCK,
                         "MSG_ID_L2SDK_HCU_TO_L2SNR_DOORLOCK",
-                        $msg) == false) $resp = "Send to message buffer error";
-                else $resp = "";
-                break;
-
-            case MFUN_HCU_CMDID_FHYS_BOX: //光交箱状态聚合控制字
-                $msg = array("project" => $project,
-                    "log_from" => $log_from,
-                    "platform" => MFUN_TECH_PLTF_HCUSTM,
-                    "deviceId" => $deviceId,
-                    "statCode" => $statCode,
-                    "content" => array("content" =>$content, "funcFlag" => $funcFlag));
-                if ($parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L2SDK_IOT_HCU,
-                        MFUN_TASK_ID_L2SENSOR_DOORLOCK,
-                        MSG_ID_L2SDK_HCU_TO_L2SNR_BOXSTAT,
-                        "MSG_ID_L2SDK_HCU_TO_L2SNR_BOXSTAT",
                         $msg) == false) $resp = "Send to message buffer error";
                 else $resp = "";
                 break;
