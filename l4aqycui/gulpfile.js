@@ -11,6 +11,13 @@ var uglify = require('gulp-uglify');
 var rename = require('gulp-rename');
 var clean = require('gulp-clean');
 var htmlmin = require('gulp-htmlmin');
+var mkdirp = require('mkdirp');
+var replace = require('gulp-replace');
+
+
+
+var replace_content = "D:/webrd/www/dist/usr_img/";
+var replace_install = "/dist";
 var option = {
 
     buildPath: "../www/dist"
@@ -61,9 +68,15 @@ gulp.task("resourcecopy",function(){
         .pipe(gulp.dest(option.buildPath+"/video/"));
     gulp.src("./screensaver/**/*")
         .pipe(gulp.dest(option.buildPath+"/screensaver/"));
-    gulp.dest(option.buildPath+"/upload/");
-    gulp.dest(option.buildPath+"/usr_img/");
-    gulp.src("./*.php")
+    mkdirp.sync(option.buildPath+"/upload/");
+    mkdirp.sync(option.buildPath+"/usr_img/");
+    gulp.src("./jump.php")
+        .pipe(gulp.dest(option.buildPath+"/"));
+    gulp.src("./request.php")
+        .pipe(replace(/_INSTALL_PATH_/,replace_install))
+        .pipe(gulp.dest(option.buildPath+"/"));
+    gulp.src("./upload.php")
+        .pipe(replace(/_UPLOAD_PATH_/,replace_content))
         .pipe(gulp.dest(option.buildPath+"/"));
     gulp.src("./*.ico")
         .pipe(gulp.dest(option.buildPath+"/"));

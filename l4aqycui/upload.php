@@ -1,5 +1,6 @@
 <?php
 	$id= $_REQUEST["id"];
+	$upload_path="D:/webrd/www/dist/usr_img/";
 	function _encode($arr)
     {
       $na = array();
@@ -19,13 +20,13 @@
       }
       return urlencode($elem);
     }
-	$num=count($_FILES['file-zh']['name']);   //¼ÆËãÉÏ´«ÎÄ¼şµÄ¸öÊı
+	$num=count($_FILES['file-zh']['name']);   //ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ï¿½Ä¼ï¿½ï¿½Ä¸ï¿½ï¿½ï¿½
 	for($i=0;$i<$num;$i++)
 	{
-		  
+
 		   		if($_FILES['file-zh']['name'][$i]!=''&&is_uploaded_file($_FILES['file-zh']['tmp_name'][$i]))
 		   		{
-				  $fname='E:/Apache24/bootstrap/usr_img/'.$_FILES['file-zh']['name'][$i];
+				  $fname=$upload_path.$_FILES['file-zh']['name'][$i];
 				  move_uploaded_file($_FILES['file-zh']['tmp_name'][$i],$fname);
 				  $retval=array(
                   		'status'=>"true",

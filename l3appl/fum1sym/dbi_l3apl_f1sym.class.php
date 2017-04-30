@@ -255,7 +255,7 @@ class classDbiL3apF1sym
         return $uid;
     }
 
-    public function dbi_user_authcheck($type, $sessionid)
+    public function dbi_user_authcheck($action, $sessionid)
     {
         //建立连接
         $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
@@ -276,13 +276,12 @@ class classDbiL3apF1sym
             $result = $mysqli->query($query_str);
             if (($result->num_rows)>0) {
                 $row = $result->fetch_array();
-                $grade = intval($row['grade']);
+                $grade_idx = intval($row['grade']);
 
-                //暂定grade=3或4的用户没有修改权限
-                if (($grade == MFUN_USER_GRADE_LEVEL_3 OR $grade == MFUN_USER_GRADE_LEVEL_4) AND ($type == "mod") ){
-                    $auth = "false";
-                    $msg = "对不起，您没有权限做此操作，请联系管理员";
-                }
+                $taskObj = new classConstL1vmUserWebRight();
+                $grade_info = $taskObj->mfun_vm_getUserGrade($grade_idx);
+                if (isset($grade_info["actionauth"])) $actionauth = $grade_info["actionauth"]; else  $actionauth = "";
+                if (isset($actionauth[$action])) $auth = $actionauth[$action]; else  $auth = "true";  //如果没有特别限制的操作，默认为ture
             }
         }
         else{
@@ -366,13 +365,18 @@ class classDbiL3apF1sym
                 $result = $mysqli->query($query_str);
                 if (($result->num_rows)>0)
                 {
+                    $userauth = array();
                     $row = $result->fetch_array();
                     $grade_idx = $row['grade'];
                     $city = $row['city'];
                     $name = $row['user'];
                     $taskObj = new classConstL1vmUserWebRight();
                     $grade_info = $taskObj->mfun_vm_getUserGrade($grade_idx);
-                    $userinfo = array('id'=>$sessionid,'name'=>$name,'level'=>$grade_idx,'city'=>$city,'userauth'=>$grade_info);
+                    if (isset($grade_info["webauth"])) $userauth['webauth'] = $grade_info["webauth"]; else  $userauth['webauth'] = "";
+                    if (isset($grade_info["query"])) $userauth['query'] = $grade_info["query"]; else  $userauth['query'] = "";
+                    if (isset($grade_info["mod"])) $userauth['mod'] = $grade_info["mod"]; else  $userauth['mod'] = "";
+
+                    $userinfo = array('id'=>$sessionid,'name'=>$name,'level'=>$grade_idx,'city'=>$city,'userauth'=>$userauth);
                 }
             }
         }

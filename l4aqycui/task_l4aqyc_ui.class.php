@@ -45,6 +45,7 @@ class classTaskL4aqycUi
         if (($msgId == MSG_ID_L4AQYCUI_CLICK_INCOMING) && (isset($msg)))
         {
             $resp = "";
+            if (isset($msg)) $action = trim($msg); else $action = "";
             //这里是L4FHYS与L3APPL功能之间的交换矩阵，从而让UI对应的多种不确定组合变换为L3APPL确定的功能组合
             switch($msg)
             {
@@ -60,7 +61,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
-                    $input = array("type" => $type, "user" => $user,"body" => $body);
+                    $input = array("action" => $action, "type" => $type, "user" => $user,"body" => $body);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM1SYM, MSG_ID_L4AQYCUI_TO_L3F1_USERINFO, "MSG_ID_L4AQYCUI_TO_L3F1_USERINFO",$input);
                     break;
 
@@ -69,7 +70,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
-                    $input = array("type" => $type, "user" => $user,"body" => $body);
+                    $input = array("action" => $action, "type" => $type, "user" => $user,"body" => $body);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM1SYM, MSG_ID_L4AQYCUI_TO_L3F1_USERNEW, "MSG_ID_L4AQYCUI_TO_L3F1_USERNEW",$input);
                     break;
 
@@ -78,7 +79,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
-                    $input = array("type" => $type, "user" => $user,"body" => $body);
+                    $input = array("action" => $action, "type" => $type, "user" => $user,"body" => $body);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM1SYM, MSG_ID_L4AQYCUI_TO_L3F1_USERMOD, "MSG_ID_L4AQYCUI_TO_L3F1_USERMOD",$input);
                     break;
 
@@ -87,7 +88,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
-                    $input = array("type" => $type,"user" => $user,"body" => $body);
+                    $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM1SYM, MSG_ID_L4AQYCUI_TO_L3F1_USERDEL, "MSG_ID_L4AQYCUI_TO_L3F1_USERDEL",$input);
                     break;
 
@@ -96,7 +97,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
-                    $input = array("type" => $type,"user" => $user,"body" => $body);
+                    $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM1SYM, MSG_ID_L4AQYCUI_TO_L3F1_USERTABLE, "MSG_ID_L4AQYCUI_TO_L3F1_USERTABLE",$input);
                     break;
 
@@ -105,7 +106,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
-                    $input = array("type" => $type,"user" => $user,"body" => $body);
+                    $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4AQYCUI_TO_L3F2_PROJECTPGLIST, "MSG_ID_L4AQYCUI_TO_L3F2_PROJECTPGLIST",$input);
                     break;
 
@@ -114,7 +115,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
-                    $input = array("type" => $type,"user" => $user,"body" => $body);
+                    $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4AQYCUI_TO_L3F2_PROJECTLIST, "MSG_ID_L4AQYCUI_TO_L3F2_PROJECTLIST",$input);
                     break;
 
@@ -123,7 +124,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
-                    $input = array("type" => $type,"user" => $user,"body" => $body);
+                    $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4AQYCUI_TO_L3F2_USERPROJ, "MSG_ID_L4AQYCUI_TO_L3F2_USERPROJ",$input);
                     break;
 
@@ -132,7 +133,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
-                    $input = array("type" => $type,"user" => $user,"body" => $body);
+                    $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4AQYCUI_TO_L3F2_PGTABLE, "MSG_ID_L4AQYCUI_TO_L3F2_PGTABLE",$input);
                     break;
 
@@ -141,7 +142,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
-                    $input = array("type" => $type,"user" => $user,"body" => $body);
+                    $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4AQYCUI_TO_L3F2_PGNEW, "MSG_ID_L4AQYCUI_TO_L3F2_PGNEW",$input);
                     break;
 
@@ -150,7 +151,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
-                    $input = array("type" => $type,"user" => $user,"body" => $body);
+                    $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4AQYCUI_TO_L3F2_PGMOD, "MSG_ID_L4AQYCUI_TO_L3F2_PGMOD",$input);
                     break;
 
@@ -159,7 +160,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
-                    $input = array("type" => $type,"user" => $user,"body" => $body);
+                    $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4AQYCUI_TO_L3F2_PGDEL, "MSG_ID_L4AQYCUI_TO_L3F2_PGDEL",$input);
                     break;
 
@@ -168,7 +169,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
-                    $input = array("type" => $type,"user" => $user,"body" => $body);
+                    $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4AQYCUI_TO_L3F2_PGPROJ, "MSG_ID_L4AQYCUI_TO_L3F2_PGPROJ",$input);
                     break;
 
@@ -177,7 +178,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
-                    $input = array("type" => $type,"user" => $user,"body" => $body);
+                    $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4AQYCUI_TO_L3F2_PROJTABLE, "MSG_ID_L4AQYCUI_TO_L3F2_PROJTABLE",$input);
                     break;
 
@@ -186,7 +187,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
-                    $input = array("type" => $type,"user" => $user,"body" => $body);
+                    $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4AQYCUI_TO_L3F2_PROJNEW, "MSG_ID_L4AQYCUI_TO_L3F2_PROJNEW",$input);
                     break;
 
@@ -195,7 +196,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
-                    $input = array("type" => $type,"user" => $user,"body" => $body);
+                    $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4AQYCUI_TO_L3F2_PROJMOD, "MSG_ID_L4AQYCUI_TO_L3F2_PROJMOD",$input);
                     break;
 
@@ -204,7 +205,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
-                    $input = array("type" => $type,"user" => $user,"body" => $body);
+                    $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4AQYCUI_TO_L3F2_PROJDEL, "MSG_ID_L4AQYCUI_TO_L3F2_PROJDEL",$input);
                     break;
 
@@ -213,7 +214,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
-                    $input = array("type" => $type,"user" => $user,"body" => $body);
+                    $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM3DM, MSG_ID_L4AQYCUI_TO_L3F3_PROJPOINT, "MSG_ID_L4AQYCUI_TO_L3F3_PROJPOINT",$input);
                     break;
 
@@ -222,7 +223,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
-                    $input = array("type" => $type,"user" => $user,"body" => $body);
+                    $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM3DM, MSG_ID_L4AQYCUI_TO_L3F3_POINTPROJ, "MSG_ID_L4AQYCUI_TO_L3F3_POINTPROJ",$input);
                     break;
 
@@ -231,7 +232,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
-                    $input = array("type" => $type,"user" => $user,"body" => $body);
+                    $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM3DM, MSG_ID_L4AQYCUI_TO_L3F3_POINTTABLE, "MSG_ID_L4AQYCUI_TO_L3F3_POINTTABLE",$input);
                     break;
 
@@ -244,7 +245,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
-                    $input = array("type" => $type,"user" => $user,"body" => $body);
+                    $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM3DM, MSG_ID_L4AQYCUI_TO_L3F3_POINTNEW, "MSG_ID_L4AQYCUI_TO_L3F3_POINTNEW",$input);
                     break;
 
@@ -253,7 +254,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
-                    $input = array("type" => $type,"user" => $user,"body" => $body);
+                    $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM3DM, MSG_ID_L4AQYCUI_TO_L3F3_POINTMOD, "MSG_ID_L4AQYCUI_TO_L3F3_POINTMOD",$input);
                     break;
 
@@ -262,7 +263,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
-                    $input = array("type" => $type,"user" => $user,"body" => $body);
+                    $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM3DM, MSG_ID_L4AQYCUI_TO_L3F3_POINTDEL, "MSG_ID_L4AQYCUI_TO_L3F3_POINTDEL",$input);
                     break;
 
@@ -271,7 +272,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
-                    $input = array("type" => $type,"user" => $user,"body" => $body);
+                    $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM3DM, MSG_ID_L4AQYCUI_TO_L3F3_POINTDEV, "MSG_ID_L4AQYCUI_TO_L3F3_POINTDEV",$input);
                     break;
 
@@ -280,7 +281,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
-                    $input = array("type" => $type,"user" => $user,"body" => $body);
+                    $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM3DM, MSG_ID_L4AQYCUI_TO_L3F3_DEVTABLE, "MSG_ID_L4AQYCUI_TO_L3F3_DEVTABLE",$input);
                     break;
 
@@ -289,7 +290,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
-                    $input = array("type" => $type,"user" => $user,"body" => $body);
+                    $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM3DM, MSG_ID_L4AQYCUI_TO_L3F3_DEVNEW, "MSG_ID_L4AQYCUI_TO_L3F3_DEVNEW",$input);
                     break;
 
@@ -298,7 +299,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
-                    $input = array("type" => $type,"user" => $user,"body" => $body);
+                    $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM3DM, MSG_ID_L4AQYCUI_TO_L3F3_DEVMOD, "MSG_ID_L4AQYCUI_TO_L3F3_DEVMOD",$input);
                     break;
 
@@ -307,7 +308,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
-                    $input = array("type" => $type,"user" => $user,"body" => $body);
+                    $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM3DM, MSG_ID_L4AQYCUI_TO_L3F3_DEVDEL, "MSG_ID_L4AQYCUI_TO_L3F3_DEVDEL",$input);
                     break;
 
@@ -316,7 +317,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
-                    $input = array("type" => $type,"user" => $user,"body" => $body);
+                    $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM3DM, MSG_ID_L4AQYCUI_TO_L3F3_MONITORLIST, "MSG_ID_L4AQYCUI_TO_L3F3_MONITORLIST",$input);
                     break;
 
@@ -325,7 +326,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
-                    $input = array("type" => $type,"user" => $user,"body" => $body);
+                    $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM3DM, MSG_ID_L4AQYCUI_TO_L3F3_FAVOURITELIST, "MSG_ID_L4AQYCUI_TO_L3F3_FAVOURITELIST",$input);
                     break;
 
@@ -334,7 +335,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
-                    $input = array("type" => $type,"user" => $user,"body" => $body);
+                    $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM3DM, MSG_ID_L4AQYCUI_TO_L3F3_FAVOURITECOUNT, "MSG_ID_L4AQYCUI_TO_L3F3_FAVOURITECOUNT",$input);
                     break;
 
@@ -343,7 +344,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
-                    $input = array("type" => $type,"user" => $user,"body" => $body);
+                    $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM5FM, MSG_ID_L4AQYCUI_TO_L3F5_ALARMMONITORLIST, "MSG_ID_L4AQYCUI_TO_L3F5_ALARMMONITORLIST",$input);
                     break;
 
@@ -352,7 +353,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
-                    $input = array("type" => $type,"user" => $user,"body" => $body);
+                    $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM5FM, MSG_ID_L4AQYCUI_TO_L3F5_ALARMQUERY, "MSG_ID_L4AQYCUI_TO_L3F5_ALARMQUERY",$input);
                     break;
 
@@ -361,7 +362,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
-                    $input = array("type" => $type,"user" => $user,"body" => $body);
+                    $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM5FM, MSG_ID_L4AQYCUI_TO_L3F5_ALARMPROCESS, "MSG_ID_L4AQYCUI_TO_L3F5_ALARMPROCESS",$input);
                     break;
 
@@ -370,7 +371,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
-                    $input = array("type" => $type,"user" => $user,"body" => $body);
+                    $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM3DM, MSG_ID_L4AQYCUI_TO_L3F3_TABLEQUERY, "MSG_ID_L4AQYCUI_TO_L3F3_TABLEQUERY",$input);
                     break;
 
@@ -379,7 +380,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
-                    $input = array("type" => $type,"user" => $user,"body" => $body);
+                    $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM4ICM, MSG_ID_L4AQYCUI_TO_L3F4_SENSORUPDATE, "MSG_ID_L4AQYCUI_TO_L3F4_SENSORUPDATE",$input);
                     break;
 
@@ -388,7 +389,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
-                    $input = array("type" => $type,"user" => $user,"body" => $body);
+                    $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM7ADS, MSG_ID_L4AQYCUI_TO_L3F7_SETUSERMSG, "MSG_ID_L4AQYCUI_TO_L3F7_SETUSERMSG",$input);
                     break;
 
@@ -397,7 +398,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
-                    $input = array("type" => $type,"user" => $user,"body" => $body);
+                    $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM7ADS, MSG_ID_L4AQYCUI_TO_L3F7_GETUSERMSG, "MSG_ID_L4AQYCUI_TO_L3F7_GETUSERMSG",$input);
                     break;
 
@@ -406,7 +407,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
-                    $input = array("type" => $type,"user" => $user,"body" => $body);
+                    $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM7ADS, MSG_ID_L4AQYCUI_TO_L3F7_SHOWUSERMSG, "MSG_ID_L4AQYCUI_TO_L3F7_SHOWUSERMSG",$input);
                     break;
 
@@ -415,7 +416,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
-                    $input = array("type" => $type,"user" => $user,"body" => $body);
+                    $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM7ADS, MSG_ID_L4AQYCUI_TO_L3F7_GETUSERIMG, "MSG_ID_L4AQYCUI_TO_L3F7_GETUSERIMG",$input);
                     break;
 
@@ -424,7 +425,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
-                    $input = array("type" => $type,"user" => $user,"body" => $body);
+                    $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM7ADS, MSG_ID_L4AQYCUI_TO_L3F7_CLEARUSERIMG, "MSG_ID_L4AQYCUI_TO_L3F7_CLEARUSERIMG",$input);
                     break;
 
@@ -433,7 +434,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
-                    $input = array("type" => $type,"user" => $user,"body" => $body);
+                    $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM4ICM, MSG_ID_L4AQYCUI_TO_L3F4_ALLSW, "MSG_ID_L4AQYCUI_TO_L3F4_ALLSW",$input);
                     break;
 
@@ -442,7 +443,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
-                    $input = array("type" => $type,"user" => $user,"body" => $body);
+                    $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM4ICM, MSG_ID_L4AQYCUI_TO_L3F4_DEVSW, "MSG_ID_L4AQYCUI_TO_L3F4_DEVSW",$input);
                     break;
 
@@ -451,7 +452,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
-                    $input = array("type" => $type,"user" => $user,"body" => $body);
+                    $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM4ICM, MSG_ID_L4AQYCUI_TO_L3F4_SWUPDATE, "MSG_ID_L4AQYCUI_TO_L3F4_SWUPDATE",$input);
                     break;
 
@@ -460,7 +461,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
-                    $input = array("type" => $type,"user" => $user,"body" => $body);
+                    $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM4ICM, MSG_ID_L4AQYCUI_TO_L3F4_CAMWEB, "MSG_ID_L4AQYCUI_TO_L3F4_CAMWEB",$input);
                     break;
 
@@ -470,7 +471,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
-                    $input = array("type" => $type,"user" => $user,"body" => $body);
+                    $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM4ICM, MSG_ID_L4AQYCUI_TO_L3F4_VIDEOLIST, "MSG_ID_L4AQYCUI_TO_L3F4_VIDEOLIST",$input);
                     break;
 
@@ -479,7 +480,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
-                    $input = array("type" => $type,"user" => $user,"body" => $body);
+                    $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM4ICM, MSG_ID_L4AQYCUI_TO_L3F4_VIDEOPLAY, "MSG_ID_L4AQYCUI_TO_L3F4_VIDEOPLAY",$input);
                     break;
 
@@ -488,7 +489,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
-                    $input = array("type" => $type,"user" => $user,"body" => $body);
+                    $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM4ICM, MSG_ID_L4AQYCUI_TO_L3F4_GETCAMERASTATUS, "MSG_ID_L4AQYCUI_TO_L3F4_GETCAMERASTATUS",$input);
                     break;
 
@@ -497,7 +498,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
-                    $input = array("type" => $type,"user" => $user,"body" => $body);
+                    $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM4ICM, MSG_ID_L4AQYCUI_TO_L3F4_GETCAMERAUNIT, "MSG_ID_L4AQYCUI_TO_L3F4_GETCAMERAUNIT",$input);
                     break;
                 case "CameraVAdj":
@@ -510,7 +511,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
-                    $input = array("type" => $type,"user" => $user,"body" => $body);
+                    $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM6PM, MSG_ID_L4AQYCUI_TO_L3F6_PERFORMANCETABLE, "MSG_ID_L4AQYCUI_TO_L3F6_PERFORMANCETABLE",$input);
                     break;
 
@@ -520,7 +521,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
-                    $input = array("type" => $type,"user" => $user,"body" => $body);
+                    $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM4ICM, MSG_ID_L4AQYCUI_TO_L3F4_SWVERINFO, "MSG_ID_L4AQYCUI_TO_L3F4_SWVERINFO",$input);
                     break;
 
@@ -530,7 +531,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
-                    $input = array("type" => $type,"user" => $user,"body" => $body);
+                    $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM4ICM, MSG_ID_L4AQYCUI_TO_L3F4_PROJSUSTRATEGY, "MSG_ID_L4AQYCUI_TO_L3F4_PROJSUSTRATEGY",$input);
                     break;
 
@@ -540,7 +541,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
-                    $input = array("type" => $type,"user" => $user,"body" => $body);
+                    $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM4ICM, MSG_ID_L4AQYCUI_TO_L3F4_PROJSWBASECHANGE, "MSG_ID_L4AQYCUI_TO_L3F4_SWBASECHANGE",$input);
                     break;
 
@@ -550,7 +551,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
-                    $input = array("type" => $type,"user" => $user,"body" => $body);
+                    $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM4ICM, MSG_ID_L4AQYCUI_TO_L3F4_DEVSUSTRATEGYCHANGE, "MSG_ID_L4AQYCUI_TO_L3F4_DEVSUSTRATEGYCHANGE",$input);
                     break;
 
@@ -560,7 +561,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
-                    $input = array("type" => $type,"user" => $user,"body" => $body);
+                    $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM4ICM, MSG_ID_L4AQYCUI_TO_L3F4_PROJSUSTRATEGYCHANGE, "MSG_ID_L4AQYCUI_TO_L3F4_PROJSUSTRATEGYCHANGE",$input);
                     break;
 
@@ -570,7 +571,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
-                    $input = array("type" => $type,"user" => $user,"body" => $body);
+                    $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM4ICM, MSG_ID_L4AQYCUI_TO_L3F4_PROJSUSTRATEGYGET, "MSG_ID_L4AQYCUI_TO_L3F4_PROJSUSTRATEGYGET",$input);
                     break;
 
@@ -579,7 +580,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
-                    $input = array("type" => $type,"user" => $user,"body" => $body);
+                    $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM3DM, MSG_ID_L4AQYCUI_TO_L3F3_ALARMHANDLETABLE, "MSG_ID_L4AQYCUI_TO_L3F3_ALARMHANDLETABLE",$input);
                     break;
 
@@ -589,7 +590,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
-                    $input = array("type" => $type,"user" => $user,"body" => $body);
+                    $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM5FM, MSG_ID_L4AQYCUI_TO_L3F5_DEVALARM, "MSG_ID_L4AQYCUI_TO_L3F5_DEVALARM",$input);
                     break;
 
@@ -598,7 +599,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
-                    $input = array("type" => $type,"user" => $user,"body" => $body);
+                    $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM5FM, MSG_ID_L4AQYCUI_TO_L3F5_ALARMTYPE, "MSG_ID_L4AQYCUI_TO_L3F5_ALARMTYPE",$input);
                     break;
 
@@ -607,7 +608,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
-                    $input = array("type" => $type,"user" => $user,"body" => $body);
+                    $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM3DM, MSG_ID_L4AQYCUI_TO_L3F3_SENSORLIST, "MSG_ID_L4AQYCUI_TO_L3F3_SENSORLIST",$input);
                     break;
 
@@ -616,7 +617,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
-                    $input = array("type" => $type,"user" => $user,"body" => $body);
+                    $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM3DM, MSG_ID_L4AQYCUI_TO_L3F3_DEVSENSOR, "MSG_ID_L4AQYCUI_TO_L3F3_DEVSENSOR",$input);
                     break;
 
@@ -625,7 +626,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
-                    $input = array("type" => $type,"user" => $user,"body" => $body);
+                    $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM3DM, MSG_ID_L4AQYCUI_TO_L3F3_GETSTATICMONITORTABLE, "MSG_ID_L4AQYCUI_TO_L3F3_GETSTATICMONITORTABLE",$input);
                     break;
 
@@ -636,7 +637,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
-                    $input = array("type" => $type,"user" => $user,"body" => $body);
+                    $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM4ICM, MSG_ID_L4FHYSUI_TO_L3F4_LOCKOPEN, "MSG_ID_L4FHYSUI_TO_L3F4_LOCKOPEN",$input);
                     break;
 
@@ -646,7 +647,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
-                    $input = array("type" => $type,"user" => $user,"body" => $body);
+                    $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4FHYSUI_TO_L3F2_USERKEY, "MSG_ID_L4FHYSUI_TO_L3F2_USERKEY",$input);
                     break;
 
@@ -656,7 +657,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
-                    $input = array("type" => $type,"user" => $user,"body" => $body);
+                    $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4FHYSUI_TO_L3F2_PROJKEYLIST, "MSG_ID_L4FHYSUI_TO_L3F2_PROJKEYLIST",$input);
                     break;
 
@@ -666,7 +667,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
-                    $input = array("type" => $type,"user" => $user,"body" => $body);
+                    $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4FHYSUI_TO_L3F2_PROJKEY, "MSG_ID_L4FHYSUI_TO_L3F2_PROJKEY",$input);
                     break;
 
@@ -676,7 +677,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
-                    $input = array("type" => $type,"user" => $user,"body" => $body);
+                    $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4FHYSUI_TO_L3F2_PROJKEYUSERLIST, "MSG_ID_L4FHYSUI_TO_L3F2_PROJKEYUSERLIST",$input);
                     break;
 
@@ -686,7 +687,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
-                    $input = array("type" => $type,"user" => $user,"body" => $body);
+                    $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4FHYSUI_TO_L3F2_KEYTABLE, "MSG_ID_L4FHYSUI_TO_L3F2_KEYTABLE",$input);
                     break;
 
@@ -696,7 +697,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
-                    $input = array("type" => $type,"user" => $user,"body" => $body);
+                    $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4FHYSUI_TO_L3F2_KEYNEW, "MSG_ID_L4FHYSUI_TO_L3F2_KEYNEW",$input);
                     break;
 
@@ -705,7 +706,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
-                    $input = array("type" => $type,"user" => $user,"body" => $body);
+                    $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4FHYSUI_TO_L3F2_KEYMOD, "MSG_ID_L4FHYSUI_TO_L3F2_KEYMOD",$input);
                     break;
 
@@ -715,7 +716,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
-                    $input = array("type" => $type,"user" => $user,"body" => $body);
+                    $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4FHYSUI_TO_L3F2_KEYDEL, "MSG_ID_L4FHYSUI_TO_L3F2_KEYDEL",$input);
                     break;
 
@@ -725,7 +726,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
-                    $input = array("type" => $type,"user" => $user,"body" => $body);
+                    $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4FHYSUI_TO_L3F2_OBJAUTHLIST, "MSG_ID_L4FHYSUI_TO_L3F2_OBJAUTHLIST",$input);
                     break;
 
@@ -735,7 +736,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
-                    $input = array("type" => $type,"user" => $user,"body" => $body);
+                    $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4FHYSUI_TO_L3F2_KEYAUTHLIST, "MSG_ID_L4FHYSUI_TO_L3F2_KEYAUTHLIST",$input);
                     break;
 
@@ -745,7 +746,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
-                    $input = array("type" => $type,"user" => $user,"body" => $body);
+                    $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4FHYSUI_TO_L3F2_KEYGRANT, "MSG_ID_L4FHYSUI_TO_L3F2_KEYGRANT",$input);
                     break;
 
@@ -755,7 +756,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
-                    $input = array("type" => $type,"user" => $user,"body" => $body);
+                    $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4FHYSUI_TO_L3F2_KEYAUTHNEW, "MSG_ID_L4FHYSUI_TO_L3F2_KEYAUTHNEW",$input);
                     break;
 
@@ -765,7 +766,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
-                    $input = array("type" => $type,"user" => $user,"body" => $body);
+                    $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4FHYSUI_TO_L3F2_KEYAUTHDEL, "MSG_ID_L4FHYSUI_TO_L3F2_KEYAUTHDEL",$input);
                     break;
 
@@ -775,7 +776,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
-                    $input = array("type" => $type,"user" => $user,"body" => $body);
+                    $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM3DM, MSG_ID_L4FHYSUI_TO_L3F3_KEYHISTORY, "MSG_ID_L4FHYSUI_TO_L3F3_KEYHISTORY",$input);
                     break;
 

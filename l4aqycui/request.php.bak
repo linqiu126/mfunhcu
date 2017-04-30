@@ -1,6 +1,7 @@
-﻿<?php
+<?php
 header("Content-type:text/html;charset=utf-8");
 #require '/php/req.php';
+$install_path="/dist";
 function _encode($arr)
 {
   $na = array();
@@ -1278,6 +1279,50 @@ RESPONSE:
 	);
 	$jsonencode = _encode($retval);
 	echo $jsonencode; break;
+case "PointPicture":
+/*
+REQUEST:
+    var body={
+	StatCode: StatCode
+	};
+    var map={
+        action:"PointPicture",
+        type:"query",
+        body: body,
+        user:usr.id
+    };
+RESPONSE:
+	$projpic = array();
+	for($i=1;$i<4;$i++){
+		$temp = array(
+			'name'=> (string)($i+1),
+			'url'=> "/dist/video/screenshot/".(string)$i.".png"
+		);
+		array_push($projpic,$temp);
+	}
+	$retval=array(
+		'status'=>"true",
+		'ret'=> $projpic,
+		'msg'=>'success',
+		'auth'=>'true'
+	);
+*/
+	$projdev = array();
+	for($i=0;$i<4;$i++){
+		$temp = array(
+			'name'=> (string)($i+1),
+            'url'=> "/dist/video/screenshot/".(string)($i+1).".png"
+		);
+		array_push($projdev,$temp);
+	}
+	$retval=array(
+		'status'=>"true",
+		'ret'=> $projdev,
+		'msg'=>'success',
+		'auth'=>'true'
+	);
+	$jsonencode = _encode($retval);
+	echo $jsonencode; break;
 case "DevTable":
 /*
 REQUEST:
@@ -2510,7 +2555,7 @@ REQUEST:
 RESPONSE:
 	$map = array(
 		'name'=>"test".(string)$i.".jpg",
-		'url'=>"assets/img/test".(string)$i.".jpg"
+		'url'=>$install_path."/screensaver/assets/img/test".(string)$i.".jpg"
 	);
 	array_push($ImgList,$map);
 
@@ -2527,7 +2572,7 @@ RESPONSE:
         for ($i=1;$i<6;$i++){
             $map = array(
                 'name'=>"test".(string)$i.".jpg",
-                'url'=>"assets/img/test".(string)$i.".jpg"
+                'url'=>$install_path."/screensaver/assets/img/test".(string)$i.".jpg"
             );
             array_push($ImgList,$map);
         }
@@ -2624,6 +2669,63 @@ RESPONSE:
     );
     $jsonencode = _encode($retval);
 	echo $jsonencode; break;
+	case "GetAuditStabilityTable":
+/*
+REQUEST:
+    var map={
+        action:"GetAuditStabilityTable",
+		type:"query",
+		user:usr.id
+    };
+RESPONSE:
+	$body=array(
+        'ColumnName'=> $column_name,
+        'TableData'=>$row_content
+	);
+    $retval=array(
+        'status'=>'true',
+        'ret'=> $body,
+		'msg'=>'success',
+		'auth'=>'true'
+    );
+*/
+    $usr = $_GET["user"];
+    $column = 16;
+    $row = 40;
+    $column_name = array();
+    $row_content = array();
+    for( $i=0;$i<$column;$i++){
+        array_push($column_name,"第".(string)($i+1)."列");
+    }
+    for($i=0;$i<$row;$i++){
+        $one_row = array();
+        array_push($one_row,(string)($i+1));
+        array_push($one_row,"备注".(string)($i+1));
+        for($j=0;$j<($column-6);$j++) array_push($one_row,rand(10,110));
+
+        //one_row.push("地址"+(i+1)+"xxxxx路"+(i+1)+"xxxxx号");
+        array_push($one_row,"地址".((string)($i+1))."xxxxx路".((string)($i+1))."xxxxx号");
+        //one_row.push("测试");
+        array_push($one_row,"测试");
+        //one_row.push("名称");
+        array_push($one_row,"名称");
+        //one_row.push("长数据长数据长数据"+(i+1)+"xxxxx路"+(i+1)+"xxxxx号");
+        array_push($one_row,"长数据长数据长数据".((string)($i+1))."xxxxx路".((string)($i+1))."xxxxx号");
+        array_push($row_content,$one_row);
+        //row_content.push(one_row);
+    }
+	$body=array(
+        'ColumnName'=> $column_name,
+        'TableData'=>$row_content
+		);
+    $retval=array(
+        'status'=>'true',
+        'ret'=> $body,
+		'msg'=>'success',
+		'auth'=>'true'
+    );
+    $jsonencode = _encode($retval);
+	echo $jsonencode; break;
     case "GetVideoList":
 /*
 REQUEST:
@@ -2661,7 +2763,8 @@ RESPONSE:
     for($j=0;$j<5;$j++) {
 
         $map = array(
-            'id'=>"Video_" .$StatCode . "_"  .$date ."_" .$hour ."_" .(string)$j,
+            /*'id'=>"Video_" .$StatCode . "_"  .$date ."_" .$hour ."_" .(string)$j,*/
+            'id'=>'127.0.0.1'.$install_path."/video/screenshot/1.png",
             'attr'=>"Video_" .$StatCode . "_"  .$date ."_" .$hour ."_" .(string)$j."视频属性"
         );
         array_push($VideoList,$map);
@@ -2690,7 +2793,7 @@ var map = {
 RESPONSE:
 $retval=array(
 	'status'=>'true',
-	'ret'=> "avorion.mp4",
+	'ret'=> $install_path."/video/avorion.mp4",
 	'msg'=>'success',
 	'auth'=>'true'
 );
@@ -2701,7 +2804,7 @@ $retval=array(
     if($number == 10){
         $retval=array(
             'status'=>'true',
-            'ret'=> "avorion.mp4",
+            'ret'=> $install_path."/video/avorion.mp4",
 			'msg'=>'success',
 			'auth'=>'true'
         );
@@ -2836,7 +2939,8 @@ RESPONSE:
 	$camerastatus=array(
 		'v'=>"120~",
 		'h'=>"120~",
-		'url'=>"./video/screenshot/".(string)$videocode.".png"
+        'zoom'=>'5',
+		'url'=>$install_path."/video/screenshot/".(string)$videocode.".png"
 	);
 	$retval=array(
 		'status'=>'true',
@@ -2853,7 +2957,8 @@ RESPONSE:
 	$camerastatus=array(
 	   'v'=>"120~",
 	   'h'=>"120~",
-	   'url'=>"./video/screenshot/".(string)$videocode.".png"
+	   'zoom'=>'5',
+	   'url'=>$install_path."/video/screenshot/".(string)$videocode.".png"
 	);
 	$retval=array(
 		'status'=>'true',
@@ -2897,7 +3002,56 @@ RESPONSE:
 	$jsonencode = _encode($retval);
 	echo $jsonencode; break;
 
+case "CameraZAdj":
+/*
+REQUEST:
+    var body = {
+	StatCode:statcode,
+	adj: value
+    };
+    var map;
+        map = {
+            action: "CameraZAdj",
+            body:body,
+	    type:"mod",
+	    user:usr.id
 
+        };
+
+RESPONSE:
+	$camerastatus=array(
+		'v'=>"120~",
+		'h'=>"120~",
+		'z'=>"4",
+		'url'=>$install_path."/video/screenshot/".(string)$videocode.".png"
+	);
+	$retval=array(
+		'status'=>'true',
+		'ret'=>$camerastatus,
+		'msg'=>'success',
+		'auth'=>'true'
+	);
+*/
+
+		$body_in = $_GET['body'];
+	$usr = $_GET["user"];
+	$StatCode = $body_in["StatCode"];
+	$adj = $body_in["adj"];
+	$videocode = rand(1,5);
+	$camerastatus=array(
+	   'v'=>"120~",
+	   'h'=>"120~",
+	   'z'=>"4",
+	   'url'=>$install_path."/video/screenshot/".(string)$videocode.".png"
+	);
+	$retval=array(
+		'status'=>'true',
+		'ret'=>$camerastatus,
+		'msg'=>'success',
+		'auth'=>'true'
+	);
+	$jsonencode = _encode($retval);
+	echo $jsonencode; break;
 
 
 case "CameraVAdj":
@@ -2929,7 +3083,8 @@ RESPONSE:
 	$camerastatus=array(
 		'v'=>"120~",
 		'h'=>"120~",
-		'url'=>"./video/screenshot/".(string)$videocode.".png"
+		'z'=>"4",
+		'url'=>$install_path."/video/screenshot/".(string)$videocode.".png"
 	);
 	$retval=array(
 		'status'=>'true',
@@ -2947,7 +3102,7 @@ RESPONSE:
 	$camerastatus=array(
 	   'v'=>"120~",
 	   'h'=>"120~",
-	   'url'=>"./video/screenshot/".(string)$videocode.".png"
+	   'url'=>$install_path."/video/screenshot/".(string)$videocode.".png"
 	);
 	$retval=array(
 		'status'=>'true',
@@ -2966,7 +3121,7 @@ case "CameraHAdj":
             var camerastatus={
                 h:"120~",
                 v:"120~",
-                url:"/video/screenshot/"+videocode+".png"
+                url:$install_path."/video/screenshot/"+videocode+".png"
             }
             var retval={
                 status:"true",
@@ -2982,7 +3137,7 @@ case "CameraHAdj":
 	$camerastatus=array(
 		'v'=>"120~",
 		'h'=>"120~",
-		'url'=>"./video/screenshot/".(string)$videocode.".png"
+		'url'=>$install_path."/video/screenshot/".(string)$videocode.".png"
 	);
 	$retval=array(
 		'status'=>'true',
@@ -3660,6 +3815,811 @@ RESPONSE:
     );
     $jsonencode = _encode($retval);
 	echo $jsonencode; break;
+	case "VersionInformation":
+/*
+REQUEST:
+    var map={
+        action:"VersionInformation",
+        type:"query",
+        user:usr.id
+    };
+RESPONSE:
+		$body = array();
+		for($i=0;$i<4;$i++){
+			$text = "number ".((string)($i+1))." line.";
+			array_push($body,$text);
+		}
+		$retval=array(
+			'status'=>'true',
+			'ret'=>$body,
+			'msg'=>'success',
+			'auth'=>'true'
+		);
+*/
+		$body = array();
+		for($i=0;$i<4;$i++){
+			$text = "number ".((string)($i+1))." line.";
+			array_push($body,$text);
+		}
+		$retval=array(
+			'status'=>'true',
+			'ret'=>$body,
+			'msg'=>'success',
+			'auth'=>'true'
+		);
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
+	case "ProjUpdateStrategyList":
+		/*
+        REQUEST:
+            var body = {
+        		ProjCode : ProjCode
+        	};
+            var map={
+                action:"ProjUpdateStrategyList",
+                body:body,
+        		type:"query",
+        		user:usr.id
+            };
+        RESPONSE:
+        	$body=array(
+        		'ColumnName'=> $column_name,
+        		'TableData'=>$row_content
+        		);
+        	$retval=array(
+        		'status'=>'true',
+        		'ret'=>$body,
+        		'msg'=>'success',
+        		'auth'=>'true'
+        	);
+        */
+		$body_in = $_GET['body'];
+		$ProjCode = $body_in["ProjCode"];
+		$column = 16;
+		$row = 40;
+		$column_name = array();
+		$row_content = array();
+		for( $i=0;$i<$column;$i++){
+			array_push($column_name,"第".(string)($i+1)."列");
+		}
+		for($i=0;$i<$row;$i++){
+			$one_row = array();
+			array_push($one_row,(string)($i+1));
+			$flag = rand(0,1);
+			if($flag == 0){
+				array_push($one_row,"Y");
+			}else{
+				array_push($one_row,"N");
+			}
+			for($j=0;$j<($column-6);$j++) array_push($one_row,rand(10,110));
+
+			//one_row.push("地址"+(i+1)+"xxxxx路"+(i+1)+"xxxxx号");
+			array_push($one_row,"地址".((string)($i+1))."xxxxx路".((string)($i+1))."xxxxx号");
+			//one_row.push("测试");
+			array_push($one_row,"测试");
+			//one_row.push("名称");
+			array_push($one_row,"名称");
+			//one_row.push("长数据长数据长数据"+(i+1)+"xxxxx路"+(i+1)+"xxxxx号");
+			array_push($one_row,"长数据长数据长数据".((string)($i+1))."xxxxx路".((string)($i+1))."xxxxx号");
+			array_push($row_content,$one_row);
+			//row_content.push(one_row);
+		}
+		$body=array(
+			'ColumnName'=> $column_name,
+			'TableData'=>$row_content
+			);
+		$retval=array(
+			'status'=>'true',
+			'ret'=>$body,
+			'msg'=>'success',
+			'auth'=>'true'
+
+		);
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
+	case "ProjVersionStrategyChange":
+/*
+REQUEST:
+	var body={
+		ProjCode:ProjCode,
+		UpdateLine:Line
+	}
+    var map={
+        action:"ProjVersionStrategyChange",
+        body:body,
+        type:"mod",
+        user:usr.id
+    };
+RESPONSE:
+	$retval=array(
+		'status'=>'true',
+		'msg'=>'success',
+		'auth'=>'true'
+	);
+*/
+		$retval=array(
+			'status'=>'true',
+			'msg'=>'success',
+			'auth'=>'true'
+		);
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
+
+	case "PointUpdateStrategyChange":
+	/*
+    REQUEST:
+    	var body={
+    		StatCode:StatCode,
+    		AutoUpdate:AutoUpdate
+    	}
+        var map={
+            action:"PointUpdateStrategyChange",
+            body:body,
+            type:"mod",
+            user:usr.id
+        };
+    RESPONSE:
+    	$retval=array(
+    		'status'=>'true',
+    		'msg'=>'success',
+    		'auth'=>'true'
+    	);
+    */
+		$retval=array(
+			'status'=>'true',
+			'msg'=>'success',
+			'auth'=>'true'
+		);
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
+	case "ProjUpdateStrategyChange":
+	/*
+    REQUEST:
+    	var body={
+    		ProjCode:ProjCode,
+    		AutoUpdate:AutoUpdate
+    	}
+        var map={
+            action:"ProjVersionStrategyChange",
+            body:body,
+            type:"mod",
+            user:usr.id
+        };
+    RESPONSE:
+    	$retval=array(
+    		'status'=>'true',
+    		'msg'=>'success',
+    		'auth'=>'true'
+    	);
+    */
+		$retval=array(
+			'status'=>'true',
+			'msg'=>'success',
+			'auth'=>'true'
+		);
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
+	case "GetProjUpdateStrategy":
+	/*
+	REQUEST:
+		var body={
+			ProjCode:ProjCode
+		}
+		var map={
+			action:"GetProjUpdateStrategy",
+			body:body,
+			type:"query",
+			user:usr.id
+		};
+	RESPONSE:
+		$body=array(
+			'VersionLine'=>1
+		);
+		$retval=array(
+			'status'=>'true',
+			'body'=>$body,
+			'msg'=>'success',
+			'auth'=>'true'
+		);
+	*/
+		$body=array(
+			'VersionLine'=>"1"
+		);
+		$retval=array(
+			'status'=>'true',
+			'ret'=>$body,
+			'msg'=>'success',
+			'auth'=>'true'
+		);
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
+	case "MonitorAlarmList":
+    /*
+    REQUEST:
+        var map={
+            action:"MonitorAlarmList",
+            type:"query",
+            user:usr.id
+        };
+    RESPONSE:
+    	$map18= array(
+    		'StatCode'=>"120101020",
+    		'StatName'=>"临港城投大厦",
+    		'ChargeMan'=>"赵六",
+    		'Telephone'=>"13912345678",
+    		'Department'=>"",
+    		'Address'=>"环湖西一路333号",
+    		'Country'=>"浦东新区",
+    		'Street'=>"",
+    		'Square'=>"0",
+    		'Flag_la'=>"N",
+    		'Latitude'=>"30.900796",
+    		'Flag_lo'=>"E",
+    		'Longitude'=>"121.933166",
+    		'ProStartTime'=>"2015-11-30",
+    		'Stage'=>""
+    	);
+    	array_push($stat_list,$map18);
+    	$retval=array(
+    		'status'=>'true',
+    		'ret'=> $stat_list,
+    		'msg'=>'success',
+    		'auth'=>'true'
+    	);
+    */
+    	$userid = $_GET["user"];
+    	$stat_list = array();
+    	$map1=array(
+    		'StatCode'=>"120101001",
+    		'StatName'=>"浦东环球金融中心工程",
+    		'ChargeMan'=>"张三",
+    		'Telephone'=>"13912345678",
+    		'Department'=>"",
+    		'Address'=>"世纪大道100号",
+    		'Country'=>"浦东新区",
+    		'Street'=>"",
+    		'Square'=>"40000",
+    		'Flag_la'=>"N",
+    		'Latitude'=>"31.240246",
+    		'Flag_lo'=>"E",
+    		'Longitude'=>"121.514168",
+    		'ProStartTime'=>"2015-01-01",
+    		'Stage'=>""
+    	);
+    	array_push($stat_list,$map1);
+    	$map2=array(
+
+    		'StatCode'=>"120101002",
+    		'StatName'=>"港运大厦",
+    		'ChargeMan'=>"张三",
+    		'Telephone'=>"13912345678",
+    		'Department'=>"",
+    		'Address'=>"杨树浦路1963弄24号",
+    		'Country'=>"虹口区",
+    		'Street'=>"",
+    		'Square'=>"0",
+    		'Flag_la'=>"N",
+    		'Latitude'=>"31.255719",
+    		'Flag_lo'=>"E",
+    		'Longitude'=>"121.517700",
+    		'ProStartTime'=>"2016-04-01",
+    		'Stage'=>""
+    	);
+    	array_push($stat_list,$map1);
+    	$map3= array(
+
+    		'StatCode'=>"120101003",
+    		'StatName'=>"万宝国际广场",
+    		'ChargeMan'=>"张三",
+    		'Telephone'=>"13912345678",
+    		'Department'=>"",
+    		'Address'=>"延安西路500号",
+    		'Country'=>"长宁区",
+    		'Street'=>"",
+    		'Square'=>"0",
+    		'Flag_la'=>"N",
+    		'Latitude'=>"31.223441",
+    		'Flag_lo'=>"E",
+    		'Longitude'=>"121.442703",
+    		'ProStartTime'=>"2016-04-01",
+    		'Stage'=>""
+    	);
+    	array_push($stat_list,$map3);
+    	$map4= array(
+
+    		'StatCode'=>"120101004",
+    		'StatName'=>"金桥创科园",
+    		'ChargeMan'=>"李四",
+    		'Telephone'=>"13912345678",
+    		'Department'=>"",
+    		'Address'=>"桂桥路255号",
+    		'Country'=>"浦东新区",
+    		'Street'=>"",
+    		'Square'=>"0",
+    		'Flag_la'=>"N",
+    		'Latitude'=>"31.248271",
+    		'Flag_lo'=>"E",
+    		'Longitude'=>"121.615476",
+    		'ProStartTime'=>"2016-04-01",
+    		'Stage'=>""
+    	);
+    	array_push($stat_list,$map4);
+    	$map5= array(
+
+    		'StatCode'=>"120101006",
+    		'StatName'=>"江湾体育场",
+    		'ChargeMan'=>"李四",
+    		'Telephone'=>"13912345678",
+    		'Department'=>"",
+    		'Address'=>"国和路346号",
+    		'Country'=>"杨浦区",
+    		'Street'=>"",
+    		'Square'=>"0",
+    		'Flag_la'=>"N",
+    		'Latitude'=>"31.313004",
+    		'Flag_lo'=>"E",
+    		'Longitude'=>"121.525701",
+    		'ProStartTime'=>"2016-04-13",
+    		'Stage'=>""
+    	);
+    	array_push($stat_list,$map5);
+    	$map6= array(
+
+    		'StatCode'=>"120101007",
+    		'StatName'=>"滨海新村",
+    		'ChargeMan'=>"李四",
+    		'Telephone'=>"13912345678",
+    		'Department'=>"",
+    		'Address'=>"同泰北路100号",
+    		'Country'=>"宝山区",
+    		'Street'=>"",
+    		'Square'=>"0",
+    		'Flag_la'=>"N",
+    		'Latitude'=>"31.382624",
+    		'Flag_lo'=>"E",
+    		'Longitude'=>"121.501387",
+    		'ProStartTime'=>"2016-02-01",
+    		'Stage'=>""
+
+    	);
+    	array_push($stat_list,$map6);
+    	$map7= array(
+    		'StatCode'=>"120101008",
+    		'StatName'=>"银都苑",
+    		'ChargeMan'=>"李四",
+    		'Telephone'=>"13912345678",
+    		'Department'=>"",
+    		'Address'=>"银都路3118弄",
+    		'Country'=>"闵行区",
+    		'Street'=>"",
+    		'Square'=>"0",
+    		'Flag_la'=>"N",
+    		'Latitude'=>"31.101605",
+    		'Flag_lo'=>"E",
+    		'Longitude'=>"121.404873",
+    		'ProStartTime'=>"2016-02-01",
+    		'Stage'=>""
+
+    	);
+    	array_push($stat_list,$map7);
+    	$map8= array(
+    		'StatCode'=>"120101009",
+    		'StatName'=>"万科花园小城",
+    		'ChargeMan'=>"王五",
+    		'Telephone'=>"13912345678",
+    		'Department'=>"",
+    		'Address'=>"龙吴路5710号",
+    		'Country'=>"闵行区",
+    		'Street'=>"",
+    		'Square'=>"0",
+    		'Flag_la'=>"N",
+    		'Latitude'=>"31.043827",
+    		'Flag_lo'=>"E",
+    		'Longitude'=>"121.476450",
+    		'ProStartTime'=>"2016-02-18",
+    		'Stage'=>""
+
+    	);
+    	array_push($stat_list,$map8);
+    	$map9= array(
+    		'StatCode'=>"120101010",
+    		'StatName'=>"合生国际花园",
+    		'ChargeMan'=>"王五",
+    		'Telephone'=>"13912345678",
+    		'Department'=>"",
+    		'Address'=>"长兴东路1290",
+    		'Country'=>"松江区",
+    		'Street'=>"",
+    		'Square'=>"0",
+    		'Flag_la'=>"N",
+    		'Latitude'=>"31.088973",
+    		'Flag_lo'=>"E",
+    		'Longitude'=>"121.295459",
+    		'ProStartTime'=>"2016-02-18",
+    		'Stage'=>""
+
+    	);
+    	array_push($stat_list,$map9);
+    	$map10= array(
+    		'StatCode'=>"120101011",
+    		'StatName'=>"江南国际会议中心",
+    		'ChargeMan'=>"王五",
+    		'Telephone'=>"13912345678",
+    		'Department'=>"",
+    		'Address'=>"青浦区Y095(阁游路)",
+    		'Country'=>"青浦区",
+    		'Street'=>"",
+    		'Square'=>"0",
+    		'Flag_la'=>"N",
+    		'Latitude'=>"31.127234",
+    		'Flag_lo'=>"E",
+    		'Longitude'=>"121.062241",
+    		'ProStartTime'=>"2016-02-18",
+    		'Stage'=>""
+    	);
+    	array_push($stat_list,$map10);
+    	$map11= array(
+
+    		'StatCode'=>"120101012",
+    		'StatName'=>"佳邸别墅",
+    		'ChargeMan'=>"王五",
+    		'Telephone'=>"13912345678",
+    		'Department'=>"",
+    		'Address'=>"盈港路1555弄",
+    		'Country'=>"青浦区",
+    		'Street'=>"",
+    		'Square'=>"0",
+    		'Flag_la'=>"N",
+    		'Latitude'=>"31.164430",
+    		'Flag_lo'=>"E",
+    		'Longitude'=>"121.102934",
+    		'ProStartTime'=>"2016-02-18",
+    		'Stage'=>""
+    	);
+    	array_push($stat_list,$map11);
+    	$map12= array(
+
+    		'StatCode'=>"120101013",
+    		'StatName'=>"西郊河畔家园",
+    		'ChargeMan'=>"王五",
+    		'Telephone'=>"13912345678",
+    		'Department'=>"",
+    		'Address'=>"繁兴路469弄",
+    		'Country'=>"闵行区",
+    		'Street'=>"华漕镇",
+    		'Square'=>"0",
+    		'Flag_la'=>"N",
+    		'Latitude'=>"31.218057",
+    		'Flag_lo'=>"E",
+    		'Longitude'=>"121.297076",
+    		'ProStartTime'=>"2016-02-18",
+    		'Stage'=>""
+    	);
+    	array_push($stat_list,$map12);
+    	$map13= array(
+
+    		'StatCode'=>"120101014",
+    		'StatName'=>"东视大厦",
+    		'ChargeMan'=>"赵六",
+    		'Telephone'=>"13912345678",
+    		'Department'=>"",
+    		'Address'=>"东方路2000号",
+    		'Country'=>"浦东新区",
+    		'Street'=>"南码头",
+    		'Square'=>"0",
+    		'Flag_la'=>"N",
+    		'Latitude'=>"31.203650",
+    		'Flag_lo'=>"E",
+    		'Longitude'=>"121.526288",
+    		'ProStartTime'=>"2016-02-18",
+    		'Stage'=>""
+
+    	);
+    	array_push($stat_list,$map13);
+    	$map14= array(
+    		'StatCode'=>"120101015",
+    		'StatName'=>"曙光大厦",
+    		'ChargeMan'=>"赵六",
+    		'Telephone'=>"13912345678",
+    		'Department'=>"",
+    		'Address'=>"普安路189号",
+    		'Country'=>"黄埔区",
+    		'Street'=>"淮海中路街道",
+    		'Square'=>"0",
+    		'Flag_la'=>"N",
+    		'Latitude'=>"31.228283",
+    		'Flag_lo'=>"E",
+    		'Longitude'=>"121.485388",
+    		'ProStartTime'=>"2016-02-29",
+    		'Stage'=>""
+
+    	);
+    	array_push($stat_list,$map14);
+    	$map15= array(
+    		'StatCode'=>"120101017",
+    		'StatName'=>"上海贝尔",
+    		'ChargeMan'=>"赵六",
+    		'Telephone'=>"13912345678",
+    		'Department'=>"",
+    		'Address'=>"西藏北路525号",
+    		'Country'=>"闸北区",
+    		'Street'=>"芷江西路街道",
+    		'Square'=>"0",
+    		'Flag_la'=>"N",
+    		'Latitude'=>"31.256691",
+    		'Flag_lo'=>"E",
+    		'Longitude'=>"121.475583",
+    		'ProStartTime'=>"2016-03-15",
+    		'Stage'=>""
+
+    	);
+    	array_push($stat_list,$map15);
+    	$map16= array(
+    		'StatCode'=>"120101018",
+    		'StatName'=>"嘉宝大厦",
+    		'ChargeMan'=>"赵六",
+    		'Telephone'=>"13912345678",
+    		'Department'=>"",
+    		'Address'=>"洪德路1009号",
+    		'Country'=>"嘉定区",
+    		'Street'=>"马陆镇",
+    		'Square'=>"0",
+    		'Flag_la'=>"N",
+    		'Latitude'=>"31.357885",
+    		'Flag_lo'=>"E",
+    		'Longitude'=>"121.256060",
+    		'ProStartTime'=>"2015-03-19",
+    		'Stage'=>""
+
+    	);
+    	array_push($stat_list,$map16);
+    	$map17= array(
+    		'StatCode'=>"120101019",
+    		'StatName'=>"金山豪庭",
+    		'ChargeMan'=>"赵六",
+    		'Telephone'=>"13912345678",
+    		'Department'=>"",
+    		'Address'=>"卫清东路2988",
+    		'Country'=>"金山区",
+    		'Street'=>"",
+    		'Square'=>"0",
+    		'Flag_la'=>"N",
+    		'Latitude'=>"30.739094",
+    		'Flag_lo'=>"E",
+    		'Longitude'=>"121.360693",
+    		'ProStartTime'=>"2015-08-25",
+    		'Stage'=>""
+
+    	);
+    	array_push($stat_list,$map17);
+    	$map18= array(
+    		'StatCode'=>"120101020",
+    		'StatName'=>"临港城投大厦",
+    		'ChargeMan'=>"赵六",
+    		'Telephone'=>"13912345678",
+    		'Department'=>"",
+    		'Address'=>"环湖西一路333号",
+    		'Country'=>"浦东新区",
+    		'Street'=>"",
+    		'Square'=>"0",
+    		'Flag_la'=>"N",
+    		'Latitude'=>"30.900796",
+    		'Flag_lo'=>"E",
+    		'Longitude'=>"121.933166",
+    		'ProStartTime'=>"2015-11-30",
+    		'Stage'=>""
+    	);
+    	array_push($stat_list,$map18);
+    	$retval=array(
+    		'status'=>'true',
+    		'ret'=> $stat_list,
+    		'msg'=>'success',
+    		'auth'=>'true'
+    	);
+        $jsonencode = _encode($retval);
+    	echo $jsonencode; break;
+	case "GetWarningHandleListTable":
+		/*
+		REQUEST:
+			var map={
+				action:"GetWarningHandleListTable",
+				type:"query",
+				user:usr.id
+			};
+		RESPONSE:
+			$body=array(
+				'ColumnName'=> $column_name,
+				'TableData'=>$row_content
+				);
+			$retval=array(
+				'status'=>'true',
+				'ret'=>$body,
+				'msg'=>'success',
+				'auth'=>'true'
+			);
+		*/
+		$column = 16;
+		$row = 40;
+		$column_name = array();
+		$row_content = array();
+		for( $i=0;$i<$column;$i++){
+			array_push($column_name,"第".(string)($i+1)."列");
+		}
+		for($i=0;$i<$row;$i++){
+			$one_row = array();
+			array_push($one_row,(string)($i+1));
+			$flag = rand(0,1);
+			if($flag == 0){
+				array_push($one_row,"Y");
+			}else{
+				array_push($one_row,"N");
+			}
+			for($j=0;$j<($column-6);$j++) array_push($one_row,rand(10,110));
+
+			//one_row.push("地址"+(i+1)+"xxxxx路"+(i+1)+"xxxxx号");
+			array_push($one_row,"地址".((string)($i+1))."xxxxx路".((string)($i+1))."xxxxx号");
+			//one_row.push("测试");
+			array_push($one_row,"测试");
+			//one_row.push("名称");
+			array_push($one_row,"名称");
+			//one_row.push("长数据长数据长数据"+(i+1)+"xxxxx路"+(i+1)+"xxxxx号");
+			array_push($one_row,"长数据长数据长数据".((string)($i+1))."xxxxx路".((string)($i+1))."xxxxx号");
+			array_push($row_content,$one_row);
+			//row_content.push(one_row);
+		}
+		$body=array(
+			'ColumnName'=> $column_name,
+			'TableData'=>$row_content
+			);
+		$retval=array(
+			'status'=>'true',
+			'ret'=>$body,
+			'msg'=>'success',
+			'auth'=>'true'
+
+		);
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
+	case "Favourite_count":
+		/*
+		REQUEST:
+			var body={
+				StatCode:StatCode
+			}
+			var map={
+				action:"Favourite_count",
+				body:body,
+				type:"query",
+				user:usr.id
+			};
+		RESPONSE:
+			$retval=array(
+				'status'=>'true',
+				'msg'=>'success',
+				'auth'=>'true'
+			);
+		*/
+			$retval=array(
+				'status'=>'true',
+				'msg'=>'success',
+				'auth'=>'true'
+			);
+			$jsonencode = _encode($retval);
+			echo $jsonencode; break;
+		case "Favourite_list":
+			/*
+			REQUEST:
+				var map={
+					action:"Favourite_list",
+					type:"query",
+					user:usr.id
+				};
+			RESPONSE:
+				$retval=array(
+					'status'=>'true',
+					'ret'=> list,
+					'msg'=>'success',
+					'auth'=>'true'
+				);
+			*/
+			$stat_list = array();
+			$map1=array(
+				'StatCode'=>"120101001",
+				'StatName'=>"浦东环球金融中心工程",
+				'ChargeMan'=>"张三",
+				'Telephone'=>"13912345678",
+				'Department'=>"",
+				'Address'=>"世纪大道100号",
+				'Country'=>"浦东新区",
+				'Street'=>"",
+				'Square'=>"40000",
+				'Flag_la'=>"N",
+				'Latitude'=>"31.240246",
+				'Flag_lo'=>"E",
+				'Longitude'=>"121.514168",
+				'ProStartTime'=>"2015-01-01",
+				'Stage'=>""
+			);
+			array_push($stat_list,$map1);
+			$map2=array(
+				'StatCode'=>"120101002",
+				'StatName'=>"港运大厦",
+				'ChargeMan'=>"张三",
+				'Telephone'=>"13912345678",
+				'Department'=>"",
+				'Address'=>"杨树浦路1963弄24号",
+				'Country'=>"虹口区",
+				'Street'=>"",
+				'Square'=>"0",
+				'Flag_la'=>"N",
+				'Latitude'=>"31.255719",
+				'Flag_lo'=>"E",
+				'Longitude'=>"121.517700",
+				'ProStartTime'=>"2016-04-01",
+				'Stage'=>""
+			);
+			array_push($stat_list,$map1);
+			$map3= array(
+				'StatCode'=>"120101003",
+				'StatName'=>"万宝国际广场",
+				'ChargeMan'=>"张三",
+				'Telephone'=>"13912345678",
+				'Department'=>"",
+				'Address'=>"延安西路500号",
+				'Country'=>"长宁区",
+				'Street'=>"",
+				'Square'=>"0",
+				'Flag_la'=>"N",
+				'Latitude'=>"31.223441",
+				'Flag_lo'=>"E",
+				'Longitude'=>"121.442703",
+				'ProStartTime'=>"2016-04-01",
+				'Stage'=>""
+			);
+			array_push($stat_list,$map3);
+			$map4= array(
+				'StatCode'=>"120101004",
+				'StatName'=>"金桥创科园",
+				'ChargeMan'=>"李四",
+				'Telephone'=>"13912345678",
+				'Department'=>"",
+				'Address'=>"桂桥路255号",
+				'Country'=>"浦东新区",
+				'Street'=>"",
+				'Square'=>"0",
+				'Flag_la'=>"N",
+				'Latitude'=>"31.248271",
+				'Flag_lo'=>"E",
+				'Longitude'=>"121.615476",
+				'ProStartTime'=>"2016-04-01",
+				'Stage'=>""
+			);
+			array_push($stat_list,$map4);
+			$map5= array(
+				'StatCode'=>"120101006",
+				'StatName'=>"江湾体育场",
+				'ChargeMan'=>"李四",
+				'Telephone'=>"13912345678",
+				'Department'=>"",
+				'Address'=>"国和路346号",
+				'Country'=>"杨浦区",
+				'Street'=>"",
+				'Square'=>"0",
+				'Flag_la'=>"N",
+				'Latitude'=>"31.313004",
+				'Flag_lo'=>"E",
+				'Longitude'=>"121.525701",
+				'ProStartTime'=>"2016-04-13",
+				'Stage'=>""
+			);
+			$retval=array(
+				'status'=>'true',
+				'ret'=> $stat_list,
+				'msg'=>'success',
+				'auth'=>'true'
+			);
+			$jsonencode = _encode($retval);
+			echo $jsonencode; break;
 	default:
 	break;
 }

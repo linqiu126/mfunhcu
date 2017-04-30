@@ -42,12 +42,12 @@ class classTaskL3aplF4icm
         return urlencode($elem);
     }
 
-    function func_hcu_camweb_process($type, $user, $body)
+    function func_hcu_camweb_process($action, $user, $body)
     {
         if (isset($body["StatCode"])) $statcode = $body["StatCode"]; else  $statcode = "";
 
         $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
-        $usercheck = $uiF1symDbObj->dbi_user_authcheck($type, $user);
+        $usercheck = $uiF1symDbObj->dbi_user_authcheck($action, $user);
         if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
             $uiF4icmDbObj = new classDbiL3apF4icm();
             $resp = $uiF4icmDbObj->dbi_get_hcu_camweb_link($statcode);
@@ -63,10 +63,10 @@ class classTaskL3aplF4icm
     }
 
     //查询所有可用的软件版本列表
-    function func_allsw_version_process($type, $user, $body)
+    function func_allsw_version_process($action, $user, $body)
     {
         $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
-        $usercheck = $uiF1symDbObj->dbi_user_authcheck($type, $user);
+        $usercheck = $uiF1symDbObj->dbi_user_authcheck($action, $user);
         if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
             $uiF4icmDbObj = new classDbiL3apF4icm();
             $resp = $uiF4icmDbObj->dbi_hcu_allsw_inqury();
@@ -82,12 +82,12 @@ class classTaskL3aplF4icm
     }
 
     //查询指定项目下所有设备的当前版本信息
-    function func_devsw_version_process($type, $user, $body)
+    function func_devsw_version_process($action, $user, $body)
     {
         if (isset($body["ProjCode"])) $projcode = $body["ProjCode"]; else  $projcode = "";
 
         $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
-        $usercheck = $uiF1symDbObj->dbi_user_authcheck($type, $user);
+        $usercheck = $uiF1symDbObj->dbi_user_authcheck($action, $user);
         if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
 
             $uiF3dmDbObj = new classDbiL3apF3dm(); //初始化一个UI DB对象
@@ -125,13 +125,13 @@ class classTaskL3aplF4icm
     }
 
     //更新指定设备到指定的版本
-    function func_devsw_update_process($type, $user, $body)
+    function func_devsw_update_process($action, $user, $body)
     {
         if (isset($body["list"])) $devlist = $body["list"]; else  $devlist = "";
         if (isset($body["version"])) $version = $body["version"]; else  $version = "";
 
         $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
-        $usercheck = $uiF1symDbObj->dbi_user_authcheck($type, $user);
+        $usercheck = $uiF1symDbObj->dbi_user_authcheck($action, $user);
         if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
             $uiF4icmDbObj = new classDbiL3apF4icm();
             $result = $uiF4icmDbObj->dbi_hcu_swver_update($devlist, $version);
@@ -148,10 +148,10 @@ class classTaskL3aplF4icm
 
     //新软件升级处理程序
     //查询三条软件版本基线信息
-    function func_swver_info_process($type, $user, $body)
+    function func_swver_info_process($action, $user, $body)
     {
         $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
-        $usercheck = $uiF1symDbObj->dbi_user_authcheck($type, $user);
+        $usercheck = $uiF1symDbObj->dbi_user_authcheck($action, $user);
         if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
             $uiF4icmDbObj = new classDbiL3apF4icm();
             $resp = $uiF4icmDbObj->dbi_swver_info_process();
@@ -166,12 +166,12 @@ class classTaskL3aplF4icm
         return $retval;
     }
 
-    function func_proj_su_strategy_list_process($type, $user, $body)
+    function func_proj_su_strategy_list_process($action, $user, $body)
     {
         if (isset($body["ProjCode"])) $projCode = $body["ProjCode"]; else  $projCode = "";
 
         $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
-        $usercheck = $uiF1symDbObj->dbi_user_authcheck($type, $user);
+        $usercheck = $uiF1symDbObj->dbi_user_authcheck($action, $user);
         if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
             $uiF4icmDbObj = new classDbiL3apF4icm();
             $resp = $uiF4icmDbObj->dbi_proj_su_strategy_list_process($projCode);
@@ -186,13 +186,13 @@ class classTaskL3aplF4icm
         return $retval;
     }
 
-    function func_proj_swbase_change_process($type, $user, $body)
+    function func_proj_swbase_change_process($action, $user, $body)
     {
         if (isset($body["ProjCode"])) $projCode = $body["ProjCode"]; else  $projCode = "";
         if (isset($body["UpdateLine"])) $sw_base = $body["UpdateLine"]; else  $sw_base = "";
 
         $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
-        $usercheck = $uiF1symDbObj->dbi_user_authcheck($type, $user);
+        $usercheck = $uiF1symDbObj->dbi_user_authcheck($action, $user);
         if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
             $uiF4icmDbObj = new classDbiL3apF4icm();
             $resp = $uiF4icmDbObj->dbi_proj_swbase_change_process($projCode, $sw_base);
@@ -207,13 +207,13 @@ class classTaskL3aplF4icm
         return $retval;
     }
 
-    function func_dev_su_strategy_change_process($type, $user, $body)
+    function func_dev_su_strategy_change_process($action, $user, $body)
     {
         if (isset($body["StatCode"])) $statCode = $body["StatCode"]; else  $statCode = "";
         if (isset($body["AutoUpdate"])) $autoUpdate = $body["AutoUpdate"]; else  $autoUpdate = "";
 
         $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
-        $usercheck = $uiF1symDbObj->dbi_user_authcheck($type, $user);
+        $usercheck = $uiF1symDbObj->dbi_user_authcheck($action, $user);
         if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
             $uiF4icmDbObj = new classDbiL3apF4icm();
             $resp = $uiF4icmDbObj->dbi_dev_su_strategy_change_process($statCode, $autoUpdate);
@@ -228,13 +228,13 @@ class classTaskL3aplF4icm
         return $retval;
     }
 
-    function func_proj_su_strategy_change_process($type, $user, $body)
+    function func_proj_su_strategy_change_process($action, $user, $body)
     {
         if (isset($body["ProjCode"])) $projCode = $body["ProjCode"]; else  $projCode = "";
         if (isset($body["AutoUpdate"])) $autoUpdate = $body["AutoUpdate"]; else  $autoUpdate = "";
 
         $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
-        $usercheck = $uiF1symDbObj->dbi_user_authcheck($type, $user);
+        $usercheck = $uiF1symDbObj->dbi_user_authcheck($action, $user);
         if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
             $uiF4icmDbObj = new classDbiL3apF4icm();
             $resp = $uiF4icmDbObj->dbi_proj_su_strategy_change_process($projCode, $autoUpdate);
@@ -249,12 +249,12 @@ class classTaskL3aplF4icm
         return $retval;
     }
 
-    function func_proj_su_strategy_get_process($type, $user, $body)
+    function func_proj_su_strategy_get_process($action, $user, $body)
     {
         if (isset($body["ProjCode"])) $projCode = $body["ProjCode"]; else  $projCode = "";
 
         $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
-        $usercheck = $uiF1symDbObj->dbi_user_authcheck($type, $user);
+        $usercheck = $uiF1symDbObj->dbi_user_authcheck($action, $user);
         if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
             $uiF4icmDbObj = new classDbiL3apF4icm();
             $resp = $uiF4icmDbObj->dbi_proj_su_strategy_get_process($projCode);
@@ -274,10 +274,10 @@ class classTaskL3aplF4icm
     }
 
     //传感器信息更新并发送HCU控制命令
-    function func_sensor_update_process($type, $user, $body)
+    function func_sensor_update_process($action, $user, $body)
     {
         $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
-        $usercheck = $uiF1symDbObj->dbi_user_authcheck($type, $user);
+        $usercheck = $uiF1symDbObj->dbi_user_authcheck($action, $user);
         if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
             $uiF4icmDbObj = new classDbiL3apF4icm();
             $resp = $uiF4icmDbObj->dbi_sensor_info_update($body);
@@ -293,10 +293,10 @@ class classTaskL3aplF4icm
     }
 
     //查询指定监测点指定时间的视频列表
-    function func_hcu_videolist_process($type, $user, $body)
+    function func_hcu_videolist_process($action, $user, $body)
     {
         $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
-        $usercheck = $uiF1symDbObj->dbi_user_authcheck($type, $user);
+        $usercheck = $uiF1symDbObj->dbi_user_authcheck($action, $user);
         if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
             $uiF4icmDbObj = new classDbiL3apF4icm();
             $resp = $uiF4icmDbObj->dbi_hcu_vediolist_inqury($body);
@@ -312,12 +312,12 @@ class classTaskL3aplF4icm
     }
 
     //请求播放指定视频
-    function func_hcu_videoplay_process($type, $user, $body)
+    function func_hcu_videoplay_process($action, $user, $body)
     {
         if (isset($body["videoid"])) $videoid = $body["videoid"]; else  $videoid = "";
 
         $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
-        $usercheck = $uiF1symDbObj->dbi_user_authcheck($type, $user);
+        $usercheck = $uiF1symDbObj->dbi_user_authcheck($action, $user);
         if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
             $uiF4icmDbObj = new classDbiL3apF4icm();
             $resp = $uiF4icmDbObj->dbi_hcu_vedioplay_request($videoid);
@@ -333,12 +333,12 @@ class classTaskL3aplF4icm
     }
 
     //Camera信息更新并发送HCU控制命令
-    function func_get_camera_status_process($type, $user, $body)
+    function func_get_camera_status_process($action, $user, $body)
     {
         if (isset($body["StatCode"])) $StatCode = $body["StatCode"]; else  $StatCode = "";
 
         $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
-        $usercheck = $uiF1symDbObj->dbi_user_authcheck($type, $user);
+        $usercheck = $uiF1symDbObj->dbi_user_authcheck($action, $user);
         if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
             $uiF4icmDbObj = new classDbiL3apF4icm();
             $result = $uiF4icmDbObj->dbi_get_camera_status($StatCode);
@@ -353,12 +353,12 @@ class classTaskL3aplF4icm
         return $retval;
     }
 
-    function func_get_camera_unit_process($type, $user, $body)
+    function func_get_camera_unit_process($action, $user, $body)
     {
         if (isset($body["StatCode"])) $StatCode = $body["StatCode"]; else  $StatCode = "";
 
         $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
-        $usercheck = $uiF1symDbObj->dbi_user_authcheck($type, $user);
+        $usercheck = $uiF1symDbObj->dbi_user_authcheck($action, $user);
         if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
             $adj_unit=array('v'=>"3~",'h'=>"3~");
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$adj_unit,'msg'=>"success");
@@ -391,12 +391,12 @@ class classTaskL3aplF4icm
     /*********************************智能云锁新增处理 Start*********************************************/
 
     //HCU_Lock_Open
-    function func_hcu_lock_compel_open($type, $user, $body)
+    function func_hcu_lock_compel_open($action, $user, $body)
     {
         if (isset($body["StatCode"])) $StatCode = $body["StatCode"]; else  $StatCode = "";
 
         $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
-        $usercheck = $uiF1symDbObj->dbi_user_authcheck($type, $user);
+        $usercheck = $uiF1symDbObj->dbi_user_authcheck($action, $user);
         if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
             $uiF4icmDbObj = new classDbiL3apF4icm();
             $result = $uiF4icmDbObj->dbi_hcu_lock_compel_open($user, $StatCode);
@@ -459,6 +459,7 @@ class classTaskL3aplF4icm
         }
         else{
             //解开消息
+            if (isset($msg["action"])) $action = $msg["action"]; else  $action = "";
             if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
             if (isset($msg["user"])) $user = $msg["user"]; else  $user = "";
             if (isset($msg["body"])) $body = $msg["body"]; else  $body = "";
@@ -476,76 +477,76 @@ class classTaskL3aplF4icm
         switch($msgId)
         {
             case MSG_ID_L4AQYCUI_TO_L3F4_ALLSW:
-                $resp = $this->func_allsw_version_process($type, $user, $body);
+                $resp = $this->func_allsw_version_process($action, $user, $body);
                 $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 
             case MSG_ID_L4AQYCUI_TO_L3F4_DEVSW:
-                $resp = $this->func_devsw_version_process($type, $user, $body);
+                $resp = $this->func_devsw_version_process($action, $user, $body);
                 $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 
             case MSG_ID_L4AQYCUI_TO_L3F4_SWUPDATE:
-                $resp = $this->func_devsw_update_process($type, $user, $body);
+                $resp = $this->func_devsw_update_process($action, $user, $body);
                 $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
             //以上为老的软件升级消息，暂时保留。
             //新的软件升级机制，以项目为单位，定义3条软件版本基线
             case MSG_ID_L4AQYCUI_TO_L3F4_SWVERINFO: //获取软件3条版本基线的最新说明
-                $resp = $this->func_swver_info_process($type, $user, $body);
+                $resp = $this->func_swver_info_process($action, $user, $body);
                 $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
             //获取指定项目下所有设备的软件更新策略，包括软件版本，版本基线，是否允许自动更新
             case MSG_ID_L4AQYCUI_TO_L3F4_PROJSUSTRATEGY:
-                $resp = $this->func_proj_su_strategy_list_process($type, $user, $body);
+                $resp = $this->func_proj_su_strategy_list_process($action, $user, $body);
                 $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
             //修改项目软件基线策略
             case MSG_ID_L4AQYCUI_TO_L3F4_PROJSWBASECHANGE:
-                $resp = $this->func_proj_swbase_change_process($type, $user, $body);
+                $resp = $this->func_proj_swbase_change_process($action, $user, $body);
                 $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
             //修改某站点软件更新策略
             case MSG_ID_L4AQYCUI_TO_L3F4_DEVSUSTRATEGYCHANGE:
-                $resp = $this->func_dev_su_strategy_change_process($type, $user, $body);
+                $resp = $this->func_dev_su_strategy_change_process($action, $user, $body);
                 $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
             case MSG_ID_L4AQYCUI_TO_L3F4_PROJSUSTRATEGYCHANGE:
-                $resp = $this->func_proj_su_strategy_change_process($type, $user, $body);
+                $resp = $this->func_proj_su_strategy_change_process($action, $user, $body);
                 $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
             case MSG_ID_L4AQYCUI_TO_L3F4_PROJSUSTRATEGYGET:
-                $resp = $this->func_proj_su_strategy_get_process($type, $user, $body);
+                $resp = $this->func_proj_su_strategy_get_process($action, $user, $body);
                 $project = MFUN_PRJ_HCU_AQYCUI;
                break;
 
             case MSG_ID_L4AQYCUI_TO_L3F4_SENSORUPDATE://功能Sensor update
-                $resp = $this->func_sensor_update_process($type, $user, $body);
+                $resp = $this->func_sensor_update_process($action, $user, $body);
                 $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 
             case MSG_ID_L4AQYCUI_TO_L3F4_CAMWEB:
-                $resp = $this->func_hcu_camweb_process($type, $user, $body);
+                $resp = $this->func_hcu_camweb_process($action, $user, $body);
                 $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 
             case MSG_ID_L4AQYCUI_TO_L3F4_VIDEOLIST:
-                $resp = $this->func_hcu_videolist_process($type, $user, $body);
+                $resp = $this->func_hcu_videolist_process($action, $user, $body);
                 $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 
             case MSG_ID_L4AQYCUI_TO_L3F4_VIDEOPLAY:
-                $resp = $this->func_hcu_videoplay_process($type, $user, $body);
+                $resp = $this->func_hcu_videoplay_process($action, $user, $body);
                 $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 
             case MSG_ID_L4AQYCUI_TO_L3F4_GETCAMERASTATUS://功能Get Camera Status
-                $resp = $this->func_get_camera_status_process($type, $user, $body);
+                $resp = $this->func_get_camera_status_process($action, $user, $body);
                 $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 
             case MSG_ID_L4AQYCUI_TO_L3F4_GETCAMERAUNIT:
-                $resp = $this->func_get_camera_unit_process($type, $user, $body);
+                $resp = $this->func_get_camera_unit_process($action, $user, $body);
                 $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 
@@ -562,7 +563,7 @@ class classTaskL3aplF4icm
 
 /*********************************智能云锁新增处理 Start*********************************************/
             case MSG_ID_L4FHYSUI_TO_L3F4_LOCKOPEN://功能HCU_Lock_Open
-                $resp = $this->func_hcu_lock_compel_open($type, $user, $body);
+                $resp = $this->func_hcu_lock_compel_open($action, $user, $body);
                 $project = MFUN_PRJ_HCU_FHYSUI;
                 break;
 

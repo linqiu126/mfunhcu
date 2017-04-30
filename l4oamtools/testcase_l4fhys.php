@@ -71,7 +71,16 @@ if (TC_L4FHYS_WECHAT == true) {
  *                             L4FHYS-UI TEST CASES                                   *
  *************************************************************************************/
 if (TC_L4FHYS_UI == true) {
-    $sessionid = "bERu5jozlk";
+    $sessionid = "U4sopsu3qo";
+
+    echo " [TC L4FHYS: USERNEW START]\n";
+    $_GET["action"] = "UserNew";
+    $body = array('name' => "aaa", 'nickname' => "bbb",'password' => "AAA",'mobile' => "139",'mail' => "aaa@139",'type' => "1",'memo' => "ZZZ",'auth' => "");
+    $_GET["type"] = "mod";
+    $_GET["body"] = $body;
+    $_GET["user"] = $sessionid;
+    require("../l4fhysui/request.php");
+    echo " [TC L4FHYS: USERNEW END]\n";
 
     echo " [TC L4FHYS: Favourite_count START]\n";
     $_GET["action"] = "Favourite_count";

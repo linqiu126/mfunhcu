@@ -42,12 +42,12 @@ class classTaskL3aplF7ads
     }
 
     //TBD，功能待完善
-    function func_set_user_msg_process($type, $user, $body)
+    function func_set_user_msg_process($action, $user, $body)
     {
         if (isset($body["id"])) $userid = $body["id"]; else  $userid = "";
 
         $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
-        $usercheck = $uiF1symDbObj->dbi_user_authcheck($type, $user);
+        $usercheck = $uiF1symDbObj->dbi_user_authcheck($action, $user);
         if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
             //$uiF7adsDbObj = new classDbiL3apF7ads(); //初始化一个UI DB对象
             $ret = array('msg'=>'您好，今天是xxxx号，欢迎领导前来视察，今天的气温是 今天的PM2.5是....','ifdev'=>"true");
@@ -60,12 +60,12 @@ class classTaskL3aplF7ads
     }
 
     //TBD，功能待完善
-    function func_get_user_msg_process($type, $user, $body)
+    function func_get_user_msg_process($action, $user, $body)
     {
         if (isset($body["id"])) $userid = $body["id"]; else  $userid = "";
 
         $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
-        $usercheck = $uiF1symDbObj->dbi_user_authcheck($type, $user);
+        $usercheck = $uiF1symDbObj->dbi_user_authcheck($action, $user);
         if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
             //$uiF7adsDbObj = new classDbiL3apF7ads(); //初始化一个UI DB对象
             $ret = array('msg'=>'您好，今天是xxxx号，欢迎领导前来视察，今天的气温是 今天的PM2.5是....','ifdev'=>"true");
@@ -78,13 +78,13 @@ class classTaskL3aplF7ads
     }
 
     //TBD，功能待完善
-    function func_show_user_msg_process($type, $user, $body)
+    function func_show_user_msg_process($action, $user, $body)
     {
         if (isset($body["id"])) $userid = $body["id"]; else  $userid = "";
         if (isset($body["StatCode"])) $statCode = $body["StatCode"]; else  $statCode = "";
 
         $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
-        $usercheck = $uiF1symDbObj->dbi_user_authcheck($type, $user);
+        $usercheck = $uiF1symDbObj->dbi_user_authcheck($action, $user);
         if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
             //$uiF7adsDbObj = new classDbiL3apF7ads(); //初始化一个UI DB对象
             $temp =(string)rand(1000,9999);
@@ -98,12 +98,12 @@ class classTaskL3aplF7ads
     }
 
     //TBD，功能待完善
-    function func_get_user_image_process($type, $user, $body)
+    function func_get_user_image_process($action, $user, $body)
     {
         if (isset($body["id"])) $userid = $body["id"]; else  $userid = "";
 
         $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
-        $usercheck = $uiF1symDbObj->dbi_user_authcheck($type, $user);
+        $usercheck = $uiF1symDbObj->dbi_user_authcheck($action, $user);
         if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
             //$uiF7adsDbObj = new classDbiL3apF7ads(); //初始化一个UI DB对象
             $ImgList = array();
@@ -123,11 +123,11 @@ class classTaskL3aplF7ads
     }
 
     //TBD，功能待完善
-    function func_clear_user_image_process($type, $user, $body)
+    function func_clear_user_image_process($action, $user, $body)
     {
         if (isset($body["id"])) $userid = $body["id"]; else  $userid = "";
         $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
-        $usercheck = $uiF1symDbObj->dbi_user_authcheck($type, $user);
+        $usercheck = $uiF1symDbObj->dbi_user_authcheck($action, $user);
         if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
             //$uiF7adsDbObj = new classDbiL3apF7ads(); //初始化一个UI DB对象
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"success");
@@ -159,6 +159,7 @@ class classTaskL3aplF7ads
         }
         else{
             //解开消息
+            if (isset($msg["action"])) $action = $msg["action"]; else  $action = "";
             if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
             if (isset($msg["user"])) $user = $msg["user"]; else  $user = "";
             if (isset($msg["body"])) $body = $msg["body"]; else  $body = "";
@@ -176,27 +177,27 @@ class classTaskL3aplF7ads
         switch($msgId)
         {
             case MSG_ID_L4AQYCUI_TO_L3F7_SETUSERMSG://功能Set User Message
-                $resp = $this->func_set_user_msg_process($type, $user, $body);
+                $resp = $this->func_set_user_msg_process($action, $user, $body);
                 $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 
             case MSG_ID_L4AQYCUI_TO_L3F7_GETUSERMSG://功能Get User Message
-                $resp = $this->func_get_user_msg_process($type, $user, $body);
+                $resp = $this->func_get_user_msg_process($action, $user, $body);
                 $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 
             case MSG_ID_L4AQYCUI_TO_L3F7_SHOWUSERMSG://功能Show User Message
-                $resp = $this->func_show_user_msg_process($type, $user, $body);
+                $resp = $this->func_show_user_msg_process($action, $user, $body);
                 $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 
             case MSG_ID_L4AQYCUI_TO_L3F7_GETUSERIMG://功能Get User Image
-                $resp = $this->func_get_user_image_process($type, $user, $body);
+                $resp = $this->func_get_user_image_process($action, $user, $body);
                 $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 
             case MSG_ID_L4AQYCUI_TO_L3F7_CLEARUSERIMG://功能Clear User Image
-                $resp = $this->func_clear_user_image_process($type, $user, $body);
+                $resp = $this->func_clear_user_image_process($action, $user, $body);
                 $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 

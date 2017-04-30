@@ -41,10 +41,10 @@ class classTaskL3aplF3dm
         return urlencode($elem);
     }
 
-    function func_project_point_process($type, $user, $body)
+    function func_project_point_process($action, $user, $body)
     {
         $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
-        $usercheck = $uiF1symDbObj->dbi_user_authcheck($type, $user);
+        $usercheck = $uiF1symDbObj->dbi_user_authcheck($action, $user);
         if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
             $uiF3dmDbObj = new classDbiL3apF3dm(); //初始化一个UI DB对象
             $sitelist = $uiF3dmDbObj->dbi_all_sitelist_req();
@@ -59,12 +59,12 @@ class classTaskL3aplF3dm
         return $retval;
     }
 
-    function func_point_project_process($type, $user, $body)
+    function func_point_project_process($action, $user, $body)
     {
         if (isset($body["ProjCode"])) $ProjCode = $body["ProjCode"]; else  $ProjCode = "";
 
         $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
-        $usercheck = $uiF1symDbObj->dbi_user_authcheck($type, $user);
+        $usercheck = $uiF1symDbObj->dbi_user_authcheck($action, $user);
         if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
             $uiF3dmDbObj = new classDbiL3apF3dm(); //初始化一个UI DB对象
             $sitelist = $uiF3dmDbObj->dbi_proj_sitelist_req($ProjCode);
@@ -79,7 +79,7 @@ class classTaskL3aplF3dm
         return $retval;
     }
 
-    function func_point_table_process($type, $user, $body)
+    function func_point_table_process($action, $user, $body)
     {
         if (isset($body["length"])) $length = $body["length"]; else  $length = "";
         if (isset($body["startseq"])) $startseq = $body["startseq"]; else  $startseq = "";
@@ -91,7 +91,7 @@ class classTaskL3aplF3dm
         if($query_length> $total-$start) {$query_length = $total-$start;}
 
         $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
-        $usercheck = $uiF1symDbObj->dbi_user_authcheck($type, $user);
+        $usercheck = $uiF1symDbObj->dbi_user_authcheck($action, $user);
         if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
             $uiF3dmDbObj = new classDbiL3apF3dm(); //初始化一个UI DB对象
             $sitetable = $uiF3dmDbObj->dbi_all_sitetable_req($start, $query_length);
@@ -108,10 +108,10 @@ class classTaskL3aplF3dm
         return $retval;
     }
 
-    function func_point_new_process($type, $user, $body)
+    function func_point_new_process($action, $user, $body)
     {
         $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
-        $usercheck = $uiF1symDbObj->dbi_user_authcheck($type, $user);
+        $usercheck = $uiF1symDbObj->dbi_user_authcheck($action, $user);
         if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
             $uiF3dmDbObj = new classDbiL3apF3dm(); //初始化一个UI DB对象
             $result = $uiF3dmDbObj->dbi_siteinfo_update($body);
@@ -126,10 +126,10 @@ class classTaskL3aplF3dm
         return $retval;
     }
 
-    function func_point_mod_process($type, $user, $body)
+    function func_point_mod_process($action, $user, $body)
     {
         $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
-        $usercheck = $uiF1symDbObj->dbi_user_authcheck($type, $user);
+        $usercheck = $uiF1symDbObj->dbi_user_authcheck($action, $user);
         if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
             $uiF3dmDbObj = new classDbiL3apF3dm(); //初始化一个UI DB对象
             $result = $uiF3dmDbObj->dbi_siteinfo_update($body);
@@ -144,12 +144,12 @@ class classTaskL3aplF3dm
         return $retval;
     }
 
-    function func_point_del_process($type, $user, $body)
+    function func_point_del_process($action, $user, $body)
     {
         if (isset($body["StatCode"])) $StatCode = $body["StatCode"]; else  $StatCode = "";
 
         $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
-        $usercheck = $uiF1symDbObj->dbi_user_authcheck($type, $user);
+        $usercheck = $uiF1symDbObj->dbi_user_authcheck($action, $user);
         if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
             $uiF3dmDbObj = new classDbiL3apF3dm(); //初始化一个UI DB对象
             $result = $uiF3dmDbObj->dbi_siteinfo_delete($StatCode);
@@ -164,12 +164,12 @@ class classTaskL3aplF3dm
         return $retval;
     }
 
-    function func_point_dev_process($type, $user, $body)
+    function func_point_dev_process($action, $user, $body)
     {
         if (isset($body["StatCode"])) $StatCode = $body["StatCode"]; else  $StatCode = "";
 
         $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
-        $usercheck = $uiF1symDbObj->dbi_user_authcheck($type, $user);
+        $usercheck = $uiF1symDbObj->dbi_user_authcheck($action, $user);
         if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
             $uiF3dmDbObj = new classDbiL3apF3dm(); //初始化一个UI DB对象
             $devlist = $uiF3dmDbObj->dbi_site_devlist_req($StatCode);
@@ -184,7 +184,7 @@ class classTaskL3aplF3dm
         return $retval;
     }
 
-    function func_dev_table_process($type, $user, $body)
+    function func_dev_table_process($action, $user, $body)
     {
         if (isset($body["length"])) $length = $body["length"]; else  $length = "";
         if (isset($body["startseq"])) $startseq = $body["startseq"]; else  $startseq = "";
@@ -197,7 +197,7 @@ class classTaskL3aplF3dm
         if($query_length> $total-$start) {$query_length = $total-$start;}
 
         $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
-        $usercheck = $uiF1symDbObj->dbi_user_authcheck($type, $user);
+        $usercheck = $uiF1symDbObj->dbi_user_authcheck($action, $user);
         if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
             $uiF3dmDbObj = new classDbiL3apF3dm(); //初始化一个UI DB对象
             $devtable = $uiF3dmDbObj->dbi_all_hcutable_req($start,$query_length);
@@ -214,10 +214,10 @@ class classTaskL3aplF3dm
         return $retval;
     }
 
-    function func_dev_new_process($type, $user, $body)
+    function func_dev_new_process($action, $user, $body)
     {
         $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
-        $usercheck = $uiF1symDbObj->dbi_user_authcheck($type, $user);
+        $usercheck = $uiF1symDbObj->dbi_user_authcheck($action, $user);
         if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
             $uiSdkDbObj = new classDbiL2sdkHcu();
             $result = $uiSdkDbObj->dbi_devinfo_update($body);
@@ -232,10 +232,10 @@ class classTaskL3aplF3dm
         return $retval;
     }
 
-    function func_dev_mod_process($type, $user, $body)
+    function func_dev_mod_process($action, $user, $body)
     {
         $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
-        $usercheck = $uiF1symDbObj->dbi_user_authcheck($type, $user);
+        $usercheck = $uiF1symDbObj->dbi_user_authcheck($action, $user);
         if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
             $uiSdkDbObj = new classDbiL2sdkHcu();
             $result = $uiSdkDbObj->dbi_devinfo_update($body);
@@ -250,12 +250,12 @@ class classTaskL3aplF3dm
         return $retval;
     }
 
-    function func_dev_del_process($type, $user, $body)
+    function func_dev_del_process($action, $user, $body)
     {
         if (isset($body["DevCode"])) $DevCode = $body["DevCode"]; else  $DevCode = "";
 
         $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
-        $usercheck = $uiF1symDbObj->dbi_user_authcheck($type, $user);
+        $usercheck = $uiF1symDbObj->dbi_user_authcheck($action, $user);
         if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
             $uiF3dmDbObj = new classDbiL3apF3dm(); //初始化一个UI DB对象
             $result = $uiF3dmDbObj->dbi_deviceinfo_delete($DevCode);
@@ -270,10 +270,10 @@ class classTaskL3aplF3dm
         return $retval;
     }
 
-    function func_monitor_list_process($type, $user, $body)
+    function func_monitor_list_process($action, $user, $body)
     {
         $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
-        $usercheck = $uiF1symDbObj->dbi_user_authcheck($type, $user);
+        $usercheck = $uiF1symDbObj->dbi_user_authcheck($action, $user);
         if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
             $uid = $uiF1symDbObj->dbi_session_check($user);
             $uiF3dmDbObj = new classDbiL3apF3dm(); //初始化一个UI DB对象
@@ -289,10 +289,10 @@ class classTaskL3aplF3dm
         return $retval;
     }
 
-    function func_favourite_list_process($type, $user, $body)
+    function func_favourite_list_process($action, $user, $body)
     {
         $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
-        $usercheck = $uiF1symDbObj->dbi_user_authcheck($type, $user);
+        $usercheck = $uiF1symDbObj->dbi_user_authcheck($action, $user);
         if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
             $uid = $uiF1symDbObj->dbi_session_check($user);
             $uiF3dmDbObj = new classDbiL3apF3dm(); //初始化一个UI DB对象
@@ -308,12 +308,12 @@ class classTaskL3aplF3dm
         return $retval;
     }
 
-    function func_favourite_count_process($type, $user, $body) //临时处理函数
+    function func_favourite_count_process($action, $user, $body) //临时处理函数
     {
         if (isset($body["StatCode"])) $statCode = $body["StatCode"]; else  $statCode = "";
 
         $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
-        $usercheck = $uiF1symDbObj->dbi_user_authcheck($type, $user);
+        $usercheck = $uiF1symDbObj->dbi_user_authcheck($action, $user);
         if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
             $uid = $uiF1symDbObj->dbi_session_check($user);
             $uiF3dmDbObj = new classDbiL3apF3dm(); //初始化一个UI DB对象
@@ -329,12 +329,12 @@ class classTaskL3aplF3dm
         return $retval;
     }
 
-    function func_historydata_table_query_process($type, $user, $body) //查询某站点历史数据
+    function func_historydata_table_query_process($action, $user, $body) //查询某站点历史数据
     {
         if (isset($body["Condition"])) $Condition = $body["Condition"]; else  $Condition = "";
 
         $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
-        $usercheck = $uiF1symDbObj->dbi_user_authcheck($type, $user);
+        $usercheck = $uiF1symDbObj->dbi_user_authcheck($action, $user);
         if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
             $uiL2snrDbObj = new classDbiL2snrCom();
             $result = $uiL2snrDbObj->dbi_excel_historydata_req($Condition);
@@ -351,10 +351,10 @@ class classTaskL3aplF3dm
         return $retval;
     }
 
-    function func_aqyc_sensor_list_process($type, $user, $body)
+    function func_aqyc_sensor_list_process($action, $user, $body)
     {
         $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
-        $usercheck = $uiF1symDbObj->dbi_user_authcheck($type, $user);
+        $usercheck = $uiF1symDbObj->dbi_user_authcheck($action, $user);
         if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
             $uiL2snrDbObj = new classDbiL2snrCom();
             $sensor_type = MFUN_L3APL_F3DM_AQYC_STYPE_PREFIX;
@@ -370,12 +370,12 @@ class classTaskL3aplF3dm
         return $retval;
     }
 
-    function func_aqyc_dev_sensor_process($type, $user, $body)
+    function func_aqyc_dev_sensor_process($action, $user, $body)
     {
         if (isset($body["DevCode"])) $DevCode = $body["DevCode"]; else  $DevCode = "";
 
         $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
-        $usercheck = $uiF1symDbObj->dbi_user_authcheck($type, $user);
+        $usercheck = $uiF1symDbObj->dbi_user_authcheck($action, $user);
         if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
             $uiL2snrDbObj = new classDbiL2snrCom();
             $sensorinfo = $uiL2snrDbObj->dbi_aqyc_dev_sensorinfo_req($DevCode);
@@ -390,10 +390,10 @@ class classTaskL3aplF3dm
         return $retval;
     }
 
-    function func_aqyc_get_static_monitor_table_process($type, $user, $body)
+    function func_aqyc_get_static_monitor_table_process($action, $user, $body)
     {
         $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
-        $usercheck = $uiF1symDbObj->dbi_user_authcheck($type, $user);
+        $usercheck = $uiF1symDbObj->dbi_user_authcheck($action, $user);
         if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
             $uid = $uiF1symDbObj->dbi_session_check($user);
             $uiF3dmDbObj = new classDbiL3apF3dm(); //初始化一个UI DB对象
@@ -411,10 +411,10 @@ class classTaskL3aplF3dm
         return $retval;
     }
 
-    function func_aqyc_get_alarm_handle_table_process($type, $user, $body)
+    function func_aqyc_get_alarm_handle_table_process($action, $user, $body)
     {
         $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
-        $usercheck = $uiF1symDbObj->dbi_user_authcheck($type, $user);
+        $usercheck = $uiF1symDbObj->dbi_user_authcheck($action, $user);
         if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
             $uid = $uiF1symDbObj->dbi_session_check($user);
             $uiF3dmDbObj = new classDbiL3apF3dm(); //初始化一个UI DB对象
@@ -433,10 +433,10 @@ class classTaskL3aplF3dm
     }
 
     /*******************************波峰智能组合秤新增处理 Start****************************************/
-    function func_bfsc_get_static_monitor_table_process($type, $user, $body)
+    function func_bfsc_get_static_monitor_table_process($action, $user, $body)
     {
         $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
-        $usercheck = $uiF1symDbObj->dbi_user_authcheck($type, $user);
+        $usercheck = $uiF1symDbObj->dbi_user_authcheck($action, $user);
         if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
             $uid = $uiF1symDbObj->dbi_session_check($user);
             $uiF3dmDbObj = new classDbiL3apF3dm(); //初始化一个UI DB对象
@@ -455,10 +455,10 @@ class classTaskL3aplF3dm
     }
 
     /*********************************智能云锁新增处理************************************************/
-    function func_fhys_sensor_list_process($type, $user, $body)
+    function func_fhys_sensor_list_process($action, $user, $body)
     {
         $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
-        $usercheck = $uiF1symDbObj->dbi_user_authcheck($type, $user);
+        $usercheck = $uiF1symDbObj->dbi_user_authcheck($action, $user);
         if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
             $uiL2snrDbObj = new classDbiL2snrCom();
             $sensor_type= MFUN_L3APL_F3DM_FHYS_STYPE_PREFIX;
@@ -474,12 +474,12 @@ class classTaskL3aplF3dm
         return $retval;
     }
 
-    function func_fhys_dev_sensor_process($type, $user, $body)
+    function func_fhys_dev_sensor_process($action, $user, $body)
     {
         if (isset($body["DevCode"])) $DevCode = $body["DevCode"]; else  $DevCode = "";
 
         $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
-        $usercheck = $uiF1symDbObj->dbi_user_authcheck($type, $user);
+        $usercheck = $uiF1symDbObj->dbi_user_authcheck($action, $user);
         if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
             $uiL2snrDbObj = new classDbiL2snrCom();
             $sensorinfo = $uiL2snrDbObj->dbi_fhys_dev_sensorinfo_req($DevCode);
@@ -494,10 +494,10 @@ class classTaskL3aplF3dm
         return $retval;
     }
 
-    function func_fhys_get_static_monitor_table_process($type, $user, $body)
+    function func_fhys_get_static_monitor_table_process($action, $user, $body)
     {
         $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
-        $usercheck = $uiF1symDbObj->dbi_user_authcheck($type, $user);
+        $usercheck = $uiF1symDbObj->dbi_user_authcheck($action, $user);
         if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
             $uid = $uiF1symDbObj->dbi_session_check($user);
             $uiF3dmDbObj = new classDbiL3apF3dm(); //初始化一个UI DB对象
@@ -515,10 +515,10 @@ class classTaskL3aplF3dm
         return $retval;
     }
 
-    function func_key_event_history_process($type, $user, $body)
+    function func_key_event_history_process($action, $user, $body)
     {
         $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
-        $usercheck = $uiF1symDbObj->dbi_user_authcheck($type, $user);
+        $usercheck = $uiF1symDbObj->dbi_user_authcheck($action, $user);
         if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
             $uid = $uiF1symDbObj->dbi_session_check($user);
             $uiF3dmDbObj = new classDbiL3apF3dm(); //初始化一个UI DB对象
@@ -536,12 +536,12 @@ class classTaskL3aplF3dm
         return $retval;
     }
 
-    function func_point_picture_process($type, $user, $body)
+    function func_point_picture_process($action, $user, $body)
     {
         if (isset($body["StatCode"])) $statcode = $body["StatCode"]; else  $statcode = "";
 
         $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
-        $usercheck = $uiF1symDbObj->dbi_user_authcheck($type, $user);
+        $usercheck = $uiF1symDbObj->dbi_user_authcheck($action, $user);
         if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
             $uiF3dmDbObj = new classDbiL3apF3dm(); //初始化一个UI DB对象
             $pic_list = $uiF3dmDbObj->dbi_point_picture_process($statcode);
@@ -576,6 +576,7 @@ class classTaskL3aplF3dm
         }
         else{
             //解开消息
+            if (isset($msg["action"])) $action = $msg["action"]; else  $action = "";
             if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
             if (isset($msg["user"])) $user = $msg["user"]; else  $user = "";
             if (isset($msg["body"])) $body = $msg["body"]; else  $body = "";
@@ -593,17 +594,17 @@ class classTaskL3aplF3dm
         switch($msgId)
         {
             case MSG_ID_L4AQYCUI_TO_L3F3_PROJPOINT://功能Project Point 查询所有监控点列表
-                $resp = $this->func_project_point_process($type, $user, $body);
+                $resp = $this->func_project_point_process($action, $user, $body);
                 $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 
             case MSG_ID_L4AQYCUI_TO_L3F3_POINTPROJ://功能Point project查询该项目下面对应监控点列表
-                $resp = $this->func_point_project_process($type, $user, $body);
+                $resp = $this->func_point_project_process($action, $user, $body);
                 $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 
             case MSG_ID_L4AQYCUI_TO_L3F3_POINTTABLE://功能Point Table
-                $resp = $this->func_point_table_process($type, $user, $body);
+                $resp = $this->func_point_table_process($action, $user, $body);
                 $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 
@@ -613,108 +614,108 @@ class classTaskL3aplF3dm
                 break;
 
             case MSG_ID_L4AQYCUI_TO_L3F3_POINTMOD://功能Point Mod
-                $resp = $this->func_point_mod_process($type, $user, $body);
+                $resp = $this->func_point_mod_process($action, $user, $body);
                 $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 
             case MSG_ID_L4AQYCUI_TO_L3F3_POINTDEL://功能Point Del
-                $resp = $this->func_point_del_process($type, $user, $body);
+                $resp = $this->func_point_del_process($action, $user, $body);
                 $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 
             case MSG_ID_L4AQYCUI_TO_L3F3_POINTDEV://功能Point Dev
-                $resp = $this->func_point_dev_process($type, $user, $body);
+                $resp = $this->func_point_dev_process($action, $user, $body);
                 $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 
             case MSG_ID_L4AQYCUI_TO_L3F3_DEVTABLE://功能Dev Table
-                $resp = $this->func_dev_table_process($type, $user, $body);
+                $resp = $this->func_dev_table_process($action, $user, $body);
                 $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 
             case MSG_ID_L4AQYCUI_TO_L3F3_DEVNEW://功能Dev New
-                $resp = $this->func_dev_new_process($type, $user, $body);
+                $resp = $this->func_dev_new_process($action, $user, $body);
                 $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 
             case MSG_ID_L4AQYCUI_TO_L3F3_DEVMOD://功能Dev Mod
-                $resp = $this->func_dev_mod_process($type, $user, $body);
+                $resp = $this->func_dev_mod_process($action, $user, $body);
                 $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 
             case MSG_ID_L4AQYCUI_TO_L3F3_DEVDEL://功能Dev Del
-                $resp = $this->func_dev_del_process($type, $user, $body);
+                $resp = $this->func_dev_del_process($action, $user, $body);
                 $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 
             case MSG_ID_L4AQYCUI_TO_L3F3_MONITORLIST://功能Monitor List
-                $resp = $this->func_monitor_list_process($type, $user, $body);
+                $resp = $this->func_monitor_list_process($action, $user, $body);
                 $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 
             case MSG_ID_L4AQYCUI_TO_L3F3_FAVOURITELIST:
-                $resp = $this->func_favourite_list_process($type, $user, $body);
+                $resp = $this->func_favourite_list_process($action, $user, $body);
                 $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 
             case MSG_ID_L4AQYCUI_TO_L3F3_FAVOURITECOUNT:
-                $resp = $this->func_favourite_count_process($type, $user, $body);
+                $resp = $this->func_favourite_count_process($action, $user, $body);
                 $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 
             case MSG_ID_L4AQYCUI_TO_L3F3_TABLEQUERY://功能Tabel Query
-                $resp = $this->func_historydata_table_query_process($type, $user, $body);
+                $resp = $this->func_historydata_table_query_process($action, $user, $body);
                 $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 
             case MSG_ID_L4AQYCUI_TO_L3F3_SENSORLIST://功能Sensor List
-                $resp = $this->func_aqyc_sensor_list_process($type, $user, $body);
+                $resp = $this->func_aqyc_sensor_list_process($action, $user, $body);
                 $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 
             case MSG_ID_L4AQYCUI_TO_L3F3_DEVSENSOR://功能Dev Sensor
-                $resp = $this->func_aqyc_dev_sensor_process($type, $user, $body);
+                $resp = $this->func_aqyc_dev_sensor_process($action, $user, $body);
                 $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 
             case MSG_ID_L4AQYCUI_TO_L3F3_GETSTATICMONITORTABLE://功能GetStaticMonitorTable
-                $resp = $this->func_aqyc_get_static_monitor_table_process($type, $user, $body);
+                $resp = $this->func_aqyc_get_static_monitor_table_process($action, $user, $body);
                 $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 
             case MSG_ID_L4AQYCUI_TO_L3F3_ALARMHANDLETABLE: //告警处理表
-                $resp = $this->func_aqyc_get_alarm_handle_table_process($type, $user, $body);
+                $resp = $this->func_aqyc_get_alarm_handle_table_process($action, $user, $body);
                 $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 
 /*********************************波峰智能组合秤新增处理 Start*********************************************/
             case MSG_ID_L4BFSCUI_TO_L3F3_GETSTATICMONITORTABLE://功能GetStaticMonitorTable
-                $resp = $this->func_bfsc_get_static_monitor_table_process($type, $user, $body);
+                $resp = $this->func_bfsc_get_static_monitor_table_process($action, $user, $body);
                 $project = MFUN_PRJ_HCU_BFSCUI;
                 break;
 /*************************************智能云锁新增处理 Start*********************************************/
             case MSG_ID_L4FHYSUI_TO_L3F3_SENSORLIST://功能Sensor List
-                $resp = $this->func_fhys_sensor_list_process($type, $user, $body);
+                $resp = $this->func_fhys_sensor_list_process($action, $user, $body);
                 $project = MFUN_PRJ_HCU_FHYSUI;
                 break;
 
             case MSG_ID_L4FHYSUI_TO_L3F3_DEVSENSOR://功能Dev Sensor
-                $resp = $this->func_fhys_dev_sensor_process($type, $user, $body);
+                $resp = $this->func_fhys_dev_sensor_process($action, $user, $body);
                 $project = MFUN_PRJ_HCU_FHYSUI;
                 break;
 
             case MSG_ID_L4FHYSUI_TO_L3F3_GETSTATICMONITORTABLE://功能GetStaticMonitorTable
-                $resp = $this->func_fhys_get_static_monitor_table_process($type, $user, $body);
+                $resp = $this->func_fhys_get_static_monitor_table_process($action, $user, $body);
                 $project = MFUN_PRJ_HCU_FHYSUI;
                 break;
 
             case MSG_ID_L4FHYSUI_TO_L3F3_KEYHISTORY://开锁事件历史记录
-                $resp = $this->func_key_event_history_process($type, $user, $body);
+                $resp = $this->func_key_event_history_process($action, $user, $body);
                 $project = MFUN_PRJ_HCU_FHYSUI;
                 break;
 
             case MSG_ID_L4FHYSUI_TO_L3F3_POINTPICTURE:
-                $resp = $this->func_point_picture_process($type, $user, $body);
+                $resp = $this->func_point_picture_process($action, $user, $body);
                 $project = MFUN_PRJ_HCU_FHYSUI;
                 break;
 

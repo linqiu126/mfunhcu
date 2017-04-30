@@ -41,10 +41,10 @@ class classTaskL3aplF6pm
         return urlencode($elem);
     }
 
-    function func_aqyc_get_performance_table_process($type, $user, $body)
+    function func_aqyc_get_performance_table_process($action, $user, $body)
     {
         $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
-        $usercheck = $uiF1symDbObj->dbi_user_authcheck($type, $user);
+        $usercheck = $uiF1symDbObj->dbi_user_authcheck($action, $user);
         if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
             $uid = $uiF1symDbObj->dbi_session_check($user);
             $uiF6pmDbObj = new classDbiL3apF6pm(); //初始化一个UI DB对象
@@ -83,6 +83,7 @@ class classTaskL3aplF6pm
         }
         else{
             //解开消息
+            if (isset($msg["action"])) $action = $msg["action"]; else  $action = "";
             if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
             if (isset($msg["user"])) $user = $msg["user"]; else  $user = "";
             if (isset($msg["body"])) $body = $msg["body"]; else  $body = "";
@@ -100,7 +101,7 @@ class classTaskL3aplF6pm
         switch($msgId)
         {
             case MSG_ID_L4AQYCUI_TO_L3F6_PERFORMANCETABLE:
-                $resp = $this->func_aqyc_get_performance_table_process($type, $user, $body);
+                $resp = $this->func_aqyc_get_performance_table_process($action, $user, $body);
                 $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
             default :

@@ -56,7 +56,7 @@ class classTaskL3aplF1sym
         return $retval;
     }
 
-    function func_userinfo_process($type, $user, $body)
+    function func_userinfo_process($action, $user, $body)
     {
         if (isset($body["session"])) $sessionid = $body["session"]; else  $sessionid = "";
 
@@ -68,10 +68,10 @@ class classTaskL3aplF1sym
         return $retval;
     }
 
-    function func_usernew_process($type, $user, $body)
+    function func_usernew_process($action, $user, $body)
     {
         $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
-        $usercheck = $uiF1symDbObj->dbi_user_authcheck($type, $user);
+        $usercheck = $uiF1symDbObj->dbi_user_authcheck($action, $user);
         if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
             $result = $uiF1symDbObj->dbi_userinfo_new($body);
             if($result == true)
@@ -85,10 +85,10 @@ class classTaskL3aplF1sym
         return $retval;
     }
 
-    function func_usermod_process($type, $user, $body)
+    function func_usermod_process($action, $user, $body)
     {
         $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
-        $usercheck = $uiF1symDbObj->dbi_user_authcheck($type, $user);
+        $usercheck = $uiF1symDbObj->dbi_user_authcheck($action, $user);
         if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
             $result = $uiF1symDbObj->dbi_userinfo_update($body);
             if($result == true)
@@ -102,12 +102,12 @@ class classTaskL3aplF1sym
         return $retval;
     }
 
-    function func_userdel_process($type, $user, $body)
+    function func_userdel_process($action, $user, $body)
     {
         if (isset($body["userid"])) $userid = $body["userid"]; else  $userid = "";
 
         $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
-        $usercheck = $uiF1symDbObj->dbi_user_authcheck($type, $user);
+        $usercheck = $uiF1symDbObj->dbi_user_authcheck($action, $user);
         if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
             $result = $uiF1symDbObj->dbi_userinfo_delete($userid);
             if($result == true)
@@ -121,7 +121,7 @@ class classTaskL3aplF1sym
         return $retval;
     }
 
-    function func_usertable_process($type, $user, $body)
+    function func_usertable_process($action, $user, $body)
     {
         if (isset($body["length"])) $length = $body["length"]; else  $length = "";
         if (isset($body["startseq"])) $startseq = $body["startseq"]; else  $startseq = "";
@@ -131,7 +131,7 @@ class classTaskL3aplF1sym
         $start = (int)($startseq);
         if($query_length > $total-$start) $query_length = $total-$start;
 
-        $usercheck = $uiF1symDbObj->dbi_user_authcheck($type, $user);
+        $usercheck = $uiF1symDbObj->dbi_user_authcheck($action, $user);
         if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
             $usertable = $uiF1symDbObj->dbi_usertable_req($start, $query_length);
             if(!empty($usertable)){
@@ -188,55 +188,60 @@ class classTaskL3aplF1sym
 
             case MSG_ID_L4AQYCUI_TO_L3F1_USERINFO://功能UserInfo
                 //解开消息
+                if (isset($msg["action"])) $action = $msg["action"]; else  $action = "";
                 if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
                 if (isset($msg["user"])) $user = $msg["user"]; else  $user = "";
                 if (isset($msg["body"])) $body = $msg["body"]; else  $body = "";
                 //具体处理函数
-                $resp = $this->func_userinfo_process($type, $user, $body);
+                $resp = $this->func_userinfo_process($action, $user, $body);
                 $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 
             case MSG_ID_L4AQYCUI_TO_L3F1_USERNEW://功能UserNew
                 //解开消息
+                if (isset($msg["action"])) $action = $msg["action"]; else  $action = "";
                 if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
                 if (isset($msg["user"])) $user = $msg["user"]; else  $user = "";
                 if (isset($msg["body"])) $body = $msg["body"]; else  $body = "";
 
                 //具体处理函数
-                $resp = $this->func_usernew_process($type, $user, $body);
+                $resp = $this->func_usernew_process($action, $user, $body);
                 $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 
             case MSG_ID_L4AQYCUI_TO_L3F1_USERMOD://功能UserMod
                 //解开消息
+                if (isset($msg["action"])) $action = $msg["action"]; else  $action = "";
                 if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
                 if (isset($msg["user"])) $user = $msg["user"]; else  $user = "";
                 if (isset($msg["body"])) $body = $msg["body"]; else  $body = "";
 
                 //具体处理函数
-                $resp = $this->func_usermod_process($type, $user, $body);
+                $resp = $this->func_usermod_process($action, $user, $body);
                 $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 
             case MSG_ID_L4AQYCUI_TO_L3F1_USERDEL://功能UserDel
                 //解开消息
+                if (isset($msg["action"])) $action = $msg["action"]; else  $action = "";
                 if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
                 if (isset($msg["user"])) $user = $msg["user"]; else  $user = "";
                 if (isset($msg["body"])) $body = $msg["body"]; else  $body = "";
 
                 //具体处理函数
-                $resp = $this->func_userdel_process($type, $user, $body);
+                $resp = $this->func_userdel_process($action, $user, $body);
                 $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 
             case MSG_ID_L4AQYCUI_TO_L3F1_USERTABLE://功能UserTable
                 //解开消息
+                if (isset($msg["action"])) $action = $msg["action"]; else  $action = "";
                 if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
                 if (isset($msg["user"])) $user = $msg["user"]; else  $user = "";
                 if (isset($msg["body"])) $body = $msg["body"]; else  $body = "";
 
                 //具体处理函数
-                $resp = $this->func_usertable_process($type, $user, $body);
+                $resp = $this->func_usertable_process($action, $user, $body);
                 $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 
