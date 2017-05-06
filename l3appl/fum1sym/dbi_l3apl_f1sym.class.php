@@ -338,6 +338,83 @@ class classDbiL3apF1sym
         return $login_info;
     }
 
+    //Get_user_auth_code, 发送手机验证码帮助找回密码
+    public function dbi_userauthcode_process($username)
+    {
+        //建立连接
+        $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli)
+        {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $mysqli->query("SET NAMES utf8");
+
+        //生成验证码并保存用于后面密码重置时校验
+        $authcode = $this->getRandomUid(MFUN_HCU_FHYS_LEXIN_AUTHCODE_LEN);
+        $query_str = "UPDATE `t_l3f1sym_account` SET `authcode` = '$authcode' WHERE `user` = '$username'";
+        $result = $mysqli->query($query_str);
+
+        $resp = false;
+        $query_str = "SELECT * FROM `t_l3f1sym_account` WHERE `user` = '$username'";
+        $result = $mysqli->query($query_str);
+        if (($result->num_rows)>0){
+            $row = $result->fetch_array();
+            $mobile = $row['phone'];
+
+            $content = "【阜华光交箱云平台】".$authcode."（动态验证码），请在30分钟内填写";
+            $bizId = time();
+            $url = MFUN_HCU_FHYS_LEXIN_URL.MFUN_HCU_FHYS_LEXIN_ACCNAME."&".MFUN_HCU_FHYS_LEXIN_ACCPWD."&aimcodes=".trim($mobile).
+                "&content=".trim($content).MFUN_HCU_FHYS_LEXIN_SIGNATURE."&bizId=".$bizId."&dataType=string";
+            $l2sdkIotWxObj = new classTaskL2sdkIotWx();
+            $resp =$l2sdkIotWxObj->https_request($url);
+        }
+
+        $mysqli->close();
+        return $resp;
+    }
+
+    public function dbi_reset_password_process($username, $code, $password)
+    {
+        //建立连接
+        $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli)
+        {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $mysqli->query("SET NAMES utf8");
+
+        //先检查用户名是否存在
+        $query_str = "SELECT * FROM `t_l3f1sym_account` WHERE `user` = '$username'";
+        $result = $mysqli->query($query_str);
+        if (($result->num_rows)>0)
+        {
+            $row = $result->fetch_array();
+            $authcode = $row['authcode'];
+            $uid = $row['uid'];
+            $admin = $row['admin'];
+
+            if ($authcode == $code) {
+                $strlen = MFUN_L3APL_F1SYM_SESSION_ID_LEN;
+                $sessionid = $this->getRandomSid($strlen);
+                $body = array('key'=> $sessionid, 'admin'=> $admin);
+                $msg = "验证码正确，登录成功";
+                $this->updateSession($uid, $sessionid);
+            }
+            else {
+                $body = array('key'=> "", 'admin'=> "");
+                $msg = "验证码错误，登录失败";
+            }
+        }
+        else {
+            $body = array('key'=> "", 'admin'=> "");
+            $msg = "登录失败，用户名错误";
+        }
+        $login_info = array('body' => $body,'msg' => $msg);
+
+        $mysqli->close();
+        return $login_info;
+    }
+
     //UI UserInfo request  获取当前登录用户信息
     public function dbi_userinfo_req($sessionid)
     {

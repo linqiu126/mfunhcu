@@ -715,7 +715,7 @@ class classDbiL2snrDoorlock
             $alarm_code = MFUN_HCU_FHYS_ALARM_LOW_BATT;
             $alarm_severity = MFUN_HCU_FHYS_ALARM_LEVEL_M;
         }
-        elseif ($gprs < MFUN_L3APL_F3DM_TH_ALARM_GPRS){
+        elseif ($gprs < MFUN_L3APL_F3DM_TH_ALARM_GPRS_LOW){
             $alarm_code = MFUN_HCU_FHYS_ALARM_LOW_SIG;
             $alarm_severity = MFUN_HCU_FHYS_ALARM_LEVEL_L;
         }

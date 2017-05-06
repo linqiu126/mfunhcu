@@ -745,6 +745,14 @@ class classTaskL2sdkIotWx
             case "CLICK_FHYS_HELP":
                 $transMsg = $this->xms_responseText($xmlmsg->FromUserName, $xmlmsg->ToUserName,"您好，请问有什么需要帮助的？");
                 break;
+            case "CLICK_FHYS_WECHATKEY_UNBIND":
+                $dbiL2sdkIotWxObj = new  classDbiL2sdkIotWx();
+                $result = $dbiL2sdkIotWxObj->dbi_fhys_wechatkey_unbind($xmlmsg->FromUserName);
+                if ($result == true)
+                    $transMsg = $this->xms_responseText($xmlmsg->FromUserName, $xmlmsg->ToUserName,"该手机微信钥匙成功解绑");
+                else
+                    $transMsg = $this->xms_responseText($xmlmsg->FromUserName, $xmlmsg->ToUserName,"该手机微信钥匙不存在");
+                break;
             default:
                 $transMsg = $this->xms_responseText($xmlmsg->FromUserName, $xmlmsg->ToUserName,"收到未识别菜单EventKey值");
                 break;

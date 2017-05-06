@@ -56,6 +56,40 @@ class classTaskL3aplF1sym
         return $retval;
     }
 
+    function func_userauthcode_process($action, $user, $body)
+    {
+        if (isset($body["name"])) $username = $body["name"]; else  $username = "";
+
+        $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
+
+        $result = $uiF1symDbObj->dbi_userauthcode_process($username);
+        if($result == true)
+            $retval=array('status'=>'true','auth'=>'true','msg'=>"发送用户手机验证码成功");
+        else
+            $retval=array('status'=>'true','auth'=>'false','msg'=>"用户手机验证码失败");
+
+        return $retval;
+    }
+
+    function func_reset_password_process($action, $user, $body)
+    {
+        if (isset($body["name"])) $username = $body["name"]; else  $username = "";
+        if (isset($body["code"])) $authcode = $body["code"]; else  $authcode = "";
+        if (isset($body["password"])) $password = $body["password"]; else  $password = "";
+
+        $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
+        $resp =$uiF1symDbObj->dbi_reset_password_process($username, $authcode, $password);
+        $body = $resp['body'];
+        $msg = $resp['msg'];
+
+        if (!empty($body['key']))
+            $retval=array('status'=>"true",'auth'=>"true",'ret'=>$body,'msg'=>$msg);
+        else
+            $retval=array('status'=>"false",'auth'=>"false",'ret'=>$body,'msg'=>$msg);
+
+        return $retval;
+    }
+
     function func_userinfo_process($action, $user, $body)
     {
         if (isset($body["session"])) $sessionid = $body["session"]; else  $sessionid = "";
@@ -183,6 +217,28 @@ class classTaskL3aplF1sym
                 if (isset($msg["pwd"])) $pwd = $msg["pwd"]; else  $pwd = "";
                 //具体处理函数
                 $resp = $this->func_login_process($user, $pwd);
+                $project = MFUN_PRJ_HCU_AQYCUI;
+                break;
+
+            case MSG_ID_L4AQYCUI_TO_L3F1_USERAUTHCODE: //发送手机验证码
+                //解开消息
+                if (isset($msg["action"])) $action = $msg["action"]; else  $action = "";
+                if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
+                if (isset($msg["user"])) $user = $msg["user"]; else  $user = "";
+                if (isset($msg["body"])) $body = $msg["body"]; else  $body = "";
+                //具体处理函数
+                $resp = $this->func_userauthcode_process($action, $user, $body);
+                $project = MFUN_PRJ_HCU_AQYCUI;
+                break;
+
+            case MSG_ID_L4AQYCUI_TO_L3F1_PWRESET: //重置密码
+                //解开消息
+                if (isset($msg["action"])) $action = $msg["action"]; else  $action = "";
+                if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
+                if (isset($msg["user"])) $user = $msg["user"]; else  $user = "";
+                if (isset($msg["body"])) $body = $msg["body"]; else  $body = "";
+                //具体处理函数
+                $resp = $this->func_reset_password_process($action, $user, $body);
                 $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 

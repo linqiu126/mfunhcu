@@ -15,7 +15,7 @@ var replace = require('gulp-replace');
 
 
 
-var replace_content = "D:/webrd/www/dist/usr_img/";
+var replace_content = "../../avorion/usr_img/";
 var replace_install = "/dist";
 var option = {
 
@@ -42,7 +42,7 @@ gulp.task('clean',function(){
         read:false
     }).pipe(clean({force:true}));
 })
-// ±àÒëSass
+// ï¿½ï¿½ï¿½ï¿½Sass
 gulp.task('sass', function() {
     gulp.src('./scss/*.scss')
         .pipe(sass())
@@ -85,7 +85,7 @@ gulp.task("resourcecopy",function(){
      //   .pipe(gulp.dest(option.buildPath+"/"));
 })
 
-// ºÏ²¢£¬Ñ¹ËõÎÄ¼þ
+// ï¿½Ï²ï¿½ï¿½ï¿½Ñ¹ï¿½ï¿½ï¿½Ä¼ï¿½
 gulp.task('scripts', function() {
     gulp.src('./js/app.js')
         .pipe(concat('app.js'))
@@ -135,16 +135,19 @@ gulp.task('scripts', function() {
     gulp.src('./Login.html')
         .pipe(htmlmin(option_html))
         .pipe(gulp.dest(option.buildPath));
+    gulp.src('./LostPassword.html')
+        .pipe(htmlmin(option_html))
+        .pipe(gulp.dest(option.buildPath));
     gulp.src('./scope.html')
         .pipe(htmlmin(option_html))
         .pipe(gulp.dest(option.buildPath));
 });
 
-// Ä¬ÈÏÈÎÎñ
+// Ä¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 gulp.task('default',['clean'], function(){
     gulp.run('lint', 'sass', 'scripts','resourcecopy');
 /*
-    // ¼àÌýÎÄ¼þ±ä»¯
+    // ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ä»¯
     gulp.watch('./js/*.js', function(){
         gulp.run('lint', 'sass', 'scripts');
     });*/

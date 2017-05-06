@@ -1762,6 +1762,7 @@ class classDbiL3apF3dm
         array_push($resp["column"], "负责人");
         array_push($resp["column"], "联系电话");
         array_push($resp["column"], "设备状态");
+        array_push($resp["column"], "上次报告时间");
         array_push($resp["column"], "门-1状态");
         array_push($resp["column"], "门-2状态");
         array_push($resp["column"], "锁-1状态");
@@ -1811,7 +1812,8 @@ class classDbiL3apF3dm
             {
                 $row = $result->fetch_array();
                 //更新设备运行状态
-                $timestamp = strtotime($row["createtime"]);
+                $last_report = $row["createtime"];
+                $timestamp = strtotime($last_report);
                 $currenttime = time();
                 if ($currenttime > ($timestamp + MFUN_HCU_FHYS_SLEEP_DURATION))  //如果最后一次测量报告距离现在已经超过休眠间隔门限
                     $dev_status = "休眠中";
@@ -1857,7 +1859,13 @@ class classDbiL3apF3dm
                     $lock_2 = "未安装";
 
                 //更新GPRS信号强度
-                $sig_level = $row["siglevel"];
+                $sig_level = hexdec($row["siglevel"])& 0xFF;
+                if ($sig_level < MFUN_L3APL_F3DM_TH_ALARM_GPRS_LOW)
+                    $gprs = "较差";
+                elseif (($sig_level >= MFUN_L3APL_F3DM_TH_ALARM_GPRS_LOW) AND ($sig_level <= MFUN_L3APL_F3DM_TH_ALARM_GPRS_HIGH))
+                    $gprs = "一般";
+                else
+                    $gprs = "良好";
 
                 //更新电池剩余电量
                 $batt_level = (string)($row["battlevel"]/10) . "V";
@@ -1894,11 +1902,12 @@ class classDbiL3apF3dm
                     $smok_alarm = "无";
             }
             array_push($one_row, $dev_status);
+            array_push($one_row, $last_report);
             array_push($one_row, $door_1);
             array_push($one_row, $door_2);
             array_push($one_row, $lock_1);
             array_push($one_row, $lock_2);
-            array_push($one_row, $sig_level);
+            array_push($one_row, $gprs);
             array_push($one_row, $batt_level);
             array_push($one_row, $temperature);
             array_push($one_row, $humidity);
@@ -2119,14 +2128,24 @@ class classDbiL3apF3dm
 
             //更新GPRS信号强度
             if ($siglevel != NULL){
-                if ($siglevel < MFUN_L3APL_F3DM_TH_ALARM_GPRS)
+                $siglevel = hexdec($siglevel)& 0xFF;
+                if ($siglevel < MFUN_L3APL_F3DM_TH_ALARM_GPRS_LOW){
+                    $gprs = "较差";
                     $alarm = "true";
-                else
+                }
+                elseif (($siglevel >= MFUN_L3APL_F3DM_TH_ALARM_GPRS_LOW) AND ($siglevel <= MFUN_L3APL_F3DM_TH_ALARM_GPRS_HIGH)){
+                    $gprs = "一般";
                     $alarm = "false";
+                }
+                else{
+                    $gprs = "良好";
+                    $alarm = "false";
+                }
+
                 $temp = array(
                             'AlarmName'=>"GPRS信号强度：",
                             'AlarmEName'=> "FHYS_sig",
-                            'AlarmValue'=>(string)$siglevel,
+                            'AlarmValue'=>(string)$gprs,
                             'AlarmUnit'=>"",
                             'WarningTarget'=>$alarm);
                 array_push($currentvalue,$temp);

@@ -158,6 +158,8 @@ define("MSG_ID_L3NBIOT_OPR_METERTO_STD_CJ188_DL_REQUEST", $index++);
 //L4AQYCUI部分
 define("MSG_ID_L4AQYCUI_CLICK_INCOMING", $index++);
 define("MSG_ID_L4AQYCUI_TO_L3F1_LOGIN", $index++);
+define("MSG_ID_L4AQYCUI_TO_L3F1_USERAUTHCODE", $index++);
+define("MSG_ID_L4AQYCUI_TO_L3F1_PWRESET", $index++);
 define("MSG_ID_L4AQYCUI_TO_L3F1_USERINFO", $index++);
 define("MSG_ID_L4AQYCUI_TO_L3F1_USERNEW", $index++);
 define("MSG_ID_L4AQYCUI_TO_L3F1_USERMOD", $index++);

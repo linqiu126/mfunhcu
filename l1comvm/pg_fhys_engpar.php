@@ -13,6 +13,7 @@ define("MFUN_HCU_FHYS_LEXIN_URL","http://www.lx198.com/sdk/send?");  //乐信短
 define("MFUN_HCU_FHYS_LEXIN_ACCNAME","accName=18616271103");  //用户名(乐信登录账号)
 define("MFUN_HCU_FHYS_LEXIN_ACCPWD","accPwd=E10ADC3949BA59ABBE56E057F20F883E");  //密码123456(乐信登录密码32位MD5加密后转大写)
 define("MFUN_HCU_FHYS_LEXIN_SIGNATURE","【阜华光交箱云平台】"); //短信签名
+define("MFUN_HCU_FHYS_LEXIN_AUTHCODE_LEN", 6); //短信验证码长度
 
 //FHYS项目关键字
 define("MFUN_HCU_FHYS_SLEEP_DURATION", 300); //如果最后一次测量报告距离现在已经超过5x60秒

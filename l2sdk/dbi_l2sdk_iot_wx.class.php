@@ -23,6 +23,31 @@ class classDbiL2sdkIotWx
 
     }
 
+    public function dbi_fhys_wechatkey_unbind($openid)
+    {
+        //建立连接
+        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli) {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $mysqli->query("SET NAMES utf8");
+
+        $query_str = "SELECT * FROM `t_l3f2cm_fhys_keyinfo` WHERE `hwcode` = '$openid'";
+        $result = $mysqli->query($query_str);
+        while($row = $result->fetch_array()) {
+            $keyid = $row['keyid'];
+            //删除该微信钥匙对应的所有授权
+            $query_str = "DELETE FROM `t_l3f2cm_fhys_keyauth` WHERE `keyid` = '$keyid'";
+            $result = $mysqli->query($query_str);
+        }
+        //删除该微信绑定的所有虚拟钥匙
+        $query_str = "DELETE FROM `t_l3f2cm_fhys_keyinfo` WHERE `hwcode` = '$openid'";
+        $result = $mysqli->query($query_str);
+
+        $mysqli->close();
+        return $result;
+    }
+
 
 }//End of class_wx_db
 

@@ -72,7 +72,10 @@ elseif (MFUN_WX_APPID == "wxf2150c4d2941b2ab") //如果是正式小慧智能服�
     '{"button":[
                 {"type":"view","name":"辐射查看","url":"https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxf2150c4d2941b2ab&redirect_uri=http://www.hkrob.com/mfunhcu/l4emcwxui/index.html?response_type=code&scope=snsapi_base&state=1#wechat_redirect"},
 
-                {"type":"view","name":"云控锁","url":"https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxf2150c4d2941b2ab&redirect_uri=http://www.hkrob.com/mfunhcu/l4fhyswechat/index.html?response_type=code&scope=snsapi_base&state=1#wechat_redirect"},
+                {"name":"云控锁",
+                    "sub_button":[{"type":"click","name":"用户解绑","key":"CLICK_FHYS_WECHATKEY_UNBIND"},
+                                  {"type":"view","name":"系统登录","url":"https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxf2150c4d2941b2ab&redirect_uri=http://www.hkrob.com/mfunhcu/l4fhyswechat/index.html?response_type=code&scope=snsapi_base&state=1#wechat_redirect"}]
+                }
 
                 {"name":"我",
                     "sub_button":[{"type":"scancode_push","name":"扫码绑定","key":"XHZN_QR_SCAN"},
@@ -87,7 +90,10 @@ elseif (MFUN_WX_APPID == "wxd054d0d6bae92d04") //如果是FOHA服务号
 {
     $self_create_menu =
         '{"button":[
-                {"type":"view","name":"光交箱云控平台","url":"https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxd054d0d6bae92d04&redirect_uri=http://www.foome.com.cn/mfunhcu/l4fhyswechat/index.html?response_type=code&scope=snsapi_base&state=1#wechat_redirect"},
+                {"name":"光交箱云控平台",
+                    "sub_button":[{"type":"click","name":"用户解绑","key":"CLICK_FHYS_WECHATKEY_UNBIND"},
+                                {"type":"view","name":"系统登录","url":"https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxd054d0d6bae92d04&redirect_uri=http://www.foome.com.cn/mfunhcu/l4fhyswechat/index.html?response_type=code&scope=snsapi_base&state=1#wechat_redirect"}]
+                },
 
                 {"name":"关于",
                     "sub_button":[{"type":"click","name":"帮助","key":"CLICK_FHYS_HELP"},
