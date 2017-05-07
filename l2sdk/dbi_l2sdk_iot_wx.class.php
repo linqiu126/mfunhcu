@@ -33,16 +33,21 @@ class classDbiL2sdkIotWx
         $mysqli->query("SET NAMES utf8");
 
         $query_str = "SELECT * FROM `t_l3f2cm_fhys_keyinfo` WHERE `hwcode` = '$openid'";
-        $result = $mysqli->query($query_str);
-        while($row = $result->fetch_array()) {
-            $keyid = $row['keyid'];
-            //删除该微信钥匙对应的所有授权
-            $query_str = "DELETE FROM `t_l3f2cm_fhys_keyauth` WHERE `keyid` = '$keyid'";
+        $resp = $mysqli->query($query_str);
+        if (($resp != false) && ($resp->num_rows)>0)
+        {
+            while($row = $resp->fetch_array()) {
+                $keyid = $row['keyid'];
+                //删除该微信钥匙对应的所有授权
+                $query_str = "DELETE FROM `t_l3f2cm_fhys_keyauth` WHERE `keyid` = '$keyid'";
+                $result = $mysqli->query($query_str);
+            }
+            //删除该微信绑定的所有虚拟钥匙
+            $query_str = "DELETE FROM `t_l3f2cm_fhys_keyinfo` WHERE `hwcode` = '$openid'";
             $result = $mysqli->query($query_str);
         }
-        //删除该微信绑定的所有虚拟钥匙
-        $query_str = "DELETE FROM `t_l3f2cm_fhys_keyinfo` WHERE `hwcode` = '$openid'";
-        $result = $mysqli->query($query_str);
+        else
+            $result = false;
 
         $mysqli->close();
         return $result;

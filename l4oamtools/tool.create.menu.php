@@ -90,7 +90,7 @@ elseif (MFUN_WX_APPID == "wxd054d0d6bae92d04") //如果是FOHA服务号
 {
     $self_create_menu =
         '{"button":[
-                {"name":"光交箱云控平台",
+                {"name":"云控平台",
                     "sub_button":[{"type":"click","name":"用户解绑","key":"CLICK_FHYS_WECHATKEY_UNBIND"},
                                 {"type":"view","name":"系统登录","url":"https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxd054d0d6bae92d04&redirect_uri=http://www.foome.com.cn/mfunhcu/l4fhyswechat/index.html?response_type=code&scope=snsapi_base&state=1#wechat_redirect"}]
                 },

@@ -13,8 +13,6 @@ var clean = require('gulp-clean');
 var htmlmin = require('gulp-htmlmin');
 var replace = require('gulp-replace');
 
-
-
 var replace_content = "../../avorion/usr_img/";
 var replace_install = "/dist";
 var option = {
@@ -42,7 +40,7 @@ gulp.task('clean',function(){
         read:false
     }).pipe(clean({force:true}));
 })
-// ï¿½ï¿½ï¿½ï¿½Sass
+// ±àÒëSass
 gulp.task('sass', function() {
     gulp.src('./scss/*.scss')
         .pipe(sass())
@@ -85,7 +83,7 @@ gulp.task("resourcecopy",function(){
      //   .pipe(gulp.dest(option.buildPath+"/"));
 })
 
-// ï¿½Ï²ï¿½ï¿½ï¿½Ñ¹ï¿½ï¿½ï¿½Ä¼ï¿½
+// ºÏ²¢£¬Ñ¹ËõÎÄ¼þ
 gulp.task('scripts', function() {
     gulp.src('./js/app.js')
         .pipe(concat('app.js'))
@@ -143,11 +141,11 @@ gulp.task('scripts', function() {
         .pipe(gulp.dest(option.buildPath));
 });
 
-// Ä¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+// Ä¬ÈÏÈÎÎñ
 gulp.task('default',['clean'], function(){
     gulp.run('lint', 'sass', 'scripts','resourcecopy');
 /*
-    // ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ä»¯
+    // ¼àÌýÎÄ¼þ±ä»¯
     gulp.watch('./js/*.js', function(){
         gulp.run('lint', 'sass', 'scripts');
     });*/

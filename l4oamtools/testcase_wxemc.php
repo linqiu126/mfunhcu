@@ -206,6 +206,15 @@ if (TC_EMCWX == true){
                                         <Event><![CDATA[CLICK]]></Event>
                                         <EventKey><![CDATA[CLICK_XHZN_COMPANY]]></EventKey>
                                      </xml>";
+
+    $GLOBALS["HTTP_RAW_POST_DATA"] =  "<xml><ToUserName><![CDATA[gh_0ab9a32c6381]]></ToUserName>
+                <FromUserName><![CDATA[oVJPKv9WTvaWLD65LxLdyziL3Uuo]]></FromUserName>
+                <CreateTime>1494079696</CreateTime>
+                <MsgType><![CDATA[event]]></MsgType>
+                <Event><![CDATA[CLICK]]></Event>
+                <EventKey><![CDATA[CLICK_FHYS_WECHATKEY_UNBIND]]></EventKey>
+                </xml>";
+
     require("../l1mainentry/cloud_callback_wechat.php");
     echo " \n[TC EMCWX: WEIXIN CLICK_COMPANY END]\n";
     //服务号菜单Click事件

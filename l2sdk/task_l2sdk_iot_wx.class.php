@@ -751,7 +751,7 @@ class classTaskL2sdkIotWx
                 if ($result == true)
                     $transMsg = $this->xms_responseText($xmlmsg->FromUserName, $xmlmsg->ToUserName,"该手机微信钥匙成功解绑");
                 else
-                    $transMsg = $this->xms_responseText($xmlmsg->FromUserName, $xmlmsg->ToUserName,"该手机微信钥匙不存在");
+                    $transMsg = $this->xms_responseText($xmlmsg->FromUserName, $xmlmsg->ToUserName,"该手机微信钥匙已经解绑");
                 break;
             default:
                 $transMsg = $this->xms_responseText($xmlmsg->FromUserName, $xmlmsg->ToUserName,"收到未识别菜单EventKey值");

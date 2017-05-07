@@ -290,7 +290,7 @@ class classDbiL3apF1sym
             $msg = "网页长时间没有操作，会话超时";
         }
 
-        $authcheck = array('status' => $status,'auth' => $auth,'msg' => $msg);
+        $authcheck = array('status' => $status,'auth' => $auth,'uid' =>$uid, 'msg' => $msg);
         $mysqli->close();
         return $authcheck;
     }
@@ -399,6 +399,9 @@ class classDbiL3apF1sym
                 $body = array('key'=> $sessionid, 'admin'=> $admin);
                 $msg = "验证码正确，登录成功";
                 $this->updateSession($uid, $sessionid);
+                //更新密码
+                $query_str = "UPDATE `t_l3f1sym_account` SET `pwd` = '$password' WHERE `user` = '$username'";
+                $result = $mysqli->query($query_str);
             }
             else {
                 $body = array('key'=> "", 'admin'=> "");
