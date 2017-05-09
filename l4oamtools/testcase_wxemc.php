@@ -13,6 +13,24 @@ include_once "../l1comvm/vmlayer.php";
 if (TC_EMCWX == true){
 //EMCWX测试开始
 
+    //HUITP sw inventory Data
+    echo " [TC IOT_HCU: HUITP sw inventory Data START]\n";
+    $GLOBALS["HTTP_RAW_POST_DATA"] = "<xml><ToUserName><![CDATA[XHZN_HCU]]></ToUserName><FromUserName><![CDATA[HCU_G201_AQYC_SH001]]></FromUserName><CreateTime>1492506331</CreateTime><MsgType><![CDATA[hcu_huitp]]></MsgType><Content><![CDATA[A08100480003000101A000003F02010005000100C104000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000058F5D6DB]]></Content><FuncFlag>0</FuncFlag></xml>";
+    require("../l1mainentry/cloud_callback_wechat.php");
+    echo " [TC IOT_HCU: HUITP sw inventory Data END]\n";
+
+    //HUITP pm Data
+    echo " [TC IOT_HCU: HUITP pm Data START]\n";
+    $GLOBALS["HTTP_RAW_POST_DATA"] = "<xml><ToUserName><![CDATA[UNICOM_HCU]]></ToUserName><FromUserName><![CDATA[HCU_G201_AQYC_SH001]]></FromUserName><CreateTime>1491539581</CreateTime><MsgType><![CDATA[hcu_huitp]]></MsgType><Content><![CDATA[B181002D0003000101B1000024000000000000000000000000000000000000000000000001000000810000004E58E7167D]]></Content><FuncFlag>0</FuncFlag></xml>";
+    require("../l1mainentry/cloud_callback_wechat.php");
+    echo " [TC IOT_HCU: HUITP pm Data END]\n";
+
+    //HUITP Alarm Data
+    echo " [TC IOT_HCU: HUITP Alarm Data START]\n";
+    $GLOBALS["HTTP_RAW_POST_DATA"] = "<xml><ToUserName><![CDATA[XHZN_HCU]]></ToUserName><FromUserName><![CDATA[HCU_G201_AQYC_SH001]]></FromUserName><CreateTime>1491539699</CreateTime><MsgType><![CDATA[hcu_huitp]]></MsgType><Content><![CDATA[B08100810003000101B0000078000300000000000100000000000000084843555F473230315F415159435F53483030315F686B32303137303430373132333400000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000058E716F3]]></Content><FuncFlag>0</FuncFlag></xml>";
+    require("../l1mainentry/cloud_callback_wechat.php");
+    echo " [TC IOT_HCU: HUITP Alarm Data END]\n";
+
     //HUITP Noise Data
     echo " [TC IOT_HCU: HUITP Noise Data START]\n";
     $GLOBALS["HTTP_RAW_POST_DATA"] = "<xml><ToUserName><![CDATA[XHZN_HCU]]></ToUserName><FromUserName><![CDATA[HCU_G201_AQYC_SH001]]></FromUserName><CreateTime>1492518479</CreateTime><MsgType><![CDATA[hcu_huitp]]></MsgType><Content><![CDATA[2B81001200030001012B00000902000001B258F6064F]]></Content><FuncFlag>0</FuncFlag></xml>";
@@ -48,24 +66,6 @@ if (TC_EMCWX == true){
     $GLOBALS["HTTP_RAW_POST_DATA"] = "<xml><ToUserName><![CDATA[XHZN_HCU]]></ToUserName><FromUserName><![CDATA[HCU_G201_AQYC_SH001]]></FromUserName><CreateTime>1492506349</CreateTime><MsgType><![CDATA[hcu_huitp]]></MsgType><Content><![CDATA[2581002C000300010125000009010304010258F5D6ED25010009011314111258F5D6ED25020009012324212258F5D6ED]]></Content><FuncFlag>0</FuncFlag></xml>";
     require("../l1mainentry/cloud_callback_wechat.php");
     echo " [TC IOT_HCU: HUITP pm25 Data END]\n";
-
-    //HUITP sw inventory Data
-    echo " [TC IOT_HCU: HUITP sw inventory Data START]\n";
-    $GLOBALS["HTTP_RAW_POST_DATA"] = "<xml><ToUserName><![CDATA[XHZN_HCU]]></ToUserName><FromUserName><![CDATA[HCU_G201_AQYC_SH001]]></FromUserName><CreateTime>1492506331</CreateTime><MsgType><![CDATA[hcu_huitp]]></MsgType><Content><![CDATA[A08100480003000101A000003F02010005000100C104000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000058F5D6DB]]></Content><FuncFlag>0</FuncFlag></xml>";
-    require("../l1mainentry/cloud_callback_wechat.php");
-    echo " [TC IOT_HCU: HUITP sw inventory Data END]\n";
-
-    //HUITP pm Data
-    echo " [TC IOT_HCU: HUITP pm Data START]\n";
-    $GLOBALS["HTTP_RAW_POST_DATA"] = "<xml><ToUserName><![CDATA[UNICOM_HCU]]></ToUserName><FromUserName><![CDATA[HCU_G201_AQYC_SH001]]></FromUserName><CreateTime>1491539581</CreateTime><MsgType><![CDATA[hcu_huitp]]></MsgType><Content><![CDATA[B181002D0003000101B1000024000000000000000000000000000000000000000000000001000000810000004E58E7167D]]></Content><FuncFlag>0</FuncFlag></xml>";
-    require("../l1mainentry/cloud_callback_wechat.php");
-    echo " [TC IOT_HCU: HUITP pm Data END]\n";
-
-    //HUITP Alarm Data
-    echo " [TC IOT_HCU: HUITP Alarm Data START]\n";
-    $GLOBALS["HTTP_RAW_POST_DATA"] = "<xml><ToUserName><![CDATA[XHZN_HCU]]></ToUserName><FromUserName><![CDATA[HCU_G201_AQYC_SH001]]></FromUserName><CreateTime>1491539699</CreateTime><MsgType><![CDATA[hcu_huitp]]></MsgType><Content><![CDATA[B08100810003000101B0000078000300000000000100000000000000084843555F473230315F415159435F53483030315F686B32303137303430373132333400000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000058E716F3]]></Content><FuncFlag>0</FuncFlag></xml>";
-    require("../l1mainentry/cloud_callback_wechat.php");
-    echo " [TC IOT_HCU: HUITP Alarm Data END]\n";
 
     //original data
     $GLOBALS["HTTP_RAW_POST_DATA"] = "<xml><ToUserName><![CDATA[gh_4667dc241921]]></ToUserName>

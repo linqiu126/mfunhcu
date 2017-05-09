@@ -4664,8 +4664,9 @@ class classTaskL2sdkWechat
                         $msgId = MSG_ID_L2SDK_IOT_HUITP_TO_L2CODEC_HUITP;
                         $msgName = "MSG_ID_L2SDK_IOT_HUITP_TO_L2CODEC_HUITP";
 
-                        $project = trim($postObj->ToUserName);
+                        $project = MFUN_PRJ_HCU_HUITP;
                         $devCode = trim($postObj->FromUserName);
+                        $log_from = $devCode; //存入消息发送方的hcu名字
 
                         //query statCode thru devCode from t_l2sdk_iothcu_inventory
                         $cDbObj = new classDbiL2sdkHcu();
@@ -4690,24 +4691,24 @@ class classTaskL2sdkWechat
                             "content" => $content,
                             "funcFlag" => $funcFlag);
 
-                        $result = $huitpObj->mfun_l2codec_huitp_xml_task_main_entry($parObj, $msgId, $msgName, $msg);
+                        $huitp_result = $huitpObj->mfun_l2codec_huitp_xml_task_main_entry($parObj, $msgId, $msgName, $msg);
 
-                        $huitpMsgId = $result[0]; //Retrieved from mfun_l2codec_huitp_xml_task_main_entry()
+                        $huitpMsgId = $huitp_result[0]; //Retrieved from mfun_l2codec_huitp_xml_task_main_entry()
 
                         switch($huitpMsgId) {
                             case HUITP_MSGID_uni_alarm_info_report:
                                 $hcuObj = new classApiL2snrCommonService();
-                                $resp = $hcuObj->func_hcuAlarmData_huitp_process($devCode, $statCode, $result);
+                                $result = $hcuObj->func_hcuAlarmData_huitp_process($devCode, $statCode, $huitp_result);
                                 break;
 
                             case HUITP_MSGID_uni_performance_info_report:
                                 $hcuObj = new classApiL2snrCommonService();
-                                $resp = $hcuObj->func_hcuPerformance_huitp_process($devCode, $statCode, $result);
+                                $result = $hcuObj->func_hcuPerformance_huitp_process($devCode, $statCode, $huitp_result);
                                 break;
 
                             case HUITP_MSGID_uni_inventory_report:
                                 $hcuObj = new classApiL2snrCommonService();
-                                $resp = $hcuObj->func_inventory_huitp_data_process($devCode, $result);
+                                $result = $hcuObj->func_inventory_huitp_data_process($devCode, $huitp_result);
                                 break;
 
                             default:
@@ -4715,72 +4716,72 @@ class classTaskL2sdkWechat
                                 $l2codecHuitpMsgDictObj = new classL2codecHuitpMsgDict();
                                 $huitp_destId = $l2codecHuitpMsgDictObj->mfun_l2codec_getHuitpDestTaskId($huitpMsgId);
                                 $huitp_msgName = "huitp_to_noise_humid_pm25_temp_winddir_windspd";
-                                $log_from = MFUN_CLOUD_WX;
+
                                 $msg = array("project" => $project,
                                     "log_from" => $log_from,
                                     "platform" => MFUN_TECH_PLTF_HCUGX,
                                     "deviceId" => $devCode,
                                     "statCode" => $statCode,
                                     //put array $result to content
-                                    "content" => $result);
+                                    "content" => $huitp_result);
                                 if ($parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L2SDK_IOT_HCU,
                                         $huitp_destId,
                                         $huitpMsgId,
                                         $huitp_msgName,
-                                        $msg) == false) $resp = "Send to message buffer error";
-                                else $resp = "";
+                                        $msg) == false) $result = "Send to message buffer error";
+                                else $result = "";
                        }
 
-                        //case1: noise
-                        /*$temp_destId = MFUN_TASK_ID_L2SENSOR_NOISE;
+                        /*//case1: noise
+                        $temp_destId = MFUN_TASK_ID_L2SENSOR_NOISE;
                         $temp_msgId = MSG_ID_L2CODEC_TO_L2SNR_NOISE;
-                        $temp_msgName = "MSG_ID_L2CODEC_TO_L2SNR_NOISE";*/
+                        $temp_msgName = "MSG_ID_L2CODEC_TO_L2SNR_NOISE";
 
                         //case2: humidity
-                        /*$temp_destId = MFUN_TASK_ID_L2SENSOR_HUMID;
+                        $temp_destId = MFUN_TASK_ID_L2SENSOR_HUMID;
                         $temp_msgId = MSG_ID_L2CODEC_TO_L2SNR_HUMIDITY;
-                        $temp_msgName = "MSG_ID_L2CODEC_TO_L2SNR_HUMIDITY";*/
+                        $temp_msgName = "MSG_ID_L2CODEC_TO_L2SNR_HUMIDITY";
 
                         //case3: pm25
-                        /*$temp_destId = MFUN_TASK_ID_L2SENSOR_PM25;
+                        $temp_destId = MFUN_TASK_ID_L2SENSOR_PM25;
                         $temp_msgId = MSG_ID_L2CODEC_TO_L2SNR_PM25;
-                        $temp_msgName = "MSG_ID_L2CODEC_TO_L2SNR_PM25";*/
+                        $temp_msgName = "MSG_ID_L2CODEC_TO_L2SNR_PM25";
 
                         //case4: temperature
-                        /*$temp_destId = MFUN_TASK_ID_L2SENSOR_TEMP;
+                        $temp_destId = MFUN_TASK_ID_L2SENSOR_TEMP;
                         $temp_msgId = MSG_ID_L2CODEC_TO_L2SNR_TEMP;
-                        $temp_msgName = "MSG_ID_L2CODEC_TO_L2SNR_TEMP";*/
+                        $temp_msgName = "MSG_ID_L2CODEC_TO_L2SNR_TEMP";
 
                         //case5: winddir
-                        /*$temp_destId = MFUN_TASK_ID_L2SENSOR_WINDDIR;
+                        $temp_destId = MFUN_TASK_ID_L2SENSOR_WINDDIR;
                         $temp_msgId = MSG_ID_L2CODEC_TO_L2SNR_WINDDIR;
-                        $temp_msgName = "MSG_ID_L2CODEC_TO_L2SNR_WINDDIR";*/
+                        $temp_msgName = "MSG_ID_L2CODEC_TO_L2SNR_WINDDIR";
 
                         //case6: windspd
-                        /*$temp_destId = MFUN_TASK_ID_L2SENSOR_WINDSPD;
+                        $temp_destId = MFUN_TASK_ID_L2SENSOR_WINDSPD;
                         $temp_msgId = MSG_ID_L2CODEC_TO_L2SNR_WINDSPD;
-                        $temp_msgName = "MSG_ID_L2CODEC_TO_L2SNR_WINDSPD";*/
-                        /*if ($parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L2SDK_IOT_HCU,
+                        $temp_msgName = "MSG_ID_L2CODEC_TO_L2SNR_WINDSPD";
+                        if ($parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L2SDK_IOT_HCU,
                                 $temp_destId,
                                 $temp_msgId,
                                 $temp_msgName,
                                 $msg) == false) $resp = "Send to message buffer error";
-                        else $resp = "";*/
+                        else $resp = "";
 
                         //case7: alarm
-                        /*$hcuObj = new classApiL2snrCommonService();
-                        $resp = $hcuObj->func_hcuAlarmData_huitp_process($devCode, $statCode, $result);*/
+                        $hcuObj = new classApiL2snrCommonService();
+                        $resp = $hcuObj->func_hcuAlarmData_huitp_process($devCode, $statCode, $result);
 
                         //case8: pm
-                        /*$hcuObj = new classApiL2snrCommonService();
-                        $resp = $hcuObj->func_hcuPerformance_huitp_process($devCode, $statCode, $result);*/
+                        $hcuObj = new classApiL2snrCommonService();
+                        $resp = $hcuObj->func_hcuPerformance_huitp_process($devCode, $statCode, $result);
 
                         //case9: sw inventory
-                        /*$hcuObj = new classApiL2snrCommonService();
+                        $hcuObj = new classApiL2snrCommonService();
                         $resp = $hcuObj->func_inventory_huitp_data_process($devCode, $result);*/
 
                         //convert array to string for log function
-                        $result = self::json_encode($result);
+                        $result = self::json_encode($huitp_result);
 
                         break;
 

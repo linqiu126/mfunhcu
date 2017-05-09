@@ -72,6 +72,7 @@ define("MFUN_TECH_PLTF_NBIOT_CJ188", "MFUN_TECH_PLTF_NBIOT_CJ188");  //窄带物
 //这里的PRJ目前只是为了在Log记录中起到应用场景的区分作用，还没有在消息处理中起到真正的作用
 define("MFUN_PRJ_IHU_EMCWX", "MFUN_PRJ_IHU_EMCWX");
 define("MFUN_PRJ_HCU_XML", "MFUN_PRJ_HCU_XML");
+define("MFUN_PRJ_HCU_HUITP", "MFUN_PRJ_HCU_HUITP");
 define("MFUN_PRJ_HCU_ZHB", "MFUN_PRJ_HCU_ZHB");
 define("MFUN_PRJ_HCU_APPLE", "MFUN_PRJ_HCU_APPLE");
 define("MFUN_PRJ_HCU_JD", "MFUN_PRJ_HCU_JD");
