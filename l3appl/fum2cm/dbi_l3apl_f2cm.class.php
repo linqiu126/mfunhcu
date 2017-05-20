@@ -300,7 +300,7 @@ class classDbiL3apF2cm
     }
 
     //UI PGTable request, 获取全部项目组列表信息
-    public function dbi_all_pgtable_req($uid, $startseq, $query_length)
+    public function dbi_user_pg_table_req($uid, $startseq, $query_length)
     {
         //建立连接
         $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);

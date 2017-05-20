@@ -99,7 +99,7 @@ class classDbiL3apF6pm
 
         $auth_list["stat_code"] = array();
         $auth_list["p_code"] = array();
-        $dbiL3apF3dmObj = new classDbiL3apF3dm();
+        $dbiL3apF3dmObj = new classDbiL3apF3dm();  //这个地方调用F3DM的dbi函数不太好！！！
         $auth_list = $dbiL3apF3dmObj->dbi_user_statproj_inqury($uid);
 
         array_push($resp["column"], "设备编号");

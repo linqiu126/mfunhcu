@@ -41,7 +41,7 @@ class classTaskL3aplF2cm
         return urlencode($elem);
     }
 
-    function func_project_pglist_process($action, $user, $body)
+    function func_all_project_pg_list_process($action, $user, $body)
     {
         $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
         $usercheck = $uiF1symDbObj->dbi_user_authcheck($action, $user);
@@ -49,9 +49,9 @@ class classTaskL3aplF2cm
             $uiF2cmDbObj = new classDbiL3apF2cm(); //初始化一个UI DB对象
             $proj_pg_list = $uiF2cmDbObj->dbi_all_projpglist_req();
             if(!empty($proj_pg_list))
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$proj_pg_list,'msg'=>"获取项目项目组列表成功");
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$proj_pg_list,'msg'=>"获取全部项目项目组列表成功");
             else
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>"获取项目项目组列表失败");
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$proj_pg_list,'msg'=>"获取全部项目项目组列表失败");
         }
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
@@ -59,7 +59,7 @@ class classTaskL3aplF2cm
         return $retval;
     }
 
-    function func_project_list_process($action, $user, $body)
+    function func_all_project_list_process($action, $user, $body)
     {
         $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
         $usercheck = $uiF1symDbObj->dbi_user_authcheck($action, $user);
@@ -67,9 +67,9 @@ class classTaskL3aplF2cm
             $uiF2cmDbObj = new classDbiL3apF2cm(); //初始化一个UI DB对象
             $projlist = $uiF2cmDbObj->dbi_all_projlist_req();
             if(!empty($projlist))
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$projlist,'msg'=>"获取项目列表成功");
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$projlist,'msg'=>"获取全部项目列表成功");
             else
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>"获取项目列表失败");
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$projlist,'msg'=>"获取全部项目列表失败");
         }
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
@@ -89,7 +89,7 @@ class classTaskL3aplF2cm
             if(!empty($userproj))
                 $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$userproj,'msg'=>"获取用户所属项目列表成功");
             else
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>"获取用户所属项目列表失败");
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$userproj,'msg'=>"获取用户所属项目列表失败");
         }
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
@@ -97,7 +97,7 @@ class classTaskL3aplF2cm
         return $retval;
     }
 
-    function func_pg_table_process($action, $user, $body)
+    function func_user_pg_table_process($action, $user, $body)
     {
         if (isset($body["length"])) $length = $body["length"]; else  $length = "";
         if (isset($body["startseq"])) $startseq = $body["startseq"]; else  $startseq = "";
@@ -112,13 +112,12 @@ class classTaskL3aplF2cm
         $usercheck = $uiF1symDbObj->dbi_user_authcheck($action, $user);
         if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
             $uid = $usercheck['uid'];
-            $pgtable = $uiF2cmDbObj->dbi_all_pgtable_req($uid, $start, $query_length);
-            if(!empty($pgtable)){
-                $ret = array('start'=> (string)$start,'total'=> (string)$total,'length'=>(string)$query_length,'pgtable'=>$pgtable);
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$ret,'msg'=>"项目组表获取成功");
-            }
+            $pgtable = $uiF2cmDbObj->dbi_user_pg_table_req($uid, $start, $query_length);
+            $ret = array('start'=> (string)$start,'total'=> (string)$total,'length'=>(string)$query_length,'pgtable'=>$pgtable);
+            if(!empty($pgtable))
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$ret,'msg'=>"获取用户授权项目组列表成功");
             else
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>"项目组获取失败");
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$ret,'msg'=>"获取用户授权项目组列表失败");
         }
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
@@ -587,7 +586,7 @@ class classTaskL3aplF2cm
             if(!empty($all_keyuser))
                 $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$all_keyuser,'msg'=>"获取项目钥匙用户列表成功");
             else
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>"获取项目钥匙用户列表失败");
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$all_keyuser,'msg'=>"获取项目钥匙用户列表失败");
         }
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
@@ -860,12 +859,12 @@ class classTaskL3aplF2cm
         switch($msgId)
         {
             case MSG_ID_L4AQYCUI_TO_L3F2_PROJECTPGLIST://功能Project Pg List
-                $resp = $this->func_project_pglist_process($action, $user, $body);
+                $resp = $this->func_all_project_pg_list_process($action, $user, $body);
                 $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 
             case MSG_ID_L4AQYCUI_TO_L3F2_PROJECTLIST://功能Project List
-                $resp = $this->func_project_list_process($action, $user, $body);
+                $resp = $this->func_all_project_list_process($action, $user, $body);
                 $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 
@@ -875,7 +874,7 @@ class classTaskL3aplF2cm
                 break;
 
             case MSG_ID_L4AQYCUI_TO_L3F2_PGTABLE://功能PG Table
-                $resp = $this->func_pg_table_process($action, $user, $body);
+                $resp = $this->func_user_pg_table_process($action, $user, $body);
                 $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 

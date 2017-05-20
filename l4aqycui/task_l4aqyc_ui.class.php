@@ -56,6 +56,24 @@ class classTaskL4aqycUi
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM1SYM, MSG_ID_L4AQYCUI_TO_L3F1_LOGIN, "MSG_ID_L4AQYCUI_TO_L3F1_LOGIN",$input);
                     break;
 
+                case "Get_user_auth_code": //找回密码发送手机验证码
+                    if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
+                    if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
+                    if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
+
+                    $input = array("action" => $action, "type" => $type, "user" => $user,"body" => $body);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM1SYM, MSG_ID_L4AQYCUI_TO_L3F1_USERAUTHCODE, "MSG_ID_L4AQYCUI_TO_L3F1_USERAUTHCODE",$input);
+                    break;
+
+                case "Reset_password":  //重置密码
+                    if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
+                    if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
+                    if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
+
+                    $input = array("action" => $action, "type" => $type, "user" => $user,"body" => $body);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM1SYM, MSG_ID_L4AQYCUI_TO_L3F1_PWRESET, "MSG_ID_L4AQYCUI_TO_L3F1_PWRESET",$input);
+                    break;
+
                 case "UserInfo":    // get User Information after login
                     if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
                     if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
@@ -233,7 +251,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
                     $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
-                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM3DM, MSG_ID_L4AQYCUI_TO_L3F3_POINTTABLE, "MSG_ID_L4AQYCUI_TO_L3F3_POINTTABLE",$input);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4AQYCUI_TO_L3F2_POINTTABLE, "MSG_ID_L4AQYCUI_TO_L3F2_POINTTABLE",$input);
                     break;
 
                 case "PointDetail":
@@ -246,7 +264,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
                     $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
-                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM3DM, MSG_ID_L4AQYCUI_TO_L3F3_POINTNEW, "MSG_ID_L4AQYCUI_TO_L3F3_POINTNEW",$input);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4AQYCUI_TO_L3F2_POINTNEW, "MSG_ID_L4AQYCUI_TO_L3F2_POINTNEW",$input);
                     break;
 
                 case "PointMod"://修改监测点信息
@@ -255,7 +273,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
                     $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
-                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM3DM, MSG_ID_L4AQYCUI_TO_L3F3_POINTMOD, "MSG_ID_L4AQYCUI_TO_L3F3_POINTMOD",$input);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4AQYCUI_TO_L3F2_POINTMOD, "MSG_ID_L4AQYCUI_TO_L3F2_POINTMOD",$input);
                     break;
 
                 case "PointDel":  //删除一个监测点
@@ -264,7 +282,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
                     $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
-                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM3DM, MSG_ID_L4AQYCUI_TO_L3F3_POINTDEL, "MSG_ID_L4AQYCUI_TO_L3F3_POINTDEL",$input);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4AQYCUI_TO_L3F2_POINTDEL, "MSG_ID_L4AQYCUI_TO_L3F2_POINTDEL",$input);
                     break;
 
                 case "PointDev": //查询监测点下的HCU设备列表
@@ -273,7 +291,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
                     $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
-                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM3DM, MSG_ID_L4AQYCUI_TO_L3F3_POINTDEV, "MSG_ID_L4AQYCUI_TO_L3F3_POINTDEV",$input);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4AQYCUI_TO_L3F2_POINTDEV, "MSG_ID_L4AQYCUI_TO_L3F2_POINTDEV",$input);
                     break;
 
                 case "DevTable": //查询HCU设备列表信息
@@ -282,7 +300,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
                     $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
-                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM3DM, MSG_ID_L4AQYCUI_TO_L3F3_DEVTABLE, "MSG_ID_L4AQYCUI_TO_L3F3_DEVTABLE",$input);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4AQYCUI_TO_L3F2_DEVTABLE, "MSG_ID_L4AQYCUI_TO_L3F2_DEVTABLE",$input);
                     break;
 
                 case "DevNew":  //创建新的HCU信息
@@ -291,7 +309,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
                     $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
-                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM3DM, MSG_ID_L4AQYCUI_TO_L3F3_DEVNEW, "MSG_ID_L4AQYCUI_TO_L3F3_DEVNEW",$input);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4AQYCUI_TO_L3F2_DEVNEW, "MSG_ID_L4AQYCUI_TO_L3F2_DEVNEW",$input);
                     break;
 
                 case "DevMod": //修改监测设备信息
@@ -300,7 +318,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
                     $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
-                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM3DM, MSG_ID_L4AQYCUI_TO_L3F3_DEVMOD, "MSG_ID_L4AQYCUI_TO_L3F3_DEVMOD",$input);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4AQYCUI_TO_L3F2_DEVMOD, "MSG_ID_L4AQYCUI_TO_L3F2_DEVMOD",$input);
                     break;
 
                 case "DevDel":  //删除HCU设备
@@ -309,7 +327,7 @@ class classTaskL4aqycUi
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
                     $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
-                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM3DM, MSG_ID_L4AQYCUI_TO_L3F3_DEVDEL, "MSG_ID_L4AQYCUI_TO_L3F3_DEVDEL",$input);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4AQYCUI_TO_L3F2_DEVDEL, "MSG_ID_L4AQYCUI_TO_L3F2_DEVDEL",$input);
                     break;
 
                 case "MonitorList":      // get monitorList in map by user id
@@ -429,6 +447,25 @@ class classTaskL4aqycUi
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM7ADS, MSG_ID_L4AQYCUI_TO_L3F7_CLEARUSERIMG, "MSG_ID_L4AQYCUI_TO_L3F7_CLEARUSERIMG",$input);
                     break;
 
+                //以下视频和摄像头处理为老的方法，保留在这里暂时不起作用
+                case "GetVideoList": //获取指定站点指定时间段内的所有视频文件列表
+                    if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
+                    if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
+                    if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
+
+                    $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM4ICM, MSG_ID_L4AQYCUI_TO_L3F4_VIDEOLIST, "MSG_ID_L4AQYCUI_TO_L3F4_VIDEOLIST",$input);
+                    break;
+
+                case "GetVideo":
+                    if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
+                    if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
+                    if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
+
+                    $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM4ICM, MSG_ID_L4AQYCUI_TO_L3F4_VIDEOPLAY, "MSG_ID_L4AQYCUI_TO_L3F4_VIDEOPLAY",$input);
+                    break;
+
                 case "GetVersionList":
                     if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
                     if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
@@ -463,25 +500,6 @@ class classTaskL4aqycUi
 
                     $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM4ICM, MSG_ID_L4AQYCUI_TO_L3F4_CAMWEB, "MSG_ID_L4AQYCUI_TO_L3F4_CAMWEB",$input);
-                    break;
-
-                //以下视频和摄像头处理为老的方法，保留在这里暂时不起作用
-                case "GetVideoList": //获取指定站点指定时间段内的所有视频文件列表
-                    if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
-                    if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
-                    if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
-
-                    $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
-                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM4ICM, MSG_ID_L4AQYCUI_TO_L3F4_VIDEOLIST, "MSG_ID_L4AQYCUI_TO_L3F4_VIDEOLIST",$input);
-                    break;
-
-                case "GetVideo":
-                    if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
-                    if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
-                    if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
-
-                    $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
-                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM4ICM, MSG_ID_L4AQYCUI_TO_L3F4_VIDEOPLAY, "MSG_ID_L4AQYCUI_TO_L3F4_VIDEOPLAY",$input);
                     break;
 
                 case "GetCameraStatus": //Get camera vertical and horizontal angle and fetch a current photo

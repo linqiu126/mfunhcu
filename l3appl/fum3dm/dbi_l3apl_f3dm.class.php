@@ -380,7 +380,7 @@ class classDbiL3apF3dm
      *                                                 地图显示相关操作DB API                                               *
      *********************************************************************************************************************/
     //查询用户授权的stat_code和proj_code list
-    private function dbi_user_statproj_inqury($uid)
+    public function dbi_user_statproj_inqury($uid)
     {
         //建立连接
         $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);

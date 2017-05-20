@@ -16,7 +16,7 @@ var replace = require('gulp-replace');
 
 
 
-var replace_content = "D:/webrd/www/dist/usr_img/";
+var replace_content = "../../avorion/usr_img/";
 var replace_install = "/dist";
 var option = {
 
