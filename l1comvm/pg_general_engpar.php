@@ -55,6 +55,9 @@ define("MFUN_L3APL_F3DM_SENSOR_TYPE_PREFIX_LEN", 2);
 define("MFUN_L3APL_F1SYM_SESSIONID_VALID_TIME", 600);  //Session ID有效时间为10分钟
 define("MFUN_L3APL_F2CM_FAVOURSITE_MAX_NUM", 5); //最大常用站点数量
 
+define("MFUN_HCU_SITE_PIC_BASE_DIR", "../../avorion/");  //站点照片存放路径
+define("MFUN_HCU_SITE_PIC_FOLDER_NAME", "avorion/");     //站点照片存放目录
+
 define("MFUN_HCU_MSG_HEAD_FORMAT", "A2Key/A2Len/A2Cmd");// 1B 控制字ctrl_key, 1B 长度length（除控制字和长度本身外），1B 操作字opt_key
 define("MFUN_HCU_MSG_HEAD_LENGTH", 6); //3 Byte
 

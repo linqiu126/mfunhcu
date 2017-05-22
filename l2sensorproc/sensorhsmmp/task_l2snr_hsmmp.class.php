@@ -73,9 +73,9 @@ class classTaskL2snrHsmmp
                 $file_type = ".jpg";
                 $result = "";
                 if ($funcFlag == "01"){ //第一包数据，创建一个新JPG文件
-                    if(!file_exists(MFUN_HCU_FHYS_PIC_BASE_DIR.$statCode))
-                        $result = mkdir(MFUN_HCU_FHYS_PIC_BASE_DIR.$statCode.'/',0777,true);
-                    $filename = MFUN_HCU_FHYS_PIC_BASE_DIR.$statCode.'/'.$statCode . "_" . $timestamp . $file_type;
+                    if(!file_exists(MFUN_HCU_SITE_PIC_BASE_DIR.$statCode))
+                        $result = mkdir(MFUN_HCU_SITE_PIC_BASE_DIR.$statCode.'/',0777,true);
+                    $filename = MFUN_HCU_SITE_PIC_BASE_DIR.$statCode.'/'.$statCode . "_" . $timestamp . $file_type;
                     $newfile = fopen($filename, "wb+") or die("Unable to open file!");
                     $filesize = fwrite($newfile, $content);
                     fclose($newfile);
@@ -90,7 +90,7 @@ class classTaskL2snrHsmmp
                 else{ //往最新的文件里追加写内容
                     $lastfile_time = 0; //初始化
                     $lastfile_name = "";
-                    $file_path = MFUN_HCU_FHYS_PIC_BASE_DIR.$statCode.'/';
+                    $file_path = MFUN_HCU_SITE_PIC_BASE_DIR.$statCode.'/';
                     foreach(glob($file_path."*".$file_type) as $filename) {
                         if (!(is_dir($filename))) { //是个文件而不是目录
                             $filetime = filemtime($filename);  //获取文件修改时间

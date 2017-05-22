@@ -54,15 +54,16 @@ switch ($key)
         $devcode=$body["code"];
         $latitude=(string)($body["latitude"]*1000000);
         $longitude=(string)($body["longitude"]*1000000);
-        $uiF3dmDbObj = new classDbiL3apF3dm(); //初始化一个UI DB对象
-        $result = $uiF3dmDbObj->dbi_siteinfo_update_gps($devcode, $latitude, $longitude);
+        $dbiL3apF2cmObj = new classDbiL3apF2cm(); //初始化一个UI DB对象
+        $result = $dbiL3apF2cmObj->dbi_siteinfo_update_gps($devcode, $latitude, $longitude);
 
         $loggerObj = new classApiL1vmFuncCom();
         $log_time = date("Y-m-d H:i:s", time());
         $log_content = $devcode."R:Latitude=".$latitude.";Longitude=".$longitude."Result=".$result;
         $loggerObj->logger("MFUN_TASK_ID_L4OAMTOOLS", "HCU_Lock_Activate", $log_time, $log_content);
 
-        $pic_num=_getfilecounts('./upload/'.$devcode.'/'); //查询该站点是否上传照片
+        $pic_num=_getfilecounts(MFUN_HCU_SITE_PIC_BASE_DIR.$devcode.'/'); //查询该站点是否上传照片
+        //已经上传超过2张照片
         if($pic_num>=2 AND $result==true)
             $retval=array('status'=>'true','auth'=>'true','msg'=>'站点激活，照片上传成功');
         else
