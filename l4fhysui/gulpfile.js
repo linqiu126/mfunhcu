@@ -13,7 +13,9 @@ var clean = require('gulp-clean');
 var htmlmin = require('gulp-htmlmin');
 var replace = require('gulp-replace');
 
-var replace_content = "../../avorion/usr_img/";
+
+
+var replace_content = "../../avorion/";
 var replace_install = "/dist";
 var option = {
 

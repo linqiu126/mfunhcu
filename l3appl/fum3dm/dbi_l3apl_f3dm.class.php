@@ -606,6 +606,7 @@ class classDbiL3apF3dm
             $vcrlist = array('vcrname'=>$vcrname, 'vcraddress'=>$vcrlink);
         }
 
+        $currentvalue = array(); //初始化
         $query_str = "SELECT * FROM `t_l3f3dm_aqyc_currentreport` WHERE `statcode` = '$statcode'";
         $result = $mysqli->query($query_str);
         if (($result->num_rows)>0)
@@ -618,7 +619,42 @@ class classDbiL3apF3dm
             $pm25 = $row['pm25']/10;
             $windspeed = $row['windspeed']/10;
 
-            $currentvalue = array();
+            //更新设备运行状态
+            $last_report = $row["createtime"];
+            $timestamp = strtotime($last_report);
+            $currenttime = time();
+            if ($currenttime > ($timestamp + MFUN_HCU_AQYC_SLEEP_DURATION)) { //如果最后一次测量报告距离现在已经超过休眠间隔门限
+                $dev_status = "休眠中";
+                $alarm = "false";
+            }
+            else{
+                $dev_status = "运行中";
+                $alarm = "false";
+            }
+            $temp = array(
+                'AlarmName'=>"设备状态",
+                'AlarmEName'=> "AQYC_status",
+                'AlarmValue'=>(string)$dev_status,
+                'AlarmUnit'=>" ",
+                'WarningTarget'=>$alarm
+            );
+            array_push($currentvalue,$temp);
+
+            if ($pm25 != NULL){
+                if ($pm25 > MFUN_L3APL_F3DM_TH_ALARM_PM25)
+                    $alarm = "true";
+                else
+                    $alarm = "false";
+                $temp = array(
+                    'AlarmName'=>"颗粒物",
+                    'AlarmEName'=> "AQYC_pm2.5",
+                    'AlarmValue'=>(string)$pm25,
+                    'AlarmUnit'=>" μg/m3",
+                    'WarningTarget'=>$alarm
+                );
+                array_push($currentvalue,$temp);
+            }
+
             if ($noise != NULL){
                 if ($noise > MFUN_L3APL_F3DM_TH_ALARM_NOISE)
                     $alarm = "true";
@@ -629,7 +665,22 @@ class classDbiL3apF3dm
                     'AlarmName'=>"噪声",
                     'AlarmEName'=> "AQYC_noise",
                     'AlarmValue'=>(string)$noise,
-                    'AlarmUnit'=>" 分贝",
+                    'AlarmUnit'=>" dB",
+                    'WarningTarget'=>$alarm
+                );
+                array_push($currentvalue,$temp);
+            }
+
+            if ($windspeed != NULL){
+                if ($windspeed > MFUN_L3APL_F3DM_TH_ALARM_WINDSPD)
+                    $alarm = "true";
+                else
+                    $alarm = "false";
+                $temp = array(
+                    'AlarmName'=>"风速",
+                    'AlarmEName'=> "AQYC_windspeed",
+                    'AlarmValue'=>(string)$windspeed,
+                    'AlarmUnit'=>" m/s",
                     'WarningTarget'=>$alarm
                 );
                 array_push($currentvalue,$temp);
@@ -640,7 +691,7 @@ class classDbiL3apF3dm
                     'AlarmName'=>"风向",
                     'AlarmEName'=> "AQYC_winddir",
                     'AlarmValue'=>(string)$winddir,
-                    'AlarmUnit'=>" 度",
+                    'AlarmUnit'=>" ",
                     'WarningTarget'=>"false"
                 );
                 array_push($currentvalue,$temp);
@@ -670,37 +721,7 @@ class classDbiL3apF3dm
                     'AlarmName'=>"温度",
                     'AlarmEName'=> "AQYC_temp",
                     'AlarmValue'=>(string)$temperature,
-                    'AlarmUnit'=>" 摄氏度",
-                    'WarningTarget'=>$alarm
-                );
-                array_push($currentvalue,$temp);
-            }
-
-            if ($pm25 != NULL){
-                if ($pm25 > MFUN_L3APL_F3DM_TH_ALARM_PM25)
-                    $alarm = "true";
-                else
-                    $alarm = "false";
-                $temp = array(
-                    'AlarmName'=>"细颗粒物",
-                    'AlarmEName'=> "AQYC_pm2.5",
-                    'AlarmValue'=>(string)$pm25,
-                    'AlarmUnit'=>" 毫克/立方米",
-                    'WarningTarget'=>$alarm
-                );
-                array_push($currentvalue,$temp);
-            }
-
-            if ($windspeed != NULL){
-                if ($windspeed > MFUN_L3APL_F3DM_TH_ALARM_WINDSPD)
-                    $alarm = "true";
-                else
-                    $alarm = "false";
-                $temp = array(
-                    'AlarmName'=>"风速",
-                    'AlarmEName'=> "AQYC_windspeed",
-                    'AlarmValue'=>(string)$windspeed,
-                    'AlarmUnit'=>" 公里/小时",
+                    'AlarmUnit'=>" °C",
                     'WarningTarget'=>$alarm
                 );
                 array_push($currentvalue,$temp);
