@@ -544,13 +544,17 @@ class classDbiL3apF4icm
         }
         $mysqli->query("SET NAMES utf8");
 
+        $port = "";
         $camweb = array();
         $query_str = "SELECT * FROM `t_l2sdk_iothcu_inventory` WHERE `statcode` = '$statcode'";
         $result = $mysqli->query($query_str);
         if (($result->num_rows)>0) {
             $row = $result->fetch_array();
-            $rtsp = $row['videourl'];
+            $port = $row['rtsp_port'];
             $cam_ctrl = $row['camctrl'];
+
+            //$rtsp = $row['videourl'];  //老的直接调用rtsp link的方法，在http上OK，换成https后用下面的方法
+            $rtsp = "./video/video_jump.php?rtsp_port=".$port;
 
             $camweb = array('video'=>$rtsp, 'camera'=>$cam_ctrl);
         }

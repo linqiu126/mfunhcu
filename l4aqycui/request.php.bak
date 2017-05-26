@@ -1,7 +1,7 @@
 <?php
 header("Content-type:text/html;charset=utf-8");
 #require '/php/req.php';
-$install_path="/dist";
+$install_path="_INSTALL_PATH_";
 function _encode($arr)
 {
   $na = array();
@@ -2075,7 +2075,9 @@ RESPONSE:
 		'hour_head'=>$hour_head,
 		'minute_alarm'=> $minute_alarm,
 		'hour_alarm'=> $hour_alarm,
-		'day_alarm'=> $day_alarm
+		'day_alarm'=> $day_alarm,
+		'Alarm_min'=>"0",
+		'Alarm_max'=>"150"
 		);
 	$retval= array(
 		'status'=>"true",
@@ -4620,6 +4622,65 @@ RESPONSE:
 			);
 			$jsonencode = _encode($retval);
 			echo $jsonencode; break;
+	case "Get_user_auth_code":
+    		/*
+    		REQUEST:
+    			var body={
+    				name:username
+    			}
+    			var map={
+    				action:"Get_user_auth_code",
+    				body:body,
+    				type:"query",
+    				user:null
+    			};
+    		RESPONSE:
+    			$retval=array(
+    				'status'=>'true',
+    				'msg'=>'success',
+    				'auth'=>'true'
+    			);
+    		*/
+    		$retval=array(
+    			'status'=>'true',
+    			'msg'=>'success',
+    			'auth'=>'true'
+    		);
+    		$jsonencode = _encode($retval);
+    		echo $jsonencode; break;
+	case "Reset_password":
+		/*
+		REQUEST:
+			var body={
+				name:username,
+				code:code,
+				password:password
+			}
+			var map={
+				action:"Reset_password",
+				body:body,
+				type:"query",
+				user:null
+			};
+		RESPONSE:
+			$retval=array(
+				'status'=>'true',
+				'msg'=>'success',
+				'auth'=>'true'
+			);
+		*/
+		$body = array(
+			'key'=> '1234567',
+			'admin'=> 'true'
+		);
+		$retval=array(
+		'status'=>'true',
+		'auth'=>'true',
+		'ret'=>$body,
+		'msg'=>'login successfully'
+		);
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
 	default:
 	break;
 }

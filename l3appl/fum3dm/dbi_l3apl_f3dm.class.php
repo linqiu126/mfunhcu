@@ -632,7 +632,7 @@ class classDbiL3apF3dm
                 $alarm = "false";
             }
             $temp = array(
-                'AlarmName'=>"设备状态",
+                'AlarmName'=>"设备状态 ",
                 'AlarmEName'=> "AQYC_status",
                 'AlarmValue'=>(string)$dev_status,
                 'AlarmUnit'=>" ",
@@ -646,7 +646,7 @@ class classDbiL3apF3dm
                 else
                     $alarm = "false";
                 $temp = array(
-                    'AlarmName'=>"颗粒物",
+                    'AlarmName'=>"颗粒物 ",
                     'AlarmEName'=> "AQYC_pm2.5",
                     'AlarmValue'=>(string)$pm25,
                     'AlarmUnit'=>" μg/m3",
@@ -662,7 +662,7 @@ class classDbiL3apF3dm
                     $alarm = "false";
 
                 $temp = array(
-                    'AlarmName'=>"噪声",
+                    'AlarmName'=>"噪声 ",
                     'AlarmEName'=> "AQYC_noise",
                     'AlarmValue'=>(string)$noise,
                     'AlarmUnit'=>" dB",
@@ -677,7 +677,7 @@ class classDbiL3apF3dm
                 else
                     $alarm = "false";
                 $temp = array(
-                    'AlarmName'=>"风速",
+                    'AlarmName'=>"风速 ",
                     'AlarmEName'=> "AQYC_windspeed",
                     'AlarmValue'=>(string)$windspeed,
                     'AlarmUnit'=>" m/s",
@@ -688,7 +688,7 @@ class classDbiL3apF3dm
 
             if ($winddir != NULL){
                 $temp = array(
-                    'AlarmName'=>"风向",
+                    'AlarmName'=>"风向 ",
                     'AlarmEName'=> "AQYC_winddir",
                     'AlarmValue'=>(string)$winddir,
                     'AlarmUnit'=>" ",
@@ -703,7 +703,7 @@ class classDbiL3apF3dm
                 else
                     $alarm = "false";
                 $temp = array(
-                    'AlarmName'=>"湿度",
+                    'AlarmName'=>"湿度 ",
                     'AlarmEName'=> "AQYC_humi",
                     'AlarmValue'=>(string)$humidity,
                     'AlarmUnit'=>" %",
@@ -718,7 +718,7 @@ class classDbiL3apF3dm
                 else
                     $alarm = "false";
                 $temp = array(
-                    'AlarmName'=>"温度",
+                    'AlarmName'=>"温度 ",
                     'AlarmEName'=> "AQYC_temp",
                     'AlarmValue'=>(string)$temperature,
                     'AlarmUnit'=>" °C",
@@ -813,7 +813,7 @@ class classDbiL3apF3dm
 
             case MFUN_L3APL_F3DM_AQYC_STYPE_WINDSPD:
                 $resp["alarm_name"] = "风速";
-                $resp["alarm_unit"] = "千米/小时";
+                $resp["alarm_unit"] = "米/秒";
                 $resp["warning"] = MFUN_L3APL_F3DM_TH_ALARM_WINDSPD;
 
                 $resp["minute_alarm"] = array();

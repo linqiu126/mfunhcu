@@ -599,7 +599,7 @@ class classDbiL2snrDoorlock
         }
         elseif(($msg['lock1'] == MFUN_HCU_DATA_FHYS_STATUS_NULL) OR ($msg['door1'] == MFUN_HCU_DATA_FHYS_STATUS_NULL)){
             $lock1 = MFUN_HCU_FHYS_LOCK_NULL;
-            $door1 = MFUN_HCU_FHYS_LOCK_NULL;
+            $door1 = MFUN_HCU_FHYS_DOOR_NULL;
         }
         else{
             $lock1 =MFUN_HCU_FHYS_STATUS_UNKNOWN;
@@ -624,7 +624,7 @@ class classDbiL2snrDoorlock
         }
         elseif(($msg['lock2'] == MFUN_HCU_DATA_FHYS_STATUS_NULL) OR ($msg['door2'] == MFUN_HCU_DATA_FHYS_STATUS_NULL)){
             $lock2 = MFUN_HCU_FHYS_LOCK_NULL;
-            $door2 = MFUN_HCU_FHYS_LOCK_NULL;
+            $door2 = MFUN_HCU_FHYS_DOOR_NULL;
         }
         else{
             $lock2 =MFUN_HCU_FHYS_STATUS_UNKNOWN;

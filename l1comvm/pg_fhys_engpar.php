@@ -71,7 +71,8 @@ define ("MFUN_HCU_FHYS_DOOR_NULL", "C"); //为了省电现在用低电平检测�
 define ("MFUN_HCU_FHYS_LOCK_OPEN", "O");  //智能云锁打开
 define ("MFUN_HCU_FHYS_LOCK_CLOSE", "C"); //智能云锁关闭
 define ("MFUN_HCU_FHYS_LOCK_ALARM", "A"); //智能云锁暴力打开
-define ("MFUN_HCU_FHYS_LOCK_NULL", "N"); //设备未安装
+//define ("MFUN_HCU_FHYS_LOCK_NULL", "N"); //设备未安装
+define ("MFUN_HCU_FHYS_LOCK_NULL", "C"); //为了省电现在用低电平检测，当锁关闭且未激活时会上报0x02，导致误报成未安装，所以这里把这种情况也定义为关闭
 
 define ("MFUN_HCU_FHYS_KEY_VALID", "Y");  //虚拟钥匙有效，已授予用户
 define ("MFUN_HCU_FHYS_KEY_INVALID", "N"); //虚拟钥匙无效，未授予用户

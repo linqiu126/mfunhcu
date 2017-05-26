@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <meta charset="UTF-8">
+        <title>视频监控</title>
+    </head>
+
+
+    <body>
+        <embed type="application/x-vlc-plugin" pluginspage="http://www.videolan.org"
+               width="640"
+               height="480"
+               id="vlc">
+        </embed>
+        <script language="Javascript">
+            var vlc = document.getElementById("vlc");
+            var mrl="rtsp://admin:Bxxh!123@ngrok.hkrob.com:__PORT__/ISAPI/Streaming/Channels/1";
+            //将地址添加到播放列表
+            vlc.playlist.add(mrl);
+            //播放
+            vlc.playlist.play();
+        </script>
+    </body>
+</html>
