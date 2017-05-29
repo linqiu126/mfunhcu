@@ -128,7 +128,7 @@ class classTaskL4fhysUi
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4AQYCUI_TO_L3F2_PROJECTPGLIST, "MSG_ID_L4AQYCUI_TO_L3F2_PROJECTPGLIST",$input);
                     break;
 
-                case "ProjectList":   //Get the Project list
+                case "ProjectList":   //Get the Project list 获取某用户授权的所有项目列表
                     if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
                     if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
@@ -227,13 +227,13 @@ class classTaskL4fhysUi
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4AQYCUI_TO_L3F2_PROJDEL, "MSG_ID_L4AQYCUI_TO_L3F2_PROJDEL",$input);
                     break;
 
-                case "ProjPoint":   //查询所有监控点列表
+                case "ProjPoint":   //查询该用户授权项目下的所有监控点列表
                     if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
                     if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
                     $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
-                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4AQYCUI_TO_L3F2_PROJPOINT, "MSG_ID_L4AQYCUI_TO_L3F2_PROJPOINT",$input);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4AQYCUI_TO_L3F2_ALLPROJPOINT, "MSG_ID_L4AQYCUI_TO_L3F2_ALLPROJPOINT",$input);
                     break;
 
                 case "PointProj": //查询该项目下面对应监控点列表
@@ -242,7 +242,7 @@ class classTaskL4fhysUi
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
                     $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
-                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4AQYCUI_TO_L3F2_POINTPROJ, "MSG_ID_L4AQYCUI_TO_L3F2_POINTPROJ",$input);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4AQYCUI_TO_L3F2_ONEPROJPOINT, "MSG_ID_L4AQYCUI_TO_L3F2_ONEPROJPOINT",$input);
                     break;
 
                 case "PointTable":  //查询所有监控点信息

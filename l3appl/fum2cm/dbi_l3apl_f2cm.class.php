@@ -139,6 +139,45 @@ class classDbiL3apF2cm
         return $output;
     }
 
+    //获取用户授权的项目组列表，如果没有直接授权项目组，则默认授权项目对应的项目组允许访问
+    private function dbi_get_user_auth_projgroup($uid)
+    {
+        //建立连接
+        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli) {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $mysqli->query("SET NAMES utf8");
+
+        $projectlist = $this->dbi_get_user_auth_project($uid);
+
+        $pg_list = array();
+        for($i=0; $i<count($projectlist); $i++)
+        {
+            $projcode = $projectlist[$i]['id'];
+            $query_str = "SELECT * FROM `t_l3f2cm_projinfo` WHERE `p_code` = '$projcode'";
+            $result = $mysqli->query($query_str);
+            if ($result->num_rows > 0){
+                $row = $result->fetch_array();
+                $pgcode = $row['pg_code'];
+                $query_str = "SELECT * FROM `t_l3f2cm_projgroup` WHERE `pg_code` = '$pgcode'";
+                $resp = $mysqli->query($query_str);
+                if (($resp->num_rows) > 0) {
+                    $list = $resp->fetch_array();
+                    $temp = array(
+                        'id' => $list['pg_code'],
+                        'name' => $list['pg_name']
+                    );
+                    array_push($pg_list, $temp);
+                }
+            }
+        }
+        //删除项目组列表里重复的项
+        $unique_pglist = $this->unique_arr($pg_list, false, true);
+        $mysqli->close();
+        return $unique_pglist;
+    }
+
     //获取该用户授权的全部项目列表,包括授权项目组下面的项目列表
     private function dbi_get_user_auth_project($uid)
     {
@@ -186,45 +225,6 @@ class classDbiL3apF2cm
         $unique_projlist = $this->unique_arr($projlist,false,true);
         $mysqli->close();
         return $unique_projlist;
-    }
-
-    //获取用户授权的项目组列表，如果没有直接授权项目组，则默认授权项目对应的项目组允许访问
-    public function dbi_get_user_auth_projgroup($uid)
-    {
-        //建立连接
-        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
-        if (!$mysqli) {
-            die('Could not connect: ' . mysqli_error($mysqli));
-        }
-        $mysqli->query("SET NAMES utf8");
-
-        $projectlist = $this->dbi_get_user_auth_project($uid);
-
-        $pg_list = array();
-        for($i=0; $i<count($projectlist); $i++)
-        {
-            $projcode = $projectlist[$i]['id'];
-            $query_str = "SELECT * FROM `t_l3f2cm_projinfo` WHERE `p_code` = '$projcode'";
-            $result = $mysqli->query($query_str);
-            if ($result->num_rows > 0){
-                $row = $result->fetch_array();
-                $pgcode = $row['pg_code'];
-                $query_str = "SELECT * FROM `t_l3f2cm_projgroup` WHERE `pg_code` = '$pgcode'";
-                $resp = $mysqli->query($query_str);
-                if (($resp->num_rows) > 0) {
-                    $list = $resp->fetch_array();
-                    $temp = array(
-                        'id' => $list['pg_code'],
-                        'name' => $list['pg_name']
-                    );
-                    array_push($pg_list, $temp);
-                }
-            }
-        }
-        //删除项目组列表里重复的项
-        $unique_pglist = $this->unique_arr($pg_list, false, true);
-        $mysqli->close();
-        return $unique_pglist;
     }
 
     //获取该用户授权的站点列表
@@ -386,8 +386,8 @@ class classDbiL3apF2cm
         return $projtable;
     }
 
-    //UI ProjectPGList request, 获取所有项目及项目组列表
-    public function dbi_all_projpglist_req()
+    //UI ProjectPGList request, 获取所有项目及项目组列表,该列表信息用户初始授权，所有给出的是全列表
+    public function dbi_user_all_projpglist_req()
     {
         //建立连接
         $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
@@ -424,7 +424,7 @@ class classDbiL3apF2cm
     }
 
     //UI ProjectList request, 获取所有项目列表
-    public function dbi_all_projlist_req()
+    public function dbi_user_all_projlist_req($uid)
     {
         //建立连接
         $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
@@ -434,17 +434,7 @@ class classDbiL3apF2cm
         $mysqli->query("SET NAMES utf8");
 
         $list = array();
-
-        $query_str = "SELECT * FROM `t_l3f2cm_projinfo` WHERE 1 ";
-        $result = $mysqli->query($query_str);
-        while($row = $result->fetch_array()) //获得所有项目列表
-        {
-            $temp = array(
-                'id' => $row['p_code'],
-                'name' => $row['p_name']
-            );
-            array_push($list, $temp);
-        }
+        $list = $this->dbi_get_user_auth_project($uid);
 
         $mysqli->close();
         return $list;
@@ -744,8 +734,8 @@ class classDbiL3apF2cm
         return $total;
     }
 
-    //UI ProjPoint request,查询所有项目监测点列表
-    public function dbi_all_sitelist_req()
+    //UI ProjPoint request,查询某用户授权的所有项目监测点列表
+    public function dbi_user_all_proj_sitelist_req($uid)
     {
         //建立连接
         $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
@@ -754,26 +744,32 @@ class classDbiL3apF2cm
         }
         $mysqli->query("SET NAMES utf8");
 
-        $query_str = "SELECT * FROM `t_l3f3dm_siteinfo` WHERE 1 ";
-        $result = $mysqli->query($query_str);
-
+        $projectlist = $this->dbi_get_user_auth_project($uid);
+        $projtotal = count($projectlist);
         $sitelist = array();
-        while($row = $result->fetch_array())
+
+        for($i=0; $i<$projtotal; $i++)
         {
-            $temp = array(
-                'id' => $row['statcode'],
-                'name' => $row['statname'],
-                'ProjCode' => $row['p_code']
-            );
-            array_push($sitelist, $temp);
+            $projcode = $projectlist[$i]['id'];
+            $query_str = "SELECT * FROM `t_l3f3dm_siteinfo` WHERE `p_code` = '$projcode' ";
+            $result = $mysqli->query($query_str);
+            while($row = $result->fetch_array())
+            {
+                $temp = array(
+                    'id' => $row['statcode'],
+                    'name' => $row['statname'],
+                    'ProjCode' => $row['p_code']
+                );
+                array_push($sitelist, $temp);
+            }
         }
 
         $mysqli->close();
         return $sitelist;
     }
 
-    //UI ProjPoint request,查询项目下面包含的监测点列表
-    public function dbi_proj_sitelist_req($p_code)
+    //UI ProjPoint request,查询某一个项目下面包含的所有监测点列表
+    public function dbi_one_proj_sitelist_req($p_code)
     {
         //建立连接
         $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);

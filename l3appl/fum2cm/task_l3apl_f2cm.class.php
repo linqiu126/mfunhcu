@@ -41,13 +41,14 @@ class classTaskL3aplF2cm
         return urlencode($elem);
     }
 
+    //查询所有的项目，项目组列表，用于用户授权，所以给出的是全部列表
     function func_all_project_pg_list_process($action, $user, $body)
     {
         $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
         $usercheck = $uiF1symDbObj->dbi_user_authcheck($action, $user);
         if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
             $uiF2cmDbObj = new classDbiL3apF2cm(); //初始化一个UI DB对象
-            $proj_pg_list = $uiF2cmDbObj->dbi_all_projpglist_req();
+            $proj_pg_list = $uiF2cmDbObj->dbi_user_all_projpglist_req();
             if(!empty($proj_pg_list))
                 $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$proj_pg_list,'msg'=>"获取全部项目项目组列表成功");
             else
@@ -64,8 +65,9 @@ class classTaskL3aplF2cm
         $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
         $usercheck = $uiF1symDbObj->dbi_user_authcheck($action, $user);
         if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
+            $uid = $usercheck['uid'];
             $uiF2cmDbObj = new classDbiL3apF2cm(); //初始化一个UI DB对象
-            $projlist = $uiF2cmDbObj->dbi_all_projlist_req();
+            $projlist = $uiF2cmDbObj->dbi_user_all_projlist_req($uid);
             if(!empty($projlist))
                 $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$projlist,'msg'=>"获取全部项目列表成功");
             else
@@ -286,13 +288,14 @@ class classTaskL3aplF2cm
         return $retval;
     }
 
-    function func_project_point_process($action, $user, $body)
+    function func_all_project_point_process($action, $user, $body)
     {
         $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
         $usercheck = $uiF1symDbObj->dbi_user_authcheck($action, $user);
         if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
+            $uid = $usercheck['uid'];
             $uiF2cmDbObj = new classDbiL3apF2cm(); //初始化一个UI DB对象
-            $sitelist = $uiF2cmDbObj->dbi_all_sitelist_req();
+            $sitelist = $uiF2cmDbObj->dbi_user_all_proj_sitelist_req($uid);
             if(!empty($sitelist))
                 $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$sitelist,'msg'=>"获取所有项目站点列表成功");
             else
@@ -304,7 +307,7 @@ class classTaskL3aplF2cm
         return $retval;
     }
 
-    function func_point_project_process($action, $user, $body)
+    function func_one_project_point_process($action, $user, $body)
     {
         if (isset($body["ProjCode"])) $ProjCode = $body["ProjCode"]; else  $ProjCode = "";
 
@@ -312,7 +315,7 @@ class classTaskL3aplF2cm
         $usercheck = $uiF1symDbObj->dbi_user_authcheck($action, $user);
         if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
             $uiF2cmDbObj = new classDbiL3apF2cm(); //初始化一个UI DB对象
-            $sitelist = $uiF2cmDbObj->dbi_proj_sitelist_req($ProjCode);
+            $sitelist = $uiF2cmDbObj->dbi_one_proj_sitelist_req($ProjCode);
             if(!empty($sitelist))
                 $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$sitelist,'msg'=>"获取该项目下站点列表成功");
             else
@@ -918,13 +921,13 @@ class classTaskL3aplF2cm
                 $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 
-            case MSG_ID_L4AQYCUI_TO_L3F2_PROJPOINT://功能Project Point 查询所有监控点列表
-                $resp = $this->func_project_point_process($action, $user, $body);
+            case MSG_ID_L4AQYCUI_TO_L3F2_ALLPROJPOINT://功能Project Point 查询所有监控点列表
+                $resp = $this->func_all_project_point_process($action, $user, $body);
                 $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 
-            case MSG_ID_L4AQYCUI_TO_L3F2_POINTPROJ://功能Point project查询该项目下面对应监控点列表
-                $resp = $this->func_point_project_process($action, $user, $body);
+            case MSG_ID_L4AQYCUI_TO_L3F2_ONEPROJPOINT://功能Point project查询该项目下面对应监控点列表
+                $resp = $this->func_one_project_point_process($action, $user, $body);
                 $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 
