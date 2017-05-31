@@ -12,12 +12,22 @@ include_once "../l1comvm/vmlayer.php";
  *                             L4AQYC-UI TEST CASES                                   *
  *************************************************************************************/
 if (TC_L4AQYC_UI == true) {
-    $sessionid = "mjXl92EXQ8";
+    $sessionid = "JHN5965q9f";
     $uerid = "UID000001";
     $statcode = "120101033";
     $projcode = "P_0002";
 
     //TEST CASE: L4AQYC-UI界面: START
+
+    echo " [TC L4AQYC: AlarmQuery START]\n";
+    $_GET["action"] = "AlarmQuery";
+    //$body = array('StatCode' => $statcode,'date'=>"2016-12-17",'type'=>"1");
+    $body = array('StatCode' => $statcode,'date'=>"2017-05-23",'type'=>"YC_00A");
+    $_GET["body"] = $body;
+    $_GET["type"] = "query";
+    $_GET["user"] = $sessionid;
+    require("../l4aqycui/request.php");
+    echo " [TC L4AQYC: AlarmQuery END]\n";
 
     echo " [TC L4AQYC: GetProjUpdateStrategy START]\n";
     $_GET["action"] = "GetProjUpdateStrategy";
@@ -153,15 +163,6 @@ if (TC_L4AQYC_UI == true) {
     $_GET["user"] = $sessionid;
     require("../l4aqycui/request.php");
     echo " [TC L4AQYC: GetVideoCameraWeb END]\n";
-
-    echo " [TC L4AQYC: AlarmQuery START]\n";
-    $_GET["action"] = "AlarmQuery";
-    $body = array('StatCode' => $statcode,'date'=>"2016-12-17",'type'=>"1");
-    $_GET["body"] = $body;
-    $_GET["type"] = "query";
-    $_GET["user"] = $sessionid;
-    require("../l4aqycui/request.php");
-    echo " [TC L4AQYC: AlarmQuery END]\n";
 
     echo " [TC L4AQYC: GetAuditStabilityTable START]\n";
     $_GET["action"] = "GetAuditStabilityTable";
