@@ -12,7 +12,7 @@ include_once "../l1comvm/vmlayer.php";
  *                             L4AQYC-UI TEST CASES                                   *
  *************************************************************************************/
 if (TC_L4AQYC_UI == true) {
-    $sessionid = "P06jev69nK";
+    $sessionid = "IakhRetHHJ";
     $uerid = "UID000001";
     $statcode = "120101033";
     $projcode = "P_0002";

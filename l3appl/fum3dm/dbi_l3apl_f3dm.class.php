@@ -780,6 +780,7 @@ class classDbiL3apF3dm
                         $hour = floor($hourminindex/60) ;
                         $min = $hourminindex - $hour*60;
                         $head = $hour.":".$min;
+                        $data=intval($data);
                         array_push($resp["minute_alarm"], $data);
                         array_push($resp["minute_head"], $head);
                     }
@@ -960,6 +961,7 @@ class classDbiL3apF3dm
                         $hour = floor($hourminindex/60) ;
                         $min = $hourminindex - $hour*60;
                         $head = $hour.":".$min;
+                        $data=intval($data);
                         array_push($resp["minute_alarm"], $data);
                         array_push($resp["minute_head"], $head);
                     }
@@ -1042,7 +1044,7 @@ class classDbiL3apF3dm
 
                             $date_value = date("Y-m-d",strtotime($start_date) + $day_index*24*60*60);
                             $head = $date_value." ".$hour_index.":00";
-                            array_push($resp["hour_alarm"],$noise[$day_index][$hour_index]["average"]);
+                            array_push($resp["hour_alarm"],$windspeed[$day_index][$hour_index]["average"]);
                             array_push($resp["hour_head"], $head);
                         }
                     }
@@ -1250,6 +1252,7 @@ class classDbiL3apF3dm
                         $hour = floor($hourminindex/60) ;
                         $min = $hourminindex - $hour*60;
                         $head = $hour.":".$min;
+                        $data=intval($data);
                         array_push($resp["minute_alarm"], $data);
                         array_push($resp["minute_head"], $head);
                     }
@@ -1332,7 +1335,7 @@ class classDbiL3apF3dm
 
                             $date_value = date("Y-m-d",strtotime($start_date) + $day_index*24*60*60);
                             $head = $date_value." ".$hour_index.":00";
-                            array_push($resp["hour_alarm"],$noise[$day_index][$hour_index]["average"]);
+                            array_push($resp["hour_alarm"],$temperature[$day_index][$hour_index]["average"]);
                             array_push($resp["hour_head"], $head);
                         }
                     }
@@ -1430,6 +1433,7 @@ class classDbiL3apF3dm
                         $hour = floor($hourminindex/60) ;
                         $min = $hourminindex - $hour*60;
                         $head = $hour.":".$min;
+                        $data=intval($data);
                         array_push($resp["minute_alarm"], $data);
                         array_push($resp["minute_head"], $head);
                     }
@@ -1512,7 +1516,7 @@ class classDbiL3apF3dm
 
                             $date_value = date("Y-m-d",strtotime($start_date) + $day_index*24*60*60);
                             $head = $date_value." ".$hour_index.":00";
-                            array_push($resp["hour_alarm"],$noise[$day_index][$hour_index]["average"]);
+                            array_push($resp["hour_alarm"],$humidity[$day_index][$hour_index]["average"]);
                             array_push($resp["hour_head"], $head);
                         }
                     }
@@ -1610,6 +1614,7 @@ class classDbiL3apF3dm
                         $hour = floor($hourminindex/60) ;
                         $min = $hourminindex - $hour*60;
                         $head = $hour.":".$min;
+                        $data=intval($data);
                         array_push($resp["minute_alarm"], $data);
                         array_push($resp["minute_head"], $head);
                     }
