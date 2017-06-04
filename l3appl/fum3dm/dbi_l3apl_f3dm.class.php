@@ -1566,7 +1566,7 @@ class classDbiL3apF3dm
                         $day_index = date("d",strtotime($row["reportdate"])-strtotime($start_date));
                         $day_index = intval($day_index);
 
-                        $humidity[$day_index]["sum"] = $noise[$day_index]["sum"] + $data;
+                        $humidity[$day_index]["sum"] = $humidity[$day_index]["sum"] + $data;
                         $humidity[$day_index]["counter"] ++;
 
                     }

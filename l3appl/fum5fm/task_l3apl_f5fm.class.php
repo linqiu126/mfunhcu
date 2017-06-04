@@ -85,9 +85,7 @@ class classTaskL3aplF5fm
                         'hour_alarm'=> $table["hour_alarm"],
                         'day_head'=>$table["day_head"],
                         'day_alarm'=> $table["day_alarm"],
-                        //'Alarm_min'=>"0",
                         'Alarm_min'=> $table["value_min"],
-                        //'Alarm_max'=>"150"
                         'Alarm_max'=> $table["value_max"]
                         );
                 $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$ret,'msg'=>"查询历史告警数据成功");
