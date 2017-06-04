@@ -612,12 +612,12 @@ class classDbiL3apF3dm
         if (($result->num_rows)>0)
         {
             $row = $result->fetch_array();  //暂时先这样处理，此处测量值计算要根据上报精度进行修改。。。。。
-            $noise = $row['noise']/100;
-            $winddir = $row['winddirection']/10;
-            $humidity = $row['humidity']/10;
-            $temperature = $row['temperature']/10;
-            $pm25 = $row['pm25']/10;
-            $windspeed = $row['windspeed']/10;
+            $noise = $row['noise']/1;
+            $winddir = $row['winddirection']/1;
+            $humidity = $row['humidity']/1;
+            $temperature = $row['temperature']/1;
+            $pm25 = $row['pm25']/1;
+            $windspeed = $row['windspeed']/1;
 
             //更新设备运行状态
             $last_report = $row["createtime"];
@@ -754,10 +754,21 @@ class classDbiL3apF3dm
             $devcode = $row['devcode'];
         }
 
+        //查询highchart坐标轴的最大和最小值
+        $query_str = "SELECT * FROM `t_l2snr_sensortype` WHERE `typeid` = '$alarm_type'";
+        $result = $mysqli->query($query_str);
+        if (($result->num_rows) > 0) {
+            $row = $result->fetch_array();
+            $value_min = $row['value_min']/1;
+            $value_max = $row['value_max']/1;
+            $resp["value_min"] = $value_min;
+            $resp["value_max"] = $value_max;
+        }
+
         switch($alarm_type) {
             case MFUN_L3APL_F3DM_AQYC_STYPE_PM:
                 $resp["alarm_name"] = "细颗粒物";
-                $resp["alarm_unit"] = "毫克/立方米";
+                $resp["alarm_unit"] = "微克/立方米";
                 $resp["warning"] = MFUN_L3APL_F3DM_TH_ALARM_PM25;
 
                 $resp["minute_alarm"] = array();
@@ -1844,12 +1855,12 @@ class classDbiL3apF3dm
             if (($result->num_rows) > 0)
             {
                 $row = $result->fetch_array();
-                $pm25 =  $row["pm25"]/10;
-                $temperature = $row["temperature"]/10;
-                $humidity = $row["humidity"]/10;
-                $noise = $row["noise"]/100;
-                $windspeed = $row["windspeed"]/10;
-                $winddir = $row["winddirection"];
+                $pm25 =  $row["pm25"]/1;
+                $temperature = $row["temperature"]/1;
+                $humidity = $row["humidity"]/1;
+                $noise = $row["noise"]/1;
+                $windspeed = $row["windspeed"]/1;
+                $winddir = $row["winddirection"]/1;
 
                 $timestamp = strtotime($row["createtime"]);
                 $currenttime = time();

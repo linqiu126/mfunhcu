@@ -72,18 +72,24 @@ class classTaskL3aplF5fm
         if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
             $uiF3dmDbObj = new classDbiL3apF3dm(); //初始化一个UI DB对象
             $table = $uiF3dmDbObj->dbi_aqyc_dev_alarmhistory_req($StatCode, $date, $alarmtype);
+
             if(!empty($table)){
                 $ret = array('StatCode'=> $StatCode,
-                            'date'=> $date,
-                            'AlarmName'=> $table["alarm_name"],
-                            'AlarmUnit'=> $table["alarm_unit"],
-                            'WarningTarget'=>$table["warning"],
-                            'minute_head'=>$table["minute_head"],
-                            'minute_alarm'=> $table["minute_alarm"],
-                            'hour_head'=>$table["hour_head"],
-                            'hour_alarm'=> $table["hour_alarm"],
-                            'day_head'=>$table["day_head"],
-                            'day_alarm'=> $table["day_alarm"]);
+                        'date'=> $date,
+                        'AlarmName'=> $table["alarm_name"],
+                        'AlarmUnit'=> $table["alarm_unit"],
+                        'WarningTarget'=>$table["warning"],
+                        'minute_head'=>$table["minute_head"],
+                        'minute_alarm'=> $table["minute_alarm"],
+                        'hour_head'=>$table["hour_head"],
+                        'hour_alarm'=> $table["hour_alarm"],
+                        'day_head'=>$table["day_head"],
+                        'day_alarm'=> $table["day_alarm"],
+                        //'Alarm_min'=>"0",
+                        'Alarm_min'=> $table["value_min"],
+                        //'Alarm_max'=>"150"
+                        'Alarm_max'=> $table["value_max"]
+                        );
                 $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$ret,'msg'=>"查询历史告警数据成功");
             }
             else
