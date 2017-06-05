@@ -638,7 +638,8 @@ class classDbiL3apF3dm
                 'AlarmUnit'=>" ",
                 'WarningTarget'=>$alarm
             );
-            array_push($currentvalue,$temp);
+            //将设备运行状态注销，只显示其他6种环境参量
+            //array_push($currentvalue,$temp);
 
             if ($pm25 != NULL){
                 if ($pm25 > MFUN_L3APL_F3DM_TH_ALARM_PM25)
