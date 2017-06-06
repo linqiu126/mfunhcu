@@ -762,9 +762,12 @@ class classDbiL3apF3dm
             $row = $result->fetch_array();
             $value_min = $row['value_min']/1;
             $value_max = $row['value_max']/1;
+            $dataformat = $row['dataformat']/1;
             $resp["value_min"] = $value_min;
             $resp["value_max"] = $value_max;
         }
+
+
 
         switch($alarm_type) {
             case MFUN_L3APL_F3DM_AQYC_STYPE_PM:
@@ -875,7 +878,8 @@ class classDbiL3apF3dm
 
                             $date_value = date("Y-m-d",strtotime($start_date) + $day_index*24*60*60);
                             $head = $date_value." ".$hour_index.":00";
-                            array_push($resp["hour_alarm"],$pm25[$day_index][$hour_index]["average"]);
+                            $average = round($pm25[$day_index][$hour_index]["average"],$dataformat);
+                            array_push($resp["hour_alarm"], $average);
                             array_push($resp["hour_head"], $head);
                         }
                     }
@@ -933,7 +937,8 @@ class classDbiL3apF3dm
 
                         $date_value = date("Y-m-d",strtotime($start_date) + $day_index*24*60*60);
                         $head = $date_value;
-                        array_push($resp["day_alarm"],$pm25[$day_index]["average"]);
+                        $average = round($pm25[$day_index]["average"],$dataformat);
+                        array_push($resp["day_alarm"], $average);
                         array_push($resp["day_head"], $head);
                     }
 
@@ -1056,7 +1061,8 @@ class classDbiL3apF3dm
 
                             $date_value = date("Y-m-d",strtotime($start_date) + $day_index*24*60*60);
                             $head = $date_value." ".$hour_index.":00";
-                            array_push($resp["hour_alarm"],$windspeed[$day_index][$hour_index]["average"]);
+                            $average = round($windspeed[$day_index][$hour_index]["average"],$dataformat);
+                            array_push($resp["hour_alarm"], $average);
                             array_push($resp["hour_head"], $head);
                         }
                     }
@@ -1114,7 +1120,8 @@ class classDbiL3apF3dm
 
                         $date_value = date("Y-m-d",strtotime($start_date) + $day_index*24*60*60);
                         $head = $date_value;
-                        array_push($resp["day_alarm"],$windspeed[$day_index]["average"]);
+                        $average = round($windspeed[$day_index]["average"],$dataformat);
+                        array_push($resp["day_alarm"], $average);
                         array_push($resp["day_head"], $head);
                     }
 
@@ -1347,7 +1354,8 @@ class classDbiL3apF3dm
 
                             $date_value = date("Y-m-d",strtotime($start_date) + $day_index*24*60*60);
                             $head = $date_value." ".$hour_index.":00";
-                            array_push($resp["hour_alarm"],$temperature[$day_index][$hour_index]["average"]);
+                            $average = round($temperature[$day_index][$hour_index]["average"],$dataformat);
+                            array_push($resp["hour_alarm"], $average);
                             array_push($resp["hour_head"], $head);
                         }
                     }
@@ -1405,7 +1413,8 @@ class classDbiL3apF3dm
 
                         $date_value = date("Y-m-d",strtotime($start_date) + $day_index*24*60*60);
                         $head = $date_value;
-                        array_push($resp["day_alarm"],$temperature[$day_index]["average"]);
+                        $average = round($temperature[$day_index]["average"],$dataformat);
+                        array_push($resp["day_alarm"], $average);
                         array_push($resp["day_head"], $head);
                     }
 
@@ -1528,7 +1537,8 @@ class classDbiL3apF3dm
 
                             $date_value = date("Y-m-d",strtotime($start_date) + $day_index*24*60*60);
                             $head = $date_value." ".$hour_index.":00";
-                            array_push($resp["hour_alarm"],$humidity[$day_index][$hour_index]["average"]);
+                            $average = round($humidity[$day_index][$hour_index]["average"],$dataformat);
+                            array_push($resp["hour_alarm"], $average);
                             array_push($resp["hour_head"], $head);
                         }
                     }
@@ -1586,7 +1596,8 @@ class classDbiL3apF3dm
 
                         $date_value = date("Y-m-d",strtotime($start_date) + $day_index*24*60*60);
                         $head = $date_value;
-                        array_push($resp["day_alarm"],$humidity[$day_index]["average"]);
+                        $average = round($humidity[$day_index]["average"],$dataformat);
+                        array_push($resp["day_alarm"], $average);
                         array_push($resp["day_head"], $head);
                     }
 
@@ -1709,7 +1720,8 @@ class classDbiL3apF3dm
 
                             $date_value = date("Y-m-d",strtotime($start_date) + $day_index*24*60*60);
                             $head = $date_value." ".$hour_index.":00";
-                            array_push($resp["hour_alarm"],$noise[$day_index][$hour_index]["average"]);
+                            $average = round($noise[$day_index][$hour_index]["average"],$dataformat);
+                            array_push($resp["hour_alarm"], $average);
                             array_push($resp["hour_head"], $head);
                         }
                     }
@@ -1767,7 +1779,8 @@ class classDbiL3apF3dm
 
                         $date_value = date("Y-m-d",strtotime($start_date) + $day_index*24*60*60);
                         $head = $date_value;
-                        array_push($resp["day_alarm"],$noise[$day_index]["average"]);
+                        $average = round($noise[$day_index]["average"],$dataformat);
+                        array_push($resp["day_alarm"], $average);
                         array_push($resp["day_head"], $head);
                     }
 
