@@ -780,7 +780,7 @@ class classDbiL3apF3dm
                 $resp["day_head"] = array();
 
                 //24小时的分钟图表
-                $query_str = "SELECT * FROM `t_l2snr_pm25data` WHERE `deviceid` = '$devcode' AND `reportdate` = '$date' ORDER BY `sid` DESC";
+                $query_str = "SELECT * FROM `t_l2snr_pm25data` WHERE `deviceid` = '$devcode' AND `reportdate` = '$date' ORDER BY `sid` ASC";
                 $result = $mysqli->query($query_str);
                 if ($result->num_rows > 0)
                 {
@@ -827,7 +827,7 @@ class classDbiL3apF3dm
                 //$date = $date." 00:00:00";
                 $start_date = date('Y-m-d',strtotime($date)-6*24*60*60); //找到一周前的起始日期
                 $date_temp = $start_date;
-                $query_str = "SELECT * FROM `t_l2snr_pm25data` WHERE `deviceid` = '$devcode' AND `reportdate` between '$start_date' AND '$date' ORDER BY `sid` DESC";
+                $query_str = "SELECT * FROM `t_l2snr_pm25data` WHERE `deviceid` = '$devcode' AND `reportdate` between '$start_date' AND '$date' ORDER BY `sid` ASC";
                 $result = $mysqli->query($query_str);
                 if ($result->num_rows > 0)
                 {
@@ -892,7 +892,7 @@ class classDbiL3apF3dm
 
                 //30天按天的图表
                 $start_date = date('Y-m-d',strtotime($date)-29*24*60*60); //找到起始日期
-                $query_str = "SELECT * FROM `t_l2snr_pm25data` WHERE `deviceid` = '$devcode' AND `reportdate` between '$start_date' AND '$date'  ORDER BY `sid` DESC";
+                $query_str = "SELECT * FROM `t_l2snr_pm25data` WHERE `deviceid` = '$devcode' AND `reportdate` between '$start_date' AND '$date'  ORDER BY `sid` ASC";
                 $result = $mysqli->query($query_str);
                 if ($result->num_rows > 0)
                 {
@@ -961,7 +961,7 @@ class classDbiL3apF3dm
                 $resp["day_head"] = array();
 
                 //24小时的分钟图表
-                $query_str = "SELECT * FROM `t_l2snr_windspd` WHERE `deviceid` = '$devcode' AND `reportdate` = '$date' ORDER BY `sid` DESC";
+                $query_str = "SELECT * FROM `t_l2snr_windspd` WHERE `deviceid` = '$devcode' AND `reportdate` = '$date' ORDER BY `sid` ASC";
                 $result = $mysqli->query($query_str);
                 if ($result->num_rows > 0)
                 {
@@ -1008,7 +1008,7 @@ class classDbiL3apF3dm
                 //$date = $date." 00:00:00";
                 $start_date = date('Y-m-d',strtotime($date)-6*24*60*60); //找到一周前的起始日期
                 $date_temp = $start_date;
-                $query_str = "SELECT * FROM `t_l2snr_windspd` WHERE `deviceid` = '$devcode' AND `reportdate` between '$start_date' AND '$date' ORDER BY `sid` DESC";
+                $query_str = "SELECT * FROM `t_l2snr_windspd` WHERE `deviceid` = '$devcode' AND `reportdate` between '$start_date' AND '$date' ORDER BY `sid` ASC";
                 $result = $mysqli->query($query_str);
                 if ($result->num_rows > 0)
                 {
@@ -1073,7 +1073,7 @@ class classDbiL3apF3dm
 
                 //30天按天的图表
                 $start_date = date('Y-m-d',strtotime($date)-29*24*60*60); //找到起始日期
-                $query_str = "SELECT * FROM `t_l2snr_windspd` WHERE `deviceid` = '$devcode' AND `reportdate` between '$start_date' AND '$date' ORDER BY `sid` DESC";
+                $query_str = "SELECT * FROM `t_l2snr_windspd` WHERE `deviceid` = '$devcode' AND `reportdate` between '$start_date' AND '$date' ORDER BY `sid` ASC";
                 $result = $mysqli->query($query_str);
                 if ($result->num_rows > 0)
                 {
@@ -1141,7 +1141,7 @@ class classDbiL3apF3dm
                 $resp["day_alarm"] = array();
                 $resp["day_head"] = array();
 
-                $query_str = "SELECT * FROM `t_l2snr_winddir` WHERE `deviceid` = '$devcode' AND `reportdate` = '$date' ORDER BY `sid` DESC";
+                $query_str = "SELECT * FROM `t_l2snr_winddir` WHERE `deviceid` = '$devcode' AND `reportdate` = '$date' ORDER BY `sid` ASC";
                 $result = $mysqli->query($query_str);
                 if ($result->num_rows > 0)
                 {
@@ -1196,7 +1196,7 @@ class classDbiL3apF3dm
                 $resp["day_alarm"] = array();
                 $resp["day_head"] = array();
 
-                $query_str = "SELECT * FROM `t_l2snr_emcdata` WHERE `deviceid` = '$devcode' AND `reportdate` = '$date' ORDER BY `sid` DESC";
+                $query_str = "SELECT * FROM `t_l2snr_emcdata` WHERE `deviceid` = '$devcode' AND `reportdate` = '$date' ORDER BY `sid` ASC";
                 $result = $mysqli->query($query_str);
                 if ($result->num_rows > 0)
                 {
@@ -1252,7 +1252,7 @@ class classDbiL3apF3dm
                 $resp["day_head"] = array();
 
                 //24小时的分钟图表
-                $query_str = "SELECT * FROM `t_l2snr_tempdata` WHERE `deviceid` = '$devcode' AND `reportdate` = '$date' ORDER BY `sid` DESC";
+                $query_str = "SELECT * FROM `t_l2snr_tempdata` WHERE `deviceid` = '$devcode' AND `reportdate` = '$date' ORDER BY `sid` ASC";
                 $result = $mysqli->query($query_str);
                 if ($result->num_rows > 0)
                 {
@@ -1299,7 +1299,7 @@ class classDbiL3apF3dm
                 //$date = $date." 00:00:00";
                 $start_date = date('Y-m-d',strtotime($date)-6*24*60*60); //找到一周前的起始日期
                 $date_temp = $start_date;
-                $query_str = "SELECT * FROM `t_l2snr_tempdata` WHERE `deviceid` = '$devcode' AND `reportdate` between '$start_date' AND '$date' ORDER BY `sid` DESC";
+                $query_str = "SELECT * FROM `t_l2snr_tempdata` WHERE `deviceid` = '$devcode' AND `reportdate` between '$start_date' AND '$date' ORDER BY `sid` ASC";
                 $result = $mysqli->query($query_str);
                 if ($result->num_rows > 0)
                 {
@@ -1364,7 +1364,7 @@ class classDbiL3apF3dm
 
                 //30天按天的图表
                 $start_date = date('Y-m-d',strtotime($date)-29*24*60*60); //找到起始日期
-                $query_str = "SELECT * FROM `t_l2snr_tempdata` WHERE `deviceid` = '$devcode' AND `reportdate` between '$start_date' AND '$date' ORDER BY `sid` DESC";
+                $query_str = "SELECT * FROM `t_l2snr_tempdata` WHERE `deviceid` = '$devcode' AND `reportdate` between '$start_date' AND '$date' ORDER BY `sid` ASC";
                 $result = $mysqli->query($query_str);
                 if ($result->num_rows > 0)
                 {
@@ -1433,7 +1433,7 @@ class classDbiL3apF3dm
                 $resp["day_head"] = array();
 
                 //24小时的分钟图表
-                $query_str = "SELECT * FROM `t_l2snr_humiddata` WHERE `deviceid` = '$devcode' AND `reportdate` = '$date' ORDER BY `sid` DESC";
+                $query_str = "SELECT * FROM `t_l2snr_humiddata` WHERE `deviceid` = '$devcode' AND `reportdate` = '$date' ORDER BY `sid` ASC";
                 $result = $mysqli->query($query_str);
                 if ($result->num_rows > 0)
                 {
@@ -1480,7 +1480,7 @@ class classDbiL3apF3dm
                 //$date = $date." 00:00:00";
                 $start_date = date('Y-m-d',strtotime($date)-6*24*60*60); //找到一周前的起始日期
                 $date_temp = $start_date;
-                $query_str = "SELECT * FROM `t_l2snr_humiddata` WHERE `deviceid` = '$devcode' AND `reportdate` between '$start_date' AND '$date' ORDER BY `sid` DESC";
+                $query_str = "SELECT * FROM `t_l2snr_humiddata` WHERE `deviceid` = '$devcode' AND `reportdate` between '$start_date' AND '$date' ORDER BY `sid` ASC";
                 $result = $mysqli->query($query_str);
                 if ($result->num_rows > 0)
                 {
@@ -1545,7 +1545,7 @@ class classDbiL3apF3dm
 
                 //30天按天的图表
                 $start_date = date('Y-m-d',strtotime($date)-29*24*60*60); //找到起始日期
-                $query_str = "SELECT * FROM `t_l2snr_humiddata` WHERE `deviceid` = '$devcode' AND `reportdate` between '$start_date' AND '$date' ORDER BY `sid` DESC";
+                $query_str = "SELECT * FROM `t_l2snr_humiddata` WHERE `deviceid` = '$devcode' AND `reportdate` between '$start_date' AND '$date' ORDER BY `sid` ASC";
                 $result = $mysqli->query($query_str);
                 if ($result->num_rows > 0)
                 {
@@ -1614,7 +1614,7 @@ class classDbiL3apF3dm
                 $resp["day_head"] = array();
 
                 //24小时的分钟图表
-                $query_str = "SELECT * FROM `t_l2snr_noisedata` WHERE `deviceid` = '$devcode' AND `reportdate` = '$date' ORDER BY `sid` DESC";
+                $query_str = "SELECT * FROM `t_l2snr_noisedata` WHERE `deviceid` = '$devcode' AND `reportdate` = '$date' ORDER BY `sid` ASC";
                 $result = $mysqli->query($query_str);
                 if ($result->num_rows > 0)
                 {
@@ -1661,7 +1661,7 @@ class classDbiL3apF3dm
                 //$date = $date." 00:00:00";
                 $start_date = date('Y-m-d',strtotime($date)-6*24*60*60); //找到一周前的起始日期
                 $date_temp = $start_date;
-                $query_str = "SELECT * FROM `t_l2snr_noisedata` WHERE `deviceid` = '$devcode' AND `reportdate` between '$start_date' AND '$date' ORDER BY `sid` DESC";
+                $query_str = "SELECT * FROM `t_l2snr_noisedata` WHERE `deviceid` = '$devcode' AND `reportdate` between '$start_date' AND '$date' ORDER BY `sid` ASC";
                 $result = $mysqli->query($query_str);
                 if ($result->num_rows > 0)
                 {
@@ -1726,7 +1726,7 @@ class classDbiL3apF3dm
 
                 //30天按天的图表
                 $start_date = date('Y-m-d',strtotime($date)-29*24*60*60); //找到起始日期
-                $query_str = "SELECT * FROM `t_l2snr_noisedata` WHERE `deviceid` = '$devcode' AND `reportdate` between '$start_date' AND '$date' ORDER BY `sid` DESC";
+                $query_str = "SELECT * FROM `t_l2snr_noisedata` WHERE `deviceid` = '$devcode' AND `reportdate` between '$start_date' AND '$date' ORDER BY `sid` ASC";
                 $result = $mysqli->query($query_str);
                 if ($result->num_rows > 0)
                 {
