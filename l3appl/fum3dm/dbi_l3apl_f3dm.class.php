@@ -655,6 +655,17 @@ class classDbiL3apF3dm
                 );
                 array_push($currentvalue,$temp);
             }
+            else{
+                $temp = array(
+                    'AlarmName'=>"颗粒物 ",
+                    'AlarmEName'=> "AQYC_pm2.5",
+                    'AlarmValue'=>"NULL",
+                    'AlarmUnit'=>" ",
+                    'WarningTarget'=>"true"
+                );
+                array_push($currentvalue,$temp);
+            }
+
 
             if ($noise != NULL){
                 if ($noise > MFUN_L3APL_F3DM_TH_ALARM_NOISE)
@@ -668,6 +679,16 @@ class classDbiL3apF3dm
                     'AlarmValue'=>(string)$noise,
                     'AlarmUnit'=>" dB",
                     'WarningTarget'=>$alarm
+                );
+                array_push($currentvalue,$temp);
+            }
+            else{
+                $temp = array(
+                    'AlarmName'=>"噪声 ",
+                    'AlarmEName'=> "AQYC_noise",
+                    'AlarmValue'=> "NULL",
+                    'AlarmUnit'=>" ",
+                    'WarningTarget'=> "true"
                 );
                 array_push($currentvalue,$temp);
             }
@@ -686,6 +707,17 @@ class classDbiL3apF3dm
                 );
                 array_push($currentvalue,$temp);
             }
+            else{
+                $temp = array(
+                    'AlarmName'=>"风速 ",
+                    'AlarmEName'=> "AQYC_windspeed",
+                    'AlarmValue'=> "NULL",
+                    'AlarmUnit'=>" ",
+                    'WarningTarget'=> "true"
+                );
+                array_push($currentvalue,$temp);
+            }
+
 
             if ($winddir != NULL){
                 $temp = array(
@@ -694,6 +726,16 @@ class classDbiL3apF3dm
                     'AlarmValue'=>(string)$winddir,
                     'AlarmUnit'=>" ",
                     'WarningTarget'=>"false"
+                );
+                array_push($currentvalue,$temp);
+            }
+            else{
+                $temp = array(
+                    'AlarmName'=>"风向 ",
+                    'AlarmEName'=> "AQYC_winddir",
+                    'AlarmValue'=> "NULL",
+                    'AlarmUnit'=>" ",
+                    'WarningTarget'=> "true"
                 );
                 array_push($currentvalue,$temp);
             }
@@ -712,6 +754,16 @@ class classDbiL3apF3dm
                 );
                 array_push($currentvalue,$temp);
             }
+            else{
+                $temp = array(
+                    'AlarmName'=>"湿度 ",
+                    'AlarmEName'=> "AQYC_humi",
+                    'AlarmValue'=> "NULL",
+                    'AlarmUnit'=>" ",
+                    'WarningTarget'=> "true"
+                );
+                array_push($currentvalue,$temp);
+            }
 
             if ($temperature != NULL){
                 if ($temperature > MFUN_L3APL_F3DM_TH_ALARM_TEMP)
@@ -724,6 +776,16 @@ class classDbiL3apF3dm
                     'AlarmValue'=>(string)$temperature,
                     'AlarmUnit'=>" °C",
                     'WarningTarget'=>$alarm
+                );
+                array_push($currentvalue,$temp);
+            }
+            else{
+                $temp = array(
+                    'AlarmName'=>"温度 ",
+                    'AlarmEName'=> "AQYC_temp",
+                    'AlarmValue'=> "NULL",
+                    'AlarmUnit'=>" ",
+                    'WarningTarget'=> "true"
                 );
                 array_push($currentvalue,$temp);
             }
