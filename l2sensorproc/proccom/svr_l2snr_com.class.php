@@ -136,10 +136,11 @@ class classApiL2snrCommonService
         $CPUOccupyCnt = hexdec($data[1]['HUITP_IEID_uni_performance_info_element']['cpuOccupy']) & 0xFFFFFFFF;
         $MemOccupyCnt = hexdec($data[1]['HUITP_IEID_uni_performance_info_element']['memOccupy']) & 0xFFFFFFFF;
         $DiskOccupyCnt = hexdec($data[1]['HUITP_IEID_uni_performance_info_element']['diskOccupy']) & 0xFFFFFFFF;
+        $CpuTemp = hexdec($data[1]['HUITP_IEID_uni_performance_info_element']['cpuTemp']) & 0xFFFFFFFF;
         $createtime = hexdec($data[1]['HUITP_IEID_uni_performance_info_element']['timeStamp']) & 0xFFFFFFFF;
 
         $cDbObj = new classDbiL1vmCommon();
-        $resp = $cDbObj->dbi_hcu_performance_huitp_data_save($deviceId, $statCode, $CurlConnAttempt, $CurlConnFailCnt, $CurlDiscCnt, $SocketDiscCnt, $PmTaskRestartCnt, $CPUOccupyCnt, $MemOccupyCnt, $DiskOccupyCnt, $createtime);
+        $resp = $cDbObj->dbi_hcu_performance_huitp_data_save($deviceId, $statCode, $CurlConnAttempt, $CurlConnFailCnt, $CurlDiscCnt, $SocketDiscCnt, $PmTaskRestartCnt, $CPUOccupyCnt, $MemOccupyCnt, $DiskOccupyCnt, $CpuTemp, $createtime);
 
         return $resp;
     }

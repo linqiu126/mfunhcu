@@ -13,17 +13,17 @@ include_once "../l1comvm/vmlayer.php";
 if (TC_EMCWX == true){
 //EMCWX测试开始
 
+    //HUITP pm Data, 增加树莓派CPU温度
+    echo " [TC IOT_HCU: HUITP pm Data START]\n";
+    $GLOBALS["HTTP_RAW_POST_DATA"] = "<xml><ToUserName><![CDATA[AQYC_HCU]]></ToUserName><FromUserName><![CDATA[HCU_G201_AQYC_SH001]]></FromUserName><CreateTime>1496584441</CreateTime><MsgType><![CDATA[hcu_huitp]]></MsgType><Content><![CDATA[B18100310003000101B1000028000000000000000000000000000000000000000100000005000000210000005600000036593410F9]]></Content><FuncFlag>0</FuncFlag></xml>";
+    require("../l1mainentry/cloud_callback_wechat.php");
+    echo " [TC IOT_HCU: HUITP pm Data END]\n";
+
     //HUITP sw inventory Data
     echo " [TC IOT_HCU: HUITP sw inventory Data START]\n";
     $GLOBALS["HTTP_RAW_POST_DATA"] = "<xml><ToUserName><![CDATA[XHZN_HCU]]></ToUserName><FromUserName><![CDATA[HCU_G201_AQYC_SH001]]></FromUserName><CreateTime>1492506331</CreateTime><MsgType><![CDATA[hcu_huitp]]></MsgType><Content><![CDATA[A08100480003000101A000003F02010005000100C104000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000058F5D6DB]]></Content><FuncFlag>0</FuncFlag></xml>";
     require("../l1mainentry/cloud_callback_wechat.php");
     echo " [TC IOT_HCU: HUITP sw inventory Data END]\n";
-
-    //HUITP pm Data
-    echo " [TC IOT_HCU: HUITP pm Data START]\n";
-    $GLOBALS["HTTP_RAW_POST_DATA"] = "<xml><ToUserName><![CDATA[UNICOM_HCU]]></ToUserName><FromUserName><![CDATA[HCU_G201_AQYC_SH001]]></FromUserName><CreateTime>1491539581</CreateTime><MsgType><![CDATA[hcu_huitp]]></MsgType><Content><![CDATA[B181002D0003000101B1000024000000000000000000000000000000000000000000000001000000810000004E58E7167D]]></Content><FuncFlag>0</FuncFlag></xml>";
-    require("../l1mainentry/cloud_callback_wechat.php");
-    echo " [TC IOT_HCU: HUITP pm Data END]\n";
 
     //HUITP Alarm Data
     echo " [TC IOT_HCU: HUITP Alarm Data START]\n";

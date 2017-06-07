@@ -808,7 +808,7 @@ class classL2codecHuitpIeDict
           //PM Report
           HUITP_IEID_uni_performance_info_min             => "",
           //HUITP_IEID_uni_performance_info_type            => array("format"=>"A4ieId/A4ieLen","name"=>""),
-          HUITP_IEID_uni_performance_info_element         => array("format"=>"A4ieId/A4ieLen/A8restartCnt/A8networkConnCnt/A8networkConnFailCnt/A8networkDiscCnt/A8socketDiscCnt/A8cpuOccupy/A8memOccupy/A8diskOccupy/A8timeStamp","name"=>"HUITP_IEID_uni_performance_info_element"),
+          HUITP_IEID_uni_performance_info_element         => array("format"=>"A4ieId/A4ieLen/A8restartCnt/A8networkConnCnt/A8networkConnFailCnt/A8networkDiscCnt/A8socketDiscCnt/A8cpuOccupy/A8memOccupy/A8diskOccupy/A8cpuTemp/A8timeStamp","name"=>"HUITP_IEID_uni_performance_info_element"),
           HUITP_IEID_uni_performance_info_value           => array("format"=>"A4ieId/A4ieLen","name"=>""),
 
           //设备基本信息
