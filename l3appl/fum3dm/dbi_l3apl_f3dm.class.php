@@ -641,7 +641,7 @@ class classDbiL3apF3dm
             //将设备运行状态注销，只显示其他6种环境参量
             //array_push($currentvalue,$temp);
 
-            if ($pm25 != NULL){
+            if ($pm25 !== NULL){
                 if ($pm25 > MFUN_L3APL_F3DM_TH_ALARM_PM25)
                     $alarm = "true";
                 else
@@ -667,7 +667,7 @@ class classDbiL3apF3dm
             }
 
 
-            if ($noise != NULL){
+            if ($noise !== NULL){
                 if ($noise > MFUN_L3APL_F3DM_TH_ALARM_NOISE)
                     $alarm = "true";
                 else
@@ -693,7 +693,7 @@ class classDbiL3apF3dm
                 array_push($currentvalue,$temp);
             }
 
-            if ($windspeed != NULL){
+            if ($windspeed !== NULL){
                 if ($windspeed > MFUN_L3APL_F3DM_TH_ALARM_WINDSPD)
                     $alarm = "true";
                 else
@@ -719,7 +719,7 @@ class classDbiL3apF3dm
             }
 
 
-            if ($winddir != NULL){
+            if ($winddir !== NULL){
                 $temp = array(
                     'AlarmName'=>"风向 ",
                     'AlarmEName'=> "AQYC_winddir",
@@ -740,7 +740,7 @@ class classDbiL3apF3dm
                 array_push($currentvalue,$temp);
             }
 
-            if ($humidity != NULL){
+            if ($humidity !== NULL){
                 if ($humidity > MFUN_L3APL_F3DM_TH_ALARM_HUMID)
                     $alarm = "true";
                 else
@@ -765,7 +765,7 @@ class classDbiL3apF3dm
                 array_push($currentvalue,$temp);
             }
 
-            if ($temperature != NULL){
+            if ($temperature !== NULL){
                 if ($temperature > MFUN_L3APL_F3DM_TH_ALARM_TEMP)
                     $alarm = "true";
                 else
