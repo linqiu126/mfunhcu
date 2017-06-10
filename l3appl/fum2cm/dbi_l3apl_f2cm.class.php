@@ -1655,16 +1655,33 @@ class classDbiL3apF2cm
         $validstart = date("Y-m-d", $timestamp);
         if ($authtype =='always'){
             $authtype = MFUN_L3APL_F2CM_AUTH_TYPE_FOREVER;
-            $query_str = "INSERT INTO `t_l3f2cm_fhys_keyauth` (keyid, authlevel, authobjcode, authtype)
-                                  VALUES ('$keyid','$authlevel','$authobjcode','$authtype')";
+
+            //判断是否重复的授权，不重复才插入一条记录，这个地方代码有点低效丑陋，可以考虑用relace语句
+            $query_str = "SELECT * FROM `t_l3f2cm_fhys_keyauth` WHERE (`keyid` = '$keyid' AND `authobjcode` = '$authobjcode' AND `authtype` = '$authtype')";
             $result = $mysqli->query($query_str);
+            if (($result->num_rows)==0) {
+                $query_str = "INSERT INTO `t_l3f2cm_fhys_keyauth` (keyid, authlevel, authobjcode, authtype)
+                                  VALUES ('$keyid','$authlevel','$authobjcode','$authtype')";
+                $result = $mysqli->query($query_str);
+            }
         }
         else{
             $validend = $authtype;
             $authtype = MFUN_L3APL_F2CM_AUTH_TYPE_TIME;
-            $query_str = "INSERT INTO `t_l3f2cm_fhys_keyauth` (keyid, authlevel, authobjcode, authtype, validstart, validend)
-                                  VALUES ('$keyid','$authlevel','$authobjcode','$authtype','$validstart','$validend')";
+
+            //判断是否重复的授权，不重复才插入一条记录，这个地方代码有点低效丑陋，可以考虑用relace语句
+            $query_str = "SELECT * FROM `t_l3f2cm_fhys_keyauth` WHERE (`keyid` = '$keyid' AND `authobjcode` = '$authobjcode' AND `authtype` = '$authtype')";
             $result = $mysqli->query($query_str);
+            if (($result->num_rows)>0) {
+                $query_str = "UPDATE `t_l3f2cm_fhys_keyauth` SET `authlevel` = '$authlevel',`validstart` = '$validstart',`validend` = '$validend'
+                            WHERE (`keyid` = '$keyid' AND `authobjcode` = '$authobjcode' AND `authtype` = '$authtype') ";
+                $result = $mysqli->query($query_str);
+            }
+            else{
+                $query_str = "INSERT INTO `t_l3f2cm_fhys_keyauth` (keyid, authlevel, authobjcode, authtype, validstart, validend)
+                                  VALUES ('$keyid','$authlevel','$authobjcode','$authtype','$validstart','$validend')";
+                $result = $mysqli->query($query_str);
+            }
         }
 
         $mysqli->close();

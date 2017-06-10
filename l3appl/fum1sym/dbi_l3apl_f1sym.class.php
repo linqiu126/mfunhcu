@@ -361,10 +361,16 @@ class classDbiL3apF1sym
             $row = $result->fetch_array();
             $mobile = $row['phone'];
 
-            $content = "【阜华光交箱云平台】".$authcode."（动态验证码），请在30分钟内填写";
-            $bizId = time();
-            $url = MFUN_HCU_FHYS_LEXIN_URL.MFUN_HCU_FHYS_LEXIN_ACCNAME."&".MFUN_HCU_FHYS_LEXIN_ACCPWD."&aimcodes=".trim($mobile).
-                "&content=".trim($content).MFUN_HCU_FHYS_LEXIN_SIGNATURE."&bizId=".$bizId."&dataType=string";
+            //LEXIN短信平台
+            //$content = "【阜华光交箱云平台】".$authcode."（动态验证码），请在30分钟内填写";
+            //$bizId = time();
+            //$url = MFUN_HCU_FHYS_LEXIN_URL.MFUN_HCU_FHYS_LEXIN_ACCNAME."&".MFUN_HCU_FHYS_LEXIN_ACCPWD."&aimcodes=".trim($mobile).
+            //    "&content=".trim($content).MFUN_HCU_FHYS_LEXIN_SIGNATURE."&bizId=".$bizId."&dataType=string";
+
+            //CMCC短信平台
+            $url = MFUN_HCU_FHYS_CMCC_URL.'?sicode='.MFUN_HCU_FHYS_CMCC_SICODE.'&mobiles='.trim($mobile).
+                '&tempid='.MFUN_HCU_FHYS_CMCC_TEMPCODE_PW.'smscode='.$authcode;
+
             $l2sdkIotWxObj = new classTaskL2sdkIotWx();
             $resp =$l2sdkIotWxObj->https_request($url);
         }

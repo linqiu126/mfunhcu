@@ -15,6 +15,14 @@ define("MFUN_HCU_FHYS_LEXIN_ACCPWD","accPwd=E10ADC3949BA59ABBE56E057F20F883E"); 
 define("MFUN_HCU_FHYS_LEXIN_SIGNATURE","【阜华光交箱云平台】"); //短信签名
 define("MFUN_HCU_FHYS_LEXIN_AUTHCODE_LEN", 6); //短信验证码长度
 
+//中国移动短彩信平台
+define("MFUN_HCU_FHYS_CMCC_URL", "http://api.sms.heclouds.com/tempsmsSend");  //模板短信请求地址
+define("MFUN_HCU_FHYS_CMCC_SICODE", "a2bb3546a41649a29e2fcb635e091dd5");  //短信平台SI CODE
+define("MFUN_HCU_FHYS_CMCC_TEMPCODE_PW", "10832");  //短信模板码  “您的验证码是#smscode#【阜华光交箱云平台】"
+define("MFUN_HCU_FHYS_CMCC_TEMPCODE_ALARM", "10833");  //短信模板码  “站点#name#告警：#action#【阜华光交箱云平台】"
+//模板短信参数
+//http://api.sms.heclouds.com/tempsmsSend?sicode=a2bb3546a41649a29e2fcb635e091dd5&mobiles=13917334681&tempid=10003&name=foha
+
 //FHYS项目关键字
 define("MFUN_HCU_FHYS_SLEEP_DURATION", 300); //如果最后一次测量报告距离现在已经超过5x60秒
 

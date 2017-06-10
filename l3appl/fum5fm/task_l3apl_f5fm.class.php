@@ -231,15 +231,9 @@ class classTaskL3aplF5fm
         if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
             $uid = $uiF1symDbObj->dbi_session_check($user);
             if (!empty($mobile) AND !empty($action)){
-                $bizId = time();
-                $url = MFUN_HCU_FHYS_LEXIN_URL.MFUN_HCU_FHYS_LEXIN_ACCNAME."&".MFUN_HCU_FHYS_LEXIN_ACCPWD."&aimcodes=".trim($mobile).
-                        "&content=".trim($action).MFUN_HCU_FHYS_LEXIN_SIGNATURE."&bizId=".$bizId."&dataType=string";
-                $l2sdkIotWxObj = new classTaskL2sdkIotWx();
-                $resp =$l2sdkIotWxObj->https_request($url);
+                $uiF5fmDbObj = new classDbiL3apF5fm(); //初始化一个UI DB对象
+                $alarm_proc = $uiF5fmDbObj->dbi_fhys_alarm_handle_process($statcode,$mobile,$action);
             }
-
-            $uiF5fmDbObj = new classDbiL3apF5fm(); //初始化一个UI DB对象
-            $alarm_proc = $uiF5fmDbObj->dbi_fhys_alarm_handle_process($statcode,$mobile,$action);
 
             if(!empty($alarm_proc))
                 $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"告警处理成功");
