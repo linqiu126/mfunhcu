@@ -489,7 +489,7 @@ class classDbiL3apF1sym
     }
 
     //UI UserTable request, 获取所有用户信息表
-    public function dbi_usertable_req($uid_start, $uid_total)
+    public function dbi_usertable_req($uid, $uid_start, $uid_total)
     {
         //建立连接
         $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
@@ -498,13 +498,13 @@ class classDbiL3apF1sym
         }
         $mysqli->query("SET NAMES utf8");
 
-        $query_str = "SELECT * FROM `t_l3f1sym_account` limit $uid_start, $uid_total";
+        //按照阜华要求，默认用户表只显示自己
+        $usertable = array(); //初始化
+        $user = "";
+        $query_str = "SELECT * FROM `t_l3f1sym_account` WHERE (`uid` = '$uid')";
         $result = $mysqli->query($query_str);
-
-        $usertable = array();
-        while (($result != false) && (($row = $result->fetch_array()) > 0))
-        {
-            $admin = $row['admin'];
+        if (($result != false) && (($row = $result->fetch_array()) > 0)){
+            $user = $row['user'];
             $temp = array(
                 'id' => $row['uid'],
                 'name' => $row['user'],
@@ -516,6 +516,28 @@ class classDbiL3apF1sym
                 'memo' => $row['backup']
             );
             array_push($usertable,$temp);
+
+        }
+
+        //如果是特殊用户则显示所有用户表
+        if ($user == 'admin' OR $user == 'foha')
+        {
+            $query_str = "SELECT * FROM `t_l3f1sym_account` limit $uid_start, $uid_total";
+            $resp = $mysqli->query($query_str);
+            while (($resp != false) && (($row = $resp->fetch_array()) > 0))
+            {
+                $temp = array(
+                    'id' => $row['uid'],
+                    'name' => $row['user'],
+                    'nickname'=> $row['nick'],
+                    'mobile' => $row['phone'],
+                    'mail' => $row['email'],
+                    'type' => $row['grade'],
+                    'date' => $row['regdate'],
+                    'memo' => $row['backup']
+                );
+                array_push($usertable,$temp);
+            }
         }
 
         $mysqli->close();

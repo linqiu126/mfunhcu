@@ -167,7 +167,8 @@ class classTaskL3aplF1sym
 
         $usercheck = $uiF1symDbObj->dbi_user_authcheck($action, $user);
         if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
-            $usertable = $uiF1symDbObj->dbi_usertable_req($start, $query_length);
+            $uid = $uiF1symDbObj->dbi_session_check($user);
+            $usertable = $uiF1symDbObj->dbi_usertable_req($uid, $start, $query_length);
             if(!empty($usertable)){
                 $ret = array('start'=> (string)$start,'total'=> (string)$total,'length'=>(string)$query_length,'usertable'=>$usertable);
                 $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$ret,'msg'=>"用户表获取成功");
