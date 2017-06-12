@@ -214,6 +214,7 @@ class classDbiL2snrHsmmp
         return $resp;
     }
 
+    //直接存储照片数据到数据库里，暂时没有采用这种机制
     public function dbi_picture_data_save($statcode, $timestamp, $bindata)
     {
         //建立连接
@@ -245,7 +246,34 @@ class classDbiL2snrHsmmp
         return $result;
     }
 
-    public function dbi_picture_link_save($statcode, $deviceId, $timestamp, $filelink, $filesize)
+    //将开锁抓拍照片信息存到开锁历史记录表中
+    public function dbi_fhys_locklog_picture_name_save($statcode, $filename)
+    {
+        //建立连接
+        $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli)
+        {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $mysqli->query("SET NAMES utf8");
+
+        //查询该站点的最后一次开锁事件记录
+        $query_str = "SELECT * FROM `t_l3fxprcm_fhys_locklog` WHERE `sid`= (SELECT MAX(sid) FROM `t_l3fxprcm_fhys_locklog` WHERE `statcode`= '$statcode' )";
+        $result = $mysqli->query($query_str);
+        if (($result != false) && ($result->num_rows)>0)
+        {
+            $row = $row = $result->fetch_array();
+            $eventid = $row['sid'];
+            $query_str = "UPDATE `t_l3fxprcm_fhys_locklog` SET `picname` = '$filename' WHERE (`sid` = '$eventid')";
+            $result=$mysqli->query($query_str);
+        }
+
+        $mysqli->close();
+        return $result;
+    }
+
+    //保存照片信息到picturedata表中，对于FHYS这个可以不需要，直接将照片信息存到开锁记录表中，这样便于开锁抓拍照片关联查询
+    public function dbi_door_open_picture_link_save($statcode, $deviceId, $timestamp, $filelink, $filesize)
     {
         //建立连接
         $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
@@ -269,7 +297,7 @@ class classDbiL2snrHsmmp
         return $result;
     }
 
-    public function dbi_picture_filesize_update($statcode, $deviceId, $timestamp, $filename, $filesize)
+    public function dbi_door_open_picture_filesize_update($statcode, $deviceId, $timestamp, $filename, $filesize)
     {
         //建立连接
         $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);

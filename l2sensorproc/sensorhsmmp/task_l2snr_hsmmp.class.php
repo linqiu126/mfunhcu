@@ -74,23 +74,29 @@ class classTaskL2snrHsmmp
                 $result = "";
                 if ($funcFlag == "01"){ //第一包数据，创建一个新JPG文件
                     if(!file_exists(MFUN_HCU_SITE_PIC_BASE_DIR.$statCode))
-                        $result = mkdir(MFUN_HCU_SITE_PIC_BASE_DIR.$statCode.'/',0777,true);
-                    $filename = MFUN_HCU_SITE_PIC_BASE_DIR.$statCode.'/'.$statCode . "_" . $timestamp . $file_type;
-                    $newfile = fopen($filename, "wb+") or die("Unable to open file!");
+                        $result = mkdir(MFUN_HCU_SITE_PIC_BASE_DIR.$statCode.'/upload/',0777,true);
+                    $filename = $statCode . "_" . $timestamp . $file_type;
+                    $filelink = MFUN_HCU_SITE_PIC_BASE_DIR.$statCode.'/upload/'.$filename;
+                    $newfile = fopen($filelink, "wb+") or die("Unable to open file!");
                     $filesize = fwrite($newfile, $content);
                     fclose($newfile);
+
+                    //保存图片名到最后一次开锁记录表中
+                    $dbiL2snrHsmmpObj = new classDbiL2snrHsmmp();
+                    $result = $dbiL2snrHsmmpObj->dbi_fhys_locklog_picture_name_save($statCode, $filename);
+
+                    //保存图片的信息到picturedata表中
                     if ($filesize){
                         //$base_dir = str_replace( '\\' , '/' , realpath(dirname(__FILE__).'/../../../avorion'));
                         $filename = $statCode . "_" . $timestamp . $file_type;
                         $loggerObj->logger($project, $deviceId, $log_time, "上传新图片文件".$filename);
-                        $dbiL2snrHsmmpObj = new classDbiL2snrHsmmp();
-                        $result = $dbiL2snrHsmmpObj->dbi_picture_link_save($statCode, $deviceId, $timestamp, $filename,$filesize);
+                        $result = $dbiL2snrHsmmpObj->dbi_door_open_picture_link_save($statCode, $deviceId, $timestamp, $filename,$filesize);
                     }
                 }
                 else{ //往最新的文件里追加写内容
                     $lastfile_time = 0; //初始化
                     $lastfile_name = "";
-                    $file_path = MFUN_HCU_SITE_PIC_BASE_DIR.$statCode.'/';
+                    $file_path = MFUN_HCU_SITE_PIC_BASE_DIR.$statCode.'/upload/';
                     foreach(glob($file_path."*".$file_type) as $filename) {
                         if (!(is_dir($filename))) { //是个文件而不是目录
                             $filetime = filemtime($filename);  //获取文件修改时间
@@ -105,11 +111,13 @@ class classTaskL2snrHsmmp
                         $oldfile = fopen($lastfile_name, "ab") or die("Unable to open file!");
                         $filesize = fwrite($oldfile, $content);
                         fclose($oldfile);
+
+                        //更新picturedata表中图片的size
                         if ($filesize){
                             $pos = strripos($lastfile_name, "/");
                             $filename = substr($lastfile_name, $pos+1); //位置加1去除目录字符'/'
                             $dbiL2snrHsmmpObj = new classDbiL2snrHsmmp();
-                            $result = $dbiL2snrHsmmpObj->dbi_picture_filesize_update($statCode, $deviceId, $timestamp, $filename, $filesize);
+                            $result = $dbiL2snrHsmmpObj->dbi_door_open_picture_filesize_update($statCode, $deviceId, $timestamp, $filename, $filesize);
                         }
                     }
                 }

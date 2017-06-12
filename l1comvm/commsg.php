@@ -240,6 +240,7 @@ define("MSG_ID_L4FHYSUI_TO_L3F2_KEYGRANT", $index++);
 define("MSG_ID_L4FHYSUI_TO_L3F2_KEYAUTHNEW", $index++);
 define("MSG_ID_L4FHYSUI_TO_L3F2_KEYAUTHDEL", $index++);
 define("MSG_ID_L4FHYSUI_TO_L3F3_KEYHISTORY", $index++);
+define("MSG_ID_L4FHYSUI_TO_L3F3_DOOROPENPIC", $index++);
 define("MSG_ID_L4FHYSUI_TO_L3F3_SENSORLIST", $index++);
 define("MSG_ID_L4FHYSUI_TO_L3F3_DEVSENSOR", $index++);  //原有AQYC消息修改适配FHYS功能
 define("MSG_ID_L4FHYSUI_TO_L3F3_POINTPICTURE", $index++); //FHYS新增站点图片消息

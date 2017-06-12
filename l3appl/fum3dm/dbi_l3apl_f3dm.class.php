@@ -2785,7 +2785,46 @@ class classDbiL3apF3dm
         return $history;
     }
 
-    public function dbi_point_picture_process($statcode)
+    public function dbi_door_open_picture_process($enventid)
+    {
+        //建立连接
+        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli) {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $mysqli->query("SET NAMES utf8");
+
+        $query_str = "SELECT * FROM `t_l3fxprcm_fhys_locklog` WHERE `sid` = '$enventid' ";
+        $result = $mysqli->query($query_str);
+
+        $pic_result = array();
+        if (($result->num_rows)>0)
+        {
+            $row = $result->fetch_array();
+            $file_name = $row['picname'];
+            $statcode = $row['statcode'];
+            if(!empty($file_name)){
+                $file_url = MFUN_HCU_SITE_PIC_FOLDER_NAME.$statcode.'/upload/'.$file_name;
+                $temp = array(
+                    'ifpicture' => 'true',
+                    'picture' => $file_url
+                );
+                array_push($pic_result, $temp);
+            }
+            else{
+                $temp = array(
+                    'ifpicture' => 'false',
+                    'picture' => ''
+                );
+                array_push($pic_result, $temp);
+            }
+        }
+
+        $mysqli->close();
+        return $pic_result;
+    }
+
+    public function dbi_point_install_picture_process($statcode)
     {
         //建立连接
         $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
@@ -2801,7 +2840,7 @@ class classDbiL3apF3dm
         while($row = $result->fetch_array())
         {
             $file_name = $row['filename'];
-            $file_url = MFUN_HCU_SITE_PIC_FOLDER_NAME.$statcode.'/'.$file_name;
+            $file_url = MFUN_HCU_SITE_PIC_FOLDER_NAME.$statcode.'/install/'.$file_name;
             $temp = array(
                 'name' => $file_name,
                 'url' => $file_url

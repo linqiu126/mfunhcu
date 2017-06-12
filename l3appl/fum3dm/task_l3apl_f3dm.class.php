@@ -307,7 +307,28 @@ class classTaskL3aplF3dm
         return $retval;
     }
 
-    function func_point_picture_process($action, $user, $body)
+    //根据开锁事件event_id查询本次开门抓拍的照片
+    function func_door_open_picture_process($action, $user, $body)
+    {
+        if (isset($body["openid"])) $enventid = $body["openid"]; else  $enventid = "";
+
+        $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
+        $usercheck = $uiF1symDbObj->dbi_user_authcheck($action, $user);
+        if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
+            $uiF3dmDbObj = new classDbiL3apF3dm(); //初始化一个UI DB对象
+            $pic_result = $uiF3dmDbObj->dbi_door_open_picture_process($enventid);
+            if(!empty($pic_result))
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$pic_result,'msg'=>"获取指定开门事件的抓拍照片成功");
+            else
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>"获取指定开门事件的抓拍照片失败");
+        }
+        else
+            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
+
+        return $retval;
+    }
+
+    function func_point_install_picture_process($action, $user, $body)
     {
         if (isset($body["StatCode"])) $statcode = $body["StatCode"]; else  $statcode = "";
 
@@ -315,7 +336,7 @@ class classTaskL3aplF3dm
         $usercheck = $uiF1symDbObj->dbi_user_authcheck($action, $user);
         if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
             $uiF3dmDbObj = new classDbiL3apF3dm(); //初始化一个UI DB对象
-            $pic_list = $uiF3dmDbObj->dbi_point_picture_process($statcode);
+            $pic_list = $uiF3dmDbObj->dbi_point_install_picture_process($statcode);
             if(!empty($pic_list))
                 $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$pic_list,'msg'=>"获取指定站点的照片列表成功");
             else
@@ -430,8 +451,13 @@ class classTaskL3aplF3dm
                 $project = MFUN_PRJ_HCU_FHYSUI;
                 break;
 
-            case MSG_ID_L4FHYSUI_TO_L3F3_POINTPICTURE:
-                $resp = $this->func_point_picture_process($action, $user, $body);
+            case MSG_ID_L4FHYSUI_TO_L3F3_DOOROPENPIC://开锁抓拍照片
+                $resp = $this->func_door_open_picture_process($action, $user, $body);
+                $project = MFUN_PRJ_HCU_FHYSUI;
+                break;
+
+            case MSG_ID_L4FHYSUI_TO_L3F3_POINTPICTURE: //开站安装上传照片
+                $resp = $this->func_point_install_picture_process($action, $user, $body);
                 $project = MFUN_PRJ_HCU_FHYSUI;
                 break;
 
