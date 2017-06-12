@@ -1,5 +1,5 @@
 <?php
-	$id= $_REQUEST["id"];
+	$devcode= $_REQUEST["id"];
 	$upload_path="../../avorion/";
 	function _encode($arr)
     {
@@ -20,14 +20,32 @@
       }
       return urlencode($elem);
     }
+
+    //建立连接
+    $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+    if (!$mysqli) {
+        die('Could not connect: ' . mysqli_error($mysqli));
+    }
+    $mysqli->query("SET NAMES utf8");
+    $query_str = "SELECT * FROM `t_l2sdk_iothcu_inventory` WHERE `devcode` = '$devcode' ";
+    $result = $mysqli->query($query_str);
+    if (($result->num_rows)>0) {
+        $row = $result->fetch_array();
+        $statcode = $row['statcode'];
+    }
+    else
+        $statcode = $devcode;
+
+
+
 	$num=count($_FILES['file-zh']['name']);   //�����ϴ��ļ��ĸ���
-	if(!file_exists('./'.$id)) {mkdir('./'.$id.'/');}
+	if(!file_exists('./'.$statcode.'/install')) {mkdir('./'.$statcode.'/install');}
 	for($i=0;$i<$num;$i++)
 	{
 
 		   		if($_FILES['file-zh']['name'][$i]!=''&&is_uploaded_file($_FILES['file-zh']['tmp_name'][$i]))
 		   		{
-				  $fname=$upload_path.$id.'/'.(string)(time()).$_FILES['file-zh']['name'][$i];
+				  $fname=$upload_path.$statcode.'/install/'.(string)(time()).$_FILES['file-zh']['name'][$i];
 				  move_uploaded_file($_FILES['file-zh']['tmp_name'][$i],$fname);
 				  $retval=array(
                   		'status'=>"true",

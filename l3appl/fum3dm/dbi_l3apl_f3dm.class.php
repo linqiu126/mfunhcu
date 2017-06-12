@@ -2805,18 +2805,16 @@ class classDbiL3apF3dm
             $statcode = $row['statcode'];
             if(!empty($file_name)){
                 $file_url = MFUN_HCU_SITE_PIC_FOLDER_NAME.$statcode.'/upload/'.$file_name;
-                $temp = array(
+                $pic_result = array(
                     'ifpicture' => 'true',
                     'picture' => $file_url
                 );
-                array_push($pic_result, $temp);
             }
             else{
-                $temp = array(
+                $pic_result = array(
                     'ifpicture' => 'false',
                     'picture' => ''
                 );
-                array_push($pic_result, $temp);
             }
         }
 
