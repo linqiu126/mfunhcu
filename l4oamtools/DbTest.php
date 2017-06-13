@@ -18,10 +18,10 @@ include_once "../l1comvm/vmlayer.php";
 //$path3 = $_SERVER['DOCUMENT_ROOT'];
 
 define ("TC_EMCWX", false);
-define ("TC_SOCKET", false);
+define ("TC_SOCKET", true);
 define ("TC_CRON", false);
 define ("TC_IOT_HCU", false);
-define ("TC_L4AQYC_UI", true);
+define ("TC_L4AQYC_UI", false);
 define ("TC_L4FHYS_UI", false);
 define ("TC_L4FHYS_WECHAT", false);
 define ("TC_L4BFSC_UI", false);

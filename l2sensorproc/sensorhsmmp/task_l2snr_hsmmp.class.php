@@ -73,7 +73,7 @@ class classTaskL2snrHsmmp
                 $file_type = ".jpg";
                 $result = "";
                 if ($funcFlag == "01"){ //第一包数据，创建一个新JPG文件
-                    if(!file_exists(MFUN_HCU_SITE_PIC_BASE_DIR.$statCode))
+                    if(!file_exists(MFUN_HCU_SITE_PIC_BASE_DIR.$statCode.'/upload/'))
                         $result = mkdir(MFUN_HCU_SITE_PIC_BASE_DIR.$statCode.'/upload/',0777,true);
                     $filename = $statCode . "_" . $timestamp . $file_type;
                     $filelink = MFUN_HCU_SITE_PIC_BASE_DIR.$statCode.'/upload/'.$filename;
