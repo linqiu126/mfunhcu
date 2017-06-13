@@ -49,6 +49,7 @@ define("MFUN_L3APL_F2CM_EVENT_TYPE_WECHAT", "W");
 define("MFUN_L3APL_F2CM_EVENT_TYPE_IDCARD", "I");
 define("MFUN_L3APL_F2CM_EVENT_TYPE_PHONE", "P");
 define("MFUN_L3APL_F2CM_EVENT_TYPE_XJ", "X");  //巡检事件
+define("MFUN_L3APL_F2CM_EVENT_TYPE_ALARM", "A");  //不明开锁事件
 
 define("MFUN_L3APL_F2CM_EVENT_DURATION_DAY", "1");
 define("MFUN_L3APL_F2CM_EVENT_DURATION_WEEK", "7");
@@ -91,6 +92,7 @@ define ("MFUN_HCU_FHYS_BLEMAC_NULL", "000000000000");  //无效BLE MAC
 define ("MFUN_HCU_DATA_FHYS_STATUS_OK", 0x00); //设备状态正常或者门锁闭合
 define ("MFUN_HCU_DATA_FHYS_STATUS_NOK", 0x01); //设备状态异常或者门锁打开
 define ("MFUN_HCU_DATA_FHYS_STATUS_NULL", 0x02); //设备为空或门锁没有安装
+define ("MFUN_HCU_DATA_FHYS_STATUS_ALARM", 0x03); //设备状态异常或者门锁未授权打开
 define ("MFUN_HCU_DATA_FHYS_LOCK_OPEN", 0x00);  //开锁命令
 define ("MFUN_HCU_DATA_FHYS_LOCK_CLOSE", 0x01);  //闭锁命令
 

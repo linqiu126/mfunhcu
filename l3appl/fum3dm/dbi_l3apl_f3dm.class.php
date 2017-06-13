@@ -2183,10 +2183,8 @@ class classDbiL3apF3dm
         array_push($resp["column"], "联系电话");
         array_push($resp["column"], "设备状态");
         array_push($resp["column"], "上次报告时间");
-        array_push($resp["column"], "门-1状态");
-        array_push($resp["column"], "门-2状态");
-        array_push($resp["column"], "锁-1状态");
-        array_push($resp["column"], "锁-2状态");
+        array_push($resp["column"], "门锁-1状态");
+        array_push($resp["column"], "门锁-2状态");
         array_push($resp["column"], "信号强度");
         array_push($resp["column"], "剩余电量");
         array_push($resp["column"], "温度");
@@ -2216,10 +2214,8 @@ class classDbiL3apF3dm
             $result = $mysqli->query($query_str);
             //初始化返回值，确保数据库没有测试报告的情况下界面返回数据长度不报错
             $dev_status = "状态未知";
-            $door_1 = "状态未知";
-            $door_2 = "状态未知";
-            $lock_1 = "状态未知";
-            $lock_2 = "状态未知";
+            $doorlock_1 = "状态未知";
+            $doorlock_2 = "状态未知";
             $sig_level = "0";
             $batt_level = "0V";
             $vibr_alarm = "未知";
@@ -2240,43 +2236,24 @@ class classDbiL3apF3dm
                 else
                     $dev_status = "运行中";
 
-                //更新门运行状态
+                //更新门锁运行状态
                 if($row["door_1"] == MFUN_HCU_FHYS_DOOR_OPEN)
-                    $door_1 = "正常打开";
+                    $doorlock_1 = "正常打开";
                 elseif($row["door_1"] == MFUN_HCU_FHYS_DOOR_CLOSE)
-                    $door_1 = "正常关闭";
+                    $doorlock_1 = "正常关闭";
                 elseif($row["door_1"] == MFUN_HCU_FHYS_DOOR_ALARM)
-                    $door_1 = "暴力打开";
+                    $doorlock_1 = "未授权打开";
                 elseif($row["door_1"] == MFUN_HCU_FHYS_DOOR_NULL)
-                    $door_1 = "未安装";
+                    $doorlock_1 = "未安装";
 
                 if($row["door_2"] == MFUN_HCU_FHYS_DOOR_OPEN)
-                    $door_2 = "正常打开";
+                    $doorlock_2 = "正常打开";
                 elseif($row["door_2"] == MFUN_HCU_FHYS_DOOR_CLOSE)
-                    $door_2 = "正常关闭";
+                    $doorlock_2 = "正常关闭";
                 elseif($row["door_2"] == MFUN_HCU_FHYS_DOOR_ALARM)
-                    $door_2 = "暴力打开";
+                    $doorlock_2 = "暴力打开";
                 elseif($row["door_2"] == MFUN_HCU_FHYS_DOOR_NULL)
-                    $door_2 = "未安装";
-
-                //更新锁运行状态
-                if($row["lock_1"] == MFUN_HCU_FHYS_LOCK_OPEN)
-                    $lock_1 = "正常打开";
-                elseif($row["lock_1"] == MFUN_HCU_FHYS_LOCK_CLOSE)
-                    $lock_1 = "正常关闭";
-                elseif($row["lock_1"] == MFUN_HCU_FHYS_LOCK_ALARM)
-                    $lock_1 = "暴力打开";
-                elseif($row["lock_1"] == MFUN_HCU_FHYS_LOCK_NULL)
-                    $lock_1 = "未安装";
-
-                if($row["lock_2"] == MFUN_HCU_FHYS_LOCK_OPEN)
-                    $lock_2 = "正常打开";
-                elseif($row["lock_2"] == MFUN_HCU_FHYS_LOCK_CLOSE)
-                    $lock_2 = "正常关闭";
-                elseif($row["lock_2"] == MFUN_HCU_FHYS_LOCK_ALARM)
-                    $lock_2 = "暴力打开";
-                elseif($row["lock_2"] == MFUN_HCU_FHYS_LOCK_NULL)
-                    $lock_2 = "未安装";
+                    $doorlock_2 = "未安装";
 
                 //更新GPRS信号强度
                 $sig_level = hexdec($row["siglevel"])& 0xFF;
@@ -2323,10 +2300,8 @@ class classDbiL3apF3dm
             }
             array_push($one_row, $dev_status);
             array_push($one_row, $last_report);
-            array_push($one_row, $door_1);
-            array_push($one_row, $door_2);
-            array_push($one_row, $lock_1);
-            array_push($one_row, $lock_2);
+            array_push($one_row, $doorlock_1);
+            array_push($one_row, $doorlock_2);
             array_push($one_row, $gprs);
             array_push($one_row, $batt_level);
             array_push($one_row, $temperature);
@@ -2408,142 +2383,74 @@ class classDbiL3apF3dm
                         'WarningTarget'=>$alarm);
             array_push($currentvalue,$temp);
 
-            //更新门-1运行状态
+            //更新门锁-1运行状态
             if($row["door_1"] == MFUN_HCU_FHYS_DOOR_OPEN){
-                $door_1_status = "正常打开";
-                $door_1_alarm = "true";
-                $door_1_picname = "FHYS_door";
+                $doorlock_1_status = "正常打开";
+                $doorlock_1_alarm = "true";
+                $doorlock_1_picname = "FHYS_locko";
             }
             elseif($row["door_1"] == MFUN_HCU_FHYS_DOOR_CLOSE){
-                $door_1_status = "正常关闭";
-                $door_1_alarm = "false";
-                $door_1_picname = "FHYS_door";
+                $doorlock_1_status = "正常关闭";
+                $doorlock_1_alarm = "false";
+                $doorlock_1_picname = "FHYS_lockc";
             }
             elseif($row["door_1"] == MFUN_HCU_FHYS_DOOR_ALARM){
-                $door_1_status = "暴力开门";
-                $door_1_alarm = "true";
-                $door_1_picname = "FHYS_door";
+                $doorlock_1_status = "未授权打开";
+                $doorlock_1_alarm = "true";
+                $doorlock_1_picname = "FHYS_locko";
             }
             elseif($row["door_1"] == MFUN_HCU_FHYS_DOOR_NULL){
-                $door_1_status = "未安装";
-                $door_1_alarm = "false";
-                $door_1_picname = "FHYS_door";
+                $doorlock_1_status = "未安装";
+                $doorlock_1_alarm = "false";
+                $doorlock_1_picname = "FHYS_lockc";
             }
             else{
-                $door_1_status = "状态未知";
-                $door_1_alarm = "false";
-                $door_1_picname = "FHYS_door";
-            }
-
-            //更新锁-1运行状态
-            if($row["lock_1"] == MFUN_HCU_FHYS_LOCK_OPEN){
-                $lock_1_status = "正常打开";
-                $lock_1_alarm = "true";
-                $lock_1_picname = "FHYS_locko";
-            }
-            elseif($row["lock_1"] == MFUN_HCU_FHYS_LOCK_CLOSE){
-                $lock_1_status = "正常关闭";
-                $lock_1_alarm = "false";
-                $lock_1_picname = "FHYS_lockc";
-            }
-            elseif($row["lock_1"] == MFUN_HCU_FHYS_LOCK_ALARM){
-                $lock_1_status = "暴力开锁";
-                $lock_1_alarm = "true";
-                $lock_1_picname = "FHYS_locko";
-            }
-            elseif($row["lock_1"] == MFUN_HCU_FHYS_LOCK_NULL){
-                $lock_1_status = "未安装";
-                $lock_1_alarm = "false";
-                $lock_1_picname = "FHYS_lockc";
-            }
-            else{
-                $lock_1_status = "状态未知";
-                $lock_1_alarm = "false";
-                $lock_1_picname = "FHYS_lockc";
+                $doorlock_1_status = "状态未知";
+                $doorlock_1_alarm = "false";
+                $doorlock_1_picname = "FHYS_lockc";
             }
 
             $temp = array(
-                        'AlarmName'=> "门-1 状态：",
-                        'AlarmEName'=> (string)$door_1_picname,
-                        'AlarmValue'=> (string)$door_1_status,
+                        'AlarmName'=> "门锁-1 状态：",
+                        'AlarmEName'=> (string)$doorlock_1_picname,
+                        'AlarmValue'=> (string)$doorlock_1_status,
                         'AlarmUnit'=> "",
-                        'WarningTarget'=>$door_1_alarm);
-            array_push($currentvalue,$temp);
-            $temp = array(
-                        'AlarmName'=> "锁-1 状态：",
-                        'AlarmEName'=> (string)$lock_1_picname,
-                        'AlarmValue'=> (string)$lock_1_status,
-                        'AlarmUnit'=> "",
-                        'WarningTarget'=>$lock_1_alarm);
+                        'WarningTarget'=>$doorlock_1_alarm);
             array_push($currentvalue,$temp);
 
-            //更新门-2运行状态
+            //更新门锁-2运行状态
             if($row["door_2"] == MFUN_HCU_FHYS_DOOR_OPEN){
-                $door_2_status = "正常打开";
-                $door_2_alarm = "true";
-                $door_2_picname = "FHYS_door";
+                $doorlock_2_status = "正常打开";
+                $doorlock_2_alarm = "true";
+                $doorlock_2_picname = "FHYS_locko";
             }
             elseif($row["door_2"] == MFUN_HCU_FHYS_DOOR_CLOSE){
-                $door_2_status = "正常关闭";
-                $door_2_alarm = "false";
-                $door_2_picname = "FHYS_door";
+                $doorlock_2_status = "正常关闭";
+                $doorlock_2_alarm = "false";
+                $doorlock_2_picname = "FHYS_lockc";
             }
             elseif($row["door_2"] == MFUN_HCU_FHYS_DOOR_ALARM){
-                $door_2_status = "暴力开门";
-                $door_2_alarm = "true";
-                $door_2_picname = "FHYS_door";
+                $doorlock_2_status = "未授权打开";
+                $doorlock_2_alarm = "true";
+                $doorlock_2_picname = "FHYS_locko";
             }
             elseif($row["door_2"] == MFUN_HCU_FHYS_DOOR_NULL){
-                $door_2_status = "未安装";
-                $door_2_alarm = "false";
-                $door_2_picname = "FHYS_door";
+                $doorlock_2_status = "未安装";
+                $doorlock_2_alarm = "false";
+                $doorlock_2_picname = "FHYS_lockc";
             }
             else{
-                $door_2_status = "状态未知";
-                $door_2_alarm = "false";
-                $door_2_picname = "FHYS_door";
-            }
-
-            //更新锁-2运行状态
-            if($row["lock_2"] == MFUN_HCU_FHYS_LOCK_OPEN){
-                $lock_2_status = "正常打开";
-                $lock_2_alarm = "true";
-                $lock_2_picname = "FHYS_locko";
-            }
-            elseif($row["lock_2"] == MFUN_HCU_FHYS_LOCK_CLOSE){
-                $lock_2_status = "正常关闭";
-                $lock_2_alarm = "false";
-                $lock_2_picname = "FHYS_lockc";
-            }
-            elseif($row["lock_2"] == MFUN_HCU_FHYS_LOCK_ALARM){
-                $lock_2_status = "暴力开锁";
-                $lock_2_alarm = "true";
-                $lock_2_picname = "FHYS_locko";
-            }
-            elseif($row["lock_2"] == MFUN_HCU_FHYS_LOCK_NULL){
-                $lock_2_status = "未安装";
-                $lock_2_alarm = "false";
-                $lock_2_picname = "FHYS_lockc";
-            }
-            else{
-                $lock_2_status = "状态未知";
-                $lock_2_alarm = "false";
-                $lock_2_picname = "FHYS_lockc";
+                $doorlock_2_status = "状态未知";
+                $doorlock_2_alarm = "false";
+                $doorlock_2_picname = "FHYS_lockc";
             }
 
             $temp = array(
-                'AlarmName'=> "门-2 状态：",
-                'AlarmEName'=> (string)$door_2_picname,
-                'AlarmValue'=> (string)$door_2_status,
+                'AlarmName'=> "门锁-2 状态：",
+                'AlarmEName'=> (string)$doorlock_2_picname,
+                'AlarmValue'=> (string)$doorlock_2_status,
                 'AlarmUnit'=> "",
-                'WarningTarget'=>$door_2_alarm);
-            array_push($currentvalue,$temp);
-            $temp = array(
-                'AlarmName'=> "锁-2 状态：",
-                'AlarmEName'=> (string)$lock_2_picname,
-                'AlarmValue'=> (string)$lock_2_status,
-                'AlarmUnit'=> "",
-                'WarningTarget'=>$lock_2_alarm);
+                'WarningTarget'=>$doorlock_2_alarm);
             array_push($currentvalue,$temp);
 
             //更新GPRS信号强度
@@ -2568,8 +2475,16 @@ class classDbiL3apF3dm
                             'AlarmValue'=>(string)$gprs,
                             'AlarmUnit'=>"",
                             'WarningTarget'=>$alarm);
-                array_push($currentvalue,$temp);
             }
+            else{ //防止数据缺失，保持界面显示完整性
+                $temp = array(
+                    'AlarmName'=>"GPRS信号强度：",
+                    'AlarmEName'=> "FHYS_sig",
+                    'AlarmValue'=>"NULL",
+                    'AlarmUnit'=>"",
+                    'WarningTarget'=>"false");
+            }
+            array_push($currentvalue,$temp);
 
             //更新电池剩余电量
             if ($battlevel != NULL){
@@ -2583,8 +2498,16 @@ class classDbiL3apF3dm
                             'AlarmValue'=>(string)($battlevel),
                             'AlarmUnit'=>" V",
                             'WarningTarget'=>$alarm);
-                array_push($currentvalue,$temp);
             }
+            else{ //防止数据缺失，保持界面显示完整性
+                $temp = array(
+                    'AlarmName'=>"剩余电量：",
+                    'AlarmEName'=> "FHYS_batt",
+                    'AlarmValue'=> "NULL",
+                    'AlarmUnit'=>"",
+                    'WarningTarget'=>"false");
+            }
+            array_push($currentvalue,$temp);
 
             //更新温度
             if ($temperature != NULL) {
@@ -2597,10 +2520,17 @@ class classDbiL3apF3dm
                     'AlarmEName' => "FHYS_temp",
                     'AlarmValue' => (string)$temperature,
                     'AlarmUnit' => " 摄氏度",
-                    'WarningTarget' => $alarm
-                );
-                array_push($currentvalue, $temp);
+                    'WarningTarget' => $alarm );
             }
+            else{ //防止数据缺失，保持界面显示完整性
+                $temp = array(
+                    'AlarmName' => "温度：",
+                    'AlarmEName' => "FHYS_temp",
+                    'AlarmValue' => "NULL",
+                    'AlarmUnit' => "",
+                    'WarningTarget' => "false" );
+            }
+            array_push($currentvalue, $temp);
 
             //更新湿度
             if ($humidity != NULL){
@@ -2613,10 +2543,17 @@ class classDbiL3apF3dm
                     'AlarmEName'=> "FHYS_humi",
                     'AlarmValue'=>(string)$humidity,
                     'AlarmUnit'=>" %",
-                    'WarningTarget'=>$alarm
-                );
-                array_push($currentvalue,$temp);
+                    'WarningTarget'=>$alarm);
             }
+            else{ //防止数据缺失，保持界面显示完整性
+                $temp = array(
+                    'AlarmName'=>"湿度：",
+                    'AlarmEName'=> "FHYS_humi",
+                    'AlarmValue'=>"NULL",
+                    'AlarmUnit'=>"",
+                    'WarningTarget'=>"false");
+            }
+            array_push($currentvalue,$temp);
 
             //更新震动告警状态
             if($row["vibralarm"] == MFUN_HCU_FHYS_ALARM_YES){
@@ -2757,6 +2694,8 @@ class classDbiL3apF3dm
                     $eventtype = "电话号码开锁";
                 elseif ($eventtype == MFUN_L3APL_F2CM_EVENT_TYPE_XJ)
                     $eventtype = "巡检事件";
+                elseif ($eventtype == MFUN_L3APL_F2CM_EVENT_TYPE_ALARM)
+                    $eventtype = "未授权开锁";
                 else
                     $eventtype = "未知事件";
 

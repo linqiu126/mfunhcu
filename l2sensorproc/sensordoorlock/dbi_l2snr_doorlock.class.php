@@ -40,8 +40,21 @@ class classDbiL2snrDoorlock
             $keyusername = $row['keyusername'];
 
             $timestamp = time();
-            $eventdate = date("Y-m-d", $timestamp);
-            $eventtime = date("H:m:s", $timestamp);
+            $temp = getdate($timestamp);
+            $eventdate = $temp['year']."-".$temp['mon']."-".$temp['mday'];
+            $eventtime = $temp['hours'].":".$temp['minutes'].":".$temp['seconds'];
+            $query_str = "INSERT INTO `t_l3fxprcm_fhys_locklog` (keyid,keyname,keyuserid,keyusername,eventtype,statcode,eventdate,eventtime)
+                              VALUES ('$keyid','$keyname','$keyuserid', '$keyusername', '$eventtype', '$statCode', '$eventdate', '$eventtime')";
+            $result = $mysqli->query($query_str);
+        }
+        else{
+            $keyid = "Unknown";
+            $keyname = "Unknown";
+            $keyuserid = "Unknown";
+            $keyusername = "Unknown";
+
+            $eventdate = date("Y-m-d");
+            $eventtime = date("H:m:s");
             $query_str = "INSERT INTO `t_l3fxprcm_fhys_locklog` (keyid,keyname,keyuserid,keyusername,eventtype,statcode,eventdate,eventtime)
                               VALUES ('$keyid','$keyname','$keyuserid', '$keyusername', '$eventtype', '$statCode', '$eventdate', '$eventtime')";
             $result = $mysqli->query($query_str);
@@ -581,6 +594,8 @@ class classDbiL2snrDoorlock
         $format = "A2lock1/A2lock2/A2door1/A2door2/A2rfid/A2ble/A2gprs/A2batt/A4temp/A4humi/A2vibr/A2smok/A2water/A2tilt";
         $msg= unpack($format, $data);
 
+        /*对于有源锁可以分别判断锁状态和门状态，这个处理有意义。但对于无源锁，锁的状态无法主动检测，这样判断就没有意义了，程序暂时保留
+
         if (($msg['lock1'] == MFUN_HCU_DATA_FHYS_STATUS_OK) AND ($msg['door1'] == MFUN_HCU_DATA_FHYS_STATUS_OK)){
             $lock1 = MFUN_HCU_FHYS_LOCK_CLOSE;
             $door1 = MFUN_HCU_FHYS_DOOR_CLOSE;
@@ -629,6 +644,57 @@ class classDbiL2snrDoorlock
         else{
             $lock2 =MFUN_HCU_FHYS_STATUS_UNKNOWN;
             $door2 =MFUN_HCU_FHYS_STATUS_UNKNOWN;
+        }
+        */
+
+        if ($msg['door1'] == MFUN_HCU_DATA_FHYS_STATUS_OK){
+            $lock1 = MFUN_HCU_FHYS_LOCK_CLOSE;
+            $door1 = MFUN_HCU_FHYS_DOOR_CLOSE;
+        }
+        elseif ($msg['door1'] == MFUN_HCU_DATA_FHYS_STATUS_NOK){
+            $lock1 = MFUN_HCU_FHYS_LOCK_OPEN;
+            $door1 = MFUN_HCU_FHYS_DOOR_OPEN;
+        }
+        elseif($msg['door1'] == MFUN_HCU_DATA_FHYS_STATUS_NULL){
+            $lock1 = MFUN_HCU_FHYS_LOCK_NULL;
+            $door1 = MFUN_HCU_FHYS_DOOR_NULL;
+        }
+        elseif($msg['door1'] == MFUN_HCU_DATA_FHYS_STATUS_ALARM){
+            $lock1 = MFUN_HCU_FHYS_LOCK_ALARM;
+            $door1 = MFUN_HCU_FHYS_DOOR_ALARM;
+        }
+        else{
+            $lock1 =MFUN_HCU_FHYS_STATUS_UNKNOWN;
+            $door1 =MFUN_HCU_FHYS_STATUS_UNKNOWN;
+        }
+
+        if ($msg['door2'] == MFUN_HCU_DATA_FHYS_STATUS_OK){
+            $lock2 = MFUN_HCU_FHYS_LOCK_CLOSE;
+            $door2 = MFUN_HCU_FHYS_DOOR_CLOSE;
+        }
+        elseif ($msg['door2'] == MFUN_HCU_DATA_FHYS_STATUS_NOK){
+            $lock2 = MFUN_HCU_FHYS_LOCK_OPEN;
+            $door2 = MFUN_HCU_FHYS_DOOR_OPEN;
+        }
+        elseif($msg['door2'] == MFUN_HCU_DATA_FHYS_STATUS_NULL){
+            $lock2 = MFUN_HCU_FHYS_LOCK_NULL;
+            $door2 = MFUN_HCU_FHYS_DOOR_NULL;
+        }
+        elseif($msg['door2'] == MFUN_HCU_DATA_FHYS_STATUS_ALARM){
+            $lock2 = MFUN_HCU_FHYS_LOCK_ALARM;
+            $door2 = MFUN_HCU_FHYS_DOOR_ALARM;
+        }
+        else{
+            $lock2 =MFUN_HCU_FHYS_STATUS_UNKNOWN;
+            $door2 =MFUN_HCU_FHYS_STATUS_UNKNOWN;
+        }
+
+        //任何一个锁出现非授权打开，即生成一条开锁记录，便于对应开门抓拍的照片与之关联
+        if(($lock1 == MFUN_HCU_FHYS_LOCK_ALARM) OR ($lock2 == MFUN_HCU_FHYS_LOCK_ALARM))
+        {
+            $keyid = "";  //未授权开门锁，所以钥匙ID为空
+            $event = MFUN_L3APL_F2CM_EVENT_TYPE_ALARM;
+            $this->dbi_hcu_event_log_process($keyid, $statCode, $event); //保存开门事件记录
         }
 
         if ($msg['rfid'] == MFUN_HCU_DATA_FHYS_STATUS_OK)
