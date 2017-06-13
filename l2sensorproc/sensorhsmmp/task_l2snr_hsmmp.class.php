@@ -90,7 +90,7 @@ class classTaskL2snrHsmmp
                         //$base_dir = str_replace( '\\' , '/' , realpath(dirname(__FILE__).'/../../../avorion'));
                         $filename = $statCode . "_" . $timestamp . $file_type;
                         $loggerObj->logger($project, $deviceId, $log_time, "上传新图片文件".$filename);
-                        $result = $dbiL2snrHsmmpObj->dbi_door_open_picture_link_save($statCode, $deviceId, $timestamp, $filename,$filesize);
+                        //$result = $dbiL2snrHsmmpObj->dbi_door_open_picture_link_save($statCode, $deviceId, $timestamp, $filename,$filesize);
                     }
                 }
                 else{ //往最新的文件里追加写内容
@@ -113,12 +113,13 @@ class classTaskL2snrHsmmp
                         fclose($oldfile);
 
                         //更新picturedata表中图片的size
+                        /*
                         if ($filesize){
                             $pos = strripos($lastfile_name, "/");
                             $filename = substr($lastfile_name, $pos+1); //位置加1去除目录字符'/'
                             $dbiL2snrHsmmpObj = new classDbiL2snrHsmmp();
                             $result = $dbiL2snrHsmmpObj->dbi_door_open_picture_filesize_update($statCode, $deviceId, $timestamp, $filename, $filesize);
-                        }
+                        }*/
                     }
                 }
 
