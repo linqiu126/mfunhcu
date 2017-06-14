@@ -53,8 +53,11 @@ class classDbiL2snrDoorlock
             $keyuserid = "Unknown";
             $keyusername = "Unknown";
 
-            $eventdate = date("Y-m-d");
-            $eventtime = date("H:m:s");
+            $timestamp = time();
+            $temp = getdate($timestamp);
+            $eventdate = $temp['year']."-".$temp['mon']."-".$temp['mday'];
+            $eventtime = $temp['hours'].":".$temp['minutes'].":".$temp['seconds'];
+
             $query_str = "INSERT INTO `t_l3fxprcm_fhys_locklog` (keyid,keyname,keyuserid,keyusername,eventtype,statcode,eventdate,eventtime)
                               VALUES ('$keyid','$keyname','$keyuserid', '$keyusername', '$eventtype', '$statCode', '$eventdate', '$eventtime')";
             $result = $mysqli->query($query_str);
