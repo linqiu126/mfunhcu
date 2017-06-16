@@ -369,7 +369,7 @@ class classDbiL3apF1sym
 
             //CMCC短信平台
             $url = MFUN_HCU_FHYS_CMCC_URL.'?sicode='.MFUN_HCU_FHYS_CMCC_SICODE.'&mobiles='.trim($mobile).
-                '&tempid='.MFUN_HCU_FHYS_CMCC_TEMPCODE_PW.'smscode='.$authcode;
+                '&tempid='.MFUN_HCU_FHYS_CMCC_TEMPCODE_PW.'&smscode='.$authcode;
 
             $l2sdkIotWxObj = new classTaskL2sdkIotWx();
             $resp =$l2sdkIotWxObj->https_request($url);
