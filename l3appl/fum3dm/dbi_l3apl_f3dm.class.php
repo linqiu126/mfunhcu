@@ -2644,14 +2644,13 @@ class classDbiL3apF3dm
         if (isset($condition["Time"])) $duration = trim($condition["Time"]); else  $duration = "";
 
         array_push($history["ColumnName"], "序号");
-        array_push($history["ColumnName"], "工单号");
+        //array_push($history["ColumnName"], "工单号");
+        array_push($history["ColumnName"], "站点名称");
         array_push($history["ColumnName"], "钥匙编号");
         array_push($history["ColumnName"], "钥匙名称");
         array_push($history["ColumnName"], "使用者工号");
         array_push($history["ColumnName"], "使用者姓名");
         array_push($history["ColumnName"], "事件类型");
-        array_push($history["ColumnName"], "站点名称");
-        array_push($history["ColumnName"], "事件日期");
         array_push($history["ColumnName"], "事件时间");
 
         $timestamp = time();
@@ -2670,7 +2669,8 @@ class classDbiL3apF3dm
         while ($row = $result->fetch_array()){
             $statcode = $row['statcode'];
             $statname = $row['statname'];
-            $query_str = "SELECT * FROM `t_l3fxprcm_fhys_locklog` WHERE (`statcode` = '$statcode')";
+            $exception = "Unknown";
+            $query_str = "SELECT * FROM `t_l3fxprcm_fhys_locklog` WHERE (`statcode` = '$statcode' AND `keyid` != '$exception')";
             $resp = $mysqli->query($query_str);
             while($resp_row = $resp->fetch_array()){
                 $sid = $resp_row['sid'];
@@ -2699,20 +2699,18 @@ class classDbiL3apF3dm
                 else
                     $eventtype = "未知事件";
 
-                $eventdate = $resp_row['eventdate'];
-                $eventtime = $resp_row['eventtime'];
-                $dateintval = intval(date('Ymd',strtotime($eventdate)));
+                $eventtime = $resp_row['createtime'];
+                $dateintval = intval(date('Ymd',strtotime($eventtime)));
                 $temp = array();
                 if($dateintval >= $start AND $dateintval <= $end){
                     array_push($temp, $sid);
-                    array_push($temp, $woid);
+                    array_push($temp, $statname);
+                    //array_push($temp, $woid);
                     array_push($temp, $keyid);
                     array_push($temp, $keyname);
                     array_push($temp, $keyuserid);
                     array_push($temp, $keyusername);
                     array_push($temp, $eventtype);
-                    array_push($temp, $statname);
-                    array_push($temp, $eventdate);
                     array_push($temp, $eventtime);
 
                     array_push($history['TableData'], $temp);
