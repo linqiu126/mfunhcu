@@ -480,9 +480,9 @@ class classL2codecHuitpIeDict
 
           //公共IE区域
           HUITP_IEID_uni_com_req                          => array("format"=>"A4ieId/A4ieLen/A2comReq","name"=>"HUITP_IEID_uni_com_req"),
-          HUITP_IEID_uni_com_resp                         => array("format"=>"A4ieId/A4ieLen","name"=>""),
+          HUITP_IEID_uni_com_resp                         => array("format"=>"A4ieId/A4ieLen/A2comResp","name"=>"HUITP_IEID_uni_com_resp"),
           HUITP_IEID_uni_com_report                       => array("format"=>"A4ieId/A4ieLen","name"=>""),
-          HUITP_IEID_uni_com_confirm                      => array("format"=>"A4ieId/A4ieLen","name"=>""),
+          HUITP_IEID_uni_com_confirm                      => array("format"=>"A4ieId/A4ieLen/A2comConfirm","name"=>"HUITP_IEID_uni_com_confirm"),
           HUITP_IEID_uni_com_state                        => array("format"=>"A4ieId/A4ieLen","name"=>""),
           HUITP_IEID_uni_com_auth                         => array("format"=>"A4ieId/A4ieLen","name"=>""),
           HUITP_IEID_uni_com_warning                      => array("format"=>"A4ieId/A4ieLen","name"=>""),

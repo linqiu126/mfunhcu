@@ -1120,11 +1120,15 @@ class classL2codecHuitpMsgDict
         //云控锁-锁
         HUITP_MSGID_uni_ccl_lock_min => array(),  //0x4D00
         HUITP_MSGID_uni_ccl_lock_req => array("0" => HUITP_IEID_uni_com_req),  //0x4D00
-        HUITP_MSGID_uni_ccl_lock_resp => array("0" => HUITP_IEID_uni_com_req),  //0x4D80
-        HUITP_MSGID_uni_ccl_lock_report => array("0" => HUITP_IEID_uni_com_req),  //0x4D81
-        HUITP_MSGID_uni_ccl_lock_confirm => array("0" => HUITP_IEID_uni_com_req),  //0x4D01
-        HUITP_MSGID_uni_ccl_lock_auth_inq => array("0" => HUITP_IEID_uni_com_req),  //0x4D90
-        HUITP_MSGID_uni_ccl_lock_auth_resp => array("0" => HUITP_IEID_uni_com_req),  //0x4D10
+        HUITP_MSGID_uni_ccl_lock_resp => array("0" => HUITP_IEID_uni_com_resp,
+                                               "1" => HUITP_IEID_uni_ccl_lock_state),  //0x4D80
+        HUITP_MSGID_uni_ccl_lock_report => array("0" => HUITP_IEID_uni_com_report,
+                                                 "1" => HUITP_IEID_uni_ccl_lock_state),  //0x4D81
+        HUITP_MSGID_uni_ccl_lock_confirm => array("0" => HUITP_IEID_uni_com_confirm),  //0x4D01
+        HUITP_MSGID_uni_ccl_lock_auth_inq => array("0" => HUITP_IEID_uni_com_req,
+                                                   "1" => HUITP_IEID_uni_ccl_lock_auth_req),  //0x4D90
+        HUITP_MSGID_uni_ccl_lock_auth_resp => array("0" => HUITP_IEID_uni_com_resp,
+                                                    "1" => HUITP_IEID_uni_ccl_lock_auth_resp),  //0x4D10
 
         //云控锁-状态聚合
         HUITP_MSGID_uni_ccl_state_min => array(),  //0x4E00
@@ -1145,7 +1149,22 @@ class classL2codecHuitpMsgDict
                                                 "13" => HUITP_IEID_uni_ccl_rssi_value,
                                                 "14" => HUITP_IEID_uni_ccl_dcmi_value,
                                                 "15" => HUITP_IEID_uni_ccl_report_type),  //0x4E80
-        HUITP_MSGID_uni_ccl_state_report => array("0" => HUITP_IEID_uni_com_req),  //0x4E81
+        HUITP_MSGID_uni_ccl_state_report => array("0" => HUITP_IEID_uni_com_req,
+                                                "1" => HUITP_IEID_uni_ccl_lock_state,
+                                                "2" => HUITP_IEID_uni_ccl_door_state,
+                                                "3" => HUITP_IEID_uni_ccl_water_state,
+                                                "4" => HUITP_IEID_uni_ccl_fall_state,
+                                                "5" => HUITP_IEID_uni_ccl_shake_state,
+                                                "6" => HUITP_IEID_uni_ccl_smoke_state,
+                                                "7" => HUITP_IEID_uni_ccl_bat_state,
+                                                "8" => HUITP_IEID_uni_ccl_temp_value,
+                                                "9" => HUITP_IEID_uni_ccl_humid_value,
+                                                "10" => HUITP_IEID_uni_ccl_bat_value,
+                                                "11" => HUITP_IEID_uni_ccl_general_value1,
+                                                "12" => HUITP_IEID_uni_ccl_general_value2,
+                                                "13" => HUITP_IEID_uni_ccl_rssi_value,
+                                                "14" => HUITP_IEID_uni_ccl_dcmi_value,
+                                                "15" => HUITP_IEID_uni_ccl_report_type),  //0x4E81
         HUITP_MSGID_uni_ccl_state_confirm => array("0" => HUITP_IEID_uni_com_req),  //0x4E01
         HUITP_MSGID_uni_ccl_state_pic_report => array("0" => HUITP_IEID_uni_com_req),  //0x4E82
         HUITP_MSGID_uni_ccl_state_pic_confirm => array("0" => HUITP_IEID_uni_com_req),  //0x4E02

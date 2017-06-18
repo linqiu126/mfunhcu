@@ -40,10 +40,10 @@ class classDbiL2snrDoorlock
             $keyusername = $row['keyusername'];
         }
         else{
-            $keyid = "Unknown";
-            $keyname = "Unknown";
-            $keyuserid = "Unknown";
-            $keyusername = "Unknown";
+            $keyid = "NA";
+            $keyname = "NA";
+            $keyuserid = "NA";
+            $keyusername = "NA";
         }
 
         $lasttime = 0;
@@ -59,6 +59,11 @@ class classDbiL2snrDoorlock
         $timestamp = time();
         $currenttime = date("Y-m-d H:i:s",$timestamp);
 
+        $query_str = "INSERT INTO `t_l3fxprcm_fhys_locklog` (keyid,keyname,keyuserid,keyusername,eventtype,statcode,createtime)
+                              VALUES ('$keyid','$keyname','$keyuserid', '$keyusername', '$eventtype', '$statcode', '$currenttime')";
+        $result = $mysqli->query($query_str);
+
+        /*
         if ($timestamp < ($lasttime + MFUN_HCU_FHYS_SLEEP_DURATION)) {
             $query_str = "UPDATE `t_l3fxprcm_fhys_locklog` SET `keyid` = '$keyid',`keyname` = '$keyname',`keyuserid` = '$keyuserid',`keyusername` = '$keyusername'
                                  `eventtype` = '$eventtype',`createtime` = '$currenttime'  WHERE (`sid` = '$event_id')";
@@ -69,6 +74,7 @@ class classDbiL2snrDoorlock
                               VALUES ('$keyid','$keyname','$keyuserid', '$keyusername', '$eventtype', '$statcode', '$currenttime')";
             $result = $mysqli->query($query_str);
         }
+        */
 
         $mysqli->close();
         return $result;
