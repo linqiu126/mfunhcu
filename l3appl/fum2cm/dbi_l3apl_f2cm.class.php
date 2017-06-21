@@ -260,6 +260,308 @@ class classDbiL3apF2cm
         return $site_list;
     }
 
+    private function dbi_print_export_usertable($uid)
+    {
+        //建立连接
+        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli) {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $mysqli->query("SET NAMES utf8");
+        $resp["column"] = array();
+        $resp['data'] = array();
+
+        array_push($resp["column"],"用户ID");
+        array_push($resp["column"],"用户名");
+        array_push($resp["column"],"昵称");
+        array_push($resp["column"],"电话");
+        array_push($resp["column"],"邮箱");
+        array_push($resp["column"],"属性");
+        array_push($resp["column"],"更新日期");
+        array_push($resp["column"],"备注");
+
+        $query_str = "SELECT * FROM `t_l3f1sym_account` WHERE (`uid` = '$uid')";
+        $result = $mysqli->query($query_str);
+        $user = "";
+        if (($result != false) && (($info = $result->fetch_array()) > 0))
+        {
+            $user = $info['user'];
+            $grade = $info["grade"];
+            if ($grade == "0")
+                $grade_name = "管理员";
+            elseif ($grade == "1")
+                $grade_name = "高级用户";
+            elseif ($grade == "2")
+                $grade_name = "一级用户";
+            elseif ($grade == "3")
+                $grade_name = "二级用户";
+            elseif ($grade == "4")
+                $grade_name = "三级用户";
+            else
+                $grade_name = "用户登记未知";
+
+            $one_row = array();
+            array_push($one_row, $info["uid"]);
+            array_push($one_row, $info["user"]);
+            array_push($one_row, $info["nick"]);
+            array_push($one_row, $info["phone"]);
+            array_push($one_row, $info["email"]);
+            array_push($one_row, $grade_name);
+            array_push($one_row, $info["regdate"]);
+            array_push($one_row, $info["backup"]);
+
+            array_push($resp['data'],$one_row);
+        }
+
+
+        //如果是特殊用户则显示所有用户表
+        if ($user == 'admin' OR $user == 'foha')
+        {
+            $query_str = "SELECT * FROM `t_l3f1sym_account` WHERE 1";
+            $result = $mysqli->query($query_str);
+            while (($result != false) && (($info = $result->fetch_array()) > 0))
+            {
+                $grade = $info["grade"];
+                if ($grade == "0")
+                    $grade_name = "管理员";
+                elseif ($grade == "1")
+                    $grade_name = "高级用户";
+                elseif ($grade == "2")
+                    $grade_name = "一级用户";
+                elseif ($grade == "3")
+                    $grade_name = "二级用户";
+                elseif ($grade == "4")
+                    $grade_name = "三级用户";
+                else
+                    $grade_name = "用户等级未知";
+                $one_row = array();
+                array_push($one_row, $info["uid"]);
+                array_push($one_row, $info["user"]);
+                array_push($one_row, $info["nick"]);
+                array_push($one_row, $info["phone"]);
+                array_push($one_row, $info["email"]);
+                array_push($one_row, $grade_name);
+                array_push($one_row, $info["regdate"]);
+                array_push($one_row, $info["backup"]);
+
+                array_push($resp['data'],$one_row);
+            }
+        }
+
+        $mysqli->close();
+        return $resp;
+    }
+
+    private function dbi_print_export_pgtable($uid)
+    {
+        //建立连接
+        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli) {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $mysqli->query("SET NAMES utf8");
+        $pg_table["column"] = array();
+        $pg_table['data'] = array();
+        array_push($pg_table["column"],"项目组编号");
+        array_push($pg_table["column"],"项目组名称");
+        array_push($pg_table["column"],"责任人");
+        array_push($pg_table["column"],"电话");
+        array_push($pg_table["column"],"所属单位");
+        array_push($pg_table["column"],"地址");
+        array_push($pg_table["column"],"备注");
+
+        $pglist = $this->dbi_get_user_auth_projgroup($uid);
+
+        for($i=0; $i<count($pglist); $i++)
+        {
+            $pgcode = $pglist[$i]['id'];
+            $query_str = "SELECT * FROM `t_l3f2cm_projgroup` WHERE `pg_code` = '$pgcode' ";
+            $result = $mysqli->query($query_str);
+            while (($result != false) && (($info = $result->fetch_array()) > 0)) {
+                $one_row = array();
+                array_push($one_row, $info["pg_code"]);
+                array_push($one_row, $info["pg_name"]);
+                array_push($one_row, $info["owner"]);
+                array_push($one_row, $info["phone"]);
+                array_push($one_row, $info["department"]);
+                array_push($one_row, $info["addr"]);
+                array_push($one_row, $info["backup"]);
+
+                array_push($pg_table['data'],$one_row);
+            }
+        }
+        $mysqli->close();
+        return $pg_table;
+    }
+
+    private function dbi_print_export_projtable($uid)
+    {
+        //建立连接
+        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli) {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $mysqli->query("SET NAMES utf8");
+
+        $proj_table["column"] = array();
+        $proj_table['data'] = array();
+        array_push($proj_table["column"],"项目编号");
+        array_push($proj_table["column"],"项目名称");
+        array_push($proj_table["column"],"负责人");
+        array_push($proj_table["column"],"电话");
+        array_push($proj_table["column"],"所属单位");
+        array_push($proj_table["column"],"地址");
+        array_push($proj_table["column"],"备注");
+
+        $projectlist = $this->dbi_get_user_auth_project($uid);
+
+        for($i=0; $i<count($projectlist); $i++)
+        {
+            $projcode = $projectlist[$i]['id'];
+            $query_str = "SELECT * FROM `t_l3f2cm_projinfo` WHERE `p_code` = '$projcode' ";
+            $result = $mysqli->query($query_str);
+            while (($result != false) && (($info = $result->fetch_array()) > 0)) {
+                $one_row = array();
+                array_push($one_row, $info["p_code"]);
+                array_push($one_row, $info["p_name"]);
+                array_push($one_row, $info["chargeman"]);
+                array_push($one_row, $info["telephone"]);
+                array_push($one_row, $info["department"]);
+                array_push($one_row, $info["address"]);
+                array_push($one_row, $info["stage"]);
+
+                array_push($proj_table['data'],$one_row);
+            }
+        }
+        $mysqli->close();
+        return $proj_table;
+    }
+
+    private function dbi_print_export_sitetable($uid)
+    {
+        //建立连接
+        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli) {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $mysqli->query("SET NAMES utf8");
+
+        $site_table["column"] = array();
+        $site_table['data'] = array();
+        array_push($site_table["column"],"站点编号");
+        array_push($site_table["column"],"站点名称");
+        array_push($site_table["column"],"负责人");
+        array_push($site_table["column"],"电话");
+        array_push($site_table["column"],"区县");
+        array_push($site_table["column"],"街道");
+        array_push($site_table["column"],"地址");
+        array_push($site_table["column"],"经度");
+        array_push($site_table["column"],"纬度");
+        array_push($site_table["column"],"开通时间");
+        array_push($site_table["column"],"备注");
+
+        $projectlist = $this->dbi_get_user_auth_project($uid);
+
+        for($i=0; $i<count($projectlist); $i++)
+        {
+            $projcode = $projectlist[$i]['id'];
+            $query_str = "SELECT * FROM `t_l3f3dm_siteinfo` WHERE `p_code` = '$projcode' ";
+            $result = $mysqli->query($query_str);
+            while (($result != false) && (($info = $result->fetch_array()) > 0)) {
+                $one_row = array();
+                array_push($one_row, $info["statcode"]);
+                array_push($one_row, $info["statname"]);
+                array_push($one_row, $info["chargeman"]);
+                array_push($one_row, $info["telephone"]);
+                array_push($one_row, $info["country"]);
+                array_push($one_row, $info["street"]);
+                array_push($one_row, $info["address"]);
+                array_push($one_row, $info["longitude"]);
+                array_push($one_row, $info["latitude"]);
+                array_push($one_row, $info["starttime"]);
+                array_push($one_row, $info["memo"]);
+
+                array_push($site_table['data'],$one_row);
+            }
+        }
+        $mysqli->close();
+        return $site_table;
+    }
+
+    private function dbi_print_export_devtable($uid)
+    {
+        //建立连接
+        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli) {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $mysqli->query("SET NAMES utf8");
+
+        $dev_table["column"] = array();
+        $dev_table['data'] = array();
+        array_push($dev_table["column"],"设备编号");
+        array_push($dev_table["column"],"站点名称");
+        array_push($dev_table["column"],"所属项目");
+        array_push($dev_table["column"],"安装时间");
+
+        $site_list = $this->dbi_get_user_auth_site($uid);
+
+        for($i=0; $i<count($site_list); $i++)
+        {
+            $statcode = $site_list[$i]['id'];
+            $query_str = "SELECT * FROM `t_l2sdk_iothcu_inventory` WHERE `statcode` = '$statcode'";
+            $result = $mysqli->query($query_str);
+            while (($result != false) && (($devinfo = $result->fetch_array()) > 0)) {
+                $devcode = $devinfo['devcode'];
+                $statcode = $devinfo['statcode'];
+                $starttime = $devinfo['opendate'];
+
+                $query_str = "SELECT * FROM `t_l3f3dm_siteinfo` WHERE `statcode` = '$statcode'";      //查询HCU设备对应监测点号
+                $resp = $mysqli->query($query_str);
+                if (($resp != false )&& (($siteinfo = $resp->fetch_array()) > 0)){
+                    $projcode = $siteinfo['p_code'];
+                    $one_row = array();
+                    array_push($one_row, $devcode);
+                    array_push($one_row, $statcode);
+                    array_push($one_row, $projcode);
+                    array_push($one_row, $starttime);
+
+                    array_push($dev_table['data'],$one_row);
+                }
+            }
+        }
+        $mysqli->close();
+        return $dev_table;
+    }
+
+    public function dbi_print_excel_table_query_process($uid, $tablename)
+    {
+        $resp["column"] = array();
+        $resp['data'] = array();
+        switch ($tablename)
+        {
+            case "usertable":
+                $resp = $this->dbi_print_export_usertable($uid);
+                break;
+            case "PGtable":
+                $resp = $this->dbi_print_export_pgtable($uid);
+                break;
+            case "Projtable":
+                $resp = $this->dbi_print_export_projtable($uid);
+                break;
+            case "Pointtable":
+                $resp = $this->dbi_print_export_sitetable($uid);
+                break;
+            case "Devtable":
+                $resp = $this->dbi_print_export_devtable($uid);
+                break;
+            default:
+                //do nothing
+                break;
+        }
+
+        return $resp;
+    }
 
 /***********************************************************************************************************************
 *                          项目Project和项目组ProjectGroup相关操作DB API                                                 *

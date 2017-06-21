@@ -577,67 +577,6 @@ class classDbiL2snrCom
 
     }//End of function bi_hourreport_process
 
-    public function dbi_excel_historydata_req($condition)
-    {
-        //建立连接
-        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
-        if (!$mysqli) {
-            die('Could not connect: ' . mysqli_error($mysqli));
-        }
-        $mysqli->query("SET NAMES utf8");
-
-        $session = "";
-        $statcode = "";
-        $type = "";
-        $start = date(time()); //初始化开始日期为当前日期
-        $end = date(time());   //初始化结束日期为当前日期
-
-        if($condition[0]["ConditonName"] == "UserId")
-            $session = $condition[0]["Equal"];
-        if($condition[1]["ConditonName"] == "StatCode")
-            $statcode = $condition[1]["Equal"];
-        if($condition[2]["ConditonName"] == "AlarmType")
-            $type = $condition[2]["Equal"];
-        if($condition[3]["ConditonName"] == "AlarmDate"){
-            $start = $condition[3]["GEQ"];
-            $end = $condition[3]["LEQ"];
-        }
-
-        $resp["column"] = array();
-        $resp['data'] = array();
-
-        array_push($resp["column"],"监测点编号");
-        array_push($resp["column"],"设备编号");
-        array_push($resp["column"],"报告日期");
-        array_push($resp["column"],"PM2.5");
-        array_push($resp["column"],"风速");
-        array_push($resp["column"],"风向");
-        array_push($resp["column"],"温度");
-        array_push($resp["column"],"湿度");
-        array_push($resp["column"],"噪声");
-
-        $query_str = "SELECT * FROM `t_l2snr_aqyc_minreport` WHERE `statcode` = '$statcode'AND `reportdate`>= '$start' AND `reportdate`<= '$end'";
-        $result = $mysqli->query($query_str);
-        while($info = $result->fetch_array())
-        {
-            $one_row = array();
-            array_push($one_row, $statcode);
-            array_push($one_row, $info["devcode"]);
-            array_push($one_row, $info["reportdate"]);
-            array_push($one_row, $info["pm25"]/10);
-            array_push($one_row, $info["windspeed"]/10);
-            array_push($one_row, $info["winddirection"]);
-            array_push($one_row, $info["temperature"]/10);
-            array_push($one_row, $info["humidity"]/10);
-            array_push($one_row, $info["noise"]/100);
-
-            array_push($resp['data'],$one_row);
-        }
-
-        $mysqli->close();
-        return $resp;
-    }
-
     /*********************************智能云锁新增处理************************************************/
 
     //UI DevSensor request, 获取所有传感器类型信息

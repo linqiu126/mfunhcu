@@ -41,6 +41,30 @@ class classTaskL3aplF2cm
         return urlencode($elem);
     }
 
+    //用户表，项目组/项目/站点/设备表的打印按钮对应的excel表导出
+    function func_print_excel_table_query_process($action, $user, $body)
+    {
+        if (isset($body["TableName"])) $tablename = $body["TableName"]; else  $tablename = "";
+
+        $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
+        $usercheck = $uiF1symDbObj->dbi_user_authcheck($action, $user);
+        if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
+            $uid = $uiF1symDbObj->dbi_session_check($user);
+            $uiF2cmDbObj = new classDbiL3apF2cm(); //初始化一个UI DB对象
+            $result = $uiF2cmDbObj->dbi_print_excel_table_query_process($uid, $tablename);
+            if(!empty($result)){
+                $ret = array('ColumnName' => $result["column"],'TableData' => $result["data"]);
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$ret,'msg'=>"获取打印报表成功");
+            }
+            else
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>"获取打印报表失败");
+        }
+        else
+            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
+
+        return $retval;
+    }
+
     //查询所有的项目，项目组列表，用于用户授权，所以给出的是全部列表
     function func_all_project_pg_list_process($action, $user, $body)
     {
@@ -861,6 +885,11 @@ class classTaskL3aplF2cm
 
         switch($msgId)
         {
+            case MSG_ID_L4AQYCUI_TO_L3F2_TABLEQUERY://功能Tabel Query
+                $resp = $this->func_print_excel_table_query_process($action, $user, $body);
+                $project = MFUN_PRJ_HCU_AQYCUI;
+                break;
+
             case MSG_ID_L4AQYCUI_TO_L3F2_PROJECTPGLIST://功能Project Pg List
                 $resp = $this->func_all_project_pg_list_process($action, $user, $body);
                 $project = MFUN_PRJ_HCU_AQYCUI;

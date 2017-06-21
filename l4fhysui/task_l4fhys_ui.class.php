@@ -119,6 +119,15 @@ class classTaskL4fhysUi
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM1SYM, MSG_ID_L4AQYCUI_TO_L3F1_USERTABLE, "MSG_ID_L4AQYCUI_TO_L3F1_USERTABLE",$input);
                     break;
 
+                case "TableQuery": //用户表，项目组/项目/站点/设备表的打印按钮对应的excel表导出
+                    if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
+                    if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
+                    if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
+
+                    $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4AQYCUI_TO_L3F2_TABLEQUERY, "MSG_ID_L4AQYCUI_TO_L3F2_TABLEQUERY",$input);
+                    break;
+
                 case "ProjectPGList":  //Get the Project & Project Group list which will be use in user auth
                     if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
                     if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
@@ -364,15 +373,6 @@ class classTaskL4fhysUi
 
                     $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM5FM, MSG_ID_L4AQYCUI_TO_L3F5_ALARMQUERY, "MSG_ID_L4AQYCUI_TO_L3F5_ALARMQUERY",$input);
-                    break;
-
-                case "TableQuery":
-                    if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
-                    if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
-                    if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
-
-                    $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
-                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM3DM, MSG_ID_L4AQYCUI_TO_L3F3_TABLEQUERY, "MSG_ID_L4AQYCUI_TO_L3F3_TABLEQUERY",$input);
                     break;
 
                 case "SensorUpdate":

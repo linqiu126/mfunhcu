@@ -100,28 +100,6 @@ class classTaskL3aplF3dm
         return $retval;
     }
 
-    function func_historydata_table_query_process($action, $user, $body) //查询某站点历史数据
-    {
-        if (isset($body["Condition"])) $Condition = $body["Condition"]; else  $Condition = "";
-
-        $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
-        $usercheck = $uiF1symDbObj->dbi_user_authcheck($action, $user);
-        if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
-            $uiL2snrDbObj = new classDbiL2snrCom();
-            $result = $uiL2snrDbObj->dbi_excel_historydata_req($Condition);
-            if(!empty($result)){
-                $ret = array('ColumnName' => $result["column"],'TableData' => $result["data"]);
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$ret,'msg'=>"获取站点历史记录成功");
-            }
-            else
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>"获取站点历史记录失败");
-        }
-        else
-            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
-
-        return $retval;
-    }
-
     function func_aqyc_sensor_list_process($action, $user, $body)
     {
         $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
@@ -397,11 +375,6 @@ class classTaskL3aplF3dm
 
             case MSG_ID_L4AQYCUI_TO_L3F3_FAVOURITECOUNT:
                 $resp = $this->func_favourite_count_process($action, $user, $body);
-                $project = MFUN_PRJ_HCU_AQYCUI;
-                break;
-
-            case MSG_ID_L4AQYCUI_TO_L3F3_TABLEQUERY://功能Tabel Query
-                $resp = $this->func_historydata_table_query_process($action, $user, $body);
                 $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 
