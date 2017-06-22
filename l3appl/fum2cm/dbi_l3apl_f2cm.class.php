@@ -268,17 +268,17 @@ class classDbiL3apF2cm
             die('Could not connect: ' . mysqli_error($mysqli));
         }
         $mysqli->query("SET NAMES utf8");
-        $resp["column"] = array();
-        $resp['data'] = array();
+        $user_table["column"] = array();
+        $user_table['data'] = array();
 
-        array_push($resp["column"],"用户ID");
-        array_push($resp["column"],"用户名");
-        array_push($resp["column"],"昵称");
-        array_push($resp["column"],"电话");
-        array_push($resp["column"],"邮箱");
-        array_push($resp["column"],"属性");
-        array_push($resp["column"],"更新日期");
-        array_push($resp["column"],"备注");
+        array_push($user_table["column"],"用户ID");
+        array_push($user_table["column"],"用户名");
+        array_push($user_table["column"],"昵称");
+        array_push($user_table["column"],"电话");
+        array_push($user_table["column"],"邮箱");
+        array_push($user_table["column"],"属性");
+        array_push($user_table["column"],"更新日期");
+        array_push($user_table["column"],"备注");
 
         $query_str = "SELECT * FROM `t_l3f1sym_account` WHERE (`uid` = '$uid')";
         $result = $mysqli->query($query_str);
@@ -310,13 +310,14 @@ class classDbiL3apF2cm
             array_push($one_row, $info["regdate"]);
             array_push($one_row, $info["backup"]);
 
-            array_push($resp['data'],$one_row);
+            array_push($user_table['data'],$one_row);
         }
 
 
         //如果是特殊用户则显示所有用户表
         if ($user == 'admin' OR $user == 'foha')
         {
+            $user_table['data'] = array(); //重新初始化
             $query_str = "SELECT * FROM `t_l3f1sym_account` WHERE 1";
             $result = $mysqli->query($query_str);
             while (($result != false) && (($info = $result->fetch_array()) > 0))
@@ -344,12 +345,12 @@ class classDbiL3apF2cm
                 array_push($one_row, $info["regdate"]);
                 array_push($one_row, $info["backup"]);
 
-                array_push($resp['data'],$one_row);
+                array_push($user_table['data'],$one_row);
             }
         }
 
         $mysqli->close();
-        return $resp;
+        return $user_table;
     }
 
     private function dbi_print_export_pgtable($uid)
