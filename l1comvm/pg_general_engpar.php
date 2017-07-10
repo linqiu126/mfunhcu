@@ -20,14 +20,14 @@ define("MFUN_L3APL_F1SYM_USER_ID_LEN", 6); //UI界面user id字符串长度=该�
 define("MFUN_L3APL_F1SYM_UID_PREFIX", "UID");  //定义用户ID的特征字，用户ID必须以UID开头
 
 //Socket通讯有关常量定义
-define("MFUN_SWOOLE_SOCKET_STD_XML_HTTP", 9501); //原有XML协议swoole socket server HTTP端口
-define("MFUN_SWOOLE_SOCKET_STD_XML_TCP", 9502);  //原有XML协议swoole socket server TCP端口
+define("MFUN_SWOOLE_SOCKET_STD_XML_HTTP", 9501); //原有XML协议swoole socket server HTTP端口,传送内容为ASCII
+define("MFUN_SWOOLE_SOCKET_STD_XML_TCP", 9502);  //原有XML协议swoole socket server TCP端口，
 define("MFUN_SWOOLE_SOCKET_STD_XML_UDP", 9503); //原有XML协议swoole socket server UDP端口
 define("MFUN_SWOOLE_SOCKET_STD_ZHB_HTTP", 9501); //原有ZHB协议swoole socket server HTTP端口
 define("MFUN_SWOOLE_SOCKET_STD_ZHB_TCP", 9502);  //原有ZHB协议swoole socket server TCP端口
 define("MFUN_SWOOLE_SOCKET_STD_ZHB_UDP", 9503); //原有ZHB协议swoole socket server UDP端口
-define("MFUN_SWOOLE_SOCKET_HUITP_XML_HTTP", 9510); //新HUITP XML协议swoole socket server HTTP端口
-define("MFUN_SWOOLE_SOCKET_HUITP_XML_TCP", 9511);  //新HUITP XML协议swoole socket server TCP端口
+define("MFUN_SWOOLE_SOCKET_HUITP_XML_HTTP", 9510); //新HUITP XML协议swoole socket server HTTP端口,传送内容为ASCII
+define("MFUN_SWOOLE_SOCKET_HUITP_XML_TCP", 9511);  //新HUITP XML协议swoole socket server TCP端口,传送内容为HEX
 define("MFUN_SWOOLE_SOCKET_HUITP_XML_UDP", 9512); //新HUITP XML协议swoole socket server UDP端口
 define("MFUN_SWOOLE_SOCKET_ZHB_HJT212_HTTP", 9513); //新ZHB HJT212协议swoole socket server HTTP端口
 define("MFUN_SWOOLE_SOCKET_ZHB_HJT212_TCP", 9514);  //新ZHB HJT212协议swoole socket server TCP端口
@@ -56,7 +56,7 @@ define("MFUN_L3APL_F1SYM_SESSIONID_VALID_TIME", 600);  //Session ID有效时间�
 define("MFUN_L3APL_F2CM_FAVOURSITE_MAX_NUM", 5); //最大常用站点数量
 
 define("MFUN_HCU_SITE_PIC_BASE_DIR", "../../avorion/");  //站点照片存放路径
-define("MFUN_HCU_SITE_PIC_FOLDER_NAME", "avorion/");     //站点照片存放目录
+define("MFUN_HCU_SITE_PIC_FOLDER_NAME", "/avorion/");     //站点照片存放目录
 
 define("MFUN_HCU_MSG_HEAD_FORMAT", "A2Key/A2Len/A2Cmd");// 1B 控制字ctrl_key, 1B 长度length（除控制字和长度本身外），1B 操作字opt_key
 define("MFUN_HCU_MSG_HEAD_LENGTH", 6); //3 Byte

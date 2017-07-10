@@ -96,8 +96,7 @@ elseif (MFUN_WX_APPID == "wxd054d0d6bae92d04") //如果是FOHA服务号
                 },
 
                 {"name":"关于",
-                    "sub_button":[{"type":"click","name":"帮助","key":"CLICK_FHYS_HELP"},
-                                  {"type":"view","name":"上海阜华","url":"http://www.foha.com.cn"}]
+                    "sub_button":[{"type":"click","name":"帮助","key":"CLICK_FHYS_HELP"}]
                 }
          ]
     }';
