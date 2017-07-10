@@ -729,7 +729,7 @@ class classL2codecHuitpIeDict
           //云控锁-锁
           HUITP_IEID_uni_ccl_lock_min                 	=> "",
           HUITP_IEID_uni_ccl_lock_state               	=> array("format"=>"A4ieId/A4ieLen/A2maxLockNo/A2lockId/A2lock_1/A2lock_2/A2lock_3/A2lock_4","name"=>"HUITP_IEID_uni_ccl_lock_state"),
-          HUITP_IEID_uni_ccl_lock_auth_req            	=> array("format"=>"A4ieId/A4ieLen","name"=>""),
+          HUITP_IEID_uni_ccl_lock_auth_req            	=> array("format"=>"A4ieId/A4ieLen/A2authReqType/A2bleAddrLen/A40bleMacAddr/A2rfidAddrLen/A40rfidAddr","name"=>"HUITP_IEID_uni_ccl_lock_auth_req"),
           HUITP_IEID_uni_ccl_lock_auth_resp           	=> array("format"=>"A4ieId/A4ieLen","name"=>""),
 
           //云控锁-状态聚合
