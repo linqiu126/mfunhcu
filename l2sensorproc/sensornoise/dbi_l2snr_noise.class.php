@@ -80,17 +80,20 @@ class classDbiL2snrNoise
         $noise = $data["value"];
 
         //存储新记录，如果发现是已经存在的数据，则覆盖，否则新增
-        $result = $mysqli->query("SELECT * FROM `t_l2snr_noisedata` WHERE (`deviceid` = '$deviceid' AND `sensorid` = '$sensorid'
-                                  AND `reportdate` = '$date' AND `hourminindex` = '$hourminindex')");
+        $query_str = "SELECT * FROM `t_l2snr_noisedata` WHERE (`deviceid` = '$deviceid' AND `sensorid` = '$sensorid'
+                                  AND `reportdate` = '$date' AND `hourminindex` = '$hourminindex')";
+        $result = $mysqli->query($query_str);
         if (($result != false) && ($result->num_rows)>0)   //重复，则覆盖
         {
-            $result=$mysqli->query("UPDATE `t_l2snr_noisedata` SET `noise` = '$noise',`altitude` = '$altitude',`flag_la` = '$flag_la',`latitude` = '$latitude',`flag_lo` = '$flag_lo',`longitude` = '$longitude'
-                          WHERE (`deviceid` = '$deviceid' AND `sensorid` = '$sensorid' AND `reportdate` = '$date' AND `hourminindex` = '$hourminindex')");
+            $query_str = "UPDATE `t_l2snr_noisedata` SET `noise` = '$noise',`altitude` = '$altitude',`flag_la` = '$flag_la',`latitude` = '$latitude',`flag_lo` = '$flag_lo',`longitude` = '$longitude'
+                          WHERE (`deviceid` = '$deviceid' AND `sensorid` = '$sensorid' AND `reportdate` = '$date' AND `hourminindex` = '$hourminindex')";
+            $result=$mysqli->query($query_str);
         }
         else   //不存在，新增
         {
-            $result=$mysqli->query("INSERT INTO `t_l2snr_noisedata` (deviceid,sensorid,noise,reportdate,hourminindex,altitude,flag_la,latitude,flag_lo,longitude)
-                                  VALUES ('$deviceid','$sensorid','$noise','$date','$hourminindex','$altitude', '$flag_la','$latitude', '$flag_lo','$longitude')");
+            $query_str = "INSERT INTO `t_l2snr_noisedata` (deviceid,sensorid,noise,reportdate,hourminindex,altitude,flag_la,latitude,flag_lo,longitude)
+                                  VALUES ('$deviceid','$sensorid','$noise','$date','$hourminindex','$altitude', '$flag_la','$latitude', '$flag_lo','$longitude')";
+            $result=$mysqli->query($query_str);
         }
         $mysqli->close();
         return $result;
@@ -105,19 +108,22 @@ class classDbiL2snrNoise
             die('Could not connect: ' . mysqli_error($mysqli));
         }
 
-        $date = intval(date("ymd", $timeStamp));
+        $date = date("Y-m-d", $timeStamp);
         $stamp = getdate($timeStamp);
         $hourminindex = intval(($stamp["hours"] * 60 + floor($stamp["minutes"]/MFUN_TIME_GRID_SIZE)));
 
         //存储新记录，如果发现是已经存在的数据，则覆盖，否则新增
-        $result = $mysqli->query("SELECT * FROM `t_l2snr_noisedata` WHERE (`deviceid` = '$deviceid' AND `reportdate` = '$date' AND `hourminindex` = '$hourminindex')");
+        $query_str = "SELECT * FROM `t_l2snr_noisedata` WHERE (`deviceid` = '$deviceid' AND `reportdate` = '$date' AND `hourminindex` = '$hourminindex')";
+        $result = $mysqli->query($query_str);
         if (($result != false) && ($result->num_rows)>0)   //重复，则覆盖
         {
-            $result=$mysqli->query("UPDATE `t_l2snr_noisedata` SET `noise` = '$noiseValue', WHERE (`deviceid` = '$deviceid' AND `reportdate` = '$date' AND `hourminindex` = '$hourminindex')");
+            $query_str = "UPDATE `t_l2snr_noisedata` SET `noise` = '$noiseValue' WHERE (`deviceid` = '$deviceid' AND `reportdate` = '$date' AND `hourminindex` = '$hourminindex')";
+            $result=$mysqli->query($query_str);
         }
         else   //不存在，新增
         {
-            $result=$mysqli->query("INSERT INTO `t_l2snr_noisedata` (deviceid,noise,reportdate,hourminindex) VALUES ('$deviceid','$noiseValue','$date','$hourminindex')");
+            $query_str = "INSERT INTO `t_l2snr_noisedata` (deviceid,noise,reportdate,hourminindex) VALUES ('$deviceid','$noiseValue','$date','$hourminindex')";
+            $result=$mysqli->query($query_str);
         }
 
         $mysqli->close();
@@ -135,7 +141,8 @@ class classDbiL2snrNoise
         {
             die('Could not connect: ' . mysqli_error($mysqli));
         }
-        $result = $mysqli->query("DELETE FROM `t_l2snr_noisedata` WHERE ((`deviceid` = '$deviceid' AND `sensorid` ='$sensorid') AND (TO_DAYS(NOW()) - TO_DAYS(`date`) > '$days'))");
+        $query_str = "DELETE FROM `t_l2snr_noisedata` WHERE ((`deviceid` = '$deviceid' AND `sensorid` ='$sensorid') AND (TO_DAYS(NOW()) - TO_DAYS(`date`) > '$days'))";
+        $result = $mysqli->query($query_str);
         $mysqli->close();
         return $result;
     }
@@ -151,7 +158,8 @@ class classDbiL2snrNoise
         {
             die('Could not connect: ' . mysqli_error($mysqli));
         }
-        $result = $mysqli->query("DELETE FROM `t_l2snr_noisedata` WHERE ((`deviceid` = '$deviceid' ) AND (TO_DAYS(NOW()) - TO_DAYS(`date`) > '$days'))");
+        $query_str = "DELETE FROM `t_l2snr_noisedata` WHERE ((`deviceid` = '$deviceid' ) AND (TO_DAYS(NOW()) - TO_DAYS(`reportdate`) > '$days'))";
+        $result = $mysqli->query($query_str);
         $mysqli->close();
         return $result;
     }
@@ -163,7 +171,8 @@ class classDbiL2snrNoise
         if (!$mysqli) {
             die('Could not connect: ' . mysqli_error($mysqli));
         }
-        $result = $mysqli->query("SELECT * FROM `t_l2snr_noisedata` WHERE `sid` = '$sid'");
+        $query_str = "SELECT * FROM `t_l2snr_noisedata` WHERE `sid` = '$sid'";
+        $result = $mysqli->query($query_str);
         if (($result != false) && ($result->num_rows)>0)
         {
             $row = $result->fetch_array();
@@ -189,17 +198,20 @@ class classDbiL2snrNoise
         $noise = $data["value"];
 
         //存储新记录，如果发现是已经存在的数据，则覆盖，否则新增
-        $result = $mysqli->query("SELECT * FROM `t_l2snr_aqyc_minreport` WHERE (`devcode` = '$devcode' AND `statcode` = '$statcode'
-                                  AND `reportdate` = '$date' AND `hourminindex` = '$hourminindex')");
+        $query_str = "SELECT * FROM `t_l2snr_aqyc_minreport` WHERE (`devcode` = '$devcode' AND `statcode` = '$statcode'
+                                  AND `reportdate` = '$date' AND `hourminindex` = '$hourminindex')";
+        $result = $mysqli->query($query_str);
         if (($result != false) && ($result->num_rows)>0)   //重复，则覆盖
         {
-            $result=$mysqli->query("UPDATE `t_l2snr_aqyc_minreport` SET `noise` = '$noise'
-                          WHERE (`devcode` = '$devcode' AND `statcode` = '$statcode' AND `reportdate` = '$date' AND `hourminindex` = '$hourminindex')");
+            $query_str = "UPDATE `t_l2snr_aqyc_minreport` SET `noise` = '$noise'
+                          WHERE (`devcode` = '$devcode' AND `statcode` = '$statcode' AND `reportdate` = '$date' AND `hourminindex` = '$hourminindex')";
+            $result=$mysqli->query($query_str);
         }
         else   //不存在，新增
         {
-            $result=$mysqli->query("INSERT INTO `t_l2snr_aqyc_minreport` (devcode,statcode,noise,reportdate,hourminindex)
-                                  VALUES ('$devcode', '$statcode', '$noise','$date','$hourminindex')");
+            $query_str = "INSERT INTO `t_l2snr_aqyc_minreport` (devcode,statcode,noise,reportdate,hourminindex)
+                                  VALUES ('$devcode', '$statcode', '$noise','$date','$hourminindex')";
+            $result=$mysqli->query($query_str);
         }
         $mysqli->close();
         return $result;
@@ -221,17 +233,20 @@ class classDbiL2snrNoise
         //$noise = $data["value"];
 
         //存储新记录，如果发现是已经存在的数据，则覆盖，否则新增
-        $result = $mysqli->query("SELECT * FROM `t_l2snr_aqyc_minreport` WHERE (`devcode` = '$devcode' AND `statcode` = '$statcode'
-                                  AND `reportdate` = '$date' AND `hourminindex` = '$hourminindex')");
+        $query_str = "SELECT * FROM `t_l2snr_aqyc_minreport` WHERE (`devcode` = '$devcode' AND `statcode` = '$statcode'
+                                  AND `reportdate` = '$date' AND `hourminindex` = '$hourminindex')";
+        $result = $mysqli->query($query_str);
         if (($result != false) && ($result->num_rows)>0)   //重复，则覆盖
         {
-            $result=$mysqli->query("UPDATE `t_l2snr_aqyc_minreport` SET `noise` = '$noise'
-                          WHERE (`devcode` = '$devcode' AND `statcode` = '$statcode' AND `reportdate` = '$date' AND `hourminindex` = '$hourminindex')");
+            $query_str = "UPDATE `t_l2snr_aqyc_minreport` SET `noise` = '$noise'
+                          WHERE (`devcode` = '$devcode' AND `statcode` = '$statcode' AND `reportdate` = '$date' AND `hourminindex` = '$hourminindex')";
+            $result=$mysqli->query($query_str);
         }
         else   //不存在，新增
         {
-            $result=$mysqli->query("INSERT INTO `t_l2snr_aqyc_minreport` (devcode,statcode,noise,reportdate,hourminindex)
-                                  VALUES ('$devcode', '$statcode', '$noise','$date','$hourminindex')");
+            $query_str = "INSERT INTO `t_l2snr_aqyc_minreport` (devcode,statcode,noise,reportdate,hourminindex)
+                                  VALUES ('$devcode', '$statcode', '$noise','$date','$hourminindex')";
+            $result=$mysqli->query($query_str);
         }
         $mysqli->close();
         return $result;

@@ -46,7 +46,9 @@ class classTaskL2sdkIotHuitp
             echo "";
             return false;
         }
-        if (($msgId != MSG_ID_L1VM_TO_L2SDK_IOT_HUITP_INCOMING) || ($msgName != "MSG_ID_L1VM_TO_L2SDK_IOT_HUITP_INCOMING")){
+        //这里HUITP消息有两个来源，一个是来自CCL通过socket收到的MSG_ID_L1VM_TO_L2SDK_IOT_HUITP_INCOMING，
+        //另外一个是扬尘HCU通过curl收到的(MSG_ID_WECHAT_TO_L2SDK_IOT_HUITP_INCOMING)，因为curl复用了cloud_callback_wechat,所以消息通过L2SDK_IOT_WX直接发给了L2CODEC,没有经由本模块
+        if (($msgId != MSG_ID_L1VM_TO_L2SDK_IOT_HUITP_INCOMING) || ($msgName != "MSG_ID_L1VM_TO_L2SDK_IOT_HUITP_INCOMING") ){
             $result = "Msgid or MsgName error";
             $log_content = "P:" . json_encode($result);
             $loggerObj->logger("MFUN_TASK_ID_L2SDK_IOT_HUITP", "mfun_l2sdk_iot_huitp_task_main_entry", $log_time, $log_content);
@@ -87,7 +89,7 @@ class classTaskL2sdkIotHuitp
         {
             //case "hcu_huitp"://HUITP消息处理
             case "huitp_text"://HUITP消息处理
-                $project = MFUN_PRJ_HCU_XML;
+                $project = MFUN_PRJ_HCU_HUITP;
                 $log_from = $fromUser;
                 //定义本入口函数的logger处理对象及函数
                 $loggerObj = new classApiL1vmFuncCom();
@@ -118,7 +120,7 @@ class classTaskL2sdkIotHuitp
                     return true;
                 }
                 $msg = array("project" => $project,
-                            "platform" => MFUN_TECH_PLTF_HCUSTM,
+                            "platform" => MFUN_TECH_PLTF_HCUGX_HUITP,
                             "devCode" => $fromUser,
                             "statCode" => $statCode,
                             "content" => $content,

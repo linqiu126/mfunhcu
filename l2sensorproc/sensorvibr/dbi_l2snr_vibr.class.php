@@ -62,12 +62,12 @@ class classDbiL2snrVibr
         if (($result != false) && ($result->num_rows)>0)
         {
             //生成控制命令的控制字
-            $apiL2snrCommonServiceObj = new classApiL2snrCommonService();
-            $ctrl_key = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_CMDID_FHYS_VIBR);
-            $opt_key = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_OPT_FHYS_VIBRSTAT_RESP);
-            $para = $apiL2snrCommonServiceObj->byte2string($data);
+            $dbiL1vmCommonObj = new classDbiL1vmCommon();
+            $ctrl_key = $dbiL1vmCommonObj->byte2string(MFUN_HCU_CMDID_FHYS_VIBR);
+            $opt_key = $dbiL1vmCommonObj->byte2string(MFUN_HCU_OPT_FHYS_VIBRSTAT_RESP);
+            $para = $dbiL1vmCommonObj->byte2string($data);
 
-            $len = $apiL2snrCommonServiceObj->byte2string(strlen($opt_key.$para)/2);
+            $len = $dbiL1vmCommonObj->byte2string(strlen($opt_key.$para)/2);
             $respCmd = $ctrl_key . $len . $opt_key . $para;
 
             //通过9502端口建立tcp阻塞式socket连接，向HCU转发操控命令
@@ -130,11 +130,11 @@ class classDbiL2snrVibr
         if (($result != false) && ($result->num_rows)>0)
         {
             //生成控制命令的控制字
-            $apiL2snrCommonServiceObj = new classApiL2snrCommonService();
-            $ctrl_key = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_CMDID_FHYS_VIBR);
-            $opt_key = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_OPT_FHYS_VIBRALARM_RESP);
+            $dbiL1vmCommonObj = new classDbiL1vmCommon();
+            $ctrl_key = $dbiL1vmCommonObj->byte2string(MFUN_HCU_CMDID_FHYS_VIBR);
+            $opt_key = $dbiL1vmCommonObj->byte2string(MFUN_HCU_OPT_FHYS_VIBRALARM_RESP);
 
-            $len = $apiL2snrCommonServiceObj->byte2string(strlen($opt_key)/2);
+            $len = $dbiL1vmCommonObj->byte2string(strlen($opt_key)/2);
             $respCmd = $ctrl_key . $len . $opt_key;
 
             //通过9502端口建立tcp阻塞式socket连接，向HCU转发操控命令

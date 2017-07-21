@@ -104,7 +104,7 @@ class classTaskL2snrEmc
 
         //更新数据精度格式表
         $format = $report["format"];
-        $cDbObj = new classDbiL2snrCom();
+        $cDbObj = new classDbiL2snrCommon();
         $cDbObj->dbi_dataformat_update_format($deviceId,"T_emcdata",$format);
         //更新瞬时测量值聚合表
         $dDbObj = new classDbiL3apF3dm();
@@ -119,7 +119,8 @@ class classTaskL2snrEmc
         $magicCode = "FECF";
         $version = "0001";
         $length = "000C";
-        $cmdid = $this->ushort2string(MFUN_IHU_CMDID_EMC_INSTANT_READ);
+        $dbiL1vmCommonObj = new classDbiL1vmCommon();
+        $cmdid = $dbiL1vmCommonObj->ushort2string(MFUN_IHU_CMDID_EMC_INSTANT_READ);
         $seq = "0000";
         $errCode = "0000";
 
@@ -135,7 +136,8 @@ class classTaskL2snrEmc
         $magicCode = "FECF";
         $version = "0001";
         $length = "000C";
-        $cmdid = $this->ushort2string(MFUN_IHU_CMDID_EMC_PERIOD_READ_OPEN);
+        $dbiL1vmCommonObj = new classDbiL1vmCommon();
+        $cmdid = $dbiL1vmCommonObj->ushort2string(MFUN_IHU_CMDID_EMC_PERIOD_READ_OPEN);
         $seq = "0000";
         $errCode = "0000";
 
@@ -151,7 +153,8 @@ class classTaskL2snrEmc
         $magicCode = "FECF";
         $version = "0001";
         $length = "000C";
-        $cmdid = $this->ushort2string(MFUN_IHU_CMDID_EMC_PERIOD_READ_CLOSE);
+        $dbiL1vmCommonObj = new classDbiL1vmCommon();
+        $cmdid = $dbiL1vmCommonObj->ushort2string(MFUN_IHU_CMDID_EMC_PERIOD_READ_CLOSE);
         $seq = "0000";
         $errCode = "0000";
 
@@ -167,7 +170,8 @@ class classTaskL2snrEmc
         $magicCode = "FECF";
         $version = "0001";
         $length = "000C";
-        $cmdid = $this->ushort2string(MFUN_IHU_CMDID_EMC_POWER_STATUS_REQ);
+        $dbiL1vmCommonObj = new classDbiL1vmCommon();
+        $cmdid = $dbiL1vmCommonObj->ushort2string(MFUN_IHU_CMDID_EMC_POWER_STATUS_REQ);
         $seq = "0000";
         $errCode = "0000";
 
@@ -176,23 +180,6 @@ class classTaskL2snrEmc
 
         return $hex_body;
     }
-
-    //BYTE转换到字符串
-    public function byte2string($n)
-    {
-        $out = "00";
-        $a1 = strtoupper(dechex($n & 0xFF));
-        return substr_replace($out, $a1, strlen($out)-strlen($a1), strlen($a1));
-    }
-    
-    //2*BYTE转换到字符串
-    public function ushort2string($n)
-    {
-        $out = "0000";
-        $a1 = strtoupper(dechex($n & 0xFFFF));
-        return substr_replace($out, $a1, strlen($out)-strlen($a1), strlen($a1));
-    }
-
 
 
     /**************************************************************************************

@@ -36,14 +36,14 @@ class classTaskL2snrAirprs
         if (empty($msg) == true) {
             $result = "Received null message body";
             $log_content = "R:" . json_encode($result);
-            $loggerObj->logger("MFUN_TASK_ID_L2SNR_AIRPRS", "mfun_l2snr_airprs_task_main_entry", $log_time, $log_content);
+            $loggerObj->logger("MFUN_TASK_ID_L2SENSOR_AIRPRS", "mfun_l2snr_airprs_task_main_entry", $log_time, $log_content);
             echo trim($result);
             return false;
         }
         if (($msgId != MSG_ID_L2SDK_HCU_TO_L2SNR_AIRPRS) || ($msgName != "MSG_ID_L2SDK_HCU_TO_L2SNR_AIRPRS")){
             $result = "Msgid or MsgName error";
             $log_content = "P:" . json_encode($result);
-            $loggerObj->logger("MFUN_TASK_ID_L2SNR_AIRPRS", "mfun_l2snr_airprs_task_main_entry", $log_time, $log_content);
+            $loggerObj->logger("MFUN_TASK_ID_L2SENSOR_AIRPRS", "mfun_l2snr_airprs_task_main_entry", $log_time, $log_content);
             echo trim($result);
             return false;
         }

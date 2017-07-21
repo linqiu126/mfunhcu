@@ -4546,14 +4546,14 @@ class classTaskL2sdkWechat
  *********************************************************************************************************************/
     //入口消息
 	//$result的技巧是，IOT_WX对应的消息，$result设置为空，从而没有返回ECHO
-    public function mfun_l2sdk_wechat_task_main_entry($parObj, $msgId, $msgName, $msg)
+    public function mfun_l2sdk_wechat_task_main_entry($parObj, $msgId, $msgName, $rcvmsg)
     {
 		//定义本入口函数的logger处理对象及函数
 		$loggerObj = new classApiL1vmFuncCom();
 		$log_time = date("Y-m-d H:i:s", time());
 
 		//入口消息内容判断
-		if (empty($msg) == true) {
+		if (empty($rcvmsg) == true) {
 			$loggerObj->logger("MFUN_TASK_ID_L2SDK_WECHAT", "mfun_l2sdk_wechat_task_main_entry", $log_time, "R: Received null message body.");
 			echo "";
 			return false;
@@ -4567,12 +4567,12 @@ class classTaskL2sdkWechat
 		}
 
 		//判断收到的消息类型
-		$format = substr(trim($msg), 0, 2);
+		$format = substr(trim($rcvmsg), 0, 2);
 		switch ($format)
 		{
 			case MFUN_L2_FRAME_FORMAT_PREFIX_XML:
 				libxml_disable_entity_loader(true);  //prevent XML entity injection
-				$postObj = simplexml_load_string($msg, 'SimpleXMLElement');  //防止破坏CDATA的内容，进而影响智能硬件L3消息体
+				$postObj = simplexml_load_string($rcvmsg, 'SimpleXMLElement');  //防止破坏CDATA的内容，进而影响智能硬件L3消息体
 				//$postObj = simplexml_load_string($postStr, 'SimpleXMLElement', LIBXML_NOCDATA);
 				$textTpl = "<xml>
                         <ToUserName><![CDATA[%s]]></ToUserName>
@@ -4584,16 +4584,18 @@ class classTaskL2sdkWechat
 
 				$fromUser = trim($postObj->FromUserName);
 				$createTime = trim($postObj->CreateTime);
-                $RX_TYPE = trim($postObj->MsgType);
+                $content = trim($postObj->Content);
+                $funcFlag = trim($postObj->FuncFlag);
+                $msgType = trim($postObj->MsgType);
 
                 //保存所有微信入口消息,这个功能可以在部署时关掉
-                $log_content = "R:".trim($msg);
+                $log_content = "R:".trim($rcvmsg);
                 $loggerObj->logger("MFUN_TASK_ID_L2SDK_WECHAT", "mfun_l2sdk_wechat_task_main_entry", $log_time, $log_content);
                 $project = "";
                 $log_from = "";
 
 				//消息类型分离
-				switch ($RX_TYPE)
+				switch ($msgType)
 				{
 					case "event":
                         $project = MFUN_PRJ_IHU_EMCWX;
@@ -4627,7 +4629,7 @@ class classTaskL2sdkWechat
 						//$wxDevObj = new classTaskL2sdkIotWx($this->appid, $this->appsecret);
 						$log_from = MFUN_CLOUD_WX;
 						$platform = MFUN_TECH_PLTF_WECHAT_DEVICE_TEXT;
-						$msg = array("project" => $project,
+						$sndmsg = array("project" => $project,
 							"log_from" => $log_from,
 							"platform" => $platform,
 							"content" => $postObj);
@@ -4635,7 +4637,7 @@ class classTaskL2sdkWechat
 								MFUN_TASK_ID_L2SDK_IOT_WX,
 								MSG_ID_WECHAT_TO_L2SDK_IOT_WX_INCOMING,
 								"MSG_ID_WECHAT_TO_L2SDK_IOT_WX_INCOMING",
-								$msg) == false) $result = "Send to message buffer error";
+                                $sndmsg) == false) $result = "Send to message buffer error";
 						else $result = "";
 						//$wxDevObj->receive_wx_device_text_message($postObj);
 						//$result = "";
@@ -4647,7 +4649,7 @@ class classTaskL2sdkWechat
 						//$wxDevObj = new classTaskL2sdkIotWx($this->appid, $this->appsecret);
 						//$wxDevObj->receive_wx_device_event_message($postObj);
 						//$result = "";
-						$msg = array("project" => $project,
+                        $sndmsg = array("project" => $project,
 							"log_from" => $log_from,
 							"platform" => $platform,
 							"content" => $postObj);
@@ -4655,141 +4657,44 @@ class classTaskL2sdkWechat
 								MFUN_TASK_ID_L2SDK_IOT_WX,
 								MSG_ID_WECHAT_TO_L2SDK_IOT_WX_INCOMING,
 								"MSG_ID_WECHAT_TO_L2SDK_IOT_WX_INCOMING",
-								$msg) == false) $result = "Send to message buffer error";
+                                $sndmsg) == false) $result = "Send to message buffer error";
 						else $result = "";
 						break;
                     //handling of huitp from hcu
                     case "hcu_huitp": //HUITP curl entrance
-                        $huitpObj = new classTaskL2codecHuitpXml();
-                        $msgId = MSG_ID_L2SDK_IOT_HUITP_TO_L2CODEC_HUITP;
-                        $msgName = "MSG_ID_L2SDK_IOT_HUITP_TO_L2CODEC_HUITP";
-
                         $project = MFUN_PRJ_HCU_HUITP;
-                        $devCode = trim($postObj->FromUserName);
-                        $log_from = $devCode; //存入消息发送方的hcu名字
+                        $log_from = MFUN_CLOUD_HCU;
+                        $platform = MFUN_TECH_PLTF_HCUGX_HUITP;
 
-                        //query statCode thru devCode from t_l2sdk_iothcu_inventory
-                        $cDbObj = new classDbiL2sdkHcu();
-                        $result = $cDbObj->dbi_hcuDevice_valid_device($devCode); //FromUserName对应每个HCU硬件的设备编号
-                        if (empty($result)){
-                            $result = "HCU_IOT: invalid device ID";
+                        //取DB中的硬件信息，判断基本信息
+                        $l2sdkHcuDbObj = new classDbiL2sdkHcu();
+                        $statCode = $l2sdkHcuDbObj->dbi_hcuDevice_valid_device($fromUser); //FromUserName对应每个HCU硬件的设备编号
+                        if (empty($statCode)){
+                            $result = "MFUN_TASK_ID_L2SDK_WECHAT: invalid device ID";
                             $log_content = "T:" . json_encode($result);
                             $loggerObj->logger($project, $log_from, $log_time, $log_content);
-                            echo trim($result);
                             return true;
                         }
-                        else{
-                            $statCode = $result;
-                        }
 
-                        $content = trim($postObj->Content);
-                        $funcFlag = trim($postObj->FuncFlag);
-
-                        $msg = array("project" => $project,
-                            "devCode" => $devCode,
+                        $sndmsg = array("project" => $project,
+                            "platform" => $platform,
+                            "devCode" => $fromUser,
                             "statCode" => $statCode,
                             "content" => $content,
                             "funcFlag" => $funcFlag);
-
-                        $huitp_result = $huitpObj->mfun_l2codec_huitp_xml_task_main_entry($parObj, $msgId, $msgName, $msg);
-
-                        $huitpMsgId = $huitp_result[0]; //Retrieved from mfun_l2codec_huitp_xml_task_main_entry()
-
-                        switch($huitpMsgId) {
-                            case HUITP_MSGID_uni_alarm_info_report:
-                                $hcuObj = new classApiL2snrCommonService();
-                                $result = $hcuObj->func_hcuAlarmData_huitp_process($devCode, $statCode, $huitp_result);
-                                break;
-
-                            case HUITP_MSGID_uni_performance_info_report:
-                                $hcuObj = new classApiL2snrCommonService();
-                                $result = $hcuObj->func_hcuPerformance_huitp_process($devCode, $statCode, $huitp_result);
-                                break;
-
-                            case HUITP_MSGID_uni_inventory_report:
-                                $hcuObj = new classApiL2snrCommonService();
-                                $result = $hcuObj->func_inventory_huitp_data_process($devCode, $huitp_result);
-                                break;
-
-                            default:
-                                //Throw $result to related tasks, solution for noise, humidity, pm25, temperature, winddir, windspd
-                                $l2codecHuitpMsgDictObj = new classL2codecHuitpMsgDict();
-                                $huitp_destId = $l2codecHuitpMsgDictObj->mfun_l2codec_getHuitpDestTaskId($huitpMsgId);
-                                $huitp_msgName = "huitp_to_noise_humid_pm25_temp_winddir_windspd";
-
-                                $msg = array("project" => $project,
-                                    "log_from" => $log_from,
-                                    "platform" => MFUN_TECH_PLTF_HCUGX,
-                                    "deviceId" => $devCode,
-                                    "statCode" => $statCode,
-                                    //put array $result to content
-                                    "content" => $huitp_result);
-                                if ($parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L2SDK_IOT_HCU,
-                                        $huitp_destId,
-                                        $huitpMsgId,
-                                        $huitp_msgName,
-                                        $msg) == false) $result = "Send to message buffer error";
-                                else $result = "";
-                       }
-
-                        /*//case1: noise
-                        $temp_destId = MFUN_TASK_ID_L2SENSOR_NOISE;
-                        $temp_msgId = MSG_ID_L2CODEC_TO_L2SNR_NOISE;
-                        $temp_msgName = "MSG_ID_L2CODEC_TO_L2SNR_NOISE";
-
-                        //case2: humidity
-                        $temp_destId = MFUN_TASK_ID_L2SENSOR_HUMID;
-                        $temp_msgId = MSG_ID_L2CODEC_TO_L2SNR_HUMIDITY;
-                        $temp_msgName = "MSG_ID_L2CODEC_TO_L2SNR_HUMIDITY";
-
-                        //case3: pm25
-                        $temp_destId = MFUN_TASK_ID_L2SENSOR_PM25;
-                        $temp_msgId = MSG_ID_L2CODEC_TO_L2SNR_PM25;
-                        $temp_msgName = "MSG_ID_L2CODEC_TO_L2SNR_PM25";
-
-                        //case4: temperature
-                        $temp_destId = MFUN_TASK_ID_L2SENSOR_TEMP;
-                        $temp_msgId = MSG_ID_L2CODEC_TO_L2SNR_TEMP;
-                        $temp_msgName = "MSG_ID_L2CODEC_TO_L2SNR_TEMP";
-
-                        //case5: winddir
-                        $temp_destId = MFUN_TASK_ID_L2SENSOR_WINDDIR;
-                        $temp_msgId = MSG_ID_L2CODEC_TO_L2SNR_WINDDIR;
-                        $temp_msgName = "MSG_ID_L2CODEC_TO_L2SNR_WINDDIR";
-
-                        //case6: windspd
-                        $temp_destId = MFUN_TASK_ID_L2SENSOR_WINDSPD;
-                        $temp_msgId = MSG_ID_L2CODEC_TO_L2SNR_WINDSPD;
-                        $temp_msgName = "MSG_ID_L2CODEC_TO_L2SNR_WINDSPD";
-                        if ($parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L2SDK_IOT_HCU,
-                                $temp_destId,
-                                $temp_msgId,
-                                $temp_msgName,
-                                $msg) == false) $resp = "Send to message buffer error";
-                        else $resp = "";
-
-                        //case7: alarm
-                        $hcuObj = new classApiL2snrCommonService();
-                        $resp = $hcuObj->func_hcuAlarmData_huitp_process($devCode, $statCode, $result);
-
-                        //case8: pm
-                        $hcuObj = new classApiL2snrCommonService();
-                        $resp = $hcuObj->func_hcuPerformance_huitp_process($devCode, $statCode, $result);
-
-                        //case9: sw inventory
-                        $hcuObj = new classApiL2snrCommonService();
-                        $resp = $hcuObj->func_inventory_huitp_data_process($devCode, $result);*/
-
-                        //convert array to string for log function
-                        $result = self::json_encode($huitp_result);
+                        if ($parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L2SDK_WECHAT,
+                                MFUN_TASK_ID_L2CODEC_HUITP,
+                                MSG_ID_WECHAT_TO_L2SDK_IOT_HUITP_INCOMING,
+                                "MSG_ID_WECHAT_TO_L2SDK_IOT_HUITP_INCOMING",
+                                $sndmsg) == false) $result = "Send to message buffer error";
+                        else $result = "";
 
                         break;
-
 					default:
 						$project = "NULL";
 						$this->logger($project,$fromUser,$log_time,$log_content);
 						$log_from = "CLOUD_NONE";
-						$result = "[XML_FORMAT]unknown message type: ".$RX_TYPE;
+						$result = "[XML_FORMAT]unknown message type: ".$msgType;
 						break;
 				}
 				break;

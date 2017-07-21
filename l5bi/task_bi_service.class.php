@@ -9,7 +9,7 @@
 include_once "../l5bi/dbi_l5bi_service.class.php";
 include_once "../l2sensorproc/proccom/dbi_l2snr_com.class.php";
 
-$biObj = new classDbiL2snrCom();
+$biObj = new classDbiL2snrCommon();
 
 $timestamp = time();
 $date = date("ymd",$timestamp);

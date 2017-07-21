@@ -20,27 +20,27 @@ define("MFUN_L3APL_F1SYM_USER_ID_LEN", 6); //UI界面user id字符串长度=该�
 define("MFUN_L3APL_F1SYM_UID_PREFIX", "UID");  //定义用户ID的特征字，用户ID必须以UID开头
 
 //Socket通讯有关常量定义
-define("MFUN_SWOOLE_SOCKET_STD_XML_HTTP", 9501); //原有XML协议swoole socket server HTTP端口,传送内容为ASCII
-define("MFUN_SWOOLE_SOCKET_STD_XML_TCP", 9502);  //原有XML协议swoole socket server TCP端口，
-define("MFUN_SWOOLE_SOCKET_STD_XML_UDP", 9503); //原有XML协议swoole socket server UDP端口
-define("MFUN_SWOOLE_SOCKET_STD_ZHB_HTTP", 9501); //原有ZHB协议swoole socket server HTTP端口
-define("MFUN_SWOOLE_SOCKET_STD_ZHB_TCP", 9502);  //原有ZHB协议swoole socket server TCP端口
-define("MFUN_SWOOLE_SOCKET_STD_ZHB_UDP", 9503); //原有ZHB协议swoole socket server UDP端口
-define("MFUN_SWOOLE_SOCKET_HUITP_XML_HTTP", 9510); //新HUITP XML协议swoole socket server HTTP端口,传送内容为ASCII
-define("MFUN_SWOOLE_SOCKET_HUITP_XML_TCP", 9511);  //新HUITP XML协议swoole socket server TCP端口,传送内容为HEX
-define("MFUN_SWOOLE_SOCKET_HUITP_XML_UDP", 9512); //新HUITP XML协议swoole socket server UDP端口
-define("MFUN_SWOOLE_SOCKET_ZHB_HJT212_HTTP", 9513); //新ZHB HJT212协议swoole socket server HTTP端口
-define("MFUN_SWOOLE_SOCKET_ZHB_HJT212_TCP", 9514);  //新ZHB HJT212协议swoole socket server TCP端口
-define("MFUN_SWOOLE_SOCKET_ZHB_HJT212_UDP", 9515); //新ZHB HJT212协议swoole socket server UDP端口
-define("MFUN_SWOOLE_SOCKET_HUITP_JSON_HTTP", 9516); //新HUITP JSON协议swoole socket server HTTP端口
-define("MFUN_SWOOLE_SOCKET_HUITP_JSON_TCP", 9517);  //新HUITP JSON协议swoole socket server TCP端口
-define("MFUN_SWOOLE_SOCKET_HUITP_JSON_UDP", 9518); //新HUITP JSON协议swoole socket server UDP端口
-define("MFUN_SWOOLE_SOCKET_NBIOT_CJ188_HTTP", 9519); //NBIOT_CJ188协议swoole socket server HTTP端口
-define("MFUN_SWOOLE_SOCKET_NBIOT_CJ188_TCP", 9520);  //NBIOT_CJ188协议swoole socket server TCP端口
-define("MFUN_SWOOLE_SOCKET_NBIOT_CJ188_UDP", 9521); //NBIOT_CJ188协议swoole socket server UDP端口
-define("MFUN_SWOOLE_SOCKET_NBIOT_QG376_HTTP", 9522); //NBIOT_QG376协议swoole socket server HTTP端口
-define("MFUN_SWOOLE_SOCKET_NBIOT_QG376_TCP", 9523);  //NBIOT_QG376协议swoole socket server TCP端口
-define("MFUN_SWOOLE_SOCKET_NBIOT_QG376_UDP", 9524); //NBIOT_QG376协议swoole socket server UDP端口
+define("MFUN_SWOOLE_SOCKET_STDXML_TCP_HCUPORT", 9501); //原有XML协议swoole socket server TCP端口,处理与下位机的连接
+define("MFUN_SWOOLE_SOCKET_STDXML_TCP_UIPORT", 9502);  //原有XML协议swoole socket server TCP端口，处理与UI的连接
+define("MFUN_SWOOLE_SOCKET_STDXML_UDP", 9503); //原有XML协议swoole socket server UDP端口，暂时没用
+define("MFUN_SWOOLE_SOCKET_STDZHB_HTTP", 9501); //原有ZHB协议swoole socket server HTTP端口
+define("MFUN_SWOOLE_SOCKET_STDZHB_TCP", 9502);  //原有ZHB协议swoole socket server TCP端口
+define("MFUN_SWOOLE_SOCKET_STDZHB_UDP", 9503); //原有ZHB协议swoole socket server UDP端口
+define("MFUN_SWOOLE_SOCKET_HUITPXML_HTTP", 9510); //新HUITP XML协议swoole socket server HTTP端口,传送内容为ASCII
+define("MFUN_SWOOLE_SOCKET_HUITPXML_TCP", 9511);  //新HUITP XML协议swoole socket server TCP端口,传送内容为HEX
+define("MFUN_SWOOLE_SOCKET_HUITPXML_UDP", 9512); //新HUITP XML协议swoole socket server UDP端口
+define("MFUN_SWOOLE_SOCKET_ZHBHJT212_HTTP", 9513); //新ZHB HJT212协议swoole socket server HTTP端口
+define("MFUN_SWOOLE_SOCKET_ZHBHJT212_TCP", 9514);  //新ZHB HJT212协议swoole socket server TCP端口
+define("MFUN_SWOOLE_SOCKET_ZHBHJT212_UDP", 9515); //新ZHB HJT212协议swoole socket server UDP端口
+define("MFUN_SWOOLE_SOCKET_HUITPJSON_HTTP", 9516); //新HUITP JSON协议swoole socket server HTTP端口
+define("MFUN_SWOOLE_SOCKET_HUITPJSON_TCP", 9517);  //新HUITP JSON协议swoole socket server TCP端口
+define("MFUN_SWOOLE_SOCKET_HUITPJSON_UDP", 9518); //新HUITP JSON协议swoole socket server UDP端口
+define("MFUN_SWOOLE_SOCKET_NBIOTCJ188_HTTP", 9519); //NBIOT_CJ188协议swoole socket server HTTP端口
+define("MFUN_SWOOLE_SOCKET_NBIOTCJ188_TCP", 9520);  //NBIOT_CJ188协议swoole socket server TCP端口
+define("MFUN_SWOOLE_SOCKET_NBIOTCJ188_UDP", 9521); //NBIOT_CJ188协议swoole socket server UDP端口
+define("MFUN_SWOOLE_SOCKET_NBIOTQG376_HTTP", 9522); //NBIOT_QG376协议swoole socket server HTTP端口
+define("MFUN_SWOOLE_SOCKET_NBIOTQG376_TCP", 9523);  //NBIOT_QG376协议swoole socket server TCP端口
+define("MFUN_SWOOLE_SOCKET_NBIOTQG376_UDP", 9524); //NBIOT_QG376协议swoole socket server UDP端口
 
 define("MFUN_SWOOLE_SOCKET_DATA_STREAM_FTP", 9550); //DATA_STREAM协议swoole socket server FTP端口
 

@@ -848,12 +848,12 @@ class classTaskL2sdkIotWx
         //以下命令暂时没有实现，保留作为将来功能扩展使用
             case MFUN_IHU_CMDID_VERSION_SYNC:
                 //版本同步消息处理
-                $ihuObj = new classApiL2snrCommonService();
+                $ihuObj = new classTaskL2snrCommonService();
                 $resp = $ihuObj->func_version_update_process(MFUN_TECH_PLTF_WECHAT, $deviceId, $msg_body);
                 break;
 
             case MFUN_IHU_CMDID_TIME_SYNC:
-                $ihuObj = new classApiL2snrCommonService();
+                $ihuObj = new classTaskL2snrCommonService();
                 $resp_msg = $ihuObj->func_timeSync_process(MFUN_TECH_PLTF_WECHAT, $deviceId, $msg_body);
                 if(!empty($msg_body))
                     $resp = pack('H*',$resp_msg);
@@ -920,7 +920,7 @@ class classTaskL2sdkIotWx
         else
         {
             //对版本读取操作进行层三处理，构造可以发送给硬件设备的信息
-            $ihuObj = new classApiL2snrCommonService();
+            $ihuObj = new classTaskL2snrCommonService();
             $msg_body = $ihuObj->func_version_push_process();
 
             if (!empty($msg_body))

@@ -19,6 +19,7 @@ define("MSG_ID_IOTWX_TO_L2SDK_IOT_WX_JSSDK_INCOMING", $index++);
 define("MSG_ID_L1VM_TO_L2SDK_IOT_HCU_INCOMING", $index++);
 define("MSG_ID_L1VM_TO_L2SDK_IOT_APPLE_INCOMING", $index++);
 define("MSG_ID_L1VM_TO_L2SDK_IOT_JD_INCOMING", $index++);
+define("MSG_ID_WECHAT_TO_L2SDK_IOT_HUITP_INCOMING", $index++);
 define("MSG_ID_L1VM_TO_L2SDK_IOT_HUITP_INCOMING", $index++);
 define("MSG_ID_L2SDK_IOT_HUITP_TO_L2CODEC_HUITP", $index++);
 define("MSG_ID_L2SDK_HCU_TO_L2SNR_EMC", $index++);
@@ -69,6 +70,7 @@ define("MSG_ID_L2SDK_EMCWX_TO_L2SNR_RAIN_DATA_READ_INSTANT", $index++);
 define("MSG_ID_L2SDK_EMCWX_TO_L2SNR_RAIN_DATA_REPORT_TIMING", $index++);
 define("MSG_ID_L2SDK_WECHAT_DATA_COMING", $index++);
 define("MSG_ID_L2SDK_HCU_DATA_COMING", $index++);
+define("MSG_ID_L2SDK_HUITP_DATA_COMING", $index++);
 //FHYS智能云锁消息
 define("MSG_ID_L2SDK_HCU_TO_L2SNR_BOXSTATUS", $index++);
 define("MSG_ID_L2SDK_HCU_TO_L2SNR_BOXOPEN", $index++);

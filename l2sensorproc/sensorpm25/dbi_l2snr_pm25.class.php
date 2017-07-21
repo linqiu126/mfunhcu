@@ -159,7 +159,7 @@ class classDbiL2snrPm25
         {
             die('Could not connect: ' . mysqli_error($mysqli));
         }
-        $result = $mysqli->query("DELETE FROM `t_l2snr_pm25data` WHERE ((`deviceid` = '$deviceid') AND (TO_DAYS(NOW()) - TO_DAYS(`date`) > '$days'))");
+        $result = $mysqli->query("DELETE FROM `t_l2snr_pm25data` WHERE ((`deviceid` = '$deviceid') AND (TO_DAYS(NOW()) - TO_DAYS(`reportdate`) > '$days'))");
         $mysqli->close();
         return $result;
     }

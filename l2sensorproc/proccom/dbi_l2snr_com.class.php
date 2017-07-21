@@ -199,7 +199,7 @@ INSERT INTO `t_l2snr_aqyc_minreport` (`sid`, `devcode`, `statcode`, `reportdate`
 
  */
 
-class classDbiL2snrCom
+class classDbiL2snrCommon
 {
     //构造函数
     public function __construct()
@@ -221,92 +221,119 @@ class classDbiL2snrCom
         {
             case "T_airpressure":
                 //存储新记录，如果发现是已经存在的数据，则覆盖，否则新增
-                $result = $mysqli->query("SELECT * FROM `t_l2snr_dataformat` WHERE (`deviceid` = '$deviceid')");
+                $query_str = "SELECT * FROM `t_l2snr_dataformat` WHERE (`deviceid` = '$deviceid')";
+                $result = $mysqli->query($query_str);
                 if (($result->num_rows)>0) {
-                    $result = $mysqli->query("UPDATE `t_l2snr_dataformat` SET  `f_airpressure` = '$format' WHERE (`deviceid` = '$deviceid')");
+                    $query_str = "UPDATE `t_l2snr_dataformat` SET  `f_airpressure` = '$format' WHERE (`deviceid` = '$deviceid')";
+                    $result = $mysqli->query($query_str);
                 }
                 else {
-                    $result = $mysqli->query("INSERT INTO `t_l2snr_dataformat` (deviceid,f_airpressure) VALUES ('$deviceid','$format')");
+                    $query_str = "INSERT INTO `t_l2snr_dataformat` (deviceid,f_airpressure) VALUES ('$deviceid','$format')";
+                    $result = $mysqli->query($query_str);
                 }
                 break;
             case "T_emcdata":
                 //存储新记录，如果发现是已经存在的数据，则覆盖，否则新增
-                $result = $mysqli->query("SELECT * FROM `t_l2snr_dataformat` WHERE (`deviceid` = '$deviceid')");
+                $query_str = "SELECT * FROM `t_l2snr_dataformat` WHERE (`deviceid` = '$deviceid')";
+                $result = $mysqli->query($query_str);
                 if (($result->num_rows)>0) {
-                    $result = $mysqli->query("UPDATE `t_l2snr_dataformat` SET  `f_emcdata` = '$format' WHERE (`deviceid` = '$deviceid')");
+                    $query_str = "UPDATE `t_l2snr_dataformat` SET  `f_emcdata` = '$format' WHERE (`deviceid` = '$deviceid')";
+                    $result = $mysqli->query($query_str);
                 }
                 else {
-                    $result = $mysqli->query("INSERT INTO `t_l2snr_dataformat` (deviceid,f_emcdata) VALUES ('$deviceid','$format')");
+                    $query_str = "INSERT INTO `t_l2snr_dataformat` (deviceid,f_emcdata) VALUES ('$deviceid','$format')";
+                    $result = $mysqli->query($query_str);
                 }
                 break;
             case "T_humidity":
                 //存储新记录，如果发现是已经存在的数据，则覆盖，否则新增
-                $result = $mysqli->query("SELECT * FROM `t_l2snr_dataformat` WHERE (`deviceid` = '$deviceid')");
+                $query_str = "SELECT * FROM `t_l2snr_dataformat` WHERE (`deviceid` = '$deviceid')";
+                $result = $mysqli->query($query_str);
                 if (($result->num_rows)>0) {
-                    $result = $mysqli->query("UPDATE `t_l2snr_dataformat` SET  `f_humidity` = '$format' WHERE (`deviceid` = '$deviceid')");
+                    $query_str = "UPDATE `t_l2snr_dataformat` SET  `f_humidity` = '$format' WHERE (`deviceid` = '$deviceid')";
+                    $result = $mysqli->query($query_str);
                 }
                 else {
-                    $result = $mysqli->query("INSERT INTO `t_l2snr_dataformat` (deviceid,f_humidity) VALUES ('$deviceid','$format')");
+                    $query_str = "INSERT INTO `t_l2snr_dataformat` (deviceid,f_humidity) VALUES ('$deviceid','$format')";
+                    $result = $mysqli->query($query_str);
                 }
                 break;
             case "T_noise":
                 //存储新记录，如果发现是已经存在的数据，则覆盖，否则新增
-                $result = $mysqli->query("SELECT * FROM `t_l2snr_dataformat` WHERE (`deviceid` = '$deviceid')");
+                $query_str = "SELECT * FROM `t_l2snr_dataformat` WHERE (`deviceid` = '$deviceid')";
+                $result = $mysqli->query($query_str);
                 if (($result->num_rows)>0) {
-                    $result = $mysqli->query("UPDATE `t_l2snr_dataformat` SET  `f_noise` = '$format' WHERE (`deviceid` = '$deviceid')");
+                    $query_str = "UPDATE `t_l2snr_dataformat` SET  `f_noise` = '$format' WHERE (`deviceid` = '$deviceid')";
+                    $result = $mysqli->query($query_str);
                 }
                 else {
-                    $result = $mysqli->query("INSERT INTO `t_l2snr_dataformat` (deviceid,f_noise) VALUES ('$deviceid','$format')");
+                    $query_str = "INSERT INTO `t_l2snr_dataformat` (deviceid,f_noise) VALUES ('$deviceid','$format')";
+                    $result = $mysqli->query($query_str);
                 }
                 break;
             case "T_pmdata";
                 //存储新记录，如果发现是已经存在的数据，则覆盖，否则新增
-                $result = $mysqli->query("SELECT * FROM `t_l2snr_dataformat` WHERE (`deviceid` = '$deviceid')");
+                $query_str = "SELECT * FROM `t_l2snr_dataformat` WHERE (`deviceid` = '$deviceid')";
+                $result = $mysqli->query($query_str);
                 if (($result->num_rows)>0) {
-                    $result = $mysqli->query("UPDATE `t_l2snr_dataformat` SET  `f_pmdata` = '$format' WHERE (`deviceid` = '$deviceid')");
+                    $query_str = "UPDATE `t_l2snr_dataformat` SET  `f_pmdata` = '$format' WHERE (`deviceid` = '$deviceid')";
+                    $result = $mysqli->query($query_str);
                 }
                 else {
-                    $result = $mysqli->query("INSERT INTO `t_l2snr_dataformat` (deviceid,f_pmdata) VALUES ('$deviceid','$format')");
+                    $query_str = "INSERT INTO `t_l2snr_dataformat` (deviceid,f_pmdata) VALUES ('$deviceid','$format')";
+                    $result = $mysqli->query($query_str);
                 }
                 break;
             case "T_rain":
                 //存储新记录，如果发现是已经存在的数据，则覆盖，否则新增
-                $result = $mysqli->query("SELECT * FROM `t_l2snr_dataformat` WHERE (`deviceid` = '$deviceid')");
+                $query_str = "SELECT * FROM `t_l2snr_dataformat` WHERE (`deviceid` = '$deviceid')";
+                $result = $mysqli->query($query_str);
                 if (($result->num_rows)>0) {
-                    $result = $mysqli->query("UPDATE `t_l2snr_dataformat` SET  `f_rain` = '$format' WHERE (`deviceid` = '$deviceid')");
+                    $query_str = "UPDATE `t_l2snr_dataformat` SET  `f_rain` = '$format' WHERE (`deviceid` = '$deviceid')";
+                    $result = $mysqli->query($query_str);
                 }
                 else {
-                    $result = $mysqli->query("INSERT INTO `t_l2snr_dataformat` (deviceid,f_rain) VALUES ('$deviceid','$format')");
+                    $query_str = "INSERT INTO `t_l2snr_dataformat` (deviceid,f_rain) VALUES ('$deviceid','$format')";
+                    $result = $mysqli->query($query_str);
                 }
                 break;
             case "T_temperature":
                 //存储新记录，如果发现是已经存在的数据，则覆盖，否则新增
-                $result = $mysqli->query("SELECT * FROM `t_l2snr_dataformat` WHERE (`deviceid` = '$deviceid')");
+                $query_str = "SELECT * FROM `t_l2snr_dataformat` WHERE (`deviceid` = '$deviceid')";
+                $result = $mysqli->query($query_str);
                 if (($result->num_rows)>0) {
-                    $result = $mysqli->query("UPDATE `t_l2snr_dataformat` SET  `f_temperature` = '$format' WHERE (`deviceid` = '$deviceid')");
+                    $query_str = "UPDATE `t_l2snr_dataformat` SET  `f_temperature` = '$format' WHERE (`deviceid` = '$deviceid')";
+                    $result = $mysqli->query($query_str);
                 }
                 else {
-                    $result = $mysqli->query("INSERT INTO `t_l2snr_dataformat` (deviceid,f_temperature) VALUES ('$deviceid','$format')");
+                    $query_str = "INSERT INTO `t_l2snr_dataformat` (deviceid,f_temperature) VALUES ('$deviceid','$format')";
+                    $result = $mysqli->query($query_str);
                 }
                 break;
             case "T_winddirection":
                 //存储新记录，如果发现是已经存在的数据，则覆盖，否则新增
-                $result = $mysqli->query("SELECT * FROM `t_l2snr_dataformat` WHERE (`deviceid` = '$deviceid')");
+                $query_str = "SELECT * FROM `t_l2snr_dataformat` WHERE (`deviceid` = '$deviceid')";
+                $result = $mysqli->query($query_str);
                 if (($result->num_rows)>0) {
-                    $result = $mysqli->query("UPDATE `t_l2snr_dataformat` SET  `f_winddirection` = '$format' WHERE (`deviceid` = '$deviceid')");
+                    $query_str = "UPDATE `t_l2snr_dataformat` SET  `f_winddirection` = '$format' WHERE (`deviceid` = '$deviceid')";
+                    $result = $mysqli->query($query_str);
                 }
                 else {
-                    $result = $mysqli->query("INSERT INTO `t_l2snr_dataformat` (deviceid,f_winddirection) VALUES ('$deviceid','$format')");
+                    $query_str = "INSERT INTO `t_l2snr_dataformat` (deviceid,f_winddirection) VALUES ('$deviceid','$format')";
+                    $result = $mysqli->query($query_str);
                 }
                 break;
             case "T_windspeed":
                 //存储新记录，如果发现是已经存在的数据，则覆盖，否则新增
-                $result = $mysqli->query("SELECT * FROM `t_l2snr_dataformat` WHERE (`deviceid` = '$deviceid')");
+                $query_str = "SELECT * FROM `t_l2snr_dataformat` WHERE (`deviceid` = '$deviceid')";
+                $result = $mysqli->query($query_str);
                 if (($result->num_rows)>0) {
-                    $result = $mysqli->query("UPDATE `t_l2snr_dataformat` SET  `f_windspeed` = '$format' WHERE (`deviceid` = '$deviceid')");
+                    $query_str = "UPDATE `t_l2snr_dataformat` SET  `f_windspeed` = '$format' WHERE (`deviceid` = '$deviceid')";
+                    $result = $mysqli->query($query_str);
                 }
                 else {
-                    $result = $mysqli->query("INSERT INTO `t_l2snr_dataformat` (deviceid,f_windspeed) VALUES ('$deviceid','$format')");
+                    $query_str = "INSERT INTO `t_l2snr_dataformat` (deviceid,f_windspeed) VALUES ('$deviceid','$format')";
+                    $result = $mysqli->query($query_str);
                 }
                 break;
             default:
@@ -442,7 +469,8 @@ class classDbiL2snrCom
         }
         //找到数据库中已有序号最大的，也许会出现序号(6 BYTE)用满的情况，这时应该考虑更新该算法，短期内不需要考虑这么复杂的情况
         //数据库SID=0的记录保留作为特殊用途，对应的emcvalue字段保存当前最大可用sid
-        $result = $mysqli->query("SELECT * FROM `t_l2snr_hourreport` WHERE `sid` = '0'");
+        $query_str = "SELECT * FROM `t_l2snr_hourreport` WHERE `sid` = '0'";
+        $result = $mysqli->query($query_str);
         if ($result->num_rows>0)
         {
             $row = $result->fetch_array();
@@ -465,8 +493,9 @@ class classDbiL2snrCom
         //查找在给定日期给定小时内该设备的所有记录
         $start = $hour*60;
         $end = ($hour+1)*60;
-        $result = $mysqli->query("SELECT * FROM `t_l2snr_aqyc_minreport` WHERE `devcode` = '$devcode' AND `statcode` = '$statcode' AND
-                          (`hourminindex` >= '$start' AND `hourminindex` < '$end')");
+        $query_str = "SELECT * FROM `t_l2snr_aqyc_minreport` WHERE `devcode` = '$devcode' AND `statcode` = '$statcode' AND
+                          (`hourminindex` >= '$start' AND `hourminindex` < '$end')";
+        $result = $mysqli->query($query_str);
 
         if ($result->num_rows < MFUN_L2SNR_COMAPI_HOUR_VALIDE_NUM )  //如果该日期指定的小时里分钟测量值小于最低要求值，则该小时平均值无效，直接返回
             return false;
@@ -552,21 +581,24 @@ class classDbiL2snrCom
             $avg_humidity = $avg_humidity/$count_humidity;
 
         //存储新记录，如果发现是已经存在的数据，则覆盖，否则新增
-        $result = $mysqli->query("SELECT `sid` FROM `t_l2snr_hourreport` WHERE (`devcode` = '$devcode' AND `statcode` = '$statcode'
-                              AND `reportdate` = '$date' AND `hourindex` = '$hour')");
+        $query_str = "SELECT `sid` FROM `t_l2snr_hourreport` WHERE (`devcode` = '$devcode' AND `statcode` = '$statcode'
+                              AND `reportdate` = '$date' AND `hourindex` = '$hour')";
+        $result = $mysqli->query($query_str);
         if ($result == false){
             $mysqli->close();
             return $result;
         }
         if (($result->num_rows)>0)   //重复，则覆盖
         {
-            $result=$mysqli->query("UPDATE `t_l2snr_hourreport` SET `emcvalue` = '$avg_emc',`noise` = '$avg_noise',`pm01` = '$avg_pm01',`pm25` = '$avg_pm25',`pm10` = '$avg_pm10',`windspeed` = '$avg_windspeed',`temperature` = '$avg_temperature',`humidity` = '$avg_humidity'
-                      WHERE (`devcode` = '$devcode' AND `statcode` = '$statcode' AND  `reportdate` = '$date' AND `hourindex` = '$hour')");
+            $query_str = "UPDATE `t_l2snr_hourreport` SET `emcvalue` = '$avg_emc',`noise` = '$avg_noise',`pm01` = '$avg_pm01',`pm25` = '$avg_pm25',`pm10` = '$avg_pm10',`windspeed` = '$avg_windspeed',`temperature` = '$avg_temperature',`humidity` = '$avg_humidity'
+                      WHERE (`devcode` = '$devcode' AND `statcode` = '$statcode' AND  `reportdate` = '$date' AND `hourindex` = '$hour')";
+            $result=$mysqli->query($query_str);
         }
         else   //不存在，新增
         {
-            $res1=$mysqli->query("INSERT INTO `t_l2snr_hourreport` (sid,devcode,statcode,reportdate,hourindex,emcvalue,pm01,pm25,pm10,noise,windspeed,temperature,humidity)
-                              VALUES ('$sid','$devcode','$statcode','$date','$hour','$avg_emc','$avg_pm01','$avg_pm25','$avg_pm10','$avg_noise','$avg_windspeed','$avg_temperature','$avg_humidity')");
+            $query_str = "INSERT INTO `t_l2snr_hourreport` (sid,devcode,statcode,reportdate,hourindex,emcvalue,pm01,pm25,pm10,noise,windspeed,temperature,humidity)
+                              VALUES ('$sid','$devcode','$statcode','$date','$hour','$avg_emc','$avg_pm01','$avg_pm25','$avg_pm10','$avg_noise','$avg_windspeed','$avg_temperature','$avg_humidity')";
+            $res1=$mysqli->query($query_str);
             //更新最大可用的sid到数据库SID=0的记录项
             $sid = $sid + 1;
             $res2=$mysqli->query("UPDATE `t_l2snr_hourreport` SET `emcvalue` = '$sid' WHERE (`sid` = '0')");
@@ -614,6 +646,95 @@ class classDbiL2snrCom
         return $sensorinfo;
     }
 
+    /*********************************HUITP数据处理************************************************/
+
+    //HCU huitp alarm Data数据存储
+    public function dbi_hcu_alarm_huitp_data_save($devCode, $statCode, $EquipmentId, $AlarmType, $AlarmDescription, $AlarmServerity, $AlarmClearFlag, $AlarmTime, $CauseId, $AlarmContent)
+    {
+        //建立连接
+        $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli)
+        {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $mysqli->query("SET NAMES utf8");
+
+        $AlarmTime = date("Y-m-d H:m:s",$AlarmTime);
+        $query_str = "INSERT INTO `t_l3f5fm_aqyc_alarmdata` (`devcode`, `equipmentid`, `alarmtype`, `picturename`, `alarmseverity`, `alarmclearflag`, `timestamp`, `causeid`, `alarmcontent`) VALUES ('$devCode', '$EquipmentId', '$AlarmType', '$AlarmDescription', '$AlarmServerity', '$AlarmClearFlag', '$AlarmTime', '$CauseId', '$AlarmContent')";
+        $result=$mysqli->query($query_str);
+
+        $mysqli->close();
+        return $result;
+    }
+
+    //HCU HUITP Performance数据存储
+    public function dbi_hcu_performance_huitp_data_save($deviceId, $statcode, $CurlConnAttempt, $CurlConnFailCnt, $CurlDiscCnt, $SocketDiscCnt, $PmTaskRestartCnt, $CPUOccupyCnt, $MemOccupyCnt, $DiskOccupyCnt, $CpuTemp, $createtime)
+    {
+        //建立连接
+        $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli)
+        {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $mysqli->query("SET NAMES utf8");
+
+        $createtime = date("Y-m-d H:m:s",$createtime);
+
+        $query_str = "INSERT INTO `t_l3f6pm_perfdata`(`devcode`, `statcode`, `CurlConnAttempt`, `CurlConnFailCnt`, `CurlDiscCnt`, `SocketDiscCnt`, `PmTaskRestartCnt`, `CPUOccupyCnt`, `MemOccupyCnt`, `DiskOccupyCnt`, `CpuTemp`, `createtime`) VALUES ('$deviceId', '$statcode', '$CurlConnAttempt', '$CurlConnFailCnt', '$CurlDiscCnt', '$SocketDiscCnt', '$PmTaskRestartCnt', '$CPUOccupyCnt', '$MemOccupyCnt', '$DiskOccupyCnt', '$CpuTemp','$createtime')";
+        $result=$mysqli->query($query_str);
+
+        $mysqli->close();
+        return $result;
+    }
+
+    //HCU Performance数据存储
+    public function dbi_hcu_performance_data_save($deviceId, $statcode, $CurlConnAttempt, $CurlConnFailCnt, $CurlDiscCnt, $SocketDiscCnt, $PmTaskRestartCnt, $CPUOccupyCnt, $MemOccupyCnt, $DiskOccupyCnt, $createtime)
+    {
+        //建立连接
+        $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli)
+        {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $mysqli->query("SET NAMES utf8");
+
+        $createtime = date("Y-m-d H:m:s",$createtime);
+        $query_str = "INSERT INTO `t_l3f6pm_perfdata`(`devcode`, `statcode`, `CurlConnAttempt`, `CurlConnFailCnt`, `CurlDiscCnt`, `SocketDiscCnt`, `PmTaskRestartCnt`, `CPUOccupyCnt`, `MemOccupyCnt`, `DiskOccupyCnt`, `createtime`) VALUES ('$deviceId', '$statcode', '$CurlConnAttempt', '$CurlConnFailCnt', '$CurlDiscCnt', '$SocketDiscCnt', '$PmTaskRestartCnt', '$CPUOccupyCnt', '$MemOccupyCnt', '$DiskOccupyCnt', '$createtime')";
+        $result=$mysqli->query($query_str);
+
+        $mysqli->close();
+        return $result;
+    }
+
+    public function dbi_deviceVersion_huitp_update($devcode, $hw_type,$hw_ver,$sw_rel,$sw_drop, $upgradeFlag,$desc,$timeStamp)
+    {
+        //maybe used later
+        $timeStamp = date("Y-m-d H:m:s",$timeStamp);
+
+        //建立连接
+        $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli)
+        {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $mysqli->query("SET NAMES utf8");
+
+        //先检查是否存在，如果存在，就更新，否则创建
+        $result = $mysqli->query("SELECT * FROM `t_l2sdk_iothcu_inventory` WHERE `devcode` = '$devcode'");
+        if (($result->num_rows)>0)
+        {
+            $query_str = "UPDATE `t_l2sdk_iothcu_inventory` SET `hw_type` = '$hw_type',`hw_ver` = '$hw_ver',`sw_rel` = '$sw_rel',`sw_drop` = '$sw_drop', `hcu_sw_autoupdate` = '$upgradeFlag', `desc` = '$desc' WHERE `devcode` = '$devcode'";
+            $result=$mysqli->query($query_str);
+        }
+        else
+        {
+            $query_str = "INSERT INTO `t_l2sdk_iothcu_inventory` (devcode, hw_type, hw_ver, sw_rel,sw_drop, hcu_sw_autoupdate,desc)
+                          VALUES ('$devcode', '$hw_type', '$hw_ver','$sw_rel','$sw_drop', '$upgradeFlag', '$desc')";
+            $result=$mysqli->query($query_str);
+        }
+        $mysqli->close();
+        return $result;
+    }
 
 }
 

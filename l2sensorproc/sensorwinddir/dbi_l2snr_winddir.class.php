@@ -136,7 +136,7 @@ class classDbiL2snrWinddir
             die('Could not connect: ' . mysqli_error($mysqli));
         }
         //尝试使用一次性删除技巧，结果非常好!!!
-        $result = $mysqli->query("DELETE FROM `t_l2snr_winddirdata` WHERE ((`deviceid` = '$deviceid' AND `sensorid` = '$sensorid')
+        $result = $mysqli->query("DELETE FROM `t_l2snr_winddir` WHERE ((`deviceid` = '$deviceid' AND `sensorid` = '$sensorid')
                       AND (TO_DAYS(NOW()) - TO_DAYS(`reportdate`) > '$days'))");
         $mysqli->close();
         return $result;
@@ -154,7 +154,7 @@ class classDbiL2snrWinddir
             die('Could not connect: ' . mysqli_error($mysqli));
         }
         //尝试使用一次性删除技巧，结果非常好!!!
-        $result = $mysqli->query("DELETE FROM `t_l2snr_winddirdata` WHERE ((`deviceid` = '$deviceid')
+        $result = $mysqli->query("DELETE FROM `t_l2snr_winddir` WHERE ((`deviceid` = '$deviceid')
                       AND (TO_DAYS(NOW()) - TO_DAYS(`reportdate`) > '$days'))");
         $mysqli->close();
         return $result;
@@ -167,7 +167,7 @@ class classDbiL2snrWinddir
         if (!$mysqli) {
             die('Could not connect: ' . mysqli_error($mysqli));
         }
-        $result = $mysqli->query("SELECT * FROM `t_l2snr_winddirdata` WHERE `sid` = '$sid'");
+        $result = $mysqli->query("SELECT * FROM `t_l2snr_winddir` WHERE `sid` = '$sid'");
         if (($result != false) && ($result->num_rows)>0)
         {
             $row = $result->fetch_array();

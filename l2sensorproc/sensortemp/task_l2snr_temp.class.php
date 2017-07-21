@@ -16,7 +16,7 @@ class classTaskL2snrTemp
 
     }
 
-    public function func_temperature_process($platform, $deviceId, $statCode, $content)
+    public function func_temperature_process($platform, $devCode, $statCode, $content)
     {
         switch($platform)
         {
@@ -30,7 +30,7 @@ class classTaskL2snrTemp
                 switch ($sub_key) //MODBUS操作字处理
                 {
                     case MFUN_HCU_MODBUS_DATA_REPORT:
-                        $resp = $this->wx_temperature_req_process($deviceId, $content);
+                        $resp = $this->wx_temperature_req_process($devCode, $content);
                         break;
                     default:
                         $resp = "";
@@ -52,7 +52,7 @@ class classTaskL2snrTemp
                 switch ($opt_key) //MODBUS操作字处理
                 {
                     case MFUN_HCU_MODBUS_DATA_REPORT:
-                        $resp = $this->hcu_temperature_req_process($deviceId, $statCode, $data);
+                        $resp = $this->hcu_temperature_req_process($devCode, $statCode, $data);
                         break;
                     default:
                         $resp = "ERROR HCUGX_TEMP: Invalid Operation Command";
@@ -74,13 +74,13 @@ class classTaskL2snrTemp
                     $data = substr($content, MFUN_HCU_MSG_HEAD_LENGTH, 2);
                     $data = hexdec($data) & 0xFF;
                     $classDbiL2snrTemp = new classDbiL2snrTemp();
-                    $resp = $classDbiL2snrTemp->dbi_hcu_fhys_temp_status_update($deviceId, $statCode, $data);
+                    $resp = $classDbiL2snrTemp->dbi_hcu_fhys_temp_status_update($devCode, $statCode, $data);
                 }
                 elseif ($opt_key == MFUN_HCU_OPT_FHYS_TEMPDATA_IND){
                     $data = substr($content, MFUN_HCU_MSG_HEAD_LENGTH, 4);
                     //$data = hexdec($data) & 0xFFFF; //直接存成16进制的字符，高2位为整数部分，低2位为小数部分
                     $classDbiL2snrTemp = new classDbiL2snrTemp();
-                    $resp = $classDbiL2snrTemp->dbi_hcu_fhys_temp_data_process($deviceId, $statCode, $data);
+                    $resp = $classDbiL2snrTemp->dbi_hcu_fhys_temp_data_process($devCode, $statCode, $data);
                 }
                 else
                     $resp = "ERROR HCUSTM_TEMP: Invalid Operation Command";
@@ -96,7 +96,7 @@ class classTaskL2snrTemp
         return $resp;
     }
 
-    public function func_temperature_huitp_process($platform, $deviceId, $statCode, $content)
+    public function func_temperature_huitp_process($platform, $devCode, $statCode, $content)
     {
         switch($platform)
         {
@@ -110,21 +110,20 @@ class classTaskL2snrTemp
                 switch ($sub_key) //MODBUS操作字处理
                 {
                     case MFUN_HCU_MODBUS_DATA_REPORT:
-                        $resp = $this->wx_temperature_req_process($deviceId, $content);
+                        $resp = $this->wx_temperature_req_process($devCode, $content);
                         break;
                     default:
                         $resp = "";
                         break;
                 }
                 break;
-            case MFUN_TECH_PLTF_HCUGX:
-
+            case MFUN_TECH_PLTF_HCUGX_HUITP:
                 $temp = $content[1]['HUITP_IEID_uni_temp_value']['tempValue'];
                 $dataFormat = pow(10,$content[1]['HUITP_IEID_uni_temp_value']['dataFormat']);
                 $tempValue = hexdec($temp) / $dataFormat;
-                $timeStamp = $content[1]['HUITP_IEID_uni_temp_value']['timeStamp'];
+                $timeStamp = time();
 
-                $resp = $this->hcu_temperature_req_huitp_process($deviceId, $statCode, $timeStamp, $tempValue);
+                $resp = $this->hcu_temperature_req_huitp_process($devCode, $statCode, $timeStamp, $tempValue);
 
                 break;
             case MFUN_TECH_PLTF_HCUSTM:
@@ -142,13 +141,13 @@ class classTaskL2snrTemp
                     $data = substr($content, MFUN_HCU_MSG_HEAD_LENGTH, 2);
                     $data = hexdec($data) & 0xFF;
                     $classDbiL2snrTemp = new classDbiL2snrTemp();
-                    $resp = $classDbiL2snrTemp->dbi_hcu_fhys_temp_status_update($deviceId, $statCode, $data);
+                    $resp = $classDbiL2snrTemp->dbi_hcu_fhys_temp_status_update($devCode, $statCode, $data);
                 }
                 elseif ($opt_key == MFUN_HCU_OPT_FHYS_TEMPDATA_IND){
                     $data = substr($content, MFUN_HCU_MSG_HEAD_LENGTH, 4);
                     //$data = hexdec($data) & 0xFFFF; //直接存成16进制的字符，高2位为整数部分，低2位为小数部分
                     $classDbiL2snrTemp = new classDbiL2snrTemp();
-                    $resp = $classDbiL2snrTemp->dbi_hcu_fhys_temp_data_process($deviceId, $statCode, $data);
+                    $resp = $classDbiL2snrTemp->dbi_hcu_fhys_temp_data_process($devCode, $statCode, $data);
                 }
                 else
                     $resp = "ERROR HCUSTM_TEMP: Invalid Operation Command";
@@ -164,7 +163,7 @@ class classTaskL2snrTemp
         return $resp;
     }
 
-    private function wx_temperature_req_process( $deviceId, $content)
+    private function wx_temperature_req_process( $devCode, $content)
     {
         $temperature =  hexdec(substr($content, 6, 4)) & 0xFFFF;
         $devCode = hexdec(substr($content, 10, 4)) & 0xFFFF;
@@ -173,13 +172,13 @@ class classTaskL2snrTemp
         $gps = "";
 
         $sDbObj = new classDbiL2snrTemp();
-        $sDbObj->dbi_temperature_data_save($deviceId,$devCode,$ntimes,$temperature,$gps);
+        $sDbObj->dbi_temperature_data_save($devCode,$devCode,$ntimes,$temperature,$gps);
 
         $resp = ""; //no response message
         return $resp;
     }
 
-    private function hcu_temperature_req_process( $deviceId,$statCode,$content)
+    private function hcu_temperature_req_process( $devCode,$statCode,$content)
     {
         $format = "A2Equ/A2Type/A2Format/A4Temperature/A2Flag_Lo/A8Longitude/A2Flag_La/A8Latitude/A8Altitude/A8Time";
         $data = unpack($format, $content);
@@ -195,42 +194,39 @@ class classTaskL2snrTemp
         $timeStamp = hexdec($data['Time']) & 0xFFFFFFFF;
 
         $sDbObj = new classDbiL2snrTemp();
-        $sDbObj->dbi_temperature_data_save($deviceId, $sensorId, $timeStamp, $report,$gps);
+        $sDbObj->dbi_temperature_data_save($devCode, $sensorId, $timeStamp, $report,$gps);
         //该函数处理需要再完善，不确定是否可用
-        $sDbObj->dbi_tempData_delete_3monold($sensorId, $deviceId, MFUN_HCU_DATA_SAVE_DURATION_IN_DAYS);  //remove 90 days old data.
+        $sDbObj->dbi_tempData_delete_3monold($sensorId, $devCode, MFUN_HCU_DATA_SAVE_DURATION_IN_DAYS);  //remove 90 days old data.
 
         //更新分钟测量报告聚合表
-        $sDbObj->dbi_minreport_update_temperature($deviceId,$statCode,$timeStamp,$report);
+        $sDbObj->dbi_minreport_update_temperature($devCode,$statCode,$timeStamp,$report);
 
         //更新数据精度格式表
         $format = $report["format"];
-        $cDbObj = new classDbiL2snrCom();
-        $cDbObj->dbi_dataformat_update_format($deviceId,"T_temperature",$format);
+        $cDbObj = new classDbiL2snrCommon();
+        $cDbObj->dbi_dataformat_update_format($devCode,"T_temperature",$format);
         //更新瞬时测量值聚合表
         $eDbObj = new classDbiL3apF3dm();
-        $eDbObj->dbi_currentreport_update_value($deviceId, $statCode, $timeStamp,"T_temperature", $report);
+        $eDbObj->dbi_currentreport_update_value($devCode, $statCode, $timeStamp,"T_temperature", $report);
 
         $resp = ""; //no response message
         return $resp;
     }
 
-    private function hcu_temperature_req_huitp_process( $deviceId,$statCode,$timeStamp, $tempValue)
+    private function hcu_temperature_req_huitp_process( $devCode,$statCode,$timeStamp, $tempValue)
     {
-        $timeStamp = hexdec($timeStamp) & 0xFFFFFFFF;
-
         $sDbObj = new classDbiL2snrTemp();
-        $sDbObj->dbi_temperature_huitp_data_save($deviceId, $timeStamp, $tempValue);
+        $resp = $sDbObj->dbi_temperature_huitp_data_save($devCode, $timeStamp, $tempValue);
         //该函数处理需要再完善，不确定是否可用
-        $sDbObj->dbi_tempData_huitp_delete_3monold($deviceId, MFUN_HCU_DATA_SAVE_DURATION_IN_DAYS);  //remove 90 days old data.
+        $resp = $sDbObj->dbi_tempData_huitp_delete_3monold($devCode, MFUN_HCU_DATA_SAVE_DURATION_IN_DAYS);  //remove 90 days old data.
 
         //更新分钟测量报告聚合表
-        $sDbObj->dbi_minreport_huitp_update_temperature($deviceId,$statCode,$timeStamp,$tempValue);
+        $resp = $sDbObj->dbi_minreport_huitp_update_temperature($devCode,$statCode,$timeStamp,$tempValue);
 
         //更新瞬时测量值聚合表
         $eDbObj = new classDbiL3apF3dm();
-        $eDbObj->dbi_currentreport_update_value($deviceId, $statCode, $timeStamp,"T_temperature", $tempValue);
+        $resp = $eDbObj->dbi_currentreport_update_value($devCode, $statCode, $timeStamp,"T_temperature", $tempValue);
 
-        $resp = ""; //no response message
         return $resp;
     }
 
@@ -243,6 +239,14 @@ class classTaskL2snrTemp
         $loggerObj = new classApiL1vmFuncCom();
         $log_time = date("Y-m-d H:i:s", time());
 
+        //赋初值
+        $project= "";
+        $log_from = "";
+        $platform ="";
+        $devCode="";
+        $statCode = "";
+        $content="";
+
         //入口消息内容判断
         if (empty($msg) == true) {
             $result = "Received null message body";
@@ -251,6 +255,16 @@ class classTaskL2snrTemp
             echo trim($result);
             return false;
         }
+        else{
+            //解开消息
+            if (isset($msg["project"])) $project = $msg["project"];
+            if (isset($msg["log_from"])) $log_from = $msg["log_from"];
+            if (isset($msg["platform"])) $platform = $msg["platform"];
+            if (isset($msg["devCode"])) $devCode = $msg["devCode"];
+            if (isset($msg["statCode"])) $statCode = $msg["statCode"];
+            if (isset($msg["content"])) $content = $msg["content"];
+        }
+
         if (($msgId != MSG_ID_L2SDK_HCU_TO_L2SNR_TEMP) && ($msgId != MSG_ID_L2SDK_EMCWX_TO_L2SNR_TEMP_DATA_READ_INSTANT) && ($msgId != MSG_ID_L2SDK_EMCWX_TO_L2SNR_TEMP_DATA_REPORT_TIMING)&& ($msgId != HUITP_MSGID_uni_temp_data_report)){
             $result = "Msgid or MsgName error";
             $log_content = "P:" . json_encode($result);
@@ -259,62 +273,26 @@ class classTaskL2snrTemp
             return false;
         }
 
-        //赋初值
-        $project= "";
-        $log_from = "";
-        $platform ="";
-        $deviceId="";
-        $statCode = "";
-        $content="";
-
         if ($msgId == MSG_ID_L2SDK_HCU_TO_L2SNR_TEMP)
         {
-            //解开消息
-            if (isset($msg["project"])) $project = $msg["project"];
-            if (isset($msg["log_from"])) $log_from = $msg["log_from"];
-            if (isset($msg["platform"])) $platform = $msg["platform"];
-            if (isset($msg["deviceId"])) $deviceId = $msg["deviceId"];
-            if (isset($msg["statCode"])) $statCode = $msg["statCode"];
-            if (isset($msg["content"])) $content = $msg["content"];
-
             //具体处理函数
-            $resp = $this->func_temperature_process($platform, $deviceId, $statCode, $content);
+            $resp = $this->func_temperature_process($platform, $devCode, $statCode, $content);
         }
         elseif ($msgId == MSG_ID_L2SDK_EMCWX_TO_L2SNR_TEMP_DATA_READ_INSTANT)
         {
-            //解开消息
-            if (isset($msg["project"])) $project = $msg["project"];
-            if (isset($msg["log_from"])) $log_from = $msg["log_from"];
-            if (isset($msg["deviceId"])) $deviceId = $msg["deviceId"];
-            if (isset($msg["content"])) $content = $msg["content"];
             //具体处理函数
-            $resp = $this->wx_temperature_req_process($deviceId, $content);
+            $resp = $this->wx_temperature_req_process($devCode, $content);
         }
         elseif ($msgId == MSG_ID_L2SDK_EMCWX_TO_L2SNR_TEMP_DATA_REPORT_TIMING)
         {
-            //解开消息
-            if (isset($msg["project"])) $project = $msg["project"];
-            if (isset($msg["log_from"])) $log_from = $msg["log_from"];
-            if (isset($msg["platform"])) $platform = $msg["platform"];
-            if (isset($msg["deviceId"])) $deviceId = $msg["deviceId"];
-            if (isset($msg["statCode"])) $statCode = $msg["statCode"];
-            if (isset($msg["content"])) $content = $msg["content"];
-
             //具体处理函数
-            $resp = $this->func_temperature_process($platform, $deviceId, $statCode, $content);
+            $resp = $this->func_temperature_process($platform, $devCode, $statCode, $content);
         }
         elseif ($msgId == HUITP_MSGID_uni_temp_data_report)
         {
-            //解开消息
-            if (isset($msg["project"])) $project = $msg["project"];
-            if (isset($msg["log_from"])) $log_from = $msg["log_from"];
-            if (isset($msg["platform"])) $platform = $msg["platform"];
-            if (isset($msg["deviceId"])) $deviceId = $msg["deviceId"];
-            if (isset($msg["statCode"])) $statCode = $msg["statCode"];
-            if (isset($msg["content"])) $content = $msg["content"];
 
             //具体处理函数
-            $resp = $this->func_temperature_huitp_process($platform, $deviceId, $statCode, $content);
+            $resp = $this->func_temperature_huitp_process($platform, $devCode, $statCode, $content);
         }
         else{
             $resp = ""; //啥都不ECHO

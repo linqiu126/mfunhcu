@@ -89,7 +89,7 @@ class classDbiL2snrDoorlock
         }
         $mysqli->query("SET NAMES utf8");
 
-        $authckeck = false;
+        $auth_check = false;
         $query_str = "SELECT * FROM `t_l3f2cm_fhys_keyauth` WHERE (`keyid` = '$keyid')";
         $result = $mysqli->query($query_str);
         while ($row = $result->fetch_array())
@@ -115,17 +115,24 @@ class classDbiL2snrDoorlock
                 switch ($authtype)
                 {
                     case MFUN_L3APL_F2CM_AUTH_TYPE_NUMBER:
+                        //防止用户重复点击，对于用户名开锁，只保留一次开锁
+                        if($validnum > 0){
+                            $query_str = "DELETE FROM `t_l3f2cm_fhys_keyauth` WHERE (`sid` = '$sid') ";
+                            $resp = $mysqli->query($query_str);
+                            $auth_check = true;
+                        }
+                        /*
                         $remain_validnum = $validnum - 1;
                         if ($remain_validnum == 0){
                             $query_str = "DELETE FROM `t_l3f2cm_fhys_keyauth` WHERE (`sid` = '$sid') ";
                             $resp = $mysqli->query($query_str);
-                            $authckeck = true;
+                            $auth_check = true;
                         }
                         else{
                             $query_str = "UPDATE `t_l3f2cm_fhys_keyauth` SET  `validnum` = '$remain_validnum' WHERE (`sid` = '$sid')";
                             $resp = $mysqli->query($query_str);
-                            $authckeck = true;
-                        }
+                            $auth_check = true;
+                        }*/
                         break;
                     case MFUN_L3APL_F2CM_AUTH_TYPE_TIME:
                         $timestamp = time();
@@ -134,26 +141,26 @@ class classDbiL2snrDoorlock
                         if ($current_date > $validend){
                             $query_str = "DELETE FROM `t_l3f2cm_fhys_keyauth` WHERE (`sid` = '$sid') ";
                             $resp = $mysqli->query($query_str);
-                            $authckeck = false;
+                            $auth_check = false;
                         }
                         else
-                            $authckeck = true;
+                            $auth_check = true;
                         break;
                     case MFUN_L3APL_F2CM_AUTH_TYPE_FOREVER:
-                        $authckeck = true;
+                        $auth_check = true;
                         break;
                     default:
-                        $authckeck = false;
+                        $auth_check = false;
                         break;
                 }
             }
             else
-                $authckeck = false;
+                $auth_check = false;
 
-            if ($authckeck == true) //如何验证授权通过就直接返回，否则继续遍历
-                return $authckeck;
+            if ($auth_check == true) //如何验证授权通过就直接返回，否则继续遍历
+                return $auth_check;
         }
-        return $authckeck;
+        return $auth_check;
     }
 
     //HCU_Lock_Open
@@ -173,9 +180,9 @@ class classDbiL2snrDoorlock
         if (($result != false) && ($result->num_rows)>0)
         {
             //生成控制命令的控制字
-            $apiL2snrCommonServiceObj = new classApiL2snrCommonService();
-            $ctrl_key = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_CMDID_FHYS_LOCK);
-            $opt_key = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_OPT_FHYS_USERID_LOCKOPEN_RESP);
+            $dbiL1vmCommonObj = new classDbiL1vmCommon();
+            $ctrl_key = $dbiL1vmCommonObj->byte2string(MFUN_HCU_CMDID_FHYS_LOCK);
+            $opt_key = $dbiL1vmCommonObj->byte2string(MFUN_HCU_OPT_FHYS_USERID_LOCKOPEN_RESP);
 
             //暂时只判断是否有针对该站点的有效次数授权
             $auth_check = false;
@@ -186,7 +193,15 @@ class classDbiL2snrDoorlock
                 $row = $resp->fetch_array();
                 $sid = $row['sid'];
                 $keyid = $row['keyid'];
-                $remain_validnum = $row['validnum'] - 1;
+                $validnum = $row['validnum'];
+
+                //防止用户重复点击，对于用户名开锁，只保留一次开锁
+                if($validnum > 0){
+                    $query_str = "DELETE FROM `t_l3f2cm_fhys_keyauth` WHERE (`sid` = '$sid') ";
+                    $resp = $mysqli->query($query_str);
+                    $auth_check = true;
+                }
+                /*
                 if ($remain_validnum == 0){
                     $query_str = "DELETE FROM `t_l3f2cm_fhys_keyauth` WHERE (`sid` = '$sid') ";
                     $resp = $mysqli->query($query_str);
@@ -196,18 +211,18 @@ class classDbiL2snrDoorlock
                     $query_str = "UPDATE `t_l3f2cm_fhys_keyauth` SET  `validnum` = '$remain_validnum' WHERE (`sid` = '$sid')";
                     $resp = $mysqli->query($query_str);
                     $auth_check = true;
-                }
+                }*/
             }
 
             if($auth_check == true){
-                $para = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_DATA_FHYS_LOCK_OPEN);
+                $para = $dbiL1vmCommonObj->byte2string(MFUN_HCU_DATA_FHYS_LOCK_OPEN);
                 $event = MFUN_L3APL_F2CM_EVENT_TYPE_USER;
                 $this->dbi_hcu_event_log_process($keyid, $statcode, $event); //保存开锁记录
             }
             else
-                $para = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_DATA_FHYS_LOCK_CLOSE);
+                $para = $dbiL1vmCommonObj->byte2string(MFUN_HCU_DATA_FHYS_LOCK_CLOSE);
 
-            $len = $apiL2snrCommonServiceObj->byte2string(strlen($opt_key.$para)/2);
+            $len = $dbiL1vmCommonObj->byte2string(strlen($opt_key.$para)/2);
             $respCmd = $ctrl_key . $len . $opt_key . $para;
 
             //通过9502端口建立tcp阻塞式socket连接，向HCU转发操控命令
@@ -238,9 +253,9 @@ class classDbiL2snrDoorlock
         if (($result != false) && ($result->num_rows)>0)
         {
             //生成控制命令的控制字
-            $apiL2snrCommonServiceObj = new classApiL2snrCommonService();
-            $ctrl_key = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_CMDID_FHYS_LOCK);
-            $opt_key = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_OPT_FHYS_RFID_LOCKOPEN_RESP);
+            $apiL2snrCommonServiceObj = new classDbiL1vmCommon();
+            $ctrl_key = $dbiL1vmCommonObj->byte2string(MFUN_HCU_CMDID_FHYS_LOCK);
+            $opt_key = $dbiL1vmCommonObj->byte2string(MFUN_HCU_OPT_FHYS_RFID_LOCKOPEN_RESP);
 
             $auth_check = false;
             $key_type = MFUN_L3APL_F2CM_KEY_TYPE_RFID;
@@ -253,14 +268,14 @@ class classDbiL2snrDoorlock
             }
 
             if($auth_check == true){
-                $para = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_DATA_FHYS_LOCK_OPEN);
+                $para = $dbiL1vmCommonObj->byte2string(MFUN_HCU_DATA_FHYS_LOCK_OPEN);
                 $event = MFUN_L3APL_F2CM_EVENT_TYPE_RFID;
                 $this->dbi_hcu_event_log_process($keyid, $statcode, $event); //保存开锁记录
             }
             else
-                $para = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_DATA_FHYS_LOCK_CLOSE);
+                $para = $dbiL1vmCommonObj->byte2string(MFUN_HCU_DATA_FHYS_LOCK_CLOSE);
 
-            $len = $apiL2snrCommonServiceObj->byte2string(strlen($opt_key.$para)/2);
+            $len = $dbiL1vmCommonObj->byte2string(strlen($opt_key.$para)/2);
             $respCmd = $ctrl_key . $len . $opt_key . $para;
 
             //通过9502端口建立tcp阻塞式socket连接，向HCU转发操控命令
@@ -291,9 +306,9 @@ class classDbiL2snrDoorlock
         if (($result != false) && ($result->num_rows)>0)
         {
             //生成控制命令的控制字
-            $apiL2snrCommonServiceObj = new classApiL2snrCommonService();
-            $ctrl_key = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_CMDID_FHYS_LOCK);
-            $opt_key = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_OPT_FHYS_BLE_LOCKOPEN_RESP);
+            $dbiL1vmCommonObj = new classDbiL1vmCommon();
+            $ctrl_key = $dbiL1vmCommonObj->byte2string(MFUN_HCU_CMDID_FHYS_LOCK);
+            $opt_key = $dbiL1vmCommonObj->byte2string(MFUN_HCU_OPT_FHYS_BLE_LOCKOPEN_RESP);
 
             $auth_check = false;
             $key_type = MFUN_L3APL_F2CM_KEY_TYPE_BLE;
@@ -322,14 +337,14 @@ class classDbiL2snrDoorlock
             }
 
             if($auth_check == true){
-                $para = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_DATA_FHYS_LOCK_OPEN);
+                $para = $dbiL1vmCommonObj->byte2string(MFUN_HCU_DATA_FHYS_LOCK_OPEN);
                 $event = MFUN_L3APL_F2CM_EVENT_TYPE_BLE;
                 $this->dbi_hcu_event_log_process($keyid, $statcode, $event); //保存开锁记录
             }
             else
-                $para = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_DATA_FHYS_LOCK_CLOSE);
+                $para = $dbiL1vmCommonObj->byte2string(MFUN_HCU_DATA_FHYS_LOCK_CLOSE);
 
-            $len = $apiL2snrCommonServiceObj->byte2string(strlen($opt_key.$para)/2);
+            $len = $dbiL1vmCommonObj->byte2string(strlen($opt_key.$para)/2);
             $respCmd = $ctrl_key . $len . $opt_key . $para;
 
             //通过9502端口建立tcp阻塞式socket连接，向HCU转发操控命令
@@ -359,9 +374,9 @@ class classDbiL2snrDoorlock
         if (($result != false) && ($result->num_rows)>0)
         {
             //生成控制命令的控制字
-            $apiL2snrCommonServiceObj = new classApiL2snrCommonService();
-            $ctrl_key = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_CMDID_FHYS_LOCK);
-            $opt_key = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_OPT_FHYS_WECHAT_LOCKOPEN_RESP);
+            $dbiL1vmCommonObj = new classDbiL1vmCommon();
+            $ctrl_key = $dbiL1vmCommonObj->byte2string(MFUN_HCU_CMDID_FHYS_LOCK);
+            $opt_key = $dbiL1vmCommonObj->byte2string(MFUN_HCU_OPT_FHYS_WECHAT_LOCKOPEN_RESP);
 
             $auth_check = false;
             $key_type = MFUN_L3APL_F2CM_KEY_TYPE_WECHAT;
@@ -374,14 +389,14 @@ class classDbiL2snrDoorlock
             }
 
             if($auth_check == true){
-                $para = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_DATA_FHYS_LOCK_OPEN);
+                $para = $dbiL1vmCommonObj->byte2string(MFUN_HCU_DATA_FHYS_LOCK_OPEN);
                 $event = MFUN_L3APL_F2CM_EVENT_TYPE_WECHAT;
                 $this->dbi_hcu_event_log_process($keyid, $statcode, $event); //保存开锁记录
             }
             else
-                $para = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_DATA_FHYS_LOCK_CLOSE);
+                $para = $dbiL1vmCommonObj->byte2string(MFUN_HCU_DATA_FHYS_LOCK_CLOSE);
 
-            $len = $apiL2snrCommonServiceObj->byte2string(strlen($opt_key.$para)/2);
+            $len = $dbiL1vmCommonObj->byte2string(strlen($opt_key.$para)/2);
             $respCmd = $ctrl_key . $len . $opt_key . $para;
 
             //通过9502端口建立tcp阻塞式socket连接，向HCU转发操控命令
@@ -411,9 +426,9 @@ class classDbiL2snrDoorlock
         if (($result != false) && ($result->num_rows)>0)
         {
             //生成控制命令的控制字
-            $apiL2snrCommonServiceObj = new classApiL2snrCommonService();
-            $ctrl_key = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_CMDID_FHYS_LOCK);
-            $opt_key = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_OPT_FHYS_IDCARD_LOCKOPEN_RESP);
+            $dbiL1vmCommonObj = new classDbiL1vmCommon();
+            $ctrl_key = $dbiL1vmCommonObj->byte2string(MFUN_HCU_CMDID_FHYS_LOCK);
+            $opt_key = $dbiL1vmCommonObj->byte2string(MFUN_HCU_OPT_FHYS_IDCARD_LOCKOPEN_RESP);
 
             $auth_check = false;
             $key_type = MFUN_L3APL_F2CM_KEY_TYPE_IDCARD;
@@ -426,14 +441,14 @@ class classDbiL2snrDoorlock
             }
 
             if($auth_check == true){
-                $para = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_DATA_FHYS_LOCK_OPEN);
+                $para = $dbiL1vmCommonObj->byte2string(MFUN_HCU_DATA_FHYS_LOCK_OPEN);
                 $event = MFUN_L3APL_F2CM_EVENT_TYPE_IDCARD;
                 $this->dbi_hcu_event_log_process($keyid, $statcode, $event); //保存开锁记录
             }
             else
-                $para = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_DATA_FHYS_LOCK_CLOSE);
+                $para = $dbiL1vmCommonObj->byte2string(MFUN_HCU_DATA_FHYS_LOCK_CLOSE);
 
-            $len = $apiL2snrCommonServiceObj->byte2string(strlen($opt_key.$para)/2);
+            $len = $dbiL1vmCommonObj->byte2string(strlen($opt_key.$para)/2);
             $respCmd = $ctrl_key . $len . $opt_key . $para;
 
             //通过9502端口建立tcp阻塞式socket连接，向HCU转发操控命令
@@ -504,12 +519,12 @@ class classDbiL2snrDoorlock
         if (($result != false) && ($result->num_rows)>0)
         {
             //生成控制命令的控制字
-            $apiL2snrCommonServiceObj = new classApiL2snrCommonService();
-            $ctrl_key = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_CMDID_FHYS_LOCK);
-            $opt_key = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_OPT_FHYS_LOCKSTAT_RESP);
-            $para = $apiL2snrCommonServiceObj->byte2string($data);
+            $dbiL1vmCommonObj = new classDbiL1vmCommon();
+            $ctrl_key = $dbiL1vmCommonObj->byte2string(MFUN_HCU_CMDID_FHYS_LOCK);
+            $opt_key = $dbiL1vmCommonObj->byte2string(MFUN_HCU_OPT_FHYS_LOCKSTAT_RESP);
+            $para = $dbiL1vmCommonObj->byte2string($data);
 
-            $len = $apiL2snrCommonServiceObj->byte2string(strlen($opt_key.$para)/2);
+            $len = $dbiL1vmCommonObj->byte2string(strlen($opt_key.$para)/2);
             $respCmd = $ctrl_key . $len . $opt_key . $para;
 
             //通过9502端口建立tcp阻塞式socket连接，向HCU转发操控命令
@@ -578,12 +593,12 @@ class classDbiL2snrDoorlock
         if (($result != false) && ($result->num_rows)>0)
         {
             //生成控制命令的控制字
-            $apiL2snrCommonServiceObj = new classApiL2snrCommonService();
-            $ctrl_key = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_CMDID_FHYS_LOCK);
-            $opt_key = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_OPT_FHYS_DOORSTAT_RESP);
-            $para = $apiL2snrCommonServiceObj->byte2string($data);
+            $dbiL1vmCommonObj = new classDbiL1vmCommon();
+            $ctrl_key = $dbiL1vmCommonObj->byte2string(MFUN_HCU_CMDID_FHYS_LOCK);
+            $opt_key = $dbiL1vmCommonObj->byte2string(MFUN_HCU_OPT_FHYS_DOORSTAT_RESP);
+            $para = $dbiL1vmCommonObj->byte2string($data);
 
-            $len = $apiL2snrCommonServiceObj->byte2string(strlen($opt_key.$para)/2);
+            $len = $dbiL1vmCommonObj->byte2string(strlen($opt_key.$para)/2);
             $respCmd = $ctrl_key . $len . $opt_key . $para;
 
             //通过9502端口建立tcp阻塞式socket连接，向HCU转发操控命令
@@ -876,11 +891,11 @@ class classDbiL2snrDoorlock
 
         if (($result != false) && ($result->num_rows)>0) {
             //生成控制命令的控制字
-            $apiL2snrCommonServiceObj = new classApiL2snrCommonService();
-            $ctrl_key = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_CMDID_FHYS_BOXSTATUS);
-            $para = $apiL2snrCommonServiceObj->byte2string($resp_data);
+            $dbiL1vmCommonObj = new classDbiL1vmCommon();
+            $ctrl_key = $dbiL1vmCommonObj->byte2string(MFUN_HCU_CMDID_FHYS_BOXSTATUS);
+            $para = $dbiL1vmCommonObj->byte2string($resp_data);
 
-            $len = $apiL2snrCommonServiceObj->byte2string(strlen($para) / 2);
+            $len = $dbiL1vmCommonObj->byte2string(strlen($para) / 2);
             $respCmd = $ctrl_key . $len . $para;
 
             //通过9502端口建立tcp阻塞式socket连接，向HCU转发操控命令
@@ -919,9 +934,9 @@ class classDbiL2snrDoorlock
         {
             $rfid = $msg['rfid'];
             //生成控制命令的控制字
-            $apiL2snrCommonServiceObj = new classApiL2snrCommonService();
-            $ctrl_key = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_CMDID_FHYS_BOXOPEN);
-            $opt_key = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_OPT_FHYS_RFID_LOCKOPEN_RESP);
+            $dbiL1vmCommonObj = new classDbiL1vmCommon();
+            $ctrl_key = $dbiL1vmCommonObj->byte2string(MFUN_HCU_CMDID_FHYS_BOXOPEN);
+            $opt_key = $dbiL1vmCommonObj->byte2string(MFUN_HCU_OPT_FHYS_RFID_LOCKOPEN_RESP);
 
             $keyid = "";
             $key_type = MFUN_L3APL_F2CM_KEY_TYPE_RFID;
@@ -934,17 +949,17 @@ class classDbiL2snrDoorlock
             }
 
             if($auth_check == true){
-                $para = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_DATA_FHYS_LOCK_OPEN);
+                $para = $dbiL1vmCommonObj->byte2string(MFUN_HCU_DATA_FHYS_LOCK_OPEN);
                 $event = MFUN_L3APL_F2CM_EVENT_TYPE_RFID;
                 $this->dbi_hcu_event_log_process($keyid, $statcode, $event); //保存开锁记录
                 $resp_msg = "Lock open with RFID success: ";
             }
             else{
-                $para = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_DATA_FHYS_LOCK_CLOSE);
+                $para = $dbiL1vmCommonObj->byte2string(MFUN_HCU_DATA_FHYS_LOCK_CLOSE);
                 $resp_msg = "Lock open with RFID failure: ";
             }
 
-            $len = $apiL2snrCommonServiceObj->byte2string(strlen($opt_key.$para)/2);
+            $len = $dbiL1vmCommonObj->byte2string(strlen($opt_key.$para)/2);
             $respCmd = $ctrl_key . $len . $opt_key . $para;
 
             //通过9502端口建立tcp阻塞式socket连接，向HCU转发操控命令
@@ -957,9 +972,9 @@ class classDbiL2snrDoorlock
         {
             $blemac = $msg['blemac'];
             //生成控制命令的控制字
-            $apiL2snrCommonServiceObj = new classApiL2snrCommonService();
-            $ctrl_key = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_CMDID_FHYS_BOXOPEN);
-            $opt_key = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_OPT_FHYS_BLE_LOCKOPEN_RESP);
+            $dbiL1vmCommonObj = new classDbiL1vmCommon();
+            $ctrl_key = $dbiL1vmCommonObj->byte2string(MFUN_HCU_CMDID_FHYS_BOXOPEN);
+            $opt_key = $dbiL1vmCommonObj->byte2string(MFUN_HCU_OPT_FHYS_BLE_LOCKOPEN_RESP);
 
             $auth_check = false;
             $key_type = MFUN_L3APL_F2CM_KEY_TYPE_BLE;
@@ -988,18 +1003,18 @@ class classDbiL2snrDoorlock
             }
 
             if($auth_check == true){
-                $para = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_DATA_FHYS_LOCK_OPEN);
+                $para = $dbiL1vmCommonObj->byte2string(MFUN_HCU_DATA_FHYS_LOCK_OPEN);
                 $event = MFUN_L3APL_F2CM_EVENT_TYPE_BLE;
                 $this->dbi_hcu_event_log_process($keyid, $statcode, $event); //保存开锁记录
                 $resp_msg = "Lock open with BLE success: ";
             }
             else{
-                $para = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_DATA_FHYS_LOCK_CLOSE);
+                $para = $dbiL1vmCommonObj->byte2string(MFUN_HCU_DATA_FHYS_LOCK_CLOSE);
                 $resp_msg = "Lock open with BLE failure: ";
             }
 
 
-            $len = $apiL2snrCommonServiceObj->byte2string(strlen($opt_key.$para)/2);
+            $len = $dbiL1vmCommonObj->byte2string(strlen($opt_key.$para)/2);
             $respCmd = $ctrl_key . $len . $opt_key . $para;
 
             //通过9502端口建立tcp阻塞式socket连接，向HCU转发操控命令
@@ -1011,9 +1026,9 @@ class classDbiL2snrDoorlock
         if ($auth_check == false)//如果RFID和BLE开锁认证都不通过，看看是否有有用户名开锁授权
         {
             //生成控制命令的控制字
-            $apiL2snrCommonServiceObj = new classApiL2snrCommonService();
-            $ctrl_key = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_CMDID_FHYS_BOXOPEN);
-            $opt_key = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_OPT_FHYS_USERID_LOCKOPEN_RESP);
+            $dbiL1vmCommonObj = new classDbiL1vmCommon();
+            $ctrl_key = $dbiL1vmCommonObj->byte2string(MFUN_HCU_CMDID_FHYS_BOXOPEN);
+            $opt_key = $dbiL1vmCommonObj->byte2string(MFUN_HCU_OPT_FHYS_USERID_LOCKOPEN_RESP);
 
             //暂时只判断是否有针对该站点的有效次数授权
             $auth_check = false;
@@ -1025,7 +1040,14 @@ class classDbiL2snrDoorlock
                 $row = $resp->fetch_array();
                 $sid = $row['sid'];
                 $keyid = $row['keyid'];
-                $remain_validnum = $row['validnum'] - 1;
+                $validnum = $row['validnum'];
+                //防止用户重复点击，对于用户名开锁，只保留一次开锁
+                if($validnum > 0){
+                    $query_str = "DELETE FROM `t_l3f2cm_fhys_keyauth` WHERE (`sid` = '$sid') ";
+                    $resp = $mysqli->query($query_str);
+                    $auth_check = true;
+                }
+                /*
                 if ($remain_validnum == 0){
                     $query_str = "DELETE FROM `t_l3f2cm_fhys_keyauth` WHERE (`sid` = '$sid') ";
                     $resp = $mysqli->query($query_str);
@@ -1035,21 +1057,21 @@ class classDbiL2snrDoorlock
                     $query_str = "UPDATE `t_l3f2cm_fhys_keyauth` SET  `validnum` = '$remain_validnum' WHERE (`sid` = '$sid')";
                     $resp = $mysqli->query($query_str);
                     $auth_check = true;
-                }
+                }*/
             }
 
             if($auth_check == true){
-                $para = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_DATA_FHYS_LOCK_OPEN);
+                $para = $dbiL1vmCommonObj->byte2string(MFUN_HCU_DATA_FHYS_LOCK_OPEN);
                 $event = MFUN_L3APL_F2CM_EVENT_TYPE_USER;
                 $this->dbi_hcu_event_log_process($keyid, $statcode, $event); //保存开锁记录
                 $resp_msg = "Lock open with USERID success: ";
             }
             else{
-                $para = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_DATA_FHYS_LOCK_CLOSE);
+                $para = $dbiL1vmCommonObj->byte2string(MFUN_HCU_DATA_FHYS_LOCK_CLOSE);
                 $resp_msg = "Lock open with USERID failure: ";
             }
 
-            $len = $apiL2snrCommonServiceObj->byte2string(strlen($opt_key.$para)/2);
+            $len = $dbiL1vmCommonObj->byte2string(strlen($opt_key.$para)/2);
             $respCmd = $ctrl_key . $len . $opt_key . $para;
 
             //通过9502端口建立tcp阻塞式socket连接，向HCU转发操控命令

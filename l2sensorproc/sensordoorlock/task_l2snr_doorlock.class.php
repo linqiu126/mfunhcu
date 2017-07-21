@@ -165,7 +165,7 @@ class classTaskL2snrDoorlock
         $project= "";
         $log_from = "";
         $platform ="";
-        $deviceId="";
+        $devCode="";
         $statCode = "";
         $content="";
 
@@ -182,7 +182,7 @@ class classTaskL2snrDoorlock
             if (isset($msg["project"])) $project = $msg["project"];
             if (isset($msg["log_from"])) $log_from = $msg["log_from"];
             if (isset($msg["platform"])) $platform = $msg["platform"];
-            if (isset($msg["deviceId"])) $deviceId = $msg["deviceId"];
+            if (isset($msg["devCode"])) $devCode = $msg["devCode"];
             if (isset($msg["statCode"])) $statCode = $msg["statCode"];
             if (isset($msg["content"])) $content = $msg["content"];
         }
@@ -199,18 +199,18 @@ class classTaskL2snrDoorlock
         {
             case MSG_ID_L2SDK_HCU_TO_L2SNR_DOORLOCK:
                 //具体处理函数
-                $resp = $this->func_doorlock_data_process($platform, $deviceId, $statCode, $content);
+                $resp = $this->func_doorlock_data_process($platform, $devCode, $statCode, $content);
                 break;
             case MSG_ID_L2SDK_HCU_TO_L2SNR_BOXSTATUS:
                 //具体处理函数
-                $resp = $this->func_doorlock_boxstatus_process($platform, $deviceId, $statCode, $content);
+                $resp = $this->func_doorlock_boxstatus_process($platform, $devCode, $statCode, $content);
                 break;
             case MSG_ID_L2SDK_HCU_TO_L2SNR_BOXOPEN:
                 //具体处理函数
-                $resp = $this->func_doorlock_boxopen_process($platform, $deviceId, $statCode, $content);
+                $resp = $this->func_doorlock_boxopen_process($platform, $devCode, $statCode, $content);
                 break;
             case HUITP_MSGID_uni_ccl_state_report:
-                $resp = $this->func_huitp_msg_uni_ccl_state_report($platform, $deviceId, $statCode, $content);
+                $resp = $this->func_huitp_msg_uni_ccl_state_report($platform, $devCode, $statCode, $content);
                 break;
             default:
                 $resp = ""; //啥都不ECHO

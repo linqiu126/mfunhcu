@@ -100,14 +100,14 @@ class classTaskL2sdkIotHcu
         $log_time = date("Y-m-d H:i:s", time());
 
         $toUser = trim($data->ToUserName);
-        $deviceId = trim($data->FromUserName);
+        $devCode = trim($data->FromUserName);
         $createTime = trim($data->CreateTime);  //暂时不处理，后面增加时间合法性的判断
         $content = trim($data->Content);
         $funcFlag = trim($data->FuncFlag);
 
         //取DB中的硬件信息，判断基本信息
         $cDbObj = new classDbiL2sdkHcu();
-        $result = $cDbObj->dbi_hcuDevice_valid_device($deviceId); //FromUserName对应每个HCU硬件的设备编号
+        $result = $cDbObj->dbi_hcuDevice_valid_device($devCode); //FromUserName对应每个HCU硬件的设备编号
         if (empty($result)){
             $result = "HCU_IOT: invalid device ID";
             $log_content = "T:" . json_encode($result);
@@ -132,7 +132,7 @@ class classTaskL2sdkIotHcu
         $key = unpack('A2Key', $content);
         $ctrl_key = hexdec($key['Key'])& 0xFF;
         if($ctrl_key == MFUN_HCU_CMDID_HEART_BEAT){
-            $hcuObj = new classApiL2snrCommonService();
+            $hcuObj = new classTaskL2snrCommonService();
             $resp = $hcuObj->func_heartBeat_process();
         }
         else
@@ -159,14 +159,14 @@ class classTaskL2sdkIotHcu
         $log_time = date("Y-m-d H:i:s", time());
 
         $toUser = trim($data->ToUserName);
-        $deviceId = trim($data->FromUserName);
+        $devCode = trim($data->FromUserName);
         $createTime = trim($data->CreateTime);  //暂时不处理，后面增加时间合法性的判断
         $content = trim($data->Content);
         $funcFlag = trim($data->FuncFlag);
 
         //取DB中的硬件信息，判断基本信息
         $cDbObj = new classDbiL2sdkHcu();
-        $result = $cDbObj->dbi_hcuDevice_valid_device($deviceId); //FromUserName对应每个HCU硬件的设备编号
+        $result = $cDbObj->dbi_hcuDevice_valid_device($devCode); //FromUserName对应每个HCU硬件的设备编号
         if (empty($result)){
             $result = "HCU_IOT: invalid device ID";
             $log_content = "T:" . json_encode($result);
@@ -192,20 +192,20 @@ class classTaskL2sdkIotHcu
         $ctrl_key = hexdec($key['Key'])& 0xFF;
         switch ($ctrl_key) {
             case MFUN_HCU_CMDID_VERSION_SYNC:
-                $hcuObj = new classApiL2snrCommonService();
-                $resp = $hcuObj->func_version_update_process(MFUN_TECH_PLTF_HCUGX, $deviceId, $content);
+                $hcuObj = new classTaskL2snrCommonService();
+                $resp = $hcuObj->func_version_update_process(MFUN_TECH_PLTF_HCUGX, $devCode, $content);
                 break;
             case MFUN_HCU_CMDID_TIME_SYNC:
-                $hcuObj = new classApiL2snrCommonService();
-                $resp = $hcuObj->func_timeSync_process(MFUN_TECH_PLTF_HCUGX, $deviceId, $data);
+                $hcuObj = new classTaskL2snrCommonService();
+                $resp = $hcuObj->func_timeSync_process(MFUN_TECH_PLTF_HCUGX, $devCode, $data);
                 break;
             case MFUN_HCU_CMDID_INVENTORY_DATA:
-                $hcuObj = new classApiL2snrCommonService();
-                $resp = $hcuObj->func_inventory_data_process(MFUN_TECH_PLTF_HCUGX, $deviceId, $content);
+                $hcuObj = new classTaskL2snrCommonService();
+                $resp = $hcuObj->func_inventory_data_process(MFUN_TECH_PLTF_HCUGX, $devCode, $content);
                 break;
             case MFUN_HCU_CMDID_HCU_POLLING:
-                $hcuObj = new classApiL2snrCommonService();
-                $resp = $hcuObj->func_hcuPolling_process($deviceId);
+                $hcuObj = new classTaskL2snrCommonService();
+                $resp = $hcuObj->func_hcuPolling_process($devCode);
                 break;
             default:
                 $resp ="HCU_IOT: invalid command type";
@@ -233,14 +233,14 @@ class classTaskL2sdkIotHcu
         $log_time = date("Y-m-d H:i:s", time());
 
         $toUser = trim($data->ToUserName);
-        $deviceId = trim($data->FromUserName);
+        $devCode = trim($data->FromUserName);
         $createTime = trim($data->CreateTime);  //暂时不处理，后面增加时间合法性的判断
         $content = trim($data->Content);
         $funcFlag = trim($data->FuncFlag);
 
         //取DB中的硬件信息，判断基本信息
         $cDbObj = new classDbiL2sdkHcu();
-        $result = $cDbObj->dbi_hcuDevice_valid_device($deviceId); //FromUserName对应每个HCU硬件的设备编号
+        $result = $cDbObj->dbi_hcuDevice_valid_device($devCode); //FromUserName对应每个HCU硬件的设备编号
         if (empty($result)){
             $result = "HCU_IOT: invalid device ID";
             $log_content = "T:" . json_encode($result);
@@ -265,8 +265,9 @@ class classTaskL2sdkIotHcu
         $key = unpack('A2Key', $content);
         $ctrl_key = hexdec($key['Key'])& 0xFF;
         if($ctrl_key == MFUN_HCU_CMDID_HCU_PERFORMANCE){
-            $hcuObj = new classApiL2snrCommonService();
-            $resp = $hcuObj->func_hcuPerformance_process($deviceId, $statCode, $content);
+            $hcuObj = new classTaskL2snrCommonService();
+            $result = $hcuObj->func_hcuPerformance_process($devCode, $statCode, $content);
+            $resp = "";
         }
         else
             $resp ="HCU_IOT: invalid command type";
@@ -292,14 +293,14 @@ class classTaskL2sdkIotHcu
         $log_time = date("Y-m-d H:i:s", time());
 
         $toUser = trim($data->ToUserName);
-        $deviceId = trim($data->FromUserName);
+        $devCode = trim($data->FromUserName);
         $createTime = trim($data->CreateTime);  //暂时不处理，后面增加时间合法性的判断
         $content = trim($data->Content);
         $funcFlag = trim($data->FuncFlag);
 
         //取DB中的硬件信息，判断基本信息
         $cDbObj = new classDbiL2sdkHcu();
-        $result = $cDbObj->dbi_hcuDevice_valid_device($deviceId); //FromUserName对应每个HCU硬件的设备编号
+        $result = $cDbObj->dbi_hcuDevice_valid_device($devCode); //FromUserName对应每个HCU硬件的设备编号
         if (empty($result)){
             $result = "HCU_IOT: invalid device ID";
             $log_content = "T:" . json_encode($result);
@@ -324,8 +325,9 @@ class classTaskL2sdkIotHcu
         $key = unpack('A2Key', $content);
         $ctrl_key = hexdec($key['Key'])& 0xFF;
         if($ctrl_key == MFUN_HCU_CMDID_HCU_ALARM_DATA){
-            $hcuObj = new classApiL2snrCommonService();
-            $resp = $hcuObj->func_hcuAlarmData_process($deviceId, $statCode, $content, $funcFlag);
+            $hcuObj = new classTaskL2snrCommonService();
+            $result = $hcuObj->func_hcuAlarmData_process($devCode, $statCode, $content, $funcFlag);
+            $resp = "";
         }
         else
             $resp ="HCU_IOT: invalid command type";
@@ -356,7 +358,7 @@ class classTaskL2sdkIotHcu
         //$content = unpack('H*',$content);
         //$strContent = strtoupper($content["1"]); //转换成16进制格式的字符串
         $toUser = trim($data->ToUserName);
-        $deviceId = trim($data->FromUserName);
+        $devCode = trim($data->FromUserName);
         $createTime = trim($data->CreateTime);  //暂时不处理，后面增加时间合法性的判断
         $data_str = trim($data->Content);
         $content = pack("H*", $data_str);
@@ -364,7 +366,7 @@ class classTaskL2sdkIotHcu
 
         //取DB中的硬件信息，判断基本信息
         $cDbObj = new classDbiL2sdkHcu();
-        $result = $cDbObj->dbi_hcuDevice_valid_device($deviceId); //FromUserName对应每个HCU硬件的设备编号
+        $result = $cDbObj->dbi_hcuDevice_valid_device($devCode); //FromUserName对应每个HCU硬件的设备编号
         if (empty($result)){
             $result = "HCU_IOT: invalid device ID";
             $log_content = "T:" . json_encode($result);
@@ -388,7 +390,7 @@ class classTaskL2sdkIotHcu
         $msg = array("project" => $project,
             "log_from" => $fromUser,
             "platform" => MFUN_TECH_PLTF_HCUSTM,
-            "deviceId" => $deviceId,
+            "devCode" => $devCode,
             "statCode" => $statCode,
             "content" => $content,
             "funcFlag" => $funcFlag);
@@ -443,7 +445,7 @@ class classTaskL2sdkIotHcu
         $msg = array("project" => $project,
             "log_from" => $log_from,
             "platform" => MFUN_TECH_PLTF_HCUSTM,
-            "deviceId" => $fromUser,
+            "devCode" => $fromUser,
             "statCode" => $statCode,
             "content" => $content,
             "funcFlag" => $funcFlag);
@@ -469,14 +471,14 @@ class classTaskL2sdkIotHcu
         //$content = unpack('H*',$content);
         //$strContent = strtoupper($content["1"]); //转换成16进制格式的字符串
         $toUser = trim($data->ToUserName);
-        $deviceId = trim($data->FromUserName);
+        $devCode = trim($data->FromUserName);
         $createTime = trim($data->CreateTime);  //暂时不处理，后面增加时间合法性的判断
         $content = trim($data->Content);
         $funcFlag = trim($data->FuncFlag);
 
         //取DB中的硬件信息，判断基本信息
         $cDbObj = new classDbiL2sdkHcu();
-        $result = $cDbObj->dbi_hcuDevice_valid_device($deviceId); //FromUserName对应每个HCU硬件的设备编号
+        $result = $cDbObj->dbi_hcuDevice_valid_device($devCode); //FromUserName对应每个HCU硬件的设备编号
         if (empty($result)){
             $result = "HCU_IOT: invalid device ID";
             $log_content = "T:" . json_encode($result);
@@ -507,7 +509,7 @@ class classTaskL2sdkIotHcu
                 $msg = array("project" => $project,
                     "log_from" => $log_from,
                     "platform" => MFUN_TECH_PLTF_HCUGX,
-                    "deviceId" => $deviceId,
+                    "devCode" => $devCode,
                     "statCode" => $statCode,
                     "content" => $content);
                 if ($parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L2SDK_IOT_HCU,
@@ -522,7 +524,7 @@ class classTaskL2sdkIotHcu
                 $msg = array("project" => $project,
                     "log_from" => $log_from,
                     "platform" => MFUN_TECH_PLTF_HCUGX,
-                    "deviceId" => $deviceId,
+                    "devCode" => $devCode,
                     "statCode" => $statCode,
                     "content" => $content);
                 if ($parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L2SDK_IOT_HCU,
@@ -537,7 +539,7 @@ class classTaskL2sdkIotHcu
                 $msg = array("project" => $project,
                     "log_from" => $log_from,
                     "platform" => MFUN_TECH_PLTF_HCUGX,
-                    "deviceId" => $deviceId,
+                    "devCode" => $devCode,
                     "statCode" => $statCode,
                     "content" => $content);
                 if ($parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L2SDK_IOT_HCU,
@@ -552,7 +554,7 @@ class classTaskL2sdkIotHcu
                 $msg = array("project" => $project,
                     "log_from" => $log_from,
                     "platform" => MFUN_TECH_PLTF_HCUGX,
-                    "deviceId" => $deviceId,
+                    "devCode" => $devCode,
                     "statCode" => $statCode,
                     "content" => $content);
                 if ($parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L2SDK_IOT_HCU,
@@ -567,7 +569,7 @@ class classTaskL2sdkIotHcu
                 $msg = array("project" => $project,
                     "log_from" => $log_from,
                     "platform" => MFUN_TECH_PLTF_HCUGX,
-                    "deviceId" => $deviceId,
+                    "devCode" => $devCode,
                     "statCode" => $statCode,
                     "content" => $content);
                 if ($parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L2SDK_IOT_HCU,
@@ -582,7 +584,7 @@ class classTaskL2sdkIotHcu
                 $msg = array("project" => $project,
                     "log_from" => $log_from,
                     "platform" => MFUN_TECH_PLTF_HCUGX,
-                    "deviceId" => $deviceId,
+                    "devCode" => $devCode,
                     "statCode" => $statCode,
                     "content" => $content);
                 if ($parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L2SDK_IOT_HCU,
@@ -597,7 +599,7 @@ class classTaskL2sdkIotHcu
                 $msg = array("project" => $project,
                     "log_from" => $log_from,
                     "platform" => MFUN_TECH_PLTF_HCUGX,
-                    "deviceId" => $deviceId,
+                    "devCode" => $devCode,
                     "statCode" => $statCode,
                     "content" => array("content" =>$content, "funcFlag" => $funcFlag));
                 if ($parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L2SDK_IOT_HCU,
@@ -612,7 +614,7 @@ class classTaskL2sdkIotHcu
                 $msg = array("project" => $project,
                     "log_from" => $log_from,
                     "platform" => MFUN_TECH_PLTF_HCUGX,
-                    "deviceId" => $deviceId,
+                    "devCode" => $devCode,
                     "statCode" => $statCode,
                     "content" => $content);
                 if ($parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L2SDK_IOT_HCU,
@@ -631,7 +633,7 @@ class classTaskL2sdkIotHcu
                 $msg = array("project" => $project,
                     "log_from" => $log_from,
                     "platform" => MFUN_TECH_PLTF_HCUSTM,
-                    "deviceId" => $deviceId,
+                    "devCode" => $devCode,
                     "statCode" => $statCode,
                     "content" => array("content" =>$content, "funcFlag" => $funcFlag));
                 if ($parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L2SDK_IOT_HCU,
@@ -646,7 +648,7 @@ class classTaskL2sdkIotHcu
                 $msg = array("project" => $project,
                     "log_from" => $log_from,
                     "platform" => MFUN_TECH_PLTF_HCUSTM,
-                    "deviceId" => $deviceId,
+                    "devCode" => $devCode,
                     "statCode" => $statCode,
                     "content" => array("content" =>$content, "funcFlag" => $funcFlag));
                 if ($parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L2SDK_IOT_HCU,
@@ -662,7 +664,7 @@ class classTaskL2sdkIotHcu
                 $msg = array("project" => $project,
                     "log_from" => $log_from,
                     "platform" => MFUN_TECH_PLTF_HCUSTM,
-                    "deviceId" => $deviceId,
+                    "devCode" => $devCode,
                     "statCode" => $statCode,
                     "content" => array("content" =>$content, "funcFlag" => $funcFlag));
                 if ($parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L2SDK_IOT_HCU,
@@ -677,7 +679,7 @@ class classTaskL2sdkIotHcu
                 $msg = array("project" => $project,
                     "log_from" => $log_from,
                     "platform" => MFUN_TECH_PLTF_HCUSTM,
-                    "deviceId" => $deviceId,
+                    "devCode" => $devCode,
                     "statCode" => $statCode,
                     "content" => array("content" =>$content, "funcFlag" => $funcFlag));
                 if ($parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L2SDK_IOT_HCU,
@@ -692,7 +694,7 @@ class classTaskL2sdkIotHcu
                 $msg = array("project" => $project,
                     "log_from" => $log_from,
                     "platform" => MFUN_TECH_PLTF_HCUSTM,
-                    "deviceId" => $deviceId,
+                    "devCode" => $devCode,
                     "statCode" => $statCode,
                     "content" => $content);
                 if ($parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L2SDK_IOT_HCU,
@@ -707,7 +709,7 @@ class classTaskL2sdkIotHcu
                 $msg = array("project" => $project,
                     "log_from" => $log_from,
                     "platform" => MFUN_TECH_PLTF_HCUSTM,
-                    "deviceId" => $deviceId,
+                    "devCode" => $devCode,
                     "statCode" => $statCode,
                     "content" => $content);
                 if ($parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L2SDK_IOT_HCU,
@@ -722,7 +724,7 @@ class classTaskL2sdkIotHcu
                 $msg = array("project" => $project,
                     "log_from" => $log_from,
                     "platform" => MFUN_TECH_PLTF_HCUSTM,
-                    "deviceId" => $deviceId,
+                    "devCode" => $devCode,
                     "statCode" => $statCode,
                     "content" => $content);
                 if ($parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L2SDK_IOT_HCU,
@@ -737,7 +739,7 @@ class classTaskL2sdkIotHcu
                 $msg = array("project" => $project,
                     "log_from" => $log_from,
                     "platform" => MFUN_TECH_PLTF_HCUSTM,
-                    "deviceId" => $deviceId,
+                    "devCode" => $devCode,
                     "statCode" => $statCode,
                     "content" => $content);
                 if ($parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L2SDK_IOT_HCU,
@@ -752,7 +754,7 @@ class classTaskL2sdkIotHcu
                 $msg = array("project" => $project,
                     "log_from" => $log_from,
                     "platform" => MFUN_TECH_PLTF_HCUSTM,
-                    "deviceId" => $deviceId,
+                    "devCode" => $devCode,
                     "statCode" => $statCode,
                     "content" => $content);
                 if ($parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L2SDK_IOT_HCU,
@@ -767,7 +769,7 @@ class classTaskL2sdkIotHcu
                 $msg = array("project" => $project,
                     "log_from" => $log_from,
                     "platform" => MFUN_TECH_PLTF_HCUSTM,
-                    "deviceId" => $deviceId,
+                    "devCode" => $devCode,
                     "statCode" => $statCode,
                     "content" => $content);
                 if ($parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L2SDK_IOT_HCU,
@@ -782,7 +784,7 @@ class classTaskL2sdkIotHcu
                 $msg = array("project" => $project,
                     "log_from" => $log_from,
                     "platform" => MFUN_TECH_PLTF_HCUSTM,
-                    "deviceId" => $deviceId,
+                    "devCode" => $devCode,
                     "statCode" => $statCode,
                     "content" => $content);
                 if ($parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L2SDK_IOT_HCU,
@@ -797,7 +799,7 @@ class classTaskL2sdkIotHcu
                 $msg = array("project" => $project,
                     "log_from" => $log_from,
                     "platform" => MFUN_TECH_PLTF_HCUSTM,
-                    "deviceId" => $deviceId,
+                    "devCode" => $devCode,
                     "statCode" => $statCode,
                     "content" => $content);
                 if ($parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L2SDK_IOT_HCU,
@@ -812,7 +814,7 @@ class classTaskL2sdkIotHcu
                 $msg = array("project" => $project,
                     "log_from" => $log_from,
                     "platform" => MFUN_TECH_PLTF_HCUSTM,
-                    "deviceId" => $deviceId,
+                    "devCode" => $devCode,
                     "statCode" => $statCode,
                     "content" => $content);
                 if ($parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L2SDK_IOT_HCU,
@@ -827,7 +829,7 @@ class classTaskL2sdkIotHcu
                 $msg = array("project" => $project,
                     "log_from" => $log_from,
                     "platform" => MFUN_TECH_PLTF_HCUPI,
-                    "deviceId" => $deviceId,
+                    "devCode" => $devCode,
                     "statCode" => $statCode,
                     "content" => $content);
                 if ($parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L2SDK_IOT_HCU,
@@ -842,7 +844,7 @@ class classTaskL2sdkIotHcu
                 $msg = array("project" => $project,
                     "log_from" => $log_from,
                     "platform" => MFUN_TECH_PLTF_HCUSTM,
-                    "deviceId" => $deviceId,
+                    "devCode" => $devCode,
                     "statCode" => $statCode,
                     "content" => array("content" =>$content, "funcFlag" => $funcFlag));
                 if ($opt_key == HUITP_OPTID_uni_data_resp){
@@ -884,7 +886,7 @@ class classTaskL2sdkIotHcu
                 $msg = array("project" => $project,
                     "log_from" => $log_from,
                     "platform" => MFUN_TECH_PLTF_HCUSTM,
-                    "deviceId" => $deviceId,
+                    "devCode" => $devCode,
                     "statCode" => $statCode,
                     "content" => array("content" =>$content, "funcFlag" => $funcFlag));
                 if ($opt_key == HUITP_OPTID_uni_data_resp){

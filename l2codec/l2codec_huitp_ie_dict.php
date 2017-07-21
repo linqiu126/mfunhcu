@@ -571,25 +571,25 @@ class classL2codecHuitpIeDict
 
           //PM1/2.5/10
           HUITP_IEID_uni_pm25_min                         => "",
-          HUITP_IEID_uni_pm01_value                       => array("format"=>"A4ieId/A4ieLen/A2dataFormat/A8pm01Value/A8timeStamp","name"=>"HUITP_IEID_uni_pm01_value"),
-          HUITP_IEID_uni_pm25_value                       => array("format"=>"A4ieId/A4ieLen/A2dataFormat/A8pm25Value/A8timeStamp","name"=>"HUITP_IEID_uni_pm25_value"),
-          HUITP_IEID_uni_pm10_value                       => array("format"=>"A4ieId/A4ieLen/A2dataFormat/A8pm10Value/A8timeStamp","name"=>"HUITP_IEID_uni_pm10_value"),
+          HUITP_IEID_uni_pm01_value                       => array("format"=>"A4ieId/A4ieLen/A2dataFormat/A8pm01Value","name"=>"HUITP_IEID_uni_pm01_value"),
+          HUITP_IEID_uni_pm25_value                       => array("format"=>"A4ieId/A4ieLen/A2dataFormat/A8pm25Value","name"=>"HUITP_IEID_uni_pm25_value"),
+          HUITP_IEID_uni_pm10_value                       => array("format"=>"A4ieId/A4ieLen/A2dataFormat/A8pm10Value","name"=>"HUITP_IEID_uni_pm10_value"),
 
           //风速Wind Speed
           HUITP_IEID_uni_windspd_min                      => "",
-          HUITP_IEID_uni_windspd_value                    => array("format"=>"A4ieId/A4ieLen/A2dataFormat/A8windspdValue/A8timeStamp","name"=>"HUITP_IEID_uni_windspd_value"),
+          HUITP_IEID_uni_windspd_value                    => array("format"=>"A4ieId/A4ieLen/A2dataFormat/A8windspdValue","name"=>"HUITP_IEID_uni_windspd_value"),
 
           //风向Wind Direction
           HUITP_IEID_uni_winddir_min                      => "n",
-          HUITP_IEID_uni_winddir_value                    => array("format"=>"A4ieId/A4ieLen/A2dataFormat/A8winddirValue/A8timeStamp","name"=>"HUITP_IEID_uni_winddir_value"),
+          HUITP_IEID_uni_winddir_value                    => array("format"=>"A4ieId/A4ieLen/A2dataFormat/A8winddirValue","name"=>"HUITP_IEID_uni_winddir_value"),
 
           //温度Temperature
           HUITP_IEID_uni_temp_min                         => "",
-          HUITP_IEID_uni_temp_value                       => array("format"=>"A4ieId/A4ieLen/A2dataFormat/A8tempValue/A8timeStamp","name"=>"HUITP_IEID_uni_temp_value"),
+          HUITP_IEID_uni_temp_value                       => array("format"=>"A4ieId/A4ieLen/A2dataFormat/A8tempValue","name"=>"HUITP_IEID_uni_temp_value"),
 
           //湿度Humidity
           HUITP_IEID_uni_humid_min                        => "",
-          HUITP_IEID_uni_humid_value                      => array("format"=>"A4ieId/A4ieLen/A2dataFormat/A8humidValue/A8timeStamp","name"=>"HUITP_IEID_uni_humid_value"),
+          HUITP_IEID_uni_humid_value                      => array("format"=>"A4ieId/A4ieLen/A2dataFormat/A8humidValue","name"=>"HUITP_IEID_uni_humid_value"),
 
           //气压Air pressure
           HUITP_IEID_uni_airprs_min                       => "",
@@ -597,7 +597,7 @@ class classL2codecHuitpIeDict
 
           //噪声Noise
           HUITP_IEID_uni_noise_min                        => "",
-          HUITP_IEID_uni_noise_value                      => array("format"=>"A4ieId/A4ieLen/A2dataFormat/A8noiseValue/A8timeStamp","name"=>"HUITP_IEID_uni_noise_value"),
+          HUITP_IEID_uni_noise_value                      => array("format"=>"A4ieId/A4ieLen/A2dataFormat/A8noiseValue","name"=>"HUITP_IEID_uni_noise_value"),
 
           //相机Camer or audio high speed
           HUITP_IEID_uni_hsmmp_min                        => array("format"=>"A4ieId/A4ieLen","name"=>""),
@@ -790,7 +790,7 @@ class classL2codecHuitpIeDict
           //软件清单
           HUITP_IEID_uni_inventory_min                    => "",
           //HUITP_IEID_uni_inventory_hw_type                => array("format"=>"A4ieId/A4ieLen","name"=>""),
-          HUITP_IEID_uni_inventory_element                => array("format"=>"A4ieId/A4ieLen/A4hwType/A4hwId/A4swRel/A4swVer/A2upgradeFlag/A100desc/A8timeStamp","name"=>"HUITP_IEID_uni_inventory_element"),
+          HUITP_IEID_uni_inventory_element                => array("format"=>"A4ieId/A4ieLen/A4hwType/A4hwId/A4swRel/A4swVer/A2upgradeFlag/A100descp","name"=>"HUITP_IEID_uni_inventory_element"),
           HUITP_IEID_uni_inventory_hw_id                  => array("format"=>"A4ieId/A4ieLen","name"=>""),
           HUITP_IEID_uni_inventory_sw_rel                 => array("format"=>"A4ieId/A4ieLen","name"=>""),
           HUITP_IEID_uni_inventory_sw_ver                 => array("format"=>"A4ieId/A4ieLen","name"=>""),
@@ -802,13 +802,13 @@ class classL2codecHuitpIeDict
           //ALARM REPORT
           HUITP_IEID_uni_alarm_info_min                   => "",
           //HUITP_IEID_uni_alarm_info_type                  => array("format"=>"A4ieId/A4ieLen","name"=>""),
-          HUITP_IEID_uni_alarm_info_element               => array("format"=>"A4ieId/A4ieLen/A4alarmType/A2alarmServerity/A2alarmClearFlag/A8equID/A8causeId/A8alarmContent/A200alarmDesc/A8timeStamp","name"=>"HUITP_IEID_uni_alarm_info_element"),
+          HUITP_IEID_uni_alarm_info_element               => array("format"=>"A4ieId/A4ieLen/A4alarmType/A2alarmServerity/A2alarmClearFlag/A8equID/A8causeId/A8alarmContent/A200alarmDescp","name"=>"HUITP_IEID_uni_alarm_info_element"),
           HUITP_IEID_uni_alarm_info_value                 => array("format"=>"A4ieId/A4ieLen","name"=>""),
 
           //PM Report
           HUITP_IEID_uni_performance_info_min             => "",
           //HUITP_IEID_uni_performance_info_type            => array("format"=>"A4ieId/A4ieLen","name"=>""),
-          HUITP_IEID_uni_performance_info_element         => array("format"=>"A4ieId/A4ieLen/A8restartCnt/A8networkConnCnt/A8networkConnFailCnt/A8networkDiscCnt/A8socketDiscCnt/A8cpuOccupy/A8memOccupy/A8diskOccupy/A8cpuTemp/A8timeStamp","name"=>"HUITP_IEID_uni_performance_info_element"),
+          HUITP_IEID_uni_performance_info_element         => array("format"=>"A4ieId/A4ieLen/A8restartCnt/A8networkConnCnt/A8networkConnFailCnt/A8networkDiscCnt/A8socketDiscCnt/A8cpuOccupy/A8memOccupy/A8diskOccupy/A8cpuTemp","name"=>"HUITP_IEID_uni_performance_info_element"),
           HUITP_IEID_uni_performance_info_value           => array("format"=>"A4ieId/A4ieLen","name"=>""),
 
           //设备基本信息

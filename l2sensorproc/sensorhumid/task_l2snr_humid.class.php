@@ -16,7 +16,7 @@ class classTaskL2snrHumid
 
     }
 
-    public function func_humidity_process($platform, $deviceId, $statCode, $content)
+    public function func_humidity_process($platform, $devCode, $statCode, $content)
     {
         switch($platform)
         {
@@ -30,7 +30,7 @@ class classTaskL2snrHumid
                 switch ($sub_key) //MODBUS操作字处理
                 {
                     case MFUN_HCU_MODBUS_DATA_REPORT:
-                        $resp = $this->wx_humidity_req_process($deviceId, $content);
+                        $resp = $this->wx_humidity_req_process($devCode, $content);
                         break;
                     default:
                         $resp = "";
@@ -52,7 +52,7 @@ class classTaskL2snrHumid
                 switch ($opt_key) //MODBUS操作字处理
                 {
                     case MFUN_HCU_MODBUS_DATA_REPORT:
-                        $resp = $this->hcu_humidity_req_process($deviceId, $statCode, $data);
+                        $resp = $this->hcu_humidity_req_process($devCode, $statCode, $data);
                         break;
                     default:
                         $resp = "";
@@ -74,13 +74,13 @@ class classTaskL2snrHumid
                     $data = substr($content, MFUN_HCU_MSG_HEAD_LENGTH, 2);
                     $data = hexdec($data) & 0xFF;
                     $classDbiL2snrHumid = new classDbiL2snrHumid();
-                    $resp = $classDbiL2snrHumid->dbi_hcu_fhys_humi_status_update($deviceId, $statCode, $data);
+                    $resp = $classDbiL2snrHumid->dbi_hcu_fhys_humi_status_update($devCode, $statCode, $data);
                 }
                 elseif ($opt_key == MFUN_HCU_OPT_FHYS_HUMIDATA_IND){
                     $data = substr($content, MFUN_HCU_MSG_HEAD_LENGTH, 4);
                     //$data = hexdec($data) & 0xFFFF; //直接存成16进制的字符，高2位为整数部分，低2位为小数部分
                     $classDbiL2snrHumid = new classDbiL2snrHumid();
-                    $resp = $classDbiL2snrHumid->dbi_hcu_fhys_humi_data_process($deviceId, $statCode, $data);
+                    $resp = $classDbiL2snrHumid->dbi_hcu_fhys_humi_data_process($devCode, $statCode, $data);
                 }
                 else
                     $resp = "ERROR HCUSTM_TEMP: Invalid Operation Command";
@@ -96,7 +96,7 @@ class classTaskL2snrHumid
         return $resp;
     }
 
-    public function func_humidity_huitp_process($platform, $deviceId, $statCode, $content)
+    public function func_humidity_huitp_process($platform, $devCode, $statCode, $content)
     {
         switch($platform)
         {
@@ -110,22 +110,22 @@ class classTaskL2snrHumid
                 switch ($sub_key) //MODBUS操作字处理
                 {
                     case MFUN_HCU_MODBUS_DATA_REPORT:
-                        $resp = $this->wx_humidity_req_process($deviceId, $content);
+                        $resp = $this->wx_humidity_req_process($devCode, $content);
                         break;
                     default:
                         $resp = "";
                         break;
                 }
                 break;
-            case MFUN_TECH_PLTF_HCUGX:
+            case MFUN_TECH_PLTF_HCUGX_HUITP:
 
                 $opt_key = $content[1]['HUITP_IEID_uni_humid_value']['ieId'];
                 $humid = $content[1]['HUITP_IEID_uni_humid_value']['humidValue'];
                 $dataFormat = pow(10,$content[1]['HUITP_IEID_uni_humid_value']['dataFormat']);
                 $humidValue = hexdec($humid) / $dataFormat;
-                $timeStamp = $content[1]['HUITP_IEID_uni_humid_value']['timeStamp'];
+                $timeStamp = time();
 
-                $resp = $this->hcu_humidity_req_huitp_process($deviceId, $statCode, $timeStamp, $humidValue);
+                $resp = $this->hcu_humidity_req_huitp_process($devCode, $statCode, $timeStamp, $humidValue);
 
                 break;
             case MFUN_TECH_PLTF_HCUSTM:
@@ -143,13 +143,13 @@ class classTaskL2snrHumid
                     $data = substr($content, MFUN_HCU_MSG_HEAD_LENGTH, 2);
                     $data = hexdec($data) & 0xFF;
                     $classDbiL2snrHumid = new classDbiL2snrHumid();
-                    $resp = $classDbiL2snrHumid->dbi_hcu_fhys_humi_status_update($deviceId, $statCode, $data);
+                    $resp = $classDbiL2snrHumid->dbi_hcu_fhys_humi_status_update($devCode, $statCode, $data);
                 }
                 elseif ($opt_key == MFUN_HCU_OPT_FHYS_HUMIDATA_IND){
                     $data = substr($content, MFUN_HCU_MSG_HEAD_LENGTH, 4);
                     //$data = hexdec($data) & 0xFFFF; //直接存成16进制的字符，高2位为整数部分，低2位为小数部分
                     $classDbiL2snrHumid = new classDbiL2snrHumid();
-                    $resp = $classDbiL2snrHumid->dbi_hcu_fhys_humi_data_process($deviceId, $statCode, $data);
+                    $resp = $classDbiL2snrHumid->dbi_hcu_fhys_humi_data_process($devCode, $statCode, $data);
                 }
                 else
                     $resp = "ERROR HCUSTM_TEMP: Invalid Operation Command";
@@ -165,7 +165,7 @@ class classTaskL2snrHumid
         return $resp;
     }
 
-    private function wx_humidity_req_process( $deviceId, $content)
+    private function wx_humidity_req_process( $devCode, $content)
     {
         $humidity =  hexdec(substr($content, 6, 4)) & 0xFFFF;
         $devCode = hexdec(substr($content, 10, 4)) & 0xFFFF;
@@ -174,13 +174,13 @@ class classTaskL2snrHumid
         $gps = "";
 
         $classDbiL2snrHumid = new classDbiL2snrHumid();
-        $classDbiL2snrHumid->dbi_humidity_data_save($deviceId,$devCode,$ntimes,$humidity,$gps);
+        $classDbiL2snrHumid->dbi_humidity_data_save($devCode,$devCode,$ntimes,$humidity,$gps);
 
         $resp = ""; //no response message
         return $resp;
     }
 
-    private function hcu_humidity_req_process( $deviceId,$statCode,$content)
+    private function hcu_humidity_req_process( $devCode,$statCode,$content)
     {
         $format = "A2Equ/A2Type/A2Format/A4Humidity/A2Flag_Lo/A8Longitude/A2Flag_La/A8Latitude/A8Altitude/A8Time";
         $data = unpack($format, $content);
@@ -196,42 +196,39 @@ class classTaskL2snrHumid
         $timeStamp = hexdec($data['Time']) & 0xFFFFFFFF;
 
         $classDbiL2snrHumid = new classDbiL2snrHumid();
-        $classDbiL2snrHumid->dbi_humidity_data_save($deviceId, $sensorId, $timeStamp, $report,$gps);
+        $classDbiL2snrHumid->dbi_humidity_data_save($devCode, $sensorId, $timeStamp, $report,$gps);
         //该函数处理需要再完善，不确定是否可用
-        $classDbiL2snrHumid->dbi_humidData_delete_3monold($sensorId, $deviceId, MFUN_HCU_DATA_SAVE_DURATION_IN_DAYS);  //remove 90 days old data.
+        $classDbiL2snrHumid->dbi_humidData_delete_3monold($sensorId, $devCode, MFUN_HCU_DATA_SAVE_DURATION_IN_DAYS);  //remove 90 days old data.
 
         //更新分钟测量报告聚合表
-        $classDbiL2snrHumid->dbi_minreport_update_humidity($deviceId,$statCode,$timeStamp,$report);
+        $classDbiL2snrHumid->dbi_minreport_update_humidity($devCode,$statCode,$timeStamp,$report);
 
         //更新数据精度格式表
         $format = $report["format"];
-        $classDbiL2snrCom = new classDbiL2snrCom();
-        $classDbiL2snrCom->dbi_dataformat_update_format($deviceId,"T_humidity",$format);
+        $classDbiL2snrCommon = new classDbiL2snrCommon();
+        $classDbiL2snrCommon->dbi_dataformat_update_format($devCode,"T_humidity",$format);
         //更新瞬时测量值聚合表
         $classDbiL3apF3dm = new classDbiL3apF3dm();
-        $classDbiL3apF3dm->dbi_currentreport_update_value($deviceId, $statCode, $timeStamp,"T_humidity", $report);
+        $classDbiL3apF3dm->dbi_currentreport_update_value($devCode, $statCode, $timeStamp,"T_humidity", $report);
 
         $resp = ""; //no response message
         return $resp;
     }
 
-    private function hcu_humidity_req_huitp_process( $deviceId,$statCode, $timeStamp, $humidValue)
+    private function hcu_humidity_req_huitp_process( $devCode,$statCode, $timeStamp, $humidValue)
     {
-        $timeStamp = hexdec($timeStamp) & 0xFFFFFFFF;
-
         $classDbiL2snrHumid = new classDbiL2snrHumid();
-        $classDbiL2snrHumid->dbi_humidity_huitp_data_save($deviceId, $timeStamp, $humidValue);
+        $resp = $classDbiL2snrHumid->dbi_humidity_huitp_data_save($devCode, $timeStamp, $humidValue);
         //该函数处理需要再完善，不确定是否可用
-        $classDbiL2snrHumid->dbi_humidData_huitp_delete_3monold($deviceId, MFUN_HCU_DATA_SAVE_DURATION_IN_DAYS);  //remove 90 days old data.
+        $resp = $classDbiL2snrHumid->dbi_humidData_huitp_delete_3monold($devCode, MFUN_HCU_DATA_SAVE_DURATION_IN_DAYS);  //remove 90 days old data.
 
         //更新分钟测量报告聚合表
-        $classDbiL2snrHumid->dbi_minreport_huitp_update_humidity($deviceId,$statCode,$timeStamp,$humidValue);
+        $resp = $classDbiL2snrHumid->dbi_minreport_huitp_update_humidity($devCode,$statCode,$timeStamp,$humidValue);
 
         //更新瞬时测量值聚合表
         $classDbiL3apF3dm = new classDbiL3apF3dm();
-        $classDbiL3apF3dm->dbi_currentreport_huitp_update_value($deviceId, $statCode, $timeStamp,"T_humidity", $humidValue);
+        $resp = $classDbiL3apF3dm->dbi_currentreport_huitp_update_value($devCode, $statCode, $timeStamp,"T_humidity", $humidValue);
 
-        $resp = ""; //no response message
         return $resp;
     }
 
@@ -244,6 +241,14 @@ class classTaskL2snrHumid
         $loggerObj = new classApiL1vmFuncCom();
         $log_time = date("Y-m-d H:i:s", time());
 
+        //赋初值
+        $project= "";
+        $log_from = "";
+        $platform ="";
+        $devCode="";
+        $statCode = "";
+        $content="";
+
         //入口消息内容判断
         if (empty($msg) == true) {
             $result = "Received null message body";
@@ -252,6 +257,16 @@ class classTaskL2snrHumid
             echo trim($result);
             return false;
         }
+        else{
+            //解开消息
+            if (isset($msg["project"])) $project = $msg["project"];
+            if (isset($msg["log_from"])) $log_from = $msg["log_from"];
+            if (isset($msg["platform"])) $platform = $msg["platform"];
+            if (isset($msg["devCode"])) $devCode = $msg["devCode"];
+            if (isset($msg["statCode"])) $statCode = $msg["statCode"];
+            if (isset($msg["content"])) $content = $msg["content"];
+        }
+
         if (($msgId != MSG_ID_L2SDK_HCU_TO_L2SNR_HUMID) && ($msgName != "MSG_ID_L2SDK_HCU_TO_L2SNR_HUMID") && ($msgId != HUITP_MSGID_uni_humid_data_report)){
             $result = "Msgid or MsgName error";
             $log_content = "P:" . json_encode($result);
@@ -260,26 +275,12 @@ class classTaskL2snrHumid
             return false;
         }
 
-        //解开消息
-        $project= "";
-        $log_from = "";
-        $platform ="";
-        $deviceId="";
-        $statCode = "";
-        $content="";
-        if (isset($msg["project"])) $project = $msg["project"];
-        if (isset($msg["log_from"])) $log_from = $msg["log_from"];
-        if (isset($msg["platform"])) $platform = $msg["platform"];
-        if (isset($msg["deviceId"])) $deviceId = $msg["deviceId"];
-        if (isset($msg["statCode"])) $statCode = $msg["statCode"];
-        if (isset($msg["content"])) $content = $msg["content"];
-
         //具体处理函数
         if ($msgId == MSG_ID_L2SDK_HCU_TO_L2SNR_HUMID){
-            $resp = $this->func_humidity_process($platform, $deviceId, $statCode, $content);
+            $resp = $this->func_humidity_process($platform, $devCode, $statCode, $content);
         }
         elseif ($msgId == HUITP_MSGID_uni_humid_data_report){
-            $resp = $this->func_humidity_huitp_process($platform, $deviceId, $statCode, $content);
+            $resp = $this->func_humidity_huitp_process($platform, $devCode, $statCode, $content);
         }
         else{
             $resp = ""; //啥都不ECHO

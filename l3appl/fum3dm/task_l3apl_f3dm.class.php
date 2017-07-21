@@ -105,7 +105,7 @@ class classTaskL3aplF3dm
         $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
         $usercheck = $uiF1symDbObj->dbi_user_authcheck($action, $user);
         if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
-            $uiL2snrDbObj = new classDbiL2snrCom();
+            $uiL2snrDbObj = new classDbiL2snrCommon();
             $sensor_type = MFUN_L3APL_F3DM_AQYC_STYPE_PREFIX;
             $sensor_list = $uiL2snrDbObj->dbi_all_sensorlist_req($sensor_type);
             if(!empty($sensor_list))
@@ -126,7 +126,7 @@ class classTaskL3aplF3dm
         $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
         $usercheck = $uiF1symDbObj->dbi_user_authcheck($action, $user);
         if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
-            $uiL2snrDbObj = new classDbiL2snrCom();
+            $uiL2snrDbObj = new classDbiL2snrCommon();
             $sensorinfo = $uiL2snrDbObj->dbi_aqyc_dev_sensorinfo_req($DevCode);
             if(!empty($sensorinfo))
                 $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$sensorinfo,'msg'=>"获取指定设备下传感器列表成功");
@@ -209,7 +209,7 @@ class classTaskL3aplF3dm
         $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
         $usercheck = $uiF1symDbObj->dbi_user_authcheck($action, $user);
         if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
-            $uiL2snrDbObj = new classDbiL2snrCom();
+            $uiL2snrDbObj = new classDbiL2snrCommon();
             $sensor_type= MFUN_L3APL_F3DM_FHYS_STYPE_PREFIX;
             $sensor_list = $uiL2snrDbObj->dbi_all_sensorlist_req($sensor_type);
             if(!empty($sensor_list))
@@ -230,7 +230,7 @@ class classTaskL3aplF3dm
         $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
         $usercheck = $uiF1symDbObj->dbi_user_authcheck($action, $user);
         if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
-            $uiL2snrDbObj = new classDbiL2snrCom();
+            $uiL2snrDbObj = new classDbiL2snrCommon();
             $sensorinfo = $uiL2snrDbObj->dbi_fhys_dev_sensorinfo_req($DevCode);
             if(!empty($sensorinfo))
                 $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$sensorinfo,'msg'=>"获取指定设备下传感器列表成功");

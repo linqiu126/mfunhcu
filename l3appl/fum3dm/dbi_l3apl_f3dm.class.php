@@ -210,7 +210,7 @@ class classDbiL3apF3dm
                 }
                 break;
             case "T_temperature":
-                $temperature = $data;
+                $temperature = $data["value"];
                 //存储新记录，如果发现是已经存在的数据，则覆盖，否则新增
                 $result = $mysqli->query("SELECT * FROM `t_l3f3dm_aqyc_currentreport` WHERE (`deviceid` = '$deviceid' )");
                 if (($result->num_rows)>0) {
@@ -221,7 +221,7 @@ class classDbiL3apF3dm
                 }
                 break;
             case "T_winddirection":
-                $winddirection = $data;
+                $winddirection = $data["value"];
                 //存储新记录，如果发现是已经存在的数据，则覆盖，否则新增
                 $result = $mysqli->query("SELECT * FROM `t_l3f3dm_aqyc_currentreport` WHERE (`deviceid` = '$deviceid' )");
                 if (($result->num_rows)>0) {
@@ -232,7 +232,7 @@ class classDbiL3apF3dm
                 }
                 break;
             case "T_windspeed":
-                $windspeed = $data;
+                $windspeed = $data['value'];
                 //存储新记录，如果发现是已经存在的数据，则覆盖，否则新增
                 $result = $mysqli->query("SELECT * FROM `t_l3f3dm_aqyc_currentreport` WHERE (`deviceid` = '$deviceid' )");
                 if (($result->num_rows)>0) {

@@ -16,7 +16,7 @@ class classTaskL2snrWinddir
 
     }
 
-    public function func_windDirection_process($platform, $deviceId, $statCode, $content)
+    public function func_windDirection_process($platform, $devCode, $statCode, $content)
     {
         switch($platform)
         {
@@ -30,7 +30,7 @@ class classTaskL2snrWinddir
                 switch ($sub_key) //MODBUS操作字处理
                 {
                     case MFUN_HCU_MODBUS_DATA_REPORT:
-                        $resp = $this->wx_winddirection_req_process($deviceId, $content);
+                        $resp = $this->wx_winddirection_req_process($devCode, $content);
                         break;
                     default:
                         $resp = "";
@@ -52,7 +52,7 @@ class classTaskL2snrWinddir
                 switch ($opt_key) //MODBUS操作字处理
                 {
                     case MFUN_HCU_MODBUS_DATA_REPORT:
-                        $resp = $this->hcu_winddirection_req_process($deviceId, $statCode, $data);
+                        $resp = $this->hcu_winddirection_req_process($devCode, $statCode, $data);
                         break;
                     default:
                         $resp = "";
@@ -70,7 +70,7 @@ class classTaskL2snrWinddir
         return $resp;
     }
 
-    public function func_windDirection_huitp_process($platform, $deviceId, $statCode, $content)
+    public function func_windDirection_huitp_process($platform, $devCode, $statCode, $content)
     {
         switch($platform)
         {
@@ -84,21 +84,20 @@ class classTaskL2snrWinddir
                 switch ($sub_key) //MODBUS操作字处理
                 {
                     case MFUN_HCU_MODBUS_DATA_REPORT:
-                        $resp = $this->wx_winddirection_req_process($deviceId, $content);
+                        $resp = $this->wx_winddirection_req_process($devCode, $content);
                         break;
                     default:
                         $resp = "";
                         break;
                 }
                 break;
-            case MFUN_TECH_PLTF_HCUGX:
-
+            case MFUN_TECH_PLTF_HCUGX_HUITP:
                 $winddir = $content[1]['HUITP_IEID_uni_winddir_value']['winddirValue'];
                 $dataFormat = pow(10,$content[1]['HUITP_IEID_uni_winddir_value']['dataFormat']);
                 $winddirValue = hexdec($winddir) / $dataFormat;
-                $timeStamp = $content[1]['HUITP_IEID_uni_winddir_value']['timeStamp'];
+                $timeStamp = time();
 
-                $resp = $this->hcu_winddirection_req_huitp_process($deviceId, $statCode, $timeStamp, $winddirValue);
+                $resp = $this->hcu_winddirection_req_huitp_process($devCode, $statCode, $timeStamp, $winddirValue);
                 break;
             case MFUN_TECH_PLTF_JDIOT:
                 $resp = ""; //no response message
@@ -111,7 +110,7 @@ class classTaskL2snrWinddir
         return $resp;
     }
 
-    private function wx_winddirection_req_process( $deviceId, $content)
+    private function wx_winddirection_req_process( $devCode, $content)
     {
         $windDirection =  hexdec(substr($content, 6, 4)) & 0xFFFF;
         $devCode = hexdec(substr($content, 10, 4)) & 0xFFFF;
@@ -120,13 +119,13 @@ class classTaskL2snrWinddir
         $gps = "";
 
         $sDbObj = new classDbiL2snrWinddir();
-        $sDbObj->dbi_winddirection_data_save($deviceId,$devCode,$ntimes,$windDirection,$gps);
+        $sDbObj->dbi_winddirection_data_save($devCode,$devCode,$ntimes,$windDirection,$gps);
 
         $resp = ""; //no response message
         return $resp;
     }
 
-    private function hcu_winddirection_req_process( $deviceId,$statCode,$content)
+    private function hcu_winddirection_req_process( $devCode,$statCode,$content)
     {
         $format = "A2Equ/A2Type/A2Format/A4WindDirection/A2Flag_Lo/A8Longitude/A2Flag_La/A8Latitude/A8Altitude/A8Time";
         $data = unpack($format, $content);
@@ -142,42 +141,39 @@ class classTaskL2snrWinddir
         $timeStamp = hexdec($data['Time']) & 0xFFFFFFFF;
 
         $sDbObj = new classDbiL2snrWinddir();
-        $sDbObj->dbi_winddirection_data_save($deviceId, $sensorId, $timeStamp, $report,$gps);
+        $sDbObj->dbi_winddirection_data_save($devCode, $sensorId, $timeStamp, $report,$gps);
         //该函数处理需要再完善，不确定是否可用
-        $sDbObj->dbi_winddirData_delete_3monold($sensorId, $deviceId, MFUN_HCU_DATA_SAVE_DURATION_IN_DAYS);  //remove 90 days old data.
+        $sDbObj->dbi_winddirData_delete_3monold($sensorId, $devCode, MFUN_HCU_DATA_SAVE_DURATION_IN_DAYS);  //remove 90 days old data.
 
         //更新分钟测量报告聚合表
-        $sDbObj->dbi_minreport_update_winddirection($deviceId,$statCode,$timeStamp,$report);
+        $sDbObj->dbi_minreport_update_winddirection($devCode,$statCode,$timeStamp,$report);
 
         //更新数据精度格式表
         $format = $report["format"];
-        $cDbObj = new classDbiL2snrCom();
-        $cDbObj->dbi_dataformat_update_format($deviceId,"T_winddirection",$format);
+        $cDbObj = new classDbiL2snrCommon();
+        $cDbObj->dbi_dataformat_update_format($devCode,"T_winddirection",$format);
         //更新瞬时测量值聚合表
         $eDbObj = new classDbiL3apF3dm();
-        $eDbObj->dbi_currentreport_update_value($deviceId, $statCode, $timeStamp,"T_winddirection", $report);
+        $eDbObj->dbi_currentreport_update_value($devCode, $statCode, $timeStamp,"T_winddirection", $report);
 
         $resp = ""; //no response message
         return $resp;
     }
 
-    private function hcu_winddirection_req_huitp_process( $deviceId,$statCode,$timeStamp, $winddirValue)
+    private function hcu_winddirection_req_huitp_process( $devCode,$statCode,$timeStamp, $winddirValue)
     {
-        $timeStamp = hexdec($timeStamp) & 0xFFFFFFFF;
-
         $sDbObj = new classDbiL2snrWinddir();
-        $sDbObj->dbi_winddirection_huitp_data_save($deviceId, $timeStamp, $winddirValue);
+        $resp = $sDbObj->dbi_winddirection_huitp_data_save($devCode, $timeStamp, $winddirValue);
         //该函数处理需要再完善，不确定是否可用
-        $sDbObj->dbi_winddirData_huitp_delete_3monold($deviceId, MFUN_HCU_DATA_SAVE_DURATION_IN_DAYS);  //remove 90 days old data.
+        $resp = $sDbObj->dbi_winddirData_huitp_delete_3monold($devCode, MFUN_HCU_DATA_SAVE_DURATION_IN_DAYS);  //remove 90 days old data.
 
         //更新分钟测量报告聚合表
-        $sDbObj->dbi_minreport_huitp_update_winddirection($deviceId,$statCode,$timeStamp,$winddirValue);
+        $resp = $sDbObj->dbi_minreport_huitp_update_winddirection($devCode,$statCode,$timeStamp,$winddirValue);
 
         //更新瞬时测量值聚合表
         $eDbObj = new classDbiL3apF3dm();
-        $eDbObj->dbi_currentreport_update_value($deviceId, $statCode, $timeStamp,"T_winddirection", $winddirValue);
+        $resp = $eDbObj->dbi_currentreport_update_value($devCode, $statCode, $timeStamp,"T_winddirection", $winddirValue);
 
-        $resp = ""; //no response message
         return $resp;
     }
 
@@ -190,6 +186,14 @@ class classTaskL2snrWinddir
         $loggerObj = new classApiL1vmFuncCom();
         $log_time = date("Y-m-d H:i:s", time());
 
+        //赋初值
+        $project= "";
+        $log_from = "";
+        $platform ="";
+        $devCode="";
+        $statCode = "";
+        $content="";
+
         //入口消息内容判断
         if (empty($msg) == true) {
             $result = "Received null message body";
@@ -198,6 +202,16 @@ class classTaskL2snrWinddir
             echo trim($result);
             return false;
         }
+        else{
+            //解开消息
+            if (isset($msg["project"])) $project = $msg["project"];
+            if (isset($msg["log_from"])) $log_from = $msg["log_from"];
+            if (isset($msg["platform"])) $platform = $msg["platform"];
+            if (isset($msg["devCode"])) $devCode = $msg["devCode"];
+            if (isset($msg["statCode"])) $statCode = $msg["statCode"];
+            if (isset($msg["content"])) $content = $msg["content"];
+        }
+
         if (($msgId != MSG_ID_L2SDK_HCU_TO_L2SNR_WINDDIR) && ($msgId != MSG_ID_L2SDK_EMCWX_TO_L2SNR_WINDDIR_DATA_READ_INSTANT) && ($msgId != MSG_ID_L2SDK_EMCWX_TO_L2SNR_WINDDIR_DATA_REPORT_TIMING)&& ($msgId != HUITP_MSGID_uni_winddir_data_report)){
             $result = "Msgid or MsgName error";
             $log_content = "P:" . json_encode($result);
@@ -206,62 +220,26 @@ class classTaskL2snrWinddir
             return false;
         }
 
-        //赋初值
-        $project= "";
-        $log_from = "";
-        $platform ="";
-        $deviceId="";
-        $statCode = "";
-        $content="";
-
         if ($msgId == MSG_ID_L2SDK_HCU_TO_L2SNR_WINDDIR)
         {
-            //解开消息
-            if (isset($msg["project"])) $project = $msg["project"];
-            if (isset($msg["log_from"])) $log_from = $msg["log_from"];
-            if (isset($msg["platform"])) $platform = $msg["platform"];
-            if (isset($msg["deviceId"])) $deviceId = $msg["deviceId"];
-            if (isset($msg["statCode"])) $statCode = $msg["statCode"];
-            if (isset($msg["content"])) $content = $msg["content"];
-
             //具体处理函数
-            $resp = $this->func_windDirection_process($platform, $deviceId, $statCode, $content);
+            $resp = $this->func_windDirection_process($platform, $devCode, $statCode, $content);
         }
         elseif ($msgId == MSG_ID_L2SDK_EMCWX_TO_L2SNR_WINDDIR_DATA_READ_INSTANT)
         {
-            //解开消息
-            if (isset($msg["project"])) $project = $msg["project"];
-            if (isset($msg["log_from"])) $log_from = $msg["log_from"];
-            if (isset($msg["deviceId"])) $deviceId = $msg["deviceId"];
-            if (isset($msg["content"])) $content = $msg["content"];
             //具体处理函数
-            $resp = $this->wx_winddirection_req_process($deviceId, $content);
+            $resp = $this->wx_winddirection_req_process($devCode, $content);
         }
         elseif ($msgId == MSG_ID_L2SDK_EMCWX_TO_L2SNR_WINDDIR_DATA_REPORT_TIMING)
         {
-            //解开消息
-            if (isset($msg["project"])) $project = $msg["project"];
-            if (isset($msg["log_from"])) $log_from = $msg["log_from"];
-            if (isset($msg["platform"])) $platform = $msg["platform"];
-            if (isset($msg["deviceId"])) $deviceId = $msg["deviceId"];
-            if (isset($msg["statCode"])) $statCode = $msg["statCode"];
-            if (isset($msg["content"])) $content = $msg["content"];
-
             //具体处理函数
-            $resp = $this->func_windDirection_process($platform, $deviceId, $statCode, $content);
+            $resp = $this->func_windDirection_process($platform, $devCode, $statCode, $content);
         }
         elseif ($msgId == HUITP_MSGID_uni_winddir_data_report)
         {
-            //解开消息
-            if (isset($msg["project"])) $project = $msg["project"];
-            if (isset($msg["log_from"])) $log_from = $msg["log_from"];
-            if (isset($msg["platform"])) $platform = $msg["platform"];
-            if (isset($msg["deviceId"])) $deviceId = $msg["deviceId"];
-            if (isset($msg["statCode"])) $statCode = $msg["statCode"];
-            if (isset($msg["content"])) $content = $msg["content"];
 
             //具体处理函数
-            $resp = $this->func_windDirection_huitp_process($platform, $deviceId, $statCode, $content);
+            $resp = $this->func_windDirection_huitp_process($platform, $devCode, $statCode, $content);
         }
         else{
             $resp = ""; //啥都不ECHO

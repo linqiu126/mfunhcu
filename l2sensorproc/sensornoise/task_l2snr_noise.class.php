@@ -85,13 +85,12 @@ class classTaskL2snrNoise
                         break;
                 }
                 break;
-            case MFUN_TECH_PLTF_HCUGX:
-
+            case MFUN_TECH_PLTF_HCUGX_HUITP:
                 $opt_key = $content[1]['HUITP_IEID_uni_noise_value']['ieId'];
                 $noise = $content[1]['HUITP_IEID_uni_noise_value']['noiseValue'];
                 $dataFormat = pow(10,$content[1]['HUITP_IEID_uni_noise_value']['dataFormat']);
                 $noiseValue = hexdec($noise) / $dataFormat;
-                $timeStamp = $content[1]['HUITP_IEID_uni_noise_value']['timeStamp'];
+                $timeStamp = time();
 
                 $resp = $this->hcu_noise_req_huitp_process($deviceId, $statCode, $timeStamp, $noiseValue);
 
@@ -148,7 +147,7 @@ class classTaskL2snrNoise
 
         //更新数据精度格式表
         $format = $report["format"];
-        $cDbObj = new classDbiL2snrCom();
+        $cDbObj = new classDbiL2snrCommon();
         $cDbObj->dbi_dataformat_update_format($deviceId,"T_noise",$format);
         //更新瞬时测量值聚合表
         $cDbObj = new classDbiL3apF3dm();
@@ -160,8 +159,6 @@ class classTaskL2snrNoise
 
     private function hcu_noise_req_huitp_process( $deviceId,$statCode,$timeStamp, $noiseValue)
     {
-        $timeStamp = hexdec($timeStamp) & 0xFFFFFFFF;
-
         $sDbObj = new classDbiL2snrNoise();
         $sDbObj->dbi_noise_huitp_data_save($deviceId, $timeStamp, $noiseValue);
         //该函数处理需要再完善，不确定是否可用
@@ -187,6 +184,14 @@ class classTaskL2snrNoise
         $loggerObj = new classApiL1vmFuncCom();
         $log_time = date("Y-m-d H:i:s", time());
 
+        //赋初值
+        $project= "";
+        $log_from = "";
+        $platform ="";
+        $devCode="";
+        $statCode = "";
+        $content="";
+
         //入口消息内容判断
         if (empty($msg) == true) {
             $result = "Received null message body";
@@ -195,7 +200,16 @@ class classTaskL2snrNoise
             echo trim($result);
             return false;
         }
-        //多条消息发送到PM25
+        else{
+            //解开消息
+            if (isset($msg["project"])) $project = $msg["project"];
+            if (isset($msg["log_from"])) $log_from = $msg["log_from"];
+            if (isset($msg["platform"])) $platform = $msg["platform"];
+            if (isset($msg["devCode"])) $devCode = $msg["devCode"];
+            if (isset($msg["statCode"])) $statCode = $msg["statCode"];
+            if (isset($msg["content"])) $content = $msg["content"];
+        }
+        //多条消息发送到NOISE模块
         if (($msgId != MSG_ID_L2SDK_HCU_TO_L2SNR_NOISE) && ($msgId != MSG_ID_L2SDK_EMCWX_TO_L2SNR_NOISE_DATA_READ_INSTANT) && ($msgId != MSG_ID_L2SDK_EMCWX_TO_L2SNR_NOISE_DATA_REPORT_TIMING) && ($msgId != HUITP_MSGID_uni_noise_data_report)){
             $result = "Msgid or MsgName error";
             $log_content = "P:" . json_encode($result);
@@ -204,61 +218,27 @@ class classTaskL2snrNoise
             return false;
         }
 
-        //赋初值
-        $project= "";
-        $log_from = "";
-        $platform ="";
-        $deviceId="";
-        $statCode = "";
-        $content="";
+
 
         if ($msgId == MSG_ID_L2SDK_HCU_TO_L2SNR_NOISE)
         {
-            if (isset($msg["project"])) $project = $msg["project"];
-            if (isset($msg["log_from"])) $log_from = $msg["log_from"];
-            if (isset($msg["platform"])) $platform = $msg["platform"];
-            if (isset($msg["deviceId"])) $deviceId = $msg["deviceId"];
-            if (isset($msg["statCode"])) $statCode = $msg["statCode"];
-            if (isset($msg["content"])) $content = $msg["content"];
-
             //具体处理函数
-            $resp = $this->func_noise_process($platform, $deviceId, $statCode, $content);
+            $resp = $this->func_noise_process($platform, $devCode, $statCode, $content);
         }
         elseif ($msgId == MSG_ID_L2SDK_EMCWX_TO_L2SNR_NOISE_DATA_READ_INSTANT)
         {
-            //解开消息
-            if (isset($msg["project"])) $project = $msg["project"];
-            if (isset($msg["log_from"])) $log_from = $msg["log_from"];
-            if (isset($msg["deviceId"])) $deviceId = $msg["deviceId"];
-            if (isset($msg["content"])) $content = $msg["content"];
             //具体处理函数
-            $resp = $this->wx_noise_req_process($deviceId, $content);
+            $resp = $this->wx_noise_req_process($devCode, $content);
         }
         elseif ($msgId == MSG_ID_L2SDK_EMCWX_TO_L2SNR_NOISE_DATA_REPORT_TIMING)
         {
-            //解开消息
-            if (isset($msg["project"])) $project = $msg["project"];
-            if (isset($msg["log_from"])) $log_from = $msg["log_from"];
-            if (isset($msg["platform"])) $platform = $msg["platform"];
-            if (isset($msg["deviceId"])) $deviceId = $msg["deviceId"];
-            if (isset($msg["statCode"])) $statCode = $msg["statCode"];
-            if (isset($msg["content"])) $content = $msg["content"];
-
             //具体处理函数
-            $resp = $this->func_noise_process($platform, $deviceId, $statCode, $content);
+            $resp = $this->func_noise_process($platform, $devCode, $statCode, $content);
         }
         elseif ($msgId == HUITP_MSGID_uni_noise_data_report)
         {
-            //解开消息
-            if (isset($msg["project"])) $project = $msg["project"];
-            if (isset($msg["log_from"])) $log_from = $msg["log_from"];
-            if (isset($msg["platform"])) $platform = $msg["platform"];
-            if (isset($msg["deviceId"])) $deviceId = $msg["deviceId"];
-            if (isset($msg["statCode"])) $statCode = $msg["statCode"];
-            if (isset($msg["content"])) $content = $msg["content"];
-
             //具体处理函数
-            $resp = $this->func_noise_huitp_process($platform, $deviceId, $statCode, $content);
+            $resp = $this->func_noise_huitp_process($platform, $devCode, $statCode, $content);
         }
         else{
             $resp = ""; //啥都不ECHO

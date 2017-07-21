@@ -28,8 +28,10 @@ class classTaskL2codecHuitpXml
             echo "";
             return false;
         }
-        if (($msgId != MSG_ID_L2SDK_IOT_HUITP_TO_L2CODEC_HUITP) || ($msgName != "MSG_ID_L2SDK_IOT_HUITP_TO_L2CODEC_HUITP")){
-            $result = "Msgid or MsgName error";
+        //这里HUITP消息有两个来源，一个是来自CCL通过socket收到的MSG_ID_L1VM_TO_L2SDK_IOT_HUITP_INCOMING，
+        //另外一个是扬尘HCU通过curl收到的，因为curl复用了cloud_callback_wechat,所以消息来自L2SDK_IOT_WX (MSG_ID_WECHAT_TO_L2SDK_IOT_HUITP_INCOMING)
+        if (($msgId != MSG_ID_L2SDK_IOT_HUITP_TO_L2CODEC_HUITP) AND ($msgId != MSG_ID_WECHAT_TO_L2SDK_IOT_HUITP_INCOMING)){
+            $result = "Received Msgid error";
             $log_content = "P:" . json_encode($result);
             $loggerObj->logger("MFUN_TASK_ID_L2CODEC_HUITP", "mfun_l2codec_huitp_xml_task_main_entry", $log_time, $log_content);
             echo trim($result);
@@ -72,8 +74,17 @@ class classTaskL2codecHuitpXml
             return false;
         }
 
+        //解码HUITP消息
         $l2codecHuitpMsgDictObj = new classL2codecHuitpMsgDict();
-        $huitpIeArray = $l2codecHuitpMsgDictObj->mfun_l2codec_getHuitpIeArray($huitpMsgId);
+        $respArray = $l2codecHuitpMsgDictObj->mfun_l2codec_getHuitpIeArray($huitpMsgId);
+        if ($respArray == false){
+            $loggerObj->logger("MFUN_TASK_ID_L2CODEC_HUITP", "mfun_l2codec_huitp_xml_task_main_entry", $log_time, "I: Invaild HUITP message ID");
+            echo "";
+            return false;
+        }
+
+        $huitpMsgName = $respArray['MSGNAME'];
+        $huitpIeArray = $respArray['MSGIE'];
         if ($huitpIeArray == false){
             $loggerObj->logger("MFUN_TASK_ID_L2CODEC_HUITP", "mfun_l2codec_huitp_xml_task_main_entry", $log_time, "I: Received invalid HUITP message ID");
             echo "";
@@ -108,10 +119,33 @@ class classTaskL2codecHuitpXml
             $i++;
         }
 
-        //$unpackedHuitpIeArray[0] is useless for the moment, replace it with huitpMsgId
-        $unpackedHuitpIeArray[0]=$huitpMsgId;
+        $huitp_destId = $l2codecHuitpMsgDictObj->mfun_l2codec_getHuitpDestTaskId($huitpMsgId);
 
-        return $unpackedHuitpIeArray;
+        $msg = array("project" => $project,
+            "platform" => MFUN_TECH_PLTF_HCUGX_HUITP,
+            "devCode" => $devCode,
+            "statCode" => $statCode,
+            "content" => $unpackedHuitpIeArray,
+            "funcFlag" => $funcFlag);
+        if ($parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L2CODEC_HUITP,
+                $huitp_destId,
+                $huitpMsgId,
+                $huitpMsgName,
+                $msg) == false) $resp = "Send to message buffer error";
+        else $resp = "";
+
+        //处理结果
+        //由于消息的分布发送到各个任务模块中去了，这里不再统一处理ECHO返回，而由各个任务模块单独完成
+        if (!empty($resp)) {
+            $timestamp = time();
+            $log_time = date("Y-m-d H:i:s", $timestamp);
+            $log_from = $devCode;
+            $log_content = "T:" . json_encode($resp);
+            $loggerObj->logger($project, $log_from, $log_time, $log_content);
+            echo trim($resp);
+        }
+        //结束，返回
+        return true;
 
     }//end of mfun_l2codec_huitp_xml_task_main_entry
 

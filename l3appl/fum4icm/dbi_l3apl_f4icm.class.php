@@ -112,10 +112,10 @@ class classDbiL3apF4icm
         $verlist = array();
         if ($result->num_rows > 0)
         {
-            $apiL2snrCommonServiceObj = new classApiL2snrCommonService();
+            $dbiL1vmCommonObj = new classDbiL1vmCommon();
             while ($row = $result->fetch_array()) {
-                $sw_rel = $apiL2snrCommonServiceObj->byte2string($row["sw_rel"]);
-                $sw_drop = $apiL2snrCommonServiceObj->ushort2string($row["sw_drop"]);
+                $sw_rel = $dbiL1vmCommonObj->byte2string($row["sw_rel"]);
+                $sw_drop = $dbiL1vmCommonObj->ushort2string($row["sw_drop"]);
                 $version = "HCUSW_R" . $sw_rel . ".D" . $sw_drop;
                 array_push($verlist, $version);
             }
@@ -137,10 +137,10 @@ class classDbiL3apF4icm
         $result = $mysqli->query($query_str);
 
         if (($result != false) AND ($result->num_rows)>0) {
-            $apiL2snrCommonServiceObj = new classApiL2snrCommonService();
+            $dbiL1vmCommonObj = new classDbiL1vmCommon();
             $row = $result->fetch_array();
-            $sw_rel = $apiL2snrCommonServiceObj->byte2string($row["sw_rel"]);
-            $sw_drop = $apiL2snrCommonServiceObj->ushort2string($row["sw_drop"]);
+            $sw_rel = $dbiL1vmCommonObj->byte2string($row["sw_rel"]);
+            $sw_drop = $dbiL1vmCommonObj->ushort2string($row["sw_drop"]);
             $version = "SW_R" . $sw_rel . ".D" . $sw_drop;
         }
         else
@@ -154,10 +154,10 @@ class classDbiL3apF4icm
     public function dbi_hcu_swver_update($devlist, $version)
     {
         //生成控制命令的控制字
-        $apiL2snrCommonServiceObj = new classApiL2snrCommonService();
-        $ctrl_key = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_CMDID_SW_UPDATE);
-        $opt_key =  $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_OPT_SWUPDATE_REQ);
-        $len = $apiL2snrCommonServiceObj->byte2string(strlen($opt_key)/2 + strlen($version));
+        $dbiL1vmCommonObj = new classDbiL1vmCommon();
+        $ctrl_key = $dbiL1vmCommonObj->byte2string(MFUN_HCU_CMDID_SW_UPDATE);
+        $opt_key =  $dbiL1vmCommonObj->byte2string(MFUN_HCU_OPT_SWUPDATE_REQ);
+        $len = $dbiL1vmCommonObj->byte2string(strlen($opt_key)/2 + strlen($version));
 
         $i = 0;
         while($i < count($devlist)){
@@ -400,34 +400,34 @@ class classDbiL3apF4icm
         if (($result != false) && ($result->num_rows)>0)
         {
             //生成控制命令的控制字
-            $apiL2snrCommonServiceObj = new classApiL2snrCommonService();
+            $dbiL1vmCommonObj = new classDbiL1vmCommon();
             if ($SensorCode == MFUN_L3APL_F3DM_AQYC_STYPE_PM) {
-                $ctrl_key = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_CMDID_PM25_DATA);
-                $equip_id = $apiL2snrCommonServiceObj->byte2string(MFUN_L3APL_F4ICM_ID_EQUIP_PM);
+                $ctrl_key = $dbiL1vmCommonObj->byte2string(MFUN_HCU_CMDID_PM25_DATA);
+                $equip_id = $dbiL1vmCommonObj->byte2string(MFUN_L3APL_F4ICM_ID_EQUIP_PM);
             }
             elseif ($SensorCode == MFUN_L3APL_F3DM_AQYC_STYPE_WINDSPD){
-                $ctrl_key = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_CMDID_WINDSPD_DATA);
-                $equip_id = $apiL2snrCommonServiceObj->byte2string(MFUN_L3APL_F4ICM_ID_EQUIP_WINDSPD);
+                $ctrl_key = $dbiL1vmCommonObj->byte2string(MFUN_HCU_CMDID_WINDSPD_DATA);
+                $equip_id = $dbiL1vmCommonObj->byte2string(MFUN_L3APL_F4ICM_ID_EQUIP_WINDSPD);
             }
             elseif ($SensorCode == MFUN_L3APL_F3DM_AQYC_STYPE_WINDDIR){
-                $ctrl_key = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_CMDID_WINDDIR_DATA);
-                $equip_id = $apiL2snrCommonServiceObj->byte2string(MFUN_L3APL_F4ICM_ID_EQUIP_WINDDIR);
+                $ctrl_key = $dbiL1vmCommonObj->byte2string(MFUN_HCU_CMDID_WINDDIR_DATA);
+                $equip_id = $dbiL1vmCommonObj->byte2string(MFUN_L3APL_F4ICM_ID_EQUIP_WINDDIR);
             }
             elseif ($SensorCode == MFUN_L3APL_F3DM_AQYC_STYPE_EMC){
-                $ctrl_key = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_CMDID_EMC_DATA);
-                $equip_id = $apiL2snrCommonServiceObj->byte2string(MFUN_L3APL_F4ICM_ID_EQUIP_EMC);
+                $ctrl_key = $dbiL1vmCommonObj->byte2string(MFUN_HCU_CMDID_EMC_DATA);
+                $equip_id = $dbiL1vmCommonObj->byte2string(MFUN_L3APL_F4ICM_ID_EQUIP_EMC);
             }
             elseif ($SensorCode == MFUN_L3APL_F3DM_AQYC_STYPE_TEMP){
-                $ctrl_key = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_CMDID_TEMP_DATA);
-                $equip_id = $apiL2snrCommonServiceObj->byte2string(MFUN_L3APL_F4ICM_ID_EQUIP_TEMP);
+                $ctrl_key = $dbiL1vmCommonObj->byte2string(MFUN_HCU_CMDID_TEMP_DATA);
+                $equip_id = $dbiL1vmCommonObj->byte2string(MFUN_L3APL_F4ICM_ID_EQUIP_TEMP);
             }
             elseif ($SensorCode == MFUN_L3APL_F3DM_AQYC_STYPE_HUMID){
-                $ctrl_key = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_CMDID_HUMID_DATA);
-                $equip_id = $apiL2snrCommonServiceObj->byte2string(MFUN_L3APL_F4ICM_ID_EQUIP_HUMID);
+                $ctrl_key = $dbiL1vmCommonObj->byte2string(MFUN_HCU_CMDID_HUMID_DATA);
+                $equip_id = $dbiL1vmCommonObj->byte2string(MFUN_L3APL_F4ICM_ID_EQUIP_HUMID);
             }
             elseif ($SensorCode == MFUN_L3APL_F3DM_AQYC_STYPE_NOISE){
-                $ctrl_key = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_CMDID_NOISE_DATA);
-                $equip_id = $apiL2snrCommonServiceObj->byte2string(MFUN_L3APL_F4ICM_ID_EQUIP_NOISE);
+                $ctrl_key = $dbiL1vmCommonObj->byte2string(MFUN_HCU_CMDID_NOISE_DATA);
+                $equip_id = $dbiL1vmCommonObj->byte2string(MFUN_L3APL_F4ICM_ID_EQUIP_NOISE);
             }
             else{
                 $ctrl_key = "";
@@ -437,7 +437,7 @@ class classDbiL3apF4icm
             $row = $result->fetch_array();  //这里暂时假定每个设备一种类型的传感器只有一个
             if(!empty($status) AND ($status != $row['onoffstatus']))  //更新传感器开关状态
             {
-                $optkey_switch_set = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_MODBUS_SWITCH_SET);
+                $optkey_switch_set = $dbiL1vmCommonObj->byte2string(MFUN_HCU_MODBUS_SWITCH_SET);
                 $resp = $mysqli->query("UPDATE `t_l3f4icm_sensorctrl` SET `onoffstatus` = '$status' WHERE (`deviceid` = '$DevCode' AND `sensortype` = '$SensorCode')");
             }
 
@@ -447,25 +447,25 @@ class classDbiL3apF4icm
                 $value = $ParaList[$i]['value'];
                 if($ParaList[$i]['name'] == "MODBUS_Addr" AND $value != $row['modbus_addr']){
                     $modebus_addr = $value;
-                    $optkey_modbus_set = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_MODBUS_ADDR_SET);
+                    $optkey_modbus_set = $dbiL1vmCommonObj->byte2string(MFUN_HCU_MODBUS_ADDR_SET);
                     $query_str = "UPDATE `t_l3f4icm_sensorctrl` SET `modbus_addr` = '$value' WHERE (`deviceid` = '$DevCode' AND `sensortype` = '$SensorCode')";
                     $resp = $mysqli->query($query_str);
                 }
                 elseif($ParaList[$i]['name'] == "Measurement_Period" AND ($value != $row['meas_period'])){
                     $meas_period = $value;
-                    $optkey_period_set = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_MODBUS_PERIOD_SET);
+                    $optkey_period_set = $dbiL1vmCommonObj->byte2string(MFUN_HCU_MODBUS_PERIOD_SET);
                     $query_str = "UPDATE `t_l3f4icm_sensorctrl` SET `meas_period` = '$value' WHERE (`deviceid` = '$DevCode' AND `sensortype` = '$SensorCode')";
                     $resp = $mysqli->query($query_str);
                 }
                 elseif($ParaList[$i]['name'] == "Samples_Interval" AND ($value != $row['sample_interval'])){
                     $sample_interval = $value;
-                    $optkey_samples_set = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_MODBUS_SAMPLES_SET);
+                    $optkey_samples_set = $dbiL1vmCommonObj->byte2string(MFUN_HCU_MODBUS_SAMPLES_SET);
                     $query_str = "UPDATE `t_l3f4icm_sensorctrl` SET `sample_interval` = '$value' WHERE (`deviceid` = '$DevCode' AND `sensortype` = '$SensorCode')";
                     $resp = $mysqli->query($query_str);
                 }
                 elseif($ParaList[$i]['name'] == "Measurement_Times" AND ($value != $row['meas_times'])){
                     $meas_times = $value;
-                    $optkey_times_set = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_MODBUS_TIMES_SET);
+                    $optkey_times_set = $dbiL1vmCommonObj->byte2string(MFUN_HCU_MODBUS_TIMES_SET);
                     $query_str = "UPDATE `t_l3f4icm_sensorctrl` SET `meas_times` = '$value' WHERE (`deviceid` = '$DevCode' AND `sensortype` = '$SensorCode')";
                     $resp = $mysqli->query($query_str);
                 }
@@ -476,7 +476,7 @@ class classDbiL3apF4icm
                     $switch = "01";
                 elseif($status == "false")
                     $switch = "00";
-                $len = $apiL2snrCommonServiceObj->byte2string(strlen( $optkey_switch_set . $equip_id . $switch)/2);
+                $len = $dbiL1vmCommonObj->byte2string(strlen( $optkey_switch_set . $equip_id . $switch)/2);
                 $respCmd = $ctrl_key . $len . $optkey_switch_set . $equip_id . $switch;
                 $dbiL1vmCommonObj = new classDbiL1vmCommon();
                 $resp = $dbiL1vmCommonObj->dbi_cmdbuf_save_cmd(trim($DevCode), trim($respCmd));
@@ -487,8 +487,8 @@ class classDbiL3apF4icm
 
             }
             if(!empty($ctrl_key)AND !empty($optkey_modbus_set)){
-                $modebus_addr = $apiL2snrCommonServiceObj->ushort2string($modebus_addr & 0xFFFF);
-                $len = $apiL2snrCommonServiceObj->byte2string(strlen( $optkey_modbus_set . $equip_id . $modebus_addr)/2);
+                $modebus_addr = $dbiL1vmCommonObj->ushort2string($modebus_addr & 0xFFFF);
+                $len = $dbiL1vmCommonObj->byte2string(strlen( $optkey_modbus_set . $equip_id . $modebus_addr)/2);
                 $respCmd = $ctrl_key . $len . $optkey_modbus_set . $equip_id . $modebus_addr;
                 $dbiL1vmCommonObj = new classDbiL1vmCommon();
                 $resp = $dbiL1vmCommonObj->dbi_cmdbuf_save_cmd(trim($DevCode), trim($respCmd));
@@ -497,8 +497,8 @@ class classDbiL3apF4icm
                 $client->connect();
             }
             if(!empty($ctrl_key)AND !empty($optkey_period_set)){
-                $meas_period = $apiL2snrCommonServiceObj->ushort2string($meas_period & 0xFFFF);
-                $len = $apiL2snrCommonServiceObj->byte2string(strlen( $optkey_period_set . $equip_id . $meas_period)/2);
+                $meas_period = $dbiL1vmCommonObj->ushort2string($meas_period & 0xFFFF);
+                $len = $dbiL1vmCommonObj->byte2string(strlen( $optkey_period_set . $equip_id . $meas_period)/2);
                 $respCmd = $ctrl_key . $len . $optkey_period_set . $equip_id . $meas_period;
                 $dbiL1vmCommonObj = new classDbiL1vmCommon();
                 $resp = $dbiL1vmCommonObj->dbi_cmdbuf_save_cmd(trim($DevCode), trim($respCmd));
@@ -507,8 +507,8 @@ class classDbiL3apF4icm
                 $client->connect();
             }
             if(!empty($ctrl_key) AND !empty($optkey_samples_set)){
-                $sample_interval = $apiL2snrCommonServiceObj->ushort2string($sample_interval & 0xFFFF);
-                $len = $apiL2snrCommonServiceObj->byte2string(strlen( $optkey_samples_set . $equip_id . $sample_interval)/2);
+                $sample_interval = $dbiL1vmCommonObj->ushort2string($sample_interval & 0xFFFF);
+                $len = $dbiL1vmCommonObj->byte2string(strlen( $optkey_samples_set . $equip_id . $sample_interval)/2);
                 $respCmd = $ctrl_key . $len . $optkey_samples_set . $equip_id . $sample_interval;
                 $dbiL1vmCommonObj = new classDbiL1vmCommon();
                 $resp = $dbiL1vmCommonObj->dbi_cmdbuf_save_cmd(trim($DevCode), trim($respCmd));
@@ -517,8 +517,8 @@ class classDbiL3apF4icm
                 $client->connect();
             }
             if(!empty($ctrl_key) AND !empty($optkey_times_set)){
-                $meas_times = $apiL2snrCommonServiceObj->ushort2string($meas_times & 0xFFFF);
-                $len = $apiL2snrCommonServiceObj->byte2string(strlen( $optkey_times_set . $equip_id . $meas_times)/2);
+                $meas_times = $dbiL1vmCommonObj->ushort2string($meas_times & 0xFFFF);
+                $len = $dbiL1vmCommonObj->byte2string(strlen( $optkey_times_set . $equip_id . $meas_times)/2);
                 $respCmd = $ctrl_key . $len . $optkey_times_set . $equip_id . $meas_times;
                 $dbiL1vmCommonObj = new classDbiL1vmCommon();
                 $resp = $dbiL1vmCommonObj->dbi_cmdbuf_save_cmd(trim($DevCode), trim($respCmd));
@@ -634,11 +634,11 @@ class classDbiL3apF4icm
             $row = $result->fetch_array();
             $dataflag = $row["dataflag"];
             $devCode = $row["deviceid"];
-            $apiL2snrCommonServiceObj = new classApiL2snrCommonService();
+            $dbiL1vmCommonObj = new classDbiL1vmCommon();
             if ($dataflag == MFUN_HCU_VIDEO_DATA_STATUS_NORMAL OR $dataflag == MFUN_HCU_VIDEO_DATA_STATUS_FAIL){
-                $ctrl_key = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_CMDID_HSMMP_DATA);
-                $opt_key = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_OPT_VEDIOFILE_REQ);
-                $len = $apiL2snrCommonServiceObj->byte2string(strlen( $opt_key)/2 + strlen($videoid));
+                $ctrl_key = $dbiL1vmCommonObj->byte2string(MFUN_HCU_CMDID_HSMMP_DATA);
+                $opt_key = $dbiL1vmCommonObj->byte2string(MFUN_HCU_OPT_VEDIOFILE_REQ);
+                $len = $dbiL1vmCommonObj->byte2string(strlen( $opt_key)/2 + strlen($videoid));
                 $cmdStr = $ctrl_key . $len . $opt_key . $videoid;
                 //保存命令到CmdBuf
                 $dbiL1VmCommonObj = new classDbiL1vmCommon();
@@ -690,14 +690,14 @@ class classDbiL3apF4icm
         if (($result != false) && ($result->num_rows)>0)
         {
             //生成控制命令的控制字
-            $apiL2snrCommonServiceObj = new classApiL2snrCommonService();
-            $ctrl_key = $apiL2snrCommonServiceObj->byte2string(MFUN_IHU_CMDID_HSMMP_DATA);
-            $opt_key = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_OPT_VEDIOPIC_REQ);
+            $dbiL1vmCommonObj = new classDbiL1vmCommon();
+            $ctrl_key = $dbiL1vmCommonObj->byte2string(MFUN_IHU_CMDID_HSMMP_DATA);
+            $opt_key = $dbiL1vmCommonObj->byte2string(MFUN_HCU_OPT_VEDIOPIC_REQ);
 
             $row = $result->fetch_array();  //statcode和devcode一一对应
             $DevCode = $row['devcode'];
 
-            $len = $apiL2snrCommonServiceObj->byte2string(strlen($opt_key)/2);
+            $len = $dbiL1vmCommonObj->byte2string(strlen($opt_key)/2);
             $respCmd = $ctrl_key . $len . $opt_key;
 
             //通过9502端口建立tcp阻塞式socket连接，向HCU转发操控命令
@@ -730,14 +730,14 @@ class classDbiL3apF4icm
         if (($result != false) && ($result->num_rows)>0)
         {
             //生成控制命令的控制字
-            $apiL2snrCommonServiceObj = new classApiL2snrCommonService();
-            $ctrl_key = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_CMDID_TEMP_DATA);
-            $opt_key = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_OPT_STATUS_REQ);
+            $dbiL1vmCommonObj = new classDbiL1vmCommon();
+            $ctrl_key = $dbiL1vmCommonObj->byte2string(MFUN_HCU_CMDID_TEMP_DATA);
+            $opt_key = $dbiL1vmCommonObj->byte2string(MFUN_HCU_OPT_STATUS_REQ);
 
             $row = $result->fetch_array();  //statcode和devcode一一对应
             $DevCode = $row['devcode'];
 
-            $len = $apiL2snrCommonServiceObj->byte2string(strlen($opt_key)/2);
+            $len = $dbiL1vmCommonObj->byte2string(strlen($opt_key)/2);
             $respCmd = $ctrl_key . $len . $opt_key;
 
             //通过9502端口建立tcp阻塞式socket连接，向HCU转发操控命令
@@ -810,12 +810,12 @@ class classDbiL3apF4icm
             $row = $result->fetch_array();
             $devCode = $row["devcode"];
             //生成控制命令的控制字
-            $apiL2snrCommonServiceObj = new classApiL2snrCommonService();
-            $ctrl_key = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_CMDID_FHYS_LOCK);
-            $opt_key = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_OPT_FHYS_FORCE_LOCKOPEN_CMD);
-            $para = $apiL2snrCommonServiceObj->byte2string(MFUN_HCU_DATA_FHYS_LOCK_OPEN);
+            $dbiL1vmCommonObj = new classDbiL1vmCommon();
+            $ctrl_key = $dbiL1vmCommonObj->byte2string(MFUN_HCU_CMDID_FHYS_LOCK);
+            $opt_key = $dbiL1vmCommonObj->byte2string(MFUN_HCU_OPT_FHYS_FORCE_LOCKOPEN_CMD);
+            $para = $dbiL1vmCommonObj->byte2string(MFUN_HCU_DATA_FHYS_LOCK_OPEN);
 
-            $len = $apiL2snrCommonServiceObj->byte2string(strlen($opt_key.$para)/2);
+            $len = $dbiL1vmCommonObj->byte2string(strlen($opt_key.$para)/2);
             $respCmd = $ctrl_key . $len . $opt_key . $para;
 
             //通过9502端口建立tcp阻塞式socket连接，向HCU转发操控命令

@@ -17,7 +17,7 @@ class classTaskL2snrPm25
 
     }
 
-    public function func_pm25_data_process($platform, $deviceId, $statCode, $content)
+    public function func_pm25_data_process($platform, $devCode, $statCode, $content)
     {
         switch($platform)
         {
@@ -31,7 +31,7 @@ class classTaskL2snrPm25
                 switch ($sub_key) //MODBUS操作字处理
                 {
                     case MFUN_HCU_MODBUS_DATA_REPORT:
-                        $resp = $this->wx_pmdata_req_process($deviceId, $content);
+                        $resp = $this->wx_pmdata_req_process($devCode, $content);
                         break;
                     default:
                         $resp = "";
@@ -53,10 +53,10 @@ class classTaskL2snrPm25
                 switch ($opt_key) //MODBUS操作字处理
                 {
                     case MFUN_HCU_MODBUS_DATA_REPORT:
-                        $resp = $this->hcu_pmdata_req_process($deviceId,$statCode, $data);
+                        $resp = $this->hcu_pmdata_req_process($devCode,$statCode, $data);
                         break;
                     case MFUN_HCU_MODBUS_SWITCH_SET_ACK:
-                        $resp = $this->hcu_pm_switch_set_process($deviceId,$statCode, $data);
+                        $resp = $this->hcu_pm_switch_set_process($devCode,$statCode, $data);
                         break;
                     case MFUN_HCU_MODBUS_ADDR_SET_ACK:
                         $resp = "";
@@ -86,7 +86,7 @@ class classTaskL2snrPm25
         return $resp;
     }
 
-    public function func_pm25_data_huitp_process($platform, $deviceId, $statCode, $content)
+    public function func_pm25_data_huitp_process($platform, $devCode, $statCode, $content)
     {
         switch($platform)
         {
@@ -100,16 +100,16 @@ class classTaskL2snrPm25
                 switch ($sub_key) //MODBUS操作字处理
                 {
                     case MFUN_HCU_MODBUS_DATA_REPORT:
-                        $resp = $this->wx_pmdata_req_process($deviceId, $content);
+                        $resp = $this->wx_pmdata_req_process($devCode, $content);
                         break;
                     default:
                         $resp = "";
                         break;
                 }
                 break;
-            case MFUN_TECH_PLTF_HCUGX:
+            case MFUN_TECH_PLTF_HCUGX_HUITP:
 
-                $resp = $this->hcu_pmdata_req_huitp_process($deviceId, $statCode, $content);
+                $resp = $this->hcu_pmdata_req_huitp_process($devCode, $statCode, $content);
 
                 break;
             case MFUN_TECH_PLTF_JDIOT:
@@ -123,7 +123,7 @@ class classTaskL2snrPm25
         return $resp;
     }
 
-    private function wx_pmdata_req_process( $deviceId,$content)
+    private function wx_pmdata_req_process( $devCode,$content)
     {
         $pmdata["pm01"] = hexdec(substr($content, 6, 8)) & 0xFFFFFFFF;
         $pmdata["pm25"] = hexdec(substr($content, 14, 8)) & 0xFFFFFFFF;
@@ -134,14 +134,14 @@ class classTaskL2snrPm25
         $gps = "";
 
         $sDbObj = new classDbiL2snrPm25();
-        $sDbObj->dbi_pmData_save($deviceId, $devCode,$ntimes, $pmdata,$gps);
-        $sDbObj->dbi_pmdata_delete_3monold($deviceId, $devCode,90);  //remove 90 days old data.
+        $sDbObj->dbi_pmData_save($devCode, $devCode,$ntimes, $pmdata,$gps);
+        $sDbObj->dbi_pmdata_delete_3monold($devCode, $devCode,90);  //remove 90 days old data.
 
         $resp = ""; //no response message
         return $resp;
     }
 
-    private function hcu_pmdata_req_process( $deviceId,$statCode,$content)
+    private function hcu_pmdata_req_process( $devCode,$statCode,$content)
     {
         $format = "A2Equ/A2Type/A2Format/A8PM01/A8PM25/A8PM10/A2Flag_Lo/A8Longitude/A2Flag_La/A8Latitude/A8Altitude/A8Time";
         $data = unpack($format, $content);
@@ -159,26 +159,26 @@ class classTaskL2snrPm25
         $timeStamp = hexdec($data['Time']) & 0xFFFFFFFF;
 
         $sDbObj = new classDbiL2snrPm25();
-        $sDbObj->dbi_pmData_save($deviceId, $sensorId, $timeStamp, $report,$gps);
+        $sDbObj->dbi_pmData_save($devCode, $sensorId, $timeStamp, $report,$gps);
         //该函数处理需要再完善，不确定是否可用
-        $sDbObj->dbi_pmdata_delete_3monold($deviceId, $sensorId,90);  //remove 90 days old data.
+        $sDbObj->dbi_pmdata_delete_3monold($devCode, $sensorId,90);  //remove 90 days old data.
 
         //更新分钟测量报告聚合表
-        $sDbObj->dbi_minreport_update_pmdata($deviceId,$statCode,$timeStamp,$report);
+        $sDbObj->dbi_minreport_update_pmdata($devCode,$statCode,$timeStamp,$report);
 
         //更新数据精度格式表
         $format = $report["format"];
-        $cDbObj = new classDbiL2snrCom();
-        $cDbObj->dbi_dataformat_update_format($deviceId,"T_pmdata",$format);
+        $cDbObj = new classDbiL2snrCommon();
+        $cDbObj->dbi_dataformat_update_format($devCode,"T_pmdata",$format);
         //更新瞬时测量值聚合表
         $eDbObj = new classDbiL3apF3dm();
-        $eDbObj->dbi_currentreport_update_value($deviceId, $statCode, $timeStamp,"T_pmdata", $report);
+        $eDbObj->dbi_currentreport_update_value($devCode, $statCode, $timeStamp,"T_pmdata", $report);
 
         $resp = ""; //no response message
         return $resp;
     }
 
-    private function hcu_pmdata_req_huitp_process( $deviceId,$statCode,$content)
+    private function hcu_pmdata_req_huitp_process( $devCode,$statCode,$content)
     {
         $pm01data = $content[1]['HUITP_IEID_uni_pm01_value']['pm01Value'];
         $pm01dataFormat = pow(10,$content[1]['HUITP_IEID_uni_pm01_value']['dataFormat']);
@@ -192,27 +192,25 @@ class classTaskL2snrPm25
         $pm10dataFormat = pow(10,$content[3]['HUITP_IEID_uni_pm10_value']['dataFormat']);
         $pm10Value = hexdec($pm10data) / $pm10dataFormat;
 
-        $timeStamp = $content[3]['HUITP_IEID_uni_pm10_value']['timeStamp'];
-        $timeStamp = hexdec($timeStamp) & 0xFFFFFFFF;
+        $timeStamp = time();
 
         $sDbObj = new classDbiL2snrPm25();
-        $sDbObj->dbi_pmData_huitp_save($deviceId, $timeStamp, $pm01Value, $pm25Value, $pm10Value);
+        $resp = $sDbObj->dbi_pmData_huitp_save($devCode, $timeStamp, $pm01Value, $pm25Value, $pm10Value);
         //该函数处理需要再完善，不确定是否可用
-        $sDbObj->dbi_pmdata_huitp_delete_3monold($deviceId, 90);  //remove 90 days old data.
+        $resp = $sDbObj->dbi_pmdata_huitp_delete_3monold($devCode, 90);  //remove 90 days old data.
 
         //更新分钟测量报告聚合表
-        $sDbObj->dbi_minreport_update_huitp_pmdata($deviceId,$statCode,$timeStamp,$pm01Value, $pm25Value, $pm10Value);
+        $resp = $sDbObj->dbi_minreport_update_huitp_pmdata($devCode,$statCode,$timeStamp,$pm01Value, $pm25Value, $pm10Value);
 
         //更新瞬时测量值聚合表
         $eDbObj = new classDbiL3apF3dm();
         $pmdata = ["pm01"=>$pm01Value,"pm25"=>$pm25Value,"pm10"=>$pm10Value];
-        $eDbObj->dbi_currentreport_update_value($deviceId, $statCode, $timeStamp,"T_pmdata", $pmdata);
+        $resp = $eDbObj->dbi_currentreport_update_value($devCode, $statCode, $timeStamp,"T_pmdata", $pmdata);
 
-        $resp = ""; //no response message
         return $resp;
     }
 
-    private function hcu_pm_switch_set_process($deviceId,$statCode, $content)
+    private function hcu_pm_switch_set_process($devCode,$statCode, $content)
     {
         $format = "A2Equ/A2Status";
         $data = unpack($format, $content);
@@ -221,7 +219,7 @@ class classTaskL2snrPm25
         $status = hexdec($data['Status']) & 0xFF;
 
         $cDbObj = new classDbiL2sdkHcu();
-        $cDbObj->dbi_hcuDevice_update_status($deviceId,$statCode,$status);
+        $cDbObj->dbi_hcuDevice_update_status($devCode,$statCode,$status);
 
         $resp = ""; //no response message
         return $resp;
@@ -229,24 +227,17 @@ class classTaskL2snrPm25
 
 
     //PM强度读取 (Cloud- > IHU)
-    public function func_pm_data_push_process($deviceId, $content)
+    public function func_pm_data_push_process($devCode, $content)
     {
-        $cmdid = $this->byte2string(MFUN_IHU_CMDID_PM25_DATA);
+        $dbiL1vmCommonObj = new classDbiL1vmCommon();
+        $cmdid = $dbiL1vmCommonObj->byte2string(MFUN_IHU_CMDID_PM25_DATA);
         $length = "01";
-        $sub_key =  $this->byte2string(MFUN_HCU_MODBUS_DATA_REQ);
+        $sub_key =  $dbiL1vmCommonObj->byte2string(MFUN_HCU_MODBUS_DATA_REQ);
         $msg_body = $cmdid . $length . $sub_key;
 
         $hex_body = pack('H*',$msg_body);
 
         return $hex_body;
-    }
-
-    //BYTE转换到字符串
-    public function byte2string($n)
-    {
-        $out = "00";
-        $a1 = strtoupper(dechex($n & 0xFF));
-        return substr_replace($out, $a1, strlen($out)-strlen($a1), strlen($a1));
     }
 
     /**************************************************************************************
@@ -258,6 +249,14 @@ class classTaskL2snrPm25
         $loggerObj = new classApiL1vmFuncCom();
         $log_time = date("Y-m-d H:i:s", time());
 
+        //赋初值
+        $project= "";
+        $log_from = "";
+        $platform ="";
+        $devCode ="";
+        $statCode = "";
+        $content="";
+
         //入口消息内容判断
         if (empty($msg) == true) {
             $result = "Received null message body";
@@ -266,6 +265,16 @@ class classTaskL2snrPm25
             echo trim($result);
             return false;
         }
+        else{
+            //解开消息
+            if (isset($msg["project"])) $project = $msg["project"];
+            if (isset($msg["log_from"])) $log_from = $msg["log_from"];
+            if (isset($msg["platform"])) $platform = $msg["platform"];
+            if (isset($msg["devCode"])) $devCode = $msg["devCode"];
+            if (isset($msg["statCode"])) $statCode = $msg["statCode"];
+            if (isset($msg["content"])) $content = $msg["content"];
+        }
+
         //多条消息发送到PM25
         if (($msgId != MSG_ID_L2SDK_HCU_TO_L2SNR_PM25) && ($msgId != MSG_ID_L2SDK_EMCWX_TO_L2SNR_PM25_DATA_READ_INSTANT) && ($msgId != MSG_ID_L2SDK_EMCWX_TO_L2SNR_PM25_DATA_REPORT_TIMING)&& ($msgId != HUITP_MSGID_uni_pm25_data_report)){
             $result = "Msgid or MsgName error";
@@ -275,62 +284,27 @@ class classTaskL2snrPm25
             return false;
         }
 
-        //赋初值
-        $project= "";
-        $log_from = "";
-        $platform ="";
-        $deviceId="";
-        $statCode = "";
-        $content="";
+
 
         if ($msgId == MSG_ID_L2SDK_HCU_TO_L2SNR_PM25)
         {
-            //解开消息
-            if (isset($msg["project"])) $project = $msg["project"];
-            if (isset($msg["log_from"])) $log_from = $msg["log_from"];
-            if (isset($msg["platform"])) $platform = $msg["platform"];
-            if (isset($msg["deviceId"])) $deviceId = $msg["deviceId"];
-            if (isset($msg["statCode"])) $statCode = $msg["statCode"];
-            if (isset($msg["content"])) $content = $msg["content"];
-
             //具体处理函数
-            $resp = $this->func_pm25_data_process($platform, $deviceId, $statCode, $content);
+            $resp = $this->func_pm25_data_process($platform, $devCode, $statCode, $content);
         }
         elseif ($msgId == MSG_ID_L2SDK_EMCWX_TO_L2SNR_PM25_DATA_READ_INSTANT)
         {
-            //解开消息
-            if (isset($msg["project"])) $project = $msg["project"];
-            if (isset($msg["log_from"])) $log_from = $msg["log_from"];
-            if (isset($msg["deviceId"])) $deviceId = $msg["deviceId"];
-            if (isset($msg["content"])) $content = $msg["content"];
             //具体处理函数
-            $resp = $this->func_pm_data_push_process($deviceId, $content);
+            $resp = $this->func_pm_data_push_process($devCode, $content);
         }
         elseif ($msgId == MSG_ID_L2SDK_EMCWX_TO_L2SNR_PM25_DATA_REPORT_TIMING)
         {
-            //解开消息
-            if (isset($msg["project"])) $project = $msg["project"];
-            if (isset($msg["log_from"])) $log_from = $msg["log_from"];
-            if (isset($msg["platform"])) $platform = $msg["platform"];
-            if (isset($msg["deviceId"])) $deviceId = $msg["deviceId"];
-            if (isset($msg["statCode"])) $statCode = $msg["statCode"];
-            if (isset($msg["content"])) $content = $msg["content"];
-
             //具体处理函数
-            $resp = $this->func_pm25_data_process($platform, $deviceId, $statCode, $content);
+            $resp = $this->func_pm25_data_process($platform, $devCode, $statCode, $content);
         }
         elseif ($msgId == HUITP_MSGID_uni_pm25_data_report)
         {
-            //解开消息
-            if (isset($msg["project"])) $project = $msg["project"];
-            if (isset($msg["log_from"])) $log_from = $msg["log_from"];
-            if (isset($msg["platform"])) $platform = $msg["platform"];
-            if (isset($msg["deviceId"])) $deviceId = $msg["deviceId"];
-            if (isset($msg["statCode"])) $statCode = $msg["statCode"];
-            if (isset($msg["content"])) $content = $msg["content"];
-
             //具体处理函数
-            $resp = $this->func_pm25_data_huitp_process($platform, $deviceId, $statCode, $content);
+            $resp = $this->func_pm25_data_huitp_process($platform, $devCode, $statCode, $content);
         }
         else{
             $resp = ""; //啥都不ECHO

@@ -34,7 +34,8 @@ include_once "../l2sdk/task_l2sdk_iot_wx_jssdk.php";
 include_once "../l2sdk/task_l2sdk_nbiot_std_qg376.class.php";
 include_once "../l2sdk/task_l2sdk_nbiot_std_cj188.class.php";
 include_once "../l2socketlisten/task_l2socket_listen.class.php";
-include_once "../l2sensorproc/proccom/svr_l2snr_com.class.php";
+include_once "../l2sensorproc/proccom/task_l2snr_com.class.php";
+include_once "../l2sensorproc/sensorccl/task_l2snr_ccl.class.php";
 include_once "../l2sensorproc/sensorairprs/task_l2snr_airprs.class.php";
 include_once "../l2sensorproc/sensoremc/task_l2snr_emc.class.php";
 include_once "../l2sensorproc/sensoralcohol/task_l2snr_alcohol.class.php";
@@ -835,6 +836,10 @@ class classTaskL1vmCoreRouter
                     $obj->mfun_l2sdk_nbiot_agc_task_main_entry($this, $result["msgId"], $result["msgName"], $result["msgBody"]);
                     break;
 
+                case MFUN_TASK_ID_L2SENSOR_COMMON:
+                    $obj = new classTaskL2snrCommonService();
+                    $obj->mfun_l2snr_common_task_main_entry($this, $result["msgId"], $result["msgName"], $result["msgBody"]);
+                    break;
                 case MFUN_TASK_ID_L2SENSOR_EMC:
                     $obj = new classTaskL2snrEmc();
                     $obj->mfun_l2snr_emc_task_main_entry($this, $result["msgId"], $result["msgName"], $result["msgBody"]);
@@ -950,6 +955,11 @@ class classTaskL1vmCoreRouter
                 case MFUN_TASK_ID_L2SENSOR_DOORLOCK:
                     $obj = new classTaskL2snrDoorlock();
                     $obj->mfun_l2snr_doorlock_task_main_entry($this, $result["msgId"], $result["msgName"], $result["msgBody"]);
+                    break;
+
+                case MFUN_TASK_ID_L2SENSOR_CCL:
+                    $obj = new classTaskL2snrCcl();
+                    $obj->mfun_l2snr_ccl_task_main_entry($this, $result["msgId"], $result["msgName"], $result["msgBody"]);
                     break;
 
                 case MFUN_TASK_ID_L2SENSOR_GPRS:

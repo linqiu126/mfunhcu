@@ -14,9 +14,11 @@ include_once "../l1comvm/vmlayer.php";
 class classL1MainEntrySocketListenServer
 {
     private $swoole_socket_serv;
+    private $swoole_http_serv;  //暂时定义没有使用
     public function __construct() {
         //创建一个swoole server资源对象, 127.0.0.1表示监听本机，0.0.0.0表示监听所有地址
-        $this->swoole_socket_serv = new swoole_server("0.0.0.0", MFUN_SWOOLE_SOCKET_STD_XML_HTTP);
+        $this->swoole_socket_serv = new swoole_server("0.0.0.0", MFUN_SWOOLE_SOCKET_STDXML_TCP_HCUPORT);
+
         //swoole_server->set函数用于设置swoole_server运行时的各项参数
         $this->swoole_socket_serv->set(array(
             'worker_num' => 4,  //设置启动的worker进程数量。swoole采用固定worker进程的模式。PHP代码中是全异步非阻塞，worker_num配置为CPU核数的1-4倍即可
@@ -35,11 +37,7 @@ class classL1MainEntrySocketListenServer
             'debug_mode'=> 1,
             'task_worker_num' => 1
         ));
-
-        $this->swoole_socket_serv->on('Start', array($this, 'swoole_socket_serv_onStart'));  //启动server，监听所有TCP/UDP端口
-        $this->swoole_socket_serv->on('Connect', array($this, 'swoole_socket_serv_onConnect'));
-        $this->swoole_socket_serv->on('Receive', array($this, 'swoole_socket_serv_onReceive'));
-        $this->swoole_socket_serv->on('Close', array($this, 'swoole_socket_serv_onClose'));
+        //Socket server公共处理函数，Manager/Task/Worker
         //worker
         $this->swoole_socket_serv->on('WorkerStart', array($this, 'swoole_socket_serv_onWorkerStart'));
         $this->swoole_socket_serv->on('WorkerStop', array($this, 'swoole_socket_serv_onWorkerStop'));
@@ -49,159 +47,54 @@ class classL1MainEntrySocketListenServer
         //manager
         $this->swoole_socket_serv->on('ManagerStart', array($this, 'swoole_socket_serv_onManagerStart'));
 
-        //port2 opened for UI command
-        $port2 = $this->swoole_socket_serv->listen("0.0.0.0", MFUN_SWOOLE_SOCKET_STD_XML_TCP, SWOOLE_SOCK_TCP);
-        /*$port2->set(array(
-            'open_length_check' => true,
-            'package_length_type' => 'N',
-            'package_length_offset' => 0,
-            'package_max_length' => 800,
-        ));*/
-        $port2->on('connect', array($this, 'port2_onConnect'));
-        $port2->on('receive', array($this, 'port2_onReceive'));
-        $port2->on('close', array($this, 'port2_onClose'));
+        //具体port处理函数
+        //stdxml_tcp_hcuport for HCU TCP
+        $this->swoole_socket_serv->on('Start', array($this, 'stdxml_tcp_hcuport_onStart'));  //启动server，监听所有TCP/UDP端口
+        $this->swoole_socket_serv->on('Connect', array($this, 'stdxml_tcp_hcuport_onConnect'));
+        $this->swoole_socket_serv->on('Receive', array($this, 'stdxml_tcp_hcuport_onReceive'));
+        $this->swoole_socket_serv->on('Close', array($this, 'stdxml_tcp_hcuport_onClose'));
 
-        //port3 for FHYS 云控锁项目
-        $port3 = $this->swoole_socket_serv->listen("0.0.0.0", MFUN_SWOOLE_SOCKET_STD_XML_UDP, SWOOLE_SOCK_UDP);
-        $port3->on('Packet', array($this, 'port3_onPacket'));
 
-        $port_huitp_xml_http = $this->swoole_socket_serv->listen("0.0.0.0", MFUN_SWOOLE_SOCKET_HUITP_XML_HTTP, SWOOLE_SOCK_TCP);
-        $port_huitp_xml_http->on('Connect', array($this, 'port_huitp_xml_http_onConnect'));
-        $port_huitp_xml_http->on('Receive', array($this, 'port_huitp_xml_http_onReceive'));
+        //stdxml_tcp_uiport opened for UI Command
+        $stdxml_tcp_uiport = $this->swoole_socket_serv->listen("0.0.0.0", MFUN_SWOOLE_SOCKET_STDXML_TCP_UIPORT, SWOOLE_SOCK_TCP);
+        $stdxml_tcp_uiport->on('connect', array($this, 'stdxml_tcp_uiport_onConnect'));
+        $stdxml_tcp_uiport->on('receive', array($this, 'stdxml_tcp_uiport_onReceive'));
+        $stdxml_tcp_uiport->on('close', array($this, 'stdxml_tcp_uiport_onClose'));
+
+        //huitpxml_tcp_port, CCL HUITP TCP port
+        $huitpxml_tcp_cclport = $this->swoole_socket_serv->listen("0.0.0.0", MFUN_SWOOLE_SOCKET_HUITPXML_TCP, SWOOLE_SOCK_TCP);
+        $huitpxml_tcp_cclport->on('Connect', array($this, 'huitpxml_tcp_cclport_onConnect'));
+        $huitpxml_tcp_cclport->on('Receive', array($this, 'huitpxml_tcp_cclport_onReceive'));
+        $huitpxml_tcp_cclport->on('Close', array($this, 'huitpxml_tcp_cclport_onClose'));
+
+        //创建CCL HTTP swoole server
+        //$this->swoole_http_serv = new swoole_http_server("0.0.0.0", MFUN_SWOOLE_SOCKET_HUITPXML_HTTP);
+        //$this->swoole_http_serv->on('Request', array($this, 'swoole_http_serv_onRequest'));
+        //$this->swoole_http_serv->start();
 
         $this->swoole_socket_serv->start();
         return;
     }
 
-    public function swoole_socket_serv_onStart($swoole_socket_serv) {
-        global $argv;
-        swoole_set_process_name("php {$argv[0]}: master");
-        echo date('Y/m/d H:i:s', time())." ";
-        echo "Swoole start: MasterPid={$swoole_socket_serv->master_pid}|Manager_pid={$swoole_socket_serv->manager_pid}\n";
-         //$serv->addtimer(1000);
-         //connect to mysql, reset all socketid to 0
-        $mysqli = mysqli_connect("127.0.0.1", "TestUser", "123456", "bxxhl1l2l3");
-        if (!$mysqli ) {
-            echo date('Y/m/d H:i:s', time())." ";
-            echo "Error: Unable to connect to MySQL." . PHP_EOL;
-            echo "Debugging errno: " . mysqli_connect_errno() . PHP_EOL;
-            echo "Debugging error: " . mysqli_connect_error() . PHP_EOL;
-            exit;
-        }
-        $query="UPDATE t_l2sdk_iothcu_inventory  SET socketid = 0 WHERE (socketid != 0)"; //将Inventory表中的设备socketid初始化成0
-        $result=$mysqli->query($query);
-        if ($result){
-            echo date('Y/m/d H:i:s', time())." ";
-            echo "Swoole start: Swoole version is ".SWOOLE_VERSION.". All socketid reseted to 0, updated rows: ".$mysqli->affected_rows.PHP_EOL;
-        }else {
-            echo date('Y/m/d H:i:s', time())." ";
-            echo "Swoole start: Reset socketid failed!".PHP_EOL;
-        }
-        $mysqli->close();
-    }
-
-    public function swoole_socket_serv_onManagerStart($swoole_socket_serv) {
-             global $argv;
-             swoole_set_process_name("php {$argv[0]}: manager");
-    }
-
-    public function swoole_socket_serv_onConnect($swoole_socket_serv, $fd, $from_id ) {
-        echo date('Y/m/d H:i:s', time())." ";
-        echo "Swoole worker: Client fd={$fd} connected.\n";
-        $swoole_socket_serv->send( $fd, "Hello {$fd}!" );
-    }
-
-    //入口函数挂载在这个函数体中，待测试
-    public function swoole_socket_serv_onReceive( swoole_server $swoole_socket_serv, $fd, $from_id, $data ) {
-        echo date('Y/m/d H:i:s', time())." ";
-        echo "Swoole worker: Get Message From Client {$fd} : {$data}\n";
-        
-        //a test to read from t_l2sdk_iothcu_inventory, devcode + socketid
-        //taskwait就是投递一条任务，这里直接传递SQL语句了
-        //然后阻塞等待SQL完成
-
-        //20161112, QL, AQYC项目的代码先注释掉，供FHYC项目调试完再说
-        //$strpos = strpos($data,"HCU_");
-        //$DevCode = substr($data, $strpos, 11);
-
-	    //$xml = simplexml_load_string($data);
-        //$DevCode = (string) $xml->FromUserName;
-	    $xml_parser = xml_parser_create();
-	    if(!xml_parse($xml_parser,$data,true)){
-            xml_parser_free($xml_parser);
-            $DevCode = $data;
-	    }else {
-    		$xml = simplexml_load_string($data);
-	        $DevCode = (string) $xml->FromUserName;
-	        xml_parser_free($xml_parser);
-	    }
-
-        $query="UPDATE t_l2sdk_iothcu_inventory  SET socketid = $fd WHERE devcode = \"$DevCode\"";
-        $result = $swoole_socket_serv->taskwait($query);
-        if ($result !== false) {
-            list($status, $db_res) = explode(':', $result, 2);
-            if ($status == 'OK') {
-                echo date('Y/m/d H:i:s', time())." ";
-                echo "Swoole worker: Client ".$DevCode."'s socketid ".$fd." is stored in t_l2sdk_iothcu_inventory. Affacted_rows: ".$db_res.PHP_EOL;
-            } else {
-                echo date('Y/m/d H:i:s', time())." ";
-                echo "Swoole worker: Socketid store failed.";
-            }
-            //return;
-        } else {
-            echo date('Y/m/d H:i:s', time())." ";
-            echo "Swoole worker: Socketid store timeout.";
-        }
-
-        /*$msg = array("serv" => $serv, "fd" => $fd, "fromid" => $from_id, "data" => $data);
-        $obj = new classTaskL1vmCoreRouter();
-        $obj->mfun_l1vm_task_main_entry(MFUN_MAIN_ENTRY_SOCKET_LISTEN, NULL, NULL, $msg); */
-
-        //for FHYS云控锁项目
-        $obj = new classTaskL1vmCoreRouter();
-        $obj->mfun_l1vm_task_main_entry(MFUN_MAIN_ENTRY_IOT_HCU, MSG_ID_L2SDK_HCU_DATA_COMING, "MSG_ID_L2SDK_HCU_DATA_COMING", $data);
-    }
-
-    public function swoole_socket_serv_onClose( $swoole_socket_serv, $fd, $from_id ) {
-        echo date('Y/m/d H:i:s', time())." ";
-        echo "Swoole worker: Client {$fd} closed connection.".PHP_EOL;
-        //reset socketid in t_l2sdk_iothcu_inventory when connection closed.
-        $query="UPDATE t_l2sdk_iothcu_inventory  SET socketid = 0 WHERE socketid = $fd"; 
-        $result = $swoole_socket_serv->taskwait($query);
-        if ($result !== false) {
-            list($status, $db_res) = explode(':', $result, 2);
-            if ($status == 'OK') {
-                echo date('Y/m/d H:i:s', time())." ";
-                echo "Swoole worker: Socketid ".$fd." is reseted to 0 in t_l2sdk_iothcu_inventory. Affacted_rows : ".$db_res.PHP_EOL;
-            } else {
-                echo date('Y/m/d H:i:s', time())." ";
-                echo "Swoole worker: Socketid".$fd." reset failed.".PHP_EOL;
-            }
-            return;
-        } else {
-            echo date('Y/m/d H:i:s', time())." ";
-            echo "Swoole worker: Socketid".$fd." reset timeout.".PHP_EOL;
-        }
-    }
-
+    /*Socket server公共处理函数*/
     public function swoole_socket_serv_onWorkerStart($swoole_socket_serv, $worker_id)
-     {
-         global $argv;
-         if($worker_id >= $swoole_socket_serv->setting['worker_num']) {
-             echo date('Y/m/d H:i:s', time())." ";
-             swoole_set_process_name("php {$argv[0]}: task_worker");
-         } else {
-             echo date('Y/m/d H:i:s', time())." ";
-             swoole_set_process_name("php {$argv[0]}: worker");
-         }
-        echo "Worker start: MasterPid={$swoole_socket_serv->master_pid}|Manager_pid={$swoole_socket_serv->manager_pid}|WorkerId=$worker_id\n";
+    {
+        global $argv;
+        if($worker_id >= $swoole_socket_serv->setting['worker_num']) {
+            echo date('Y/m/d H:i:s', time())." ";
+            swoole_set_process_name("php {$argv[0]}: task_worker");
+        } else {
+            echo date('Y/m/d H:i:s', time())." ";
+            swoole_set_process_name("php {$argv[0]}: worker");
+        }
+        echo "swoole_socket_serv_onWorkerStart: MasterPid={$swoole_socket_serv->master_pid}|Manager_pid={$swoole_socket_serv->manager_pid}|WorkerId=$worker_id\n";
         //$serv->addtimer(500); //500ms
-     }
+    }
 
     public function swoole_socket_serv_onWorkerStop($swoole_socket_serv, $worker_id)
     {
         echo date('Y/m/d H:i:s', time())." ";
-        echo "WorkerStop[$worker_id]|pid=".posix_getpid().".\n";
+        echo "swoole_socket_serv_onWorkerStop: [$worker_id]|pid=".posix_getpid().".\n";
     }
 
     public function swoole_socket_serv_onTask($swoole_socket_serv, $task_id, $from_id, $sql)
@@ -217,15 +110,14 @@ class classL1MainEntrySocketListenServer
         } else {
             //try to resolve mysql has gone away problem
             //if(!mysql_ping($link)){
-                //mysql_close($link); //注意：一定要先执行数据库关闭，这是关键
-                //$link->close();
+            //mysql_close($link); //注意：一定要先执行数据库关闭，这是关键
+            //$link->close();
             $link = mysqli_connect("127.0.0.1", "TestUser", "123456", "bxxhl1l2l3");
             if (!$link) {
                 $link = null;
                 $swoole_socket_serv->finish("ER:" . mysqli_error($link));
                 return;
             }
-            //}
         }
 
         $result = $link->query($sql);//mysqli_result return resultset if the command is SELECT, SHOW, DESCRIBE, EXPLAIN, others will be TRUE instead
@@ -242,12 +134,12 @@ class classL1MainEntrySocketListenServer
                 break;
             case "SELECT":
                 $i=0;
-                 if($result->num_rows>0){                                               //判断结果集中行的数目是否大于0
-                      while($row =$result->fetch_array() ){
-                               $data[$i]=$row;
-                               $i++;
-                      }
-                 }
+                if($result->num_rows>0){                                               //判断结果集中行的数目是否大于0
+                    while($row =$result->fetch_array() ){
+                        $data[$i]=$row;
+                        $i++;
+                    }
+                }
                 $result->free();
                 $swoole_socket_serv->finish("OK:" . serialize($data));
                 $link->close();
@@ -259,17 +151,122 @@ class classL1MainEntrySocketListenServer
     public function swoole_socket_serv_onFinish($swoole_socket_serv, $data)
     {
         echo date('Y/m/d H:i:s', time())." ";
-        echo "AsyncTask Finish:Connect.PID=" . posix_getpid() . PHP_EOL;
+        echo "swoole_socket_serv_onFinish: Connect.PID=" . posix_getpid() . PHP_EOL;
     }
 
-    public  function port2_onConnect($swoole_socket_serv, $fd){
+    public function swoole_socket_serv_onManagerStart($swoole_socket_serv) {
+        global $argv;
+        swoole_set_process_name("php {$argv[0]}: manager");
+    }
+
+    //具体port处理函数
+    public function stdxml_tcp_hcuport_onStart($swoole_socket_serv) {
+        global $argv;
+        swoole_set_process_name("php {$argv[0]}: master");
         echo date('Y/m/d H:i:s', time())." ";
-        echo "Swoole worker port2: Client {$fd} connected. ".PHP_EOL;
+        echo "stdxml_tcp_hcuport_onStart: MasterPid={$swoole_socket_serv->master_pid}|Manager_pid={$swoole_socket_serv->manager_pid}\n";
+         //$serv->addtimer(1000);
+         //connect to mysql, reset all socketid to 0
+        $mysqli = mysqli_connect("127.0.0.1", "TestUser", "123456", "bxxhl1l2l3");
+        if (!$mysqli ) {
+            echo date('Y/m/d H:i:s', time())." ";
+            echo "[ERROR]stdxml_tcp_hcuport_onStart: Unable to connect to MySQL." . PHP_EOL;
+            echo "Debugging errno: " . mysqli_connect_errno() . PHP_EOL;
+            echo "Debugging error: " . mysqli_connect_error() . PHP_EOL;
+            exit;
+        }
+        $query="UPDATE t_l2sdk_iothcu_inventory  SET socketid = 0 WHERE (socketid != 0)"; //将Inventory表中的设备socketid初始化成0
+        $result=$mysqli->query($query);
+        if ($result == false){
+            echo date('Y/m/d H:i:s', time())." ";
+            echo "[ERROR]stdxml_tcp_hcuport_onStart: Update socketid to 0 failed!".PHP_EOL;
+        }
+        $mysqli->close();
     }
 
-    public function port2_onReceive($swoole_socket_serv, $fd, $from_id, $data) {
+    public function stdxml_tcp_hcuport_onConnect($swoole_socket_serv, $fd, $from_id ) {
+        echo date('Y/m/d H:i:s', time())." ";
+        echo "stdxml_tcp_hcuport_onConnect: Client fd={$fd} connected.\n";
+        $swoole_socket_serv->send( $fd, "Hello {$fd}!" );
+    }
 
-        $swoole_socket_serv->send($fd, $data);//临时增加，等协商好之后修改
+    //入口函数挂载在这个函数体中
+    public function stdxml_tcp_hcuport_onReceive( swoole_server $swoole_socket_serv, $fd, $from_id, $data ) {
+        echo date('Y/m/d H:i:s', time())." ";
+        echo "stdxml_tcp_hcuport_onReceive: Get Message From Client {$fd} : {$data}\n";
+        
+        //a test to read from t_l2sdk_iothcu_inventory, devcode + socketid
+        //taskwait就是投递一条任务，这里直接传递SQL语句了
+        //然后阻塞等待SQL完成
+
+	    $xml_parser = xml_parser_create();
+	    if(!xml_parse($xml_parser,$data,true)){
+            xml_parser_free($xml_parser);
+            $devCode = "";
+	    }else {
+    		$xml = simplexml_load_string($data);
+	        $devCode = (string) $xml->FromUserName;
+	        xml_parser_free($xml_parser);
+	    }
+
+        $query="UPDATE t_l2sdk_iothcu_inventory  SET socketid = $fd WHERE devcode = \"$devCode\"";
+        $result = $swoole_socket_serv->taskwait($query);
+        if ($result == true) {
+            list($status, $db_res) = explode(':', $result, 2);
+            if ($status == 'OK') {
+                echo date('Y/m/d H:i:s', time())." ";
+                echo "stdxml_tcp_hcuport_onReceive: Client ".$devCode."'s socketid ".$fd." is stored in t_l2sdk_iothcu_inventory. Affacted_rows: ".$db_res.PHP_EOL;
+            } else {
+                echo date('Y/m/d H:i:s', time())." ";
+                echo "[ERROR]stdxml_tcp_hcuport_onReceive: socketid store failed.";
+            }
+            //return;
+        } else {
+            echo date('Y/m/d H:i:s', time())." ";
+            echo "[ERROR]stdxml_tcp_hcuport_onReceive: device = ". $devCode . "not found in t_l2sdk_iothcu_inventory";
+        }
+
+        /*$msg = array("serv" => $serv, "fd" => $fd, "fromid" => $from_id, "data" => $data);
+        $obj = new classTaskL1vmCoreRouter();
+        $obj->mfun_l1vm_task_main_entry(MFUN_MAIN_ENTRY_SOCKET_LISTEN, NULL, NULL, $msg); */
+
+        //for FHYS云控锁项目
+        $obj = new classTaskL1vmCoreRouter();
+        $obj->mfun_l1vm_task_main_entry(MFUN_MAIN_ENTRY_IOT_HCU, MSG_ID_L2SDK_HCU_DATA_COMING, "MSG_ID_L2SDK_HCU_DATA_COMING", $data);
+    }
+
+    public function stdxml_tcp_hcuport_onClose( $swoole_socket_serv, $fd, $from_id ) {
+        echo date('Y/m/d H:i:s', time())." ";
+        echo "stdxml_tcp_hcuport_onClose: Client {$fd} closed connection.".PHP_EOL;
+        //reset socketid in t_l2sdk_iothcu_inventory when connection closed.
+        $query="UPDATE t_l2sdk_iothcu_inventory  SET socketid = 0 WHERE socketid = $fd"; 
+        $result = $swoole_socket_serv->taskwait($query);
+        if ($result == true) {
+            list($status, $db_res) = explode(':', $result, 2);
+            if ($status == 'OK') {
+                echo date('Y/m/d H:i:s', time())." ";
+                echo "stdxml_tcp_hcuport_onClose: socketid ".$fd." was set to 0. Affacted_rows : ".$db_res.PHP_EOL;
+            } else {
+                echo date('Y/m/d H:i:s', time())." ";
+                echo "[ERROR]stdxml_tcp_hcuport_onClose: socketid: update socketid".$fd." to 0 failed.".PHP_EOL;
+            }
+            return;
+        } else {
+            echo date('Y/m/d H:i:s', time())." ";
+            echo "[ERROR]stdxml_tcp_hcuport_onClose: socketid".$fd." not found in t_l2sdk_iothcu_inventory.".PHP_EOL;
+        }
+    }
+
+    //TCP UI Port
+    public  function stdxml_tcp_uiport_onConnect($swoole_socket_serv, $fd)
+    {
+        echo date('Y/m/d H:i:s', time())." ";
+        echo "Swoole worker stdxml_tcp_uiport: Client {$fd} connected. ".PHP_EOL;
+    }
+
+    public function stdxml_tcp_uiport_onReceive($swoole_socket_serv, $fd, $from_id, $data)
+    {
+        //$swoole_socket_serv->send($fd, $data);//临时增加，等协商好之后修改
         $arr = json_decode($data);
         $query="SELECT devcode,socketid from t_l2sdk_iothcu_inventory where devcode=\"$arr[0]\"";
         $result = $swoole_socket_serv->taskwait($query);
@@ -281,102 +278,107 @@ class classL1MainEntrySocketListenServer
                 $devcode=unserialize($db_res)[0]['devcode']; //restore to array
                 $socketid=unserialize($db_res)[0]['socketid'];
                 echo date('Y/m/d H:i:s', time())." ";
-                echo ("Swoole worker port2: Target {$devcode} received from UI, Command from UI thru Swoole worker is ").$arr[1].PHP_EOL;
+                echo ("stdxml_tcp_uiport_onReceive: Device = {$devcode}, Command from UI = ").$arr[1].PHP_EOL;
                 if ($socketid != 0){
                     $sendresult = $swoole_socket_serv->send($socketid, $arr[1]);
                     if ($sendresult){
                         echo date('Y/m/d H:i:s', time())." ";
-                        echo ("Swoole worker port2: Message delivered to {$devcode}.").PHP_EOL;
+                        echo ("stdxml_tcp_uiport_onReceive: Message delivered to {$devcode} success.").PHP_EOL;
                     } else {
                         echo date('Y/m/d H:i:s', time())." ";
-                        echo ("Swoole worker port2: Message delivery to {$devcode} failed.").PHP_EOL;
+                        echo ("[ERROR]stdxml_tcp_uiport_onReceive: Message delivery to {$devcode} failed.").PHP_EOL;
                     }
                 } else {
                     echo date('Y/m/d H:i:s', time())." ";
-                    echo ("Swoole worker port2: sockid = 0, $devcode is offline.".PHP_EOL);
+                    echo ("[ERROR]stdxml_tcp_uiport_onReceive: sockid = 0, $devcode is offline.".PHP_EOL);
                 }
                 //$swoole_socket_serv->close($fd);
             } else {
-                $swoole_socket_serv->send($fd, $db_res);
+                //$swoole_socket_serv->send($fd, $db_res);
                 echo date('Y/m/d H:i:s', time())." ";
-                echo ("Swoole worker port2: query mysql failed.").PHP_EOL;
+                echo ("[ERROR]stdxml_tcp_uiport_onReceive: query mysql failed.").PHP_EOL;
                 //$swoole_socket_serv->close($fd);
             }
             return;
         } else {
-            $swoole_socket_serv->send($fd, "Error. Task timeout\n");
+            //$swoole_socket_serv->send($fd, "Error. Task timeout\n");
             echo date('Y/m/d H:i:s', time())." ";
-            echo ("Swoole worker port2: query mysql timeout.").PHP_EOL;
+            echo ("[ERROR]stdxml_tcp_uiport_onReceive: query mysql timeout.").PHP_EOL;
         }
         //$swoole_socket_serv->close($fd);
     }
 
-    public function port2_onClose($swoole_socket_serv, $fd) {
+    public function stdxml_tcp_uiport_onClose($swoole_socket_serv, $fd) {
         echo date('Y/m/d H:i:s', time())." ";
-        echo "Swoole worker port2: Client {$fd} connection closed.".PHP_EOL;
+        echo "stdxml_tcp_uiport_onClose: Client {$fd} connection closed.".PHP_EOL;
     }
 
-    //FHYS云控锁
-    public function port3_onPacket($swoole_socket_serv, $data, $addr) {
+
+    /********************************************HUITP TCP CCL port****************************************************/
+
+    public function huitpxml_tcp_cclport_onConnect($swoole_socket_serv, $fd, $from_id ) {
         echo date('Y/m/d H:i:s', time())." ";
-        echo "Swoole worker port3: addr is $addr, data is $data.".PHP_EOL;
-        var_dump($addr);
-        $swoole_socket_serv->sendto($addr['address'], $addr['port'], 'Swoole port3: ' . $data);
+        echo "huitpxml_tcp_cclport_onConnect: Client fd={$fd} connected.\n";
     }
 
-    public function port_huitp_xml_http_onConnect($swoole_socket_serv, $fd, $from_id ) {
+    //入口函数挂载在这个函数体中，待测试
+    public function huitpxml_tcp_cclport_onReceive( swoole_server $swoole_socket_serv, $fd, $from_id, $data ) {
         echo date('Y/m/d H:i:s', time())." ";
-        echo "Swoole worker: Client fd={$fd} connected.\n";
-        $content = "<xml><ToUserName><![CDATA[HCU_G514_FHYS_SH001]]></ToUserName><FromUserName><![CDATA[XHZN_HCU]]></FromUserName><CreateTime>1485033641</CreateTime><MsgType><![CDATA[huitp_text]]></MsgType><Content><![CDATA[4D10000A00020001014D02000101]]></Content><FuncFlag>0</FuncFlag></xml>";
+        echo "huitpxml_tcp_cclport_onReceive: Get Message From Client {$fd} : {$data}\n";
 
-        //$swoole_socket_serv->send( $fd, "Hello {$fd}!" );
-        $swoole_socket_serv->send( $fd, "{$content}" );
-    }
+        //临时调试用
+        //$content = "<xml><ToUserName><![CDATA[HCU_G514_FHYS_SH001]]></ToUserName><FromUserName><![CDATA[XHZN_HCU]]></FromUserName><CreateTime>1485033641</CreateTime><MsgType><![CDATA[huitp_text]]></MsgType><Content><![CDATA[4D10000A00020001014D02000101]]></Content><FuncFlag>0</FuncFlag></xml>";
+        //$swoole_socket_serv->send( $fd, "{$content}" );
 
-    public function port_huitp_xml_http_onReceive( swoole_server $swoole_socket_serv, $fd, $from_id, $data ) {
-        echo date('Y/m/d H:i:s', time())." ";
-        echo "Swoole worker: Get Message From Client {$fd} : {$data}\n";
+        //a test to read from t_l2sdk_iothcu_inventory, devcode + socketid
+        //taskwait就是投递一条任务，这里直接传递SQL语句了
+        //然后阻塞等待SQL完成
 
         $xml_parser = xml_parser_create();
         if(!xml_parse($xml_parser,$data,true)){
             xml_parser_free($xml_parser);
-            $DevCode = $data;
+            $devCode = "";
         }else {
             $xml = simplexml_load_string($data);
-            $DevCode = (string) $xml->FromUserName;
+            $devCode = (string) $xml->FromUserName;
             xml_parser_free($xml_parser);
         }
 
-        $query="UPDATE t_l2sdk_iothcu_inventory  SET socketid = $fd WHERE devcode = \"$DevCode\"";
+        if (!empty($devCode)){
+            $msg = array("socketid" => $fd, "data"=>$data);
+            $obj = new classTaskL1vmCoreRouter();
+            $obj->mfun_l1vm_task_main_entry(MFUN_MAIN_ENTRY_IOT_HUITP, MSG_ID_L2SDK_HUITP_DATA_COMING, "MSG_ID_L2SDK_HUITP_DATA_COMING", $msg);
+        }
+        else{
+            echo date('Y/m/d H:i:s', time())." ";
+            echo "[ERROR]huitpxml_tcp_cclport_onReceive: device = {$devCode} not found in the receive data\n";
+        }
+    }
+
+    public function huitpxml_tcp_cclport_onClose( $swoole_socket_serv, $fd, $from_id ) {
+        echo date('Y/m/d H:i:s', time())." ";
+        echo "huitpxml_tcp_cclport_onClose: Client {$fd} closed connection.".PHP_EOL;
+
+        //reset socketid in t_l2sdk_iothcu_inventory when connection closed.
+        $query="UPDATE t_l2sdk_iothcu_inventory  SET socketid = 0 WHERE socketid = $fd";
         $result = $swoole_socket_serv->taskwait($query);
         if ($result !== false) {
             list($status, $db_res) = explode(':', $result, 2);
             if ($status == 'OK') {
                 echo date('Y/m/d H:i:s', time())." ";
-                echo "Swoole worker: Client ".$DevCode."'s socketid ".$fd." is stored in t_l2sdk_iothcu_inventory. Affacted_rows: ".$db_res.PHP_EOL;
+                echo "huitpxml_tcp_cclport_onClose: Socketid ".$fd." is reseted to 0 in t_l2sdk_iothcu_inventory. Affacted_rows : ".$db_res.PHP_EOL;
             } else {
                 echo date('Y/m/d H:i:s', time())." ";
-                echo "Swoole worker: Socketid store failed.";
+                echo "[ERROR]huitpxml_tcp_cclport_onClose: Socketid".$fd." reset failed.".PHP_EOL;
             }
-            //return;
+            return;
         } else {
             echo date('Y/m/d H:i:s', time())." ";
-            echo "Swoole worker: Socketid store timeout.";
+            echo "[ERROR]huitpxml_tcp_cclport_onClose: Socketid".$fd." not found in t_l2sdk_iothcu_inventory.".PHP_EOL;
         }
-
-        /*$msg = array("serv" => $serv, "fd" => $fd, "fromid" => $from_id, "data" => $data);
-        $obj = new classTaskL1vmCoreRouter();
-        $obj->mfun_l1vm_task_main_entry(MFUN_MAIN_ENTRY_SOCKET_LISTEN, NULL, NULL, $msg); */
-
-        $msg = array("socketid" => $fd, "data"=>$data);
-
-        //for FHYS云控锁项目
-        $obj = new classTaskL1vmCoreRouter();
-        $obj->mfun_l1vm_task_main_entry(MFUN_MAIN_ENTRY_IOT_HUITP, MSG_ID_L2SDK_HCU_DATA_COMING, "MSG_ID_L2SDK_HCU_DATA_COMING", $msg);
-
     }
 
-}
+}//end of classL1MainEntrySocketListenServer
 
 //该服务目前只能在AQ云下跑，其它的待开发完善
 $server = new classL1MainEntrySocketListenServer();
