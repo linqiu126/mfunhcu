@@ -87,7 +87,7 @@ class classTaskL2sdkIotHuitp
         //消息或者说帧类型分离，l2SDK只进行协议类型解码，不对消息的content进行处理，判断协议类型后发送给专门的l2codec任务处理
         switch ($msgType)
         {
-            //case "hcu_huitp"://HUITP消息处理
+            //case "huitp_text"://HUITP消息处理
             case "huitp_text"://HUITP消息处理
                 $project = MFUN_PRJ_HCU_HUITP;
                 $log_from = $fromUser;

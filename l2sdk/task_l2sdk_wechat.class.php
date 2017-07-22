@@ -4661,7 +4661,7 @@ class classTaskL2sdkWechat
 						else $result = "";
 						break;
                     //handling of huitp from hcu
-                    case "hcu_huitp": //HUITP curl entrance
+                    case "huitp_text": //HUITP curl entrance
                         $project = MFUN_PRJ_HCU_HUITP;
                         $log_from = MFUN_CLOUD_HCU;
                         $platform = MFUN_TECH_PLTF_HCUGX_HUITP;
