@@ -43,7 +43,7 @@ gulp.task('clean',function(){
         read:false
     }).pipe(clean({force:true}));
 })
-// ±àÒëSass
+// ï¿½ï¿½ï¿½ï¿½Sass
 gulp.task('sass', function() {
     gulp.src('./scss/*.scss')
         .pipe(sass())
@@ -86,7 +86,7 @@ gulp.task("resourcecopy",function(){
      //   .pipe(gulp.dest(option.buildPath+"/"));
 })
 
-// ºÏ²¢£¬Ñ¹ËõÎÄ¼þ
+// ï¿½Ï²ï¿½ï¿½ï¿½Ñ¹ï¿½ï¿½ï¿½Ä¼ï¿½
 gulp.task('scripts', function() {
     gulp.src('./js/app.js')
         .pipe(concat('app.js'))
@@ -152,11 +152,11 @@ gulp.task('scripts', function() {
         .pipe(gulp.dest(option.buildPath));
 });
 
-// Ä¬ÈÏÈÎÎñ
+// Ä¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 gulp.task('default',['clean'], function(){
     gulp.run('lint', 'sass', 'scripts','resourcecopy');
 /*
-    // ¼àÌýÎÄ¼þ±ä»¯
+    // ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ä»¯
     gulp.watch('./js/*.js', function(){
         gulp.run('lint', 'sass', 'scripts');
     });*/
