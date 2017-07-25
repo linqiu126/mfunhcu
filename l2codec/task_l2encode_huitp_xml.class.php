@@ -38,6 +38,7 @@ class classTaskL2encodeHuitpXml
             <CreateTime>%s</CreateTime>
             <MsgType><![CDATA[huitp_text]]></MsgType>
             <Content><![CDATA[%s]]></Content>
+            <FuncFlag>0</FuncFlag>
             </xml>";
         $result = sprintf($xmlTpl, $toUser, $fromUser, time(), $content);
         return $result;
