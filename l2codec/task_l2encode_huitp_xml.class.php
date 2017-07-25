@@ -30,6 +30,19 @@ class classTaskL2encodeHuitpXml
         return $result;
     }
 
+    private function func_huitp_xml_format_encode($toUser, $fromUser, $content)
+    {
+        $xmlTpl = "<xml>
+            <ToUserName><![CDATA[%s]]></ToUserName>
+            <FromUserName><![CDATA[%s]]></FromUserName>
+            <CreateTime>%s</CreateTime>
+            <MsgType><![CDATA[huitp_text]]></MsgType>
+            <Content><![CDATA[%s]]></Content>
+            </xml>";
+        $result = sprintf($xmlTpl, $toUser, $fromUser, time(), $content);
+        return $result;
+    }
+
     //HUITP消息编码发送模块总入口。Cloud回复给HCU的HUITP消息在各任务模块生成，通过消息MSG_ID_L2CODEC_ENCODE_HUITP_INCOMING发送到HUITP ENCODE模块，
     //每个IE为一个数组，填充在content里，在这里对消息进行编码，保证回复的消息为规定长度的HEX->CHAR型
     public function mfun_l2encode_huitp_xml_task_main_entry($parObj, $msgId, $msgName, $msg)
@@ -108,8 +121,9 @@ class classTaskL2encodeHuitpXml
             $respMsgStr = $dbiL1vmCommonObj->ushort2string($respMsgLen).$respIeStr;
             $respMsgStr = $dbiL1vmCommonObj->ushort2string($huitpMsgId).$respMsgStr;
 
+            $xmlMsgStr = $this->func_huitp_xml_format_encode($devCode, MFUN_CLOUD_HCU,$respMsgStr);
             //通过建立tcp阻塞式socket连接，向HCU发送回复消息
-            $client = new socket_client_sync($devCode, $respMsgStr);
+            $client = new socket_client_sync($devCode, $xmlMsgStr);
             $client->connect();
 
             //返回消息log
