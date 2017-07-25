@@ -1216,17 +1216,16 @@ class classDbiL3apF2cm
         if ($result->num_rows>0){
             $row = $result->fetch_array();
             $statcode = $row['statcode'];
+            $flag_la = "N";
+            $flag_lo = "E";
+            $query_str = "UPDATE `t_l3f3dm_siteinfo` SET `flag_la` = '$flag_la', `latitude` = '$latitude',`flag_lo` = '$flag_lo',`longitude` = '$longitude' WHERE (`statcode` = '$statcode' )";
+            $resp = $mysqli->query($query_str);
         }
         else
-            $statcode = "";
-
-        $flag_la = "N";
-        $flag_lo = "E";
-        $query_str = "UPDATE `t_l3f3dm_siteinfo` SET `flag_la` = '$flag_la', `latitude` = '$latitude',`flag_lo` = '$flag_lo',`longitude` = '$longitude' WHERE (`statcode` = '$statcode' )";
-        $result = $mysqli->query($query_str);
+            $resp= false;
 
         $mysqli->close();
-        return $result;
+        return $resp;
     }
 
     //UI DevTable request, 获取全部HCU设备列表信息

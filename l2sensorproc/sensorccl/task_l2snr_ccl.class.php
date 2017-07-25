@@ -28,7 +28,6 @@ class classTaskL2snrCcl
 
         //初始化消息内容
         $project= "";
-        $log_from = "";
         $platform ="";
         $devCode="";
         $statCode = "";
@@ -45,7 +44,6 @@ class classTaskL2snrCcl
         else{
             //解开消息
             if (isset($msg["project"])) $project = $msg["project"];
-            if (isset($msg["log_from"])) $log_from = $msg["log_from"];
             if (isset($msg["platform"])) $platform = $msg["platform"];
             if (isset($msg["devCode"])) $devCode = $msg["devCode"];
             if (isset($msg["statCode"])) $statCode = $msg["statCode"];
@@ -56,24 +54,55 @@ class classTaskL2snrCcl
         {
             case HUITP_MSGID_uni_ccl_lock_resp:
                 $dbiL2snrCclObj = new classDbiL2snrCcl();
-                $resp = $dbiL2snrCclObj->dbi_huitp_msg_uni_ccl_lock_resp($devCode, $statCode, $content);
+                $respHuitpMsg = $dbiL2snrCclObj->dbi_huitp_msg_uni_ccl_lock_resp($devCode, $statCode, $content);
                 break;
             case HUITP_MSGID_uni_ccl_lock_report:
                 $dbiL2snrCclObj = new classDbiL2snrCcl();
-                $resp = $dbiL2snrCclObj->dbi_huitp_msg_uni_ccl_lock_report($devCode, $statCode, $content);
+                $respHuitpMsg = $dbiL2snrCclObj->dbi_huitp_msg_uni_ccl_lock_report($devCode, $statCode, $content);
                 break;
             case HUITP_MSGID_uni_ccl_lock_auth_inq:
                 $dbiL2snrCclObj = new classDbiL2snrCcl();
-                $resp = $dbiL2snrCclObj->dbi_huitp_msg_uni_ccl_auth_inq($devCode, $statCode, $content);
+                $respHuitpMsg = $dbiL2snrCclObj->dbi_huitp_msg_uni_ccl_auth_inq($devCode, $statCode, $content);
+
+                //组装返回消息 HUITP_MSGID_uni_ccl_lock_auth_resp, 并发送给L2 ENCODE进行编码发送
+                if (!empty($respHuitpMsg)){
+                    $msg = array("project" => $project,
+                        "platform" => MFUN_TECH_PLTF_HCUGX_HUITP,
+                        "devCode" => $devCode,
+                        "respMsg" => HUITP_MSGID_uni_ccl_lock_auth_resp,
+                        "content" => $respHuitpMsg);
+                    if ($parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L2SENSOR_CCL,
+                            MFUN_TASK_ID_L2ENCODE_HUITP,
+                            MSG_ID_L2CODEC_ENCODE_HUITP_INCOMING,
+                            "MSG_ID_L2CODEC_ENCODE_HUITP_INCOMING",
+                            $msg) == false) $resp = "Send to message buffer error";
+                    else $resp = "";
+                }
                 break;
             case HUITP_MSGID_uni_ccl_state_resp:
                 $dbiL2snrCclObj = new classDbiL2snrCcl();
-                $resp = $dbiL2snrCclObj->dbi_huitp_msg_uni_ccl_state_resp($devCode, $statCode, $content);
+                $respHuitpMsg = $dbiL2snrCclObj->dbi_huitp_msg_uni_ccl_state_resp($devCode, $statCode, $content);
                 break;
 
             case HUITP_MSGID_uni_ccl_state_report:
                 $dbiL2snrCclObj = new classDbiL2snrCcl();
-                $resp = $dbiL2snrCclObj->dbi_huitp_msg_uni_ccl_state_report($devCode, $statCode, $content);
+                $respHuitpMsg = $dbiL2snrCclObj->dbi_huitp_msg_uni_ccl_state_report($devCode, $statCode, $content);
+
+                //组装返回消息 HUITP_MSGID_uni_ccl_state_confirm, 并发送给L2 ENCODE进行编码发送
+                if (!empty($respHuitpMsg)){
+                    $msg = array("project" => $project,
+                        "platform" => MFUN_TECH_PLTF_HCUGX_HUITP,
+                        "devCode" => $devCode,
+                        "respMsg" => HUITP_MSGID_uni_ccl_state_confirm,
+                        "content" => $respHuitpMsg);
+                    if ($parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L2SENSOR_CCL,
+                            MFUN_TASK_ID_L2ENCODE_HUITP,
+                            MSG_ID_L2CODEC_ENCODE_HUITP_INCOMING,
+                            "MSG_ID_L2CODEC_ENCODE_HUITP_INCOMING",
+                            $msg) == false) $resp = "Send to message buffer error";
+                    else $resp = "";
+
+                }
                 break;
             case HUITP_MSGID_uni_ccl_state_pic_report:
                 break;
@@ -86,8 +115,7 @@ class classTaskL2snrCcl
         if (!empty($resp))
         {
             $log_content = "T:" . json_encode($resp);
-            $loggerObj->logger($project, $log_from, $log_time, $log_content);
-            echo trim($resp);
+            $loggerObj->logger($project, $devCode, $log_time, $log_content);
         }
 
         //返回

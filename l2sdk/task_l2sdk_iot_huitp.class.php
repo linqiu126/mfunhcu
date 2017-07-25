@@ -47,7 +47,7 @@ class classTaskL2sdkIotHuitp
             return false;
         }
         //这里HUITP消息有两个来源，一个是来自CCL通过socket收到的MSG_ID_L1VM_TO_L2SDK_IOT_HUITP_INCOMING，
-        //另外一个是扬尘HCU通过curl收到的(MSG_ID_WECHAT_TO_L2SDK_IOT_HUITP_INCOMING)，因为curl复用了cloud_callback_wechat,所以消息通过L2SDK_IOT_WX直接发给了L2CODEC,没有经由本模块
+        //另外一个是扬尘HCU通过curl收到的(MSG_ID_L2SDK_WECHAT_TO_L2DECODE_HUITP)，因为curl复用了cloud_callback_wechat,所以消息通过L2SDK_IOT_WX直接发给了L2CODEC,没有经由本模块
         if (($msgId != MSG_ID_L1VM_TO_L2SDK_IOT_HUITP_INCOMING) || ($msgName != "MSG_ID_L1VM_TO_L2SDK_IOT_HUITP_INCOMING") ){
             $result = "Msgid or MsgName error";
             $log_content = "P:" . json_encode($result);
@@ -87,7 +87,7 @@ class classTaskL2sdkIotHuitp
         //消息或者说帧类型分离，l2SDK只进行协议类型解码，不对消息的content进行处理，判断协议类型后发送给专门的l2codec任务处理
         switch ($msgType)
         {
-            //case "hcu_huitp"://HUITP消息处理
+            //case "huitp_text"://HUITP消息处理
             case "huitp_text"://HUITP消息处理
                 $project = MFUN_PRJ_HCU_HUITP;
                 $log_from = $fromUser;
@@ -126,9 +126,9 @@ class classTaskL2sdkIotHuitp
                             "content" => $content,
                             "funcFlag" => $funcFlag);
                 if ($parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L2SDK_IOT_HUITP,
-                        MFUN_TASK_ID_L2CODEC_HUITP,
-                        MSG_ID_L2SDK_IOT_HUITP_TO_L2CODEC_HUITP,
-                        "MSG_ID_L2SDK_IOT_HUITP_TO_L2CODEC_HUITP",
+                        MFUN_TASK_ID_L2DECODE_HUITP,
+                        MSG_ID_L2SDK_IOT_HUITP_TO_L2DECODE_HUITP,
+                        "MSG_ID_L2SDK_IOT_HUITP_TO_L2DECODE_HUITP",
                         $msg) == false) $resp = "Send to message buffer error";
                 else $resp = "";
                 break;

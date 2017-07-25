@@ -4661,7 +4661,7 @@ class classTaskL2sdkWechat
 						else $result = "";
 						break;
                     //handling of huitp from hcu
-                    case "hcu_huitp": //HUITP curl entrance
+                    case "huitp_text": //HUITP curl entrance
                         $project = MFUN_PRJ_HCU_HUITP;
                         $log_from = MFUN_CLOUD_HCU;
                         $platform = MFUN_TECH_PLTF_HCUGX_HUITP;
@@ -4683,9 +4683,9 @@ class classTaskL2sdkWechat
                             "content" => $content,
                             "funcFlag" => $funcFlag);
                         if ($parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L2SDK_WECHAT,
-                                MFUN_TASK_ID_L2CODEC_HUITP,
-                                MSG_ID_WECHAT_TO_L2SDK_IOT_HUITP_INCOMING,
-                                "MSG_ID_WECHAT_TO_L2SDK_IOT_HUITP_INCOMING",
+                                MFUN_TASK_ID_L2DECODE_HUITP,
+                                MSG_ID_L2SDK_WECHAT_TO_L2DECODE_HUITP,
+                                "MSG_ID_L2SDK_WECHAT_TO_L2DECODE_HUITP",
                                 $sndmsg) == false) $result = "Send to message buffer error";
                         else $result = "";
 
