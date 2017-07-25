@@ -368,6 +368,11 @@ Make By：ZJL
 > 修改FHYS开锁抓拍照片处理流程，开站上传照片和开锁抓拍照片分开显示
 > 更新AQYC登录界面，highchart，视频跳转，站点地图跳转等
 
+//= LZH, 2017 July.25, CURRENT_SW_DELIVERY R03.D20
+> 软件架构演进，对以前的IOT HCU代码进行了清理。
+> 增加CCL HUITP支持，同时对Swoole socket进行了修改，不同的协议端口进行了区分
+> FHYS数据表单进行了修改，适配CCL
+
 
 //待完善的功能
 1. dbi_devinfo_update（）需要修改，添加设备时预计结束时间和实际结束时间应该在项目信息里

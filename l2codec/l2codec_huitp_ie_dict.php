@@ -10,6 +10,102 @@
  *                                                   HUITP接口协议v2.2
  **********************************************************************************************************************/
 
+/****************************************************HUITP常量定义******************************************************/
+define("HUITP_FRAME_STRUCT_1_BYTE", 2);
+define("HUITP_FRAME_STRUCT_2_BYTE", 4);
+define("HUITP_FRAME_STRUCT_4_BYTE", 8);
+
+//锁状态
+define("HUITP_IEID_UNI_LOCK_STATE_NULL", 0x00);
+define("HUITP_IEID_UNI_LOCK_STATE_OPEN", 0x01);
+define("HUITP_IEID_UNI_LOCK_STATE_CLOSE", 0x02);
+define("HUITP_IEID_UNI_LOCK_STATE_INVALID", 0xFF);
+//门状态
+define("HUITP_IEID_UNI_DOOR_STATE_NULL", 0x00);
+define("HUITP_IEID_UNI_DOOR_STATE_OPEN", 0x01);
+define("HUITP_IEID_UNI_DOOR_STATE_CLOSE", 0x02);
+define("HUITP_IEID_UNI_DOOR_STATE_INVALID", 0xFF);
+//电池状态
+define("HUITP_IEID_UNI_BAT_STATE_NULL", 0x00);
+define("HUITP_IEID_UNI_BAT_STATE_NORMAL", 0x01);
+define("HUITP_IEID_UNI_BAT_STATE_WARNING", 0x02);
+define("HUITP_IEID_UNI_BAT_STATE_INVALID", 0xFF);
+//震动状态
+define("HUITP_IEID_UNI_SHAKE_STATE_NULL", 0x00);
+define("HUITP_IEID_UNI_SHAKE_STATE_DEACTIVE", 0x01);
+define("HUITP_IEID_UNI_SHAKE_STATE_ACTIVE", 0x02);
+define("HUITP_IEID_UNI_SHAKE_STATE_INVALID", 0xFF);
+//烟雾状态
+define("HUITP_IEID_UNI_SMOKE_STATE_NULL", 0x00);
+define("HUITP_IEID_UNI_SMOKE_STATE_DEACTIVE", 0x01);
+define("HUITP_IEID_UNI_SMOKE_STATE_ACTIVE", 0x02);
+define("HUITP_IEID_UNI_SMOKE_STATE_INVALID", 0xFF);
+//水浸状态
+define("HUITP_IEID_UNI_WATER_STATE_NULL", 0x00);
+define("HUITP_IEID_UNI_WATER_STATE_DEACTIVE", 0x01);
+define("HUITP_IEID_UNI_WATER_STATE_ACTIVE", 0x02);
+define("HUITP_IEID_UNI_WATER_STATE_INVALID", 0xFF);
+//倾斜状态
+define("HUITP_IEID_UNI_FALL_STATE_NULL", 0x00);
+define("HUITP_IEID_UNI_FALL_STATE_DEACTIVE", 0x01);
+define("HUITP_IEID_UNI_FALL_STATE_ACTIVE", 0x02);
+define("HUITP_IEID_UNI_FALL_STATE_INVALID", 0xFF);
+
+
+
+//状态报告触发事件
+define("HUITP_IEID_UNI_CCL_REPORT_TYPE_NULL", 0x00);
+define("HUITP_IEID_UNI_CCL_REPORT_TYPE_PERIOD_EVENT", 0x01);
+define("HUITP_IEID_UNI_CCL_REPORT_TYPE_CLOSE_EVENT", 0x02);
+define("HUITP_IEID_UNI_CCL_REPORT_TYPE_FAULT_EVENT", 0x03);
+define("HUITP_IEID_UNI_CCL_REPORT_TYPE_INVALID", 0xFF);
+
+//数据格式
+define("HUITP_IEID_UNI_COM_FORMAT_TYPE_NULL", 0x00);
+define("HUITP_IEID_UNI_COM_FORMAT_TYPE_INT_ONLY", 0x01);
+define("HUITP_IEID_UNI_COM_FORMAT_TYPE_FLOAT_WITH_NF1", 0x02);
+define("HUITP_IEID_UNI_COM_FORMAT_TYPE_FLOAT_WITH_NF2", 0x03);
+define("HUITP_IEID_UNI_COM_FORMAT_TYPE_FLOAT_WITH_NF3", 0x04);
+define("HUITP_IEID_UNI_COM_FORMAT_TYPE_FLOAT_WITH_NF4", 0x05);
+define("HUITP_IEID_UNI_COM_FORMAT_TYPE_INVALID", 0xFF);
+
+//COM_CONFIRM
+define("HUITP_IEID_UNI_COM_CONFIRM_NULL", 0x00);
+define("HUITP_IEID_UNI_COM_CONFIRM_POSITIVE", 0x01);
+define("HUITP_IEID_UNI_COM_CONFIRM_NEGATIVE", 0x02);
+define("HUITP_IEID_UNI_COM_CONFIRM_YES", 0x01);
+define("HUITP_IEID_UNI_COM_CONFIRM_NO", 0x02);
+define("HUITP_IEID_UNI_COM_CONFIRM_INVALID", 0xFF);
+
+//COM_RESPONSE
+define("HUITP_IEID_UNI_COM_RESPONSE_NULL", 0x00);
+define("HUITP_IEID_UNI_COM_RESPONSE_YES", 0x01);
+define("HUITP_IEID_UNI_COM_RESPONSE_NO", 0x02);
+define("HUITP_IEID_UNI_COM_RESPONSE_INVALID", 0xFF);
+
+//开锁鉴权请求类型
+define("HUITP_IEID_UNI_CCL_LOCK_AUTH_REQ_TYPE_NULL", 0x00);
+define("HUITP_IEID_UNI_CCL_LOCK_AUTH_REQ_TYPE_LOCK", 0x01);
+define("HUITP_IEID_UNI_CCL_LOCK_AUTH_REQ_TYPE_BLE", 0x02);
+define("HUITP_IEID_UNI_CCL_LOCK_AUTH_REQ_TYPE_RFID", 0x03);
+define("HUITP_IEID_UNI_CCL_LOCK_AUTH_REQ_TYPE_PHONE", 0x04);
+define("HUITP_IEID_UNI_CCL_LOCK_AUTH_REQ_TYPE_PID", 0x05);
+define("HUITP_IEID_UNI_CCL_LOCK_AUTH_REQ_TYPE_INVALID", 0xFF);
+
+//开锁鉴权响应
+define("HUITP_IEID_UNI_CCL_LOCK_AUTH_RESP_NULL", 0x00);
+define("HUITP_IEID_UNI_CCL_LOCK_AUTH_RESP_YES", 0x01);
+define("HUITP_IEID_UNI_CCL_LOCK_AUTH_RESP_NO", 0x02);
+define("HUITP_IEID_UNI_CCL_LOCK_AUTH_RESP_INVALID", 0xFF);
+
+
+
+
+
+
+
+
+
 /**********************************************HUITP公共信息单元IE定义***************************************************/
 define("HUITP_IEID_uni_min", 0x0000);
 define("HUITP_IEID_uni_none", 0x0000);
@@ -479,375 +575,375 @@ class classL2codecHuitpIeDict
           HUITP_IEID_uni_none                             => "",
 
           //公共IE区域
-          HUITP_IEID_uni_com_req                          => array("format"=>"A4ieId/A4ieLen/A2comReq","name"=>"HUITP_IEID_uni_com_req"),
-          HUITP_IEID_uni_com_resp                         => array("format"=>"A4ieId/A4ieLen/A2comResp","name"=>"HUITP_IEID_uni_com_resp"),
-          HUITP_IEID_uni_com_report                       => array("format"=>"A4ieId/A4ieLen","name"=>""),
-          HUITP_IEID_uni_com_confirm                      => array("format"=>"A4ieId/A4ieLen/A2comConfirm","name"=>"HUITP_IEID_uni_com_confirm"),
-          HUITP_IEID_uni_com_state                        => array("format"=>"A4ieId/A4ieLen","name"=>""),
-          HUITP_IEID_uni_com_auth                         => array("format"=>"A4ieId/A4ieLen","name"=>""),
-          HUITP_IEID_uni_com_warning                      => array("format"=>"A4ieId/A4ieLen","name"=>""),
-          HUITP_IEID_uni_com_action                       => array("format"=>"A4ieId/A4ieLen","name"=>""),
-          HUITP_IEID_uni_com_switch_onoff                 => array("format"=>"A4ieId/A4ieLen","name"=>""),
-          HUITP_IEID_uni_com_command                      => array("format"=>"A4ieId/A4ieLen","name"=>""),
-          HUITP_IEID_uni_com_back_type                    => array("format"=>"A4ieId/A4ieLen","name"=>""),
-          HUITP_IEID_uni_com_equp_id                      => array("format"=>"A4ieId/A4ieLen","name"=>""),
-          HUITP_IEID_uni_com_format_type                  => array("format"=>"A4ieId/A4ieLen","name"=>""),
-          HUITP_IEID_uni_com_work_cycle                   => array("format"=>"A4ieId/A4ieLen","name"=>""),
-          HUITP_IEID_uni_com_sample_cycle                 => array("format"=>"A4ieId/A4ieLen","name"=>""),
-          HUITP_IEID_uni_com_sample_number                => array("format"=>"A4ieId/A4ieLen","name"=>""),
-          HUITP_IEID_uni_com_unix_time                    => array("format"=>"A4ieId/A4ieLen","name"=>""),
-          HUITP_IEID_uni_com_ymd_time                     => array("format"=>"A4ieId/A4ieLen","name"=>""),
-          HUITP_IEID_uni_com_ntimes                       => array("format"=>"A4ieId/A4ieLen","name"=>""),
-          HUITP_IEID_uni_com_gps_x                        => array("format"=>"A4ieId/A4ieLen","name"=>""),
-          HUITP_IEID_uni_com_gps_y                        => array("format"=>"A4ieId/A4ieLen","name"=>""),
-          HUITP_IEID_uni_com_gps_z                        => array("format"=>"A4ieId/A4ieLen","name"=>""),
-          HUITP_IEID_uni_com_gps_direction                => array("format"=>"A4ieId/A4ieLen","name"=>""),
-          HUITP_IEID_uni_com_grade                        => array("format"=>"A4ieId/A4ieLen","name"=>""),
-          HUITP_IEID_uni_com_percentage                   => array("format"=>"A4ieId/A4ieLen","name"=>""),
-          HUITP_IEID_uni_com_modbus_address               => array("format"=>"A4ieId/A4ieLen","name"=>""),
-          HUITP_IEID_uni_com_file_name                    => array("format"=>"A4ieId/A4ieLen","name"=>""),
-          HUITP_IEID_uni_com_http_link                    => array("format"=>"A4ieId/A4ieLen","name"=>""),
-          HUITP_IEID_uni_com_segment_total                => array("format"=>"A4ieId/A4ieLen","name"=>""),
-          HUITP_IEID_uni_com_segment_index                => array("format"=>"A4ieId/A4ieLen","name"=>""),
+          HUITP_IEID_uni_com_req                          => array("format"=>"A4ieId/A4ieLen/A2comReq","len"=>"1","name"=>"HUITP_IEID_uni_com_req"),
+          HUITP_IEID_uni_com_resp                         => array("format"=>"A4ieId/A4ieLen/A2comResp","len"=>"1","name"=>"HUITP_IEID_uni_com_resp"),
+          HUITP_IEID_uni_com_report                       => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
+          HUITP_IEID_uni_com_confirm                      => array("format"=>"A4ieId/A4ieLen/A2comConfirm","len"=>"1","name"=>"HUITP_IEID_uni_com_confirm"),
+          HUITP_IEID_uni_com_state                        => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
+          HUITP_IEID_uni_com_auth                         => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
+          HUITP_IEID_uni_com_warning                      => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
+          HUITP_IEID_uni_com_action                       => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
+          HUITP_IEID_uni_com_switch_onoff                 => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
+          HUITP_IEID_uni_com_command                      => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
+          HUITP_IEID_uni_com_back_type                    => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
+          HUITP_IEID_uni_com_equp_id                      => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
+          HUITP_IEID_uni_com_format_type                  => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
+          HUITP_IEID_uni_com_work_cycle                   => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
+          HUITP_IEID_uni_com_sample_cycle                 => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
+          HUITP_IEID_uni_com_sample_number                => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
+          HUITP_IEID_uni_com_unix_time                    => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
+          HUITP_IEID_uni_com_ymd_time                     => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
+          HUITP_IEID_uni_com_ntimes                       => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
+          HUITP_IEID_uni_com_gps_x                        => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
+          HUITP_IEID_uni_com_gps_y                        => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
+          HUITP_IEID_uni_com_gps_z                        => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
+          HUITP_IEID_uni_com_gps_direction                => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
+          HUITP_IEID_uni_com_grade                        => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
+          HUITP_IEID_uni_com_percentage                   => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
+          HUITP_IEID_uni_com_modbus_address               => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
+          HUITP_IEID_uni_com_file_name                    => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
+          HUITP_IEID_uni_com_http_link                    => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
+          HUITP_IEID_uni_com_segment_total                => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
+          HUITP_IEID_uni_com_segment_index                => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
 
           //血糖
           HUITP_IEID_uni_blood_glucose_min                => "",
-          HUITP_IEID_uni_blood_glucose_value              => array("format"=>"A4ieId/A4ieLen","name"=>""),
+          HUITP_IEID_uni_blood_glucose_value              => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
 
           //单次运动
           HUITP_IEID_uni_single_sports_min                => "",
-          HUITP_IEID_uni_single_sports_value              => array("format"=>"A4ieId/A4ieLen","name"=>""),
+          HUITP_IEID_uni_single_sports_value              => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
 
           //单次睡眠
           HUITP_IEID_uni_single_sleep_min                 => "",
-          HUITP_IEID_uni_single_sleep_value               => array("format"=>"A4ieId/A4ieLen","name"=>""),
+          HUITP_IEID_uni_single_sleep_value               => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
 
           //体脂
           HUITP_IEID_uni_body_fat_min                     => "",
-          HUITP_IEID_uni_body_fat_value                   => array("format"=>"A4ieId/A4ieLen","name"=>""),
+          HUITP_IEID_uni_body_fat_value                   => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
 
           //血压
           HUITP_IEID_uni_blood_pressure_min               => "",
-          HUITP_IEID_uni_blood_pressure_value             => array("format"=>"A4ieId/A4ieLen","name"=>""),
+          HUITP_IEID_uni_blood_pressure_value             => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
 
           //跑步机数据上报
           HUITP_IEID_uni_runner_machine_rep_min           => "",
-          HUITP_IEID_uni_runner_machine_rep_value         => array("format"=>"A4ieId/A4ieLen","name"=>""),
+          HUITP_IEID_uni_runner_machine_rep_value         => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
 
           //跑步机任务控制
           HUITP_IEID_uni_runner_machine_ctrl_min          => "",
-          HUITP_IEID_uni_runner_machine_ctrl_value        => array("format"=>"A4ieId/A4ieLen","name"=>""),
+          HUITP_IEID_uni_runner_machine_ctrl_value        => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
 
           //GPS地址
           HUITP_IEID_uni_gps_specific_min                 => "",
-          HUITP_IEID_uni_gps_specific_x                   => array("format"=>"A4ieId/A4ieLen","name"=>""),
-          HUITP_IEID_uni_gps_specific_y                   => array("format"=>"A4ieId/A4ieLen","name"=>""),
-          HUITP_IEID_uni_gps_specific_z                   => array("format"=>"A4ieId/A4ieLen","name"=>""),
+          HUITP_IEID_uni_gps_specific_x                   => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
+          HUITP_IEID_uni_gps_specific_y                   => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
+          HUITP_IEID_uni_gps_specific_z                   => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
 
           //IHU与IAU之间控制命令
           HUITP_IEID_uni_iau_ctrl_min                     => "",
-          HUITP_IEID_uni_iau_ctrl_value                   => array("format"=>"A4ieId/A4ieLen","name"=>""),
+          HUITP_IEID_uni_iau_ctrl_value                   => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
 
           //电磁辐射强度
           HUITP_IEID_uni_emc_data_min                     => "",
-          HUITP_IEID_uni_emc_data_value                   => array("format"=>"A4ieId/A4ieLen","name"=>""),
+          HUITP_IEID_uni_emc_data_value                   => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
 
           //电磁辐射剂量
           HUITP_IEID_uni_emc_accu_min                     => "",
-          HUITP_IEID_uni_emc_accu_value                   => array("format"=>"A4ieId/A4ieLen","name"=>""),
+          HUITP_IEID_uni_emc_accu_value                   => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
 
           //一氧化碳
           HUITP_IEID_uni_co_min                           => "",
-          HUITP_IEID_uni_co_value                         => array("format"=>"A4ieId/A4ieLen","name"=>""),
+          HUITP_IEID_uni_co_value                         => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
 
           //甲醛HCHO
           HUITP_IEID_uni_formaldehyde_min                 => "",
-          HUITP_IEID_uni_formaldehyde_value               => array("format"=>"A4ieId/A4ieLen","name"=>""),
-          HUITP_IEID_uni_hcho_value                       => array("format"=>"A4ieId/A4ieLen","name"=>""),
+          HUITP_IEID_uni_formaldehyde_value               => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
+          HUITP_IEID_uni_hcho_value                       => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
 
           //酒精
           HUITP_IEID_uni_alcohol_min                      => "",
-          HUITP_IEID_uni_alcohol_value                    => array("format"=>"A4ieId/A4ieLen","name"=>""),
+          HUITP_IEID_uni_alcohol_value                    => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
 
           //PM1/2.5/10
           HUITP_IEID_uni_pm25_min                         => "",
-          HUITP_IEID_uni_pm01_value                       => array("format"=>"A4ieId/A4ieLen/A2dataFormat/A8pm01Value","name"=>"HUITP_IEID_uni_pm01_value"),
-          HUITP_IEID_uni_pm25_value                       => array("format"=>"A4ieId/A4ieLen/A2dataFormat/A8pm25Value","name"=>"HUITP_IEID_uni_pm25_value"),
-          HUITP_IEID_uni_pm10_value                       => array("format"=>"A4ieId/A4ieLen/A2dataFormat/A8pm10Value","name"=>"HUITP_IEID_uni_pm10_value"),
+          HUITP_IEID_uni_pm01_value                       => array("format"=>"A4ieId/A4ieLen/A2dataFormat/A8pm01Value","len"=>"5","name"=>"HUITP_IEID_uni_pm01_value"),
+          HUITP_IEID_uni_pm25_value                       => array("format"=>"A4ieId/A4ieLen/A2dataFormat/A8pm25Value","len"=>"5","name"=>"HUITP_IEID_uni_pm25_value"),
+          HUITP_IEID_uni_pm10_value                       => array("format"=>"A4ieId/A4ieLen/A2dataFormat/A8pm10Value","len"=>"5","name"=>"HUITP_IEID_uni_pm10_value"),
 
           //风速Wind Speed
           HUITP_IEID_uni_windspd_min                      => "",
-          HUITP_IEID_uni_windspd_value                    => array("format"=>"A4ieId/A4ieLen/A2dataFormat/A8windspdValue","name"=>"HUITP_IEID_uni_windspd_value"),
+          HUITP_IEID_uni_windspd_value                    => array("format"=>"A4ieId/A4ieLen/A2dataFormat/A8windspdValue","len"=>"5","name"=>"HUITP_IEID_uni_windspd_value"),
 
           //风向Wind Direction
           HUITP_IEID_uni_winddir_min                      => "n",
-          HUITP_IEID_uni_winddir_value                    => array("format"=>"A4ieId/A4ieLen/A2dataFormat/A8winddirValue","name"=>"HUITP_IEID_uni_winddir_value"),
+          HUITP_IEID_uni_winddir_value                    => array("format"=>"A4ieId/A4ieLen/A2dataFormat/A8winddirValue","len"=>"5","name"=>"HUITP_IEID_uni_winddir_value"),
 
           //温度Temperature
           HUITP_IEID_uni_temp_min                         => "",
-          HUITP_IEID_uni_temp_value                       => array("format"=>"A4ieId/A4ieLen/A2dataFormat/A8tempValue","name"=>"HUITP_IEID_uni_temp_value"),
+          HUITP_IEID_uni_temp_value                       => array("format"=>"A4ieId/A4ieLen/A2dataFormat/A8tempValue","len"=>"5","name"=>"HUITP_IEID_uni_temp_value"),
 
           //湿度Humidity
           HUITP_IEID_uni_humid_min                        => "",
-          HUITP_IEID_uni_humid_value                      => array("format"=>"A4ieId/A4ieLen/A2dataFormat/A8humidValue","name"=>"HUITP_IEID_uni_humid_value"),
+          HUITP_IEID_uni_humid_value                      => array("format"=>"A4ieId/A4ieLen/A2dataFormat/A8humidValue","len"=>"5","name"=>"HUITP_IEID_uni_humid_value"),
 
           //气压Air pressure
           HUITP_IEID_uni_airprs_min                       => "",
-          HUITP_IEID_uni_airprs_value                     => array("format"=>"A4ieId/A4ieLen","name"=>""),
+          HUITP_IEID_uni_airprs_value                     => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
 
           //噪声Noise
           HUITP_IEID_uni_noise_min                        => "",
-          HUITP_IEID_uni_noise_value                      => array("format"=>"A4ieId/A4ieLen/A2dataFormat/A8noiseValue","name"=>"HUITP_IEID_uni_noise_value"),
+          HUITP_IEID_uni_noise_value                      => array("format"=>"A4ieId/A4ieLen/A2dataFormat/A8noiseValue","len"=>"5","name"=>"HUITP_IEID_uni_noise_value"),
 
           //相机Camer or audio high speed
-          HUITP_IEID_uni_hsmmp_min                        => array("format"=>"A4ieId/A4ieLen","name"=>""),
-          HUITP_IEID_uni_hsmmp_value                      => array("format"=>"A4ieId/A4ieLen","name"=>""),
+          HUITP_IEID_uni_hsmmp_min                        => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
+          HUITP_IEID_uni_hsmmp_value                      => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
 
           //声音
           HUITP_IEID_uni_audio_min                        => "",
-          HUITP_IEID_uni_audio_value                      => array("format"=>"A4ieId/A4ieLen","name"=>""),
+          HUITP_IEID_uni_audio_value                      => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
 
           //视频
           HUITP_IEID_uni_video_min                        => "",
-          HUITP_IEID_uni_video_value                      => array("format"=>"A4ieId/A4ieLen","name"=>""),
+          HUITP_IEID_uni_video_value                      => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
 
           //图片
           HUITP_IEID_uni_picture_min                      => "",
-          HUITP_IEID_uni_picture_value                    => array("format"=>"A4ieId/A4ieLen","name"=>""),
-          HUITP_IEID_uni_picture_segment                  => array("format"=>"A4ieId/A4ieLen","name"=>""),
-          HUITP_IEID_uni_picture_format                  	=> array("format"=>"A4ieId/A4ieLen","name"=>""),
-          HUITP_IEID_uni_picture_body                  	=> array("format"=>"A4ieId/A4ieLen","name"=>""),
+          HUITP_IEID_uni_picture_value                    => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
+          HUITP_IEID_uni_picture_segment                  => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
+          HUITP_IEID_uni_picture_format                  	=> array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
+          HUITP_IEID_uni_picture_body                  	=> array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
 
           //扬尘监控系统
           HUITP_IEID_uni_ycjk_min                         => "",
-          HUITP_IEID_uni_ycjk_value                       => array("format"=>"A4ieId/A4ieLen","name"=>""),
-          HUITP_IEID_uni_ycjk_sensor_selection            => array("format"=>"A4ieId/A4ieLen","name"=>""),
+          HUITP_IEID_uni_ycjk_value                       => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
+          HUITP_IEID_uni_ycjk_sensor_selection            => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
 
           //水表
           HUITP_IEID_uni_water_meter_min                  => "n",
-          HUITP_IEID_uni_water_meter_value                => array("format"=>"A4ieId/A4ieLen","name"=>""),
+          HUITP_IEID_uni_water_meter_value                => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
 
           //热表
           HUITP_IEID_uni_heat_meter_min                   => "",
-          HUITP_IEID_uni_heat_meter_value                 => array("format"=>"A4ieId/A4ieLen","name"=>""),
+          HUITP_IEID_uni_heat_meter_value                 => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
 
           //气表
           HUITP_IEID_uni_gas_meter_min                    => "",
-          HUITP_IEID_uni_gas_meter_value                  => array("format"=>"A4ieId/A4ieLen","name"=>""),
+          HUITP_IEID_uni_gas_meter_value                  => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
 
           //电表
           HUITP_IEID_uni_power_meter_min                  => "",
-          HUITP_IEID_uni_power_meter_value                => array("format"=>"A4ieId/A4ieLen","name"=>""),
+          HUITP_IEID_uni_power_meter_value                => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
 
           //光照强度
           HUITP_IEID_uni_light_strength_min               => "",
-          HUITP_IEID_uni_light_strength_value             => array("format"=>"A4ieId/A4ieLen","name"=>""),
+          HUITP_IEID_uni_light_strength_value             => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
 
           //有毒气体VOC
           HUITP_IEID_uni_toxicgas_min                     => "",
-          HUITP_IEID_uni_toxicgas_value                   => array("format"=>"A4ieId/A4ieLen","name"=>""),
+          HUITP_IEID_uni_toxicgas_value                   => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
 
           //海拔高度
-          HUITP_IEID_uni_altitude_min                     => array("format"=>"A4ieId/A4ieLen","name"=>""),
-          HUITP_IEID_uni_altitude_value                   => array("format"=>"A4ieId/A4ieLen","name"=>""),
+          HUITP_IEID_uni_altitude_min                     => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
+          HUITP_IEID_uni_altitude_value                   => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
 
           //马达
           HUITP_IEID_uni_moto_min                         => "",
-          HUITP_IEID_uni_moto_value                       => array("format"=>"A4ieId/A4ieLen","name"=>""),
+          HUITP_IEID_uni_moto_value                       => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
 
           //继电器
           HUITP_IEID_uni_switch_resistor_min              => "",
-          HUITP_IEID_uni_switch_resistor_value            => array("format"=>"A4ieId/A4ieLen","name"=>""),
+          HUITP_IEID_uni_switch_resistor_value            => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
 
           //导轨传送带
           HUITP_IEID_uni_transporter_min                  => "",
-          HUITP_IEID_uni_transporter_value                => array("format"=>"A4ieId/A4ieLen","name"=>""),
+          HUITP_IEID_uni_transporter_value                => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
 
           //组合秤BFSC
           HUITP_IEID_uni_bfsc_comb_scale_min              => "",
-          HUITP_IEID_uni_scale_weight_value               => array("format"=>"A4ieId/A4ieLen","name"=>""),
-          HUITP_IEID_uni_scale_weight_cmd                 => array("format"=>"A4ieId/A4ieLen","name"=>""),
+          HUITP_IEID_uni_scale_weight_value               => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
+          HUITP_IEID_uni_scale_weight_cmd                 => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
 
           //云控锁-锁-旧系统
           HUITP_IEID_uni_ccl_lock_old_min                 => "",
-          HUITP_IEID_uni_ccl_lock_old_state               => array("format"=>"A4ieId/A4ieLen","name"=>""),
-          HUITP_IEID_uni_ccl_lock_old_auth_req            => array("format"=>"A4ieId/A4ieLen","name"=>""),
-          HUITP_IEID_uni_ccl_lock_old_auth_resp           => array("format"=>"A4ieId/A4ieLen","name"=>""),
+          HUITP_IEID_uni_ccl_lock_old_state               => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
+          HUITP_IEID_uni_ccl_lock_old_auth_req            => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
+          HUITP_IEID_uni_ccl_lock_old_auth_resp           => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
 
           //云控锁-门
           HUITP_IEID_uni_ccl_door_min                     => "",
-          HUITP_IEID_uni_ccl_door_state                   => array("format"=>"A4ieId/A4ieLen/A2maxDoorNo/A2doorId/A2door_1/A2door_2/A2door_3/A2door_4","name"=>"HUITP_IEID_uni_ccl_door_state"),
+          HUITP_IEID_uni_ccl_door_state                   => array("format"=>"A4ieId/A4ieLen/A2maxDoorNo/A2doorId/A2door_1/A2door_2/A2door_3/A2door_4","len"=>"6","name"=>"HUITP_IEID_uni_ccl_door_state"),
 
           //云控锁-RFID模块
           HUITP_IEID_uni_ccl_rfid_min                     => "",
-          HUITP_IEID_uni_ccl_rfid_value                   => array("format"=>"A4ieId/A4ieLen","name"=>""),
+          HUITP_IEID_uni_ccl_rfid_value                   => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
 
           //云控锁-BLE模块
           HUITP_IEID_uni_ccl_ble_min                      => "",
-          HUITP_IEID_uni_ccl_ble_value                    => array("format"=>"A4ieId/A4ieLen","name"=>""),
+          HUITP_IEID_uni_ccl_ble_value                    => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
 
           //云控锁-GPRS模块
           HUITP_IEID_uni_ccl_gprs_min                     => "",
-          HUITP_IEID_uni_ccl_rssi_value                   => array("format"=>"A4ieId/A4ieLen/A2dataFormat/A4rssiValue","name"=>"HUITP_IEID_uni_ccl_rssi_value"),
+          HUITP_IEID_uni_ccl_rssi_value                   => array("format"=>"A4ieId/A4ieLen/A2dataFormat/A4rssiValue","len"=>"3","name"=>"HUITP_IEID_uni_ccl_rssi_value"),
 
           //云控锁-电池模块
           HUITP_IEID_uni_ccl_battery_min                  => "",
-          HUITP_IEID_uni_ccl_bat_state                    => array("format"=>"A4ieId/A4ieLen/A2batState","name"=>"HUITP_IEID_uni_ccl_bat_state"),
-          HUITP_IEID_uni_ccl_bat_value                    => array("format"=>"A4ieId/A4ieLen/A2dataFormat/A4batValue","name"=>"HUITP_IEID_uni_ccl_bat_value"),
+          HUITP_IEID_uni_ccl_bat_state                    => array("format"=>"A4ieId/A4ieLen/A2batState","len"=>"1","name"=>"HUITP_IEID_uni_ccl_bat_state"),
+          HUITP_IEID_uni_ccl_bat_value                    => array("format"=>"A4ieId/A4ieLen/A2dataFormat/A4batValue","len"=>"3","name"=>"HUITP_IEID_uni_ccl_bat_value"),
 
           //云控锁-震动
           HUITP_IEID_uni_ccl_shake_min                    => "",
-          HUITP_IEID_uni_ccl_shake_state                  => array("format"=>"A4ieId/A4ieLen/A2shakeState","name"=>"HUITP_IEID_uni_ccl_shake_state"),
+          HUITP_IEID_uni_ccl_shake_state                  => array("format"=>"A4ieId/A4ieLen/A2shakeState","len"=>"1","name"=>"HUITP_IEID_uni_ccl_shake_state"),
 
           //云控锁-烟雾
           HUITP_IEID_uni_ccl_smoke_min                    => "",
-          HUITP_IEID_uni_ccl_smoke_state                  => array("format"=>"A4ieId/A4ieLen/A2smokeState","name"=>"HUITP_IEID_uni_ccl_smoke_state"),
+          HUITP_IEID_uni_ccl_smoke_state                  => array("format"=>"A4ieId/A4ieLen/A2smokeState","len"=>"1","name"=>"HUITP_IEID_uni_ccl_smoke_state"),
 
           //云控锁-水浸
           HUITP_IEID_uni_ccl_water_min                    => "",
-          HUITP_IEID_uni_ccl_water_state                  => array("format"=>"A4ieId/A4ieLen/A2waterState","name"=>"HUITP_IEID_uni_ccl_water_state"),
+          HUITP_IEID_uni_ccl_water_state                  => array("format"=>"A4ieId/A4ieLen/A2waterState","len"=>"1","name"=>"HUITP_IEID_uni_ccl_water_state"),
 
           //云控锁-温度
           HUITP_IEID_uni_ccl_temp_min                     => "",
-          HUITP_IEID_uni_ccl_temp_value                   => array("format"=>"A4ieId/A4ieLen/A2dataFormat/A4tempValue","name"=>"HUITP_IEID_uni_ccl_temp_value"),
+          HUITP_IEID_uni_ccl_temp_value                   => array("format"=>"A4ieId/A4ieLen/A2dataFormat/A4tempValue","len"=>"3","name"=>"HUITP_IEID_uni_ccl_temp_value"),
 
           //云控锁-湿度
           HUITP_IEID_uni_ccl_humid_min                    => "",
-          HUITP_IEID_uni_ccl_humid_value                  => array("format"=>"A4ieId/A4ieLen/A2dataFormat/A4humidValue","name"=>"HUITP_IEID_uni_ccl_humid_value"),
+          HUITP_IEID_uni_ccl_humid_value                  => array("format"=>"A4ieId/A4ieLen/A2dataFormat/A4humidValue","len"=>"3","name"=>"HUITP_IEID_uni_ccl_humid_value"),
 
           //云控锁-倾倒
           HUITP_IEID_uni_ccl_fall_min                     => "",
-          HUITP_IEID_uni_ccl_fall_state                   => array("format"=>"A4ieId/A4ieLen/A2fallState","name"=>"HUITP_IEID_uni_ccl_fall_state"),
+          HUITP_IEID_uni_ccl_fall_state                   => array("format"=>"A4ieId/A4ieLen/A2fallState","len"=>"1","name"=>"HUITP_IEID_uni_ccl_fall_state"),
 
           //云控锁-状态聚合-旧系统
           HUITP_IEID_uni_ccl_state_old_min                => "",
-          HUITP_IEID_uni_ccl_general_old_value1           => array("format"=>"A4ieId/A4ieLen","name"=>""),
-          HUITP_IEID_uni_ccl_general_old_value2           => array("format"=>"A4ieId/A4ieLen","name"=>""),
-          HUITP_IEID_uni_ccl_dcmi_old_value               => array("format"=>"A4ieId/A4ieLen","name"=>""),
-          HUITP_IEID_uni_ccl_report_old_type              => array("format"=>"A4ieId/A4ieLen","name"=>""),
+          HUITP_IEID_uni_ccl_general_old_value1           => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
+          HUITP_IEID_uni_ccl_general_old_value2           => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
+          HUITP_IEID_uni_ccl_dcmi_old_value               => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
+          HUITP_IEID_uni_ccl_report_old_type              => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
 
           //云控锁-锁
           HUITP_IEID_uni_ccl_lock_min                 	=> "",
-          HUITP_IEID_uni_ccl_lock_state               	=> array("format"=>"A4ieId/A4ieLen/A2maxLockNo/A2lockId/A2lock_1/A2lock_2/A2lock_3/A2lock_4","name"=>"HUITP_IEID_uni_ccl_lock_state"),
-          HUITP_IEID_uni_ccl_lock_auth_req            	=> array("format"=>"A4ieId/A4ieLen/A2authReqType/A2bleAddrLen/A40bleMacAddr/A2rfidAddrLen/A40rfidAddr","name"=>"HUITP_IEID_uni_ccl_lock_auth_req"),
-          HUITP_IEID_uni_ccl_lock_auth_resp           	=> array("format"=>"A4ieId/A4ieLen","name"=>""),
+          HUITP_IEID_uni_ccl_lock_state               	=> array("format"=>"A4ieId/A4ieLen/A2maxLockNo/A2lockId/A2lock_1/A2lock_2/A2lock_3/A2lock_4","len"=>"6","name"=>"HUITP_IEID_uni_ccl_lock_state"),
+          HUITP_IEID_uni_ccl_lock_auth_req            	=> array("format"=>"A4ieId/A4ieLen/A2authReqType/A2bleAddrLen/A40bleMacAddr/A2rfidAddrLen/A40rfidAddr","len"=>"43","name"=>"HUITP_IEID_uni_ccl_lock_auth_req"),
+          HUITP_IEID_uni_ccl_lock_auth_resp           	=> array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
 
           //云控锁-状态聚合
           HUITP_IEID_uni_ccl_state_min                    => "",
-          HUITP_IEID_uni_ccl_general_value1               => array("format"=>"A4ieId/A4ieLen/A2dataFormat/A4generalValue1","name"=>"HUITP_IEID_uni_ccl_general_value1"),
-          HUITP_IEID_uni_ccl_general_value2               => array("format"=>"A4ieId/A4ieLen/A2dataFormat/A4generalValue1","name"=>"HUITP_IEID_uni_ccl_general_value2"),
-          HUITP_IEID_uni_ccl_dcmi_value                   => array("format"=>"A4ieId/A4ieLen/A2dataFormat/A4dcmiValue","name"=>"HUITP_IEID_uni_ccl_dcmi_value"),
-          HUITP_IEID_uni_ccl_report_type                  => array("format"=>"A4ieId/A4ieLen/A2event","name"=>"HUITP_IEID_uni_ccl_report_type"),
+          HUITP_IEID_uni_ccl_general_value1               => array("format"=>"A4ieId/A4ieLen/A2dataFormat/A4generalValue1","len"=>"3","name"=>"HUITP_IEID_uni_ccl_general_value1"),
+          HUITP_IEID_uni_ccl_general_value2               => array("format"=>"A4ieId/A4ieLen/A2dataFormat/A4generalValue2","len"=>"3","name"=>"HUITP_IEID_uni_ccl_general_value2"),
+          HUITP_IEID_uni_ccl_dcmi_value                   => array("format"=>"A4ieId/A4ieLen/A2dataFormat/A4dcmiValue","len"=>"3","name"=>"HUITP_IEID_uni_ccl_dcmi_value"),
+          HUITP_IEID_uni_ccl_report_type                  => array("format"=>"A4ieId/A4ieLen/A2event","len"=>"1","name"=>"HUITP_IEID_uni_ccl_report_type"),
 
           //串口读取命令/返回结果
           HUITP_IEID_uni_itf_sps_min                      => "",
-          HUITP_IEID_uni_itf_sps_value                    => array("format"=>"A4ieId/A4ieLen","name"=>""),
+          HUITP_IEID_uni_itf_sps_value                    => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
 
           //ADC读取命令/返回结果
           HUITP_IEID_uni_itf_adc_min                      => "",
-          HUITP_IEID_uni_itf_adc_value                    => array("format"=>"A4ieId/A4ieLen","name"=>""),
+          HUITP_IEID_uni_itf_adc_value                    => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
 
           //DAC读取命令/返回结果
           HUITP_IEID_uni_itf_dac_min                      => "",
-          HUITP_IEID_uni_itf_dac_value                    => array("format"=>"A4ieId/A4ieLen","name"=>""),
+          HUITP_IEID_uni_itf_dac_value                    => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
 
           //I2C读取命令/返回结果
           HUITP_IEID_uni_itf_i2c_min                      => "",
-          HUITP_IEID_uni_itf_i2c_value                    => array("format"=>"A4ieId/A4ieLen","name"=>""),
+          HUITP_IEID_uni_itf_i2c_value                    => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
 
           //PWM读取命令/返回结果
           HUITP_IEID_uni_itf_pwm_min                      => "",
-          HUITP_IEID_uni_itf_pwm_value                    => array("format"=>"A4ieId/A4ieLen","name"=>""),
+          HUITP_IEID_uni_itf_pwm_value                    => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
 
           //DI读取命令/返回结果
           HUITP_IEID_uni_itf_di_min                       => "",
-          HUITP_IEID_uni_itf_di_value                     => array("format"=>"A4ieId/A4ieLen","name"=>""),
+          HUITP_IEID_uni_itf_di_value                     => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
 
           //DO读取命令/返回结果
           HUITP_IEID_uni_itf_do_min                       => "",
-          HUITP_IEID_uni_itf_do_value                     => array("format"=>"A4ieId/A4ieLen","name"=>""),
+          HUITP_IEID_uni_itf_do_value                     => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
 
           //CAN读取命令/返回结果
           HUITP_IEID_uni_itf_can_min                      => "",
-          HUITP_IEID_uni_itf_can_value                    => array("format"=>"A4ieId/A4ieLen","name"=>""),
+          HUITP_IEID_uni_itf_can_value                    => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
 
           //SPI读取命令/返回结果
           HUITP_IEID_uni_itf_spi_min                      => "",
-          HUITP_IEID_uni_itf_spi_value                    => array("format"=>"A4ieId/A4ieLen","name"=>""),
+          HUITP_IEID_uni_itf_spi_value                    => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
 
           //USB读取命令/返回结果
           HUITP_IEID_uni_itf_usb_min                      => "",
-          HUITP_IEID_uni_itf_usb_value                    => array("format"=>"A4ieId/A4ieLen","name"=>""),
+          HUITP_IEID_uni_itf_usb_value                    => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
 
           //网口读取命令/返回结果
           HUITP_IEID_uni_itf_eth_min                      => "",
-          HUITP_IEID_uni_itf_eth_value                    => array("format"=>"A4ieId/A4ieLen","name"=>""),
+          HUITP_IEID_uni_itf_eth_value                    => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
 
           //485读取命令/返回结果
           HUITP_IEID_uni_itf_485_min                      => "",
-          HUITP_IEID_uni_itf_485_value                    => array("format"=>"A4ieId/A4ieLen","name"=>""),
+          HUITP_IEID_uni_itf_485_value                    => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
 
           //软件清单
           HUITP_IEID_uni_inventory_min                    => "",
-          //HUITP_IEID_uni_inventory_hw_type                => array("format"=>"A4ieId/A4ieLen","name"=>""),
-          HUITP_IEID_uni_inventory_element                => array("format"=>"A4ieId/A4ieLen/A4hwType/A4hwId/A4swRel/A4swVer/A2upgradeFlag/A100descp","name"=>"HUITP_IEID_uni_inventory_element"),
-          HUITP_IEID_uni_inventory_hw_id                  => array("format"=>"A4ieId/A4ieLen","name"=>""),
-          HUITP_IEID_uni_inventory_sw_rel                 => array("format"=>"A4ieId/A4ieLen","name"=>""),
-          HUITP_IEID_uni_inventory_sw_ver                 => array("format"=>"A4ieId/A4ieLen","name"=>""),
+          //HUITP_IEID_uni_inventory_hw_type                => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
+          HUITP_IEID_uni_inventory_element                => array("format"=>"A4ieId/A4ieLen/A4hwType/A4hwId/A4swRel/A4swVer/A2upgradeFlag/A100descp","len"=>"59","name"=>"HUITP_IEID_uni_inventory_element"),
+          HUITP_IEID_uni_inventory_hw_id                  => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
+          HUITP_IEID_uni_inventory_sw_rel                 => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
+          HUITP_IEID_uni_inventory_sw_ver                 => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
 
           //软件版本体
           HUITP_IEID_uni_sw_package_min                   => "",
-          HUITP_IEID_uni_sw_package_body                  => array("format"=>"A4ieId/A4ieLen","name"=>""),
+          HUITP_IEID_uni_sw_package_body                  => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
 
           //ALARM REPORT
           HUITP_IEID_uni_alarm_info_min                   => "",
-          //HUITP_IEID_uni_alarm_info_type                  => array("format"=>"A4ieId/A4ieLen","name"=>""),
-          HUITP_IEID_uni_alarm_info_element               => array("format"=>"A4ieId/A4ieLen/A4alarmType/A2alarmServerity/A2alarmClearFlag/A8equID/A8causeId/A8alarmContent/A200alarmDescp","name"=>"HUITP_IEID_uni_alarm_info_element"),
-          HUITP_IEID_uni_alarm_info_value                 => array("format"=>"A4ieId/A4ieLen","name"=>""),
+          //HUITP_IEID_uni_alarm_info_type                  => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
+          HUITP_IEID_uni_alarm_info_element               => array("format"=>"A4ieId/A4ieLen/A4alarmType/A2alarmServerity/A2alarmClearFlag/A8equID/A8causeId/A8alarmContent/A200alarmDescp","len"=>"116","name"=>"HUITP_IEID_uni_alarm_info_element"),
+          HUITP_IEID_uni_alarm_info_value                 => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
 
           //PM Report
           HUITP_IEID_uni_performance_info_min             => "",
-          //HUITP_IEID_uni_performance_info_type            => array("format"=>"A4ieId/A4ieLen","name"=>""),
-          HUITP_IEID_uni_performance_info_element         => array("format"=>"A4ieId/A4ieLen/A8restartCnt/A8networkConnCnt/A8networkConnFailCnt/A8networkDiscCnt/A8socketDiscCnt/A8cpuOccupy/A8memOccupy/A8diskOccupy/A8cpuTemp","name"=>"HUITP_IEID_uni_performance_info_element"),
-          HUITP_IEID_uni_performance_info_value           => array("format"=>"A4ieId/A4ieLen","name"=>""),
+          //HUITP_IEID_uni_performance_info_type            => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
+          HUITP_IEID_uni_performance_info_element         => array("format"=>"A4ieId/A4ieLen/A8restartCnt/A8networkConnCnt/A8networkConnFailCnt/A8networkDiscCnt/A8socketDiscCnt/A8cpuOccupy/A8memOccupy/A8diskOccupy/A8cpuTemp","len"=>"36","name"=>"HUITP_IEID_uni_performance_info_element"),
+          HUITP_IEID_uni_performance_info_value           => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
 
           //设备基本信息
           HUITP_IEID_uni_equipment_info_min               => "",
-          HUITP_IEID_uni_equipment_info_value             => array("format"=>"A4ieId/A4ieLen","name"=>""),
+          HUITP_IEID_uni_equipment_info_value             => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
 
           //个人基本信息
           HUITP_IEID_uni_personal_info_min                => "",
-          HUITP_IEID_uni_personal_info_value              => array("format"=>"A4ieId/A4ieLen","name"=>""),
+          HUITP_IEID_uni_personal_info_value              => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
 
           //时间同步
           HUITP_IEID_uni_time_sync_min                    => "",
-          HUITP_IEID_uni_time_sync_value                  => array("format"=>"A4ieId/A4ieLen","name"=>""),
+          HUITP_IEID_uni_time_sync_value                  => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
 
           //读取数据
           HUITP_IEID_uni_general_read_data_min            => "",
-          HUITP_IEID_uni_general_read_data_value          => array("format"=>"A4ieId/A4ieLen","name"=>""),
+          HUITP_IEID_uni_general_read_data_value          => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
 
           //定时闹钟及久坐提醒
           HUITP_IEID_uni_clock_timeout_min                => "",
-          HUITP_IEID_uni_clock_timeout_value              => array("format"=>"A4ieId/A4ieLen","name"=>""),
+          HUITP_IEID_uni_clock_timeout_value              => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
 
           //同步充电，双击情况
           HUITP_IEID_uni_sync_charging_min                => "",
-          HUITP_IEID_uni_sync_charging_value              => array("format"=>"A4ieId/A4ieLen","name"=>""),
+          HUITP_IEID_uni_sync_charging_value              => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
 
           //同步通知信息
           HUITP_IEID_uni_sync_trigger_min                 => "",
-          HUITP_IEID_uni_sync_trigger_value               => array("format"=>"A4ieId/A4ieLen","name"=>""),
+          HUITP_IEID_uni_sync_trigger_value               => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
 
           //CMD CONTROL
           HUITP_IEID_uni_cmd_ctrl_min                     => "",
-          HUITP_IEID_uni_cmd_ctrl_send                    => array("format"=>"A4ieId/A4ieLen","name"=>""),
-          HUITP_IEID_uni_cmd_ctrl_confirm                 => array("format"=>"A4ieId/A4ieLen","name"=>""),
+          HUITP_IEID_uni_cmd_ctrl_send                    => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
+          HUITP_IEID_uni_cmd_ctrl_confirm                 => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
 
           //心跳
           HUITP_IEID_uni_heart_beat_min                   => "",
-          HUITP_IEID_uni_heart_beat_ping                  => array("format"=>"A4ieId/A4ieLen","name"=>""),
-          HUITP_IEID_uni_heart_beat_pong                  => array("format"=>"A4ieId/A4ieLen","name"=>""),
+          HUITP_IEID_uni_heart_beat_ping                  => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
+          HUITP_IEID_uni_heart_beat_pong                  => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
 
           //最大值
           HUITP_IEID_uni_max                              => "",

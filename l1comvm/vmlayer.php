@@ -22,10 +22,11 @@ include_once "../l1comvm/func_comapi.class.php";
 //HUITP任务模块
 include_once "../l2codec/l2codec_huitp_msg_dict.php";
 include_once "../l2codec/l2codec_huitp_ie_dict.php";
-include_once "../l2codec/task_l2codec_huitp_xml.class.php";
+include_once "../l2codec/task_l2decode_huitp_xml.class.php";
+include_once "../l2codec/task_l2encode_huitp_xml.class.php";
+include_once "../l2sdk/task_l2sdk_iot_huitp.class.php";
 //包含所有的任务模块，不然无法调用
 include_once "../l2sdk/task_l2sdk_iot_hcu.class.php";
-include_once "../l2sdk/task_l2sdk_iot_huitp.class.php";
 include_once "../l2sdk/task_l2sdk_wechat.class.php";
 include_once "../l2sdk/task_l2sdk_iot_apple.class.php";
 include_once "../l2sdk/task_l2sdk_iot_jd.class.php";
@@ -811,9 +812,14 @@ class classTaskL1vmCoreRouter
                     $obj->mfun_l2sdk_iot_huitp_task_main_entry($this, $result["msgId"], $result["msgName"], $result["msgBody"]);
                     break;
 
-                case MFUN_TASK_ID_L2CODEC_HUITP:
-                    $obj = new classTaskL2codecHuitpXml();
-                    $obj->mfun_l2codec_huitp_xml_task_main_entry($this, $result["msgId"], $result["msgName"], $result["msgBody"]);
+                case MFUN_TASK_ID_L2DECODE_HUITP:
+                    $obj = new classTaskL2decodeHuitpXml();
+                    $obj->mfun_l2decode_huitp_xml_task_main_entry($this, $result["msgId"], $result["msgName"], $result["msgBody"]);
+                    break;
+
+                case MFUN_TASK_ID_L2ENCODE_HUITP:
+                    $obj = new classTaskL2encodeHuitpXml();
+                    $obj->mfun_l2encode_huitp_xml_task_main_entry($this, $result["msgId"], $result["msgName"], $result["msgBody"]);
                     break;
 
                 case MFUN_TASK_ID_L2SDK_NBIOT_STD_QG376:

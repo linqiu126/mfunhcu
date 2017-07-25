@@ -56,7 +56,7 @@ define("MFUN_L3APL_F2CM_EVENT_DURATION_WEEK", "7");
 define("MFUN_L3APL_F2CM_EVENT_DURATION_MONTH", "30");
 
 //FHYS系统常量
-define ("MFUN_HCU_FHYS_TIME_GRID_SIZE", 1); //每分钟一条记录
+define ("MFUN_HCU_FHYS_TIME_GRID_SIZE", 3); //每分钟一条记录
 
 define ("MFUN_HCU_FHYS_ALARM_PROC_FLAG_Y", "Y"); //告警已经处理，等待关闭
 define ("MFUN_HCU_FHYS_ALARM_PROC_FLAG_N", "N"); //告警未处理
@@ -124,8 +124,8 @@ define("MFUN_HCU_CMDID_FHYS_SMOK", 0x47);       //烟雾控制字
 define("MFUN_HCU_CMDID_FHYS_WATER", 0x48);       //水浸控制字
 define("MFUN_HCU_CMDID_FHYS_TEMP", 0x49);       //温度控制字
 define("MFUN_HCU_CMDID_FHYS_HUMI", 0x4A);       //湿度控制字
-define("MFUN_HCU_CMDID_FHYS_BOXOPEN", 0x4B);    //光交箱开锁控制字
-define("MFUN_HCU_CMDID_FHYS_BOXSTATUS", 0x4C);  //光交箱状态聚合控制字
+define("MFUN_HCU_CMDID_FHYS_DOORLOCK_OPEN", 0x4B);    //光交箱开锁控制字
+define("MFUN_HCU_CMDID_FHYS_DOORLOCK_STATUS", 0x4C);  //光交箱状态聚合控制字
 
 //锁操作字
 define("MFUN_HCU_OPT_FHYS_BOXSTAT_IND", 0x81);
