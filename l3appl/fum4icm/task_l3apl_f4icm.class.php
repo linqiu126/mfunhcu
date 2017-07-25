@@ -341,14 +341,14 @@ class classTaskL3aplF4icm
         $usercheck = $uiF1symDbObj->dbi_user_authcheck($action, $user);
         if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
             $uiF4icmDbObj = new classDbiL3apF4icm();
-            $result = $uiF4icmDbObj->dbi_get_camera_status($StatCode);
-            if($result == true)
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"摄像头状态更新成功");
+            $ret = $uiF4icmDbObj->dbi_get_camera_status($StatCode);
+            if(!empty($ret))
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$ret,'msg'=>"摄像头状态更新成功");
             else
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"摄像头状态更新失败");
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$ret,'msg'=>"摄像头状态更新失败");
         }
         else
-            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>$usercheck['msg']);
+            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
 
         return $retval;
     }

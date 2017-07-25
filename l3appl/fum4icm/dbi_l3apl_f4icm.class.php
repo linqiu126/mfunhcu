@@ -689,29 +689,16 @@ class classDbiL3apF4icm
 
         if (($result != false) && ($result->num_rows)>0)
         {
-            //生成控制命令的控制字
-            $dbiL1vmCommonObj = new classDbiL1vmCommon();
-            $ctrl_key = $dbiL1vmCommonObj->byte2string(MFUN_IHU_CMDID_HSMMP_DATA);
-            $opt_key = $dbiL1vmCommonObj->byte2string(MFUN_HCU_OPT_VEDIOPIC_REQ);
-
             $row = $result->fetch_array();  //statcode和devcode一一对应
-            $DevCode = $row['devcode'];
-
-            $len = $dbiL1vmCommonObj->byte2string(strlen($opt_key)/2);
-            $respCmd = $ctrl_key . $len . $opt_key;
-
-            //通过9502端口建立tcp阻塞式socket连接，向HCU转发操控命令
-            $client = new socket_client_sync($DevCode, $respCmd);
-            $client->connect();
-
-            $resp = true;
+            $url = $row['camctrl'];
+            $resp = array("v"=>"120~","h"=>"120~","zoom"=>"5","url"=>$url);
         }
         else
-            $resp = false;
+            $resp = array();
+
         $mysqli->close();
         return $resp;
     }
-
 
     //TBSWR gettempstatus
     public function dbi_tbswr_gettempstatus($uid, $StatCode)
