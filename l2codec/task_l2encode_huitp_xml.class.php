@@ -32,14 +32,7 @@ class classTaskL2encodeHuitpXml
 
     private function func_huitp_xml_format_encode($toUser, $fromUser, $content)
     {
-        $xmlTpl = "<xml>
-            <ToUserName><![CDATA[%s]]></ToUserName>
-            <FromUserName><![CDATA[%s]]></FromUserName>
-            <CreateTime>%s</CreateTime>
-            <MsgType><![CDATA[huitp_text]]></MsgType>
-            <Content><![CDATA[%s]]></Content>
-            <FuncFlag>0</FuncFlag>
-            </xml>";
+        $xmlTpl = "<xml><ToUserName><![CDATA[%s]]></ToUserName><FromUserName><![CDATA[%s]]></FromUserName><CreateTime>%s</CreateTime><MsgType><![CDATA[huitp_text]]></MsgType><Content><![CDATA[%s]]></Content><FuncFlag>0</FuncFlag></xml>";
         $result = sprintf($xmlTpl, $toUser, $fromUser, time(), $content);
         return $result;
     }
