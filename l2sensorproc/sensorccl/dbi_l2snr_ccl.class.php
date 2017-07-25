@@ -344,6 +344,8 @@ class classDbiL2snrCcl
         array_push($authRespIE, $huitpIeLen);
         array_push($authRespIE, $authResp);
 
+        array_push($respMsgContent, $comRespIE);
+        array_push($respMsgContent, $authRespIE);
 
         $mysqli->close();
         return $respMsgContent;
