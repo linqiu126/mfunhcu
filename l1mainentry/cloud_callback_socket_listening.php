@@ -209,7 +209,7 @@ class classL1MainEntrySocketListenServer
     public function stdxml_tcp_hcuport_onConnect($swoole_socket_serv, $fd, $from_id ) {
         echo date('Y/m/d H:i:s', time())." ";
         echo "stdxml_tcp_hcuport_onConnect: Client fd={$fd} connected.\n";
-        $swoole_socket_serv->send( $fd, "Hello {$fd}!" );
+        //$swoole_socket_serv->send( $fd, "Hello {$fd}!" );
     }
 
     //STDXML hcuport入口函数，收到消息直接转发给HCU IOT模块并带上socketid，L1socket模块只负责消息收发，不进行任何消息解码工作
@@ -344,7 +344,7 @@ class classL1MainEntrySocketListenServer
     public function huitpxml_tcp_picport_onConnect($swoole_socket_serv, $fd, $from_id ) {
         echo date('Y/m/d H:i:s', time())." ";
         echo "huitpxml_tcp_picport_onConnect: Client fd={$fd} connected.\n";
-        $swoole_socket_serv->send( $fd, "Hello {$fd}!" );
+        //$swoole_socket_serv->send( $fd, "Hello {$fd}!" );
     }
 
     public function huitpxml_tcp_picport_onReceive(swoole_server $swoole_socket_serv, $fd, $from_id, $data )

@@ -161,7 +161,7 @@ class classTaskL2snrHsmmp
             //$base_dir = str_replace( '\\' , '/' , realpath(dirname(__FILE__).'/../../../avorion'));
             $filename = $statCode . "_" . $timestamp . $file_type;
             $loggerObj->logger($project, $devCode, $log_time, "上传新图片文件".$filename);
-            //$result = $dbiL2snrHsmmpObj->dbi_door_open_picture_link_save($statCode, $devCode, $timestamp, $filename,$filesize);
+            $result = $dbiL2snrHsmmpObj->dbi_door_open_picture_link_save($statCode, $devCode, $timestamp, $filename,$filesize);
         }
 
         return $result;
