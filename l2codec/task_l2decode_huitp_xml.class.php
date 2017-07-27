@@ -61,7 +61,7 @@ class classTaskL2decodeHuitpXml
         //判断HUITP消息长度的合法性
         $length =  $huitpMsgLen * 2 + MFUN_HUITP_MSG_HEAD_LENGTH; //因为收到的消息为16进制字符，消息总长度等于length＋2B MsgId＋2B MsgLen本身
         if ($length != strlen($content)) {
-            $result = "Message length invalid";
+            $result = "[HUITP_DECODE] Message length invalid";
             $log_content = "P:" . json_encode($result);
             $loggerObj->logger("MFUN_TASK_ID_L2DECODE_HUITP", "mfun_l2decode_huitp_xml_task_main_entry", $log_time, $log_content);
             echo trim($result);

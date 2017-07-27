@@ -8,7 +8,7 @@
 include_once "../l1comvm/vmlayer.php";
 //require dirname(__FILE__).'/../l1comvm/vmlayer.php';
 //include_once "../l2sdk/task_l2sdk_wechat.class.php";
-//include_once "../l2sdk/task_l2sdk_iot_hcu.class.php";
+//include_once "../l2sdk/task_l2sdk_iot_stdxml.class.php";
 //include_once "../l4aqycui/dbi_l4aqyc_ui.class.php";
 //$dir = dirname(__FILE__);
 //header("Content-type:text/html;charset=utf-8");
@@ -20,7 +20,7 @@ include_once "../l1comvm/vmlayer.php";
 define ("TC_EMCWX", false);
 define ("TC_SOCKET", true);
 define ("TC_CRON", false);
-define ("TC_IOT_HCU", false);
+define ("TC_IOT_STDXML", false);
 define ("TC_L4AQYC_UI", false);
 define ("TC_L4FHYS_UI", false);
 define ("TC_L4FHYS_WECHAT", false);

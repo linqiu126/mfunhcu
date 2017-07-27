@@ -26,7 +26,7 @@ include_once "../l2codec/task_l2decode_huitp_xml.class.php";
 include_once "../l2codec/task_l2encode_huitp_xml.class.php";
 include_once "../l2sdk/task_l2sdk_iot_huitp.class.php";
 //包含所有的任务模块，不然无法调用
-include_once "../l2sdk/task_l2sdk_iot_hcu.class.php";
+include_once "../l2sdk/task_l2sdk_iot_stdxml.class.php";
 include_once "../l2sdk/task_l2sdk_wechat.class.php";
 include_once "../l2sdk/task_l2sdk_iot_apple.class.php";
 include_once "../l2sdk/task_l2sdk_iot_jd.class.php";
@@ -438,11 +438,11 @@ class classTaskL1vmCoreRouter
                     return false;
                 }
                 break;
-            case MFUN_MAIN_ENTRY_IOT_HCU:
+            case MFUN_MAIN_ENTRY_IOT_STDXML:
                 $resp = $this->mfun_l1vm_msg_send(MFUN_TASK_ID_L1VM,
-                    MFUN_TASK_ID_L2SDK_IOT_HCU,
-                    MSG_ID_L1VM_TO_L2SDK_IOT_HCU_INCOMING,
-                    "MSG_ID_L1VM_TO_L2SDK_IOT_HCU_INCOMING",
+                    MFUN_TASK_ID_L2SDK_IOT_STDXML,
+                    MSG_ID_L1VM_TO_L2SDK_IOT_STDXML_INCOMING,
+                    "MSG_ID_L1VM_TO_L2SDK_IOT_STDXML_INCOMING",
                     $msg);
                 if ($resp == false){
                     $result = "Cloud: Send to message buffer error.";
@@ -802,9 +802,9 @@ class classTaskL1vmCoreRouter
                     $obj->mfun_l2sdk_iot_wx_jssdk_task_main_entry($this, $result["msgId"], $result["msgName"], $result["msgBody"]);
                     break;
 
-                case MFUN_TASK_ID_L2SDK_IOT_HCU:
-                    $obj = new classTaskL2sdkIotHcu();
-                    $obj->mfun_l2sdk_iot_hcu_task_main_entry($this, $result["msgId"], $result["msgName"], $result["msgBody"]);
+                case MFUN_TASK_ID_L2SDK_IOT_STDXML:
+                    $obj = new classTaskL2sdkIotStdxml();
+                    $obj->mfun_l2sdk_iot_stdxml_task_main_entry($this, $result["msgId"], $result["msgName"], $result["msgBody"]);
                     break;
 
                 case MFUN_TASK_ID_L2SDK_IOT_HUITP:

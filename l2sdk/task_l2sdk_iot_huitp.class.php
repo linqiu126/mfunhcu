@@ -9,7 +9,7 @@ include_once "../l1comvm/vmlayer.php";
 include_once "../l2sdk/dbi_l2sdk_iot_huitp.class.php";
 
 //HCU硬件设备级 Layer 2 SDK
-//TASK_ID = MFUN_TASK_ID_L2SDK_IOT_HCU
+//TASK_ID = MFUN_TASK_ID_L2SDK_IOT_STDXML
 class classTaskL2sdkIotHuitp
 {
     //构造函数
@@ -95,8 +95,8 @@ class classTaskL2sdkIotHuitp
                 $loggerObj = new classApiL1vmFuncCom();
 
                 //取DB中的硬件信息，判断基本信息
-                $l2sdkHcuDbObj = new classDbiL2sdkHcu();
-                $result = $l2sdkHcuDbObj->dbi_hcuDevice_valid_device($fromUser); //FromUserName对应每个HCU硬件的设备编号
+                $dbiL2sdkIotcomObj = new classDbiL2sdkIotcom();
+                $result = $dbiL2sdkIotcomObj->dbi_hcuDevice_valid_device($fromUser); //FromUserName对应每个HCU硬件的设备编号
                 if (empty($result)){
                     $result = "HCU_IOT: invalid device ID";
                     $log_content = "T:" . json_encode($result);
@@ -107,8 +107,8 @@ class classTaskL2sdkIotHuitp
                 $statCode = $result;
                 //将socket id和设备ID（fromUser）进行绑定
                 if(!empty($socketid) AND !empty($statCode)){
-                    $dbiL2sdkHuitpObj = new classDbiL2sdkHuitp();
-                    $dbiL2sdkHuitpObj->dbi_huitp_huc_socketid_update($fromUser, $socketid);
+                    $dbiL2sdkIotcomObj = new classDbiL2sdkIotcom();
+                    $dbiL2sdkIotcomObj->dbi_huitp_huc_socketid_update($fromUser, $socketid);
                 }
 
                 //收到非本消息体该收到的消息

@@ -90,13 +90,13 @@ class classTaskL3aplF4icm
         $usercheck = $uiF1symDbObj->dbi_user_authcheck($action, $user);
         if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
 
-            $uiF3dmDbObj = new classDbiL3apF3dm(); //初始化一个UI DB对象
-            $sitelist = $uiF3dmDbObj->dbi_proj_sitelist_req($projcode); //查询指定项目号下的所有监测点
+            $uiF2cmDbObj = new classDbiL3apF2Cm(); //初始化一个UI DB对象
+            $sitelist = $uiF2cmDbObj->dbi_one_proj_sitelist_req($projcode); //查询指定项目号下的所有监测点
 
             $i = 0;
             $devlist = array();
             while ($i < count($sitelist)) {
-                $devlist = $uiF3dmDbObj->dbi_site_devlist_req($sitelist[$i]["id"]); //查询指定监测点下的HCU设备
+                $devlist = $uiF2cmDbObj->dbi_site_devlist_req($sitelist[$i]["id"]); //查询指定监测点下的HCU设备
                 $i++;
             }
 

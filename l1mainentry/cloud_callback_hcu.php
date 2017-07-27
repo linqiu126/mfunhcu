@@ -13,7 +13,7 @@ $obj = new classTaskL1vmCoreRouter();
 //$postStr = $GLOBALS["HTTP_RAW_POST_DATA"];
 $postStr = file_get_contents('php://input','r');
 
-$obj->mfun_l1vm_task_main_entry(MFUN_MAIN_ENTRY_IOT_HCU, MSG_ID_L2SDK_HCU_DATA_COMING, "MSG_ID_L2SDK_HCU_DATA_COMING", $postStr);
+$obj->mfun_l1vm_task_main_entry(MFUN_MAIN_ENTRY_IOT_STDXML, MSG_ID_L2SDK_HCU_DATA_COMING, "MSG_ID_L2SDK_HCU_DATA_COMING", $postStr);
 //$postStr = $GLOBALS["HTTP_RAW_POST_DATA"];
 //$obj->mfun_l1vm_task_main_entry(MFUN_MAIN_ENTRY_HCU_IOT, file_get_contents('php://input','r'));
 

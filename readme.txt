@@ -103,7 +103,7 @@ Make By：ZJL
 > 增加所有任务模块的入口
 > 框架基本搭建完成，还需要完善消息发送和处理方式
 > 二次包含vmlayer.php出现告警全部消除，所有的包含都放在VM中，其它任务模块不再包含了VMLAYER了
-> 搭建好了IOT_HCU对应传感器的所有任务框架
+> 搭建好了IOT_STDXML对应传感器的所有任务框架
 > 修改好了SDK_WECHAT
 > IOT_WX还未修改完整，
   =>ihu_device_L25_content_process：发送到EMC/PM25的L3/L4处理信息，需要到SENSOR EMC/PM25处理完整，
@@ -373,6 +373,9 @@ Make By：ZJL
 > 增加CCL HUITP支持，同时对Swoole socket进行了修改，不同的协议端口进行了区分
 > FHYS数据表单进行了修改，适配CCL
 
+//= LZH, 2017 July.27, CURRENT_SW_DELIVERY R03.D21
+> 继续软件代码清理，删除老的IOT_HCU SDK的功能，改IOT_HCU为IOT_STDXML
+> 添加图片传送HEX data Socket端口，和相应L2snr_hsmmp处理
 
 //待完善的功能
 1. dbi_devinfo_update（）需要修改，添加设备时预计结束时间和实际结束时间应该在项目信息里

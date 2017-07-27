@@ -44,7 +44,7 @@
 //include_once "../l1comvm/vmlayer.php";
 include_once "../l2sdk/dbi_l2sdk_wechat.class.php";
 include_once "../l2sdk/task_l2sdk_iot_wx.class.php";
-include_once "../l2sdk/task_l2sdk_iot_hcu.class.php";
+include_once "../l2sdk/task_l2sdk_iot_stdxml.class.php";
 
 //Layer 2.1.1 SDK01.1，完整的公号SDK，正在跟轻量级SDK01进行合并
 class classTaskL2sdkWechat
@@ -4667,8 +4667,8 @@ class classTaskL2sdkWechat
                         $platform = MFUN_TECH_PLTF_HCUGX_HUITP;
 
                         //取DB中的硬件信息，判断基本信息
-                        $l2sdkHcuDbObj = new classDbiL2sdkHcu();
-                        $statCode = $l2sdkHcuDbObj->dbi_hcuDevice_valid_device($fromUser); //FromUserName对应每个HCU硬件的设备编号
+                        $dbiL2sdkIotcomObj = new classDbiL2sdkIotcom();
+                        $statCode = $dbiL2sdkIotcomObj->dbi_hcuDevice_valid_device($fromUser); //FromUserName对应每个HCU硬件的设备编号
                         if (empty($statCode)){
                             $result = "MFUN_TASK_ID_L2SDK_WECHAT: invalid device ID";
                             $log_content = "T:" . json_encode($result);

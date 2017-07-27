@@ -14,7 +14,7 @@ include_once "../l1comvm/vmlayer.php";
 class classL1MainEntrySocketListenServer
 {
     private $swoole_socket_serv;
-    private $swoole_http_serv;  //暂时定义没有使用
+
     public function __construct() {
         //创建一个swoole server资源对象, 127.0.0.1表示监听本机，0.0.0.0表示监听所有地址
         $this->swoole_socket_serv = new swoole_server("0.0.0.0", MFUN_SWOOLE_SOCKET_STDXML_TCP_HCUPORT);
@@ -32,6 +32,11 @@ class classL1MainEntrySocketListenServer
             'heartbeat_idle_time' => 600, //TCP连接的最大闲置时间，单位s , 如果某fd最后一次发包距离现在的时间超过heartbeat_idle_time会把这个连接关闭,heartbeat_idle_time必须大于或等于heartbeat_check_interval
             'heartbeat_check_interval' => 60,  //每隔多少秒检测一次，单位秒，Swoole会轮询所有TCP连接，将超过心跳时间的连接关闭掉
             'max_request' => 2000,  //此参数表示worker进程在处理完n次请求后结束运行
+            //"open_length_check" => true,
+            //"package_max_length" => 8192,
+            //"package_body_offset" => 0,
+            //'open_eof_check'=> true,
+            //'package_eof' => chr(35),
             'package_max_length' => 2048,
             'dispatch_mode' => 2,  //1平均分配，2按FD取摸固定分配，3抢占式分配，默认为取模(dispatch=2)
             'debug_mode'=> 1,
@@ -72,11 +77,26 @@ class classL1MainEntrySocketListenServer
         //$this->swoole_http_serv->on('Request', array($this, 'swoole_http_serv_onRequest'));
         //$this->swoole_http_serv->start();
 
+        //CCL图片传输端口
+        $huitpxml_tcp_picport = $this->swoole_socket_serv->listen("0.0.0.0", MFUN_SWOOLE_SOCKET_DATA_STREAM_TCP, SWOOLE_SOCK_TCP);
+        $huitpxml_tcp_picport->set(array(
+            'open_length_check' => true,        //开启包长检查
+            'package_length_type' => 'N',       //长度字段的类型，固定包头中用一个4字节（N）或2字节（n）表示包体长度，
+            'package_length_offset' => 20,      //第N个字节是包长度的值
+            'package_body_offset' => 24,        //第几个字节开始计算长度
+            'package_max_length' => 200000)    //协议最大长
+        );
+
+        $huitpxml_tcp_picport->on('Connect', array($this, 'huitpxml_tcp_picport_onConnect'));
+        $huitpxml_tcp_picport->on('Receive', array($this, 'huitpxml_tcp_picport_onReceive'));
+        $huitpxml_tcp_picport->on('Close', array($this, 'huitpxml_tcp_picport_onClose'));
+
         $this->swoole_socket_serv->start();
+
         return;
     }
 
-    /*Socket server公共处理函数*/
+    /****************************************Swoole Socket server公共处理函数*******************************************/
     public function swoole_socket_serv_onWorkerStart($swoole_socket_serv, $worker_id)
     {
         global $argv;
@@ -159,6 +179,8 @@ class classL1MainEntrySocketListenServer
         swoole_set_process_name("php {$argv[0]}: manager");
     }
 
+    /********************************************STDXML TCP hcuport****************************************************/
+
     //具体port处理函数
     public function stdxml_tcp_hcuport_onStart($swoole_socket_serv) {
         global $argv;
@@ -190,49 +212,14 @@ class classL1MainEntrySocketListenServer
         $swoole_socket_serv->send( $fd, "Hello {$fd}!" );
     }
 
-    //入口函数挂载在这个函数体中
+    //STDXML hcuport入口函数，收到消息直接转发给HCU IOT模块并带上socketid，L1socket模块只负责消息收发，不进行任何消息解码工作
     public function stdxml_tcp_hcuport_onReceive( swoole_server $swoole_socket_serv, $fd, $from_id, $data ) {
         echo date('Y/m/d H:i:s', time())." ";
         echo "stdxml_tcp_hcuport_onReceive: Get Message From Client {$fd} : {$data}\n";
-        
-        //a test to read from t_l2sdk_iothcu_inventory, devcode + socketid
-        //taskwait就是投递一条任务，这里直接传递SQL语句了
-        //然后阻塞等待SQL完成
 
-	    $xml_parser = xml_parser_create();
-	    if(!xml_parse($xml_parser,$data,true)){
-            xml_parser_free($xml_parser);
-            $devCode = "";
-	    }else {
-    		$xml = simplexml_load_string($data);
-	        $devCode = (string) $xml->FromUserName;
-	        xml_parser_free($xml_parser);
-	    }
-
-        $query="UPDATE t_l2sdk_iothcu_inventory  SET socketid = $fd WHERE devcode = \"$devCode\"";
-        $result = $swoole_socket_serv->taskwait($query);
-        if ($result == true) {
-            list($status, $db_res) = explode(':', $result, 2);
-            if ($status == 'OK') {
-                echo date('Y/m/d H:i:s', time())." ";
-                echo "stdxml_tcp_hcuport_onReceive: Client ".$devCode."'s socketid ".$fd." is stored in t_l2sdk_iothcu_inventory. Affacted_rows: ".$db_res.PHP_EOL;
-            } else {
-                echo date('Y/m/d H:i:s', time())." ";
-                echo "[ERROR]stdxml_tcp_hcuport_onReceive: socketid store failed.";
-            }
-            //return;
-        } else {
-            echo date('Y/m/d H:i:s', time())." ";
-            echo "[ERROR]stdxml_tcp_hcuport_onReceive: device = ". $devCode . "not found in t_l2sdk_iothcu_inventory";
-        }
-
-        /*$msg = array("serv" => $serv, "fd" => $fd, "fromid" => $from_id, "data" => $data);
+        $msg = array("socketid" => $fd, "data"=>$data);
         $obj = new classTaskL1vmCoreRouter();
-        $obj->mfun_l1vm_task_main_entry(MFUN_MAIN_ENTRY_SOCKET_LISTEN, NULL, NULL, $msg); */
-
-        //for FHYS云控锁项目
-        $obj = new classTaskL1vmCoreRouter();
-        $obj->mfun_l1vm_task_main_entry(MFUN_MAIN_ENTRY_IOT_HCU, MSG_ID_L2SDK_HCU_DATA_COMING, "MSG_ID_L2SDK_HCU_DATA_COMING", $data);
+        $obj->mfun_l1vm_task_main_entry(MFUN_MAIN_ENTRY_IOT_STDXML, MSG_ID_L2SDK_HCU_DATA_COMING, "MSG_ID_L2SDK_HCU_DATA_COMING", $data);
     }
 
     public function stdxml_tcp_hcuport_onClose( $swoole_socket_serv, $fd, $from_id ) {
@@ -321,38 +308,14 @@ class classL1MainEntrySocketListenServer
         echo "huitpxml_tcp_cclport_onConnect: Client fd={$fd} connected.\n";
     }
 
-    //入口函数挂载在这个函数体中，待测试
+    //HUITP cclport入口函数，收到消息直接转发给HUITP IOT模块并带上socketid，L1socket模块只负责消息收发，不进行任何消息解码工作
     public function huitpxml_tcp_cclport_onReceive( swoole_server $swoole_socket_serv, $fd, $from_id, $data ) {
-        echo date('Y/m/d H:i:s', time())." ";
+        echo "\n".date('Y/m/d H:i:s', time())." ";
         echo "huitpxml_tcp_cclport_onReceive: Get Message From Client {$fd} : {$data}\n";
 
-        //临时调试用
-        //$content = "<xml><ToUserName><![CDATA[HCU_G514_FHYS_SH001]]></ToUserName><FromUserName><![CDATA[XHZN_HCU]]></FromUserName><CreateTime>1485033641</CreateTime><MsgType><![CDATA[huitp_text]]></MsgType><Content><![CDATA[4D10000A00020001014D02000101]]></Content><FuncFlag>0</FuncFlag></xml>";
-        //$swoole_socket_serv->send( $fd, "{$content}" );
-
-        //a test to read from t_l2sdk_iothcu_inventory, devcode + socketid
-        //taskwait就是投递一条任务，这里直接传递SQL语句了
-        //然后阻塞等待SQL完成
-
-        $xml_parser = xml_parser_create();
-        if(!xml_parse($xml_parser,$data,true)){
-            xml_parser_free($xml_parser);
-            $devCode = "";
-        }else {
-            $xml = simplexml_load_string($data);
-            $devCode = (string) $xml->FromUserName;
-            xml_parser_free($xml_parser);
-        }
-
-        if (!empty($devCode)){
-            $msg = array("socketid" => $fd, "data"=>$data);
-            $obj = new classTaskL1vmCoreRouter();
-            $obj->mfun_l1vm_task_main_entry(MFUN_MAIN_ENTRY_IOT_HUITP, MSG_ID_L2SDK_HUITP_DATA_COMING, "MSG_ID_L2SDK_HUITP_DATA_COMING", $msg);
-        }
-        else{
-            echo date('Y/m/d H:i:s', time())." ";
-            echo "[ERROR]huitpxml_tcp_cclport_onReceive: device = {$devCode} not found in the receive data\n";
-        }
+        $msg = array("socketid" => $fd, "data"=>$data);
+        $obj = new classTaskL1vmCoreRouter();
+        $obj->mfun_l1vm_task_main_entry(MFUN_MAIN_ENTRY_IOT_HUITP, MSG_ID_L2SDK_HUITP_DATA_COMING, "MSG_ID_L2SDK_HUITP_DATA_COMING", $msg);
     }
 
     public function huitpxml_tcp_cclport_onClose( $swoole_socket_serv, $fd, $from_id ) {
@@ -377,6 +340,47 @@ class classL1MainEntrySocketListenServer
             echo "[ERROR]huitpxml_tcp_cclport_onClose: Socketid".$fd." not found in t_l2sdk_iothcu_inventory.".PHP_EOL;
         }
     }
+
+    public function huitpxml_tcp_picport_onConnect($swoole_socket_serv, $fd, $from_id ) {
+        echo date('Y/m/d H:i:s', time())." ";
+        echo "huitpxml_tcp_picport_onConnect: Client fd={$fd} connected.\n";
+        $swoole_socket_serv->send( $fd, "Hello {$fd}!" );
+    }
+
+    public function huitpxml_tcp_picport_onReceive(swoole_server $swoole_socket_serv, $fd, $from_id, $data )
+    {
+        echo PHP_EOL.date('Y/m/d H:i:s', time())." ";
+        echo "huitpxml_tcp_picport_onReceive: Get Message From Client {$fd} : {$data}\n";
+        $msg = array("socketid" => $fd, "data"=>$data);
+        $obj = new classTaskL1vmCoreRouter();
+        $obj->mfun_l1vm_task_main_entry(MFUN_TASK_ID_L2SOCKET_LISTEN, MSG_ID_L2SOCKET_LISTEN_DATA_COMING, "MSG_ID_L2SOCKET_LISTEN_DATA_COMING", $msg);
+    }
+
+    public function huitpxml_tcp_picport_onClose( $swoole_socket_serv, $fd, $from_id ) {
+        echo date('Y/m/d H:i:s', time())." ";
+        echo "huitpxml_tcp_picport_onClose: Client {$fd} closed connection.".PHP_EOL;
+
+        //reset socketid in t_l2sdk_iothcu_inventory when connection closed.
+        $query="UPDATE t_l2sdk_iothcu_inventory  SET socketid = 0 WHERE socketid = $fd";
+        $result = $swoole_socket_serv->taskwait($query);
+        if ($result !== false) {
+            list($status, $db_res) = explode(':', $result, 2);
+            if ($status == 'OK') {
+                echo date('Y/m/d H:i:s', time())." ";
+                echo "huitpxml_tcp_picport_onClose: Socketid ".$fd." is reseted to 0 in t_l2sdk_iothcu_inventory. Affacted_rows : ".$db_res.PHP_EOL;
+            } else {
+                echo date('Y/m/d H:i:s', time())." ";
+                echo "[ERROR]huitpxml_tcp_picport_onClose: Socketid".$fd." reset failed.".PHP_EOL;
+            }
+            return;
+        } else {
+            echo date('Y/m/d H:i:s', time())." ";
+            echo "[ERROR]huitpxml_tcp_picport_onClose: Socketid".$fd." not found in t_l2sdk_iothcu_inventory.".PHP_EOL;
+        }
+    }
+
+
+
 
 }//end of classL1MainEntrySocketListenServer
 

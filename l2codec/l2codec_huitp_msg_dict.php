@@ -1652,7 +1652,7 @@ class classL2codecHuitpMsgDict
         MFUN_TASK_ID_L2SDK_WECHAT => array(),
         MFUN_TASK_ID_L2SDK_IOT_WX => array(),
         MFUN_TASK_ID_L2SDK_IOT_WX_JSSDK => array(),
-        MFUN_TASK_ID_L2SDK_IOT_HCU => array(),
+        MFUN_TASK_ID_L2SDK_IOT_STDXML => array(),
         MFUN_TASK_ID_L2SDK_NBIOT_STD_QG376 => array(),
         MFUN_TASK_ID_L2SDK_NBIOT_STD_CJ188 => array(),
         MFUN_TASK_ID_L2SDK_NBIOT_LTEV => array(),

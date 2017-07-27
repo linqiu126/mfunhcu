@@ -218,8 +218,8 @@ class classTaskL2snrPm25
         $sensorId = hexdec($data['Equ']) & 0xFF;
         $status = hexdec($data['Status']) & 0xFF;
 
-        $cDbObj = new classDbiL2sdkHcu();
-        $cDbObj->dbi_hcuDevice_update_status($devCode,$statCode,$status);
+        $dbiL2sdkIotcomObj = new classDbiL2sdkIotcom();
+        $dbiL2sdkIotcomObj->dbi_hcuDevice_update_status($devCode,$statCode,$status);
 
         $resp = ""; //no response message
         return $resp;

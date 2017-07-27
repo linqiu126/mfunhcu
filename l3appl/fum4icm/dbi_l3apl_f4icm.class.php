@@ -163,8 +163,6 @@ class classDbiL3apF4icm
         while($i < count($devlist)){
             $DevCode = $devlist[$i];
             $respCmd = $ctrl_key . $len . $opt_key . $version;
-            $dbiL1vmCommonObj = new classDbiL1vmCommon();
-            $resp = $dbiL1vmCommonObj->dbi_cmdbuf_save_cmd(trim($DevCode), trim($respCmd));
             //通过9502端口建立tcp阻塞式socket连接，向HCU转发操控命令
             $client = new socket_client_sync($DevCode, $respCmd);
             $client->connect();
@@ -490,8 +488,6 @@ class classDbiL3apF4icm
                 $modebus_addr = $dbiL1vmCommonObj->ushort2string($modebus_addr & 0xFFFF);
                 $len = $dbiL1vmCommonObj->byte2string(strlen( $optkey_modbus_set . $equip_id . $modebus_addr)/2);
                 $respCmd = $ctrl_key . $len . $optkey_modbus_set . $equip_id . $modebus_addr;
-                $dbiL1vmCommonObj = new classDbiL1vmCommon();
-                $resp = $dbiL1vmCommonObj->dbi_cmdbuf_save_cmd(trim($DevCode), trim($respCmd));
                 //通过9502端口建立tcp阻塞式socket连接，向HCU转发操控命令
                 $client = new socket_client_sync($DevCode, $respCmd);
                 $client->connect();
@@ -500,8 +496,6 @@ class classDbiL3apF4icm
                 $meas_period = $dbiL1vmCommonObj->ushort2string($meas_period & 0xFFFF);
                 $len = $dbiL1vmCommonObj->byte2string(strlen( $optkey_period_set . $equip_id . $meas_period)/2);
                 $respCmd = $ctrl_key . $len . $optkey_period_set . $equip_id . $meas_period;
-                $dbiL1vmCommonObj = new classDbiL1vmCommon();
-                $resp = $dbiL1vmCommonObj->dbi_cmdbuf_save_cmd(trim($DevCode), trim($respCmd));
                 //通过9502端口建立tcp阻塞式socket连接，向HCU转发操控命令
                 $client = new socket_client_sync($DevCode, $respCmd);
                 $client->connect();
@@ -510,8 +504,6 @@ class classDbiL3apF4icm
                 $sample_interval = $dbiL1vmCommonObj->ushort2string($sample_interval & 0xFFFF);
                 $len = $dbiL1vmCommonObj->byte2string(strlen( $optkey_samples_set . $equip_id . $sample_interval)/2);
                 $respCmd = $ctrl_key . $len . $optkey_samples_set . $equip_id . $sample_interval;
-                $dbiL1vmCommonObj = new classDbiL1vmCommon();
-                $resp = $dbiL1vmCommonObj->dbi_cmdbuf_save_cmd(trim($DevCode), trim($respCmd));
                 //通过9502端口建立tcp阻塞式socket连接，向HCU转发操控命令
                 $client = new socket_client_sync($DevCode, $respCmd);
                 $client->connect();
@@ -520,8 +512,6 @@ class classDbiL3apF4icm
                 $meas_times = $dbiL1vmCommonObj->ushort2string($meas_times & 0xFFFF);
                 $len = $dbiL1vmCommonObj->byte2string(strlen( $optkey_times_set . $equip_id . $meas_times)/2);
                 $respCmd = $ctrl_key . $len . $optkey_times_set . $equip_id . $meas_times;
-                $dbiL1vmCommonObj = new classDbiL1vmCommon();
-                $resp = $dbiL1vmCommonObj->dbi_cmdbuf_save_cmd(trim($DevCode), trim($respCmd));
                 //通过9502端口建立tcp阻塞式socket连接，向HCU转发操控命令
                 $client = new socket_client_sync($DevCode, $respCmd);
                 $client->connect();

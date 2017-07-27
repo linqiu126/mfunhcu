@@ -334,34 +334,6 @@ class classDbiL1vmCommon
         return $resp;
     }
 
-    //更新设备软,硬件版本
-    public function dbi_deviceVersion_update($devcode, $mac, $hw_type, $hw_ver, $sw_rel, $sw_drop, $db_ver)
-    {
-        //建立连接
-        $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
-        if (!$mysqli)
-        {
-            die('Could not connect: ' . mysqli_error($mysqli));
-        }
-        $mysqli->query("SET NAMES utf8");
-
-        //先检查是否存在，如果存在，就更新，否则创建
-        $query_str = "SELECT * FROM `t_l2sdk_iothcu_inventory` WHERE `devcode` = '$devcode'";
-        $result = $mysqli->query($query_str);
-        if (($result->num_rows)>0)
-        {
-            $query_str = "UPDATE `t_l2sdk_iothcu_inventory` SET `hw_type` = '$hw_type',`hw_ver` = '$hw_ver',`sw_rel` = '$sw_rel',`sw_drop` = '$sw_drop', `hcu_db_ver` = '$db_ver' WHERE `devcode` = '$devcode'";
-            $result=$mysqli->query($query_str);
-        }
-        else
-        {
-            $query_str = "INSERT INTO `t_l2sdk_iothcu_inventory` (devcode, hw_type, hw_ver, sw_rel,sw_drop,hcu_db_ver) VALUES ('$devcode', '$hw_type', '$hw_ver','$sw_rel','$sw_drop','$db_ver')";
-            $result=$mysqli->query($query_str);
-        }
-        $mysqli->close();
-        return $result;
-    }
-
     //HCU控制命令缓存
     public function dbi_cmdbuf_save_cmd($deviceid, $cmd)
     {
@@ -382,27 +354,7 @@ class classDbiL1vmCommon
         return $result;
     }
 
-    //HCU alarm Data数据存储
-    public function dbi_hcu_alarm_data_save($deviceId, $statCode, $EquipmentId, $AlarmType, $AlarmDescription, $AlarmServerity, $AlarmClearFlag, $AlarmTime, $PictureName)
-    {
-        //建立连接
-        $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
-        if (!$mysqli)
-        {
-            die('Could not connect: ' . mysqli_error($mysqli));
-        }
-        $mysqli->query("SET NAMES utf8");
-
-        $AlarmTime = date("Y-m-d H:m:s",$AlarmTime);
-
-        $query_str = "INSERT INTO `t_l3f5fm_aqyc_alarmdata` (`devcode`, `equipmentid`, `alarmtype`, `alarmdesc`, `alarmseverity`, `alarmclearflag`, `timestamp`, `picturename`) VALUES ('$deviceId', '$EquipmentId', '$AlarmType', '$AlarmDescription', '$AlarmServerity', '$AlarmClearFlag', '$AlarmTime', '$PictureName')";
-        $result=$mysqli->query($query_str);
-
-        $mysqli->close();
-        return $result;
-    }
-
-    //HCU控制命令查询
+        //HCU控制命令查询
     public function dbi_cmdbuf_inquiry_cmd($deviceid)
     {
         //建立连接

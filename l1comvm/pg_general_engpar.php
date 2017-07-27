@@ -11,7 +11,8 @@ include_once "../l1comvm/sysconfig.php";
  * 通用配置参数: 所有项目相关缺省配置参数                                             *
  *************************************************************************************/
 //HCU_ID命名固定前缀
-define ("MFUN_HCU_NAME_FIX_PREFIX", "HCU_");
+define("MFUN_HCU_NAME_FIX_PREFIX", "HCU_");
+define("MFUN_HCU_DEVCODE_MAX_LENGTH", 19);
 
 //通用项目标识
 define("MFUN_L1VM_DBI_MAX_LOG_NUM", 5000);  //防止t_loginfo表单数据无限制的增长，保留的最大记录数
@@ -42,7 +43,7 @@ define("MFUN_SWOOLE_SOCKET_NBIOTQG376_HTTP", 9522); //NBIOT_QG376协议swoole so
 define("MFUN_SWOOLE_SOCKET_NBIOTQG376_TCP", 9523);  //NBIOT_QG376协议swoole socket server TCP端口
 define("MFUN_SWOOLE_SOCKET_NBIOTQG376_UDP", 9524); //NBIOT_QG376协议swoole socket server UDP端口
 
-define("MFUN_SWOOLE_SOCKET_DATA_STREAM_FTP", 9550); //DATA_STREAM协议swoole socket server FTP端口
+define("MFUN_SWOOLE_SOCKET_DATA_STREAM_TCP", 9550); //DATA_STREAM协议swoole socket server FTP端口
 
 
 //项目类关键字

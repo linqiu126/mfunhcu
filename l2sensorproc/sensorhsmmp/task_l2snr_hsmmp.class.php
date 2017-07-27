@@ -16,7 +16,7 @@ class classTaskL2snrHsmmp
 
     }
 
-    public function func_hsmmp_process($platform, $project, $deviceId, $statCode, $content,$funcFlag)
+    public function func_hsmmp_process($platform, $project, $devCode, $statCode, $content, $funcFlag)
     {
         switch($platform)
         {
@@ -30,7 +30,7 @@ class classTaskL2snrHsmmp
                 switch ($sub_key) //MODBUS操作字处理
                 {
                     case MFUN_HCU_OPT_VEDIOLINK_RESP:
-                        $resp = $this->wx_hsmmp_req_process($deviceId, $content,$funcFlag);
+                        $resp = $this->wx_hsmmp_req_process($devCode, $content,$funcFlag);
                         break;
                     case MFUN_HCU_OPT_VEDIOFILE_RESP:
                         $resp = "";
@@ -56,10 +56,10 @@ class classTaskL2snrHsmmp
                 switch ($opt_key) //操作字处理
                 {
                     case MFUN_HCU_OPT_VEDIOLINK_RESP:
-                        $resp = $this->hcu_videolink_resp_process($deviceId, $data, $funcFlag);
+                        $resp = $this->hcu_videolink_resp_process($devCode, $data, $funcFlag);
                         break;
                     case MFUN_HCU_OPT_VEDIOFILE_RESP:
-                        $resp = $this->hcu_videofile_resp_process($deviceId, $data, $funcFlag);
+                        $resp = $this->hcu_videofile_resp_process($devCode, $data, $funcFlag);
                         break;
                     default:
                         $resp = "";
@@ -67,6 +67,7 @@ class classTaskL2snrHsmmp
                 }
                 break;
             case MFUN_TECH_PLTF_HCUSTM: //HCU单片机STM32平台
+                $content = pack("H*", $content); //将收到的16进制字符串pack成HEX data
                 $loggerObj = new classApiL1vmFuncCom();
                 $timestamp = time();
                 $log_time = date("Y-m-d H:i:s", $timestamp);
@@ -89,8 +90,8 @@ class classTaskL2snrHsmmp
                     if ($filesize){
                         //$base_dir = str_replace( '\\' , '/' , realpath(dirname(__FILE__).'/../../../avorion'));
                         $filename = $statCode . "_" . $timestamp . $file_type;
-                        $loggerObj->logger($project, $deviceId, $log_time, "上传新图片文件".$filename);
-                        //$result = $dbiL2snrHsmmpObj->dbi_door_open_picture_link_save($statCode, $deviceId, $timestamp, $filename,$filesize);
+                        $loggerObj->logger($project, $devCode, $log_time, "上传新图片文件".$filename);
+                        //$result = $dbiL2snrHsmmpObj->dbi_door_open_picture_link_save($statCode, $devCode, $timestamp, $filename,$filesize);
                     }
                 }
                 else{ //往最新的文件里追加写内容
@@ -118,7 +119,7 @@ class classTaskL2snrHsmmp
                             $pos = strripos($lastfile_name, "/");
                             $filename = substr($lastfile_name, $pos+1); //位置加1去除目录字符'/'
                             $dbiL2snrHsmmpObj = new classDbiL2snrHsmmp();
-                            $result = $dbiL2snrHsmmpObj->dbi_door_open_picture_filesize_update($statCode, $deviceId, $timestamp, $filename, $filesize);
+                            $result = $dbiL2snrHsmmpObj->dbi_door_open_picture_filesize_update($statCode, $devCode, $timestamp, $filename, $filesize);
                         }*/
                     }
                 }
@@ -135,14 +136,44 @@ class classTaskL2snrHsmmp
         return $resp;
     }
 
+    private function func_pic_hexdata_process($project,$devCode,$statCode,$content)
+    {
+        $loggerObj = new classApiL1vmFuncCom();
+        $timestamp = time();
+        $log_time = date("Y-m-d H:i:s", $timestamp);
+        $file_type = ".jpg";
+
+        if(!file_exists(MFUN_HCU_SITE_PIC_BASE_DIR.$statCode.'/upload/'))
+            $result = mkdir(MFUN_HCU_SITE_PIC_BASE_DIR.$statCode.'/upload/',0777,true);
+        $filename = $statCode . "_" . $timestamp . $file_type;
+        $filelink = MFUN_HCU_SITE_PIC_BASE_DIR.$statCode.'/upload/'.$filename;
+        $newfile = fopen($filelink, "wb+") or die("Unable to open file!");
+        $filesize = fwrite($newfile, $content);
+        fclose($newfile);
+
+        //保存图片名到最后一次开锁记录表中
+        $dbiL2snrHsmmpObj = new classDbiL2snrHsmmp();
+        $result = $dbiL2snrHsmmpObj->dbi_fhys_locklog_picture_name_save($statCode, $filename);
+
+        //保存图片的信息到picturedata表中
+        if ($filesize){
+            //$base_dir = str_replace( '\\' , '/' , realpath(dirname(__FILE__).'/../../../avorion'));
+            $filename = $statCode . "_" . $timestamp . $file_type;
+            $loggerObj->logger($project, $devCode, $log_time, "上传新图片文件".$filename);
+            //$result = $dbiL2snrHsmmpObj->dbi_door_open_picture_link_save($statCode, $devCode, $timestamp, $filename,$filesize);
+        }
+
+        return $result;
+    }
+
     //微信平台暂时不支持
-    private function wx_hsmmp_req_process( $deviceId, $content, $funcFlag)
+    private function wx_hsmmp_req_process( $devCode, $content, $funcFlag)
     {
         $resp = ""; //no response message
         return $resp;
     }
 
-    private function hcu_videolink_resp_process( $deviceId,$content,$funcFlag)
+    private function hcu_videolink_resp_process( $devCode,$content,$funcFlag)
     {
         $format = "A2Equ/A2Type/A2Flag_Lo/A8Longitude/A2Flag_La/A8Latitude/A8Altitude/A8Time";
         $data = unpack($format, $content);
@@ -156,20 +187,20 @@ class classTaskL2snrHsmmp
         $timeStamp = hexdec($data['Time']) & 0xFFFFFFFF;
 
         $dbiL2snrHsmmpObj = new classDbiL2snrHsmmp();
-        $dbiL2snrHsmmpObj->dbi_video_data_save($deviceId, $sensorId, $timeStamp, $funcFlag,$gps);
+        $dbiL2snrHsmmpObj->dbi_video_data_save($devCode, $sensorId, $timeStamp, $funcFlag,$gps);
 
         $resp = ""; //no response message
         return $resp;
     }
 
-    private function hcu_videofile_resp_process($deviceId, $content, $funcFlag)
+    private function hcu_videofile_resp_process($devCode, $content, $funcFlag)
     {
         $format = "A2Type/A2Status";
         $data = unpack($format, $content);
         $status = hexdec($data["Status"]) & 0xFF;
         $videoid = $funcFlag;
         $dbiL2snrHsmmpObj = new classDbiL2snrHsmmp();
-        $dbiL2snrHsmmpObj->dbi_video_data_status_update($deviceId, $status, $videoid);
+        $dbiL2snrHsmmpObj->dbi_video_data_status_update($devCode, $status, $videoid);
 
         $resp = ""; //no response message
         return $resp;
@@ -184,47 +215,55 @@ class classTaskL2snrHsmmp
         $loggerObj = new classApiL1vmFuncCom();
         $log_time = date("Y-m-d H:i:s", time());
 
+        $project = "";
+        $platform = "";
+        $devCode = "";
+        $statCode = "";
+        $content = "";
+        $funcFlag = "";
         //入口消息内容判断
         if (empty($msg) == true) {
             $result = "Received null message body";
             $log_content = "R:" . json_encode($result);
-            $loggerObj->logger("MFUN_TASK_ID_L2SNR_HSMMP", "mfun_l2snr_hsmmp_task_main_entry", $log_time, $log_content);
+            $loggerObj->logger("MFUN_TASK_ID_L2SENSOR_HSMMP", "mfun_l2snr_hsmmp_task_main_entry", $log_time, $log_content);
             echo trim($result);
             return false;
         }
-        if (($msgId != MSG_ID_L2SDK_HCU_TO_L2SNR_HSMMP) || ($msgName != "MSG_ID_L2SDK_HCU_TO_L2SNR_HSMMP")){
+        else{
+            //解开消息
+            if (isset($msg["project"])) $project = $msg["project"];
+            if (isset($msg["platform"])) $platform = $msg["platform"];
+            if (isset($msg["devCode"])) $devCode = $msg["devCode"];
+            if (isset($msg["statCode"])) $statCode = $msg["statCode"];
+            if (isset($msg["content"])) $content = $msg["content"];
+            if (isset($msg["funcFlag"])) $funcFlag = $msg["funcFlag"];
+        }
+
+        if (($msgId != MSG_ID_L2SDK_HCU_TO_L2SNR_HSMMP) AND ($msgName != MSG_ID_L2SOCKET_TO_L2SNR_HSMMP)){
             $result = "Msgid or MsgName error";
             $log_content = "P:" . json_encode($result);
-            $loggerObj->logger("MFUN_TASK_ID_L2SNR_HSMMP", "mfun_l2snr_hsmmp_task_main_entry", $log_time, $log_content);
+            $loggerObj->logger("MFUN_TASK_ID_L2SENSOR_HSMMP", "mfun_l2snr_hsmmp_task_main_entry", $log_time, $log_content);
             echo trim($result);
             return false;
         }
+        switch($msgId)
+        {
+            case MSG_ID_L2SDK_HCU_TO_L2SNR_HSMMP:
+                //具体处理函数
+                $resp = $this->func_hsmmp_process($platform, $project, $devCode, $statCode, $content,$funcFlag);
+                break;
+            case MSG_ID_L2SOCKET_TO_L2SNR_HSMMP:
+                $resp = $this->func_pic_hexdata_process($project,$devCode,$statCode,$content);
+                break;
+            default:
+                $resp = "";
+                break;
+        }
 
-        //解开消息
-        $project = "";
-        $log_from = "";
-        $platform = "";
-        $deviceId = "";
-        $statCode = "";
-        $content = "";
-        $funcFlag = "";
-        if (isset($msg["project"])) $project = $msg["project"];
-        if (isset($msg["log_from"])) $log_from = $msg["log_from"];
-        if (isset($msg["platform"])) $platform = $msg["platform"];
-        if (isset($msg["deviceId"])) $deviceId = $msg["deviceId"];
-        if (isset($msg["statCode"])) $statCode = $msg["statCode"];
-        if (isset($msg["content"])) $content = $msg["content"];
-        if (isset($msg["funcFlag"])) $funcFlag = $msg["funcFlag"];
-
-        //具体处理函数
-        $resp = $this->func_hsmmp_process($platform, $project, $deviceId, $statCode, $content,$funcFlag);
-
-        //返回ECHO
         if (!empty($resp))
         {
             $log_content = "T:" . json_encode($resp);
-            $loggerObj->logger($project, $log_from, $log_time, $log_content);
-            echo trim($resp);
+            $loggerObj->logger($project, $devCode, $log_time, $log_content);
         }
 
         //返回

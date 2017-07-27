@@ -17,14 +17,8 @@ class classTaskL2snrDoorlock
 
     }
 
-    private function func_fhys_doorlock_status_process($platform, $devCode, $statCode, $msg)
+    private function func_fhys_doorlock_status_process($platform, $devCode, $statCode, $content, $funcFlag)
     {
-        if(isset($msg['content'])) $content = $msg['content']; else $content = "";
-        if(isset($msg['funcFlag'])) $funcFlag = $msg['funcFlag']; else $funcFlag = "";
-
-        if(empty($content)){
-            return "ERROR FHYS_DOORCLOCK: message empty";  //消息内容为空，直接返回
-        }
         $raw_MsgHead = substr($content, 0, MFUN_HCU_MSG_HEAD_LENGTH-2);  //截取4Byte MsgHead
         $msgHead = unpack("A2Key/A2Len", $raw_MsgHead);
         $length = hexdec($msgHead['Len']) & 0xFF;
@@ -39,14 +33,8 @@ class classTaskL2snrDoorlock
         return $resp;
     }
 
-    private function func_fhys_doorlock_open_process($platform, $devCode, $statCode, $msg)
+    private function func_fhys_doorlock_open_process($platform, $devCode, $statCode, $content, $funcFlag)
     {
-        if(isset($msg['content'])) $content = $msg['content']; else $content = "";
-        if(isset($msg['funcFlag'])) $funcFlag = $msg['funcFlag']; else $funcFlag = "";
-
-        if(empty($content)){
-            return "ERROR FHYS_DOORCLOCK: message empty";  //消息内容为空，直接返回
-        }
         $raw_MsgHead = substr($content, 0, MFUN_HCU_MSG_HEAD_LENGTH-2);  //截取4Byte MsgHead
         $msgHead = unpack("A2Key/A2Len", $raw_MsgHead);
         $length = hexdec($msgHead['Len']) & 0xFF;
@@ -72,12 +60,12 @@ class classTaskL2snrDoorlock
         $log_time = date("Y-m-d H:i:s", time());
 
         //初始化消息内容
-        $project= "";
-        $platform ="";
-        $devCode="";
+        $project = "";
+        $platform = "";
+        $devCode = "";
         $statCode = "";
-        $cmdKey = "";
-        $content="";
+        $content = "";
+        $funcFlag = "";
 
         //入口消息内容判断
         if (empty($msg) == true) {
@@ -93,8 +81,8 @@ class classTaskL2snrDoorlock
             if (isset($msg["platform"])) $platform = $msg["platform"];
             if (isset($msg["devCode"])) $devCode = $msg["devCode"];
             if (isset($msg["statCode"])) $statCode = $msg["statCode"];
-            if (isset($msg["cmdKey"])) $cmdKey = $msg["cmdKey"];
             if (isset($msg["content"])) $content = $msg["content"];
+            if (isset($msg["funcFlag"])) $funcFlag = $msg["funcFlag"];
         }
 
         if (($msgId != MSG_ID_L2SDK_HCU_TO_L2SNR_DOORLOCK) || ($msgName != "MSG_ID_L2SDK_HCU_TO_L2SNR_DOORLOCK")){
@@ -109,10 +97,12 @@ class classTaskL2snrDoorlock
         {
             case MSG_ID_L2SDK_HCU_TO_L2SNR_DOORLOCK:
                 //具体处理函数
+                $key = unpack('A2Cmd/A2Opt', $content);
+                $cmdKey = hexdec($key['Cmd'])& 0xFF;
                 if($cmdKey == MFUN_HCU_CMDID_FHYS_DOORLOCK_STATUS)
-                    $resp = $this->func_fhys_doorlock_status_process($platform, $devCode, $statCode, $content);
+                    $resp = $this->func_fhys_doorlock_status_process($platform, $devCode, $statCode, $content, $funcFlag);
                 elseif($cmdKey == MFUN_HCU_CMDID_FHYS_DOORLOCK_OPEN)
-                    $resp = $this->func_fhys_doorlock_open_process($platform, $devCode, $statCode, $content);
+                    $resp = $this->func_fhys_doorlock_open_process($platform, $devCode, $statCode, $content, $funcFlag);
                 else
                     $resp = ""; //啥都不ECHO
 
