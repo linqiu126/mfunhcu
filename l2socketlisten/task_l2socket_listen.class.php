@@ -50,16 +50,14 @@ class classTaskL2SocketListen
         $project = MFUN_PRJ_HCU_HEXDATA;
         $devCode = "";
         $statCode = "";
-        $content = array();
 
         //图片HEX数据来自MFUN_SWOOLE_SOCKET_DATA_STREAM_TCP端口，数据格式定义如下：
         //0-19字节为设备ID，现在的DEVCODE为19个字符，第20个字符为填充，20～23字节为数据长度，4B，后面的数据为照片Hex码流
         if ($msgId == MSG_ID_L2SOCKET_LISTEN_DATA_COMING)
         {
-
             //解析设备ID
             for($i=0; $i<MFUN_HCU_DEVCODE_MAX_LENGTH; $i++){
-                $devCode = $devCode. chr(hexdec($data[$i]));
+                $devCode = $devCode. chr(hexdec(substr($data, $i*2, 2)));
             }
             if(!empty($devCode)){
                 //取DB中的硬件信息，判断devCode合法性
@@ -73,9 +71,7 @@ class classTaskL2SocketListen
                 }
             }
             //解析HEX Content
-            for($i = 0; $i < count($data); $i++){
-                $content[$i] = $data[MFUN_HCU_DEVCODE_MAX_LENGTH + 4 + $i]; //扣除20B devCode + 4B Length
-            }
+            $content = substr($data, (MFUN_HCU_DEVCODE_MAX_LENGTH + 1 + 4)*2); //扣除20B devCode + 4B Length
 
             $msg = array("project" => $project,
                 "platform" => MFUN_TECH_PLTF_HCUSTM,

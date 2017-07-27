@@ -353,7 +353,7 @@ class classL1MainEntrySocketListenServer
         echo "huitpxml_tcp_picport_onReceive: Get Message From Client {$fd} : {$data}\n";
         $msg = array("socketid" => $fd, "data"=>$data);
         $obj = new classTaskL1vmCoreRouter();
-        $obj->mfun_l1vm_task_main_entry(MFUN_TASK_ID_L2SOCKET_LISTEN, MSG_ID_L2SOCKET_LISTEN_DATA_COMING, "MSG_ID_L2SOCKET_LISTEN_DATA_COMING", $msg);
+        $obj->mfun_l1vm_task_main_entry(MFUN_MAIN_ENTRY_SOCKET_LISTEN, MSG_ID_L2SOCKET_LISTEN_DATA_COMING, "MSG_ID_L2SOCKET_LISTEN_DATA_COMING", $msg);
     }
 
     public function huitpxml_tcp_picport_onClose( $swoole_socket_serv, $fd, $from_id ) {

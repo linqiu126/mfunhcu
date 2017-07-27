@@ -138,6 +138,7 @@ class classTaskL2snrHsmmp
 
     private function func_pic_hexdata_process($project,$devCode,$statCode,$content)
     {
+        $content = pack("H*", $content); //将收到的16进制字符串pack成HEX data
         $loggerObj = new classApiL1vmFuncCom();
         $timestamp = time();
         $log_time = date("Y-m-d H:i:s", $timestamp);
@@ -239,7 +240,7 @@ class classTaskL2snrHsmmp
             if (isset($msg["funcFlag"])) $funcFlag = $msg["funcFlag"];
         }
 
-        if (($msgId != MSG_ID_L2SDK_HCU_TO_L2SNR_HSMMP) AND ($msgName != MSG_ID_L2SOCKET_TO_L2SNR_HSMMP)){
+        if (($msgId != MSG_ID_L2SDK_HCU_TO_L2SNR_HSMMP) AND ($msgId != MSG_ID_L2SOCKET_TO_L2SNR_HSMMP)){
             $result = "Msgid or MsgName error";
             $log_content = "P:" . json_encode($result);
             $loggerObj->logger("MFUN_TASK_ID_L2SENSOR_HSMMP", "mfun_l2snr_hsmmp_task_main_entry", $log_time, $log_content);

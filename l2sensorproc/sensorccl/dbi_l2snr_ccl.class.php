@@ -221,8 +221,10 @@ class classDbiL2snrCcl
         $authRequestType = hexdec($data[1]['HUITP_IEID_uni_ccl_lock_auth_req']['authReqType']) & 0xFF;
         $bleAddrLen = hexdec($data[1]['HUITP_IEID_uni_ccl_lock_auth_req']['bleAddrLen']) & 0xFF;
         $bleMacAddr = trim($data[1]['HUITP_IEID_uni_ccl_lock_auth_req']['bleMacAddr']);  //MAC地址保留HEX CHAR格式
+        $bleMacAddr = substr($bleMacAddr, 0, $bleAddrLen*2);
         $rfidAddrLen = hexdec($data[1]['HUITP_IEID_uni_ccl_lock_auth_req']['rfidAddrLen']) & 0xFF;
         $rfidAddr = trim($data[1]['HUITP_IEID_uni_ccl_lock_auth_req']['rfidAddr']);  //RFID Code保留HEX CHAR格式
+        $rfidAddr = substr($rfidAddr, 0, $rfidAddrLen*2);
 
         $auth_check = false; //初始化
 
