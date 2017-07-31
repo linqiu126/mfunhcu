@@ -206,7 +206,7 @@ http.createServer(function(request, response) {
                     response.write(Data);
                     response.end();
                 }else{
-                    Data = fs.readFileSync('./Login.html','utf-8');
+                    Data = fs.readFileSync('./login.html','utf-8');
                     response.writeHead(200, {"Content-Type": "text/html"});
                     response.write(Data);
                     response.end();
@@ -309,7 +309,7 @@ http.createServer(function(request, response) {
                 response.write(Data);
                 response.end();
             }else{
-                Data = fs.readFileSync('./Login.html','utf-8');
+                Data = fs.readFileSync('./login.html','utf-8');
                 response.writeHead(200, {"Content-Type": "text/html"});
                 response.write(Data);
                 response.end();
@@ -317,7 +317,7 @@ http.createServer(function(request, response) {
             break;
         default:
             console.log("Client require :"+pathname);
-                Data = fs.readFileSync('./Login.html','utf-8');
+                Data = fs.readFileSync('./login.html','utf-8');
                 response.writeHead(200, {"Content-Type": "text/html"});
                 response.write(Data);
                 response.end();

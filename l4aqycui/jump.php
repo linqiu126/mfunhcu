@@ -25,7 +25,7 @@ if($if_jump!=""){
     }
     echo $contents;
 }else{
-    $filename = "./Login.html";
+    $filename = "./login.html";
     $handle = fopen($filename, "r");
     $contents = fread($handle, filesize ($filename));
     fclose($handle);
