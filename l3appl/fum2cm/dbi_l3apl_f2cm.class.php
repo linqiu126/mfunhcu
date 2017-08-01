@@ -1166,13 +1166,13 @@ class classDbiL3apF2cm
         if (isset($siteinfo["ProjCode"])) $pcode = trim($siteinfo["ProjCode"]); else  $pcode = "";
         if (isset($siteinfo["ChargeMan"])) $chargeman = trim($siteinfo["ChargeMan"]); else  $chargeman = "";
         if (isset($siteinfo["Telephone"])) $telephone = trim($siteinfo["Telephone"]); else  $telephone = "";
-        if (isset($siteinfo["Longitude"])) $longitude = trim($siteinfo["Longitude"]); else  $longitude = "";
-        if (isset($siteinfo["Latitude"])) $latitude = trim($siteinfo["Latitude"]); else  $latitude = "";
+        if (isset($siteinfo["Longitude"])) $longitude = intval($siteinfo["Longitude"]); else  $longitude = 0;
+        if (isset($siteinfo["Latitude"])) $latitude = intval($siteinfo["Latitude"]); else  $latitude = 0;
         if (isset($siteinfo["Department"])) $department = trim($siteinfo["Department"]); else  $department = "";
         if (isset($siteinfo["Address"])) $addr = trim($siteinfo["Address"]); else  $addr = "";
         if (isset($siteinfo["Country"])) $country = trim($siteinfo["Country"]); else  $country = "";
         if (isset($siteinfo["Street"])) $street = trim($siteinfo["Street"]); else  $street = "";
-        if (isset($siteinfo["Square"])) $square = trim($siteinfo["Square"]); else  $square = "";
+        if (isset($siteinfo["Square"])) $square = intval($siteinfo["Square"]); else  $square = 0;
         if (isset($siteinfo["ProStartTime"])) $starttime = trim($siteinfo["ProStartTime"]); else  $starttime = "";
         if (isset($siteinfo["Stage"])) $memo = trim($siteinfo["Stage"]); else  $memo = "";
 
