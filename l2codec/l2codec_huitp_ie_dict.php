@@ -421,7 +421,8 @@ define("HUITP_IEID_uni_ccl_general_value1", 0x4E00);
 define("HUITP_IEID_uni_ccl_general_value2", 0x4E01);
 define("HUITP_IEID_uni_ccl_dcmi_value", 0x4E02);
 define("HUITP_IEID_uni_ccl_report_type", 0x4E03);
-define("HUITP_IEID_uni_ccl_state_max", 0x4E03);
+define("HUITP_IEID_uni_ccl_gen_picid", 0x4E04);
+define("HUITP_IEID_uni_ccl_state_max", 0x4E04);
 
 
 //串口读取命令/返回结果
@@ -834,6 +835,7 @@ class classL2codecHuitpIeDict
           HUITP_IEID_uni_ccl_general_value2               => array("format"=>"A4ieId/A4ieLen/A2dataFormat/A4generalValue2","len"=>"3","name"=>"HUITP_IEID_uni_ccl_general_value2"),
           HUITP_IEID_uni_ccl_dcmi_value                   => array("format"=>"A4ieId/A4ieLen/A2dataFormat/A4dcmiValue","len"=>"3","name"=>"HUITP_IEID_uni_ccl_dcmi_value"),
           HUITP_IEID_uni_ccl_report_type                  => array("format"=>"A4ieId/A4ieLen/A2event","len"=>"1","name"=>"HUITP_IEID_uni_ccl_report_type"),
+          HUITP_IEID_uni_ccl_gen_picid                    => array("format"=>"A4ieId/A4ieLen/A64picId","len"=>"32","name"=>"HUITP_IEID_uni_ccl_gen_picid"),
 
           //串口读取命令/返回结果
           HUITP_IEID_uni_itf_sps_min                      => "",

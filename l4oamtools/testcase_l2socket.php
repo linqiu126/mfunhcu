@@ -16,7 +16,7 @@ if (TC_SOCKET == true) {
     echo " [TC SOCKET: xxx START]\n";
 
     /*********************图片数据，消息来自9501端口*********************/
-    $data = "4843555F473530325F464859535F503030303140000000024040";
+    $data = "4843555F473530325F464859535F50303030315F303132333435363738395F5F000000024040";
 
     $msg = array("socketid" => 1, "data"=>$data);
     $obj = new classTaskL1vmCoreRouter();

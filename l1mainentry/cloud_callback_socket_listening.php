@@ -82,8 +82,8 @@ class classL1MainEntrySocketListenServer
         $huitpxml_tcp_picport->set(array(
             'open_length_check' => true,        //开启包长检查
             'package_length_type' => 'N',       //长度字段的类型，固定包头中用一个4字节（N）或2字节（n）表示包体长度，
-            'package_length_offset' => 20,      //第N个字节是包长度的值
-            'package_body_offset' => 24,        //第几个字节开始计算长度
+            'package_length_offset' => HUITP_IEID_UNI_CCL_GEN_PIC_ID_LEN_MAX,      //第N个字节是包长度的值
+            'package_body_offset' => HUITP_IEID_UNI_CCL_GEN_PIC_ID_LEN_MAX + 4,        //第几个字节开始计算长度
             'package_max_length' => 200000)    //协议最大长
         );
 

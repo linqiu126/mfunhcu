@@ -243,6 +243,57 @@ class classDbiL1vmCommon
         return substr_replace($out, $a1, strlen($out)-strlen($a1), strlen($a1));
     }
 
+    //用填充字符将字符串填充到指定长度
+    public function str_padding($strInput,$padding,$lenInput)
+    {
+        $len = strlen($strInput);
+        while ($len < $lenInput)
+        {
+            $strInput = $strInput . $padding;
+            $len++;
+        }
+
+        return $strInput;
+    }
+
+    public function crc16($string,$crc=0xffff) {
+
+        for ( $x=0; $x<strlen( $string ); $x++ ) {
+
+            $crc = $crc ^ ord( $string[$x] );
+            for ($y = 0; $y < 8; $y++) {
+
+                if ( ($crc & 0x0001) == 0x0001 )
+                    $crc = ( ($crc >> 1 ) ^ 0xA001 );
+                else
+                    $crc =    $crc >> 1;
+            }
+        }
+        return $crc;
+    }
+
+    public function crc_check($data, $crc)
+    {
+        $calc_crc = strtoupper(dechex($this->crc16($data, 0xffff)));
+
+        if ($calc_crc == $crc)
+            return true;
+        else
+            return false;
+    }
+
+    public function getStrBetween($kw1,$mark1,$mark2)
+    {
+        $kw=$kw1;
+        $kw='123'.$kw.'123';
+        $st =stripos($kw,$mark1);
+        $ed =stripos($kw,$mark2);
+        if(($st==false||$ed==false)||$st>=$ed)
+            return 0;
+        $kw=substr($kw,($st+1),($ed-$st-1));
+        return $kw;
+    }
+
     //存储logger信息，以便用于调试任务
     public function dbi_log_process_save($project,$fromuser,$createtime,$log_content)
     {

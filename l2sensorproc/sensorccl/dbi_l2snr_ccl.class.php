@@ -52,7 +52,7 @@ class classDbiL2snrCcl
         return $value;
     }
 
-    private function dbi_hcu_event_log_process($keyid, $statcode, $eventtype)
+    private function dbi_hcu_event_log_process($keyid, $statcode, $eventtype,$picname)
     {
         //建立连接
         $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
@@ -78,6 +78,15 @@ class classDbiL2snrCcl
             $keyusername = "NA";
         }
 
+
+        $timestamp = time();
+        $currenttime = date("Y-m-d H:i:s",$timestamp);
+
+        $query_str = "INSERT INTO `t_l3fxprcm_fhys_locklog` (keyid,keyname,keyuserid,keyusername,eventtype,statcode,createtime,picname)
+                              VALUES ('$keyid','$keyname','$keyuserid', '$keyusername', '$eventtype', '$statcode', '$currenttime', '$picname')";
+        $result = $mysqli->query($query_str);
+
+        /*
         $lasttime = 0;
         //查询该站点的最后一次开锁事件记录
         $query_str = "SELECT * FROM `t_l3fxprcm_fhys_locklog` WHERE `sid`= (SELECT MAX(sid) FROM `t_l3fxprcm_fhys_locklog` WHERE `statcode`= '$statcode' )";
@@ -88,14 +97,6 @@ class classDbiL2snrCcl
             $lasttime = strtotime($last_event);
             $event_id = $row['sid'];
         }
-        $timestamp = time();
-        $currenttime = date("Y-m-d H:i:s",$timestamp);
-
-        $query_str = "INSERT INTO `t_l3fxprcm_fhys_locklog` (keyid,keyname,keyuserid,keyusername,eventtype,statcode,createtime)
-                              VALUES ('$keyid','$keyname','$keyuserid', '$keyusername', '$eventtype', '$statcode', '$currenttime')";
-        $result = $mysqli->query($query_str);
-
-        /*
         if ($timestamp < ($lasttime + MFUN_HCU_FHYS_SLEEP_DURATION)) {
             $query_str = "UPDATE `t_l3fxprcm_fhys_locklog` SET `keyid` = '$keyid',`keyname` = '$keyname',`keyuserid` = '$keyuserid',`keyusername` = '$keyusername'
                                  `eventtype` = '$eventtype',`createtime` = '$currenttime'  WHERE (`sid` = '$event_id')";
@@ -228,11 +229,12 @@ class classDbiL2snrCcl
         $rfidAddr = substr($rfidAddr, 0, $rfidAddrLen*2);
 
         $auth_check = false; //初始化
+        $keyid = "";
+        $event = "";
 
         //判断是否检测到RFID开锁请求
         if (($authRequestType == HUITP_IEID_UNI_CCL_LOCK_AUTH_REQ_TYPE_RFID) AND !empty($rfidAddr))
         {
-            $keyid = "";
             $key_type = MFUN_L3APL_F2CM_KEY_TYPE_RFID;
             $query_str = "SELECT * FROM `t_l3f2cm_fhys_keyinfo` WHERE (`hwcode` = '$rfidAddr' AND `keytype` = '$key_type')"; //暂时只判断是否有
             $resp = $mysqli->query($query_str);
@@ -242,21 +244,11 @@ class classDbiL2snrCcl
                 $auth_check = $this->dbi_hcu_lock_keyauth_check($keyid, $statCode);
             }
 
-            if($auth_check == true){
-                $authResp = HUITP_IEID_UNI_CCL_LOCK_AUTH_RESP_YES;
-                $event = MFUN_L3APL_F2CM_EVENT_TYPE_RFID;
-                $this->dbi_hcu_event_log_process($keyid, $statCode, $event); //保存开锁记录
-                $resp_msg = "Lock open with RFID success: ";
-            }
-            else{
-                $authResp = HUITP_IEID_UNI_CCL_LOCK_AUTH_RESP_NO;
-                $resp_msg = "Lock open with RFID failure: ";
-            }
+            $event = MFUN_L3APL_F2CM_EVENT_TYPE_RFID;
         }
         //判断是否检测到BLE开锁请求且RFID开锁没有授权
         elseif (($authRequestType == HUITP_IEID_UNI_CCL_LOCK_AUTH_REQ_TYPE_BLE) AND !empty($bleMacAddr) AND ($auth_check == false))
         {
-            $keyid = "";
             $key_type = MFUN_L3APL_F2CM_KEY_TYPE_BLE;
             $query_str = "SELECT * FROM `t_l3f2cm_fhys_keyinfo` WHERE (`hwcode` = '$bleMacAddr' AND `keytype` = '$key_type')"; //暂时只判断是否有
             $resp = $mysqli->query($query_str);
@@ -282,22 +274,12 @@ class classDbiL2snrCcl
                 $result = $mysqli->query($query_str);
             }
 
-            if($auth_check == true){
-                $event = MFUN_L3APL_F2CM_EVENT_TYPE_BLE;
-                $this->dbi_hcu_event_log_process($keyid, $statCode, $event); //保存开锁记录
-                $authResp = HUITP_IEID_UNI_CCL_LOCK_AUTH_RESP_YES;
-                $resp_msg = "Lock open with BLE success: ";
-            }
-            else{
-                $authResp = HUITP_IEID_UNI_CCL_LOCK_AUTH_RESP_NO;
-                $resp_msg = "Lock open with BLE failure: ";
-            }
+            $event = MFUN_L3APL_F2CM_EVENT_TYPE_BLE;
         }
         //如果RFID和BLE开锁认证都不通过，看看是否有有用户名开锁授权
         elseif (($authRequestType == HUITP_IEID_UNI_CCL_LOCK_AUTH_REQ_TYPE_LOCK) AND ($auth_check == false))
         {
             //暂时只判断是否有针对该站点的有效次数授权
-            $keyid = "";
             $auth_type = MFUN_L3APL_F2CM_AUTH_TYPE_NUMBER;
             $query_str = "SELECT * FROM `t_l3f2cm_fhys_keyauth` WHERE (`authobjcode` = '$statCode' AND `authtype` = '$auth_type')";
             $resp = $mysqli->query($query_str);
@@ -326,16 +308,20 @@ class classDbiL2snrCcl
                     $auth_check = true;
                 }
             }
-            if($auth_check == true){
-                $event = MFUN_L3APL_F2CM_EVENT_TYPE_USER;
-                $this->dbi_hcu_event_log_process($keyid, $statCode, $event); //保存开锁记录
-                $authResp = HUITP_IEID_UNI_CCL_LOCK_AUTH_RESP_YES;
-                $resp_msg = "Lock open with USERID success: ";
-            }
-            else{
-                $authResp = HUITP_IEID_UNI_CCL_LOCK_AUTH_RESP_NO;
-                $resp_msg = "Lock open with USERID failure: ";
-            }
+
+            $event = MFUN_L3APL_F2CM_EVENT_TYPE_USER;
+        }
+
+        if($auth_check == true){
+            $timestamp = time();
+            $filename = $statCode . "_" . $timestamp; //生成jpg文件名
+            $picname = $filename . MFUN_HCU_SITE_PIC_FILE_TYPE;
+            $this->dbi_hcu_event_log_process($keyid, $statCode, $event, $picname); //保存开锁记录
+            $authResp = HUITP_IEID_UNI_CCL_LOCK_AUTH_RESP_YES;
+        }
+        else {
+            $filename = "";
+            $authResp = HUITP_IEID_UNI_CCL_LOCK_AUTH_RESP_NO;
         }
 
         //生成 HUITP_MSGID_uni_ccl_lock_auth_resp 消息的内容
@@ -359,6 +345,24 @@ class classDbiL2snrCcl
         array_push($authRespIE, HUITP_IEID_uni_ccl_lock_auth_resp);
         array_push($authRespIE, $huitpIeLen);
         array_push($authRespIE, $authResp);
+
+        //组装IE HUITP_IEID_uni_ccl_gen_picid
+        $huitpIe = $l2codecHuitpIeDictObj->mfun_l2codec_getHuitpIeFormat(HUITP_IEID_uni_ccl_gen_picid);
+        $huitpIeLen = intval($huitpIe['len']);
+
+        //处理照片文件名，将其补足固定长度
+        $dbiL1vmCommonObj = new classDbiL1vmCommon();
+        $filename = $dbiL1vmCommonObj->str_padding($filename, "_", HUITP_IEID_UNI_CCL_GEN_PIC_ID_LEN_MAX);
+        //将文件名字符串转成Hex字符串
+        $picId = array();
+        for($i = 0; $i < HUITP_IEID_UNI_CCL_GEN_PIC_ID_LEN_MAX; $i++){
+            $one_char = substr($filename, $i, 1);
+            $hex_char = dechex(ord($one_char));
+            array_push($picId, $hex_char);
+        }
+        array_push($authRespIE, HUITP_IEID_uni_ccl_gen_picid);
+        array_push($authRespIE, $huitpIeLen);
+        array_push($authRespIE, $picId);
 
         array_push($respMsgContent, $comRespIE);
         array_push($respMsgContent, $authRespIE);

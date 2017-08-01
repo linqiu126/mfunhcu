@@ -22,6 +22,7 @@ define("MFUN_HUITP_IELEN_2B", 4); //2Byte
 define("MFUN_HUITP_IELEN_4B", 8); //4Byte
 
 define("HUITP_IEID_UNI_CCL_LOCK_MAX_NUMBER", 4); //最多支持4把锁
+define("HUITP_IEID_UNI_CCL_GEN_PIC_ID_LEN_MAX", 32);
 
 /*********************************************HUITP命令字HuitpCmdId*****************************************************/
 define("HUITP_CMDID_uni_none",                  0x00);
@@ -1398,7 +1399,8 @@ class classL2codecHuitpMsgDict
         //0x4D10
         HUITP_MSGID_uni_ccl_lock_auth_resp => array("MSGNAME" => "HUITP_MSGID_uni_ccl_lock_auth_resp",
             "MSGIE" => array(HUITP_IEID_uni_com_resp,
-                            HUITP_IEID_uni_ccl_lock_auth_resp)),
+                            HUITP_IEID_uni_ccl_lock_auth_resp,
+                            HUITP_IEID_uni_ccl_gen_picid)),
 
         //云控锁-状态聚合
         //0x4E00

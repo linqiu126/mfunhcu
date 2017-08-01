@@ -18,18 +18,6 @@ class classTaskL2sdkIotHuitp
 
     }
 
-    function getStrBetween($kw1,$mark1,$mark2)
-    {
-        $kw=$kw1;
-        $kw='123'.$kw.'123';
-        $st =stripos($kw,$mark1);
-        $ed =stripos($kw,$mark2);
-        if(($st==false||$ed==false)||$st>=$ed)
-            return 0;
-        $kw=substr($kw,($st+1),($ed-$st-1));
-        return $kw;
-    }
-
     /*****************************************************************************************************************
     *                                                任务入口函数                                                     *
     *****************************************************************************************************************/
@@ -60,7 +48,8 @@ class classTaskL2sdkIotHuitp
         if (isset($msg["data"])) $data = $msg["data"]; else  $data = "";
 
         //FHYS测试时发现有多条xml消息粘连在一起的情况，此处加保护保证只取第一条完整xml消息
-        $msg = $this->getStrBetween($data,"<xml>","</xml>");
+        $dbiL1vmCommonObj = new classDbiL1vmCommon();
+        $msg = $dbiL1vmCommonObj->getStrBetween($data,"<xml>","</xml>");
         $msg = "<" . $msg . "</xml>";
         libxml_disable_entity_loader(true);  //prevent XML entity injection
         $postObj = simplexml_load_string($msg, 'SimpleXMLElement');  //防止破坏CDATA的内容，进而影响智能硬件L3消息体

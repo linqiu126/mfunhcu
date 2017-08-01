@@ -136,35 +136,29 @@ class classTaskL2snrHsmmp
         return $resp;
     }
 
-    private function func_pic_hexdata_process($project,$devCode,$statCode,$content)
+    private function func_pic_hexdata_process($project,$statCode,$picname,$content)
     {
         $content = pack("H*", $content); //将收到的16进制字符串pack成HEX data
-        $loggerObj = new classApiL1vmFuncCom();
-        $timestamp = time();
-        $log_time = date("Y-m-d H:i:s", $timestamp);
-        $file_type = ".jpg";
 
         if(!file_exists(MFUN_HCU_SITE_PIC_BASE_DIR.$statCode.'/upload/'))
             $result = mkdir(MFUN_HCU_SITE_PIC_BASE_DIR.$statCode.'/upload/',0777,true);
-        $filename = $statCode . "_" . $timestamp . $file_type;
-        $filelink = MFUN_HCU_SITE_PIC_BASE_DIR.$statCode.'/upload/'.$filename;
+
+        $filelink = MFUN_HCU_SITE_PIC_BASE_DIR.$statCode.'/upload/'.$picname;
         $newfile = fopen($filelink, "wb+") or die("Unable to open file!");
         $filesize = fwrite($newfile, $content);
         fclose($newfile);
 
-        //保存图片名到最后一次开锁记录表中
-        $dbiL2snrHsmmpObj = new classDbiL2snrHsmmp();
-        $result = $dbiL2snrHsmmpObj->dbi_fhys_locklog_picture_name_save($statCode, $filename);
-
         //保存图片的信息到picturedata表中
         if ($filesize){
-            //$base_dir = str_replace( '\\' , '/' , realpath(dirname(__FILE__).'/../../../avorion'));
-            $filename = $statCode . "_" . $timestamp . $file_type;
-            $loggerObj->logger($project, $devCode, $log_time, "上传新图片文件".$filename);
-            $result = $dbiL2snrHsmmpObj->dbi_door_open_picture_link_save($statCode, $devCode, $timestamp, $filename,$filesize);
+            $timestamp = time();
+            $dbiL2snrHsmmpObj = new classDbiL2snrHsmmp();
+            $result = $dbiL2snrHsmmpObj->dbi_door_open_picture_link_save($statCode, $timestamp, $picname,$filesize);
+            $resp = "上传新图片文件,file=".$filelink. "照片文件写入成功，size=".$filesize;
         }
+        else
+            $resp = "上传新图片文件,file=".$filelink. "照片文件写入失败";
 
-        return $result;
+        return $resp;
     }
 
     //微信平台暂时不支持
@@ -219,6 +213,7 @@ class classTaskL2snrHsmmp
         $project = "";
         $platform = "";
         $devCode = "";
+        $picname = "";
         $statCode = "";
         $content = "";
         $funcFlag = "";
@@ -235,6 +230,7 @@ class classTaskL2snrHsmmp
             if (isset($msg["project"])) $project = $msg["project"];
             if (isset($msg["platform"])) $platform = $msg["platform"];
             if (isset($msg["devCode"])) $devCode = $msg["devCode"];
+            if (isset($msg["picname"])) $picname = $msg["picname"];
             if (isset($msg["statCode"])) $statCode = $msg["statCode"];
             if (isset($msg["content"])) $content = $msg["content"];
             if (isset($msg["funcFlag"])) $funcFlag = $msg["funcFlag"];
@@ -254,7 +250,7 @@ class classTaskL2snrHsmmp
                 $resp = $this->func_hsmmp_process($platform, $project, $devCode, $statCode, $content,$funcFlag);
                 break;
             case MSG_ID_L2SOCKET_TO_L2SNR_HSMMP:
-                $resp = $this->func_pic_hexdata_process($project,$devCode,$statCode,$content);
+                $resp = $this->func_pic_hexdata_process($project,$statCode,$picname,$content);
                 break;
             default:
                 $resp = "";
@@ -263,7 +259,7 @@ class classTaskL2snrHsmmp
 
         if (!empty($resp))
         {
-            $log_content = "T:" . json_encode($resp);
+            $log_content = "R:" . json_encode($resp);
             $loggerObj->logger($project, $devCode, $log_time, $log_content);
         }
 

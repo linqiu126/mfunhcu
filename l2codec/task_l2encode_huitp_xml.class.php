@@ -94,6 +94,7 @@ class classTaskL2encodeHuitpXml
             $respIeStr = $respIeStr.$dbiL1vmCommonObj->ushort2string($huitpIeLen);
             //编码IE参数
             $ieNumList = $this->findNum($huitpIeFormat);
+            //IE format字符串里前2个对应IE ID和IE Len，所以编码从下标2开始
             for($j = 2; $j<count($ieNumList); $j++)
             {
                 if($ieNumList[$j] == HUITP_FRAME_STRUCT_1_BYTE){
@@ -104,6 +105,13 @@ class classTaskL2encodeHuitpXml
                 }
                 elseif($ieNumList[$j] == HUITP_FRAME_STRUCT_4_BYTE){
                     $respIeStr = $respIeStr.$dbiL1vmCommonObj->int2string($content[$i][$j]);
+                }
+                //如果是数组，需要区分是字符还是U8的整数，这部分编码需要在发送模块处理成HEX字符，这里直接当作字符串copy
+                else{
+                    $arrayPara = $content[$i][$j];
+                    if (is_array($arrayPara)){
+                        for($n = 0; $n < count($arrayPara); $n++)  $respIeStr = $respIeStr.$arrayPara[$n];
+                    }
                 }
             }
             $i++;

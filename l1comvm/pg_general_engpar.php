@@ -12,7 +12,6 @@ include_once "../l1comvm/sysconfig.php";
  *************************************************************************************/
 //HCU_ID命名固定前缀
 define("MFUN_HCU_NAME_FIX_PREFIX", "HCU_");
-define("MFUN_HCU_DEVCODE_MAX_LENGTH", 19);
 
 //通用项目标识
 define("MFUN_L1VM_DBI_MAX_LOG_NUM", 5000);  //防止t_loginfo表单数据无限制的增长，保留的最大记录数
@@ -58,6 +57,7 @@ define("MFUN_L3APL_F2CM_FAVOURSITE_MAX_NUM", 5); //最大常用站点数量
 
 define("MFUN_HCU_SITE_PIC_BASE_DIR", "../../avorion/");  //站点照片存放路径
 define("MFUN_HCU_SITE_PIC_FOLDER_NAME", "/avorion/");     //站点照片存放目录
+define("MFUN_HCU_SITE_PIC_FILE_TYPE", ".jpg");
 
 define("MFUN_HCU_MSG_HEAD_FORMAT", "A2Key/A2Len/A2Cmd");// 1B 控制字ctrl_key, 1B 长度length（除控制字和长度本身外），1B 操作字opt_key
 define("MFUN_HCU_MSG_HEAD_LENGTH", 6); //3 Byte
