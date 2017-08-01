@@ -391,7 +391,7 @@ class classTaskL3aplF2cm
             if($result == true)
                 $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"新建监测点成功");
             else
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"新建监测点失败");
+                $retval=array('status'=>'false','auth'=>$usercheck['auth'],'msg'=>"新建监测点失败");
         }
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>$usercheck['msg']);
