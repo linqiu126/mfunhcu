@@ -20,7 +20,7 @@ if (TC_SOCKET == true) {
 
     $msg = array("socketid" => 1, "data"=>$data);
     $obj = new classTaskL1vmCoreRouter();
-    $obj->mfun_l1vm_task_main_entry(MFUN_MAIN_ENTRY_SOCKET_LISTEN, MSG_ID_L2SOCKET_LISTEN_DATA_COMING, "MSG_ID_L2SOCKET_LISTEN_DATA_COMING", $msg);
+    //$obj->mfun_l1vm_task_main_entry(MFUN_MAIN_ENTRY_SOCKET_LISTEN, MSG_ID_L2SOCKET_LISTEN_DATA_COMING, "MSG_ID_L2SOCKET_LISTEN_DATA_COMING", $msg);
 
     /*******************老的云控制锁项目，消息来自9501端口****************/
     //状态报告

@@ -328,6 +328,7 @@ class classDbiL2snrCcl
         $respMsgContent = array();
         $comRespIE = array();
         $authRespIE = array();
+        $picNameIE = array();
 
         $l2codecHuitpIeDictObj = new classL2codecHuitpIeDict;
 
@@ -360,12 +361,13 @@ class classDbiL2snrCcl
             $hex_char = dechex(ord($one_char));
             array_push($picId, $hex_char);
         }
-        array_push($authRespIE, HUITP_IEID_uni_ccl_gen_picid);
-        array_push($authRespIE, $huitpIeLen);
-        array_push($authRespIE, $picId);
+        array_push($picNameIE, HUITP_IEID_uni_ccl_gen_picid);
+        array_push($picNameIE, $huitpIeLen);
+        array_push($picNameIE, $picId);
 
         array_push($respMsgContent, $comRespIE);
         array_push($respMsgContent, $authRespIE);
+        array_push($respMsgContent, $picNameIE);
 
         $mysqli->close();
         return $respMsgContent;
