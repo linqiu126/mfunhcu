@@ -145,6 +145,13 @@ class classTaskL1vmCoreRouter
         $this->msgBufferUsedCnt++;
         $this->msgBufferWriteCnt = ($this->msgBufferWriteCnt+1) % MFUN_MSG_BUFFER_NBR_MAX;
 
+        if(sizeof($msgBody, 1) > MFUN_MSG_BODY_LENGTH){
+            $loggerObj = new classApiL1vmFuncCom();
+            $log_time = date("Y-m-d H:i:s", time());
+            $loggerObj->logger(MFUN_TRACE_VM, $msgName, $log_time, "I: MsgBody over max length");
+            return true;
+        }
+
         //完事的MESSAGE TRACE机制, 先生成$loggerObj对应的指针
         //公共变量没有放在外面统一声明的原因，是为了优化TRACE_MSG_MODE_ALL_OFF的最小开销
         if (TRACE_MSG_ON == TRACE_MSG_MODE_ALL_OFF){

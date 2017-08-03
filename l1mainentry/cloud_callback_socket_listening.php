@@ -350,8 +350,9 @@ class classL1MainEntrySocketListenServer
     public function huitpxml_tcp_picport_onReceive(swoole_server $swoole_socket_serv, $fd, $from_id, $data )
     {
         echo PHP_EOL.date('Y/m/d H:i:s', time())." ";
-        echo "huitpxml_tcp_picport_onReceive: Get Message From Client {$fd} : {$data}\n";
+        echo "huitpxml_tcp_picport_onReceive: Get Message From Client {$fd}\n";
         $msg = array("socketid" => $fd, "data"=>$data);
+
         $obj = new classTaskL1vmCoreRouter();
         $obj->mfun_l1vm_task_main_entry(MFUN_MAIN_ENTRY_SOCKET_LISTEN, MSG_ID_L2SOCKET_LISTEN_DATA_COMING, "MSG_ID_L2SOCKET_LISTEN_DATA_COMING", $msg);
     }

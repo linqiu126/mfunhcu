@@ -63,9 +63,9 @@ class classTaskL2SocketListen
             //解析数据长度
             $len = array();
             for($i=0; $i<4; $i++) {
-                $len[$i] = bin2hex($data[$i+HUITP_IEID_UNI_CCL_GEN_PIC_ID_LEN_MAX]);
+                $len[$i] = intval(bin2hex($data[$i+HUITP_IEID_UNI_CCL_GEN_PIC_ID_LEN_MAX]),16);
             }
-            $length = ($len[0]<<32) + ($len[1]<<16) + ($len[2]<<8) + $len[3];
+            $length = ($len[0]*256*256*256) + ($len[1]*256*256) + ($len[2]*256) + $len[3];
 
             //查询开锁记录表，通过事先生成的文件名找到对应的站点
             $dbiL2snrHsmmpObj = new classDbiL2snrHsmmp();
@@ -77,9 +77,11 @@ class classTaskL2SocketListen
                 return true;
             }
             //解析HEX Content
+            $lastdata = 0xFF;
             $content = array();
             for($i=0; $i<$length; $i++){
                 $content[$i] = $data[$i+HUITP_IEID_UNI_CCL_GEN_PIC_ID_LEN_MAX+4];
+                $lastdata = $content[$i];
             }
 
             $msg = array("project" => $project,
