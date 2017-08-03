@@ -136,27 +136,26 @@ class classTaskL2snrHsmmp
         return $resp;
     }
 
-    private function func_pic_hexdata_process($project,$statCode,$picname,$content)
+    private function func_pic_hexdata_process($statCode,$picname,$picsize,$content)
     {
-        $content = pack("H*", $content); //将收到的16进制字符串pack成HEX data
+        //$content = pack("H*", $content); //将收到的16进制字符串pack成HEX data
 
         if(!file_exists(MFUN_HCU_SITE_PIC_BASE_DIR.$statCode.'/upload/'))
             $result = mkdir(MFUN_HCU_SITE_PIC_BASE_DIR.$statCode.'/upload/',0777,true);
 
         $filelink = MFUN_HCU_SITE_PIC_BASE_DIR.$statCode.'/upload/'.$picname;
         $newfile = fopen($filelink, "wb+") or die("Unable to open file!");
-        $filesize = fwrite($newfile, $content);
+        for ($i=0; $i<$picsize; $i++)
+            fwrite($newfile, $content[$i]);
+
         fclose($newfile);
 
         //保存图片的信息到picturedata表中
-        if ($filesize){
-            $timestamp = time();
-            $dbiL2snrHsmmpObj = new classDbiL2snrHsmmp();
-            $result = $dbiL2snrHsmmpObj->dbi_door_open_picture_link_save($statCode, $timestamp, $picname,$filesize);
-            $resp = "上传新图片文件,file=".$filelink. "照片文件写入成功，size=".$filesize;
-        }
-        else
-            $resp = "上传新图片文件,file=".$filelink. "照片文件写入失败";
+
+        $timestamp = time();
+        $dbiL2snrHsmmpObj = new classDbiL2snrHsmmp();
+        $result = $dbiL2snrHsmmpObj->dbi_door_open_picture_link_save($statCode, $timestamp, $picname,$picsize);
+        $resp = "上传新图片文件,file=".$filelink. "照片文件写入成功，size=".$picsize;
 
         return $resp;
     }
@@ -214,6 +213,7 @@ class classTaskL2snrHsmmp
         $platform = "";
         $devCode = "";
         $picname = "";
+        $picsize = 0;
         $statCode = "";
         $content = "";
         $funcFlag = "";
@@ -231,6 +231,7 @@ class classTaskL2snrHsmmp
             if (isset($msg["platform"])) $platform = $msg["platform"];
             if (isset($msg["devCode"])) $devCode = $msg["devCode"];
             if (isset($msg["picname"])) $picname = $msg["picname"];
+            if (isset($msg["picsize"])) $picsize = intval($msg["picsize"]);
             if (isset($msg["statCode"])) $statCode = $msg["statCode"];
             if (isset($msg["content"])) $content = $msg["content"];
             if (isset($msg["funcFlag"])) $funcFlag = $msg["funcFlag"];
@@ -250,7 +251,10 @@ class classTaskL2snrHsmmp
                 $resp = $this->func_hsmmp_process($platform, $project, $devCode, $statCode, $content,$funcFlag);
                 break;
             case MSG_ID_L2SOCKET_TO_L2SNR_HSMMP:
-                $resp = $this->func_pic_hexdata_process($project,$statCode,$picname,$content);
+                if ($picsize != 0)
+                    $resp = $this->func_pic_hexdata_process($statCode,$picname,$picsize,$content);
+                else
+                    $resp = "Picture size = 0!";
                 break;
             default:
                 $resp = "";
@@ -260,7 +264,7 @@ class classTaskL2snrHsmmp
         if (!empty($resp))
         {
             $log_content = "R:" . json_encode($resp);
-            $loggerObj->logger($project, $devCode, $log_time, $log_content);
+            $loggerObj->logger($project, "mfun_l2snr_hsmmp_task_main_entry", $log_time, $log_content);
         }
 
         //返回

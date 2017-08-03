@@ -23,6 +23,7 @@ class classTaskL2SocketListen
         //定义本入口函数的logger处理对象及函数
         $loggerObj = new classApiL1vmFuncCom();
         $log_time = date("Y-m-d H:i:s", time());
+        $project = MFUN_PRJ_HCU_HEXDATA;
 
         //入口消息内容判断
         if (empty($msg) == true) {
@@ -47,38 +48,44 @@ class classTaskL2SocketListen
             return false;
         }
 
-        $project = MFUN_PRJ_HCU_HEXDATA;
-        $statCode = "";
-
         //图片HEX数据来自MFUN_SWOOLE_SOCKET_DATA_STREAM_TCP端口，数据格式定义如下：
-        //0-19字节为设备ID，现在的DEVCODE为19个字符，第20个字符为填充，20～23字节为数据长度，4B，后面的数据为照片Hex码流
+        //第0-31字节为后台分配的照片ID，该ID通过开锁请求响应Anth_Resp消息发送给CCL, CCL在发送照片数据时带回。如果照片ID不满32个字符用下划线“_"填充
+        //第32～35字节为数据长度，4B，网络字节序高位在前，后面的数据为照片Hex码流
         if ($msgId == MSG_ID_L2SOCKET_LISTEN_DATA_COMING)
         {
             $filename = "";
-            $picname = "";
-            //解析设备ID
+            //解析照片ID
             for($i=0; $i<HUITP_IEID_UNI_CCL_GEN_PIC_ID_LEN_MAX; $i++){
-                $filename = $filename. chr(hexdec(substr($data, $i*2, 2)));
-                $picname = trim($filename, "_").MFUN_HCU_SITE_PIC_FILE_TYPE;
+                $filename = $filename. $data[$i];
             }
+            $picname = trim($filename, "_").MFUN_HCU_SITE_PIC_FILE_TYPE; //去除可能的填充字符
+
+            //解析数据长度
+            $len = array();
+            for($i=0; $i<4; $i++) {
+                $len[$i] = bin2hex($data[$i+HUITP_IEID_UNI_CCL_GEN_PIC_ID_LEN_MAX]);
+            }
+            $length = ($len[0]<<32) + ($len[1]<<16) + ($len[2]<<8) + $len[3];
 
             //查询开锁记录表，通过事先生成的文件名找到对应的站点
             $dbiL2snrHsmmpObj = new classDbiL2snrHsmmp();
             $statCode = $dbiL2snrHsmmpObj->dbi_fhys_locklog_picture_name_inqury($picname);
-
             if (empty($statCode)){
                 $result = "L2SOCKET_LISTEN: reecive invalid picnmae = ".$picname;
-                $log_content = "T:" . json_encode($result);
+                $log_content = "T:" . $result;
                 $loggerObj->logger($project, MFUN_TASK_ID_L2SOCKET_LISTEN, $log_time, $log_content);
                 return true;
             }
-
             //解析HEX Content
-            $content = substr($data, (HUITP_IEID_UNI_CCL_GEN_PIC_ID_LEN_MAX + 4)*2); //扣除32B picname + 4B Length
+            $content = array();
+            for($i=0; $i<$length; $i++){
+                $content[$i] = $data[$i+HUITP_IEID_UNI_CCL_GEN_PIC_ID_LEN_MAX+4];
+            }
 
             $msg = array("project" => $project,
                 "platform" => MFUN_TECH_PLTF_HCUSTM,
                 "picname" => $picname,
+                "picsize" => $length,
                 "statCode" => $statCode,
                 "content" => $content);
             if ($parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L2SOCKET_LISTEN,
