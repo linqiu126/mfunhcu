@@ -67,7 +67,8 @@ class classTaskL2SocketListen
             }
             $length = ($len[0]*256*256*256) + ($len[1]*256*256) + ($len[2]*256) + $len[3];
 
-            //查询开锁记录表，通过事先生成的文件名找到对应的站点
+            //查询开锁记录表，通过事先生成的文件名找到对应的站点。
+            //这里有一种情况没有考虑，暴力开锁没有事先生成照片ID的情况
             $dbiL2snrHsmmpObj = new classDbiL2snrHsmmp();
             $statCode = $dbiL2snrHsmmpObj->dbi_fhys_locklog_picture_name_inqury($picname);
             if (empty($statCode)){
@@ -77,11 +78,9 @@ class classTaskL2SocketListen
                 return true;
             }
             //解析HEX Content
-            $lastdata = 0xFF;
             $content = array();
             for($i=0; $i<$length; $i++){
                 $content[$i] = $data[$i+HUITP_IEID_UNI_CCL_GEN_PIC_ID_LEN_MAX+4];
-                $lastdata = $content[$i];
             }
 
             $msg = array("project" => $project,

@@ -443,7 +443,7 @@ class classDbiL3apF5fm
                 $one_row = array();
                 $alarmflag = $row["alarmflag"];
                 $alarmseverity = $row["alarmseverity"];
-                $alarmcode = hexdec($row["alarmcode"]) & 0xFF ;
+                $alarmcode = intval($row["alarmcode"]) ;
                 $alarmdescription = $objFhysAlarm->mfun_hcu_fhys_getAlarmDescription($alarmcode);
                 $tsgen = $row["tsgen"];
                 $tsclose = $row["tsclose"];
@@ -479,30 +479,30 @@ class classDbiL3apF5fm
         }
         $mysqli->query("SET NAMES utf8");
         $timestamp = time();
+        $alarmproc = "";
 
         $query_str = "SELECT * FROM `t_l3f3dm_siteinfo` WHERE `statcode` = '$statcode'";
         $result = $mysqli->query($query_str);
         if (($result->num_rows) > 0) {
             $row = $result->fetch_array();
             $statname = $row["statname"];
+            //LEXIN短信平台
+            //$url = MFUN_HCU_FHYS_LEXIN_URL.MFUN_HCU_FHYS_LEXIN_ACCNAME."&".MFUN_HCU_FHYS_LEXIN_ACCPWD."&aimcodes=".trim($mobile).
+            //    "&content=".trim($action).MFUN_HCU_FHYS_LEXIN_SIGNATURE."&bizId=".$timestamp."&dataType=string";
+
+            //CMCC短信平台
+            //http://api.sms.heclouds.com/tempsmsSend?sicode=a2bb3546a41649a29e2fcb635e091dd5&mobiles=13917334681&tempid=10003&name=foha
+            $url = MFUN_HCU_FHYS_CMCC_URL.'?sicode='.MFUN_HCU_FHYS_CMCC_SICODE.'&mobiles='.trim($mobile).
+                '&tempid='.MFUN_HCU_FHYS_CMCC_TEMPCODE_ALARM.'&name='.$statname.'&action='.$action;
+            $l2sdkIotWxObj = new classTaskL2sdkIotWx();
+            $resp =$l2sdkIotWxObj->https_request($url);
+
+            $currenttime = date("Y-m-d H:i:s",$timestamp);
+            $alarmflag = MFUN_HCU_FHYS_ALARM_PROC_FLAG_Y;
+            $alarmproc = $currenttime . ":发送信息（".$action."）到手机".$mobile;
+            $query_str = "UPDATE `t_l3f5fm_fhys_alarmdata` SET `alarmflag` = '$alarmflag', `alarmproc` = '$alarmproc' WHERE (`statcode` = '$statcode')";
+            $result = $mysqli->query($query_str);
         }
-        //LEXIN短信平台
-        //$url = MFUN_HCU_FHYS_LEXIN_URL.MFUN_HCU_FHYS_LEXIN_ACCNAME."&".MFUN_HCU_FHYS_LEXIN_ACCPWD."&aimcodes=".trim($mobile).
-        //    "&content=".trim($action).MFUN_HCU_FHYS_LEXIN_SIGNATURE."&bizId=".$timestamp."&dataType=string";
-
-        //CMCC短信平台
-        //http://api.sms.heclouds.com/tempsmsSend?sicode=a2bb3546a41649a29e2fcb635e091dd5&mobiles=13917334681&tempid=10003&name=foha
-        $url = MFUN_HCU_FHYS_CMCC_URL.'?sicode='.MFUN_HCU_FHYS_CMCC_SICODE.'&mobiles='.trim($mobile).
-            '&tempid='.MFUN_HCU_FHYS_CMCC_TEMPCODE_ALARM.'&name='.$statname.'&action='.$action;
-
-        $l2sdkIotWxObj = new classTaskL2sdkIotWx();
-        $resp =$l2sdkIotWxObj->https_request($url);
-
-        $currenttime = date("Y-m-d H:i:s",$timestamp);
-        $alarmflag = MFUN_HCU_FHYS_ALARM_PROC_FLAG_Y;
-        $alarmproc = $currenttime . ":发送信息（".$action."）到手机".$mobile;
-        $query_str = "UPDATE `t_l3f5fm_fhys_alarmdata` SET `alarmflag` = '$alarmflag', `alarmproc` = '$alarmproc' WHERE (`statcode` = '$statcode')";
-        $result = $mysqli->query($query_str);
 
         $mysqli->close();
         return $alarmproc;

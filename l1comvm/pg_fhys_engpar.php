@@ -24,7 +24,8 @@ define("MFUN_HCU_FHYS_CMCC_TEMPCODE_ALARM", "10833");  //短信模板码  “站
 //http://api.sms.heclouds.com/tempsmsSend?sicode=a2bb3546a41649a29e2fcb635e091dd5&mobiles=13917334681&tempid=10003&name=foha
 
 //FHYS项目关键字
-define("MFUN_HCU_FHYS_SLEEP_DURATION", 300); //如果最后一次测量报告距离现在已经超过5x60秒
+define("MFUN_HCU_FHYS_SLEEP_DURATION", 180); //如果最后一次测量报告距离现在已经超过3x60秒
+define ("MFUN_HCU_FHYS_TIME_GRID_SIZE", 3); //每分钟一条记录
 
 define("MFUN_L3APL_F2CM_KEY_PREFIX", "KEY");  //定义KEY ID的特征字，钥匙KEYID必须以KEY开头
 define("MFUN_L3APL_F2CM_KEY_ID_LEN", 6);     //UI界面key id字符串长度=该值+3（KEY)
@@ -56,32 +57,19 @@ define("MFUN_L3APL_F2CM_EVENT_DURATION_WEEK", "7");
 define("MFUN_L3APL_F2CM_EVENT_DURATION_MONTH", "30");
 
 //FHYS系统常量
-define ("MFUN_HCU_FHYS_TIME_GRID_SIZE", 3); //每分钟一条记录
-
 define ("MFUN_HCU_FHYS_ALARM_PROC_FLAG_Y", "Y"); //告警已经处理，等待关闭
 define ("MFUN_HCU_FHYS_ALARM_PROC_FLAG_N", "N"); //告警未处理
 define ("MFUN_HCU_FHYS_ALARM_PROC_FLAG_C", "C"); //告警已经处理关闭
 
+
 define ("MFUN_HCU_FHYS_ALARM_YES", "Y");
 define ("MFUN_HCU_FHYS_ALARM_NO", "N");
-define ("MFUN_HCU_FHYS_STATUS_SLEEP", "S"); //设备休眠中
 define ("MFUN_HCU_FHYS_STATUS_UNKNOWN", "U"); //未知状态
 
 define ("MFUN_HCU_FHYS_ALARM_LEVEL_0", "0"); //告警级别0，正常无告警
 define ("MFUN_HCU_FHYS_ALARM_LEVEL_L", "1"); //告警级别1，告警级别Low
 define ("MFUN_HCU_FHYS_ALARM_LEVEL_M", "2"); //告警级别2，告警级别Middle
 define ("MFUN_HCU_FHYS_ALARM_LEVEL_H", "3"); //告警级别3，告警级别High
-
-define ("MFUN_HCU_FHYS_DOOR_OPEN", "O");  //光交箱门打开
-define ("MFUN_HCU_FHYS_DOOR_CLOSE", "C"); //光交箱门关闭
-define ("MFUN_HCU_FHYS_DOOR_ALARM", "A"); //光交箱门暴力打开
-//define ("MFUN_HCU_FHYS_DOOR_NULL", "N"); //设备未安装
-define ("MFUN_HCU_FHYS_DOOR_NULL", "C"); //为了省电现在用低电平检测，当锁关闭且未激活时会上报0x02，导致误报成未安装，所以这里把这种情况也定义为关闭
-define ("MFUN_HCU_FHYS_LOCK_OPEN", "O");  //智能云锁打开
-define ("MFUN_HCU_FHYS_LOCK_CLOSE", "C"); //智能云锁关闭
-define ("MFUN_HCU_FHYS_LOCK_ALARM", "A"); //智能云锁暴力打开
-//define ("MFUN_HCU_FHYS_LOCK_NULL", "N"); //设备未安装
-define ("MFUN_HCU_FHYS_LOCK_NULL", "C"); //为了省电现在用低电平检测，当锁关闭且未激活时会上报0x02，导致误报成未安装，所以这里把这种情况也定义为关闭
 
 define ("MFUN_HCU_FHYS_KEY_VALID", "Y");  //虚拟钥匙有效，已授予用户
 define ("MFUN_HCU_FHYS_KEY_INVALID", "N"); //虚拟钥匙无效，未授予用户
@@ -96,6 +84,7 @@ define ("MFUN_HCU_DATA_FHYS_STATUS_ALARM", 0x03); //设备状态异常或者门�
 define ("MFUN_HCU_DATA_FHYS_LOCK_OPEN", 0x00);  //开锁命令
 define ("MFUN_HCU_DATA_FHYS_LOCK_CLOSE", 0x01);  //闭锁命令
 
+//BFSC常量，临时定义在这里，后面根据需要移除
 define ("MFUN_HCU_BFSC_STATUS_OK", "Y");  //设备正常，运行中
 define ("MFUN_HCU_BFSC_STATUS_NOK", "N"); //设备异常，关闭中
 

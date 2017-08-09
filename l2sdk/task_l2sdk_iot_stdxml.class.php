@@ -96,7 +96,7 @@ class classTaskL2sdkIotStdxml
         //将socket id和设备ID（fromUser）进行绑定
         if(!empty($socketid) AND !empty($statCode)){
             $dbiL2sdkIotcomObj = new classDbiL2sdkIotcom();
-            $dbiL2sdkIotcomObj->dbi_huitp_huc_socketid_update($fromUser, $socketid);
+            $result = $dbiL2sdkIotcomObj->dbi_huitp_huc_socketid_update($fromUser, $socketid);
         }
 
         //消息或者说帧类型分离，l2SDK只进行XML类型解码，不对消息的content进行处理,Content处理在具体的L2sensor模块
