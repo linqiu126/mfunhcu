@@ -2185,6 +2185,8 @@ class classDbiL3apF3dm
         array_push($resp["column"], "上次报告时间");
         array_push($resp["column"], "门锁-1状态");
         array_push($resp["column"], "门锁-2状态");
+        array_push($resp["column"], "门锁-3状态");
+        array_push($resp["column"], "门锁-4状态");
         array_push($resp["column"], "信号强度");
         array_push($resp["column"], "剩余电量");
         array_push($resp["column"], "温度");
@@ -2216,8 +2218,10 @@ class classDbiL3apF3dm
             $dev_status = "状态未知";
             $doorlock_1 = "状态未知";
             $doorlock_2 = "状态未知";
+            $doorlock_3 = "状态未知";
+            $doorlock_4 = "状态未知";
             $sig_level = "0";
-            $batt_level = "0V";
+            $batt_level = "0%";
             $vibr_alarm = "未知";
             $water_alarm = "未知";
             $smok_alarm = "未知";
@@ -2236,7 +2240,7 @@ class classDbiL3apF3dm
                 else
                     $dev_status = "运行中";
 
-                //更新门锁运行状态
+                //门锁-1运行状态
                 if($row["door_1"] == HUITP_IEID_UNI_DOOR_STATE_OPEN)
                     $doorlock_1 = "正常打开";
                 elseif($row["door_1"] == HUITP_IEID_UNI_DOOR_STATE_CLOSE)
@@ -2245,8 +2249,9 @@ class classDbiL3apF3dm
                     $doorlock_1 = "未安装";
 
                 if(($row["door_1"] == HUITP_IEID_UNI_DOOR_STATE_OPEN) AND ($row["reporttype"] == HUITP_IEID_UNI_CCL_REPORT_TYPE_FAULT_EVENT))
-                    $doorlock_1 = "未授权打开";
+                    $doorlock_1 = "异常打开";
 
+                //门锁-2运行状态
                 if($row["door_2"] == HUITP_IEID_UNI_DOOR_STATE_OPEN)
                     $doorlock_2 = "正常打开";
                 elseif($row["door_2"] == HUITP_IEID_UNI_DOOR_STATE_CLOSE)
@@ -2255,7 +2260,30 @@ class classDbiL3apF3dm
                     $doorlock_2 = "未安装";
 
                 if(($row["door_2"] == HUITP_IEID_UNI_DOOR_STATE_OPEN) AND ($row["reporttype"] == HUITP_IEID_UNI_CCL_REPORT_TYPE_FAULT_EVENT))
-                    $doorlock_2 = "未授权打开";
+                    $doorlock_2 = "异常打开";
+
+                //门锁-3运行状态
+                if($row["door_3"] == HUITP_IEID_UNI_DOOR_STATE_OPEN)
+                    $doorlock_3 = "正常打开";
+                elseif($row["door_3"] == HUITP_IEID_UNI_DOOR_STATE_CLOSE)
+                    $doorlock_3 = "正常关闭";
+                elseif($row["door_3"] == HUITP_IEID_UNI_DOOR_STATE_NULL)
+                    $doorlock_3 = "未安装";
+
+                if(($row["door_3"] == HUITP_IEID_UNI_DOOR_STATE_OPEN) AND ($row["reporttype"] == HUITP_IEID_UNI_CCL_REPORT_TYPE_FAULT_EVENT))
+                    $doorlock_3 = "异常打开";
+
+                //门锁-4运行状态
+                if($row["door_4"] == HUITP_IEID_UNI_DOOR_STATE_OPEN)
+                    $doorlock_4 = "正常打开";
+                elseif($row["door_4"] == HUITP_IEID_UNI_DOOR_STATE_CLOSE)
+                    $doorlock_4 = "正常关闭";
+                elseif($row["door_4"] == HUITP_IEID_UNI_DOOR_STATE_NULL)
+                    $doorlock_4 = "未安装";
+
+                if(($row["door_4"] == HUITP_IEID_UNI_DOOR_STATE_OPEN) AND ($row["reporttype"] == HUITP_IEID_UNI_CCL_REPORT_TYPE_FAULT_EVENT))
+                    $doorlock_4 = "异常打开";
+
 
                 //更新GPRS信号强度
                 $sig_level = (string)$row["rssivalue"];
@@ -2267,7 +2295,7 @@ class classDbiL3apF3dm
                     $gprs = "良好";
 
                 //更新电池剩余电量
-                $batt_level = (string)($row["battvalue"]);
+                $batt_level = (string)($row["battvalue"])."%";
                 //更新温度,
                 $temperature = (string)($row["tempvalue"]);
                 //更新湿度
@@ -2292,6 +2320,8 @@ class classDbiL3apF3dm
             array_push($one_row, $last_report);
             array_push($one_row, $doorlock_1);
             array_push($one_row, $doorlock_2);
+            array_push($one_row, $doorlock_3);
+            array_push($one_row, $doorlock_4);
             array_push($one_row, $gprs);
             array_push($one_row, $batt_level);
             array_push($one_row, $temperature);
@@ -2390,7 +2420,7 @@ class classDbiL3apF3dm
             }
 
             if($row["door_1"] == HUITP_IEID_UNI_DOOR_STATE_OPEN AND $row["reporttype"] == HUITP_IEID_UNI_CCL_REPORT_TYPE_FAULT_EVENT){
-                $doorlock_1_status = "未授权打开";
+                $doorlock_1_status = "异常打开";
                 $doorlock_1_alarm = "true";
                 $doorlock_1_picname = "FHYS_locko";
             }
@@ -2426,7 +2456,7 @@ class classDbiL3apF3dm
             }
 
             if($row["door_2"] == HUITP_IEID_UNI_DOOR_STATE_OPEN AND $row["reporttype"] == HUITP_IEID_UNI_CCL_REPORT_TYPE_FAULT_EVENT){
-                $doorlock_2_status = "未授权打开";
+                $doorlock_2_status = "异常打开";
                 $doorlock_2_alarm = "true";
                 $doorlock_2_picname = "FHYS_locko";
             }
@@ -2481,7 +2511,7 @@ class classDbiL3apF3dm
                             'AlarmName'=>"剩余电量：",
                             'AlarmEName'=> "FHYS_batt",
                             'AlarmValue'=>(string)($battlevel),
-                            'AlarmUnit'=>" V",
+                            'AlarmUnit'=>" %",
                             'WarningTarget'=>$alarm);
             }
             else{ //防止数据缺失，保持界面显示完整性

@@ -218,7 +218,7 @@ class classDbiL2snrDoorlock
         //GPRS信号强度
         $rssiValue =hexdec($msg['rssi']) & 0xFF;
         //电量
-        $battValue = hexdec($msg['batt'])/10;
+        $battValue = hexdec($msg['batt']);
         if ($battValue > MFUN_L3APL_F3DM_TH_ALARM_BATT)
             $battState = HUITP_IEID_UNI_BAT_STATE_NORMAL;
         else{
@@ -337,8 +337,8 @@ class classDbiL2snrDoorlock
             $result = $mysqli->query($query_str);
         }
 
-        //告警等级大于0，则新插入一条
-        if (($alarm_code != MFUN_HCU_FHYS_ALARM_NONE) OR ($alarm_severity != MFUN_HCU_FHYS_ALARM_LEVEL_0))
+        //告警等级大于0，则新插入一条新纪录
+        if (($alarm_code != MFUN_HCU_FHYS_ALARM_NONE) AND ($alarm_severity != MFUN_HCU_FHYS_ALARM_LEVEL_0))
         {
             $alarm_flag = MFUN_HCU_FHYS_ALARM_PROC_FLAG_N;
             $alarm_proc = "新增告警，等待处理中";
