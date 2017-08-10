@@ -398,6 +398,7 @@ define("HUITP_IEID_uni_ccl_humid_max", 0x4A00);
 //云控锁-倾倒
 define("HUITP_IEID_uni_ccl_fall_min", 0x4B00);
 define("HUITP_IEID_uni_ccl_fall_state", 0x4B00);
+define("HUITP_IEID_uni_ccl_fall_value", 0x4B01);
 define("HUITP_IEID_uni_ccl_fall_max", 0x4B00);
 
 //云控锁-状态聚合-旧系统
@@ -815,6 +816,7 @@ class classL2codecHuitpIeDict
           //云控锁-倾倒
           HUITP_IEID_uni_ccl_fall_min                     => "",
           HUITP_IEID_uni_ccl_fall_state                   => array("format"=>"A4ieId/A4ieLen/A2fallState","len"=>"1","name"=>"HUITP_IEID_uni_ccl_fall_state"),
+          HUITP_IEID_uni_ccl_fall_value                   => array("format"=>"A4ieId/A4ieLen/A2dataFormat/A4fallValue","len"=>"3","name"=>"HUITP_IEID_uni_ccl_fall_value"),
 
           //云控锁-状态聚合-旧系统
           HUITP_IEID_uni_ccl_state_old_min                => "",

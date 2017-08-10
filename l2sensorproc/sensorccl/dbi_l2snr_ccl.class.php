@@ -463,21 +463,25 @@ class classDbiL2snrCcl
         $format = hexdec($data[10]['HUITP_IEID_uni_ccl_bat_value']['dataFormat']) & 0xFF;
         $value = hexdec($data[10]['HUITP_IEID_uni_ccl_bat_value']['batValue']) & 0xFFFF;
         $battValue = $this->dbi_datavalue_convert($format, $value);
+        //倾斜角
+        $format = hexdec($data[11]['HUITP_IEID_uni_ccl_fall_value']['dataFormat']) & 0xFF;
+        $value = hexdec($data[11]['HUITP_IEID_uni_ccl_fall_value']['fallValue']) & 0xFFFF;
+        $fallValue = $this->dbi_datavalue_convert($format, $value);
         //备用：通用值-1
-        $format = hexdec($data[11]['HUITP_IEID_uni_ccl_general_value1']['dataFormat']) & 0xFF;
-        $value = hexdec($data[11]['HUITP_IEID_uni_ccl_general_value1']['generalValue1']) & 0xFFFF;
+        $format = hexdec($data[12]['HUITP_IEID_uni_ccl_general_value1']['dataFormat']) & 0xFF;
+        $value = hexdec($data[12]['HUITP_IEID_uni_ccl_general_value1']['generalValue1']) & 0xFFFF;
         $generalValue1 = $this->dbi_datavalue_convert($format, $value);
         //备用：通用值-2
-        $format = hexdec($data[12]['HUITP_IEID_uni_ccl_general_value2']['dataFormat']) & 0xFF;
-        $value = hexdec($data[12]['HUITP_IEID_uni_ccl_general_value2']['generalValue2']) & 0xFFFF;
+        $format = hexdec($data[13]['HUITP_IEID_uni_ccl_general_value2']['dataFormat']) & 0xFF;
+        $value = hexdec($data[13]['HUITP_IEID_uni_ccl_general_value2']['generalValue2']) & 0xFFFF;
         $generalValue2 = $this->dbi_datavalue_convert($format, $value);
         //信号强度RSSI值
-        $format = hexdec($data[13]['HUITP_IEID_uni_ccl_rssi_value']['dataFormat']) & 0xFF;
-        $value = hexdec($data[13]['HUITP_IEID_uni_ccl_rssi_value']['rssiValue']) & 0xFFFF;
+        $format = hexdec($data[14]['HUITP_IEID_uni_ccl_rssi_value']['dataFormat']) & 0xFF;
+        $value = hexdec($data[14]['HUITP_IEID_uni_ccl_rssi_value']['rssiValue']) & 0xFFFF;
         $rssiValue = $this->dbi_datavalue_convert($format, $value);
-        //$data[14]['HUITP_IEID_uni_ccl_dcmi_value'] NOT USED
+        //$data[15]['HUITP_IEID_uni_ccl_dcmi_value'] NOT USED
         //状态报告事件
-        $reportType = hexdec($data[15]['HUITP_IEID_uni_ccl_report_type']['event']) & 0xFF;
+        $reportType = hexdec($data[16]['HUITP_IEID_uni_ccl_report_type']['event']) & 0xFF;
 
 
         $timestamp = time();
@@ -490,14 +494,14 @@ class classDbiL2snrCcl
         if (($result != false) && ($result->num_rows)>0)   //重复，则覆盖
         {
             $query_str = "UPDATE `t_l2snr_fhys_minreport` SET `reporttype` = '$reportType',`door_1` = '$door_1',`door_2` = '$door_2',`door_3` = '$door_3',`door_4` = '$door_4',`lock_1` = '$lock_1',`lock_2` = '$lock_2',`lock_3` = '$lock_3',`lock_4` = '$lock_4',
-                          `battstate` = '$battState',`waterstate` = '$waterState',`shakestate` = '$shakeState',`fallstate` = '$fallState',`smokestate` = '$smokeState',`battvalue` = '$battValue',`tempvalue` = '$tempValue',`humidvalue` = '$humidValue',`rssivalue` = '$rssiValue'
+                          `battstate` = '$battState',`waterstate` = '$waterState',`shakestate` = '$shakeState',`fallstate` = '$fallState',`smokestate` = '$smokeState',`battvalue` = '$battValue',`fallvalue` = '$fallValue',`tempvalue` = '$tempValue',`humidvalue` = '$humidValue',`rssivalue` = '$rssiValue'
                             WHERE (`devcode` = '$devCode' AND `statcode` = '$statcode' AND `reportdate` = '$reportdate' AND `hourminindex` = '$hourminindex')";
             $result = $mysqli->query($query_str);
         }
         else
         {
-            $query_str = "INSERT INTO `t_l2snr_fhys_minreport` (devcode,statcode,reportdate,hourminindex,reporttype,door_1,door_2,door_3,door_4,lock_1,lock_2,lock_3,lock_4,battstate,waterstate,shakestate,fallstate,smokestate,battvalue,tempvalue,humidvalue,rssivalue)
-                            VALUES ('$devCode','$statcode','$reportdate','$hourminindex','$reportType','$door_1','$door_2','$door_3','$door_4','$lock_1','$lock_2','$lock_3','$lock_4','$battState','$waterState','$shakeState','$fallState','$smokeState','$battValue','$tempValue','$humidValue','$rssiValue')";
+            $query_str = "INSERT INTO `t_l2snr_fhys_minreport` (devcode,statcode,reportdate,hourminindex,reporttype,door_1,door_2,door_3,door_4,lock_1,lock_2,lock_3,lock_4,battstate,waterstate,shakestate,fallstate,smokestate,battvalue,fallValue,tempvalue,humidvalue,rssivalue)
+                            VALUES ('$devCode','$statcode','$reportdate','$hourminindex','$reportType','$door_1','$door_2','$door_3','$door_4','$lock_1','$lock_2','$lock_3','$lock_4','$battState','$waterState','$shakeState','$fallState','$smokeState','$battValue','$fallValue','$tempValue','$humidValue','$rssiValue')";
             $result = $mysqli->query($query_str);
         }
 
@@ -506,13 +510,13 @@ class classDbiL2snrCcl
         $result = $mysqli->query("SELECT * FROM `t_l3f3dm_fhys_currentreport` WHERE (`devcode` = '$devCode' AND `statcode` = '$statcode') ");
         if (($result->num_rows)>0) {
             $query_str = "UPDATE `t_l3f3dm_fhys_currentreport` SET `createtime` = '$currenttime',`reporttype` = '$reportType',`door_1` = '$door_1',`door_2` = '$door_2',`door_3` = '$door_3',`door_4` = '$door_4',`lock_1` = '$lock_1',`lock_2` = '$lock_2',`lock_3` = '$lock_3',`lock_4` = '$lock_4',
-                          `battstate` = '$battState',`waterstate` = '$waterState',`shakestate` = '$shakeState',`fallstate` = '$fallState',`smokestate` = '$smokeState',`battvalue` = '$battValue',`tempvalue` = '$tempValue',`humidvalue` = '$humidValue',`rssivalue` = '$rssiValue'
+                          `battstate` = '$battState',`waterstate` = '$waterState',`shakestate` = '$shakeState',`fallstate` = '$fallState',`smokestate` = '$smokeState',`battvalue` = '$battValue',`fallvalue` = '$fallValue',`tempvalue` = '$tempValue',`humidvalue` = '$humidValue',`rssivalue` = '$rssiValue'
                             WHERE (`devcode` = '$devCode')";
             $result = $mysqli->query($query_str);
         }
         else {
-            $query_str = "INSERT INTO `t_l3f3dm_fhys_currentreport` (devcode,statcode,createtime,reporttype,door_1,door_2,door_3,door_4,lock_1,lock_2,lock_3,lock_4,battstate,waterstate,shakestate,fallstate,smokestate,battvalue,tempvalue,humidvalue,rssivalue)
-                            VALUES ('$devCode','$statcode','$currenttime','$reportType','$door_1','$door_2','$door_3','$door_4','$lock_1','$lock_2','$lock_3','$lock_4','$battState','$waterState','$shakeState','$fallState','$smokeState','$battValue','$tempValue','$humidValue','$rssiValue')";
+            $query_str = "INSERT INTO `t_l3f3dm_fhys_currentreport` (devcode,statcode,createtime,reporttype,door_1,door_2,door_3,door_4,lock_1,lock_2,lock_3,lock_4,battstate,waterstate,shakestate,fallstate,smokestate,battvalue,fallValue,tempvalue,humidvalue,rssivalue)
+                            VALUES ('$devCode','$statcode','$currenttime','$reportType','$door_1','$door_2','$door_3','$door_4','$lock_1','$lock_2','$lock_3','$lock_4','$battState','$waterState','$shakeState','$fallState','$smokeState','$battValue','$fallValue','$tempValue','$humidValue','$rssiValue')";
             $result = $mysqli->query($query_str);
         }
 

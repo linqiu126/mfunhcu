@@ -1439,6 +1439,7 @@ class classL2codecHuitpMsgDict
                             HUITP_IEID_uni_ccl_temp_value,
                             HUITP_IEID_uni_ccl_humid_value,
                             HUITP_IEID_uni_ccl_bat_value,
+                            HUITP_IEID_uni_ccl_fall_value,
                             HUITP_IEID_uni_ccl_general_value1,
                             HUITP_IEID_uni_ccl_general_value2,
                             HUITP_IEID_uni_ccl_rssi_value,
