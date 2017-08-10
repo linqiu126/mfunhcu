@@ -500,7 +500,7 @@ class classDbiL2snrCcl
         }
         else
         {
-            $query_str = "INSERT INTO `t_l2snr_fhys_minreport` (devcode,statcode,reportdate,hourminindex,reporttype,door_1,door_2,door_3,door_4,lock_1,lock_2,lock_3,lock_4,battstate,waterstate,shakestate,fallstate,smokestate,battvalue,fallValue,tempvalue,humidvalue,rssivalue)
+            $query_str = "INSERT INTO `t_l2snr_fhys_minreport` (devcode,statcode,reportdate,hourminindex,reporttype,door_1,door_2,door_3,door_4,lock_1,lock_2,lock_3,lock_4,battstate,waterstate,shakestate,fallstate,smokestate,battvalue,fallvalue,tempvalue,humidvalue,rssivalue)
                             VALUES ('$devCode','$statcode','$reportdate','$hourminindex','$reportType','$door_1','$door_2','$door_3','$door_4','$lock_1','$lock_2','$lock_3','$lock_4','$battState','$waterState','$shakeState','$fallState','$smokeState','$battValue','$fallValue','$tempValue','$humidValue','$rssiValue')";
             $result = $mysqli->query($query_str);
         }
@@ -515,7 +515,7 @@ class classDbiL2snrCcl
             $result = $mysqli->query($query_str);
         }
         else {
-            $query_str = "INSERT INTO `t_l3f3dm_fhys_currentreport` (devcode,statcode,createtime,reporttype,door_1,door_2,door_3,door_4,lock_1,lock_2,lock_3,lock_4,battstate,waterstate,shakestate,fallstate,smokestate,battvalue,fallValue,tempvalue,humidvalue,rssivalue)
+            $query_str = "INSERT INTO `t_l3f3dm_fhys_currentreport` (devcode,statcode,createtime,reporttype,door_1,door_2,door_3,door_4,lock_1,lock_2,lock_3,lock_4,battstate,waterstate,shakestate,fallstate,smokestate,battvalue,fallvalue,tempvalue,humidvalue,rssivalue)
                             VALUES ('$devCode','$statcode','$currenttime','$reportType','$door_1','$door_2','$door_3','$door_4','$lock_1','$lock_2','$lock_3','$lock_4','$battState','$waterState','$shakeState','$fallState','$smokeState','$battValue','$fallValue','$tempValue','$humidValue','$rssiValue')";
             $result = $mysqli->query($query_str);
         }
