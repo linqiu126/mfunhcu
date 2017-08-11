@@ -230,6 +230,9 @@ define("MSG_ID_L4AQYCUI_TO_L3F7_CLEARUSERIMG", $index++);
 
 //L4FHYS部分
 define("MSG_ID_L4FHYSUI_CLICK_INCOMING", $index++);
+define("MSG_ID_L4FHYSUI_TO_L3F2_PROJDEL", $index++);
+define("MSG_ID_L4FHYSUI_TO_L3F2_POINTDEL", $index++);
+define("MSG_ID_L4FHYSUI_TO_L3F2_DEVDEL", $index++);
 define("MSG_ID_L4FHYSUI_TO_L3F2_USERKEY", $index++);
 define("MSG_ID_L4FHYSUI_TO_L3F2_PROJKEYLIST", $index++);
 define("MSG_ID_L4FHYSUI_TO_L3F2_PROJKEY", $index++);

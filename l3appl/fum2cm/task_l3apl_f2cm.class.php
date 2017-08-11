@@ -156,8 +156,9 @@ class classTaskL3aplF2cm
         $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
         $usercheck = $uiF1symDbObj->dbi_user_authcheck($action, $user);
         if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
+            $uid = $usercheck['uid'];
             $uiF2cmDbObj = new classDbiL3apF2cm(); //初始化一个UI DB对象
-            $result = $uiF2cmDbObj->dbi_pginfo_update($body);
+            $result = $uiF2cmDbObj->dbi_pginfo_new($uid, $body);
             if($result == true)
                 $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"项目组新增成功");
             else
@@ -169,13 +170,13 @@ class classTaskL3aplF2cm
         return $retval;
     }
 
-    function func_pg_mod_process($action, $user, $body)
+    function func_pg_modify_process($action, $user, $body)
     {
         $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
         $usercheck = $uiF1symDbObj->dbi_user_authcheck($action, $user);
         if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
             $uiF2cmDbObj = new classDbiL3apF2cm(); //初始化一个UI DB对象
-            $result = $uiF2cmDbObj->dbi_pginfo_update($body);
+            $result = $uiF2cmDbObj->dbi_pginfo_modify($body);
             if($result == true)
                 $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"项目组信息修改成功");
             else
@@ -261,8 +262,9 @@ class classTaskL3aplF2cm
         $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
         $usercheck = $uiF1symDbObj->dbi_user_authcheck($action, $user);
         if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
+            $uid = $usercheck['uid'];
             $uiF2cmDbObj = new classDbiL3apF2cm(); //初始化一个UI DB对象
-            $result = $uiF2cmDbObj->dbi_projinfo_update($body);
+            $result = $uiF2cmDbObj->dbi_projinfo_new($uid, $body);
             if($result == true)
                 $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"新项目创建成功");
             else
@@ -274,13 +276,13 @@ class classTaskL3aplF2cm
         return $retval;
     }
 
-    function func_project_mod_process($action, $user, $body)
+    function func_project_modify_process($action, $user, $body)
     {
         $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
         $usercheck = $uiF1symDbObj->dbi_user_authcheck($action, $user);
         if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
             $uiF2cmDbObj = new classDbiL3apF2cm(); //初始化一个UI DB对象
-            $result = $uiF2cmDbObj->dbi_projinfo_update($body);
+            $result = $uiF2cmDbObj->dbi_projinfo_modify($body);
             if($result == true)
                 $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"项目信息修改成功");
             else
@@ -292,7 +294,7 @@ class classTaskL3aplF2cm
         return $retval;
     }
 
-    function func_project_del_process($action, $user, $body)
+    function func_project_delete_process($action, $user, $body)
     {
         if (isset($body["ProjCode"])) $ProjCode = $body["ProjCode"]; else  $ProjCode = "";
 
@@ -387,7 +389,7 @@ class classTaskL3aplF2cm
         $usercheck = $uiF1symDbObj->dbi_user_authcheck($action, $user);
         if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
             $uiF2cmDbObj = new classDbiL3apF2cm(); //初始化一个UI DB对象
-            $result = $uiF2cmDbObj->dbi_siteinfo_update($body);
+            $result = $uiF2cmDbObj->dbi_siteinfo_new($body);
             if($result == true)
                 $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"新建监测点成功");
             else
@@ -405,7 +407,7 @@ class classTaskL3aplF2cm
         $usercheck = $uiF1symDbObj->dbi_user_authcheck($action, $user);
         if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
             $uiF2cmDbObj = new classDbiL3apF2cm(); //初始化一个UI DB对象
-            $result = $uiF2cmDbObj->dbi_siteinfo_update($body);
+            $result = $uiF2cmDbObj->dbi_siteinfo_modify($body);
             if($result == true)
                 $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"新修改监测点成功");
             else
@@ -417,7 +419,7 @@ class classTaskL3aplF2cm
         return $retval;
     }
 
-    function func_point_del_process($action, $user, $body)
+    function func_point_delete_process($action, $user, $body)
     {
         if (isset($body["StatCode"])) $StatCode = $body["StatCode"]; else  $StatCode = "";
 
@@ -522,7 +524,7 @@ class classTaskL3aplF2cm
         return $retval;
     }
 
-    function func_dev_del_process($action, $user, $body)
+    function func_dev_delete_process($action, $user, $body)
     {
         if (isset($body["DevCode"])) $DevCode = $body["DevCode"]; else  $DevCode = "";
 
@@ -543,6 +545,68 @@ class classTaskL3aplF2cm
     }
 
     /*********************************智能云锁新增处理 Start*********************************************/
+    function func_fhys_project_delete_process($action, $user, $body)
+    {
+        if (isset($body["ProjCode"])) $ProjCode = $body["ProjCode"]; else  $ProjCode = "";
+
+        $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
+        $usercheck = $uiF1symDbObj->dbi_user_authcheck($action, $user);
+        if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
+            $uiF2cmDbObj = new classDbiL3apF2cm(); //初始化一个UI DB对象
+            $result1 = $uiF2cmDbObj->dbi_fhys_projkey_delete($ProjCode); //针对云控锁项目，删除归属于该项目的钥匙和相应授权
+            $result2 = $uiF2cmDbObj->dbi_projinfo_delete($ProjCode);
+            if($result1 AND $result2)
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"删除一个项目成功");
+            else
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"删除一个项目失败");
+        }
+        else
+            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>$usercheck['msg']);
+
+        return $retval;
+    }
+
+    function func_fhys_point_delete_process($action, $user, $body)
+    {
+        if (isset($body["StatCode"])) $StatCode = $body["StatCode"]; else  $StatCode = "";
+
+        $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
+        $usercheck = $uiF1symDbObj->dbi_user_authcheck($action, $user);
+        if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
+            $uiF2cmDbObj = new classDbiL3apF2cm(); //初始化一个UI DB对象
+            $result1 = $uiF2cmDbObj->dbi_site_keyauth_delete($StatCode); //针对云控锁项目，删除归属于该站点的相应钥匙授权
+            $result2 = $uiF2cmDbObj->dbi_siteinfo_delete($StatCode);
+            if($result1 AND $result2)
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"删除一个监测点成功");
+            else
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"删除一个监测点失败");
+        }
+        else
+            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>$usercheck['msg']);
+
+        return $retval;
+    }
+
+    function func_fhys_dev_delete_process($action, $user, $body)
+    {
+        if (isset($body["DevCode"])) $DevCode = $body["DevCode"]; else  $DevCode = "";
+
+        $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
+        $usercheck = $uiF1symDbObj->dbi_user_authcheck($action, $user);
+        if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
+            $uiF2cmDbObj = new classDbiL3apF2cm(); //初始化一个UI DB对象
+            $result = $uiF2cmDbObj->dbi_fhys_deviceinfo_delete($DevCode);
+            if($result == true)
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"删除设备信息成功");
+            else
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"删除设备信息失败");
+        }
+        else
+            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>$usercheck['msg']);
+
+        return $retval;
+    }
+
     function func_project_userkey_process($action, $user, $body)
     {
         if (isset($body["userid"])) $uid = $body["userid"]; else  $uid = "";
@@ -916,7 +980,7 @@ class classTaskL3aplF2cm
                 break;
 
             case MSG_ID_L4AQYCUI_TO_L3F2_PGMOD://功能PG Mod
-                $resp = $this->func_pg_mod_process($action, $user, $body);
+                $resp = $this->func_pg_modify_process($action, $user, $body);
                 $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 
@@ -941,12 +1005,12 @@ class classTaskL3aplF2cm
                 break;
 
             case MSG_ID_L4AQYCUI_TO_L3F2_PROJMOD://功能ProjMod
-                $resp = $this->func_project_mod_process($action, $user, $body);
+                $resp = $this->func_project_modify_process($action, $user, $body);
                 $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 
             case MSG_ID_L4AQYCUI_TO_L3F2_PROJDEL://功能ProjDel
-                $resp = $this->func_project_del_process($action, $user, $body);
+                $resp = $this->func_project_delete_process($action, $user, $body);
                 $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 
@@ -976,7 +1040,7 @@ class classTaskL3aplF2cm
                 break;
 
             case MSG_ID_L4AQYCUI_TO_L3F2_POINTDEL://功能Point Del
-                $resp = $this->func_point_del_process($action, $user, $body);
+                $resp = $this->func_point_delete_process($action, $user, $body);
                 $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 
@@ -1001,11 +1065,26 @@ class classTaskL3aplF2cm
                 break;
 
             case MSG_ID_L4AQYCUI_TO_L3F2_DEVDEL://功能Dev Del
-                $resp = $this->func_dev_del_process($action, $user, $body);
+                $resp = $this->func_dev_delete_process($action, $user, $body);
                 $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 
             /*********************************智能云锁新增处理 Start*********************************************/
+            case MSG_ID_L4FHYSUI_TO_L3F2_PROJDEL://功能ProjDel
+                $resp = $this->func_fhys_project_delete_process($action, $user, $body);
+                $project = MFUN_PRJ_HCU_AQYCUI;
+                break;
+
+            case MSG_ID_L4FHYSUI_TO_L3F2_POINTDEL://功能Point Del
+                $resp = $this->func_fhys_point_delete_process($action, $user, $body);
+                $project = MFUN_PRJ_HCU_AQYCUI;
+                break;
+
+            case MSG_ID_L4FHYSUI_TO_L3F2_DEVDEL://功能Dev Del
+                $resp = $this->func_fhys_dev_delete_process($action, $user, $body);
+                $project = MFUN_PRJ_HCU_AQYCUI;
+                break;
+
             case MSG_ID_L4FHYSUI_TO_L3F2_USERKEY:
                 $resp = $this->func_project_userkey_process($action, $user, $body);
                 $project = MFUN_PRJ_HCU_FHYSUI;

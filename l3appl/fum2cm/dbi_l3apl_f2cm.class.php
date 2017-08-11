@@ -154,8 +154,8 @@ class classDbiL3apF2cm
         $pg_list = array();
         for($i=0; $i<count($projectlist); $i++)
         {
-            $projcode = $projectlist[$i]['id'];
-            $query_str = "SELECT * FROM `t_l3f2cm_projinfo` WHERE `p_code` = '$projcode'";
+            $pcode = $projectlist[$i]['id'];
+            $query_str = "SELECT * FROM `t_l3f2cm_projinfo` WHERE `p_code` = '$pcode'";
             $result = $mysqli->query($query_str);
             if ($result->num_rows > 0){
                 $row = $result->fetch_array();
@@ -242,9 +242,9 @@ class classDbiL3apF2cm
         $site_list = array();
         for($i=0; $i<count($projectlist); $i++)
         {
-            $projcode = $projectlist[$i]['id'];
+            $pcode = $projectlist[$i]['id'];
 
-            $query_str = "SELECT * FROM `t_l3f3dm_siteinfo` WHERE `p_code` = '$projcode'";
+            $query_str = "SELECT * FROM `t_l3f3dm_siteinfo` WHERE `p_code` = '$pcode'";
             $result = $mysqli->query($query_str);
             while($row = $result->fetch_array())
             {
@@ -418,8 +418,8 @@ class classDbiL3apF2cm
 
         for($i=0; $i<count($projectlist); $i++)
         {
-            $projcode = $projectlist[$i]['id'];
-            $query_str = "SELECT * FROM `t_l3f2cm_projinfo` WHERE `p_code` = '$projcode' ";
+            $pcode = $projectlist[$i]['id'];
+            $query_str = "SELECT * FROM `t_l3f2cm_projinfo` WHERE `p_code` = '$pcode' ";
             $result = $mysqli->query($query_str);
             while (($result != false) && (($info = $result->fetch_array()) > 0)) {
                 $one_row = array();
@@ -465,8 +465,8 @@ class classDbiL3apF2cm
 
         for($i=0; $i<count($projectlist); $i++)
         {
-            $projcode = $projectlist[$i]['id'];
-            $query_str = "SELECT * FROM `t_l3f3dm_siteinfo` WHERE `p_code` = '$projcode' ";
+            $pcode = $projectlist[$i]['id'];
+            $query_str = "SELECT * FROM `t_l3f3dm_siteinfo` WHERE `p_code` = '$pcode' ";
             $result = $mysqli->query($query_str);
             while (($result != false) && (($info = $result->fetch_array()) > 0)) {
                 $one_row = array();
@@ -520,11 +520,11 @@ class classDbiL3apF2cm
                 $query_str = "SELECT * FROM `t_l3f3dm_siteinfo` WHERE `statcode` = '$statcode'";      //查询HCU设备对应监测点号
                 $resp = $mysqli->query($query_str);
                 if (($resp != false )&& (($siteinfo = $resp->fetch_array()) > 0)){
-                    $projcode = $siteinfo['p_code'];
+                    $pcode = $siteinfo['p_code'];
                     $one_row = array();
                     array_push($one_row, $devcode);
                     array_push($one_row, $statcode);
-                    array_push($one_row, $projcode);
+                    array_push($one_row, $pcode);
                     array_push($one_row, $starttime);
 
                     array_push($dev_table['data'],$one_row);
@@ -666,8 +666,8 @@ class classDbiL3apF2cm
         $projtable = array();
 
         for($i=$startseq; $i<$startseq + $query_length; $i++){
-            $projcode = $projectlist[$i]['id'];
-            $query_str = "SELECT * FROM `t_l3f2cm_projinfo` WHERE `p_code` = '$projcode' ";
+            $pcode = $projectlist[$i]['id'];
+            $query_str = "SELECT * FROM `t_l3f2cm_projinfo` WHERE `p_code` = '$pcode' ";
             $result = $mysqli->query($query_str);
             while($row = $result->fetch_array())
             {
@@ -873,8 +873,71 @@ class classDbiL3apF2cm
         return $projlist;
     }
 
+    //UI PGNew request,添加新项目组信息
+    public function dbi_pginfo_new($uid, $pginfo)
+    {
+        //建立连接
+        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli) {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $mysqli->query("SET NAMES utf8");
+
+        //$session = $pginfo["user"];
+        //$pgcode = $pginfo["PGCode"];
+        //为避免用户随意输入项目组编号导致的混乱，这里的pgcode改成系统自动分配
+        $pgcode = "PG_".$this->getRandomKeyid(7);
+        $pgname = $pginfo["PGName"];
+        $owner = $pginfo["ChargeMan"];
+        $phone = $pginfo["Telephone"];
+        $department = $pginfo["Department"];
+        $addr = $pginfo["Address"];
+        $stage = $pginfo["Stage"];
+        $projlist = $pginfo["Projlist"];
+
+        $query_str = "SELECT * FROM `t_l3f2cm_projgroup` WHERE `pg_code` = '$pgcode'";
+        $result = $mysqli->query($query_str);
+
+        if (($result->num_rows)>0) //重复，则覆盖
+        {
+            $query_str = "UPDATE `t_l3f2cm_projgroup` SET `pg_name` = '$pgname',`owner` = '$owner',`phone` = '$phone',`department` = '$department',
+                          `addr` = '$addr', `backup` = '$stage' WHERE (`pg_code` = '$pgcode' )";
+            $result = $mysqli->query($query_str);
+        }
+        else //不存在，新增
+        {
+            $query_str = "INSERT INTO `t_l3f2cm_projgroup` (pg_code,pg_name,owner,phone,department,addr,backup)
+                                  VALUES ('$pgcode','$pgname','$owner','$phone','$department', '$addr','$stage')";
+
+            $result = $mysqli->query($query_str);
+        }
+
+        //先把该项目组下面的原有的项目解绑
+        $query_str = "UPDATE `t_l3f2cm_projinfo` SET `pg_code` = '' WHERE (`pg_code` = '$pgcode') ";
+        $result = $mysqli->query($query_str);
+
+        //再把更新后授权的项目list到该项目组
+        if(!empty($projlist)){
+            $i = 0;
+            while ($i < count($projlist))
+            {
+                if(isset($projlist[$i]["id"])) $pcode = $projlist[$i]["id"]; else $pcode = "";
+                $query_str = "UPDATE `t_l3f2cm_projinfo` SET `pg_code` = '$pgcode' WHERE (`p_code` = '$pcode') ";
+                $result = $mysqli->query($query_str);
+                $i++;
+            }
+        }
+
+        //将新建的项目组授权给该用户
+        $query_str = "INSERT INTO `t_l3f1sym_authlist` (uid, auth_code) VALUE ('$uid', '$pgcode')";
+        $result = $mysqli->query($query_str);
+
+        $mysqli->close();
+        return $result;
+    }
+
     //UI PGNew & PGMod request,添加新项目组信息或者修改项目组信息
-    public function dbi_pginfo_update($pginfo)
+    public function dbi_pginfo_modify($pginfo)
     {
         //建立连接
         $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
@@ -930,8 +993,53 @@ class classDbiL3apF2cm
         return $result;
     }
 
-    //UI ProjNew & ProjMod request,添加新项目信息或者修改项目信息
-    public function dbi_projinfo_update($projinfo)
+    //UI ProjNew request,添加新项目信息
+    public function dbi_projinfo_new($uid, $projinfo)
+    {
+        //建立连接
+        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli) {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $mysqli->query("SET NAMES utf8");
+
+        //$session = $projinfo["user"];
+        //$pcode = $projinfo["ProjCode"];
+        //为了防止用户随意输入项目号导致的混乱，这里的项目号改成由系统自动生成。
+        $pcode = "P_" . $this->getRandomKeyid(8);
+        $pname = $projinfo["ProjName"];
+        $chargeman = $projinfo["ChargeMan"];
+        $telephone = $projinfo["Telephone"];
+        $department = $projinfo["Department"];
+        $addr = $projinfo["Address"];
+        $starttime = $projinfo["ProStartTime"];
+        $stage = $projinfo["Stage"];
+
+        $query_str = "SELECT * FROM `t_l3f2cm_projinfo` WHERE `p_code` = '$pcode'";
+        $result = $mysqli->query($query_str);
+
+        if (($result->num_rows)>0) //重复，则覆盖
+        {
+            $query_str = "UPDATE `t_l3f2cm_projinfo` SET `p_name` = '$pname',`chargeman` = '$chargeman',`telephone` = '$telephone',`department` = '$department',
+                          `address` = '$addr', `starttime` = '$starttime', `stage` = '$stage' WHERE (`p_code` = '$pcode' )";
+            $result = $mysqli->query($query_str);
+        }
+        else //不存在，新增
+        {
+            $query_str = "INSERT INTO `t_l3f2cm_projinfo` (p_code,p_name,chargeman,telephone,department,address,starttime,stage)
+                                  VALUES ('$pcode','$pname','$chargeman','$telephone','$department', '$addr','$starttime','$stage')";
+            $result = $mysqli->query($query_str);
+        }
+        //将新建的项目授权给该用户
+        $query_str = "INSERT INTO `t_l3f1sym_authlist` (uid, auth_code) VALUE ('$uid', '$pcode')";
+        $result = $mysqli->query($query_str);
+
+        $mysqli->close();
+        return $result;
+    }
+
+    //ProjMod request,修改项目信息
+    public function dbi_projinfo_modify($projinfo)
     {
         //建立连接
         $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
@@ -980,13 +1088,16 @@ class classDbiL3apF2cm
             die('Could not connect: ' . mysqli_error($mysqli));
         }
 
-        $query_str = "DELETE FROM `t_l3f2cm_projinfo` WHERE `p_code` = '$pcode'";  //删除项目信息表
+        //删除项目信息表
+        $query_str = "DELETE FROM `t_l3f2cm_projinfo` WHERE `p_code` = '$pcode'";
         $result1 = $mysqli->query($query_str);
 
-        $query_str = "DELETE FROM `t_l3f2cm_sitemapping` WHERE `p_code` = '$pcode'";  //删除项目和监测点的映射关系
+        //删除用户授权表中项目组信息
+        $query_str = "DELETE FROM `t_l3f1sym_authlist` WHERE `pg_code` = '$pcode'";
         $result2 = $mysqli->query($query_str);
 
-        $query_str = "UPDATE `t_l3f3dm_siteinfo` SET `p_code` = '' WHERE (`p_code` = '$pcode' )"; //删除监测点表中的对应项目号
+        //删除监测点表中的对应项目号
+        $query_str = "UPDATE `t_l3f3dm_siteinfo` SET `p_code` = '' WHERE (`p_code` = '$pcode' )";
         $result3 = $mysqli->query($query_str);
 
         $result = $result1 and $result2 and $result3;
@@ -1004,11 +1115,17 @@ class classDbiL3apF2cm
             die('Could not connect: ' . mysqli_error($mysqli));
         }
 
-        $query_str = "DELETE FROM `t_l3f2cm_projgroup` WHERE `pg_code` = '$pgcode'";  //删除项目组信息表
+        //删除项目组信息表
+        $query_str = "DELETE FROM `t_l3f2cm_projgroup` WHERE `pg_code` = '$pgcode'";
         $result1 = $mysqli->query($query_str);
 
-        $query_str = "UPDATE `t_l3f2cm_projinfo` SET `pg_code` = '' WHERE (`pg_code` = '$pgcode') "; //删除项目组和项目的映射关系
+        //删除项目组和项目的映射关系
+        $query_str = "UPDATE `t_l3f2cm_projinfo` SET `pg_code` = '' WHERE (`pg_code` = '$pgcode') ";
         $result2 = $mysqli->query($query_str);
+
+        //删除用户授权表中项目组信息
+        $query_str = "DELETE FROM `t_l3f1sym_authlist` WHERE `pg_code` = '$pgcode'";
+        $result1 = $mysqli->query($query_str);
 
         $result = $result1 and $result2;
 
@@ -1053,8 +1170,8 @@ class classDbiL3apF2cm
 
         for($i=0; $i<$projtotal; $i++)
         {
-            $projcode = $projectlist[$i]['id'];
-            $query_str = "SELECT * FROM `t_l3f3dm_siteinfo` WHERE `p_code` = '$projcode' ";
+            $pcode = $projectlist[$i]['id'];
+            $query_str = "SELECT * FROM `t_l3f3dm_siteinfo` WHERE `p_code` = '$pcode' ";
             $result = $mysqli->query($query_str);
             while($row = $result->fetch_array())
             {
@@ -1120,9 +1237,9 @@ class classDbiL3apF2cm
         $sitetable = array();
         for($i=$startseq; $i<$startseq + $query_length; $i++)
         {
-            $projcode = $projectlist[$i]['id'];
+            $pcode = $projectlist[$i]['id'];
 
-            $query_str = "SELECT * FROM `t_l3f3dm_siteinfo` WHERE `p_code` = '$projcode'";
+            $query_str = "SELECT * FROM `t_l3f3dm_siteinfo` WHERE `p_code` = '$pcode'";
             $result = $mysqli->query($query_str);
             while($row = $result->fetch_array())
             {
@@ -1151,8 +1268,61 @@ class classDbiL3apF2cm
     }
 
 
-    //UI PointNew & PointMod request,添加监测点信息或者修改监测点信息
-    public function dbi_siteinfo_update($siteinfo)
+    //UI PointNew request,新添加监测点信息
+    public function dbi_siteinfo_new($siteinfo)
+    {
+        //建立连接
+        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli) {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $mysqli->query("SET NAMES utf8");
+
+        //if (isset($siteinfo["StatCode"])) $statcode = trim($siteinfo["StatCode"]); else  $statcode = "";
+        //为防止用户随意填写监测点ID造成混乱，这里的statcode做成系统自动分配
+        $statcode = "S_".$this->getRandomKeyid(8);
+        if (isset($siteinfo["StatName"])) $statname = trim($siteinfo["StatName"]); else  $statname = "";
+        if (isset($siteinfo["ProjCode"])) $pcode = trim($siteinfo["ProjCode"]); else  $pcode = "";
+        if (isset($siteinfo["ChargeMan"])) $chargeman = trim($siteinfo["ChargeMan"]); else  $chargeman = "";
+        if (isset($siteinfo["Telephone"])) $telephone = trim($siteinfo["Telephone"]); else  $telephone = "";
+        if (isset($siteinfo["Longitude"])) $longitude = intval($siteinfo["Longitude"]); else  $longitude = 0;
+        if (isset($siteinfo["Latitude"])) $latitude = intval($siteinfo["Latitude"]); else  $latitude = 0;
+        if (isset($siteinfo["Department"])) $department = trim($siteinfo["Department"]); else  $department = "";
+        if (isset($siteinfo["Address"])) $addr = trim($siteinfo["Address"]); else  $addr = "";
+        if (isset($siteinfo["Country"])) $country = trim($siteinfo["Country"]); else  $country = "";
+        if (isset($siteinfo["Street"])) $street = trim($siteinfo["Street"]); else  $street = "";
+        if (isset($siteinfo["Square"])) $square = intval($siteinfo["Square"]); else  $square = 0;
+        if (isset($siteinfo["ProStartTime"])) $starttime = trim($siteinfo["ProStartTime"]); else  $starttime = "";
+        if (isset($siteinfo["Stage"])) $memo = trim($siteinfo["Stage"]); else  $memo = "";
+
+        //暂时初始化的值，将来需要调整
+        $altitude = 0;
+        $flag_la = "N";
+        $flag_lo = "E";
+
+        $query_str = "SELECT * FROM `t_l3f3dm_siteinfo` WHERE `statcode` = '$statcode'";
+        $result = $mysqli->query($query_str);
+
+        if (($result->num_rows)>0) //重复，则覆盖
+        {
+            $query_str = "UPDATE `t_l3f3dm_siteinfo` SET `statname` = '$statname',`p_code` = '$pcode',`chargeman` = '$chargeman',`telephone` = '$telephone',`department` = '$department',
+                          `country` = '$country',`street` = '$street',`address` = '$addr',`starttime` = '$starttime',`square` = '$square',`altitude` = '$altitude',
+                          `flag_la` = '$flag_la',`latitude` = '$latitude',`flag_lo` = '$flag_lo',`longitude` = '$longitude',`memo` = '$memo'  WHERE (`statcode` = '$statcode' )";
+            $result = $mysqli->query($query_str);
+        }
+        else //不存在，新增
+        {
+            $query_str = "INSERT INTO `t_l3f3dm_siteinfo` (statcode,statname,p_code,chargeman,telephone,department,country,street,address,starttime,square,altitude,flag_la,latitude,flag_lo,longitude,memo)
+                                  VALUES ('$statcode','$statname','$pcode','$chargeman','$telephone','$department','$country','$street','$addr','$starttime','$square','$altitude','$flag_la','$latitude','$flag_lo','$longitude','$memo')";
+            $result = $mysqli->query($query_str);
+        }
+
+        $mysqli->close();
+        return $result;
+    }
+
+    //PointMod request,修改监测点信息
+    public function dbi_siteinfo_modify($siteinfo)
     {
         //建立连接
         $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
@@ -1328,10 +1498,12 @@ class classDbiL3apF2cm
             die('Could not connect: ' . mysqli_error($mysqli));
         }
 
-        $query_str = "DELETE FROM `t_l3f3dm_siteinfo` WHERE `statcode` = '$statcode'";  //删除监测点信息表
+        //删除监测点信息表
+        $query_str = "DELETE FROM `t_l3f3dm_siteinfo` WHERE `statcode` = '$statcode'";
         $result1 = $mysqli->query($query_str);
 
-        $query_str = "UPDATE `t_l2sdk_iothcu_inventory` SET `statcode` = '' WHERE (`statcode` = '$statcode' )"; //删除HCU设备表中的对应监测点号
+        //因为站点和设备一一对应，删除站点的同时也要清除对应的设备
+        $query_str = "DELETE FROM `t_l2sdk_iothcu_inventory` WHERE `statcode` = '$statcode'";  //删除监测点信息表
         $result2 = $mysqli->query($query_str);
 
         $result = $result1 and $result2;
@@ -1350,13 +1522,19 @@ class classDbiL3apF2cm
             die('Could not connect: ' . mysqli_error($mysqli));
         }
 
+        //删除设备Inventory信息
         $query_str = "DELETE FROM `t_l2sdk_iothcu_inventory` WHERE `devcode` = '$devcode'";  //删除HCU device信息表
         $result1 = $mysqli->query($query_str);
 
+        //删除设备对应传感器信息表
         $query_str = "DELETE FROM `t_l3f4icm_sensorctrl` WHERE `deviceid` = '$devcode'";  //删除Sensorctrl表中HUC信息
         $result2 = $mysqli->query($query_str);
 
-        $result = $result1 and $result2;
+        //清理设备对应当前状态报告表
+        $query_str = "DELETE FROM `t_l3f3dm_aqyc_currentreport` WHERE `devcode` = '$devcode'";  //删除Sensorctrl表中HUC信息
+        $result3 = $mysqli->query($query_str);
+
+        $result = $result1 AND $result2 AND $result3;
 
         $mysqli->close();
         return $result;
@@ -1460,8 +1638,8 @@ class classDbiL3apF2cm
 
         for($i=0; $i<count($projectlist); $i++)
         {
-            $projCode = $projectlist[$i]['id'];
-            $query_str = "SELECT * FROM `t_l3f2cm_fhys_keyinfo` WHERE  `p_code` = '$projCode' ";
+            $pcode = $projectlist[$i]['id'];
+            $query_str = "SELECT * FROM `t_l3f2cm_fhys_keyinfo` WHERE  `p_code` = '$pcode' ";
             $result = $mysqli->query($query_str);
 
             while($row = $result->fetch_array()){
@@ -1478,7 +1656,7 @@ class classDbiL3apF2cm
         return $all_keylist;
     }
 
-    public function dbi_project_keylist_process($projCode)
+    public function dbi_project_keylist_process($pcode)
     {
         //建立连接
         $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
@@ -1487,7 +1665,7 @@ class classDbiL3apF2cm
         }
         $mysqli->query("SET NAMES utf8");
 
-        $query_str = "SELECT * FROM `t_l3f2cm_fhys_keyinfo` WHERE `p_code` = '$projCode' ";
+        $query_str = "SELECT * FROM `t_l3f2cm_fhys_keyinfo` WHERE `p_code` = '$pcode' ";
         $result = $mysqli->query($query_str);
 
         $proj_keylist = array();
@@ -1505,6 +1683,73 @@ class classDbiL3apF2cm
         return $proj_keylist;
     }
 
+    //当删除项目时，需要同时清除该项目下的所有钥匙，以及对该项目的所有钥匙授权
+    public function dbi_fhys_projkey_delete($pcode)
+    {
+        //建立连接
+        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli) {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $mysqli->query("SET NAMES utf8");
+
+        //删除钥匙信息表中归属于该项目的所有钥匙
+        $query_str = "DELETE FROM `t_l3f2cm_fhys_keyinfo` WHERE `p_code` = '$pcode'";
+        $result1 = $mysqli->query($query_str);
+
+        //删除钥匙授权信息表中针对该项目的所有授权
+        $query_str = "DELETE FROM `t_l3f2cm_fhys_keyauth` WHERE `authobjcode` = '$pcode'";
+        $result2 = $mysqli->query($query_str);
+
+        $result = $result1 AND $result2;
+        $mysqli->close();
+        return $result;
+    }
+
+    public function dbi_site_keyauth_delete($statcode)
+    {
+        //建立连接
+        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli) {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $mysqli->query("SET NAMES utf8");
+
+        //删除钥匙授权信息表中针对该项目的所有授权
+        $query_str = "DELETE FROM `t_l3f2cm_fhys_keyauth` WHERE `authobjcode` = '$statcode'";
+        $result = $mysqli->query($query_str);
+
+        $mysqli->close();
+        return $result;
+    }
+
+    //UI DevDel request，删除一个监测点
+    public function dbi_fhys_deviceinfo_delete($devcode)
+    {
+        //建立连接
+        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli) {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+
+        //删除设备Inventory信息
+        $query_str = "DELETE FROM `t_l2sdk_iothcu_inventory` WHERE `devcode` = '$devcode'";  //删除HCU device信息表
+        $result1 = $mysqli->query($query_str);
+
+        //删除设备对应传感器信息表
+        $query_str = "DELETE FROM `t_l3f4icm_sensorctrl` WHERE `deviceid` = '$devcode'";  //删除Sensorctrl表中HUC信息
+        $result2 = $mysqli->query($query_str);
+
+        //清理设备对应当前状态报告表
+        $query_str = "DELETE FROM `t_l3f3dm_fhys_currentreport` WHERE `devcode` = '$devcode'";  //删除Sensorctrl表中HUC信息
+        $result3 = $mysqli->query($query_str);
+
+        $result = $result1 AND $result2 AND $result3;
+
+        $mysqli->close();
+        return $result;
+    }
+
     public function dbi_all_projkeyuser_process($uid)
     {
         //建立连接
@@ -1519,8 +1764,8 @@ class classDbiL3apF2cm
         $all_projuser = array();
         for($i=0; $i<count($projectlist);$i++)
         {
-            $projcode = $projectlist[$i]['id'];
-            $query_str = "SELECT * FROM `t_l3f1sym_authlist` WHERE `auth_code` = '$projcode' ";
+            $pcode = $projectlist[$i]['id'];
+            $query_str = "SELECT * FROM `t_l3f1sym_authlist` WHERE `auth_code` = '$pcode' ";
             $result = $mysqli->query($query_str);
             while($row = $result->fetch_array()){
                 $keyuserid = $row['uid'];
@@ -1529,7 +1774,7 @@ class classDbiL3apF2cm
                 $resp_row = $resp->fetch_array();
                 $keyusername = $resp_row['nick'];
 
-                $temp = array('id'=>$keyuserid, 'name'=>$keyusername, 'ProjCode'=>$projcode);
+                $temp = array('id'=>$keyuserid, 'name'=>$keyusername, 'ProjCode'=>$pcode);
                 array_push($all_projuser,$temp);
             }
         }
@@ -1576,10 +1821,10 @@ class classDbiL3apF2cm
         $keytable = array();
         for($i=$startseq; $i<$startseq + $query_length; $i++)
         {
-            $projcode = $projectlist[$i]['id'];
+            $pcode = $projectlist[$i]['id'];
             $projname = $projectlist[$i]['name'];
 
-            $query_str = "SELECT * FROM `t_l3f2cm_fhys_keyinfo` WHERE `p_code` = '$projcode'";
+            $query_str = "SELECT * FROM `t_l3f2cm_fhys_keyinfo` WHERE `p_code` = '$pcode'";
             $result = $mysqli->query($query_str);
             while($row = $result->fetch_array())
             {
@@ -1606,7 +1851,7 @@ class classDbiL3apF2cm
                     'KeyName' => $row['keyname'],
                     'KeyType' => $keytype,
                     'HardwareCode' => $row['hwcode'],
-                    'KeyProj' => $projcode,
+                    'KeyProj' => $pcode,
                     'KeyProjName' => $projname,
                     'KeyUser' => $row['keyuserid'],
                     'KeyUserName' => $row['keyusername'],
@@ -1631,7 +1876,7 @@ class classDbiL3apF2cm
 
         //if (isset($keyinfo["KeyCode"])) $KeyCode = trim($keyinfo["KeyCode"]); else  $KeyCode = "";
         if (isset($keyinfo["KeyName"])) $keyname = trim($keyinfo["KeyName"]); else  $keyname = "";
-        if (isset($keyinfo["KeyProj"])) $projcode = trim($keyinfo["KeyProj"]); else  $projcode = "";
+        if (isset($keyinfo["KeyProj"])) $pcode = trim($keyinfo["KeyProj"]); else  $pcode = "";
         if (isset($keyinfo["KeyType"])) $keytype = trim($keyinfo["KeyType"]); else  $keytype = "";
         if (isset($keyinfo["HardwareCode"])) $hwcode = trim($keyinfo["HardwareCode"]); else  $hwcode = "";
         if (isset($keyinfo["Memo"])) $memo = trim($keyinfo["Memo"]); else  $memo = "";
@@ -1658,7 +1903,7 @@ class classDbiL3apF2cm
         */
 
         $query_str = "INSERT INTO `t_l3f2cm_fhys_keyinfo` (keyid, keyname, p_code, keystatus, keytype, hwcode, memo)
-                                  VALUES ('$keyid','$keyname','$projcode','$keystatus','$keytype','$hwcode','$memo')";
+                                  VALUES ('$keyid','$keyname','$pcode','$keystatus','$keytype','$hwcode','$memo')";
         $result = $mysqli->query($query_str);
 
         $mysqli->close();
@@ -1676,7 +1921,7 @@ class classDbiL3apF2cm
 
         if (isset($keyinfo["KeyCode"])) $keyid = trim($keyinfo["KeyCode"]); else  $keyid = "";
         if (isset($keyinfo["KeyName"])) $keyname = trim($keyinfo["KeyName"]); else  $keyname = "";
-        if (isset($keyinfo["KeyProj"])) $projcode = trim($keyinfo["KeyProj"]); else  $projcode = "";
+        if (isset($keyinfo["KeyProj"])) $pcode = trim($keyinfo["KeyProj"]); else  $pcode = "";
         if (isset($keyinfo["KeyType"])) $keytype = trim($keyinfo["KeyType"]); else  $keytype = "";
         if (isset($keyinfo["HardwareCode"])) $hwcode = trim($keyinfo["HardwareCode"]); else  $hwcode = "";
         if (isset($keyinfo["Memo"])) $memo = trim($keyinfo["Memo"]); else  $memo = "";
@@ -1699,7 +1944,7 @@ class classDbiL3apF2cm
             $keytype = MFUN_L3APL_F2CM_KEY_TYPE_UNDEFINED;
         */
 
-        $query_str = "UPDATE `t_l3f2cm_fhys_keyinfo` SET `keyname` = '$keyname',`p_code` = '$projcode',`keytype` = '$keytype',
+        $query_str = "UPDATE `t_l3f2cm_fhys_keyinfo` SET `keyname` = '$keyname',`p_code` = '$pcode',`keytype` = '$keytype',
                           `hwcode` = '$hwcode', `memo` = '$memo' WHERE (`keyid` = '$keyid' )";
         $result = $mysqli->query($query_str);
 

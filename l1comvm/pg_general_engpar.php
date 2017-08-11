@@ -52,7 +52,7 @@ define("MFUN_L3APL_F2CM_CODE_FORMAT_LEN", 2); //定义项目code和项目组code
 define("MFUN_L3APL_F3DM_FHYS_STYPE_PREFIX", "CL"); //FHYS传感器类型特征字
 define("MFUN_L3APL_F3DM_AQYC_STYPE_PREFIX", "YC"); //AQYC传感器类型特征字
 define("MFUN_L3APL_F3DM_SENSOR_TYPE_PREFIX_LEN", 2);
-define("MFUN_L3APL_F1SYM_SESSIONID_VALID_TIME", 600);  //Session ID有效时间为10分钟
+define("MFUN_L3APL_F1SYM_SESSIONID_VALID_TIME", 900);  //Session ID有效时间为15分钟
 define("MFUN_L3APL_F2CM_FAVOURSITE_MAX_NUM", 5); //最大常用站点数量
 
 define("MFUN_HCU_SITE_PIC_BASE_DIR", "../../avorion/");  //站点照片存放路径
