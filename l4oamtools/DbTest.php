@@ -17,6 +17,12 @@ include_once "../l1comvm/vmlayer.php";
 //$path2 = pathinfo(__FILE__, PATHINFO_DIRNAME);
 //$path3 = $_SERVER['DOCUMENT_ROOT'];
 
+$obj = new classDbiL1vmCommon();
+
+$segContent = file_get_contents("../../avorion/120101004/upload/20170725_1501763679.jpg",0,null,0,4);
+
+$crc = $obj->seg_checksum($segContent);
+
 define ("TC_EMCWX", false);
 define ("TC_SOCKET", true);
 define ("TC_CRON", false);

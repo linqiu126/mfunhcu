@@ -17,7 +17,7 @@ class classTaskL2snrCommonService
 
     /************************************************HUITP 消息处理*****************************************************/
 
-    public function func_hcuAlarmData_huitp_process($devCode, $statCode, $data)
+    public function func_huitp_xmlmsg_alarm_info_report($devCode, $statCode, $data)
     {
         $AlarmType = hexdec($data[1]['HUITP_IEID_uni_alarm_info_element']['alarmType']) & 0xFFFF;
         $AlarmServerity = hexdec($data[1]['HUITP_IEID_uni_alarm_info_element']['alarmServerity']) & 0xFF;
@@ -35,11 +35,11 @@ class classTaskL2snrCommonService
         $AlarmTime = time();
 
         $dbiL2snrCommonObj = new classDbiL2snrCommon();
-        $resp = $dbiL2snrCommonObj->dbi_hcu_alarm_huitp_data_save($devCode, $statCode, $EquipmentId, $AlarmType, $AlarmDescription, $AlarmServerity, $AlarmClearFlag, $AlarmTime, $CauseId, $AlarmContent);
+        $resp = $dbiL2snrCommonObj->dbi_huitp_xmlmsg_alarm_info_save($devCode, $statCode, $EquipmentId, $AlarmType, $AlarmDescription, $AlarmServerity, $AlarmClearFlag, $AlarmTime, $CauseId, $AlarmContent);
         return $resp;
     }
 
-    public function func_hcuPerformance_huitp_process($deviceId, $statCode, $data)
+    public function func_huitp_xmlmsg_performance_info_report($deviceId, $statCode, $data)
     {
         $PmTaskRestartCnt = hexdec($data[1]['HUITP_IEID_uni_performance_info_element']['restartCnt']) & 0xFFFFFFFF;
         $CurlConnAttempt = hexdec($data[1]['HUITP_IEID_uni_performance_info_element']['networkConnCnt']) & 0xFFFFFFFF;
@@ -53,30 +53,10 @@ class classTaskL2snrCommonService
         $createtime = time();
 
         $dbiL2snrCommonObj = new classDbiL2snrCommon();
-        $resp = $dbiL2snrCommonObj->dbi_hcu_performance_huitp_data_save($deviceId, $statCode, $CurlConnAttempt, $CurlConnFailCnt, $CurlDiscCnt, $SocketDiscCnt, $PmTaskRestartCnt, $CPUOccupyCnt, $MemOccupyCnt, $DiskOccupyCnt, $CpuTemp, $createtime);
+        $resp = $dbiL2snrCommonObj->dbi_huitp_xmlmsg_performance_info_save($deviceId, $statCode, $CurlConnAttempt, $CurlConnFailCnt, $CurlDiscCnt, $SocketDiscCnt, $PmTaskRestartCnt, $CPUOccupyCnt, $MemOccupyCnt, $DiskOccupyCnt, $CpuTemp, $createtime);
 
         return $resp;
     }
-
-    public function func_inventory_huitp_data_process($deviceId, $data)
-    {
-        $hw_type = hexdec($data[1]['HUITP_IEID_uni_inventory_element']['hwType']) & 0xFFFF;
-        $hw_ver = hexdec($data[1]['HUITP_IEID_uni_inventory_element']['hwId']) & 0xFFFF;
-        $sw_rel = hexdec($data[1]['HUITP_IEID_uni_inventory_element']['swRel']) & 0xFFFF;
-        $sw_drop = hexdec($data[1]['HUITP_IEID_uni_inventory_element']['swVer']) & 0xFFFF;
-        $upgradeFlag = hexdec($data[1]['HUITP_IEID_uni_inventory_element']['upgradeFlag']) & 0xFFFF;
-        $timeStamp = time();
-
-        //$desc = $data[1]['HUITP_IEID_uni_inventory_element']['desc'];
-        $dbiL1vmCommonObj = new classDbiL1vmCommon();
-        $descp = $dbiL1vmCommonObj->Hex2String($data[1]['HUITP_IEID_uni_inventory_element']['descp']);
-
-        $dbiL2snrCommonObj = new classDbiL2snrCommon();
-        $resp = $dbiL2snrCommonObj->dbi_deviceVersion_huitp_update($deviceId,$hw_type,$hw_ver,$sw_rel,$sw_drop, $upgradeFlag,$descp,$timeStamp);
-
-        return $resp;
-    }
-
 
     /**************************************************************************************
      *                             任务入口函数                                           *
@@ -99,7 +79,7 @@ class classTaskL2snrCommonService
         if (empty($msg) == true) {
             $result = "Received null message body";
             $log_content = "R:" . json_encode($result);
-            $loggerObj->logger("MFUN_TASK_ID_L2SNR_COMMON", "mfun_l2snr_common_task_main_entry", $log_time, $log_content);
+            $loggerObj->logger("MFUN_TASK_ID_L2SENSOR_COMMON", "mfun_l2snr_common_task_main_entry", $log_time, $log_content);
             echo trim($result);
             return false;
         }
@@ -117,16 +97,62 @@ class classTaskL2snrCommonService
         {
             case HUITP_MSGID_uni_alarm_info_report:
                 //具体处理函数
-                $resp = $this->func_hcuAlarmData_huitp_process($devCode, $statCode, $content);
+                $resp = $this->func_huitp_xmlmsg_alarm_info_report($devCode, $statCode, $content);
                 break;
             case HUITP_MSGID_uni_performance_info_report:
                 //具体处理函数
-                $resp = $this->func_hcuPerformance_huitp_process($devCode, $statCode, $content);
+                $resp = $this->func_huitp_xmlmsg_performance_info_report($devCode, $statCode, $content);
                 break;
 
             case HUITP_MSGID_uni_inventory_report:
-                //具体处理函数
-                $resp = $this->func_inventory_huitp_data_process($devCode, $content);
+                $dbiL2snrCommonObj = new classDbiL2snrCommon();
+                $respHuitpMsg = $dbiL2snrCommonObj->dbi_huitp_xmlmsg_inventory_report($devCode, $statCode, $content);
+
+                //组装返回消息 HUITP_MSGID_uni_inventory_confirm, 并发送给L2 ENCODE进行编码发送
+                if (!empty($respHuitpMsg)){
+                    $msg = array("project" => $project,
+                        "platform" => MFUN_TECH_PLTF_HCUGX_HUITP,
+                        "devCode" => $devCode,
+                        "respMsg" => HUITP_MSGID_uni_inventory_confirm,
+                        "content" => $respHuitpMsg);
+                    if ($parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L2SENSOR_COMMON,
+                            MFUN_TASK_ID_L2ENCODE_HUITP,
+                            MSG_ID_L2CODEC_ENCODE_HUITP_INCOMING,
+                            "MSG_ID_L2CODEC_ENCODE_HUITP_INCOMING",
+                            $msg) == false) $resp = "Send to message buffer error";
+                    else $resp = "";
+                }
+                break;
+
+            case HUITP_MSGID_uni_inventory_resp:
+                $dbiL2snrCommonObj = new classDbiL2snrCommon();
+                $respHuitpMsg = $dbiL2snrCommonObj->dbi_huitp_xmlmsg_inventory_resp($devCode, $statCode, $content);
+                break;
+
+            case HUITP_MSGID_uni_sw_package_resp:
+                $dbiL2snrCommonObj = new classDbiL2snrCommon();
+                $respHuitpMsg = $dbiL2snrCommonObj->dbi_huitp_xmlmsg_sw_package_resp($devCode, $statCode, $content);
+                break;
+
+            case HUITP_MSGID_uni_sw_package_report:
+                $dbiL2snrCommonObj = new classDbiL2snrCommon();
+                $respHuitpMsg = $dbiL2snrCommonObj->dbi_huitp_xmlmsg_sw_package_report($devCode, $statCode, $content);
+
+                //组装返回消息 HUITP_MSGID_uni_sw_package_confirm, 并发送给L2 ENCODE进行编码发送
+                if (!empty($respHuitpMsg)) {
+                    $msg = array("project" => $project,
+                        "platform" => MFUN_TECH_PLTF_HCUGX_HUITP,
+                        "devCode" => $devCode,
+                        "respMsg" => HUITP_MSGID_uni_sw_package_confirm,
+                        "content" => $respHuitpMsg);
+                    if ($parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L2SENSOR_COMMON,
+                            MFUN_TASK_ID_L2ENCODE_HUITP,
+                            MSG_ID_L2CODEC_ENCODE_HUITP_INCOMING,
+                            "MSG_ID_L2CODEC_ENCODE_HUITP_INCOMING",
+                            $msg) == false
+                    ) $resp = "Send to message buffer error";
+                    else $resp = "";
+                }
                 break;
             default:
                 $resp = ""; //啥都不ECHO

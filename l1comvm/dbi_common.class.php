@@ -256,6 +256,17 @@ class classDbiL1vmCommon
         return $strInput;
     }
 
+    public function seg_checksum ($string)
+    {
+        $checksum = 0;
+        for ( $x=0; $x<strlen( $string ); $x++ ){
+            $value = intval(bin2hex($string[$x]), 16);
+            $checksum =  $checksum + $value;
+        }
+        $seg_checksum = dechex($checksum) & 0xFFFF;
+        return $seg_checksum;
+    }
+
     public function crc16($string,$crc=0xffff) {
 
         for ( $x=0; $x<strlen( $string ); $x++ ) {

@@ -13,6 +13,10 @@ include_once "../l1comvm/sysconfig.php";
 //HCU_ID命名固定前缀
 define("MFUN_HCU_NAME_FIX_PREFIX", "HCU_");
 
+//软件有效性标识
+define("MFUN_HCU_SW_LOAD_FLAG_INVALID", 0);
+define("MFUN_HCU_SW_LOAD_FLAG_VALID", 1);
+
 //通用项目标识
 define("MFUN_L1VM_DBI_MAX_LOG_NUM", 5000);  //防止t_loginfo表单数据无限制的增长，保留的最大记录数
 define("MFUN_L3APL_F1SYM_SESSION_ID_LEN", 10); //UI界面session id字符串长度

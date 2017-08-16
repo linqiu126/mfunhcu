@@ -649,7 +649,7 @@ class classDbiL2snrCommon
     /*********************************HUITP数据处理************************************************/
 
     //HCU huitp alarm Data数据存储
-    public function dbi_hcu_alarm_huitp_data_save($devCode, $statCode, $EquipmentId, $AlarmType, $AlarmDescription, $AlarmServerity, $AlarmClearFlag, $AlarmTime, $CauseId, $AlarmContent)
+    public function dbi_huitp_xmlmsg_alarm_info_save($devCode, $statCode, $EquipmentId, $AlarmType, $AlarmDescription, $AlarmServerity, $AlarmClearFlag, $AlarmTime, $CauseId, $AlarmContent)
     {
         //建立连接
         $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
@@ -668,7 +668,7 @@ class classDbiL2snrCommon
     }
 
     //HCU HUITP Performance数据存储
-    public function dbi_hcu_performance_huitp_data_save($deviceId, $statcode, $CurlConnAttempt, $CurlConnFailCnt, $CurlDiscCnt, $SocketDiscCnt, $PmTaskRestartCnt, $CPUOccupyCnt, $MemOccupyCnt, $DiskOccupyCnt, $CpuTemp, $createtime)
+    public function dbi_huitp_xmlmsg_performance_info_save($deviceId, $statcode, $CurlConnAttempt, $CurlConnFailCnt, $CurlDiscCnt, $SocketDiscCnt, $PmTaskRestartCnt, $CPUOccupyCnt, $MemOccupyCnt, $DiskOccupyCnt, $CpuTemp, $createtime)
     {
         //建立连接
         $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
@@ -734,6 +734,240 @@ class classDbiL2snrCommon
         }
         $mysqli->close();
         return $result;
+    }
+
+
+    public function dbi_huitp_xmlmsg_inventory_report($devCode, $statCode, $data)
+    {
+        //建立连接
+        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli) {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $mysqli->query("SET NAMES utf8");
+
+        //$data[0] = HUITP_IEID_uni_com_report，暂时没有使用
+        //$data[1] = HUITP_IEID_uni_inventory_element
+        $hwType = hexdec($data[1]['HUITP_IEID_uni_inventory_element']['hwType']) & 0xFFFF;
+        $hwId = hexdec($data[1]['HUITP_IEID_uni_inventory_element']['hwId']) & 0xFFFF;
+        $swRel = hexdec($data[1]['HUITP_IEID_uni_inventory_element']['swRel']) & 0xFFFF;
+        $swVer = hexdec($data[1]['HUITP_IEID_uni_inventory_element']['swVer']) & 0xFFFF;
+        $dbVer = hexdec($data[1]['HUITP_IEID_uni_inventory_element']['dbVer']) & 0xFFFF;
+        $swCheckSum = hexdec($data[1]['HUITP_IEID_uni_inventory_element']['swCheckSum']) & 0xFFFF;
+        $swTotalLen = hexdec($data[1]['HUITP_IEID_uni_inventory_element']['swTotalLen']) & 0xFFFFFFFF;
+        $dbCheckSum = hexdec($data[1]['HUITP_IEID_uni_inventory_element']['dbCheckSum']) & 0xFFFF;
+        $dbTotalLen = hexdec($data[1]['HUITP_IEID_uni_inventory_element']['dbTotalLen']) & 0xFFFFFFFF;
+        $upgradeFlag = hexdec($data[1]['HUITP_IEID_uni_inventory_element']['upgradeFlag']) & 0xFF;
+        $equEntry = hexdec($data[1]['HUITP_IEID_uni_inventory_element']['equEntryg']) & 0xFF;
+
+        $validflag = MFUN_HCU_SW_LOAD_FLAG_VALID;
+        $relver_index = $swRel*65535 + $swVer;
+
+        //查找硬件类型hwtype相同，设备entry（HCU，IHU）相同，软件更新标识（稳定版，补丁版，测试版）相同的load
+        $query_str = "SELECT * FROM `t_l3f4icm_swctrl` WHERE `swrel` = (SELECT MAX(`swrel`) FROM `t_l3f4icm_swctrl` WHERE (`hwtype` = '$hwType' AND `upgradeFlag` = '$upgradeFlag' AND `equEntry` = '$equEntry' AND `validflag` = '$validflag'))";
+        $result=$mysqli->query($query_str);
+        //选取符合上述更新条件中最新的版本
+        while (($result != false) && (($row = $result->fetch_array()) > 0))
+        {
+            $newHwId = intval($row['hwid']);
+            if ($newHwId < $hwId) continue;  //HwID要大于等于输入
+
+            $newSwRel = intval($row['swrel']);
+            $newSwVer = intval($row['swver']);
+            $new_index = $newSwRel*65535 + $newSwVer;
+            if ($new_index > $relver_index){
+                $relver_index = $new_index;
+                $hwId = $newHwId;
+                $swRel = $newSwRel;
+                $swVer = $newSwVer;
+                $dbVer = intval($row['dbver']);
+                $swCheckSum = intval($row['checksum']);
+                $swTotalLen = intval($row['filesize']);
+            }
+        }
+
+        //查找新load对应的database版本
+        $dbEntry = HUITP_IEID_UNI_EQU_ENTRY_HCU_DB;
+        $query_str = "SELECT * FROM `t_l3f4icm_swctrl` WHERE (`hwtype` = '$hwType' AND `upgradeFlag` = '$upgradeFlag' AND `equEntry` = '$dbEntry' AND `validflag` = '$validflag' AND `swrel` = '$swRel' AND `dbver` = '$dbVer')";
+        $result=$mysqli->query($query_str);
+        if (($result != false) && ($result->num_rows)>0){
+            $row = $result->fetch_array();
+            $dbCheckSum = $row['checksum'];
+            $dbTotalLen = $row['filesize'];
+            $comConfirm = HUITP_IEID_UNI_COM_CONFIRM_YES;
+        }
+        else{
+            $comConfirm = HUITP_IEID_UNI_COM_CONFIRM_NO;
+        }
+
+        //生成 HUITP_MSGID_uni_inventory_confirm 消息的内容
+        $respMsgContent = array();
+        $baseConfirmIE = array();
+        $confirmValueIE = array();
+
+        $l2codecHuitpIeDictObj = new classL2codecHuitpIeDict;
+
+        //组装IE HUITP_IEID_uni_com_confirm
+        $huitpIe = $l2codecHuitpIeDictObj->mfun_l2codec_getHuitpIeFormat(HUITP_IEID_uni_com_confirm);
+        $huitpIeLen = intval($huitpIe['len']);
+        array_push($baseConfirmIE, HUITP_IEID_uni_com_confirm);
+        array_push($baseConfirmIE, $huitpIeLen);
+        array_push($baseConfirmIE, $comConfirm);
+
+        //组装IE HUITP_IEID_uni_inventory_element
+        $huitpIe = $l2codecHuitpIeDictObj->mfun_l2codec_getHuitpIeFormat(HUITP_IEID_uni_inventory_element);
+        $huitpIeLen = intval($huitpIe['len']);
+        array_push($confirmValueIE, HUITP_IEID_uni_inventory_element);
+        array_push($confirmValueIE, $huitpIeLen);
+        array_push($confirmValueIE, $hwType);
+        array_push($confirmValueIE, $hwId);
+        array_push($confirmValueIE, $swRel);
+        array_push($confirmValueIE, $swVer);
+        array_push($confirmValueIE, $swCheckSum);
+        array_push($confirmValueIE, $swTotalLen);
+        array_push($confirmValueIE, $dbCheckSum);
+        array_push($confirmValueIE, $dbTotalLen);
+        array_push($confirmValueIE, $upgradeFlag);
+        array_push($confirmValueIE, $equEntry);
+
+        array_push($respMsgContent, $baseConfirmIE);
+        array_push($respMsgContent, $confirmValueIE);
+
+        $mysqli->close();
+        return $respMsgContent;
+    }
+
+    public function dbi_huitp_xmlmsg_inventory_resp($devCode, $statCode, $data)
+    {
+        return true;
+    }
+
+    public function dbi_huitp_xmlmsg_sw_package_resp($devCode, $statCode, $data)
+    {
+        return true;
+    }
+
+    public function dbi_huitp_xmlmsg_sw_package_report($devCode, $statCode, $data)
+    {
+        //建立连接
+        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli) {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $mysqli->query("SET NAMES utf8");
+
+        //$data[0] = HUITP_IEID_uni_com_report，暂时没有使用
+        //$data[1] = HUITP_IEID_uni_com_segment
+        $hwType = hexdec($data[1]['HUITP_IEID_uni_com_segment']['hwType']) & 0xFFFF;
+        $hwPem = hexdec($data[1]['HUITP_IEID_uni_com_segment']['hwPem']) & 0xFFFF;
+        $swRel = hexdec($data[1]['HUITP_IEID_uni_com_segment']['swRel']) & 0xFFFF;
+        $swVer = hexdec($data[1]['HUITP_IEID_uni_com_segment']['swVer']) & 0xFFFF;
+        $upgradeFlag = hexdec($data[1]['HUITP_IEID_uni_com_segment']['upgradeFlag']) & 0xFF;
+        $equEntry = hexdec($data[1]['HUITP_IEID_uni_com_segment']['equEntry']) & 0xFF;
+        $segIndex = hexdec($data[1]['HUITP_IEID_uni_com_segment']['segIndex']) & 0xFFFF;
+        $segTotal = hexdec($data[1]['HUITP_IEID_uni_com_segment']['segTotal']) & 0xFFFF;
+        $segSplitLen = hexdec($data[1]['HUITP_IEID_uni_com_segment']['segSplitLen']) & 0xFFFF;
+
+        $filelink = "";
+        $filesize = 0;
+        $file_checksum = 0;
+        $validflag = MFUN_HCU_SW_LOAD_FLAG_VALID;
+        if ($equEntry == HUITP_IEID_UNI_EQU_ENTRY_HCU_SW) { //软件下载请求
+            $query_str = "SELECT * FROM `t_l3f4icm_swctrl` WHERE (`hwtype` = '$hwType' AND `upgradeFlag` = '$upgradeFlag' AND `equEntry` = '$equEntry' AND `validflag` = '$validflag' AND `swrel` = '$swRel' AND `swver` = '$swVer')";
+            $result = $mysqli->query($query_str);
+            if (($result != false) && ($result->num_rows) > 0) {
+                $row = $result->fetch_array();
+                $filelink = intval($row['filelink']);
+                $filesize = intval($row['filesize']);
+                $file_checksum = intval($row['checksum']);
+            }
+        } elseif ($equEntry == HUITP_IEID_UNI_EQU_ENTRY_HCU_DB) {  //数据库下载请求
+            $query_str = "SELECT * FROM `t_l3f4icm_swctrl` WHERE (`hwtype` = '$hwType' AND `upgradeFlag` = '$upgradeFlag' AND `equEntry` = '$equEntry' AND `validflag` = '$validflag' AND `swrel` = '$swRel' AND `dbver` = '$swVer')";
+            $result = $mysqli->query($query_str);
+            if (($result != false) && ($result->num_rows) > 0) {
+                $row = $result->fetch_array();
+                $filelink = intval($row['filelink']);
+                $filesize = intval($row['filesize']);
+                $file_checksum = intval($row['checksum']);
+            }
+        }
+
+        if ($segTotal > 0)
+            $len = $filesize / $segTotal;
+        else
+            $len = 0;
+
+        $seg_checksum = 0;
+        $segContent = "";
+        $comConfirm = HUITP_IEID_UNI_COM_CONFIRM_NO;
+        $include_path = 0; //可选。如果也想在 include_path 中搜寻文件的话，可以将该参数设为 "1"。
+        $context = null;  //可选。规定文件句柄的环境。
+        if (!empty($filelink) AND $len == $segSplitLen) {
+            if ($segIndex < $segTotal) {
+                $start = ($segIndex -1)*$segSplitLen;
+                $validLen = $segSplitLen;
+                $segContent = file_get_contents($filelink,$include_path,$context,$start,$validLen);
+                $dbiL1vmCommonObj = new classDbiL1vmCommon();
+                $seg_checksum = $dbiL1vmCommonObj->seg_checksum($segContent);
+                $comConfirm = HUITP_IEID_UNI_COM_CONFIRM_YES;
+            } elseif ($segIndex == $segTotal) {
+                $start = ($segIndex -1)*$segSplitLen;
+                $validLen = $filesize - $start;
+                $segContent = file_get_contents($filelink,$include_path,$context,$start,$validLen);
+                $dbiL1vmCommonObj = new classDbiL1vmCommon();
+                $seg_checksum = $dbiL1vmCommonObj->seg_checksum($segContent);
+                $comConfirm = HUITP_IEID_UNI_COM_CONFIRM_YES;
+            }
+        }
+
+        //生成 HUITP_MSGID_uni_sw_package_confirm 消息的内容
+        $respMsgContent = array();
+        $baseConfirmIE = array();
+        $confirmValueIE = array();
+        $swPkgBodyIE = array();
+
+        $l2codecHuitpIeDictObj = new classL2codecHuitpIeDict;
+
+        //组装IE HUITP_IEID_uni_com_confirm
+        $huitpIe = $l2codecHuitpIeDictObj->mfun_l2codec_getHuitpIeFormat(HUITP_IEID_uni_com_confirm);
+        $huitpIeLen = intval($huitpIe['len']);
+        array_push($baseConfirmIE, HUITP_IEID_uni_com_confirm);
+        array_push($baseConfirmIE, $huitpIeLen);
+        array_push($baseConfirmIE, $comConfirm);
+
+        //组装IE HUITP_IEID_uni_inventory_element
+        $huitpIe = $l2codecHuitpIeDictObj->mfun_l2codec_getHuitpIeFormat(HUITP_IEID_uni_inventory_element);
+        $huitpIeLen = intval($huitpIe['len']);
+        array_push($confirmValueIE, HUITP_IEID_uni_inventory_element);
+        array_push($confirmValueIE, $huitpIeLen);
+        array_push($confirmValueIE, $hwType);
+        array_push($confirmValueIE, $hwPem);
+        array_push($confirmValueIE, $swRel);
+        array_push($confirmValueIE, $swVer);
+        array_push($confirmValueIE, $upgradeFlag);
+        array_push($confirmValueIE, $equEntry);
+        array_push($confirmValueIE, $segIndex);
+        array_push($confirmValueIE, $segTotal);
+        array_push($confirmValueIE, $segSplitLen);
+
+        //组装IE HUITP_IEID_uni_sw_package_body
+        $huitpIe = $l2codecHuitpIeDictObj->mfun_l2codec_getHuitpIeFormat(HUITP_IEID_uni_sw_package_body);
+        $huitpIeLen = intval($huitpIe['len']);
+        array_push($swPkgBodyIE, HUITP_IEID_uni_sw_package_body);
+        array_push($swPkgBodyIE, $huitpIeLen);
+        array_push($swPkgBodyIE, $validLen);
+        array_push($swPkgBodyIE, $seg_checksum);
+        $temp = array();
+        for ( $i=0; $i<strlen($segContent); $i++ )
+            array_push($temp, $segContent[$i]);
+        array_push($swPkgBodyIE, $temp);
+
+        array_push($respMsgContent, $baseConfirmIE);
+        array_push($respMsgContent, $confirmValueIE);
+        array_push($respMsgContent, $swPkgBodyIE);
+
+        $mysqli->close();
+        return $respMsgContent;
     }
 
 }
