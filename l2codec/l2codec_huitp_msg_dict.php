@@ -1495,7 +1495,9 @@ class classL2codecHuitpMsgDict
         HUITP_MSGID_uni_alarm_info_report => array("MSGNAME" => "HUITP_MSGID_uni_alarm_info_report",
             "MSGIE" => array(HUITP_IEID_uni_com_report,
                             HUITP_IEID_uni_alarm_info_element)),
-        HUITP_MSGID_uni_alarm_info_confirm => array("MSGNAME" => "","MSGIE" => array(HUITP_IEID_uni_com_req)),  //0xB001
+        //0xB001
+        HUITP_MSGID_uni_alarm_info_confirm => array("MSGNAME" => "HUITP_MSGID_uni_alarm_info_confirm",
+            "MSGIE" => array(HUITP_IEID_uni_com_confirm)),
 
         //PM Report
         HUITP_MSGID_uni_performance_info_req => array("MSGNAME" => "","MSGIE" => array(HUITP_IEID_uni_com_req)),  //0xB100
@@ -1504,7 +1506,9 @@ class classL2codecHuitpMsgDict
         HUITP_MSGID_uni_performance_info_report => array("MSGNAME" => "HUITP_MSGID_uni_performance_info_report",
             "MSGIE" => array(HUITP_IEID_uni_com_report,
                             HUITP_IEID_uni_performance_info_element)),
-        HUITP_MSGID_uni_performance_info_confirm => array("MSGNAME" => "","MSGIE" => array(HUITP_IEID_uni_com_req)),  //0xB101
+        //0xB101
+        HUITP_MSGID_uni_performance_info_confirm => array("MSGNAME" => "HUITP_MSGID_uni_performance_info_confirm",
+            "MSGIE" => array(HUITP_IEID_uni_com_confirm)),
 
         //设备基本信息
         HUITP_MSGID_uni_equipment_info_req => array("MSGNAME" => "","MSGIE" => array(HUITP_IEID_uni_com_req)),  //0xF000

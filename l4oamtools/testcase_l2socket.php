@@ -45,8 +45,10 @@ if (TC_SOCKET == true) {
     //HUITP_MSGID_uni_noise_data_report
     //$data = "<xml><ToUserName><![CDATA[XHZN_HCU]]></ToUserName><FromUserName><![CDATA[HCU_G502_FHYS_P0001]]></FromUserName><CreateTime>1490757257</CreateTime><MsgType><![CDATA[huitp_text]]></MsgType><Content><![CDATA[2B81000E00030001012B00000502000001B2]]></Content><FuncFlag>0</FuncFlag></xml>";
 
+    //HUITP_MSGID_uni_inventory_report
+    $data = " <xml><ToUserName><![CDATA[XHZN_HCU]]></ToUserName><FromUserName><![CDATA[HCU_G502_FHYS_P0001]]></FromUserName><CreateTime>1502851758</CreateTime><MsgType><![CDATA[huitp_text]]></MsgType><Content><![CDATA[A08100250003000101A000001C08010006000300EF000100000000000000000000000004015993B2AE]]></Content><FuncFlag>0</FuncFlag></xml>";
     //HUITP_MSGID_uni_performance_info_report
-    //$data = "<xml><ToUserName><![CDATA[XHZN_HCU]]></ToUserName><FromUserName><![CDATA[HCU_G301_BFSC_P0001]]></FromUserName><CreateTime>1499765168</CreateTime><MsgType><![CDATA[huitp_text]]></MsgType><Content><![CDATA[B1813100030001000100B12800000000000000000000000000000000008C04000004000000130000002200000000000000B0996459]]></Content><FuncFlag>0</FuncFlag></xml>";
+    $data = "<xml><ToUserName><![CDATA[XHZN_HCU]]></ToUserName><FromUserName><![CDATA[HCU_G502_FHYS_P0001]]></FromUserName><CreateTime>1502853593</CreateTime><MsgType><![CDATA[huitp_text]]></MsgType><Content><![CDATA[B18100310003000101B10000280000000000000000000000000000000000000000000000000000001700000059000000005993B9D9]]></Content><FuncFlag>0</FuncFlag></xml>";
 
     $msg = array("socketid" => 1, "data"=>$data);
     $obj->mfun_l1vm_task_main_entry(MFUN_MAIN_ENTRY_IOT_HUITP, MSG_ID_L2SDK_HUITP_DATA_COMING, "MSG_ID_L2SDK_HUITP_DATA_COMING", $msg);

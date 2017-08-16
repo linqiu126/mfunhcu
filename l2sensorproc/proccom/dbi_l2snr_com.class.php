@@ -648,94 +648,119 @@ class classDbiL2snrCommon
 
     /*********************************HUITP数据处理************************************************/
 
-    //HCU huitp alarm Data数据存储
-    public function dbi_huitp_xmlmsg_alarm_info_save($devCode, $statCode, $EquipmentId, $AlarmType, $AlarmDescription, $AlarmServerity, $AlarmClearFlag, $AlarmTime, $CauseId, $AlarmContent)
+    public function dbi_huitp_xmlmsg_alarm_info_report($devCode, $statCode, $data)
     {
         //建立连接
-        $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
-        if (!$mysqli)
-        {
+        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli) {
             die('Could not connect: ' . mysqli_error($mysqli));
         }
         $mysqli->query("SET NAMES utf8");
 
-        $AlarmTime = date("Y-m-d H:m:s",$AlarmTime);
-        $query_str = "INSERT INTO `t_l3f5fm_aqyc_alarmdata` (`devcode`, `equipmentid`, `alarmtype`, `picturename`, `alarmseverity`, `alarmclearflag`, `timestamp`, `causeid`, `alarmcontent`) VALUES ('$devCode', '$EquipmentId', '$AlarmType', '$AlarmDescription', '$AlarmServerity', '$AlarmClearFlag', '$AlarmTime', '$CauseId', '$AlarmContent')";
+        //$data[0] = HUITP_IEID_uni_com_report，暂时没有使用
+
+        //$data[1] = HUITP_IEID_uni_alarm_info_element
+        $alarmType = hexdec($data[1]['HUITP_IEID_uni_alarm_info_element']['alarmType']) & 0xFFFF;
+        $alarmServerity = hexdec($data[1]['HUITP_IEID_uni_alarm_info_element']['alarmServerity']) & 0xFF;
+        $alarmClearFlag = hexdec($data[1]['HUITP_IEID_uni_alarm_info_element']['alarmClearFlag']) & 0xFF;
+        $equID = hexdec($data[1]['HUITP_IEID_uni_alarm_info_element']['equID']) & 0xFFFFFFFF;
+        $causeId = hexdec($data[1]['HUITP_IEID_uni_alarm_info_element']['causeId']) & 0xFFFFFFFF;
+        $alarmContent = hexdec($data[1]['HUITP_IEID_uni_alarm_info_element']['alarmContent']) & 0xFFFFFFFF;
+        $alarmDesc = $data[1]['HUITP_IEID_uni_alarm_info_element']['alarmDesc'];
+        $timeStamp = hexdec($data[1]['HUITP_IEID_uni_alarm_info_element']['timeStamp']) & 0xFFFFFFFF;
+
+        $createtime = date("Y-m-d H:m:s", $timeStamp);
+        $query_str = "INSERT INTO `t_l3f5fm_aqyc_alarmdata` (`devcode`, `equipmentid`, `alarmtype`, `alarmdesc`, `alarmseverity`, `alarmclearflag`, `timestamp`, `causeid`, `alarmcontent`)
+                      VALUES ('$devCode', '$equID', '$alarmType', '$alarmDesc', '$alarmServerity', '$alarmClearFlag', '$createtime', '$causeId', '$alarmContent')";
         $result=$mysqli->query($query_str);
 
+        if ($result == true)
+            $comConfirm = HUITP_IEID_UNI_COM_CONFIRM_YES;
+        else
+            $comConfirm = HUITP_IEID_UNI_COM_CONFIRM_NO;
+
+        //生成 HUITP_MSGID_uni_alarm_info_confirm 消息的内容
+        $respMsgContent = array();
+        $baseConfirmIE = array();
+
+        $l2codecHuitpIeDictObj = new classL2codecHuitpIeDict;
+
+        //组装IE HUITP_IEID_uni_com_confirm
+        $huitpIe = $l2codecHuitpIeDictObj->mfun_l2codec_getHuitpIeFormat(HUITP_IEID_uni_com_confirm);
+        $huitpIeLen = intval($huitpIe['len']);
+        array_push($baseConfirmIE, HUITP_IEID_uni_com_confirm);
+        array_push($baseConfirmIE, $huitpIeLen);
+        array_push($baseConfirmIE, $comConfirm);
+
+        array_push($respMsgContent, $baseConfirmIE);
+
         $mysqli->close();
-        return $result;
+        return $respMsgContent;
     }
 
-    //HCU HUITP Performance数据存储
-    public function dbi_huitp_xmlmsg_performance_info_save($deviceId, $statcode, $CurlConnAttempt, $CurlConnFailCnt, $CurlDiscCnt, $SocketDiscCnt, $PmTaskRestartCnt, $CPUOccupyCnt, $MemOccupyCnt, $DiskOccupyCnt, $CpuTemp, $createtime)
+    public function dbi_huitp_xmlmsg_performance_info_report($devCode, $statCode, $data)
     {
         //建立连接
-        $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
-        if (!$mysqli)
-        {
+        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli) {
             die('Could not connect: ' . mysqli_error($mysqli));
         }
         $mysqli->query("SET NAMES utf8");
 
-        $createtime = date("Y-m-d H:m:s",$createtime);
+        //$data[0] = HUITP_IEID_uni_com_report，暂时没有使用
 
-        $query_str = "INSERT INTO `t_l3f6pm_perfdata`(`devcode`, `statcode`, `CurlConnAttempt`, `CurlConnFailCnt`, `CurlDiscCnt`, `SocketDiscCnt`, `PmTaskRestartCnt`, `CPUOccupyCnt`, `MemOccupyCnt`, `DiskOccupyCnt`, `CpuTemp`, `createtime`) VALUES ('$deviceId', '$statcode', '$CurlConnAttempt', '$CurlConnFailCnt', '$CurlDiscCnt', '$SocketDiscCnt', '$PmTaskRestartCnt', '$CPUOccupyCnt', '$MemOccupyCnt', '$DiskOccupyCnt', '$CpuTemp','$createtime')";
-        $result=$mysqli->query($query_str);
+        //$data[1] = HUITP_IEID_uni_performance_info_element
+        $restartCnt = hexdec($data[1]['HUITP_IEID_uni_performance_info_element']['restartCnt']) & 0xFFFFFFFF;
+        $networkConnCnt = hexdec($data[1]['HUITP_IEID_uni_performance_info_element']['networkConnCnt']) & 0xFFFFFFFF;
+        $networkConnFailCnt = hexdec($data[1]['HUITP_IEID_uni_performance_info_element']['networkConnFailCnt']) & 0xFFFFFFFF;
+        $networkDiscCnt = hexdec($data[1]['HUITP_IEID_uni_performance_info_element']['networkDiscCnt']) & 0xFFFFFFFF;
+        $socketDiscCnt = hexdec($data[1]['HUITP_IEID_uni_performance_info_element']['socketDiscCnt']) & 0xFFFFFFFF;
+        $cpuOccupy = hexdec($data[1]['HUITP_IEID_uni_performance_info_element']['cpuOccupy']) & 0xFFFFFFFF;
+        $memOccupy = hexdec($data[1]['HUITP_IEID_uni_performance_info_element']['memOccupy']) & 0xFFFFFFFF;
+        $diskOccupy = hexdec($data[1]['HUITP_IEID_uni_performance_info_element']['diskOccupy']) & 0xFFFFFFFF;
+        $cpuTemp = hexdec($data[1]['HUITP_IEID_uni_performance_info_element']['cpuTemp']) & 0xFFFFFFFF;
 
-        $mysqli->close();
-        return $result;
-    }
-
-    //HCU Performance数据存储
-    public function dbi_hcu_performance_data_save($deviceId, $statcode, $CurlConnAttempt, $CurlConnFailCnt, $CurlDiscCnt, $SocketDiscCnt, $PmTaskRestartCnt, $CPUOccupyCnt, $MemOccupyCnt, $DiskOccupyCnt, $createtime)
-    {
-        //建立连接
-        $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
-        if (!$mysqli)
-        {
-            die('Could not connect: ' . mysqli_error($mysqli));
-        }
-        $mysqli->query("SET NAMES utf8");
-
-        $createtime = date("Y-m-d H:m:s",$createtime);
-        $query_str = "INSERT INTO `t_l3f6pm_perfdata`(`devcode`, `statcode`, `CurlConnAttempt`, `CurlConnFailCnt`, `CurlDiscCnt`, `SocketDiscCnt`, `PmTaskRestartCnt`, `CPUOccupyCnt`, `MemOccupyCnt`, `DiskOccupyCnt`, `createtime`) VALUES ('$deviceId', '$statcode', '$CurlConnAttempt', '$CurlConnFailCnt', '$CurlDiscCnt', '$SocketDiscCnt', '$PmTaskRestartCnt', '$CPUOccupyCnt', '$MemOccupyCnt', '$DiskOccupyCnt', '$createtime')";
-        $result=$mysqli->query($query_str);
-
-        $mysqli->close();
-        return $result;
-    }
-
-    public function dbi_deviceVersion_huitp_update($devcode, $hw_type,$hw_ver,$sw_rel,$sw_drop, $upgradeFlag,$desc,$timeStamp)
-    {
-        //maybe used later
-        $timeStamp = date("Y-m-d H:m:s",$timeStamp);
-
-        //建立连接
-        $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
-        if (!$mysqli)
-        {
-            die('Could not connect: ' . mysqli_error($mysqli));
-        }
-        $mysqli->query("SET NAMES utf8");
+        $timeStamp = time();
+        $createtime = date("Y-m-d H:m:s", $timeStamp);
 
         //先检查是否存在，如果存在，就更新，否则创建
-        $result = $mysqli->query("SELECT * FROM `t_l2sdk_iothcu_inventory` WHERE `devcode` = '$devcode'");
+        $result = $mysqli->query("SELECT * FROM `t_l3f6pm_perfdata` WHERE (`devcode` = '$devCode' AND `statcode` = '$statCode')");
         if (($result->num_rows)>0)
         {
-            $query_str = "UPDATE `t_l2sdk_iothcu_inventory` SET `hw_type` = '$hw_type',`hw_ver` = '$hw_ver',`sw_rel` = '$sw_rel',`sw_drop` = '$sw_drop', `hcu_sw_autoupdate` = '$upgradeFlag', `desc` = '$desc' WHERE `devcode` = '$devcode'";
+            $query_str = "UPDATE `t_l3f6pm_perfdata` SET `createtime` = '$createtime',`restartCnt` = '$restartCnt',`networkConnCnt` = '$networkConnCnt',`networkConnFailCnt` = '$networkConnFailCnt',`networkDiscCnt` = '$networkDiscCnt', `socketDiscCnt` = '$socketDiscCnt',
+                          `cpuOccupy` = '$cpuOccupy', `memOccupy` = '$memOccupy', `diskOccupy` = '$diskOccupy',`cpuTemp` = '$cpuTemp' WHERE (`devcode` = '$devCode' AND `statcode` = '$statCode')";
             $result=$mysqli->query($query_str);
         }
         else
         {
-            $query_str = "INSERT INTO `t_l2sdk_iothcu_inventory` (devcode, hw_type, hw_ver, sw_rel,sw_drop, hcu_sw_autoupdate,desc)
-                          VALUES ('$devcode', '$hw_type', '$hw_ver','$sw_rel','$sw_drop', '$upgradeFlag', '$desc')";
+            $query_str = "INSERT INTO `t_l3f6pm_perfdata`(`devcode`, `statcode`, `createtime`,`restartCnt`, `networkConnCnt`, `networkConnFailCnt`, `networkDiscCnt`, `socketDiscCnt`, `cpuOccupy`, `memOccupy`, `diskOccupy`, `cpuTemp`)
+                          VALUES ('$devCode', '$statCode', '$createtime','$restartCnt', '$networkConnCnt', '$networkConnFailCnt', '$networkDiscCnt', '$socketDiscCnt', '$cpuOccupy', '$memOccupy', '$diskOccupy', '$cpuTemp')";
             $result=$mysqli->query($query_str);
         }
-        $mysqli->close();
-        return $result;
-    }
 
+        if ($result == true)
+            $comConfirm = HUITP_IEID_UNI_COM_CONFIRM_YES;
+        else
+            $comConfirm = HUITP_IEID_UNI_COM_CONFIRM_NO;
+
+        //生成 HUITP_MSGID_uni_performance_info_confirm 消息的内容
+        $respMsgContent = array();
+        $baseConfirmIE = array();
+
+        $l2codecHuitpIeDictObj = new classL2codecHuitpIeDict;
+
+        //组装IE HUITP_IEID_uni_com_confirm
+        $huitpIe = $l2codecHuitpIeDictObj->mfun_l2codec_getHuitpIeFormat(HUITP_IEID_uni_com_confirm);
+        $huitpIeLen = intval($huitpIe['len']);
+        array_push($baseConfirmIE, HUITP_IEID_uni_com_confirm);
+        array_push($baseConfirmIE, $huitpIeLen);
+        array_push($baseConfirmIE, $comConfirm);
+
+        array_push($respMsgContent, $baseConfirmIE);
+
+        $mysqli->close();
+        return $respMsgContent;
+    }
 
     public function dbi_huitp_xmlmsg_inventory_report($devCode, $statCode, $data)
     {
@@ -758,7 +783,8 @@ class classDbiL2snrCommon
         $dbCheckSum = hexdec($data[1]['HUITP_IEID_uni_inventory_element']['dbCheckSum']) & 0xFFFF;
         $dbTotalLen = hexdec($data[1]['HUITP_IEID_uni_inventory_element']['dbTotalLen']) & 0xFFFFFFFF;
         $upgradeFlag = hexdec($data[1]['HUITP_IEID_uni_inventory_element']['upgradeFlag']) & 0xFF;
-        $equEntry = hexdec($data[1]['HUITP_IEID_uni_inventory_element']['equEntryg']) & 0xFF;
+        $equEntry = hexdec($data[1]['HUITP_IEID_uni_inventory_element']['equEntry']) & 0xFF;
+        $timeStamp = hexdec($data[1]['HUITP_IEID_uni_inventory_element']['timeStamp']) & 0xFFFFFFFF;
 
         $validflag = MFUN_HCU_SW_LOAD_FLAG_VALID;
         $relver_index = $swRel*65535 + $swVer;
@@ -800,6 +826,7 @@ class classDbiL2snrCommon
             $comConfirm = HUITP_IEID_UNI_COM_CONFIRM_NO;
         }
 
+        $timeStamp = time();
         //生成 HUITP_MSGID_uni_inventory_confirm 消息的内容
         $respMsgContent = array();
         $baseConfirmIE = array();
@@ -823,12 +850,14 @@ class classDbiL2snrCommon
         array_push($confirmValueIE, $hwId);
         array_push($confirmValueIE, $swRel);
         array_push($confirmValueIE, $swVer);
+        array_push($confirmValueIE, $dbVer);
         array_push($confirmValueIE, $swCheckSum);
         array_push($confirmValueIE, $swTotalLen);
         array_push($confirmValueIE, $dbCheckSum);
         array_push($confirmValueIE, $dbTotalLen);
         array_push($confirmValueIE, $upgradeFlag);
         array_push($confirmValueIE, $equEntry);
+        array_push($confirmValueIE, $timeStamp);
 
         array_push($respMsgContent, $baseConfirmIE);
         array_push($respMsgContent, $confirmValueIE);

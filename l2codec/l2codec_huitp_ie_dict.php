@@ -835,7 +835,7 @@ class classL2codecHuitpIeDict
 
           //软件清单
           //HUITP_IEID_uni_inventory_hw_type                => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
-          HUITP_IEID_uni_inventory_element                => array("format"=>"A4ieId/A4ieLen/A4hwType/A4hwId/A4swRel/A4swVer/A4dbVer/A4swCheckSum/A8swTotalLen/A4dbCheckSum/A8dbTotalLen/A2upgradeFlag/A2equEntry","len"=>"24","name"=>"HUITP_IEID_uni_inventory_element"),
+          HUITP_IEID_uni_inventory_element                => array("format"=>"A4ieId/A4ieLen/A4hwType/A4hwId/A4swRel/A4swVer/A4dbVer/A4swCheckSum/A8swTotalLen/A4dbCheckSum/A8dbTotalLen/A2upgradeFlag/A2equEntry/A8timeStamp","len"=>"28","name"=>"HUITP_IEID_uni_inventory_element"),
           HUITP_IEID_uni_inventory_hw_id                  => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
           HUITP_IEID_uni_inventory_sw_rel                 => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
           HUITP_IEID_uni_inventory_sw_ver                 => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
@@ -844,7 +844,7 @@ class classL2codecHuitpIeDict
           HUITP_IEID_uni_sw_package_body                  => array("format"=>"A4ieId/A4ieLen/A4segValidLen/A4segCheckSum/A800swPkgBody","len"=>"404","name"=>"HUITP_IEID_uni_sw_package_body"),
 
           //ALARM REPORT
-          HUITP_IEID_uni_alarm_info_element               => array("format"=>"A4ieId/A4ieLen/A4alarmType/A2alarmServerity/A2alarmClearFlag/A8equID/A8causeId/A8alarmContent/A200alarmDescp","len"=>"116","name"=>"HUITP_IEID_uni_alarm_info_element"),
+          HUITP_IEID_uni_alarm_info_element               => array("format"=>"A4ieId/A4ieLen/A4alarmType/A2alarmServerity/A2alarmClearFlag/A8equID/A8causeId/A8alarmContent/A200alarmDesc/A8timeStamp","len"=>"120","name"=>"HUITP_IEID_uni_alarm_info_element"),
 
           //PM Report
           HUITP_IEID_uni_performance_info_element         => array("format"=>"A4ieId/A4ieLen/A8restartCnt/A8networkConnCnt/A8networkConnFailCnt/A8networkDiscCnt/A8socketDiscCnt/A8cpuOccupy/A8memOccupy/A8diskOccupy/A8cpuTemp","len"=>"36","name"=>"HUITP_IEID_uni_performance_info_element"),
