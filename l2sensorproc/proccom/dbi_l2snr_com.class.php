@@ -648,6 +648,50 @@ class classDbiL2snrCommon
 
     /*********************************HUITP数据处理************************************************/
 
+    public function dbi_huitp_xmlmsg_heart_beat_report($devCode, $statCode, $data)
+    {
+        //建立连接
+        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli) {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $mysqli->query("SET NAMES utf8");
+
+        //$data[0] = HUITP_IEID_uni_com_report，暂时没有使用
+
+        //$data[1] = HUITP_IEID_uni_heart_beat_ping
+        $pingval = hexdec($data[1]['HUITP_IEID_uni_heart_beat_ping']['randval']) & 0xFFFF;
+
+        //生成 HUITP_MSGID_uni_heart_beat_confirm 消息的内容
+        $respMsgContent = array();
+        $baseConfirmIE = array();
+        $pongIE = array();
+
+        $l2codecHuitpIeDictObj = new classL2codecHuitpIeDict;
+
+        //组装IE HUITP_IEID_uni_com_confirm
+        $huitpIe = $l2codecHuitpIeDictObj->mfun_l2codec_getHuitpIeFormat(HUITP_IEID_uni_com_confirm);
+        $huitpIeLen = intval($huitpIe['len']);
+        $comConfirm = HUITP_IEID_UNI_COM_CONFIRM_YES;
+        array_push($baseConfirmIE, HUITP_IEID_uni_com_confirm);
+        array_push($baseConfirmIE, $huitpIeLen);
+        array_push($baseConfirmIE, $comConfirm);
+
+        //组装IE HUITP_IEID_uni_heart_beat_pong
+        $huitpIe = $l2codecHuitpIeDictObj->mfun_l2codec_getHuitpIeFormat(HUITP_IEID_uni_heart_beat_pong);
+        $huitpIeLen = intval($huitpIe['len']);
+        $pongval = $pingval;
+        array_push($pongIE, HUITP_IEID_uni_heart_beat_pong);
+        array_push($pongIE, $huitpIeLen);
+        array_push($pongIE, $pongval);
+
+        array_push($respMsgContent, $baseConfirmIE);
+        array_push($respMsgContent, $pongIE);
+
+        $mysqli->close();
+        return $respMsgContent;
+    }
+
     public function dbi_huitp_xmlmsg_alarm_info_report($devCode, $statCode, $data)
     {
         //建立连接
@@ -928,6 +972,7 @@ class classDbiL2snrCommon
 
         $seg_checksum = 0;
         $segContent = "";
+        $validLen = 0;
         $comConfirm = HUITP_IEID_UNI_COM_CONFIRM_NO;
         $include_path = 0; //可选。如果也想在 include_path 中搜寻文件的话，可以将该参数设为 "1"。
         $context = null;  //可选。规定文件句柄的环境。
@@ -986,9 +1031,15 @@ class classDbiL2snrCommon
         array_push($swPkgBodyIE, $huitpIeLen);
         array_push($swPkgBodyIE, $validLen);
         array_push($swPkgBodyIE, $seg_checksum);
+        //填充SW_body,不够规定长度的补充0
         $temp = array();
-        for ( $i=0; $i<strlen($segContent); $i++ )
-            array_push($temp, $segContent[$i]);
+        for ( $i=0; $i<HUITP_IEID_UNI_SW_PACKAGE_BODY_MAX_LEN; $i++ ){
+            if($i < $validLen)
+                array_push($temp, $segContent[$i]);
+            else
+                array_push($temp, 0);
+        }
+
         array_push($swPkgBodyIE, $temp);
 
         array_push($respMsgContent, $baseConfirmIE);

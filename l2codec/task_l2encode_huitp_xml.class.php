@@ -18,14 +18,23 @@ class classTaskL2encodeHuitpXml
 
     //查找IE format字符串中的长度数字
     private function findNum($str){
-        $str=trim($str);
+        $str=trim($str)."/";
         if(empty($str)){return '';}
         $result=array();
         while(!empty($str)){
-            $len = intval(substr($str,1,1));
-            array_push($result,$len);
-            $str = strstr($str, "/");
-            $str = substr($str,1);
+            $str = substr($str, 1);
+            $temp_str = strstr($str, "/", true);
+            $num_str ="";
+            for($i = 0; $i < strlen($temp_str); $i++){
+                if(is_numeric($temp_str[$i]))
+                    $num_str= $num_str.$temp_str[$i];
+                else
+                    break;
+            }
+            $num = intval($num_str);
+            array_push($result,$num);
+            $str = strstr($str, "/", false);
+            $str = substr($str, 1);
         }
         return $result;
     }

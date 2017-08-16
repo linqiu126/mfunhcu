@@ -1561,8 +1561,14 @@ class classL2codecHuitpMsgDict
         //心跳
         HUITP_MSGID_uni_heart_beat_req => array("MSGNAME" => "","MSGIE" => array(HUITP_IEID_uni_com_req)),  //0xFE00
         HUITP_MSGID_uni_heart_beat_resp => array("MSGNAME" => "","MSGIE" => array(HUITP_IEID_uni_com_req)),  //0xFE80
-        HUITP_MSGID_uni_heart_beat_report => array("MSGNAME" => "","MSGIE" => array(HUITP_IEID_uni_com_req)),  //0xFE81
-        HUITP_MSGID_uni_heart_beat_confirm => array("MSGNAME" => "","MSGIE" => array(HUITP_IEID_uni_com_req)),  //0xFE01
+        //0xFE81
+        HUITP_MSGID_uni_heart_beat_report => array("MSGNAME" => "HUITP_MSGID_uni_heart_beat_report",
+            "MSGIE" => array(HUITP_IEID_uni_com_report,
+                            HUITP_IEID_uni_heart_beat_ping)),
+        //0xFE01
+        HUITP_MSGID_uni_heart_beat_confirm => array("MSGNAME" => "HUITP_MSGID_uni_heart_beat_confirm",
+            "MSGIE" => array(HUITP_IEID_uni_com_confirm,
+                            HUITP_IEID_uni_heart_beat_pong)),
 
         //无效
         HUITP_MSGID_uni_max => array("MSGNAME" => "HUITP_MSGID_uni_max","MSGIE" => array()),  //0xFFFF
@@ -1613,7 +1619,8 @@ class classL2codecHuitpMsgDict
                                             HUITP_MSGID_uni_windspd_data_confirm,
                                             HUITP_MSGID_uni_windspd_ctrl_req
                                             ),
-        MFUN_TASK_ID_L2SENSOR_COMMON => array(HUITP_MSGID_uni_alarm_info_report,
+        MFUN_TASK_ID_L2SENSOR_COMMON => array(HUITP_MSGID_uni_heart_beat_report,
+                                            HUITP_MSGID_uni_alarm_info_report,
                                             HUITP_MSGID_uni_performance_info_report,
                                             HUITP_MSGID_uni_inventory_resp,
                                             HUITP_MSGID_uni_inventory_report,

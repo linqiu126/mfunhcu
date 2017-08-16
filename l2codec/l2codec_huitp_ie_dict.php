@@ -15,6 +15,8 @@ define("HUITP_FRAME_STRUCT_1_BYTE", 2);
 define("HUITP_FRAME_STRUCT_2_BYTE", 4);
 define("HUITP_FRAME_STRUCT_4_BYTE", 8);
 
+define("HUITP_IEID_UNI_SW_PACKAGE_BODY_MAX_LEN", 104);
+
 //锁状态
 define("HUITP_IEID_UNI_LOCK_STATE_NULL", 0x00);
 define("HUITP_IEID_UNI_LOCK_STATE_OPEN", 0x01);
@@ -841,7 +843,7 @@ class classL2codecHuitpIeDict
           HUITP_IEID_uni_inventory_sw_ver                 => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
 
           //软件版本体
-          HUITP_IEID_uni_sw_package_body                  => array("format"=>"A4ieId/A4ieLen/A4segValidLen/A4segCheckSum/A800swPkgBody","len"=>"404","name"=>"HUITP_IEID_uni_sw_package_body"),
+          HUITP_IEID_uni_sw_package_body                  => array("format"=>"A4ieId/A4ieLen/A4segValidLen/A4segCheckSum/A208swPkgBody","len"=>"108","name"=>"HUITP_IEID_uni_sw_package_body"),
 
           //ALARM REPORT
           HUITP_IEID_uni_alarm_info_element               => array("format"=>"A4ieId/A4ieLen/A4alarmType/A2alarmServerity/A2alarmClearFlag/A8equID/A8causeId/A8alarmContent/A200alarmDesc/A8timeStamp","len"=>"120","name"=>"HUITP_IEID_uni_alarm_info_element"),
@@ -875,8 +877,8 @@ class classL2codecHuitpIeDict
           HUITP_IEID_uni_cmd_ctrl_confirm                 => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
 
           //心跳
-          HUITP_IEID_uni_heart_beat_ping                  => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
-          HUITP_IEID_uni_heart_beat_pong                  => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
+          HUITP_IEID_uni_heart_beat_ping                  => array("format"=>"A4ieId/A4ieLen/A4randval","len"=>"2","name"=>"HUITP_IEID_uni_heart_beat_ping"),
+          HUITP_IEID_uni_heart_beat_pong                  => array("format"=>"A4ieId/A4ieLen/A4randval","len"=>"2","name"=>"HUITP_IEID_uni_heart_beat_pong"),
 
           //最大值
           HUITP_IEID_uni_max                              => "",

@@ -51,6 +51,24 @@ class classTaskL2snrCommonService
 
         switch($msgId)
         {
+            case HUITP_MSGID_uni_heart_beat_report:
+                $dbiL2snrCommonObj = new classDbiL2snrCommon();
+                $respHuitpMsg = $dbiL2snrCommonObj->dbi_huitp_xmlmsg_heart_beat_report($devCode, $statCode, $content);
+                //组装返回消息 HUITP_MSGID_uni_heart_beat_confirm, 并发送给L2 ENCODE进行编码发送
+                if (!empty($respHuitpMsg)){
+                    $msg = array("project" => $project,
+                        "platform" => MFUN_TECH_PLTF_HCUGX_HUITP,
+                        "devCode" => $devCode,
+                        "respMsg" => HUITP_MSGID_uni_heart_beat_confirm,
+                        "content" => $respHuitpMsg);
+                    if ($parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L2SENSOR_COMMON,
+                            MFUN_TASK_ID_L2ENCODE_HUITP,
+                            MSG_ID_L2CODEC_ENCODE_HUITP_INCOMING,
+                            "MSG_ID_L2CODEC_ENCODE_HUITP_INCOMING",
+                            $msg) == false) $resp = "Send to message buffer error";
+                    else $resp = "";
+                }
+                break;
             case HUITP_MSGID_uni_alarm_info_report:
                 $dbiL2snrCommonObj = new classDbiL2snrCommon();
                 $respHuitpMsg = $dbiL2snrCommonObj->dbi_huitp_xmlmsg_alarm_info_report($devCode, $statCode, $content);
