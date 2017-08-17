@@ -15,7 +15,7 @@ define("HUITP_FRAME_STRUCT_1_BYTE", 2);
 define("HUITP_FRAME_STRUCT_2_BYTE", 4);
 define("HUITP_FRAME_STRUCT_4_BYTE", 8);
 
-define("HUITP_IEID_UNI_SW_PACKAGE_BODY_MAX_LEN", 104);
+define("HUITP_IEID_UNI_SW_PACKAGE_BODY_MAX_LEN", 400);
 
 //锁状态
 define("HUITP_IEID_UNI_LOCK_STATE_NULL", 0x00);
@@ -843,7 +843,7 @@ class classL2codecHuitpIeDict
           HUITP_IEID_uni_inventory_sw_ver                 => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
 
           //软件版本体
-          HUITP_IEID_uni_sw_package_body                  => array("format"=>"A4ieId/A4ieLen/A4segValidLen/A4segCheckSum/A208swPkgBody","len"=>"108","name"=>"HUITP_IEID_uni_sw_package_body"),
+          HUITP_IEID_uni_sw_package_body                  => array("format"=>"A4ieId/A4ieLen/A4segValidLen/A4segCheckSum/A800swPkgBody","len"=>"404","name"=>"HUITP_IEID_uni_sw_package_body"),
 
           //ALARM REPORT
           HUITP_IEID_uni_alarm_info_element               => array("format"=>"A4ieId/A4ieLen/A4alarmType/A2alarmServerity/A2alarmClearFlag/A8equID/A8causeId/A8alarmContent/A200alarmDesc/A8timeStamp","len"=>"120","name"=>"HUITP_IEID_uni_alarm_info_element"),
