@@ -981,9 +981,15 @@ class classDbiL2snrCommon
                 $start = ($segIndex -1)*$segSplitLen;
                 $validLen = $segSplitLen;
                 $segContent = file_get_contents($filelink,$include_path,$context,$start,$validLen);
-                $dbiL1vmCommonObj = new classDbiL1vmCommon();
-                $seg_checksum = $dbiL1vmCommonObj->seg_checksum($segContent);
-                $comConfirm = HUITP_IEID_UNI_COM_CONFIRM_YES;
+                if($segContent){
+                    $dbiL1vmCommonObj = new classDbiL1vmCommon();
+                    $seg_checksum = $dbiL1vmCommonObj->seg_checksum($segContent);
+                    $comConfirm = HUITP_IEID_UNI_COM_CONFIRM_YES;
+                }
+                else{
+                    $seg_checksum = 0;
+                    $comConfirm = HUITP_IEID_UNI_COM_CONFIRM_NO;
+                }
             } elseif ($segIndex == $segTotal) {
                 $start = ($segIndex -1)*$segSplitLen;
                 $validLen = $filesize - $start;

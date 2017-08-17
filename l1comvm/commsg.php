@@ -431,7 +431,7 @@ define("MSG_ID_L4NBIOT_IHMUI_TO_L3OPR_METER_DL_WRITE_DEVICE_SYN_DATA", $index++)
 define("MSG_ID_L4BI_CLICK_INCOMING", $index++);
 
 //为了兼容最新HUITP消息，暂时修改
-define("MSG_ID_MFUN_MAX", 0xFE01);
+define("MSG_ID_MFUN_MAX", 0xFEFF);
 
 
 /**************************************************************************************

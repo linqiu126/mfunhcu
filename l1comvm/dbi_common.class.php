@@ -263,7 +263,7 @@ class classDbiL1vmCommon
             $value = intval(bin2hex($string[$x]), 16);
             $checksum =  $checksum + $value;
         }
-        $seg_checksum = dechex($checksum) & 0xFFFF;
+        $seg_checksum = $checksum & 0xFFFF;
         return $seg_checksum;
     }
 
