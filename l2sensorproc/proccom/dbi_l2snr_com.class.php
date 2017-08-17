@@ -834,7 +834,7 @@ class classDbiL2snrCommon
         $relver_index = $swRel*65535 + $swVer;
 
         //查找硬件类型hwtype相同，设备entry（HCU，IHU）相同，软件更新标识（稳定版，补丁版，测试版）相同的load
-        $query_str = "SELECT * FROM `t_l3f4icm_swctrl` WHERE `swrel` = (SELECT MAX(`swrel`) FROM `t_l3f4icm_swctrl` WHERE (`hwtype` = '$hwType' AND `upgradeFlag` = '$upgradeFlag' AND `equEntry` = '$equEntry' AND `validflag` = '$validflag'))";
+        $query_str = "SELECT * FROM `t_l3f4icm_swctrl` WHERE (`hwtype` = '$hwType' AND `upgradeFlag` = '$upgradeFlag' AND `equEntry` = '$equEntry' AND `validflag` = '$validflag')";
         $result=$mysqli->query($query_str);
         //选取符合上述更新条件中最新的版本
         while (($result != false) && (($row = $result->fetch_array()) > 0))
@@ -950,7 +950,7 @@ class classDbiL2snrCommon
             $result = $mysqli->query($query_str);
             if (($result != false) && ($result->num_rows) > 0) {
                 $row = $result->fetch_array();
-                $filelink = intval($row['filelink']);
+                $filelink = $row['filelink'];
                 $filesize = intval($row['filesize']);
                 $file_checksum = intval($row['checksum']);
             }
@@ -966,7 +966,7 @@ class classDbiL2snrCommon
         }
 
         if ($segTotal > 0)
-            $len = $filesize / $segTotal;
+            $len = ceil($filesize / $segTotal); //分段数向上取整
         else
             $len = 0;
 
