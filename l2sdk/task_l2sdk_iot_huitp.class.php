@@ -50,6 +50,11 @@ class classTaskL2sdkIotHuitp
         //FHYS测试时发现有多条xml消息粘连在一起的情况，此处加保护保证只取第一条完整xml消息
         $dbiL1vmCommonObj = new classDbiL1vmCommon();
         $msg = $dbiL1vmCommonObj->getStrBetween($data,"<xml>","</xml>");
+        if(empty($msg)){
+            $loggerObj->logger("MFUN_TASK_ID_L2SDK_IOT_HUITP", "mfun_l2sdk_iot_huitp_task_main_entry", $log_time, "R:Received XML message format error!");
+            return false;
+        }
+
         $msg = "<" . $msg . "</xml>";
         libxml_disable_entity_loader(true);  //prevent XML entity injection
         $postObj = simplexml_load_string($msg, 'SimpleXMLElement');  //防止破坏CDATA的内容，进而影响智能硬件L3消息体

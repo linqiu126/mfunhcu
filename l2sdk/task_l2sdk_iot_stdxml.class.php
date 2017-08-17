@@ -32,7 +32,6 @@ class classTaskL2sdkIotStdxml
         //入口消息内容判断
         if (empty($msg) == true) {
             $loggerObj->logger("MFUN_TASK_ID_L2SDK_IOT_STDXML", "mfun_l2sdk_iot_stdxml_task_main_entry", $log_time, "R: Received null message body.");
-            echo "";
             return false;
         }
         if (($msgId != MSG_ID_L1VM_TO_L2SDK_IOT_STDXML_INCOMING) || ($msgName != "MSG_ID_L1VM_TO_L2SDK_IOT_STDXML_INCOMING")){
@@ -50,6 +49,11 @@ class classTaskL2sdkIotStdxml
         //FHYS测试时发现有多条xml消息粘连在一起的情况，此处加保护保证只取第一条完整xml消息
         $dbiL1vmCommonObj = new classDbiL1vmCommon();
         $data = $dbiL1vmCommonObj->getStrBetween($data,"<xml>","</xml>");
+        if(empty($data)){
+            $loggerObj->logger("MFUN_TASK_ID_L2SDK_IOT_STDXML", "mfun_l2sdk_iot_stdxml_task_main_entry", $log_time, "R:Received XML message format error!");
+            return false;
+        }
+
         $xmlmsg = "<" . $data . "</xml>";
         libxml_disable_entity_loader(true);  //prevent XML entity injection
         $postObj = simplexml_load_string($xmlmsg, 'SimpleXMLElement');  //防止破坏CDATA的内容，进而影响智能硬件L3消息体

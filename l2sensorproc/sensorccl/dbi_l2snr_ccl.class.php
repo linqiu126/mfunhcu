@@ -149,13 +149,12 @@ class classDbiL2snrCcl
                 {
                     case MFUN_L3APL_F2CM_AUTH_TYPE_NUMBER:
                         //防止用户重复点击，对于用户名开锁，只保留一次开锁
-                        /*
                         if($validnum > 0){
                             $query_str = "DELETE FROM `t_l3f2cm_fhys_keyauth` WHERE (`sid` = '$sid') ";
                             $resp = $mysqli->query($query_str);
                             $auth_check = true;
                         }
-                        */
+                        /*
                         $remain_validnum = $validnum - 1;
                         if ($remain_validnum == 0){
                             $query_str = "DELETE FROM `t_l3f2cm_fhys_keyauth` WHERE (`sid` = '$sid') ";
@@ -166,7 +165,7 @@ class classDbiL2snrCcl
                             $query_str = "UPDATE `t_l3f2cm_fhys_keyauth` SET  `validnum` = '$remain_validnum' WHERE (`sid` = '$sid')";
                             $resp = $mysqli->query($query_str);
                             $auth_check = true;
-                        }
+                        }*/
                         break;
                     case MFUN_L3APL_F2CM_AUTH_TYPE_TIME:
                         $timestamp = time();
@@ -289,13 +288,13 @@ class classDbiL2snrCcl
                 $keyid = $row['keyid'];
                 $validnum = $row['validnum'];
                 //防止用户重复点击，对于用户名开锁，只保留一次开锁
-                /*
+
                 if ($validnum > 0) {
                     $query_str = "DELETE FROM `t_l3f2cm_fhys_keyauth` WHERE (`sid` = '$sid') ";
                     $mysqli->query($query_str);
                     $auth_check = true;
-                }*/
-
+                }
+                /*
                 $remain_validnum = $validnum - 1;
                 if ($remain_validnum == 0){
                     $query_str = "DELETE FROM `t_l3f2cm_fhys_keyauth` WHERE (`sid` = '$sid') ";
@@ -306,7 +305,7 @@ class classDbiL2snrCcl
                     $query_str = "UPDATE `t_l3f2cm_fhys_keyauth` SET  `validnum` = '$remain_validnum' WHERE (`sid` = '$sid')";
                     $resp = $mysqli->query($query_str);
                     $auth_check = true;
-                }
+                }*/
             }
 
             $event = MFUN_L3APL_F2CM_EVENT_TYPE_USER;
