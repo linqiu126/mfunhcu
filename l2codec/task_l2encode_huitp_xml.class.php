@@ -138,8 +138,6 @@ class classTaskL2encodeHuitpXml
             $client->connect();
 
             //返回消息log
-            $timestamp = time();
-            $log_time = date("Y-m-d H:i:s", $timestamp);
             $log_from = $devCode;
             $log_content = "T:" . json_encode($respMsgStr);
             $loggerObj->logger($project, $log_from, $log_time, $log_content);

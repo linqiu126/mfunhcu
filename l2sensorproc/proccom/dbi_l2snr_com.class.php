@@ -767,20 +767,9 @@ class classDbiL2snrCommon
         $timeStamp = time();
         $createtime = date("Y-m-d H:m:s", $timeStamp);
 
-        //先检查是否存在，如果存在，就更新，否则创建
-        $result = $mysqli->query("SELECT * FROM `t_l3f6pm_perfdata` WHERE (`devcode` = '$devCode' AND `statcode` = '$statCode')");
-        if (($result->num_rows)>0)
-        {
-            $query_str = "UPDATE `t_l3f6pm_perfdata` SET `createtime` = '$createtime',`restartCnt` = '$restartCnt',`networkConnCnt` = '$networkConnCnt',`networkConnFailCnt` = '$networkConnFailCnt',`networkDiscCnt` = '$networkDiscCnt', `socketDiscCnt` = '$socketDiscCnt',
-                          `cpuOccupy` = '$cpuOccupy', `memOccupy` = '$memOccupy', `diskOccupy` = '$diskOccupy',`cpuTemp` = '$cpuTemp' WHERE (`devcode` = '$devCode' AND `statcode` = '$statCode')";
-            $result=$mysqli->query($query_str);
-        }
-        else
-        {
-            $query_str = "INSERT INTO `t_l3f6pm_perfdata`(`devcode`, `statcode`, `createtime`,`restartCnt`, `networkConnCnt`, `networkConnFailCnt`, `networkDiscCnt`, `socketDiscCnt`, `cpuOccupy`, `memOccupy`, `diskOccupy`, `cpuTemp`)
-                          VALUES ('$devCode', '$statCode', '$createtime','$restartCnt', '$networkConnCnt', '$networkConnFailCnt', '$networkDiscCnt', '$socketDiscCnt', '$cpuOccupy', '$memOccupy', '$diskOccupy', '$cpuTemp')";
-            $result=$mysqli->query($query_str);
-        }
+        $query_str = "INSERT INTO `t_l3f6pm_perfdata`(`devcode`, `statcode`, `createtime`,`restartCnt`, `networkConnCnt`, `networkConnFailCnt`, `networkDiscCnt`, `socketDiscCnt`, `cpuOccupy`, `memOccupy`, `diskOccupy`, `cpuTemp`)
+                      VALUES ('$devCode', '$statCode', '$createtime','$restartCnt', '$networkConnCnt', '$networkConnFailCnt', '$networkDiscCnt', '$socketDiscCnt', '$cpuOccupy', '$memOccupy', '$diskOccupy', '$cpuTemp')";
+        $result=$mysqli->query($query_str);
 
         if ($result == true)
             $comConfirm = HUITP_IEID_UNI_COM_CONFIRM_YES;
@@ -959,16 +948,16 @@ class classDbiL2snrCommon
             $result = $mysqli->query($query_str);
             if (($result != false) && ($result->num_rows) > 0) {
                 $row = $result->fetch_array();
-                $filelink = intval($row['filelink']);
+                $filelink = $row['filelink'];
                 $filesize = intval($row['filesize']);
                 $file_checksum = intval($row['checksum']);
             }
         }
 
-        if ($segTotal > 0)
-            $len = ceil($filesize / $segTotal); //分段数向上取整
+        if($segSplitLen != 0)
+            $segTotal_calc = ceil($filesize/$segSplitLen);
         else
-            $len = 0;
+            $segTotal_calc = 0;
 
         $seg_checksum = 0;
         $segContent = "";
@@ -976,7 +965,7 @@ class classDbiL2snrCommon
         $comConfirm = HUITP_IEID_UNI_COM_CONFIRM_NO;
         $include_path = 0; //可选。如果也想在 include_path 中搜寻文件的话，可以将该参数设为 "1"。
         $context = null;  //可选。规定文件句柄的环境。
-        if (!empty($filelink) AND $len == $segSplitLen) {
+        if (!empty($filelink) AND $segTotal == $segTotal_calc) {
             if ($segIndex < $segTotal) {
                 $start = ($segIndex -1)*$segSplitLen;
                 $validLen = $segSplitLen;
@@ -988,6 +977,7 @@ class classDbiL2snrCommon
                 }
                 else{
                     $seg_checksum = 0;
+                    $segTotal = $segTotal_calc;
                     $comConfirm = HUITP_IEID_UNI_COM_CONFIRM_NO;
                 }
             } elseif ($segIndex == $segTotal) {

@@ -137,8 +137,6 @@ class classTaskL2decodeHuitpXml
         //处理结果
         //由于消息的分布发送到各个任务模块中去了，这里不再统一处理ECHO返回，而由各个任务模块单独完成
         if (!empty($resp)) {
-            $timestamp = time();
-            $log_time = date("Y-m-d H:i:s", $timestamp);
             $log_from = $devCode;
             $log_content = "T:" . json_encode($resp);
             $loggerObj->logger($project, $log_from, $log_time, $log_content);

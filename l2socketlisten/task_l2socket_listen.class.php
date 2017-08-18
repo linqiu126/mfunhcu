@@ -27,10 +27,8 @@ class classTaskL2SocketListen
 
         //入口消息内容判断
         if (empty($msg) == true) {
-            $result = "Received null message body";
-            $log_content = "R:" . json_encode($result);
+            $log_content = "R:Received null message body";
             $loggerObj->logger("MFUN_TASK_ID_L2SOCKET_LISTEN", "mfun_l2socket_listen_task_main_entry", $log_time, $log_content);
-            echo trim($result);
             return false;
         }
         else{
@@ -41,10 +39,8 @@ class classTaskL2SocketListen
 
         //多条消息发送到L2SOCKET_LISTEN，这里潜在的消息太多，没法一个一个的判断，故而只检查上下界
         if (($msgId != MSG_ID_L2SOCKET_LISTEN_DATA_COMING) || ($msgName != "MSG_ID_L2SOCKET_LISTEN_DATA_COMING")){
-            $result = "Msgid or MsgName error";
-            $log_content = "P:" . json_encode($result);
+            $log_content = "P:MsgId or MsgName error";
             $loggerObj->logger("MFUN_TASK_ID_L2SOCKET_LISTEN", "mfun_l2socket_listen_task_main_entry", $log_time, $log_content);
-            echo trim($result);
             return false;
         }
 
@@ -106,7 +102,6 @@ class classTaskL2SocketListen
         {
             $log_content = "T:" . json_encode($resp);
             $loggerObj->logger("L2SOCKETLISTEN", "MFUN_TASK_ID_L2SOCKET_LISTEN", $log_time, $log_content);
-            echo trim($resp);
         }
 
         //返回
