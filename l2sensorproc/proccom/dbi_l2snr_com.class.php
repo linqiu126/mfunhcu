@@ -1041,7 +1041,7 @@ class classDbiL2snrCommon
         $temp = array();
         for ( $i=0; $i<HUITP_IEID_UNI_SW_PACKAGE_BODY_MAX_LEN; $i++ ){
             if($i < $validLen)
-                array_push($temp, $segContent[$i]);
+                array_push($temp, intval(bin2hex($segContent[$i]),16));
             else
                 array_push($temp, 0);
         }

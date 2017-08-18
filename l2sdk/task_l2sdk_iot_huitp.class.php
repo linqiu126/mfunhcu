@@ -27,20 +27,20 @@ class classTaskL2sdkIotHuitp
         //定义本入口函数的logger处理对象及函数
         $loggerObj = new classApiL1vmFuncCom();
         $log_time = date("Y-m-d H:i:s", time());
+        $project = MFUN_PRJ_HCU_HUITP;
 
         //入口消息内容判断
         if (empty($msg) == true) {
-            $loggerObj->logger("MFUN_TASK_ID_L2SDK_IOT_HUITP", "mfun_l2sdk_iot_huitp_task_main_entry", $log_time, "R: Received null message body.");
-            echo "";
+            $log_content = "IOT_HUITP:received null message body";
+            $loggerObj->logger($project, "mfun_l2sdk_iot_huitp_task_main_entry", $log_time, $log_content);
+            echo trim($log_content); //这里echo主要是为了swoole log打印，帮助查找问题
             return false;
         }
         //这里HUITP消息有两个来源，一个是来自CCL通过socket收到的MSG_ID_L1VM_TO_L2SDK_IOT_HUITP_INCOMING，
         //另外一个是扬尘HCU通过curl收到的(MSG_ID_L2SDK_WECHAT_TO_L2DECODE_HUITP)，因为curl复用了cloud_callback_wechat,所以消息通过L2SDK_IOT_WX直接发给了L2CODEC,没有经由本模块
         if (($msgId != MSG_ID_L1VM_TO_L2SDK_IOT_HUITP_INCOMING) || ($msgName != "MSG_ID_L1VM_TO_L2SDK_IOT_HUITP_INCOMING") ){
-            $result = "Msgid or MsgName error";
-            $log_content = "P:" . json_encode($result);
-            $loggerObj->logger("MFUN_TASK_ID_L2SDK_IOT_HUITP", "mfun_l2sdk_iot_huitp_task_main_entry", $log_time, $log_content);
-            echo trim($result);
+            $log_content = "P:MsgId or MsgName error";
+            $loggerObj->logger($project, "mfun_l2sdk_iot_huitp_task_main_entry", $log_time, $log_content);
             return false;
         }
 
@@ -51,7 +51,9 @@ class classTaskL2sdkIotHuitp
         $dbiL1vmCommonObj = new classDbiL1vmCommon();
         $msg = $dbiL1vmCommonObj->getStrBetween($data,"<xml>","</xml>");
         if(empty($msg)){
-            $loggerObj->logger("MFUN_TASK_ID_L2SDK_IOT_HUITP", "mfun_l2sdk_iot_huitp_task_main_entry", $log_time, "R:Received XML message format error!");
+            $log_content = "IOT_HUITP:received XML message format error";
+            $loggerObj->logger($project, "mfun_l2sdk_iot_huitp_task_main_entry", $log_time, $log_content);
+            echo trim($log_content); //这里echo主要是为了swoole log打印，帮助查找问题
             return false;
         }
 
@@ -75,30 +77,24 @@ class classTaskL2sdkIotHuitp
         $content = trim($postObj->Content);
         $funcFlag = trim($postObj->FuncFlag);
 
-        $log_time = date("Y-m-d H:i:s",$createTime);
-        $log_content = "R:" . trim($msg);
 
         //消息或者说帧类型分离，l2SDK只进行协议类型解码，不对消息的content进行处理，判断协议类型后发送给专门的l2codec任务处理
         switch ($msgType)
         {
             //case "huitp_text"://HUITP消息处理
             case "huitp_text"://HUITP消息处理
-                $project = MFUN_PRJ_HCU_HUITP;
                 $log_from = $fromUser;
-                //定义本入口函数的logger处理对象及函数
-                $loggerObj = new classApiL1vmFuncCom();
 
                 //取DB中的硬件信息，判断基本信息
                 $dbiL2sdkIotcomObj = new classDbiL2sdkIotcom();
-                $result = $dbiL2sdkIotcomObj->dbi_hcuDevice_valid_device($fromUser); //FromUserName对应每个HCU硬件的设备编号
-                if (empty($result)){
-                    $result = "HCU_IOT: invalid device ID";
-                    $log_content = "T:" . json_encode($result);
+                $statCode = $dbiL2sdkIotcomObj->dbi_hcuDevice_valid_device($fromUser); //FromUserName对应每个HCU硬件的设备编号
+                if (empty($statCode)){
+                    $log_content = "IOT_STDXML: invalid FromUserName = ".$fromUser;
                     $loggerObj->logger($project, $log_from, $log_time, $log_content);
+                    echo trim($log_content); //这里echo主要是为了swoole log打印，帮助查找问题
                     return true;
                 }
 
-                $statCode = $result;
                 //将socket id和设备ID（fromUser）进行绑定
                 if(!empty($socketid) AND !empty($statCode)){
                     $dbiL2sdkIotcomObj = new classDbiL2sdkIotcom();
@@ -107,10 +103,9 @@ class classTaskL2sdkIotHuitp
 
                 //收到非本消息体该收到的消息
                 if ($toUser != MFUN_CLOUD_HCU ){
-                    $result = "HCU_IOT: FHYS XML message invalid ToUserName";
-                    $log_content = "T:" . json_encode($result);
+                    $log_content = "IOT_STDXML: invalid ToUserName = ".$toUser;
                     $loggerObj->logger($project, $log_from, $log_time, $log_content);
-                    echo trim($result);
+                    echo trim($log_content); //这里echo主要是为了swoole log打印，帮助查找问题
                     return true;
                 }
                 $msg = array("project" => $project,
@@ -128,27 +123,17 @@ class classTaskL2sdkIotHuitp
                 break;
 
             default:
-                //收内容存储
-                $project = "NULL";
+                $log_content = "IOT_HUITP:unknown message type = " . $msgType;
                 $loggerObj->logger($project, $fromUser, $log_time, $log_content);
-                $log_from = "CLOUD_NONE";
-                $result = "[XML_FORMAT]unknown message type: " . $msgType;
-                //差错返回
-                $log_content = "T:" . json_encode($result);
-                $loggerObj->logger($project, $log_from, $log_time, $log_content);
-                echo trim($result);
+                echo trim($log_content); //这里echo主要是为了swoole log打印，帮助查找问题
                 break;
         }
-
 
         //处理结果
         //由于消息的分布发送到各个任务模块中去了，这里不再统一处理ECHO返回，而由各个任务模块单独完成
         if (!empty($resp)) {
-            $timestamp = time();
-            $log_time = date("Y-m-d H:i:s", $timestamp);
             $log_content = "T:" . json_encode($resp);
-            $loggerObj->logger($project, $log_from, $log_time, $log_content);
-            echo trim($resp);
+            $loggerObj->logger($project, $fromUser, $log_time, $log_content);
         }
 
         //结束，返回

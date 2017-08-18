@@ -15,10 +15,6 @@ if (TC_SOCKET == true) {
 //SOCKET测试开始
     echo " [TC SOCKET: xxx START]\n";
 
-    $filelink = "../../avorion/PrjBfsc";
-    $segContent = file_get_contents($filelink,0,null,0,2);
-    $a = bin2hex($segContent);
-
     /*********************图片数据，消息来自9501端口*********************/
     $data = "4843555F473530325F464859535F50303030315F303132333435363738395F5F000000024040";
 
@@ -59,7 +55,7 @@ if (TC_SOCKET == true) {
     //$data = " <xml><ToUserName><![CDATA[XHZN_HCU]]></ToUserName><FromUserName><![CDATA[HCU_G502_FHYS_P0001]]></FromUserName><CreateTime>1502891284</CreateTime><MsgType><![CDATA[huitp_text]]></MsgType><Content><![CDATA[A08100250003000101A000001C08010006000300F00001000000000000000000000000040159944D14]]></Content><FuncFlag>0</FuncFlag></xml>";
 
     //A181, HUITP_MSGID_uni_sw_package_report
-    $data = "<xml><ToUserName><![CDATA[XHZN_HCU]]></ToUserName><FromUserName><![CDATA[HCU_G502_FHYS_P0001]]></FromUserName><CreateTime>1502961915</CreateTime><MsgType><![CDATA[huitp_text]]></MsgType><Content><![CDATA[A181001900030001010032001008010006000300FA04010001242F0190]]></Content><FuncFlag>0</FuncFlag></xml>";
+    //$data = "<xml><ToUserName><![CDATA[XHZN_HCU]]></ToUserName><FromUserName><![CDATA[HCU_G502_FHYS_P0001]]></FromUserName><CreateTime>1502970733</CreateTime><MsgType><![CDATA[huitp_text]]></MsgType><Content><![CDATA[A181001900030001010032001008010006000300FA040100016F560082]]></Content><FuncFlag>0</FuncFlag></xml>";
 
     $msg = array("socketid" => 1, "data"=>$data);
     $obj->mfun_l1vm_task_main_entry(MFUN_MAIN_ENTRY_IOT_HUITP, MSG_ID_L2SDK_HUITP_DATA_COMING, "MSG_ID_L2SDK_HUITP_DATA_COMING", $msg);

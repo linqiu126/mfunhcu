@@ -574,7 +574,7 @@ define("HUITP_IEID_uni_heart_beat_pong", 0xFE01);
 define("HUITP_IEID_uni_heart_beat_max", 0xFE01);
 
 //最大值
-define("HUITP_IEID_uni_max", 0xFE01);
+define("HUITP_IEID_uni_max", 0xFEFF);
 
 //无效
 define("HUITP_IEID_uni_null", 0xFFFF);

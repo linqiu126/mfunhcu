@@ -454,7 +454,7 @@ class classTaskL1vmCoreRouter
                 if ($resp == false){
                     $result = "Cloud: Send to message buffer error.";
                     $log_content = "P:" . json_encode($result);
-                    $loggerObj->logger("MFUN_MAIN_ENTRY_HCU_IOT", "mfun_l1vm_task_main_entry", $log_time, $log_content);
+                    $loggerObj->logger("MFUN_MAIN_ENTRY_IOT_STDXML", "mfun_l1vm_task_main_entry", $log_time, $log_content);
                     echo trim($result);
                     return false;
                 }

@@ -31,14 +31,15 @@ class classTaskL2sdkIotStdxml
 
         //入口消息内容判断
         if (empty($msg) == true) {
-            $loggerObj->logger("MFUN_TASK_ID_L2SDK_IOT_STDXML", "mfun_l2sdk_iot_stdxml_task_main_entry", $log_time, "R: Received null message body.");
+            $log_content = "IOT_STDXML:received null message body";
+            $loggerObj->logger("MFUN_TASK_ID_L2SDK_IOT_STDXML", "mfun_l2sdk_iot_stdxml_task_main_entry", $log_time, $log_content);
+            echo trim($log_content); //这里echo主要是为了swoole log打印，帮助查找问题
             return false;
         }
         if (($msgId != MSG_ID_L1VM_TO_L2SDK_IOT_STDXML_INCOMING) || ($msgName != "MSG_ID_L1VM_TO_L2SDK_IOT_STDXML_INCOMING")){
             $result = "Msgid or MsgName error";
             $log_content = "P:" . json_encode($result);
             $loggerObj->logger("MFUN_TASK_ID_L2SDK_IOT_STDXML", "mfun_l2sdk_iot_stdxml_task_main_entry", $log_time, $log_content);
-            echo trim($result);
             return false;
         }
 
@@ -50,7 +51,9 @@ class classTaskL2sdkIotStdxml
         $dbiL1vmCommonObj = new classDbiL1vmCommon();
         $data = $dbiL1vmCommonObj->getStrBetween($data,"<xml>","</xml>");
         if(empty($data)){
-            $loggerObj->logger("MFUN_TASK_ID_L2SDK_IOT_STDXML", "mfun_l2sdk_iot_stdxml_task_main_entry", $log_time, "R:Received XML message format error!");
+            $log_content = "IOT_STDXML:received XML message format error";
+            $loggerObj->logger("MFUN_TASK_ID_L2SDK_IOT_STDXML", "mfun_l2sdk_iot_stdxml_task_main_entry", $log_time, $log_content);
+            echo trim($log_content); //这里echo主要是为了swoole log打印，帮助查找问题
             return false;
         }
 
@@ -82,18 +85,17 @@ class classTaskL2sdkIotStdxml
         $dbiL2sdkIotcomObj = new classDbiL2sdkIotcom();
         $statCode = $dbiL2sdkIotcomObj->dbi_hcuDevice_valid_device($fromUser); //FromUserName对应每个HCU硬件的设备编号
         if (empty($statCode)){
-            $result = "IOT_STDXML: invalid FromUserName = ".$fromUser;
-            $log_content = "T:" . json_encode($result);
+            $log_content = "IOT_STDXML: invalid FromUserName = ".$fromUser;
             $loggerObj->logger($project, $fromUser, $log_time, $log_content);
+            echo trim($log_content); //这里echo主要是为了swoole log打印，帮助查找问题
             return true;
         }
 
         //判断ToUser合法性
         if ($toUser != MFUN_CLOUD_HCU ){
-            $result = "IOT_STDXML: invalid ToUserName = ".$toUser;
-            $log_content = "T:" . json_encode($result);
+            $log_content = "IOT_STDXML: invalid ToUserName = ".$toUser;
             $loggerObj->logger($project, $toUser, $log_time, $log_content);
-            echo trim($result);
+            echo trim($log_content); //这里echo主要是为了swoole log打印，帮助查找问题
             return true;
         }
 
@@ -134,8 +136,9 @@ class classTaskL2sdkIotStdxml
                 else $resp = "";
                 break;
             default:
-                //收内容存储
-                $resp = "[STDXML]unknown message type: " . $msgType;
+                $log_content = "IOT_STDXML:unknown message type = " . $msgType;
+                $loggerObj->logger($project, $fromUser, $log_time, $log_content);
+                echo trim($log_content); //这里echo主要是为了swoole log打印，帮助查找问题
                 break;
         }
 

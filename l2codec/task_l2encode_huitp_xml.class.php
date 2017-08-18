@@ -94,7 +94,7 @@ class classTaskL2encodeHuitpXml
         {
             $huitpIeId = $huitpIeArray[$i];
             $huitpIe = $l2codecHuitpIeDictObj->mfun_l2codec_getHuitpIeFormat($huitpIeId);
-            $huitpIeFormat = $huitpIe['format'];  //A4ieId/A4ieLen/A2dataFormat/A8pm01Value
+            $huitpIeFormat = $huitpIe['format'];
             $huitpIeLen = $huitpIe['len'];
 
             //编码IE ID
