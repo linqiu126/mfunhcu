@@ -845,18 +845,20 @@ class classDbiL2snrCommon
             }
         }
 
-        //查找新load对应的database版本
-        $dbEntry = HUITP_IEID_UNI_EQU_ENTRY_HCU_DB;
-        $query_str = "SELECT * FROM `t_l3f4icm_swctrl` WHERE (`hwtype` = '$hwType' AND `upgradeFlag` = '$upgradeFlag' AND `equEntry` = '$dbEntry' AND `validflag` = '$validflag' AND `swrel` = '$swRel' AND `dbver` = '$dbVer')";
-        $result=$mysqli->query($query_str);
-        if (($result != false) && ($result->num_rows)>0){
-            $row = $result->fetch_array();
-            $dbCheckSum = $row['checksum'];
-            $dbTotalLen = $row['filesize'];
-            $comConfirm = HUITP_IEID_UNI_COM_CONFIRM_YES;
-        }
-        else{
-            $comConfirm = HUITP_IEID_UNI_COM_CONFIRM_NO;
+        //如果entry是HCU_SW,需要查找新load对应的database版本
+        if($equEntry == HUITP_IEID_UNI_EQU_ENTRY_HCU_SW){
+            $dbEntry = HUITP_IEID_UNI_EQU_ENTRY_HCU_DB;
+            $query_str = "SELECT * FROM `t_l3f4icm_swctrl` WHERE (`hwtype` = '$hwType' AND `equEntry` = '$dbEntry' AND `validflag` = '$validflag' AND `swrel` = '$swRel' AND `dbver` = '$dbVer')";
+            $result=$mysqli->query($query_str);
+            if (($result != false) && ($result->num_rows)>0){
+                $row = $result->fetch_array();
+                $dbCheckSum = $row['checksum'];
+                $dbTotalLen = $row['filesize'];
+                $comConfirm = HUITP_IEID_UNI_COM_CONFIRM_YES;
+            }
+            else{
+                $comConfirm = HUITP_IEID_UNI_COM_CONFIRM_NO;
+            }
         }
 
         $timeStamp = time();

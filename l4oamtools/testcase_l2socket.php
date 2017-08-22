@@ -55,7 +55,7 @@ if (TC_SOCKET == true) {
     $data = "<xml><ToUserName><![CDATA[XHZN_HCU]]></ToUserName><FromUserName><![CDATA[HCU_G502_FHYS_P0001]]></FromUserName><CreateTime>1502966475</CreateTime><MsgType><![CDATA[huitp_text]]></MsgType><Content><![CDATA[FE81000B0003000101FE000002CA29]]></Content><FuncFlag>0</FuncFlag></xml>";
 
     //A081, HUITP_MSGID_uni_inventory_report
-    //$data = "<xml><ToUserName><![CDATA[XHZN_HCU]]></ToUserName><FromUserName><![CDATA[HCU_G502_FHYS_P0001]]></FromUserName><CreateTime>1502891284</CreateTime><MsgType><![CDATA[huitp_text]]></MsgType><Content><![CDATA[A08100250003000101A000001C08010006000300F00001000000000000000000000000040159944D14]]></Content><FuncFlag>0</FuncFlag></xml>";
+    $data = "<xml><ToUserName><![CDATA[XHZN_HCU]]></ToUserName><FromUserName><![CDATA[HCU_G502_FHYS_P0001]]></FromUserName><CreateTime>1503390782</CreateTime><MsgType><![CDATA[huitp_text]]></MsgType><Content><![CDATA[A08100250003000101A000001C080100000000000000000000000000000000000000000403599BEC3E]]></Content><FuncFlag>0</FuncFlag></xml>";
 
     //A181, HUITP_MSGID_uni_sw_package_report
     //$data = "<xml><ToUserName><![CDATA[XHZN_HCU]]></ToUserName><FromUserName><![CDATA[HCU_G502_FHYS_P0001]]></FromUserName><CreateTime>1503044536</CreateTime><MsgType><![CDATA[huitp_text]]></MsgType><Content><![CDATA[A181001900030001010032001008010006000300FA0401000100080130]]></Content><FuncFlag>0</FuncFlag></xml>";
