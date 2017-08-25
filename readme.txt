@@ -377,6 +377,11 @@ Make By：ZJL
 > 继续软件代码清理，删除老的IOT_HCU SDK的功能，改IOT_HCU为IOT_STDXML
 > 添加图片传送HEX data Socket端口，和相应L2snr_hsmmp处理
 
+//= LZH, 2017 Aug.25, CURRENT_SW_DELIVERY R03.D22
+> 添加5510 socket端口用于照片HEX码流上传
+> 完成CLL HUITP消息调试，支持4把锁功能
+> 完成软件下载功能
+
 //待完善的功能
 1. dbi_devinfo_update（）需要修改，添加设备时预计结束时间和实际结束时间应该在项目信息里
 2. 添加设备时没有选择该设备装配了那些传感器，sensorctrl表没有更新

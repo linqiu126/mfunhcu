@@ -819,6 +819,7 @@ class classDbiL2snrCommon
         $equEntry = hexdec($data[1]['HUITP_IEID_uni_inventory_element']['equEntry']) & 0xFF;
         $timeStamp = hexdec($data[1]['HUITP_IEID_uni_inventory_element']['timeStamp']) & 0xFFFFFFFF;
 
+        $comConfirm = HUITP_IEID_UNI_COM_CONFIRM_NO; //初始化
         $validflag = MFUN_HCU_SW_LOAD_FLAG_VALID;
         $relver_index = $swRel*65535 + $swVer;
 
@@ -834,7 +835,7 @@ class classDbiL2snrCommon
             $newSwRel = intval($row['swrel']);
             $newSwVer = intval($row['swver']);
             $new_index = $newSwRel*65535 + $newSwVer;
-            if ($new_index > $relver_index){
+            if ($new_index >= $relver_index){
                 $relver_index = $new_index;
                 $hwId = $newHwId;
                 $swRel = $newSwRel;
@@ -842,6 +843,7 @@ class classDbiL2snrCommon
                 $dbVer = intval($row['dbver']);
                 $swCheckSum = intval($row['checksum']);
                 $swTotalLen = intval($row['filesize']);
+                $comConfirm = HUITP_IEID_UNI_COM_CONFIRM_YES;
             }
         }
 
@@ -854,7 +856,6 @@ class classDbiL2snrCommon
                 $row = $result->fetch_array();
                 $dbCheckSum = $row['checksum'];
                 $dbTotalLen = $row['filesize'];
-                $comConfirm = HUITP_IEID_UNI_COM_CONFIRM_YES;
             }
             else{
                 $comConfirm = HUITP_IEID_UNI_COM_CONFIRM_NO;
@@ -936,7 +937,8 @@ class classDbiL2snrCommon
         $filesize = 0;
         $file_checksum = 0;
         $validflag = MFUN_HCU_SW_LOAD_FLAG_VALID;
-        if ($equEntry == HUITP_IEID_UNI_EQU_ENTRY_HCU_SW) { //软件下载请求
+        //HCU或IHU软件下载请求
+        if ($equEntry == HUITP_IEID_UNI_EQU_ENTRY_HCU_SW OR $equEntry == HUITP_IEID_UNI_EQU_ENTRY_IHU) {
             $query_str = "SELECT * FROM `t_l3f4icm_swctrl` WHERE (`hwtype` = '$hwType' AND `upgradeFlag` = '$upgradeFlag' AND `equEntry` = '$equEntry' AND `validflag` = '$validflag' AND `swrel` = '$swRel' AND `swver` = '$swVer')";
             $result = $mysqli->query($query_str);
             if (($result != false) && ($result->num_rows) > 0) {
@@ -945,8 +947,10 @@ class classDbiL2snrCommon
                 $filesize = intval($row['filesize']);
                 $file_checksum = intval($row['checksum']);
             }
-        } elseif ($equEntry == HUITP_IEID_UNI_EQU_ENTRY_HCU_DB) {  //数据库下载请求
-            $query_str = "SELECT * FROM `t_l3f4icm_swctrl` WHERE (`hwtype` = '$hwType' AND `upgradeFlag` = '$upgradeFlag' AND `equEntry` = '$equEntry' AND `validflag` = '$validflag' AND `swrel` = '$swRel' AND `dbver` = '$swVer')";
+        }
+        //数据库下载请求
+        elseif ($equEntry == HUITP_IEID_UNI_EQU_ENTRY_HCU_DB) {
+            $query_str = "SELECT * FROM `t_l3f4icm_swctrl` WHERE (`hwtype` = '$hwType' AND `equEntry` = '$equEntry' AND `validflag` = '$validflag' AND `swrel` = '$swRel' AND `dbver` = '$swVer')";
             $result = $mysqli->query($query_str);
             if (($result != false) && ($result->num_rows) > 0) {
                 $row = $result->fetch_array();
@@ -954,6 +958,10 @@ class classDbiL2snrCommon
                 $filesize = intval($row['filesize']);
                 $file_checksum = intval($row['checksum']);
             }
+        }
+        else{
+            $filelink = "";
+            $filesize = 0;
         }
 
         if($segSplitLen != 0)
