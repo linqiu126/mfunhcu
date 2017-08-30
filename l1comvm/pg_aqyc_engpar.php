@@ -27,6 +27,9 @@ define ("MFUN_HCU_AQYC_STATUS_ON", "Y");
 define ("MFUN_HCU_AQYC_STATUS_OFF", "N");
 define("MFUN_HCU_AQYC_SLEEP_DURATION", 600); //如果最后一次测量报告距离现在已经超过10x60秒
 
+//扬尘摄像头访问常量
+define ("MFUN_HCU_AQYC_CAM_USERNAME", "admin");
+define ("MFUN_HCU_AQYC_CAM_PASSWORD", "Bxxh!123");
 
 //定义传感器类型
 define("MFUN_L3APL_F3DM_AQYC_STYPE_PM", "YC_001");

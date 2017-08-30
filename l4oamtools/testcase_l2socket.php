@@ -15,6 +15,34 @@ if (TC_SOCKET == true) {
 //SOCKET测试开始
     echo " [TC SOCKET: xxx START]\n";
 
+    $username='admin';
+    $password='Bxxh!123';
+//$URL='http://192.168.1.64/ISAPI/System/status';
+    $URL="http://ngrok.hkrob.com:30191/Streaming/channels/1/picture";
+//echo "URL is $URL".PHP_EOL;
+
+    $curl = curl_init();
+    curl_setopt($curl, CURLOPT_URL, $URL);
+    curl_setopt($curl, CURLOPT_HEADER, 0);// ÉèÖÃheader
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);// ÉèÖÃcURL ²ÎÊý£¬ÒªÇó½á¹û±£´æµ½×Ö·û´®ÖÐ»¹ÊÇÊä³öµ½ÆÁÄ»ÉÏ¡£
+    curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_ANY);
+    curl_setopt($curl, CURLOPT_USERPWD, "$username:$password");
+    curl_setopt($curl, CURLOPT_TIMEOUT, 30); //timeout after 30 seconds
+
+    $data = curl_exec($curl);
+    curl_close($curl);
+
+    $filelink = './test.jpg';
+    $newfile = fopen($filelink, "wb+") or die("Unable to open file!");
+    fwrite($newfile, $data);
+    fclose($newfile);
+
+
+    $status_code = curl_getinfo($curl, CURLINFO_HTTP_CODE);   //get status code
+    curl_close($curl);
+    $array = (array) simplexml_load_string( $data );
+    print_r($array);
+
     /*********************图片数据，消息来自9501端口*********************/
     $data = "4843555F473530325F464859535F50303030315F303132333435363738395F5F000000024040";
 
