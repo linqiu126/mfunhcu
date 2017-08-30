@@ -710,8 +710,9 @@ class classDbiL2snrCommon
         $equID = hexdec($data[1]['HUITP_IEID_uni_alarm_info_element']['equID']) & 0xFFFFFFFF;
         $causeId = hexdec($data[1]['HUITP_IEID_uni_alarm_info_element']['causeId']) & 0xFFFFFFFF;
         $alarmContent = hexdec($data[1]['HUITP_IEID_uni_alarm_info_element']['alarmContent']) & 0xFFFFFFFF;
-        $alarmDesc = $data[1]['HUITP_IEID_uni_alarm_info_element']['alarmDesc'];
         $timeStamp = hexdec($data[1]['HUITP_IEID_uni_alarm_info_element']['timeStamp']) & 0xFFFFFFFF;
+
+        $alarmDesc = "";
 
         $createtime = date("Y-m-d H:m:s", $timeStamp);
         $query_str = "INSERT INTO `t_l3f5fm_aqyc_alarmdata` (`devcode`, `equipmentid`, `alarmtype`, `alarmdesc`, `alarmseverity`, `alarmclearflag`, `timestamp`, `causeid`, `alarmcontent`)
@@ -763,8 +764,8 @@ class classDbiL2snrCommon
         $memOccupy = hexdec($data[1]['HUITP_IEID_uni_performance_info_element']['memOccupy']) & 0xFFFFFFFF;
         $diskOccupy = hexdec($data[1]['HUITP_IEID_uni_performance_info_element']['diskOccupy']) & 0xFFFFFFFF;
         $cpuTemp = hexdec($data[1]['HUITP_IEID_uni_performance_info_element']['cpuTemp']) & 0xFFFFFFFF;
+        $timeStamp = hexdec($data[1]['HUITP_IEID_uni_performance_info_element']['timeStamp']) & 0xFFFFFFFF;
 
-        $timeStamp = time();
         $createtime = date("Y-m-d H:m:s", $timeStamp);
 
         $query_str = "INSERT INTO `t_l3f6pm_perfdata`(`devcode`, `statcode`, `createtime`,`restartCnt`, `networkConnCnt`, `networkConnFailCnt`, `networkDiscCnt`, `socketDiscCnt`, `cpuOccupy`, `memOccupy`, `diskOccupy`, `cpuTemp`)

@@ -357,8 +357,8 @@ class classDbiL2snrCcl
         $picId = array();
         for($i = 0; $i < HUITP_IEID_UNI_CCL_GEN_PIC_ID_LEN_MAX; $i++){
             $one_char = substr($filename, $i, 1);
-            $hex_char = dechex(ord($one_char));
-            array_push($picId, $hex_char);
+            $int_char = ord($one_char);
+            array_push($picId, $int_char);
         }
         array_push($picNameIE, HUITP_IEID_uni_ccl_gen_picid);
         array_push($picNameIE, $huitpIeLen);

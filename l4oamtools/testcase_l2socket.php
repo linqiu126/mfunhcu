@@ -41,26 +41,28 @@ if (TC_SOCKET == true) {
 
     //4E81,HUITP_MSGID_uni_ccl_state_report
     $data = "<xml><ToUserName><![CDATA[XHZN_HCU]]></ToUserName><FromUserName><![CDATA[HCU_G502_FHYS_P0001]]></FromUserName><CreateTime>1485035971</CreateTime><MsgType><![CDATA[huitp_text]]></MsgType><Content><![CDATA[4E81006800030001014D0000060404010101014100000604040101010148000001024B000001024600000102470000010245000001024900000303FFFF4A00000303FFFF450100030300234E00000303FB5D4E01000303DFD84400000303E0C04E02000303C68B4E03000102]]></Content><FuncFlag>0</FuncFlag></xml>";
-
-    //$data = "<xml><ToUserName><![CDATA[XHZN_HCU]]></ToUserName><FromUserName><![CDATA[HCU_G502_FHYS_P0001]]></FromUserName><CreateTime>1485033688</CreateTime><MsgType><![CDATA[huitp_text]]></MsgType><Content><![CDATA[4D90003400010001014D01002B01000000000000000000000000000000000000000000000000000000000000000000000000000000000000]]></Content><FuncFlag>0</FuncFlag></xml>";
-    //$data = "<xml><ToUserName><![CDATA[XHZN_HCU]]></ToUserName><FromUserName><![CDATA[HCU_G502_FHYS_P0001]]></FromUserName><CreateTime>1485033674</CreateTime><MsgType><![CDATA[huitp_text]]></MsgType><Content><![CDATA[4D90003400010001014D01002B0206F4F5DB759CEF0000000000000000000000000000000000000000000000000000000000000000000000]]></Content><FuncFlag>0</FuncFlag></xml>";
     $data = "<xml><ToUserName><![CDATA[XHZN_HCU]]></ToUserName><FromUserName><![CDATA[HCU_G502_FHYS_P0001]]></FromUserName><CreateTime>1485033714</CreateTime><MsgType><![CDATA[huitp_text]]></MsgType><Content><![CDATA[4E81006800030001014D0000060404020202024D00000604040202020248000001024B0000010146000001014700000101450000010149000003030BB84A0000030311CC450100030100294E00000303C02C4E010003033B4B440000030100104E0200030377824E03000102]]></Content><FuncFlag>0</FuncFlag></xml>";
-    //HUITP_MSGID_uni_noise_data_report
+
+    //4D90 HUITP_MSGID_uni_ccl_lock_auth_inq
+    //$data = "<xml><ToUserName><![CDATA[XHZN_HCU]]></ToUserName><FromUserName><![CDATA[HCU_G502_FHYS_P0001]]></FromUserName><CreateTime>1485033688</CreateTime><MsgType><![CDATA[huitp_text]]></MsgType><Content><![CDATA[4D90003400010001014D01002B01000000000000000000000000000000000000000000000000000000000000000000000000000000000000]]></Content><FuncFlag>0</FuncFlag></xml>";
+    $data = "<xml><ToUserName><![CDATA[XHZN_HCU]]></ToUserName><FromUserName><![CDATA[HCU_G502_FHYS_P0001]]></FromUserName><CreateTime>1485033674</CreateTime><MsgType><![CDATA[huitp_text]]></MsgType><Content><![CDATA[4D90003400010001014D01002B0206F4F5DB759CEF0000000000000000000000000000000000000000000000000000000000000000000000]]></Content><FuncFlag>0</FuncFlag></xml>";
+
+    //2B81 HUITP_MSGID_uni_noise_data_report
     //$data = "<xml><ToUserName><![CDATA[XHZN_HCU]]></ToUserName><FromUserName><![CDATA[HCU_G502_FHYS_P0001]]></FromUserName><CreateTime>1490757257</CreateTime><MsgType><![CDATA[huitp_text]]></MsgType><Content><![CDATA[2B81000E00030001012B00000502000001B2]]></Content><FuncFlag>0</FuncFlag></xml>";
 
     //B181, HUITP_MSGID_uni_performance_info_report
     //$data = "<xml><ToUserName><![CDATA[XHZN_HCU]]></ToUserName><FromUserName><![CDATA[HCU_G502_FHYS_P0001]]></FromUserName><CreateTime>1502853593</CreateTime><MsgType><![CDATA[huitp_text]]></MsgType><Content><![CDATA[B18100310003000101B10000280000000000000000000000000000000000000000000000000000001700000059000000005993B9D9]]></Content><FuncFlag>0</FuncFlag></xml>";
 
     //FE81, HUITP_MSGID_uni_heart_beat_report
-    $data = "<xml><ToUserName><![CDATA[XHZN_HCU]]></ToUserName><FromUserName><![CDATA[HCU_G502_FHYS_P0001]]></FromUserName><CreateTime>1502966475</CreateTime><MsgType><![CDATA[huitp_text]]></MsgType><Content><![CDATA[FE81000B0003000101FE000002CA29]]></Content><FuncFlag>0</FuncFlag></xml>";
+    //$data = "<xml><ToUserName><![CDATA[XHZN_HCU]]></ToUserName><FromUserName><![CDATA[HCU_G502_FHYS_P0001]]></FromUserName><CreateTime>1502966475</CreateTime><MsgType><![CDATA[huitp_text]]></MsgType><Content><![CDATA[FE81000B0003000101FE000002CA29]]></Content><FuncFlag>0</FuncFlag></xml>";
 
     //A081, HUITP_MSGID_uni_inventory_report
-    $data = " <xml><ToUserName><![CDATA[XHZN_HCU]]></ToUserName><FromUserName><![CDATA[HCU_G502_FHYS_P0001]]></FromUserName><CreateTime>1503451437</CreateTime><MsgType><![CDATA[huitp_text]]></MsgType><Content><![CDATA[A08100250003000101A000001C080100000000000000000000000000000000000000000303599CD92D]]></Content><FuncFlag>0</FuncFlag></xml>";
-    $data = " <xml><ToUserName><![CDATA[XHZN_HCU]]></ToUserName><FromUserName><![CDATA[HCU_G502_FHYS_P0001]]></FromUserName><CreateTime>1503454622</CreateTime><MsgType><![CDATA[huitp_text]]></MsgType><Content><![CDATA[A08100250003000101A000001C080100000000000000000000000000000000000000000203599CE59E]]></Content><FuncFlag>0</FuncFlag></xml>";
+    //$data = " <xml><ToUserName><![CDATA[XHZN_HCU]]></ToUserName><FromUserName><![CDATA[HCU_G502_FHYS_P0001]]></FromUserName><CreateTime>1503451437</CreateTime><MsgType><![CDATA[huitp_text]]></MsgType><Content><![CDATA[A08100250003000101A000001C080100000000000000000000000000000000000000000303599CD92D]]></Content><FuncFlag>0</FuncFlag></xml>";
+    //$data = " <xml><ToUserName><![CDATA[XHZN_HCU]]></ToUserName><FromUserName><![CDATA[HCU_G502_FHYS_P0001]]></FromUserName><CreateTime>1503454622</CreateTime><MsgType><![CDATA[huitp_text]]></MsgType><Content><![CDATA[A08100250003000101A000001C080100000000000000000000000000000000000000000203599CE59E]]></Content><FuncFlag>0</FuncFlag></xml>";
 
     //A181, HUITP_MSGID_uni_sw_package_report
     //$data = "<xml><ToUserName><![CDATA[XHZN_HCU]]></ToUserName><FromUserName><![CDATA[HCU_G502_FHYS_P0001]]></FromUserName><CreateTime>1503044536</CreateTime><MsgType><![CDATA[huitp_text]]></MsgType><Content><![CDATA[A181001900030001010032001008010006000300FA0401000100080130]]></Content><FuncFlag>0</FuncFlag></xml>";
-    $data = " <xml><ToUserName><![CDATA[XHZN_HCU]]></ToUserName><FromUserName><![CDATA[HCU_G502_FHYS_P0001]]></FromUserName><CreateTime>1503477929</CreateTime><MsgType><![CDATA[huitp_text]]></MsgType><Content><![CDATA[A1810019000300010100320010080100060004002C0403000100080130]]></Content><FuncFlag>0</FuncFlag></xml>";
+    //$data = " <xml><ToUserName><![CDATA[XHZN_HCU]]></ToUserName><FromUserName><![CDATA[HCU_G502_FHYS_P0001]]></FromUserName><CreateTime>1503477929</CreateTime><MsgType><![CDATA[huitp_text]]></MsgType><Content><![CDATA[A1810019000300010100320010080100060004002C0403000100080130]]></Content><FuncFlag>0</FuncFlag></xml>";
 
 
     $msg = array("socketid" => 1, "data"=>$data);

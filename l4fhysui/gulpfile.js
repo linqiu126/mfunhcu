@@ -12,13 +12,15 @@ var rename = require('gulp-rename');
 var clean = require('gulp-clean');
 var htmlmin = require('gulp-htmlmin');
 var replace = require('gulp-replace');
+var mkdirp = require('mkdirp');
 
 
-
-var replace_content = "../../avorion/";
-var replace_install = "/dist";
+var replace_content = "/l4fhysui";
+var replace_content_admintools = "/l4admintools";
+var replace_content_admintools_url = "/mfunhcu/l4admintools";
+var replace_install = "../../avorion";
 var option = {
-
+    admin_tools_path:"../www/dist/admintools",
     buildPath: "../www/dist"
 }
 var option_html = {
@@ -55,6 +57,8 @@ gulp.task("resourcecopy",function(){
         .pipe(gulp.dest(option.buildPath+"/img/"));
     gulp.src("./resource/**/*")
         .pipe(gulp.dest(option.buildPath+"/resource/"));
+    gulp.src("./resource/**/*")
+        .pipe(gulp.dest(option.admin_tools_path+"/resource/"));
     gulp.src("./php/*")
         .pipe(gulp.dest(option.buildPath+"/php/"));
     gulp.src("./ejs/*")
@@ -67,8 +71,7 @@ gulp.task("resourcecopy",function(){
         .pipe(gulp.dest(option.buildPath+"/video/"));
     gulp.src("./screensaver/**/*")
         .pipe(gulp.dest(option.buildPath+"/screensaver/"));
-    gulp.dest(option.buildPath+"/upload/");
-    gulp.dest(option.buildPath+"/usr_img/");
+
     gulp.src("./jump.php")
         .pipe(gulp.dest(option.buildPath+"/"));
     gulp.src("./request.php")
@@ -83,13 +86,23 @@ gulp.task("resourcecopy",function(){
         .pipe(gulp.dest(option.buildPath+"/"));
     gulp.src("./imageshow/**/*")
         .pipe(gulp.dest(option.buildPath+"/imageshow/"));
+    gulp.src("./admintools/upload.php")
+        .pipe(replace(/_UPLOAD_PATH_/,replace_content_admintools))
+        .pipe(gulp.dest(option.admin_tools_path));
+    gulp.src("./admintools/admintools.php")
+        .pipe(gulp.dest(option.admin_tools_path));
     //gulp.src("./*.html")
      //   .pipe(gulp.dest(option.buildPath+"/"));
+
+    mkdirp.sync(option.buildPath+"/upload/");
+    mkdirp.sync(option.admin_tools_path+"/upload/");
+    mkdirp.sync(option.buildPath+"/usr_img/");
 })
 
 // �ϲ���ѹ���ļ�
 gulp.task('scripts', function() {
     gulp.src('./js/app.js')
+        .pipe(replace(/_ADMINTOOL_PATH_/,replace_content_admintools_url))
         .pipe(concat('app.js'))
         //.pipe(gulp.dest('./dist/js'))
         .pipe(rename('app.js'))
@@ -114,6 +127,22 @@ gulp.task('scripts', function() {
         .pipe(uglify())
         .pipe(gulp.dest(option.buildPath+"/js/"));
 
+
+    gulp.src('./js/hcu_util.js')
+        .pipe(concat('hcu_util.js'))
+        //.pipe(gulp.dest('./dist/js'))
+        .pipe(rename('hcu_util.js'))
+        .pipe(uglify())
+        .pipe(gulp.dest(option.admin_tools_path+"/js/"));
+    gulp.src('./js/nprogress.js')
+        .pipe(concat('nprogress.js'))
+        // .pipe(gulp.dest('./dist/js'))
+        .pipe(rename('nprogress.js'))
+        .pipe(uglify())
+        .pipe(gulp.dest(option.admin_tools_path+"/js/"));
+
+
+
     gulp.src('./css/Login.css')
        // .pipe(concat('Login.css'))
         .pipe(rename('Login.css'))
@@ -134,7 +163,23 @@ gulp.task('scripts', function() {
         .pipe(rename('style.css'))
         .pipe(minifycss())
         .pipe(gulp.dest(option.buildPath+"/css/"));
+    gulp.src('./css/nprogress.css')
+        // .pipe(concat('nprogress.css'))
+        .pipe(rename('nprogress.css'))
+        .pipe(minifycss())
+        .pipe(gulp.dest(option.admin_tools_path+"/css/"));
+    gulp.src('./css/scope.css')
+        // .pipe(concat('scope.css'))
+        .pipe(rename('scope.css'))
+        .pipe(minifycss())
+        .pipe(gulp.dest(option.admin_tools_path+"/css/"));
+    gulp.src('./css/style.css')
+        // .pipe(concat('scope.css'))
+        .pipe(rename('style.css'))
+        .pipe(minifycss())
+        .pipe(gulp.dest(option.admin_tools_path+"/css/"));
     gulp.src('./login.html')
+        .pipe(rename('login.html'))
         .pipe(htmlmin(option_html))
         .pipe(gulp.dest(option.buildPath));
     gulp.src('./LostPassword.html')
@@ -143,6 +188,17 @@ gulp.task('scripts', function() {
     gulp.src('./scope.html')
         .pipe(htmlmin(option_html))
         .pipe(gulp.dest(option.buildPath));
+
+    gulp.src('./admintools/js/admintools.js')
+        .pipe(replace(/_INSTALL_PATH_/,replace_install))
+        //.pipe(concat('admintools.js'))
+        //.pipe(gulp.dest('./dist/js'))
+        //.pipe(rename('admintools.js'))
+        .pipe(uglify())
+        .pipe(gulp.dest(option.admin_tools_path+"/js/"));
+    gulp.src('./admintools/admintools.html')
+        .pipe(htmlmin(option_html))
+        .pipe(gulp.dest(option.admin_tools_path));
 });
 
 // Ĭ������

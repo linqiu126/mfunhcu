@@ -846,10 +846,10 @@ class classL2codecHuitpIeDict
           HUITP_IEID_uni_sw_package_body                  => array("format"=>"A4ieId/A4ieLen/A4segValidLen/A4segCheckSum/A608swPkgBody","len"=>"308","name"=>"HUITP_IEID_uni_sw_package_body"),
 
           //ALARM REPORT
-          HUITP_IEID_uni_alarm_info_element               => array("format"=>"A4ieId/A4ieLen/A4alarmType/A2alarmServerity/A2alarmClearFlag/A8equID/A8causeId/A8alarmContent/A200alarmDesc/A8timeStamp","len"=>"120","name"=>"HUITP_IEID_uni_alarm_info_element"),
+          HUITP_IEID_uni_alarm_info_element               => array("format"=>"A4ieId/A4ieLen/A4alarmType/A2alarmServerity/A2alarmClearFlag/A8equID/A8causeId/A8alarmContent/A8timeStamp","len"=>"20","name"=>"HUITP_IEID_uni_alarm_info_element"),
 
           //PM Report
-          HUITP_IEID_uni_performance_info_element         => array("format"=>"A4ieId/A4ieLen/A8restartCnt/A8networkConnCnt/A8networkConnFailCnt/A8networkDiscCnt/A8socketDiscCnt/A8cpuOccupy/A8memOccupy/A8diskOccupy/A8cpuTemp","len"=>"36","name"=>"HUITP_IEID_uni_performance_info_element"),
+          HUITP_IEID_uni_performance_info_element         => array("format"=>"A4ieId/A4ieLen/A8restartCnt/A8networkConnCnt/A8networkConnFailCnt/A8networkDiscCnt/A8socketDiscCnt/A8cpuOccupy/A8memOccupy/A8diskOccupy/A8cpuTemp/A8timeStamp","len"=>"40","name"=>"HUITP_IEID_uni_performance_info_element"),
 
           //设备基本信息
           HUITP_IEID_uni_equipment_info_value             => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
