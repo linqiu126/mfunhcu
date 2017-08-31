@@ -25,21 +25,6 @@ function _urlencode($elem)
 $key=$_GET["action"];
 
 switch ($key){
-    case "UserInfo":
-        $user = array(
-            'id'=>'7654321',
-            'name'=>'黄',
-            'admin'=>'false',
-            'city'=>("上海")
-        );
-        $retval=array(
-            'status'=>'true',
-            'auth'=>'true',
-            'msg'=>'',
-            'ret'=>($user)
-        );
-        $jsonencode = _encode($retval);
-        echo $jsonencode; break;
     case "GetSoftwareLoadTable":
         /*
         REQUEST:

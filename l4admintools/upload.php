@@ -1,6 +1,6 @@
 <?php
 	$id= $_REQUEST["id"];
-	$upload_path="../l4admintools/";
+	$upload_path="/var/www/html/mfunhcu/l4admintools";
 	function _encode($arr)
     {
       $na = array();

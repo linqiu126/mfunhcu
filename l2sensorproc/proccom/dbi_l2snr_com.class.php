@@ -207,6 +207,39 @@ class classDbiL2snrCommon
 
     }
 
+    //用于HUITP汇报数值根据format进行转换
+    public function dbi_datavalue_convert($format, $data)
+    {
+        switch($format)
+        {
+            case HUITP_IEID_UNI_COM_FORMAT_TYPE_NULL:
+                $value = false;
+                break;
+            case HUITP_IEID_UNI_COM_FORMAT_TYPE_INT_ONLY:
+                $value = intval($data);
+                break;
+            case HUITP_IEID_UNI_COM_FORMAT_TYPE_FLOAT_WITH_NF1:
+                $value = intval($data)/10;
+                break;
+            case HUITP_IEID_UNI_COM_FORMAT_TYPE_FLOAT_WITH_NF2:
+                $value = intval($data)/100;
+                break;
+            case HUITP_IEID_UNI_COM_FORMAT_TYPE_FLOAT_WITH_NF3:
+                $value = intval($data)/1000;
+                break;
+            case HUITP_IEID_UNI_COM_FORMAT_TYPE_FLOAT_WITH_NF4:
+                $value = intval($data)/10000;
+                break;
+            case HUITP_IEID_UNI_COM_FORMAT_TYPE_INVALID:
+                $value = false;
+                break;
+            default:
+                $value = false;
+                break;
+        }
+        return $value;
+    }
+
     //更新各测量数据对应的精度信息
     public function dbi_dataformat_update_format($deviceid, $type, $format)
     {

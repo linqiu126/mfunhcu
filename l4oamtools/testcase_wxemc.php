@@ -16,54 +16,54 @@ if (TC_EMCWX == true){
     //HUITP pm Data, 增加树莓派CPU温度
     echo " [TC IOT_STDXML: HUITP pm Data START]\n";
     $GLOBALS["HTTP_RAW_POST_DATA"] = "<xml><ToUserName><![CDATA[AQYC_HCU]]></ToUserName><FromUserName><![CDATA[HCU_G201_AQYC_SH001]]></FromUserName><CreateTime>1496584441</CreateTime><MsgType><![CDATA[huitp_text]]></MsgType><Content><![CDATA[B18100310003000101B1000028000000000000000000000000000000000000000100000005000000210000005600000036593410F9]]></Content><FuncFlag>0</FuncFlag></xml>";
-    require("../l1mainentry/cloud_callback_wechat.php");
+    //require("../l1mainentry/cloud_callback_wechat.php");
     echo " [TC IOT_STDXML: HUITP pm Data END]\n";
 
     //HUITP sw inventory Data
     echo " [TC IOT_STDXML: HUITP sw inventory Data START]\n";
     $GLOBALS["HTTP_RAW_POST_DATA"] = "<xml><ToUserName><![CDATA[XHZN_HCU]]></ToUserName><FromUserName><![CDATA[HCU_G201_AQYC_SH001]]></FromUserName><CreateTime>1492506331</CreateTime><MsgType><![CDATA[huitp_text]]></MsgType><Content><![CDATA[A08100480003000101A000003F02010005000100C104000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000058F5D6DB]]></Content><FuncFlag>0</FuncFlag></xml>";
-    require("../l1mainentry/cloud_callback_wechat.php");
+    //require("../l1mainentry/cloud_callback_wechat.php");
     echo " [TC IOT_STDXML: HUITP sw inventory Data END]\n";
 
     //HUITP Alarm Data
     echo " [TC IOT_STDXML: HUITP Alarm Data START]\n";
     $GLOBALS["HTTP_RAW_POST_DATA"] = "<xml><ToUserName><![CDATA[XHZN_HCU]]></ToUserName><FromUserName><![CDATA[HCU_G201_AQYC_SH001]]></FromUserName><CreateTime>1491539699</CreateTime><MsgType><![CDATA[huitp_text]]></MsgType><Content><![CDATA[B08100810003000101B0000078000300000000000100000000000000084843555F473230315F415159435F53483030315F686B32303137303430373132333400000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000058E716F3]]></Content><FuncFlag>0</FuncFlag></xml>";
-    require("../l1mainentry/cloud_callback_wechat.php");
+    //require("../l1mainentry/cloud_callback_wechat.php");
     echo " [TC IOT_STDXML: HUITP Alarm Data END]\n";
 
     //HUITP Noise Data
     echo " [TC IOT_STDXML: HUITP Noise Data START]\n";
-    $GLOBALS["HTTP_RAW_POST_DATA"] = "<xml><ToUserName><![CDATA[XHZN_HCU]]></ToUserName><FromUserName><![CDATA[HCU_G201_AQYC_SH001]]></FromUserName><CreateTime>1492518479</CreateTime><MsgType><![CDATA[huitp_text]]></MsgType><Content><![CDATA[2B81001200030001012B00000902000001B258F6064F]]></Content><FuncFlag>0</FuncFlag></xml>";
-    require("../l1mainentry/cloud_callback_wechat.php");
+    $GLOBALS["HTTP_RAW_POST_DATA"] = "<xml><ToUserName><![CDATA[XHZN_HCU]]></ToUserName><FromUserName><![CDATA[HCU_G201_AQYC_SH001]]></FromUserName><CreateTime>1504188646</CreateTime><MsgType><![CDATA[huitp_text]]></MsgType><Content><![CDATA[2B81001200030001012B00000901000001F359A818E6]]></Content><FuncFlag>0</FuncFlag></xml>";
+    //require("../l1mainentry/cloud_callback_wechat.php");
     echo " [TC IOT_STDXML: HUITP Noise Data END]\n";
 
     //HUITP Windspd Data
     echo " [TC IOT_STDXML: HUITP Windspd Data START]\n";
-    $GLOBALS["HTTP_RAW_POST_DATA"] = "<xml><ToUserName><![CDATA[XHZN_HCU]]></ToUserName><FromUserName><![CDATA[HCU_G201_AQYC_SH001]]></FromUserName><CreateTime>1492506346</CreateTime><MsgType><![CDATA[huitp_text]]></MsgType><Content><![CDATA[26810012000300010126000009010000013158F5D6EA]]></Content><FuncFlag>0</FuncFlag></xml>";
-    require("../l1mainentry/cloud_callback_wechat.php");
+    $GLOBALS["HTTP_RAW_POST_DATA"] = "<xml><ToUserName><![CDATA[XHZN_HCU]]></ToUserName><FromUserName><![CDATA[HCU_G201_AQYC_SH001]]></FromUserName><CreateTime>1504189207</CreateTime><MsgType><![CDATA[huitp_text]]></MsgType><Content><![CDATA[26810012000300010126000009010000000059A81B17]]></Content><FuncFlag>0</FuncFlag></xml>";
+    //require("../l1mainentry/cloud_callback_wechat.php");
     echo " [TC IOT_STDXML: HUITP Windspd Data END]\n";
 
     //HUITP Winddir Data
     echo " [TC IOT_STDXML: HUITP Winddir Data START]\n";
-    $GLOBALS["HTTP_RAW_POST_DATA"] = "<xml><ToUserName><![CDATA[XHZN_HCU]]></ToUserName><FromUserName><![CDATA[HCU_G201_AQYC_SH001]]></FromUserName><CreateTime>1492506340</CreateTime><MsgType><![CDATA[huitp_text]]></MsgType><Content><![CDATA[278100120003000101270000090200000AF058F5D6E4]]></Content><FuncFlag>0</FuncFlag></xml>";
-    require("../l1mainentry/cloud_callback_wechat.php");
+    $GLOBALS["HTTP_RAW_POST_DATA"] = "<xml><ToUserName><![CDATA[XHZN_HCU]]></ToUserName><FromUserName><![CDATA[HCU_G201_AQYC_SH001]]></FromUserName><CreateTime>1504189208</CreateTime><MsgType><![CDATA[huitp_text]]></MsgType><Content><![CDATA[27810012000300010127000009020000047659A81B18]]></Content><FuncFlag>0</FuncFlag></xml>";
+    //require("../l1mainentry/cloud_callback_wechat.php");
     echo " [TC IOT_STDXML: HUITP Winddir Data END]\n";
 
     //HUITP Temp Data
     echo " [TC IOT_STDXML: HUITP Temperature Data START]\n";
-    $GLOBALS["HTTP_RAW_POST_DATA"] = "<xml><ToUserName><![CDATA[XHZN_HCU]]></ToUserName><FromUserName><![CDATA[HCU_G201_AQYC_SH001]]></FromUserName><CreateTime>1492506350</CreateTime><MsgType><![CDATA[huitp_text]]></MsgType><Content><![CDATA[28810012000300010128000009010000123458F5D6EE]]></Content><FuncFlag>0</FuncFlag></xml>";
-    require("../l1mainentry/cloud_callback_wechat.php");
+    $GLOBALS["HTTP_RAW_POST_DATA"] = "<xml><ToUserName><![CDATA[XHZN_HCU]]></ToUserName><FromUserName><![CDATA[HCU_G201_AQYC_SH001]]></FromUserName><CreateTime>1504189210</CreateTime><MsgType><![CDATA[huitp_text]]></MsgType><Content><![CDATA[2881001200030001012800000901000000EE59A81B1A]]></Content><FuncFlag>0</FuncFlag></xml>";
+    //require("../l1mainentry/cloud_callback_wechat.php");
     echo " [TC IOT_STDXML: HUITP Temperature Data END]\n";
 
     //HUITP Humidity Data
     echo " [TC IOT_STDXML: HUITP Humidity Data START]\n";
-    $GLOBALS["HTTP_RAW_POST_DATA"] = "<xml><ToUserName><![CDATA[XHZN_HCU]]></ToUserName><FromUserName><![CDATA[HCU_G201_AQYC_SH001]]></FromUserName><CreateTime>1500955144</CreateTime><MsgType><![CDATA[huitp_text]]></MsgType><Content><![CDATA[2981001200030001012900000901000002475976C208]]></Content><FuncFlag>0</FuncFlag></xml>";
-    require("../l1mainentry/cloud_callback_wechat.php");
+    $GLOBALS["HTTP_RAW_POST_DATA"] = "<xml><ToUserName><![CDATA[XHZN_HCU]]></ToUserName><FromUserName><![CDATA[HCU_G201_AQYC_SH001]]></FromUserName><CreateTime>1504189208</CreateTime><MsgType><![CDATA[huitp_text]]></MsgType><Content><![CDATA[29810012000300010129000009010000030D59A81B18]]></Content><FuncFlag>0</FuncFlag></xml>";
+    //require("../l1mainentry/cloud_callback_wechat.php");
     echo " [TC IOT_STDXML: HUITP Humidity Data END]\n";
 
     //HUITP pm25 Data
     echo " [TC IOT_STDXML: HUITP pm25 Data START]\n";
-    $GLOBALS["HTTP_RAW_POST_DATA"] = "<xml><ToUserName><![CDATA[XHZN_HCU]]></ToUserName><FromUserName><![CDATA[HCU_G201_AQYC_SH001]]></FromUserName><CreateTime>1492506349</CreateTime><MsgType><![CDATA[huitp_text]]></MsgType><Content><![CDATA[2581002C000300010125000009010304010258F5D6ED25010009011314111258F5D6ED25020009012324212258F5D6ED]]></Content><FuncFlag>0</FuncFlag></xml>";
+    $GLOBALS["HTTP_RAW_POST_DATA"] = "<xml><ToUserName><![CDATA[XHZN_HCU]]></ToUserName><FromUserName><![CDATA[HCU_G201_AQYC_SH001]]></FromUserName><CreateTime>1504188646</CreateTime><MsgType><![CDATA[huitp_text]]></MsgType><Content><![CDATA[2581002C000300010125000009010000000059A818E625010009010000000059A818E625020009010000000059A818E6]]></Content><FuncFlag>0</FuncFlag></xml>";
     require("../l1mainentry/cloud_callback_wechat.php");
     echo " [TC IOT_STDXML: HUITP pm25 Data END]\n";
 

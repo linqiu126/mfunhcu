@@ -1142,8 +1142,13 @@ class classL2codecHuitpMsgDict
         //扬尘监控系统
         HUITP_MSGID_uni_ycjk_data_req => array("MSGNAME" => "","MSGIE" => array(HUITP_IEID_uni_com_req)),  //0x3000
         HUITP_MSGID_uni_ycjk_data_resp => array("MSGNAME" => "","MSGIE" => array(HUITP_IEID_uni_com_req)),  //0x3080
-        HUITP_MSGID_uni_ycjk_data_report => array("MSGNAME" => "","MSGIE" => array(HUITP_IEID_uni_com_req)),  //0x3081
-        HUITP_MSGID_uni_ycjk_data_confirm => array("MSGNAME" => "","MSGIE" => array(HUITP_IEID_uni_com_req)),  //0x3001
+        //0x3081
+        HUITP_MSGID_uni_ycjk_data_report => array("MSGNAME" => "HUITP_MSGID_uni_ycjk_data_report",
+            "MSGIE" => array(HUITP_IEID_uni_com_report,
+                HUITP_IEID_uni_ycjk_value)),
+        //0x3001
+        HUITP_MSGID_uni_ycjk_data_confirm => array("MSGNAME" => "HUITP_MSGID_uni_ycjk_data_confirm",
+            "MSGIE" => array(HUITP_IEID_uni_com_confirm)),
         HUITP_MSGID_uni_ycjk_ctrl_req => array("MSGNAME" => "","MSGIE" => array(HUITP_IEID_uni_com_req)),  //0x3002
         HUITP_MSGID_uni_ycjk_ctrl_resp => array("MSGNAME" => "","MSGIE" => array(HUITP_IEID_uni_com_req)),  //0x3082
 

@@ -43,13 +43,9 @@ INSERT INTO `t_l2snr_windspd` (`sid`, `deviceid`, `sensorid`, `windspeed`, `data
 
 class classDbiL2snrWindspd
 {
-    //构造函数
-    public function __construct()
-    {
 
-    }
-
-    public function dbi_windSpeed_data_save($deviceid,$sensorid,$timestamp,$data,$gps)
+    //更新每个传感器自己对应的l2snr data表
+    private function dbi_l2snr_windspd_update($devCode, $timeStamp, $windspdValue)
     {
         //建立连接
         $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
@@ -58,45 +54,29 @@ class classDbiL2snrWindspd
             die('Could not connect: ' . mysqli_error($mysqli));
         }
 
-        $date = intval(date("ymd", $timestamp));
-        $stamp = getdate($timestamp);
+        //存储新记录，如果发现是已经存在的数据，则覆盖，否则新增
+        $date = intval(date("ymd", $timeStamp));
+        $stamp = getdate($timeStamp);
         $hourminindex = intval(($stamp["hours"] * 60 + floor($stamp["minutes"]/MFUN_TIME_GRID_SIZE)));
 
-        if(!empty($gps)){
-            $altitude = $gps["altitude"];
-            $flag_la = $gps["flag_la"];
-            $latitude = $gps["latitude"];
-            $flag_lo = $gps["flag_lo"];
-            $longitude = $gps["longitude"];
-        }
-        else{
-            $altitude = "";
-            $flag_la = "";
-            $latitude = "";
-            $flag_lo = "";
-            $longitude = "";
-        }
-
-        $windspeed = $data["value"];
-
-        //存储新记录，如果发现是已经存在的数据，则覆盖，否则新增
-        $result = $mysqli->query("SELECT * FROM `t_l2snr_windspd` WHERE (`deviceid` = '$deviceid' AND `sensorid` = '$sensorid'
-                                  AND `reportdate` = '$date' AND `hourminindex` = '$hourminindex')");
-        if (($result != false) && ($result->num_rows)>0)  //重复，则覆盖
+        $query_str = "SELECT * FROM `t_l2snr_windspd` WHERE (`deviceid` = '$devCode' AND `reportdate` = '$date' AND `hourminindex` = '$hourminindex')";
+        $result = $mysqli->query($query_str);
+        if (($result != false) && ($result->num_rows)>0)   //重复，则覆盖
         {
-            $result=$mysqli->query("UPDATE `t_l2snr_windspd` SET `windspeed` = '$windspeed',`altitude` = '$altitude',`flag_la` = '$flag_la',`latitude` = '$latitude',`flag_lo` = '$flag_lo',`longitude` = '$longitude'
-                    WHERE (`deviceid` = '$deviceid' AND `sensorid` = '$sensorid' AND `reportdate` = '$date' AND `hourminindex` = '$hourminindex')");
+            $query_str = "UPDATE `t_l2snr_windspd` SET `windspeed` = '$windspdValue' WHERE (`deviceid` = '$devCode' AND `reportdate` = '$date' AND `hourminindex` = '$hourminindex')";
+            $result=$mysqli->query($query_str);
         }
         else   //不存在，新增
         {
-            $result=$mysqli->query("INSERT INTO `t_l2snr_windspd` (deviceid,sensorid,windspeed,reportdate,hourminindex,altitude,flag_la,latitude,flag_lo,longitude)
-                    VALUES ('$deviceid','$sensorid','$windspeed','$date','$hourminindex','$altitude', '$flag_la','$latitude', '$flag_lo','$longitude')");
+            $query_str = "INSERT INTO `t_l2snr_windspd` (deviceid,windspeed,reportdate,hourminindex) VALUES ('$devCode','$windspdValue','$date','$hourminindex')";
+            $result=$mysqli->query($query_str);
         }
         $mysqli->close();
         return $result;
     }
 
-    public function dbi_windSpeed_huitp_data_save($deviceid,$timestamp,$windspdValue)
+    //更新传感器分钟聚合表
+    public function dbi_l2snr_windspd_minreport_update($devCode,$statCode,$timeStamp,$windspdValue)
     {
         //建立连接
         $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
@@ -105,142 +85,101 @@ class classDbiL2snrWindspd
             die('Could not connect: ' . mysqli_error($mysqli));
         }
 
-        $date = intval(date("ymd", $timestamp));
-        $stamp = getdate($timestamp);
+        $reportdate = intval(date("ymd", $timeStamp));
+        $stamp = getdate($timeStamp);
         $hourminindex = intval(($stamp["hours"] * 60 + floor($stamp["minutes"]/MFUN_TIME_GRID_SIZE)));
 
-        $windspeed = $windspdValue;
-
         //存储新记录，如果发现是已经存在的数据，则覆盖，否则新增
-        $result = $mysqli->query("SELECT * FROM `t_l2snr_windspd` WHERE (`deviceid` = '$deviceid'
-                                  AND `reportdate` = '$date' AND `hourminindex` = '$hourminindex')");
+        $query_str = "SELECT * FROM `t_l2snr_aqyc_minreport` WHERE (`devcode` = '$devCode' AND `statcode` = '$statCode'
+                                  AND `reportdate` = '$reportdate' AND `hourminindex` = '$hourminindex')";
+        $result = $mysqli->query($query_str);
         if (($result != false) && ($result->num_rows)>0)  //重复，则覆盖
         {
-            $result=$mysqli->query("UPDATE `t_l2snr_windspd` SET `windspeed` = '$windspeed'
-                    WHERE (`deviceid` = '$deviceid' AND `reportdate` = '$date' AND `hourminindex` = '$hourminindex')");
+            $query_str = "UPDATE `t_l2snr_aqyc_minreport` SET `windspeed` = '$windspdValue'
+                          WHERE (`devcode` = '$devCode' AND `statcode` = '$statCode' AND `reportdate` = '$reportdate' AND `hourminindex` = '$hourminindex')";
+            $result=$mysqli->query($query_str);
         }
         else   //不存在，新增
         {
-            $result=$mysqli->query("INSERT INTO `t_l2snr_windspd` (deviceid,windspeed,reportdate,hourminindex)
-                    VALUES ('$deviceid','$windspeed','$date','$hourminindex')");
+            $query_str = "INSERT INTO `t_l2snr_aqyc_minreport` (devcode,statcode,windspeed,reportdate,hourminindex)
+                                  VALUES ('$devCode', '$statCode', '$windspdValue','$reportdate','$hourminindex')";
+            $result=$mysqli->query($query_str);
         }
+        $mysqli->close();
+        return $result;
+    }
+
+    //更新传感器当前报告聚合表
+    private function dbi_l2snr_windspd_currentreport_update($devCode,$statCode,$timeStamp,$windspdValue)
+    {
+        //建立连接
+        $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli)
+        {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+
+        $currenttime = date("Y-m-d H:i:s",$timeStamp);
+
+        //存储新记录，如果发现是已经存在的数据，则覆盖，否则新增
+        $query_str = "SELECT * FROM `t_l3f3dm_aqyc_currentreport` WHERE (`deviceid` = '$devCode')";
+        $result = $mysqli->query($query_str);
+        if (($result->num_rows)>0) {
+            $query_str = "UPDATE `t_l3f3dm_aqyc_currentreport` SET `statcode` = '$statCode', `windspeed` = '$windspdValue',`createtime` = '$currenttime' WHERE (`deviceid` = '$devCode')";
+            $result = $mysqli->query($query_str);
+        }
+        else {
+            $query_str = "INSERT INTO `t_l3f3dm_aqyc_currentreport` (deviceid,statcode,createtime,windspeed) VALUES ('$devCode','$statCode','$currenttime','$windspdValue')";
+            $result = $mysqli->query($query_str);
+        }
+
         $mysqli->close();
         return $result;
     }
 
     //删除对应用户所有超过90天的数据
     //缺省做成90天，如果参数错误，导致90天以内的数据强行删除，则不被认可
-    public function dbi_windspdData_delete_3monold($deviceid, $sensorid, $days)
+    private function dbi_l2snr_windspd_old_delete($devCode, $days)
     {
-        if ($days <90) $days = 90;  //不允许删除90天以内的数据
+        if ($days < MFUN_HCU_DATA_SAVE_DURATION_IN_DAYS) $days = MFUN_HCU_DATA_SAVE_DURATION_IN_DAYS;  //不允许删除90天以内的数据
         //建立连接
         $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
         if (!$mysqli)
         {
             die('Could not connect: ' . mysqli_error($mysqli));
         }
-        //尝试使用一次性删除技巧，结果非常好!!!
-        $result = $mysqli->query("DELETE FROM `t_l2snr_windspd` WHERE ((`deviceid` = '$deviceid' AND `sensorid` = '$sensorid')
-                      AND (TO_DAYS(NOW()) - TO_DAYS(`reportdate`) > '$days'))");
+        $query_str = "DELETE FROM `t_l2snr_windspd` WHERE ((`deviceid` = '$devCode') AND (TO_DAYS(NOW()) - TO_DAYS(`reportdate`) > '$days'))";
+        $result = $mysqli->query($query_str);
+
         $mysqli->close();
         return $result;
     }
 
-    public function dbi_windspdData_huitp_delete_3monold($deviceid, $days)
+    public function dbi_huitp_msg_uni_windspd_data_report($devCode, $statCode, $content)
     {
-        if ($days <90) $days = 90;  //不允许删除90天以内的数据
-        //建立连接
-        $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
-        if (!$mysqli)
-        {
-            die('Could not connect: ' . mysqli_error($mysqli));
-        }
-        //尝试使用一次性删除技巧，结果非常好!!!
-        $result = $mysqli->query("DELETE FROM `t_l2snr_windspd` WHERE ((`deviceid` = '$deviceid' )
-                      AND (TO_DAYS(NOW()) - TO_DAYS(`reportdate`) > '$days'))");
-        $mysqli->close();
-        return $result;
-    }
+        //$data[0] = HUITP_IEID_uni_com_report，暂时没有使用
 
-    public function dbi_LatestWindspdValue_inqury($sid)
-    {
-        $LatestWindspdValue = "";
-        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
-        if (!$mysqli) {
-            die('Could not connect: ' . mysqli_error($mysqli));
-        }
-        $result = $mysqli->query("SELECT * FROM `t_l2snr_windspd` WHERE `sid` = '$sid'");
-        if (($result != false) && ($result->num_rows)>0)
-        {
-            $row = $result->fetch_array();
-            $LatestWindspdValue = $row['windspeed'];
-        }
-        $mysqli->close();
-        return $LatestWindspdValue;
-    }
+        $dbiL2snrCommon = new classDbiL2snrCommon();
+        $windspdData = hexdec($content[1]['HUITP_IEID_uni_windspd_value']['windspdValue']) & 0xFFFFFFFF;
+        $dataFormat =hexdec($content[1]['HUITP_IEID_uni_windspd_value']['dataFormat']) & 0xFF;
+        $windspdValue = $dbiL2snrCommon->dbi_datavalue_convert($dataFormat, $windspdData);
 
-    public function dbi_minreport_update_windspeed($devcode,$statcode,$timestamp,$data)
-    {
-        //建立连接
-        $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
-        if (!$mysqli)
-        {
-            die('Could not connect: ' . mysqli_error($mysqli));
-        }
 
-        $date = intval(date("ymd", $timestamp));
-        $stamp = getdate($timestamp);
-        $hourminindex = intval(($stamp["hours"] * 60 + floor($stamp["minutes"]/MFUN_TIME_GRID_SIZE)));
+        $timeStamp = time();
 
-        $windspeed = $data["value"];
+        //保存记录到对应l2snr表
+        $result = $this->dbi_l2snr_windspd_update($devCode, $timeStamp, $windspdValue);
+        //清理超过90天记录的数据
+        $result = $this->dbi_l2snr_windspd_old_delete($devCode, 90);  //remove 90 days old data.
 
-        //存储新记录，如果发现是已经存在的数据，则覆盖，否则新增
-        $result = $mysqli->query("SELECT * FROM `t_l2snr_aqyc_minreport` WHERE (`devcode` = '$devcode' AND `statcode` = '$statcode'
-                                  AND `reportdate` = '$date' AND `hourminindex` = '$hourminindex')");
-        if (($result != false) && ($result->num_rows)>0)  //重复，则覆盖
-        {
-            $result=$mysqli->query("UPDATE `t_l2snr_aqyc_minreport` SET `windspeed` = '$windspeed'
-                          WHERE (`devcode` = '$devcode' AND `statcode` = '$statcode' AND `reportdate` = '$date' AND `hourminindex` = '$hourminindex')");
-        }
-        else   //不存在，新增
-        {
-            $result=$mysqli->query("INSERT INTO `t_l2snr_aqyc_minreport` (devcode,statcode,windspeed,reportdate,hourminindex)
-                                  VALUES ('$devcode', '$statcode', '$windspeed','$date','$hourminindex')");
-        }
-        $mysqli->close();
-        return $result;
-    }
+        //更新分钟测量报告聚合表
+        $result = $this->dbi_l2snr_windspd_minreport_update($devCode,$statCode,$timeStamp,$windspdValue);
 
-    public function dbi_minreport_huitp_update_windspeed($devcode,$statcode,$timestamp,$windspdValue)
-    {
-        //建立连接
-        $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
-        if (!$mysqli)
-        {
-            die('Could not connect: ' . mysqli_error($mysqli));
-        }
+        //更新瞬时测量值聚合表
+        $result = $this->dbi_l2snr_windspd_currentreport_update($devCode,$statCode,$timeStamp,$windspdValue);
 
-        $date = intval(date("ymd", $timestamp));
-        $stamp = getdate($timestamp);
-        $hourminindex = intval(($stamp["hours"] * 60 + floor($stamp["minutes"]/MFUN_TIME_GRID_SIZE)));
-
-        $windspeed = $windspdValue;
-
-        //存储新记录，如果发现是已经存在的数据，则覆盖，否则新增
-        $result = $mysqli->query("SELECT * FROM `t_l2snr_aqyc_minreport` WHERE (`devcode` = '$devcode' AND `statcode` = '$statcode'
-                                  AND `reportdate` = '$date' AND `hourminindex` = '$hourminindex')");
-        if (($result != false) && ($result->num_rows)>0)  //重复，则覆盖
-        {
-            $result=$mysqli->query("UPDATE `t_l2snr_aqyc_minreport` SET `windspeed` = '$windspeed'
-                          WHERE (`devcode` = '$devcode' AND `statcode` = '$statcode' AND `reportdate` = '$date' AND `hourminindex` = '$hourminindex')");
-        }
-        else   //不存在，新增
-        {
-            $result=$mysqli->query("INSERT INTO `t_l2snr_aqyc_minreport` (devcode,statcode,windspeed,reportdate,hourminindex)
-                                  VALUES ('$devcode', '$statcode', '$windspeed','$date','$hourminindex')");
-        }
-        $mysqli->close();
-        return $result;
+        //构造返回消息TBD
+        return true;
     }
 
 }

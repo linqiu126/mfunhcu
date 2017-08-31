@@ -15,10 +15,11 @@ var replace = require('gulp-replace');
 var mkdirp = require('mkdirp');
 
 
-var replace_content = "/l4fhysui";
-var replace_content_admintools = "/l4admintools";
+var replace_content = "/var/www/html/avorion";
+var replace_content_admintools = "/var/www/html/mfunhcu/l4admintools";
+
 var replace_content_admintools_url = "/mfunhcu/l4admintools";
-var replace_install = "../../avorion";
+var replace_install = "/mfunhcu/l4fhysui";
 var option = {
     admin_tools_path:"../www/dist/admintools",
     buildPath: "../www/dist"

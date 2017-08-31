@@ -168,7 +168,7 @@ class classDbiL3apF4icm
             $client->connect();
             $i++;
         }
-        return $resp;
+        return $respCmd;
     }
 
     //获取HCU对应软件和数据库bin文件
@@ -682,6 +682,7 @@ class classDbiL3apF4icm
             $row = $result->fetch_array();  //statcode和devcode一一对应
             $url = $row['camctrl'];
 
+            $filelink = ""; //初始化
             $username = MFUN_HCU_AQYC_CAM_USERNAME;
             $password = MFUN_HCU_AQYC_CAM_PASSWORD;
             $curl = curl_init();
@@ -692,10 +693,10 @@ class classDbiL3apF4icm
             curl_setopt($curl, CURLOPT_USERPWD, "$username:$password");
             curl_setopt($curl, CURLOPT_TIMEOUT, 30); //timeout after 30 seconds
             $picdata = curl_exec($curl);
+            $filesize = curl_getinfo($curl, CURLINFO_SIZE_DOWNLOAD);
             curl_close($curl);
 
-            $filelink = "";
-            if (!empty($picdata)){
+            if ($filesize != 0){
                 if(!file_exists(MFUN_HCU_SITE_PIC_BASE_DIR.$statCode.'/upload/'))
                     $result = mkdir(MFUN_HCU_SITE_PIC_BASE_DIR.$statCode.'/upload/',0777,true);
                 $timestamp = time();
@@ -706,6 +707,17 @@ class classDbiL3apF4icm
                 $newfile = fopen($filelink, "wb+") or die("Unable to open file!");
                 fwrite($newfile, $picdata);
                 fclose($newfile);
+
+                //保存照片信息
+                $date = intval(date("ymd", $timestamp));
+                $stamp = getdate($timestamp);
+                $hourminindex = intval(($stamp["hours"] * 60 + floor($stamp["minutes"]/MFUN_TIME_GRID_SIZE)));
+                $filetype = MFUN_HCU_SITE_PIC_FILE_TYPE;
+                $filesize = (int)$filesize;
+                $description = "站点".$statCode."上传的照片";
+                $dataflag = "Y";
+                $query_str = "INSERT INTO `t_l2snr_picturedata` (statcode,filename,filetype,filesize,filedescription,reportdate,hourminindex,dataflag) VALUES ('$statCode','$filelink','$filetype','$filesize','$description','$date','$hourminindex','$dataflag')";
+                $result=$mysqli->query($query_str);
             }
 
             $resp = array("v"=>"120~","h"=>"120~","zoom"=>"5","url"=>$filelink);

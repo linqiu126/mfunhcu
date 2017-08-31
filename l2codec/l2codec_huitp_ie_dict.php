@@ -704,7 +704,7 @@ class classL2codecHuitpIeDict
           HUITP_IEID_uni_picture_body                  	=> array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
 
           //扬尘监控系统
-          HUITP_IEID_uni_ycjk_value                       => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
+          HUITP_IEID_uni_ycjk_value                       => array("format"=>"A4ieId/A4ieLen/A2dataFormat/A8tempValue/A8humidValue/A8winddirValue/A8windspdValue/A8noiseValue/A8pm1d0Value/A8pm2d5Value/A8pm10Value/A8tspValue","len"=>"37","name"=>"HUITP_IEID_uni_ycjk_value"),
           HUITP_IEID_uni_ycjk_sensor_selection            => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
 
           //水表

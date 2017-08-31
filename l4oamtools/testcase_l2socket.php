@@ -30,6 +30,7 @@ if (TC_SOCKET == true) {
     curl_setopt($curl, CURLOPT_TIMEOUT, 30); //timeout after 30 seconds
 
     $data = curl_exec($curl);
+    $size = curl_getinfo($curl, CURLINFO_SIZE_DOWNLOAD);   //get status code
     curl_close($curl);
 
     $filelink = './test.jpg';
@@ -37,9 +38,6 @@ if (TC_SOCKET == true) {
     fwrite($newfile, $data);
     fclose($newfile);
 
-
-    $status_code = curl_getinfo($curl, CURLINFO_HTTP_CODE);   //get status code
-    curl_close($curl);
     $array = (array) simplexml_load_string( $data );
     print_r($array);
 

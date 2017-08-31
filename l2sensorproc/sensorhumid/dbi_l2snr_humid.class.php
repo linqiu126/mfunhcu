@@ -41,13 +41,9 @@ INSERT INTO `t_l2snr_humiddata` (`sid`, `deviceid`, `sensorid`, `humidity`, `dat
 
 class classDbiL2snrHumid
 {
-    //构造函数
-    public function __construct()
-    {
 
-    }
-
-    public function dbi_humidity_data_save($deviceid,$sensorid,$timestamp,$data,$gps)
+    //更新每个传感器自己对应的l2snr data表
+    private function dbi_l2snr_humiddata_update($devCode, $timeStamp, $humidValue)
     {
         //建立连接
         $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
@@ -55,324 +51,133 @@ class classDbiL2snrHumid
         {
             die('Could not connect: ' . mysqli_error($mysqli));
         }
-
-        $date = intval(date("ymd", $timestamp));
-        $stamp = getdate($timestamp);
-        $hourminindex = intval(($stamp["hours"] * 60 + floor($stamp["minutes"]/MFUN_TIME_GRID_SIZE)));
-
-        if(!empty($gps)){
-            $altitude = $gps["altitude"];
-            $flag_la = $gps["flag_la"];
-            $latitude = $gps["latitude"];
-            $flag_lo = $gps["flag_lo"];
-            $longitude = $gps["longitude"];
-        }
-        else{
-            $altitude = "";
-            $flag_la = "";
-            $latitude = "";
-            $flag_lo = "";
-            $longitude = "";
-        }
-
-        $humidity = $data["value"];
 
         //存储新记录，如果发现是已经存在的数据，则覆盖，否则新增
-        $result = $mysqli->query("SELECT * FROM `t_l2snr_humiddata` WHERE (`deviceid` = '$deviceid' AND `sensorid` = '$sensorid'
-                                  AND `reportdate` = '$date' AND `hourminindex` = '$hourminindex')");
-        if (($result != false) && ($result->num_rows)>0)  //重复，则覆盖
-        {
-            $result=$mysqli->query("UPDATE `t_l2snr_humiddata` SET  `humidity` = '$humidity',`altitude` = '$altitude',`flag_la` = '$flag_la',`latitude` = '$latitude',`flag_lo` = '$flag_lo',`longitude` = '$longitude'
-                    WHERE (`deviceid` = '$deviceid' AND `sensorid` = '$sensorid' AND `reportdate` = '$date' AND `hourminindex` = '$hourminindex')");
-        }
-        else   //不存在，新增
-        {
-            $result=$mysqli->query("INSERT INTO `t_l2snr_humiddata` (deviceid,sensorid,humidity,reportdate,hourminindex,altitude,flag_la,latitude,flag_lo,longitude)
-                    VALUES ('$deviceid','$sensorid','$humidity','$date','$hourminindex','$altitude', '$flag_la','$latitude', '$flag_lo','$longitude')");
-        }
-        $mysqli->close();
-        return $result;
-    }
-
-    public function dbi_humidity_huitp_data_save($deviceid,$timeStamp,$humidValue)
-    {
-        //建立连接
-        $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
-        if (!$mysqli)
-        {
-            die('Could not connect: ' . mysqli_error($mysqli));
-        }
-
         $date = intval(date("ymd", $timeStamp));
         $stamp = getdate($timeStamp);
         $hourminindex = intval(($stamp["hours"] * 60 + floor($stamp["minutes"]/MFUN_TIME_GRID_SIZE)));
 
+        $query_str = "SELECT * FROM `t_l2snr_humiddata` WHERE (`deviceid` = '$devCode' AND `reportdate` = '$date' AND `hourminindex` = '$hourminindex')";
+        $result = $mysqli->query($query_str);
+        if (($result != false) && ($result->num_rows)>0)   //重复，则覆盖
+        {
+            $query_str = "UPDATE `t_l2snr_humiddata` SET `humidity` = '$humidValue' WHERE (`deviceid` = '$devCode' AND `reportdate` = '$date' AND `hourminindex` = '$hourminindex')";
+            $result=$mysqli->query($query_str);
+        }
+        else   //不存在，新增
+        {
+            $query_str = "INSERT INTO `t_l2snr_humiddata` (deviceid,humidity,reportdate,hourminindex) VALUES ('$devCode','$humidValue','$date','$hourminindex')";
+            $result=$mysqli->query($query_str);
+        }
+        $mysqli->close();
+        return $result;
+    }
+
+    //更新传感器分钟聚合表
+    public function dbi_l2snr_humiddata_minreport_update($devCode,$statCode,$timeStamp,$humidValue)
+    {
+        //建立连接
+        $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli)
+        {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+
+        $reportdate = intval(date("ymd", $timeStamp));
+        $stamp = getdate($timeStamp);
+        $hourminindex = intval(($stamp["hours"] * 60 + floor($stamp["minutes"]/MFUN_TIME_GRID_SIZE)));
+
         //存储新记录，如果发现是已经存在的数据，则覆盖，否则新增
-        $result = $mysqli->query("SELECT * FROM `t_l2snr_humiddata` WHERE (`deviceid` = '$deviceid' AND `reportdate` = '$date' AND `hourminindex` = '$hourminindex')");
+        $query_str = "SELECT * FROM `t_l2snr_aqyc_minreport` WHERE (`devcode` = '$devCode' AND `statcode` = '$statCode'
+                                  AND `reportdate` = '$reportdate' AND `hourminindex` = '$hourminindex')";
+        $result = $mysqli->query($query_str);
         if (($result != false) && ($result->num_rows)>0)  //重复，则覆盖
         {
-            $result=$mysqli->query("UPDATE `t_l2snr_humiddata` SET  `humidity` = '$humidValue' WHERE (`deviceid` = '$deviceid' AND `reportdate` = '$date' AND `hourminindex` = '$hourminindex')");
+            $query_str = "UPDATE `t_l2snr_aqyc_minreport` SET `humidity` = '$humidValue'
+                          WHERE (`devcode` = '$devCode' AND `statcode` = '$statCode' AND `reportdate` = '$reportdate' AND `hourminindex` = '$hourminindex')";
+            $result=$mysqli->query($query_str);
         }
         else   //不存在，新增
         {
-            $result=$mysqli->query("INSERT INTO `t_l2snr_humiddata` (deviceid,humidity,reportdate,hourminindex)
-                    VALUES ('$deviceid','$humidValue','$date','$hourminindex')");
+            $query_str = "INSERT INTO `t_l2snr_aqyc_minreport` (devcode,statcode,humidity,reportdate,hourminindex)
+                                  VALUES ('$devCode', '$statCode', '$humidValue','$reportdate','$hourminindex')";
+            $result=$mysqli->query($query_str);
         }
+        $mysqli->close();
+        return $result;
+    }
+
+    //更新传感器当前报告聚合表
+    private function dbi_l2snr_humiddata_currentreport_update($devCode,$statCode,$timeStamp,$humidValue)
+    {
+        //建立连接
+        $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli)
+        {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+
+        $currenttime = date("Y-m-d H:i:s",$timeStamp);
+
+        //存储新记录，如果发现是已经存在的数据，则覆盖，否则新增
+        $query_str = "SELECT * FROM `t_l3f3dm_aqyc_currentreport` WHERE (`deviceid` = '$devCode')";
+        $result = $mysqli->query($query_str);
+        if (($result->num_rows)>0) {
+            $query_str = "UPDATE `t_l3f3dm_aqyc_currentreport` SET `statcode` = '$statCode',`humidity` = '$humidValue',`createtime` = '$currenttime' WHERE (`deviceid` = '$devCode')";
+            $result = $mysqli->query($query_str);
+        }
+        else {
+            $query_str = "INSERT INTO `t_l3f3dm_aqyc_currentreport` (deviceid,statcode,createtime,humidity) VALUES ('$devCode','$statCode','$currenttime','$humidValue')";
+            $result = $mysqli->query($query_str);
+        }
+
         $mysqli->close();
         return $result;
     }
 
     //删除对应用户所有超过90天的数据
     //缺省做成90天，如果参数错误，导致90天以内的数据强行删除，则不被认可
-    public function dbi_humidData_delete_3monold($deviceid, $sensorid,$days)
+    private function dbi_l2snr_humiddata_old_delete($devCode, $days)
     {
-        if ($days <90) $days = 90;  //不允许删除90天以内的数据
+        if ($days < MFUN_HCU_DATA_SAVE_DURATION_IN_DAYS) $days = MFUN_HCU_DATA_SAVE_DURATION_IN_DAYS;  //不允许删除90天以内的数据
         //建立连接
         $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
         if (!$mysqli)
         {
             die('Could not connect: ' . mysqli_error($mysqli));
         }
-        $result = $mysqli->query("DELETE FROM `t_l2snr_humiddata` WHERE ((`deviceid` = '$deviceid' AND `sensorid` ='$sensorid') AND (TO_DAYS(NOW()) - TO_DAYS(`date`) > '$days'))");
-        $mysqli->close();
-        return $result;
-    }
-
-    //删除对应用户所有超过90天的数据
-    //缺省做成90天，如果参数错误，导致90天以内的数据强行删除，则不被认可
-    public function dbi_humidData_huitp_delete_3monold($deviceid, $days)
-    {
-        if ($days <90) $days = 90;  //不允许删除90天以内的数据
-        //建立连接
-        $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
-        if (!$mysqli)
-        {
-            die('Could not connect: ' . mysqli_error($mysqli));
-        }
-        $result = $mysqli->query("DELETE FROM `t_l2snr_humiddata` WHERE ((`deviceid` = '$deviceid' ) AND (TO_DAYS(NOW()) - TO_DAYS(`reportdate`) > '$days'))");
-        $mysqli->close();
-        return $result;
-    }
-
-    public function dbi_LatestHumidValue_inqury($sid)
-    {
-        $LatestHumidValue = "";
-        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
-        if (!$mysqli) {
-            die('Could not connect: ' . mysqli_error($mysqli));
-        }
-        $result = $mysqli->query("SELECT * FROM `t_l2snr_humiddata` WHERE `sid` = '$sid'");
-        if (($result != false) && ($result->num_rows)>0)
-        {
-            $row = $result->fetch_array();
-            $LatestHumidValue = $row['humidity'];
-        }
-        $mysqli->close();
-        return $LatestHumidValue;
-    }
-
-    public function dbi_minreport_update_humidity($devcode,$statcode,$timestamp,$data)
-    {
-        //建立连接
-        $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
-        if (!$mysqli)
-        {
-            die('Could not connect: ' . mysqli_error($mysqli));
-        }
-
-        $date = intval(date("ymd", $timestamp));
-        $stamp = getdate($timestamp);
-        $hourminindex = intval(($stamp["hours"] * 60 + floor($stamp["minutes"]/MFUN_TIME_GRID_SIZE)));
-
-        $humidity = $data["value"];
-
-        //存储新记录，如果发现是已经存在的数据，则覆盖，否则新增
-        $result = $mysqli->query("SELECT * FROM `t_l2snr_aqyc_minreport` WHERE (`devcode` = '$devcode' AND `statcode` = '$statcode'
-                                  AND `reportdate` = '$date' AND `hourminindex` = '$hourminindex')");
-        if (($result != false) && ($result->num_rows)>0)   //重复，则覆盖
-        {
-            $result=$mysqli->query("UPDATE `t_l2snr_aqyc_minreport` SET `humidity` = '$humidity'
-                          WHERE (`devcode` = '$devcode' AND `statcode` = '$statcode' AND `reportdate` = '$date' AND `hourminindex` = '$hourminindex')");
-        }
-        else   //不存在，新增
-        {
-            $result=$mysqli->query("INSERT INTO `t_l2snr_aqyc_minreport` (devcode,statcode,humidity,reportdate,hourminindex)
-                                  VALUES ('$devcode', '$statcode', '$humidity','$date','$hourminindex')");
-        }
-        $mysqli->close();
-        return $result;
-    }
-
-    public function dbi_minreport_huitp_update_humidity($devcode,$statcode,$timestamp,$humidValue)
-    {
-        //建立连接
-        $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
-        if (!$mysqli)
-        {
-            die('Could not connect: ' . mysqli_error($mysqli));
-        }
-
-        $date = intval(date("ymd", $timestamp));
-        $stamp = getdate($timestamp);
-        $hourminindex = intval(($stamp["hours"] * 60 + floor($stamp["minutes"]/MFUN_TIME_GRID_SIZE)));
-
-        //存储新记录，如果发现是已经存在的数据，则覆盖，否则新增
-        $result = $mysqli->query("SELECT * FROM `t_l2snr_aqyc_minreport` WHERE (`devcode` = '$devcode' AND `statcode` = '$statcode'
-                                  AND `reportdate` = '$date' AND `hourminindex` = '$hourminindex')");
-        if (($result != false) && ($result->num_rows)>0)   //重复，则覆盖
-        {
-            $result=$mysqli->query("UPDATE `t_l2snr_aqyc_minreport` SET `humidity` = '$humidValue'
-                          WHERE (`devcode` = '$devcode' AND `statcode` = '$statcode' AND `reportdate` = '$date' AND `hourminindex` = '$hourminindex')");
-        }
-        else   //不存在，新增
-        {
-            $result=$mysqli->query("INSERT INTO `t_l2snr_aqyc_minreport` (devcode,statcode,humidity,reportdate,hourminindex)
-                                  VALUES ('$devcode', '$statcode', '$humidValue','$date','$hourminindex')");
-        }
-        $mysqli->close();
-        return $result;
-    }
-
-
-    /*********************************智能云锁新增处理 Start*********************************************/
-
-    public function dbi_hcu_fhys_humi_status_update($devCode, $statCode, $data)
-    {
-        //建立连接
-        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
-        if (!$mysqli) {
-            die('Could not connect: ' . mysqli_error($mysqli));
-        }
-        $mysqli->query("SET NAMES utf8");
-
-        if ($data == MFUN_HCU_DATA_FHYS_STATUS_OK)
-            $status = MFUN_HCU_FHYS_ALARM_NO;
-        elseif ($data == MFUN_HCU_DATA_FHYS_STATUS_NOK)
-            $status = MFUN_HCU_FHYS_ALARM_YES;
-        else
-            $status = MFUN_HCU_FHYS_STATUS_UNKNOWN;
-        $timestamp = time();
-        $date = intval(date("ymd", $timestamp));
-        $temp = getdate($timestamp);
-        $hourminindex = intval(($temp["hours"] * 60 + floor($temp["minutes"]/MFUN_HCU_FHYS_TIME_GRID_SIZE)));
-
-        //更新分钟报告表
-        $result = $mysqli->query("SELECT * FROM `t_l2snr_fhys_minreport` WHERE (( `devcode` = '$devCode' AND `statcode` = '$statCode')
-                        AND (`reportdate` = '$date' AND `hourminindex` = '$hourminindex'))");
-        if (($result != false) && ($result->num_rows)>0)   //重复，则覆盖
-        {
-            $query_str = "UPDATE `t_l2snr_fhys_minreport` SET `humistat` = '$status' WHERE (`devcode` = '$devCode' AND `statcode` = '$statCode' AND `reportdate` = '$date' AND `hourminindex` = '$hourminindex')";
-            $result = $mysqli->query($query_str);
-        }
-        else
-        {
-            $query_str = "INSERT INTO `t_l2snr_fhys_minreport` (devcode,statcode,humistat,reportdate,hourminindex) VALUES ('$devCode','$statCode','$status', '$date', '$hourminindex')";
-            $result = $mysqli->query($query_str);
-        }
-
-        //更新当前聚合表
-        $currenttime = date("Y-m-d H:i:s",$timestamp);
-        $result = $mysqli->query("SELECT * FROM `t_l3f3dm_fhys_currentreport` WHERE (`devcode` = '$devCode') ");
-        if (($result->num_rows)>0) {
-            $query_str = "UPDATE `t_l3f3dm_fhys_currentreport` SET  `humistat` = '$status', `createtime` = '$currenttime' WHERE (`devcode` = '$devCode')";
-            $result = $mysqli->query($query_str);
-        }
-        else {
-            $query_str ="INSERT INTO `t_l3f3dm_fhys_currentreport` (devcode,statcode,createtime,humistat) VALUES ('$devCode','$statCode','$currenttime','$status')";
-            $result = $mysqli->query($query_str);
-        }
-
-        //返回Response
-        $query_str = "SELECT * FROM `t_l2sdk_iothcu_inventory` WHERE (`statcode` = '$statCode' AND `devcode` = '$devCode')";
+        $query_str = "DELETE FROM `t_l2snr_humiddata` WHERE ((`deviceid` = '$devCode') AND (TO_DAYS(NOW()) - TO_DAYS(`reportdate`) > '$days'))";
         $result = $mysqli->query($query_str);
 
-        if (($result != false) && ($result->num_rows)>0)
-        {
-            //生成控制命令的控制字
-            $dbiL1vmCommonObj = new classDbiL1vmCommon();
-            $ctrl_key = $dbiL1vmCommonObj->byte2string(MFUN_HCU_CMDID_FHYS_HUMI);
-            $opt_key = $dbiL1vmCommonObj->byte2string(MFUN_HCU_OPT_FHYS_HUMISTAT_RESP);
-            $para = $dbiL1vmCommonObj->byte2string($data);
-
-            $len = $dbiL1vmCommonObj->byte2string(strlen($opt_key.$para)/2);
-            $respCmd = $ctrl_key . $len . $opt_key . $para;
-
-            //通过9502端口建立tcp阻塞式socket连接，向HCU转发操控命令
-            $client = new socket_client_sync($devCode, $respCmd);
-            $client->connect();
-            $resp = "Sensor humidity status response send success";
-        }
-        else
-            $resp = "Sensor humidity status response send failure";
-
         $mysqli->close();
-        return $resp;
+        return $result;
     }
 
-    public function dbi_hcu_fhys_humi_data_process($devCode, $statCode, $data)
+    public function dbi_huitp_msg_uni_humid_data_report($devCode, $statCode, $content)
     {
-        //建立连接
-        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
-        if (!$mysqli) {
-            die('Could not connect: ' . mysqli_error($mysqli));
-        }
-        $mysqli->query("SET NAMES utf8");
+        //$data[0] = HUITP_IEID_uni_com_report，暂时没有使用
 
-        $timestamp = time();
-        $date = intval(date("ymd", $timestamp));
-        $temp = getdate($timestamp);
-        $hourminindex = intval(($temp["hours"] * 60 + floor($temp["minutes"]/MFUN_HCU_FHYS_TIME_GRID_SIZE)));
+        $dbiL2snrCommon = new classDbiL2snrCommon();
+        $humidData = hexdec($content[1]['HUITP_IEID_uni_humid_value']['humidValue']) & 0xFFFFFFFF;
+        $dataFormat =hexdec($content[1]['HUITP_IEID_uni_humid_value']['dataFormat']) & 0xFF;
+        $humidValue = $dbiL2snrCommon->dbi_datavalue_convert($dataFormat, $humidData);
 
-        //更新分钟报告表
-        $result = $mysqli->query("SELECT * FROM `t_l2snr_fhys_minreport` WHERE (( `devcode` = '$devCode' AND `statcode` = '$statCode')
-                        AND (`reportdate` = '$date' AND `hourminindex` = '$hourminindex'))");
-        if (($result != false) && ($result->num_rows)>0)   //重复，则覆盖
-        {
-            $query_str = "UPDATE `t_l2snr_fhys_minreport` SET `humidity` = '$data' WHERE (`devcode` = '$devCode' AND `statcode` = '$statCode' AND `reportdate` = '$date' AND `hourminindex` = '$hourminindex')";
-            $result = $mysqli->query($query_str);
-        }
-        else
-        {
-            $query_str = "INSERT INTO `t_l2snr_fhys_minreport` (devcode,statcode,humidity,reportdate,hourminindex) VALUES ('$devCode','$statCode','$data', '$date', '$hourminindex')";
-            $result = $mysqli->query($query_str);
-        }
 
-        //更新当前聚合表
-        $currenttime = date("Y-m-d H:i:s",$timestamp);
-        $result = $mysqli->query("SELECT * FROM `t_l3f3dm_fhys_currentreport` WHERE (`devcode` = '$devCode') ");
-        if (($result->num_rows)>0) {
-            $query_str = "UPDATE `t_l3f3dm_fhys_currentreport` SET  `humidity` = '$data', `createtime` = '$currenttime' WHERE (`devcode` = '$devCode')";
-            $result = $mysqli->query($query_str);
-        }
-        else {
-            $query_str = "INSERT INTO `t_l3f3dm_fhys_currentreport` (devcode,statcode,createtime,humidity) VALUES ('$devCode','$statCode','$currenttime','$data')";
-            $result = $mysqli->query($query_str);
-        }
+        $timeStamp = time();
 
-        //返回Response
-        $query_str = "SELECT * FROM `t_l2sdk_iothcu_inventory` WHERE (`statcode` = '$statCode' AND `devcode` = '$devCode')";
-        $result = $mysqli->query($query_str);
+        //保存记录到对应l2snr表
+        $result = $this->dbi_l2snr_humiddata_update($devCode, $timeStamp, $humidValue);
+        //清理超过90天记录的数据
+        $result = $this->dbi_l2snr_humiddata_old_delete($devCode, 90);  //remove 90 days old data.
 
-        if (($result != false) && ($result->num_rows)>0)
-        {
-            //生成控制命令的控制字
-            $dbiL1vmCommonObj = new classDbiL1vmCommon();
-            $ctrl_key = $dbiL1vmCommonObj->byte2string(MFUN_HCU_CMDID_FHYS_HUMI);
-            $opt_key = $dbiL1vmCommonObj->byte2string(MFUN_HCU_OPT_FHYS_HUMIDATA_RESP);
+        //更新分钟测量报告聚合表
+        $result = $this->dbi_l2snr_humiddata_minreport_update($devCode,$statCode,$timeStamp,$humidValue);
 
-            $len = $dbiL1vmCommonObj->byte2string(strlen($opt_key)/2);
-            $respCmd = $ctrl_key . $len . $opt_key;
+        //更新瞬时测量值聚合表
+        $result = $this->dbi_l2snr_humiddata_currentreport_update($devCode,$statCode,$timeStamp,$humidValue);
 
-            //通过9502端口建立tcp阻塞式socket连接，向HCU转发操控命令
-            $client = new socket_client_sync($devCode, $respCmd);
-            $client->connect();
-            $resp = "Sensor humidity data response send success";
-        }
-        else
-            $resp = "Sensor humidity data response send failure";
-
-        $mysqli->close();
-        return $resp;
+        //构造返回消息TBD
+        return true;
     }
 
 }
