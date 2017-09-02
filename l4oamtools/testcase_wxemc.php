@@ -64,6 +64,9 @@ if (TC_EMCWX == true){
     //HUITP pm25 Data
     echo " [TC IOT_STDXML: HUITP pm25 Data START]\n";
     $GLOBALS["HTTP_RAW_POST_DATA"] = "<xml><ToUserName><![CDATA[XHZN_HCU]]></ToUserName><FromUserName><![CDATA[HCU_G201_AQYC_SH001]]></FromUserName><CreateTime>1504188646</CreateTime><MsgType><![CDATA[huitp_text]]></MsgType><Content><![CDATA[2581002C000300010125000009010000000059A818E625010009010000000059A818E625020009010000000059A818E6]]></Content><FuncFlag>0</FuncFlag></xml>";
+    $GLOBALS["HTTP_RAW_POST_DATA"] = "<xml><ToUserName><![CDATA[XHZN_HCU]]></ToUserName><FromUserName><![CDATA[hcu_g201_aqyc_sh050]]></FromUserName><CreateTime>1504323120</CreateTime><MsgType><![CDATA[huitp_text]]></MsgType><Content><![CDATA[2581002C000300010125000009000000003C59AA263025010009000000002159AA263025020009000000002659AA2630]]></Content><FuncFlag>0</FuncFlag></xml>";
+    $GLOBALS["HTTP_RAW_POST_DATA"] = "<xml><ToUserName><![CDATA[XHZN_HCU]]></ToUserName><FromUserName><![CDATA[HCU_G201_AQYC_SH001]]></FromUserName><CreateTime>1504323120</CreateTime><MsgType><![CDATA[huitp_text]]></MsgType><Content><![CDATA[2581002C000300010125000009000000003C59AA263025010009000000002159AA263025020009000000002659AA2630]]></Content><FuncFlag>0</FuncFlag></xml>";
+
     require("../l1mainentry/cloud_callback_wechat.php");
     echo " [TC IOT_STDXML: HUITP pm25 Data END]\n";
 

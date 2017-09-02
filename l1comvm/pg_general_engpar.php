@@ -17,6 +17,11 @@ define("MFUN_HCU_NAME_FIX_PREFIX", "HCU_");
 define("MFUN_HCU_SW_LOAD_FLAG_INVALID", 0);
 define("MFUN_HCU_SW_LOAD_FLAG_VALID", 1);
 
+//传感器数据标识
+define("MFUN_HCU_DATA_FLAG_INVALID", "N"); //无效数据
+define("MFUN_HCU_DATA_FLAG_VALID", "Y");   //有效数据
+define("MFUN_HCU_DATA_FLAG_FAKE", "F");    //人工插入数据
+
 //通用项目标识
 define("MFUN_L1VM_DBI_MAX_LOG_NUM", 5000);  //防止t_loginfo表单数据无限制的增长，保留的最大记录数
 define("MFUN_L3APL_F1SYM_SESSION_ID_LEN", 10); //UI界面session id字符串长度

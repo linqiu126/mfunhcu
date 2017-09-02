@@ -15,32 +15,6 @@ if (TC_SOCKET == true) {
 //SOCKET测试开始
     echo " [TC SOCKET: xxx START]\n";
 
-    $username='admin';
-    $password='Bxxh!123';
-//$URL='http://192.168.1.64/ISAPI/System/status';
-    $URL="http://ngrok.hkrob.com:30191/Streaming/channels/1/picture";
-//echo "URL is $URL".PHP_EOL;
-
-    $curl = curl_init();
-    curl_setopt($curl, CURLOPT_URL, $URL);
-    curl_setopt($curl, CURLOPT_HEADER, 0);// ÉèÖÃheader
-    curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);// ÉèÖÃcURL ²ÎÊý£¬ÒªÇó½á¹û±£´æµ½×Ö·û´®ÖÐ»¹ÊÇÊä³öµ½ÆÁÄ»ÉÏ¡£
-    curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_ANY);
-    curl_setopt($curl, CURLOPT_USERPWD, "$username:$password");
-    curl_setopt($curl, CURLOPT_TIMEOUT, 30); //timeout after 30 seconds
-
-    $data = curl_exec($curl);
-    $size = curl_getinfo($curl, CURLINFO_SIZE_DOWNLOAD);   //get status code
-    curl_close($curl);
-
-    $filelink = './test.jpg';
-    $newfile = fopen($filelink, "wb+") or die("Unable to open file!");
-    fwrite($newfile, $data);
-    fclose($newfile);
-
-    $array = (array) simplexml_load_string( $data );
-    print_r($array);
-
     /*********************图片数据，消息来自9501端口*********************/
     $data = "4843555F473530325F464859535F50303030315F303132333435363738395F5F000000024040";
 
@@ -76,11 +50,14 @@ if (TC_SOCKET == true) {
     //2B81 HUITP_MSGID_uni_noise_data_report
     //$data = "<xml><ToUserName><![CDATA[XHZN_HCU]]></ToUserName><FromUserName><![CDATA[HCU_G502_FHYS_P0001]]></FromUserName><CreateTime>1490757257</CreateTime><MsgType><![CDATA[huitp_text]]></MsgType><Content><![CDATA[2B81000E00030001012B00000502000001B2]]></Content><FuncFlag>0</FuncFlag></xml>";
 
+    //B081 HUITP_MSGID_uni_alarm_info_report
+    $data = "<xml><ToUserName><![CDATA[XHZN_HCU]]></ToUserName><FromUserName><![CDATA[HCU_G201_AQYC_SH001]]></FromUserName><CreateTime>1504338271</CreateTime><MsgType><![CDATA[huitp_text]]></MsgType><Content><![CDATA[B081001D0003000101B00000140001000000000006000000000000000259AA615F]]></Content><FuncFlag>0</FuncFlag></xml>";
+
     //B181, HUITP_MSGID_uni_performance_info_report
-    //$data = "<xml><ToUserName><![CDATA[XHZN_HCU]]></ToUserName><FromUserName><![CDATA[HCU_G502_FHYS_P0001]]></FromUserName><CreateTime>1502853593</CreateTime><MsgType><![CDATA[huitp_text]]></MsgType><Content><![CDATA[B18100310003000101B10000280000000000000000000000000000000000000000000000000000001700000059000000005993B9D9]]></Content><FuncFlag>0</FuncFlag></xml>";
+    //$data = "<xml><ToUserName><![CDATA[XHZN_HCU]]></ToUserName><FromUserName><![CDATA[HCU_G201_AQYC_SH001]]></FromUserName><CreateTime>1502853593</CreateTime><MsgType><![CDATA[huitp_text]]></MsgType><Content><![CDATA[B18100310003000101B10000280000000000000000000000000000000000000000000000000000001700000059000000005993B9D9]]></Content><FuncFlag>0</FuncFlag></xml>";
 
     //FE81, HUITP_MSGID_uni_heart_beat_report
-    //$data = "<xml><ToUserName><![CDATA[XHZN_HCU]]></ToUserName><FromUserName><![CDATA[HCU_G502_FHYS_P0001]]></FromUserName><CreateTime>1502966475</CreateTime><MsgType><![CDATA[huitp_text]]></MsgType><Content><![CDATA[FE81000B0003000101FE000002CA29]]></Content><FuncFlag>0</FuncFlag></xml>";
+    //$data = "<xml><ToUserName><![CDATA[XHZN_HCU]]></ToUserName><FromUserName><![CDATA[HCU_G201_AQYC_SH001]]></FromUserName><CreateTime>1502966475</CreateTime><MsgType><![CDATA[huitp_text]]></MsgType><Content><![CDATA[FE81000B0003000101FE000002CA29]]></Content><FuncFlag>0</FuncFlag></xml>";
 
     //A081, HUITP_MSGID_uni_inventory_report
     //$data = " <xml><ToUserName><![CDATA[XHZN_HCU]]></ToUserName><FromUserName><![CDATA[HCU_G502_FHYS_P0001]]></FromUserName><CreateTime>1503451437</CreateTime><MsgType><![CDATA[huitp_text]]></MsgType><Content><![CDATA[A08100250003000101A000001C080100000000000000000000000000000000000000000303599CD92D]]></Content><FuncFlag>0</FuncFlag></xml>";
@@ -90,6 +67,8 @@ if (TC_SOCKET == true) {
     //$data = "<xml><ToUserName><![CDATA[XHZN_HCU]]></ToUserName><FromUserName><![CDATA[HCU_G502_FHYS_P0001]]></FromUserName><CreateTime>1503044536</CreateTime><MsgType><![CDATA[huitp_text]]></MsgType><Content><![CDATA[A181001900030001010032001008010006000300FA0401000100080130]]></Content><FuncFlag>0</FuncFlag></xml>";
     //$data = " <xml><ToUserName><![CDATA[XHZN_HCU]]></ToUserName><FromUserName><![CDATA[HCU_G502_FHYS_P0001]]></FromUserName><CreateTime>1503477929</CreateTime><MsgType><![CDATA[huitp_text]]></MsgType><Content><![CDATA[A1810019000300010100320010080100060004002C0403000100080130]]></Content><FuncFlag>0</FuncFlag></xml>";
 
+    //3081 HUITP_MSGID_uni_ycjk_data_report
+    $data = "<xml><ToUserName><![CDATA[XHZN_HCU]]></ToUserName><FromUserName><![CDATA[HCU_G201_AQYC_SH001]]></FromUserName><CreateTime>1504340558</CreateTime><MsgType><![CDATA[huitp_text]]></MsgType><Content><![CDATA[3081002E00030001013000002504000000000000000000004204000000000000DA5C00000000000000000000000000000000]]></Content><FuncFlag>0</FuncFlag></xml>";
 
     $msg = array("socketid" => 1, "data"=>$data);
     $obj->mfun_l1vm_task_main_entry(MFUN_MAIN_ENTRY_IOT_HUITP, MSG_ID_L2SDK_HUITP_DATA_COMING, "MSG_ID_L2SDK_HUITP_DATA_COMING", $msg);
