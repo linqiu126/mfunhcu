@@ -16,30 +16,35 @@
 --
 
 CREATE TABLE IF NOT EXISTS `t_l2snr_tempdata` (
-  `sid` int(4) NOT NULL AUTO_INCREMENT,
+  `sid` int(4) NOT NULL,
   `deviceid` char(50) NOT NULL,
-  `sensorid` int(1) NOT NULL,
-  `temperature` int(4) NOT NULL,
-  `dataflag` char(1) NOT NULL DEFAULT 'N',
+  `temperature` float DEFAULT NULL,
+  `dataflag` char(1) DEFAULT NULL,
   `reportdate` date NOT NULL,
-  `hourminindex` int(2) NOT NULL,
-  `altitude` int(4) NOT NULL,
-  `flag_la` char(1) NOT NULL,
-  `latitude` int(4) NOT NULL,
-  `flag_lo` char(1) NOT NULL,
-  `longitude` int(4) NOT NULL,
-  PRIMARY KEY (`sid`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=21027 ;
+  `hourminindex` int(2) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
--- 转存表中的数据 `t_l2snr_tempdata`
+-- Indexes for dumped tables
 --
 
-INSERT INTO `t_l2snr_tempdata` (`sid`, `deviceid`, `sensorid`, `temperature`, `dataflag`, `reportdate`, `hourminindex`, `altitude`, `flag_la`, `latitude`, `flag_lo`, `longitude`) VALUES
-(19899, 'HCU_SH_0301', 6, 172, 'N', '2016-03-13', 1235, 0, '\0', 0, '\0', 0);
+--
+-- Indexes for table `t_l2snr_tempdata`
+--
+ALTER TABLE `t_l2snr_tempdata`
+  ADD PRIMARY KEY (`sid`);
 
+--
+-- AUTO_INCREMENT for dumped tables
+--
 
- */
+--
+-- AUTO_INCREMENT for table `t_l2snr_tempdata`
+--
+ALTER TABLE `t_l2snr_tempdata`
+  MODIFY `sid` int(4) NOT NULL AUTO_INCREMENT;
+
+*/
 
 
 class classDbiL2snrTemp
@@ -179,8 +184,22 @@ class classDbiL2snrTemp
         //更新瞬时测量值聚合表
         $result = $this->dbi_l2snr_tempdata_currentreport_update($devCode,$statCode,$timeStamp,$tempValue);
 
-        //构造返回消息TBD
-        return true;
+        //生成 HUITP_MSGID_uni_temp_data_confirm 消息的内容
+        $respMsgContent = array();
+        $baseConfirmIE = array();
+
+        $l2codecHuitpIeDictObj = new classL2codecHuitpIeDict;
+        //组装IE HUITP_IEID_uni_com_confirm
+        $huitpIe = $l2codecHuitpIeDictObj->mfun_l2codec_getHuitpIeFormat(HUITP_IEID_uni_com_confirm);
+        $huitpIeLen = intval($huitpIe['len']);
+        $comConfirm = HUITP_IEID_UNI_COM_CONFIRM_YES;
+        array_push($baseConfirmIE, HUITP_IEID_uni_com_confirm);
+        array_push($baseConfirmIE, $huitpIeLen);
+        array_push($baseConfirmIE, $comConfirm);
+
+        array_push($respMsgContent, $baseConfirmIE);
+
+        return $respMsgContent;
     }
 
 }

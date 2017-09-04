@@ -56,7 +56,7 @@ class classTaskL2snrPm25
                 $dbiL2snrPm25Obj = new classDbiL2snrPm25();
                 $respHuitpMsg = $dbiL2snrPm25Obj->dbi_huitp_msg_uni_pm25_data_report($devCode, $statCode, $content);
 
-                //暂时HUITP_MSGID_uni_pm25_data_confirm没有处理
+                //发送HUITP_MSGID_uni_pm25_data_confirm
                 if (!empty($respHuitpMsg)) {
                     $msg = array("project" => $project,
                         "platform" => MFUN_TECH_PLTF_HCUGX_HUITP,
@@ -76,7 +76,7 @@ class classTaskL2snrPm25
                 $dbiL2snrPm25Obj = new classDbiL2snrPm25();
                 $respHuitpMsg = $dbiL2snrPm25Obj->dbi_huitp_msg_uni_ycjk_data_report($devCode, $statCode, $content);
 
-                //暂时HUITP_MSGID_uni_ycjk_data_confirm没有处理
+                //发送HUITP_MSGID_uni_ycjk_data_confirm
                 if (!empty($respHuitpMsg)) {
                     $msg = array("project" => $project,
                         "platform" => MFUN_TECH_PLTF_HCUGX_HUITP,

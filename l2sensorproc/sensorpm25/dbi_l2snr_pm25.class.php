@@ -44,7 +44,99 @@ ALTER TABLE `t_l2snr_pm25data`
 --
 ALTER TABLE `t_l2snr_pm25data`
   MODIFY `sid` int(4) NOT NULL AUTO_INCREMENT;
- */
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `t_l2snr_aqyc_minreport`
+--
+
+CREATE TABLE IF NOT EXISTS `t_l2snr_aqyc_minreport` (
+  `sid` int(4) NOT NULL,
+  `devcode` char(20) NOT NULL,
+  `statcode` char(20) NOT NULL,
+  `reportdate` date NOT NULL,
+  `hourminindex` int(2) NOT NULL,
+  `dataflag` char(10) NOT NULL DEFAULT 'Y',
+  `pm01` float DEFAULT NULL,
+  `pm25` float DEFAULT NULL,
+  `pm10` float DEFAULT NULL,
+  `noise` float DEFAULT NULL,
+  `windspeed` float DEFAULT NULL,
+  `winddirection` float DEFAULT NULL,
+  `temperature` float DEFAULT NULL,
+  `humidity` float DEFAULT NULL,
+  `airpressure` float DEFAULT NULL,
+  `rain` float DEFAULT NULL,
+  `emcvalue` float DEFAULT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `t_l2snr_aqyc_minreport`
+--
+ALTER TABLE `t_l2snr_aqyc_minreport`
+  ADD PRIMARY KEY (`sid`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `t_l2snr_aqyc_minreport`
+--
+ALTER TABLE `t_l2snr_aqyc_minreport`
+  MODIFY `sid` int(4) NOT NULL AUTO_INCREMENT;
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `t_l3f3dm_aqyc_currentreport`
+--
+
+CREATE TABLE IF NOT EXISTS `t_l3f3dm_aqyc_currentreport` (
+  `sid` int(4) NOT NULL,
+  `deviceid` char(50) NOT NULL,
+  `statcode` char(20) NOT NULL,
+  `createtime` char(20) NOT NULL,
+  `pm01` float DEFAULT NULL,
+  `pm25` float DEFAULT NULL,
+  `pm10` float DEFAULT NULL,
+  `noise` float DEFAULT NULL,
+  `windspeed` float DEFAULT NULL,
+  `winddirection` float DEFAULT NULL,
+  `temperature` float DEFAULT NULL,
+  `humidity` float DEFAULT NULL,
+  `rain` float DEFAULT NULL,
+  `airpressure` float DEFAULT NULL,
+  `emcvalue` float DEFAULT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `t_l3f3dm_aqyc_currentreport`
+--
+ALTER TABLE `t_l3f3dm_aqyc_currentreport`
+  ADD PRIMARY KEY (`sid`),
+  ADD UNIQUE KEY `deviceid` (`deviceid`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `t_l3f3dm_aqyc_currentreport`
+--
+ALTER TABLE `t_l3f3dm_aqyc_currentreport`
+  MODIFY `sid` int(4) NOT NULL AUTO_INCREMENT;
+
+*/
 
 
 class classDbiL2snrPm25
@@ -61,20 +153,21 @@ class classDbiL2snrPm25
         }
 
         //存储新记录，如果发现是已经存在的数据，则覆盖，否则新增
-        $date = intval(date("ymd", $timeStamp));
+        $reportdate = intval(date("ymd", $timeStamp));
         $stamp = getdate($timeStamp);
         $hourminindex = intval(($stamp["hours"] * 60 + floor($stamp["minutes"]/MFUN_TIME_GRID_SIZE)));
+        $dataFlag = MFUN_HCU_DATA_FLAG_VALID;
 
-        $query_str = "SELECT * FROM `t_l2snr_pm25data` WHERE (`deviceid` = '$devCode' AND `reportdate` = '$date' AND `hourminindex` = '$hourminindex')";
+        $query_str = "SELECT * FROM `t_l2snr_pm25data` WHERE (`deviceid` = '$devCode' AND `reportdate` = '$reportdate' AND `hourminindex` = '$hourminindex')";
         $result = $mysqli->query($query_str);
         if (($result != false) && ($result->num_rows)>0)   //重复，则覆盖
         {
-            $query_str = "UPDATE `t_l2snr_pm25data` SET `pm01` = '$pm01',`pm25` = '$pm25',`pm10` = '$pm10' WHERE (`deviceid` = '$devCode' AND `reportdate` = '$date' AND `hourminindex` = '$hourminindex')";
+            $query_str = "UPDATE `t_l2snr_pm25data` SET `pm01` = '$pm01',`pm25` = '$pm25',`pm10` = '$pm10',`dataflag` = '$dataFlag' WHERE (`deviceid` = '$devCode' AND `reportdate` = '$date' AND `hourminindex` = '$hourminindex')";
             $result=$mysqli->query($query_str);
         }
         else   //不存在，新增
         {
-            $query_str = "INSERT INTO `t_l2snr_pm25data` (deviceid,pm01,pm25,pm10,reportdate,hourminindex) VALUES ('$devCode','$pm01','$pm25','$pm10','$date','$hourminindex')";
+            $query_str = "INSERT INTO `t_l2snr_pm25data` (deviceid,pm01,pm25,pm10,dataflag,reportdate,hourminindex) VALUES ('$devCode','$pm01','$pm25','$pm10','$dataFlag','$reportdate','$hourminindex')";
             $result=$mysqli->query($query_str);
         }
         $mysqli->close();
@@ -91,24 +184,25 @@ class classDbiL2snrPm25
             die('Could not connect: ' . mysqli_error($mysqli));
         }
 
-        $date = intval(date("ymd", $timeStamp));
-        $stamp = getdate($timestamp);
+        $reportdate = intval(date("ymd", $timeStamp));
+        $stamp = getdate($timeStamp);
         $hourminindex = intval(($stamp["hours"] * 60 + floor($stamp["minutes"]/MFUN_TIME_GRID_SIZE)));
+        $dataFlag = MFUN_HCU_DATA_FLAG_VALID;
 
         //存储新记录，如果发现是已经存在的数据，则覆盖，否则新增
         $query_str = "SELECT * FROM `t_l2snr_aqyc_minreport` WHERE (`devcode` = '$devCode' AND `statcode` = '$statCode'
-                                  AND `reportdate` = '$date' AND `hourminindex` = '$hourminindex')";
+                                  AND `reportdate` = '$reportdate' AND `hourminindex` = '$hourminindex')";
         $result = $mysqli->query($query_str);
         if (($result != false) && ($result->num_rows)>0)  //重复，则覆盖
         {
-            $query_str = "UPDATE `t_l2snr_aqyc_minreport` SET `pm01` = '$pm01',`pm25` = '$pm25',`pm10` = '$pm10'
-                          WHERE (`devcode` = '$devCode' AND `statcode` = '$statCode' AND `reportdate` = '$date' AND `hourminindex` = '$hourminindex')";
+            $query_str = "UPDATE `t_l2snr_aqyc_minreport` SET `pm01` = '$pm01',`pm25` = '$pm25',`pm10` = '$pm10',`dataflag` = '$dataFlag'
+                          WHERE (`devcode` = '$devCode' AND `statcode` = '$statCode' AND `reportdate` = '$reportdate' AND `hourminindex` = '$hourminindex')";
             $result=$mysqli->query($query_str);
         }
         else   //不存在，新增
         {
-            $query_str = "INSERT INTO `t_l2snr_aqyc_minreport` (devcode,statcode,pm01,pm25,pm10,reportdate,hourminindex)
-                                  VALUES ('$devCode', '$statCode', '$pm01','$pm25','$pm10','$date','$hourminindex')";
+            $query_str = "INSERT INTO `t_l2snr_aqyc_minreport` (devcode,statcode,pm01,pm25,pm10,dataflag,reportdate,hourminindex)
+                                  VALUES ('$devCode', '$statCode', '$pm01','$pm25','$pm10','$dataFlag','$reportdate','$hourminindex')";
             $result=$mysqli->query($query_str);
         }
         $mysqli->close();

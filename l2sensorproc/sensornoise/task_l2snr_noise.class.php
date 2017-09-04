@@ -32,7 +32,7 @@ class classTaskL2snrNoise
         if (empty($msg) == true) {
             $result = "Received null message body";
             $log_content = "R:" . json_encode($result);
-            $loggerObj->logger("MFUN_TASK_ID_L2SNR_NOISE", "mfun_l2snr_noise_task_main_entry", $log_time, $log_content);
+            $loggerObj->logger("MFUN_TASK_ID_L2SENSOR_NOISE", "mfun_l2snr_noise_task_main_entry", $log_time, $log_content);
             echo trim($result);
             return false;
         }
@@ -44,33 +44,36 @@ class classTaskL2snrNoise
             if (isset($msg["statCode"])) $statCode = $msg["statCode"];
             if (isset($msg["content"])) $content = $msg["content"];
         }
-        //多条消息发送到NOISE模块
-        if ($msgId != HUITP_MSGID_uni_noise_data_report){
-            $result = "Msgid or MsgName error";
-            $log_content = "P:" . json_encode($result);
-            $loggerObj->logger("MFUN_TASK_ID_L2SNR_NOISE", "mfun_l2snr_noise_task_main_entry", $log_time, $log_content);
-            echo trim($result);
-            return false;
-        }
 
         if ($msgId == HUITP_MSGID_uni_noise_data_report)
         {
             $dbiL2snrNoiseObj = new classDbiL2snrNoise();
-            $dbiL2snrNoiseObj->dbi_huitp_msg_uni_noise_data_report($devCode, $statCode, $content);
+            $respHuitpMsg = $dbiL2snrNoiseObj->dbi_huitp_msg_uni_noise_data_report($devCode, $statCode, $content);
 
-            //暂时HUITP_MSGID_uni_noise_data_confirm没有处理
-            $resp ="";
+            //发送HUITP_MSGID_uni_noise_data_confirm
+            if (!empty($respHuitpMsg)) {
+                $msg = array("project" => $project,
+                    "platform" => MFUN_TECH_PLTF_HCUGX_HUITP,
+                    "devCode" => $devCode,
+                    "respMsg" => HUITP_MSGID_uni_noise_data_confirm,
+                    "content" => $respHuitpMsg);
+                if ($parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L2SENSOR_NOISE,
+                        MFUN_TASK_ID_L2ENCODE_HUITP,
+                        MSG_ID_L2CODEC_ENCODE_HUITP_INCOMING,
+                        "MSG_ID_L2CODEC_ENCODE_HUITP_INCOMING",
+                        $msg) == false
+                ) $resp = "Send to message buffer error";
+                else $resp = "";
+            }
         }
         else{
-            $resp = ""; //啥都不ECHO
+            $resp ="Received invalid MSGID!";
         }
 
-        //返回ECHO
         if (!empty($resp))
         {
             $log_content = "T:" . json_encode($resp);
-            $loggerObj->logger($project, $devCode, $log_time, $log_content);
-            echo trim($resp);
+            $loggerObj->logger($project, "mfun_l2snr_noise_task_main_entry", $log_time, $log_content);
         }
 
         //返回
