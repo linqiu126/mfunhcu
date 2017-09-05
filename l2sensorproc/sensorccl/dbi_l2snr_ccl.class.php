@@ -477,9 +477,9 @@ class classDbiL2snrCcl
 
         //更新当前聚合表
         $currenttime = date("Y-m-d H:i:s",$timestamp);
-        $result = $mysqli->query("SELECT * FROM `t_l3f3dm_fhys_currentreport` WHERE (`devcode` = '$devCode' AND `statcode` = '$statcode') ");
+        $result = $mysqli->query("SELECT * FROM `t_l3f3dm_fhys_currentreport` WHERE (`devcode` = '$devCode') ");
         if (($result->num_rows)>0) {
-            $query_str = "UPDATE `t_l3f3dm_fhys_currentreport` SET `createtime` = '$currenttime',`reporttype` = '$reportType',`door_1` = '$door_1',`door_2` = '$door_2',`door_3` = '$door_3',`door_4` = '$door_4',`lock_1` = '$lock_1',`lock_2` = '$lock_2',`lock_3` = '$lock_3',`lock_4` = '$lock_4',
+            $query_str = "UPDATE `t_l3f3dm_fhys_currentreport` SET `statcode` = '$statcode',`createtime` = '$currenttime',`reporttype` = '$reportType',`door_1` = '$door_1',`door_2` = '$door_2',`door_3` = '$door_3',`door_4` = '$door_4',`lock_1` = '$lock_1',`lock_2` = '$lock_2',`lock_3` = '$lock_3',`lock_4` = '$lock_4',
                           `battstate` = '$battState',`waterstate` = '$waterState',`shakestate` = '$shakeState',`fallstate` = '$fallState',`smokestate` = '$smokeState',`battvalue` = '$battValue',`fallvalue` = '$fallValue',`tempvalue` = '$tempValue',`humidvalue` = '$humidValue',`rssivalue` = '$rssiValue'
                             WHERE (`devcode` = '$devCode')";
             $result = $mysqli->query($query_str);

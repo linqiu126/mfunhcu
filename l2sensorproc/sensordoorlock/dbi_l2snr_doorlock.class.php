@@ -315,17 +315,17 @@ class classDbiL2snrDoorlock
 
         //更新当前聚合表
         $currenttime = date("Y-m-d H:i:s",$timestamp);
-        $result = $mysqli->query("SELECT * FROM `t_l3f3dm_fhys_currentreport` WHERE (`devcode` = '$devCode' AND `statcode` = '$statcode') ");
+        $result = $mysqli->query("SELECT * FROM `t_l3f3dm_fhys_currentreport` WHERE (`devcode` = '$devCode') ");
         if (($result->num_rows)>0) {
             //集中器传感器问题的workaround，有时候温湿度传感器会偶尔读数不正常，同时为0，这时候保持温湿度值不更新。
             if($tempValue == 0 AND $humidValue == 0){
-                $query_str = "UPDATE `t_l3f3dm_fhys_currentreport` SET `createtime` = '$currenttime',`reporttype` = '$reportType',`door_1` = '$door_1',`door_2` = '$door_2',`lock_1` = '$lock_1',`lock_2` = '$lock_2',`battstate` = '$battState',
+                $query_str = "UPDATE `t_l3f3dm_fhys_currentreport` SET `statcode` = '$statcode',`createtime` = '$currenttime',`reporttype` = '$reportType',`door_1` = '$door_1',`door_2` = '$door_2',`lock_1` = '$lock_1',`lock_2` = '$lock_2',`battstate` = '$battState',
                           `waterstate` = '$waterState',`shakestate` = '$shakeState',`fallstate` = '$fallState',`smokestate` = '$smokeState',`battvalue` = '$battValue',`rssivalue` = '$rssiValue'
                             WHERE (`devcode` = '$devCode')";
                 $result = $mysqli->query($query_str);
             }
             else{
-                $query_str = "UPDATE `t_l3f3dm_fhys_currentreport` SET `createtime` = '$currenttime',`reporttype` = '$reportType',`door_1` = '$door_1',`door_2` = '$door_2',`lock_1` = '$lock_1',`lock_2` = '$lock_2',`battstate` = '$battState',
+                $query_str = "UPDATE `t_l3f3dm_fhys_currentreport` SET `statcode` = '$statcode',`createtime` = '$currenttime',`reporttype` = '$reportType',`door_1` = '$door_1',`door_2` = '$door_2',`lock_1` = '$lock_1',`lock_2` = '$lock_2',`battstate` = '$battState',
                           `waterstate` = '$waterState',`shakestate` = '$shakeState',`fallstate` = '$fallState',`smokestate` = '$smokeState',`battvalue` = '$battValue',`tempvalue` = '$tempValue',`humidvalue` = '$humidValue',`rssivalue` = '$rssiValue'
                             WHERE (`devcode` = '$devCode')";
                 $result = $mysqli->query($query_str);

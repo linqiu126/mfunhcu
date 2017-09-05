@@ -12,51 +12,100 @@ header("Content-type:text/html;charset=utf-8");
 -- --------------------------------------------------------
 
 --
--- 表的结构 `t_l3f2cm_projinfo`
+-- 表的结构 `t_l3f2cm_favourlist`
 --
 
-CREATE TABLE IF NOT EXISTS `t_l3f2cm_projinfo` (
+CREATE TABLE IF NOT EXISTS `t_l3f2cm_favourlist` (
+  `sid` int(4) NOT NULL,
+  `uid` varchar(10) NOT NULL,
+  `statcode` varchar(20) NOT NULL,
+  `createtime` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `t_l3f2cm_favourlist`
+--
+ALTER TABLE `t_l3f2cm_favourlist`
+  ADD PRIMARY KEY (`sid`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `t_l3f2cm_favourlist`
+--
+ALTER TABLE `t_l3f2cm_favourlist`
+  MODIFY `sid` int(4) NOT NULL AUTO_INCREMENT;
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `t_l3f2cm_fhys_keyauth`
+--
+
+CREATE TABLE IF NOT EXISTS `t_l3f2cm_fhys_keyauth` (
+  `sid` int(4) NOT NULL,
+  `keyid` char(10) NOT NULL,
+  `authlevel` char(1) NOT NULL DEFAULT 'D',
+  `authobjcode` char(20) NOT NULL,
+  `authtype` char(1) NOT NULL DEFAULT 'T',
+  `validnum` int(2) DEFAULT '0',
+  `validstart` date DEFAULT NULL,
+  `validend` date DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `t_l3f2cm_fhys_keyauth`
+--
+ALTER TABLE `t_l3f2cm_fhys_keyauth`
+  ADD PRIMARY KEY (`sid`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `t_l3f2cm_fhys_keyauth`
+--
+ALTER TABLE `t_l3f2cm_fhys_keyauth`
+  MODIFY `sid` int(4) NOT NULL AUTO_INCREMENT;
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `t_l3f2cm_fhys_keyinfo`
+--
+
+CREATE TABLE IF NOT EXISTS `t_l3f2cm_fhys_keyinfo` (
+  `keyid` char(10) NOT NULL,
+  `keyname` char(20) NOT NULL DEFAULT 'NULL',
   `p_code` char(20) NOT NULL,
-  `p_name` char(50) NOT NULL,
-  `chargeman` char(20) NOT NULL,
-  `telephone` char(20) NOT NULL,
-  `department` char(30) NOT NULL,
-  `address` char(30) NOT NULL,
-  `country` char(20) NOT NULL,
-  `street` char(20) NOT NULL,
-  `square` int(4) NOT NULL,
-  `starttime` date NOT NULL,
-  `pre_endtime` date NOT NULL,
-  `true_endtime` date NOT NULL,
-  `stage` text NOT NULL,
-  PRIMARY KEY (`p_code`),
-  KEY `statCode` (`p_code`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+  `keyuserid` char(10) DEFAULT 'none',
+  `keyusername` char(10) DEFAULT 'none',
+  `keystatus` char(1) NOT NULL DEFAULT 'Y',
+  `keytype` char(1) NOT NULL,
+  `hwcode` char(50) DEFAULT NULL,
+  `memo` text
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- 转存表中的数据 `t_l3f2cm_projinfo`
+-- Indexes for dumped tables
 --
 
-INSERT INTO `t_l3f2cm_projinfo` (`p_code`, `p_name`, `chargeman`, `telephone`, `department`, `address`, `country`, `street`, `square`, `starttime`, `pre_endtime`, `true_endtime`, `stage`) VALUES
-('P_0014', '万宝国际广场', '张三', '13912345678', '上海建筑', '延安西路500号', '长宁区', '', 10000, '2015-04-01', '2016-05-01', '2016-05-31', '项目延期1月'),
-('P_0019', '港运大厦', '张三', '13912345678', '', '杨树浦路1963弄24号', '虹口区', '', 0, '2016-04-01', '0000-00-00', '0000-00-00', ''),
-('P_0002', '浦东环球金融中心工程', '张三', '13912345678', '浦东建筑', '世纪大道100号', '浦东新区', '', 40000, '2015-01-01', '0000-00-00', '0000-00-00', '项目延期'),
-('P_0004', '金桥创科园', '李四', '13912345678', '', '桂桥路255号', '浦东新区', '', 0, '2016-04-01', '0000-00-00', '0000-00-00', ''),
-('P_0005', '江湾体育场', '李四', '13912345678', '上海建筑', '国和路346号', '杨浦区', '', 0, '2016-04-13', '0000-00-00', '0000-00-00', ''),
-('P_0006', '滨海新村', '李四', '13912345678', '', '同泰北路100号', '宝山区', '', 0, '2016-02-01', '0000-00-00', '0000-00-00', ''),
-('P_0007', '银都苑', '李四', '13912345678', '', '银都路3118弄', '闵行区', '', 0, '2016-02-01', '0000-00-00', '0000-00-00', ''),
-('P_0008', '万科花园小城', '王五', '13912345678', '', '龙吴路5710号', '闵行区', '', 0, '2016-02-18', '0000-00-00', '0000-00-00', ''),
-('P_0009', '合生国际花园', '王五', '13912345678', '', '长兴东路1290', '松江区', '', 0, '2016-02-18', '0000-00-00', '0000-00-00', ''),
-('P_0010', '江南国际会议中心', '王五', '13912345678', '', '青浦区Y095(阁游路)', '青浦区', '', 0, '2016-02-18', '0000-00-00', '0000-00-00', ''),
-('P_0011', '佳邸别墅', '王五', '13912345678', '', '盈港路1555弄', '青浦区', '', 0, '2016-02-18', '0000-00-00', '0000-00-00', ''),
-('P_0012', '西郊河畔家园', '王五', '13912345678', '', '繁兴路469弄', '闵行区', '华漕镇', 0, '2016-02-18', '0000-00-00', '0000-00-00', ''),
-('P_0013', '东视大厦', '赵六', '13912345678', '', '东方路2000号', '浦东新区', '南码头', 0, '2016-02-18', '0000-00-00', '0000-00-00', ''),
-('P_0001', '曙光大厦', '赵六', '13912345678', '', '普安路189号', '黄埔区', '淮海中路街道', 0, '2016-02-29', '0000-00-00', '0000-00-00', ''),
-('P_0015', '上海贝尔', '赵六', '13912345678', '', '西藏北路525号', '闸北区', '芷江西路街道', 0, '2016-03-15', '0000-00-00', '0000-00-00', ''),
-('P_0016', '嘉宝大厦', '赵六', '13912345678', '', '洪德路1009号', '嘉定区', '马陆镇', 0, '2015-03-19', '0000-00-00', '0000-00-00', ''),
-('P_0017', '金山豪庭', '赵六', '13912345678', '', '卫清东路2988', '金山区', '', 0, '2015-08-25', '0000-00-00', '0000-00-00', ''),
-('P_0018', '临港城投大厦', '赵六', '13912345678', '', '环湖西一路333号', '浦东新区', '', 0, '2015-11-30', '0000-00-00', '0000-00-00', ''),
-('P_0003', '金鹰大厦', '张三', '13912345678', '上海爱启', '含笑路80号', '浦东新区', '联洋街道', 10000, '2015-04-30', '2016-05-01', '2016-05-31', '项目进行中');
+--
+-- Indexes for table `t_l3f2cm_fhys_keyinfo`
+--
+ALTER TABLE `t_l3f2cm_fhys_keyinfo`
+  ADD PRIMARY KEY (`keyid`);
 
 -- --------------------------------------------------------
 
@@ -66,22 +115,54 @@ INSERT INTO `t_l3f2cm_projinfo` (`p_code`, `p_name`, `chargeman`, `telephone`, `
 
 CREATE TABLE IF NOT EXISTS `t_l3f2cm_projgroup` (
   `pg_code` char(20) NOT NULL,
-  `pg_name` char(50) DEFAULT NULL,
+  `pg_name` char(50) NOT NULL,
   `owner` char(20) DEFAULT NULL,
   `phone` char(20) DEFAULT NULL,
   `department` char(50) DEFAULT NULL,
   `addr` char(100) DEFAULT NULL,
-  `backup` text,
-  PRIMARY KEY (`pg_code`)
+  `backup` text
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- 转存表中的数据 `t_l3f2cm_projgroup`
+-- Indexes for dumped tables
 --
 
-INSERT INTO `t_l3f2cm_projgroup` (`pg_code`, `pg_name`, `owner`, `phone`, `department`, `addr`, `backup`) VALUES
-('PG_1111', '扬尘项目组', '张三', '13912341234', '扬尘项目组单位', '扬尘项目组单位地址', '该项目组管理所有扬尘项目的用户，项目以及相关权限'),
-('PG_2222', '污水处理项目组', '李四', '13912349999', '污水项目组单位', '污水项目组单位地址', '该项目组管理所有污水处理项目的用户，项目以及相关权限');
+--
+-- Indexes for table `t_l3f2cm_projgroup`
+--
+ALTER TABLE `t_l3f2cm_projgroup`
+  ADD PRIMARY KEY (`pg_code`);
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `t_l3f2cm_projinfo`
+--
+
+CREATE TABLE IF NOT EXISTS `t_l3f2cm_projinfo` (
+  `p_code` char(20) NOT NULL,
+  `p_name` char(50) NOT NULL,
+  `pg_code` char(20) DEFAULT NULL,
+  `chargeman` char(20) DEFAULT NULL,
+  `telephone` char(20) DEFAULT NULL,
+  `department` char(30) DEFAULT NULL,
+  `address` char(30) DEFAULT NULL,
+  `sw_base` char(1) NOT NULL DEFAULT '0',
+  `starttime` date DEFAULT NULL,
+  `pre_endtime` date DEFAULT NULL,
+  `true_endtime` date DEFAULT NULL,
+  `stage` text
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `t_l3f2cm_projinfo`
+--
+ALTER TABLE `t_l3f2cm_projinfo`
+  ADD PRIMARY KEY (`p_code`);
 
 
  */

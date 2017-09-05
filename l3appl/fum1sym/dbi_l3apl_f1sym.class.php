@@ -13,86 +13,121 @@ include_once "../l1comvm/vmlayer.php";  //此处include不可修改！！！
 -- --------------------------------------------------------
 
 --
--- 表的结构 `t_l3f1sym_session`
+-- 表的结构 `t_l3f1sym_account`
 --
 
-CREATE TABLE IF NOT EXISTS `t_l3f1sym_session` (
-  `sessionid` char(8) NOT NULL,
-  `uid` char(20) NOT NULL,
-  `lastupdate` int(4) NOT NULL,
-  PRIMARY KEY (`sessionid`)
+CREATE TABLE IF NOT EXISTS `t_l3f1sym_account` (
+  `uid` char(10) NOT NULL,
+  `user` char(20) NOT NULL,
+  `nick` char(20) DEFAULT NULL,
+  `pwd` char(100) NOT NULL,
+  `admin` char(5) DEFAULT NULL,
+  `grade` char(1) NOT NULL DEFAULT '0',
+  `phone` char(20) DEFAULT NULL,
+  `email` char(50) DEFAULT NULL,
+  `regdate` date DEFAULT NULL,
+  `city` char(10) DEFAULT NULL,
+  `backup` text
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- 转存表中的数据 `t_l3f1sym_session`
+-- Indexes for dumped tables
 --
 
-INSERT INTO `t_l3f1sym_session` (`sessionid`, `uid`, `lastupdate`) VALUES
-('KpjEAyCZ', 'UID001', 1466300141);
-
-
- -- --------------------------------------------------------
-
- --
- -- 表的结构 `t_l3f1sym_account`
- --
-
- CREATE TABLE IF NOT EXISTS `t_l3f1sym_account` (
-   `uid` char(10) NOT NULL,
-   `user` char(20) DEFAULT NULL,
-   `nick` char(20) DEFAULT NULL,
-   `pwd` char(20) DEFAULT NULL,
-   `attribute` char(10) DEFAULT NULL,
-   `phone` char(20) DEFAULT NULL,
-   `email` char(50) DEFAULT NULL,
-   `regdate` date DEFAULT NULL,
-   `city` char(10) DEFAULT NULL,
-   `backup` text,
-   PRIMARY KEY (`uid`)
- ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
- --
- -- 转存表中的数据 `t_l3f1sym_account`
- --
-
- INSERT INTO `t_l3f1sym_account` (`uid`, `user`, `nick`, `pwd`, `attribute`, `phone`, `email`, `regdate`, `city`, `backup`) VALUES
- ('UID001', 'admin', '爱启用户', 'admin', '管理员', '13912341234', '13912341234@cmcc.com', '2016-05-28', '上海', ''),
- ('UID002', '李四', '老李', 'li_4', '管理员', '13912341234', '13912341234@cmcc.com', '2016-06-17', '上海', ''),
- ('UID003', 'user_01', '用户01', 'user01', '管理员', '13912349901', '13912349901@qq.com', '2016-04-01', '上海', NULL),
- ('UID004', 'user_02', '用户2', 'user02', '用户', '13912349902', '13912349902@qq.com', '2016-05-28', '上海', ''),
- ('UID005', 'user_03', '用户三', 'user03', '用户', '13912349903', '13912349902@qq.com', '2016-05-28', '上海', '');
-
+--
+-- Indexes for table `t_l3f1sym_account`
+--
+ALTER TABLE `t_l3f1sym_account`
+  ADD PRIMARY KEY (`uid`);
 
 -- --------------------------------------------------------
+
 --
 -- 表的结构 `t_l3f1sym_authlist`
 --
 
 CREATE TABLE IF NOT EXISTS `t_l3f1sym_authlist` (
-  `sid` int(4) NOT NULL AUTO_INCREMENT,
+  `sid` int(4) NOT NULL,
   `uid` char(10) NOT NULL,
-  `auth_code` char(20) DEFAULT NULL,
-  PRIMARY KEY (`sid`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=75 ;
+  `auth_code` char(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- 转存表中的数据 `t_l3f1sym_authlist`
+-- Indexes for dumped tables
 --
 
-INSERT INTO `t_l3f1sym_authlist` (`sid`, `uid`, `auth_code`) VALUES
-(1, 'UID001', 'P_0001'),
-(2, 'UID001', 'P_0002'),
-(3, 'UID003', 'PG_1111'),
-(64, 'UID005', 'P_0002'),
-(65, 'UID005', 'P_0004'),
-(66, 'UID005', 'P_0012'),
-(67, 'UID004', 'P_0008'),
-(68, 'UID004', 'P_0009'),
-(69, 'UID004', 'P_0010'),
-(70, 'UID001', 'P_0003'),
-(72, 'UID002', 'P_0004'),
-(73, 'UID002', 'P_0010'),
-(74, 'UID002', 'P_0012');
+--
+-- Indexes for table `t_l3f1sym_authlist`
+--
+ALTER TABLE `t_l3f1sym_authlist`
+  ADD PRIMARY KEY (`sid`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `t_l3f1sym_authlist`
+--
+ALTER TABLE `t_l3f1sym_authlist`
+  MODIFY `sid` int(4) NOT NULL AUTO_INCREMENT;
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `t_l3f1sym_session`
+--
+
+CREATE TABLE IF NOT EXISTS `t_l3f1sym_session` (
+  `uid` char(20) NOT NULL,
+  `sessionid` char(10) NOT NULL,
+  `lastupdate` int(4) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `t_l3f1sym_session`
+--
+ALTER TABLE `t_l3f1sym_session`
+  ADD PRIMARY KEY (`uid`),
+  ADD UNIQUE KEY `sessionid` (`sessionid`);
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `t_l3f1sym_sysinfo`
+--
+
+CREATE TABLE IF NOT EXISTS `t_l3f1sym_sysinfo` (
+  `sid` int(4) NOT NULL,
+  `keyid` char(50) NOT NULL,
+  `vendorinfo` char(200) NOT NULL,
+  `customerinfo` char(200) NOT NULL,
+  `licenseinfo` char(200) NOT NULL,
+  `maxadmin` int(4) NOT NULL DEFAULT '10',
+  `maxsubscribers` int(4) NOT NULL DEFAULT '1000',
+  `maxservers` int(4) NOT NULL DEFAULT '5'
+) ENGINE=InnoDB AUTO_INCREMENT=101 DEFAULT CHARSET=utf8;
+
+--
+-- 转存表中的数据 `t_l3f1sym_sysinfo`
+--
+
+INSERT INTO `t_l3f1sym_sysinfo` (`sid`, `keyid`, `vendorinfo`, `customerinfo`, `licenseinfo`, `maxadmin`, `maxsubscribers`, `maxservers`) VALUES
+(100, 'AAA-BBB-012', 'Aiqi Yancheng Shanghai Ltd.', '上海是环保局，中环工程', '', 10, 1000, 5);
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `t_l3f1sym_sysinfo`
+--
+ALTER TABLE `t_l3f1sym_sysinfo`
+  ADD PRIMARY KEY (`sid`);
 
 -- --------------------------------------------------------
 
@@ -101,7 +136,7 @@ INSERT INTO `t_l3f1sym_authlist` (`sid`, `uid`, `auth_code`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `t_l3f1sym_userprofile` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL,
   `username` varchar(25) NOT NULL,
   `email` varchar(255) NOT NULL,
   `password_hash` varchar(60) NOT NULL,
@@ -112,11 +147,8 @@ CREATE TABLE IF NOT EXISTS `t_l3f1sym_userprofile` (
   `registration_ip` varchar(45) DEFAULT NULL,
   `created_at` int(11) NOT NULL,
   `updated_at` int(11) NOT NULL,
-  `flags` int(11) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `user_unique_username` (`username`),
-  UNIQUE KEY `user_unique_email` (`email`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=54 ;
+  `flags` int(11) NOT NULL DEFAULT '0'
+) ENGINE=MyISAM AUTO_INCREMENT=54 DEFAULT CHARSET=utf8;
 
 --
 -- 转存表中的数据 `t_l3f1sym_userprofile`
@@ -129,32 +161,27 @@ INSERT INTO `t_l3f1sym_userprofile` (`id`, `username`, `email`, `password_hash`,
 (52, 'zjl', 'smdzjl@sina.cn', '$2y$12$pCBD9e0/B0bvwKs6crXA2.pzy606Bn4o19Bzx1r8jdjr1t1nN/jc.', 'GPJwlaHeV0JaMswrLuai0JsW7H8aUjPh', 1444091551, NULL, NULL, '117.135.149.14', 1444091501, 1444091551, 0),
 (53, 'shanchuz', 'zsc0905@sina.com', '$2y$12$mlslUwrYelb5nV6DfYot9ORgYGI9YB5.bN/HCMYru6QRn6UrfJsP6', '7VMvRAprvPsYU-Fqt6jDYeLvUzfLzdjF', 1444527288, NULL, NULL, '101.226.125.108', 1444527242, 1444527288, 0);
 
-//这个表单用来存储系统的各项LICENSE等信息
--- --------------------------------------------------------
 --
--- 表的结构 `t_l3f1sym_sysinfo`
+-- Indexes for dumped tables
 --
 
-CREATE TABLE IF NOT EXISTS `t_l3f1sym_sysinfo` (
-  `sid` int(4) NOT NULL AUTO_INCREMENT,
-  `keyid` char(50) NOT NULL,
-  `vendorinfo` char(200) NOT NULL,
-  `customerinfo` char(200) NOT NULL,
-  `licenseinfo` char(200) NOT NULL,
-  `maxadmin` int(4) NOT NULL DEFAULT 10,
-  `maxsubscribers` int(4) NOT NULL DEFAULT 1000,
-  `maxservers` int(4) NOT NULL DEFAULT 5,
-  PRIMARY KEY (`sid`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+--
+-- Indexes for table `t_l3f1sym_userprofile`
+--
+ALTER TABLE `t_l3f1sym_userprofile`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `user_unique_username` (`username`),
+  ADD UNIQUE KEY `user_unique_email` (`email`);
 
 --
--- 转存表中的数据 `t_l3f1sym_sysinfo`
+-- AUTO_INCREMENT for dumped tables
 --
 
-INSERT INTO `t_l3f1sym_sysinfo` (`sid`, `keyid`, `vendorinfo`, `customerinfo`) VALUES
-(100, 'AAA-BBB-012', 'Aiqi Yancheng Shanghai Ltd.', '上海是环保局，中环工程');
-
-
+--
+-- AUTO_INCREMENT for table `t_l3f1sym_userprofile`
+--
+ALTER TABLE `t_l3f1sym_userprofile`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=54;
 
 */
 

@@ -11,81 +11,75 @@
 -- --------------------------------------------------------
 
 --
--- 表的结构 `t_l2snr_dataformat`
+-- 表的结构 `t_l2snr_sensortype`
 --
 
-CREATE TABLE IF NOT EXISTS `t_l2snr_dataformat` (
-  `deviceid` char(50) NOT NULL,
-  `f_airpressure` int(1) DEFAULT NULL,
-  `f_emcdata` int(1) DEFAULT NULL,
-  `f_humidity` int(1) DEFAULT NULL,
-  `f_noise` int(1) DEFAULT NULL,
-  `f_pmdata` int(1) DEFAULT NULL,
-  `f_rain` int(1) DEFAULT NULL,
-  `f_temperature` int(1) DEFAULT NULL,
-  `f_winddirection` int(1) DEFAULT NULL,
-  `f_windspeed` int(1) DEFAULT NULL,
-  PRIMARY KEY (`deviceid`)
+CREATE TABLE IF NOT EXISTS `t_l2snr_sensortype` (
+  `typeid` char(10) NOT NULL,
+  `name` char(10) NOT NULL,
+  `value_min` int(2) NOT NULL DEFAULT '0',
+  `value_max` int(2) NOT NULL,
+  `model` char(20) DEFAULT NULL,
+  `vendor` char(20) DEFAULT NULL,
+  `dataformat` int(1) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `t_l2snr_sensortype`
+--
+ALTER TABLE `t_l2snr_sensortype`
+  ADD PRIMARY KEY (`typeid`);
+
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `t_l2snr_aqyc_minreport`
+--
+
+CREATE TABLE IF NOT EXISTS `t_l2snr_aqyc_minreport` (
+  `sid` int(4) NOT NULL,
+  `devcode` char(20) NOT NULL,
+  `statcode` char(20) NOT NULL,
+  `reportdate` date NOT NULL,
+  `hourminindex` int(2) NOT NULL,
+  `dataflag` char(10) NOT NULL DEFAULT 'Y',
+  `pm01` float DEFAULT NULL,
+  `pm25` float DEFAULT NULL,
+  `pm10` float DEFAULT NULL,
+  `noise` float DEFAULT NULL,
+  `windspeed` float DEFAULT NULL,
+  `winddirection` float DEFAULT NULL,
+  `temperature` float DEFAULT NULL,
+  `humidity` float DEFAULT NULL,
+  `airpressure` float DEFAULT NULL,
+  `rain` float DEFAULT NULL,
+  `emcvalue` float DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
--- 转存表中的数据 `t_l2snr_dataformat`
+-- Indexes for dumped tables
 --
 
-INSERT INTO `t_l2snr_dataformat` (`deviceid`, `f_airpressure`, `f_emcdata`, `f_humidity`, `f_noise`, `f_pmdata`, `f_rain`, `f_temperature`, `f_winddirection`, `f_windspeed`) VALUES
-('HCU_SH_0301', 0, 1, 1, 2, 1, 0, 1, 1, 1),
-('HCU_SH_0303', NULL, 1, NULL, NULL, 1, NULL, NULL, NULL, NULL),
-('HCU_SH_0302', NULL, 1, 1, NULL, NULL, NULL, 1, NULL, NULL),
-('HCU_SH_0305', NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('HCU_SH_0304', NULL, 1, 1, NULL, NULL, NULL, 1, NULL, NULL),
-('HCU_SH_0309', NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-
-
--- --------------------------------------------------------
+--
+-- Indexes for table `t_l2snr_aqyc_minreport`
+--
+ALTER TABLE `t_l2snr_aqyc_minreport`
+  ADD PRIMARY KEY (`sid`);
 
 --
--- 表的结构 `t_l2snr_sensortype`
+-- AUTO_INCREMENT for dumped tables
 --
 
-CREATE TABLE IF NOT EXISTS `t_l2snr_sensortype` (
-  `id` char(6) NOT NULL,
-  `name` char(10) NOT NULL,
-  `model` char(20) NOT NULL,
-  `vendor` char(20) NOT NULL,
-  `modbus` int(1) DEFAULT NULL COMMENT 'MODBUS地址',
-  `period` int(2) DEFAULT NULL COMMENT '测量周期，单位秒',
-  `samples` int(2) DEFAULT NULL COMMENT '采样间隔，单位秒',
-  `times` int(2) DEFAULT NULL COMMENT '测量次数',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
 --
--- 转存表中的数据 `t_l2snr_sensortype`
+-- AUTO_INCREMENT for table `t_l2snr_aqyc_minreport`
 --
-
-INSERT INTO `t_l2snr_sensortype` (`id`, `name`, `model`, `vendor`, `modbus`, `period`, `samples`, `times`) VALUES
-('S_0001', '细颗粒物', 'PM-100', '爱启公司', 1, 100, 500, 200),
-('S_0002', '风速', 'WS-100', '爱启公司', 2, NULL, NULL, NULL),
-('S_0003', '风向', 'WD-100', '爱启公司', 3, NULL, NULL, NULL),
-('S_0005', '电磁辐射', 'EMC-100', '小慧智能科技', 5, NULL, NULL, NULL),
-('S_0006', '温度', 'TE-100', '小慧智能科技', 6, NULL, NULL, NULL),
-('S_0007', '湿度', 'TH-100', '小慧智能科技', 6, NULL, NULL, NULL),
-('S_000A', '噪声', 'NO-100', '小慧智能科技', 10, NULL, NULL, NULL);
-
-
--- --------------------------------------------------------
-
---
--- 表的结构 `t_l2snr_sensortype`
---
-
-CREATE TABLE IF NOT EXISTS `t_l2snr_sensortype` (
-  `id` char(6) NOT NULL,
-  `name` char(10) NOT NULL,
-  `model` char(20) NOT NULL,
-  `vendor` char(20) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+ALTER TABLE `t_l2snr_aqyc_minreport`
+  MODIFY `sid` int(4) NOT NULL AUTO_INCREMENT;
 
 -- --------------------------------------------------------
 
@@ -94,7 +88,7 @@ CREATE TABLE IF NOT EXISTS `t_l2snr_sensortype` (
 --
 
 CREATE TABLE IF NOT EXISTS `t_l2snr_hourreport` (
-`sid` int(4) NOT NULL AUTO_INCREMENT,
+  `sid` int(4) NOT NULL,
   `devcode` char(20) NOT NULL,
   `statcode` char(20) DEFAULT NULL,
   `reportdate` date NOT NULL,
@@ -111,90 +105,83 @@ CREATE TABLE IF NOT EXISTS `t_l2snr_hourreport` (
   `humidity` int(4) DEFAULT NULL,
   `airpressure` int(4) DEFAULT NULL,
   `datastatus` char(10) DEFAULT NULL,
-  `validdatanum` int(1) DEFAULT NULL,
-  PRIMARY KEY (`sid`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=19 ;
+  `validdatanum` int(1) DEFAULT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
--- 转存表中的数据 `t_l2snr_hourreport`
+-- Indexes for dumped tables
 --
 
-INSERT INTO `t_l2snr_hourreport` (`sid`, `devcode`, `statcode`, `reportdate`, `hourindex`, `emcvalue`, `pm01`, `pm25`, `pm10`, `noise`, `windspeed`, `winddirection`, `rain`, `temperature`, `humidity`, `airpressure`, `datastatus`, `validdatanum`) VALUES
-(1, '', NULL, '0000-00-00', 0, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(2, '', NULL, '0000-00-00', 0, 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(3, '', NULL, '0000-00-00', 0, 3, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(4, '', NULL, '0000-00-00', 0, 4, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(5, '', NULL, '0000-00-00', 0, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(6, '', NULL, '0000-00-00', 0, 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(7, '', NULL, '0000-00-00', 0, 7, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(8, '', NULL, '0000-00-00', 0, 8, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(9, '', NULL, '0000-00-00', 0, 9, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(10, '', NULL, '0000-00-00', 0, 10, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(11, '', NULL, '0000-00-00', 0, 11, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(12, '', NULL, '0000-00-00', 0, 12, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(13, '', NULL, '0000-00-00', 0, 13, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(14, '', NULL, '0000-00-00', 0, 14, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(15, '', NULL, '0000-00-00', 0, 15, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(16, '', NULL, '0000-00-00', 0, 16, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(17, '', NULL, '0000-00-00', 0, 17, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(18, '', NULL, '0000-00-00', 0, 18, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+--
+-- Indexes for table `t_l2snr_hourreport`
+--
+ALTER TABLE `t_l2snr_hourreport`
+  ADD PRIMARY KEY (`sid`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `t_l2snr_hourreport`
+--
+ALTER TABLE `t_l2snr_hourreport`
+  MODIFY `sid` int(4) NOT NULL AUTO_INCREMENT;
 
 -- --------------------------------------------------------
 
 --
--- 表的结构 `t_l2snr_aqyc_minreport`
+-- 表的结构 `t_l2snr_fhys_minreport`
 --
 
-CREATE TABLE IF NOT EXISTS `t_l2snr_aqyc_minreport` (
-  `sid` int(4) NOT NULL AUTO_INCREMENT,
+CREATE TABLE IF NOT EXISTS `t_l2snr_fhys_minreport` (
+  `sid` int(2) NOT NULL,
   `devcode` char(20) NOT NULL,
   `statcode` char(20) NOT NULL,
   `reportdate` date NOT NULL,
   `hourminindex` int(2) NOT NULL,
-  `emcvalue` int(4) DEFAULT NULL,
-  `pm01` int(4) DEFAULT NULL,
-  `pm25` int(4) DEFAULT NULL,
-  `pm10` int(4) DEFAULT NULL,
-  `noise` int(4) DEFAULT NULL,
-  `windspeed` int(4) DEFAULT NULL,
-  `winddirection` int(4) DEFAULT NULL,
-  `rain` int(4) DEFAULT NULL,
-  `temperature` int(4) DEFAULT NULL,
-  `humidity` int(4) DEFAULT NULL,
-  `airpressure` int(4) DEFAULT NULL,
-  `pmdataflag` char(10) DEFAULT NULL,
-  PRIMARY KEY (`sid`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=55777 ;
+  `reporttype` int(1) NOT NULL DEFAULT '0',
+  `door_1` int(1) NOT NULL DEFAULT '0',
+  `door_2` int(1) NOT NULL DEFAULT '0',
+  `door_3` int(1) NOT NULL DEFAULT '0',
+  `door_4` int(1) NOT NULL DEFAULT '0',
+  `lock_1` int(1) NOT NULL DEFAULT '0',
+  `lock_2` int(1) NOT NULL DEFAULT '0',
+  `lock_3` int(1) NOT NULL DEFAULT '0',
+  `lock_4` int(1) NOT NULL DEFAULT '0',
+  `battstate` int(1) NOT NULL DEFAULT '0',
+  `waterstate` int(1) NOT NULL DEFAULT '0',
+  `shakestate` int(1) NOT NULL DEFAULT '0',
+  `fallstate` int(1) NOT NULL DEFAULT '0',
+  `smokestate` int(1) NOT NULL DEFAULT '0',
+  `battvalue` float NOT NULL DEFAULT '0',
+  `fallValue` float NOT NULL DEFAULT '0',
+  `tempvalue` float NOT NULL DEFAULT '0',
+  `humidvalue` float NOT NULL DEFAULT '0',
+  `rssivalue` float NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- 转存表中的数据 `t_l2snr_aqyc_minreport`
+-- Indexes for dumped tables
 --
 
-INSERT INTO `t_l2snr_aqyc_minreport` (`sid`, `devcode`, `statcode`, `reportdate`, `hourminindex`, `emcvalue`, `pm01`, `pm25`, `pm10`, `noise`, `windspeed`, `winddirection`, `rain`, `temperature`, `humidity`, `airpressure`, `pmdataflag`) VALUES
-(614, 'HCU_SH_0302', '120101002', '2016-04-21', 1387, 5655, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 700, 228, NULL, NULL),
-(615, 'HCU_SH_0302', '120101002', '2016-04-21', 1388, 4795, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 700, 228, NULL, NULL),
-(616, 'HCU_SH_0302', '120101002', '2016-04-21', 1389, 5247, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 702, 228, NULL, NULL),
-(617, 'HCU_SH_0302', '120101002', '2016-04-21', 1390, 4706, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 702, 228, NULL, NULL),
-(618, 'HCU_SH_0302', '120101002', '2016-04-21', 1391, 5166, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 702, 228, NULL, NULL),
-(619, 'HCU_SH_0302', '120101002', '2016-04-21', 1392, 5461, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 702, 228, NULL, NULL),
-(620, 'HCU_SH_0302', '120101002', '2016-04-21', 1393, 5593, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 700, NULL, NULL, NULL),
-(621, 'HCU_SH_0302', '120101002', '2016-04-21', 1394, 5328, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 700, 228, NULL, NULL),
-(622, 'HCU_SH_0302', '120101002', '2016-04-21', 1395, 5034, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 700, 228, NULL, NULL),
-(623, 'HCU_SH_0302', '120101002', '2016-04-21', 1396, 5348, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 700, 228, NULL, NULL),
-(624, 'HCU_SH_0302', '120101002', '2016-04-21', 1397, 5623, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 700, 227, NULL, NULL),
-(625, 'HCU_SH_0302', '120101002', '2016-04-21', 1398, 5239, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 700, 227, NULL, NULL),
-(626, 'HCU_SH_0302', '120101002', '2016-04-21', 1399, 5251, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 700, 227, NULL, NULL),
-(627, 'HCU_SH_0302', '120101002', '2016-04-21', 1400, 5201, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 700, 227, NULL, NULL),
-(628, 'HCU_SH_0302', '120101002', '2016-04-21', 1401, 5542, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 699, 227, NULL, NULL),
-(629, 'HCU_SH_0302', '120101002', '2016-04-21', 1402, 4939, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 699, 227, NULL, NULL),
-(630, 'HCU_SH_0302', '120101002', '2016-04-21', 1403, 5280, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 698, 227, NULL, NULL),
-(631, 'HCU_SH_0302', '120101002', '2016-04-21', 1404, 5481, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 698, 227, NULL, NULL),
-(632, 'HCU_SH_0302', '120101002', '2016-04-21', 1405, 4966, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 698, 227, NULL, NULL),
-(633, 'HCU_SH_0302', '120101002', '2016-04-21', 1406, 5447, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 697, 227, NULL, NULL),
-(634, 'HCU_SH_0302', '120101002', '2016-04-21', 1407, 5469, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 696, 227, NULL, NULL),
-(635, 'HCU_SH_0302', '120101002', '2016-04-21', 1408, 4858, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 696, 227, NULL, NULL),
-(636, 'HCU_SH_0302', '120101002', '2016-04-21', 1409, 5177, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 227, NULL, NULL),
-(637, 'HCU_SH_0302', '120101002', '2016-04-21', 1410, 4908, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 696, 227, NULL, NULL);
+--
+-- Indexes for table `t_l2snr_fhys_minreport`
+--
+ALTER TABLE `t_l2snr_fhys_minreport`
+  ADD PRIMARY KEY (`sid`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `t_l2snr_fhys_minreport`
+--
+ALTER TABLE `t_l2snr_fhys_minreport`
+  MODIFY `sid` int(2) NOT NULL AUTO_INCREMENT;
+
+
 
 
  */
@@ -238,144 +225,6 @@ class classDbiL2snrCommon
                 break;
         }
         return $value;
-    }
-
-    //更新各测量数据对应的精度信息
-    public function dbi_dataformat_update_format($deviceid, $type, $format)
-    {
-        //建立连接
-        $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
-        if (!$mysqli)
-        {
-            die('Could not connect: ' . mysqli_error($mysqli));
-        }
-
-        switch($type)
-        {
-            case "T_airpressure":
-                //存储新记录，如果发现是已经存在的数据，则覆盖，否则新增
-                $query_str = "SELECT * FROM `t_l2snr_dataformat` WHERE (`deviceid` = '$deviceid')";
-                $result = $mysqli->query($query_str);
-                if (($result->num_rows)>0) {
-                    $query_str = "UPDATE `t_l2snr_dataformat` SET  `f_airpressure` = '$format' WHERE (`deviceid` = '$deviceid')";
-                    $result = $mysqli->query($query_str);
-                }
-                else {
-                    $query_str = "INSERT INTO `t_l2snr_dataformat` (deviceid,f_airpressure) VALUES ('$deviceid','$format')";
-                    $result = $mysqli->query($query_str);
-                }
-                break;
-            case "T_emcdata":
-                //存储新记录，如果发现是已经存在的数据，则覆盖，否则新增
-                $query_str = "SELECT * FROM `t_l2snr_dataformat` WHERE (`deviceid` = '$deviceid')";
-                $result = $mysqli->query($query_str);
-                if (($result->num_rows)>0) {
-                    $query_str = "UPDATE `t_l2snr_dataformat` SET  `f_emcdata` = '$format' WHERE (`deviceid` = '$deviceid')";
-                    $result = $mysqli->query($query_str);
-                }
-                else {
-                    $query_str = "INSERT INTO `t_l2snr_dataformat` (deviceid,f_emcdata) VALUES ('$deviceid','$format')";
-                    $result = $mysqli->query($query_str);
-                }
-                break;
-            case "T_humidity":
-                //存储新记录，如果发现是已经存在的数据，则覆盖，否则新增
-                $query_str = "SELECT * FROM `t_l2snr_dataformat` WHERE (`deviceid` = '$deviceid')";
-                $result = $mysqli->query($query_str);
-                if (($result->num_rows)>0) {
-                    $query_str = "UPDATE `t_l2snr_dataformat` SET  `f_humidity` = '$format' WHERE (`deviceid` = '$deviceid')";
-                    $result = $mysqli->query($query_str);
-                }
-                else {
-                    $query_str = "INSERT INTO `t_l2snr_dataformat` (deviceid,f_humidity) VALUES ('$deviceid','$format')";
-                    $result = $mysqli->query($query_str);
-                }
-                break;
-            case "T_noise":
-                //存储新记录，如果发现是已经存在的数据，则覆盖，否则新增
-                $query_str = "SELECT * FROM `t_l2snr_dataformat` WHERE (`deviceid` = '$deviceid')";
-                $result = $mysqli->query($query_str);
-                if (($result->num_rows)>0) {
-                    $query_str = "UPDATE `t_l2snr_dataformat` SET  `f_noise` = '$format' WHERE (`deviceid` = '$deviceid')";
-                    $result = $mysqli->query($query_str);
-                }
-                else {
-                    $query_str = "INSERT INTO `t_l2snr_dataformat` (deviceid,f_noise) VALUES ('$deviceid','$format')";
-                    $result = $mysqli->query($query_str);
-                }
-                break;
-            case "T_pmdata";
-                //存储新记录，如果发现是已经存在的数据，则覆盖，否则新增
-                $query_str = "SELECT * FROM `t_l2snr_dataformat` WHERE (`deviceid` = '$deviceid')";
-                $result = $mysqli->query($query_str);
-                if (($result->num_rows)>0) {
-                    $query_str = "UPDATE `t_l2snr_dataformat` SET  `f_pmdata` = '$format' WHERE (`deviceid` = '$deviceid')";
-                    $result = $mysqli->query($query_str);
-                }
-                else {
-                    $query_str = "INSERT INTO `t_l2snr_dataformat` (deviceid,f_pmdata) VALUES ('$deviceid','$format')";
-                    $result = $mysqli->query($query_str);
-                }
-                break;
-            case "T_rain":
-                //存储新记录，如果发现是已经存在的数据，则覆盖，否则新增
-                $query_str = "SELECT * FROM `t_l2snr_dataformat` WHERE (`deviceid` = '$deviceid')";
-                $result = $mysqli->query($query_str);
-                if (($result->num_rows)>0) {
-                    $query_str = "UPDATE `t_l2snr_dataformat` SET  `f_rain` = '$format' WHERE (`deviceid` = '$deviceid')";
-                    $result = $mysqli->query($query_str);
-                }
-                else {
-                    $query_str = "INSERT INTO `t_l2snr_dataformat` (deviceid,f_rain) VALUES ('$deviceid','$format')";
-                    $result = $mysqli->query($query_str);
-                }
-                break;
-            case "T_temperature":
-                //存储新记录，如果发现是已经存在的数据，则覆盖，否则新增
-                $query_str = "SELECT * FROM `t_l2snr_dataformat` WHERE (`deviceid` = '$deviceid')";
-                $result = $mysqli->query($query_str);
-                if (($result->num_rows)>0) {
-                    $query_str = "UPDATE `t_l2snr_dataformat` SET  `f_temperature` = '$format' WHERE (`deviceid` = '$deviceid')";
-                    $result = $mysqli->query($query_str);
-                }
-                else {
-                    $query_str = "INSERT INTO `t_l2snr_dataformat` (deviceid,f_temperature) VALUES ('$deviceid','$format')";
-                    $result = $mysqli->query($query_str);
-                }
-                break;
-            case "T_winddirection":
-                //存储新记录，如果发现是已经存在的数据，则覆盖，否则新增
-                $query_str = "SELECT * FROM `t_l2snr_dataformat` WHERE (`deviceid` = '$deviceid')";
-                $result = $mysqli->query($query_str);
-                if (($result->num_rows)>0) {
-                    $query_str = "UPDATE `t_l2snr_dataformat` SET  `f_winddirection` = '$format' WHERE (`deviceid` = '$deviceid')";
-                    $result = $mysqli->query($query_str);
-                }
-                else {
-                    $query_str = "INSERT INTO `t_l2snr_dataformat` (deviceid,f_winddirection) VALUES ('$deviceid','$format')";
-                    $result = $mysqli->query($query_str);
-                }
-                break;
-            case "T_windspeed":
-                //存储新记录，如果发现是已经存在的数据，则覆盖，否则新增
-                $query_str = "SELECT * FROM `t_l2snr_dataformat` WHERE (`deviceid` = '$deviceid')";
-                $result = $mysqli->query($query_str);
-                if (($result->num_rows)>0) {
-                    $query_str = "UPDATE `t_l2snr_dataformat` SET  `f_windspeed` = '$format' WHERE (`deviceid` = '$deviceid')";
-                    $result = $mysqli->query($query_str);
-                }
-                else {
-                    $query_str = "INSERT INTO `t_l2snr_dataformat` (deviceid,f_windspeed) VALUES ('$deviceid','$format')";
-                    $result = $mysqli->query($query_str);
-                }
-                break;
-            default:
-                $result = "COMMON_DB: invaild data format type";
-                break;
-        }
-
-        $mysqli->close();
-        return $result;
     }
 
     //UI SensorList request, 获取所有传感器类型信息
@@ -640,7 +489,7 @@ class classDbiL2snrCommon
         $mysqli->close();
         return $result;
 
-    }//End of function bi_hourreport_process
+    }
 
     /*********************************智能云锁新增处理************************************************/
 

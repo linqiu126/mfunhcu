@@ -12,6 +12,46 @@ header("Content-type:text/html;charset=utf-8");
 //工单管理
 //如果涉及到区分，则需要通过具体的dbi函数来完成
 //DBI函数仅仅是样例
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `t_l3fxprcm_fhys_locklog`
+--
+
+CREATE TABLE IF NOT EXISTS `t_l3fxprcm_fhys_locklog` (
+  `sid` int(2) NOT NULL,
+  `woid` char(10) DEFAULT '0',
+  `keyid` char(10) NOT NULL,
+  `keyname` char(20) NOT NULL,
+  `keyuserid` char(10) NOT NULL,
+  `keyusername` varchar(20) NOT NULL,
+  `eventtype` char(1) NOT NULL,
+  `statcode` varchar(20) NOT NULL,
+  `createtime` char(20) NOT NULL,
+  `picname` varchar(50) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `t_l3fxprcm_fhys_locklog`
+--
+ALTER TABLE `t_l3fxprcm_fhys_locklog`
+  ADD PRIMARY KEY (`sid`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `t_l3fxprcm_fhys_locklog`
+--
+ALTER TABLE `t_l3fxprcm_fhys_locklog`
+  MODIFY `sid` int(2) NOT NULL AUTO_INCREMENT;
+
 -- --------------------------------------------------------
 --
 -- 表的结构 `t_l3fxprcm_workerbill`

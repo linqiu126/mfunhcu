@@ -15,29 +15,82 @@ header("Content-type:text/html;charset=utf-8");
 //DBI函数仅仅是样例
 
 -- --------------------------------------------------------
+
 --
 -- 表的结构 `t_l3f5fm_aqyc_alarmdata`
 --
 
 CREATE TABLE IF NOT EXISTS `t_l3f5fm_aqyc_alarmdata` (
-  `sid` int(4) NOT NULL AUTO_INCREMENT,
-  `alarmsrc` int(4) NOT NULL,
-  `alarmtype` char(20) NOT NULL,
-  `alarmdesc` char(50) NOT NULL,
-  `alarmimpact` char(50) NOT NULL,
-  `alarmseverity` int(4) NOT NULL,
-  `tsgen` int(4) NOT NULL,
-  `tsclose` int(4) NOT NULL,
-  PRIMARY KEY (`sid`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+  `sid` int(4) NOT NULL,
+  `devcode` varchar(20) NOT NULL,
+  `equipmentid` int(4) NOT NULL,
+  `alarmtype` int(4) DEFAULT NULL,
+  `alarmdesc` int(4) DEFAULT NULL,
+  `alarmseverity` int(4) DEFAULT '0',
+  `alarmclearflag` int(4) NOT NULL,
+  `timestamp` datetime NOT NULL,
+  `picturename` varchar(100) DEFAULT NULL,
+  `causeid` int(4) DEFAULT NULL,
+  `alarmcontent` int(4) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- 转存表中的数据 `t_l3f5fm_aqyc_alarmdata`
+-- Indexes for dumped tables
 --
 
-INSERT INTO `t_l3f5fm_aqyc_alarmdata` (`sid`, `alarmdesc`) VALUES
-(1, 'Cloud HCU inter-link failure.');
+--
+-- Indexes for table `t_l3f5fm_aqyc_alarmdata`
+--
+ALTER TABLE `t_l3f5fm_aqyc_alarmdata`
+  ADD PRIMARY KEY (`sid`);
 
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `t_l3f5fm_aqyc_alarmdata`
+--
+ALTER TABLE `t_l3f5fm_aqyc_alarmdata`
+  MODIFY `sid` int(4) NOT NULL AUTO_INCREMENT;
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `t_l3f5fm_fhys_alarmdata`
+--
+
+CREATE TABLE IF NOT EXISTS `t_l3f5fm_fhys_alarmdata` (
+  `sid` int(4) NOT NULL,
+  `devcode` varchar(20) NOT NULL,
+  `statcode` varchar(20) NOT NULL,
+  `alarmflag` char(1) NOT NULL DEFAULT 'N',
+  `alarmseverity` char(1) DEFAULT '0',
+  `alarmcode` int(2) NOT NULL,
+  `tsgen` datetime NOT NULL,
+  `tsclose` datetime DEFAULT NULL,
+  `alarmproc` varchar(100) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `t_l3f5fm_fhys_alarmdata`
+--
+ALTER TABLE `t_l3f5fm_fhys_alarmdata`
+  ADD PRIMARY KEY (`sid`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `t_l3f5fm_fhys_alarmdata`
+--
+ALTER TABLE `t_l3f5fm_fhys_alarmdata`
+  MODIFY `sid` int(4) NOT NULL AUTO_INCREMENT;
 */
 
 

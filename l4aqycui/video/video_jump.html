@@ -2,23 +2,63 @@
 <html>
     <head lang="en">
         <meta charset="UTF-8">
-        <title>视频监控</title>
+        <title>扬尘视频监控</title>
     </head>
 
+
+
+
+    <!--OBJECT classid="clsid:9BE31822-FDAD-461B-AD51-BE1D1C159921"
+            codebase="http://downloads.videolan.org/pub/videolan/vlc/latest/win32/axvlc.cab"
+            width="800"
+            height="600">
+        <param name="ShowDisplay" value="False" />
+        <param name="AutoLoop" value="False" />
+        <param name="AutoPlay" value="False" />
+        <param name="Time" value="True"/>
+        <EMBED pluginspage="http://www.videolan.org"
+               type="application/x-vlc-plugin"
+               version="VideoLAN.VLCPlugin.2"
+               width="800"
+               height="600"
+               text="Waiting for video"
+               id="vlc"
+                ></EMBED>
+
+        <script language="Javascript">
+            var vlc_obj = document.getElementById("vlc");
+            if (vlc_obj != null) {
+                console.debug(vlc_obj);
+            } else {
+                console.debug("VLC object is undefined...");
+            }
+            var mrl="rtsp://admin:Bxxh!123@ngrok.hkrob.com:__PORT__/ISAPI/Streaming/Channels/1";
+            //将地址添加到播放列表
+            var itemId = vlc_obj.playlist.add(mrl);
+            //播放
+            vlc_obj.playlist.playItem(itemId);
+        </script>
+    </OBJECT-->
 
     <body>
         <embed type="application/x-vlc-plugin" pluginspage="http://www.videolan.org"
                width="640"
                height="480"
-               id="vlc">
-        </embed>
+               id="vlc_id">
+        </embed >
+
         <script language="Javascript">
-            var vlc = document.getElementById("vlc");
+            var vlc_obj = document.getElementById("vlc_id");
+            if (vlc_obj.playlist != null) {
+                console.debug(vlc_obj.playlist);
+            } else {
+                console.debug("VLC object is undefined...");
+            }
             var mrl="rtsp://admin:Bxxh!123@ngrok.hkrob.com:__PORT__/ISAPI/Streaming/Channels/1";
             //将地址添加到播放列表
-            vlc.playlist.add(mrl);
+            var itemId = vlc_obj.playlist.add(mrl);
             //播放
-            vlc.playlist.play();
+            vlc_obj.playlist.playItem(itemId);
         </script>
     </body>
 </html>

@@ -92,28 +92,6 @@ INSERT INTO `t_l1vm_logtracemsg` (`sid`, `msgid`, `allowflag`, `restrictflag`) V
 (7, 7, 1, 0),
 (8, 8, 1, 0),
 (9, 9, 1, 0),
-(10, 10, 1, 0),
-(11, 11, 1, 0),
-(12, 12, 1, 0),
-(13, 13, 1, 0),
-(14, 14, 1, 0),
-(15, 15, 1, 0),
-(16, 16, 1, 0),
-(17, 17, 1, 0),
-(18, 18, 1, 0),
-(19, 19, 1, 0),
-(20, 20, 1, 0),
-(21, 21, 1, 0),
-(22, 22, 1, 0),
-(23, 23, 1, 0),
-(24, 24, 1, 0),
-(25, 25, 1, 0),
-(26, 26, 1, 0),
-(27, 27, 1, 0),
-(28, 28, 1, 0),
-(29, 29, 1, 0),
-(208, 208, 1, 0),
-(209, 209, 1, 0);
 
 --
 -- 表的结构 `t_l1vm_logwechatswitch`
@@ -155,21 +133,6 @@ CREATE TABLE IF NOT EXISTS `t_l2sdk_iothcu_inventory` (
 INSERT INTO `t_l2sdk_iothcu_inventory` (`deviceid`, `hw_type`, `hw_ver`, `sw_rel`, `sw_drop`) VALUES
 ('HCU_SH_0304', 2, 3, 1, 90),
 ('HCU_SH_0302', 2, 3, 1, 92);
-
-
--- --------------------------------------------------------
---
--- 表的结构 `t_l1vm_cmdbuf`
---
-
-CREATE TABLE IF NOT EXISTS `t_l1vm_cmdbuf` (
-  `sid` int(4) NOT NULL AUTO_INCREMENT,
-  `deviceid` char(50) NOT NULL,
-  `cmd` char(50) NOT NULL,
-  `cmdtime` datetime NOT NULL,
-  PRIMARY KEY (`sid`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
 
 -- --------------------------------------------------------
 --
@@ -396,52 +359,6 @@ class classDbiL1vmCommon
         return $resp;
     }
 
-    //HCU控制命令缓存
-    public function dbi_cmdbuf_save_cmd($deviceid, $cmd)
-    {
-        //建立连接
-        $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
-        if (!$mysqli)
-        {
-            die('Could not connect: ' . mysqli_error($mysqli));
-        }
-        $mysqli->query("SET NAMES utf8");
-
-        $timestamp = time();
-        $cmdtime = date("Y-m-d H:m:s",$timestamp);
-        $query_str = "INSERT INTO `t_l1vm_cmdbuf` (deviceid, cmd, cmdtime) VALUES ('$deviceid', '$cmd', '$cmdtime')";
-        $result=$mysqli->query($query_str);
-
-        $mysqli->close();
-        return $result;
-    }
-
-        //HCU控制命令查询
-    public function dbi_cmdbuf_inquiry_cmd($deviceid)
-    {
-        //建立连接
-        $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
-        if (!$mysqli)
-        {
-            die('Could not connect: ' . mysqli_error($mysqli));
-        }
-        $result = $mysqli->query("SELECT * FROM `t_l1vm_cmdbuf` WHERE `deviceid` = '$deviceid'");
-        if ($result->num_rows>0)
-        {
-            $row = $result->fetch_array();
-            $resp = trim($row['cmd']); //返回待发送的命令
-
-            $sid = intval($row['sid']);
-            $mysqli->query("DELETE FROM `t_l1vm_cmdbuf` WHERE (`sid` = $sid) "); //从数据库中删除该命令
-        }
-        else{
-            $resp = "";
-        }
-
-        $mysqli->close();
-        return $resp;
-
-    }
 
     //设置数据库中该用户微信log开关状态
     public function dbi_LogSwitchInfo_set($user,$switch_set)

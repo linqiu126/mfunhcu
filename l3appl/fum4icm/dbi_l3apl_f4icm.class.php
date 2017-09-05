@@ -17,53 +17,85 @@ header("Content-type:text/html;charset=utf-8");
 //这个表格是否与设备中SENSOR列表相互冲突，待完善
 
 -- --------------------------------------------------------
+
 --
 -- 表的结构 `t_l3f4icm_sensorctrl`
 --
 
 CREATE TABLE IF NOT EXISTS `t_l3f4icm_sensorctrl` (
-  `sid` int(4) NOT NULL AUTO_INCREMENT,
+  `sid` int(4) NOT NULL,
   `deviceid` char(20) NOT NULL,
-  `sensorid` int(2) NOT NULL,
-  `equid` int(2) NOT NULL,
+  `sensorid` char(20) NOT NULL,
+  `modbus_addr` int(1) DEFAULT NULL,
   `sensortype` char(10) NOT NULL,
-  `workingcycle` int(2) NOT NULL,
-  `onoffstatus` tinyint(1) NOT NULL,
-  `sampleduaration` int(2) NOT NULL,
-  `paralpha` int(2) NOT NULL,
-  `parbeta` int(2) NOT NULL,
-  `pargama` int(2) NOT NULL,
-  PRIMARY KEY (`sid`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+  `meas_period` int(2) DEFAULT NULL,
+  `onoffstatus` char(5) NOT NULL DEFAULT 'off',
+  `sample_interval` int(2) DEFAULT NULL,
+  `meas_times` int(2) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- 转存表中的数据 `t_l3f4icm_sensorctrl`
+-- Indexes for dumped tables
 --
 
-INSERT INTO `t_l3f4icm_sensorctrl` (`sid`, `deviceid`, `sensorid`, `equid`, `sensortype`, `workingcycle`, `onoffstatus`, `sampleduaration`, `paralpha`, `parbeta`, `pargama`) VALUES
-(1, 'HCU301_22', 111, 6, '风速', 0, 0, 0, 0, 0, 0);
-
+--
+-- Indexes for table `t_l3f4icm_sensorctrl`
+--
+ALTER TABLE `t_l3f4icm_sensorctrl`
+  ADD PRIMARY KEY (`sid`);
 
 --
--- 表的结构 `t_l3f4icm_swfactory`
+-- AUTO_INCREMENT for dumped tables
 --
 
-CREATE TABLE IF NOT EXISTS `t_l3f4icm_swfactory` (
-  `sid` int(4) NOT NULL AUTO_INCREMENT,
-  `swverid` char(50) NOT NULL,
-  `swverdescripition` char(50) NOT NULL,
-  `issuedate` date NOT NULL,
-  `swbin` mediumblob NOT NULL,
-  `dbbin` mediumblob NOT NULL,
-  PRIMARY KEY (`sid`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+--
+-- AUTO_INCREMENT for table `t_l3f4icm_sensorctrl`
+--
+ALTER TABLE `t_l3f4icm_sensorctrl`
+  MODIFY `sid` int(4) NOT NULL AUTO_INCREMENT;
+
+-- --------------------------------------------------------
 
 --
--- 转存表中的数据 `t_l3f4icm_swfactory`
+-- 表的结构 `t_l3f4icm_swctrl`
 --
 
-INSERT INTO `t_l3f4icm_swfactory` (`sid`, `swverid`, `swverdescripition`, `issuedate`, `swbin`, `dbbin`) VALUES
-(1, 'AQYC.R02.099', '飞凌335D Baseline, 基础功能完善，气象五参数，视频，支持基于树莓派的传感器', '2016-07-13', '', '');
+CREATE TABLE IF NOT EXISTS `t_l3f4icm_swctrl` (
+  `sid` int(4) NOT NULL,
+  `equentry` int(1) NOT NULL DEFAULT '0',
+  `validflag` int(1) NOT NULL DEFAULT '0',
+  `upgradeflag` int(1) NOT NULL DEFAULT '0',
+  `hwtype` int(2) NOT NULL DEFAULT '0',
+  `hwid` int(2) NOT NULL DEFAULT '0',
+  `swrel` int(2) NOT NULL DEFAULT '0',
+  `swver` int(2) NOT NULL DEFAULT '0',
+  `dbver` int(2) NOT NULL DEFAULT '0',
+  `filelink` varchar(100) NOT NULL DEFAULT 'NULL',
+  `filesize` int(4) NOT NULL DEFAULT '0',
+  `checksum` int(2) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `t_l3f4icm_swctrl`
+--
+ALTER TABLE `t_l3f4icm_swctrl`
+  ADD PRIMARY KEY (`sid`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `t_l3f4icm_swctrl`
+--
+ALTER TABLE `t_l3f4icm_swctrl`
+  MODIFY `sid` int(4) NOT NULL AUTO_INCREMENT;
+
+
 
 */
 
@@ -476,8 +508,6 @@ class classDbiL3apF4icm
                     $switch = "00";
                 $len = $dbiL1vmCommonObj->byte2string(strlen( $optkey_switch_set . $equip_id . $switch)/2);
                 $respCmd = $ctrl_key . $len . $optkey_switch_set . $equip_id . $switch;
-                $dbiL1vmCommonObj = new classDbiL1vmCommon();
-                $resp = $dbiL1vmCommonObj->dbi_cmdbuf_save_cmd(trim($DevCode), trim($respCmd));
 
                 //通过9502端口建立tcp阻塞式socket连接，向HCU转发操控命令
                 $client = new socket_client_sync($DevCode, $respCmd);
@@ -630,9 +660,6 @@ class classDbiL3apF4icm
                 $opt_key = $dbiL1vmCommonObj->byte2string(MFUN_HCU_OPT_VEDIOFILE_REQ);
                 $len = $dbiL1vmCommonObj->byte2string(strlen( $opt_key)/2 + strlen($videoid));
                 $cmdStr = $ctrl_key . $len . $opt_key . $videoid;
-                //保存命令到CmdBuf
-                $dbiL1VmCommonObj = new classDbiL1vmCommon();
-                $dbiL1VmCommonObj->dbi_cmdbuf_save_cmd(trim($devCode), trim($cmdStr));
 
                 //更新视频文件的状态
                 $dataflag = MFUN_HCU_VIDEO_DATA_STATUS_DOWNLOAD;

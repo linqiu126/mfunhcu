@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: 2017-07-25 13:30:45
+-- Generation Time: 2017-09-05 07:45:10
 -- 服务器版本： 5.6.32
 -- PHP Version: 5.4.16
 
@@ -19,19 +19,6 @@ SET time_zone = "+00:00";
 --
 -- Database: `bxxhl1l2l3`
 --
-
--- --------------------------------------------------------
-
---
--- 表的结构 `t_l1vm_cmdbuf`
---
-
-CREATE TABLE IF NOT EXISTS `t_l1vm_cmdbuf` (
-  `sid` int(4) NOT NULL,
-  `deviceid` char(50) NOT NULL,
-  `cmd` char(50) NOT NULL,
-  `cmdtime` datetime NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -53,18 +40,6 @@ CREATE TABLE IF NOT EXISTS `t_l1vm_engpar` (
   `filetypelog` char(10) NOT NULL,
   `filedatalog` mediumblob NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- 表的结构 `t_l1vm_hcuswdb`
---
-
-CREATE TABLE IF NOT EXISTS `t_l1vm_hcuswdb` (
-  `date` date NOT NULL,
-  `hcu_sw_ver` varchar(20) NOT NULL,
-  `hcu_db_ver` varchar(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -225,18 +200,18 @@ CREATE TABLE IF NOT EXISTS `t_l2snr_aqyc_minreport` (
   `statcode` char(20) NOT NULL,
   `reportdate` date NOT NULL,
   `hourminindex` int(2) NOT NULL,
-  `emcvalue` float DEFAULT NULL,
+  `dataflag` char(10) NOT NULL DEFAULT 'Y',
   `pm01` float DEFAULT NULL,
   `pm25` float DEFAULT NULL,
   `pm10` float DEFAULT NULL,
   `noise` float DEFAULT NULL,
   `windspeed` float DEFAULT NULL,
   `winddirection` float DEFAULT NULL,
-  `rain` float DEFAULT NULL,
   `temperature` float DEFAULT NULL,
   `humidity` float DEFAULT NULL,
   `airpressure` float DEFAULT NULL,
-  `pmdataflag` char(10) DEFAULT NULL
+  `rain` float DEFAULT NULL,
+  `emcvalue` float DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -284,25 +259,6 @@ CREATE TABLE IF NOT EXISTS `t_l2snr_co1data` (
   `latitude` int(4) NOT NULL,
   `flag_lo` char(1) NOT NULL,
   `longitude` int(4) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- 表的结构 `t_l2snr_dataformat`
---
-
-CREATE TABLE IF NOT EXISTS `t_l2snr_dataformat` (
-  `deviceid` char(50) NOT NULL,
-  `f_airpressure` int(1) DEFAULT NULL,
-  `f_emcdata` int(1) DEFAULT NULL,
-  `f_humidity` int(1) DEFAULT NULL,
-  `f_noise` int(1) DEFAULT NULL,
-  `f_pmdata` int(1) DEFAULT NULL,
-  `f_rain` int(1) DEFAULT NULL,
-  `f_temperature` int(1) DEFAULT NULL,
-  `f_winddirection` int(1) DEFAULT NULL,
-  `f_windspeed` int(1) DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -367,6 +323,7 @@ CREATE TABLE IF NOT EXISTS `t_l2snr_fhys_minreport` (
   `fallstate` int(1) NOT NULL DEFAULT '0',
   `smokestate` int(1) NOT NULL DEFAULT '0',
   `battvalue` float NOT NULL DEFAULT '0',
+  `fallValue` float NOT NULL DEFAULT '0',
   `tempvalue` float NOT NULL DEFAULT '0',
   `humidvalue` float NOT NULL DEFAULT '0',
   `rssivalue` float NOT NULL DEFAULT '0'
@@ -429,16 +386,10 @@ CREATE TABLE IF NOT EXISTS `t_l2snr_hourreport` (
 CREATE TABLE IF NOT EXISTS `t_l2snr_hsmmpdata` (
   `sid` int(4) NOT NULL,
   `deviceid` char(50) NOT NULL,
-  `sensorid` int(1) NOT NULL,
   `videourl` text NOT NULL,
   `dataflag` char(1) NOT NULL DEFAULT 'N',
   `reportdate` date NOT NULL,
-  `hourminindex` int(2) NOT NULL,
-  `altitude` int(4) NOT NULL,
-  `flag_la` char(1) NOT NULL,
-  `latitude` int(4) NOT NULL,
-  `flag_lo` char(1) NOT NULL,
-  `longitude` int(4) NOT NULL
+  `hourminindex` int(2) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -450,16 +401,10 @@ CREATE TABLE IF NOT EXISTS `t_l2snr_hsmmpdata` (
 CREATE TABLE IF NOT EXISTS `t_l2snr_humiddata` (
   `sid` int(4) NOT NULL,
   `deviceid` char(50) NOT NULL,
-  `sensorid` int(1) DEFAULT NULL,
   `humidity` float NOT NULL,
-  `dataflag` char(1) DEFAULT NULL,
+  `dataflag` char(1) DEFAULT 'N',
   `reportdate` date NOT NULL,
-  `hourminindex` int(2) NOT NULL,
-  `altitude` int(4) DEFAULT NULL,
-  `flag_la` char(1) DEFAULT NULL,
-  `latitude` int(4) DEFAULT NULL,
-  `flag_lo` char(1) DEFAULT NULL,
-  `longitude` int(4) DEFAULT NULL
+  `hourminindex` int(2) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -679,16 +624,10 @@ CREATE TABLE IF NOT EXISTS `t_l2snr_lightstrdata` (
 CREATE TABLE IF NOT EXISTS `t_l2snr_noisedata` (
   `sid` int(4) NOT NULL,
   `deviceid` char(50) NOT NULL,
-  `sensorid` int(1) DEFAULT NULL,
   `noise` float NOT NULL,
   `dataflag` char(1) DEFAULT NULL,
   `reportdate` date NOT NULL,
-  `hourminindex` int(2) NOT NULL,
-  `altitude` int(4) DEFAULT NULL,
-  `flag_la` char(1) DEFAULT NULL,
-  `latitude` int(4) DEFAULT NULL,
-  `flag_lo` char(1) DEFAULT NULL,
-  `longitude` int(4) DEFAULT NULL
+  `hourminindex` int(2) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -706,7 +645,6 @@ CREATE TABLE IF NOT EXISTS `t_l2snr_picturedata` (
   `filetype` varchar(10) DEFAULT NULL,
   `filesize` varchar(10) NOT NULL DEFAULT '0',
   `filedescription` char(50) DEFAULT NULL,
-  `bindata` mediumblob,
   `dataflag` char(1) NOT NULL DEFAULT 'N'
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
@@ -719,18 +657,12 @@ CREATE TABLE IF NOT EXISTS `t_l2snr_picturedata` (
 CREATE TABLE IF NOT EXISTS `t_l2snr_pm25data` (
   `sid` int(4) NOT NULL,
   `deviceid` char(50) NOT NULL,
-  `sensorid` int(1) DEFAULT NULL,
   `pm01` float NOT NULL,
   `pm25` float NOT NULL,
   `pm10` float NOT NULL,
   `dataflag` char(1) DEFAULT NULL,
   `reportdate` date NOT NULL,
-  `hourminindex` int(2) NOT NULL,
-  `altitude` int(4) DEFAULT NULL,
-  `flag_la` char(1) DEFAULT NULL,
-  `latitude` int(4) DEFAULT NULL,
-  `flag_lo` char(1) DEFAULT NULL,
-  `longitude` int(4) DEFAULT NULL
+  `hourminindex` int(2) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -743,15 +675,10 @@ CREATE TABLE IF NOT EXISTS `t_l2snr_raindata` (
   `sid` int(4) NOT NULL,
   `deviceid` char(50) NOT NULL,
   `sensorid` int(1) NOT NULL,
-  `rain` int(4) NOT NULL,
+  `rain` float NOT NULL,
   `dataflag` char(1) NOT NULL DEFAULT 'N',
   `reportdate` date NOT NULL,
-  `hourminindex` int(2) NOT NULL,
-  `altitude` int(4) NOT NULL,
-  `flag_la` char(1) NOT NULL,
-  `latitude` int(4) NOT NULL,
-  `flag_lo` char(1) NOT NULL,
-  `longitude` int(4) NOT NULL
+  `hourminindex` int(2) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -779,16 +706,10 @@ CREATE TABLE IF NOT EXISTS `t_l2snr_sensortype` (
 CREATE TABLE IF NOT EXISTS `t_l2snr_tempdata` (
   `sid` int(4) NOT NULL,
   `deviceid` char(50) NOT NULL,
-  `sensorid` int(1) DEFAULT NULL,
   `temperature` float DEFAULT NULL,
   `dataflag` char(1) DEFAULT NULL,
   `reportdate` date NOT NULL,
-  `hourminindex` int(2) NOT NULL,
-  `altitude` int(4) DEFAULT NULL,
-  `flag_la` char(1) DEFAULT NULL,
-  `latitude` int(4) DEFAULT NULL,
-  `flag_lo` char(1) DEFAULT NULL,
-  `longitude` int(4) DEFAULT NULL
+  `hourminindex` int(2) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -821,16 +742,10 @@ CREATE TABLE IF NOT EXISTS `t_l2snr_toxicgasdata` (
 CREATE TABLE IF NOT EXISTS `t_l2snr_winddir` (
   `sid` int(4) NOT NULL,
   `deviceid` char(50) NOT NULL,
-  `sensorid` int(1) DEFAULT NULL,
   `winddirection` float DEFAULT NULL,
   `dataflag` char(1) DEFAULT NULL,
   `reportdate` date NOT NULL,
-  `hourminindex` int(2) NOT NULL,
-  `altitude` int(4) DEFAULT NULL,
-  `flag_la` char(1) DEFAULT NULL,
-  `latitude` int(4) DEFAULT NULL,
-  `flag_lo` char(1) DEFAULT NULL,
-  `longitude` int(4) DEFAULT NULL
+  `hourminindex` int(2) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -842,16 +757,10 @@ CREATE TABLE IF NOT EXISTS `t_l2snr_winddir` (
 CREATE TABLE IF NOT EXISTS `t_l2snr_windspd` (
   `sid` int(4) NOT NULL,
   `deviceid` char(50) NOT NULL,
-  `sensorid` int(1) DEFAULT NULL,
   `windspeed` float DEFAULT NULL,
   `dataflag` char(1) DEFAULT NULL,
   `reportdate` date NOT NULL,
-  `hourminindex` int(2) NOT NULL,
-  `altitude` int(4) DEFAULT NULL,
-  `flag_la` char(1) DEFAULT NULL,
-  `latitude` int(4) DEFAULT NULL,
-  `flag_lo` char(1) DEFAULT NULL,
-  `longitude` int(4) DEFAULT NULL
+  `hourminindex` int(2) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -1068,7 +977,6 @@ CREATE TABLE IF NOT EXISTS `t_l3f3dm_aqyc_currentreport` (
   `deviceid` char(50) NOT NULL,
   `statcode` char(20) NOT NULL,
   `createtime` char(20) NOT NULL,
-  `emcvalue` float DEFAULT NULL,
   `pm01` float DEFAULT NULL,
   `pm25` float DEFAULT NULL,
   `pm10` float DEFAULT NULL,
@@ -1078,7 +986,8 @@ CREATE TABLE IF NOT EXISTS `t_l3f3dm_aqyc_currentreport` (
   `temperature` float DEFAULT NULL,
   `humidity` float DEFAULT NULL,
   `rain` float DEFAULT NULL,
-  `airpressure` float DEFAULT NULL
+  `airpressure` float DEFAULT NULL,
+  `emcvalue` float DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -1131,6 +1040,7 @@ CREATE TABLE IF NOT EXISTS `t_l3f3dm_fhys_currentreport` (
   `fallstate` int(1) NOT NULL DEFAULT '0',
   `smokestate` int(1) NOT NULL DEFAULT '0',
   `battvalue` float NOT NULL DEFAULT '0',
+  `fallvalue` float NOT NULL DEFAULT '0',
   `tempvalue` float NOT NULL DEFAULT '0',
   `humidvalue` float NOT NULL DEFAULT '0',
   `rssivalue` float NOT NULL DEFAULT '0'
@@ -1156,10 +1066,10 @@ CREATE TABLE IF NOT EXISTS `t_l3f3dm_siteinfo` (
   `square` char(10) NOT NULL DEFAULT '0',
   `altitude` int(4) DEFAULT '0',
   `flag_la` char(1) DEFAULT 'N',
-  `latitude` int(4) DEFAULT NULL,
+  `latitude` int(4) DEFAULT '0',
   `flag_lo` char(1) DEFAULT 'E',
-  `longitude` int(4) DEFAULT NULL,
-  `memo` text
+  `longitude` int(4) DEFAULT '0',
+  `memo` varchar(200) DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -1183,6 +1093,27 @@ CREATE TABLE IF NOT EXISTS `t_l3f4icm_sensorctrl` (
 -- --------------------------------------------------------
 
 --
+-- 表的结构 `t_l3f4icm_swctrl`
+--
+
+CREATE TABLE IF NOT EXISTS `t_l3f4icm_swctrl` (
+  `sid` int(4) NOT NULL,
+  `equentry` int(1) NOT NULL DEFAULT '0',
+  `validflag` int(1) NOT NULL DEFAULT '0',
+  `upgradeflag` int(1) NOT NULL DEFAULT '0',
+  `hwtype` int(2) NOT NULL DEFAULT '0',
+  `hwid` int(2) NOT NULL DEFAULT '0',
+  `swrel` int(2) NOT NULL DEFAULT '0',
+  `swver` int(2) NOT NULL DEFAULT '0',
+  `dbver` int(2) NOT NULL DEFAULT '0',
+  `filelink` varchar(100) NOT NULL DEFAULT 'NULL',
+  `filesize` int(4) NOT NULL DEFAULT '0',
+  `checksum` int(2) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
 -- 表的结构 `t_l3f4icm_swfactory`
 --
 
@@ -1195,6 +1126,20 @@ CREATE TABLE IF NOT EXISTS `t_l3f4icm_swfactory` (
   `issuedate` date NOT NULL,
   `swbin` mediumblob NOT NULL,
   `dbbin` mediumblob NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `t_l3f4icm_swupgrade_sta`
+--
+
+CREATE TABLE IF NOT EXISTS `t_l3f4icm_swupgrade_sta` (
+  `devcode` varchar(20) NOT NULL,
+  `sutimes` int(2) NOT NULL DEFAULT '0',
+  `lastsu` date NOT NULL,
+  `lastrel` int(2) NOT NULL,
+  `lastver` int(2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -1245,16 +1190,16 @@ CREATE TABLE IF NOT EXISTS `t_l3f6pm_perfdata` (
   `sid` int(4) NOT NULL,
   `devcode` char(20) NOT NULL,
   `statcode` char(20) NOT NULL,
-  `CurlConnAttempt` int(4) NOT NULL,
-  `CurlConnFailCnt` int(4) NOT NULL,
-  `CurlDiscCnt` int(4) NOT NULL,
-  `SocketDiscCnt` int(4) NOT NULL,
-  `PmTaskRestartCnt` int(4) NOT NULL,
-  `CPUOccupyCnt` int(4) NOT NULL,
-  `MemOccupyCnt` int(4) NOT NULL,
-  `DiskOccupyCnt` int(4) NOT NULL,
-  `CpuTemp` int(4) NOT NULL,
-  `createtime` datetime NOT NULL
+  `createtime` datetime NOT NULL,
+  `restartCnt` int(4) NOT NULL DEFAULT '0',
+  `networkConnCnt` int(4) NOT NULL DEFAULT '0',
+  `networkConnFailCnt` int(4) NOT NULL DEFAULT '0',
+  `networkDiscCnt` int(4) NOT NULL DEFAULT '0',
+  `socketDiscCnt` int(4) NOT NULL DEFAULT '0',
+  `cpuOccupy` int(4) NOT NULL DEFAULT '0',
+  `memOccupy` int(4) NOT NULL DEFAULT '0',
+  `diskOccupy` int(4) NOT NULL DEFAULT '0',
+  `cpuTemp` int(4) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -1323,11 +1268,10 @@ CREATE TABLE IF NOT EXISTS `t_l3fxprcm_fhys_locklog` (
   `keyid` char(10) NOT NULL,
   `keyname` char(20) NOT NULL,
   `keyuserid` char(10) NOT NULL,
-  `keyusername` char(10) NOT NULL,
+  `keyusername` varchar(20) NOT NULL,
   `eventtype` char(1) NOT NULL,
-  `statcode` char(10) NOT NULL,
-  `eventdate` date NOT NULL,
-  `eventtime` time NOT NULL,
+  `statcode` varchar(20) NOT NULL,
+  `createtime` char(20) NOT NULL,
   `picname` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -1349,22 +1293,10 @@ CREATE TABLE IF NOT EXISTS `t_l3fxprcm_workerbill` (
 --
 
 --
--- Indexes for table `t_l1vm_cmdbuf`
---
-ALTER TABLE `t_l1vm_cmdbuf`
-  ADD PRIMARY KEY (`sid`);
-
---
 -- Indexes for table `t_l1vm_engpar`
 --
 ALTER TABLE `t_l1vm_engpar`
   ADD PRIMARY KEY (`sid`);
-
---
--- Indexes for table `t_l1vm_hcuswdb`
---
-ALTER TABLE `t_l1vm_hcuswdb`
-  ADD UNIQUE KEY `date` (`date`);
 
 --
 -- Indexes for table `t_l2sdk_iothcu_inventory`
@@ -1432,12 +1364,6 @@ ALTER TABLE `t_l2snr_bfsc_minreport`
 --
 ALTER TABLE `t_l2snr_co1data`
   ADD PRIMARY KEY (`sid`);
-
---
--- Indexes for table `t_l2snr_dataformat`
---
-ALTER TABLE `t_l2snr_dataformat`
-  ADD PRIMARY KEY (`deviceid`);
 
 --
 -- Indexes for table `t_l2snr_emcaccumulation`
@@ -1670,6 +1596,12 @@ ALTER TABLE `t_l3f4icm_sensorctrl`
   ADD PRIMARY KEY (`sid`);
 
 --
+-- Indexes for table `t_l3f4icm_swctrl`
+--
+ALTER TABLE `t_l3f4icm_swctrl`
+  ADD PRIMARY KEY (`sid`);
+
+--
 -- Indexes for table `t_l3f4icm_swfactory`
 --
 ALTER TABLE `t_l3f4icm_swfactory`
@@ -1733,11 +1665,6 @@ ALTER TABLE `t_l3fxprcm_workerbill`
 -- AUTO_INCREMENT for dumped tables
 --
 
---
--- AUTO_INCREMENT for table `t_l1vm_cmdbuf`
---
-ALTER TABLE `t_l1vm_cmdbuf`
-  MODIFY `sid` int(4) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `t_l1vm_engpar`
 --
@@ -1922,6 +1849,11 @@ ALTER TABLE `t_l3f3dm_aqyc_currentreport`
 -- AUTO_INCREMENT for table `t_l3f4icm_sensorctrl`
 --
 ALTER TABLE `t_l3f4icm_sensorctrl`
+  MODIFY `sid` int(4) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `t_l3f4icm_swctrl`
+--
+ALTER TABLE `t_l3f4icm_swctrl`
   MODIFY `sid` int(4) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `t_l3f4icm_swfactory`

@@ -14,26 +14,46 @@ header("Content-type:text/html;charset=utf-8");
 //DBI函数仅仅是样例
 
 -- --------------------------------------------------------
+
 --
 -- 表的结构 `t_l3f6pm_perfdata`
 --
 
 CREATE TABLE IF NOT EXISTS `t_l3f6pm_perfdata` (
-  `sid` int(4) NOT NULL AUTO_INCREMENT,
-  `deviceid` int(4) NOT NULL,
-  `sensorid` int(4) NOT NULL,
-  `stability` int(4) NOT NULL,
-  `errcnt` int(4) NOT NULL,
-  `timeupdate` int(4) NOT NULL,
-  PRIMARY KEY (`sid`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+  `sid` int(4) NOT NULL,
+  `devcode` char(20) NOT NULL,
+  `statcode` char(20) NOT NULL,
+  `createtime` datetime NOT NULL,
+  `restartCnt` int(4) NOT NULL DEFAULT '0',
+  `networkConnCnt` int(4) NOT NULL DEFAULT '0',
+  `networkConnFailCnt` int(4) NOT NULL DEFAULT '0',
+  `networkDiscCnt` int(4) NOT NULL DEFAULT '0',
+  `socketDiscCnt` int(4) NOT NULL DEFAULT '0',
+  `cpuOccupy` int(4) NOT NULL DEFAULT '0',
+  `memOccupy` int(4) NOT NULL DEFAULT '0',
+  `diskOccupy` int(4) NOT NULL DEFAULT '0',
+  `cpuTemp` int(4) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- 转存表中的数据 `t_l3f6pm_perfdata`
+-- Indexes for dumped tables
 --
 
-INSERT INTO `t_l3f6pm_perfdata` (`sid`, `deviceid`, `sensorid`, `stability`) VALUES
-(1, 111, 15, 90);
+--
+-- Indexes for table `t_l3f6pm_perfdata`
+--
+ALTER TABLE `t_l3f6pm_perfdata`
+  ADD PRIMARY KEY (`sid`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `t_l3f6pm_perfdata`
+--
+ALTER TABLE `t_l3f6pm_perfdata`
+  MODIFY `sid` int(4) NOT NULL AUTO_INCREMENT;
 
 */
 

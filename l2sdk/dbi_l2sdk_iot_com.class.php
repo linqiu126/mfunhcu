@@ -17,27 +17,46 @@
 
 CREATE TABLE IF NOT EXISTS `t_l2sdk_iothcu_inventory` (
   `devcode` char(20) NOT NULL,
-  `statcode` char(20) DEFAULT NULL,
-  `macaddr` char(20) DEFAULT NULL,
-  `ipaddr` char(15) DEFAULT NULL,
-  `switch` char(3) NOT NULL DEFAULT '0',
-  `videourl` text,
-  `sensorlist` char(100) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`devcode`)
+  `statcode` char(20) NOT NULL,
+  `opendate` date DEFAULT NULL,
+  `macaddr_wlan0` varchar(20) DEFAULT NULL,
+  `ip_wlan0` varchar(20) DEFAULT NULL,
+  `macaddr_eth0` char(20) DEFAULT NULL,
+  `socketid` int(2) DEFAULT '0',
+  `status` char(1) NOT NULL DEFAULT 'Y',
+  `simcard` char(20) DEFAULT NULL,
+  `hw_type` int(1) DEFAULT NULL,
+  `hw_ver` int(2) DEFAULT NULL,
+  `sw_rel` int(1) DEFAULT NULL,
+  `sw_drop` int(2) DEFAULT NULL,
+  `ver_base` char(1) NOT NULL DEFAULT '1',
+  `hcu_db_ver` int(4) NOT NULL DEFAULT '1',
+  `videourl` char(100) DEFAULT NULL,
+  `camctrl` char(100) DEFAULT NULL,
+  `boxpic` mediumblob,
+  `hcu_sw_autoupdate` tinyint(1) NOT NULL DEFAULT '0',
+  `hcu_db_autoupdate` tinyint(1) NOT NULL DEFAULT '0',
+  `http_ui` varchar(100) DEFAULT NULL,
+  `video_port` int(4) DEFAULT NULL,
+  `rtsp_port` int(4) DEFAULT NULL,
+  `service_port` int(4) DEFAULT NULL,
+  `ssh_port` int(4) DEFAULT NULL,
+  `vnc_port` int(4) DEFAULT NULL,
+  `image_version` varchar(20) DEFAULT NULL,
+  `remark` varchar(100) DEFAULT NULL,
+  `desc` varchar(50) DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
--- 转存表中的数据 `t_l2sdk_iothcu_inventory`
+-- Indexes for dumped tables
 --
 
-INSERT INTO `t_l2sdk_iothcu_inventory` (`devcode`, `statcode`, `macaddr`, `ipaddr`, `switch`, `videourl`, `sensorlist`) VALUES
-('HCU_SH_0301', '120101001', '', '', 'on', '', 'S_0001;S_0002;S_0003;S_0005;S_0006;S_0007;S_000A;'),
-('HCU_SH_0302', '120101015', '', '', 'off', 'http://192.168.31.232:8000/avorion/avorion201606061346.h264', 'S_0001;S_0002;S_0003;S_0005;S_0006;S_0007;S_000A;'),
-('HCU_SH_0305', '120101005', '', '', 'off', '', 'S_0002;S_0003;S_0005;S_0006;S_0007;'),
-('HCU_SH_0304', '120101004', '', '', 'off', '', 'S_0005;'),
-('HCU_SH_0303', '120101003', '', '', 'on', 'http://192.168.1.232:8000/avorion/avorion201606041614.h264', 'S_0001;S_0005;'),
-('HCU_SH_0309', '120101009', '', '', 'off', '', 'S_0005;S_006;');
-
+--
+-- Indexes for table `t_l2sdk_iothcu_inventory`
+--
+ALTER TABLE `t_l2sdk_iothcu_inventory`
+  ADD PRIMARY KEY (`devcode`),
+  ADD UNIQUE KEY `statcode` (`statcode`);
  */
 
 class classDbiL2sdkIotcom
