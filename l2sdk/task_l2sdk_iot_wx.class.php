@@ -230,6 +230,13 @@ class classTaskL2sdkIotWx
         return json_decode($res, true);
     }
 
+    public function send_template_message($data)
+    {
+        $url = "http://file.api.weixin.qq.com/cgi-bin/message/template/send?access_token=" . $this->access_token;
+        $res = $this->https_request($url, $data);
+        return json_decode($res, true);
+    }
+
     //https请求（支持GET和POST）
     public function https_request($url, $data = null)  //protected function
     {
