@@ -57,11 +57,13 @@ class classTaskL2sdkIotWx
     //构造函数，获取Access Token
     public function __construct($appid = NULL, $appsecret = NULL)
     {
-        if ($appid) {
+        if ($appid AND $appsecret) {
             $this->appid = $appid;
-        }
-        if ($appsecret) {
             $this->appsecret = $appsecret;
+        }
+        else{
+            $this->appid = MFUN_WX_APPID;
+            $this->appsecret = MFUN_WX_APPSECRET;
         }
 
         //这里的Token刷的太快，会出现超过微信设置的每天API刷新的上限问题
@@ -69,7 +71,7 @@ class classTaskL2sdkIotWx
         //原则上，同一个Appid/Appsecrete的逻辑功能，包括不同Subscriber的操作，都
         $wxDbObj = new classDbiL2sdkWechat();
         // $result = $wxDbObj->dbi_accesstoken_inqury($appid, $appsecret);
-        $result = $wxDbObj->dbi_accesstoken_inqury(MFUN_WX_APPID, MFUN_WX_APPSECRET);
+        $result = $wxDbObj->dbi_accesstoken_inqury($this->appid, $this->appsecret);
         //2小时=7200秒为最长限度，考虑到余量，少放点
         if (($result == "NOTEXIST") || (time() > $result["lasttime"] + 6500))
         {

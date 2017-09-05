@@ -327,6 +327,25 @@ if (TC_EMCWX == true){
     echo " \n[TC L4EMCWX: personal_bracelet_radiation_track END]\n";
 
 
+    $l2sdkIotWxObj = new classTaskL2sdkIotWx();
+    //微信公众号通知
+    $wx_touser = "oMjZ7v_s-Y5R1fKTvBTzcMl9C65o";
+    $currenttime = date("Y-m-d H:i:s",$timestamp);
+    $template = array('touser' => $wx_touser,
+        'template_id' => "SAoMGA7GYeavgwpOImgWDs5BaoDMKIT5luASeZ671XM",
+        "topcolor" => "#FF0000",
+        'data' => array('first' => array('value' => ("您好，光交箱智能管理平台告警通知!"), 'color' => "#743A3A"),
+            'keyword1' => array('value' => ("益阳光交箱测试点"), 'color' => "#0000FF"),
+            'keyword2' => array('value' => ("烟雾告警"), 'color' => "#FF0000"),
+            'keyword3' => array('value' => ($currenttime), 'color' => "#0000FF"),
+            'keyword4' => array('value' => ("刘工"), 'color' => "#0000FF"),
+            'keyword5' => array('value' => ("13917334681"), 'color' => "#0000FF"),
+            'remark' => array('value' => ("请及时联系相关人员处理该告警"), 'color' => "#0000FF")
+        )
+    );
+    $data = json_encode($template);
+    $resp = $l2sdkIotWxObj->send_template_message(($data));
+
 //EMCWX测试结束
 }
 

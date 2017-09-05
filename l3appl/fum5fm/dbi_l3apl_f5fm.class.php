@@ -553,21 +553,22 @@ class classDbiL3apF5fm
             $resp =$l2sdkIotWxObj->https_request($url);
 
             //微信公众号通知
-            $wx_touser = "oS0Chv3Uum1TZqHaCEb06AoBfCvY";
+            $wx_touser = "oMjZ7v_s-Y5R1fKTvBTzcMl9C65o";
             $currenttime = date("Y-m-d H:i:s",$timestamp);
             $template = array('touser' => $wx_touser,
                             'template_id' => "SAoMGA7GYeavgwpOImgWDs5BaoDMKIT5luASeZ671XM",
                             'topcolor' => "#7B68EE",
-                            'data' => array('first' => array('value' => urlencode("您好，光交箱智能管理平台告警通知!"), 'color' => "#743A3A"),
-                                            'keyword1' => array('value' => urlencode($statname), 'color' => "#0000FF"),
-                                            'keyword2' => array('value' => urlencode($action), 'color' => "#FF0000"),
-                                            'keyword3' => array('value' => urlencode($currenttime), 'color' => "#0000FF"),
-                                            'keyword4' => array('value' => urlencode($chargeman), 'color' => "#0000FF"),
-                                            'keyword5' => array('value' => urlencode($telephone), 'color' => "#0000FF"),
-                                            'keyword6' => array('value' => urlencode("请及时联系相关人员处理该告警"), 'color' => "#0000FF")
+                            //'url' => "http://weixin.qq.com/download", //详细信息URL
+                            'data' => array('first' => array('value' => "您好，光交箱智能管理平台告警通知!", 'color' => "#743A3A"),
+                                            'keyword1' => array('value' => $statname, 'color' => "#0000FF"),
+                                            'keyword2' => array('value' => $action, 'color' => "#FF0000"),
+                                            'keyword3' => array('value' => $currenttime, 'color' => "#0000FF"),
+                                            'keyword4' => array('value' => $chargeman, 'color' => "#0000FF"),
+                                            'keyword5' => array('value' => $telephone, 'color' => "#0000FF"),
+                                            'keyword6' => array('value' => "请及时联系相关人员处理该告警", 'color' => "#0000FF")
                                             )
                             );
-            $resp = $l2sdkIotWxObj->send_template_message($template);
+            $resp = $l2sdkIotWxObj->send_template_message(json_encode($template));
 
             $alarmflag = MFUN_HCU_FHYS_ALARM_PROC_FLAG_Y;
             $alarmproc = $currenttime . ":发送信息（".$action."）到手机".$mobile;
