@@ -520,7 +520,7 @@ class classTaskL2sdkIotWx
      *                                               自定义API部分                                                     *
      ******************************************************************************************************************/
     //接收微信消息类型为“device_text”的处理函数，传入data为下位机Airsync发送的16进制码流
-    public function receive_wx_device_text_message($parObj, $xmlmsg)
+    private function receive_wx_device_text_message($parObj, $xmlmsg)
     {
         $transMsg = ""; //初始化
         //发送到L3的比特流还需要进行base64解码和16进制unpack
@@ -550,7 +550,7 @@ class classTaskL2sdkIotWx
     } //receive_wx_device_text_message处理结束
 
     //接收微信消息类型为“device_event”的处理函数，传入data为下位机发送的16进制码流
-    public function receive_wx_device_event_message($parObj, $xmlmsg)
+    private function receive_wx_device_event_message($parObj, $xmlmsg)
     {
         //发送到L3的比特流还需要进行base64解码和16进制unpack
         $content = base64_decode($xmlmsg->Content);
@@ -618,7 +618,7 @@ class classTaskL2sdkIotWx
     }//End of receive_wx_device_event_message
 
     //用户自己定义的微信点击菜单命令“event->CLICK”处理函数
-    public function receive_wx_menu_click_message($parObj, $xmlmsg)
+    private function receive_wx_menu_click_message($parObj, $xmlmsg)
     {
         $result = "";
         switch($xmlmsg->EventKey) {
@@ -770,7 +770,7 @@ class classTaskL2sdkIotWx
     }//End of receive_wx_menu_click_message
 
      //设备业务消息的处理函数，跳转到对应的业务处理模块
-    public function func_device_text_process($parObj, $fromUser, $deviceId, $timeStamp, $content)
+    private function func_device_text_process($parObj, $fromUser, $deviceId, $timeStamp, $content)
     {
         //因为收到的Airsync数据消息头已经被微信处理掉，传递过来的消息体在上级函数中已经被处理成16制格式的字符串
         /*
@@ -801,7 +801,6 @@ class classTaskL2sdkIotWx
         }
 
         $cmdid = hexdec($unpack_data['cmdid']) & 0xFFFF;
-        $resp = "";
         $statCode = "";
         switch ($cmdid)
         {
@@ -852,56 +851,6 @@ class classTaskL2sdkIotWx
                 else $resp = "";
                 */
                 $resp = "";
-                break;
-
-        //以下命令暂时没有实现，保留作为将来功能扩展使用
-            case MFUN_IHU_CMDID_VERSION_SYNC:
-                //版本同步消息处理
-                $ihuObj = new classTaskL2snrCommonService();
-                $resp = $ihuObj->func_version_update_process(MFUN_TECH_PLTF_WECHAT, $deviceId, $msg_body);
-                break;
-
-            case MFUN_IHU_CMDID_TIME_SYNC:
-                $ihuObj = new classTaskL2snrCommonService();
-                $resp_msg = $ihuObj->func_timeSync_process(MFUN_TECH_PLTF_WECHAT, $deviceId, $msg_body);
-                if(!empty($msg_body))
-                    $resp = pack('H*',$resp_msg);
-                else
-                    $resp = $resp_msg;
-                break;
-
-            case MFUN_IHU_CMDID_TEMP_DATA:
-                $msg = array("project" => MFUN_PRJ_IHU_EMCWX,
-                    "log_from" => $fromUser,
-                    "platform" => MFUN_TECH_PLTF_WECHAT,
-                    "deviceId" => $deviceId,
-                    "statCode" => $statCode,
-                    "content" => $msg_body);
-                if ($parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L2SDK_IOT_WX,
-                        MFUN_TASK_ID_L2SENSOR_TEMP,
-                        MSG_ID_L2SDK_EMCWX_TO_L2SNR_TEMP_DATA_REPORT_TIMING,
-                        "MSG_ID_L2SDK_EMCWX_TO_L2SNR_TEMP_DATA_REPORT_TIMING",
-                        $msg) == false) $resp = "ERROR IOT_WX[IHU]:Send to message buffer error";
-                else $resp = "";
-                //$ihuObj = new class_temperature_service();
-                //$resp = $ihuObj->func_temperature_process(MFUN_TECH_PLTF_WECHAT, $deviceId, $statCode, $data);
-                break;
-
-            case MFUN_IHU_CMDID_HUMID_DATA:
-                $msg = array("project" => MFUN_PRJ_IHU_EMCWX,
-                    "log_from" => $fromUser,
-                    "platform" => MFUN_TECH_PLTF_WECHAT,
-                    "deviceId" => $deviceId,
-                    "statCode" => $statCode,
-                    "content" => $msg_body);
-                if ($parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L2SDK_IOT_WX,
-                        MFUN_TASK_ID_L2SENSOR_HUMID,
-                        MSG_ID_L2SDK_EMCWX_TO_L2SNR_HUMID_DATA_REPORT_TIMING,
-                        "MSG_ID_L2SDK_EMCWX_TO_L2SNR_HUMID_DATA_REPORT_TIMING",
-                        $msg) == false) $resp = "ERROR IOT_WX[IHU]:Send to message buffer error";
-                else $resp = "";
-                //$ihuObj = new class_humidity_service();
-                //$resp = $ihuObj->func_humidity_process(MFUN_TECH_PLTF_WECHAT, $deviceId, $statCode, $data);
                 break;
 
             default:
@@ -1398,6 +1347,7 @@ class classTaskL2sdkIotWx
         $emcDbObj = new classDbiL2snrEmc();
         $dbi_info = $wxDbObj->dbi_blebound_query($user);
 
+        $transMsg = "";
         if ($dbi_info == false)
         {
             //$transMsg = $this->xms_responseText($data->FromUserName, $data->ToUserName, "数据库中该用户未绑定设备\n".$data->FromUserName);
@@ -1449,25 +1399,23 @@ class classTaskL2sdkIotWx
         //入口消息内容判断
         if (empty($msg) == true) {
             $loggerObj->logger("MFUN_TASK_ID_L2SDK_IOT_WX", "mfun_l2sdk_iot_wx_task_main_entry", $log_time, "R: Received null message body.");
-            echo "";
             return false;
         }
         if (($msgId != MSG_ID_WECHAT_TO_L2SDK_IOT_WX_INCOMING) || ($msgName != "MSG_ID_WECHAT_TO_L2SDK_IOT_WX_INCOMING")){
             $result = "Msgid or MsgName error";
             $log_content = "P:" . json_encode($result);
             $loggerObj->logger("MFUN_TASK_ID_L2SDK_IOT_WX", "mfun_l2sdk_iot_wx_task_main_entry", $log_time, $log_content);
-            echo trim($result);
             return false;
         }
 
         //解开消息
         $project= "";
-        $log_from = "";
         $platform = "";
+        $fromuser = "";
         $content="";
         if (isset($msg["project"])) $project = $msg["project"];
-        if (isset($msg["log_from"])) $log_from = $msg["log_from"];
         if (isset($msg["platform"])) $platform = $msg["platform"];
+        if (isset($msg["devCode"])) $fromuser = $msg["devCode"];
         if (isset($msg["content"])) $content = $msg["content"];
 
         //具体处理函数
@@ -1489,10 +1437,10 @@ class classTaskL2sdkIotWx
         //返回ECHO
         if (!empty($resp))
         {
-            $log_content = "T:" . json_encode($resp);
-            $loggerObj->logger($project, $log_from, $log_time, $log_content);
+            $log_content = "T:" . json_encode($resp, JSON_UNESCAPED_UNICODE);
+            $loggerObj->logger($project, $fromuser, $log_time, $log_content);
             if(is_array($resp))
-                echo(json_encode($resp));
+                echo(json_encode($resp, JSON_UNESCAPED_UNICODE));
             else
                 echo trim($resp);
         }

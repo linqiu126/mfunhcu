@@ -375,27 +375,6 @@ class classDbiL2sdkWechat
         $mysqli->close();
         return $location;
     }
-
-    //Shanchun Start 通过FromUserName查询DeviceID
-    public function dbi_deviceid_inqury($user)
-    {
-        $DeviceID = 0;
-        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
-        if (!$mysqli) {
-            die('Could not connect: ' . mysqli_error($mysqli));
-        }
-
-        $result = $mysqli->query("SELECT * FROM `t_l2sdk_wechat_blebound` WHERE `fromuser` = '$user'");
-
-        if ($result->num_rows>0)
-        {
-            $row = $result->fetch_array();
-            $DeviceID = $row['deviceid'];
-        }
-
-        $mysqli->close();
-        return $DeviceID;
-    }
     
 }
 

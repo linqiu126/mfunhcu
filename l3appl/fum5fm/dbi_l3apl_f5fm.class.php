@@ -565,7 +565,7 @@ class classDbiL3apF5fm
                                             'keyword3' => array('value' => $currenttime, 'color' => "#0000FF"),
                                             'keyword4' => array('value' => $chargeman, 'color' => "#0000FF"),
                                             'keyword5' => array('value' => $telephone, 'color' => "#0000FF"),
-                                            'keyword6' => array('value' => "请及时联系相关人员处理该告警", 'color' => "#0000FF")
+                                            'remark' => array('value' => "请及时联系相关人员处理该告警", 'color' => "#0000FF")
                                             )
                             );
             $resp = $l2sdkIotWxObj->send_template_message(json_encode($template));

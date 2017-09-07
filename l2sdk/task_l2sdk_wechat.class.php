@@ -4294,7 +4294,7 @@ class classTaskL2sdkWechat
     }
 
     //接收图片消息
-    public function wechat_receiveImage($object)
+    private function func_wechat_receiveImage($object)
     {
         $content = array("MediaId"=>$object->MediaId);
         $result = $this->transmitImage($object, $content);
@@ -4302,7 +4302,7 @@ class classTaskL2sdkWechat
     }
 
     //接收位置消息
-    public function wechat_receiveLocation($object)
+    private function func_wechat_receiveLocation($object)
     {
         $content = "你发送的是位置，纬度为：".$object->Location_X."；经度为：".$object->Location_Y."；缩放级别为：".$object->Scale."；位置为：".$object->Label;
         $result = $this->transmitText($object, $content);
@@ -4310,7 +4310,7 @@ class classTaskL2sdkWechat
     }
 
     //接收语音消息
-    public function wechat_receiveVoice($object)
+    private function func_wechat_receiveVoice($object)
     {
         if (isset($object->Recognition) && !empty($object->Recognition)){
             $content = "你刚才说的是：".$object->Recognition;
@@ -4324,7 +4324,7 @@ class classTaskL2sdkWechat
     }
 
     //接收视频消息
-    public function wechat_receiveVideo($object)
+    private function func_wechat_receiveVideo($object)
     {
         $content = array("MediaId"=>$object->MediaId, "ThumbMediaId"=>$object->ThumbMediaId, "Title"=>"", "Description"=>"");
         $result = $this->transmitVideo($object, $content);
@@ -4332,7 +4332,7 @@ class classTaskL2sdkWechat
     }
 
     //接收链接消息
-    public function wechat_receiveLink($object)
+    private function func_wechat_receiveLink($object)
     {
         $content = "你发送的是链接，标题为：".$object->Title."；内容为：".$object->Description."；链接地址为：".$object->Url;
         $result = $this->transmitText($object, $content);
@@ -4340,7 +4340,7 @@ class classTaskL2sdkWechat
     }
 
     //接收文本消息
-    public function wechat_receiveText($object)
+    private function func_wechat_receiveText($object)
     {
         $result= NULL;
         $keyword = trim($object->Content);
@@ -4397,7 +4397,7 @@ class classTaskL2sdkWechat
     }
 
     //接收事件消息
-    public function wechat_receiveEvent($parObj, $postObj)
+    private function func_wechat_receiveEvent($parObj, $postObj)
     {
         $result= NULL;
         $scenario = 0;
@@ -4413,13 +4413,11 @@ class classTaskL2sdkWechat
                 //$content = "扫码类型 ". $postObj->ScanCodeInfo->ScanType." \n扫码结果：". $postObj->ScanCodeInfo->ScanResult;
                 $scenario = 2;
                 $project = MFUN_PRJ_IHU_EMCWX;
-                $log_from = MFUN_CLOUD_WX;
                 $platform = MFUN_TECH_PLTF_WECHAT_DEVICE_EVENT;
                 //$wxDevObj = new classTaskL2sdkIotWx($this->appid, $this->appsecret);
                 //$wxDevObj->receive_wx_device_event_message($postObj);
                 //$result = "";
                 $msg = array("project" => $project,
-                    "log_from" => $log_from,
                     "platform" => $platform,
                     "content" => $postObj);
                 if ($parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L2SDK_WECHAT,
@@ -4435,13 +4433,11 @@ class classTaskL2sdkWechat
             case "CLICK":
                 $scenario = 2;
                 $project = MFUN_PRJ_IHU_EMCWX;
-                $log_from = MFUN_CLOUD_WX;
                 $platform = MFUN_TECH_PLTF_WECHAT_MENU_CLICK;
                 //$wxDevObj = new classTaskL2sdkIotWx($this->appid, $this->appsecret);
                 //$wxDevObj->receive_wx_device_event_message($postObj);
                 //$result = "";
                 $msg = array("project" => $project,
-                    "log_from" => $log_from,
                     "platform" => $platform,
                     "content" => $postObj);
                 if ($parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L2SDK_WECHAT,
@@ -4519,200 +4515,158 @@ class classTaskL2sdkWechat
         return $result;
     }
 
-    //日志记录
-    public function logger($project,$fromUser,$createTime,$log_content)
-    {
-        /*
-        if(isset($_SERVER['HTTP_APPNAME'])){   //SAE
-            sae_set_display_errors(false);
-            sae_debug($log_content);
-            sae_set_display_errors(true);
-        }else if($_SERVER['REMOTE_ADDR'] != "127.0.0.1"){ //LOCAL
-            $max_size = 10000;
-            $log_filename = "log.xml";
-            if(file_exists($log_filename) and (abs(filesize($log_filename)) > $max_size)){unlink($log_filename);}
-            file_put_contents($log_filename, date('H:i:s')." ".$log_content."\r\n", FILE_APPEND);
-        }
-        */
-        //存储log在数据库中
-        $cDbObj = new classDbiL1vmCommon();
-        $result = $cDbObj->dbi_log_process_save($project,$fromUser,$createTime,$log_content);
-
-        return $result;
-    }
-
 /**********************************************************************************************************************
  *                                               总入口Response函数                                                   *
  *********************************************************************************************************************/
     //入口消息
 	//$result的技巧是，IOT_WX对应的消息，$result设置为空，从而没有返回ECHO
-    public function mfun_l2sdk_wechat_task_main_entry($parObj, $msgId, $msgName, $rcvmsg)
+    public function mfun_l2sdk_wechat_task_main_entry($parObj, $msgId, $msgName, $data)
     {
 		//定义本入口函数的logger处理对象及函数
 		$loggerObj = new classApiL1vmFuncCom();
 		$log_time = date("Y-m-d H:i:s", time());
+        $project = MFUN_PRJ_IHU_EMCWX;
 
 		//入口消息内容判断
-		if (empty($rcvmsg) == true) {
+        //通过调用cloud_callback_wechat入口来的消息。主要是微信后台发送的消息以及HCU通过curl发送的消息（已切换到socket）
+		if (empty($data) == true) {
 			$loggerObj->logger("MFUN_TASK_ID_L2SDK_WECHAT", "mfun_l2sdk_wechat_task_main_entry", $log_time, "R: Received null message body.");
-			echo "";
 			return false;
 		}
 		if (($msgId != MSG_ID_L1VM_TO_L2SDK_WECHAT_INCOMING) || ($msgName != "MSG_ID_L1VM_TO_L2SDK_WECHAT_INCOMING")){
 			$result = "Msgid or MsgName error";
 			$log_content = "P:" . json_encode($result);
 			$loggerObj->logger("MFUN_TASK_ID_L2SDK_WECHAT", "mfun_l2sdk_wechat_task_main_entry", $log_time, $log_content);
-			echo trim($result);
 			return false;
 		}
 
-		//判断收到的消息类型
-		$format = substr(trim($rcvmsg), 0, 2);
-		switch ($format)
-		{
-			case MFUN_L2_FRAME_FORMAT_PREFIX_XML:
-				libxml_disable_entity_loader(true);  //prevent XML entity injection
-				$postObj = simplexml_load_string($rcvmsg, 'SimpleXMLElement');  //防止破坏CDATA的内容，进而影响智能硬件L3消息体
-				//$postObj = simplexml_load_string($postStr, 'SimpleXMLElement', LIBXML_NOCDATA);
-				$textTpl = "<xml>
-                        <ToUserName><![CDATA[%s]]></ToUserName>
-                        <FromUserName><![CDATA[%s]]></FromUserName>
-                        <CreateTime>%s</CreateTime>
-                        <MsgType><![CDATA[%s]]></MsgType>
-                        <Content><![CDATA[%s]]></Content>
-                        <FuncFlag>0</FuncFlag></xml>";
+        //防止多条xml消息粘连在一起的情况，此处加保护保证只取第一条完整xml消息
+        $dbiL1vmCommonObj = new classDbiL1vmCommon();
+        $data = $dbiL1vmCommonObj->getStrBetween($data,"<xml>","</xml>");
+        if(empty($data)){
+            $log_content = "L2SDK_WECHAT:XML message format error";
+            $loggerObj->logger("MFUN_TASK_ID_L2SDK_WECHAT", "mfun_l2sdk_wechat_task_main_entry", $log_time, $log_content);
+            echo trim($log_content); //这里echo主要是为了swoole log打印，帮助查找问题
+            return true;
+        }
+        $xmlmsg = "<" . $data . "</xml>";
 
-				$fromUser = trim($postObj->FromUserName);
-				$createTime = trim($postObj->CreateTime);
-                $content = trim($postObj->Content);
-                $funcFlag = trim($postObj->FuncFlag);
-                $msgType = trim($postObj->MsgType);
+        libxml_disable_entity_loader(true);  //prevent XML entity injection
+        $postObj = simplexml_load_string($xmlmsg, 'SimpleXMLElement');  //防止破坏CDATA的内容，进而影响智能硬件L3消息体
+        //$postObj = simplexml_load_string($postStr, 'SimpleXMLElement', LIBXML_NOCDATA);
+        $textTpl = "<xml>
+                <ToUserName><![CDATA[%s]]></ToUserName>
+                <FromUserName><![CDATA[%s]]></FromUserName>
+                <CreateTime>%s</CreateTime>
+                <MsgType><![CDATA[%s]]></MsgType>
+                <Content><![CDATA[%s]]></Content>
+                <FuncFlag>0</FuncFlag></xml>";
 
-                //保存所有微信入口消息,这个功能可以在部署时关掉
-                $log_content = "R:".trim($rcvmsg);
-                $loggerObj->logger("MFUN_TASK_ID_L2SDK_WECHAT", "mfun_l2sdk_wechat_task_main_entry", $log_time, $log_content);
-                $project = "";
-                $log_from = "";
+        $fromUser = trim($postObj->FromUserName);
+        $createTime = trim($postObj->CreateTime);
+        $content = trim($postObj->Content);
+        $funcFlag = trim($postObj->FuncFlag);
+        $msgType = trim($postObj->MsgType);
 
-				//消息类型分离
-				switch ($msgType)
-				{
-					case "event":
-                        $project = MFUN_PRJ_IHU_EMCWX;
-                        $log_from = MFUN_CLOUD_WX;
-						$result = $this->wechat_receiveEvent($parObj, $postObj);
-						break;
-					case "text":
-                        $project = MFUN_PRJ_IHU_EMCWX;
-                        $log_from = MFUN_CLOUD_WX;
-						$result = $this->wechat_receiveText($postObj);
-						break;
-					case "image":
-						$result = $this->wechat_receiveImage($postObj);
-						break;
-					case "location":
-						$result = $this->wechat_receiveLocation($postObj);
-						//$wxDevObj = new class_wx_IOT_sdk($this->appid, $this->appsecret);
-						//$result = $wxDevObj->receive_locationEvent($postObj);
-						break;
-					case "voice":
-						$result = $this->wechat_receiveVoice($postObj);
-						break;
-					case "video":
-						$result = $this->wechat_receiveVideo($postObj);
-						break;
-					case "link":
-						$result = $this->wechat_receiveLink($postObj);
-						break;
-					case "device_text":  //智能硬件设备text消息，都转到IOT相关的CLASS中
-						$project = MFUN_PRJ_IHU_EMCWX;
-						//$wxDevObj = new classTaskL2sdkIotWx($this->appid, $this->appsecret);
-						$log_from = MFUN_CLOUD_WX;
-						$platform = MFUN_TECH_PLTF_WECHAT_DEVICE_TEXT;
-						$sndmsg = array("project" => $project,
-							"log_from" => $log_from,
-							"platform" => $platform,
-							"content" => $postObj);
-						if ($parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L2SDK_WECHAT,
-								MFUN_TASK_ID_L2SDK_IOT_WX,
-								MSG_ID_WECHAT_TO_L2SDK_IOT_WX_INCOMING,
-								"MSG_ID_WECHAT_TO_L2SDK_IOT_WX_INCOMING",
-                                $sndmsg) == false) $result = "Send to message buffer error";
-						else $result = "";
-						//$wxDevObj->receive_wx_device_text_message($postObj);
-						//$result = "";
-						break;
-					case "device_event": //智能硬件设备event消息，都转到IOT相关的CLASS中
-						$project = MFUN_PRJ_IHU_EMCWX;
-						$log_from = MFUN_CLOUD_WX;
-						$platform = MFUN_TECH_PLTF_WECHAT_DEVICE_EVENT;
-						//$wxDevObj = new classTaskL2sdkIotWx($this->appid, $this->appsecret);
-						//$wxDevObj->receive_wx_device_event_message($postObj);
-						//$result = "";
-                        $sndmsg = array("project" => $project,
-							"log_from" => $log_from,
-							"platform" => $platform,
-							"content" => $postObj);
-						if ($parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L2SDK_WECHAT,
-								MFUN_TASK_ID_L2SDK_IOT_WX,
-								MSG_ID_WECHAT_TO_L2SDK_IOT_WX_INCOMING,
-								"MSG_ID_WECHAT_TO_L2SDK_IOT_WX_INCOMING",
-                                $sndmsg) == false) $result = "Send to message buffer error";
-						else $result = "";
-						break;
-                    //handling of huitp from hcu
-                    case "huitp_text": //HUITP curl entrance
-                        $project = MFUN_PRJ_HCU_HUITP;
-                        $log_from = MFUN_CLOUD_HCU;
-                        $platform = MFUN_TECH_PLTF_HCUGX_HUITP;
+        //保存所有微信入口消息,这个功能可以在部署时关掉
+        $log_content = "R:".($xmlmsg);
+        $loggerObj->logger("MFUN_TASK_ID_L2SDK_WECHAT", "mfun_l2sdk_wechat_task_main_entry", $log_time, $log_content);
 
-                        //取DB中的硬件信息，判断基本信息
-                        $dbiL2sdkIotcomObj = new classDbiL2sdkIotcom();
-                        $statCode = $dbiL2sdkIotcomObj->dbi_hcuDevice_valid_device($fromUser); //FromUserName对应每个HCU硬件的设备编号
-                        if (empty($statCode)){
-                            $result = "MFUN_TASK_ID_L2SDK_WECHAT: invalid device ID";
-                            $log_content = "T:" . json_encode($result);
-                            $loggerObj->logger($project, $log_from, $log_time, $log_content);
-                            return true;
-                        }
+        //消息类型分离
+        switch ($msgType)
+        {
+            case "event":
+                $result = $this->func_wechat_receiveEvent($parObj, $postObj);
+                break;
+            case "text":
+                $result = $this->func_wechat_receiveText($postObj);
+                break;
+            case "image":
+                $result = $this->func_wechat_receiveImage($postObj);
+                break;
+            case "location":
+                $result = $this->func_wechat_receiveLocation($postObj);
+                //$wxDevObj = new class_wx_IOT_sdk($this->appid, $this->appsecret);
+                //$result = $wxDevObj->receive_locationEvent($postObj);
+                break;
+            case "voice":
+                $result = $this->func_wechat_receiveVoice($postObj);
+                break;
+            case "video":
+                $result = $this->func_wechat_receiveVideo($postObj);
+                break;
+            case "link":
+                $result = $this->func_wechat_receiveLink($postObj);
+                break;
+            case "device_text":  //智能硬件设备text消息，都转到IOT相关的CLASS中
+                //$wxDevObj = new classTaskL2sdkIotWx($this->appid, $this->appsecret);
+                $platform = MFUN_TECH_PLTF_WECHAT_DEVICE_TEXT;
+                $msg = array("project" => $project,
+                    "platform" => $platform,
+                    "devCode" => $fromUser,
+                    "content" => $postObj);
+                if ($parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L2SDK_WECHAT,
+                        MFUN_TASK_ID_L2SDK_IOT_WX,
+                        MSG_ID_WECHAT_TO_L2SDK_IOT_WX_INCOMING,
+                        "MSG_ID_WECHAT_TO_L2SDK_IOT_WX_INCOMING",
+                        $msg) == false) $result = "Send to message buffer error";
+                else $result = "";
+                //$wxDevObj->receive_wx_device_text_message($postObj);
+                //$result = "";
+                break;
+            case "device_event": //智能硬件设备event消息，都转到IOT相关的CLASS中
+                $platform = MFUN_TECH_PLTF_WECHAT_DEVICE_EVENT;
+                //$wxDevObj = new classTaskL2sdkIotWx($this->appid, $this->appsecret);
+                //$wxDevObj->receive_wx_device_event_message($postObj);
+                //$result = "";
+                $msg = array("project" => $project,
+                    "platform" => $platform,
+                    "devCode" => $fromUser,
+                    "content" => $postObj);
+                if ($parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L2SDK_WECHAT,
+                        MFUN_TASK_ID_L2SDK_IOT_WX,
+                        MSG_ID_WECHAT_TO_L2SDK_IOT_WX_INCOMING,
+                        "MSG_ID_WECHAT_TO_L2SDK_IOT_WX_INCOMING",
+                        $msg) == false) $result = "Send to message buffer error";
+                else $result = "";
+                break;
+            case "huitp_text": //HUITP curl entrance
+                $project = MFUN_PRJ_HCU_HUITP;
+                $platform = MFUN_TECH_PLTF_HCUGX_HUITP;
+                //取DB中的硬件信息，判断基本信息
+                $dbiL2sdkIotcomObj = new classDbiL2sdkIotcom();
+                $statCode = $dbiL2sdkIotcomObj->dbi_hcuDevice_valid_device($fromUser); //FromUserName对应每个HCU硬件的设备编号
+                if (empty($statCode)){
+                    $result = "MFUN_TASK_ID_L2SDK_WECHAT: invalid device ID";
+                    $log_content = "T:" . json_encode($result);
+                    $loggerObj->logger($project, $fromUser, $log_time, $log_content);
+                    return true;
+                }
 
-                        $sndmsg = array("project" => $project,
-                            "platform" => $platform,
-                            "devCode" => $fromUser,
-                            "statCode" => $statCode,
-                            "content" => $content,
-                            "funcFlag" => $funcFlag);
-                        if ($parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L2SDK_WECHAT,
-                                MFUN_TASK_ID_L2DECODE_HUITP,
-                                MSG_ID_L2SDK_WECHAT_TO_L2DECODE_HUITP,
-                                "MSG_ID_L2SDK_WECHAT_TO_L2DECODE_HUITP",
-                                $sndmsg) == false) $result = "Send to message buffer error";
-                        else $result = "";
-
-                        break;
-					default:
-						$project = "NULL";
-						$this->logger($project,$fromUser,$log_time,$log_content);
-						$log_from = "CLOUD_NONE";
-						$result = "[XML_FORMAT]unknown message type: ".$msgType;
-						break;
-				}
-				break;
-			default:
-				$result = "Unknown message format";
-				$project = "NULL";
-				$log_from = "CLOUD_NONE";
-				break;
-		}
+                $msg = array("project" => $project,
+                    "platform" => $platform,
+                    "devCode" => $fromUser,
+                    "statCode" => $statCode,
+                    "content" => $content,
+                    "funcFlag" => $funcFlag);
+                if ($parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L2SDK_WECHAT,
+                        MFUN_TASK_ID_L2DECODE_HUITP,
+                        MSG_ID_L2SDK_WECHAT_TO_L2DECODE_HUITP,
+                        "MSG_ID_L2SDK_WECHAT_TO_L2DECODE_HUITP",
+                        $msg) == false) $result = "Send to message buffer error";
+                else $result = "";
+                break;
+            default:
+                $result = "L2SDK_WECHAT:unknown message type=".$msgType;
+                break;
+        }
 
 		if (!empty($result))
 		{
-			$timestamp = time();
-			$log_time = date("Y-m-d H:i:s", $timestamp);
-            $jsonencode = json_encode($result, JSON_UNESCAPED_UNICODE);
-            $log_content = "T:" . $jsonencode;
-			$this->logger($project,$log_from, $log_time, $log_content);
-			echo trim($result);
+            $resp = json_encode($result, JSON_UNESCAPED_UNICODE);
+            $log_content = "T:" . $resp;
+            $loggerObj->logger($project, $fromUser, $log_time, $log_content);
+			echo $resp;
 		}
 
 		//返回

@@ -54,7 +54,7 @@ class classTaskL2sdkIotStdxml
             $log_content = "IOT_STDXML:received XML message format error";
             $loggerObj->logger("MFUN_TASK_ID_L2SDK_IOT_STDXML", "mfun_l2sdk_iot_stdxml_task_main_entry", $log_time, $log_content);
             echo trim($log_content); //这里echo主要是为了swoole log打印，帮助查找问题
-            return false;
+            return true;
         }
 
         $xmlmsg = "<" . $data . "</xml>";
