@@ -1093,10 +1093,10 @@ CREATE TABLE IF NOT EXISTS `t_l3f4icm_sensorctrl` (
 -- --------------------------------------------------------
 
 --
--- 表的结构 `t_l3f4icm_swctrl`
+-- 表的结构 `t_l3f10oam_swloadinfo`
 --
 
-CREATE TABLE IF NOT EXISTS `t_l3f4icm_swctrl` (
+CREATE TABLE IF NOT EXISTS `t_l3f10oam_swloadinfo` (
   `sid` int(4) NOT NULL,
   `equentry` int(1) NOT NULL DEFAULT '0',
   `validflag` int(1) NOT NULL DEFAULT '0',
@@ -1131,10 +1131,10 @@ CREATE TABLE IF NOT EXISTS `t_l3f4icm_swfactory` (
 -- --------------------------------------------------------
 
 --
--- 表的结构 `t_l3f4icm_swupgrade_sta`
+-- 表的结构 `t_l3f10oam_suhistory`
 --
 
-CREATE TABLE IF NOT EXISTS `t_l3f4icm_swupgrade_sta` (
+CREATE TABLE IF NOT EXISTS `t_l3f10oam_suhistory` (
   `devcode` varchar(20) NOT NULL,
   `sutimes` int(2) NOT NULL DEFAULT '0',
   `lastsu` date NOT NULL,
@@ -1596,9 +1596,9 @@ ALTER TABLE `t_l3f4icm_sensorctrl`
   ADD PRIMARY KEY (`sid`);
 
 --
--- Indexes for table `t_l3f4icm_swctrl`
+-- Indexes for table `t_l3f10oam_swloadinfo`
 --
-ALTER TABLE `t_l3f4icm_swctrl`
+ALTER TABLE `t_l3f10oam_swloadinfo`
   ADD PRIMARY KEY (`sid`);
 
 --
@@ -1851,9 +1851,9 @@ ALTER TABLE `t_l3f3dm_aqyc_currentreport`
 ALTER TABLE `t_l3f4icm_sensorctrl`
   MODIFY `sid` int(4) NOT NULL AUTO_INCREMENT;
 --
--- AUTO_INCREMENT for table `t_l3f4icm_swctrl`
+-- AUTO_INCREMENT for table `t_l3f10oam_swloadinfo`
 --
-ALTER TABLE `t_l3f4icm_swctrl`
+ALTER TABLE `t_l3f10oam_swloadinfo`
   MODIFY `sid` int(4) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `t_l3f4icm_swfactory`

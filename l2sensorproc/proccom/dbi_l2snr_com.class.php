@@ -707,7 +707,7 @@ class classDbiL2snrCommon
         $relver_index = $swRel*65535 + $swVer;
 
         //查找硬件类型hwtype相同，设备entry（HCU，IHU）相同，软件更新标识（稳定版，补丁版，测试版）相同的load
-        $query_str = "SELECT * FROM `t_l3f4icm_swctrl` WHERE (`hwtype` = '$hwType' AND `upgradeFlag` = '$upgradeFlag' AND `equEntry` = '$equEntry' AND `validflag` = '$validflag')";
+        $query_str = "SELECT * FROM `t_l3f10oam_swloadinfo` WHERE (`hwtype` = '$hwType' AND `upgradeFlag` = '$upgradeFlag' AND `equEntry` = '$equEntry' AND `validflag` = '$validflag')";
         $result=$mysqli->query($query_str);
         //选取符合上述更新条件中最新的版本
         while (($result != false) && (($row = $result->fetch_array()) > 0))
@@ -733,7 +733,7 @@ class classDbiL2snrCommon
         //如果entry是HCU_SW,需要查找新load对应的database版本
         if($equEntry == HUITP_IEID_UNI_EQU_ENTRY_HCU_SW){
             $dbEntry = HUITP_IEID_UNI_EQU_ENTRY_HCU_DB;
-            $query_str = "SELECT * FROM `t_l3f4icm_swctrl` WHERE (`hwtype` = '$hwType' AND `equEntry` = '$dbEntry' AND `validflag` = '$validflag' AND `swrel` = '$swRel' AND `dbver` = '$dbVer')";
+            $query_str = "SELECT * FROM `t_l3f10oam_swloadinfo` WHERE (`hwtype` = '$hwType' AND `equEntry` = '$dbEntry' AND `validflag` = '$validflag' AND `swrel` = '$swRel' AND `dbver` = '$dbVer')";
             $result=$mysqli->query($query_str);
             if (($result != false) && ($result->num_rows)>0){
                 $row = $result->fetch_array();
@@ -822,7 +822,7 @@ class classDbiL2snrCommon
         $validflag = MFUN_HCU_SW_LOAD_FLAG_VALID;
         //HCU或IHU软件下载请求
         if ($equEntry == HUITP_IEID_UNI_EQU_ENTRY_HCU_SW OR $equEntry == HUITP_IEID_UNI_EQU_ENTRY_IHU) {
-            $query_str = "SELECT * FROM `t_l3f4icm_swctrl` WHERE (`hwtype` = '$hwType' AND `upgradeFlag` = '$upgradeFlag' AND `equEntry` = '$equEntry' AND `validflag` = '$validflag' AND `swrel` = '$swRel' AND `swver` = '$swVer')";
+            $query_str = "SELECT * FROM `t_l3f10oam_swloadinfo` WHERE (`hwtype` = '$hwType' AND `upgradeFlag` = '$upgradeFlag' AND `equEntry` = '$equEntry' AND `validflag` = '$validflag' AND `swrel` = '$swRel' AND `swver` = '$swVer')";
             $result = $mysqli->query($query_str);
             if (($result != false) && ($result->num_rows) > 0) {
                 $row = $result->fetch_array();
@@ -833,7 +833,7 @@ class classDbiL2snrCommon
         }
         //数据库下载请求
         elseif ($equEntry == HUITP_IEID_UNI_EQU_ENTRY_HCU_DB) {
-            $query_str = "SELECT * FROM `t_l3f4icm_swctrl` WHERE (`hwtype` = '$hwType' AND `equEntry` = '$equEntry' AND `validflag` = '$validflag' AND `swrel` = '$swRel' AND `dbver` = '$swVer')";
+            $query_str = "SELECT * FROM `t_l3f10oam_swloadinfo` WHERE (`hwtype` = '$hwType' AND `equEntry` = '$equEntry' AND `validflag` = '$validflag' AND `swrel` = '$swRel' AND `dbver` = '$swVer')";
             $result = $mysqli->query($query_str);
             if (($result != false) && ($result->num_rows) > 0) {
                 $row = $result->fetch_array();

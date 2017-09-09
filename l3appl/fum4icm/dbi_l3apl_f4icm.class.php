@@ -54,48 +54,6 @@ ALTER TABLE `t_l3f4icm_sensorctrl`
 ALTER TABLE `t_l3f4icm_sensorctrl`
   MODIFY `sid` int(4) NOT NULL AUTO_INCREMENT;
 
--- --------------------------------------------------------
-
---
--- 表的结构 `t_l3f4icm_swctrl`
---
-
-CREATE TABLE IF NOT EXISTS `t_l3f4icm_swctrl` (
-  `sid` int(4) NOT NULL,
-  `equentry` int(1) NOT NULL DEFAULT '0',
-  `validflag` int(1) NOT NULL DEFAULT '0',
-  `upgradeflag` int(1) NOT NULL DEFAULT '0',
-  `hwtype` int(2) NOT NULL DEFAULT '0',
-  `hwid` int(2) NOT NULL DEFAULT '0',
-  `swrel` int(2) NOT NULL DEFAULT '0',
-  `swver` int(2) NOT NULL DEFAULT '0',
-  `dbver` int(2) NOT NULL DEFAULT '0',
-  `filelink` varchar(100) NOT NULL DEFAULT 'NULL',
-  `filesize` int(4) NOT NULL DEFAULT '0',
-  `checksum` int(2) NOT NULL DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Indexes for dumped tables
---
-
---
--- Indexes for table `t_l3f4icm_swctrl`
---
-ALTER TABLE `t_l3f4icm_swctrl`
-  ADD PRIMARY KEY (`sid`);
-
---
--- AUTO_INCREMENT for dumped tables
---
-
---
--- AUTO_INCREMENT for table `t_l3f4icm_swctrl`
---
-ALTER TABLE `t_l3f4icm_swctrl`
-  MODIFY `sid` int(4) NOT NULL AUTO_INCREMENT;
-
-
 
 */
 

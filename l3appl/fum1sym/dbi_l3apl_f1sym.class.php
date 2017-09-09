@@ -183,6 +183,47 @@ ALTER TABLE `t_l3f1sym_userprofile`
 ALTER TABLE `t_l3f1sym_userprofile`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=54;
 
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `t_l3f10oam_swloadinfo`
+--
+
+CREATE TABLE IF NOT EXISTS `t_l3f10oam_swloadinfo` (
+  `sid` int(4) NOT NULL,
+  `equentry` int(1) NOT NULL DEFAULT '0',
+  `validflag` int(1) NOT NULL DEFAULT '0',
+  `upgradeflag` int(1) NOT NULL DEFAULT '0',
+  `hwtype` int(2) NOT NULL DEFAULT '0',
+  `hwid` int(2) NOT NULL DEFAULT '0',
+  `swrel` int(2) NOT NULL DEFAULT '0',
+  `swver` int(2) NOT NULL DEFAULT '0',
+  `dbver` int(2) NOT NULL DEFAULT '0',
+  `filelink` varchar(100) NOT NULL DEFAULT 'NULL',
+  `filesize` int(4) NOT NULL DEFAULT '0',
+  `checksum` int(2) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `t_l3f10oam_swloadinfo`
+--
+ALTER TABLE `t_l3f10oam_swloadinfo`
+  ADD PRIMARY KEY (`sid`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `t_l3f10oam_swloadinfo`
+--
+ALTER TABLE `t_l3f10oam_swloadinfo`
+  MODIFY `sid` int(4) NOT NULL AUTO_INCREMENT;
+
 */
 
 class classDbiL3apF1sym
