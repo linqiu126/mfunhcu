@@ -93,7 +93,7 @@ class classDbiL2snrHsmmp
 
     }
     
-    public function dbi_video_data_save($deviceid,$sensorid,$timestamp,$url,$gps)
+    public function dbi_video_data_save($deviceid,$sensorid,$timeStamp,$url,$gps)
     {
         //建立连接
         $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
@@ -103,8 +103,8 @@ class classDbiL2snrHsmmp
         }
         $mysqli->query("SET NAMES utf8");
 
-        $date = intval(date("ymd", $timestamp));
-        $stamp = getdate($timestamp);
+        $reportdate = date("Y-m-d", $timeStamp);
+        $stamp = getdate($timeStamp);
         $hourminindex = intval(($stamp["hours"] * 60 + floor($stamp["minutes"]/MFUN_TIME_GRID_SIZE)));
 
         if(!empty($gps)){
@@ -128,16 +128,16 @@ class classDbiL2snrHsmmp
 
         //存储新记录，如果发现是已经存在的数据，则覆盖，否则新增
         $result = $mysqli->query("SELECT * FROM `t_l2snr_hsmmpdata` WHERE (`deviceid` = '$deviceid' AND `sensorid` = '$sensorid'
-                                  AND `reportdate` = '$date' AND `hourminindex` = '$hourminindex')");
+                                  AND `reportdate` = '$reportdate' AND `hourminindex` = '$hourminindex')");
         if (($result != false) && ($result->num_rows)>0)   //重复，则覆盖
         {
             $result=$mysqli->query("UPDATE `t_l2snr_hsmmpdata` SET `videourl` = '$url',`altitude` = '$altitude',`flag_la` = '$flag_la',`latitude` = '$latitude',`flag_lo` = '$flag_lo',`longitude` = '$longitude'
-                    WHERE (`deviceid` = '$deviceid' AND `sensorid` = '$sensorid' AND `reportdate` = '$date' AND `hourminindex` = '$hourminindex')");
+                    WHERE (`deviceid` = '$deviceid' AND `sensorid` = '$sensorid' AND `reportdate` = '$reportdate' AND `hourminindex` = '$hourminindex')");
         }
         else   //不存在，新增
         {
             $result=$mysqli->query("INSERT INTO `t_l2snr_hsmmpdata` (deviceid,sensorid,videourl,reportdate,hourminindex,altitude,flag_la,latitude,flag_lo,longitude)
-                    VALUES ('$deviceid','$sensorid','$url','$date','$hourminindex','$altitude', '$flag_la','$latitude', '$flag_lo','$longitude')");
+                    VALUES ('$deviceid','$sensorid','$url','$reportdate','$hourminindex','$altitude', '$flag_la','$latitude', '$flag_lo','$longitude')");
         }
         $mysqli->close();
         return $result;
@@ -224,7 +224,7 @@ class classDbiL2snrHsmmp
     }
 
     //直接存储照片数据到数据库里，暂时没有采用这种机制
-    public function dbi_picture_data_save($statcode, $timestamp, $bindata)
+    public function dbi_picture_data_save($statcode, $timeStamp, $bindata)
     {
         //建立连接
         $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
@@ -234,21 +234,21 @@ class classDbiL2snrHsmmp
         }
         $mysqli->query("SET NAMES utf8");
 
-        $date = intval(date("ymd", $timestamp));
-        $stamp = getdate($timestamp);
+        $reportdate = date("Y-m-d", $timeStamp);
+        $stamp = getdate($timeStamp);
         $hourminindex = intval(($stamp["hours"] * 60 + floor($stamp["minutes"]/MFUN_TIME_GRID_SIZE)));
 
         //存储新记录，如果发现是已经存在的数据，则覆盖，否则新增
-        $query_str = "SELECT * FROM `t_l2snr_picturedata` WHERE (`statcode` = '$statcode' AND `reportdate` = '$date' AND `hourminindex` = '$hourminindex')";
+        $query_str = "SELECT * FROM `t_l2snr_picturedata` WHERE (`statcode` = '$statcode' AND `reportdate` = '$reportdate' AND `hourminindex` = '$hourminindex')";
         $result = $mysqli->query($query_str);
         if (($result != false) && ($result->num_rows)>0)   //重复，则覆盖
         {
-            $query_str = "UPDATE `t_l2snr_picturedata` SET `bindata` = '$bindata' WHERE (`statcode` = '$statcode' AND `reportdate` = '$date' AND `hourminindex` = '$hourminindex')";
+            $query_str = "UPDATE `t_l2snr_picturedata` SET `bindata` = '$bindata' WHERE (`statcode` = '$statcode' AND `reportdate` = '$reportdate' AND `hourminindex` = '$hourminindex')";
             $result=$mysqli->query($query_str);
         }
         else   //不存在，新增
         {
-            $query_str = "INSERT INTO `t_l2snr_picturedata` (statcode,bindata,reportdate,hourminindex) VALUES ('$statcode','$bindata','$date','$hourminindex')";
+            $query_str = "INSERT INTO `t_l2snr_picturedata` (statcode,bindata,reportdate,hourminindex) VALUES ('$statcode','$bindata','$reportdate','$hourminindex')";
             $result=$mysqli->query($query_str);
         }
         $mysqli->close();
@@ -308,7 +308,7 @@ class classDbiL2snrHsmmp
 
 
     //保存照片信息到picturedata表中，对于FHYS这个可以不需要，直接将照片信息存到开锁记录表中，这样便于开锁抓拍照片关联查询
-    public function dbi_door_open_picture_link_save($statcode, $timestamp, $filelink, $filesize)
+    public function dbi_door_open_picture_link_save($statcode, $timeStamp, $filelink, $filesize)
     {
         //建立连接
         $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
@@ -318,21 +318,21 @@ class classDbiL2snrHsmmp
         }
         $mysqli->query("SET NAMES utf8");
 
-        $date = intval(date("ymd", $timestamp));
-        $stamp = getdate($timestamp);
+        $reportdate = date("Y-m-d", $timeStamp);
+        $stamp = getdate($timeStamp);
         $hourminindex = intval(($stamp["hours"] * 60 + floor($stamp["minutes"]/MFUN_TIME_GRID_SIZE)));
 
         $filetype = "JPG";
         $filesize = (int)$filesize;
         $description = "站点".$statcode."上传的照片";
-        $query_str = "INSERT INTO `t_l2snr_picturedata` (statcode,filename,filetype,filesize,filedescription,reportdate,hourminindex) VALUES ('$statcode','$filelink','$filetype','$filesize','$description','$date','$hourminindex')";
+        $query_str = "INSERT INTO `t_l2snr_picturedata` (statcode,filename,filetype,filesize,filedescription,reportdate,hourminindex) VALUES ('$statcode','$filelink','$filetype','$filesize','$description','$reportdate','$hourminindex')";
         $result=$mysqli->query($query_str);
 
         $mysqli->close();
         return $result;
     }
 
-    public function dbi_door_open_picture_filesize_update($statcode, $deviceId, $timestamp, $filename, $filesize)
+    public function dbi_door_open_picture_filesize_update($statcode, $deviceId, $timeStamp, $filename, $filesize)
     {
         //建立连接
         $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
@@ -342,8 +342,8 @@ class classDbiL2snrHsmmp
         }
         $mysqli->query("SET NAMES utf8");
 
-        $date = intval(date("ymd", $timestamp));
-        $stamp = getdate($timestamp);
+        $reportdate = date("Y-m-d", $timeStamp);
+        $stamp = getdate($timeStamp);
         $hourminindex = intval(($stamp["hours"] * 60 + floor($stamp["minutes"]/MFUN_TIME_GRID_SIZE)));
 
         $query_str = "SELECT * FROM `t_l2snr_picturedata` WHERE (`statcode` = '$statcode' AND `filename` = '$filename')";
@@ -352,7 +352,7 @@ class classDbiL2snrHsmmp
             $row = $result->fetch_array();
             $oldsize = (int)$row['filesize'];
             $newsize = (int)$filesize + $oldsize;
-            $query_str = "UPDATE `t_l2snr_picturedata` SET `filesize` = '$newsize', `hourminindex` = '$hourminindex' WHERE (`statcode` = '$statcode' AND `filename` = '$filename')";
+            $query_str = "UPDATE `t_l2snr_picturedata` SET `filesize` = '$newsize', `reportdate` = '$reportdate',`hourminindex` = '$hourminindex' WHERE (`statcode` = '$statcode' AND `filename` = '$filename')";
             $result=$mysqli->query($query_str);
         }
 

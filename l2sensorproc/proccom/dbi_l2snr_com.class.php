@@ -227,6 +227,128 @@ class classDbiL2snrCommon
         return $value;
     }
 
+
+    //用于传感器缺失数据的插值
+    public function dbi_missingdata_insert($value_start,$date_start,$timeindex_start,$value_end,$date_end,$timeindex_end)
+    {
+        //解开消息，先判断上次记录输入
+        if (isset($value_start["pm01"])) $pm01_start = intval($value_start["pm01"]); else  $pm01_start = 0;
+        if (isset($value_start["pm25"])) $pm25_start = intval($value_start["pm25"]); else  $pm25_start = 0;
+        if (isset($value_start["pm10"])) $pm10_start = intval($value_start["pm10"]); else  $pm10_start = 0;
+        if (isset($value_start["noise"])) $noise_start = intval($value_start["noise"]); else  $noise_start = 0;
+        if (isset($value_start["temp"])) $temp_start = intval($value_start["temp"]); else  $temp_start = 0;
+        if (isset($value_start["humid"])) $humid_start = intval($value_start["humid"]); else  $humid_start = 0;
+        if (isset($value_start["windspd"])) $windspd_start = intval($value_start["windspd"]); else  $windspd_start = 0;
+        if (isset($value_start["winddir"])) $winddir_start = intval($value_start["winddir"]); else  $winddir_start = 0;
+        //再判断本次记录输入
+        if (isset($value_end["pm01"])) $pm01_end = intval($value_end["pm01"]); else  $pm01_end = 0;
+        if (isset($value_end["pm25"])) $pm25_end = intval($value_end["pm25"]); else  $pm25_end = 0;
+        if (isset($value_end["pm10"])) $pm10_end = intval($value_end["pm10"]); else  $pm10_end = 0;
+        if (isset($value_end["noise"])) $noise_end = intval($value_end["noise"]); else  $noise_end = 0;
+        if (isset($value_end["temp"])) $temp_end = intval($value_end["temp"]); else  $temp_end = 0;
+        if (isset($value_end["humid"])) $humid_end = intval($value_end["humid"]); else  $humid_end = 0;
+        if (isset($value_end["windspd"])) $windspd_end = intval($value_end["windspd"]); else  $windspd_end = 0;
+        if (isset($value_end["winddir"])) $winddir_end = intval($value_end["winddir"]); else  $winddir_end = 0;
+
+        $resp =array(); //初始化
+        $time_start = strtotime($date_start);
+        $time_end = strtotime($date_end);
+        $diff_day = ($time_end - $time_start)/86400;
+
+
+        if ($diff_day == 0){
+            //同一天，从上次的hourminindex插值到当前的hourminindex
+            for ($i=$timeindex_start+1; $i<$timeindex_end; $i++){
+                $pm01 = rand ($pm01_start, $pm01_end);
+                $pm25 = rand ($pm25_start, $pm25_end);
+                $pm10 = rand ($pm10_start, $pm10_end);
+                $noise = rand ($noise_start, $noise_end);
+                $temp = rand ($temp_start, $temp_end);
+                $humid = rand ($humid_start, $humid_end);
+                $windspd = rand ($windspd_start, $windspd_end);
+                $winddir = rand ($winddir_start, $winddir_end);
+                $onerow = array('date'=>$date_start,'hourminindex'=>$i,"pm01"=>$pm01,"pm25"=>$pm25,"pm10"=>$pm10,"noise"=>$noise,"temp"=>$temp,"humid"=>$humid,"windspd"=>$windspd,"winddir"=>$winddir);
+                array_push($resp, $onerow);
+            }
+        }
+        elseif ($diff_day == 1){
+            //先插入上次记录当天剩余值
+            for ($i=$timeindex_start+1; $i<(23*60+60/MFUN_TIME_GRID_SIZE); $i++){
+                $pm01 = rand ($pm01_start, $pm01_end);
+                $pm25 = rand ($pm25_start, $pm25_end);
+                $pm10 = rand ($pm10_start, $pm10_end);
+                $noise = rand ($noise_start, $noise_end);
+                $temp = rand ($temp_start, $temp_end);
+                $humid = rand ($humid_start, $humid_end);
+                $windspd = rand ($windspd_start, $windspd_end);
+                $winddir = rand ($winddir_start, $winddir_end);
+                $onerow = array('date'=>$date_start,'hourminindex'=>$i,"pm01"=>$pm01,"pm25"=>$pm25,"pm10"=>$pm10,"noise"=>$noise,"temp"=>$temp,"humid"=>$humid,"windspd"=>$windspd,"winddir"=>$winddir);
+                array_push($resp, $onerow);
+            }
+            //再插入今天当前hourminindex前的记录
+            for ($i=1; $i<$timeindex_end; $i++){
+                $pm01 = rand ($pm01_start, $pm01_end);
+                $pm25 = rand ($pm25_start, $pm25_end);
+                $pm10 = rand ($pm10_start, $pm10_end);
+                $noise = rand ($noise_start, $noise_end);
+                $temp = rand ($temp_start, $temp_end);
+                $humid = rand ($humid_start, $humid_end);
+                $windspd = rand ($windspd_start, $windspd_end);
+                $winddir = rand ($winddir_start, $winddir_end);
+                $onerow = array('date'=>$date_end,'hourminindex'=>$i,"pm01"=>$pm01,"pm25"=>$pm25,"pm10"=>$pm10,"noise"=>$noise,"temp"=>$temp,"humid"=>$humid,"windspd"=>$windspd,"winddir"=>$winddir);
+                array_push($resp, $onerow);
+            }
+
+        }
+        elseif ($diff_day > 1){
+            //先插入上次记录当天剩余值
+            for ($i=$timeindex_start+1; $i<(23*60+60/MFUN_TIME_GRID_SIZE); $i++){
+                $pm01 = rand ($pm01_start, $pm01_end);
+                $pm25 = rand ($pm25_start, $pm25_end);
+                $pm10 = rand ($pm10_start, $pm10_end);
+                $noise = rand ($noise_start, $noise_end);
+                $temp = rand ($temp_start, $temp_end);
+                $humid = rand ($humid_start, $humid_end);
+                $windspd = rand ($windspd_start, $windspd_end);
+                $winddir = rand ($winddir_start, $winddir_end);
+                $onerow = array('date'=>$date_start,'hourminindex'=>$i,"pm01"=>$pm01,"pm25"=>$pm25,"pm10"=>$pm10,"noise"=>$noise,"temp"=>$temp,"humid"=>$humid,"windspd"=>$windspd,"winddir"=>$winddir);
+                array_push($resp, $onerow);
+            }
+            //插入中间欠缺的完整天记录
+            for($j = 1; $j<$diff_day; $j++){
+                $format = '+'.$j.' day';
+                $date_current = date('Y-m-d',strtotime($format,strtotime($date_start)));
+                for ($i=1; $i<(23*60+60/MFUN_TIME_GRID_SIZE); $i++){
+                    $pm01 = rand ($pm01_start, $pm01_end);
+                    $pm25 = rand ($pm25_start, $pm25_end);
+                    $pm10 = rand ($pm10_start, $pm10_end);
+                    $noise = rand ($noise_start, $noise_end);
+                    $temp = rand ($temp_start, $temp_end);
+                    $humid = rand ($humid_start, $humid_end);
+                    $windspd = rand ($windspd_start, $windspd_end);
+                    $winddir = rand ($winddir_start, $winddir_end);
+                    $onerow = array('date'=>$date_current,'hourminindex'=>$i,"pm01"=>$pm01,"pm25"=>$pm25,"pm10"=>$pm10,"noise"=>$noise,"temp"=>$temp,"humid"=>$humid,"windspd"=>$windspd,"winddir"=>$winddir);
+                    array_push($resp, $onerow);
+                }
+            }
+            //再插入今天当前hourminindex前的记录
+            for ($i=1; $i<$timeindex_end; $i++){
+                $pm01 = rand ($pm01_start, $pm01_end);
+                $pm25 = rand ($pm25_start, $pm25_end);
+                $pm10 = rand ($pm10_start, $pm10_end);
+                $noise = rand ($noise_start, $noise_end);
+                $temp = rand ($temp_start, $temp_end);
+                $humid = rand ($humid_start, $humid_end);
+                $windspd = rand ($windspd_start, $windspd_end);
+                $winddir = rand ($winddir_start, $winddir_end);
+                $onerow = array('date'=>$date_end,'hourminindex'=>$i,"pm01"=>$pm01,"pm25"=>$pm25,"pm10"=>$pm10,"noise"=>$noise,"temp"=>$temp,"humid"=>$humid,"windspd"=>$windspd,"winddir"=>$winddir);
+                array_push($resp, $onerow);
+            }
+        }
+
+        return $resp;
+    }
+
     //UI SensorList request, 获取所有传感器类型信息
     public function dbi_all_sensorlist_req($type)
     {

@@ -142,6 +142,83 @@ ALTER TABLE `t_l3f3dm_aqyc_currentreport`
 class classDbiL2snrPm25
 {
 
+    //用于PM2.5传感器缺失数据的插值
+    private function dbi_missing_pmdata_insert($pm01_start,$pm25_start,$pm10_start,$date_start,$timeindex_start,$pm01_end,$pm25_end,$pm10_end,$date_end,$timeindex_end)
+    {
+        $resp =array(); //初始化
+        $pm01_start = intval($pm01_start);
+        $pm25_start = intval($pm25_start);
+        $pm10_start = intval($pm10_start);
+        $pm01_end = intval($pm01_end);
+        $pm25_end = intval($pm25_end);
+        $pm10_end = intval($pm10_end);
+        $time_start = strtotime($date_start);
+        $time_end = strtotime($date_end);
+        $diff_day = ($time_end - $time_start)/86400;
+
+        if ($diff_day == 0){
+            //同一天，从上次的hourminindex插值到当前的hourminindex
+            for ($i=$timeindex_start+1; $i<$timeindex_end; $i++){
+                $pm01 = rand ($pm01_start, $pm01_end);
+                $pm25 = rand ($pm25_start, $pm25_end);
+                $pm10 = rand ($pm10_start, $pm10_end);
+                $onerow = array('date'=>$date_start, 'hourminindex'=>$i, 'pm01'=>$pm01, 'pm25'=>$pm25, 'pm10'=>$pm10);
+                array_push($resp, $onerow);
+            }
+        }
+        elseif ($diff_day == 1){
+            //先插入上次记录当天剩余值
+            for ($i=$timeindex_start+1; $i<(23*60+60/MFUN_TIME_GRID_SIZE); $i++){
+                $pm01 = rand ($pm01_start, $pm01_end);
+                $pm25 = rand ($pm25_start, $pm25_end);
+                $pm10 = rand ($pm10_start, $pm10_end);
+                $onerow = array('date'=>$date_start, 'hourminindex'=>$i, 'pm01'=>$pm01, 'pm25'=>$pm25, 'pm10'=>$pm10);
+                array_push($resp, $onerow);
+            }
+            //再插入今天当前hourminindex前的记录
+            for ($i=1; $i<$timeindex_end; $i++){
+                $pm01 = rand ($pm01_start, $pm01_end);
+                $pm25 = rand ($pm25_start, $pm25_end);
+                $pm10 = rand ($pm10_start, $pm10_end);
+                $onerow = array('date'=>$date_end, 'hourminindex'=>$i, 'pm01'=>$pm01, 'pm25'=>$pm25, 'pm10'=>$pm10);
+                array_push($resp, $onerow);
+            }
+        }
+        elseif ($diff_day > 1){
+            //先插入上次记录当天剩余值
+            for ($i=$timeindex_start+1; $i<(23*60+60/MFUN_TIME_GRID_SIZE); $i++){
+                $pm01 = rand ($pm01_start, $pm01_end);
+                $pm25 = rand ($pm25_start, $pm25_end);
+                $pm10 = rand ($pm10_start, $pm10_end);
+                $onerow = array('date'=>$date_start, 'hourminindex'=>$i, 'pm01'=>$pm01, 'pm25'=>$pm25, 'pm10'=>$pm10);
+                array_push($resp, $onerow);
+            }
+            //插入中间欠缺的完整天记录
+            for($j = 1; $j<$diff_day; $j++){
+                $format = '+'.$j.' day';
+                $date_current = date('Y-m-d',strtotime($format,strtotime($date_start)));
+                for ($i=1; $i<(23*60+60/MFUN_TIME_GRID_SIZE); $i++){
+                    $pm01 = rand ($pm01_start, $pm01_end);
+                    $pm25 = rand ($pm25_start, $pm25_end);
+                    $pm10 = rand ($pm10_start, $pm10_end);
+                    $onerow = array('date'=>$date_current, 'hourminindex'=>$i, 'pm01'=>$pm01, 'pm25'=>$pm25, 'pm10'=>$pm10);
+                    array_push($resp, $onerow);
+                }
+            }
+            //再插入今天当前hourminindex前的记录
+            for ($i=1; $i<$timeindex_end; $i++){
+                $pm01 = rand ($pm01_start, $pm01_end);
+                $pm25 = rand ($pm25_start, $pm25_end);
+                $pm10 = rand ($pm10_start, $pm10_end);
+                $onerow = array('date'=>$date_end, 'hourminindex'=>$i, 'pm01'=>$pm01, 'pm25'=>$pm25, 'pm10'=>$pm10);
+                array_push($resp, $onerow);
+            }
+        }
+
+        return $resp;
+    }
+
+
     //更新每个传感器自己对应的l2snr data表
     private function dbi_l2snr_pmdata_update($devCode, $timeStamp, $pm01, $pm25, $pm10)
     {
@@ -152,12 +229,39 @@ class classDbiL2snrPm25
             die('Could not connect: ' . mysqli_error($mysqli));
         }
 
-        //存储新记录，如果发现是已经存在的数据，则覆盖，否则新增
-        $reportdate = intval(date("ymd", $timeStamp));
+        //在更新之前先判断从上次记录到现在是否有数据缺失，如果有缺失则插入从上次上报值到当前值的随机值，补全记录
+        $reportdate = date("Y-m-d", $timeStamp);
         $stamp = getdate($timeStamp);
         $hourminindex = intval(($stamp["hours"] * 60 + floor($stamp["minutes"]/MFUN_TIME_GRID_SIZE)));
-        $dataFlag = MFUN_HCU_DATA_FLAG_VALID;
 
+        //先判断数据是否缺失
+        $fakedata = array();
+        $query_str = "SELECT MAX(`sid`) FROM `t_l2snr_pm25data` WHERE (`deviceid` = '$devCode')";
+        $result = $mysqli->query($query_str);
+        if (($result->num_rows)>0){
+            $row = $result->fetch_array();
+            $last_reportdate = $row['reportdate'];
+            $last_hourminindex = $row['hourminindex'];
+            $last_pm01 = $row['pm01'];
+            $last_pm25 = $row['pm25'];
+            $last_pm10 = $row['pm10'];
+
+            $fakedata = $this->dbi_missing_pmdata_insert($last_pm01,$last_pm25,$last_pm10,$last_reportdate,$last_hourminindex,$pm01,$pm25,$pm10,$reportdate,$hourminindex);
+
+            $dataFlag = MFUN_HCU_DATA_FLAG_FAKE;
+            for($i=0; $i<count($fakedata); $i++){
+                $fake_pm01 = $fakedata[$i]['pm01'];
+                $fake_pm25 = $fakedata[$i]['pm25'];
+                $fake_pm10 = $fakedata[$i]['pm10'];
+                $fake_reportdate = $fakedata[$i]['date'];
+                $fake_hourminindex = $fakedata[$i]['hourminindex'];
+                $query_str = "INSERT INTO `t_l2snr_pm25data` (deviceid,pm01,pm25,pm10,dataflag,reportdate,hourminindex) VALUES ('$devCode','$fake_pm01','$fake_pm25','$fake_pm10','$dataFlag','$fake_reportdate','$fake_hourminindex')";
+                $result=$mysqli->query($query_str);
+            }
+        }
+
+        //存储新记录，如果发现是已经存在的数据，则覆盖，否则新增
+        $dataFlag = MFUN_HCU_DATA_FLAG_VALID;
         $query_str = "SELECT * FROM `t_l2snr_pm25data` WHERE (`deviceid` = '$devCode' AND `reportdate` = '$reportdate' AND `hourminindex` = '$hourminindex')";
         $result = $mysqli->query($query_str);
         if (($result != false) && ($result->num_rows)>0)   //重复，则覆盖
@@ -184,7 +288,7 @@ class classDbiL2snrPm25
             die('Could not connect: ' . mysqli_error($mysqli));
         }
 
-        $reportdate = intval(date("ymd", $timeStamp));
+        $reportdate = date("Y-m-d", $timeStamp);
         $stamp = getdate($timeStamp);
         $hourminindex = intval(($stamp["hours"] * 60 + floor($stamp["minutes"]/MFUN_TIME_GRID_SIZE)));
         $dataFlag = MFUN_HCU_DATA_FLAG_VALID;
@@ -265,7 +369,7 @@ class classDbiL2snrPm25
         }
 
         //存储新记录，如果发现是已经存在的数据，则覆盖，否则新增
-        $reportdate = intval(date("ymd", $timeStamp));
+        $reportdate = date("Y-m-d", $timeStamp);
         $stamp = getdate($timeStamp);
         $hourminindex = intval(($stamp["hours"] * 60 + floor($stamp["minutes"]/MFUN_TIME_GRID_SIZE)));
 
@@ -355,24 +459,66 @@ class classDbiL2snrPm25
         $pm10Value = $report['pm10Value'];
         $tspValue = $report['tspValue'];
 
-        $date = intval(date("ymd", $timeStamp));
+        $reportdate = date("Y-m-d", $timeStamp);
         $stamp = getdate($timeStamp);
         $hourminindex = intval(($stamp["hours"] * 60 + floor($stamp["minutes"]/MFUN_TIME_GRID_SIZE)));
 
+        //更新数据前先判断上次记录到现在是否有缺失，如果有则补充缺失记录
+        $value_last = array();
+        $query_str = "SELECT * FROM `t_l2snr_aqyc_minreport` WHERE `sid` = (SELECT MAX(`sid`) FROM `t_l2snr_aqyc_minreport` WHERE (`devcode` = '$devCode' AND `statcode` = '$statCode'))";
+        $result = $mysqli->query($query_str);
+        if (($result->num_rows)>0) {
+            $row = $result->fetch_array();
+            $reportdate_last = $row['reportdate'];
+            $hourminindex_last = $row['hourminindex'];
+            $pm01_last = intval($row['pm01']);
+            $pm25_last = intval($row['pm25']);
+            $pm10_last = intval($row['pm10']);
+            $noise_last = intval($row['noise']);
+            $temp_last = intval($row['temperature']);
+            $humid_last = intval($row['humidity']);
+            $windspd_last = intval($row['windspeed']);
+            $winddir_last = intval($row['winddirection']);
+            $value_last = array("pm01"=>$pm01_last,"pm25"=>$pm25_last,"pm10"=>$pm10_last,"noise"=>$noise_last,"temp"=>$temp_last,"humid"=>$humid_last,"windspd"=>$windspd_last,"winddir"=>$winddir_last);
+        }
+
+        if (!empty($value_last)){
+            $value_now = array("pm01"=>$tspValue,"pm25"=>$pm25Value,"pm10"=>$pm10Value,"noise"=>$noiseValue,"temp"=>$tempValue,"humid"=>$humidValue,"windspd"=>$windspdValue,"winddir"=>$winddirValue);
+            $dbiL2snrCommonObj = new classDbiL2snrCommon();
+            $fakedata = $dbiL2snrCommonObj->dbi_missingdata_insert($value_last,$reportdate_last,$hourminindex_last,$value_now,$reportdate,$hourminindex);
+            $dataFlag = MFUN_HCU_DATA_FLAG_FAKE;
+            for($i=0; $i<count($fakedata); $i++){
+                $fake_tsp = $fakedata[$i]['pm01'];
+                $fake_pm25 = $fakedata[$i]['pm25'];
+                $fake_pm10 = $fakedata[$i]['pm10'];
+                $fake_noise = $fakedata[$i]['noise'];
+                $fake_temp = $fakedata[$i]['temp'];
+                $fake_humid = $fakedata[$i]['humid'];
+                $fake_windspd = $fakedata[$i]['windspd'];
+                $fake_winddir = $fakedata[$i]['winddir'];
+                $fake_reportdate = $fakedata[$i]['date'];
+                $fake_hourminindex = $fakedata[$i]['hourminindex'];
+
+                $query_str = "INSERT INTO `t_l2snr_aqyc_minreport` (devcode,statcode,pm01,pm25,pm10,noise,windspeed,winddirection,temperature,humidity,reportdate,hourminindex,dataflag)
+                          VALUES ('$devCode', '$statCode', '$fake_tsp','$fake_pm25','$fake_pm10','$fake_noise','$fake_windspd','$fake_winddir','$fake_temp','$fake_humid','$fake_reportdate','$fake_hourminindex','$dataFlag')";
+                $result=$mysqli->query($query_str);
+            }
+        }
+
         $dataFlag = MFUN_HCU_DATA_FLAG_VALID;
         //存储新记录，如果发现是已经存在的数据，则覆盖，否则新增
-        $query_str = "SELECT * FROM `t_l2snr_aqyc_minreport` WHERE (`devcode` = '$devCode' AND `statcode` = '$statCode' AND `reportdate` = '$date' AND `hourminindex` = '$hourminindex')";
+        $query_str = "SELECT * FROM `t_l2snr_aqyc_minreport` WHERE (`devcode` = '$devCode' AND `statcode` = '$statCode' AND `reportdate` = '$reportdate' AND `hourminindex` = '$hourminindex')";
         $result = $mysqli->query($query_str);
         if (($result != false) && ($result->num_rows)>0)  //重复，则覆盖
         {
             $query_str = "UPDATE `t_l2snr_aqyc_minreport` SET `pm01` = '$tspValue',`pm25` = '$pm25Value',`pm10` = '$pm10Value',`noise` = '$noiseValue',`windspeed` = '$windspdValue',`winddirection` = '$winddirValue',`temperature` = '$tempValue',`humidity` = '$humidValue',`dataflag` = '$dataFlag'
-                          WHERE (`devcode` = '$devCode' AND `statcode` = '$statCode' AND `reportdate` = '$date' AND `hourminindex` = '$hourminindex')";
+                          WHERE (`devcode` = '$devCode' AND `statcode` = '$statCode' AND `reportdate` = '$reportdate' AND `hourminindex` = '$hourminindex')";
             $result=$mysqli->query($query_str);
         }
         else   //不存在，新增
         {
             $query_str = "INSERT INTO `t_l2snr_aqyc_minreport` (devcode,statcode,pm01,pm25,pm10,noise,windspeed,winddirection,temperature,humidity,reportdate,hourminindex,dataflag)
-                          VALUES ('$devCode', '$statCode', '$tspValue','$pm25Value','$pm10Value','$noiseValue','$windspdValue','$winddirValue','$tempValue','$humidValue','$date','$hourminindex','$dataFlag')";
+                          VALUES ('$devCode', '$statCode', '$tspValue','$pm25Value','$pm10Value','$noiseValue','$windspdValue','$winddirValue','$tempValue','$humidValue','$reportdate','$hourminindex','$dataFlag')";
             $result=$mysqli->query($query_str);
         }
         $mysqli->close();

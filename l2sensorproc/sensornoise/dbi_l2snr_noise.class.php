@@ -61,20 +61,20 @@ class classDbiL2snrNoise
         }
 
         //存储新记录，如果发现是已经存在的数据，则覆盖，否则新增
-        $date = intval(date("ymd", $timeStamp));
+        $reportdate = date("Y-m-d", $timeStamp);
         $stamp = getdate($timeStamp);
         $hourminindex = intval(($stamp["hours"] * 60 + floor($stamp["minutes"]/MFUN_TIME_GRID_SIZE)));
 
-        $query_str = "SELECT * FROM `t_l2snr_noisedata` WHERE (`deviceid` = '$devCode' AND `reportdate` = '$date' AND `hourminindex` = '$hourminindex')";
+        $query_str = "SELECT * FROM `t_l2snr_noisedata` WHERE (`deviceid` = '$devCode' AND `reportdate` = '$reportdate' AND `hourminindex` = '$hourminindex')";
         $result = $mysqli->query($query_str);
         if (($result != false) && ($result->num_rows)>0)   //重复，则覆盖
         {
-            $query_str = "UPDATE `t_l2snr_noisedata` SET `noise` = '$noiseValue' WHERE (`deviceid` = '$devCode' AND `reportdate` = '$date' AND `hourminindex` = '$hourminindex')";
+            $query_str = "UPDATE `t_l2snr_noisedata` SET `noise` = '$noiseValue' WHERE (`deviceid` = '$devCode' AND `reportdate` = '$reportdate' AND `hourminindex` = '$hourminindex')";
             $result=$mysqli->query($query_str);
         }
         else   //不存在，新增
         {
-            $query_str = "INSERT INTO `t_l2snr_noisedata` (deviceid,noise,reportdate,hourminindex) VALUES ('$devCode','$noiseValue','$date','$hourminindex')";
+            $query_str = "INSERT INTO `t_l2snr_noisedata` (deviceid,noise,reportdate,hourminindex) VALUES ('$devCode','$noiseValue','$reportdate','$hourminindex')";
             $result=$mysqli->query($query_str);
         }
         $mysqli->close();
@@ -91,7 +91,7 @@ class classDbiL2snrNoise
             die('Could not connect: ' . mysqli_error($mysqli));
         }
 
-        $reportdate = intval(date("ymd", $timeStamp));
+        $reportdate = date("Y-m-d", $timeStamp);
         $stamp = getdate($timeStamp);
         $hourminindex = intval(($stamp["hours"] * 60 + floor($stamp["minutes"]/MFUN_TIME_GRID_SIZE)));
 

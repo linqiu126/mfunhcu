@@ -61,20 +61,20 @@ class classDbiL2snrTemp
         }
 
         //存储新记录，如果发现是已经存在的数据，则覆盖，否则新增
-        $date = intval(date("ymd", $timeStamp));
+        $reportdate = date("Y-m-d", $timeStamp);
         $stamp = getdate($timeStamp);
         $hourminindex = intval(($stamp["hours"] * 60 + floor($stamp["minutes"]/MFUN_TIME_GRID_SIZE)));
 
-        $query_str = "SELECT * FROM `t_l2snr_tempdata` WHERE (`deviceid` = '$devCode' AND `reportdate` = '$date' AND `hourminindex` = '$hourminindex')";
+        $query_str = "SELECT * FROM `t_l2snr_tempdata` WHERE (`deviceid` = '$devCode' AND `reportdate` = '$reportdate' AND `hourminindex` = '$hourminindex')";
         $result = $mysqli->query($query_str);
         if (($result != false) && ($result->num_rows)>0)   //重复，则覆盖
         {
-            $query_str = "UPDATE `t_l2snr_tempdata` SET `temperature` = '$tempValue' WHERE (`deviceid` = '$devCode' AND `reportdate` = '$date' AND `hourminindex` = '$hourminindex')";
+            $query_str = "UPDATE `t_l2snr_tempdata` SET `temperature` = '$tempValue' WHERE (`deviceid` = '$devCode' AND `reportdate` = '$reportdate' AND `hourminindex` = '$hourminindex')";
             $result=$mysqli->query($query_str);
         }
         else   //不存在，新增
         {
-            $query_str = "INSERT INTO `t_l2snr_tempdata` (deviceid,temperature,reportdate,hourminindex) VALUES ('$devCode','$tempValue','$date','$hourminindex')";
+            $query_str = "INSERT INTO `t_l2snr_tempdata` (deviceid,temperature,reportdate,hourminindex) VALUES ('$devCode','$tempValue','$reportdate','$hourminindex')";
             $result=$mysqli->query($query_str);
         }
         $mysqli->close();
