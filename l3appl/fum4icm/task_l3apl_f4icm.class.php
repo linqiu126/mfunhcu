@@ -353,7 +353,7 @@ class classTaskL3aplF4icm
             if(!empty($ret))
                 $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$ret,'msg'=>"摄像头状态更新成功");
             else
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$ret,'msg'=>"摄像头状态更新失败");
+                $retval=array('status'=>$usercheck['status'],'auth'=>'false','ret'=>$ret,'msg'=>"摄像头状态更新失败");
         }
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);

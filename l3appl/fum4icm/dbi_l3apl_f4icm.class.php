@@ -677,11 +677,21 @@ class classDbiL3apF4icm
                 $filesize = (int)$filesize;
                 $description = "站点".$statCode."上传的照片";
                 $dataflag = "Y";
-                $query_str = "INSERT INTO `t_l2snr_picturedata` (statcode,filename,filetype,filesize,filedescription,reportdate,hourminindex,dataflag) VALUES ('$statCode','$filename','$filetype','$filesize','$description','$date','$hourminindex','$dataflag')";
+                $query_str = "INSERT INTO `t_l2snr_picturedata` (statcode,filename,filetype,filesize,filedescription,reportdate,hourminindex,dataflag) VALUES ('$statCode','$picname','$filetype','$filesize','$description','$date','$hourminindex','$dataflag')";
                 $result=$mysqli->query($query_str);
+                $resp = array("v"=>"120~","h"=>"120~","zoom"=>"5","url"=>MFUN_HCU_SITE_PIC_WWW_FOLDER.$picname);
             }
-
-            $resp = array("v"=>"120~","h"=>"120~","zoom"=>"5","url"=>MFUN_HCU_SITE_PIC_WWW_FOLDER.$filename);
+            else { //使用最近的一次照片作为默认照片
+                $query_str = "SELECT * FROM `t_l2snr_picturedata` WHERE  `sid`= (SELECT MAX(sid) FROM `t_l2snr_picturedata` WHERE (`statcode`= '$statCode'))";
+                $result = $mysqli->query($query_str);
+                if (($result != false) && ($result->num_rows)>0){
+                    $row = $result->fetch_array();
+                    $picname = $row['filename'];
+                    $resp = array("v"=>"120~","h"=>"120~","zoom"=>"5","url"=>MFUN_HCU_SITE_PIC_WWW_FOLDER.$picname);
+                }
+                else //如果最近一次照片也没有
+                    $resp = array();
+            }
         }
         else
             $resp = array();
