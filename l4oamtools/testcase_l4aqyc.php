@@ -12,12 +12,30 @@ include_once "../l1comvm/vmlayer.php";
  *                             L4AQYC-UI TEST CASES                                   *
  *************************************************************************************/
 if (TC_L4AQYC_UI == true) {
-    $sessionid = "IakhRetHHJ";
+    $sessionid = "6c02WTxtK3";
     $uerid = "UID000001";
-    $statcode = "120101033";
+    $statcode = "120101002";
     $projcode = "P_0002";
 
     //TEST CASE: L4AQYC-UI界面: START
+
+    echo " [TC L4AQYC: GetVideo START]\n";
+    $_GET["action"] = "GetVideo";
+    $_GET["type"] = "query";
+    $body = array('videoid' => "/avorion/picture/120101002/120101002_1492918446.jpg");
+    $_GET["body"] = $body;
+    $_GET["user"] = $sessionid;
+    require("../l4aqycui/request.php");
+    echo " [TC L4AQYC: GetVideo END]\n";
+
+    echo " [TC L4AQYC: GetVideoList START]\n";
+    $_GET["action"] = "GetVideoList";
+    $_GET["type"] = "query";
+    $body = array('StatCode' => $statcode, 'date'=>"2017-09-13", 'hour'=>'11');
+    $_GET["body"] = $body;
+    $_GET["user"] = $sessionid;
+    require("../l4aqycui/request.php");
+    echo " [TC L4AQYC: GetVideoList END]\n";
 
     echo " [TC L4AQYC: AlarmQuery START]\n";
     $_GET["action"] = "AlarmQuery";

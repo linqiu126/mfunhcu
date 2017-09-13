@@ -74,10 +74,10 @@ class classTaskL2snrHsmmp
                 $file_type = ".jpg";
                 $result = "";
                 if ($funcFlag == "01"){ //第一包数据，创建一个新JPG文件
-                    if(!file_exists(MFUN_HCU_SITE_PIC_BASE_DIR.$statCode.'/upload/'))
-                        $result = mkdir(MFUN_HCU_SITE_PIC_BASE_DIR.$statCode.'/upload/',0777,true);
+                    if(!file_exists(MFUN_HCU_SITE_PIC_BASE_DIR.$statCode))
+                        $result = mkdir(MFUN_HCU_SITE_PIC_BASE_DIR.$statCode,0777,true);
                     $filename = $statCode . "_" . $timestamp . $file_type;
-                    $filelink = MFUN_HCU_SITE_PIC_BASE_DIR.$statCode.'/upload/'.$filename;
+                    $filelink = MFUN_HCU_SITE_PIC_BASE_DIR.$statCode.$filename;
                     $newfile = fopen($filelink, "wb+") or die("Unable to open file!");
                     $filesize = fwrite($newfile, $content);
                     fclose($newfile);
@@ -97,7 +97,7 @@ class classTaskL2snrHsmmp
                 else{ //往最新的文件里追加写内容
                     $lastfile_time = 0; //初始化
                     $lastfile_name = "";
-                    $file_path = MFUN_HCU_SITE_PIC_BASE_DIR.$statCode.'/upload/';
+                    $file_path = MFUN_HCU_SITE_PIC_BASE_DIR.$statCode;
                     foreach(glob($file_path."*".$file_type) as $filename) {
                         if (!(is_dir($filename))) { //是个文件而不是目录
                             $filetime = filemtime($filename);  //获取文件修改时间
@@ -140,10 +140,10 @@ class classTaskL2snrHsmmp
     {
         //$content = pack("H*", $content); //将收到的16进制字符串pack成HEX data
 
-        if(!file_exists(MFUN_HCU_SITE_PIC_BASE_DIR.$statCode.'/upload/'))
-            $result = mkdir(MFUN_HCU_SITE_PIC_BASE_DIR.$statCode.'/upload/',0777,true);
+        if(!file_exists(MFUN_HCU_SITE_PIC_BASE_DIR.$statCode))
+            $result = mkdir(MFUN_HCU_SITE_PIC_BASE_DIR.$statCode,0777,true);
 
-        $filelink = MFUN_HCU_SITE_PIC_BASE_DIR.$statCode.'/upload/'.$picname;
+        $filelink = MFUN_HCU_SITE_PIC_BASE_DIR.$statCode.$picname;
         $newfile = fopen($filelink, "wb+") or die("Unable to open file!");
         for ($i=0; $i<$picsize; $i++)
             fwrite($newfile, $content[$i]);

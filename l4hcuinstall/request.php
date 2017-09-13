@@ -62,7 +62,10 @@ switch ($key)
         $log_content = $devcode."R:Latitude=".$latitude.";Longitude=".$longitude."Result=".$result;
         $loggerObj->logger("MFUN_TASK_ID_L4OAMTOOLS", "HCU_Lock_Activate", $log_time, $log_content);
 
-        $pic_num=_getfilecounts(MFUN_HCU_SITE_PIC_BASE_DIR.$devcode.'/'); //查询该站点是否上传照片
+        $dbiL2sdkIotcomObj = new classDbiL2sdkIotcom();
+        $statcode = $dbiL2sdkIotcomObj->dbi_hcuDevice_valid_device($devcode);
+
+        $pic_num=_getfilecounts(MFUN_HCU_FHYS_PIC_UPLOAD_DIR.$statcode.'/'); //查询该站点是否上传照片
         //已经上传超过2张照片
         if($pic_num>=2 AND $result==true)
             $retval=array('status'=>'true','auth'=>'true','msg'=>'站点激活，照片上传成功');

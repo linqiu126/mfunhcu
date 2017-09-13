@@ -2549,7 +2549,7 @@ class classDbiL3apF3dm
             $file_name = $row['picname'];
             $statcode = $row['statcode'];
             if(!empty($file_name)){
-                $file_url = MFUN_HCU_SITE_PIC_FOLDER_NAME.$statcode.'/upload/'.$file_name;
+                $file_url = MFUN_HCU_SITE_PIC_WWW_FOLDER.$statcode.'/'.$file_name;
                 $pic_result = array(
                     'ifpicture' => 'true',
                     'picture' => $file_url
@@ -2583,7 +2583,7 @@ class classDbiL3apF3dm
         while($row = $result->fetch_array())
         {
             $file_name = $row['filename'];
-            $file_url = MFUN_HCU_SITE_PIC_FOLDER_NAME.$statcode.'/install/'.$file_name;
+            $file_url = MFUN_HCU_FHYS_PIC_WWW_FOLDER.$statcode.'/'.$file_name;
             $temp = array(
                 'name' => $file_name,
                 'url' => $file_url

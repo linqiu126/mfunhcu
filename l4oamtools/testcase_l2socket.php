@@ -15,6 +15,13 @@ if (TC_SOCKET == true) {
 //SOCKET测试开始
     echo " [TC SOCKET: xxx START]\n";
 
+    $t = time();
+    $stamp = getdate($t);
+    $pic_name = "S_24520057_1504960825.jpg";
+    $str_temp = strstr($pic_name,MFUN_HCU_SITE_PIC_FILE_TYPE,true);
+    $str_pos = strripos($str_temp,"_");
+    $timestamp = substr($str_temp, $str_pos+1);
+
     /*********************图片数据，消息来自9501端口*********************/
     $data = "4843555F473530325F464859535F50303030315F303132333435363738395F5F000000024040";
 

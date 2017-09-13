@@ -541,7 +541,7 @@ class classDbiL3apF4icm
         return $camweb;
     }
 
-    public function dbi_hcu_vediolist_inqury($input)
+    public function dbi_hcu_picturelist_inqury($statcode, $date, $hour)
     {
         //查询监测点下的设备列表
         $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
@@ -550,51 +550,27 @@ class classDbiL3apF4icm
         }
         $mysqli->query("SET NAMES utf8");
 
-        if (isset($input["StatCode"])) $statcode = trim($input["StatCode"]); else  $statcode = "";
-        if (isset($input["date"])) $date = trim($input["date"]); else  $date = "";
-        if (isset($input["hour"])) $hour = trim($input["hour"]); else  $hour = "";
-
-        $query_str = "SELECT * FROM `t_l3f3dm_siteinfo` WHERE `statcode` = '$statcode' ";
+        $start = $hour * 60;
+        $end = $hour * 60 + 59;
+        $picturelist = array();
+        $query_str = "SELECT * FROM `t_l2snr_picturedata` WHERE (`statcode` = '$statcode' AND `reportdate` = '$date' AND `hourminindex` >= '$start' AND `hourminindex` < '$end')";
         $result = $mysqli->query($query_str);
+        while(($result != false) AND ($row = $result->fetch_array())){
+            //提取照片名中的时间戳
+            $pic_name = $row['filename'];
+            $str_temp = strstr($pic_name,MFUN_HCU_SITE_PIC_FILE_TYPE,true);
+            $str_pos = strripos($str_temp,"_");
+            $timeStamp = intval(substr($str_temp, $str_pos+1));
+            $stamp = getdate($timeStamp);
 
-        $devlist = array();
-        while($row = $result->fetch_array())
-        {
-            $temp = array(
-                'statcode' => $row['statcode'],
-                'name' =>  $row['statname'],
-                'devcode' => $row['devcode']
-            );
-            array_push($devlist, $temp);
+            $pictureUrl = MFUN_HCU_SITE_PIC_WWW_FOLDER.$statcode.'/'.$pic_name;
+            $attr = '照片_'.$date.'_'.$stamp['hours'].":".$stamp["minutes"].":".$stamp["seconds"];
+            $temp = array('id'=> $pictureUrl,'attr'=> $attr);
+            array_push($picturelist, $temp);
         }
 
-        $videolist = array();
-        if(!empty($devlist)){
-            $i = 0;
-            $format = "A11Hcuid/A1Conj/A2Key/A8Date/A2Hour/A2Min/A9Fix";  //HCU_SH_0304_av201607202130.h264.mp4
-            while ($i < count($devlist)){
-                $deviceid = $devlist[$i]['devcode'];
-                $start = $hour * 60;
-                $end = $hour * 60 + 59;
-                $query_str = "SELECT * FROM `t_l2snr_hsmmpdata` WHERE `deviceid` = '$deviceid' AND `reportdate` = '$date'
-                                  AND `hourminindex` >= '$start' AND `hourminindex` < '$end' ";
-                $result = $mysqli->query($query_str);
-                while($row = $result->fetch_array()){
-                    $videourl = $row['videourl'];
-                    //$videourl = strrchr($videourl, '/');
-                    $data = unpack($format, $videourl);
-
-                    $temp = array(
-                        'id'=> $videourl,
-                        'attr'=> $devlist[$i]['name']."_视频".$data["Date"]."_".$data["Hour"].":".$data["Min"]
-                    );
-                    array_push($videolist, $temp);
-                }
-                $i++;
-            }
-        }
         $mysqli->close();
-        return $videolist;
+        return $picturelist;
     }
 
     public function dbi_hcu_vedioplay_request($videoid)
@@ -667,7 +643,7 @@ class classDbiL3apF4icm
             $row = $result->fetch_array();  //statcode和devcode一一对应
             $url = $row['camctrl'];
 
-            $filelink = ""; //初始化
+            $filename = ""; //初始化
             $username = MFUN_HCU_AQYC_CAM_USERNAME;
             $password = MFUN_HCU_AQYC_CAM_PASSWORD;
             $curl = curl_init();
@@ -682,30 +658,30 @@ class classDbiL3apF4icm
             curl_close($curl);
 
             if ($filesize != 0){
-                if(!file_exists(MFUN_HCU_SITE_PIC_BASE_DIR.$statCode.'/upload/'))
-                    $result = mkdir(MFUN_HCU_SITE_PIC_BASE_DIR.$statCode.'/upload/',0777,true);
+                if(!file_exists(MFUN_HCU_SITE_PIC_BASE_DIR.$statCode))
+                    $result = mkdir(MFUN_HCU_SITE_PIC_BASE_DIR.$statCode,0777,true);
                 $timestamp = time();
                 $filename = $statCode . "_" . $timestamp; //生成jpg文件名
                 $picname = $filename . MFUN_HCU_SITE_PIC_FILE_TYPE;
 
-                $filelink = MFUN_HCU_SITE_PIC_BASE_DIR.$statCode.'/upload/'.$picname;
+                $filelink = MFUN_HCU_SITE_PIC_BASE_DIR.$statCode.'/'.$picname;
                 $newfile = fopen($filelink, "wb+") or die("Unable to open file!");
                 fwrite($newfile, $picdata);
                 fclose($newfile);
 
                 //保存照片信息
-                $date = intval(date("ymd", $timestamp));
+                $date = date("Y-m-d", $timestamp);
                 $stamp = getdate($timestamp);
                 $hourminindex = intval(($stamp["hours"] * 60 + floor($stamp["minutes"]/MFUN_TIME_GRID_SIZE)));
                 $filetype = MFUN_HCU_SITE_PIC_FILE_TYPE;
                 $filesize = (int)$filesize;
                 $description = "站点".$statCode."上传的照片";
                 $dataflag = "Y";
-                $query_str = "INSERT INTO `t_l2snr_picturedata` (statcode,filename,filetype,filesize,filedescription,reportdate,hourminindex,dataflag) VALUES ('$statCode','$filelink','$filetype','$filesize','$description','$date','$hourminindex','$dataflag')";
+                $query_str = "INSERT INTO `t_l2snr_picturedata` (statcode,filename,filetype,filesize,filedescription,reportdate,hourminindex,dataflag) VALUES ('$statCode','$filename','$filetype','$filesize','$description','$date','$hourminindex','$dataflag')";
                 $result=$mysqli->query($query_str);
             }
 
-            $resp = array("v"=>"120~","h"=>"120~","zoom"=>"5","url"=>$filelink);
+            $resp = array("v"=>"120~","h"=>"120~","zoom"=>"5","url"=>MFUN_HCU_SITE_PIC_WWW_FOLDER.$filename);
         }
         else
             $resp = array();

@@ -16,7 +16,7 @@ var replace = require('gulp-replace');
 
 
 
-var replace_content = "../../avorion/";
+var replace_content = "../avorion/picture/";
 var replace_install = "/dist";
 var option = {
 
@@ -138,7 +138,8 @@ gulp.task('scripts', function() {
         .pipe(rename('style.css'))
         .pipe(minifycss())
         .pipe(gulp.dest(option.buildPath+"/css/"));
-    gulp.src('./login.html')
+    gulp.src('./Login.html')
+        .pipe(rename("login.html"))
         .pipe(htmlmin(option_html))
         .pipe(gulp.dest(option.buildPath));
     gulp.src('./LostPassword.html')

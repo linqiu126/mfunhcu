@@ -24,6 +24,8 @@ define("MFUN_HCU_FHYS_CMCC_TEMPCODE_ALARM", "10833");  //短信模板码  “站
 //http://api.sms.heclouds.com/tempsmsSend?sicode=a2bb3546a41649a29e2fcb635e091dd5&mobiles=13917334681&tempid=10003&name=foha
 
 //FHYS项目关键字
+define("MFUN_HCU_FHYS_PIC_UPLOAD_DIR", "../avorion/upload/"); //云控锁安装后，手机拍照上传照片目录
+define("MFUN_HCU_FHYS_PIC_WWW_FOLDER", "/avorion/upload/");   //手机拍照上传照片存放目录，相对于www/html的路径
 define("MFUN_HCU_FHYS_SLEEP_DURATION", 180); //如果最后一次测量报告距离现在已经超过3x60秒
 define ("MFUN_HCU_FHYS_TIME_GRID_SIZE", 3); //每分钟一条记录
 
