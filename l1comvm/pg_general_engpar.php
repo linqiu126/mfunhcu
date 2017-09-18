@@ -64,7 +64,7 @@ define("MFUN_L3APL_F3DM_SENSOR_TYPE_PREFIX_LEN", 2);
 define("MFUN_L3APL_F1SYM_SESSIONID_VALID_TIME", 900);  //Session ID有效时间为15分钟
 define("MFUN_L3APL_F2CM_FAVOURSITE_MAX_NUM", 5); //最大常用站点数量
 
-define("MFUN_CLOUD_XHZN_WWW", "http://www.hkrob.com/");
+define("MFUN_CLOUD_XHZN_WWW", "www.hkrob.com/");
 define("MFUN_HCU_SITE_PIC_BASE_DIR", "../../avorion/picture/");  //设备拍照上传的照片目录
 define("MFUN_HCU_SITE_PIC_WWW_PATH", "avorion/picture/");     //站点照片存放www路径
 define("MFUN_HCU_SITE_VIDEO_WWW_PATH", "avorion/video/");     //站点视频存放www路径
