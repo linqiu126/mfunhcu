@@ -117,22 +117,6 @@ if (TC_IOT_STDXML == true) {
     echo " [TC IOT_STDXML: ZHB FORMAT END]\n";
 //TEST CASE: 基础数据测试用例集: END
 
-
-//TEST CASE: 测试图片存储的功能: START
-    echo " [TC OTHERS: PICTURE STORAGE START]\n";
-    $dbiObj = new classDbiL2snrHsmmp();
-    $data = addslashes(fread(fopen("C:\wamp\www\mfunhcu\l4oamtools\xhzn.png", "rb"), filesize("C:\wamp\www\mfunhcu\l4oamtools\xhzn.png")));
-    $dbiObj->dbi_picture_data_save(1, 1, $data);
-//fclose($data);
-//读取操作
-    $bindata = $dbiObj->dbi_latestPictureData_inqury(1);
-    $myfile = fopen("C:\wamp\www\mfunhcu\l4oamtools\xhzn.png", "w") or die("Unable to open file!");
-    fwrite($myfile, $bindata);
-    fclose($myfile);
-    echo " [TC OTHERS: PICTURE STORAGE END]\n";
-//TEST CASE: 测试图片存储的功能：END
-
-
 //TEST CASE: 全局工程参数中图像的更新: START
     echo " [TC ENGPAR: UPDATE LOG PICTURE FILES START]\n";
     $dbiObj = new classDbiL1vmCommon();

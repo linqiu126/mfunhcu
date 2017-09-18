@@ -292,8 +292,8 @@ class classTaskL3aplF4icm
         return $retval;
     }
 
-    //查询指定监测点指定时间的图片列表
-    function func_hcu_picturelist_process($action, $user, $body)
+    //查询指定监测点指定时间的图片/视频列表
+    function func_hcu_hsmmplist_process($action, $user, $body)
     {
         if (isset($body["StatCode"])) $statcode = trim($body["StatCode"]); else  $statcode = "";
         if (isset($body["date"])) $date = trim($body["date"]); else  $date = "";
@@ -303,7 +303,7 @@ class classTaskL3aplF4icm
         $usercheck = $uiF1symDbObj->dbi_user_authcheck($action, $user);
         if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
             $uiF4icmDbObj = new classDbiL3apF4icm();
-            $resp = $uiF4icmDbObj->dbi_hcu_picturelist_inqury($statcode, $date, $hour);
+            $resp = $uiF4icmDbObj->dbi_hcu_hsmmplist_inqury($statcode, $date, $hour);
             if(!empty($resp))
                 $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$resp,'msg'=>"获取指定时间图片列表成功");
             else
@@ -315,24 +315,21 @@ class classTaskL3aplF4icm
         return $retval;
     }
 
-    //显示指定照片
-    function func_hcu_picturedisplay_process($action, $user, $body)
+    //显示指定照片/视频
+    function func_hcu_hsmmpdisplay_process($action, $user, $body)
     {
-        if (isset($body["videoid"])) $videoid = $body["videoid"]; else  $videoid = "";
+        if (isset($body["videoid"])) $url_index = $body["videoid"]; else  $url_index = "";
 
         $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
         $usercheck = $uiF1symDbObj->dbi_user_authcheck($action, $user);
         if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
-
-            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$videoid,'msg'=>"显示指定照片成功");
-            /*
-            $uiF4icmDbObj = new classDbiL3apF4icm();
-            $resp = $uiF4icmDbObj->dbi_hcu_vedioplay_request($videoid);
+            //$uiF4icmDbObj = new classDbiL3apF4icm();
+            //$resp = $uiF4icmDbObj->dbi_hcu_hsmmpdisplay_request($urlIndex);
             if(!empty($resp))
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$resp,'msg'=>"播放指定视频成功");
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$url_index,'msg'=>"播放指定照片/视频成功");
             else
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>"播放指定视频失败");
-            */
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>"播放指定照片/视频失败");
+
         }
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
@@ -538,12 +535,12 @@ class classTaskL3aplF4icm
                 $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 
-            case MSG_ID_L4AQYCUI_TO_L3F4_VIDEOLIST: //这里沿用以前的Video消息，实际上是处理picture
-                $resp = $this->func_hcu_picturelist_process($action, $user, $body);
+            case MSG_ID_L4AQYCUI_TO_L3F4_HSMMPLIST: //这里沿用以前的Video消息，实际上是处理picture
+                $resp = $this->func_hcu_hsmmplist_process($action, $user, $body);
                 $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
-            case MSG_ID_L4AQYCUI_TO_L3F4_VIDEOPLAY:  //这里沿用以前的Video消息，实际上是处理picture
-                $resp = $this->func_hcu_picturedisplay_process($action, $user, $body);
+            case MSG_ID_L4AQYCUI_TO_L3F4_HSMMPPLAY:  //这里沿用以前的Video消息，实际上是处理picture
+                $resp = $this->func_hcu_hsmmpdisplay_process($action, $user, $body);
                 $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 

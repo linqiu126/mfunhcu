@@ -38,7 +38,6 @@ class classTaskL2snrPm25
             $result = "Received null message body";
             $log_content = "R:" . json_encode($result);
             $loggerObj->logger("MFUN_TASK_ID_L2SENSOR_PM25", "mfun_l2snr_pm25_task_main_entry", $log_time, $log_content);
-            echo trim($result);
             return false;
         }
         else{

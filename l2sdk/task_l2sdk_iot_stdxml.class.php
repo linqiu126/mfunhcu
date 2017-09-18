@@ -51,7 +51,7 @@ class classTaskL2sdkIotStdxml
         $dbiL1vmCommonObj = new classDbiL1vmCommon();
         $data = $dbiL1vmCommonObj->getStrBetween($data,"<xml>","</xml>");
         if(empty($data)){
-            $log_content = "IOT_STDXML:received XML message format error";
+            $log_content = "IOT_STDXML:received XML message format error, socketid = ".$socketid;
             $loggerObj->logger("MFUN_TASK_ID_L2SDK_IOT_STDXML", "mfun_l2sdk_iot_stdxml_task_main_entry", $log_time, $log_content);
             echo trim($log_content); //这里echo主要是为了swoole log打印，帮助查找问题
             return true;
@@ -144,7 +144,7 @@ class classTaskL2sdkIotStdxml
 
         //处理结果
         if (!empty($resp)) {
-            $log_content = "T:" . json_encode($resp);
+            $log_content = "T:" . json_encode($resp,JSON_UNESCAPED_UNICODE);
             $loggerObj->logger($project, $fromUser, $log_time, $log_content);
         }
         //结束，返回

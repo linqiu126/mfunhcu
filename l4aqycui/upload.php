@@ -1,6 +1,6 @@
 <?php
 	$id= $_REQUEST["id"];
-	$upload_path="../../avorion/";
+	$upload_path="../avorion/upload/";
 	function _encode($arr)
     {
       $na = array();

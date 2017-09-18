@@ -38,9 +38,11 @@
     });
     function require_VCR(){
         if(responsed) return;
+        var body = {videoid: videoid};
+
         var map = {
             action: "GetVideo",
-            id: videoid
+            body: body
         };
         jQuery.get(request_head, map, function (data) {
             log(data);
@@ -51,7 +53,7 @@
                 $("#notepad").empty();
                 $("#notepad").append("获取视频失败，请检查设备的因特网链接是否顺畅。")
             }else{
-                var url = result.url;
+                var url = result.ret;
                 var txt = $("#notepad").text();
                 if(url == "downloading"){
                     txt = txt+".";
@@ -60,8 +62,9 @@
                     $("#notepad").append(txt);
                 }else{
                     responsed = true;
+                    console.log(url);
                     $("body").empty();
-                    txt = "<video id='my-video' class='video-js' controls preload='auto' width='320' height='264'data-setup='{}'>"+
+                    txt = "<video id='my-video' class='video-js' controls preload='auto' width='100%' data-setup='{}'>"+
                             "<source src="+url+" type='video/mp4'>"+
                             "<p class='vjs-no-js'>"+
                             "需要支持js和html5的浏览器</a> </p> </video>"+

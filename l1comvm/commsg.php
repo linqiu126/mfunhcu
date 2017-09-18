@@ -29,8 +29,6 @@ define("MSG_ID_L2SDK_HCU_TO_L2SNR_EMC", $index++);
 define("MSG_ID_L2SDK_EMCWX_TO_L2SNR_EMC_DATA_READ_INSTANT", $index++);
 define("MSG_ID_L2SDK_EMCWX_TO_L2SNR_EMC_DATA_REPORT_TIMING", $index++);
 define("MSG_ID_L2SDK_EMCWX_TO_L2SNR_POWER_STATUS_REPORT_TIMING", $index++);
-define("MSG_ID_L2SDK_HCU_TO_L2SNR_HSMMP", $index++);
-define("MSG_ID_L2SOCKET_TO_L2SNR_HSMMP", $index++);
 define("MSG_ID_L2SDK_EMCWX_TO_L2SNR_HSMMP_DATA_READ_INSTANT", $index++);
 define("MSG_ID_L2SDK_EMCWX_TO_L2SNR_HSMMP_DATA_REPORT_TIMING", $index++);
 define("MSG_ID_L2SDK_HCU_TO_L2SNR_AIRPRS", $index++);
@@ -58,6 +56,7 @@ define("MSG_ID_L2SDK_WECHAT_DATA_COMING", $index++);
 define("MSG_ID_L2SDK_HCU_DATA_COMING", $index++);
 define("MSG_ID_L2SDK_HUITP_DATA_COMING", $index++);
 //FHYS智能云锁消息
+define("MSG_ID_L2SDK_HCU_TO_L2SNR_HSMMP", $index++); //兼容老的云控锁消息(照片发送)
 define("MSG_ID_L2SDK_HCU_TO_L2SNR_DOORLOCK", $index++); //用于兼容老的郑州FHYS方案
 define("MSG_ID_L2SDK_HCU_TO_L2SNR_BATT", $index++);
 define("MSG_ID_L2SDK_HCU_TO_L2SNR_BLE", $index++);
@@ -134,6 +133,7 @@ define("MSG_ID_L2TIMER_CRON_7DAY_COMING", $index++);
 define("MSG_ID_L2TIMER_CRON_30DAY_COMING", $index++);
 //L2SOCKET_LISTEN消息部分
 define("MSG_ID_L2SOCKET_LISTEN_DATA_COMING", $index++);
+define("MSG_ID_L2SOCKET_TO_L2SNR_HSMMP", $index++);
 //L3APPL消息部分
 define("MSG_ID_L3APPL_DATA_COMING", $index++);
 
@@ -187,8 +187,8 @@ define("MSG_ID_L4AQYCUI_TO_L3F4_ALLSW", $index++);      //查询所有可用的�
 define("MSG_ID_L4AQYCUI_TO_L3F4_DEVSW", $index++);      //查询指定HCU设备当前版本
 define("MSG_ID_L4AQYCUI_TO_L3F4_SWUPDATE", $index++);   //请求将指定的HCU设备软件更新到指定版本
 define("MSG_ID_L4AQYCUI_TO_L3F4_CAMWEB", $index++);     //使用第三方控件实现视频和摄像头处理
-define("MSG_ID_L4AQYCUI_TO_L3F4_VIDEOLIST", $index++);  //查询某HCU设备指定日期的视频文件列表
-define("MSG_ID_L4AQYCUI_TO_L3F4_VIDEOPLAY", $index++);  //请求播放某指定视频文件
+define("MSG_ID_L4AQYCUI_TO_L3F4_HSMMPLIST", $index++);  //查询某HCU设备指定日期的视频/图片文件列表
+define("MSG_ID_L4AQYCUI_TO_L3F4_HSMMPPLAY", $index++);  //请求播放某指定视频/图片文件
 define("MSG_ID_L4AQYCUI_TO_L3F4_GETCAMERASTATUS", $index++);  //查询垂直和水平角度，同时报告传一个照片给后台
 define("MSG_ID_L4AQYCUI_TO_L3F4_GETCAMERAUNIT", $index++);
 define("MSG_ID_L4AQYCUI_TO_L3F4_SENSORUPDATE", $index++);

@@ -64,18 +64,16 @@ define("MFUN_L3APL_F3DM_SENSOR_TYPE_PREFIX_LEN", 2);
 define("MFUN_L3APL_F1SYM_SESSIONID_VALID_TIME", 900);  //Session ID有效时间为15分钟
 define("MFUN_L3APL_F2CM_FAVOURSITE_MAX_NUM", 5); //最大常用站点数量
 
+define("MFUN_CLOUD_XHZN_WWW", "http://www.hkrob.com/");
 define("MFUN_HCU_SITE_PIC_BASE_DIR", "../../avorion/picture/");  //设备拍照上传的照片目录
-define("MFUN_HCU_SITE_PIC_WWW_FOLDER", "/avorion/picture/");     //站点照片存放目录，相对于www/html的路径
+define("MFUN_HCU_SITE_PIC_WWW_PATH", "avorion/picture/");     //站点照片存放www路径
+define("MFUN_HCU_SITE_VIDEO_WWW_PATH", "avorion/video/");     //站点视频存放www路径
 define("MFUN_HCU_SITE_PIC_FILE_TYPE", ".jpg");
+define("MFUN_HCU_SITE_VIDEO_FILE_TYPE", ".mp4");
 
 define("MFUN_HCU_MSG_HEAD_FORMAT", "A2Key/A2Len/A2Cmd");// 1B 控制字ctrl_key, 1B 长度length（除控制字和长度本身外），1B 操作字opt_key
 define("MFUN_HCU_MSG_HEAD_LENGTH", 6); //3 Byte
 
-//定义HCU视频文件状态，N-正常状态，文件名上传但文件本身没有上传；D-文件下载中；R-文件上传完成，可以随时播放; F-视频下载失败
-define ("MFUN_HCU_VIDEO_DATA_STATUS_NORMAL", "N");
-define ("MFUN_HCU_VIDEO_DATA_STATUS_DOWNLOAD", "D");
-define ("MFUN_HCU_VIDEO_DATA_STATUS_READY", "R");
-define ("MFUN_HCU_VIDEO_DATA_STATUS_FAIL", "F");
 
 //BFSC控制字
 define("MFUN_HCU_CMDID_BFSC_WEIGHT", 0x3B);
@@ -104,6 +102,7 @@ define ("MFUN_L3APL_F4ICM_ID_EQUIP_NOISE", 0x0A);
 if (MFUN_CURRENT_WORKING_PROGRAM_NAME_UNIQUE == MFUN_WORKING_PROGRAM_NAME_UNIQUE_TESTMODE){
     define ("MFUN_HCU_DATA_SAVE_DURATION_IN_DAYS", 90);
     define ("MFUN_EMCWX_DATA_SAVE_DURATION_IN_DAYS", 90);
+    define ("MFUN_AQYC_DATA_SAVE_DURATION_IN_DAYS", 180);
 }
 
 //定义用户权限级别

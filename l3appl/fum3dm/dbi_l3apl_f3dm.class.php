@@ -2549,7 +2549,7 @@ class classDbiL3apF3dm
             $file_name = $row['picname'];
             $statcode = $row['statcode'];
             if(!empty($file_name)){
-                $file_url = MFUN_HCU_SITE_PIC_WWW_FOLDER.$statcode.'/'.$file_name;
+                $file_url = MFUN_HCU_SITE_PIC_WWW_PATH.$statcode.'/'.$file_name;
                 $pic_result = array(
                     'ifpicture' => 'true',
                     'picture' => $file_url

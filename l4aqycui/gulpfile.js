@@ -16,8 +16,8 @@ var replace = require('gulp-replace');
 
 
 
-var replace_content = "../avorion/picture/";
-var replace_install = "/dist";
+var replace_content = "../avorion/upload/";
+var replace_install = "/www/dist";
 var option = {
 
     buildPath: "../www/dist"

@@ -115,11 +115,28 @@ define("HUITP_IEID_UNI_FW_UPGRADE_YES_TRAIL", 3);
 define("HUITP_IEID_UNI_FW_UPGRADE_YES_PATCH", 4);
 define("HUITP_IEID_UNI_FW_UPGRADE_YES_INVALID", 0xFF);
 
+//摄像头控制常量
+define("HUITP_IEID_UNI_HSMMP_MOTIVE_NULL", 0);
+define("HUITP_IEID_UNI_HSMMP_MOTIVE_MOVEUP", 1);
+define("HUITP_IEID_UNI_HSMMP_MOTIVE_MOVEDOWN", 2);
+define("HUITP_IEID_UNI_HSMMP_MOTIVE_MOVELEFT", 3);
+define("HUITP_IEID_UNI_HSMMP_MOTIVE_MOVERIGHT", 4);
+define("HUITP_IEID_UNI_HSMMP_MOTIVE_ZOOMIN", 5);
+define("HUITP_IEID_UNI_HSMMP_MOTIVE_ZOOMOUT", 6);
+define("HUITP_IEID_UNI_HSMMP_MOTIVE_INVALID", 0xFF);
 
+//公共IE常量
+define("HUITP_IEID_UNI_COM_SWITCH_ONOFF_NULL", 0);
+define("HUITP_IEID_UNI_COM_SWITCH_ONOFF_YES", 1);
+define("HUITP_IEID_UNI_COM_SWITCH_ONOFF_NO", 2);
+define("HUITP_IEID_UNI_COM_SWITCH_ONOFF_INVALID", 0xFF);
 
-
-
-
+//测试命令
+define("HUITP_IEID_UNI_TEST_CMD_ID_NULL", 0);
+define("HUITP_IEID_UNI_TEST_CMD_ID_PING", 1);
+define("HUITP_IEID_UNI_TEST_CMD_ID_READ_ALL", 2);
+define("HUITP_IEID_UNI_TEST_CMD_ID_READ_LABLE", 3);
+define("HUITP_IEID_UNI_TEST_CMD_ID_INVALID", 0xFFFFFFFF);
 
 
 /**********************************************HUITP公共信息单元IE定义***************************************************/
@@ -153,6 +170,7 @@ define("HUITP_IEID_uni_com_gps_direction", 0x002B);
 define("HUITP_IEID_uni_com_grade", 0x002C);
 define("HUITP_IEID_uni_com_percentage", 0x002E);
 define("HUITP_IEID_uni_com_modbus_address", 0x002F);
+
 define("HUITP_IEID_uni_com_file_name", 0x0030);
 define("HUITP_IEID_uni_com_http_link", 0x0031);
 define("HUITP_IEID_uni_com_segment", 0x0032);
@@ -271,7 +289,8 @@ define("HUITP_IEID_uni_noise_max", 0x2B00);
 //相机Camer or audio high speed
 define("HUITP_IEID_uni_hsmmp_min", 0x2C00);
 define("HUITP_IEID_uni_hsmmp_value", 0x2C00);
-define("HUITP_IEID_uni_hsmmp_max", 0x2C00);
+define("HUITP_IEID_uni_hsmmp_motive", 0x2C01);
+define("HUITP_IEID_uni_hsmmp_max", 0x2C01);
 
 //声音
 define("HUITP_IEID_uni_audio_min", 0x2D00);
@@ -285,7 +304,7 @@ define("HUITP_IEID_uni_video_max", 0x2D00);
 
 //图片
 define("HUITP_IEID_uni_picture_min", 0x2F00);
-define("HUITP_IEID_uni_picture_value", 0x2F00);
+define("HUITP_IEID_uni_picture_ind", 0x2F00);
 define("HUITP_IEID_uni_picture_segment", 0x2F01);
 define("HUITP_IEID_uni_picture_format", 0x2F02);
 define("HUITP_IEID_uni_picture_body", 0x2F03);
@@ -561,6 +580,10 @@ define("HUITP_IEID_uni_sync_trigger_min", 0xF600);
 define("HUITP_IEID_uni_sync_trigger_value", 0xF600);
 define("HUITP_IEID_uni_sync_trigger_max", 0xF600);
 
+//测试命令
+define("HUITP_IEID_uni_test_command_min", 0xF700);
+define("HUITP_IEID_uni_test_command_value", 0xF700);
+
 //CMD CONTROL
 define("HUITP_IEID_uni_cmd_ctrl_min", 0xFD00);
 define("HUITP_IEID_uni_cmd_ctrl_send", 0xFD00);
@@ -593,32 +616,32 @@ class classL2codecHuitpIeDict
           HUITP_IEID_uni_com_resp                         => array("format"=>"A4ieId/A4ieLen/A2comResp","len"=>"1","name"=>"HUITP_IEID_uni_com_resp"),
           HUITP_IEID_uni_com_report                       => array("format"=>"A4ieId/A4ieLen/A2comReport","len"=>"1","name"=>"HUITP_IEID_uni_com_report"),
           HUITP_IEID_uni_com_confirm                      => array("format"=>"A4ieId/A4ieLen/A2comConfirm","len"=>"1","name"=>"HUITP_IEID_uni_com_confirm"),
-          HUITP_IEID_uni_com_state                        => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
-          HUITP_IEID_uni_com_auth                         => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
-          HUITP_IEID_uni_com_warning                      => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
-          HUITP_IEID_uni_com_action                       => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
-          HUITP_IEID_uni_com_switch_onoff                 => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
-          HUITP_IEID_uni_com_command                      => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
-          HUITP_IEID_uni_com_back_type                    => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
-          HUITP_IEID_uni_com_equp_id                      => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
-          HUITP_IEID_uni_com_format_type                  => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
-          HUITP_IEID_uni_com_work_cycle                   => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
-          HUITP_IEID_uni_com_sample_cycle                 => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
-          HUITP_IEID_uni_com_sample_number                => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
-          HUITP_IEID_uni_com_unix_time                    => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
-          HUITP_IEID_uni_com_ymd_time                     => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
-          HUITP_IEID_uni_com_ntimes                       => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
-          HUITP_IEID_uni_com_gps_x                        => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
-          HUITP_IEID_uni_com_gps_y                        => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
-          HUITP_IEID_uni_com_gps_z                        => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
-          HUITP_IEID_uni_com_gps_direction                => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
-          HUITP_IEID_uni_com_grade                        => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
-          HUITP_IEID_uni_com_percentage                   => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
-          HUITP_IEID_uni_com_modbus_address               => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
-          HUITP_IEID_uni_com_file_name                    => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
-          HUITP_IEID_uni_com_http_link                    => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
+          HUITP_IEID_uni_com_state                        => array("format"=>"A4ieId/A4ieLen/A2comState","len"=>"1","name"=>"HUITP_IEID_uni_com_state"),
+          HUITP_IEID_uni_com_auth                         => array("format"=>"A4ieId/A4ieLen/A2comAuth","len"=>"1","name"=>"HUITP_IEID_uni_com_auth"),
+          HUITP_IEID_uni_com_warning                      => array("format"=>"A4ieId/A4ieLen/A2comWarning","len"=>"1","name"=>"HUITP_IEID_uni_com_warning"),
+          HUITP_IEID_uni_com_action                       => array("format"=>"A4ieId/A4ieLen/A2comAction","len"=>"1","name"=>"HUITP_IEID_uni_com_action"),
+          HUITP_IEID_uni_com_switch_onoff                 => array("format"=>"A4ieId/A4ieLen/A2flag","len"=>"1","name"=>"HUITP_IEID_uni_com_switch_onoff"),
+          HUITP_IEID_uni_com_command                      => array("format"=>"A4ieId/A4ieLen/A2comCmd","len"=>"1","name"=>"HUITP_IEID_uni_com_command"),
+          HUITP_IEID_uni_com_back_type                    => array("format"=>"A4ieId/A4ieLen/A2comBackType","len"=>"1","name"=>"HUITP_IEID_uni_com_back_type"),
+          HUITP_IEID_uni_com_equp_id                      => array("format"=>"A4ieId/A4ieLen/A8comEqupId","len"=>"4","name"=>"HUITP_IEID_uni_com_equp_id"),
+          HUITP_IEID_uni_com_format_type                  => array("format"=>"A4ieId/A4ieLen/A2dataFormat","len"=>"1","name"=>"HUITP_IEID_uni_com_format_type"),
+          HUITP_IEID_uni_com_work_cycle                   => array("format"=>"A4ieId/A4ieLen/A8value","len"=>"4","name"=>"HUITP_IEID_uni_com_work_cycle"),
+          HUITP_IEID_uni_com_sample_cycle                 => array("format"=>"A4ieId/A4ieLen/A8value","len"=>"4","name"=>"HUITP_IEID_uni_com_sample_cycle"),
+          HUITP_IEID_uni_com_sample_number                => array("format"=>"A4ieId/A4ieLen/A8value","len"=>"4","name"=>"HUITP_IEID_uni_com_sample_number"),
+          HUITP_IEID_uni_com_unix_time                    => array("format"=>"A4ieId/A4ieLen/A8unixTimeValue","len"=>"4","name"=>"HUITP_IEID_uni_com_unix_time"),
+          HUITP_IEID_uni_com_ymd_time                     => array("format"=>"A4ieId/A4ieLen/A18ymdTimeValue","len"=>"9","name"=>"HUITP_IEID_uni_com_ymd_time"),
+          HUITP_IEID_uni_com_ntimes                       => array("format"=>"A4ieId/A4ieLen/A8nTimeValue","len"=>"4","name"=>"HUITP_IEID_uni_com_ntimes"),
+          HUITP_IEID_uni_com_gps_x                        => array("format"=>"A4ieId/A4ieLen/A8xGpsValue","len"=>"4","name"=>"HUITP_IEID_uni_com_gps_x"),
+          HUITP_IEID_uni_com_gps_y                        => array("format"=>"A4ieId/A4ieLen/A8yGpsValue","len"=>"4","name"=>"HUITP_IEID_uni_com_gps_y"),
+          HUITP_IEID_uni_com_gps_z                        => array("format"=>"A4ieId/A4ieLen/A8zGpsValue","len"=>"4","name"=>"HUITP_IEID_uni_com_gps_z"),
+          HUITP_IEID_uni_com_gps_direction                => array("format"=>"A4ieId/A4ieLen/A2gpsDirection","len"=>"1","name"=>"HUITP_IEID_uni_com_gps_direction"),
+          HUITP_IEID_uni_com_grade                        => array("format"=>"A4ieId/A4ieLen/A8value","len"=>"4","name"=>"HUITP_IEID_uni_com_grade"),
+          HUITP_IEID_uni_com_percentage                   => array("format"=>"A4ieId/A4ieLen/A2dataFormat/A8value","len"=>"5","name"=>"HUITP_IEID_uni_com_percentage"),
+          HUITP_IEID_uni_com_modbus_address               => array("format"=>"A4ieId/A4ieLen/A8oldValue/A8newValue","len"=>"8","name"=>"HUITP_IEID_uni_com_modbus_address"),
+          HUITP_IEID_uni_com_file_name                    => array("format"=>"A4ieId/A4ieLen/A200fileName","len"=>"100","name"=>"HUITP_IEID_uni_com_file_name"),
+          HUITP_IEID_uni_com_http_link                    => array("format"=>"A4ieId/A4ieLen/A200httpLink","len"=>"100","name"=>"HUITP_IEID_uni_com_http_link"),
           HUITP_IEID_uni_com_segment                      => array("format"=>"A4ieId/A4ieLen/A4hwType/A4hwPem/A4swRel/A4swVer/A2upgradeFlag/A2equEntry/A4segIndex/A4segTotal/A4segSplitLen","len"=>"16","name"=>"HUITP_IEID_uni_com_segment"),
-          HUITP_IEID_uni_com_snr_cmd_tag                  => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
+          HUITP_IEID_uni_com_snr_cmd_tag                  => array("format"=>"A4ieId/A4ieLen/A2cmdTag","len"=>"1","name"=>"HUITP_IEID_uni_com_snr_cmd_tag"),
 
           //血糖
           HUITP_IEID_uni_blood_glucose_value              => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
@@ -690,6 +713,7 @@ class classL2codecHuitpIeDict
 
           //相机Camer or audio high speed
           HUITP_IEID_uni_hsmmp_value                      => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
+          HUITP_IEID_uni_hsmmp_motive                     => array("format"=>"A4ieId/A4ieLen/A2motive/A8value","len"=>"5","name"=>"HUITP_IEID_uni_hsmmp_motive"),
 
           //声音
           HUITP_IEID_uni_audio_value                      => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
@@ -698,10 +722,10 @@ class classL2codecHuitpIeDict
           HUITP_IEID_uni_video_value                      => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
 
           //图片
-          HUITP_IEID_uni_picture_value                    => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
+          HUITP_IEID_uni_picture_ind                      => array("format"=>"A4ieId/A4ieLen/A2flag/A8eventId/A200picName","len"=>"105","name"=>"HUITP_IEID_uni_picture_ind"),
           HUITP_IEID_uni_picture_segment                  => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
-          HUITP_IEID_uni_picture_format                  	=> array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
-          HUITP_IEID_uni_picture_body                  	=> array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
+          HUITP_IEID_uni_picture_format                   => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
+          HUITP_IEID_uni_picture_body                  	  => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
 
           //扬尘监控系统
           HUITP_IEID_uni_ycjk_value                       => array("format"=>"A4ieId/A4ieLen/A2dataFormat/A8tempValue/A8humidValue/A8winddirValue/A8windspdValue/A8noiseValue/A8pm1d0Value/A8pm2d5Value/A8pm10Value/A8tspValue","len"=>"37","name"=>"HUITP_IEID_uni_ycjk_value"),
@@ -871,6 +895,9 @@ class classL2codecHuitpIeDict
 
           //同步通知信息
           HUITP_IEID_uni_sync_trigger_value               => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
+
+          //测试命令
+          HUITP_IEID_uni_test_command_value               => array("format"=>"A4ieId/A4ieLen/A8testCmdId/A8cmdPar1/A8cmdPar2/A8cmdPar3/A8cmdPar4/A100testCmdDesc","len"=>"66","name"=>"HUITP_IEID_uni_test_command_value"),
 
           //CMD CONTROL
           HUITP_IEID_uni_cmd_ctrl_send                    => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),

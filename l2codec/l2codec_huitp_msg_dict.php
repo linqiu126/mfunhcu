@@ -703,6 +703,13 @@ define("HUITP_MSGID_uni_sync_trigger_resp",  0xF680);
 define("HUITP_MSGID_uni_sync_trigger_report",  0xF681);
 define("HUITP_MSGID_uni_sync_trigger_confirm",  0xF601);
 
+//测试命令
+define("HUITP_MSGID_uni_test_command_min",  0xF700);
+define("HUITP_MSGID_uni_test_command_req",  0xF700);
+define("HUITP_MSGID_uni_test_command_resp",  0xF780);
+define("HUITP_MSGID_uni_test_command_report",  0xF781);
+define("HUITP_MSGID_uni_test_command_confirm",  0xF701);
+
 //CMD CONTROL
 define("HUITP_MSGID_uni_cmd_ctrl_min",  0xFD00);
 define("HUITP_MSGID_uni_cmd_ctrl_req",  0xFD00);
@@ -1100,11 +1107,24 @@ class classL2codecHuitpMsgDict
             "MSGIE" => array(HUITP_IEID_uni_com_confirm)),
         //0x2C02
         HUITP_MSGID_uni_hsmmp_ctrl_req => array("MSGNAME" => "HUITP_MSGID_uni_hsmmp_ctrl_req",
-            "MSGIE" => array(HUITP_IEID_uni_com_req)),
+            "MSGIE" => array(HUITP_IEID_uni_com_req,
+                        HUITP_IEID_uni_com_snr_cmd_tag,
+                        HUITP_IEID_uni_com_switch_onoff,
+                        HUITP_IEID_uni_com_work_cycle,
+                        HUITP_IEID_uni_com_sample_cycle,
+                        HUITP_IEID_uni_com_sample_number,
+                        HUITP_IEID_uni_com_modbus_address,
+                        HUITP_IEID_uni_hsmmp_motive)),
         //0x2C82
         HUITP_MSGID_uni_hsmmp_ctrl_resp => array("MSGNAME" => "HUITP_MSGID_uni_hsmmp_ctrl_resp",
-            "MSGIE" => array(HUITP_IEID_uni_com_resp)),
-
+            "MSGIE" => array(HUITP_IEID_uni_com_resp,
+                        HUITP_IEID_uni_com_snr_cmd_tag,
+                        HUITP_IEID_uni_com_switch_onoff,
+                        HUITP_IEID_uni_com_work_cycle,
+                        HUITP_IEID_uni_com_sample_cycle,
+                        HUITP_IEID_uni_com_sample_number,
+                        HUITP_IEID_uni_com_modbus_address,
+                        HUITP_IEID_uni_hsmmp_motive)),
         //声音
         //0x2D00
         HUITP_MSGID_uni_audio_data_req => array("MSGNAME" => "HUITP_MSGID_uni_audio_data_req",
@@ -1136,8 +1156,13 @@ class classL2codecHuitpMsgDict
         //图片
         HUITP_MSGID_uni_picture_data_req => array("MSGNAME" => "","MSGIE" => array(HUITP_IEID_uni_com_req)),  //0x2F00
         HUITP_MSGID_uni_picture_data_resp => array("MSGNAME" => "","MSGIE" => array(HUITP_IEID_uni_com_req)),  //0x2F80
-        HUITP_MSGID_uni_picture_data_report => array("MSGNAME" => "","MSGIE" => array(HUITP_IEID_uni_com_req)),  //0x2F81
-        HUITP_MSGID_uni_picture_data_confirm => array("MSGNAME" => "","MSGIE" => array(HUITP_IEID_uni_com_req)),  //0x2F01
+        //0x2F81
+        HUITP_MSGID_uni_picture_data_report => array("MSGNAME" => "HUITP_MSGID_uni_picture_data_report",
+            "MSGIE" => array(HUITP_IEID_uni_com_report,
+                            HUITP_IEID_uni_picture_ind)),
+        //0x2F01
+        HUITP_MSGID_uni_picture_data_confirm => array("MSGNAME" => "HUITP_MSGID_uni_picture_data_confirm",
+            "MSGIE" => array(HUITP_IEID_uni_com_confirm)),
 
         //扬尘监控系统
         HUITP_MSGID_uni_ycjk_data_req => array("MSGNAME" => "","MSGIE" => array(HUITP_IEID_uni_com_req)),  //0x3000
@@ -1557,6 +1582,24 @@ class classL2codecHuitpMsgDict
         HUITP_MSGID_uni_sync_trigger_report => array("MSGNAME" => "","MSGIE" => array(HUITP_IEID_uni_com_req)),  //0xF681
         HUITP_MSGID_uni_sync_trigger_confirm => array("MSGNAME" => "","MSGIE" => array(HUITP_IEID_uni_com_req)),  //0xF601
 
+        //测试命令
+        //0xF700
+        HUITP_MSGID_uni_test_command_req => array("MSGNAME" => "HUITP_MSGID_uni_test_command_req",
+            "MSGIE" => array(HUITP_IEID_uni_com_req,
+                            HUITP_IEID_uni_test_command_value)),
+        //0xF780
+        HUITP_MSGID_uni_test_command_resp => array("MSGNAME" => "HUITP_MSGID_uni_test_command_resp",
+            "MSGIE" => array(HUITP_IEID_uni_com_resp,
+                            HUITP_IEID_uni_test_command_value)),
+        //0xF781
+        HUITP_MSGID_uni_test_command_report => array("MSGNAME" => "HUITP_MSGID_uni_test_command_report",
+            "MSGIE" => array(HUITP_IEID_uni_com_report,
+                            HUITP_IEID_uni_test_command_value)),
+        //0xF701
+        HUITP_MSGID_uni_test_command_confirm => array("MSGNAME" => "HUITP_MSGID_uni_test_command_confirm",
+            "MSGIE" => array(HUITP_IEID_uni_com_confirm,
+                            HUITP_IEID_uni_test_command_value)),
+
         //CMD CONTROL
         HUITP_MSGID_uni_cmd_ctrl_req => array("MSGNAME" => "","MSGIE" => array(HUITP_IEID_uni_com_req)),  //0xFD00
         HUITP_MSGID_uni_cmd_ctrl_resp => array("MSGNAME" => "","MSGIE" => array(HUITP_IEID_uni_com_req)),  //0xFD80
@@ -1637,7 +1680,10 @@ class classL2codecHuitpMsgDict
                                             HUITP_MSGID_uni_sw_package_resp,
                                             HUITP_MSGID_uni_sw_package_report),
         MFUN_TASK_ID_L2SENSOR_EMC => array(),
-        MFUN_TASK_ID_L2SENSOR_HSMMP => array(),
+        MFUN_TASK_ID_L2SENSOR_HSMMP => array(HUITP_MSGID_uni_hsmmp_data_resp,
+                                            HUITP_MSGID_uni_hsmmp_data_report,
+                                            HUITP_MSGID_uni_hsmmp_ctrl_resp,
+                                            HUITP_MSGID_uni_picture_data_report),
         MFUN_TASK_ID_L2SENSOR_HUMID => array(HUITP_MSGID_uni_humid_data_resp,
                                             HUITP_MSGID_uni_humid_data_report,
                                             HUITP_MSGID_uni_humid_ctrl_resp),

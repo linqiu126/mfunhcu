@@ -172,8 +172,8 @@ class classDbiL2snrWinddir
 
         //保存记录到对应l2snr表
         $result = $this->dbi_l2snr_winddir_update($devCode, $timeStamp, $winddirValue);
-        //清理超过90天记录的数据
-        $result = $this->dbi_l2snr_winddir_olddata_delete($devCode, 90);  //remove 90 days old data.
+        //清理超期的数据
+        $result = $this->dbi_l2snr_winddir_olddata_delete($devCode, MFUN_AQYC_DATA_SAVE_DURATION_IN_DAYS);
 
         //更新分钟测量报告聚合表
         $result = $this->dbi_l2snr_winddir_minreport_update($devCode,$statCode,$timeStamp,$winddirValue);

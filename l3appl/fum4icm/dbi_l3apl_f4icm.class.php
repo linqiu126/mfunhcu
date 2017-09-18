@@ -60,35 +60,6 @@ ALTER TABLE `t_l3f4icm_sensorctrl`
 
 class classDbiL3apF4icm
 {
-    //构造函数
-    public function __construct()
-    {
-
-    }
-
-    public function dbi_sensor_control_table_save($deviceid, $sensorid, $equid, $sensortype)
-    {
-        //建立连接
-        $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
-        if (!$mysqli)
-        {
-            die('Could not connect: ' . mysqli_error($mysqli));
-        }
-
-        //存储新记录，如果发现是已经存在的数据，则覆盖，否则新增
-        $result = $mysqli->query("SELECT * FROM `t_l3f4icm_sensorctrl` WHERE (`deviceid` = '$deviceid' AND `sensor_sid` = '$sensorid'");
-        if (($result != false) && ($result->num_rows)>0)   //重复，则覆盖
-        {
-            $result=$mysqli->query("UPDATE `t_l3f4icm_sensorctrl` SET  `equid` = '$equid',`sensortype` = '$sensortype' WHERE (`deviceid` = '$deviceid' AND `sensor_sid` = '$sensorid')");
-        }
-        else   //不存在，新增
-        {
-            $result=$mysqli->query("INSERT INTO `t_l3f4icm_sensorctrl` (deviceid,sensor_sid,equid,sensortype)
-                    VALUES ('$deviceid','$sensorid','$equid','$sensortype')");
-        }
-        $mysqli->close();
-        return $result;
-    }
 
     //查询所有可用SW版本
     public function dbi_hcu_allsw_inqury()
@@ -159,31 +130,6 @@ class classDbiL3apF4icm
             $i++;
         }
         return $respCmd;
-    }
-
-    //获取HCU对应软件和数据库bin文件
-    public function dbi_hcu_swdb_bin_get($sw_rel, $sw_drop)
-    {
-        //建立连接
-        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
-        if (!$mysqli) {
-            die('Could not connect: ' . mysqli_error($mysqli));
-        }
-        $result = $mysqli->query("SELECT * FROM `t_l3f4icm_swfactory` WHERE (`sw_rel` = '$sw_rel' AND `sw_drop` = '$sw_drop')");
-
-        $LatestSwValue = "";
-        $LatestDbValue = "";
-        if (($result != false) && ($result->num_rows)>0)   //重复，则覆盖
-        {
-            $row = $result->fetch_array();
-            $LatestSwValue = $row['swbin'];
-            $LatestDbValue = $row['dbbin'];
-        }
-
-        $result = array("swbin" => $LatestSwValue, "dbbin" => $LatestDbValue);
-
-        $mysqli->close();
-        return $result;
     }
 
     //查询所有可用SW版本
@@ -513,6 +459,13 @@ class classDbiL3apF4icm
         return $resp;
     }
 
+
+    public function dbi_hcu_hsmmpdisplay_request($urlIndex)
+    {
+        return true;
+    }
+
+    //点击视频播放按钮
     public function dbi_get_hcu_camweb_link($statcode)
     {
         //建立连接
@@ -541,7 +494,8 @@ class classDbiL3apF4icm
         return $camweb;
     }
 
-    public function dbi_hcu_picturelist_inqury($statcode, $date, $hour)
+    //查询历史照片视频列表
+    public function dbi_hcu_hsmmplist_inqury($statcode, $date, $hour)
     {
         //查询监测点下的设备列表
         $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
@@ -552,76 +506,40 @@ class classDbiL3apF4icm
 
         $start = $hour * 60;
         $end = $hour * 60 + 59;
-        $picturelist = array();
+        $hsmmp_list = array();
+        //查询照片列表
         $query_str = "SELECT * FROM `t_l2snr_picturedata` WHERE (`statcode` = '$statcode' AND `reportdate` = '$date' AND `hourminindex` >= '$start' AND `hourminindex` < '$end')";
         $result = $mysqli->query($query_str);
         while(($result != false) AND ($row = $result->fetch_array())){
-            //提取照片名中的时间戳
             $pic_name = $row['filename'];
-            $str_temp = strstr($pic_name,MFUN_HCU_SITE_PIC_FILE_TYPE,true);
-            $str_pos = strripos($str_temp,"_");
-            $timeStamp = intval(substr($str_temp, $str_pos+1));
-            $stamp = getdate($timeStamp);
+            $reportdata = $row['reportdate'];
+            $hourminindex = intval($row['hourminindex']);
+            $hourindex = floor($hourminindex/60);
+            $minindex = $hourminindex - $hourindex*60;
 
-            $pictureUrl = MFUN_HCU_SITE_PIC_WWW_FOLDER.$statcode.'/'.$pic_name;
-            $attr = '照片_'.$date.'_'.$stamp['hours'].":".$stamp["minutes"].":".$stamp["seconds"];
+            $pictureUrl = MFUN_CLOUD_XHZN_WWW.MFUN_HCU_SITE_PIC_WWW_PATH.$statcode.'/'.$pic_name;
+            $attr = '照片_'.$date.'_'.$hourindex.":".$minindex;
             $temp = array('id'=> $pictureUrl,'attr'=> $attr);
-            array_push($picturelist, $temp);
+            array_push($hsmmp_list, $temp);
         }
-
-        $mysqli->close();
-        return $picturelist;
-    }
-
-    public function dbi_hcu_vedioplay_request($videoid)
-    {
-        //查询该视频文件当前状态，是否已经下载，是否正在下载
-        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
-        if (!$mysqli) {
-            die('Could not connect: ' . mysqli_error($mysqli));
-        }
-        $mysqli->query("SET NAMES utf8");
-
-        $query_str = "SELECT * FROM `t_l2snr_hsmmpdata` WHERE `videourl` = '$videoid' ";
+        //查询视频列表
+        $query_str = "SELECT * FROM `t_l2snr_hsmmpdata` WHERE (`statcode` = '$statcode' AND `reportdate` = '$date' AND `hourminindex` >= '$start' AND `hourminindex` < '$end')";
         $result = $mysqli->query($query_str);
-        if (($result->num_rows)>0) {
-            $row = $result->fetch_array();
-            $dataflag = $row["dataflag"];
-            $devCode = $row["deviceid"];
-            $dbiL1vmCommonObj = new classDbiL1vmCommon();
-            if ($dataflag == MFUN_HCU_VIDEO_DATA_STATUS_NORMAL OR $dataflag == MFUN_HCU_VIDEO_DATA_STATUS_FAIL){
-                $ctrl_key = $dbiL1vmCommonObj->byte2string(MFUN_HCU_CMDID_HSMMP_DATA);
-                $opt_key = $dbiL1vmCommonObj->byte2string(MFUN_HCU_OPT_VEDIOFILE_REQ);
-                $len = $dbiL1vmCommonObj->byte2string(strlen( $opt_key)/2 + strlen($videoid));
-                $cmdStr = $ctrl_key . $len . $opt_key . $videoid;
+        while(($result != false) AND ($row = $result->fetch_array())){
+            $video_name = $row['filename'];
+            $reportdata = $row['reportdate'];
+            $hourminindex = intval($row['hourminindex']);
+            $hourindex = floor($hourminindex/60);
+            $minindex = $hourminindex - $hourindex*60;
 
-                //更新视频文件的状态
-                $dataflag = MFUN_HCU_VIDEO_DATA_STATUS_DOWNLOAD;
-                $query_str = "UPDATE `t_l2snr_hsmmpdata` SET `dataflag` = '$dataflag' WHERE (`deviceid` = '$devCode' AND `videourl` = '$videoid')";
-                $result = $mysqli->query($query_str);
-
-                //通过9502端口建立tcp阻塞式socket连接，向HCU转发操控命令
-                $client = new socket_client_sync($devCode, $cmdStr);
-                $client->connect();
-
-                $resp = "downloading";
-
-            }
-            elseif ($dataflag == MFUN_HCU_VIDEO_DATA_STATUS_DOWNLOAD){
-                //正在下载中又收到该视频文件的请求什么也不做，直接回复
-                $resp = "downloading";
-            }
-            elseif ($dataflag == MFUN_HCU_VIDEO_DATA_STATUS_READY){
-                $resp = "http://121.40.185.177/xhzn/avorion/" . $videoid;
-            }
-            else
-                $resp = "";
+            $videoUrl = MFUN_CLOUD_XHZN_WWW.MFUN_HCU_SITE_VIDEO_WWW_PATH.$statcode.'/'.$video_name;
+            $attr = '视频_'.$date.'_'.$hourindex.":".$minindex;
+            $temp = array('id'=> $videoUrl,'attr'=> $attr);
+            array_push($hsmmp_list, $temp);
         }
-        else
-            $resp = "";
 
         $mysqli->close();
-        return $resp;
+        return $hsmmp_list;
     }
 
     //Camera状态更新，取回当前照片
@@ -679,7 +597,8 @@ class classDbiL3apF4icm
                 $dataflag = "Y";
                 $query_str = "INSERT INTO `t_l2snr_picturedata` (statcode,filename,filetype,filesize,filedescription,reportdate,hourminindex,dataflag) VALUES ('$statCode','$picname','$filetype','$filesize','$description','$date','$hourminindex','$dataflag')";
                 $result=$mysqli->query($query_str);
-                $resp = array("v"=>"120~","h"=>"120~","zoom"=>"5","url"=>MFUN_HCU_SITE_PIC_WWW_FOLDER.$picname);
+                $picUrl = MFUN_CLOUD_XHZN_WWW.MFUN_HCU_SITE_PIC_WWW_PATH.$statCode.'/'.$picname;
+                $resp = array("v"=>"120~","h"=>"120~","zoom"=>"5","url"=>$picUrl);
             }
             else { //使用最近的一次照片作为默认照片
                 $query_str = "SELECT * FROM `t_l2snr_picturedata` WHERE  `sid`= (SELECT MAX(sid) FROM `t_l2snr_picturedata` WHERE (`statcode`= '$statCode'))";
@@ -687,7 +606,8 @@ class classDbiL3apF4icm
                 if (($result != false) && ($result->num_rows)>0){
                     $row = $result->fetch_array();
                     $picname = $row['filename'];
-                    $resp = array("v"=>"120~","h"=>"120~","zoom"=>"5","url"=>MFUN_HCU_SITE_PIC_WWW_FOLDER.$picname);
+                    $picUrl = MFUN_CLOUD_XHZN_WWW.MFUN_HCU_SITE_PIC_WWW_PATH.$statCode.'/'.$picname;
+                    $resp = array("v"=>"120~","h"=>"120~","zoom"=>"5","url"=>$picUrl);
                 }
                 else //如果最近一次照片也没有
                     $resp = array();
@@ -700,6 +620,7 @@ class classDbiL3apF4icm
         return $resp;
     }
 
+    /*********************************TBSWR新增处理 Start*********************************************/
     //TBSWR gettempstatus
     public function dbi_tbswr_gettempstatus($uid, $statCode)
     {
@@ -764,7 +685,6 @@ class classDbiL3apF4icm
             $row = $result->fetch_array();
             $keyid = $row["keyid"];
         }
-
 
         //插入一条开锁授权
         $authlevel = MFUN_L3APL_F2CM_AUTH_LEVEL_DEVICE;

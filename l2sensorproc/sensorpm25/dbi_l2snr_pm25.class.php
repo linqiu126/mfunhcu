@@ -341,7 +341,6 @@ class classDbiL2snrPm25
         return $result;
     }
 
-    //删除对应用户所有超过90天的数据
     //缺省做成90天，如果参数错误，导致90天以内的数据强行删除，则不被认可
     private function dbi_l2snr_pmdata_old_delete($devCode, $days)
     {
@@ -582,8 +581,8 @@ class classDbiL2snrPm25
 
         //保存记录到对应l2snr表
         $result = $this->dbi_l2snr_pmdata_update($devCode, $timeStamp, $pm01Value, $pm25Value, $pm10Value);
-        //清理超过90天记录的数据
-        $result = $this->dbi_l2snr_pmdata_old_delete($devCode, 90);  //remove 90 days old data.
+        //清理超期的数据
+        $result = $this->dbi_l2snr_pmdata_old_delete($devCode, MFUN_AQYC_DATA_SAVE_DURATION_IN_DAYS);  //remove old data.
 
         //更新分钟测量报告聚合表
         $result = $this->dbi_l2snr_pmdata_minreport_update($devCode,$statCode,$timeStamp,$pm01Value, $pm25Value, $pm10Value);
@@ -649,7 +648,7 @@ class classDbiL2snrPm25
         //保存记录到对应l2snr表
         $result = $this->dbi_l2snr_ycjk_data_update($devCode,$timeStamp,$report);
         //清理超过90天记录的数据
-        $result = $this->dbi_l2snr_ycjk_data_old_delete($devCode, 90);  //remove 90 days old data.
+        $result = $this->dbi_l2snr_ycjk_data_old_delete($devCode, MFUN_HCU_DATA_SAVE_DURATION_IN_DAYS);  //remove old data.
 
         //更新分钟测量报告聚合表
         $result = $this->dbi_l2snr_ycjk_data_minreport_update($devCode,$statCode,$timeStamp,$report);

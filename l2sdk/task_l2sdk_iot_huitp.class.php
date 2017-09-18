@@ -132,7 +132,7 @@ class classTaskL2sdkIotHuitp
         //处理结果
         //由于消息的分布发送到各个任务模块中去了，这里不再统一处理ECHO返回，而由各个任务模块单独完成
         if (!empty($resp)) {
-            $log_content = "T:" . json_encode($resp);
+            $log_content = "T:" . json_encode($resp,JSON_UNESCAPED_UNICODE);
             $loggerObj->logger($project, $fromUser, $log_time, $log_content);
         }
 

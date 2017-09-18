@@ -18,6 +18,7 @@
             return "";
         }
         function buildcontent(address){
+			console.log("address="+address);
             if(address.length<=0){
                 $("body").append("无法找到视频地址");
                 return;
@@ -30,6 +31,9 @@
                         "<param name='fullscreen' value='false' />"+
                         "<param name='controls' value='false' />"+
                         "</object>";
+						/*
+				var txt = "<embed type='application/x-vlc-plugin' pluginspage='http://www.videolan.org' version='VideoLAN.VLCPlugin.2' width='800' height='600' id='vlc' loop='yes' autoplay='yes' target='"+address+"'> </embed>";*/
+
                 $("body").append(txt);
                 return;
             }
