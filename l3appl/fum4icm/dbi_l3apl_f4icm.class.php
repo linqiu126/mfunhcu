@@ -591,11 +591,10 @@ class classDbiL3apF4icm
                 $date = date("Y-m-d", $timestamp);
                 $stamp = getdate($timestamp);
                 $hourminindex = intval(($stamp["hours"] * 60 + floor($stamp["minutes"]/MFUN_TIME_GRID_SIZE)));
-                $filetype = MFUN_HCU_SITE_PIC_FILE_TYPE;
                 $filesize = (int)$filesize;
                 $description = "站点".$statCode."上传的照片";
                 $dataflag = "Y";
-                $query_str = "INSERT INTO `t_l2snr_picturedata` (statcode,filename,filetype,filesize,filedescription,reportdate,hourminindex,dataflag) VALUES ('$statCode','$picname','$filetype','$filesize','$description','$date','$hourminindex','$dataflag')";
+                $query_str = "INSERT INTO `t_l2snr_picturedata` (statcode,filename,filesize,filedescription,reportdate,hourminindex,dataflag) VALUES ('$statCode','$picname','$filesize','$description','$date','$hourminindex','$dataflag')";
                 $result=$mysqli->query($query_str);
                 $picUrl = MFUN_CLOUD_XHZN_WWW.MFUN_HCU_SITE_PIC_WWW_PATH.$statCode.'/'.$picname;
                 $resp = array("v"=>"120~","h"=>"120~","zoom"=>"5","url"=>$picUrl);

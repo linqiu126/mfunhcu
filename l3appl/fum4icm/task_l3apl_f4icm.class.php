@@ -305,9 +305,9 @@ class classTaskL3aplF4icm
             $uiF4icmDbObj = new classDbiL3apF4icm();
             $resp = $uiF4icmDbObj->dbi_hcu_hsmmplist_inqury($statcode, $date, $hour);
             if(!empty($resp))
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$resp,'msg'=>"获取指定时间图片列表成功");
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$resp,'msg'=>"获取指定时间图片/视频列表成功");
             else
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>"获取指定时间图片列表失败");
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>"获取指定时间图片/视频列表失败");
         }
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
@@ -459,7 +459,6 @@ class classTaskL3aplF4icm
             $result = "Received null message body";
             $log_content = "R:" . json_encode($result);
             $loggerObj->logger("MFUN_TASK_ID_L3APPL_FUM4ICM", "mfun_l3apl_f4icm_task_main_entry", $log_time, $log_content);
-            echo trim($result);
             return false;
         }
         else{
@@ -468,15 +467,6 @@ class classTaskL3aplF4icm
             if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
             if (isset($msg["user"])) $user = $msg["user"]; else  $user = "";
             if (isset($msg["body"])) $body = $msg["body"]; else  $body = "";
-        }
-
-        //多条消息发送到L3APPL_F4ICM，这里潜在的消息太多，没法一个一个的判断，故而只检查上下界
-        if (($msgId <= MSG_ID_MFUN_MIN) || ($msgId >= MSG_ID_MFUN_MAX)){
-            $result = "Msgid or MsgName error";
-            $log_content = "P:" . json_encode($result);
-            $loggerObj->logger("MFUN_TASK_ID_L3APPL_FUM4ICM", "mfun_l3apl_f4icm_task_main_entry", $log_time, $log_content);
-            echo trim($result);
-            return false;
         }
 
         switch($msgId)

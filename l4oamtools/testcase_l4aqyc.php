@@ -12,7 +12,7 @@ include_once "../l1comvm/vmlayer.php";
  *                             L4AQYC-UI TEST CASES                                   *
  *************************************************************************************/
 if (TC_L4AQYC_UI == true) {
-    $sessionid = "6c02WTxtK3";
+    $sessionid = "QqYQEItYS0";
     $uerid = "UID000001";
     $statcode = "120101002";
     $projcode = "P_0002";
@@ -25,7 +25,7 @@ if (TC_L4AQYC_UI == true) {
     $body = array('videoid' => "/avorion/picture/120101002/120101002_1492918446.jpg");
     $_GET["body"] = $body;
     $_GET["user"] = $sessionid;
-    require("../l4aqycui/request.php");
+    //require("../l4aqycui/request.php");
     echo " [TC L4AQYC: GetVideo END]\n";
 
     echo " [TC L4AQYC: GetVideoList START]\n";
