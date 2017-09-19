@@ -41,13 +41,40 @@
     </OBJECT-->
 
     <body>
-        <embed type="application/x-vlc-plugin" pluginspage="http://www.videolan.org"
+        <!--embed type="application/x-vlc-plugin" pluginspage="http://www.videolan.org"
                width="640"
                height="480"
                id="vlc_id">
-        </embed >
+        </embed -->
+
+        <object  width="640" height="480" id='vlc_id'  codebase="http://downloads.videolan.org/pub/videolan/vlc/latest/win32/axvlc.cab" classid="clsid:9BE31822-FDAD-461B-AD51-BE1D1C159921">
+            <param name="ShowDisplay" value="True" />
+            <param name="AutoPlay" value="false" />
+        </object>
+
+        <!--object classid="clsid:E23FE9C6-778E-49D4-B537-38FCDE4887D8" codebase="http://downloads.videolan.org/pub/videolan/vlc/latest/win32/axvlc.cab"
+                width="640" height="480" events="True" id="vlc2">
+            <param name="MRL" value="udp://@239.255.1.1:1234" />
+            <param name="ShowDisplay" value="True" />
+            <param name="Loop" value="False" />
+            <param name="AutoPlay" value="True" />
+            <embed type="application/x-vlc-plugin" pluginspage="http://www.videolan.org"
+                   width="640"
+                   height="480"
+                   id="vlc_id">
+            </embed>
+        </object-->
+
 
         <script language="Javascript">
+            var vlc=document.getElementById("vlc_id");
+            var mrl="rtsp://admin:Bxxh!123@ngrok.hkrob.com:__PORT__/ISAPI/Streaming/Channels/1";
+
+            var id=vlc.playlist.add(mrl);
+            vlc.playlist.play(id);
+            vlc.playlist.stop();
+
+            /*
             var vlc_obj = document.getElementById("vlc_id");
             if (vlc_obj.playlist != null) {
                 console.debug(vlc_obj.playlist);
@@ -59,6 +86,7 @@
             var itemId = vlc_obj.playlist.add(mrl);
             //播放
             vlc_obj.playlist.playItem(itemId);
+            */
         </script>
     </body>
 </html>

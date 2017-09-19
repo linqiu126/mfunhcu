@@ -596,7 +596,7 @@ class classDbiL3apF4icm
                 $dataflag = "Y";
                 $query_str = "INSERT INTO `t_l2snr_picturedata` (statcode,filename,filesize,filedescription,reportdate,hourminindex,dataflag) VALUES ('$statCode','$picname','$filesize','$description','$date','$hourminindex','$dataflag')";
                 $result=$mysqli->query($query_str);
-                $picUrl = MFUN_CLOUD_XHZN_WWW.MFUN_HCU_SITE_PIC_WWW_PATH.$statCode.'/'.$picname;
+                $picUrl = MFUN_HCU_SITE_PIC_BASE_DIR.$statCode.'/'.$picname;
                 $resp = array("v"=>"120~","h"=>"120~","zoom"=>"5","url"=>$picUrl);
             }
             else { //使用最近的一次照片作为默认照片
@@ -605,7 +605,7 @@ class classDbiL3apF4icm
                 if (($result != false) && ($result->num_rows)>0){
                     $row = $result->fetch_array();
                     $picname = $row['filename'];
-                    $picUrl = MFUN_CLOUD_XHZN_WWW.MFUN_HCU_SITE_PIC_WWW_PATH.$statCode.'/'.$picname;
+                    $picUrl = MFUN_HCU_SITE_PIC_BASE_DIR.$statCode.'/'.$picname;
                     $resp = array("v"=>"120~","h"=>"120~","zoom"=>"5","url"=>$picUrl);
                 }
                 else //如果最近一次照片也没有
