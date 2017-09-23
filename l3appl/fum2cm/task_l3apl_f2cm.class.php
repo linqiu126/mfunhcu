@@ -127,6 +127,7 @@ class classTaskL3aplF2cm
     {
         if (isset($body["length"])) $length = $body["length"]; else  $length = "";
         if (isset($body["startseq"])) $startseq = $body["startseq"]; else  $startseq = "";
+        if (isset($body["keyword"])) $keyword = $body["keyword"]; else  $keyword = "";
 
         $uiF2cmDbObj = new classDbiL3apF2cm(); //初始化一个UI DB对象
         $total = $uiF2cmDbObj->dbi_all_pgnum_inqury();
@@ -138,7 +139,7 @@ class classTaskL3aplF2cm
         $usercheck = $uiF1symDbObj->dbi_user_authcheck($action, $user);
         if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
             $uid = $usercheck['uid'];
-            $pgtable = $uiF2cmDbObj->dbi_user_pg_table_req($uid, $start, $query_length);
+            $pgtable = $uiF2cmDbObj->dbi_user_pg_table_req($uid, $start, $query_length,$keyword);
             $ret = array('start'=> (string)$start,'total'=> (string)$total,'length'=>(string)$query_length,'pgtable'=>$pgtable);
             if(!empty($pgtable))
                 $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$ret,'msg'=>"获取用户授权项目组列表成功");
@@ -232,6 +233,7 @@ class classTaskL3aplF2cm
     {
         if (isset($body["length"])) $length = $body["length"]; else  $length = "";
         if (isset($body["startseq"])) $startseq = $body["startseq"]; else  $startseq = "";
+        if (isset($body["keyword"])) $keyword = $body["keyword"]; else  $keyword = "";
 
         $uiF2cmDbObj = new classDbiL3apF2cm(); //初始化一个UI DB对象
         $total = $uiF2cmDbObj->dbi_all_projnum_inqury();
@@ -243,7 +245,7 @@ class classTaskL3aplF2cm
         $usercheck = $uiF1symDbObj->dbi_user_authcheck($action, $user);
         if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
             $uid = $usercheck['uid'];
-            $projtable = $uiF2cmDbObj->dbi_all_projtable_req($uid, $start, $query_length);
+            $projtable = $uiF2cmDbObj->dbi_all_projtable_req($uid, $start, $query_length, $keyword);
             if(!empty($projtable)){
                 $ret = array('start'=> (string)$start,'total'=> (string)$total,'length'=>(string)$query_length,'projtable'=>$projtable);
                 $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$ret,'msg'=>"项目列表获取成功");
@@ -357,6 +359,7 @@ class classTaskL3aplF2cm
     {
         if (isset($body["length"])) $length = $body["length"]; else  $length = "";
         if (isset($body["startseq"])) $startseq = $body["startseq"]; else  $startseq = "";
+        if (isset($body["keyword"])) $keyword = $body["keyword"]; else  $keyword = "";
 
         $uiF2cmDbObj = new classDbiL3apF2cm(); //初始化一个UI DB对象
         $total = $uiF2cmDbObj->dbi_all_sitenum_inqury();
@@ -369,7 +372,7 @@ class classTaskL3aplF2cm
         if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
             $uid = $usercheck['uid'];
             $uiF2cmDbObj = new classDbiL3apF2cm(); //初始化一个UI DB对象
-            $sitetable = $uiF2cmDbObj->dbi_all_sitetable_req($uid, $start, $query_length);
+            $sitetable = $uiF2cmDbObj->dbi_all_sitetable_req($uid, $start, $query_length, $keyword);
             if(!empty($sitetable)){
                 $ret = array('start'=> (string)$start,'total'=> (string)$total,'length'=>(string)$query_length,'pointtable'=>$sitetable);
                 $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$ret,'msg'=>"获取站点列表成功");
@@ -463,6 +466,7 @@ class classTaskL3aplF2cm
     {
         if (isset($body["length"])) $length = $body["length"]; else  $length = "";
         if (isset($body["startseq"])) $startseq = $body["startseq"]; else  $startseq = "";
+        if (isset($body["keyword"])) $keyword = $body["keyword"]; else  $keyword = "";
 
         $uiF2cmDbObj = new classDbiL3apF2cm(); //初始化一个UI DB对象
         $total = $uiF2cmDbObj->dbi_all_hcunum_inqury();
@@ -474,7 +478,7 @@ class classTaskL3aplF2cm
         $usercheck = $uiF1symDbObj->dbi_user_authcheck($action, $user);
         if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
             $uid = $usercheck['uid'];
-            $devtable = $uiF2cmDbObj->dbi_all_hcutable_req($uid, $start, $query_length);
+            $devtable = $uiF2cmDbObj->dbi_all_hcutable_req($uid, $start, $query_length, $keyword);
             if(!empty($devtable)){
                 $ret = array('start'=> (string)$start,'total'=> (string)$total,'length'=>(string)$query_length,'devtable'=>$devtable);
                 $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$ret,'msg'=>"获取设备列表成功");
@@ -689,6 +693,7 @@ class classTaskL3aplF2cm
     {
         if (isset($body["length"])) $length = $body["length"]; else  $length = "";
         if (isset($body["startseq"])) $startseq = $body["startseq"]; else  $startseq = "";
+        if (isset($body["keyword"])) $keyword = $body["keyword"]; else  $keyword = "";
 
         $uiF2cmDbObj = new classDbiL3apF2cm(); //初始化一个UI DB对象
         $total = $uiF2cmDbObj->dbi_all_keynum_inqury();
@@ -700,7 +705,7 @@ class classTaskL3aplF2cm
         $usercheck = $uiF1symDbObj->dbi_user_authcheck($action, $user);
         if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
             $uid = $usercheck['uid'];
-            $key_table = $uiF2cmDbObj->dbi_all_keytable_req($uid, $start, $query_length);
+            $key_table = $uiF2cmDbObj->dbi_all_keytable_req($uid, $start, $query_length, $keyword);
             if(!empty($key_table)){
                 $ret = array('start'=> (string)$start,'total'=> (string)$total,'length'=>(string)$query_length,'keytable'=>$key_table);
                 $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$ret,'msg'=>"钥匙列表获取成功");

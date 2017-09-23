@@ -684,7 +684,7 @@ class classDbiL3apF2cm
     }
 
     //UI PGTable request, 获取全部项目组列表信息
-    public function dbi_user_pg_table_req($uid, $startseq, $query_length)
+    public function dbi_user_pg_table_req($uid, $startseq, $query_length, $keyword)
     {
         //建立连接
         $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
@@ -704,21 +704,38 @@ class classDbiL3apF2cm
 
         for($i=$startseq; $i<$startseq + $query_length; $i++)
         {
-
             $pgcode = $pglist[$i]['id'];
-            $query_str = "SELECT * FROM `t_l3f2cm_projgroup` WHERE `pg_code` = '$pgcode' ";
-            $result = $mysqli->query($query_str);
-            while (($result != false) && (($row = $result->fetch_array()) > 0)) {
-                $temp = array(
-                    'PGCode' => $row['pg_code'],
-                    'PGName' => $row['pg_name'],
-                    'ChargeMan' => $row['owner'],
-                    'Telephone' => $row['phone'],
-                    'Department' => $row['department'],
-                    'Address' => $row['addr'],
-                    'Stage' => $row['backup']
-                );
-                array_push($pgtable, $temp);
+            if (empty($keyword)){
+                $query_str = "SELECT * FROM `t_l3f2cm_projgroup` WHERE `pg_code` = '$pgcode' ";
+                $result = $mysqli->query($query_str);
+                while (($result != false) && (($row = $result->fetch_array()) > 0)) {
+                    $temp = array(
+                        'PGCode' => $row['pg_code'],
+                        'PGName' => $row['pg_name'],
+                        'ChargeMan' => $row['owner'],
+                        'Telephone' => $row['phone'],
+                        'Department' => $row['department'],
+                        'Address' => $row['addr'],
+                        'Stage' => $row['backup']
+                    );
+                    array_push($pgtable, $temp);
+                }
+            }
+            else{
+                $query_str = "SELECT * FROM `t_l3f2cm_projgroup` WHERE (`pg_code` = '$pgcode' AND (concat(`pg_name`,`owner`,`department`) like '%$keyword%'))";
+                $result = $mysqli->query($query_str);
+                while (($result != false) && (($row = $result->fetch_array()) > 0)) {
+                    $temp = array(
+                        'PGCode' => $row['pg_code'],
+                        'PGName' => $row['pg_name'],
+                        'ChargeMan' => $row['owner'],
+                        'Telephone' => $row['phone'],
+                        'Department' => $row['department'],
+                        'Address' => $row['addr'],
+                        'Stage' => $row['backup']
+                    );
+                    array_push($pgtable, $temp);
+                }
             }
         }
 
@@ -727,7 +744,7 @@ class classDbiL3apF2cm
     }
 
     //UI ProjTable request, 获取全部项目列表信息
-    public function dbi_all_projtable_req($uid, $startseq, $query_length)
+    public function dbi_all_projtable_req($uid, $startseq, $query_length,$keyword)
     {
         //建立连接
         $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
@@ -748,21 +765,41 @@ class classDbiL3apF2cm
 
         for($i=$startseq; $i<$startseq + $query_length; $i++){
             $pcode = $projectlist[$i]['id'];
-            $query_str = "SELECT * FROM `t_l3f2cm_projinfo` WHERE `p_code` = '$pcode' ";
-            $result = $mysqli->query($query_str);
-            while(($result != false) && (($row = $result->fetch_array()) > 0))
-            {
-                $temp = array(
-                    'ProjCode' => $row['p_code'],
-                    'ProjName' => $row['p_name'],
-                    'ChargeMan' => $row['chargeman'],
-                    'Telephone' => $row['telephone'],
-                    'Department' => $row['department'],
-                    'Address' => $row['address'],
-                    'ProStartTime' => $row['starttime'],
-                    'Stage' => $row['stage']
-                );
-                array_push($projtable, $temp);
+            if(empty($keyword)){
+                $query_str = "SELECT * FROM `t_l3f2cm_projinfo` WHERE `p_code` = '$pcode' ";
+                $result = $mysqli->query($query_str);
+                while(($result != false) && (($row = $result->fetch_array()) > 0))
+                {
+                    $temp = array(
+                        'ProjCode' => $row['p_code'],
+                        'ProjName' => $row['p_name'],
+                        'ChargeMan' => $row['chargeman'],
+                        'Telephone' => $row['telephone'],
+                        'Department' => $row['department'],
+                        'Address' => $row['address'],
+                        'ProStartTime' => $row['starttime'],
+                        'Stage' => $row['stage']
+                    );
+                    array_push($projtable, $temp);
+                }
+            }
+            else{
+                $query_str = "SELECT * FROM `t_l3f2cm_projinfo` WHERE (`p_code` = '$pcode' AND (concat(`p_name`,`chargeman`,`department`) like '%$keyword%'))";
+                $result = $mysqli->query($query_str);
+                while(($result != false) && (($row = $result->fetch_array()) > 0))
+                {
+                    $temp = array(
+                        'ProjCode' => $row['p_code'],
+                        'ProjName' => $row['p_name'],
+                        'ChargeMan' => $row['chargeman'],
+                        'Telephone' => $row['telephone'],
+                        'Department' => $row['department'],
+                        'Address' => $row['address'],
+                        'ProStartTime' => $row['starttime'],
+                        'Stage' => $row['stage']
+                    );
+                    array_push($projtable, $temp);
+                }
             }
         }
 
@@ -1298,7 +1335,7 @@ class classDbiL3apF2cm
     }
 
     //UI ProjTable request, 获取全部监测点列表信息
-    public function dbi_all_sitetable_req($uid, $startseq, $query_length)
+    public function dbi_all_sitetable_req($uid, $startseq, $query_length, $keyword)
     {
         //建立连接
         $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
@@ -1319,28 +1356,51 @@ class classDbiL3apF2cm
         for($i=$startseq; $i<$startseq + $query_length; $i++)
         {
             $pcode = $projectlist[$i]['id'];
-
-            $query_str = "SELECT * FROM `t_l3f3dm_siteinfo` WHERE `p_code` = '$pcode'";
-            $result = $mysqli->query($query_str);
-            while(($result != false) && (($row = $result->fetch_array()) > 0))
-            {
-                $temp = array(
-                    'StatCode' => $row['statcode'],
-                    'StatName' => $row['statname'],
-                    'ProjCode' => $row['p_code'],
-                    'ChargeMan' => $row['chargeman'],
-                    'Telephone' => $row['telephone'],
-                    'Longitude' => $row['longitude'],
-                    'Latitude' => $row['latitude'],
-                    'Department' => $row['department'],
-                    'Address' => $row['address'],
-                    'Country' => $row['country'],
-                    'Street' => $row['street'],
-                    'Square' => $row['square'],
-                    'ProStartTime' => $row['starttime'],
-                    'Stage' => $row['memo']
-                );
-                array_push($sitetable, $temp);
+            if(empty($keyword)){
+                $query_str = "SELECT * FROM `t_l3f3dm_siteinfo` WHERE `p_code` = '$pcode'";
+                $result = $mysqli->query($query_str);
+                while(($result != false) && (($row = $result->fetch_array()) > 0)){
+                    $temp = array(
+                        'StatCode' => $row['statcode'],
+                        'StatName' => $row['statname'],
+                        'ProjCode' => $row['p_code'],
+                        'ChargeMan' => $row['chargeman'],
+                        'Telephone' => $row['telephone'],
+                        'Longitude' => $row['longitude'],
+                        'Latitude' => $row['latitude'],
+                        'Department' => $row['department'],
+                        'Address' => $row['address'],
+                        'Country' => $row['country'],
+                        'Street' => $row['street'],
+                        'Square' => $row['square'],
+                        'ProStartTime' => $row['starttime'],
+                        'Stage' => $row['memo']
+                    );
+                    array_push($sitetable, $temp);
+                }
+            }
+            else{
+                $query_str = "SELECT * FROM `t_l3f3dm_siteinfo` WHERE (`p_code` = '$pcode' AND (concat(`statname`,`address`) like '%$keyword%'))";
+                $result = $mysqli->query($query_str);
+                while(($result != false) && (($row = $result->fetch_array()) > 0)){
+                    $temp = array(
+                        'StatCode' => $row['statcode'],
+                        'StatName' => $row['statname'],
+                        'ProjCode' => $row['p_code'],
+                        'ChargeMan' => $row['chargeman'],
+                        'Telephone' => $row['telephone'],
+                        'Longitude' => $row['longitude'],
+                        'Latitude' => $row['latitude'],
+                        'Department' => $row['department'],
+                        'Address' => $row['address'],
+                        'Country' => $row['country'],
+                        'Street' => $row['street'],
+                        'Square' => $row['square'],
+                        'ProStartTime' => $row['starttime'],
+                        'Stage' => $row['memo']
+                    );
+                    array_push($sitetable, $temp);
+                }
             }
         }
 
@@ -1380,7 +1440,7 @@ class classDbiL3apF2cm
         $altitude = 0;
         $flag_la = "N";
         $flag_lo = "E";
-        $flag_active = MFUN_HCU_SITE_ACTIVE_NO;
+        $status = MFUN_HCU_SITE_STATUS_INITIAL;
 
         $query_str = "SELECT * FROM `t_l3f3dm_siteinfo` WHERE `statcode` = '$statcode'";
         $result = $mysqli->query($query_str);
@@ -1394,8 +1454,8 @@ class classDbiL3apF2cm
         }
         else //不存在，新增
         {
-            $query_str = "INSERT INTO `t_l3f3dm_siteinfo` (statcode,statname,flag_active,p_code,chargeman,telephone,department,country,street,address,starttime,square,altitude,flag_la,latitude,flag_lo,longitude,memo)
-                                  VALUES ('$statcode','$statname','$flag_active','$pcode','$chargeman','$telephone','$department','$country','$street','$addr','$starttime','$square','$altitude','$flag_la','$latitude','$flag_lo','$longitude','$memo')";
+            $query_str = "INSERT INTO `t_l3f3dm_siteinfo` (statcode,statname,status,p_code,chargeman,telephone,department,country,street,address,starttime,square,altitude,flag_la,latitude,flag_lo,longitude,memo)
+                                  VALUES ('$statcode','$statname','$status','$pcode','$chargeman','$telephone','$department','$country','$street','$addr','$starttime','$square','$altitude','$flag_la','$latitude','$flag_lo','$longitude','$memo')";
             $result = $mysqli->query($query_str);
         }
 
@@ -1455,7 +1515,7 @@ class classDbiL3apF2cm
     }
 
     //UI DevTable request, 获取全部HCU设备列表信息
-    public function dbi_all_hcutable_req($uid, $startseq, $query_length)
+    public function dbi_all_hcutable_req($uid, $startseq, $query_length, $keyword)
     {
         //建立连接
         $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
@@ -1493,24 +1553,47 @@ class classDbiL3apF2cm
                 elseif($devstatus == MFUN_HCU_AQYC_STATUS_OFF)
                     $devstatus = "false";
 
-                $query_str = "SELECT * FROM `t_l3f3dm_siteinfo` WHERE `statcode` = '$statcode'";      //查询HCU设备对应监测点号
-                $resp = $mysqli->query($query_str);
-                if (($resp->num_rows)>0) {
-                    $info = $resp->fetch_array();
-                    $temp = array(
-                        'DevCode' => $devcode,
-                        'StatCode' => $statcode,
-                        'ProjCode' => $info['p_code'],
-                        'StartTime' => $starttime, //$info['starttime'], 取用HCU_inventory表中HCU开通时间
-                        'PreEndTime' => "",  //TBD
-                        'EndTime' => "",     //TBD
-                        'DevStatus' => $devstatus,
-                        'VideoURL' => $url,
-                        'MAC' => $macaddr,
-                        'IP' => $ipaddr
-                    );
-                    array_push($hcutable, $temp);
+                if(empty($keyword)){
+                    $query_str = "SELECT * FROM `t_l3f3dm_siteinfo` WHERE `statcode` = '$statcode'";      //查询HCU设备对应监测点号
+                    $resp = $mysqli->query($query_str);
+                    if (($resp->num_rows)>0) {
+                        $info = $resp->fetch_array();
+                        $temp = array(
+                            'DevCode' => $devcode,
+                            'StatCode' => $statcode,
+                            'ProjCode' => $info['p_code'],
+                            'StartTime' => $starttime, //$info['starttime'], 取用HCU_inventory表中HCU开通时间
+                            'PreEndTime' => "",  //TBD
+                            'EndTime' => "",     //TBD
+                            'DevStatus' => $devstatus,
+                            'VideoURL' => $url,
+                            'MAC' => $macaddr,
+                            'IP' => $ipaddr
+                        );
+                        array_push($hcutable, $temp);
+                    }
                 }
+                else{
+                    $query_str = "SELECT * FROM `t_l3f3dm_siteinfo` WHERE (`statcode` = '$statcode' AND (concat(`statname`,`address`) like '%$keyword%'))";      //查询HCU设备对应监测点号
+                    $resp = $mysqli->query($query_str);
+                    if (($resp->num_rows)>0) {
+                        $info = $resp->fetch_array();
+                        $temp = array(
+                            'DevCode' => $devcode,
+                            'StatCode' => $statcode,
+                            'ProjCode' => $info['p_code'],
+                            'StartTime' => $starttime, //$info['starttime'], 取用HCU_inventory表中HCU开通时间
+                            'PreEndTime' => "",  //TBD
+                            'EndTime' => "",     //TBD
+                            'DevStatus' => $devstatus,
+                            'VideoURL' => $url,
+                            'MAC' => $macaddr,
+                            'IP' => $ipaddr
+                        );
+                        array_push($hcutable, $temp);
+                    }
+                }
+
             }
         }
 
@@ -1650,9 +1733,9 @@ class classDbiL3apF2cm
             $result1 = $mysqli->query($query_str);
         }
 
-        //更新站点状态为激活
-        $flag_active = MFUN_HCU_SITE_ACTIVE_YES;
-        $query_str = "UPDATE `t_l3f3dm_siteinfo` SET `flag_active` = '$flag_active'  WHERE (`statcode` = '$statcode' )";
+        //更新站点状态为开通确认
+        $status = MFUN_HCU_SITE_STATUS_CONFIRM;
+        $query_str = "UPDATE `t_l3f3dm_siteinfo` SET `status` = '$status'  WHERE (`statcode` = '$statcode' )";
         $result2 = $mysqli->query($query_str);
 
         $result = $result1 AND $result2;
@@ -1678,7 +1761,8 @@ class classDbiL3apF2cm
             $statcode = $row['statcode'];
             $flag_la = "N";
             $flag_lo = "E";
-            $query_str = "UPDATE `t_l3f3dm_siteinfo` SET `flag_la` = '$flag_la', `latitude` = '$latitude',`flag_lo` = '$flag_lo',`longitude` = '$longitude' WHERE (`statcode` = '$statcode' )";
+            $status = MFUN_HCU_SITE_STATUS_ATTACH;
+            $query_str = "UPDATE `t_l3f3dm_siteinfo` SET `status` = '$status', `flag_la` = '$flag_la', `latitude` = '$latitude',`flag_lo` = '$flag_lo',`longitude` = '$longitude' WHERE (`statcode` = '$statcode' )";
             $resp = $mysqli->query($query_str);
         }
         else
@@ -1697,10 +1781,11 @@ class classDbiL3apF2cm
         }
         $mysqli->query("SET NAMES utf8");
 
-        $flag_active = MFUN_HCU_SITE_ACTIVE_NO;
+        //未人工开通确认的站点都可以再次和设备重新配对
+        $status = MFUN_HCU_SITE_STATUS_CONFIRM;
         $sitetable = array();
         $projtable = array();
-        $query_str = "SELECT * FROM `t_l3f3dm_siteinfo` WHERE (`flag_active` = '$flag_active')";
+        $query_str = "SELECT * FROM `t_l3f3dm_siteinfo` WHERE (`status` != '$status')";
         $result = $mysqli->query($query_str);
         while(($result != false) && (($row = $result->fetch_array()) > 0)){
             $temp = array(
@@ -1941,7 +2026,7 @@ class classDbiL3apF2cm
     }
 
     //UI ProjTable request, 获取全部项目列表信息
-    public function dbi_all_keytable_req($uid, $startseq, $query_length)
+    public function dbi_all_keytable_req($uid, $startseq, $query_length, $keyword)
     {
         //建立连接
         $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
@@ -1964,40 +2049,43 @@ class classDbiL3apF2cm
             $pcode = $projectlist[$i]['id'];
             $projname = $projectlist[$i]['name'];
 
-            $query_str = "SELECT * FROM `t_l3f2cm_fhys_keyinfo` WHERE `p_code` = '$pcode'";
-            $result = $mysqli->query($query_str);
-            while(($result != false) && (($row = $result->fetch_array()) > 0))
-            {
-                $keytype = $row['keytype'];
-                /*
-                if ($keytype == MFUN_L3APL_F2CM_KEY_TYPE_RFID)
-                    $keytype = "RFID钥匙";
-                elseif ($keytype == MFUN_L3APL_F2CM_KEY_TYPE_BLE)
-                    $keytype = "手机蓝牙钥匙";
-                elseif ($keytype == MFUN_L3APL_F2CM_KEY_TYPE_USER)
-                    $keytype = "用户名钥匙";
-                elseif ($keytype == MFUN_L3APL_F2CM_KEY_TYPE_WECHAT)
-                    $keytype = "微信号钥匙";
-                elseif ($keytype == MFUN_L3APL_F2CM_KEY_TYPE_IDCARD)
-                    $keytype = "身份证钥匙";
-                elseif ($keytype == MFUN_L3APL_F2CM_KEY_TYPE_PHONE)
-                    $keytype = "电话号码钥匙";
-                else
-                    $keytype = "未知类型钥匙";
-                */
-
-                $temp = array(
-                    'KeyCode' => $row['keyid'],
-                    'KeyName' => $row['keyname'],
-                    'KeyType' => $keytype,
-                    'HardwareCode' => $row['hwcode'],
-                    'KeyProj' => $pcode,
-                    'KeyProjName' => $projname,
-                    'KeyUser' => $row['keyuserid'],
-                    'KeyUserName' => $row['keyusername'],
-                    'Memo' => $row['memo']
-                );
-                array_push($keytable, $temp);
+            if(empty($keyword)){
+                $query_str = "SELECT * FROM `t_l3f2cm_fhys_keyinfo` WHERE `p_code` = '$pcode'";
+                $result = $mysqli->query($query_str);
+                while(($result != false) && (($row = $result->fetch_array()) > 0)){
+                    $keytype = $row['keytype'];
+                    $temp = array(
+                        'KeyCode' => $row['keyid'],
+                        'KeyName' => $row['keyname'],
+                        'KeyType' => $keytype,
+                        'HardwareCode' => $row['hwcode'],
+                        'KeyProj' => $pcode,
+                        'KeyProjName' => $projname,
+                        'KeyUser' => $row['keyuserid'],
+                        'KeyUserName' => $row['keyusername'],
+                        'Memo' => $row['memo']
+                    );
+                    array_push($keytable, $temp);
+                }
+            }
+            else{
+                $query_str = "SELECT * FROM `t_l3f2cm_fhys_keyinfo` WHERE (`p_code` = '$pcode' AND (concat(`keyname`,`keyusername`) like '%$keyword%'))";
+                $result = $mysqli->query($query_str);
+                while(($result != false) && (($row = $result->fetch_array()) > 0)){
+                    $keytype = $row['keytype'];
+                    $temp = array(
+                        'KeyCode' => $row['keyid'],
+                        'KeyName' => $row['keyname'],
+                        'KeyType' => $keytype,
+                        'HardwareCode' => $row['hwcode'],
+                        'KeyProj' => $pcode,
+                        'KeyProjName' => $projname,
+                        'KeyUser' => $row['keyuserid'],
+                        'KeyUserName' => $row['keyusername'],
+                        'Memo' => $row['memo']
+                    );
+                    array_push($keytable, $temp);
+                }
             }
         }
 

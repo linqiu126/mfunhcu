@@ -159,6 +159,8 @@ class classTaskL3aplF1sym
     {
         if (isset($body["length"])) $length = $body["length"]; else  $length = "";
         if (isset($body["startseq"])) $startseq = $body["startseq"]; else  $startseq = "";
+        if (isset($body["keyword"])) $keyword = $body["keyword"]; else  $keyword = "";
+
         $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
         $total = $uiF1symDbObj->dbi_usernum_inqury();
         $query_length = (int)($length);
@@ -168,7 +170,7 @@ class classTaskL3aplF1sym
         $usercheck = $uiF1symDbObj->dbi_user_authcheck($action, $user);
         if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
             $uid = $uiF1symDbObj->dbi_session_check($user);
-            $usertable = $uiF1symDbObj->dbi_usertable_req($uid, $start, $query_length);
+            $usertable = $uiF1symDbObj->dbi_usertable_req($uid, $start, $query_length,$keyword);
             if(!empty($usertable)){
                 $ret = array('start'=> (string)$start,'total'=> (string)$total,'length'=>(string)$query_length,'usertable'=>$usertable);
                 $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$ret,'msg'=>"用户表获取成功");

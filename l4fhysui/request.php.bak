@@ -1,7 +1,7 @@
 <?php
 header("Content-type:text/html;charset=utf-8");
 #require '/php/req.php';
-$install_path="/mfunhcu/l4fhysui";
+$install_path="_INSTALL_PATH_";
 function _encode($arr)
 {
   $na = array();

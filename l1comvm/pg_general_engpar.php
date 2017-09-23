@@ -17,9 +17,10 @@ define("MFUN_HCU_NAME_FIX_PREFIX", "HCU_");
 define("MFUN_HCU_SW_LOAD_FLAG_INVALID", 0);
 define("MFUN_HCU_SW_LOAD_FLAG_VALID", 1);
 
-//站点是否激活标识，站点分配了设备HCU即视为激活
-define("MFUN_HCU_SITE_ACTIVE_NO", "N");
-define("MFUN_HCU_SITE_ACTIVE_YES", "Y");
+//站点状态标识，站点分配了设备HCU即视为激活
+define("MFUN_HCU_SITE_STATUS_INITIAL", "I"); //站点新创建，没有添加设备
+define("MFUN_HCU_SITE_STATUS_ATTACH", "A");  //站点添加了设备
+define("MFUN_HCU_SITE_STATUS_CONFIRM", "C"); //用户人工确认了站点开通
 
 //传感器数据标识
 define("MFUN_HCU_DATA_FLAG_INVALID", "N"); //无效数据

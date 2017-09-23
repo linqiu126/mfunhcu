@@ -557,7 +557,7 @@ class classDbiL3apF1sym
     }
 
     //UI UserTable request, 获取所有用户信息表
-    public function dbi_usertable_req($uid, $uid_start, $uid_total)
+    public function dbi_usertable_req($uid, $uid_start, $uid_total,$keyword)
     {
         //建立连接
         $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
@@ -570,7 +570,9 @@ class classDbiL3apF1sym
         $usertable = array(); //初始化
         $query_str = "SELECT * FROM `t_l3f1sym_account` WHERE (`uid` = '$uid')";
         $result = $mysqli->query($query_str);
-        if (($result != false) && (($row = $result->fetch_array()) > 0)){
+        //没有关键字查询
+        if (empty($keyword)){
+            $row = $result->fetch_array();
             //显示自己信息
             $self_grade = intval($row['grade']);
             $temp = array(
@@ -604,6 +606,25 @@ class classDbiL3apF1sym
                     );
                     array_push($usertable,$temp);
                 }
+            }
+        }
+        //有关键字模糊查询
+        else{
+            $query_str = "SELECT * FROM `t_l3f1sym_account` where concat(`user`,`nick`,`phone`) like '%$keyword%'";
+            $result = $mysqli->query($query_str);
+            while (($result != false) && (($row = $result->fetch_array()) > 0))
+            {
+                $temp = array(
+                    'id' => $row['uid'],
+                    'name' => $row['user'],
+                    'nickname'=> $row['nick'],
+                    'mobile' => $row['phone'],
+                    'mail' => $row['email'],
+                    'type' => $row['grade'],
+                    'date' => $row['regdate'],
+                    'memo' => $row['backup']
+                );
+                array_push($usertable,$temp);
             }
         }
 
