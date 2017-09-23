@@ -176,7 +176,7 @@ class classDbiL2snrTemp
         //保存记录到对应l2snr表
         $result = $this->dbi_l2snr_tempdata_update($devCode, $timeStamp, $tempValue);
         //清理超期的数据
-        $result = $this->dbi_l2snr_tempdata_old_delete($devCode, MFUN_AQYC_DATA_SAVE_DURATION_IN_DAYS);
+        $result = $this->dbi_l2snr_tempdata_old_delete($devCode, MFUN_HCU_DATA_SAVE_DURATION_BY_PROJ);
 
         //更新分钟测量报告聚合表
         $result = $this->dbi_l2snr_tempdata_minreport_update($devCode,$statCode,$timeStamp,$tempValue);

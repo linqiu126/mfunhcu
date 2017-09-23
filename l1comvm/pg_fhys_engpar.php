@@ -209,7 +209,14 @@ define ("MFUN_HCU_FHYS_ALARM_CODE_MAX", 0x0F); //Alarmcode的最大值，如有�
  *************************************************************************************/
 //定义数据保存不删的时间长度
 if (MFUN_CURRENT_WORKING_PROGRAM_NAME_UNIQUE == MFUN_WORKING_PROGRAM_NAME_UNIQUE_FHYS){
-    define ("MFUN_HCU_DATA_SAVE_DURATION_IN_DAYS", 90);
+    define ("MFUN_HCU_DATA_SAVE_DURATION_BY_PROJ", 180);
+    define ("MFUN_HCU_USER_NAME_GRADE_0", "管理员");
+    define ("MFUN_HCU_USER_NAME_GRADE_1", "市级网管");
+    define ("MFUN_HCU_USER_NAME_GRADE_2", "区级网管");
+    define ("MFUN_HCU_USER_NAME_GRADE_3", "市级代维");
+    define ("MFUN_HCU_USER_NAME_GRADE_4", "区级代维");
+    define ("MFUN_HCU_USER_NAME_GRADE_N", "用户等级未知");
+
 }
 
 class classConstFhysEngpar

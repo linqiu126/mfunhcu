@@ -566,13 +566,13 @@ class classDbiL3apF1sym
         }
         $mysqli->query("SET NAMES utf8");
 
-        //按照阜华要求，默认用户表只显示自己
+        //默认用户表只显示自己以及比自己level低的用户，以便高等级用户给低等级用户授权
         $usertable = array(); //初始化
-        $user = "";
         $query_str = "SELECT * FROM `t_l3f1sym_account` WHERE (`uid` = '$uid')";
         $result = $mysqli->query($query_str);
         if (($result != false) && (($row = $result->fetch_array()) > 0)){
-            $user = $row['user'];
+            //显示自己信息
+            $self_grade = intval($row['grade']);
             $temp = array(
                 'id' => $row['uid'],
                 'name' => $row['user'],
@@ -585,26 +585,25 @@ class classDbiL3apF1sym
             );
             array_push($usertable,$temp);
 
-        }
-
-        //如果是特殊用户则显示所有用户表
-        if ($user == 'admin' OR $user == 'foha')
-        {
-            $query_str = "SELECT * FROM `t_l3f1sym_account` limit $uid_start, $uid_total";
+            //显示比自己等级低的用户信息
+            $query_str = "SELECT * FROM `t_l3f1sym_account` WHERE (1)";
             $resp = $mysqli->query($query_str);
             while (($resp != false) && (($row = $resp->fetch_array()) > 0))
             {
-                $temp = array(
-                    'id' => $row['uid'],
-                    'name' => $row['user'],
-                    'nickname'=> $row['nick'],
-                    'mobile' => $row['phone'],
-                    'mail' => $row['email'],
-                    'type' => $row['grade'],
-                    'date' => $row['regdate'],
-                    'memo' => $row['backup']
-                );
-                array_push($usertable,$temp);
+                $grade = intval($row['grade']);
+                if ($self_grade < $grade){
+                    $temp = array(
+                        'id' => $row['uid'],
+                        'name' => $row['user'],
+                        'nickname'=> $row['nick'],
+                        'mobile' => $row['phone'],
+                        'mail' => $row['email'],
+                        'type' => $row['grade'],
+                        'date' => $row['regdate'],
+                        'memo' => $row['backup']
+                    );
+                    array_push($usertable,$temp);
+                }
             }
         }
 

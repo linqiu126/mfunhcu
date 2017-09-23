@@ -164,7 +164,7 @@ class classDbiL2snrHsmmp
         }
 
         //删除超期照片
-        $result = $this->dbi_picturedata_delete_3monold($statCode, MFUN_AQYC_DATA_SAVE_DURATION_IN_DAYS);
+        $result = $this->dbi_picturedata_delete_3monold($statCode, MFUN_HCU_DATA_SAVE_DURATION_BY_PROJ);
 
         $mysqli->close();
         return $result;

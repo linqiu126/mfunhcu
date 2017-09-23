@@ -47,7 +47,7 @@ switch ($key){
         $latitude=(string)($body["latitude"]*1000000);
         $longitude=(string)($body["longitude"]*1000000);
         $dbiL3apF2cmObj = new classDbiL3apF2cm(); //初始化一个UI DB对象
-        $result = $dbiL3apF2cmObj->dbi_siteinfo_update_gps($devcode, $latitude, $longitude);
+        $result = $dbiL3apF2cmObj->dbi_qrcode_scan_siteinfo_update_gps($devcode, $latitude, $longitude);
 
         $loggerObj = new classApiL1vmFuncCom();
         $log_time = date("Y-m-d H:i:s", time());
@@ -55,9 +55,9 @@ switch ($key){
         $loggerObj->logger("MFUN_TASK_ID_L4OAMTOOLS", "HCU_AQYC_Activate", $log_time, $log_content);
 
         if($result==true)
-            $retval=array('status'=>'true','auth'=>'true','msg'=>'站点激活成功');
+            $retval=array('status'=>'true','auth'=>'true','msg'=>'设备激活成功');
         else
-            $retval=array('status'=>'false','auth'=>'true','msg'=>'站点激活失败');
+            $retval=array('status'=>'false','auth'=>'true','msg'=>'设备激活失败');
 
         $jsonencode = _encode($retval);
         echo $jsonencode;

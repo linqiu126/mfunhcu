@@ -49,13 +49,35 @@ $key=$payload["action"];
 //echo $key;
 switch ($key)
 {
+    case "HCU_Get_Free_Station":
+        $dbiL3apF2cmObj = new classDbiL3apF2cm(); //初始化一个UI DB对象
+        $reselt = $dbiL3apF2cmObj->dbi_qrcode_scan_free_projsite_inquiry();
+        $free_site = $reselt['site_list'];
+
+        $retval=array('status'=>'true','ret'=>$free_site,'auth'=>'true','msg'=>'空闲站点列表查找成功');
+        $jsonencode = _encode($retval);
+        echo $jsonencode;
+        break;
+
+    case "ProjectList":
+        $dbiL3apF2cmObj = new classDbiL3apF2cm(); //初始化一个UI DB对象
+        $reselt = $dbiL3apF2cmObj->dbi_qrcode_scan_free_projsite_inquiry();
+        $free_proj = $reselt['proj_list'];
+
+        $retval=array('status'=>'true','ret'=> $free_proj,'auth'=>'true','msg'=>'空闲项目列表查找成功');
+        $jsonencode = _encode($retval);
+        echo $jsonencode;
+        break;
+
     case "HCU_Lock_Activate": //Open a lock
         $body=$payload["body"];
         $devcode=$body["code"];
         $latitude=(string)($body["latitude"]*1000000);
         $longitude=(string)($body["longitude"]*1000000);
+        //更新站点GPRS地址
         $dbiL3apF2cmObj = new classDbiL3apF2cm(); //初始化一个UI DB对象
-        $result = $dbiL3apF2cmObj->dbi_siteinfo_update_gps($devcode, $latitude, $longitude);
+        $result = $dbiL3apF2cmObj->dbi_qrcode_scan_siteinfo_update_gps($devcode, $latitude, $longitude);
+        //生成设备信息表，检查二维码是否合法，并关联相应站点
 
         $loggerObj = new classApiL1vmFuncCom();
         $log_time = date("Y-m-d H:i:s", time());
@@ -75,6 +97,7 @@ switch ($key)
         $jsonencode = _encode($retval);
         echo $jsonencode;
         break;
+
 	default:
 	    break;
 }

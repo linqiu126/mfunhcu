@@ -17,6 +17,10 @@ define("MFUN_HCU_NAME_FIX_PREFIX", "HCU_");
 define("MFUN_HCU_SW_LOAD_FLAG_INVALID", 0);
 define("MFUN_HCU_SW_LOAD_FLAG_VALID", 1);
 
+//站点是否激活标识，站点分配了设备HCU即视为激活
+define("MFUN_HCU_SITE_ACTIVE_NO", "N");
+define("MFUN_HCU_SITE_ACTIVE_YES", "Y");
+
 //传感器数据标识
 define("MFUN_HCU_DATA_FLAG_INVALID", "N"); //无效数据
 define("MFUN_HCU_DATA_FLAG_VALID", "Y");   //有效数据
@@ -99,10 +103,15 @@ define ("MFUN_L3APL_F4ICM_ID_EQUIP_TEMP", 0x06);
 define ("MFUN_L3APL_F4ICM_ID_EQUIP_HUMID", 0x06);
 define ("MFUN_L3APL_F4ICM_ID_EQUIP_NOISE", 0x0A);
 
+define ("MFUN_HCU_DATA_SAVE_DURATION_IN_DAYS", 90); //限定最低保存时间，项目定义的时间如果小于这个时间则不被接受
 if (MFUN_CURRENT_WORKING_PROGRAM_NAME_UNIQUE == MFUN_WORKING_PROGRAM_NAME_UNIQUE_TESTMODE){
-    define ("MFUN_HCU_DATA_SAVE_DURATION_IN_DAYS", 90);
-    define ("MFUN_EMCWX_DATA_SAVE_DURATION_IN_DAYS", 90);
-    define ("MFUN_AQYC_DATA_SAVE_DURATION_IN_DAYS", 180);
+    define ("MFUN_HCU_DATA_SAVE_DURATION_BY_PROJ", 180);
+    define ("MFUN_HCU_USER_NAME_GRADE_0", "管理员");
+    define ("MFUN_HCU_USER_NAME_GRADE_1", "高级用户");
+    define ("MFUN_HCU_USER_NAME_GRADE_2", "一级用户");
+    define ("MFUN_HCU_USER_NAME_GRADE_3", "二级用户");
+    define ("MFUN_HCU_USER_NAME_GRADE_4", "三级用户");
+    define ("MFUN_HCU_USER_NAME_GRADE_N", "用户等级未知");
 }
 
 //定义用户权限级别
@@ -114,102 +123,58 @@ define ("MFUN_USER_GRADE_LEVEL_4", 4);
 
 class classConstL1vmUserWebRight
 {
-    public static $mfunUserGradeArrayConst = array(
+//定义界面菜单显示权限，如果为false则该菜单在用户登录时隐藏
+    static $mfunUserGradeArrayConst = array(
         MFUN_USER_GRADE_LEVEL_0 => array(
             'webauth'=>array(
-                'MPMonitorCard' => 'true', //menu not display
+                //登录屏保
+                'menu_user_profile' => 'true',
+                //系统管理
+                'UserManage' => 'true',
+                'ParaManage' => 'true',
+                'ExportTableManage' => 'true',
+                'SoftwareLoadManage' =>'false',
+                //项目管理
+                'PGManage' => 'true',
+                'ProjManage' => 'true',
+                'MPManage' => 'true',
+                'DevManage' => 'true',
+                //测量管理
+                'MPMonitor' => 'true',
+                'MPStaticMonitorTable' => 'true',
+                'MPMonitorCard' => 'true',
+                //告警管理
+                'WarningCheck' => 'true',
+                'WarningHandle' => 'true',
+                //性能管理
+                'AuditTarget' => 'true',
+                'AuditStability' => 'true',
+                'AuditAvailability' => 'true',
+                'AuditError' => 'true',
+                'AuditQuality' => 'true',
+                //仪器操作
                 'InstConf' => 'true',
                 'InstRead' => 'true',
                 'InstDesign' => 'true',
                 'InstControl' => 'true',
                 'InstSnapshot' => 'true',
                 'InstVideo' => 'true',
-                'AuditTarget' => 'true',
-                'AuditAvailability' => 'true',
-                'AuditError' => 'true',
-                'AuditQuality' => 'true',
+                //地理环境管理
                 'GeoInfoQuery' => 'true',
                 'GeoTrendAnalysis' => 'true',
                 'GeoDisaterForecast' => 'true',
                 'GeoEmergencyDirect' => 'true',
                 'GeoDiffusionAnalysis' => 'true',
+                //广告和门户
                 'ADConf' => 'true',
                 'WEBConf' => 'true',
-                'ParaManage' => 'true',
-                'UserManage' => 'true',//menu to be display
-                'ExportTableManage' => 'true',
-                'SoftwareLoadManage' =>'false',
-                'PGManage' => 'true',
-                'ProjManage' => 'true',
-                'MPManage' => 'true',
-                'DevManage' => 'true',
+                //钥匙管理  ->只适用于FHYS
                 'KeyManage' => 'true',
                 'KeyAuth' => 'true',
                 'KeyHistory' => 'true',
-                'MPMonitor' => 'true',
-                'MPStaticMonitorTable' => 'true',
-                'WarningCheck' => 'true',
-                'WarningHandle' => 'true'),
-            'actionauth'=>array(
-                        'UserNew' => 'true',
-                        'UserMod' => 'true',
-                        'UserDel' => 'true',
-                        'PGNew' => 'true',
-                        'PGMod' => 'true',
-                        'PGDel' => 'true',
-                        'ProjNew' => 'true',
-                        'ProjMod' => 'true',
-                        'ProjDel' => 'true',
-                        'PointNew' => 'true',
-                        'PointMod' => 'true',
-                        'PointDel' => 'true',
-                        'DevNew' => 'true',
-                        'DevMod' => 'true',
-                        'DevDel' => 'true',
-                        'KeyNew' => 'true',
-                        'KeyMod' => 'true',
-                        'KeyDel' => 'true',
-                        'OpenLock' => 'true',
-                        'KeyAuthNew' => 'true',
-                        'KeyGrant' => 'true'
-            ),
-            'query' => 'true',
-            'mod' => 'true'),
-        MFUN_USER_GRADE_LEVEL_1 => array(
-            'webauth'=>array(
-                'MPMonitorCard' => 'false', //menu not display
-                'InstConf' => 'false',
-                'InstRead' => 'false',
-                'InstDesign' => 'false',
-                'InstControl' => 'false',
-                'InstSnapshot' => 'false',
-                'InstVideo' => 'false',
-                'AuditTarget' => 'false',
-                'AuditAvailability' => 'false',
-                'AuditError' => 'false',
-                'AuditQuality' => 'false',
-                'GeoInfoQuery' => 'false',
-                'GeoTrendAnalysis' => 'false',
-                'GeoDisaterForecast' => 'false',
-                'GeoEmergencyDirect' => 'false',
-                'GeoDiffusionAnalysis' => 'false',
-                'ADConf' => 'false',
-                'WEBConf' => 'false',
-                'ParaManage' => 'false',
-                'UserManage' => 'true',
-                'ExportTableManage' => 'false',
-                'SoftwareLoadManage' =>'false',
-                'PGManage' => 'false',
-                'ProjManage' => 'true',
-                'MPManage' => 'true',
-                'DevManage' => 'true',
-                'KeyManage' => 'true',
-                'KeyAuth' => 'true',
-                'KeyHistory' => 'true',
-                'MPMonitor' => 'true',
-                'MPStaticMonitorTable' => 'true',
-                'WarningCheck' => 'true',
-                'WarningHandle' => 'true'),
+                //纤芯管理
+                'RTUManage' => 'true',
+                'OTDRManage' => 'true'),
             'actionauth'=>array(
                 'UserNew' => 'true',
                 'UserMod' => 'true',
@@ -235,161 +200,56 @@ class classConstL1vmUserWebRight
             ),
             'query' => 'true',
             'mod' => 'true'),
-        MFUN_USER_GRADE_LEVEL_2 => array(
+        MFUN_USER_GRADE_LEVEL_1 => array(
             'webauth'=>array(
-                'MPMonitorCard' => 'false', //menu not display
-                'InstConf' => 'false',
-                'InstRead' => 'false',
-                'InstDesign' => 'false',
-                'InstControl' => 'false',
-                'InstSnapshot' => 'false',
-                'InstVideo' => 'false',
-                'AuditTarget' => 'false',
-                'AuditAvailability' => 'false',
-                'AuditError' => 'false',
-                'AuditQuality' => 'false',
-                'GeoInfoQuery' => 'false',
-                'GeoTrendAnalysis' => 'false',
-                'GeoDisaterForecast' => 'false',
-                'GeoEmergencyDirect' => 'false',
-                'GeoDiffusionAnalysis' => 'false',
-                'ADConf' => 'false',
-                'WEBConf' => 'false',
-                'ParaManage' => 'false',
-                'UserManage' => 'true',
-                'ExportTableManage' => 'false',
-                'SoftwareLoadManage' =>'false',
-                'PGManage' => 'false',
-                'ProjManage' => 'true',
-                'MPManage' => 'true',
-                'DevManage' => 'true',
-                'KeyManage' => 'true',
-                'KeyAuth' => 'true',
-                'KeyHistory' => 'true',
-                'MPMonitor' => 'true',
-                'MPStaticMonitorTable' => 'true',
-                'WarningCheck' => 'true',
-                'WarningHandle' => 'true'),
-            'actionauth'=>array(
-                'UserNew' => 'true',
-                'UserMod' => 'false',
-                'UserDel' => 'false',
-                'PGNew' => 'true',
-                'PGMod' => 'false',
-                'PGDel' => 'false',
-                'ProjNew' => 'true',
-                'ProjMod' => 'false',
-                'ProjDel' => 'false',
-                'PointNew' => 'true',
-                'PointMod' => 'false',
-                'PointDel' => 'false',
-                'DevNew' => 'true',
-                'DevMod' => 'false',
-                'DevDel' => 'false',
-                'KeyNew' => 'true',
-                'KeyMod' => 'false',
-                'KeyDel' => 'false',
-                'OpenLock' => 'true',
-                'KeyAuthNew' => 'true',
-                'KeyGrant' => 'true'
-            ),
-            'query' => 'true',
-            'mod' => 'true'),
-        MFUN_USER_GRADE_LEVEL_3 => array(
-            'webauth'=>array(
-                'MPMonitorCard' => 'false', //menu not display
-                'InstConf' => 'false',
-                'InstRead' => 'false',
-                'InstDesign' => 'false',
-                'InstControl' => 'false',
-                'InstSnapshot' => 'false',
-                'InstVideo' => 'false',
-                'AuditTarget' => 'false',
-                'AuditAvailability' => 'false',
-                'AuditError' => 'false',
-                'AuditQuality' => 'false',
-                'GeoInfoQuery' => 'false',
-                'GeoTrendAnalysis' => 'false',
-                'GeoDisaterForecast' => 'false',
-                'GeoEmergencyDirect' => 'false',
-                'GeoDiffusionAnalysis' => 'false',
-                'ADConf' => 'false',
-                'WEBConf' => 'false',
-                'ParaManage' => 'false',
-                'UserManage' => 'true',
-                'ExportTableManage' => 'false',
-                'SoftwareLoadManage' =>'false',
-                'PGManage' => 'false',
-                'ProjManage' => 'true',
-                'MPManage' => 'true',
-                'DevManage' => 'true',
-                'KeyManage' => 'true',
-                'KeyAuth' => 'true',
-                'KeyHistory' => 'true',
-                'MPMonitor' => 'true',
-                'MPStaticMonitorTable' => 'true',
-                'WarningCheck' => 'true',
-                'WarningHandle' => 'true'),
-            'actionauth'=>array(
-                'UserNew' => 'false',
-                'UserMod' => 'false',
-                'UserDel' => 'false',
-                'PGNew' => 'false',
-                'PGMod' => 'false',
-                'PGDel' => 'false',
-                'ProjNew' => 'false',
-                'ProjMod' => 'false',
-                'ProjDel' => 'false',
-                'PointNew' => 'false',
-                'PointMod' => 'false',
-                'PointDel' => 'false',
-                'DevNew' => 'false',
-                'DevMod' => 'false',
-                'DevDel' => 'false',
-                'KeyNew' => 'true',
-                'KeyMod' => 'false',
-                'KeyDel' => 'false',
-                'OpenLock' => 'true',
-                'KeyAuthNew' => 'true',
-                'KeyGrant' => 'true'
-            ),
-            'query' => 'true',
-            'mod' => 'false'),
-        MFUN_USER_GRADE_LEVEL_4 => array(
-            'webauth'=>array(
-                'MPMonitorCard' => 'false', //menu not display
-                'InstConf' => 'false',
-                'InstRead' => 'false',
-                'InstDesign' => 'false',
-                'InstControl' => 'false',
-                'InstSnapshot' => 'false',
-                'InstVideo' => 'false',
-                'AuditTarget' => 'false',
-                'AuditAvailability' => 'false',
-                'AuditError' => 'false',
-                'AuditQuality' => 'false',
-                'GeoInfoQuery' => 'false',
-                'GeoTrendAnalysis' => 'false',
-                'GeoDisaterForecast' => 'false',
-                'GeoEmergencyDirect' => 'false',
-                'GeoDiffusionAnalysis' => 'false',
-                'ADConf' => 'false',
-                'WEBConf' => 'false',
-                'ParaManage' => 'false',
+                //登录屏保
+                'menu_user_profile' => 'false',
+                //系统管理
                 'UserManage' => 'false',
+                'ParaManage' => 'false',
                 'ExportTableManage' => 'false',
                 'SoftwareLoadManage' =>'false',
+                //项目管理
                 'PGManage' => 'false',
-                'ProjManage' => 'true',
-                'MPManage' => 'true',
-                'DevManage' => 'true',
-                'KeyManage' => 'true',
-                'KeyAuth' => 'true',
-                'KeyHistory' => 'true',
-                'MPMonitor' => 'true',
-                'MPStaticMonitorTable' => 'true',
-                'WarningCheck' => 'true',
-                'WarningHandle' => 'false'),
+                'ProjManage' => 'false',
+                'MPManage' => 'false',
+                'DevManage' => 'false',
+                //测量管理
+                'MPMonitor' => 'false',
+                'MPStaticMonitorTable' => 'false',
+                'MPMonitorCard' => 'false',
+                //告警管理
+                'WarningCheck' => 'false',
+                'WarningHandle' => 'false',
+                //性能管理
+                'AuditTarget' => 'false',
+                'AuditStability' => 'false',
+                'AuditAvailability' => 'false',
+                'AuditError' => 'false',
+                'AuditQuality' => 'false',
+                //仪器操作
+                'InstConf' => 'false',
+                'InstRead' => 'false',
+                'InstDesign' => 'false',
+                'InstControl' => 'false',
+                'InstSnapshot' => 'false',
+                'InstVideo' => 'false',
+                //地理环境管理
+                'GeoInfoQuery' => 'false',
+                'GeoTrendAnalysis' => 'false',
+                'GeoDisaterForecast' => 'false',
+                'GeoEmergencyDirect' => 'false',
+                'GeoDiffusionAnalysis' => 'false',
+                //广告和门户
+                'ADConf' => 'false',
+                'WEBConf' => 'false',
+                //钥匙管理  ->只适用于FHYS
+                'KeyManage' => 'false',
+                'KeyAuth' => 'false',
+                'KeyHistory' => 'false',
+                //纤芯管理
+                'RTUManage' => 'false',
+                'OTDRManage' => 'false'),
             'actionauth'=>array(
                 'UserNew' => 'false',
                 'UserMod' => 'false',
@@ -406,20 +266,557 @@ class classConstL1vmUserWebRight
                 'DevNew' => 'false',
                 'DevMod' => 'false',
                 'DevDel' => 'false',
-                'KeyNew' => 'true',
+                'KeyNew' => 'false',
                 'KeyMod' => 'false',
                 'KeyDel' => 'false',
                 'OpenLock' => 'false',
                 'KeyAuthNew' => 'false',
                 'KeyGrant' => 'false'
             ),
-            'query' => 'true',
+            'query' => 'false',
             'mod' => 'false'),
-        );
+        MFUN_USER_GRADE_LEVEL_2 => array(
+            'webauth'=>array(
+                //登录屏保
+                'menu_user_profile' => 'false',
+                //系统管理
+                'UserManage' => 'false',
+                'ParaManage' => 'false',
+                'ExportTableManage' => 'false',
+                'SoftwareLoadManage' =>'false',
+                //项目管理
+                'PGManage' => 'false',
+                'ProjManage' => 'false',
+                'MPManage' => 'false',
+                'DevManage' => 'false',
+                //测量管理
+                'MPMonitor' => 'false',
+                'MPStaticMonitorTable' => 'false',
+                'MPMonitorCard' => 'false',
+                //告警管理
+                'WarningCheck' => 'false',
+                'WarningHandle' => 'false',
+                //性能管理
+                'AuditTarget' => 'false',
+                'AuditStability' => 'false',
+                'AuditAvailability' => 'false',
+                'AuditError' => 'false',
+                'AuditQuality' => 'false',
+                //仪器操作
+                'InstConf' => 'false',
+                'InstRead' => 'false',
+                'InstDesign' => 'false',
+                'InstControl' => 'false',
+                'InstSnapshot' => 'false',
+                'InstVideo' => 'false',
+                //地理环境管理
+                'GeoInfoQuery' => 'false',
+                'GeoTrendAnalysis' => 'false',
+                'GeoDisaterForecast' => 'false',
+                'GeoEmergencyDirect' => 'false',
+                'GeoDiffusionAnalysis' => 'false',
+                //广告和门户
+                'ADConf' => 'false',
+                'WEBConf' => 'false',
+                //钥匙管理  ->只适用于FHYS
+                'KeyManage' => 'false',
+                'KeyAuth' => 'false',
+                'KeyHistory' => 'false',
+                //纤芯管理
+                'RTUManage' => 'false',
+                'OTDRManage' => 'false'),
+            'actionauth'=>array(
+                'UserNew' => 'false',
+                'UserMod' => 'false',
+                'UserDel' => 'false',
+                'PGNew' => 'false',
+                'PGMod' => 'false',
+                'PGDel' => 'false',
+                'ProjNew' => 'false',
+                'ProjMod' => 'false',
+                'ProjDel' => 'false',
+                'PointNew' => 'false',
+                'PointMod' => 'false',
+                'PointDel' => 'false',
+                'DevNew' => 'false',
+                'DevMod' => 'false',
+                'DevDel' => 'false',
+                'KeyNew' => 'false',
+                'KeyMod' => 'false',
+                'KeyDel' => 'false',
+                'OpenLock' => 'false',
+                'KeyAuthNew' => 'false',
+                'KeyGrant' => 'false'
+            ),
+            'query' => 'false',
+            'mod' => 'false'),
+        MFUN_USER_GRADE_LEVEL_3 => array(
+            'webauth'=>array(
+                //登录屏保
+                'menu_user_profile' => 'false',
+                //系统管理
+                'UserManage' => 'false',
+                'ParaManage' => 'false',
+                'ExportTableManage' => 'false',
+                'SoftwareLoadManage' =>'false',
+                //项目管理
+                'PGManage' => 'false',
+                'ProjManage' => 'false',
+                'MPManage' => 'false',
+                'DevManage' => 'false',
+                //测量管理
+                'MPMonitor' => 'false',
+                'MPStaticMonitorTable' => 'false',
+                'MPMonitorCard' => 'false',
+                //告警管理
+                'WarningCheck' => 'false',
+                'WarningHandle' => 'false',
+                //性能管理
+                'AuditTarget' => 'false',
+                'AuditStability' => 'false',
+                'AuditAvailability' => 'false',
+                'AuditError' => 'false',
+                'AuditQuality' => 'false',
+                //仪器操作
+                'InstConf' => 'false',
+                'InstRead' => 'false',
+                'InstDesign' => 'false',
+                'InstControl' => 'false',
+                'InstSnapshot' => 'false',
+                'InstVideo' => 'false',
+                //地理环境管理
+                'GeoInfoQuery' => 'false',
+                'GeoTrendAnalysis' => 'false',
+                'GeoDisaterForecast' => 'false',
+                'GeoEmergencyDirect' => 'false',
+                'GeoDiffusionAnalysis' => 'false',
+                //广告和门户
+                'ADConf' => 'false',
+                'WEBConf' => 'false',
+                //钥匙管理  ->只适用于FHYS
+                'KeyManage' => 'false',
+                'KeyAuth' => 'false',
+                'KeyHistory' => 'false',
+                //纤芯管理
+                'RTUManage' => 'false',
+                'OTDRManage' => 'false'),
+            'actionauth'=>array(
+                'UserNew' => 'false',
+                'UserMod' => 'false',
+                'UserDel' => 'false',
+                'PGNew' => 'false',
+                'PGMod' => 'false',
+                'PGDel' => 'false',
+                'ProjNew' => 'false',
+                'ProjMod' => 'false',
+                'ProjDel' => 'false',
+                'PointNew' => 'false',
+                'PointMod' => 'false',
+                'PointDel' => 'false',
+                'DevNew' => 'false',
+                'DevMod' => 'false',
+                'DevDel' => 'false',
+                'KeyNew' => 'false',
+                'KeyMod' => 'false',
+                'KeyDel' => 'false',
+                'OpenLock' => 'false',
+                'KeyAuthNew' => 'false',
+                'KeyGrant' => 'false'
+            ),
+            'query' => 'false',
+            'mod' => 'false'),
+        MFUN_USER_GRADE_LEVEL_4 => array(
+            'webauth'=>array(
+                //登录屏保
+                'menu_user_profile' => 'false',
+                //系统管理
+                'UserManage' => 'false',
+                'ParaManage' => 'false',
+                'ExportTableManage' => 'false',
+                'SoftwareLoadManage' =>'false',
+                //项目管理
+                'PGManage' => 'false',
+                'ProjManage' => 'false',
+                'MPManage' => 'false',
+                'DevManage' => 'false',
+                //测量管理
+                'MPMonitor' => 'false',
+                'MPStaticMonitorTable' => 'false',
+                'MPMonitorCard' => 'false',
+                //告警管理
+                'WarningCheck' => 'false',
+                'WarningHandle' => 'false',
+                //性能管理
+                'AuditTarget' => 'false',
+                'AuditStability' => 'false',
+                'AuditAvailability' => 'false',
+                'AuditError' => 'false',
+                'AuditQuality' => 'false',
+                //仪器操作
+                'InstConf' => 'false',
+                'InstRead' => 'false',
+                'InstDesign' => 'false',
+                'InstControl' => 'false',
+                'InstSnapshot' => 'false',
+                'InstVideo' => 'false',
+                //地理环境管理
+                'GeoInfoQuery' => 'false',
+                'GeoTrendAnalysis' => 'false',
+                'GeoDisaterForecast' => 'false',
+                'GeoEmergencyDirect' => 'false',
+                'GeoDiffusionAnalysis' => 'false',
+                //广告和门户
+                'ADConf' => 'false',
+                'WEBConf' => 'false',
+                //钥匙管理  ->只适用于FHYS
+                'KeyManage' => 'false',
+                'KeyAuth' => 'false',
+                'KeyHistory' => 'false',
+                //纤芯管理
+                'RTUManage' => 'false',
+                'OTDRManage' => 'false'),
+            'actionauth'=>array(
+                'UserNew' => 'false',
+                'UserMod' => 'false',
+                'UserDel' => 'false',
+                'PGNew' => 'false',
+                'PGMod' => 'false',
+                'PGDel' => 'false',
+                'ProjNew' => 'false',
+                'ProjMod' => 'false',
+                'ProjDel' => 'false',
+                'PointNew' => 'false',
+                'PointMod' => 'false',
+                'PointDel' => 'false',
+                'DevNew' => 'false',
+                'DevMod' => 'false',
+                'DevDel' => 'false',
+                'KeyNew' => 'false',
+                'KeyMod' => 'false',
+                'KeyDel' => 'false',
+                'OpenLock' => 'false',
+                'KeyAuthNew' => 'false',
+                'KeyGrant' => 'false'
+            ),
+            'query' => 'false',
+            'mod' => 'false'),
+    );
+    //构造函数，根据不同项目初始化权限配置.默认都为false，不同项目根据需要修改为true
+    public function __construct()
+    {
+        if (MFUN_CURRENT_WORKING_PROGRAM_NAME_UNIQUE == MFUN_WORKING_PROGRAM_NAME_UNIQUE_TESTMODE)
+        {
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['webauth']['UserManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['webauth']['ExportTableManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['webauth']['PGManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['webauth']['ProjManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['webauth']['MPManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['webauth']['DevManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['webauth']['MPMonitor'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['webauth']['MPStaticMonitorTable'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['webauth']['WarningCheck'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['webauth']['WarningHandle'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['webauth']['AuditStability'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['webauth']['KeyManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['webauth']['KeyAuth'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['webauth']['KeyHistory'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['webauth']['RTUManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['webauth']['OTDRManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['actionauth']['UserNew'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['actionauth']['UserMod'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['actionauth']['UserDel'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['actionauth']['PGNew'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['actionauth']['PGMod'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['actionauth']['PGDel'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['actionauth']['ProjNew'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['actionauth']['ProjMod'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['actionauth']['ProjDel'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['actionauth']['PointNew'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['actionauth']['PointMod'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['actionauth']['PointDel'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['actionauth']['DevNew'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['actionauth']['DevMod'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['actionauth']['DevDel'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['actionauth']['KeyNew'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['actionauth']['KeyMod'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['actionauth']['KeyDel'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['actionauth']['OpenLock'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['actionauth']['KeyAuthNew'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['actionauth']['KeyGrant'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['query'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['mod'] = 'true';
+
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['webauth']['UserManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['webauth']['PGManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['webauth']['ProjManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['webauth']['MPManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['webauth']['DevManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['webauth']['MPMonitor'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['webauth']['MPStaticMonitorTable'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['webauth']['WarningCheck'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['webauth']['WarningHandle'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['webauth']['AuditStability'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['webauth']['KeyManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['webauth']['KeyAuth'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['webauth']['KeyHistory'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['webauth']['RTUManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['webauth']['OTDRManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['actionauth']['UserNew'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['actionauth']['UserMod'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['actionauth']['PGNew'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['actionauth']['PGMod'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['actionauth']['ProjNew'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['actionauth']['ProjMod'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['actionauth']['PointNew'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['actionauth']['PointMod'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['actionauth']['DevNew'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['actionauth']['DevMod'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['actionauth']['KeyNew'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['actionauth']['KeyMod'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['actionauth']['OpenLock'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['actionauth']['KeyAuthNew'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['actionauth']['KeyGrant'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['query'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['mod'] = 'true';
+
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_3]['webauth']['UserManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_3]['webauth']['PGManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_3]['webauth']['ProjManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_3]['webauth']['MPManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_3]['webauth']['DevManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_3]['webauth']['MPMonitor'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_3]['webauth']['MPStaticMonitorTable'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_3]['webauth']['WarningCheck'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_3]['webauth']['WarningHandle'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_3]['webauth']['AuditStability'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_3]['webauth']['KeyManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_3]['webauth']['KeyAuth'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_3]['webauth']['KeyHistory'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_3]['webauth']['RTUManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_3]['webauth']['OTDRManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_3]['actionauth']['UserNew'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_3]['actionauth']['PGNew'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_3]['actionauth']['ProjNew'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_3]['actionauth']['PointNew'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_3]['actionauth']['DevNew'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_3]['actionauth']['KeyNew'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_3]['actionauth']['OpenLock'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_3]['actionauth']['KeyAuthNew'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_3]['actionauth']['KeyGrant'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_3]['query'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_3]['mod'] = 'true';
+
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_4]['webauth']['UserManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_4]['webauth']['PGManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_4]['webauth']['ProjManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_4]['webauth']['MPManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_4]['webauth']['DevManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_4]['webauth']['MPMonitor'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_4]['webauth']['MPStaticMonitorTable'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_4]['webauth']['WarningCheck'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_4]['webauth']['WarningHandle'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_4]['webauth']['AuditStability'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_4]['webauth']['KeyManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_4]['webauth']['KeyAuth'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_4]['webauth']['KeyHistory'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_4]['webauth']['RTUManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_4]['webauth']['OTDRManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_4]['query'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_4]['mod'] = 'false';
+        }
+        elseif (MFUN_CURRENT_WORKING_PROGRAM_NAME_UNIQUE == MFUN_WORKING_PROGRAM_NAME_UNIQUE_AQYC)
+        {
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['webauth']['UserManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['webauth']['ExportTableManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['webauth']['PGManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['webauth']['ProjManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['webauth']['MPManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['webauth']['DevManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['webauth']['MPMonitor'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['webauth']['MPStaticMonitorTable'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['webauth']['WarningCheck'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['webauth']['WarningHandle'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['webauth']['AuditStability'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['actionauth']['UserNew'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['actionauth']['UserMod'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['actionauth']['UserDel'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['actionauth']['PGNew'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['actionauth']['PGMod'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['actionauth']['PGDel'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['actionauth']['ProjNew'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['actionauth']['ProjMod'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['actionauth']['ProjDel'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['actionauth']['PointNew'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['actionauth']['PointMod'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['actionauth']['PointDel'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['actionauth']['DevNew'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['actionauth']['DevMod'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['actionauth']['DevDel'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['query'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['mod'] = 'true';
+
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['webauth']['UserManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['webauth']['ProjManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['webauth']['MPManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['webauth']['DevManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['webauth']['MPMonitor'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['webauth']['MPStaticMonitorTable'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['webauth']['WarningCheck'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['webauth']['WarningHandle'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['webauth']['AuditStability'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['actionauth']['UserNew'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['actionauth']['UserMod'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['actionauth']['PGNew'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['actionauth']['PGMod'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['actionauth']['ProjNew'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['actionauth']['ProjMod'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['actionauth']['PointNew'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['actionauth']['PointMod'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['actionauth']['DevNew'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['actionauth']['DevMod'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['query'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['mod'] = 'true';
+
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_3]['webauth']['UserManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_3]['webauth']['ProjManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_3]['webauth']['MPManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_3]['webauth']['DevManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_3]['webauth']['MPMonitor'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_3]['webauth']['MPStaticMonitorTable'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_3]['webauth']['WarningCheck'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_3]['webauth']['WarningHandle'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_3]['webauth']['AuditStability'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_3]['actionauth']['UserNew'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_3]['actionauth']['PGNew'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_3]['actionauth']['ProjNew'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_3]['actionauth']['PointNew'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_3]['actionauth']['DevNew'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_3]['query'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_3]['mod'] = 'true';
+
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_4]['webauth']['UserManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_4]['webauth']['ProjManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_4]['webauth']['MPManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_4]['webauth']['DevManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_4]['webauth']['MPMonitor'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_4]['webauth']['MPStaticMonitorTable'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_4]['webauth']['WarningCheck'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_4]['webauth']['WarningHandle'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_4]['webauth']['AuditStability'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_4]['query'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_4]['mod'] = 'false';
+        }
+        elseif (MFUN_CURRENT_WORKING_PROGRAM_NAME_UNIQUE == MFUN_WORKING_PROGRAM_NAME_UNIQUE_FHYS)
+        {
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['webauth']['UserManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['webauth']['ExportTableManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['webauth']['ProjManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['webauth']['MPManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['webauth']['DevManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['webauth']['KeyManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['webauth']['KeyAuth'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['webauth']['KeyHistory'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['webauth']['MPMonitor'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['webauth']['MPStaticMonitorTable'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['webauth']['WarningCheck'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['webauth']['WarningHandle'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['webauth']['RTUManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['webauth']['OTDRManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['actionauth']['UserNew'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['actionauth']['UserMod'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['actionauth']['UserDel'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['actionauth']['ProjNew'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['actionauth']['ProjMod'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['actionauth']['ProjDel'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['actionauth']['PointNew'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['actionauth']['PointMod'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['actionauth']['PointDel'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['actionauth']['DevNew'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['actionauth']['DevMod'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['actionauth']['DevDel'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['actionauth']['KeyNew'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['actionauth']['KeyMod'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['actionauth']['KeyDel'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['actionauth']['OpenLock'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['actionauth']['KeyAuthNew'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['actionauth']['KeyGrant'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['query'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['mod'] = 'true';
+
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['webauth']['UserManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['webauth']['ExportTableManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['webauth']['ProjManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['webauth']['MPManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['webauth']['DevManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['webauth']['KeyManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['webauth']['KeyAuth'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['webauth']['KeyHistory'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['webauth']['MPMonitor'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['webauth']['MPStaticMonitorTable'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['webauth']['WarningCheck'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['webauth']['WarningHandle'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['webauth']['RTUManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['webauth']['OTDRManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['actionauth']['UserNew'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['actionauth']['UserMod'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['actionauth']['UserDel'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['actionauth']['ProjNew'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['actionauth']['ProjMod'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['actionauth']['ProjDel'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['actionauth']['PointNew'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['actionauth']['PointMod'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['actionauth']['PointDel'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['actionauth']['DevNew'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['actionauth']['DevMod'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['actionauth']['DevDel'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['actionauth']['KeyNew'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['actionauth']['KeyMod'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['actionauth']['KeyDel'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['actionauth']['OpenLock'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['actionauth']['KeyAuthNew'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['actionauth']['KeyGrant'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['query'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['mod'] = 'true';
+
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_3]['webauth']['UserManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_3]['webauth']['ProjManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_3]['webauth']['MPManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_3]['webauth']['DevManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_3]['webauth']['KeyManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_3]['webauth']['KeyAuth'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_3]['webauth']['KeyHistory'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_3]['webauth']['MPMonitor'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_3]['webauth']['MPStaticMonitorTable'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_3]['webauth']['WarningCheck'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_3]['webauth']['WarningHandle'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_3]['webauth']['RTUManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_3]['webauth']['OTDRManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_3]['actionauth']['OpenLock'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_3]['query'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_3]['mod'] = 'true';
+
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_4]['webauth']['UserManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_4]['webauth']['ProjManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_4]['webauth']['MPManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_4]['webauth']['DevManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_4]['webauth']['KeyManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_4]['webauth']['KeyAuth'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_4]['webauth']['KeyHistory'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_4]['webauth']['MPMonitor'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_4]['webauth']['MPStaticMonitorTable'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_4]['webauth']['WarningCheck'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_4]['webauth']['WarningHandle'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_4]['webauth']['RTUManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_4]['webauth']['OTDRManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_4]['actionauth']['OpenLock'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_4]['query'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_4]['mod'] = 'true';
+        }
+    }
+
     //通过授权级别获取详细授权菜单信息
     public static function mfun_vm_getUserGrade($gradeIndex)
     {
-
         if ($gradeIndex >= 0 AND $gradeIndex <=4) {
             return self::$mfunUserGradeArrayConst[$gradeIndex];
         }else {

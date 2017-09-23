@@ -89,8 +89,13 @@ define("MFUN_HCU_MODBUS_TIMES_READ_ACK", 0x8B);
  *************************************************************************************/
 //定义数据保存不删的时间长度
 if (MFUN_CURRENT_WORKING_PROGRAM_NAME_UNIQUE == MFUN_WORKING_PROGRAM_NAME_UNIQUE_AQYC){
-    define ("MFUN_HCU_DATA_SAVE_DURATION_IN_DAYS", 90);
-    define ("MFUN_AQYC_DATA_SAVE_DURATION_IN_DAYS", 180);
+    define ("MFUN_HCU_DATA_SAVE_DURATION_BY_PROJ", 180);
+    define ("MFUN_HCU_USER_NAME_GRADE_0", "管理员");
+    define ("MFUN_HCU_USER_NAME_GRADE_1", "高级用户");
+    define ("MFUN_HCU_USER_NAME_GRADE_2", "一级用户");
+    define ("MFUN_HCU_USER_NAME_GRADE_3", "二级用户");
+    define ("MFUN_HCU_USER_NAME_GRADE_4", "三级用户");
+    define ("MFUN_HCU_USER_NAME_GRADE_N", "用户等级未知");
 }
 
 

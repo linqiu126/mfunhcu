@@ -275,7 +275,7 @@ class classDbiL3apF2cm
         $projlist = array();
         if($result->num_rows>0)
         {
-            while($row = $result->fetch_array())
+            while(($result != false) && (($row = $result->fetch_array()) > 0))
             {
                 $authcode = $row['auth_code'];
                 $fromat = substr($authcode, 0, MFUN_L3APL_F2CM_CODE_FORMAT_LEN);
@@ -327,7 +327,7 @@ class classDbiL3apF2cm
 
             $query_str = "SELECT * FROM `t_l3f3dm_siteinfo` WHERE `p_code` = '$pcode'";
             $result = $mysqli->query($query_str);
-            while($row = $result->fetch_array())
+            while(($result != false) && (($row = $result->fetch_array()) > 0))
             {
                 $temp = array(
                     'id' => $row['statcode'],
@@ -367,19 +367,19 @@ class classDbiL3apF2cm
         if (($result != false) && (($info = $result->fetch_array()) > 0))
         {
             $user = $info['user'];
-            $grade = $info["grade"];
-            if ($grade == "0")
-                $grade_name = "管理员";
-            elseif ($grade == "1")
-                $grade_name = "高级用户";
-            elseif ($grade == "2")
-                $grade_name = "一级用户";
-            elseif ($grade == "3")
-                $grade_name = "二级用户";
-            elseif ($grade == "4")
-                $grade_name = "三级用户";
+            $grade = intval($info["grade"]);
+            if ($grade == MFUN_USER_GRADE_LEVEL_0)
+                $grade_name = MFUN_HCU_USER_NAME_GRADE_0;
+            elseif ($grade == MFUN_USER_GRADE_LEVEL_1)
+                $grade_name = MFUN_HCU_USER_NAME_GRADE_1;
+            elseif ($grade == MFUN_USER_GRADE_LEVEL_2)
+                $grade_name = MFUN_HCU_USER_NAME_GRADE_2;
+            elseif ($grade == MFUN_USER_GRADE_LEVEL_3)
+                $grade_name = MFUN_HCU_USER_NAME_GRADE_3;
+            elseif ($grade == MFUN_USER_GRADE_LEVEL_4)
+                $grade_name = MFUN_HCU_USER_NAME_GRADE_4;
             else
-                $grade_name = "用户登记未知";
+                $grade_name = MFUN_HCU_USER_NAME_GRADE_N;
 
             $one_row = array();
             array_push($one_row, $info["uid"]);
@@ -396,26 +396,26 @@ class classDbiL3apF2cm
 
 
         //如果是特殊用户则显示所有用户表
-        if ($user == 'admin' OR $user == 'foha')
+        if ($user == 'admin')
         {
             $user_table['data'] = array(); //重新初始化
             $query_str = "SELECT * FROM `t_l3f1sym_account` WHERE 1";
             $result = $mysqli->query($query_str);
             while (($result != false) && (($info = $result->fetch_array()) > 0))
             {
-                $grade = $info["grade"];
-                if ($grade == "0")
-                    $grade_name = "管理员";
-                elseif ($grade == "1")
-                    $grade_name = "高级用户";
-                elseif ($grade == "2")
-                    $grade_name = "一级用户";
-                elseif ($grade == "3")
-                    $grade_name = "二级用户";
-                elseif ($grade == "4")
-                    $grade_name = "三级用户";
+                $grade = intval($info["grade"]);
+                if ($grade == MFUN_USER_GRADE_LEVEL_0)
+                    $grade_name = MFUN_HCU_USER_NAME_GRADE_0;
+                elseif ($grade == MFUN_USER_GRADE_LEVEL_1)
+                    $grade_name = MFUN_HCU_USER_NAME_GRADE_1;
+                elseif ($grade == MFUN_USER_GRADE_LEVEL_2)
+                    $grade_name = MFUN_HCU_USER_NAME_GRADE_2;
+                elseif ($grade == MFUN_USER_GRADE_LEVEL_3)
+                    $grade_name = MFUN_HCU_USER_NAME_GRADE_3;
+                elseif ($grade == MFUN_USER_GRADE_LEVEL_4)
+                    $grade_name = MFUN_HCU_USER_NAME_GRADE_4;
                 else
-                    $grade_name = "用户等级未知";
+                    $grade_name = MFUN_HCU_USER_NAME_GRADE_N;
                 $one_row = array();
                 array_push($one_row, $info["uid"]);
                 array_push($one_row, $info["user"]);
@@ -750,7 +750,7 @@ class classDbiL3apF2cm
             $pcode = $projectlist[$i]['id'];
             $query_str = "SELECT * FROM `t_l3f2cm_projinfo` WHERE `p_code` = '$pcode' ";
             $result = $mysqli->query($query_str);
-            while($row = $result->fetch_array())
+            while(($result != false) && (($row = $result->fetch_array()) > 0))
             {
                 $temp = array(
                     'ProjCode' => $row['p_code'],
@@ -783,7 +783,7 @@ class classDbiL3apF2cm
         $list = array();
         $query_str = "SELECT * FROM `t_l3f2cm_projgroup` WHERE 1 ";
         $result = $mysqli->query($query_str);
-        while($row = $result->fetch_array()) //获得所有项目组列表
+        while(($result != false) && (($row = $result->fetch_array()) > 0)) //获得所有项目组列表
         {
             $temp = array(
                 'id' => $row['pg_code'],
@@ -794,7 +794,7 @@ class classDbiL3apF2cm
 
         $query_str = "SELECT * FROM `t_l3f2cm_projinfo` WHERE 1 ";
         $result = $mysqli->query($query_str);
-        while($row = $result->fetch_array()) //获得所有项目列表
+        while(($result != false) && (($row = $result->fetch_array()) > 0)) //获得所有项目列表
         {
             $temp = array(
                 'id' => $row['p_code'],
@@ -838,7 +838,7 @@ class classDbiL3apF2cm
         $result = $mysqli->query($query_str);
 
         $pglist = array();
-        while($row = $result->fetch_array())
+        while(($result != false) && (($row = $result->fetch_array()) > 0))
         {
             $pgcode = "";
             $authcode = $row['auth_code'];
@@ -877,7 +877,7 @@ class classDbiL3apF2cm
         $result = $mysqli->query($query_str);
 
         $table = array();
-        while($row = $result->fetch_array())
+        while(($result != false) && (($row = $result->fetch_array()) > 0))
         {
             //获得授权的项目组
             $pgcode = "";
@@ -934,7 +934,7 @@ class classDbiL3apF2cm
         $result = $mysqli->query($query_str);
 
         $projlist = array();
-        while($row = $result->fetch_array())
+        while(($result != false) && (($row = $result->fetch_array()) > 0))
         {
             $pcode = $row['p_code'];
             $query_str = "SELECT * FROM `t_l3f2cm_projinfo` WHERE `p_code` = '$pcode'";
@@ -1254,7 +1254,7 @@ class classDbiL3apF2cm
             $pcode = $projectlist[$i]['id'];
             $query_str = "SELECT * FROM `t_l3f3dm_siteinfo` WHERE `p_code` = '$pcode' ";
             $result = $mysqli->query($query_str);
-            while($row = $result->fetch_array())
+            while(($result != false) && (($row = $result->fetch_array()) > 0))
             {
                 $temp = array(
                     'id' => $row['statcode'],
@@ -1283,7 +1283,7 @@ class classDbiL3apF2cm
         $result = $mysqli->query($query_str);
 
         $sitelist = array();
-        while($row = $result->fetch_array())
+        while(($result != false) && (($row = $result->fetch_array()) > 0))
         {
             $temp = array(
                 'id' => $row['statcode'],
@@ -1322,7 +1322,7 @@ class classDbiL3apF2cm
 
             $query_str = "SELECT * FROM `t_l3f3dm_siteinfo` WHERE `p_code` = '$pcode'";
             $result = $mysqli->query($query_str);
-            while($row = $result->fetch_array())
+            while(($result != false) && (($row = $result->fetch_array()) > 0))
             {
                 $temp = array(
                     'StatCode' => $row['statcode'],
@@ -1380,6 +1380,7 @@ class classDbiL3apF2cm
         $altitude = 0;
         $flag_la = "N";
         $flag_lo = "E";
+        $flag_active = MFUN_HCU_SITE_ACTIVE_NO;
 
         $query_str = "SELECT * FROM `t_l3f3dm_siteinfo` WHERE `statcode` = '$statcode'";
         $result = $mysqli->query($query_str);
@@ -1393,8 +1394,8 @@ class classDbiL3apF2cm
         }
         else //不存在，新增
         {
-            $query_str = "INSERT INTO `t_l3f3dm_siteinfo` (statcode,statname,p_code,chargeman,telephone,department,country,street,address,starttime,square,altitude,flag_la,latitude,flag_lo,longitude,memo)
-                                  VALUES ('$statcode','$statname','$pcode','$chargeman','$telephone','$department','$country','$street','$addr','$starttime','$square','$altitude','$flag_la','$latitude','$flag_lo','$longitude','$memo')";
+            $query_str = "INSERT INTO `t_l3f3dm_siteinfo` (statcode,statname,flag_active,p_code,chargeman,telephone,department,country,street,address,starttime,square,altitude,flag_la,latitude,flag_lo,longitude,memo)
+                                  VALUES ('$statcode','$statname','$flag_active','$pcode','$chargeman','$telephone','$department','$country','$street','$addr','$starttime','$square','$altitude','$flag_la','$latitude','$flag_lo','$longitude','$memo')";
             $result = $mysqli->query($query_str);
         }
 
@@ -1451,32 +1452,6 @@ class classDbiL3apF2cm
 
         $mysqli->close();
         return $result;
-    }
-
-    public function dbi_siteinfo_update_gps($devcode, $latitude, $longitude)
-    {
-        //建立连接
-        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
-        if (!$mysqli) {
-            die('Could not connect: ' . mysqli_error($mysqli));
-        }
-        $mysqli->query("SET NAMES utf8");
-
-        $query_str = "SELECT `statcode` FROM `t_l2sdk_iothcu_inventory` WHERE (`devcode` = '$devcode')";
-        $result = $mysqli->query($query_str);
-        if ($result->num_rows>0){
-            $row = $result->fetch_array();
-            $statcode = $row['statcode'];
-            $flag_la = "N";
-            $flag_lo = "E";
-            $query_str = "UPDATE `t_l3f3dm_siteinfo` SET `flag_la` = '$flag_la', `latitude` = '$latitude',`flag_lo` = '$flag_lo',`longitude` = '$longitude' WHERE (`statcode` = '$statcode' )";
-            $resp = $mysqli->query($query_str);
-        }
-        else
-            $resp= false;
-
-        $mysqli->close();
-        return $resp;
     }
 
     //UI DevTable request, 获取全部HCU设备列表信息
@@ -1557,7 +1532,7 @@ class classDbiL3apF2cm
         $result = $mysqli->query($query_str);
 
         $devlist = array();
-        while($row = $result->fetch_array())
+        while(($result != false) && (($row = $result->fetch_array()) > 0))
         {
             $temp = array(
                 'id' => $row['statcode'],
@@ -1667,18 +1642,102 @@ class classDbiL3apF2cm
         if (($result->num_rows)>0) //重复，则覆盖
         {
             $query_str = "UPDATE `t_l2sdk_iothcu_inventory` SET `statcode` = '$statcode',`opendate` = '$starttime',`status` = '$devstatus',`videourl` = '$videourl' WHERE (`devcode` = '$devcode' )";
-            $result = $mysqli->query($query_str);
+            $result1 = $mysqli->query($query_str);
         }
         else //不存在，新增
         {
             $query_str = "INSERT INTO `t_l2sdk_iothcu_inventory` (devcode,statcode,opendate,status,videourl) VALUES ('$devcode','$statcode','$starttime','$devstatus','$videourl')";
-            $result = $mysqli->query($query_str);
+            $result1 = $mysqli->query($query_str);
         }
 
+        //更新站点状态为激活
+        $flag_active = MFUN_HCU_SITE_ACTIVE_YES;
+        $query_str = "UPDATE `t_l3f3dm_siteinfo` SET `flag_active` = '$flag_active'  WHERE (`statcode` = '$statcode' )";
+        $result2 = $mysqli->query($query_str);
+
+        $result = $result1 AND $result2;
         $mysqli->close();
         return $result;
     }
 
+    /*********************************二维码激活相关处理*********************************************/
+
+    public function dbi_qrcode_scan_siteinfo_update_gps($devcode, $latitude, $longitude)
+    {
+        //建立连接
+        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli) {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $mysqli->query("SET NAMES utf8");
+
+        $query_str = "SELECT `statcode` FROM `t_l2sdk_iothcu_inventory` WHERE (`devcode` = '$devcode')";
+        $result = $mysqli->query($query_str);
+        if ($result->num_rows>0){
+            $row = $result->fetch_array();
+            $statcode = $row['statcode'];
+            $flag_la = "N";
+            $flag_lo = "E";
+            $query_str = "UPDATE `t_l3f3dm_siteinfo` SET `flag_la` = '$flag_la', `latitude` = '$latitude',`flag_lo` = '$flag_lo',`longitude` = '$longitude' WHERE (`statcode` = '$statcode' )";
+            $resp = $mysqli->query($query_str);
+        }
+        else
+            $resp= false;
+
+        $mysqli->close();
+        return $resp;
+    }
+
+    public function dbi_qrcode_scan_free_projsite_inquiry()
+    {
+        //建立连接
+        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli) {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $mysqli->query("SET NAMES utf8");
+
+        $flag_active = MFUN_HCU_SITE_ACTIVE_NO;
+        $sitetable = array();
+        $projtable = array();
+        $query_str = "SELECT * FROM `t_l3f3dm_siteinfo` WHERE (`flag_active` = '$flag_active')";
+        $result = $mysqli->query($query_str);
+        while(($result != false) && (($row = $result->fetch_array()) > 0)){
+            $temp = array(
+                'StatCode' => $row['statcode'],
+                'StatName' => $row['statname'],
+                'ProjCode' => $row['p_code'],
+                'ChargeMan' => $row['chargeman'],
+                'Telephone' => $row['telephone'],
+                'Longitude' => $row['longitude'],
+                'Latitude' => $row['latitude'],
+                'Department' => $row['department'],
+                'Address' => $row['address'],
+                'Country' => $row['country'],
+                'Street' => $row['street'],
+                'Square' => $row['square'],
+                'ProStartTime' => $row['starttime'],
+                'Stage' => $row['memo']
+            );
+            array_push($sitetable, $temp);
+
+            $pcode = $row['p_code'];
+            $query_str = "SELECT * FROM `t_l3f2cm_projinfo` WHERE `p_code` = '$pcode'";
+            $resp = $mysqli->query($query_str);
+            if (($resp->num_rows)>0) {
+                $list = $resp->fetch_array();
+                $temp = array(
+                    'id' => $list['p_code'],
+                    'name' => $list['p_name']
+                );
+                array_push($projtable, $temp);
+            }
+        }
+
+        $resp = array('site_list'=>$sitetable, 'proj_list'=>$projtable);
+        $mysqli->close();
+        return $resp;
+    }
     /*********************************智能云锁新增处理 Start*********************************************/
 
     public function dbi_project_userkey_process($uid)
@@ -1694,7 +1753,7 @@ class classDbiL3apF2cm
         $result = $mysqli->query($query_str);
 
         $user_keylist = array();
-        while($row = $result->fetch_array()){
+        while(($result != false) && (($row = $result->fetch_array()) > 0)){
             $keyid = $row['keyid'];
             $keyname = $row['keyname'];
             $p_code = $row['p_code'];
@@ -1723,7 +1782,7 @@ class classDbiL3apF2cm
             $query_str = "SELECT * FROM `t_l3f2cm_fhys_keyinfo` WHERE  `p_code` = '$pcode' ";
             $result = $mysqli->query($query_str);
 
-            while($row = $result->fetch_array()){
+            while(($result != false) && (($row = $result->fetch_array()) > 0)){
                 $keyid = $row['keyid'];
                 $keyname = $row['keyname'];
                 $p_code = $row['p_code'];
@@ -1750,7 +1809,7 @@ class classDbiL3apF2cm
         $result = $mysqli->query($query_str);
 
         $proj_keylist = array();
-        while($row = $result->fetch_array()){
+        while(($result != false) && (($row = $result->fetch_array()) > 0)){
             $keyid = $row['keyid'];
             $keyname = $row['keyname'];
             if($row['keyusername'] != "NULL")
@@ -1848,7 +1907,7 @@ class classDbiL3apF2cm
             $pcode = $projectlist[$i]['id'];
             $query_str = "SELECT * FROM `t_l3f1sym_authlist` WHERE `auth_code` = '$pcode' ";
             $result = $mysqli->query($query_str);
-            while($row = $result->fetch_array()){
+            while(($result != false) && (($row = $result->fetch_array()) > 0)){
                 $keyuserid = $row['uid'];
                 $query_str = "SELECT * FROM `t_l3f1sym_account` WHERE `uid` = '$keyuserid' ";
                 $resp = $mysqli->query($query_str);
@@ -1907,7 +1966,7 @@ class classDbiL3apF2cm
 
             $query_str = "SELECT * FROM `t_l3f2cm_fhys_keyinfo` WHERE `p_code` = '$pcode'";
             $result = $mysqli->query($query_str);
-            while($row = $result->fetch_array())
+            while(($result != false) && (($row = $result->fetch_array()) > 0))
             {
                 $keytype = $row['keytype'];
                 /*
@@ -2068,7 +2127,7 @@ class classDbiL3apF2cm
         {
             $query_str = "SELECT * FROM `t_l3f2cm_fhys_keyauth` WHERE `authobjcode` = '$authobjcode' ";
             $result = $mysqli->query($query_str);
-            while($row = $result->fetch_array()){
+            while(($result != false) && (($row = $result->fetch_array()) > 0)){
                 //初始化
                 $department = "";
                 $keyname = "";
@@ -2115,7 +2174,7 @@ class classDbiL3apF2cm
         else{
             $query_str = "SELECT * FROM `t_l3f2cm_fhys_keyauth` WHERE `authobjcode` = '$authobjcode' ";
             $result = $mysqli->query($query_str);
-            while($row = $result->fetch_array()) {
+            while(($result != false) && (($row = $result->fetch_array()) > 0)) {
                 //初始化
                 $department = "";
                 $keyname = "";
@@ -2175,7 +2234,7 @@ class classDbiL3apF2cm
         $authlist = array();
         $query_str = "SELECT * FROM `t_l3f2cm_fhys_keyauth` WHERE `keyid` = '$keyid' ";
         $result = $mysqli->query($query_str);
-        while($row = $result->fetch_array())
+        while(($result != false) && (($row = $result->fetch_array()) > 0))
         {
             //初始化
             $department = "";
@@ -2358,7 +2417,7 @@ class classDbiL3apF2cm
 
         $query_str = "SELECT * FROM `t_l3f2cm_fhys_rtu` WHERE 1";
         $result = $mysqli->query($query_str);
-        while ($row = $result->fetch_array())
+        while (($result != false) && (($row = $result->fetch_array()) > 0))
         {
             $one_row = array();//初始化
 
@@ -2404,7 +2463,7 @@ class classDbiL3apF2cm
 
         $query_str = "SELECT * FROM `t_l3f2cm_fhys_otdr` WHERE 1";
         $result = $mysqli->query($query_str);
-        while ($row = $result->fetch_array())
+        while (($result != false) && (($row = $result->fetch_array()) > 0))
         {
             $one_row = array();//初始化
 

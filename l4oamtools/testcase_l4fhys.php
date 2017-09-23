@@ -63,7 +63,7 @@ if (TC_L4FHYS_WECHAT == true) {
     $body = array('code' => 'HCU_CL_0301','latitude'=>'31.209018','longitude'=>'121.521740');
     $_GET["body"] = $body;
     $_GET["user"] = "UID771073";
-    require("../l4oamtools/hcuinstall/request.php");
+    require("../l4fhysactive/request.php");
     echo " [TC L4OAMTOOLS: HCU_Lock_Activate END]\n";
 
 }
@@ -71,8 +71,7 @@ if (TC_L4FHYS_WECHAT == true) {
  *                             L4FHYS-UI TEST CASES                                   *
  *************************************************************************************/
 if (TC_L4FHYS_UI == true) {
-    $sessionid = "AvuoVpEGtH";
-
+    $sessionid = "uQBJUG1qSr";
 
     echo " [TC L4FHYS: GetWarningHandleListTable START]\n";
     $_GET["action"] = "GetWarningHandleListTable";
