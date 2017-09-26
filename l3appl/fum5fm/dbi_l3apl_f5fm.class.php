@@ -117,7 +117,7 @@ class classDbiL3apF5fm
         $result = $mysqli->query($query_str);
         $p_list = array();
         $pg_list = array();
-        while($row = $result->fetch_array())
+        while (($result != false) && (($row = $result->fetch_array()) > 0))
         {
             $temp = $row["auth_code"];
             $fromat = substr($temp, 0, MFUN_L3APL_F2CM_CODE_FORMAT_LEN);
@@ -132,7 +132,7 @@ class classDbiL3apF5fm
         {
             $query_str = "SELECT `p_code` FROM `t_l3f2cm_projinfo` WHERE `pg_code` = '$pg_list[$i]'";
             $result = $mysqli->query($query_str);
-            while($row = $result->fetch_array())
+            while (($result != false) && (($row = $result->fetch_array()) > 0))
             {
                 $temp = $row["p_code"];
                 array_push($p_list,$temp);
@@ -146,7 +146,7 @@ class classDbiL3apF5fm
         {
             $query_str = "SELECT `statcode` FROM `t_l3f3dm_siteinfo` WHERE `p_code` = '$p_list[$i]'";
             $result = $mysqli->query($query_str);
-            while($row = $result->fetch_array())
+            while (($result != false) && (($row = $result->fetch_array()) > 0))
             {
                 $temp = $row["statcode"];
                 array_push($auth_list["stat_code"] ,$temp);
@@ -491,7 +491,7 @@ class classDbiL3apF5fm
             $alarmflag = MFUN_HCU_FHYS_ALARM_PROC_FLAG_C;
             $query_str = "SELECT * FROM `t_l3f5fm_fhys_alarmdata` WHERE (`statcode` = '$statcode' AND `alarmflag` != '$alarmflag')"; //授权站点中尚未关闭的告警
             $result = $mysqli->query($query_str);
-            while($row = $result->fetch_array())
+            while (($result != false) && (($row = $result->fetch_array()) > 0))
             {
                 $one_row = array();
                 $alarmflag = $row["alarmflag"];
@@ -538,6 +538,7 @@ class classDbiL3apF5fm
         $result = $mysqli->query($query_str);
         if (($result->num_rows) > 0) {
             $row = $result->fetch_array();
+            $projcode = $row['p_code'];
             $statname = $row["statname"];
             $chargeman = $row["chargeman"];
             $telephone = $row["telephone"];
@@ -553,22 +554,27 @@ class classDbiL3apF5fm
             $resp =$l2sdkIotWxObj->https_request($url);
 
             //微信公众号通知
-            $wx_touser = "oMjZ7v_s-Y5R1fKTvBTzcMl9C65o";
-            $currenttime = date("Y-m-d H:i:s",$timestamp);
-            $template = array('touser' => $wx_touser,
-                            'template_id' => "SAoMGA7GYeavgwpOImgWDs5BaoDMKIT5luASeZ671XM",
-                            'topcolor' => "#7B68EE",
-                            //'url' => "http://weixin.qq.com/download", //详细信息URL
-                            'data' => array('first' => array('value' => "您好，光交箱智能管理平台告警通知!", 'color' => "#743A3A"),
-                                            'keyword1' => array('value' => $statname, 'color' => "#0000FF"),
-                                            'keyword2' => array('value' => $action, 'color' => "#FF0000"),
-                                            'keyword3' => array('value' => $currenttime, 'color' => "#0000FF"),
-                                            'keyword4' => array('value' => $chargeman, 'color' => "#0000FF"),
-                                            'keyword5' => array('value' => $telephone, 'color' => "#0000FF"),
-                                            'remark' => array('value' => "请及时联系相关人员处理该告警", 'color' => "#0000FF")
-                                            )
-                            );
-            $resp = $l2sdkIotWxObj->send_template_message(json_encode($template));
+            //先查询这个有这个项目授权的所有手机微信openid
+            $key_type = MFUN_L3APL_F2CM_KEY_TYPE_WECHAT;
+            $query_str = "SELECT `hwcode` FROM `t_l3f2cm_fhys_keyinfo` WHERE (`p_code` = '$projcode' AND `keytype` = '$key_type')";
+            $result = $mysqli->query($query_str);
+            while (($result != false) && (($row = $result->fetch_array()) > 0)){
+                $wx_touser = $row['hwcode'];
+                $currenttime = date("Y-m-d H:i:s", $timestamp);
+                $template = array('touser' => $wx_touser,
+                                'template_id' => "SAoMGA7GYeavgwpOImgWDs5BaoDMKIT5luASeZ671XM",
+                                'topcolor' => "#7B68EE",
+                                //'url' => "http://weixin.qq.com/download", //详细信息URL
+                                'data' => array('first' => array('value' => "您好，光交箱智能管理平台告警通知!", 'color' => "#743A3A"),
+                                    'keyword1' => array('value' => $statname, 'color' => "#0000FF"),
+                                    'keyword2' => array('value' => $action, 'color' => "#FF0000"),
+                                    'keyword3' => array('value' => $currenttime, 'color' => "#0000FF"),
+                                    'keyword4' => array('value' => $chargeman, 'color' => "#0000FF"),
+                                    'keyword5' => array('value' => $telephone, 'color' => "#0000FF"),
+                                    'remark' => array('value' => "请及时联系相关人员处理该告警", 'color' => "#0000FF"))
+                                );
+                $resp = $l2sdkIotWxObj->send_template_message(json_encode($template, JSON_UNESCAPED_UNICODE));
+            }
 
             $alarmflag = MFUN_HCU_FHYS_ALARM_PROC_FLAG_Y;
             $alarmproc = $currenttime . ":发送信息（".$action."）到手机".$mobile;

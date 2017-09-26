@@ -88,10 +88,11 @@ class classTaskL3wxOprFhys
         if (isset($body["code"])) $openid = $body["code"]; else  $openid = "";
         if (isset($body["username"])) $username = $body["username"]; else  $username = "";
         if (isset($body["password"])) $password = $body["password"]; else  $password = "";
+        if (isset($body["mobile"])) $mobile = $body["mobile"]; else  $mobile = "";
 
         if(!empty($openid)){
             $l3wxOprFhysDbObj = new classDbiL3wxOprFhys(); //初始化一个UI DB对象
-            $bindinfo = $l3wxOprFhysDbObj->dbi_fhyswechat_userbind($openid,$username,$password);
+            $bindinfo = $l3wxOprFhysDbObj->dbi_fhyswechat_userbind($openid,$username,$password,$mobile);
             if($bindinfo['usercheck'] == true){
                 $userinfo = array('username'=>$bindinfo['username'],'userid'=>$bindinfo['userid']);
                 $retval=array('status'=>'true','auth'=>'true','ret'=>$userinfo,'msg'=>$bindinfo['msg']);

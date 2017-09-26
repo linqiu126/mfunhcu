@@ -54,7 +54,7 @@ class classDbiL3wxOprFhys
         return $userinfo;
     }
 
-    public function dbi_fhyswechat_userbind($openid,$username,$password)
+    public function dbi_fhyswechat_userbind($openid,$username,$password,$mobile)
     {
         //建立连接
         $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
@@ -102,10 +102,10 @@ class classDbiL3wxOprFhys
             $i = 0;
             $keytype = MFUN_L3APL_F2CM_KEY_TYPE_WECHAT;
             $keystatus = MFUN_HCU_FHYS_KEY_VALID; //Key授予用户,启用
-            $memo = "微信虚拟钥匙，已启用绑定用户";
+            $memo = "新建微信虚拟钥匙，请授权";
             while ($i < count($projlist)){
                 $keyid = MFUN_L3APL_F2CM_KEY_PREFIX.$this->getRandomKeyid(MFUN_L3APL_F2CM_KEY_ID_LEN);  //KEYID的分配机制将来要重新考虑，避免重复
-                $keyname = $username."微信钥匙-".$i;
+                $keyname = "微信钥匙[".$mobile."]";
                 $pcode = $projlist[$i];
                 $query_str = "INSERT INTO `t_l3f2cm_fhys_keyinfo` (keyid,keyname,p_code,keyuserid,keyusername,keystatus,keytype,hwcode,memo)
                                       VALUES ('$keyid','$keyname','$pcode','$userid','$username','$keystatus','$keytype','$openid','$memo')";
