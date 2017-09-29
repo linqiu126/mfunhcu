@@ -71,21 +71,31 @@ switch ($key)
 
     case "HCU_Lock_Activate": //Open a lock
         $body=$payload["body"];
-        $devcode=$body["code"];
+        $devCode=$body["code"];
+        $statCode=$body["StatCode"];
         $latitude=(string)($body["latitude"]*1000000);
         $longitude=(string)($body["longitude"]*1000000);
-        //更新站点GPRS地址
-        $dbiL3apF2cmObj = new classDbiL3apF2cm(); //初始化一个UI DB对象
-        $result = $dbiL3apF2cmObj->dbi_qrcode_scan_siteinfo_update_gps($devcode, $latitude, $longitude);
-        //生成设备信息表，检查二维码是否合法，并关联相应站点
 
+        //先到小慧云后台检查二维码是否合法
+        $dbiL3apF2cmObj = new classDbiL3apF2cm(); //初始化一个UI DB对象
+        $result = $dbiL3apF2cmObj->dbi_qrcode_scan_newcode_check($devCode);
+
+        //如果二维码不合法，直接返回
+        if ($result == false){
+            $retval=array('status'=>'false','auth'=>'true','msg'=>'二维码不合法');
+            $jsonencode = _encode($retval);
+            echo $jsonencode;
+            return false;
+        }
+
+        //如果合法，生成设备信息表，关联相应站点，并更新站点GPRS地址
+        $result = $dbiL3apF2cmObj->dbi_qrcode_scan_newcode_add($devCode, $statCode, $latitude, $longitude);
+
+        //保存log
         $loggerObj = new classApiL1vmFuncCom();
         $log_time = date("Y-m-d H:i:s", time());
-        $log_content = $devcode."R:Latitude=".$latitude.";Longitude=".$longitude."Result=".$result;
+        $log_content = $devCode."R:Latitude=".$latitude.";Longitude=".$longitude."Result=".$result;
         $loggerObj->logger("MFUN_TASK_ID_L4OAMTOOLS", "HCU_Lock_Activate", $log_time, $log_content);
-
-        $dbiL2sdkIotcomObj = new classDbiL2sdkIotcom();
-        $statcode = $dbiL2sdkIotcomObj->dbi_hcuDevice_valid_device($devcode);
 
         $pic_num=_getfilecounts(MFUN_HCU_FHYS_PIC_UPLOAD_DIR.$statcode.'/'); //查询该站点是否上传照片
         //已经上传超过2张照片
@@ -101,6 +111,5 @@ switch ($key)
 	default:
 	    break;
 }
-
 
 ?>

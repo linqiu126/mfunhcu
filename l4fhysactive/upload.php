@@ -1,6 +1,6 @@
 <?php
 	$id= $_REQUEST["id"];
-	$upload_path="../avorion/upload/";
+	$upload_path="/var/www/html/avorion/upload/";
 	function _encode($arr)
     {
       $na = array();
@@ -20,8 +20,8 @@
       }
       return urlencode($elem);
     }
-	$num=count($_FILES['file-zh']['name']);   //�����ϴ��ļ��ĸ���
-	if(!file_exists('./upload/'.$id)) {mkdir('./upload/'.$id.'/');}
+	$num=count($_FILES['file-zh']['name']);
+	if(!file_exists($upload_path.$id)) {mkdir($upload_path.$id.'/',0777,true);}
 	for($i=0;$i<$num;$i++)
 	{
 

@@ -386,6 +386,50 @@ class classTaskL3aplF2cm
         return $retval;
     }
 
+    function func_point_get_activeinfo($action, $user, $body)
+    {
+        if (isset($body["StatCode"])) $statCode = $body["StatCode"]; else  $statCode = "";
+
+        $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
+        $usercheck = $uiF1symDbObj->dbi_user_authcheck($action, $user);
+        if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
+            $uiF2cmDbObj = new classDbiL3apF2cm(); //初始化一个UI DB对象
+            $status = $uiF2cmDbObj->dbi_point_get_activeinfo($statCode);
+            if(!empty($status)){
+                $ret = array('actived'=>$status);
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$ret,'msg'=>"获取站点激活信息成功");
+            }
+            else{
+                $ret = array('actived'=>$status);
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$ret,'msg'=>"获取站点激活信息失败");
+            }
+        }
+        else
+            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
+
+        return $retval;
+    }
+
+    function func_point_set_activeinfo($action, $user, $body)
+    {
+        if (isset($body["StatCode"])) $statCode = $body["StatCode"]; else  $statCode = "";
+
+        $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
+        $usercheck = $uiF1symDbObj->dbi_user_authcheck($action, $user);
+        if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
+            $uiF2cmDbObj = new classDbiL3apF2cm(); //初始化一个UI DB对象
+            $result = $uiF2cmDbObj->dbi_point_set_activeinfo($statCode);
+            if($result)
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"设置站点激活状态成功");
+            else
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"设置站点激活状态失败");
+        }
+        else
+            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>$usercheck['msg']);
+
+        return $retval;
+    }
+
     function func_point_new_process($action, $user, $body)
     {
         $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
@@ -1031,6 +1075,16 @@ class classTaskL3aplF2cm
 
             case MSG_ID_L4AQYCUI_TO_L3F2_POINTTABLE://功能Point Table
                 $resp = $this->func_point_table_process($action, $user, $body);
+                $project = MFUN_PRJ_HCU_AQYCUI;
+                break;
+
+            case MSG_ID_L4AQYCUI_TO_L3F2_POINTACTIVEINFO: //功能GetStationActiveInfo
+                $resp = $this->func_point_get_activeinfo($action, $user, $body);
+                $project = MFUN_PRJ_HCU_AQYCUI;
+                break;
+
+            case MSG_ID_L4FHYSUI_TO_L3F2_POINTACTIVESET: //功能StationActive
+                $resp = $this->func_point_set_activeinfo($action, $user, $body);
                 $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 

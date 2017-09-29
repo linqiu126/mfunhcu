@@ -174,14 +174,14 @@ class classDbiL3wxOprFhys
                                 $dev_status = "运行中";
 
                             //更新门运行状态
-                            if($row["door_1"] == HUITP_IEID_UNI_DOOR_STATE_OPEN)
+                            if($status_row["door_1"] == HUITP_IEID_UNI_DOOR_STATE_OPEN)
                                 $door_1 = "正常打开";
-                            elseif($row["door_1"] == HUITP_IEID_UNI_DOOR_STATE_CLOSE)
+                            elseif($status_row["door_1"] == HUITP_IEID_UNI_DOOR_STATE_CLOSE)
                                 $door_1 = "正常关闭";
-                            elseif($row["door_1"] == HUITP_IEID_UNI_DOOR_STATE_NULL)
+                            elseif($status_row["door_1"] == HUITP_IEID_UNI_DOOR_STATE_NULL)
                                 $door_1 = "未安装";
 
-                            if(($row["door_1"] == HUITP_IEID_UNI_DOOR_STATE_OPEN) AND ($row["reporttype"] == HUITP_IEID_UNI_CCL_REPORT_TYPE_FAULT_EVENT))
+                            if(($status_row["door_1"] == HUITP_IEID_UNI_DOOR_STATE_OPEN) AND ($status_row["reporttype"] == HUITP_IEID_UNI_CCL_REPORT_TYPE_FAULT_EVENT))
                                 $door_1 = "未授权打开";
 
                             if ($status_row["door_2"] == HUITP_IEID_UNI_DOOR_STATE_OPEN)
@@ -191,7 +191,7 @@ class classDbiL3wxOprFhys
                             elseif ($status_row["door_2"] == HUITP_IEID_UNI_DOOR_STATE_NULL)
                                 $door_2 = "未安装";
 
-                            if(($row["door_2"] == HUITP_IEID_UNI_DOOR_STATE_OPEN) AND ($row["reporttype"] == HUITP_IEID_UNI_CCL_REPORT_TYPE_FAULT_EVENT))
+                            if(($status_row["door_2"] == HUITP_IEID_UNI_DOOR_STATE_OPEN) AND ($status_row["reporttype"] == HUITP_IEID_UNI_CCL_REPORT_TYPE_FAULT_EVENT))
                                 $door_2 = "未授权打开";
 
                             //更新锁运行状态
@@ -202,7 +202,7 @@ class classDbiL3wxOprFhys
                             elseif ($status_row["lock_1"] == HUITP_IEID_UNI_LOCK_STATE_NULL)
                                 $lock_1 = "未安装";
 
-                            if(($row["lock_1"] == HUITP_IEID_UNI_LOCK_STATE_OPEN) AND ($row["reporttype"] == HUITP_IEID_UNI_CCL_REPORT_TYPE_FAULT_EVENT))
+                            if(($status_row["lock_1"] == HUITP_IEID_UNI_LOCK_STATE_OPEN) AND ($status_row["reporttype"] == HUITP_IEID_UNI_CCL_REPORT_TYPE_FAULT_EVENT))
                                 $lock_1 = "未授权打开";
 
                             if ($status_row["lock_2"] == HUITP_IEID_UNI_LOCK_STATE_OPEN)
@@ -212,7 +212,7 @@ class classDbiL3wxOprFhys
                             elseif ($status_row["lock_2"] == HUITP_IEID_UNI_LOCK_STATE_NULL)
                                 $lock_2 = "未安装";
 
-                            if(($row["lock_2"] == HUITP_IEID_UNI_LOCK_STATE_OPEN) AND ($row["reporttype"] == HUITP_IEID_UNI_CCL_REPORT_TYPE_FAULT_EVENT))
+                            if(($status_row["lock_2"] == HUITP_IEID_UNI_LOCK_STATE_OPEN) AND ($status_row["reporttype"] == HUITP_IEID_UNI_CCL_REPORT_TYPE_FAULT_EVENT))
                                 $lock_2 = "未授权打开";
                         }
 
@@ -253,14 +253,14 @@ class classDbiL3wxOprFhys
                                 $dev_status = "运行中";
 
                             //更新门运行状态
-                            if($row["door_1"] == HUITP_IEID_UNI_DOOR_STATE_OPEN)
+                            if($status_row["door_1"] == HUITP_IEID_UNI_DOOR_STATE_OPEN)
                                 $door_1 = "正常打开";
-                            elseif($row["door_1"] == HUITP_IEID_UNI_DOOR_STATE_CLOSE)
+                            elseif($status_row["door_1"] == HUITP_IEID_UNI_DOOR_STATE_CLOSE)
                                 $door_1 = "正常关闭";
-                            elseif($row["door_1"] == HUITP_IEID_UNI_DOOR_STATE_NULL)
+                            elseif($status_row["door_1"] == HUITP_IEID_UNI_DOOR_STATE_NULL)
                                 $door_1 = "未安装";
 
-                            if(($row["door_1"] == HUITP_IEID_UNI_DOOR_STATE_OPEN) AND ($row["reporttype"] == HUITP_IEID_UNI_CCL_REPORT_TYPE_FAULT_EVENT))
+                            if(($status_row["door_1"] == HUITP_IEID_UNI_DOOR_STATE_OPEN) AND ($status_row["reporttype"] == HUITP_IEID_UNI_CCL_REPORT_TYPE_FAULT_EVENT))
                                 $door_1 = "未授权打开";
 
                             if ($status_row["door_2"] == HUITP_IEID_UNI_DOOR_STATE_OPEN)
@@ -270,7 +270,7 @@ class classDbiL3wxOprFhys
                             elseif ($status_row["door_2"] == HUITP_IEID_UNI_DOOR_STATE_NULL)
                                 $door_2 = "未安装";
 
-                            if(($row["door_2"] == HUITP_IEID_UNI_DOOR_STATE_OPEN) AND ($row["reporttype"] == HUITP_IEID_UNI_CCL_REPORT_TYPE_FAULT_EVENT))
+                            if(($status_row["door_2"] == HUITP_IEID_UNI_DOOR_STATE_OPEN) AND ($status_row["reporttype"] == HUITP_IEID_UNI_CCL_REPORT_TYPE_FAULT_EVENT))
                                 $door_2 = "未授权打开";
 
                             //更新锁运行状态
@@ -281,7 +281,7 @@ class classDbiL3wxOprFhys
                             elseif ($status_row["lock_1"] == HUITP_IEID_UNI_LOCK_STATE_NULL)
                                 $lock_1 = "未安装";
 
-                            if(($row["lock_1"] == HUITP_IEID_UNI_LOCK_STATE_OPEN) AND ($row["reporttype"] == HUITP_IEID_UNI_CCL_REPORT_TYPE_FAULT_EVENT))
+                            if(($status_row["lock_1"] == HUITP_IEID_UNI_LOCK_STATE_OPEN) AND ($status_row["reporttype"] == HUITP_IEID_UNI_CCL_REPORT_TYPE_FAULT_EVENT))
                                 $lock_1 = "未授权打开";
 
                             if ($status_row["lock_2"] == HUITP_IEID_UNI_LOCK_STATE_OPEN)
@@ -291,7 +291,7 @@ class classDbiL3wxOprFhys
                             elseif ($status_row["lock_2"] == HUITP_IEID_UNI_LOCK_STATE_NULL)
                                 $lock_2 = "未安装";
 
-                            if(($row["lock_2"] == HUITP_IEID_UNI_LOCK_STATE_OPEN) AND ($row["reporttype"] == HUITP_IEID_UNI_CCL_REPORT_TYPE_FAULT_EVENT))
+                            if(($status_row["lock_2"] == HUITP_IEID_UNI_LOCK_STATE_OPEN) AND ($status_row["reporttype"] == HUITP_IEID_UNI_CCL_REPORT_TYPE_FAULT_EVENT))
                                 $lock_2 = "未授权打开";
                         }
                         $detailinfo = "站点地址:".$site_row['address']."; 设备状态:".$dev_status."; 门-1:".$door_1."; 门-2:".$door_2."; 锁-1:".$lock_1."; 锁-2:".$lock_2;
@@ -331,7 +331,7 @@ class classDbiL3wxOprFhys
             $row = $result->fetch_array();
             $lock_1 = $row['lock_1'];
             $lock_2 = $row['lock_2'];
-            if ($lock_1 == MFUN_HCU_FHYS_LOCK_OPEN AND $lock_2 == MFUN_HCU_FHYS_LOCK_OPEN)
+            if ($lock_1 == HUITP_IEID_UNI_LOCK_STATE_OPEN AND $lock_2 == HUITP_IEID_UNI_LOCK_STATE_OPEN)
                 $lockstatus = true;
             else
                 $lockstatus = false;

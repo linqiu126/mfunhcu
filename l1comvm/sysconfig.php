@@ -105,6 +105,7 @@ if (isset($_SERVER['SERVER_NAME']))
             define("MFUN_CLOUD_WX", "XHZN_WX"); //微信后台云应用
             //主数据库定义
             //define("MFUN_CLOUD_DBHOST", "h5.aiqiworld.com/myAdmin");    //连接的服务器地址
+            define("MFUN_HOME_DBHOST", "121.40.118.33");    //小慧云HOME服务器地址
             define("MFUN_CLOUD_DBHOST", "127.0.0.1");    //连接的服务器地址
             define("MFUN_CLOUD_DBUSER", "root");     //连接数据库的用户名
             define("MFUN_CLOUD_DBPSW", "bxxhbxxh");        //连接数据库的密码
@@ -141,6 +142,7 @@ if (isset($_SERVER['SERVER_NAME']))
             define("MFUN_CLOUD_WX", "AQ_WX"); //微信后台云应用
             //主数据库定义
             //define("MFUN_CLOUD_DBHOST", "h5.aiqiworld.com/myAdmin");    //连接的服务器地址
+            define("MFUN_HOME_DBHOST", "121.40.118.33");    //小慧云HOME服务器地址
             define("MFUN_CLOUD_DBHOST", "127.0.0.1");    //连接的服务器地址
             define("MFUN_CLOUD_DBUSER", "root");     //连接数据库的用户名
             define("MFUN_CLOUD_DBPSW", "aiqiMySQL@321");        //连接数据库的密码
@@ -176,6 +178,7 @@ if (isset($_SERVER['SERVER_NAME']))
             define("MFUN_CLOUD_WX", "XHZN_WX"); //微信后台云应用
             //主数据库定义
             //define("MFUN_CLOUD_DBHOST", "h5.aiqiworld.com/myAdmin");    //连接的服务器地址
+            define("MFUN_HOME_DBHOST", "121.40.118.33");    //小慧云HOME服务器地址
             define("MFUN_CLOUD_DBHOST", "127.0.0.1");    //连接的服务器地址
             define("MFUN_CLOUD_DBUSER", "root");     //连接数据库的用户名
             define("MFUN_CLOUD_DBPSW", "bxxhbxxh");        //连接数据库的密码
@@ -384,6 +387,7 @@ if (isset($_SERVER['SERVER_NAME']))
             define("MFUN_CLOUD_HCU", "LOCAL_HCU"); //HCU后台云应用
             define("MFUN_CLOUD_WX", "LOCAL_WX"); //微信后台云应用
             //主数据库定义
+            define("MFUN_HOME_DBHOST", "121.40.118.33");    //小慧云HOME服务器地址
             define("MFUN_CLOUD_DBHOST", "localhost");    //连接的服务器地址
             define("MFUN_CLOUD_DBUSER", "TestUser");     //连接数据库的用户名
             define("MFUN_CLOUD_DBPSW", "123456");        //连接数据库的密码
@@ -418,6 +422,7 @@ if (isset($_SERVER['SERVER_NAME']))
             define("MFUN_CLOUD_HCU", "XHZN_HCU"); //HCU后台云应用
             define("MFUN_CLOUD_WX", "PC_WX"); //微信后台云应用
             //主数据库定义
+            define("MFUN_HOME_DBHOST", "121.40.118.33");    //小慧云HOME服务器地址
             define("MFUN_CLOUD_DBHOST", "localhost");    //连接的服务器地址
             define("MFUN_CLOUD_DBUSER", "TestUser");     //连接数据库的用户名
             define("MFUN_CLOUD_DBPSW", "123456");        //连接数据库的密码
@@ -456,6 +461,7 @@ if (isset($_SERVER['SERVER_NAME']))
     define("MFUN_CLOUD_HCU", "XHZN_HCU"); //HCU后台云应用
     define("MFUN_CLOUD_WX", "PC_WX"); //微信后台云应用
     //主数据库定义
+    define("MFUN_HOME_DBHOST", "121.40.118.33");    //小慧云HOME服务器地址
     define("MFUN_CLOUD_DBHOST", "localhost");    //连接的服务器地址
     define("MFUN_CLOUD_DBUSER", "TestUser");     //连接数据库的用户名
     define("MFUN_CLOUD_DBPSW", "123456");        //连接数据库的密码

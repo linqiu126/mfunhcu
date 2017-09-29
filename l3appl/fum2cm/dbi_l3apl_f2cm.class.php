@@ -1408,6 +1408,49 @@ class classDbiL3apF2cm
         return $sitetable;
     }
 
+    //UI GetStationActiveInfo,查询站点激活状态
+    public function dbi_point_get_activeinfo($statCode)
+    {
+        //建立连接
+        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli) {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $mysqli->query("SET NAMES utf8");
+
+        $status = '';
+        $query_str = "SELECT * FROM `t_l3f3dm_siteinfo` WHERE `statcode` = '$statCode'";
+        $result = $mysqli->query($query_str);
+        if (($result->num_rows)>0)
+        {
+            $row = $result->fetch_array();
+            if ($row['status'] == MFUN_HCU_SITE_STATUS_CONFIRM)
+                $status = 'true';
+            else
+                $status = 'false';
+        }
+
+        $mysqli->close();
+        return $status;
+    }
+
+    //UI StationActive,确认站点激活状态
+    public function dbi_point_set_activeinfo($statCode)
+    {
+        //建立连接
+        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli) {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $mysqli->query("SET NAMES utf8");
+
+        $status = MFUN_HCU_SITE_STATUS_CONFIRM;
+        $query_str = "UPDATE `t_l3f3dm_siteinfo` SET `status` = '$status' WHERE `statcode` = '$statCode'";
+        $result = $mysqli->query($query_str);
+
+        $mysqli->close();
+        return $result;
+    }
 
     //UI PointNew request,新添加监测点信息
     public function dbi_siteinfo_new($siteinfo)
@@ -1745,7 +1788,35 @@ class classDbiL3apF2cm
 
     /*********************************二维码激活相关处理*********************************************/
 
-    public function dbi_qrcode_scan_siteinfo_update_gps($devcode, $latitude, $longitude)
+    //所有二维码必须要到小慧云服务器 MFUN_HOME_DBHOST 检验合法性
+    public function dbi_qrcode_scan_newcode_check($devCode)
+    {
+        //建立小慧云数据库连接
+        $mysqli = new mysqli(MFUN_HOME_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli) {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $mysqli->query("SET NAMES utf8");
+
+        $validFlag = "Y";
+        $validDate = date("Y-m-d", time());
+        //先查询该设备二维码是否合法,
+        $query_str = "SELECT * FROM `t_l3f10oam_qrcodeinfo` WHERE (`devcode` = '$devCode')";
+        $result = $mysqli->query($query_str);
+        if ($result->num_rows>0) {
+            //更新二维码启用状态和启用日期
+            $query_str = "UPDATE `t_l3f10oam_qrcodeinfo` SET `validflag` = '$validFlag', `validdate` = '$validDate' WHERE (`devcode` = '$devCode' )";
+            $result = $mysqli->query($query_str);
+            $resp = true;
+        }
+        else
+           $resp = false;
+
+        $mysqli->close();
+        return $resp;
+    }
+
+    public function dbi_qrcode_scan_newcode_add($devCode, $statCode, $latitude, $longitude)
     {
         //建立连接
         $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
@@ -1754,22 +1825,29 @@ class classDbiL3apF2cm
         }
         $mysqli->query("SET NAMES utf8");
 
-        $query_str = "SELECT `statcode` FROM `t_l2sdk_iothcu_inventory` WHERE (`devcode` = '$devcode')";
+        $openDate = date("Y-m-d", time());
+        //添加设备到HCU inventory表
+        $query_str = "SELECT * FROM `t_l2sdk_iothcu_inventory` WHERE (`devcode` = '$devCode')";
         $result = $mysqli->query($query_str);
-        if ($result->num_rows>0){
-            $row = $result->fetch_array();
-            $statcode = $row['statcode'];
-            $flag_la = "N";
-            $flag_lo = "E";
-            $status = MFUN_HCU_SITE_STATUS_ATTACH;
-            $query_str = "UPDATE `t_l3f3dm_siteinfo` SET `status` = '$status', `flag_la` = '$flag_la', `latitude` = '$latitude',`flag_lo` = '$flag_lo',`longitude` = '$longitude' WHERE (`statcode` = '$statcode' )";
-            $resp = $mysqli->query($query_str);
+        if ($result->num_rows > 0) {
+            //更新设备站点绑定关系
+            $query_str = "UPDATE `t_l2sdk_iothcu_inventory` SET `statcode` = '$statCode',`opendate` = '$openDate' (`devcode` = '$devCode' )";
+            $result = $mysqli->query($query_str);
+        } else {
+            //新插入一个设备到HCU inventory表
+            $query_str = "INSERT INTO `t_l2sdk_iothcu_inventory` (devcode,statcode,opendate) VALUES ('$devCode','$statCode','$openDate')";
+            $result = $mysqli->query($query_str);
         }
-        else
-            $resp= false;
+
+        //更新GPS地址到站点表
+        $flag_la = "N";
+        $flag_lo = "E";
+        $status = MFUN_HCU_SITE_STATUS_ATTACH;
+        $query_str = "UPDATE `t_l3f3dm_siteinfo` SET `status` = '$status', `flag_la` = '$flag_la', `latitude` = '$latitude',`flag_lo` = '$flag_lo',`longitude` = '$longitude' WHERE (`statcode` = '$statCode' )";
+        $result = $mysqli->query($query_str);
 
         $mysqli->close();
-        return $resp;
+        return $result;
     }
 
     public function dbi_qrcode_scan_free_projsite_inquiry()
