@@ -166,7 +166,7 @@ class classDbiL2snrWinddir
         $dbiL2snrCommon = new classDbiL2snrCommon();
         $winddirData = hexdec($content[1]['HUITP_IEID_uni_winddir_value']['winddirValue']) & 0xFFFFFFFF;
         $dataFormat =hexdec($content[1]['HUITP_IEID_uni_winddir_value']['dataFormat']) & 0xFF;
-        $winddirValue = $dbiL2snrCommon->dbi_datavalue_convert($dataFormat, $winddirData);
+        $winddirValue = $dbiL2snrCommon->dbi_l2snr_datavalue_convert($dataFormat, $winddirData);
 
         $timeStamp = time();
 

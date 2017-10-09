@@ -32,6 +32,7 @@ if (TC_SOCKET == true) {
     /*******************老的云控制锁项目，消息来自9501端口****************/
     //状态报告
     //$data ="<xml><ToUserName><![CDATA[XHZN_HCU]]></ToUserName><FromUserName><![CDATA[HCU_G502_FHYS_P0001]]></FromUserName><CreateTime>1477323704</CreateTime><MsgType><![CDATA[hcu_text]]></MsgType><Content><![CDATA[4C1001010101010018291A00520001000000]]></Content><FuncFlag>0</FuncFlag></xml>";
+     $data = "<xml><ToUserName><![CDATA[XHZN_HCU]]></ToUserName><FromUserName><![CDATA[HCU_G502_FHYS_P0001]]></FromUserName><CreateTime>1477323704</CreateTime><MsgType><![CDATA[hcu_text]]></MsgType><Content><![CDATA[4C10000000000100144518004E0001000000]]></Content><FuncFlag>0</FuncFlag></xml>";
     //开锁请求
     $data = "<xml><ToUserName><![CDATA[XHZN_HCU]]></ToUserName><FromUserName><![CDATA[HCU_G502_FHYS_P0001]]></FromUserName><CreateTime>1477323704</CreateTime><MsgType><![CDATA[hcu_text]]></MsgType><Content><![CDATA[4B0A00000000a0934765c0dd]]></Content><FuncFlag>0</FuncFlag></xml>";
     //图片数据

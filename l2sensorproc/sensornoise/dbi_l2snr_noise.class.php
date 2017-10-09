@@ -167,7 +167,7 @@ class classDbiL2snrNoise
         $dbiL2snrCommon = new classDbiL2snrCommon();
         $noiseData = hexdec($content[1]['HUITP_IEID_uni_noise_value']['noiseValue']) & 0xFFFFFFFF;
         $dataFormat =hexdec($content[1]['HUITP_IEID_uni_noise_value']['dataFormat']) & 0xFF;
-        $noiseValue = $dbiL2snrCommon->dbi_datavalue_convert($dataFormat, $noiseData);
+        $noiseValue = $dbiL2snrCommon->dbi_l2snr_datavalue_convert($dataFormat, $noiseData);
 
 
         $timeStamp = time();

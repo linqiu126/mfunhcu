@@ -424,31 +424,31 @@ class classDbiL2snrCcl
         //温度值
         $format = hexdec($data[8]['HUITP_IEID_uni_ccl_temp_value']['dataFormat']) & 0xFF;
         $value = hexdec($data[8]['HUITP_IEID_uni_ccl_temp_value']['tempValue']) & 0xFFFF;
-        $tempValue = $dbiL2snrCommon->dbi_datavalue_convert($format, $value);
+        $tempValue = $dbiL2snrCommon->dbi_l2snr_datavalue_convert($format, $value);
         //湿度值
         $format = hexdec($data[9]['HUITP_IEID_uni_ccl_humid_value']['dataFormat']) & 0xFF;
         $value = hexdec($data[9]['HUITP_IEID_uni_ccl_humid_value']['humidValue']) & 0xFFFF;
-        $humidValue = $dbiL2snrCommon->dbi_datavalue_convert($format, $value);
+        $humidValue = $dbiL2snrCommon->dbi_l2snr_datavalue_convert($format, $value);
         //电量值
         $format = hexdec($data[10]['HUITP_IEID_uni_ccl_bat_value']['dataFormat']) & 0xFF;
         $value = hexdec($data[10]['HUITP_IEID_uni_ccl_bat_value']['batValue']) & 0xFFFF;
-        $battValue = $dbiL2snrCommon->dbi_datavalue_convert($format, $value);
+        $battValue = $dbiL2snrCommon->dbi_l2snr_datavalue_convert($format, $value);
         //倾斜角
         $format = hexdec($data[11]['HUITP_IEID_uni_ccl_fall_value']['dataFormat']) & 0xFF;
         $value = hexdec($data[11]['HUITP_IEID_uni_ccl_fall_value']['fallValue']) & 0xFFFF;
-        $fallValue = $dbiL2snrCommon->dbi_datavalue_convert($format, $value);
+        $fallValue = $dbiL2snrCommon->dbi_l2snr_datavalue_convert($format, $value);
         //备用：通用值-1
         $format = hexdec($data[12]['HUITP_IEID_uni_ccl_general_value1']['dataFormat']) & 0xFF;
         $value = hexdec($data[12]['HUITP_IEID_uni_ccl_general_value1']['generalValue1']) & 0xFFFF;
-        $generalValue1 = $dbiL2snrCommon->dbi_datavalue_convert($format, $value);
+        $generalValue1 = $dbiL2snrCommon->dbi_l2snr_datavalue_convert($format, $value);
         //备用：通用值-2
         $format = hexdec($data[13]['HUITP_IEID_uni_ccl_general_value2']['dataFormat']) & 0xFF;
         $value = hexdec($data[13]['HUITP_IEID_uni_ccl_general_value2']['generalValue2']) & 0xFFFF;
-        $generalValue2 = $dbiL2snrCommon->dbi_datavalue_convert($format, $value);
+        $generalValue2 = $dbiL2snrCommon->dbi_l2snr_datavalue_convert($format, $value);
         //信号强度RSSI值
         $format = hexdec($data[14]['HUITP_IEID_uni_ccl_rssi_value']['dataFormat']) & 0xFF;
         $value = hexdec($data[14]['HUITP_IEID_uni_ccl_rssi_value']['rssiValue']) & 0xFFFF;
-        $rssiValue = $dbiL2snrCommon->dbi_datavalue_convert($format, $value);
+        $rssiValue = $dbiL2snrCommon->dbi_l2snr_datavalue_convert($format, $value);
         //$data[15]['HUITP_IEID_uni_ccl_dcmi_value'] NOT USED
         //状态报告事件
         $reportType = hexdec($data[16]['HUITP_IEID_uni_ccl_report_type']['event']) & 0xFF;

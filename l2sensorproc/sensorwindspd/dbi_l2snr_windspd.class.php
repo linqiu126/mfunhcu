@@ -167,7 +167,7 @@ class classDbiL2snrWindspd
         $dbiL2snrCommon = new classDbiL2snrCommon();
         $windspdData = hexdec($content[1]['HUITP_IEID_uni_windspd_value']['windspdValue']) & 0xFFFFFFFF;
         $dataFormat =hexdec($content[1]['HUITP_IEID_uni_windspd_value']['dataFormat']) & 0xFF;
-        $windspdValue = $dbiL2snrCommon->dbi_datavalue_convert($dataFormat, $windspdData);
+        $windspdValue = $dbiL2snrCommon->dbi_l2snr_datavalue_convert($dataFormat, $windspdData);
 
 
         $timeStamp = time();

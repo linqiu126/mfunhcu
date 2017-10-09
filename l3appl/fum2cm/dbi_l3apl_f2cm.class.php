@@ -1704,6 +1704,17 @@ class classDbiL3apF2cm
             die('Could not connect: ' . mysqli_error($mysqli));
         }
 
+        //删除设备前，先把该设备绑定的站点置成未激活状态
+        $query_str = "SELECT * FROM `t_l2sdk_iothcu_inventory` WHERE `devcode` = '$devcode'";
+        $result = $mysqli->query($query_str);
+        if (($result->num_rows)>0) {
+            $row = $result->fetch_array();
+            $statCode = $row['statcode'];
+            $status = MFUN_HCU_SITE_STATUS_INITIAL;
+            $query_str = "UPDATE `t_l3f3dm_siteinfo` SET `status` = '$status' WHERE `statcode` = '$statCode'";
+            $result = $mysqli->query($query_str);
+        }
+
         //删除设备Inventory信息
         $query_str = "DELETE FROM `t_l2sdk_iothcu_inventory` WHERE `devcode` = '$devcode'";  //删除HCU device信息表
         $result1 = $mysqli->query($query_str);
@@ -2033,6 +2044,17 @@ class classDbiL3apF2cm
         $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
         if (!$mysqli) {
             die('Could not connect: ' . mysqli_error($mysqli));
+        }
+
+        //删除设备前，先把该设备绑定的站点置成未激活状态
+        $query_str = "SELECT * FROM `t_l2sdk_iothcu_inventory` WHERE `devcode` = '$devcode'";
+        $result = $mysqli->query($query_str);
+        if (($result->num_rows)>0) {
+            $row = $result->fetch_array();
+            $statCode = $row['statcode'];
+            $status = MFUN_HCU_SITE_STATUS_INITIAL;
+            $query_str = "UPDATE `t_l3f3dm_siteinfo` SET `status` = '$status' WHERE `statcode` = '$statCode'";
+            $result = $mysqli->query($query_str);
         }
 
         //删除设备Inventory信息

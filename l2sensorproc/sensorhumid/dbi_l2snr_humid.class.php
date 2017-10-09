@@ -165,7 +165,7 @@ class classDbiL2snrHumid
         $dbiL2snrCommon = new classDbiL2snrCommon();
         $humidData = hexdec($content[1]['HUITP_IEID_uni_humid_value']['humidValue']) & 0xFFFFFFFF;
         $dataFormat =hexdec($content[1]['HUITP_IEID_uni_humid_value']['dataFormat']) & 0xFF;
-        $humidValue = $dbiL2snrCommon->dbi_datavalue_convert($dataFormat, $humidData);
+        $humidValue = $dbiL2snrCommon->dbi_l2snr_datavalue_convert($dataFormat, $humidData);
 
 
         $timeStamp = time();

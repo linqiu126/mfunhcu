@@ -188,14 +188,27 @@ ALTER TABLE `t_l2snr_fhys_minreport`
 
 class classDbiL2snrCommon
 {
-    //构造函数
-    public function __construct()
-    {
 
+    //删除对应用户所有超过90天的数据
+    //缺省做成90天，如果参数错误，导致90天以内的数据强行删除，则不被认可
+    private function dbi_l2snr_perfdata_old_delete($devCode, $days)
+    {
+        if ($days < MFUN_HCU_DATA_SAVE_DURATION_IN_DAYS) $days = MFUN_HCU_DATA_SAVE_DURATION_IN_DAYS;  //不允许删除90天以内的数据
+        //建立连接
+        $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli)
+        {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $query_str = "DELETE FROM `t_l3f6pm_perfdata` WHERE ((`devcode` = '$devCode') AND (TO_DAYS(NOW()) - TO_DAYS(`createtime`) > '$days'))";
+        $result = $mysqli->query($query_str);
+
+        $mysqli->close();
+        return $result;
     }
 
     //用于HUITP汇报数值根据format进行转换
-    public function dbi_datavalue_convert($format, $data)
+    public function dbi_l2snr_datavalue_convert($format, $data)
     {
         switch($format)
         {
@@ -229,7 +242,7 @@ class classDbiL2snrCommon
 
 
     //用于传感器缺失数据的插值
-    public function dbi_missingdata_insert($value_start,$date_start,$timeindex_start,$value_end,$date_end,$timeindex_end)
+    public function dbi_l2snr_missingdata_insert($value_start,$date_start,$timeindex_start,$value_end,$date_end,$timeindex_end)
     {
         //解开消息，先判断上次记录输入
         if (isset($value_start["pm01"])) $pm01_start = intval($value_start["pm01"]); else  $pm01_start = 0;
@@ -825,6 +838,9 @@ class classDbiL2snrCommon
             $comConfirm = HUITP_IEID_UNI_COM_CONFIRM_YES;
         else
             $comConfirm = HUITP_IEID_UNI_COM_CONFIRM_NO;
+
+        //清除超期数据
+        $result = $this->dbi_l2snr_perfdata_old_delete($devCode, MFUN_HCU_DATA_SAVE_DURATION_BY_PROJ);
 
         //生成 HUITP_MSGID_uni_performance_info_confirm 消息的内容
         $respMsgContent = array();

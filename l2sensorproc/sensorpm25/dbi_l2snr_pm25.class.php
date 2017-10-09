@@ -484,7 +484,7 @@ class classDbiL2snrPm25
         if (!empty($value_last)){
             $value_now = array("pm01"=>$tspValue,"pm25"=>$pm25Value,"pm10"=>$pm10Value,"noise"=>$noiseValue,"temp"=>$tempValue,"humid"=>$humidValue,"windspd"=>$windspdValue,"winddir"=>$winddirValue);
             $dbiL2snrCommonObj = new classDbiL2snrCommon();
-            $fakedata = $dbiL2snrCommonObj->dbi_missingdata_insert($value_last,$reportdate_last,$hourminindex_last,$value_now,$reportdate,$hourminindex);
+            $fakedata = $dbiL2snrCommonObj->dbi_l2snr_missingdata_insert($value_last,$reportdate_last,$hourminindex_last,$value_now,$reportdate,$hourminindex);
             $dataFlag = MFUN_HCU_DATA_FLAG_FAKE;
             for($i=0; $i<count($fakedata); $i++){
                 $fake_tsp = $fakedata[$i]['pm01'];
@@ -567,15 +567,15 @@ class classDbiL2snrPm25
         $dbiL2snrCommon = new classDbiL2snrCommon();
         $pm01data = hexdec($content[1]['HUITP_IEID_uni_pm01_value']['pm01Value']) & 0xFFFFFFFF;
         $pm01dataFormat = hexdec($content[1]['HUITP_IEID_uni_pm01_value']['dataFormat']) & 0xFF;
-        $pm01Value = $dbiL2snrCommon->dbi_datavalue_convert($pm01dataFormat, $pm01data);
+        $pm01Value = $dbiL2snrCommon->dbi_l2snr_datavalue_convert($pm01dataFormat, $pm01data);
 
         $pm25data = hexdec($content[2]['HUITP_IEID_uni_pm25_value']['pm25Value']) & 0xFFFFFFFF;
         $pm25dataFormat = hexdec($content[2]['HUITP_IEID_uni_pm25_value']['dataFormat']) & 0xFF;
-        $pm25Value = $dbiL2snrCommon->dbi_datavalue_convert($pm25dataFormat, $pm25data);
+        $pm25Value = $dbiL2snrCommon->dbi_l2snr_datavalue_convert($pm25dataFormat, $pm25data);
 
         $pm10data = hexdec($content[3]['HUITP_IEID_uni_pm10_value']['pm10Value']) & 0xFFFFFFFF;
         $pm10dataFormat = hexdec($content[3]['HUITP_IEID_uni_pm10_value']['dataFormat']) & 0xFF;
-        $pm10Value = $dbiL2snrCommon->dbi_datavalue_convert($pm10dataFormat, $pm10data);
+        $pm10Value = $dbiL2snrCommon->dbi_l2snr_datavalue_convert($pm10dataFormat, $pm10data);
 
         $timeStamp = time();
 
@@ -616,31 +616,31 @@ class classDbiL2snrPm25
         $dataFormat = hexdec($content[1]['HUITP_IEID_uni_ycjk_value']['dataFormat']) & 0xFF;
         //温度
         $tempData = hexdec($content[1]['HUITP_IEID_uni_ycjk_value']['tempValue']) & 0xFFFFFFFF;
-        $tempValue = $dbiL2snrCommon->dbi_datavalue_convert($dataFormat, $tempData);
+        $tempValue = $dbiL2snrCommon->dbi_l2snr_datavalue_convert($dataFormat, $tempData);
         //湿度
         $humidData = hexdec($content[1]['HUITP_IEID_uni_ycjk_value']['humidValue']) & 0xFFFFFFFF;
-        $humidValue = $dbiL2snrCommon->dbi_datavalue_convert($dataFormat, $humidData);
+        $humidValue = $dbiL2snrCommon->dbi_l2snr_datavalue_convert($dataFormat, $humidData);
         //风向
         $winddirData = hexdec($content[1]['HUITP_IEID_uni_ycjk_value']['winddirValue']) & 0xFFFFFFFF;
-        $winddirValue = $dbiL2snrCommon->dbi_datavalue_convert($dataFormat, $winddirData);
+        $winddirValue = $dbiL2snrCommon->dbi_l2snr_datavalue_convert($dataFormat, $winddirData);
         //风速
         $windspdData = hexdec($content[1]['HUITP_IEID_uni_ycjk_value']['windspdValue']) & 0xFFFFFFFF;
-        $windspdValue = $dbiL2snrCommon->dbi_datavalue_convert($dataFormat, $windspdData);
+        $windspdValue = $dbiL2snrCommon->dbi_l2snr_datavalue_convert($dataFormat, $windspdData);
         //噪声
         $noiseData = hexdec($content[1]['HUITP_IEID_uni_ycjk_value']['noiseValue']) & 0xFFFFFFFF;
-        $noiseValue = $dbiL2snrCommon->dbi_datavalue_convert($dataFormat, $noiseData);
+        $noiseValue = $dbiL2snrCommon->dbi_l2snr_datavalue_convert($dataFormat, $noiseData);
         //PM1.0
         $pm01Data = hexdec($content[1]['HUITP_IEID_uni_ycjk_value']['pm1d0Value']) & 0xFFFFFFFF;
-        $pm01Value = $dbiL2snrCommon->dbi_datavalue_convert($dataFormat, $pm01Data);
+        $pm01Value = $dbiL2snrCommon->dbi_l2snr_datavalue_convert($dataFormat, $pm01Data);
         //PM2.5
         $pm25Data = hexdec($content[1]['HUITP_IEID_uni_ycjk_value']['pm2d5Value']) & 0xFFFFFFFF;
-        $pm25Value = $dbiL2snrCommon->dbi_datavalue_convert($dataFormat, $pm25Data);
+        $pm25Value = $dbiL2snrCommon->dbi_l2snr_datavalue_convert($dataFormat, $pm25Data);
         //PM10
         $pm10Data = hexdec($content[1]['HUITP_IEID_uni_ycjk_value']['pm10Value']) & 0xFFFFFFFF;
-        $pm10Value = $dbiL2snrCommon->dbi_datavalue_convert($dataFormat, $pm10Data);
+        $pm10Value = $dbiL2snrCommon->dbi_l2snr_datavalue_convert($dataFormat, $pm10Data);
         //TSP
         $tspData = hexdec($content[1]['HUITP_IEID_uni_ycjk_value']['tspValue']) & 0xFFFFFFFF;
-        $tspValue = $dbiL2snrCommon->dbi_datavalue_convert($dataFormat, $tspData);
+        $tspValue = $dbiL2snrCommon->dbi_l2snr_datavalue_convert($dataFormat, $tspData);
 
         $report = array('tempValue'=>$tempValue,'humidValue'=>$humidValue,'winddirValue'=>$winddirValue,'windspdValue'=>$windspdValue,'noiseValue'=>$noiseValue,'pm01Value'=>$pm01Value, 'pm25Value'=>$pm25Value, 'pm10Value'=>$pm10Value,'tspValue'=>$tspValue);
 

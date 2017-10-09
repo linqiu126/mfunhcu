@@ -168,7 +168,7 @@ class classDbiL2snrTemp
         $dbiL2snrCommon = new classDbiL2snrCommon();
         $tempData = hexdec($content[1]['HUITP_IEID_uni_temp_value']['tempValue']) & 0xFFFFFFFF;
         $dataFormat =hexdec($content[1]['HUITP_IEID_uni_temp_value']['dataFormat']) & 0xFF;
-        $tempValue = $dbiL2snrCommon->dbi_datavalue_convert($dataFormat, $tempData);
+        $tempValue = $dbiL2snrCommon->dbi_l2snr_datavalue_convert($dataFormat, $tempData);
 
 
         $timeStamp = time();
