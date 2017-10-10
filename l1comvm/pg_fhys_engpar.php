@@ -24,11 +24,12 @@ define("MFUN_HCU_FHYS_CMCC_TEMPCODE_ALARM", "10833");  //短信模板码  “站
 //http://api.sms.heclouds.com/tempsmsSend?sicode=a2bb3546a41649a29e2fcb635e091dd5&mobiles=13917334681&tempid=10003&name=foha
 
 //FHYS项目关键字
-define("MFUN_HCU_FHYS_PIC_UPLOAD_DIR", "/var/www/html/avorion/upload/"); //云控锁安装后，手机拍照上传照片目录
+define("MFUN_HCU_FHYS_PIC_UPLOAD_DIR", "../../avorion/upload/"); //云控锁安装后，手机拍照上传照片目录
 define("MFUN_HCU_FHYS_PIC_WWW_FOLDER", "/avorion/upload/");   //手机拍照上传照片存放目录，相对于www/html的路径
 define("MFUN_HCU_FHYS_SLEEP_DURATION", 180); //如果最后一次测量报告距离现在已经超过3x60秒
 define ("MFUN_HCU_FHYS_TIME_GRID_SIZE", 3); //每分钟一条记录
 
+//FHYS钥匙类型
 define("MFUN_L3APL_F2CM_KEY_PREFIX", "KEY");  //定义KEY ID的特征字，钥匙KEYID必须以KEY开头
 define("MFUN_L3APL_F2CM_KEY_ID_LEN", 6);     //UI界面key id字符串长度=该值+3（KEY)
 define("MFUN_L3APL_F2CM_KEY_TYPE_RFID", "R");
@@ -39,12 +40,14 @@ define("MFUN_L3APL_F2CM_KEY_TYPE_IDCARD", "I");
 define("MFUN_L3APL_F2CM_KEY_TYPE_PHONE", "P");
 define("MFUN_L3APL_F2CM_KEY_TYPE_UNDEFINED", "N");
 
+//钥匙授权级别,类型
 define("MFUN_L3APL_F2CM_AUTH_LEVEL_PROJ", "P"); //项目级授权
 define("MFUN_L3APL_F2CM_AUTH_LEVEL_DEVICE", "D"); //单个站点(设备)级授权
 define("MFUN_L3APL_F2CM_AUTH_TYPE_NUMBER", "N");
 define("MFUN_L3APL_F2CM_AUTH_TYPE_TIME", "T");
 define("MFUN_L3APL_F2CM_AUTH_TYPE_FOREVER", "F");
 
+//开锁事件类型
 define("MFUN_L3APL_F2CM_EVENT_TYPE_RFID", "R"); //RFID开锁事件
 define("MFUN_L3APL_F2CM_EVENT_TYPE_BLE", "B");
 define("MFUN_L3APL_F2CM_EVENT_TYPE_USER", "U");
@@ -86,11 +89,9 @@ define ("MFUN_HCU_DATA_FHYS_STATUS_ALARM", 0x03); //设备状态异常或者门�
 define ("MFUN_HCU_DATA_FHYS_LOCK_OPEN", 0x00);  //开锁命令
 define ("MFUN_HCU_DATA_FHYS_LOCK_CLOSE", 0x01);  //闭锁命令
 
-//BFSC常量，临时定义在这里，后面根据需要移除
-define ("MFUN_HCU_BFSC_STATUS_OK", "Y");  //设备正常，运行中
-define ("MFUN_HCU_BFSC_STATUS_NOK", "N"); //设备异常，关闭中
-
 //定义智能云锁所带传感器类型
+define("MFUN_L3APL_F3DM_FHYS_STYPE_PREFIX", "CL"); //FHYS传感器类型特征字
+
 define("MFUN_L3APL_F3DM_FHYS_STYPE_DOOR", "CL_001");
 define("MFUN_L3APL_F3DM_FHYS_STYPE_LOCK", "CL_002");
 define("MFUN_L3APL_F3DM_FHYS_STYPE_RFID", "CL_003");
@@ -180,11 +181,6 @@ define("MFUN_HCU_OPT_FHYS_HUMISTAT_RESP", 0x01);
 define("MFUN_HCU_OPT_FHYS_HUMIDATA_IND", 0x82);
 define("MFUN_HCU_OPT_FHYS_HUMIDATA_RESP", 0x02);
 
-//组合秤操作字
-define("MFUN_HCU_OPT_BFSC_WEIGHTDATA_IND", 0x81);
-define("MFUN_HCU_OPT_BFSC_WEIGHTSTART_RESP", 0x82);
-define("MFUN_HCU_OPT_BFSC_WEIGHTSTOP_RESP", 0x83);
-
 define ("MFUN_HCU_FHYS_ALARM_NONE", 0x00); //正常无告警
 define ("MFUN_HCU_FHYS_ALARM_DOOR1_OPEN", 0x01); //门-1暴力打开
 define ("MFUN_HCU_FHYS_ALARM_DOOR2_OPEN", 0x02); //门-2暴力打开
@@ -201,7 +197,6 @@ define ("MFUN_HCU_FHYS_ALARM_TILT", 0x0C);  //倾斜报警
 define ("MFUN_HCU_FHYS_ALARM_LOW_SIG", 0x0D); //GPRS信号强度弱
 define ("MFUN_HCU_FHYS_ALARM_LOW_BATT", 0x0E); //低电量告警
 define ("MFUN_HCU_FHYS_ALARM_CODE_MAX", 0x0F); //Alarmcode的最大值，如有新alarmcode添加，该值要顺延
-
 
 
 /**************************************************************************************

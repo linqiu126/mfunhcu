@@ -63,25 +63,19 @@ define("MFUN_SWOOLE_SOCKET_DATA_STREAM_TCP", 9550); //DATA_STREAM协议swoole so
 define("MFUN_L3APL_F2CM_PG_CODE_PREFIX", "PG");   //定义项目组code的特征字，项目组code必须以“PG”开头
 define("MFUN_L3APL_F2CM_PROJ_CODE_PREFIX", "P_");  //定义项目code的特征字，项目code必须以“P_”开头
 define("MFUN_L3APL_F2CM_CODE_FORMAT_LEN", 2); //定义项目code和项目组code的特征字长度
-define("MFUN_L3APL_F3DM_FHYS_STYPE_PREFIX", "CL"); //FHYS传感器类型特征字
-define("MFUN_L3APL_F3DM_AQYC_STYPE_PREFIX", "YC"); //AQYC传感器类型特征字
 define("MFUN_L3APL_F3DM_SENSOR_TYPE_PREFIX_LEN", 2);
 define("MFUN_L3APL_F1SYM_SESSIONID_VALID_TIME", 900);  //Session ID有效时间为15分钟
 define("MFUN_L3APL_F2CM_FAVOURSITE_MAX_NUM", 5); //最大常用站点数量
 
 define("MFUN_CLOUD_XHZN_WWW", "www.hkrob.com/");
 define("MFUN_HCU_SITE_PIC_BASE_DIR", "../../avorion/picture/");  //设备拍照上传的照片目录
-define("MFUN_HCU_SITE_PIC_WWW_PATH", "avorion/picture/");     //站点照片存放www路径
+define("MFUN_HCU_SITE_PIC_WWW_PATH", "/avorion/picture/");     //站点照片存放www路径
 define("MFUN_HCU_SITE_VIDEO_WWW_PATH", "avorion/video/");     //站点视频存放www路径
 define("MFUN_HCU_SITE_PIC_FILE_TYPE", ".jpg");
 define("MFUN_HCU_SITE_VIDEO_FILE_TYPE", ".mp4");
 
 define("MFUN_HCU_MSG_HEAD_FORMAT", "A2Key/A2Len/A2Cmd");// 1B 控制字ctrl_key, 1B 长度length（除控制字和长度本身外），1B 操作字opt_key
 define("MFUN_HCU_MSG_HEAD_LENGTH", 6); //3 Byte
-
-
-//BFSC控制字
-define("MFUN_HCU_CMDID_BFSC_WEIGHT", 0x3B);
 
 //定义各测量值告警门限
 define("MFUN_L3APL_F3DM_TH_ALARM_NOISE", 80);
@@ -121,6 +115,16 @@ define ("MFUN_USER_GRADE_LEVEL_1", 1);
 define ("MFUN_USER_GRADE_LEVEL_2", 2);
 define ("MFUN_USER_GRADE_LEVEL_3", 3);
 define ("MFUN_USER_GRADE_LEVEL_4", 4);
+
+//BFSC常量，临时定义在这里，后面根据需要移除
+define ("MFUN_HCU_BFSC_STATUS_OK", "Y");  //设备正常，运行中
+define ("MFUN_HCU_BFSC_STATUS_NOK", "N"); //设备异常，关闭中
+//BFSC控制字
+define("MFUN_HCU_CMDID_BFSC_WEIGHT", 0x3B);
+//组合秤操作字
+define("MFUN_HCU_OPT_BFSC_WEIGHTDATA_IND", 0x81);
+define("MFUN_HCU_OPT_BFSC_WEIGHTSTART_RESP", 0x82);
+define("MFUN_HCU_OPT_BFSC_WEIGHTSTOP_RESP", 0x83);
 
 class classConstL1vmUserWebRight
 {
