@@ -1,5 +1,8 @@
 <?php
-	$id= $_REQUEST["id"];
+    include_once "../l1comvm/vmlayer.php";
+    header("Content-type:text/html;charset=utf-8");
+
+	$devCode= $_REQUEST["id"];
 	$upload_path="../../avorion/upload/";
 	function _encode($arr)
     {
@@ -21,28 +24,32 @@
       return urlencode($elem);
     }
 	$num=count($_FILES['file-zh']['name']);
-	if(!file_exists($upload_path.$id)) {mkdir($upload_path.$id.'/',0777,true);}
+
+    //获取设备对应的站点编号
+    $dbiL2sdkIotcomObj = new classDbiL2sdkIotcom();
+    $statCode = $dbiL2sdkIotcomObj->dbi_hcuDevice_valid_device($devCode); //FromUserName对应每个HCU硬件的设备编号
+
+	if(!file_exists($upload_path.$statCode)) {mkdir($upload_path.$statCode.'/',0777,true);}
 	for($i=0;$i<$num;$i++)
 	{
 
-		   		if($_FILES['file-zh']['name'][$i]!=''&&is_uploaded_file($_FILES['file-zh']['tmp_name'][$i]))
-		   		{
-				  $fname=$upload_path.$id.'/'.(string)(time()).$_FILES['file-zh']['name'][$i];
-				  move_uploaded_file($_FILES['file-zh']['tmp_name'][$i],$fname);
-				  $retval=array(
-                  		'status'=>"true",
-                  		'msg'=>$_FILES['file-zh']['name'][$i].' Upload success!'
-                  );
-                  $jsonencode = (_encode($retval));
-                  echo $jsonencode;
-				}else{
-				  $retval=array(
-						'status'=>"false",
-						'msg'=>$_FILES['file-zh']['name'][$i].' Upload fail!'
-				  );
-				  $jsonencode = (_encode($retval));
-				  echo $jsonencode;
-				}
-
+        if($_FILES['file-zh']['name'][$i]!=''&&is_uploaded_file($_FILES['file-zh']['tmp_name'][$i]))
+        {
+          $fname=$upload_path.$statCode.'/'.(string)(time()).$_FILES['file-zh']['name'][$i];
+          $result = move_uploaded_file($_FILES['file-zh']['tmp_name'][$i],$fname);
+          $retval=array(
+                'status'=>"true",
+                'msg'=>$_FILES['file-zh']['name'][$i].' Upload success!'
+          );
+          $jsonencode = (_encode($retval));
+          echo $jsonencode;
+        }else{
+          $retval=array(
+                'status'=>"false",
+                'msg'=>$_FILES['file-zh']['name'][$i].' Upload fail!'
+          );
+          $jsonencode = (_encode($retval));
+          echo $jsonencode;
+        }
 	}
 ?>

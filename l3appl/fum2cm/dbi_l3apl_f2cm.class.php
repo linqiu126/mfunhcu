@@ -178,17 +178,6 @@ class classDbiL3apF2cm
 /***********************************************************************************************************************
 *                                              与UI界面无关的私有函数API                                                 *
 ***********************************************************************************************************************/
-    //获取随机数
-    private function getRandomKeyid($strlen)
-    {
-        $str = "";
-        $str_pol = "0123456789";
-        $max = strlen($str_pol) - 1;
-        for ($i = 0; $i < $strlen; $i++) {
-            $str .= $str_pol[mt_rand(0, $max)];
-        }
-        return $str;
-    }
 
     //去除二维数组中的重复项
     private function unique_arr($array2D,$stkeep=false,$ndformat=true)
@@ -1004,7 +993,8 @@ class classDbiL3apF2cm
         //$session = $pginfo["user"];
         //$pgcode = $pginfo["PGCode"];
         //为避免用户随意输入项目组编号导致的混乱，这里的pgcode改成系统自动分配
-        $pgcode = "PG_".$this->getRandomKeyid(7);
+        $dbiL1vmCommonObj = new classDbiL1vmCommon();
+        $pgcode = MFUN_L3APL_F2CM_PG_CODE_PREFIX."_".$dbiL1vmCommonObj->getRandomDigId(MFUN_L3APL_F2CM_PG_CODE_DIGLEN);
         $pgname = $pginfo["PGName"];
         $owner = $pginfo["ChargeMan"];
         $phone = $pginfo["Telephone"];
@@ -1124,7 +1114,8 @@ class classDbiL3apF2cm
         //$session = $projinfo["user"];
         //$pcode = $projinfo["ProjCode"];
         //为了防止用户随意输入项目号导致的混乱，这里的项目号改成由系统自动生成。
-        $pcode = "P_" . $this->getRandomKeyid(8);
+        $dbiL1vmCommonObj = new classDbiL1vmCommon();
+        $pcode = MFUN_L3APL_F2CM_PROJ_CODE_PREFIX . $dbiL1vmCommonObj->getRandomDigId(MFUN_L3APL_F2CM_PROJ_CODE_DIGLEN);
         $pname = $projinfo["ProjName"];
         $chargeman = $projinfo["ChargeMan"];
         $telephone = $projinfo["Telephone"];
@@ -1464,7 +1455,8 @@ class classDbiL3apF2cm
 
         //if (isset($siteinfo["StatCode"])) $statcode = trim($siteinfo["StatCode"]); else  $statcode = "";
         //为防止用户随意填写监测点ID造成混乱，这里的statcode做成系统自动分配
-        $statcode = "S_".$this->getRandomKeyid(8);
+        $dbiL1vmCommonObj = new classDbiL1vmCommon();
+        $statcode = MFUN_L3APL_F2CM_SITE_CODE_PREFIX.$dbiL1vmCommonObj->getRandomDigId(MFUN_L3APL_F2CM_SITE_CODE_DIGLEN);
         if (isset($siteinfo["StatName"])) $statname = trim($siteinfo["StatName"]); else  $statname = "";
         if (isset($siteinfo["ProjCode"])) $pcode = trim($siteinfo["ProjCode"]); else  $pcode = "";
         if (isset($siteinfo["ChargeMan"])) $chargeman = trim($siteinfo["ChargeMan"]); else  $chargeman = "";
@@ -2209,7 +2201,8 @@ class classDbiL3apF2cm
         if (isset($keyinfo["HardwareCode"])) $hwcode = trim($keyinfo["HardwareCode"]); else  $hwcode = "";
         if (isset($keyinfo["Memo"])) $memo = trim($keyinfo["Memo"]); else  $memo = "";
 
-        $keyid = MFUN_L3APL_F2CM_KEY_PREFIX.$this->getRandomKeyid(MFUN_L3APL_F2CM_KEY_ID_LEN);  //KEYID的分配机制将来要重新考虑，避免重复
+        $dbiL1vmCommonObj = new classDbiL1vmCommon();
+        $keyid = MFUN_L3APL_F2CM_KEY_PREFIX.$dbiL1vmCommonObj->getRandomDigId(MFUN_L3APL_F2CM_KEY_ID_LEN);  //KEYID的分配机制将来要重新考虑，避免重复
         $keystatus = MFUN_HCU_FHYS_KEY_INVALID; //默认新建的Key是没有启用的，未授予用户
 
         //转换keytype

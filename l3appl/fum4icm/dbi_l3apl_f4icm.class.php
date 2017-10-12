@@ -669,20 +669,48 @@ class classDbiL3apF4icm
         }
         $mysqli->query("SET NAMES utf8");
 
+        $uid = "";
         $query_str = "SELECT * FROM `t_l3f1sym_session` WHERE (`sessionid` = '$sessionid')";
         $result = $mysqli->query($query_str);
         if (($result != false) && ($result->num_rows)>0){
             $row = $result->fetch_array();
             $uid = $row["uid"];
         }
+        $user = "";
+        $query_str = "SELECT * FROM `t_l3f1sym_account` WHERE (`uid` = '$uid')";
+        $result = $mysqli->query($query_str);
+        if (($result != false) && ($result->num_rows)>0){
+            $row = $result->fetch_array();
+            $user = $row["user"];
+        }
 
-        $keyid = "";
         $key_type = MFUN_L3APL_F2CM_KEY_TYPE_USER;
         $query_str = "SELECT * FROM `t_l3f2cm_fhys_keyinfo` WHERE (`hwcode` = '$uid' AND `keytype` = '$key_type')";
         $result = $mysqli->query($query_str);
         if (($result != false) && ($result->num_rows)>0){
             $row = $result->fetch_array();
             $keyid = $row["keyid"];
+        }
+        else{//使用该用户账号创建一个用户名钥匙
+            //查找项目号
+            $pcode = "";
+            $query_str = "SELECT * FROM `t_l3f3dm_siteinfo` WHERE `statcode` = '$statCode' ";
+            $result = $mysqli->query($query_str);
+            if (($result->num_rows)>0){
+                $row = $result->fetch_array();
+                $pcode = $row['p_code'];
+            }
+            $dbiL1vmCommonObj = new classDbiL1vmCommon();
+            $keyid = MFUN_L3APL_F2CM_KEY_PREFIX.$dbiL1vmCommonObj->getRandomDigId(MFUN_L3APL_F2CM_KEY_ID_LEN);  //KEYID的分配机制将来要重新考虑，避免重复
+            $keystatus = MFUN_HCU_FHYS_KEY_VALID; //默认新建的Key是没有启用的，未授予用户
+            $keyname = "用户名钥匙[".$user."]";
+            $keytype = MFUN_L3APL_F2CM_KEY_TYPE_USER;
+            $hwcode = $uid;
+            $memo = "系统自动创建的用户名虚拟钥匙";
+
+            $query_str = "INSERT INTO `t_l3f2cm_fhys_keyinfo` (keyid, keyname, p_code, keyuserid, keyusername, keystatus, keytype, hwcode, memo)
+                                  VALUES ('$keyid','$keyname','$pcode','$uid','$user','$keystatus','$keytype','$hwcode','$memo')";
+            $result = $mysqli->query($query_str);
         }
 
         //插入一条开锁授权

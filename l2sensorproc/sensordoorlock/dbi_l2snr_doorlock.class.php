@@ -423,7 +423,7 @@ class classDbiL2snrDoorlock
                 $keyname = "蓝牙钥匙-".$blemac;
                 $keytype = MFUN_L3APL_F2CM_KEY_TYPE_BLE;
                 $keystatus = MFUN_HCU_FHYS_KEY_INVALID;
-                $memo = "系统自动生成的蓝牙虚拟钥匙，暂未授权";
+                $memo = "系统自动生成的蓝牙虚拟钥匙";
                 $query_str = "INSERT INTO `t_l3f2cm_fhys_keyinfo` (keyid,keyname,p_code,keystatus,keytype,hwcode,memo)
                                       VALUES ('$keyid','$keyname','$pcode','$keystatus','$keytype','$blemac','$memo')";
                 $result = $mysqli->query($query_str);

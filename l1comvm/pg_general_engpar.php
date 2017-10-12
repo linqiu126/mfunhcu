@@ -28,7 +28,7 @@ define("MFUN_HCU_DATA_FLAG_VALID", "Y");   //有效数据
 define("MFUN_HCU_DATA_FLAG_FAKE", "F");    //人工插入数据
 
 //通用项目标识
-define("MFUN_L1VM_DBI_MAX_LOG_NUM", 5000);  //防止t_loginfo表单数据无限制的增长，保留的最大记录数
+define("MFUN_L1VM_DBI_MAX_LOG_NUM", 50000);  //防止t_loginfo表单数据无限制的增长，保留的最大记录数
 define("MFUN_L3APL_F1SYM_SESSION_ID_LEN", 10); //UI界面session id字符串长度
 define("MFUN_L3APL_F1SYM_USER_ID_LEN", 6); //UI界面user id字符串长度=该值+3 （UID）
 define("MFUN_L3APL_F1SYM_UID_PREFIX", "UID");  //定义用户ID的特征字，用户ID必须以UID开头
@@ -61,7 +61,11 @@ define("MFUN_SWOOLE_SOCKET_DATA_STREAM_TCP", 9550); //DATA_STREAM协议swoole so
 
 //项目类关键字
 define("MFUN_L3APL_F2CM_PG_CODE_PREFIX", "PG");   //定义项目组code的特征字，项目组code必须以“PG”开头
+define("MFUN_L3APL_F2CM_PG_CODE_DIGLEN", 7);      //项目组code数字字符长度，PG_1234567
 define("MFUN_L3APL_F2CM_PROJ_CODE_PREFIX", "P_");  //定义项目code的特征字，项目code必须以“P_”开头
+define("MFUN_L3APL_F2CM_PROJ_CODE_DIGLEN", 8);     //项目code数字字符长度，P_12345678
+define("MFUN_L3APL_F2CM_SITE_CODE_PREFIX", "S_");  //定义站点code的特征字，站点code必须以“S_”开头
+define("MFUN_L3APL_F2CM_SITE_CODE_DIGLEN", 8);     //站点code数字字符长度，S_12345678
 define("MFUN_L3APL_F2CM_CODE_FORMAT_LEN", 2); //定义项目code和项目组code的特征字长度
 define("MFUN_L3APL_F3DM_SENSOR_TYPE_PREFIX_LEN", 2);
 define("MFUN_L3APL_F1SYM_SESSIONID_VALID_TIME", 900);  //Session ID有效时间为15分钟

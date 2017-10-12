@@ -268,6 +268,18 @@ class classDbiL1vmCommon
         return $kw;
     }
 
+    //获取随机数
+    public function getRandomDigId($strlen)
+    {
+        $str = "";
+        $str_pol = "0123456789";
+        $max = strlen($str_pol) - 1;
+        for ($i = 0; $i < $strlen; $i++) {
+            $str .= $str_pol[mt_rand(0, $max)];
+        }
+        return $str;
+    }
+
     //存储logger信息，以便用于调试任务
     public function dbi_log_process_save($project,$fromuser,$createtime,$log_content)
     {
