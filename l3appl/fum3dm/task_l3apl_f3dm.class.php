@@ -264,14 +264,19 @@ class classTaskL3aplF3dm
         return $retval;
     }
 
+    //查询开锁历史记录
     function func_key_event_history_process($action, $user, $body)
     {
+        if (isset($body["ProjCode"])) $projCode = $body["ProjCode"]; else  $projCode = "";
+        if (isset($body["Time"])) $duration = $body["Time"]; else  $duration = "";
+        if (isset($body["KeyWord"])) $keyWord = $body["KeyWord"]; else  $keyWord = "";
+
         $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
         $usercheck = $uiF1symDbObj->dbi_user_authcheck($action, $user);
         if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
             $uid = $uiF1symDbObj->dbi_session_check($user);
             $uiF3dmDbObj = new classDbiL3apF3dm(); //初始化一个UI DB对象
-            $resp = $uiF3dmDbObj->dbi_key_event_history_process($body);
+            $resp = $uiF3dmDbObj->dbi_key_event_history_process($projCode,$duration,$keyWord);
             if(!empty($resp)){
                 $ret = array('ColumnName' => $resp["ColumnName"],'TableData' => $resp["TableData"]);
                 $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$ret,'msg'=>"获取锁事件历史记录成功");

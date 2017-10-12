@@ -718,7 +718,6 @@ class classConstL1vmUserWebRight
         elseif (MFUN_CURRENT_WORKING_PROGRAM_NAME_UNIQUE == MFUN_WORKING_PROGRAM_NAME_UNIQUE_FHYS)
         {
             self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['webauth']['UserManage'] = 'true';
-            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['webauth']['ExportTableManage'] = 'true';
             self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['webauth']['ProjManage'] = 'true';
             self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['webauth']['MPManage'] = 'true';
             self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['webauth']['DevManage'] = 'true';
@@ -753,7 +752,6 @@ class classConstL1vmUserWebRight
             self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['mod'] = 'true';
 
             self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['webauth']['UserManage'] = 'true';
-            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['webauth']['ExportTableManage'] = 'true';
             self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['webauth']['ProjManage'] = 'true';
             self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['webauth']['MPManage'] = 'true';
             self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['webauth']['DevManage'] = 'true';

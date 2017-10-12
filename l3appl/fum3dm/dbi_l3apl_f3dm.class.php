@@ -2434,7 +2434,7 @@ class classDbiL3apF3dm
         return $resp;
     }
 
-    public function dbi_key_event_history_process($condition)
+    public function dbi_key_event_history_process($projCode,$duration,$keyWord)
     {
         //初始化返回值
         $history["ColumnName"] = array();
@@ -2447,9 +2447,6 @@ class classDbiL3apF3dm
         }
         $mysqli->query("SET NAMES utf8");
 
-        if (isset($condition["ProjCode"])) $projCode = trim($condition["ProjCode"]); else  $projCode = "";
-        if (isset($condition["Time"])) $duration = trim($condition["Time"]); else  $duration = "";
-
         array_push($history["ColumnName"], "序号");
         //array_push($history["ColumnName"], "工单号");
         array_push($history["ColumnName"], "站点名称");
@@ -2459,8 +2456,6 @@ class classDbiL3apF3dm
         array_push($history["ColumnName"], "钥匙名称");
         array_push($history["ColumnName"], "使用者工号");
         array_push($history["ColumnName"], "使用者姓名");
-
-
 
         $timestamp = time();
         $end = intval(date("Ymd", $timestamp));
@@ -2478,7 +2473,7 @@ class classDbiL3apF3dm
         while ($row = $result->fetch_array()){
             $statcode = $row['statcode'];
             $statname = $row['statname'];
-            $query_str = "SELECT * FROM `t_l3fxprcm_fhys_locklog` WHERE (`statcode` = '$statcode')";
+            $query_str = "SELECT * FROM `t_l3fxprcm_fhys_locklog` WHERE (`statcode` = '$statcode' AND (concat(`keyname`,`keyusername`) like '%$keyWord%'))";
             $resp = $mysqli->query($query_str);
             while($resp_row = $resp->fetch_array()){
                 $sid = $resp_row['sid'];
