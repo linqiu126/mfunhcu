@@ -2564,32 +2564,29 @@ class classDbiL3apF3dm
 
     public function dbi_point_install_picture_process($statcode)
     {
-        //建立连接
-        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
-        if (!$mysqli) {
-            die('Could not connect: ' . mysqli_error($mysqli));
-        }
-        $mysqli->query("SET NAMES utf8");
-
-        $query_str = "SELECT * FROM `t_l2snr_picturedata` WHERE `statcode` = '$statcode' ";
-        $result = $mysqli->query($query_str);
-
         $pic_list = array();
-        while($row = $result->fetch_array())
-        {
-            $file_name = $row['filename'];
-            $file_url = MFUN_HCU_FHYS_PIC_WWW_FOLDER.$statcode.'/'.$file_name;
-            $temp = array(
-                'name' => $file_name,
-                'url' => $file_url
-            );
-            array_push($pic_list, $temp);
+        $path = MFUN_HCU_FHYS_PIC_ABS_FOLDER.$statcode;
+        if(!file_exists($path)) return $pic_list;
+        foreach(glob($path."/*".MFUN_HCU_SITE_PIC_FILE_TYPE) as $afile) {
+            if (is_dir($afile)) { //如果是目录
+                //do nothing;
+            }
+            else{
+                //获取的文件名含有路径信息，需要进行字符串截取操作，提取纯文件名
+                $str_arr = explode("/", $afile);
+                $file_name = $str_arr[count($str_arr)-1];
+
+                $file_url = MFUN_HCU_FHYS_PIC_WWW_FOLDER.$statcode.'/'.$file_name;
+                $temp = array(
+                    'name' => $file_name,
+                    'url' => $file_url
+                );
+                array_push($pic_list, $temp);
+            }
         }
 
-        $mysqli->close();
         return $pic_list;
     }
-
 }
 
 ?>
