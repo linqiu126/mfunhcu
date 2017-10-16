@@ -547,7 +547,7 @@ class classDbiL2snrCcl
         if(($alarm_severity != MFUN_HCU_FHYS_ALARM_LEVEL_0) AND ($alarm_code != MFUN_HCU_FHYS_ALARM_NONE))
         {
             //更新告警记录表
-            $alarm_flag = MFUN_HCU_FHYS_ALARM_PROC_FLAG_N;
+            $alarm_flag = MFUN_HCU_ALARM_PROC_FLAG_N;
             $alarm_proc = "新增告警，等待处理中";
             $query_str = "INSERT INTO `t_l3f5fm_fhys_alarmdata` (devcode,statcode,alarmflag,alarmseverity,alarmcode,tsgen,alarmproc)
                             VALUES ('$devCode','$statcode','$alarm_flag','$alarm_severity','$alarm_code','$currenttime','$alarm_proc')";

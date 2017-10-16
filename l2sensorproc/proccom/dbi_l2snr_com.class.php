@@ -727,15 +727,12 @@ class classDbiL2snrCommon
         $equID = hexdec($data[1]['HUITP_IEID_uni_alarm_info_element']['equID']) & 0xFFFFFFFF;
         $causeId = hexdec($data[1]['HUITP_IEID_uni_alarm_info_element']['causeId']) & 0xFFFFFFFF;
         $alarmContent = hexdec($data[1]['HUITP_IEID_uni_alarm_info_element']['alarmContent']) & 0xFFFFFFFF;
-        $timeStamp = hexdec($data[1]['HUITP_IEID_uni_alarm_info_element']['timeStamp']) & 0xFFFFFFFF;
-
-        $alarmDesc = "";
-        $createtime = date("Y-m-d H:m:s", $timeStamp);
-        $query_str = "INSERT INTO `t_l3f5fm_aqyc_alarmdata` (`devcode`, `equipmentid`, `alarmtype`, `alarmdesc`, `alarmseverity`, `alarmclearflag`, `timestamp`, `causeid`, `alarmcontent`)
-                      VALUES ('$devCode', '$equID', '$alarmType', '$alarmDesc', '$alarmServerity', '$alarmClearFlag', '$createtime', '$causeId', '$alarmContent')";
-        $result=$mysqli->query($query_str);
+        //HCU的时间戳可能不准，暂时取汇报时的后台系统时间
+        //$timeStamp = hexdec($data[1]['HUITP_IEID_uni_alarm_info_element']['timeStamp']) & 0xFFFFFFFF;
+        $timeStamp = time();
 
         //如果是扬尘超标或者噪声超标告警，则进行照片抓取
+        $picName = ""; //初始化
         if($alarmContent == HUITP_IEID_UNI_ALARM_CONTENT_TSP_VALUE_EXCEED_THRESHLOD OR $alarmContent == HUITP_IEID_UNI_ALARM_CONTENT_NOISE_VALUE_EXCEED_THRESHLOD){
             $query_str = "SELECT * FROM `t_l2sdk_iothcu_inventory` WHERE `statcode` = '$statCode' ";
             $result = $mysqli->query($query_str);
@@ -752,34 +749,40 @@ class classDbiL2snrCommon
                 curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_ANY);
                 curl_setopt($curl, CURLOPT_USERPWD, "$username:$password");
                 curl_setopt($curl, CURLOPT_TIMEOUT, 30); //timeout after 30 seconds
-                $picdata = curl_exec($curl);
-                $filesize = curl_getinfo($curl, CURLINFO_SIZE_DOWNLOAD);
+                $picData = curl_exec($curl);
+                $fileSize = curl_getinfo($curl, CURLINFO_SIZE_DOWNLOAD);
                 curl_close($curl);
 
-                if ($filesize != 0){
+                if ($fileSize != 0){
                     if(!file_exists(MFUN_HCU_SITE_PIC_BASE_DIR.$statCode))
                         $result = mkdir(MFUN_HCU_SITE_PIC_BASE_DIR.$statCode,0777,true);
-                    $timestamp = time();
-                    $filename = $statCode . "_" . $timestamp; //生成jpg文件名
-                    $picname = $filename . MFUN_HCU_SITE_PIC_FILE_TYPE;
 
-                    $filelink = MFUN_HCU_SITE_PIC_BASE_DIR.$statCode.'/'.$picname;
-                    $newfile = fopen($filelink, "wb+") or die("Unable to open file!");
-                    fwrite($newfile, $picdata);
-                    fclose($newfile);
+                    $picName = $statCode . "_" . $timeStamp . MFUN_HCU_SITE_PIC_FILE_TYPE;//生成jpg文件名
+                    $fileLink = MFUN_HCU_SITE_PIC_BASE_DIR.$statCode.'/'.$picName;
+                    $newFile = fopen($fileLink, "wb+") or die("Unable to open file!");
+                    fwrite($newFile, $picData);
+                    fclose($newFile);
 
                     //保存照片信息
-                    $date = date("Y-m-d", $timestamp);
-                    $stamp = getdate($timestamp);
+                    $date = date("Y-m-d", $timeStamp);
+                    $stamp = getdate($timeStamp);
                     $hourminindex = intval(($stamp["hours"] * 60 + floor($stamp["minutes"]/MFUN_TIME_GRID_SIZE)));
-                    $filesize = (int)$filesize;
                     $description = "站点".$statCode."告警抓拍的照片";
                     $dataflag = "Y";
-                    $query_str = "INSERT INTO `t_l2snr_picturedata` (statcode,filename,filesize,filedescription,reportdate,hourminindex,dataflag) VALUES ('$statCode','$picname','$filesize','$description','$date','$hourminindex','$dataflag')";
+                    $query_str = "INSERT INTO `t_l2snr_picturedata` (statcode,filename,filesize,filedescription,reportdate,hourminindex,dataflag)
+                                  VALUES ('$statCode','$picName','$fileSize','$description','$date','$hourminindex','$dataflag')";
                     $result=$mysqli->query($query_str);
                 }
             }
         }
+
+        //生成告警记录，同时将抓拍的告警照片和告警记录关联
+        $alarmFlag = MFUN_HCU_ALARM_PROC_FLAG_N;
+        $alarmProc = "新增告警，等待处理";
+        $tsGen = date("Y-m-d H:m:s", $timeStamp);
+        $query_str = "INSERT INTO `t_l3f5fm_aqyc_alarmdata` (`devcode`,`statcode`,`alarmflag`,`alarmseverity`,`alarmcontent`,`alarmtype`,`clearflag`,`causeid`,`tsgen`,`alarmpic`,`alarmproc`)
+                      VALUES ('$devCode','$statCode','$alarmFlag','$alarmServerity', '$alarmContent','$alarmType','$alarmClearFlag','$causeId','$tsGen','$picName','$alarmProc')";
+        $result=$mysqli->query($query_str);
 
         if ($result == true)
             $comConfirm = HUITP_IEID_UNI_COM_CONFIRM_YES;

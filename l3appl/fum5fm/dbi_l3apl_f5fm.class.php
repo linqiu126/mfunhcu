@@ -102,6 +102,38 @@ class classDbiL3apF5fm
 
     }
 
+    //删除对应设备所有超期的告警数据
+    //缺省做成90天，如果参数错误，导致90天以内的数据强行删除，则不被认可
+    private function dbi_l3f5fm_aqyc_alarmdata_old_delete($statCode, $days)
+    {
+        if ($days < MFUN_HCU_DATA_SAVE_DURATION_IN_DAYS) $days = MFUN_HCU_DATA_SAVE_DURATION_IN_DAYS;  //不允许删除90天以内的数据
+        //建立连接
+        $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli)
+        {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $result = $mysqli->query("DELETE FROM `t_l3f5fm_aqyc_alarmdata` WHERE ((`statcode` = '$statCode') AND (TO_DAYS(NOW()) - TO_DAYS(`timestamp`) > '$days'))");
+        $mysqli->close();
+        return $result;
+    }
+
+    //删除对应设备所有超期的告警数据
+    //缺省做成90天，如果参数错误，导致90天以内的数据强行删除，则不被认可
+    private function dbi_l3f5fm_fhys_alarmdata_old_delete($statCode, $days)
+    {
+        if ($days < MFUN_HCU_DATA_SAVE_DURATION_IN_DAYS) $days = MFUN_HCU_DATA_SAVE_DURATION_IN_DAYS;  //不允许删除90天以内的数据
+        //建立连接
+        $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli)
+        {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $result = $mysqli->query("DELETE FROM `t_l3f5fm_fhys_alarmdata` WHERE ((`statcode` = '$statCode') AND (TO_DAYS(NOW()) - TO_DAYS(`tsgen`) > '$days'))");
+        $mysqli->close();
+        return $result;
+    }
+
     //查询用户授权的stat_code和proj_code list
     public function dbi_user_statproj_inqury($uid)
     {
@@ -117,8 +149,7 @@ class classDbiL3apF5fm
         $result = $mysqli->query($query_str);
         $p_list = array();
         $pg_list = array();
-        while (($result != false) && (($row = $result->fetch_array()) > 0))
-        {
+        while (($result != false) && (($row = $result->fetch_array()) > 0)){
             $temp = $row["auth_code"];
             $fromat = substr($temp, 0, MFUN_L3APL_F2CM_CODE_FORMAT_LEN);
             if($fromat == MFUN_L3APL_F2CM_PROJ_CODE_PREFIX)
@@ -128,8 +159,7 @@ class classDbiL3apF5fm
         }
 
         //把授权的项目组列表里对应的项目号也取出来追加到项目列表，获得该用户授权的完整项目列表
-        for($i=0; $i<count($pg_list); $i++)
-        {
+        for($i=0; $i<count($pg_list); $i++){
             $query_str = "SELECT `p_code` FROM `t_l3f2cm_projinfo` WHERE `pg_code` = '$pg_list[$i]'";
             $result = $mysqli->query($query_str);
             while (($result != false) && (($row = $result->fetch_array()) > 0))
@@ -138,24 +168,22 @@ class classDbiL3apF5fm
                 array_push($p_list,$temp);
             }
         }
-
         //查询授权项目号下对应的所有监测点code
-        $auth_list["p_code"] = array();
-        $auth_list["stat_code"] = array();
-        for($i=0; $i<count($p_list); $i++)
-        {
+        $auth_list= array();
+        for($i=0; $i<count($p_list); $i++){
             $query_str = "SELECT `statcode` FROM `t_l3f3dm_siteinfo` WHERE `p_code` = '$p_list[$i]'";
             $result = $mysqli->query($query_str);
-            while (($result != false) && (($row = $result->fetch_array()) > 0))
-            {
-                $temp = $row["statcode"];
-                array_push($auth_list["stat_code"] ,$temp);
-                array_push($auth_list["p_code"] ,$p_list[$i]);
+            while (($result != false) && (($row = $result->fetch_array()) > 0)){
+                $temp = array("stat_code"=>$row["statcode"],"p_code"=>$p_list[$i]);
+                array_push($auth_list ,$temp);
             }
         }
+        //删除列表里重复的项
+        $dbiL1vmCommonObj = new classDbiL1vmCommon();
+        $unique_authlist = $dbiL1vmCommonObj->unique_array($auth_list,false,true);
 
         $mysqli->close();
-        return $auth_list;
+        return $unique_authlist;
     }
 
     //查询该站点是否正处于告警状态
@@ -206,14 +234,13 @@ class classDbiL3apF5fm
         }
         $mysqli->query("SET NAMES utf8");
 
-        $auth_list["stat_code"] = array();
-        $auth_list["p_code"] = array();
+        //获取授权站点-项目列表
         $auth_list = $this->dbi_user_statproj_inqury($uid);
 
         $sitelist = array();
-        for($i=0; $i<count($auth_list["stat_code"]); $i++)
+        for($i=0; $i<count($auth_list); $i++)
         {
-            $statcode = $auth_list['stat_code'][$i];
+            $statcode = $auth_list[$i]['stat_code'];
 
             $query_str = "SELECT * FROM `t_l3f3dm_siteinfo` WHERE `statcode` = '$statcode'";      //查询监测点对应的项目号
             $resp = $mysqli->query($query_str);
@@ -251,62 +278,6 @@ class classDbiL3apF5fm
         return $sitelist;
     }
 
-    public function dbi_alarm_data_save($sid, $alarmdesc)
-    {
-        //建立连接
-        $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
-        if (!$mysqli)
-        {
-            die('Could not connect: ' . mysqli_error($mysqli));
-        }
-
-        //存储新记录，如果发现是已经存在的数据，则覆盖，否则新增
-        $result = $mysqli->query("SELECT * FROM `t_l3f5fm_aqyc_alarmdata` WHERE (`sid` = '$sid'");
-        if (($result != false) && ($result->num_rows)>0)   //重复，则覆盖
-        {
-            $result=$mysqli->query("UPDATE `t_l3f5fm_aqyc_alarmdata` SET  `alarmdesc` = '$alarmdesc' WHERE (`sid` = '$sid')");
-        }
-        else   //不存在，新增
-        {
-            $result=$mysqli->query("INSERT INTO `t_l3f5fm_aqyc_alarmdata` (sid, alarmdesc) VALUES ('$sid', '$alarmdesc')");
-        }
-        $mysqli->close();
-        return $result;
-    }
-
-    //删除对应用户所有超过90天的数据
-    //缺省做成90天，如果参数错误，导致90天以内的数据强行删除，则不被认可
-    public function dbi_alarm_data_3mondel($sid, $days)
-    {
-        if ($days <90) $days = 90;  //不允许删除90天以内的数据
-        //建立连接
-        $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
-        if (!$mysqli)
-        {
-            die('Could not connect: ' . mysqli_error($mysqli));
-        }
-        $result = $mysqli->query("DELETE FROM `t_l3f5fm_aqyc_alarmdata` WHERE ((`sid` = '$sid') AND (TO_DAYS(NOW()) - TO_DAYS(`date`) > '$days'))");
-        $mysqli->close();
-        return $result;
-    }
-
-    public function dbi_alarm_data_inqury($sid)
-    {
-        $LatestValue = "";
-        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
-        if (!$mysqli) {
-            die('Could not connect: ' . mysqli_error($mysqli));
-        }
-        $result = $mysqli->query("SELECT * FROM `t_l3f5fm_aqyc_alarmdata` WHERE `sid` = '$sid'");
-        if (($result != false) && ($result->num_rows)>0)
-        {
-            $row = $result->fetch_array();
-            $LatestValue = $row['alarmdesc'];
-        }
-        $mysqli->close();
-        return $LatestValue;
-    }
-
 
     //UI AlarmType request, 获取所有需要生成告警数据表的传感器类型信息
     public function dbi_all_alarmtype_req($type)
@@ -336,7 +307,7 @@ class classDbiL3apF5fm
         return $alarm_type;
     }
 
-    public function dbi_aqyc_current_alarmtable_req($uid)
+    public function dbi_aqyc_alarm_handle_table_req($uid)
     {
         //初始化返回值
         $resp["column"] = array();
@@ -349,79 +320,100 @@ class classDbiL3apF5fm
         }
         $mysqli->query("SET NAMES utf8");
 
-        $auth_list["stat_code"] = array();
-        $auth_list["p_code"] = array();
+        //获取授权站点-项目列表
         $auth_list = $this->dbi_user_statproj_inqury($uid);
 
         array_push($resp["column"], "监测点编号");
         array_push($resp["column"], "监测点名称");
-        array_push($resp["column"], "项目单位");
-        array_push($resp["column"], "区县");
         array_push($resp["column"], "地址");
         array_push($resp["column"], "负责人");
         array_push($resp["column"], "联系电话");
-        array_push($resp["column"], "PM2.5");
-        array_push($resp["column"], "温度");
-        array_push($resp["column"], "湿度");
-        array_push($resp["column"], "噪音");
-        array_push($resp["column"], "风速");
-        array_push($resp["column"], "风向");
-        array_push($resp["column"], "设备状态");
+        array_push($resp["column"], "告警等级");
+        array_push($resp["column"], "告警内容");
+        array_push($resp["column"], "告警产生时间");
+        array_push($resp["column"], "告警关闭时间");
+        array_push($resp["column"], "告警处理");
 
-        for($i=0; $i<count($auth_list["stat_code"]); $i++)
+        //初始化返回值，确保数据库查询不到的情况下界面返回数据长度不报错
+        $statName = "";
+        $address = "";
+        $chargeMan = "";
+        $telephone = "";
+        for($i=0; $i<count($auth_list); $i++)
         {
             $one_row = array();
-            $pcode = $auth_list["p_code"][$i];
-            $statcode = $auth_list["stat_code"][$i];
-            $query_str = "SELECT * FROM `t_l3f3dm_siteinfo` WHERE `statcode` = '$statcode'";
-            $result = $mysqli->query($query_str);
-            if (($result->num_rows) > 0)
-            {
-                $row = $result->fetch_array();
-                array_push($one_row, $statcode);
-                array_push($one_row, $row["statname"]);
-                array_push($one_row, $row["department"]);
-                array_push($one_row, $row["country"]);
-                array_push($one_row, $row["address"]);
-                array_push($one_row, $row["chargeman"]);
-                array_push($one_row, $row["telephone"]);
-            }
-            $query_str = "SELECT * FROM `t_l3f3dm_aqyc_currentreport` WHERE `statcode` = '$statcode'";
-            $result = $mysqli->query($query_str);
-            //初始化返回值，确保数据库没有测试报告的情况下界面返回数据长度不报错
-            $pm25 = 0;
-            $temperature = 0;
-            $humidity = 0;
-            $noise = 0;
-            $windspeed = 0;
-            $winddir = 0;
-            $status = "停止";
-            if (($result->num_rows) > 0)
-            {
-                $row = $result->fetch_array();
-                $pm25 =  $row["pm25"]/10;
-                $temperature = $row["temperature"]/10;
-                $humidity = $row["humidity"]/10;
-                $noise = $row["noise"]/100;
-                $windspeed = $row["windspeed"]/10;
-                $winddir = $row["winddirection"];
+            //$projCode = $auth_list[$i]["p_code"];
+            $statCode = $auth_list[$i]["stat_code"];
 
-                $timestamp = strtotime($row["createtime"]);
-                $currenttime = time();
-                if ($currenttime > ($timestamp+180))  //如果最后一次测量报告距离现在已经超过3分钟
-                    $status = "停止";
+            //删除超期的历史数据
+            $this->dbi_l3f5fm_aqyc_alarmdata_old_delete($statCode, MFUN_HCU_DATA_SAVE_DURATION_BY_PROJ);
+
+            $query_str = "SELECT * FROM `t_l3f3dm_siteinfo` WHERE `statcode` = '$statCode'";
+            $result = $mysqli->query($query_str);
+            if (($result->num_rows) > 0){
+                $row = $result->fetch_array();
+                $statName = $row["statname"];
+                $address = $row["address"];
+                $chargeMan = $row["chargeman"];
+                $telephone = $row["telephone"];
+            }
+
+            $alarmFlag = MFUN_HCU_ALARM_PROC_FLAG_C;
+            $query_str = "SELECT * FROM `t_l3f5fm_aqyc_alarmdata` WHERE (`statcode` = '$statCode' AND `alarmflag` != '$alarmFlag')";
+            $result = $mysqli->query($query_str);
+            while (($result != false) && (($row = $result->fetch_array()) > 0))
+            {
+                $one_row = array();
+                $alarmSeverity =  $row["alarmseverity"];
+                $alarmContent = $row["alarmcontent"];
+                $tsGen = $row["tsgen"];
+                $tsClose = $row["tsclose"];
+                $alarmPic = $row["alarmpic"];
+                $alarmProc = $row["alarmproc"];
+
+                if ($alarmSeverity == HUITP_IEID_UNI_ALARM_SEVERITY_HIGH)
+                    $alarmSeverity = "高";
+                elseif ($alarmSeverity == HUITP_IEID_UNI_ALARM_SEVERITY_MEDIUM)
+                    $alarmSeverity = "中";
+                elseif ($alarmSeverity == HUITP_IEID_UNI_ALARM_SEVERITY_MINOR)
+                    $alarmSeverity = "低";
                 else
-                    $status = "运行";
-            }
-            array_push($one_row, $pm25);
-            array_push($one_row, $temperature);
-            array_push($one_row, $humidity);
-            array_push($one_row, $noise);
-            array_push($one_row, $windspeed);
-            array_push($one_row, $winddir);
-            array_push($one_row, $status);
+                    $alarmSeverity = "无";
 
-            array_push($resp['data'], $one_row);
+                if ($alarmContent == HUITP_IEID_UNI_ALARM_CONTENT_PM25_NO_CONNECT)
+                    $alarmContent = "颗粒物传感器故障";
+                elseif ($alarmContent == HUITP_IEID_UNI_ALARM_CONTENT_TEMP_NO_CONNECT)
+                    $alarmContent = "温度传感器故障";
+                elseif ($alarmContent == HUITP_IEID_UNI_ALARM_CONTENT_HUMID_NO_CONNECT)
+                    $alarmContent = "湿度传感器故障";
+                elseif ($alarmContent == HUITP_IEID_UNI_ALARM_CONTENT_WINDDIR_NO_CONNECT)
+                    $alarmContent = "风向传感器故障";
+                elseif ($alarmContent == HUITP_IEID_UNI_ALARM_CONTENT_WINDSPD_NO_CONNECT)
+                    $alarmContent = "风速传感器故障";
+                elseif ($alarmContent == HUITP_IEID_UNI_ALARM_CONTENT_NOISE_NO_CONNECT)
+                    $alarmContent = "噪声传感器故障";
+                elseif ($alarmContent == HUITP_IEID_UNI_ALARM_CONTENT_VIDEO_NO_CONNECT)
+                    $alarmContent = "摄像头故障";
+                elseif ($alarmContent == HUITP_IEID_UNI_ALARM_CONTENT_TSP_VALUE_EXCEED_THRESHLOD)
+                    $alarmContent = "扬尘超标";
+                elseif ($alarmContent == HUITP_IEID_UNI_ALARM_CONTENT_NOISE_VALUE_EXCEED_THRESHLOD)
+                    $alarmContent = "噪声超标";
+                else
+                    $alarmContent = "未知";
+
+                array_push($one_row, $statCode);
+                array_push($one_row, $statName);
+                array_push($one_row, $address);
+                array_push($one_row, $chargeMan);
+                array_push($one_row, $telephone);
+                array_push($one_row, $alarmSeverity);
+                array_push($one_row, $alarmContent);
+                array_push($one_row, $tsGen);
+                array_push($one_row, $tsClose);
+                array_push($one_row, $alarmProc);
+
+                array_push($resp['data'], $one_row);
+            }
         }
 
         $mysqli->close();
@@ -459,28 +451,22 @@ class classDbiL3apF5fm
         array_push($resp["column"], "告警处理");
 
         //初始化返回值，确保数据库查询不到的情况下界面返回数据长度不报错
-        $statcode = "";
         $statname = "";
         $country = "";
         $address = "";
         $chargeman = "";
         $telephone = "";
-        $alarmflag = "";
-        $alarmseverity = "";
-        $alarmdescription = "";
-        $tsgen = "";
-        $tsclose = "";
-        $alarmproc = "";
-
 
         $objFhysAlarm = new classConstFhysEngpar();
         for($i=0; $i<count($auth_list["stat_code"]); $i++)
         {
             $statcode = $auth_list["stat_code"][$i];
+            //删除超期的历史数据
+            $this->dbi_l3f5fm_fhys_alarmdata_old_delete($statcode, MFUN_HCU_DATA_SAVE_DURATION_BY_PROJ);
+
             $query_str = "SELECT * FROM `t_l3f3dm_siteinfo` WHERE `statcode` = '$statcode'";
             $result = $mysqli->query($query_str);
-            if (($result->num_rows) > 0)
-            {
+            if (($result->num_rows) > 0) {
                 $row = $result->fetch_array();
                 $statname = $row["statname"];
                 $country = $row["country"];
@@ -488,11 +474,10 @@ class classDbiL3apF5fm
                 $chargeman = $row["chargeman"];
                 $telephone = $row["telephone"];
             }
-            $alarmflag = MFUN_HCU_FHYS_ALARM_PROC_FLAG_C;
+            $alarmflag = MFUN_HCU_ALARM_PROC_FLAG_C;
             $query_str = "SELECT * FROM `t_l3f5fm_fhys_alarmdata` WHERE (`statcode` = '$statcode' AND `alarmflag` != '$alarmflag')"; //授权站点中尚未关闭的告警
             $result = $mysqli->query($query_str);
-            while (($result != false) && (($row = $result->fetch_array()) > 0))
-            {
+            while (($result != false) && (($row = $result->fetch_array()) > 0)) {
                 $one_row = array();
                 $alarmflag = $row["alarmflag"];
                 $alarmseverity = $row["alarmseverity"];
@@ -555,12 +540,12 @@ class classDbiL3apF5fm
 
             //微信公众号通知
             //先查询这个有这个项目授权的所有手机微信openid
+            $currenttime = date("Y-m-d H:i:s", $timestamp);
             $key_type = MFUN_L3APL_F2CM_KEY_TYPE_WECHAT;
             $query_str = "SELECT `hwcode` FROM `t_l3f2cm_fhys_keyinfo` WHERE (`p_code` = '$projcode' AND `keytype` = '$key_type')";
             $result = $mysqli->query($query_str);
             while (($result != false) && (($row = $result->fetch_array()) > 0)){
                 $wx_touser = $row['hwcode'];
-                $currenttime = date("Y-m-d H:i:s", $timestamp);
                 $template = array('touser' => $wx_touser,
                                 'template_id' => "SAoMGA7GYeavgwpOImgWDs5BaoDMKIT5luASeZ671XM",
                                 'topcolor' => "#7B68EE",
@@ -576,7 +561,7 @@ class classDbiL3apF5fm
                 $resp = $l2sdkIotWxObj->send_template_message(json_encode($template, JSON_UNESCAPED_UNICODE));
             }
 
-            $alarmflag = MFUN_HCU_FHYS_ALARM_PROC_FLAG_Y;
+            $alarmflag = MFUN_HCU_ALARM_PROC_FLAG_Y;
             $alarmproc = $currenttime . ":发送信息（".$action."）到手机".$mobile;
             $query_str = "UPDATE `t_l3f5fm_fhys_alarmdata` SET `alarmflag` = '$alarmflag', `alarmproc` = '$alarmproc' WHERE (`statcode` = '$statcode')";
             $result = $mysqli->query($query_str);
@@ -597,7 +582,7 @@ class classDbiL3apF5fm
 
         $timestamp = time();
         $currenttime = date("Y-m-d H:i:s",$timestamp);
-        $closeflag = MFUN_HCU_FHYS_ALARM_PROC_FLAG_C;
+        $closeflag = MFUN_HCU_ALARM_PROC_FLAG_C;
         $alarmproc = $currenttime . ":操作员（".$uid."）关闭告警";
         $query_str = "UPDATE `t_l3f5fm_fhys_alarmdata` SET `alarmflag` = '$closeflag', `alarmproc` = '$alarmproc', `tsclose` = '$currenttime' WHERE (`statcode` = '$statcode' AND `alarmflag` != '$closeflag')";
         $result = $mysqli->query($query_str);

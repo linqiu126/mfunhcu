@@ -576,7 +576,7 @@ class classTaskL4fhysUi
                     if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
                     $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
-                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM5FM, MSG_ID_L4FHYSUI_TO_L3F5_GETALARMHANDLETABLE, "MSG_ID_L4FHYSUI_TO_L3F5_GETALARMHANDLETABLE",$input);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM5FM, MSG_ID_L4FHYSUI_TO_L3F5_ALARMHANDLETABLE, "MSG_ID_L4FHYSUI_TO_L3F5_ALARMHANDLETABLE",$input);
                     break;
 
                 case "AlarmHandle":

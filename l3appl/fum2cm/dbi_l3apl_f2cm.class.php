@@ -179,36 +179,6 @@ class classDbiL3apF2cm
 *                                              与UI界面无关的私有函数API                                                 *
 ***********************************************************************************************************************/
 
-    //去除二维数组中的重复项
-    private function unique_arr($array2D,$stkeep=false,$ndformat=true)
-    {
-        // 判断是否保留一级数组键 (一级数组键可以为非数字)
-        if($stkeep) $stArr = array_keys($array2D);
-        // 判断是否保留二级数组键 (所有二级数组键必须相同)
-        if($ndformat) $ndArr = array_keys(end($array2D));
-        //降维,也可以用implode,将一维数组转换为用逗号连接的字符串
-        foreach ($array2D as $v){
-            $v = join(",",$v);
-            $temp[] = $v;
-        }
-        //去掉重复的字符串,也就是重复的一维数组
-        $temp = array_unique($temp);
-        //再将拆开的数组重新组装
-        $i = 0;
-        foreach ($temp as $k => $v)
-        {
-            if($stkeep) $k = $stArr[$k];
-            if($ndformat)
-            {
-                $tempArr = explode(",",$v);
-                foreach($tempArr as $ndkey => $ndval) $output[$i][$ndArr[$ndkey]] = $ndval;
-                $i++;
-            }
-            else $output[$k] = explode(",",$v);
-        }
-        return $output;
-    }
-
     //获取用户授权的项目组列表，如果没有直接授权项目组，则默认授权项目对应的项目组允许访问
     private function dbi_get_user_auth_projgroup($uid)
     {
@@ -243,7 +213,8 @@ class classDbiL3apF2cm
             }
         }
         //删除项目组列表里重复的项
-        $unique_pglist = $this->unique_arr($pg_list, false, true);
+        $dbiL1vmCommonObj = new classDbiL1vmCommon();
+        $unique_pglist = $dbiL1vmCommonObj->unique_array($pg_list, false, true);
         $mysqli->close();
         return $unique_pglist;
     }
@@ -292,7 +263,8 @@ class classDbiL3apF2cm
             }
         }
         //删除项目列表里重复的项
-        $unique_projlist = $this->unique_arr($projlist,false,true);
+        $dbiL1vmCommonObj = new classDbiL1vmCommon();
+        $unique_projlist = $dbiL1vmCommonObj->unique_array($projlist,false,true);
         $mysqli->close();
         return $unique_projlist;
     }
@@ -350,39 +322,75 @@ class classDbiL3apF2cm
         array_push($user_table["column"],"更新日期");
         array_push($user_table["column"],"备注");
 
+        $self_grade = 0; //初始化
         $query_str = "SELECT * FROM `t_l3f1sym_account` WHERE (`uid` = '$uid')";
         $result = $mysqli->query($query_str);
-        $user = "";
-        if (($result != false) && (($info = $result->fetch_array()) > 0))
-        {
-            $user = $info['user'];
-            $grade = intval($info["grade"]);
-            if ($grade == MFUN_USER_GRADE_LEVEL_0)
+        //没有关键字查询
+        if (empty($keyword)) {
+            $row = $result->fetch_array();
+            //显示自己信息
+            $self_grade = intval($row['grade']);
+            if ($self_grade == MFUN_USER_GRADE_LEVEL_0)
                 $grade_name = MFUN_HCU_USER_NAME_GRADE_0;
-            elseif ($grade == MFUN_USER_GRADE_LEVEL_1)
+            elseif ($self_grade == MFUN_USER_GRADE_LEVEL_1)
                 $grade_name = MFUN_HCU_USER_NAME_GRADE_1;
-            elseif ($grade == MFUN_USER_GRADE_LEVEL_2)
+            elseif ($self_grade == MFUN_USER_GRADE_LEVEL_2)
                 $grade_name = MFUN_HCU_USER_NAME_GRADE_2;
-            elseif ($grade == MFUN_USER_GRADE_LEVEL_3)
+            elseif ($self_grade == MFUN_USER_GRADE_LEVEL_3)
                 $grade_name = MFUN_HCU_USER_NAME_GRADE_3;
-            elseif ($grade == MFUN_USER_GRADE_LEVEL_4)
+            elseif ($self_grade == MFUN_USER_GRADE_LEVEL_4)
                 $grade_name = MFUN_HCU_USER_NAME_GRADE_4;
             else
                 $grade_name = MFUN_HCU_USER_NAME_GRADE_N;
 
             $one_row = array();
-            array_push($one_row, $info["uid"]);
-            array_push($one_row, $info["user"]);
-            array_push($one_row, $info["nick"]);
-            array_push($one_row, $info["phone"]);
-            array_push($one_row, $info["email"]);
+            array_push($one_row, $row["uid"]);
+            array_push($one_row, $row["user"]);
+            array_push($one_row, $row["nick"]);
+            array_push($one_row, $row["phone"]);
+            array_push($one_row, $row["email"]);
             array_push($one_row, $grade_name);
-            array_push($one_row, $info["regdate"]);
-            array_push($one_row, $info["backup"]);
+            array_push($one_row, $row["regdate"]);
+            array_push($one_row, $row["backup"]);
 
-            array_push($user_table['data'],$one_row);
+            array_push($user_table['data'],$one_row);  //本用户信息
         }
 
+        $query_str = "SELECT * FROM `t_l3f1sym_account` WHERE (1)";
+        $result = $mysqli->query($query_str);
+        $user = "";
+        while (($result != false) && (($info = $result->fetch_array()) > 0))
+        {
+            $grade = intval($info['grade']);
+            if ($self_grade < $grade){  //比自己等级低的用户信息
+                $user = $info['user'];
+                $grade = intval($info["grade"]);
+                if ($grade == MFUN_USER_GRADE_LEVEL_0)
+                    $grade_name = MFUN_HCU_USER_NAME_GRADE_0;
+                elseif ($grade == MFUN_USER_GRADE_LEVEL_1)
+                    $grade_name = MFUN_HCU_USER_NAME_GRADE_1;
+                elseif ($grade == MFUN_USER_GRADE_LEVEL_2)
+                    $grade_name = MFUN_HCU_USER_NAME_GRADE_2;
+                elseif ($grade == MFUN_USER_GRADE_LEVEL_3)
+                    $grade_name = MFUN_HCU_USER_NAME_GRADE_3;
+                elseif ($grade == MFUN_USER_GRADE_LEVEL_4)
+                    $grade_name = MFUN_HCU_USER_NAME_GRADE_4;
+                else
+                    $grade_name = MFUN_HCU_USER_NAME_GRADE_N;
+
+                $one_row = array();
+                array_push($one_row, $info["uid"]);
+                array_push($one_row, $info["user"]);
+                array_push($one_row, $info["nick"]);
+                array_push($one_row, $info["phone"]);
+                array_push($one_row, $info["email"]);
+                array_push($one_row, $grade_name);
+                array_push($one_row, $info["regdate"]);
+                array_push($one_row, $info["backup"]);
+
+                array_push($user_table['data'],$one_row);
+            }
+        }
 
         //如果是特殊用户则显示所有用户表
         if ($user == 'admin')

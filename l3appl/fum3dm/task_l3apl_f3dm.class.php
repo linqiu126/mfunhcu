@@ -160,27 +160,6 @@ class classTaskL3aplF3dm
         return $retval;
     }
 
-    function func_aqyc_get_alarm_handle_table_process($action, $user, $body)
-    {
-        $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
-        $usercheck = $uiF1symDbObj->dbi_user_authcheck($action, $user);
-        if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
-            $uid = $uiF1symDbObj->dbi_session_check($user);
-            $uiF3dmDbObj = new classDbiL3apF3dm(); //初始化一个UI DB对象
-            $resp = $uiF3dmDbObj->dbi_aqyc_alarm_handle_table_req($uid);
-            if(!empty($resp)){
-                $ret = array('ColumnName' => $resp["column"],'TableData' => $resp["data"]);
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$ret,'msg'=>"获取告警站点列表成功");
-            }
-            else
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>"获取告警站点列表失败");
-        }
-        else
-            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
-
-        return $retval;
-    }
-
     /*******************************波峰智能组合秤新增处理 Start****************************************/
     function func_bfsc_get_static_monitor_table_process($action, $user, $body)
     {
@@ -395,11 +374,6 @@ class classTaskL3aplF3dm
 
             case MSG_ID_L4AQYCUI_TO_L3F3_GETSTATICMONITORTABLE://功能GetStaticMonitorTable
                 $resp = $this->func_aqyc_get_static_monitor_table_process($action, $user, $body);
-                $project = MFUN_PRJ_HCU_AQYCUI;
-                break;
-
-            case MSG_ID_L4AQYCUI_TO_L3F3_ALARMHANDLETABLE: //告警处理表
-                $resp = $this->func_aqyc_get_alarm_handle_table_process($action, $user, $body);
                 $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 

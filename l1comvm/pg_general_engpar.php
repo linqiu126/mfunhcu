@@ -27,6 +27,11 @@ define("MFUN_HCU_DATA_FLAG_INVALID", "N"); //无效数据
 define("MFUN_HCU_DATA_FLAG_VALID", "Y");   //有效数据
 define("MFUN_HCU_DATA_FLAG_FAKE", "F");    //人工插入数据
 
+//告警处理状态标识
+define ("MFUN_HCU_ALARM_PROC_FLAG_Y", "Y"); //告警已经处理，等待关闭
+define ("MFUN_HCU_ALARM_PROC_FLAG_N", "N"); //告警未处理
+define ("MFUN_HCU_ALARM_PROC_FLAG_C", "C"); //告警已经处理关闭
+
 //通用项目标识
 define("MFUN_L1VM_DBI_MAX_LOG_NUM", 50000);  //防止t_loginfo表单数据无限制的增长，保留的最大记录数
 define("MFUN_L3APL_F1SYM_SESSION_ID_LEN", 10); //UI界面session id字符串长度
@@ -726,7 +731,7 @@ class classConstL1vmUserWebRight
             self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['webauth']['KeyHistory'] = 'true';
             self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['webauth']['MPMonitor'] = 'true';
             self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['webauth']['MPStaticMonitorTable'] = 'true';
-            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['webauth']['WarningCheck'] = 'true';
+            //self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['webauth']['WarningCheck'] = 'true';
             self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['webauth']['WarningHandle'] = 'true';
             self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['webauth']['RTUManage'] = 'true';
             self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['webauth']['OTDRManage'] = 'true';
@@ -760,7 +765,7 @@ class classConstL1vmUserWebRight
             self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['webauth']['KeyHistory'] = 'true';
             self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['webauth']['MPMonitor'] = 'true';
             self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['webauth']['MPStaticMonitorTable'] = 'true';
-            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['webauth']['WarningCheck'] = 'true';
+            //self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['webauth']['WarningCheck'] = 'true';
             self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['webauth']['WarningHandle'] = 'true';
             self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['webauth']['RTUManage'] = 'true';
             self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['webauth']['OTDRManage'] = 'true';
@@ -794,7 +799,7 @@ class classConstL1vmUserWebRight
             self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_3]['webauth']['KeyHistory'] = 'true';
             self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_3]['webauth']['MPMonitor'] = 'true';
             self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_3]['webauth']['MPStaticMonitorTable'] = 'true';
-            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_3]['webauth']['WarningCheck'] = 'true';
+            //self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_3]['webauth']['WarningCheck'] = 'true';
             self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_3]['webauth']['WarningHandle'] = 'true';
             self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_3]['webauth']['RTUManage'] = 'true';
             self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_3]['webauth']['OTDRManage'] = 'true';
@@ -811,7 +816,7 @@ class classConstL1vmUserWebRight
             self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_4]['webauth']['KeyHistory'] = 'true';
             self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_4]['webauth']['MPMonitor'] = 'true';
             self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_4]['webauth']['MPStaticMonitorTable'] = 'true';
-            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_4]['webauth']['WarningCheck'] = 'true';
+            //self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_4]['webauth']['WarningCheck'] = 'true';
             self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_4]['webauth']['WarningHandle'] = 'true';
             self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_4]['webauth']['RTUManage'] = 'true';
             self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_4]['webauth']['OTDRManage'] = 'true';

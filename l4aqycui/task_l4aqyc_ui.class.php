@@ -393,15 +393,6 @@ class classTaskL4aqycUi
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM5FM, MSG_ID_L4AQYCUI_TO_L3F5_ALARMQUERY, "MSG_ID_L4AQYCUI_TO_L3F5_ALARMQUERY",$input);
                     break;
 
-                case "AlarmProcess"://告警处理，暂时只是聚合显示当前告警站点列表
-                    if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
-                    if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
-                    if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
-
-                    $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
-                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM5FM, MSG_ID_L4AQYCUI_TO_L3F5_ALARMPROCESS, "MSG_ID_L4AQYCUI_TO_L3F5_ALARMPROCESS",$input);
-                    break;
-
                 case "TableQuery"://导出某站点历史数据
                     if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
                     if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
@@ -611,16 +602,7 @@ class classTaskL4aqycUi
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM4ICM, MSG_ID_L4AQYCUI_TO_L3F4_PROJSUSTRATEGYGET, "MSG_ID_L4AQYCUI_TO_L3F4_PROJSUSTRATEGYGET",$input);
                     break;
 
-                case "GetWarningHandleListTable":
-                    if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
-                    if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
-                    if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
-
-                    $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
-                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM3DM, MSG_ID_L4AQYCUI_TO_L3F3_ALARMHANDLETABLE, "MSG_ID_L4AQYCUI_TO_L3F3_ALARMHANDLETABLE",$input);
-                    break;
-
-                /*以下5条消息是公用，要考虑不同项目的适配*/
+                /*********************以下6条消息公用，要考虑不同项目的适配*********************/
                 case "DevAlarm":  //获取当前的测量值，如果测量值超出范围，提示告警
                     if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
                     if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
@@ -664,6 +646,16 @@ class classTaskL4aqycUi
 
                     $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM3DM, MSG_ID_L4AQYCUI_TO_L3F3_GETSTATICMONITORTABLE, "MSG_ID_L4AQYCUI_TO_L3F3_GETSTATICMONITORTABLE",$input);
+                    break;
+
+                //告警处理表
+                case "GetWarningHandleListTable":
+                    if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
+                    if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
+                    if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
+
+                    $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
+                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM5FM, MSG_ID_L4AQYCUI_TO_L3F5_ALARMHANDLETABLE, "MSG_ID_L4AQYCUI_TO_L3F5_ALARMHANDLETABLE",$input);
                     break;
 
                 /*********************************智能云锁新增处理 Start*********************************************/

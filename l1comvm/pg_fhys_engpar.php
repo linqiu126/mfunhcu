@@ -63,10 +63,6 @@ define("MFUN_L3APL_F2CM_EVENT_DURATION_WEEK", "7");
 define("MFUN_L3APL_F2CM_EVENT_DURATION_MONTH", "30");
 
 //FHYS系统常量
-define ("MFUN_HCU_FHYS_ALARM_PROC_FLAG_Y", "Y"); //告警已经处理，等待关闭
-define ("MFUN_HCU_FHYS_ALARM_PROC_FLAG_N", "N"); //告警未处理
-define ("MFUN_HCU_FHYS_ALARM_PROC_FLAG_C", "C"); //告警已经处理关闭
-
 
 define ("MFUN_HCU_FHYS_ALARM_YES", "Y");
 define ("MFUN_HCU_FHYS_ALARM_NO", "N");

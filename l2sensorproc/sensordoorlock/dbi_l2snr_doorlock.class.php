@@ -340,7 +340,7 @@ class classDbiL2snrDoorlock
         //告警等级大于0，则新插入一条新纪录
         if (($alarm_code != MFUN_HCU_FHYS_ALARM_NONE) AND ($alarm_severity != MFUN_HCU_FHYS_ALARM_LEVEL_0))
         {
-            $alarm_flag = MFUN_HCU_FHYS_ALARM_PROC_FLAG_N;
+            $alarm_flag = MFUN_HCU_ALARM_PROC_FLAG_N;
             $alarm_proc = "新增告警，等待处理中";
             $query_str = "INSERT INTO `t_l3f5fm_fhys_alarmdata` (devcode,statcode,alarmflag,alarmseverity,alarmcode,tsgen,alarmproc)
                             VALUES ('$devCode','$statcode','$alarm_flag','$alarm_severity','$alarm_code','$currenttime','$alarm_proc')";
