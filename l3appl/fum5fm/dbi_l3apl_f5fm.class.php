@@ -135,7 +135,7 @@ class classDbiL3apF5fm
     }
 
     //查询用户授权的stat_code和proj_code list
-    public function dbi_user_statproj_inqury($uid)
+    private function dbi_user_statproj_inqury($uid)
     {
         //建立连接
         $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
@@ -187,7 +187,7 @@ class classDbiL3apF5fm
     }
 
     //查询该站点是否正处于告警状态
-    private function dbi_site_alarm_check($statcode)
+    private function dbi_site_alarm_check($statCode)
     {
         //建立连接
         $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
@@ -196,7 +196,7 @@ class classDbiL3apF5fm
             die('Could not connect: ' . mysqli_error($mysqli));
         }
 
-        $result = $mysqli->query("SELECT * FROM `t_l3f3dm_aqyc_currentreport` WHERE `statcode` = '$statcode'");
+        $result = $mysqli->query("SELECT * FROM `t_l3f3dm_aqyc_currentreport` WHERE `statcode` = '$statCode'");
         if ($result->num_rows>0){
             $row = $result->fetch_array();
             $pm25 = $row['pm25']/1;
@@ -240,12 +240,12 @@ class classDbiL3apF5fm
         $sitelist = array();
         for($i=0; $i<count($auth_list); $i++)
         {
-            $statcode = $auth_list[$i]['stat_code'];
+            $statCode = $auth_list[$i]['stat_code'];
 
-            $query_str = "SELECT * FROM `t_l3f3dm_siteinfo` WHERE `statcode` = '$statcode'";      //查询监测点对应的项目号
+            $query_str = "SELECT * FROM `t_l3f3dm_siteinfo` WHERE `statcode` = '$statCode'";      //查询监测点对应的项目号
             $resp = $mysqli->query($query_str);
             if (($resp->num_rows)>0) {
-                $alarm_check = $this->dbi_site_alarm_check($statcode);
+                $alarm_check = $this->dbi_site_alarm_check($statCode);
                 if ($alarm_check){
                     $info = $resp->fetch_array();
 
@@ -341,7 +341,6 @@ class classDbiL3apF5fm
         $telephone = "";
         for($i=0; $i<count($auth_list); $i++)
         {
-            $one_row = array();
             //$projCode = $auth_list[$i]["p_code"];
             $statCode = $auth_list[$i]["stat_code"];
 
@@ -460,11 +459,11 @@ class classDbiL3apF5fm
         $objFhysAlarm = new classConstFhysEngpar();
         for($i=0; $i<count($auth_list["stat_code"]); $i++)
         {
-            $statcode = $auth_list["stat_code"][$i];
+            $statCode = $auth_list["stat_code"][$i];
             //删除超期的历史数据
-            $this->dbi_l3f5fm_fhys_alarmdata_old_delete($statcode, MFUN_HCU_DATA_SAVE_DURATION_BY_PROJ);
+            $this->dbi_l3f5fm_fhys_alarmdata_old_delete($statCode, MFUN_HCU_DATA_SAVE_DURATION_BY_PROJ);
 
-            $query_str = "SELECT * FROM `t_l3f3dm_siteinfo` WHERE `statcode` = '$statcode'";
+            $query_str = "SELECT * FROM `t_l3f3dm_siteinfo` WHERE `statcode` = '$statCode'";
             $result = $mysqli->query($query_str);
             if (($result->num_rows) > 0) {
                 $row = $result->fetch_array();
@@ -475,7 +474,7 @@ class classDbiL3apF5fm
                 $telephone = $row["telephone"];
             }
             $alarmflag = MFUN_HCU_ALARM_PROC_FLAG_C;
-            $query_str = "SELECT * FROM `t_l3f5fm_fhys_alarmdata` WHERE (`statcode` = '$statcode' AND `alarmflag` != '$alarmflag')"; //授权站点中尚未关闭的告警
+            $query_str = "SELECT * FROM `t_l3f5fm_fhys_alarmdata` WHERE (`statcode` = '$statCode' AND `alarmflag` != '$alarmflag')"; //授权站点中尚未关闭的告警
             $result = $mysqli->query($query_str);
             while (($result != false) && (($row = $result->fetch_array()) > 0)) {
                 $one_row = array();
@@ -487,7 +486,7 @@ class classDbiL3apF5fm
                 $tsclose = $row["tsclose"];
                 $alarmproc = $row["alarmproc"];
 
-                array_push($one_row, $statcode);
+                array_push($one_row, $statCode);
                 array_push($one_row, $alarmflag);
                 array_push($one_row, $statname);
                 array_push($one_row, $country);
@@ -508,7 +507,7 @@ class classDbiL3apF5fm
         return $resp;
     }
 
-    public function dbi_fhys_alarm_handle_process($statcode,$mobile,$action)
+    public function dbi_fhys_alarm_handle_process($statCode,$mobile,$action)
     {
         //建立连接
         $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
@@ -519,7 +518,7 @@ class classDbiL3apF5fm
         $timestamp = time();
         $alarmproc = "";
 
-        $query_str = "SELECT * FROM `t_l3f3dm_siteinfo` WHERE `statcode` = '$statcode'";
+        $query_str = "SELECT * FROM `t_l3f3dm_siteinfo` WHERE `statcode` = '$statCode'";
         $result = $mysqli->query($query_str);
         if (($result->num_rows) > 0) {
             $row = $result->fetch_array();
@@ -563,7 +562,7 @@ class classDbiL3apF5fm
 
             $alarmflag = MFUN_HCU_ALARM_PROC_FLAG_Y;
             $alarmproc = $currenttime . ":发送信息（".$action."）到手机".$mobile;
-            $query_str = "UPDATE `t_l3f5fm_fhys_alarmdata` SET `alarmflag` = '$alarmflag', `alarmproc` = '$alarmproc' WHERE (`statcode` = '$statcode')";
+            $query_str = "UPDATE `t_l3f5fm_fhys_alarmdata` SET `alarmflag` = '$alarmflag', `alarmproc` = '$alarmproc' WHERE (`statcode` = '$statCode')";
             $result = $mysqli->query($query_str);
         }
 
@@ -571,7 +570,7 @@ class classDbiL3apF5fm
         return $alarmproc;
     }
 
-    public function dbi_fhys_alarm_close_process($uid,$statcode)
+    public function dbi_fhys_alarm_close_process($uid,$statCode)
     {
         //建立连接
         $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
@@ -584,7 +583,7 @@ class classDbiL3apF5fm
         $currenttime = date("Y-m-d H:i:s",$timestamp);
         $closeflag = MFUN_HCU_ALARM_PROC_FLAG_C;
         $alarmproc = $currenttime . ":操作员（".$uid."）关闭告警";
-        $query_str = "UPDATE `t_l3f5fm_fhys_alarmdata` SET `alarmflag` = '$closeflag', `alarmproc` = '$alarmproc', `tsclose` = '$currenttime' WHERE (`statcode` = '$statcode' AND `alarmflag` != '$closeflag')";
+        $query_str = "UPDATE `t_l3f5fm_fhys_alarmdata` SET `alarmflag` = '$closeflag', `alarmproc` = '$alarmproc', `tsclose` = '$currenttime' WHERE (`statcode` = '$statCode' AND `alarmflag` != '$closeflag')";
         $result = $mysqli->query($query_str);
 
         $mysqli->close();

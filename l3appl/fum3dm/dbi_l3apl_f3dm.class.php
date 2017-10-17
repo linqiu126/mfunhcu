@@ -144,6 +144,58 @@ class classDbiL3apF3dm
 
     }
 
+    //查询用户授权的stat_code和proj_code list
+    private function dbi_user_statproj_inqury($uid)
+    {
+        //建立连接
+        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli) {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $mysqli->query("SET NAMES utf8");
+
+        //查询该用户授权的项目和项目组列表
+        $query_str = "SELECT `auth_code` FROM `t_l3f1sym_authlist` WHERE `uid` = '$uid'";
+        $result = $mysqli->query($query_str);
+        $p_list = array();
+        $pg_list = array();
+        while (($result != false) && (($row = $result->fetch_array()) > 0)){
+            $temp = $row["auth_code"];
+            $fromat = substr($temp, 0, MFUN_L3APL_F2CM_CODE_FORMAT_LEN);
+            if($fromat == MFUN_L3APL_F2CM_PROJ_CODE_PREFIX)
+                array_push($p_list,$temp);
+            elseif ($fromat == MFUN_L3APL_F2CM_PG_CODE_PREFIX)
+                array_push($pg_list,$temp);
+        }
+
+        //把授权的项目组列表里对应的项目号也取出来追加到项目列表，获得该用户授权的完整项目列表
+        for($i=0; $i<count($pg_list); $i++){
+            $query_str = "SELECT `p_code` FROM `t_l3f2cm_projinfo` WHERE `pg_code` = '$pg_list[$i]'";
+            $result = $mysqli->query($query_str);
+            while (($result != false) && (($row = $result->fetch_array()) > 0))
+            {
+                $temp = $row["p_code"];
+                array_push($p_list,$temp);
+            }
+        }
+        //查询授权项目号下对应的所有监测点code
+        $auth_list= array();
+        for($i=0; $i<count($p_list); $i++){
+            $query_str = "SELECT `statcode` FROM `t_l3f3dm_siteinfo` WHERE `p_code` = '$p_list[$i]'";
+            $result = $mysqli->query($query_str);
+            while (($result != false) && (($row = $result->fetch_array()) > 0)){
+                $temp = array("stat_code"=>$row["statcode"],"p_code"=>$p_list[$i]);
+                array_push($auth_list ,$temp);
+            }
+        }
+        //删除列表里重复的项
+        $dbiL1vmCommonObj = new classDbiL1vmCommon();
+        $unique_authlist = $dbiL1vmCommonObj->unique_array($auth_list,false,true);
+
+        $mysqli->close();
+        return $unique_authlist;
+    }
+
     //查询该HCU设备的视频地址link
     public function dbi_siteinfo_inquiry_url($deviceid)
     {
@@ -171,63 +223,6 @@ class classDbiL3apF3dm
     /**********************************************************************************************************************
      *                                                 地图显示相关操作DB API                                               *
      *********************************************************************************************************************/
-    //查询用户授权的stat_code和proj_code list
-    public function dbi_user_statproj_inqury($uid)
-    {
-        //建立连接
-        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
-        if (!$mysqli) {
-            die('Could not connect: ' . mysqli_error($mysqli));
-        }
-        $mysqli->query("SET NAMES utf8");
-
-        //查询该用户授权的项目和项目组列表
-        $query_str = "SELECT `auth_code` FROM `t_l3f1sym_authlist` WHERE `uid` = '$uid'";
-        $result = $mysqli->query($query_str);
-        $p_list = array();
-        $pg_list = array();
-        while($row = $result->fetch_array())
-        {
-            $temp = $row["auth_code"];
-            $fromat = substr($temp, 0, MFUN_L3APL_F2CM_CODE_FORMAT_LEN);
-            if($fromat == MFUN_L3APL_F2CM_PROJ_CODE_PREFIX)
-                array_push($p_list,$temp);
-            elseif ($fromat == MFUN_L3APL_F2CM_PG_CODE_PREFIX)
-                array_push($pg_list,$temp);
-        }
-
-        //把授权的项目组列表里对应的项目号也取出来追加到项目列表，获得该用户授权的完整项目列表
-        for($i=0; $i<count($pg_list); $i++)
-        {
-            $query_str = "SELECT `p_code` FROM `t_l3f2cm_projinfo` WHERE `pg_code` = '$pg_list[$i]'";
-            $result = $mysqli->query($query_str);
-            while($row = $result->fetch_array())
-            {
-                $temp = $row["p_code"];
-                array_push($p_list,$temp);
-            }
-        }
-
-        //查询授权项目号下对应的所有监测点code
-        $auth_list["p_code"] = array();
-        $auth_list["stat_code"] = array();
-        for($i=0; $i<count($p_list); $i++)
-        {
-            $query_str = "SELECT `statcode` FROM `t_l3f3dm_siteinfo` WHERE `p_code` = '$p_list[$i]'";
-            $result = $mysqli->query($query_str);
-            while($row = $result->fetch_array())
-            {
-                $temp = $row["statcode"];
-                array_push($auth_list["stat_code"] ,$temp);
-                array_push($auth_list["p_code"] ,$p_list[$i]);
-            }
-        }
-
-        $mysqli->close();
-        return $auth_list;
-    }
-
-
     //UI MonitorList request, 获取该用户地图显示的所有监测点信息
     public function dbi_map_sitetinfo_req($uid)
     {
@@ -238,16 +233,14 @@ class classDbiL3apF3dm
         }
         $mysqli->query("SET NAMES utf8");
 
-        $auth_list["stat_code"] = array();
-        $auth_list["p_code"] = array();
+        //获取授权站点-项目列表
         $auth_list = $this->dbi_user_statproj_inqury($uid);
 
         $sitelist = array();
-        for($i=0; $i<count($auth_list["stat_code"]); $i++)
+        for($i=0; $i<count($auth_list); $i++)
         {
-            $statcode = $auth_list['stat_code'][$i];
-
-            $query_str = "SELECT * FROM `t_l3f3dm_siteinfo` WHERE `statcode` = '$statcode'";      //查询监测点对应的项目号
+            $statCode = $auth_list[$i]['stat_code'];
+            $query_str = "SELECT * FROM `t_l3f3dm_siteinfo` WHERE `statcode` = '$statCode'";      //查询监测点对应的项目号
             $resp = $mysqli->query($query_str);
             if (($resp->num_rows)>0) {
                 $info = $resp->fetch_array();
@@ -335,9 +328,9 @@ class classDbiL3apF3dm
         $query_str = "SELECT * FROM `t_l3f2cm_favourlist` WHERE `uid` = '$uid'";
         $result = $mysqli->query($query_str);
         while ($row = $result->fetch_array()){
-            $statcode = $row['statcode'];
+            $statCode = $row['statcode'];
 
-            $query_str = "SELECT * FROM `t_l3f3dm_siteinfo` WHERE `statcode` = '$statcode'";      //查询监测点对应的项目号
+            $query_str = "SELECT * FROM `t_l3f3dm_siteinfo` WHERE `statcode` = '$statCode'";      //查询监测点对应的项目号
             $resp = $mysqli->query($query_str);
             if (($resp->num_rows)>0) {
                 $info = $resp->fetch_array();
@@ -373,7 +366,7 @@ class classDbiL3apF3dm
      *                                                 传感器相关操作DB API                                                 *
      *********************************************************************************************************************/
     //UI DevAlarm Request, 获取当前的测量值，如果测量值超出范围，提示告警
-    public function dbi_aqyc_dev_currentvalue_req($statcode)
+    public function dbi_aqyc_dev_currentvalue_req($statCode)
     {
         //建立连接
         $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
@@ -385,7 +378,7 @@ class classDbiL3apF3dm
         $vcrname = array();
         $vcrlink = array();
         $vcrlist = array();
-        $query_str = "SELECT * FROM `t_l2sdk_iothcu_inventory` WHERE `statcode` = '$statcode'";
+        $query_str = "SELECT * FROM `t_l2sdk_iothcu_inventory` WHERE `statcode` = '$statCode'";
         $result = $mysqli->query($query_str);
         if (($result->num_rows)>0) {
             $row = $result->fetch_array();
@@ -399,7 +392,7 @@ class classDbiL3apF3dm
         }
 
         $currentvalue = array(); //初始化
-        $query_str = "SELECT * FROM `t_l3f3dm_aqyc_currentreport` WHERE `statcode` = '$statcode'";
+        $query_str = "SELECT * FROM `t_l3f3dm_aqyc_currentreport` WHERE `statcode` = '$statCode'";
         $result = $mysqli->query($query_str);
         if (($result->num_rows)>0)
         {
@@ -585,14 +578,14 @@ class classDbiL3apF3dm
         else
             $currentvalue = "";
 
-        $resp = array('StatCode'=>$statcode, 'alarmlist'=>$currentvalue, 'vcr'=>$vcrlist);
+        $resp = array('StatCode'=>$statCode, 'alarmlist'=>$currentvalue, 'vcr'=>$vcrlist);
 
         $mysqli->close();
         return $resp;
     }
 
     //UI AlarmQuery Request, 获取告警历史数据
-    public function dbi_aqyc_dev_alarmhistory_req($statcode, $date, $alarm_type)
+    public function dbi_aqyc_dev_alarmhistory_req($statCode, $date, $alarm_type)
     {
         //建立连接
         $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
@@ -602,7 +595,7 @@ class classDbiL3apF3dm
         $mysqli->query("SET NAMES utf8");
 
         //根据监测点号查找对应的设备号
-        $query_str = "SELECT * FROM `t_l2sdk_iothcu_inventory` WHERE `statcode` = '$statcode'";
+        $query_str = "SELECT * FROM `t_l2sdk_iothcu_inventory` WHERE `statcode` = '$statCode'";
         $result = $mysqli->query($query_str);
         if (($result->num_rows) > 0) {
             $row = $result->fetch_array();
@@ -1673,8 +1666,7 @@ class classDbiL3apF3dm
         }
         $mysqli->query("SET NAMES utf8");
 
-        $auth_list["stat_code"] = array();
-        $auth_list["p_code"] = array();
+        //获取授权站点-项目列表
         $auth_list = $this->dbi_user_statproj_inqury($uid);
 
         array_push($resp["column"], "监测点编号");
@@ -1692,17 +1684,17 @@ class classDbiL3apF3dm
         array_push($resp["column"], "风向");
         array_push($resp["column"], "设备状态");
 
-        for($i=0; $i<count($auth_list["stat_code"]); $i++)
+        for($i=0; $i<count($auth_list); $i++)
         {
             $one_row = array();
-            $pcode = $auth_list["p_code"][$i];
-            $statcode = $auth_list["stat_code"][$i];
-            $query_str = "SELECT * FROM `t_l3f3dm_siteinfo` WHERE `statcode` = '$statcode'";
+            $pcode = $auth_list[$i]["p_code"];
+            $statCode = $auth_list[$i]["stat_code"];
+            $query_str = "SELECT * FROM `t_l3f3dm_siteinfo` WHERE `statcode` = '$statCode'";
             $result = $mysqli->query($query_str);
             if (($result->num_rows) > 0)
             {
                 $row = $result->fetch_array();
-                array_push($one_row, $statcode);
+                array_push($one_row, $statCode);
                 array_push($one_row, $row["statname"]);
                 array_push($one_row, $row["department"]);
                 array_push($one_row, $row["country"]);
@@ -1710,7 +1702,7 @@ class classDbiL3apF3dm
                 array_push($one_row, $row["chargeman"]);
                 array_push($one_row, $row["telephone"]);
             }
-            $query_str = "SELECT * FROM `t_l3f3dm_aqyc_currentreport` WHERE `statcode` = '$statcode'";
+            $query_str = "SELECT * FROM `t_l3f3dm_aqyc_currentreport` WHERE `statcode` = '$statCode'";
             $result = $mysqli->query($query_str);
             //初始化返回值，确保数据库没有测试报告的情况下界面返回数据长度不报错
             $pm25 = 0;
@@ -1768,8 +1760,7 @@ class classDbiL3apF3dm
         }
         $mysqli->query("SET NAMES utf8");
 
-        $auth_list["stat_code"] = array();
-        $auth_list["p_code"] = array();
+        //获取授权站点-项目列表
         $auth_list = $this->dbi_user_statproj_inqury($uid);
 
         array_push($resp["column"], "站点编号");
@@ -1788,12 +1779,12 @@ class classDbiL3apF3dm
         array_push($resp["column"], "秤_11");
         array_push($resp["column"], "秤_12");
 
-        for($i=0; $i<count($auth_list["stat_code"]); $i++)
+        for($i=0; $i<count($auth_list); $i++)
         {
             $one_row = array();
-            $statcode = $auth_list["stat_code"][$i];
+            $statCode = $auth_list[$i]["stat_code"];
 
-            $query_str = "SELECT * FROM `t_l3f3dm_bfsc_currentreport` WHERE `statcode` = '$statcode'";
+            $query_str = "SELECT * FROM `t_l3f3dm_bfsc_currentreport` WHERE `statcode` = '$statCode'";
             $result = $mysqli->query($query_str);
             //初始化返回值，确保数据库没有测试报告的情况下界面返回数据长度不报错
             $status = "休眠中";
@@ -1813,7 +1804,7 @@ class classDbiL3apF3dm
             {
                 $row = $result->fetch_array();
                 $devcode = $row["devcode"];
-                array_push($one_row, $statcode);
+                array_push($one_row, $statCode);
                 array_push($one_row, $devcode);
                 //更新设备运行状态
                 $timestamp = strtotime($row["createtime"]);
@@ -1872,8 +1863,7 @@ class classDbiL3apF3dm
         }
         $mysqli->query("SET NAMES utf8");
 
-        $auth_list["stat_code"] = array();
-        $auth_list["p_code"] = array();
+        //获取授权站点-项目列表
         $auth_list = $this->dbi_user_statproj_inqury($uid);
 
         array_push($resp["column"], "站点编号");
@@ -1897,23 +1887,23 @@ class classDbiL3apF3dm
         array_push($resp["column"], "烟雾告警");
 
 
-        for($i=0; $i<count($auth_list["stat_code"]); $i++)
+        for($i=0; $i<count($auth_list); $i++)
         {
             $one_row = array();
-            $statcode = $auth_list["stat_code"][$i];
-            $query_str = "SELECT * FROM `t_l3f3dm_siteinfo` WHERE `statcode` = '$statcode'";
+            $statCode = $auth_list[$i]["stat_code"];
+            $query_str = "SELECT * FROM `t_l3f3dm_siteinfo` WHERE `statcode` = '$statCode'";
             $result = $mysqli->query($query_str);
             if (($result->num_rows) > 0)
             {
                 $row = $result->fetch_array();
-                array_push($one_row, $statcode);
+                array_push($one_row, $statCode);
                 array_push($one_row, $row["statname"]);
                 array_push($one_row, $row["country"]);
                 array_push($one_row, $row["address"]);
                 array_push($one_row, $row["chargeman"]);
                 array_push($one_row, $row["telephone"]);
             }
-            $query_str = "SELECT * FROM `t_l3f3dm_fhys_currentreport` WHERE `statcode` = '$statcode'";
+            $query_str = "SELECT * FROM `t_l3f3dm_fhys_currentreport` WHERE `statcode` = '$statCode'";
             $result = $mysqli->query($query_str);
             //初始化返回值，确保数据库没有测试报告的情况下界面返回数据长度不报错
             $dev_status = "状态未知";
@@ -2039,7 +2029,7 @@ class classDbiL3apF3dm
     }
 
     //UI DevAlarm Request, 获取当前的测量值，如果测量值超出范围，提示告警
-    public function dbi_fhys_dev_currentvalue_req($statcode)
+    public function dbi_fhys_dev_currentvalue_req($statCode)
     {
         //建立连接
         $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
@@ -2051,7 +2041,7 @@ class classDbiL3apF3dm
         $vcrname = array();
         $vcrlink = array();
         $vcrlist = array();
-        $query_str = "SELECT * FROM `t_l2sdk_iothcu_inventory` WHERE `statcode` = '$statcode'";
+        $query_str = "SELECT * FROM `t_l2sdk_iothcu_inventory` WHERE `statcode` = '$statCode'";
         $result = $mysqli->query($query_str);
         if (($result->num_rows)>0) {
             $row = $result->fetch_array();
@@ -2064,7 +2054,7 @@ class classDbiL3apF3dm
             $vcrlist = array('vcrname'=>$vcrname, 'vcraddress'=>$vcrlink);
         }
 
-        $query_str = "SELECT * FROM `t_l3f3dm_fhys_currentreport` WHERE `statcode` = '$statcode'";
+        $query_str = "SELECT * FROM `t_l3f3dm_fhys_currentreport` WHERE `statcode` = '$statCode'";
         $result = $mysqli->query($query_str);
         if (($result->num_rows)>0)
         {
@@ -2337,7 +2327,7 @@ class classDbiL3apF3dm
         else
             $currentvalue = "";
 
-        $resp = array('StatCode'=>$statcode, 'alarmlist'=>$currentvalue, 'vcr'=>$vcrlist);
+        $resp = array('StatCode'=>$statCode, 'alarmlist'=>$currentvalue, 'vcr'=>$vcrlist);
 
         $mysqli->close();
         return $resp;
@@ -2380,9 +2370,9 @@ class classDbiL3apF3dm
         $result = $mysqli->query($query_str);
 
         while ($row = $result->fetch_array()){
-            $statcode = $row['statcode'];
+            $statCode = $row['statcode'];
             $statname = $row['statname'];
-            $query_str = "SELECT * FROM `t_l3fxprcm_fhys_locklog` WHERE (`statcode` = '$statcode' AND (concat(`keyname`,`keyusername`) like '%$keyWord%'))";
+            $query_str = "SELECT * FROM `t_l3fxprcm_fhys_locklog` WHERE (`statcode` = '$statCode' AND (concat(`keyname`,`keyusername`) like '%$keyWord%'))";
             $resp = $mysqli->query($query_str);
             while($resp_row = $resp->fetch_array()){
                 $sid = $resp_row['sid'];
@@ -2451,9 +2441,9 @@ class classDbiL3apF3dm
         {
             $row = $result->fetch_array();
             $file_name = $row['picname'];
-            $statcode = $row['statcode'];
+            $statCode = $row['statcode'];
             if(!empty($file_name)){
-                $file_url = MFUN_HCU_SITE_PIC_WWW_PATH.$statcode.'/'.$file_name;
+                $file_url = MFUN_HCU_SITE_PIC_WWW_PATH.$statCode.'/'.$file_name;
                 $pic_result = array(
                     'ifpicture' => 'true',
                     'picture' => $file_url
@@ -2471,10 +2461,10 @@ class classDbiL3apF3dm
         return $pic_result;
     }
 
-    public function dbi_point_install_picture_process($statcode)
+    public function dbi_point_install_picture_process($statCode)
     {
         $pic_list = array();
-        $path = MFUN_HCU_FHYS_PIC_ABS_FOLDER.$statcode;
+        $path = MFUN_HCU_FHYS_PIC_ABS_FOLDER.$statCode;
         if(!file_exists($path)) return $pic_list;
         foreach(glob($path."/*".MFUN_HCU_SITE_PIC_FILE_TYPE) as $afile) {
             if (is_dir($afile)) { //如果是目录
@@ -2485,7 +2475,7 @@ class classDbiL3apF3dm
                 $str_arr = explode("/", $afile);
                 $file_name = $str_arr[count($str_arr)-1];
 
-                $file_url = MFUN_HCU_FHYS_PIC_WWW_FOLDER.$statcode.'/'.$file_name;
+                $file_url = MFUN_HCU_FHYS_PIC_WWW_FOLDER.$statCode.'/'.$file_name;
                 $temp = array(
                     'name' => $file_name,
                     'url' => $file_url
