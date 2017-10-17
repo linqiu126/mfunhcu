@@ -133,28 +133,6 @@ class classDbiL3apF6pm
         return $result;
     }
 
-    public function dbi_perform_data_save($sid, $stability)
-    {
-        //建立连接
-        $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
-        if (!$mysqli)
-        {
-            die('Could not connect: ' . mysqli_error($mysqli));
-        }
-
-        //存储新记录，如果发现是已经存在的数据，则覆盖，否则新增
-        $result = $mysqli->query("SELECT * FROM `t_l3f6pm_perfdata` WHERE (`sid` = '$sid'");
-        if (($result != false) && ($result->num_rows)>0)   //重复，则覆盖
-        {
-            $result=$mysqli->query("UPDATE `t_l3f6pm_perfdata` SET  `stability` = '$stability' WHERE (`sid` = '$sid')");
-        }
-        else   //不存在，新增
-        {
-            $result=$mysqli->query("INSERT INTO `t_l3f6pm_perfdata` (sid, stability) VALUES ('$sid', '$stability')");
-        }
-        $mysqli->close();
-        return $result;
-    }
 
     public function dbi_aqyc_performance_table_req($uid)
     {
@@ -187,7 +165,6 @@ class classDbiL3apF6pm
 
 
         for($i=0; $i<count($auth_list); $i++){
-            $one_row = array();
             //$pcode = $auth_list[$i]["p_code"];
             $statCode = $auth_list[$i]["stat_code"];
 
@@ -205,6 +182,7 @@ class classDbiL3apF6pm
             $query_str = "SELECT * FROM `t_l3f6pm_perfdata` WHERE `statcode` = '$statCode'";
             $result = $mysqli->query($query_str);
             while (($result != false) && (($row = $result->fetch_array()) > 0)){
+                $one_row = array();
                 $row = $result->fetch_array();
                 $devcode = $row["devcode"];
                 $createtime =  $row["createtime"];
