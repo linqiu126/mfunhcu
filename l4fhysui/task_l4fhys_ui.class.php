@@ -465,33 +465,6 @@ class classTaskL4fhysUi
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM4ICM, MSG_ID_L4AQYCUI_TO_L3F4_HSMMPPLAY, "MSG_ID_L4AQYCUI_TO_L3F4_HSMMPPLAY",$input);
                     break;
 
-                case "GetVersionList":
-                    if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
-                    if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
-                    if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
-
-                    $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
-                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM4ICM, MSG_ID_L4AQYCUI_TO_L3F4_ALLSW, "MSG_ID_L4AQYCUI_TO_L3F4_ALLSW",$input);
-                    break;
-
-                case "GetProjDevVersion":
-                    if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
-                    if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
-                    if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
-
-                    $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
-                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM4ICM, MSG_ID_L4AQYCUI_TO_L3F4_DEVSW, "MSG_ID_L4AQYCUI_TO_L3F4_DEVSW",$input);
-                    break;
-
-                case "UpdateDevVersion":
-                    if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
-                    if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
-                    if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
-
-                    $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
-                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM4ICM, MSG_ID_L4AQYCUI_TO_L3F4_SWUPDATE, "MSG_ID_L4AQYCUI_TO_L3F4_SWUPDATE",$input);
-                    break;
-
                 case "GetCameraStatus": //Get camera vertical and horizontal angle and fetch a current photo
                     if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
                     if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";

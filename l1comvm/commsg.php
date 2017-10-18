@@ -184,21 +184,12 @@ define("MSG_ID_L4AQYCUI_TO_L3F3_FAVOURITECOUNT", $index++);
 define("MSG_ID_L4AQYCUI_TO_L3F3_SENSORLIST", $index++);
 define("MSG_ID_L4AQYCUI_TO_L3F3_DEVSENSOR", $index++);
 define("MSG_ID_L4AQYCUI_TO_L3F3_GETSTATICMONITORTABLE", $index++);
-define("MSG_ID_L4AQYCUI_TO_L3F4_ALLSW", $index++);      //查询所有可用的软件版本
-define("MSG_ID_L4AQYCUI_TO_L3F4_DEVSW", $index++);      //查询指定HCU设备当前版本
-define("MSG_ID_L4AQYCUI_TO_L3F4_SWUPDATE", $index++);   //请求将指定的HCU设备软件更新到指定版本
 define("MSG_ID_L4AQYCUI_TO_L3F4_CAMWEB", $index++);     //使用第三方控件实现视频和摄像头处理
 define("MSG_ID_L4AQYCUI_TO_L3F4_HSMMPLIST", $index++);  //查询某HCU设备指定日期的视频/图片文件列表
 define("MSG_ID_L4AQYCUI_TO_L3F4_HSMMPPLAY", $index++);  //请求播放某指定视频/图片文件
 define("MSG_ID_L4AQYCUI_TO_L3F4_GETCAMERASTATUS", $index++);  //查询垂直和水平角度，同时报告传一个照片给后台
 define("MSG_ID_L4AQYCUI_TO_L3F4_GETCAMERAUNIT", $index++);
 define("MSG_ID_L4AQYCUI_TO_L3F4_SENSORUPDATE", $index++);
-define("MSG_ID_L4AQYCUI_TO_L3F4_SWVERINFO", $index++);
-define("MSG_ID_L4AQYCUI_TO_L3F4_PROJSUSTRATEGY", $index++);
-define("MSG_ID_L4AQYCUI_TO_L3F4_PROJSWBASECHANGE", $index++);
-define("MSG_ID_L4AQYCUI_TO_L3F4_DEVSUSTRATEGYCHANGE", $index++);
-define("MSG_ID_L4AQYCUI_TO_L3F4_PROJSUSTRATEGYCHANGE", $index++);
-define("MSG_ID_L4AQYCUI_TO_L3F4_PROJSUSTRATEGYGET", $index++);
 define("MSG_ID_L4AQYCUI_TO_L3F5_ALARMTYPE", $index++);
 define("MSG_ID_L4AQYCUI_TO_L3F5_DEVALARM", $index++);
 define("MSG_ID_L4AQYCUI_TO_L3F5_ALARMQUERY", $index++);

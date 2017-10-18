@@ -145,7 +145,7 @@ class classConstL1vmUserWebRight
                 'menu_user_profile' => 'true',
                 //系统管理
                 'UserManage' => 'true',
-                'ParaManage' => 'true',
+                'ParaManage' => 'false',
                 'ExportTableManage' => 'true',
                 'SoftwareLoadManage' =>'false',
                 //项目管理

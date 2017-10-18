@@ -1602,12 +1602,6 @@ ALTER TABLE `t_l3f10oam_swloadinfo`
   ADD PRIMARY KEY (`sid`);
 
 --
--- Indexes for table `t_l3f4icm_swfactory`
---
-ALTER TABLE `t_l3f4icm_swfactory`
-  ADD PRIMARY KEY (`sid`);
-
---
 -- Indexes for table `t_l3f5fm_aqyc_alarmdata`
 --
 ALTER TABLE `t_l3f5fm_aqyc_alarmdata`

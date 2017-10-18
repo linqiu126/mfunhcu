@@ -458,33 +458,6 @@ class classTaskL4bfscUi
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4BFSC_UI, MFUN_TASK_ID_L3APPL_FUM4ICM, MSG_ID_L4AQYCUI_TO_L3F4_HSMMPPLAY, "MSG_ID_L4AQYCUI_TO_L3F4_HSMMPPLAY",$input);
                     break;
 
-                case "GetVersionList":
-                    if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
-                    if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
-                    if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
-
-                    $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
-                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4BFSC_UI, MFUN_TASK_ID_L3APPL_FUM4ICM, MSG_ID_L4AQYCUI_TO_L3F4_ALLSW, "MSG_ID_L4AQYCUI_TO_L3F4_ALLSW",$input);
-                    break;
-
-                case "GetProjDevVersion":
-                    if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
-                    if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
-                    if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
-
-                    $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
-                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4BFSC_UI, MFUN_TASK_ID_L3APPL_FUM4ICM, MSG_ID_L4AQYCUI_TO_L3F4_DEVSW, "MSG_ID_L4AQYCUI_TO_L3F4_DEVSW",$input);
-                    break;
-
-                case "UpdateDevVersion":
-                    if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
-                    if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
-                    if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
-
-                    $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
-                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4BFSC_UI, MFUN_TASK_ID_L3APPL_FUM4ICM, MSG_ID_L4AQYCUI_TO_L3F4_SWUPDATE, "MSG_ID_L4AQYCUI_TO_L3F4_SWUPDATE",$input);
-                    break;
-
                 case "GetVideoCameraWeb": //使用第三方控件实现视频和摄像头处理
                     if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
                     if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
@@ -523,66 +496,6 @@ class classTaskL4bfscUi
 
                     $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
                     $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4BFSC_UI, MFUN_TASK_ID_L3APPL_FUM6PM, MSG_ID_L4AQYCUI_TO_L3F6_PERFORMANCETABLE, "MSG_ID_L4AQYCUI_TO_L3F6_PERFORMANCETABLE",$input);
-                    break;
-
-                //获取软件3条版本基线的最新说明
-                case "VersionInformation":
-                    if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
-                    if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
-                    if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
-
-                    $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
-                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4BFSC_UI, MFUN_TASK_ID_L3APPL_FUM4ICM, MSG_ID_L4AQYCUI_TO_L3F4_SWVERINFO, "MSG_ID_L4AQYCUI_TO_L3F4_SWVERINFO",$input);
-                    break;
-
-                //获取指定项目下所有设备的软件更新策略，包括软件版本，版本基线，是否允许自动更新
-                case "ProjUpdateStrategyList":
-                    if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
-                    if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
-                    if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
-
-                    $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
-                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4BFSC_UI, MFUN_TASK_ID_L3APPL_FUM4ICM, MSG_ID_L4AQYCUI_TO_L3F4_PROJSUSTRATEGY, "MSG_ID_L4AQYCUI_TO_L3F4_PROJSUSTRATEGY",$input);
-                    break;
-
-                //修改项目软件版本基线
-                case "ProjVersionStrategyChange":
-                    if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
-                    if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
-                    if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
-
-                    $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
-                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4BFSC_UI, MFUN_TASK_ID_L3APPL_FUM4ICM, MSG_ID_L4AQYCUI_TO_L3F4_PROJSWBASECHANGE, "MSG_ID_L4AQYCUI_TO_L3F4_SWBASECHANGE",$input);
-                    break;
-
-                //修改某站点软件更新策略
-                case "PointUpdateStrategyChange":
-                    if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
-                    if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
-                    if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
-
-                    $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
-                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4BFSC_UI, MFUN_TASK_ID_L3APPL_FUM4ICM, MSG_ID_L4AQYCUI_TO_L3F4_DEVSUSTRATEGYCHANGE, "MSG_ID_L4AQYCUI_TO_L3F4_DEVSUSTRATEGYCHANGE",$input);
-                    break;
-
-                //修改某项目软件更新策略
-                case "ProjUpdateStrategyChange":
-                    if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
-                    if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
-                    if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
-
-                    $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
-                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4BFSC_UI, MFUN_TASK_ID_L3APPL_FUM4ICM, MSG_ID_L4AQYCUI_TO_L3F4_PROJSUSTRATEGYCHANGE, "MSG_ID_L4AQYCUI_TO_L3F4_PROJSUSTRATEGYCHANGE",$input);
-                    break;
-
-                //获取某项目软件更新策略
-                case "GetProjUpdateStrategy":
-                    if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
-                    if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
-                    if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
-
-                    $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
-                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4BFSC_UI, MFUN_TASK_ID_L3APPL_FUM4ICM, MSG_ID_L4AQYCUI_TO_L3F4_PROJSUSTRATEGYGET, "MSG_ID_L4AQYCUI_TO_L3F4_PROJSUSTRATEGYGET",$input);
                     break;
 
                 case "GetWarningHandleListTable":
