@@ -572,7 +572,7 @@ class classTaskL3aplF2cm
         return $retval;
     }
 
-    function func_dev_delete_process($action, $user, $body)
+    function func_aqyc_dev_delete_process($action, $user, $body)
     {
         if (isset($body["DevCode"])) $DevCode = $body["DevCode"]; else  $DevCode = "";
 
@@ -580,7 +580,7 @@ class classTaskL3aplF2cm
         $usercheck = $uiF1symDbObj->dbi_user_authcheck($action, $user);
         if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
             $uiF2cmDbObj = new classDbiL3apF2cm(); //初始化一个UI DB对象
-            $result = $uiF2cmDbObj->dbi_deviceinfo_delete($DevCode);
+            $result = $uiF2cmDbObj->dbi_aqyc_deviceinfo_delete($DevCode);
             if($result == true)
                 $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"删除设备信息成功");
             else
@@ -1124,7 +1124,7 @@ class classTaskL3aplF2cm
                 break;
 
             case MSG_ID_L4AQYCUI_TO_L3F2_DEVDEL://功能Dev Del
-                $resp = $this->func_dev_delete_process($action, $user, $body);
+                $resp = $this->func_aqyc_dev_delete_process($action, $user, $body);
                 $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 

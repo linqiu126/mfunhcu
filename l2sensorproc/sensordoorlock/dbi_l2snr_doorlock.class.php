@@ -501,8 +501,11 @@ class classDbiL2snrDoorlock
         $filename = $dbiL1vmCommonObj->str_padding($filename, "_", HUITP_IEID_UNI_CCL_GEN_PIC_ID_LEN_MAX);
         $filename = bin2hex($filename);
         $ctrl_key = $dbiL1vmCommonObj->byte2string(MFUN_HCU_CMDID_FHYS_DOORLOCK_OPEN);
-        $len = $dbiL1vmCommonObj->byte2string(strlen($opt_key.$para.$filename)/2);
-        $respCmd = $ctrl_key . $len . $opt_key . $para . $filename;
+        //这里为了保持与老版本的兼容，控制命令部分不变，增加独立的照片文件名长度+照片文件名
+        $len_1 = $dbiL1vmCommonObj->byte2string(strlen($opt_key.$para)/2);
+        $len_2 = $dbiL1vmCommonObj->byte2string(strlen($filename)/2);
+
+        $respCmd = $ctrl_key . $len_1 . $opt_key . $para . $len_2 . $filename;
 
         //通过9502端口建立tcp阻塞式socket连接，向HCU转发操控命令
         $client = new socket_client_sync($devCode, $respCmd);

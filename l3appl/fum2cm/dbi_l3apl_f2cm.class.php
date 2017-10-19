@@ -1210,7 +1210,7 @@ class classDbiL3apF2cm
         $result1 = $mysqli->query($query_str);
 
         //删除用户授权表中项目组信息
-        $query_str = "DELETE FROM `t_l3f1sym_authlist` WHERE `pg_code` = '$pcode'";
+        $query_str = "DELETE FROM `t_l3f1sym_authlist` WHERE `auth_code` = '$pcode'";
         $result2 = $mysqli->query($query_str);
 
         //删除监测点表中的对应项目号
@@ -1241,7 +1241,7 @@ class classDbiL3apF2cm
         $result2 = $mysqli->query($query_str);
 
         //删除用户授权表中项目组信息
-        $query_str = "DELETE FROM `t_l3f1sym_authlist` WHERE `pg_code` = '$pgcode'";
+        $query_str = "DELETE FROM `t_l3f1sym_authlist` WHERE `auth_code` = '$pgcode'";
         $result1 = $mysqli->query($query_str);
 
         $result = $result1 and $result2;
@@ -1696,7 +1696,7 @@ class classDbiL3apF2cm
 
     //ZJL: 这个东西同时连接两个数据库，需要分开
     //UI DevDel request，删除一个监测点
-    public function dbi_deviceinfo_delete($devcode)
+    public function dbi_aqyc_deviceinfo_delete($devcode)
     {
         //建立连接
         $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
@@ -1724,7 +1724,7 @@ class classDbiL3apF2cm
         $result2 = $mysqli->query($query_str);
 
         //清理设备对应当前状态报告表
-        $query_str = "DELETE FROM `t_l3f3dm_aqyc_currentreport` WHERE `devcode` = '$devcode'";  //删除Sensorctrl表中HUC信息
+        $query_str = "DELETE FROM `t_l3f3dm_aqyc_currentreport` WHERE `devcode` = '$devcode'";  //删除currentreport表中HUC信息
         $result3 = $mysqli->query($query_str);
 
         $result = $result1 AND $result2 AND $result3;
