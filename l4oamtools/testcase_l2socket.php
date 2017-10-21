@@ -42,7 +42,7 @@ if (TC_SOCKET == true) {
 
     $msg = array("socketid" => 1, "data"=>$data);
     $obj = new classTaskL1vmCoreRouter();
-    $obj->mfun_l1vm_task_main_entry(MFUN_MAIN_ENTRY_IOT_STDXML, MSG_ID_L2SDK_HCU_DATA_COMING, "MSG_ID_L2SDK_HCU_DATA_COMING", $msg);
+    //$obj->mfun_l1vm_task_main_entry(MFUN_MAIN_ENTRY_IOT_STDXML, MSG_ID_L2SDK_HCU_DATA_COMING, "MSG_ID_L2SDK_HCU_DATA_COMING", $msg);
 
     /********************HUITP消息，来自9511端口************************/
 
@@ -72,8 +72,10 @@ if (TC_SOCKET == true) {
     //A081, HUITP_MSGID_uni_inventory_report
     //$data = "<xml><ToUserName><![CDATA[XHZN_HCU]]></ToUserName><FromUserName><![CDATA[HCU_G502_FHYS_P0001]]></FromUserName><CreateTime>1503451437</CreateTime><MsgType><![CDATA[huitp_text]]></MsgType><Content><![CDATA[A08100250003000101A000001C080100000000000000000000000000000000000000000303599CD92D]]></Content><FuncFlag>0</FuncFlag></xml>";
     //$data = "<xml><ToUserName><![CDATA[XHZN_HCU]]></ToUserName><FromUserName><![CDATA[HCU_G502_FHYS_P0001]]></FromUserName><CreateTime>1503454622</CreateTime><MsgType><![CDATA[huitp_text]]></MsgType><Content><![CDATA[A08100250003000101A000001C080100000000000000000000000000000000000000000203599CE59E]]></Content><FuncFlag>0</FuncFlag></xml>";
-    $data = "<xml><ToUserName><![CDATA[XHZN_HCU]]></ToUserName><FromUserName><![CDATA[HCU_G502_FHYS_P0001]]></FromUserName><CreateTime>1505816347</CreateTime><MsgType><![CDATA[huitp_text]]></MsgType><Content><![CDATA[A08100250003000101A000001C08010003000000000000000000000000000000000000020359C0EF1B]]></Content><FuncFlag>11:22:33:44:55:ED</FuncFlag></xml>";
-    $data = "<xml><ToUserName><![CDATA[XHZN_HCU]]></ToUserName><FromUserName><![CDATA[HCU_G502_FHYS_P0001]]></FromUserName><CreateTime>1505816287</CreateTime><MsgType><![CDATA[huitp_text]]></MsgType><Content><![CDATA[A08100250003000101A000001C07D400030003010900C6000000000000000000000000030159C0EEDF]]></Content><FuncFlag>11:22:33:44:55:ED</FuncFlag></xml>";
+    //$data = "<xml><ToUserName><![CDATA[XHZN_HCU]]></ToUserName><FromUserName><![CDATA[HCU_G502_FHYS_P0001]]></FromUserName><CreateTime>1505816347</CreateTime><MsgType><![CDATA[huitp_text]]></MsgType><Content><![CDATA[A08100250003000101A000001C08010003000000000000000000000000000000000000020359C0EF1B]]></Content><FuncFlag>11:22:33:44:55:ED</FuncFlag></xml>";
+    //$data = "<xml><ToUserName><![CDATA[XHZN_HCU]]></ToUserName><FromUserName><![CDATA[HCU_G502_FHYS_P0001]]></FromUserName><CreateTime>1505816287</CreateTime><MsgType><![CDATA[huitp_text]]></MsgType><Content><![CDATA[A08100250003000101A000001C07D400030003010900C6000000000000000000000000030159C0EEDF]]></Content><FuncFlag>11:22:33:44:55:ED</FuncFlag></xml>";
+    $data = "<xml><ToUserName><![CDATA[XHZN_HCU]]></ToUserName><FromUserName><![CDATA[HCU_G502_FHYS_P0001]]></FromUserName><CreateTime>1508492340</CreateTime><MsgType><![CDATA[huitp_text]]></MsgType><Content><![CDATA[A08100250003000101A000001C1F410003000300B400C8000000000000000000000000020159E9C434]]></Content><FuncFlag>11:22:33:44:55:C9</FuncFlag></xml>";
+
 
     //A181, HUITP_MSGID_uni_sw_package_report
     //$data = "<xml><ToUserName><![CDATA[XHZN_HCU]]></ToUserName><FromUserName><![CDATA[HCU_G502_FHYS_P0001]]></FromUserName><CreateTime>1503044536</CreateTime><MsgType><![CDATA[huitp_text]]></MsgType><Content><![CDATA[A181001900030001010032001008010006000300FA0401000100080130]]></Content><FuncFlag>0</FuncFlag></xml>";

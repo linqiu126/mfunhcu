@@ -876,7 +876,7 @@ class classDbiL2snrCommon
         //$data[0] = HUITP_IEID_uni_com_report，暂时没有使用
         //$data[1] = HUITP_IEID_uni_inventory_element
         $hwType = hexdec($data[1]['HUITP_IEID_uni_inventory_element']['hwType']) & 0xFFFF;
-        $hwId = hexdec($data[1]['HUITP_IEID_uni_inventory_element']['hwId']) & 0xFFFF;
+        $hwId_input = hexdec($data[1]['HUITP_IEID_uni_inventory_element']['hwId']) & 0xFFFF;
         $swRel = hexdec($data[1]['HUITP_IEID_uni_inventory_element']['swRel']) & 0xFFFF;
         $swVer = hexdec($data[1]['HUITP_IEID_uni_inventory_element']['swVer']) & 0xFFFF;
         $dbVer = hexdec($data[1]['HUITP_IEID_uni_inventory_element']['dbVer']) & 0xFFFF;
@@ -899,7 +899,7 @@ class classDbiL2snrCommon
         while (($result != false) && (($row = $result->fetch_array()) > 0))
         {
             $newHwId = intval($row['hwid']);
-            if ($newHwId < $hwId) continue;  //HwID要大于等于输入
+            if ($newHwId < $hwId_input) continue;  //HwID要大于等于输入
 
             $newSwRel = intval($row['swrel']);
             $newSwVer = intval($row['swver']);
