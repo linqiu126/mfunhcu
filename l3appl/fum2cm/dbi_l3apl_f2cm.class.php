@@ -147,7 +147,6 @@ CREATE TABLE IF NOT EXISTS `t_l3f2cm_projinfo` (
   `telephone` char(20) DEFAULT NULL,
   `department` char(30) DEFAULT NULL,
   `address` char(30) DEFAULT NULL,
-  `sw_base` char(1) NOT NULL DEFAULT '0',
   `starttime` date DEFAULT NULL,
   `pre_endtime` date DEFAULT NULL,
   `true_endtime` date DEFAULT NULL,

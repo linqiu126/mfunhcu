@@ -243,6 +243,17 @@ if (TC_EMCWX == true){
     //require("../l1mainentry/cloud_callback_wechat.php");
     echo " \n[TC EMCWX: WEIXIN CLICK_XHZN_UNBIND END]\n";
 
+    echo " [TC FHYSWECHAT: WEIXIN CLICK_FHYS_WECHATKEY_UNBIND START]\n";
+    $GLOBALS["HTTP_RAW_POST_DATA"] = "<xml><ToUserName><![CDATA[gh_0ab9a32c6381]]></ToUserName>
+                                        <FromUserName><![CDATA[oVJPKv9WTvaWLD65LxLdyziL3Uuo]]></FromUserName>
+                                        <CreateTime>1508899880</CreateTime>
+                                        <MsgType><![CDATA[event]]></MsgType>
+                                        <Event><![CDATA[CLICK]]></Event>
+                                        <EventKey><![CDATA[CLICK_FHYS_WECHATKEY_UNBIND]]></EventKey>
+                                        </xml>";
+    //require("../l1mainentry/cloud_callback_wechat.php");
+    echo " \n[TC FHYSWECHAT: WEIXIN CLICK_FHYS_WECHATKEY_UNBIND END]\n";
+
     echo " [TC EMCWX: WEIXIN CLICK_EMC_INSTANT_READ START]\n";
     $GLOBALS["HTTP_RAW_POST_DATA"] = "<xml><ToUserName><![CDATA[gh_70c714952b02]]></ToUserName>
                                         <FromUserName><![CDATA[oS0Chv-avCH7W4ubqOQAFXojYODY]]></FromUserName>

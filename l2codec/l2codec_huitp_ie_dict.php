@@ -898,6 +898,8 @@ class classL2codecHuitpIeDict
 
           //软件版本体
           HUITP_IEID_uni_sw_package_body                  => array("format"=>"A4ieId/A4ieLen/A4segValidLen/A4segCheckSum/A608swPkgBody","len"=>"308","name"=>"HUITP_IEID_uni_sw_package_body"),
+          //for CCL test
+          //HUITP_IEID_uni_sw_package_body                  => array("format"=>"A4ieId/A4ieLen/A4segValidLen/A4segCheckSum/A200swPkgBody","len"=>"100","name"=>"HUITP_IEID_uni_sw_package_body"),
 
           //ALARM REPORT
           HUITP_IEID_uni_alarm_info_element               => array("format"=>"A4ieId/A4ieLen/A4alarmType/A2alarmServerity/A2alarmClearFlag/A8equID/A8causeId/A8alarmContent/A8timeStamp","len"=>"20","name"=>"HUITP_IEID_uni_alarm_info_element"),
