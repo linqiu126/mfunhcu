@@ -52,20 +52,18 @@ class classTaskL2encodeHuitpXml
     {
         //定义本入口函数的logger处理对象及函数
         $loggerObj = new classApiL1vmFuncCom();
-        $log_time = date("Y-m-d H:i:s", time());
+        $project = MFUN_PRJ_HCU_HUITP;
 
         //判断入口消息是否为空
         if (empty($msg) == true) {
-            $loggerObj->logger("MFUN_TASK_ID_L2ENCODE_HUITP", "mfun_l2encode_huitp_xml_task_main_entry", $log_time, "R: Received null message body.");
-            echo "";
+            $log_content = "E: receive null message body";
+            $loggerObj->mylog($project,"NULL","NULL","MFUN_TASK_ID_L2ENCODE_HUITP",$msgName,$log_content);
             return false;
         }
         //来自各L2SNR模块发给给HCU的HUITP消息
         if (($msgId != MSG_ID_L2CODEC_ENCODE_HUITP_INCOMING) || ($msgName != "MSG_ID_L2CODEC_ENCODE_HUITP_INCOMING")){
-            $result = "Received Msgid error";
-            $log_content = "P:" . json_encode($result);
-            $loggerObj->logger("MFUN_TASK_ID_L2ENCODE_HUITP", "mfun_l2encode_huitp_xml_task_main_entry", $log_time, $log_content);
-            echo trim($result);
+            $log_content = "E: receive null message body";
+            $loggerObj->mylog($project,"NULL","NULL","MFUN_TASK_ID_L2ENCODE_HUITP",$msgName,$log_content);
             return false;
         }
         else{ //解开消息
@@ -81,8 +79,8 @@ class classTaskL2encodeHuitpXml
         $huitpMsgName = $respArray['MSGNAME'];
         $huitpIeArray = $respArray['MSGIE'];
         if ($huitpIeArray == false){
-            $loggerObj->logger("MFUN_TASK_ID_L2ENCODE_HUITP", "mfun_l2encode_huitp_xml_task_main_entry", $log_time, "I: Received invalid HUITP message ID");
-            echo "";
+            $log_content = "E: invaild HUITP message ID";
+            $loggerObj->mylog($project,$devCode,"NULL","MFUN_TASK_ID_L2ENCODE_HUITP",$msgName,$log_content);
             return false;
         }
 
@@ -138,9 +136,8 @@ class classTaskL2encodeHuitpXml
             $client->connect();
 
             //返回消息log
-            $log_from = $devCode;
             $log_content = "T:" . json_encode($respMsgStr);
-            $loggerObj->logger($project, $log_from, $log_time, $log_content);
+            $loggerObj->mylog($project,$devCode,"MFUN_TASK_ID_L2ENCODE_HUITP","NULL",$msgName,$log_content);
         }
         //结束，返回
         return true;

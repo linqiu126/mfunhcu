@@ -20,21 +20,19 @@ class classTaskL2decodeHuitpXml
     {
         //定义本入口函数的logger处理对象及函数
         $loggerObj = new classApiL1vmFuncCom();
-        $log_time = date("Y-m-d H:i:s", time());
+        $project = MFUN_PRJ_HCU_HUITP;
 
         //判断入口消息是否为空
         if (empty($msg) == true) {
-            $loggerObj->logger("MFUN_TASK_ID_L2DECODE_HUITP", "mfun_l2decode_huitp_xml_task_main_entry", $log_time, "R: Received null message body.");
-            echo "";
+            $log_content = "E: receive null message body";
+            $loggerObj->mylog($project,"NULL","MFUN_TASK_ID_L2SDK_IOT_HUITP","MFUN_TASK_ID_L2DECODE_HUITP",$msgName,$log_content);
             return false;
         }
         //这里HUITP消息有两个来源，一个是来自CCL通过socket收到的MSG_ID_L1VM_TO_L2SDK_IOT_HUITP_INCOMING，
         //另外一个是扬尘HCU通过curl收到的，因为curl复用了cloud_callback_wechat,所以消息来自L2SDK_IOT_WX (MSG_ID_L2SDK_WECHAT_TO_L2DECODE_HUITP)
         if (($msgId != MSG_ID_L2SDK_IOT_HUITP_TO_L2DECODE_HUITP) AND ($msgId != MSG_ID_L2SDK_WECHAT_TO_L2DECODE_HUITP)){
-            $result = "Received Msgid error";
-            $log_content = "P:" . json_encode($result);
-            $loggerObj->logger("MFUN_TASK_ID_L2DECODE_HUITP", "mfun_l2decode_huitp_xml_task_main_entry", $log_time, $log_content);
-            echo trim($result);
+            $log_content = "E: receive MsgId or MsgName error";
+            $loggerObj->mylog($project,"NULL","MFUN_TASK_ID_L2SDK_IOT_HUITP","MFUN_TASK_ID_L2DECODE_HUITP",$msgName,$log_content);
             return false;
         }
         else{ //解开消息
@@ -47,8 +45,8 @@ class classTaskL2decodeHuitpXml
 
         //判断收到的HUITP消息是否为空
         if(empty($content) == true){
-            $loggerObj->logger("MFUN_TASK_ID_L2DECODE_HUITP", "mfun_l2decode_huitp_xml_task_main_entry", $log_time, "I: Received null message body.");
-            echo "";
+            $log_content = "E: empty HUITP message body";
+            $loggerObj->mylog($project,$devCode,"MFUN_TASK_ID_L2SDK_IOT_HUITP","MFUN_TASK_ID_L2DECODE_HUITP",$msgName,$log_content);
             return false;
         }
         else{
@@ -61,16 +59,14 @@ class classTaskL2decodeHuitpXml
         //判断HUITP消息长度的合法性
         $length =  $huitpMsgLen * 2 + MFUN_HUITP_MSG_HEAD_LENGTH; //因为收到的消息为16进制字符，消息总长度等于length＋2B MsgId＋2B MsgLen本身
         if ($length != strlen($content)) {
-            $result = "[HUITP_DECODE] Message length invalid";
-            $log_content = "P:" . json_encode($result);
-            $loggerObj->logger("MFUN_TASK_ID_L2DECODE_HUITP", "mfun_l2decode_huitp_xml_task_main_entry", $log_time, $log_content);
-            echo trim($result);
+            $log_content = "E: HUITP Message length invalid";
+            $loggerObj->mylog($project,$devCode,"MFUN_TASK_ID_L2SDK_IOT_HUITP","MFUN_TASK_ID_L2DECODE_HUITP",$msgName,$log_content);
             return false;
         }
         //判断HUITP消息的IE是否为空
         if(empty($huitpBody) == true){
-            $loggerObj->logger("MFUN_TASK_ID_L2DECODE_HUITP", "mfun_l2decode_huitp_xml_task_main_entry", $log_time, "I: Received HUITP message with NULL IE");
-            echo "";
+            $log_content = "E: HUITP message with NULL IE";
+            $loggerObj->mylog($project,$devCode,"MFUN_TASK_ID_L2SDK_IOT_HUITP","MFUN_TASK_ID_L2DECODE_HUITP",$msgName,$log_content);
             return false;
         }
 
@@ -78,16 +74,16 @@ class classTaskL2decodeHuitpXml
         $l2codecHuitpMsgDictObj = new classL2codecHuitpMsgDict();
         $respArray = $l2codecHuitpMsgDictObj->mfun_l2codec_getHuitpIeArray($huitpMsgId);
         if ($respArray == false){
-            $loggerObj->logger("MFUN_TASK_ID_L2DECODE_HUITP", "mfun_l2decode_huitp_xml_task_main_entry", $log_time, "I: Invaild HUITP message ID");
-            echo "";
+            $log_content = "E: invaild HUITP message ID";
+            $loggerObj->mylog($project,$devCode,"MFUN_TASK_ID_L2SDK_IOT_HUITP","MFUN_TASK_ID_L2DECODE_HUITP",$msgName,$log_content);
             return false;
         }
 
         $huitpMsgName = $respArray['MSGNAME'];
         $huitpIeArray = $respArray['MSGIE'];
         if ($huitpIeArray == false){
-            $loggerObj->logger("MFUN_TASK_ID_L2DECODE_HUITP", "mfun_l2decode_huitp_xml_task_main_entry", $log_time, "I: Received invalid HUITP message ID");
-            echo "";
+            $log_content = "E: invaild HUITP message ID";
+            $loggerObj->mylog($project,$devCode,"MFUN_TASK_ID_L2SDK_IOT_HUITP","MFUN_TASK_ID_L2DECODE_HUITP",$msgName,$log_content);
             return false;
         }
 
@@ -102,8 +98,8 @@ class classTaskL2decodeHuitpXml
             $huitpIe = $l2codecHuitpIeDictObj->mfun_l2codec_getHuitpIeFormat($huitpIeId);
             //判断HUITP消息的IE是否合法
             if($huitpIe == false){
-                $loggerObj->logger("MFUN_TASK_ID_L2DECODE_HUITP", "mfun_l2decode_huitp_xml_task_main_entry", $log_time, "I: Received HUITP message with invalid IE");
-                echo "";
+                $log_content = "E: received HUITP message with invalid IE";
+                $loggerObj->mylog($project,$devCode,"MFUN_TASK_ID_L2SDK_IOT_HUITP","MFUN_TASK_ID_L2DECODE_HUITP",$msgName,$log_content);
                 return false;
             }
             $huitpIeFormat = $huitpIe['format'];
@@ -131,15 +127,14 @@ class classTaskL2decodeHuitpXml
                 $huitp_destId,
                 $huitpMsgId,
                 $huitpMsgName,
-                $msg) == false) $resp = "Send to message buffer error";
+                $msg) == false) $resp = "E: send to message buffer error";
         else $resp = "";
 
         //处理结果
         //由于消息的分布发送到各个任务模块中去了，这里不再统一处理ECHO返回，而由各个任务模块单独完成
         if (!empty($resp)) {
-            $log_from = $devCode;
-            $log_content = "T:" . json_encode($resp);
-            $loggerObj->logger($project, $log_from, $log_time, $log_content);
+            $log_content = json_encode($resp,JSON_UNESCAPED_UNICODE);
+            $loggerObj->mylog($project,$devCode,"MFUN_TASK_ID_L2SDK_IOT_HUITP","MFUN_TASK_ID_L2DECODE_HUITP",$msgName,$log_content);
         }
         //结束，返回
         return true;

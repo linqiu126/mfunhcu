@@ -147,8 +147,8 @@ class classTaskL1vmCoreRouter
 
         if(sizeof($msgBody, 1) > MFUN_MSG_BODY_LENGTH){
             $loggerObj = new classApiL1vmFuncCom();
-            $log_time = date("Y-m-d H:i:s", time());
-            $loggerObj->logger(MFUN_TRACE_VM, $msgName, $log_time, "I: MsgBody over max length");
+            $log_content = "I: MsgBody over max length";
+            $loggerObj->mylog("NULL","NULL","MFUN_TASK_ID_L1VM","NULL",$msgName,$log_content);
             return true;
         }
 
@@ -159,204 +159,189 @@ class classTaskL1vmCoreRouter
         }
         elseif (TRACE_MSG_ON == TRACE_MSG_MODE_ALL_ON){
             $loggerObj = new classApiL1vmFuncCom();
-            $log_time = date("Y-m-d H:i:s", time());
             $taskObj = new classConstL1vmSysTaskList;
             $srcIdName = $taskObj->mfun_vm_getTaskName($srcId);
             $destIdName = $taskObj->mfun_vm_getTaskName($destId);
-            $logmsg = "SrcId=[" . $srcId . "] SrcName=[" . $srcIdName . "] DestId=[" . $destId . "] DestName=[" . $destIdName . "] MsgId=[" . $msgId . "] MsgBody=[" . json_encode($msgBody,JSON_UNESCAPED_UNICODE) . "]";
-            $loggerObj->logger(MFUN_TRACE_VM, $msgName, $log_time, "I: " . json_encode($logmsg,JSON_UNESCAPED_UNICODE));
+            $logmsg = "I: " . json_encode($msgBody,JSON_UNESCAPED_UNICODE);
+            $loggerObj->mylog(MFUN_TRACE_VM,"NULL",$srcIdName,$destIdName,$msgName,$logmsg);
         }
 
         elseif (TRACE_MSG_ON == TRACE_MSG_MODE_MOUDLE_TO_ALLOW){
             $loggerObj = new classApiL1vmFuncCom();
-            $log_time = date("Y-m-d H:i:s", time());
             $taskObj = new classConstL1vmSysTaskList;
             $srcIdName = $taskObj->mfun_vm_getTaskName($srcId);
             $destIdName = $taskObj->mfun_vm_getTaskName($destId);
-            $logmsg = "SrcId=[" . $srcId . "] SrcName=[" . $srcIdName . "] DestId=[" . $destId . "] DestName=[" . $destIdName . "] MsgId=[" . $msgId . "] MsgBody=[" . json_encode($msgBody,JSON_UNESCAPED_UNICODE) . "]";
+            $logmsg = "I: " . json_encode($msgBody,JSON_UNESCAPED_UNICODE);
             $result = $loggerObj->trace_module_inqury($destId);
             if (isset($result) == true){
                 if ($result["allowflag"] == TRACE_MSG_GENERAL_ON)
-                    $loggerObj->logger(MFUN_TRACE_VM, $msgName, $log_time, "I: " . json_encode($logmsg,JSON_UNESCAPED_UNICODE));
+                    $loggerObj->mylog(MFUN_TRACE_VM,"NULL",$srcIdName,$destIdName,$msgName,$logmsg);
             }
         }
         elseif (TRACE_MSG_ON == TRACE_MSG_MODE_MOUDLE_TO_RESTRICT){
             $loggerObj = new classApiL1vmFuncCom();
-            $log_time = date("Y-m-d H:i:s", time());
             $taskObj = new classConstL1vmSysTaskList;
             $srcIdName = $taskObj->mfun_vm_getTaskName($srcId);
             $destIdName = $taskObj->mfun_vm_getTaskName($destId);
-            $logmsg = "SrcId=[" . $srcId . "] SrcName=[" . $srcIdName . "] DestId=[" . $destId . "] DestName=[" . $destIdName . "] MsgId=[" . $msgId . "] MsgBody=[" . json_encode($msgBody,JSON_UNESCAPED_UNICODE) . "]";
+            $logmsg = "I: " . json_encode($msgBody,JSON_UNESCAPED_UNICODE);
             $result = $loggerObj->trace_module_inqury($destId);
             if (isset($result) == true){
                 if ($result["restrictflag"] != TRACE_MSG_GENERAL_ON)
-                    $loggerObj->logger(MFUN_TRACE_VM, $msgName, $log_time, "I: " . json_encode($logmsg,JSON_UNESCAPED_UNICODE));
+                    $loggerObj->mylog(MFUN_TRACE_VM,"NULL",$srcIdName,$destIdName,$msgName,$logmsg);
             }
         }
         elseif (TRACE_MSG_ON == TRACE_MSG_MODE_MOUDLE_FROM_ALLOW){
             $loggerObj = new classApiL1vmFuncCom();
-            $log_time = date("Y-m-d H:i:s", time());
             $taskObj = new classConstL1vmSysTaskList;
             $srcIdName = $taskObj->mfun_vm_getTaskName($srcId);
             $destIdName = $taskObj->mfun_vm_getTaskName($destId);
-            $logmsg = "SrcId=[" . $srcId . "] SrcName=[" . $srcIdName . "] DestId=[" . $destId . "] DestName=[" . $destIdName . "] MsgId=[" . $msgId . "] MsgBody=[" . json_encode($msgBody,JSON_UNESCAPED_UNICODE) . "]";
+            $logmsg = "I: " . json_encode($msgBody,JSON_UNESCAPED_UNICODE);
             $result = $loggerObj->trace_module_inqury($srcId);
             if (isset($result) == true){
                 if ($result["allowflag"] == TRACE_MSG_GENERAL_ON)
-                    $loggerObj->logger(MFUN_TRACE_VM, $msgName, $log_time, "I: " . json_encode($logmsg,JSON_UNESCAPED_UNICODE));
+                    $loggerObj->mylog(MFUN_TRACE_VM,"NULL",$srcIdName,$destIdName,$msgName,$logmsg);
             }
         }
         elseif (TRACE_MSG_ON == TRACE_MSG_MODE_MOUDLE_FROM_RESTRICT){
             $loggerObj = new classApiL1vmFuncCom();
-            $log_time = date("Y-m-d H:i:s", time());
             $taskObj = new classConstL1vmSysTaskList;
             $srcIdName = $taskObj->mfun_vm_getTaskName($srcId);
             $destIdName = $taskObj->mfun_vm_getTaskName($destId);
-            $logmsg = "SrcId=[" . $srcId . "] SrcName=[" . $srcIdName . "] DestId=[" . $destId . "] DestName=[" . $destIdName . "] MsgId=[" . $msgId . "] MsgBody=[" . json_encode($msgBody,JSON_UNESCAPED_UNICODE) . "]";
+            $logmsg = "I: " . json_encode($msgBody,JSON_UNESCAPED_UNICODE);
             $result = $loggerObj->trace_module_inqury($srcId);
             if (isset($result) == true){
                 if ($result["restrictflag"] != TRACE_MSG_GENERAL_ON)
-                    $loggerObj->logger(MFUN_TRACE_VM, $msgName, $log_time, "I: " . json_encode($logmsg,JSON_UNESCAPED_UNICODE));
+                    $loggerObj->mylog(MFUN_TRACE_VM,"NULL",$srcIdName,$destIdName,$msgName,$logmsg);
             }
         }
         elseif (TRACE_MSG_ON == TRACE_MSG_MODE_MOUDLE_DOUBLE_ALLOW){
             $loggerObj = new classApiL1vmFuncCom();
-            $log_time = date("Y-m-d H:i:s", time());
             $taskObj = new classConstL1vmSysTaskList;
             $srcIdName = $taskObj->mfun_vm_getTaskName($srcId);
             $destIdName = $taskObj->mfun_vm_getTaskName($destId);
-            $logmsg = "SrcId=[" . $srcId . "] SrcName=[" . $srcIdName . "] DestId=[" . $destId . "] DestName=[" . $destIdName . "] MsgId=[" . $msgId . "] MsgBody=[" . json_encode($msgBody,JSON_UNESCAPED_UNICODE) . "]";
+            $logmsg = "I: " . json_encode($msgBody,JSON_UNESCAPED_UNICODE);
             $result1 = $loggerObj->trace_module_inqury($srcId);
             $result2 = $loggerObj->trace_module_inqury($destId);
             if (isset($result) == true){
                 if (($result1["allowflag"] == TRACE_MSG_GENERAL_ON) && ($result2["allowflag"] == TRACE_MSG_GENERAL_ON))
-                    $loggerObj->logger(MFUN_TRACE_VM, $msgName, $log_time, "I: " . json_encode($logmsg,JSON_UNESCAPED_UNICODE));
+                    $loggerObj->mylog(MFUN_TRACE_VM,"NULL",$srcIdName,$destIdName,$msgName,$logmsg);
             }
         }
         elseif (TRACE_MSG_ON == TRACE_MSG_MODE_MOUDLE_DOUBLE_RESTRICT){
             $loggerObj = new classApiL1vmFuncCom();
-            $log_time = date("Y-m-d H:i:s", time());
             $taskObj = new classConstL1vmSysTaskList;
             $srcIdName = $taskObj->mfun_vm_getTaskName($srcId);
             $destIdName = $taskObj->mfun_vm_getTaskName($destId);
-            $logmsg = "SrcId=[" . $srcId . "] SrcName=[" . $srcIdName . "] DestId=[" . $destId . "] DestName=[" . $destIdName . "] MsgId=[" . $msgId . "] MsgBody=[" . json_encode($msgBody,JSON_UNESCAPED_UNICODE) . "]";
+            $logmsg = "I: " . json_encode($msgBody,JSON_UNESCAPED_UNICODE);
             $result1 = $loggerObj->trace_module_inqury($srcId);
             $result2 = $loggerObj->trace_module_inqury($destId);
             if (isset($result) == true){
                 if (($result1["restrictflag"] != TRACE_MSG_GENERAL_ON) && ($result2["restrictflag"] != TRACE_MSG_GENERAL_ON))
-                    $loggerObj->logger(MFUN_TRACE_VM, $msgName, $log_time, "I: " . json_encode($logmsg,JSON_UNESCAPED_UNICODE));
+                    $loggerObj->mylog(MFUN_TRACE_VM,"NULL",$srcIdName,$destIdName,$msgName,$logmsg);
             }
         }
         elseif (TRACE_MSG_ON == TRACE_MSG_MODE_MSGID_ALLOW){
             $loggerObj = new classApiL1vmFuncCom();
-            $log_time = date("Y-m-d H:i:s", time());
             $taskObj = new classConstL1vmSysTaskList;
             $srcIdName = $taskObj->mfun_vm_getTaskName($srcId);
             $destIdName = $taskObj->mfun_vm_getTaskName($destId);
-            $logmsg = "SrcId=[" . $srcId . "] SrcName=[" . $srcIdName . "] DestId=[" . $destId . "] DestName=[" . $destIdName . "] MsgId=[" . $msgId . "] MsgBody=[" . json_encode($msgBody,JSON_UNESCAPED_UNICODE) . "]";
+            $logmsg = "I: " . json_encode($msgBody,JSON_UNESCAPED_UNICODE);
             $result = $loggerObj->trace_msg_inqury($msgId);
             if (isset($result) == true){
                 if ($result["allowflag"] == TRACE_MSG_GENERAL_ON)
-                    $loggerObj->logger(MFUN_TRACE_VM, $msgName, $log_time, "I: " . json_encode($logmsg,JSON_UNESCAPED_UNICODE));
+                    $loggerObj->mylog(MFUN_TRACE_VM,"NULL",$srcIdName,$destIdName,$msgName,$logmsg);
             }
         }
         elseif (TRACE_MSG_ON == TRACE_MSG_MODE_MSGID_RESTRICT){
             $loggerObj = new classApiL1vmFuncCom();
-            $log_time = date("Y-m-d H:i:s", time());
             $taskObj = new classConstL1vmSysTaskList;
             $srcIdName = $taskObj->mfun_vm_getTaskName($srcId);
             $destIdName = $taskObj->mfun_vm_getTaskName($destId);
-            $logmsg = "SrcId=[" . $srcId . "] SrcName=[" . $srcIdName . "] DestId=[" . $destId . "] DestName=[" . $destIdName . "] MsgId=[" . $msgId . "] MsgBody=[" . json_encode($msgBody,JSON_UNESCAPED_UNICODE) . "]";
+            $logmsg = "I: " . json_encode($msgBody,JSON_UNESCAPED_UNICODE);
             $result = $loggerObj->trace_msg_inqury($msgId);
             if (isset($result) == true){
                 if ($result["restrictflag"] != TRACE_MSG_GENERAL_ON)
-                    $loggerObj->logger(MFUN_TRACE_VM, $msgName, $log_time, "I: " . json_encode($logmsg,JSON_UNESCAPED_UNICODE));
+                    $loggerObj->mylog(MFUN_TRACE_VM,"NULL",$srcIdName,$destIdName,$msgName,$logmsg);
             }
         }
         elseif (TRACE_MSG_ON == TRACE_MSG_MODE_COMBINE_TO_ALLOW){
             $loggerObj = new classApiL1vmFuncCom();
-            $log_time = date("Y-m-d H:i:s", time());
             $taskObj = new classConstL1vmSysTaskList;
             $srcIdName = $taskObj->mfun_vm_getTaskName($srcId);
             $destIdName = $taskObj->mfun_vm_getTaskName($destId);
-            $logmsg = "SrcId=[" . $srcId . "] SrcName=[" . $srcIdName . "] DestId=[" . $destId . "] DestName=[" . $destIdName . "] MsgId=[" . $msgId . "] MsgBody=[" . json_encode($msgBody,JSON_UNESCAPED_UNICODE) . "]";
+            $logmsg = "I: " . json_encode($msgBody,JSON_UNESCAPED_UNICODE);
             $result1 = $loggerObj->trace_module_inqury($destId);
             $result2 = $loggerObj->trace_msg_inqury($msgId);
             if (isset($result) == true){
                 if (($result1["allowflag"] == TRACE_MSG_GENERAL_ON) && ($result2["allowflag"] == TRACE_MSG_GENERAL_ON))
-                    $loggerObj->logger(MFUN_TRACE_VM, $msgName, $log_time, "I: " . json_encode($logmsg,JSON_UNESCAPED_UNICODE));
+                    $loggerObj->mylog(MFUN_TRACE_VM,"NULL",$srcIdName,$destIdName,$msgName,$logmsg);
             }
         }
         elseif (TRACE_MSG_ON == TRACE_MSG_MODE_COMBINE_TO_RESTRICT){
             $loggerObj = new classApiL1vmFuncCom();
-            $log_time = date("Y-m-d H:i:s", time());
             $taskObj = new classConstL1vmSysTaskList;
             $srcIdName = $taskObj->mfun_vm_getTaskName($srcId);
             $destIdName = $taskObj->mfun_vm_getTaskName($destId);
-            $logmsg = "SrcId=[" . $srcId . "] SrcName=[" . $srcIdName . "] DestId=[" . $destId . "] DestName=[" . $destIdName . "] MsgId=[" . $msgId . "] MsgBody=[" . json_encode($msgBody,JSON_UNESCAPED_UNICODE) . "]";
+            $logmsg = "I: " . json_encode($msgBody,JSON_UNESCAPED_UNICODE);
             $result1 = $loggerObj->trace_module_inqury($destId);
             $result2 = $loggerObj->trace_msg_inqury($msgId);
             if (isset($result) == true){
                 if (($result1["restrictflag"] != TRACE_MSG_GENERAL_ON) && ($result2["restrictflag"] != TRACE_MSG_GENERAL_ON))
-                    $loggerObj->logger(MFUN_TRACE_VM, $msgName, $log_time, "I: " . json_encode($logmsg,JSON_UNESCAPED_UNICODE));
+                    $loggerObj->mylog(MFUN_TRACE_VM,"NULL",$srcIdName,$destIdName,$msgName,$logmsg);
             }
         }
         elseif (TRACE_MSG_ON == TRACE_MSG_MODE_COMBINE_FROM_ALLOW){
             $loggerObj = new classApiL1vmFuncCom();
-            $log_time = date("Y-m-d H:i:s", time());
             $taskObj = new classConstL1vmSysTaskList;
             $srcIdName = $taskObj->mfun_vm_getTaskName($srcId);
             $destIdName = $taskObj->mfun_vm_getTaskName($destId);
-            $logmsg = "SrcId=[" . $srcId . "] SrcName=[" . $srcIdName . "] DestId=[" . $destId . "] DestName=[" . $destIdName . "] MsgId=[" . $msgId . "] MsgBody=[" . json_encode($msgBody,JSON_UNESCAPED_UNICODE) . "]";
+            $logmsg = "I: " . json_encode($msgBody,JSON_UNESCAPED_UNICODE);
             $result1 = $loggerObj->trace_module_inqury($srcId);
             $result2 = $loggerObj->trace_msg_inqury($msgId);
             if (isset($result) == true){
                 if (($result1["allowflag"] == TRACE_MSG_GENERAL_ON) && ($result2["allowflag"] == TRACE_MSG_GENERAL_ON))
-                    $loggerObj->logger(MFUN_TRACE_VM, $msgName, $log_time, "I: " . json_encode($logmsg,JSON_UNESCAPED_UNICODE));
+                    $loggerObj->mylog(MFUN_TRACE_VM,"NULL",$srcIdName,$destIdName,$msgName,$logmsg);
             }
         }
         elseif (TRACE_MSG_ON == TRACE_MSG_MODE_COMBINE_FROM_RESTRICT){
             $loggerObj = new classApiL1vmFuncCom();
-            $log_time = date("Y-m-d H:i:s", time());
             $taskObj = new classConstL1vmSysTaskList;
             $srcIdName = $taskObj->mfun_vm_getTaskName($srcId);
             $destIdName = $taskObj->mfun_vm_getTaskName($destId);
-            $logmsg = "SrcId=[" . $srcId . "] SrcName=[" . $srcIdName . "] DestId=[" . $destId . "] DestName=[" . $destIdName . "] MsgId=[" . $msgId . "] MsgBody=[" . json_encode($msgBody,JSON_UNESCAPED_UNICODE) . "]";
+            $logmsg = "I: " . json_encode($msgBody,JSON_UNESCAPED_UNICODE);
             $result1 = $loggerObj->trace_module_inqury($srcId);
             $result2 = $loggerObj->trace_msg_inqury($msgId);
             if (isset($result) == true){
                 if (($result1["restrictflag"] != TRACE_MSG_GENERAL_ON) && ($result2["restrictflag"] != TRACE_MSG_GENERAL_ON))
-                    $loggerObj->logger(MFUN_TRACE_VM, $msgName, $log_time, "I: " . json_encode($logmsg,JSON_UNESCAPED_UNICODE));
+                    $loggerObj->mylog(MFUN_TRACE_VM,"NULL",$srcIdName,$destIdName,$msgName,$logmsg);
             }
         }
         elseif (TRACE_MSG_ON == TRACE_MSG_MODE_COMBINE_DOUBLE_ALLOW){
             $loggerObj = new classApiL1vmFuncCom();
-            $log_time = date("Y-m-d H:i:s", time());
             $taskObj = new classConstL1vmSysTaskList;
             $srcIdName = $taskObj->mfun_vm_getTaskName($srcId);
             $destIdName = $taskObj->mfun_vm_getTaskName($destId);
-            $logmsg = "SrcId=[" . $srcId . "] SrcName=[" . $srcIdName . "] DestId=[" . $destId . "] DestName=[" . $destIdName . "] MsgId=[" . $msgId . "] MsgBody=[" . json_encode($msgBody,JSON_UNESCAPED_UNICODE) . "]";
+            $logmsg = "I: " . json_encode($msgBody,JSON_UNESCAPED_UNICODE);
             $result1 = $loggerObj->trace_module_inqury($srcId);
             $result2 = $loggerObj->trace_module_inqury($destId);
             $result3 = $loggerObj->trace_msg_inqury($msgId);
             if (isset($result) == true){
                 if (($result1["allowflag"] == TRACE_MSG_GENERAL_ON) && ($result2["allowflag"] == TRACE_MSG_GENERAL_ON) && ($result3["allowflag"] == TRACE_MSG_GENERAL_ON))
-                    $loggerObj->logger(MFUN_TRACE_VM, $msgName, $log_time, "I: " . json_encode($logmsg,JSON_UNESCAPED_UNICODE));
+                    $loggerObj->mylog(MFUN_TRACE_VM,"NULL",$srcIdName,$destIdName,$msgName,$logmsg);
             }
         }
         elseif (TRACE_MSG_ON == TRACE_MSG_MODE_COMBINE_DOUBLE_RESTRICT){
             $loggerObj = new classApiL1vmFuncCom();
-            $log_time = date("Y-m-d H:i:s", time());
             $taskObj = new classConstL1vmSysTaskList;
             $srcIdName = $taskObj->mfun_vm_getTaskName($srcId);
             $destIdName = $taskObj->mfun_vm_getTaskName($destId);
-            $logmsg = "SrcId=[" . $srcId . "] SrcName=[" . $srcIdName . "] DestId=[" . $destId . "] DestName=[" . $destIdName . "] MsgId=[" . $msgId . "] MsgBody=[" . json_encode($msgBody,JSON_UNESCAPED_UNICODE) . "]";
+            $logmsg = "I: " . json_encode($msgBody,JSON_UNESCAPED_UNICODE);
             $result1 = $loggerObj->trace_module_inqury($srcId);
             $result2 = $loggerObj->trace_module_inqury($destId);
             $result3 = $loggerObj->trace_msg_inqury($msgId);
             if (isset($result) == true){
                 if (($result1["restrictflag"] != TRACE_MSG_GENERAL_ON) && ($result2["restrictflag"] != TRACE_MSG_GENERAL_ON) && ($result3["restrictflag"] != TRACE_MSG_GENERAL_ON))
-                    $loggerObj->logger(MFUN_TRACE_VM, $msgName, $log_time, "I: " . json_encode($logmsg,JSON_UNESCAPED_UNICODE));
+                    $loggerObj->mylog(MFUN_TRACE_VM,"NULL",$srcIdName,$destIdName,$msgName,$logmsg);
             }
         }
         else{
@@ -419,12 +404,12 @@ class classTaskL1vmCoreRouter
     {
         //先生成$loggerObj对应的指针
         $loggerObj = new classApiL1vmFuncCom();
-        $log_time = date("Y-m-d H:i:s", time());
 
         //先处理接收到的消息的基本情况
         if (empty($msg) == true){
-            $loggerObj->logger("NULL", "mfun_l1vm_task_main_entry", $log_time, "P: Nothing received");
-            echo "";
+            $log_content = "P: Nothing received";
+            $loggerObj->mylog("NULL","NULL","NULL","MFUN_TASK_ID_L1VM",$msgName,$log_content);
+            echo $log_content;
             //return false;
         }
 
@@ -440,7 +425,7 @@ class classTaskL1vmCoreRouter
                 if ($resp == false){
                     $result = "Cloud: Send to message buffer error.";
                     $log_content = "P:" . json_encode($result,JSON_UNESCAPED_UNICODE);
-                    $loggerObj->logger("MFUN_MAIN_ENTRY_WECHAT", "mfun_l1vm_task_main_entry", $log_time, $log_content);
+                    $loggerObj->mylog(MFUN_MAIN_ENTRY_WECHAT,"NULL","MFUN_TASK_ID_L1VM","MFUN_TASK_ID_L2SDK_WECHAT","MSG_ID_L1VM_TO_L2SDK_WECHAT_INCOMING",$log_content);
                     echo trim($result);
                     return false;
                 }
@@ -454,7 +439,7 @@ class classTaskL1vmCoreRouter
                 if ($resp == false){
                     $result = "Cloud: Send to message buffer error.";
                     $log_content = "P:" . json_encode($result,JSON_UNESCAPED_UNICODE);
-                    $loggerObj->logger("MFUN_MAIN_ENTRY_IOT_STDXML", "mfun_l1vm_task_main_entry", $log_time, $log_content);
+                    $loggerObj->mylog(MFUN_MAIN_ENTRY_IOT_STDXML,"NULL","MFUN_TASK_ID_L1VM","MFUN_TASK_ID_L2SDK_IOT_STDXML","MSG_ID_L1VM_TO_L2SDK_IOT_STDXML_INCOMING",$log_content);
                     echo trim($result);
                     return false;
                 }
@@ -468,7 +453,7 @@ class classTaskL1vmCoreRouter
                 if ($resp == false){
                     $result = "Cloud: Send to message buffer error.";
                     $log_content = "P:" . json_encode($result,JSON_UNESCAPED_UNICODE);
-                    $loggerObj->logger("MFUN_MAIN_ENTRY_IOT_HUITP", "mfun_l1vm_task_main_entry", $log_time, $log_content);
+                    $loggerObj->mylog(MFUN_MAIN_ENTRY_IOT_HUITP,"NULL","MFUN_TASK_ID_L1VM","MFUN_TASK_ID_L2SDK_IOT_HUITP","MSG_ID_L1VM_TO_L2SDK_IOT_HUITP_INCOMING",$log_content);
                     echo trim($result);
                     return false;
                 }
@@ -482,7 +467,7 @@ class classTaskL1vmCoreRouter
                 if ($resp == false){
                     $result = "Cloud: Send to message buffer error.";
                     $log_content = "P:" . json_encode($result,JSON_UNESCAPED_UNICODE);
-                    $loggerObj->logger("MFUN_MAIN_ENTRY_JINGDONG", "mfun_l1vm_task_main_entry", $log_time, $log_content);
+                    $loggerObj->mylog(MFUN_MAIN_ENTRY_JINGDONG,"NULL","MFUN_TASK_ID_L1VM","MFUN_TASK_ID_L2SDK_IOT_JD","MSG_ID_L2SDK_JD_INCOMING",$log_content);
                     echo trim($result);
                     return false;
                 }
@@ -496,7 +481,7 @@ class classTaskL1vmCoreRouter
                 if ($resp == false){
                     $result = "Cloud: Send to message buffer error.";
                     $log_content = "P:" . json_encode($result,JSON_UNESCAPED_UNICODE);
-                    $loggerObj->logger("MFUN_MAIN_ENTRY_APPLE", "mfun_l1vm_task_main_entry", $log_time, $log_content);
+                    $loggerObj->mylog(MFUN_MAIN_ENTRY_APPLE,"NULL","MFUN_TASK_ID_L1VM","MFUN_TASK_ID_L2SDK_IOT_APPLE","MSG_ID_L2SDK_APPLE_INCOMING",$log_content);
                     echo trim($result);
                     return false;
                 }
@@ -515,7 +500,7 @@ class classTaskL1vmCoreRouter
                 else {
                     $result = "Cloud: Send to message buffer error.";
                     $log_content = "P:" . json_encode($result,JSON_UNESCAPED_UNICODE);
-                    $loggerObj->logger("MFUN_MAIN_ENTRY_CRON", "mfun_l1vm_task_main_entry", $log_time, $log_content);
+                    $loggerObj->mylog(MFUN_MAIN_ENTRY_CRON,"NULL","MFUN_TASK_ID_L1VM","MFUN_TASK_ID_L2TIMER_CRON","MSG_ID_L2TIMER_CRON_XXX_COMING",$log_content);
                     echo trim($result);
                     return false;
                 }
@@ -529,7 +514,7 @@ class classTaskL1vmCoreRouter
                 if ($resp == false){
                     $result = "Cloud: Send to message buffer error.";
                     $log_content = "P:" . json_encode($result,JSON_UNESCAPED_UNICODE);
-                    $loggerObj->logger("MFUN_MAIN_ENTRY_SOCKET_LISTEN", "mfun_l1vm_task_main_entry", $log_time, $log_content);
+                    $loggerObj->mylog(MFUN_MAIN_ENTRY_SOCKET_LISTEN,"NULL","MFUN_TASK_ID_L1VM","MFUN_TASK_ID_L2SOCKET_LISTEN","MSG_ID_L2SOCKET_LISTEN_DATA_COMING",$log_content);
                     echo trim($result);
                     return false;
                 }
@@ -543,7 +528,7 @@ class classTaskL1vmCoreRouter
                 if ($resp == false){
                     $result = "Cloud: Send to message buffer error.";
                     $log_content = "P:" . json_encode($result,JSON_UNESCAPED_UNICODE);
-                    $loggerObj->logger("MFUN_MAIN_ENTRY_NBIOT_STD_QG376", "mfun_l1vm_task_main_entry", $log_time, $log_content);
+                    $loggerObj->mylog(MFUN_MAIN_ENTRY_NBIOT_STD_QG376,"NULL","MFUN_TASK_ID_L1VM","MFUN_TASK_ID_L2SDK_NBIOT_STD_QG376","MSG_ID_L2SDK_NBIOT_STD_QG376_INCOMING",$log_content);
                     echo trim($result);
                     return false;
                 }
@@ -557,7 +542,7 @@ class classTaskL1vmCoreRouter
                 if ($resp == false){
                     $result = "Cloud: Send to message buffer error.";
                     $log_content = "P:" . json_encode($result,JSON_UNESCAPED_UNICODE);
-                    $loggerObj->logger("MFUN_MAIN_ENTRY_NBIOT_STD_CJ188", "mfun_l1vm_task_main_entry", $log_time, $log_content);
+                    $loggerObj->mylog(MFUN_MAIN_ENTRY_NBIOT_STD_CJ188,"NULL","MFUN_TASK_ID_L1VM","MFUN_TASK_ID_L2SDK_NBIOT_STD_CJ188","MSG_ID_L2SDK_NBIOT_STD_CJ188_INCOMING",$log_content);
                     echo trim($result);
                     return false;
                 }
@@ -571,7 +556,7 @@ class classTaskL1vmCoreRouter
                 if ($resp == false){
                     $result = "Cloud: Send to message buffer error.";
                     $log_content = "P:" . json_encode($result,JSON_UNESCAPED_UNICODE);
-                    $loggerObj->logger("MFUN_MAIN_ENTRY_NBIOT_LTEV", "mfun_l1vm_task_main_entry", $log_time, $log_content);
+                    $loggerObj->mylog(MFUN_MAIN_ENTRY_NBIOT_LTEV,"NULL","MFUN_TASK_ID_L1VM","MFUN_TASK_ID_L2SDK_NBIOT_LTEV","MSG_ID_L2SDK_NBIOT_LTEV_INCOMING",$log_content);
                     echo trim($result);
                     return false;
                 }
@@ -585,7 +570,7 @@ class classTaskL1vmCoreRouter
                 if ($resp == false){
                     $result = "Cloud: Send to message buffer error.";
                     $log_content = "P:" . json_encode($result,JSON_UNESCAPED_UNICODE);
-                    $loggerObj->logger("MFUN_MAIN_ENTRY_NBIOT_AGC", "mfun_l1vm_task_main_entry", $log_time, $log_content);
+                    $loggerObj->mylog(MFUN_MAIN_ENTRY_NBIOT_AGC,"NULL","MFUN_TASK_ID_L1VM","MFUN_TASK_ID_L2SDK_NBIOT_AGC","MSG_ID_L2SDK_NBIOT_AGC_INCOMING",$log_content);
                     echo trim($result);
                     return false;
                 }
@@ -599,7 +584,7 @@ class classTaskL1vmCoreRouter
                 if ($resp == false){
                     $result = "Cloud: Send to message buffer error.";
                     $log_content = "P:" . json_encode($result,JSON_UNESCAPED_UNICODE);
-                    $loggerObj->logger("MFUN_MAIN_ENTRY_EMCWX_UI", "mfun_l1vm_task_main_entry", $log_time, $log_content);
+                    $loggerObj->mylog(MFUN_MAIN_ENTRY_EMCWX_UI,"NULL","MFUN_TASK_ID_L1VM","MFUN_TASK_ID_L4EMCWX_UI","MSG_ID_L4EMCWXUI_CLICK_INCOMING",$log_content);
                     echo trim($result);
                     return false;
                 }
@@ -613,7 +598,7 @@ class classTaskL1vmCoreRouter
                 if ($resp == false){
                     $result = "Cloud: Send to message buffer error.";
                     $log_content = "P:" . json_encode($result,JSON_UNESCAPED_UNICODE);
-                    $loggerObj->logger("MFUN_MAIN_ENTRY_AQYC_UI", "mfun_l1vm_task_main_entry", $log_time, $log_content);
+                    $loggerObj->mylog(MFUN_MAIN_ENTRY_AQYC_UI,"NULL","MFUN_TASK_ID_L1VM","MFUN_TASK_ID_L4AQYC_UI","MSG_ID_L4AQYCUI_CLICK_INCOMING",$log_content);
                     echo trim($result);
                     return false;
                 }
@@ -627,7 +612,7 @@ class classTaskL1vmCoreRouter
                 if ($resp == false){
                     $result = "Cloud: Send to message buffer error.";
                     $log_content = "P:" . json_encode($result,JSON_UNESCAPED_UNICODE);
-                    $loggerObj->logger("MFUN_MAIN_ENTRY_FHYS_UI", "mfun_l1vm_task_main_entry", $log_time, $log_content);
+                    $loggerObj->mylog(MFUN_MAIN_ENTRY_FHYS_UI,"NULL","MFUN_TASK_ID_L1VM","MFUN_TASK_ID_L4FHYS_UI","MSG_ID_L4FHYSUI_CLICK_INCOMING",$log_content);
                     echo trim($result);
                     return false;
                 }
@@ -641,7 +626,7 @@ class classTaskL1vmCoreRouter
                 if ($resp == false){
                     $result = "Cloud: Send to message buffer error.";
                     $log_content = "P:" . json_encode($result,JSON_UNESCAPED_UNICODE);
-                    $loggerObj->logger("MFUN_MAIN_ENTRY_FHYS_WECHAT", "mfun_l1vm_task_main_entry", $log_time, $log_content);
+                    $loggerObj->mylog(MFUN_MAIN_ENTRY_FHYS_WECHAT,"NULL","MFUN_TASK_ID_L1VM","MFUN_TASK_ID_L4FHYS_WECHAT","MSG_ID_L4FHYS_WECHAT_CLICK_INCOMING",$log_content);
                     echo trim($result);
                     return false;
                 }
@@ -655,7 +640,7 @@ class classTaskL1vmCoreRouter
                 if ($resp == false){
                     $result = "Cloud: Send to message buffer error.";
                     $log_content = "P:" . json_encode($result,JSON_UNESCAPED_UNICODE);
-                    $loggerObj->logger("MFUN_MAIN_ENTRY_BFSC_UI", "mfun_l1vm_task_main_entry", $log_time, $log_content);
+                    $loggerObj->mylog(MFUN_MAIN_ENTRY_BFSC_UI,"NULL","MFUN_TASK_ID_L1VM","MFUN_TASK_ID_L4BFSC_UI","MSG_ID_L4BFSCUI_CLICK_INCOMING",$log_content);
                     echo trim($result);
                     return false;
                 }
@@ -669,7 +654,7 @@ class classTaskL1vmCoreRouter
                 if ($resp == false){
                     $result = "Cloud: Send to message buffer error.";
                     $log_content = "P:" . json_encode($result,JSON_UNESCAPED_UNICODE);
-                    $loggerObj->logger("MFUN_MAIN_ENTRY_TBSWR_UI", "mfun_l1vm_task_main_entry", $log_time, $log_content);
+                    $loggerObj->mylog(MFUN_MAIN_ENTRY_TBSWR_UI,"NULL","MFUN_TASK_ID_L1VM","MFUN_TASK_ID_L4TBSWR_UI","MSG_ID_L4TBSWR_CLICK_INCOMING",$log_content);
                     echo trim($result);
                     return false;
                 }
@@ -683,7 +668,7 @@ class classTaskL1vmCoreRouter
                 if ($resp == false){
                     $result = "Cloud: Send to message buffer error.";
                     $log_content = "P:" . json_encode($result,JSON_UNESCAPED_UNICODE);
-                    $loggerObj->logger("MFUN_MAIN_ENTRY_NBIOT_IPM_UI", "mfun_l1vm_task_main_entry", $log_time, $log_content);
+                    $loggerObj->mylog(MFUN_MAIN_ENTRY_NBIOT_IPM_UI,"NULL","MFUN_TASK_ID_L1VM","MFUN_TASK_ID_L4NBIOT_IPM_UI","MSG_ID_L4NBIOT_IPMUI_CLICK_INCOMING",$log_content);
                     echo trim($result);
                     return false;
                 }
@@ -697,7 +682,7 @@ class classTaskL1vmCoreRouter
                 if ($resp == false){
                     $result = "Cloud: Send to message buffer error.";
                     $log_content = "P:" . json_encode($result,JSON_UNESCAPED_UNICODE);
-                    $loggerObj->logger("MFUN_MAIN_ENTRY_NBIOT_IWM_UI", "mfun_l1vm_task_main_entry", $log_time, $log_content);
+                    $loggerObj->mylog(MFUN_MAIN_ENTRY_NBIOT_IWM_UI,"NULL","MFUN_TASK_ID_L1VM","MFUN_TASK_ID_L4NBIOT_IWM_UI","MSG_ID_L4NBIOT_IWMUI_CLICK_INCOMING",$log_content);
                     echo trim($result);
                     return false;
                 }
@@ -711,7 +696,7 @@ class classTaskL1vmCoreRouter
                 if ($resp == false){
                     $result = "Cloud: Send to message buffer error.";
                     $log_content = "P:" . json_encode($result,JSON_UNESCAPED_UNICODE);
-                    $loggerObj->logger("MFUN_MAIN_ENTRY_NBIOT_IGM_UI", "mfun_l1vm_task_main_entry", $log_time, $log_content);
+                    $loggerObj->mylog(MFUN_MAIN_ENTRY_NBIOT_IGM_UI,"NULL","MFUN_TASK_ID_L1VM","MFUN_TASK_ID_L4NBIOT_IGM_UI","MSG_ID_L4NBIOT_IGMUI_CLICK_INCOMING",$log_content);
                     echo trim($result);
                     return false;
                 }
@@ -725,7 +710,7 @@ class classTaskL1vmCoreRouter
                 if ($resp == false){
                     $result = "Cloud: Send to message buffer error.";
                     $log_content = "P:" . json_encode($result,JSON_UNESCAPED_UNICODE);
-                    $loggerObj->logger("MFUN_MAIN_ENTRY_NBIOT_IHM_UI", "mfun_l1vm_task_main_entry", $log_time, $log_content);
+                    $loggerObj->mylog(MFUN_MAIN_ENTRY_NBIOT_IHM_UI,"NULL","MFUN_TASK_ID_L1VM","MFUN_TASK_ID_L4NBIOT_IHM_UI","MSG_ID_L4NBIOT_IHMUI_CLICK_INCOMING",$log_content);
                     echo trim($result);
                     return false;
                 }
@@ -760,7 +745,7 @@ class classTaskL1vmCoreRouter
             if ($modObj->mfun_vm_getTaskPresent($result["destId"]) != true){
                 $result = "Cloud: Target module is not actived.";
                 $log_content = "P:" . json_encode($result,JSON_UNESCAPED_UNICODE);
-                $loggerObj->logger("NULL", "mfun_l1vm_task_main_entry", $log_time, $log_content);
+                $loggerObj->mylog("NULL","NULL","MFUN_TASK_ID_L1VM",$result["destId"],$result["msgName"],$log_content);
                 echo trim($result);
                 continue;
             }
@@ -1131,7 +1116,7 @@ class classTaskL1vmCoreRouter
                 default:
                     $result = "Cloud: Not supported destination module.";
                     $log_content = "P:" . json_encode($result,JSON_UNESCAPED_UNICODE);
-                    $loggerObj->logger("NULL", "mfun_l1vm_task_main_entry", $log_time, $log_content);
+                    $loggerObj->mylog("NULL","NULL","MFUN_TASK_ID_L1VM",$result["destId"],$result["msgName"],$log_content);
                     echo trim($result);
                     break;
 

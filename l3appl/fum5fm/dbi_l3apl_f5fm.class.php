@@ -546,7 +546,8 @@ class classDbiL3apF5fm
             while (($result != false) && (($row = $result->fetch_array()) > 0)){
                 $wx_touser = $row['hwcode'];
                 $template = array('touser' => $wx_touser,
-                                'template_id' => "SAoMGA7GYeavgwpOImgWDs5BaoDMKIT5luASeZ671XM",
+                                //'template_id' => "SAoMGA7GYeavgwpOImgWDs5BaoDMKIT5luASeZ671XM",  //小慧公众号
+                                'template_id' => "JtIqUduhqFSJYRbnBLQnlSri7gT6NRkLKgzohHyDUrs",    //阜华公众号
                                 'topcolor' => "#7B68EE",
                                 //'url' => "http://weixin.qq.com/download", //详细信息URL
                                 'data' => array('first' => array('value' => "您好，光交箱智能管理平台告警通知!", 'color' => "#743A3A"),

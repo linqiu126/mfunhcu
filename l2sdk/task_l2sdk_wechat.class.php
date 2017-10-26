@@ -4412,7 +4412,7 @@ class classTaskL2sdkWechat
             case "scancode_push":
                 //$content = "扫码类型 ". $postObj->ScanCodeInfo->ScanType." \n扫码结果：". $postObj->ScanCodeInfo->ScanResult;
                 $scenario = 2;
-                $project = MFUN_PRJ_IHU_EMCWX;
+                $project = MFUN_PRJ_HCU_WECHAT;
                 $platform = MFUN_TECH_PLTF_WECHAT_DEVICE_EVENT;
                 //$wxDevObj = new classTaskL2sdkIotWx($this->appid, $this->appsecret);
                 //$wxDevObj->receive_wx_device_event_message($postObj);
@@ -4432,7 +4432,7 @@ class classTaskL2sdkWechat
                 break;
             case "CLICK":
                 $scenario = 2;
-                $project = MFUN_PRJ_IHU_EMCWX;
+                $project = MFUN_PRJ_HCU_WECHAT;
                 $platform = MFUN_TECH_PLTF_WECHAT_MENU_CLICK;
                 //$wxDevObj = new classTaskL2sdkIotWx($this->appid, $this->appsecret);
                 //$wxDevObj->receive_wx_device_event_message($postObj);
@@ -4524,19 +4524,18 @@ class classTaskL2sdkWechat
     {
 		//定义本入口函数的logger处理对象及函数
 		$loggerObj = new classApiL1vmFuncCom();
-		$log_time = date("Y-m-d H:i:s", time());
-        $project = MFUN_PRJ_IHU_EMCWX;
+        $project = MFUN_PRJ_HCU_WECHAT;
 
 		//入口消息内容判断
         //通过调用cloud_callback_wechat入口来的消息。主要是微信后台发送的消息以及HCU通过curl发送的消息（已切换到socket）
 		if (empty($data) == true) {
-			$loggerObj->logger("MFUN_TASK_ID_L2SDK_WECHAT", "mfun_l2sdk_wechat_task_main_entry", $log_time, "R: Received null message body.");
+            $log_content = "E: Received null message body";
+            $loggerObj->mylog($project,"NULL","MFUN_TASK_ID_L1VM","MFUN_TASK_ID_L2SDK_WECHAT",$msgName,$log_content);
 			return false;
 		}
 		if (($msgId != MSG_ID_L1VM_TO_L2SDK_WECHAT_INCOMING) || ($msgName != "MSG_ID_L1VM_TO_L2SDK_WECHAT_INCOMING")){
-			$result = "Msgid or MsgName error";
-			$log_content = "P:" . json_encode($result);
-			$loggerObj->logger("MFUN_TASK_ID_L2SDK_WECHAT", "mfun_l2sdk_wechat_task_main_entry", $log_time, $log_content);
+            $log_content = "E: Msgid or MsgName error";
+            $loggerObj->mylog($project,"NULL","MFUN_TASK_ID_L1VM","MFUN_TASK_ID_L2SDK_WECHAT",$msgName,$log_content);
 			return false;
 		}
 
@@ -4545,7 +4544,7 @@ class classTaskL2sdkWechat
         $data = $dbiL1vmCommonObj->getStrBetween($data,"<xml>","</xml>");
         if(empty($data)){
             $log_content = "L2SDK_WECHAT:XML message format error";
-            $loggerObj->logger("MFUN_TASK_ID_L2SDK_WECHAT", "mfun_l2sdk_wechat_task_main_entry", $log_time, $log_content);
+            $loggerObj->mylog($project,"NULL","MFUN_TASK_ID_L1VM","MFUN_TASK_ID_L2SDK_WECHAT",$msgName,$log_content);
             echo trim($log_content); //这里echo主要是为了swoole log打印，帮助查找问题
             return true;
         }
@@ -4570,7 +4569,7 @@ class classTaskL2sdkWechat
 
         //保存所有微信入口消息,这个功能可以在部署时关掉
         $log_content = "R:".($xmlmsg);
-        $loggerObj->logger("MFUN_TASK_ID_L2SDK_WECHAT", "mfun_l2sdk_wechat_task_main_entry", $log_time, $log_content);
+        $loggerObj->mylog($project,$fromUser,"MFUN_TASK_ID_L1VM","MFUN_TASK_ID_L2SDK_WECHAT",$msgName,$log_content);
 
         //消息类型分离
         switch ($msgType)
@@ -4609,7 +4608,7 @@ class classTaskL2sdkWechat
                         MFUN_TASK_ID_L2SDK_IOT_WX,
                         MSG_ID_WECHAT_TO_L2SDK_IOT_WX_INCOMING,
                         "MSG_ID_WECHAT_TO_L2SDK_IOT_WX_INCOMING",
-                        $msg) == false) $result = "Send to message buffer error";
+                        $msg) == false) $result = "E: send to message buffer error";
                 else $result = "";
                 //$wxDevObj->receive_wx_device_text_message($postObj);
                 //$result = "";
@@ -4627,7 +4626,7 @@ class classTaskL2sdkWechat
                         MFUN_TASK_ID_L2SDK_IOT_WX,
                         MSG_ID_WECHAT_TO_L2SDK_IOT_WX_INCOMING,
                         "MSG_ID_WECHAT_TO_L2SDK_IOT_WX_INCOMING",
-                        $msg) == false) $result = "Send to message buffer error";
+                        $msg) == false) $result = "E: send to message buffer error";
                 else $result = "";
                 break;
             case "huitp_text": //HUITP curl entrance
@@ -4637,9 +4636,8 @@ class classTaskL2sdkWechat
                 $dbiL2sdkIotcomObj = new classDbiL2sdkIotcom();
                 $statCode = $dbiL2sdkIotcomObj->dbi_hcuDevice_valid_device($fromUser); //FromUserName对应每个HCU硬件的设备编号
                 if (empty($statCode)){
-                    $result = "MFUN_TASK_ID_L2SDK_WECHAT: invalid device ID";
-                    $log_content = "T:" . json_encode($result);
-                    $loggerObj->logger($project, $fromUser, $log_time, $log_content);
+                    $log_content = "E: invalid device ID";
+                    $loggerObj->mylog($project,$fromUser,"MFUN_TASK_ID_L1VM","MFUN_TASK_ID_L2SDK_WECHAT",$msgName,$log_content);
                     return true;
                 }
 
@@ -4653,20 +4651,19 @@ class classTaskL2sdkWechat
                         MFUN_TASK_ID_L2DECODE_HUITP,
                         MSG_ID_L2SDK_WECHAT_TO_L2DECODE_HUITP,
                         "MSG_ID_L2SDK_WECHAT_TO_L2DECODE_HUITP",
-                        $msg) == false) $result = "Send to message buffer error";
+                        $msg) == false) $result = "E: send to message buffer error";
                 else $result = "";
                 break;
             default:
-                $result = "L2SDK_WECHAT:unknown message type=".$msgType;
+                $result = "E: unknown message type=".$msgType;
                 break;
         }
 
-		if (!empty($result))
-		{
-            $resp = json_encode($result, JSON_UNESCAPED_UNICODE);
-            $log_content = "T:" . $resp;
-            $loggerObj->logger($project, $fromUser, $log_time, $log_content);
-			echo $resp;
+		if (!empty($result)) {
+            $jsonencode = json_encode($result, JSON_UNESCAPED_UNICODE);
+            $log_content = "T:" . $jsonencode;
+            $loggerObj->mylog($project,$fromUser,"MFUN_TASK_ID_L1VM","MFUN_TASK_ID_L2SDK_WECHAT",$msgName,$log_content);
+			echo $result;
 		}
 
 		//返回

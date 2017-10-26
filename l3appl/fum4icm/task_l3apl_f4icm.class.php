@@ -240,14 +240,12 @@ class classTaskL3aplF4icm
     {
         //定义本入口函数的logger处理对象及函数
         $loggerObj = new classApiL1vmFuncCom();
-        $log_time = date("Y-m-d H:i:s", time());
         $project ="";
 
         //入口消息内容判断
         if (empty($msg) == true) {
-            $result = "Received null message body";
-            $log_content = "R:" . json_encode($result);
-            $loggerObj->logger("MFUN_TASK_ID_L3APPL_FUM4ICM", "mfun_l3apl_f4icm_task_main_entry", $log_time, $log_content);
+            $log_content = "E: receive null message body";
+            $loggerObj->mylog("NULL","NULL","NULL","MFUN_TASK_ID_L3APPL_FUM4ICM",$msgName,$log_content);
             return false;
         }
         else{
@@ -330,13 +328,12 @@ class classTaskL3aplF4icm
                 break;
         }
 
-        //返回ECHO
-        if (!empty($resp))
-        {
+        //这里需要将response返回给UI界面
+        if (!empty($resp)) {
             $jsonencode = json_encode($resp, JSON_UNESCAPED_UNICODE);
             $log_content = "T:" . $jsonencode;
-            $loggerObj->logger($project, "MFUN_TASK_ID_L3APPL_FUM4ICM", $log_time, $log_content);
-            echo trim($jsonencode); //这里需要编码送出去，跟其他处理方式还不太一样
+            $loggerObj->mylog($project,$user,"MFUN_TASK_ID_L3APPL_FUM4ICM","NULL",$msgName,$log_content);
+            echo trim($jsonencode);
         }
 
         //返回

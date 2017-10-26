@@ -17,7 +17,7 @@ class classTaskL2snrDoorlock
 
     }
 
-    private function func_fhys_doorlock_status_process($platform, $devCode, $statCode, $content, $funcFlag)
+    private function func_fhys_doorlock_status_process($devCode, $statCode, $content, $funcFlag)
     {
         $raw_MsgHead = substr($content, 0, MFUN_HCU_MSG_HEAD_LENGTH-2);  //截取4Byte MsgHead
         $msgHead = unpack("A2Key/A2Len", $raw_MsgHead);
@@ -33,7 +33,7 @@ class classTaskL2snrDoorlock
         return $resp;
     }
 
-    private function func_fhys_doorlock_open_process($platform, $devCode, $statCode, $content, $funcFlag)
+    private function func_fhys_doorlock_open_process($devCode, $statCode, $content, $funcFlag)
     {
         $raw_MsgHead = substr($content, 0, MFUN_HCU_MSG_HEAD_LENGTH-2);  //截取4Byte MsgHead
         $msgHead = unpack("A2Key/A2Len", $raw_MsgHead);
@@ -57,39 +57,26 @@ class classTaskL2snrDoorlock
     {
         //定义本入口函数的logger处理对象及函数
         $loggerObj = new classApiL1vmFuncCom();
-        $log_time = date("Y-m-d H:i:s", time());
-
-        //初始化消息内容
-        $project = "";
-        $platform = "";
-        $devCode = "";
-        $statCode = "";
-        $content = "";
-        $funcFlag = "";
+        $project= MFUN_PRJ_HCU_HUITP;
 
         //入口消息内容判断
         if (empty($msg) == true) {
-            $result = "Received null message body";
-            $log_content = "R:" . json_encode($result);
-            $loggerObj->logger("MFUN_TASK_ID_L2SNR_DOORLOCK", "mfun_l2snr_doorlocktask_main_entry", $log_time, $log_content);
-            echo trim($result);
+            $log_content = "E: receive null message body";
+            $loggerObj->mylog($project,"NULL","MFUN_TASK_ID_L2SDK_IOT_STDXML","MFUN_TASK_ID_L2SNR_DOORLOCK",$msgName,$log_content);
             return false;
         }
         else{
             //解开消息
-            if (isset($msg["project"])) $project = $msg["project"];
-            if (isset($msg["platform"])) $platform = $msg["platform"];
-            if (isset($msg["devCode"])) $devCode = $msg["devCode"];
-            if (isset($msg["statCode"])) $statCode = $msg["statCode"];
-            if (isset($msg["content"])) $content = $msg["content"];
-            if (isset($msg["funcFlag"])) $funcFlag = $msg["funcFlag"];
+            if (isset($msg["project"])) $project = $msg["project"]; else $project = "";
+            if (isset($msg["devCode"])) $devCode = $msg["devCode"]; else $devCode = "";
+            if (isset($msg["statCode"])) $statCode = $msg["statCode"]; else $statCode = "";
+            if (isset($msg["content"])) $content = $msg["content"]; else $content = "";
+            if (isset($msg["funcFlag"])) $funcFlag = $msg["funcFlag"]; else $funcFlag = "";
         }
 
         if (($msgId != MSG_ID_L2SDK_HCU_TO_L2SNR_DOORLOCK) || ($msgName != "MSG_ID_L2SDK_HCU_TO_L2SNR_DOORLOCK")){
-            $result = "Msgid or MsgName error";
-            $log_content = "P:" . json_encode($result);
-            $loggerObj->logger("MFUN_TASK_ID_L2SNR_DOORLOCK", "mfun_l2snr_doorlock_task_main_entry", $log_time, $log_content);
-            echo trim($result);
+            $log_content = "E: Msgid or MsgName error";
+            $loggerObj->mylog($project,"NULL","MFUN_TASK_ID_L2SDK_IOT_STDXML","MFUN_TASK_ID_L2SNR_DOORLOCK",$msgName,$log_content);
             return false;
         }
 
@@ -100,23 +87,22 @@ class classTaskL2snrDoorlock
                 $key = unpack('A2Cmd/A2Opt', $content);
                 $cmdKey = hexdec($key['Cmd'])& 0xFF;
                 if($cmdKey == MFUN_HCU_CMDID_FHYS_DOORLOCK_STATUS)
-                    $resp = $this->func_fhys_doorlock_status_process($platform, $devCode, $statCode, $content, $funcFlag);
+                    $resp = $this->func_fhys_doorlock_status_process($devCode, $statCode, $content, $funcFlag);
                 elseif($cmdKey == MFUN_HCU_CMDID_FHYS_DOORLOCK_OPEN)
-                    $resp = $this->func_fhys_doorlock_open_process($platform, $devCode, $statCode, $content, $funcFlag);
+                    $resp = $this->func_fhys_doorlock_open_process($devCode, $statCode, $content, $funcFlag);
                 else
-                    $resp = ""; //啥都不ECHO
+                    $resp = "E: L2SNR_DOORLOCK received message with unknown OptId";
 
                 break;
             default:
-                $resp = ""; //啥都不ECHO
+                $resp = "E: L2SNR_DOORLOCK receive unknown MsgId";
                 break;
         }
 
         //返回ECHO
-        if (!empty($resp))
-        {
-            $log_content = "T:" . json_encode($resp);
-            $loggerObj->logger($project, $devCode, $log_time, $log_content);
+        if (!empty($resp)) {
+            $log_content = json_encode($resp,JSON_UNESCAPED_UNICODE);
+            $loggerObj->mylog($project,$devCode,"MFUN_TASK_ID_L2SENSOR_CCL","MFUN_TASK_ID_L2ENCODE_HUITP",$msgName,$log_content);
         }
 
         //返回

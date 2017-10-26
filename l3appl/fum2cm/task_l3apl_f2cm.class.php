@@ -968,15 +968,12 @@ class classTaskL3aplF2cm
     {
         //定义本入口函数的logger处理对象及函数
         $loggerObj = new classApiL1vmFuncCom();
-        $log_time = date("Y-m-d H:i:s", time());
         $project ="";
 
         //入口消息内容判断
         if (empty($msg) == true) {
-            $result = "Received null message body";
-            $log_content = "R:" . json_encode($result);
-            $loggerObj->logger("MFUN_TASK_ID_L3APPL_FUM2CM", "mfun_l3apl_f2cm_task_main_entry", $log_time, $log_content);
-            echo trim($result);
+            $log_content = "E: receive null message body";
+            $loggerObj->mylog("NULL","NULL","NULL","MFUN_TASK_ID_L3APPL_FUM2CM",$msgName,$log_content);
             return false;
         }
         else{
@@ -985,15 +982,6 @@ class classTaskL3aplF2cm
             if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
             if (isset($msg["user"])) $user = $msg["user"]; else  $user = "";
             if (isset($msg["body"])) $body = $msg["body"]; else  $body = "";
-        }
-
-        //多条消息发送到L3APPL_F2CM，这里潜在的消息太多，没法一个一个的判断，故而只检查上下界
-        if (($msgId <= MSG_ID_MFUN_MIN) || ($msgId >= MSG_ID_MFUN_MAX)){
-            $result = "Msgid or MsgName error";
-            $log_content = "P:" . json_encode($result);
-            $loggerObj->logger("MFUN_TASK_ID_L3APPL_FUM2CM", "mfun_l3apl_f2cm_task_main_entry", $log_time, $log_content);
-            echo trim($result);
-            return false;
         }
 
         switch($msgId)
@@ -1089,7 +1077,7 @@ class classTaskL3aplF2cm
                 break;
 
             case MSG_ID_L4AQYCUI_TO_L3F2_POINTNEW://功能Point New
-                $resp = $this->func_point_new_process($type, $user, $body);
+                $resp = $this->func_point_new_process($action, $user, $body);
                 $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 
@@ -1224,12 +1212,11 @@ class classTaskL3aplF2cm
                 break;
         }
 
-        //返回ECHO
-        if (!empty($resp))
-        {
+        //这里需要将response返回给UI界面
+        if (!empty($resp)) {
             $jsonencode = json_encode($resp, JSON_UNESCAPED_UNICODE);
             $log_content = "T:" . $jsonencode;
-            $loggerObj->logger($project, "MFUN_TASK_ID_L3APPL_FUM2CM", $log_time, $log_content);
+            $loggerObj->mylog($project,$user,"MFUN_TASK_ID_L3APPL_FUM2CM","NULL",$msgName,$log_content);
             echo trim($jsonencode);
         }
 

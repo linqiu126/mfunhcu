@@ -36,6 +36,15 @@ class classApiL1vmFuncCom
         return $result;
     }
 
+    public function mylog($project,$fromUser,$srcName,$destName,$msgId,$logData)
+    {
+        //存储log在数据库中
+        $dbiL1vmCommonObj = new classDbiL1vmCommon();
+        $result = $dbiL1vmCommonObj->dbi_l1comvm_syslog_save($project,$fromUser,$srcName,$destName,$msgId,$logData);
+
+        return $result;
+    }
+
     //MODULE TRACE查询
     public function trace_module_inqury($moduleId)
     {

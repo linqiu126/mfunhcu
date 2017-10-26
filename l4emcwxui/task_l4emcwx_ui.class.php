@@ -24,107 +24,101 @@ class classTaskL4emcwxUi
      *************************************************************************************/
     public function mfun_l4emcwx_ui_task_main_entry($parObj, $msgId, $msgName, $msg)
     {
-
         //定义本入口函数的logger处理对象及函数
         $loggerObj = new classApiL1vmFuncCom();
-        $log_time = date("Y-m-d H:i:s", time());
+        $project = MFUN_PRJ_IHU_EMCWXUI;
 
         //入口消息内容判断
         if (empty($msg) == true) {
-            $result = "Received null message body";
-            $log_content = "R:" . json_encode($result);
-            $loggerObj->logger("MFUN_TASK_ID_L4EMCWX_UI", "mfun_l4emcwx_ui_task_main_entry", $log_time, $log_content);
-            echo trim($result);
+            $log_content = "E: receive null message body";
+            $loggerObj->mylog($project,"NULL","MFUN_TASK_ID_L1VM","MFUN_TASK_ID_L4EMCWX_UI",$msgName,$log_content);
             return false;
         }
-        //多条消息发送到L4EMXWXUI，这里潜在的消息太多，没法一个一个的判断，故而只检查上下界
-        if (($msgId <= MSG_ID_MFUN_MIN) || ($msgId >= MSG_ID_MFUN_MAX)) {
-            $result = "Msgid or MsgName error";
-            $log_content = "P:" . json_encode($result);
-            $loggerObj->logger("MFUN_TASK_ID_L4EMCWX_UI", "mfun_l4emcwx_ui_task_main_entry", $log_time, $log_content);
-            echo trim($result);
+        if (($msgId != MSG_ID_L4EMCWXUI_CLICK_INCOMING) || ($msgName != "MSG_ID_L4EMCWXUI_CLICK_INCOMING")){
+            $log_content = "E: Msgid or MsgName error";
+            $loggerObj->mylog($project,"NULL","MFUN_TASK_ID_L1VM","MFUN_TASK_ID_L4EMCWX_UI",$msgName,$log_content);
             return false;
         }
 
-        if (($msgId == MSG_ID_L4EMCWXUI_CLICK_INCOMING) && (isset($msg))) {
-            $resp = "";
-            //这里是L4EMCWX与L3APPL功能之间的交换矩阵，从而让UI对应的多种不确定组合变换为L3APPL确定的功能组合
-            switch ($msg) {
-                case "wechat_login":
-                    if (isset($_GET["code"])) $code = trim($_GET["code"]); else $code = "";
-                    $input = array("code" => $code);
-                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4EMCWX_UI, MFUN_TASK_ID_L3WX_OPR_EMC, MSG_ID_L4EMCWXUI_TO_L3WXOPR_EMCUSER, "MSG_ID_L4EMCWXUI_TO_L3WXOPR_EMCUSER",$input);
-                    break;
-                case "personal_bracelet_radiation_current":
-                    /*
-                        var device = data.id;
-                        var retval={
-                            status:"true",
-                            ret: GetRandomNum(0,255).toString()
-                        };
-                        return JSON.stringify(retval);
-                    */
-                    if (isset($_GET["id"])) $openid = trim($_GET["id"]); else $openid = "";
-                    $input = array("openid" => $openid);
-                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4EMCWX_UI, MFUN_TASK_ID_L3WX_OPR_EMC, MSG_ID_L4EMCWXUI_TO_L3WXOPR_EMCNOW, "MSG_ID_L4EMCWXUI_TO_L3WXOPR_EMCNOW",$input);
-                    break;
-                case "personal_bracelet_radiation_alarm":
-                    /*
+        if (isset($msg)) $action = trim($msg); else $action = "";
+        //这里是L4EMCWX与L3APPL功能之间的交换矩阵，从而让UI对应的多种不确定组合变换为L3APPL确定的功能组合
+        switch ($action)
+        {
+            case "wechat_login":
+                if (isset($_GET["code"])) $code = trim($_GET["code"]); else $code = "";
+                $input = array("code" => $code);
+                $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4EMCWX_UI, MFUN_TASK_ID_L3WX_OPR_EMC, MSG_ID_L4EMCWXUI_TO_L3WXOPR_EMCUSER, "MSG_ID_L4EMCWXUI_TO_L3WXOPR_EMCUSER",$input);
+                break;
+            case "personal_bracelet_radiation_current":
+                /*
+                    var device = data.id;
                     var retval={
                         status:"true",
-                        warning: "150",
-                        alarm: "200"
+                        ret: GetRandomNum(0,255).toString()
                     };
                     return JSON.stringify(retval);
-                    */
-                    if (isset($_GET["id"])) $openid = trim($_GET["id"]); else $openid = "";
-                    $input = array("openid" => $openid);
-                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4EMCWX_UI, MFUN_TASK_ID_L3WX_OPR_EMC, MSG_ID_L4EMCWXUI_TO_L3WXOPR_EMCALARM, "MSG_ID_L4EMCWXUI_TO_L3WXOPR_EMCALARM",$input);
-                    break;
-                case "personal_bracelet_radiation_history":
-                    /*
-                        var device = data.id;
-                        var retlist = new Array();
-                        for(var i=0;i<48;i++){
-                          retlist.push(GetRandomNum(0,255).toString())
+                */
+                if (isset($_GET["id"])) $openid = trim($_GET["id"]); else $openid = "";
+                $input = array("openid" => $openid);
+                $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4EMCWX_UI, MFUN_TASK_ID_L3WX_OPR_EMC, MSG_ID_L4EMCWXUI_TO_L3WXOPR_EMCNOW, "MSG_ID_L4EMCWXUI_TO_L3WXOPR_EMCNOW",$input);
+                break;
+            case "personal_bracelet_radiation_alarm":
+                /*
+                var retval={
+                    status:"true",
+                    warning: "150",
+                    alarm: "200"
+                };
+                return JSON.stringify(retval);
+                */
+                if (isset($_GET["id"])) $openid = trim($_GET["id"]); else $openid = "";
+                $input = array("openid" => $openid);
+                $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4EMCWX_UI, MFUN_TASK_ID_L3WX_OPR_EMC, MSG_ID_L4EMCWXUI_TO_L3WXOPR_EMCALARM, "MSG_ID_L4EMCWXUI_TO_L3WXOPR_EMCALARM",$input);
+                break;
+            case "personal_bracelet_radiation_history":
+                /*
+                    var device = data.id;
+                    var retlist = new Array();
+                    for(var i=0;i<48;i++){
+                      retlist.push(GetRandomNum(0,255).toString())
+                    }
+                    var retval={
+                      status:"true",
+                      ret:retlist
+                    }
+                    return JSON.stringify(retval);
+                */
+                if (isset($_GET["id"])) $openid = trim($_GET["id"]); else $openid = "";
+                $input = array("openid" => $openid);
+                $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4EMCWX_UI, MFUN_TASK_ID_L3WX_OPR_EMC, MSG_ID_L4EMCWXUI_TO_L3WXOPR_EMCHISTORY, "MSG_ID_L4EMCWXUI_TO_L3WXOPR_EMCHISTORY",$input);
+                break;
+            case "personal_bracelet_radiation_track":
+                /*
+                    var device = data.id;
+                    var retlist = new Array();
+                    for(var i=0;i<48*6;i++){
+                        var map = {
+                            longitude: (121.514168+0.05*i).toString(),
+                            latitude: "31.240246",
+                            value:GetRandomNum(0,255).toString(),
                         }
-                        var retval={
-                          status:"true",
-                          ret:retlist
-                        }
-                        return JSON.stringify(retval);
-                    */
-                    if (isset($_GET["id"])) $openid = trim($_GET["id"]); else $openid = "";
-                    $input = array("openid" => $openid);
-                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4EMCWX_UI, MFUN_TASK_ID_L3WX_OPR_EMC, MSG_ID_L4EMCWXUI_TO_L3WXOPR_EMCHISTORY, "MSG_ID_L4EMCWXUI_TO_L3WXOPR_EMCHISTORY",$input);
-                    break;
-                case "personal_bracelet_radiation_track":
-                    /*
-                        var device = data.id;
-                        var retlist = new Array();
-                        for(var i=0;i<48*6;i++){
-                            var map = {
-                                longitude: (121.514168+0.05*i).toString(),
-                                latitude: "31.240246",
-                                value:GetRandomNum(0,255).toString(),
-                            }
-                            retlist.push(GetRandomNum(0,255).toString())
-                        }
-                        var retval={
-                            status:"true",
-                            ret:retlist
-                        }
-                        return JSON.stringify(retval);
-                    */
-                    if (isset($_GET["id"])) $openid = trim($_GET["id"]); else $openid = "";
-                    $input = array("openid" => $openid);
-                    $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4EMCWX_UI, MFUN_TASK_ID_L3WX_OPR_EMC, MSG_ID_L4EMCWXUI_TO_L3WXOPR_EMCTRACK, "MSG_ID_L4EMCWXUI_TO_L3WXOPR_EMCTRACK",$input);
-                    break;
-                default:
-                    break;
-            }
+                        retlist.push(GetRandomNum(0,255).toString())
+                    }
+                    var retval={
+                        status:"true",
+                        ret:retlist
+                    }
+                    return JSON.stringify(retval);
+                */
+                if (isset($_GET["id"])) $openid = trim($_GET["id"]); else $openid = "";
+                $input = array("openid" => $openid);
+                $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4EMCWX_UI, MFUN_TASK_ID_L3WX_OPR_EMC, MSG_ID_L4EMCWXUI_TO_L3WXOPR_EMCTRACK, "MSG_ID_L4EMCWXUI_TO_L3WXOPR_EMCTRACK",$input);
+                break;
+            default:
+                break;
         }
     }
+
 }//End of class_task_service
 
 ?>

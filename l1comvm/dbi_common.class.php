@@ -351,6 +351,48 @@ class classDbiL1vmCommon
         return $result;
     }
 
+    //新log函数
+    public function dbi_l1comvm_syslog_save($project,$fromUser,$srcName,$destName,$msgId,$logData)
+    {
+        $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_DEBUG, MFUN_CLOUD_DBPORT);
+        if (!$mysqli)
+        {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $mysqli->query("SET NAMES utf8");
+
+        $sysVer = MFUN_CURRENT_VERSION;
+        $sysProg = MFUN_CURRENT_WORKING_PROGRAM_NAME_UNIQUE;
+        $logTime = date("Y-m-d H:i:s", time());
+        //存储新记录
+        $query_str = "INSERT INTO `t_l1vm_loginfo` (sysver,sysprog,project,fromuser,srcname,destname,msgid,logtime,logdata)
+                      VALUES ('$sysVer','$sysProg','$project','$fromUser','$srcName','$destName','$msgId','$logTime','$logData')";
+        $result = $mysqli->query($query_str);
+
+        //查找最大SID
+        $result = $mysqli->query("SELECT  MAX(`sid`)  FROM `t_l1vm_loginfo` WHERE 1 ");
+        if ($result->num_rows>0){
+            $row_max =  $result->fetch_array();
+            $sid_max = $row_max['MAX(`sid`)'];
+        }
+        //查找最小SID
+        $result = $mysqli->query("SELECT  MIN(`sid`)  FROM `t_l1vm_loginfo` WHERE 1 ");
+        if ($result->num_rows>0) {
+            $row_min =  $result->fetch_array();
+            $sid_min = $row_min['MIN(`sid`)'] ;
+        }
+
+        //检查记录数如果超过MAX_LOG_NUM，则删除老的记录
+        if (($sid_max - $sid_min) > MFUN_L1VM_DBI_MAX_LOG_NUM)
+        {
+            $count = $sid_max - MFUN_L1VM_DBI_MAX_LOG_NUM;
+            $result = $mysqli->query("DELETE FROM `t_l1vm_loginfo` WHERE (`sid` >0 AND `sid`< $count) ");
+        }
+
+        $mysqli->close();
+        return $result;
+    }
+
     //查询t_l1vm_logtracemodule中的允许及限制状态
     public function dbi_logtrace_module_inqury($moudleId)
     {

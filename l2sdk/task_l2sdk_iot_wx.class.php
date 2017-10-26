@@ -807,7 +807,7 @@ class classTaskL2sdkIotWx
                     $msgContent = "EMC Value = " . $value . "mV";
                     $this->send_custom_message($fromUser, "text", $msgContent);  //使用API-CURL推送EMC测量值到微信用户
                 }
-                $msg = array("project" => MFUN_PRJ_IHU_EMCWX,
+                $msg = array("project" => MFUN_PRJ_HCU_WECHAT,
                     "log_from" => $fromUser,
                     "platform" => MFUN_TECH_PLTF_WECHAT,
                     "deviceId" => $deviceId,
@@ -831,7 +831,7 @@ class classTaskL2sdkIotWx
 
                 //电池电量信息暂时不需要后台存储，只进行界面推送即可
                 /*
-                $msg = array("project" => MFUN_PRJ_IHU_EMCWX,
+                $msg = array("project" => MFUN_PRJ_HCU_WECHAT,
                     "log_from" => $fromUser,
                     "platform" => MFUN_TECH_PLTF_WECHAT,
                     "deviceId" => $deviceId,
@@ -1389,29 +1389,25 @@ class classTaskL2sdkIotWx
     {
         //定义本入口函数的logger处理对象及函数
         $loggerObj = new classApiL1vmFuncCom();
-        $log_time = date("Y-m-d H:i:s", time());
+        $project = MFUN_PRJ_HCU_WECHAT;
 
         //入口消息内容判断
         if (empty($msg) == true) {
-            $loggerObj->logger("MFUN_TASK_ID_L2SDK_IOT_WX", "mfun_l2sdk_iot_wx_task_main_entry", $log_time, "R: Received null message body.");
+            $log_content = "E: Received null message body";
+            $loggerObj->mylog($project,"NULL","MFUN_TASK_ID_L1VM","MFUN_TASK_ID_L2SDK_IOT_WX",$msgName,$log_content);
             return false;
         }
         if (($msgId != MSG_ID_WECHAT_TO_L2SDK_IOT_WX_INCOMING) || ($msgName != "MSG_ID_WECHAT_TO_L2SDK_IOT_WX_INCOMING")){
-            $result = "Msgid or MsgName error";
-            $log_content = "P:" . json_encode($result);
-            $loggerObj->logger("MFUN_TASK_ID_L2SDK_IOT_WX", "mfun_l2sdk_iot_wx_task_main_entry", $log_time, $log_content);
+            $log_content = "E: Msgid or MsgName error";
+            $loggerObj->mylog($project,"NULL","MFUN_TASK_ID_L1VM","MFUN_TASK_ID_L2SDK_IOT_WX",$msgName,$log_content);
             return false;
         }
 
         //解开消息
-        $project= "";
-        $platform = "";
-        $fromuser = "";
-        $content="";
-        if (isset($msg["project"])) $project = $msg["project"];
-        if (isset($msg["platform"])) $platform = $msg["platform"];
-        if (isset($msg["devCode"])) $fromuser = $msg["devCode"];
-        if (isset($msg["content"])) $content = $msg["content"];
+        if (isset($msg["project"])) $project = $msg["project"]; else $project= "";
+        if (isset($msg["platform"])) $platform = $msg["platform"]; else $platform = "";
+        if (isset($msg["devCode"])) $fromuser = $msg["devCode"]; else $fromuser = "";
+        if (isset($msg["content"])) $content = $msg["content"]; else $content="";
 
         //具体处理函数
         switch($platform){
@@ -1430,12 +1426,12 @@ class classTaskL2sdkIotWx
         }
 
         //返回ECHO
-        if (!empty($resp))
-        {
-            $log_content = "T:" . json_encode($resp, JSON_UNESCAPED_UNICODE);
-            $loggerObj->logger($project, $fromuser, $log_time, $log_content);
+        if (!empty($resp)){
+            $jsonencode = json_encode($resp, JSON_UNESCAPED_UNICODE);
+            $log_content = "T:" . $jsonencode;
+            $loggerObj->mylog($project,$fromuser,"MFUN_TASK_ID_L2SDK_IOT_WX","NULL",$msgName,$log_content);
             if(is_array($resp))
-                echo(json_encode($resp, JSON_UNESCAPED_UNICODE));
+                echo $jsonencode;
             else
                 echo trim($resp);
         }

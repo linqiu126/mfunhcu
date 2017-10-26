@@ -22,13 +22,13 @@ class classTaskL2SocketListen
     {
         //定义本入口函数的logger处理对象及函数
         $loggerObj = new classApiL1vmFuncCom();
-        $log_time = date("Y-m-d H:i:s", time());
         $project = MFUN_PRJ_HCU_HEXDATA;
+        $statCode = "";
 
         //入口消息内容判断
         if (empty($msg) == true) {
-            $log_content = "R:Received null message body";
-            $loggerObj->logger("MFUN_TASK_ID_L2SOCKET_LISTEN", "mfun_l2socket_listen_task_main_entry", $log_time, $log_content);
+            $log_content = "E: receive null message body";
+            $loggerObj->mylog($project,"NULL","MFUN_TASK_ID_L2DECODE_HUITP","MFUN_TASK_ID_L2SOCKET_LISTEN",$msgName,$log_content);
             return false;
         }
         else{
@@ -36,11 +36,9 @@ class classTaskL2SocketListen
             if (isset($msg["socketid"])) $socketid = $msg["socketid"]; else  $socketid = "";
             if (isset($msg["data"])) $data = $msg["data"]; else  $data = "";
         }
-
-        //多条消息发送到L2SOCKET_LISTEN，这里潜在的消息太多，没法一个一个的判断，故而只检查上下界
         if (($msgId != MSG_ID_L2SOCKET_LISTEN_DATA_COMING) || ($msgName != "MSG_ID_L2SOCKET_LISTEN_DATA_COMING")){
-            $log_content = "P:MsgId or MsgName error";
-            $loggerObj->logger("MFUN_TASK_ID_L2SOCKET_LISTEN", "mfun_l2socket_listen_task_main_entry", $log_time, $log_content);
+            $log_content = "E: L2SOCKET_LISTEN receive Msgid or MsgName error";
+            $loggerObj->mylog($project,"NULL","MFUN_TASK_ID_L1VM","MFUN_TASK_ID_L2SOCKET_LISTEN",$msgName,$log_content);
             return false;
         }
 
@@ -68,9 +66,9 @@ class classTaskL2SocketListen
             $dbiL2snrHsmmpObj = new classDbiL2snrHsmmp();
             $statCode = $dbiL2snrHsmmpObj->dbi_fhys_locklog_picture_name_inqury($picname);
             if (empty($statCode)){
-                $result = "L2SOCKET_LISTEN: reecive invalid picnmae = ".$picname;
-                $log_content = "T:" . $result;
-                $loggerObj->logger($project, MFUN_TASK_ID_L2SOCKET_LISTEN, $log_time, $log_content);
+                $log_content = "E: L2SOCKET_LISTEN reecive invalid picnmae = ".$picname;
+                $loggerObj->mylog($project,"NULL","MFUN_TASK_ID_L1VM","MFUN_TASK_ID_L2SDK_IOT_STDXML",$msgName,$log_content);
+                echo trim($log_content); //这里echo主要是为了swoole log打印，帮助查找问题
                 return true;
             }
             //解析HEX Content
@@ -80,7 +78,6 @@ class classTaskL2SocketListen
             }
 
             $msg = array("project" => $project,
-                "platform" => MFUN_TECH_PLTF_HCUSTM,
                 "picname" => $picname,
                 "picsize" => $length,
                 "statCode" => $statCode,
@@ -89,19 +86,17 @@ class classTaskL2SocketListen
                     MFUN_TASK_ID_L2SENSOR_HSMMP,
                     MSG_ID_L2SOCKET_TO_L2SNR_HSMMP,
                     "MSG_ID_L2SOCKET_TO_L2SNR_HSMMP",
-                    $msg) == false) $resp = "Send to message buffer error";
+                    $msg) == false) $resp = "E: send to message buffer error";
             else $resp = "";
         }
 
         else{
-            $resp = ""; //啥都不ECHO
+            $resp ="E: received invalid MSGID!";
         }
 
-        //返回ECHO
-        if (!empty($resp))
-        {
-            $log_content = "T:" . json_encode($resp);
-            $loggerObj->logger("L2SOCKETLISTEN", "MFUN_TASK_ID_L2SOCKET_LISTEN", $log_time, $log_content);
+        if (!empty($resp))  {
+            $log_content = json_encode($resp,JSON_UNESCAPED_UNICODE);
+            $loggerObj->mylog($project,$statCode,"MFUN_TASK_ID_L2SOCKET_LISTEN","MFUN_TASK_ID_L2SENSOR_HSMMP",$msgName,$log_content);
         }
 
         //返回

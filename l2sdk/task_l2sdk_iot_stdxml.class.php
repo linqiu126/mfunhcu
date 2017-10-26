@@ -27,19 +27,17 @@ class classTaskL2sdkIotStdxml
         //定义本入口函数的logger处理对象及函数
         $loggerObj = new classApiL1vmFuncCom();
         $project = MFUN_PRJ_HCU_STDXML;
-        $log_time = date("Y-m-d H:i:s", time());
 
         //入口消息内容判断
         if (empty($msg) == true) {
-            $log_content = "IOT_STDXML:received null message body";
-            $loggerObj->logger("MFUN_TASK_ID_L2SDK_IOT_STDXML", "mfun_l2sdk_iot_stdxml_task_main_entry", $log_time, $log_content);
+            $log_content = "E: IOT_STDXML received null message body";
+            $loggerObj->mylog($project,"NULL","MFUN_TASK_ID_L1VM","MFUN_TASK_ID_L2SDK_IOT_STDXML",$msgName,$log_content);
             echo trim($log_content); //这里echo主要是为了swoole log打印，帮助查找问题
             return false;
         }
         if (($msgId != MSG_ID_L1VM_TO_L2SDK_IOT_STDXML_INCOMING) || ($msgName != "MSG_ID_L1VM_TO_L2SDK_IOT_STDXML_INCOMING")){
-            $result = "Msgid or MsgName error";
-            $log_content = "P:" . json_encode($result);
-            $loggerObj->logger("MFUN_TASK_ID_L2SDK_IOT_STDXML", "mfun_l2sdk_iot_stdxml_task_main_entry", $log_time, $log_content);
+            $log_content = "E: IOT_STDXML receive Msgid or MsgName error";
+            $loggerObj->mylog($project,"NULL","MFUN_TASK_ID_L1VM","MFUN_TASK_ID_L2SDK_IOT_STDXML",$msgName,$log_content);
             return false;
         }
 
@@ -51,8 +49,8 @@ class classTaskL2sdkIotStdxml
         $dbiL1vmCommonObj = new classDbiL1vmCommon();
         $data = $dbiL1vmCommonObj->getStrBetween($data,"<xml>","</xml>");
         if(empty($data)){
-            $log_content = "IOT_STDXML:received XML message format error, socketid = ".$socketid;
-            $loggerObj->logger("MFUN_TASK_ID_L2SDK_IOT_STDXML", "mfun_l2sdk_iot_stdxml_task_main_entry", $log_time, $log_content);
+            $log_content = "E:IOT_STDXML received XML message format error, socketid = ".$socketid;
+            $loggerObj->mylog($project,"NULL","MFUN_TASK_ID_L1VM","MFUN_TASK_ID_L2SDK_IOT_STDXML",$msgName,$log_content);
             echo trim($log_content); //这里echo主要是为了swoole log打印，帮助查找问题
             return true;
         }
@@ -79,22 +77,22 @@ class classTaskL2sdkIotStdxml
 
         //对接收内容进行log记录
         $log_content = "R:" . trim($xmlmsg);
-        $loggerObj->logger($project, $fromUser, $log_time, $log_content);
+        $loggerObj->mylog($project,$fromUser,"MFUN_TASK_ID_L1VM","MFUN_TASK_ID_L2SDK_IOT_STDXML",$msgName,$log_content);
 
         //取DB中的硬件信息，判断FromUser合法性
         $dbiL2sdkIotcomObj = new classDbiL2sdkIotcom();
         $statCode = $dbiL2sdkIotcomObj->dbi_hcuDevice_valid_device($fromUser); //FromUserName对应每个HCU硬件的设备编号
         if (empty($statCode)){
-            $log_content = "IOT_STDXML: invalid FromUserName = ".$fromUser;
-            $loggerObj->logger($project, $fromUser, $log_time, $log_content);
+            $log_content = "E: IOT_STDXML receive invalid FromUserName = ".$fromUser;
+            $loggerObj->mylog($project,$fromUser,"MFUN_TASK_ID_L1VM","MFUN_TASK_ID_L2SDK_IOT_STDXML",$msgName,$log_content);
             echo trim($log_content); //这里echo主要是为了swoole log打印，帮助查找问题
             return true;
         }
 
         //判断ToUser合法性
         if ($toUser != MFUN_CLOUD_HCU ){
-            $log_content = "IOT_STDXML: invalid ToUserName = ".$toUser;
-            $loggerObj->logger($project, $toUser, $log_time, $log_content);
+            $log_content = "E: IOT_STDXML receive invalid ToUserName = ".$toUser;
+            $loggerObj->mylog($project,$fromUser,"MFUN_TASK_ID_L1VM","MFUN_TASK_ID_L2SDK_IOT_STDXML",$msgName,$log_content);
             echo trim($log_content); //这里echo主要是为了swoole log打印，帮助查找问题
             return true;
         }
@@ -118,7 +116,7 @@ class classTaskL2sdkIotStdxml
                         MFUN_TASK_ID_L2SENSOR_DOORLOCK,
                         MSG_ID_L2SDK_HCU_TO_L2SNR_DOORLOCK,
                         "MSG_ID_L2SDK_HCU_TO_L2SNR_DOORLOCK",
-                        $msg) == false) $resp = "Send to message buffer error";
+                        $msg) == false) $resp = "E: send to message buffer error";
                 else $resp = "";
                 break;
             case "hcu_pic":
@@ -132,20 +130,19 @@ class classTaskL2sdkIotStdxml
                         MFUN_TASK_ID_L2SENSOR_HSMMP,
                         MSG_ID_L2SDK_HCU_TO_L2SNR_HSMMP,
                         "MSG_ID_L2SDK_HCU_TO_L2SNR_HSMMP",
-                        $msg) == false) $resp = "Send to message buffer error";
+                        $msg) == false) $resp = "E: send to message buffer error";
                 else $resp = "";
                 break;
             default:
-                $log_content = "IOT_STDXML:unknown message type = " . $msgType;
-                $loggerObj->logger($project, $fromUser, $log_time, $log_content);
-                echo trim($log_content); //这里echo主要是为了swoole log打印，帮助查找问题
+                $resp = "E: unknown message type = " . $msgType;
                 break;
         }
 
         //处理结果
         if (!empty($resp)) {
-            $log_content = "T:" . json_encode($resp,JSON_UNESCAPED_UNICODE);
-            $loggerObj->logger($project, $fromUser, $log_time, $log_content);
+            $log_content = json_encode($resp,JSON_UNESCAPED_UNICODE);
+            $loggerObj->mylog($project,$fromUser,"MFUN_TASK_ID_L2SDK_IOT_STDXML","NULL",$msgName,$log_content);
+            echo trim($log_content); //这里echo主要是为了swoole log打印，帮助查找问题
         }
         //结束，返回
         return true;

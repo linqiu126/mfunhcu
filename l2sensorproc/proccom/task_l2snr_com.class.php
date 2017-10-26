@@ -23,30 +23,20 @@ class classTaskL2snrCommonService
     {
         //定义本入口函数的logger处理对象及函数
         $loggerObj = new classApiL1vmFuncCom();
-        $log_time = date("Y-m-d H:i:s", time());
-
-        //初始化消息内容
-        $project= "";
-        $log_from = "";
-        $devCode="";
-        $statCode = "";
-        $content="";
+        $project= MFUN_PRJ_HCU_HUITP;
 
         //入口消息内容判断
         if (empty($msg) == true) {
-            $result = "Received null message body";
-            $log_content = "R:" . json_encode($result);
-            $loggerObj->logger("MFUN_TASK_ID_L2SENSOR_COMMON", "mfun_l2snr_common_task_main_entry", $log_time, $log_content);
-            echo trim($result);
+            $log_content = "E: receive null message body";
+            $loggerObj->mylog($project,"NULL","MFUN_TASK_ID_L2DECODE_HUITP","MFUN_TASK_ID_L2SENSOR_COMMON",$msgName,$log_content);
             return false;
         }
         else{
             //解开消息
-            if (isset($msg["project"])) $project = $msg["project"];
-            if (isset($msg["log_from"])) $log_from = $msg["log_from"];
-            if (isset($msg["devCode"])) $devCode = $msg["devCode"];
-            if (isset($msg["statCode"])) $statCode = $msg["statCode"];
-            if (isset($msg["content"])) $content = $msg["content"];
+            if (isset($msg["project"])) $project = $msg["project"]; else $project= "";;
+            if (isset($msg["devCode"])) $devCode = $msg["devCode"]; else $devCode="";
+            if (isset($msg["statCode"])) $statCode = $msg["statCode"]; else $statCode = "";
+            if (isset($msg["content"])) $content = $msg["content"]; else $content="";
         }
 
         switch($msgId)
@@ -57,7 +47,6 @@ class classTaskL2snrCommonService
                 //组装返回消息 HUITP_MSGID_uni_heart_beat_confirm, 并发送给L2 ENCODE进行编码发送
                 if (!empty($respHuitpMsg)){
                     $msg = array("project" => $project,
-                        "platform" => MFUN_TECH_PLTF_HCUGX_HUITP,
                         "devCode" => $devCode,
                         "respMsg" => HUITP_MSGID_uni_heart_beat_confirm,
                         "content" => $respHuitpMsg);
@@ -65,7 +54,7 @@ class classTaskL2snrCommonService
                             MFUN_TASK_ID_L2ENCODE_HUITP,
                             MSG_ID_L2CODEC_ENCODE_HUITP_INCOMING,
                             "MSG_ID_L2CODEC_ENCODE_HUITP_INCOMING",
-                            $msg) == false) $resp = "Send to message buffer error";
+                            $msg) == false) $resp = "E: send to message buffer error";
                     else $resp = "";
                 }
                 break;
@@ -75,7 +64,6 @@ class classTaskL2snrCommonService
                 //组装返回消息 HUITP_MSGID_uni_alarm_info_confirm, 并发送给L2 ENCODE进行编码发送
                 if (!empty($respHuitpMsg)){
                     $msg = array("project" => $project,
-                        "platform" => MFUN_TECH_PLTF_HCUGX_HUITP,
                         "devCode" => $devCode,
                         "respMsg" => HUITP_MSGID_uni_alarm_info_confirm,
                         "content" => $respHuitpMsg);
@@ -83,7 +71,7 @@ class classTaskL2snrCommonService
                             MFUN_TASK_ID_L2ENCODE_HUITP,
                             MSG_ID_L2CODEC_ENCODE_HUITP_INCOMING,
                             "MSG_ID_L2CODEC_ENCODE_HUITP_INCOMING",
-                            $msg) == false) $resp = "Send to message buffer error";
+                            $msg) == false) $resp = "E: send to message buffer error";
                     else $resp = "";
                 }
                 break;
@@ -93,7 +81,6 @@ class classTaskL2snrCommonService
                 //组装返回消息 HUITP_MSGID_uni_performance_info_confirm, 并发送给L2 ENCODE进行编码发送
                 if (!empty($respHuitpMsg)){
                     $msg = array("project" => $project,
-                        "platform" => MFUN_TECH_PLTF_HCUGX_HUITP,
                         "devCode" => $devCode,
                         "respMsg" => HUITP_MSGID_uni_performance_info_confirm,
                         "content" => $respHuitpMsg);
@@ -101,7 +88,7 @@ class classTaskL2snrCommonService
                             MFUN_TASK_ID_L2ENCODE_HUITP,
                             MSG_ID_L2CODEC_ENCODE_HUITP_INCOMING,
                             "MSG_ID_L2CODEC_ENCODE_HUITP_INCOMING",
-                            $msg) == false) $resp = "Send to message buffer error";
+                            $msg) == false) $resp = "E: send to message buffer error";
                     else $resp = "";
                 }
                 break;
@@ -112,7 +99,6 @@ class classTaskL2snrCommonService
                 //组装返回消息 HUITP_MSGID_uni_inventory_confirm, 并发送给L2 ENCODE进行编码发送
                 if (!empty($respHuitpMsg)){
                     $msg = array("project" => $project,
-                        "platform" => MFUN_TECH_PLTF_HCUGX_HUITP,
                         "devCode" => $devCode,
                         "respMsg" => HUITP_MSGID_uni_inventory_confirm,
                         "content" => $respHuitpMsg);
@@ -120,7 +106,7 @@ class classTaskL2snrCommonService
                             MFUN_TASK_ID_L2ENCODE_HUITP,
                             MSG_ID_L2CODEC_ENCODE_HUITP_INCOMING,
                             "MSG_ID_L2CODEC_ENCODE_HUITP_INCOMING",
-                            $msg) == false) $resp = "Send to message buffer error";
+                            $msg) == false) $resp = "E: send to message buffer error";
                     else $resp = "";
                 }
                 break;
@@ -139,7 +125,6 @@ class classTaskL2snrCommonService
                 //组装返回消息 HUITP_MSGID_uni_sw_package_confirm, 并发送给L2 ENCODE进行编码发送
                 if (!empty($respHuitpMsg)) {
                     $msg = array("project" => $project,
-                        "platform" => MFUN_TECH_PLTF_HCUGX_HUITP,
                         "devCode" => $devCode,
                         "respMsg" => HUITP_MSGID_uni_sw_package_confirm,
                         "content" => $respHuitpMsg);
@@ -148,21 +133,19 @@ class classTaskL2snrCommonService
                             MSG_ID_L2CODEC_ENCODE_HUITP_INCOMING,
                             "MSG_ID_L2CODEC_ENCODE_HUITP_INCOMING",
                             $msg) == false
-                    ) $resp = "Send to message buffer error";
+                    ) $resp = "E: send to message buffer error";
                     else $resp = "";
                 }
                 break;
             default:
-                $resp = ""; //啥都不ECHO
+                $resp ="E: received invalid MSGID!";
                 break;
         }
 
         //返回ECHO
-        if (!empty($resp))
-        {
-            $log_content = "T:" . json_encode($resp);
-            $loggerObj->logger($project, $log_from, $log_time, $log_content);
-            echo trim($resp);
+        if (!empty($resp)){
+            $log_content = json_encode($resp,JSON_UNESCAPED_UNICODE);
+            $loggerObj->mylog($project,$devCode,"MFUN_TASK_ID_L2SENSOR_COMMON","MFUN_TASK_ID_L2ENCODE_HUITP",$msgName,$log_content);
         }
 
         //返回
