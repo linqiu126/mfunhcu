@@ -4530,12 +4530,12 @@ class classTaskL2sdkWechat
         //通过调用cloud_callback_wechat入口来的消息。主要是微信后台发送的消息以及HCU通过curl发送的消息（已切换到socket）
 		if (empty($data) == true) {
             $log_content = "E: Received null message body";
-            $loggerObj->mylog($project,"NULL","MFUN_TASK_ID_L1VM","MFUN_TASK_ID_L2SDK_WECHAT",$msgName,$log_content);
+            $loggerObj->mylog($project,"NULL","MFUN_TASK_VID_L1VM_WECHAT","MFUN_TASK_ID_L2SDK_WECHAT",$msgName,$log_content);
 			return false;
 		}
 		if (($msgId != MSG_ID_L1VM_TO_L2SDK_WECHAT_INCOMING) || ($msgName != "MSG_ID_L1VM_TO_L2SDK_WECHAT_INCOMING")){
             $log_content = "E: Msgid or MsgName error";
-            $loggerObj->mylog($project,"NULL","MFUN_TASK_ID_L1VM","MFUN_TASK_ID_L2SDK_WECHAT",$msgName,$log_content);
+            $loggerObj->mylog($project,"NULL","MFUN_TASK_VID_L1VM_WECHAT","MFUN_TASK_ID_L2SDK_WECHAT",$msgName,$log_content);
 			return false;
 		}
 
@@ -4544,7 +4544,7 @@ class classTaskL2sdkWechat
         $data = $dbiL1vmCommonObj->getStrBetween($data,"<xml>","</xml>");
         if(empty($data)){
             $log_content = "L2SDK_WECHAT:XML message format error";
-            $loggerObj->mylog($project,"NULL","MFUN_TASK_ID_L1VM","MFUN_TASK_ID_L2SDK_WECHAT",$msgName,$log_content);
+            $loggerObj->mylog($project,"NULL","MFUN_TASK_VID_L1VM_WECHAT","MFUN_TASK_ID_L2SDK_WECHAT",$msgName,$log_content);
             echo trim($log_content); //这里echo主要是为了swoole log打印，帮助查找问题
             return true;
         }
@@ -4569,7 +4569,7 @@ class classTaskL2sdkWechat
 
         //保存所有微信入口消息,这个功能可以在部署时关掉
         $log_content = "R:".($xmlmsg);
-        $loggerObj->mylog($project,$fromUser,"MFUN_TASK_ID_L1VM","MFUN_TASK_ID_L2SDK_WECHAT",$msgName,$log_content);
+        $loggerObj->mylog($project,$fromUser,"MFUN_TASK_VID_L1VM_WECHAT","MFUN_TASK_ID_L2SDK_WECHAT",$msgName,$log_content);
 
         //消息类型分离
         switch ($msgType)
@@ -4662,7 +4662,7 @@ class classTaskL2sdkWechat
 		if (!empty($result)) {
             $jsonencode = json_encode($result, JSON_UNESCAPED_UNICODE);
             $log_content = "T:" . $jsonencode;
-            $loggerObj->mylog($project,$fromUser,"MFUN_TASK_ID_L1VM","MFUN_TASK_ID_L2SDK_WECHAT",$msgName,$log_content);
+            $loggerObj->mylog($project,$fromUser,"MFUN_TASK_ID_L2SDK_WECHAT","MFUN_TASK_ID_L2SDK_IOT_WX",$msgName,$log_content);
 			echo $result;
 		}
 

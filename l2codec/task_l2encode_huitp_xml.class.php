@@ -137,7 +137,7 @@ class classTaskL2encodeHuitpXml
 
             //返回消息log
             $log_content = "T:" . json_encode($respMsgStr);
-            $loggerObj->mylog($project,$devCode,"MFUN_TASK_ID_L2ENCODE_HUITP","NULL",$msgName,$log_content);
+            $loggerObj->mylog($project,$devCode,"MFUN_TASK_ID_L2ENCODE_HUITP","NULL","MSG_VID_L2CODEC_ENCODE_HUITP_OUTPUT",$log_content);
         }
         //结束，返回
         return true;

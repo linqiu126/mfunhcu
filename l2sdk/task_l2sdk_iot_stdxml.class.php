@@ -31,13 +31,13 @@ class classTaskL2sdkIotStdxml
         //入口消息内容判断
         if (empty($msg) == true) {
             $log_content = "E: IOT_STDXML received null message body";
-            $loggerObj->mylog($project,"NULL","MFUN_TASK_ID_L1VM","MFUN_TASK_ID_L2SDK_IOT_STDXML",$msgName,$log_content);
+            $loggerObj->mylog($project,"NULL","MFUN_TASK_VID_L1VM_SWOOLE","MFUN_TASK_ID_L2SDK_IOT_STDXML",$msgName,$log_content);
             echo trim($log_content); //这里echo主要是为了swoole log打印，帮助查找问题
             return false;
         }
         if (($msgId != MSG_ID_L1VM_TO_L2SDK_IOT_STDXML_INCOMING) || ($msgName != "MSG_ID_L1VM_TO_L2SDK_IOT_STDXML_INCOMING")){
             $log_content = "E: IOT_STDXML receive Msgid or MsgName error";
-            $loggerObj->mylog($project,"NULL","MFUN_TASK_ID_L1VM","MFUN_TASK_ID_L2SDK_IOT_STDXML",$msgName,$log_content);
+            $loggerObj->mylog($project,"NULL","MFUN_TASK_VID_L1VM_SWOOLE","MFUN_TASK_ID_L2SDK_IOT_STDXML",$msgName,$log_content);
             return false;
         }
 
@@ -50,7 +50,7 @@ class classTaskL2sdkIotStdxml
         $data = $dbiL1vmCommonObj->getStrBetween($data,"<xml>","</xml>");
         if(empty($data)){
             $log_content = "E:IOT_STDXML received XML message format error, socketid = ".$socketid;
-            $loggerObj->mylog($project,"NULL","MFUN_TASK_ID_L1VM","MFUN_TASK_ID_L2SDK_IOT_STDXML",$msgName,$log_content);
+            $loggerObj->mylog($project,"NULL","MFUN_TASK_VID_L1VM_SWOOLE","MFUN_TASK_ID_L2SDK_IOT_STDXML",$msgName,$log_content);
             echo trim($log_content); //这里echo主要是为了swoole log打印，帮助查找问题
             return true;
         }
@@ -77,7 +77,7 @@ class classTaskL2sdkIotStdxml
 
         //对接收内容进行log记录
         $log_content = "R:" . trim($xmlmsg);
-        $loggerObj->mylog($project,$fromUser,"MFUN_TASK_ID_L1VM","MFUN_TASK_ID_L2SDK_IOT_STDXML",$msgName,$log_content);
+        $loggerObj->mylog($project,$fromUser,"MFUN_TASK_VID_L1VM_SWOOLE","MFUN_TASK_ID_L2SDK_IOT_STDXML",$msgName,$log_content);
 
         //取DB中的硬件信息，判断FromUser合法性
         $dbiL2sdkIotcomObj = new classDbiL2sdkIotcom();

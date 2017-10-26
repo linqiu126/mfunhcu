@@ -1394,12 +1394,12 @@ class classTaskL2sdkIotWx
         //入口消息内容判断
         if (empty($msg) == true) {
             $log_content = "E: Received null message body";
-            $loggerObj->mylog($project,"NULL","MFUN_TASK_ID_L1VM","MFUN_TASK_ID_L2SDK_IOT_WX",$msgName,$log_content);
+            $loggerObj->mylog($project,"NULL","MFUN_TASK_VID_L1VM_WECHAT","MFUN_TASK_ID_L2SDK_IOT_WX",$msgName,$log_content);
             return false;
         }
         if (($msgId != MSG_ID_WECHAT_TO_L2SDK_IOT_WX_INCOMING) || ($msgName != "MSG_ID_WECHAT_TO_L2SDK_IOT_WX_INCOMING")){
             $log_content = "E: Msgid or MsgName error";
-            $loggerObj->mylog($project,"NULL","MFUN_TASK_ID_L1VM","MFUN_TASK_ID_L2SDK_IOT_WX",$msgName,$log_content);
+            $loggerObj->mylog($project,"NULL","MFUN_TASK_VID_L1VM_WECHAT","MFUN_TASK_ID_L2SDK_IOT_WX",$msgName,$log_content);
             return false;
         }
 
@@ -1429,7 +1429,7 @@ class classTaskL2sdkIotWx
         if (!empty($resp)){
             $jsonencode = json_encode($resp, JSON_UNESCAPED_UNICODE);
             $log_content = "T:" . $jsonencode;
-            $loggerObj->mylog($project,$fromuser,"MFUN_TASK_ID_L2SDK_IOT_WX","NULL",$msgName,$log_content);
+            $loggerObj->mylog($project,$fromuser,"MFUN_TASK_ID_L2SDK_IOT_WX","MSG_VID_L2SDK_IOT_WX_OUTPUT",$msgName,$log_content);
             if(is_array($resp))
                 echo $jsonencode;
             else

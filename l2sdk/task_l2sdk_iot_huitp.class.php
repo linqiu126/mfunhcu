@@ -31,7 +31,7 @@ class classTaskL2sdkIotHuitp
         //入口消息内容判断
         if (empty($msg) == true) {
             $log_content = "E: IOT_HUITP receive null message body";
-            $loggerObj->mylog($project,"NULL","MFUN_TASK_ID_L1VM","MFUN_TASK_ID_L2SDK_IOT_HUITP",$msgName,$log_content);
+            $loggerObj->mylog($project,"NULL","MFUN_TASK_VID_L1VM_SWOOLE","MFUN_TASK_ID_L2SDK_IOT_HUITP",$msgName,$log_content);
             echo trim($log_content); //这里echo主要是为了swoole log打印，帮助查找问题
             return false;
         }
@@ -39,7 +39,7 @@ class classTaskL2sdkIotHuitp
         //另外一个是扬尘HCU通过curl收到的(MSG_ID_L2SDK_WECHAT_TO_L2DECODE_HUITP)，因为curl复用了cloud_callback_wechat,所以消息通过L2SDK_IOT_WX直接发给了L2CODEC,没有经由本模块
         if (($msgId != MSG_ID_L1VM_TO_L2SDK_IOT_HUITP_INCOMING) || ($msgName != "MSG_ID_L1VM_TO_L2SDK_IOT_HUITP_INCOMING") ){
             $log_content = "E: IOT_HUITP receive MsgId or MsgName error";
-            $loggerObj->mylog($project,"NULL","MFUN_TASK_ID_L1VM","MFUN_TASK_ID_L2SDK_IOT_HUITP",$msgName,$log_content);
+            $loggerObj->mylog($project,"NULL","MFUN_TASK_VID_L1VM_SWOOLE","MFUN_TASK_ID_L2SDK_IOT_HUITP",$msgName,$log_content);
             return false;
         }
 
@@ -51,7 +51,7 @@ class classTaskL2sdkIotHuitp
         $msg = $dbiL1vmCommonObj->getStrBetween($data,"<xml>","</xml>");
         if(empty($msg)){
             $log_content = "E: IOT_HUITP receive XML message format error";
-            $loggerObj->mylog($project,"NULL","MFUN_TASK_ID_L1VM","MFUN_TASK_ID_L2SDK_IOT_HUITP",$msgName,$log_content);
+            $loggerObj->mylog($project,"NULL","MFUN_TASK_VID_L1VM_SWOOLE","MFUN_TASK_ID_L2SDK_IOT_HUITP",$msgName,$log_content);
             echo trim($log_content); //这里echo主要是为了swoole log打印，帮助查找问题
             return false;
         }
@@ -78,7 +78,7 @@ class classTaskL2sdkIotHuitp
 
         //对接收内容进行log记录
         $log_content = "R:" . trim($xmlmsg);
-        $loggerObj->mylog($project,$fromUser,"MFUN_TASK_ID_L1VM","MFUN_TASK_ID_L2SDK_IOT_HUITP",$msgName,$log_content);
+        $loggerObj->mylog($project,$fromUser,"MFUN_TASK_VID_L1VM_SWOOLE","MFUN_TASK_ID_L2SDK_IOT_HUITP",$msgName,$log_content);
 
 
         //消息或者说帧类型分离，l2SDK只进行协议类型解码，不对消息的content进行处理，判断协议类型后发送给专门的l2codec任务处理
