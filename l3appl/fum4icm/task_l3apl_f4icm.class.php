@@ -332,7 +332,7 @@ class classTaskL3aplF4icm
         if (!empty($resp)) {
             $jsonencode = json_encode($resp, JSON_UNESCAPED_UNICODE);
             $log_content = "T:" . $jsonencode;
-            $loggerObj->mylog($project,$user,"MFUN_TASK_ID_L3APPL_FUM4ICM","NULL",$msgName,$log_content);
+            $loggerObj->mylog($project,$user,"MFUN_TASK_ID_L3APPL_FUM4ICM","MFUN_TASK_VID_L4UI_ECHO",$msgName,$log_content);
             echo trim($jsonencode);
         }
 

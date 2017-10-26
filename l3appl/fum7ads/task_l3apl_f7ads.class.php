@@ -198,8 +198,8 @@ class classTaskL3aplF7ads
         if (!empty($resp)) {
             $jsonencode = json_encode($resp, JSON_UNESCAPED_UNICODE);
             $log_content = "T:" . $jsonencode;
-            $loggerObj->mylog($project,$user,"MFUN_TASK_ID_L3APPL_FUM7ADS","NULL",$msgName,$log_content);
-            echo trim($jsonencode); //这里需要编码送出去，跟其他处理方式还不太一样
+            $loggerObj->mylog($project,$user,"MFUN_TASK_ID_L3APPL_FUM7ADS","MFUN_TASK_VID_L4UI_ECHO",$msgName,$log_content);
+            echo trim($jsonencode);
         }
 
         //返回
