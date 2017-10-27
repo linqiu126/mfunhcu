@@ -31,12 +31,12 @@ class classTaskL4emcwxUi
         //入口消息内容判断
         if (empty($msg) == true) {
             $log_content = "E: receive null message body";
-            $loggerObj->mylog($project,"NULL","MFUN_TASK_ID_L1VM","MFUN_TASK_ID_L4EMCWX_UI",$msgName,$log_content);
+            $loggerObj->mylog($project,"NULL","H5UI_ENTRY_EMCWX","MFUN_TASK_ID_L4EMCWX_UI",$msgName,$log_content);
             return false;
         }
         if (($msgId != MSG_ID_L4EMCWXUI_CLICK_INCOMING) || ($msgName != "MSG_ID_L4EMCWXUI_CLICK_INCOMING")){
             $log_content = "E: Msgid or MsgName error";
-            $loggerObj->mylog($project,"NULL","MFUN_TASK_ID_L1VM","MFUN_TASK_ID_L4EMCWX_UI",$msgName,$log_content);
+            $loggerObj->mylog($project,"NULL","H5UI_ENTRY_EMCWX","MFUN_TASK_ID_L4EMCWX_UI",$msgName,$log_content);
             return false;
         }
 

@@ -103,7 +103,6 @@ class classTaskL2snrCcl
                 break;
         }
 
-        //返回ECHO
         if (!empty($resp)) {
             $log_content = json_encode($resp,JSON_UNESCAPED_UNICODE);
             $loggerObj->mylog($project,$devCode,"MFUN_TASK_ID_L2SENSOR_CCL","MFUN_TASK_ID_L2ENCODE_HUITP",$msgName,$log_content);

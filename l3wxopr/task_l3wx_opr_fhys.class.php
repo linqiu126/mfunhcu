@@ -156,23 +156,12 @@ class classTaskL3wxOprFhys
     {
         //定义本入口函数的logger处理对象及函数
         $loggerObj = new classApiL1vmFuncCom();
-        $log_time = date("Y-m-d H:i:s", time());
-        $project ="";
+        $project = MFUN_PRJ_HCU_FHYSWX;
 
         //入口消息内容判断
         if (empty($msg) == true) {
-            $result = "Received null message body";
-            $log_content = "R:" . json_encode($result);
-            $loggerObj->logger("MFUN_TASK_ID_L3WX_OPR_FHYS", "mfun_l3wx_opr_fhys_task_main_entry", $log_time, $log_content);
-            echo trim($result);
-            return false;
-        }
-        //多条消息发送到L3APPL_FXPRCM，这里潜在的消息太多，没法一个一个的判断，故而只检查上下界
-        if (($msgId <= MSG_ID_MFUN_MIN) || ($msgId >= MSG_ID_MFUN_MAX)){
-            $result = "Msgid or MsgName error";
-            $log_content = "P:" . json_encode($result);
-            $loggerObj->logger("MFUN_TASK_ID_L3WX_OPR_FHYS", "mfun_l3wx_opr_fhys_task_main_entry", $log_time, $log_content);
-            echo trim($result);
+            $log_content = "E: receive null message body";
+            $loggerObj->mylog($project,"NULL","MFUN_TASK_ID_L4FHYS_WECHAT","MFUN_TASK_ID_L3WX_OPR_FHYS",$msgName,$log_content);
             return false;
         }
         else{
@@ -186,35 +175,34 @@ class classTaskL3wxOprFhys
         {
             case MSG_ID_FHYSWECHAT_TO_L3WXOPR_LOGIN:
                 $resp = $this->func_fhys_wechat_login($type, $user, $body);
-                $project = MFUN_PRJ_HCU_FHYSWX;
                 break;
+
             case MSG_ID_FHYSWECHAT_TO_L3WXOPR_USERBIND:
                 $resp = $this->func_fhys_wechat_userbind($type, $user, $body);
-                $project = MFUN_PRJ_HCU_FHYSWX;
                 break;
+
             case MSG_ID_FHYSWECHAT_TO_L3WXOPR_LOCKQUERY:
                 $resp = $this->func_fhys_wechat_lockquery($type, $user, $body);
-                $project = MFUN_PRJ_HCU_FHYSWX;
                 break;
+
             case MSG_ID_FHYSWECHAT_TO_L3WXOPR_LOCKSTATUS:
                 $resp = $this->func_fhys_wechat_lockstatus($type, $user, $body);
-                $project = MFUN_PRJ_HCU_FHYSWX;
                 break;
+
             case MSG_ID_FHYSWECHAT_TO_L3WXOPR_LOCKOPEN:
                 $resp = $this->func_fhys_wechat_lockopen($type, $user, $body);
-                $project = MFUN_PRJ_HCU_FHYSWX;
                 break;
+
             default:
-                $resp = ""; //啥都不ECHO
+                $resp = "";
                 break;
         }
 
         //返回ECHO
-        if (!empty($resp))
-        {
+        if (!empty($resp)) {
             $jsonencode = json_encode($resp, JSON_UNESCAPED_UNICODE);
             $log_content = "T:" . $jsonencode;
-            $loggerObj->logger($project, "mfun_l3wx_opr_fhys_task_main_entry", $log_time, $log_content);
+            $loggerObj->mylog($project,$user,"MFUN_TASK_ID_L3WX_OPR_FHYS","MFUN_TASK_VID_L4FHYS_WECHAT_ECHO",$msgName,$log_content);
             echo trim($jsonencode); //这里需要编码送出去，跟其他处理方式还不太一样
         }
         //返回

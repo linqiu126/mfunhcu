@@ -9,19 +9,19 @@ $request_body = file_get_contents('php://input');
 //echo $request_body;
 $payload = json_decode($request_body,true);
 
-if (!empty($payload))
-{
-    $loggerObj = new classApiL1vmFuncCom();
-    $log_time = date("Y-m-d H:i:s", time());
-    $log_content = "T:" . json_encode($payload);
-    $loggerObj->logger("MFUN_TASK_ID_L4FHYS_WECHAT", "mfun_l4fhys_wechat_task_main_entry", $log_time, $log_content);
-}
-
 //echo $payload;
 if (isset($payload["action"])) $_GET["action"] = trim($payload["action"]); else $_GET["action"] = "";
 if (isset($payload["type"])) $_GET["type"] = trim($payload["type"]); else $_GET["type"] = "";
 if (isset($payload["user"])) $_GET["user"] = trim($payload["user"]); else $_GET["user"] = "";
 if (isset($payload["body"])) $_GET["body"] = $payload["body"]; else $_GET["body"] = "";
+
+//保存log
+if (!empty($payload)) {
+    $loggerObj = new classApiL1vmFuncCom();
+    $log_content = "R: " . json_encode($payload);
+    $project = MFUN_PRJ_HCU_FHYSWX;
+    $loggerObj->mylog($project,$_GET["user"],"h5ui_entry_fhys_wechat","MFUN_TASK_ID_L4FHYS_WECHAT",$_GET["action"],$log_content);
+}
 
 if (isset($_GET["action"])){
     require("../l1mainentry/h5ui_entry_fhys_wechat.php");

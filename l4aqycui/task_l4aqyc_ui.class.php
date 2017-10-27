@@ -28,13 +28,13 @@ class classTaskL4aqycUi
         //入口消息内容判断
         if (empty($msg) == true) {
             $log_content = "E: receive null message body";
-            $loggerObj->mylog($project,"NULL","MFUN_TASK_ID_L1VM","MFUN_TASK_ID_L4AQYC_UI",$msgName,$log_content);
+            $loggerObj->mylog($project,"NULL","H5UI_ENTRY_AQYC","MFUN_TASK_ID_L4AQYC_UI",$msgName,$log_content);
             echo trim($log_content);
             return false;
         }
         if (($msgId != MSG_ID_L4AQYCUI_CLICK_INCOMING) || ($msgName != "MSG_ID_L4AQYCUI_CLICK_INCOMING")){
             $log_content = "E: Msgid or MsgName error";
-            $loggerObj->mylog($project,"NULL","MFUN_TASK_ID_L1VM","MFUN_TASK_ID_L4AQYC_UI",$msgName,$log_content);
+            $loggerObj->mylog($project,"NULL","H5UI_ENTRY_AQYC","MFUN_TASK_ID_L4AQYC_UI",$msgName,$log_content);
             echo trim($log_content);
             return false;
         }
@@ -779,7 +779,7 @@ class classTaskL4aqycUi
         if (!empty($resp)) {
             $jsonencode = json_encode($resp, JSON_UNESCAPED_UNICODE);
             $log_content = "T:" . $jsonencode;
-            $loggerObj->mylog($project,$user,"MFUN_TASK_ID_L4AQYC_UI","NULL",$msgName,$log_content);
+            $loggerObj->mylog($project,$user,"H5UI_ENTRY_AQYC","MFUN_TASK_ID_L4FHYS_UI",$msgName,$log_content);
             echo trim($jsonencode);
         }
 

@@ -93,9 +93,9 @@ switch ($key)
 
         //保存log
         $loggerObj = new classApiL1vmFuncCom();
-        $log_time = date("Y-m-d H:i:s", time());
+        $project = MFUN_PRJ_HCU_FHYSWX;
         $log_content = $devCode."R:Latitude=".$latitude.";Longitude=".$longitude."Result=".$result;
-        $loggerObj->logger("MFUN_TASK_ID_L4OAMTOOLS", "HCU_Lock_Activate", $log_time, $log_content);
+        $loggerObj->mylog($project,$devCode,"MFUN_TASK_ID_L4OAMTOOLS","MFUN_TASK_VID_L4AQYC_ACTIVE",$key,$log_content);
 
         $pic_num=_getfilecounts(MFUN_HCU_FHYS_PIC_UPLOAD_DIR.$statCode.'/'); //查询该站点是否上传照片
         //已经上传超过2张照片

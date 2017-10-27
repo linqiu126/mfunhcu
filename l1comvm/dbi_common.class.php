@@ -324,7 +324,7 @@ class classDbiL1vmCommon
         $sysprog = MFUN_CURRENT_WORKING_PROGRAM_NAME_UNIQUE;
         $logtime = date("Y-m-d H:i:s", time());
         //存储新记录
-        $query_str = "INSERT INTO `t_l1vm_loginfo` (sysprog,sysver, project,fromuser,createtime, logtime,logdata) VALUES ('$sysprog', '$sysver', '$project', '$fromuser', '$createtime', '$logtime','$log_content')";
+        $query_str = "INSERT INTO `t_l1vm_loginfo` (sysprog,sysver, project,fromuser, logtime,logdata) VALUES ('$sysprog', '$sysver', '$project', '$fromuser', '$logtime','$log_content')";
         $result = $mysqli->query($query_str);
 
         //查找最大SID

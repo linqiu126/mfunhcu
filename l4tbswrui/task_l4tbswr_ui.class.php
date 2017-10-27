@@ -23,22 +23,13 @@ class classTaskL4tbswrUi
     {
         //定义本入口函数的logger处理对象及函数
         $loggerObj = new classApiL1vmFuncCom();
-        $log_time = date("Y-m-d H:i:s", time());
+        $project = MFUN_PRJ_HCU_TBSWRUI;
 
         //入口消息内容判断
         if (empty($msg) == true) {
-            $result = "Received null message body";
-            $log_content = "R:" . json_encode($result);
-            $loggerObj->logger("MFUN_TASK_ID_L4TBSWR_UI", "mfun_l4tbswr_ui_task_main_entry", $log_time, $log_content);
-            echo trim($result);
-            return false;
-        }
-        //多条消息发送到L4TBSWRUI，这里潜在的消息太多，没法一个一个的判断，故而只检查上下界
-        if (($msgId <= MSG_ID_MFUN_MIN) || ($msgId >= MSG_ID_MFUN_MAX)){
-            $result = "Msgid or MsgName error";
-            $log_content = "P:" . json_encode($result);
-            $loggerObj->logger("MFUN_TASK_ID_L4TBSWR_UI", "mfun_l4tbswr_ui_task_main_entry", $log_time, $log_content);
-            echo trim($result);
+            $log_content = "E: receive null message body";
+            $loggerObj->mylog($project,"NULL","H5UI_ENTRY_TBSWR","MFUN_TASK_ID_L4TBSWR_UI",$msgName,$log_content);
+            echo trim($log_content);
             return false;
         }
 
@@ -75,11 +66,11 @@ class classTaskL4tbswrUi
         }
 
         //返回ECHO
-        if (!empty($resp))
-        {
-            $log_content = "T:" . json_encode($resp);
-            $loggerObj->logger("L4TBSWRUI", "MFUN_TASK_ID_L4TBSWR_UI", $log_time, $log_content);
-            echo trim($resp);
+        if (!empty($resp)) {
+            $jsonencode = json_encode($resp, JSON_UNESCAPED_UNICODE);
+            $log_content = "T:" . $jsonencode;
+            $loggerObj->mylog($project,$uid,"H5UI_ENTRY_TBSWR","MFUN_TASK_ID_L4TBSWR_UI",$msgName,$log_content);
+            echo trim($jsonencode);
         }
 
         //返回

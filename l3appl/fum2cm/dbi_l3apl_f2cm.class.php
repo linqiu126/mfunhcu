@@ -1911,6 +1911,34 @@ class classDbiL3apF2cm
         $mysqli->close();
         return $resp;
     }
+
+    //用于AQYC扫描刷新GPS，将来可以和FHYS做成一样
+    public function dbi_aqyc_qrcode_scan_siteinfo_update_gps($devCode, $latitude, $longitude)
+    {
+        //建立连接
+        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli) {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $mysqli->query("SET NAMES utf8");
+
+        $query_str = "SELECT * FROM `t_l2sdk_iothcu_inventory` WHERE (`devcode` = '$devCode')";
+        $result = $mysqli->query($query_str);
+        if ($result->num_rows > 0) {
+            $row = $result->fetch_array();
+            $statCode = $row['statcode'];
+
+            //更新GPS地址到站点表
+            $flag_la = "N";
+            $flag_lo = "E";
+            $query_str = "UPDATE `t_l3f3dm_siteinfo` SET `flag_la` = '$flag_la', `latitude` = '$latitude',`flag_lo` = '$flag_lo',`longitude` = '$longitude' WHERE (`statcode` = '$statCode' )";
+            $result = $mysqli->query($query_str);
+        }
+
+        $mysqli->close();
+        return $result;
+    }
+
     /*********************************智能云锁新增处理 Start*********************************************/
 
     public function dbi_project_userkey_process($uid)
