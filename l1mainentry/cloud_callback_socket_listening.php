@@ -21,26 +21,24 @@ class classL1MainEntrySocketListenServer
 
         //swoole_server->set函数用于设置swoole_server运行时的各项参数
         $this->swoole_socket_serv->set(array(
-            'worker_num' => 4,  //设置启动的worker进程数量。swoole采用固定worker进程的模式。PHP代码中是全异步非阻塞，worker_num配置为CPU核数的1-4倍即可
-            'max_conn' => 10000, //设置Server最大允许维持多少个tcp连接。超过此数量后，新进入的连接将被拒绝。
-            'daemonize' => false, //加入此参数后，执行php server.php将转入后台作为守护进程运行
-            'reactor_num' => 2, //通过此参数来调节poll线程的数量，以充分利用多核,reactor_num和writer_num默认设置为CPU核数
-            //'daemonize' => true,
+            'worker_num' => 4,  //设置启动的worker进程数量。开启的worker进程数越多，server负载能力越大，但是相应的server占有的内存也会更多,配置为CPU核数的1-4倍即可
+            'max_request' => 10000,  //=2000,每个worker进程允许处理的最大任务数,每个worker进程在处理完max_request个请求后就会自动重启。设置该值的主要目的是为了防止worker进程处理大量请求后可能引起的内存溢出
+            'max_conn' => 10000, //服务器允许维持的最大TCP连接数。超过此数量后，新进入的连接将被拒绝。
+            'ipc_mode' => 1, //设置进程间的通信方式,1 => 使用unix socket通信/2 => 使用消息队列通信/3 => 使用消息队列通信，并设置为争抢模式
+            'dispatch_mode' => 2,  //指定数据包分发策略,1 => 轮循模式，收到会轮循分配给每一个worker进程/2 => 固定模式，根据连接的文件描述符分配worker。这样可以保证同一个连接发来的数据只会被同一个worker处理/3 => 抢占模式，主进程会根据Worker的忙闲状态选择投递，只会投递给处于闲置状态的Worker
+            'task_worker_num' => 8, //=1,服务器开启的task进程数,设置此参数后，服务器会开启异步task功能。可以使用task方法投递异步任务。必须要给swoole_server设置onTask/onFinish两个回调函数
+            'task_max_request' => 10000, //每个task进程允许处理的最大任务数。
+            'task_ipc_mode' => 2, //设置task进程与worker进程之间通信的方式。
+            'daemonize' => 0, //设置程序进入后台作为守护进程运行。长时间运行的服务器端程序必须启用此项。如果不启用守护进程，当ssh终端退出后，程序将被终止运行。启用守护进程后，标准输入和输出会被重定向到 log_file，如果 log_file未设置，则所有输出会被丢弃。
             //'log_file' => '/home/qiulin/swoole_server.log', //指定swoole错误日志文件,爱启云环境使用
-            //'daemonize' => true,
             //'log_file' => '/home/hitpony/swoole_server.log', //指定swoole错误日志文件, vmware环境使用
-            'heartbeat_idle_time' => 600, //TCP连接的最大闲置时间，单位s , 如果某fd最后一次发包距离现在的时间超过heartbeat_idle_time会把这个连接关闭,heartbeat_idle_time必须大于或等于heartbeat_check_interval
-            'heartbeat_check_interval' => 60,  //每隔多少秒检测一次，单位秒，Swoole会轮询所有TCP连接，将超过心跳时间的连接关闭掉
-            'max_request' => 2000,  //此参数表示worker进程在处理完n次请求后结束运行
-            //"open_length_check" => true,
-            //"package_max_length" => 8192,
-            //"package_body_offset" => 0,
-            //'open_eof_check'=> true,
-            //'package_eof' => chr(35),
+            'heartbeat_check_interval' => 60,  //设置心跳检测间隔，每隔多久轮循一次，单位为秒。每次检测时遍历所有连接，如果某个连接在间隔时间内没有数据发送，则强制关闭连接（会有onClose回调）。
+            'heartbeat_idle_time' => 600, //设置某个连接允许的最大闲置时间,如果某个连接在heartbeat_idle_time时间内没有数据发送，则强制关闭连接。
+            'open_cpu_affinity' => true, //启用CPU亲和性设置, 在多核的硬件平台中，启用此特性会将swoole的reactor线程/worker进程绑定到固定的一个核上。可以避免进程/线程的运行时在多个核之间互相切换，提高CPU Cache的命中率。
+            'open_tcp_nodelay' => true, //开启后TCP连接发送数据时会无关闭Nagle合并算法，立即发往客户端连接。在某些场景下，如http服务器，可以提升响应速度。
+            'reactor_num' => 2, //指定Reactor线程数,通过此参数来调节poll线程的数量，以充分利用多核,reactor_num和writer_num默认设置为CPU核数
             'package_max_length' => 2048,
-            'dispatch_mode' => 2,  //1平均分配，2按FD取摸固定分配，3抢占式分配，默认为取模(dispatch=2)
-            'debug_mode'=> 1,
-            'task_worker_num' => 1
+            'debug_mode'=> 1
         ));
         //Socket server公共处理函数，Manager/Task/Worker
         //worker
@@ -68,6 +66,10 @@ class classL1MainEntrySocketListenServer
 
         //huitpxml_tcp_port, CCL HUITP TCP port
         $huitpxml_tcp_cclport = $this->swoole_socket_serv->listen("0.0.0.0", MFUN_SWOOLE_SOCKET_HUITPXML_TCP, SWOOLE_SOCK_TCP);
+        $huitpxml_tcp_cclport->set(array(
+            'open_eof_check' => true, //打开eof检测功能。当数据包结尾是指定的package_eof 字符串时才会将数据包投递至Worker进程，否则会一直拼接数据包直到缓存溢出或超时才会终止。一旦出错，该连接会被判定为恶意连接，数据包会被丢弃并强制关闭连接。
+            'package_eof ' => '</xml>') //设置EOF字符串, package_eof最大只允许传入8个字节的字符串
+        );
         $huitpxml_tcp_cclport->on('Connect', array($this, 'huitpxml_tcp_cclport_onConnect'));
         $huitpxml_tcp_cclport->on('Receive', array($this, 'huitpxml_tcp_cclport_onReceive'));
         $huitpxml_tcp_cclport->on('Close', array($this, 'huitpxml_tcp_cclport_onClose'));
