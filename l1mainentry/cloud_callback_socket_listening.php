@@ -29,7 +29,7 @@ class classL1MainEntrySocketListenServer
 
     public function __construct() {
         //创建一个swoole server资源对象, 127.0.0.1表示监听本机，0.0.0.0表示监听所有地址
-        $this->swoole_socket_serv = new swoole_server("0.0.0.0");
+        $this->swoole_socket_serv = new swoole_server("0.0.0.0", MFUN_SWOOLE_SOCKET_STDXML_TCP_HCUPORT);
 
         //swoole_server->set函数用于设置swoole_server运行时的各项参数，端口相关专用参数在端口listen时set
         $this->swoole_socket_serv->set(array(
@@ -38,7 +38,7 @@ class classL1MainEntrySocketListenServer
             'max_conn' => 10000, //服务器允许维持的最大TCP连接数。超过此数量后，新进入的连接将被拒绝。
             'ipc_mode' => 1, //设置进程间的通信方式,1 => 使用unix socket通信/2 => 使用消息队列通信/3 => 使用消息队列通信，并设置为争抢模式
             'dispatch_mode' => 2,  //指定数据包分发策略,1 => 轮循模式，收到会轮循分配给每一个worker进程/2 => 固定模式，根据连接的文件描述符分配worker。这样可以保证同一个连接发来的数据只会被同一个worker处理/3 => 抢占模式，主进程会根据Worker的忙闲状态选择投递，只会投递给处于闲置状态的Worker
-            'task_worker_num' => 4, //=1,服务器开启的task进程数,设置此参数后，服务器会开启异步task功能。可以使用task方法投递异步任务。必须要给swoole_server设置onTask/onFinish两个回调函数
+            'task_worker_num' => 1, //=1,服务器开启的task进程数,设置此参数后，服务器会开启异步task功能。可以使用task方法投递异步任务。必须要给swoole_server设置onTask/onFinish两个回调函数
             'task_max_request' => 10000, //每个task进程允许处理的最大任务数。
             'task_ipc_mode' => 2, //设置task进程与worker进程之间通信的方式。
             'daemonize' => 0, //设置程序进入后台作为守护进程运行。长时间运行的服务器端程序必须启用此项。如果不启用守护进程，当ssh终端退出后，程序将被终止运行。启用守护进程后，标准输入和输出会被重定向到 log_file，如果 log_file未设置，则所有输出会被丢弃。
@@ -69,22 +69,23 @@ class classL1MainEntrySocketListenServer
         $this->swoole_socket_serv->on('WorkerStart', array($this, 'swoole_socket_serv_onWorkerStart'));
         $this->swoole_socket_serv->on('WorkerStop', array($this, 'swoole_socket_serv_onWorkerStop'));
         $this->swoole_socket_serv->on('Finish', array($this, 'swoole_socket_serv_onFinish'));
+        //stdxml_tcp_hcuport 传送老的标准XML消息，TCP端口9501
+        $this->swoole_socket_serv->on('Connect', array($this, 'stdxml_tcp_hcuport_onConnect'));
+        $this->swoole_socket_serv->on('Receive', array($this, 'stdxml_tcp_hcuport_onReceive'));
+        $this->swoole_socket_serv->on('Close', array($this, 'stdxml_tcp_hcuport_onClose'));
         //Task
         //进程回调函数 onTask/onWorkerStart
         $this->swoole_socket_serv->on('Task', array($this, 'swoole_socket_serv_onTask'));
 
         /****************************************具体port处理函数*******************************************************/
         //stdxml_tcp_hcuport 传送老的标准XML消息，TCP端口9501
-        $stdxml_tcp_hcuport = $this->swoole_socket_serv->listen("0.0.0.0", MFUN_SWOOLE_SOCKET_STDXML_TCP_HCUPORT, SWOOLE_SOCK_TCP);
+        //回调函数默认使用主服务器的回调函数 onConnect/onClose/onReceive/
+        /*$stdxml_tcp_hcuport = $this->swoole_socket_serv->listen("0.0.0.0", MFUN_SWOOLE_SOCKET_STDXML_TCP_HCUPORT, SWOOLE_SOCK_TCP);
         $stdxml_tcp_hcuport->set(array(
             'open_tcp_nodelay' => true, //开启后TCP连接发送数据时会无关闭Nagle合并算法，立即发往客户端连接。在某些场景下，如http服务器，可以提升响应速度。
             'open_eof_check' => true, //打开eof检测功能。当数据包结尾是指定的package_eof 字符串时才会将数据包投递至Worker进程，否则会一直拼接数据包直到缓存溢出或超时才会终止。一旦出错，该连接会被判定为恶意连接，数据包会被丢弃并强制关闭连接。
             'package_eof ' => '</xml>') //设置EOF字符串, package_eof最大只允许传入8个字节的字符串
-        );
-        $stdxml_tcp_hcuport->on('Connect', array($this, 'stdxml_tcp_hcuport_onConnect'));
-        $stdxml_tcp_hcuport->on('Receive', array($this, 'stdxml_tcp_hcuport_onReceive'));
-        $stdxml_tcp_hcuport->on('Close', array($this, 'stdxml_tcp_hcuport_onClose'));
-
+        );*/
 
         //stdxml_tcp_uiport 来自UI界面或者上层发送给远端设备的消息，TCP端口9502
         $stdxml_tcp_uiport = $this->swoole_socket_serv->listen("0.0.0.0", MFUN_SWOOLE_SOCKET_STDXML_TCP_UIPORT, SWOOLE_SOCK_TCP);
@@ -115,7 +116,6 @@ class classL1MainEntrySocketListenServer
             'package_body_offset' => HUITP_IEID_UNI_CCL_GEN_PIC_ID_LEN_MAX + 4,        //第几个字节开始计算长度
             'package_max_length' => SWOOLE_SOCKET_PACKAGE_MAX_LENGTH)    //协议最大长
         );
-
         $huitpxml_tcp_picport->on('Connect', array($this, 'huitpxml_tcp_picport_onConnect'));
         $huitpxml_tcp_picport->on('Receive', array($this, 'huitpxml_tcp_picport_onReceive'));
         $huitpxml_tcp_picport->on('Close', array($this, 'huitpxml_tcp_picport_onClose'));
