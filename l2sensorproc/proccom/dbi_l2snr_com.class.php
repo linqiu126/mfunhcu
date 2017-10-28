@@ -891,6 +891,7 @@ class classDbiL2snrCommon
         $comConfirm = HUITP_IEID_UNI_COM_CONFIRM_NO; //初始化
         $validflag = MFUN_HCU_SW_LOAD_FLAG_VALID;
         $relver_index = $swRel*65535 + $swVer;
+        $hwId = $hwId_input; //先初始化为输入
 
         //查找硬件类型hwtype相同，设备entry（HCU，IHU）相同，软件更新标识（稳定版，补丁版，测试版）相同的load
         $query_str = "SELECT * FROM `t_l3f10oam_swloadinfo` WHERE (`hwtype` = '$hwType' AND `upgradeFlag` = '$upgradeFlag' AND `equEntry` = '$equEntry' AND `validflag` = '$validflag')";
