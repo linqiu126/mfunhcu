@@ -89,9 +89,9 @@ class classL1MainEntrySocketListenServer
 
         //stdxml_tcp_uiport 来自UI界面或者上层发送给远端设备的消息，TCP端口9502
         $stdxml_tcp_uiport = $this->swoole_socket_serv->listen("0.0.0.0", MFUN_SWOOLE_SOCKET_STDXML_TCP_UIPORT, SWOOLE_SOCK_TCP);
-        $stdxml_tcp_uiport->set(array(
-            'open_tcp_nodelay' => true ) //开启后TCP连接发送数据时会无关闭Nagle合并算法，立即发往客户端连接。在某些场景下，如http服务器，可以提升响应速度。
-        );
+        //$stdxml_tcp_uiport->set(array(
+        //    'open_tcp_nodelay' => true ) //开启后TCP连接发送数据时会无关闭Nagle合并算法，立即发往客户端连接。在某些场景下，如http服务器，可以提升响应速度。
+        //);
         $stdxml_tcp_uiport->on('Connect', array($this, 'stdxml_tcp_uiport_onConnect'));
         $stdxml_tcp_uiport->on('Receive', array($this, 'stdxml_tcp_uiport_onReceive'));
         $stdxml_tcp_uiport->on('Close', array($this, 'stdxml_tcp_uiport_onClose'));
@@ -130,7 +130,7 @@ class classL1MainEntrySocketListenServer
         global $argv;
         swoole_set_process_name("php {$argv[0]}: master");
         echo date('Y/m/d H:i:s', time())." ";
-        echo "swoole_socket_serv_onStart: Master_Pid = {$swoole_socket_serv->master_pid}\n";
+        echo "swoole_socket_serv_onStart: Master_Pid = {$swoole_socket_serv->master_pid} | "."Swoole_Version = [" . SWOOLE_VERSION . "]".PHP_EOL;
         //$swoole_socket_serv->addtimer(1000);
 
         //connect to mysql, reset all socketid to 0
@@ -183,10 +183,55 @@ class classL1MainEntrySocketListenServer
         echo "swoole_socket_serv_onFinish: task_id={$task_id} | task_data_resp={$data}".PHP_EOL;
     }
 
-    public function swoole_socket_serv_onTask($swoole_socket_serv, $task_id, $src_worker_id, $data)
+    public function swoole_socket_serv_onTask($swoole_socket_serv, $task_id, $from_id, $sql)
     {
-        echo date('Y/m/d H:i:s', time())." ";
-        echo "swoole_socket_serv_onFinish: task_id={$task_id} | src_worker_id={$src_worker_id} | task_data_req={$data}".PHP_EOL;
+        static $link = null;
+        if ($link == null) {
+            $link = mysqli_connect(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3);
+            if (!$link) {
+                $link = null;
+                $swoole_socket_serv->finish("ER:" . mysqli_error($link));
+                return;
+            }
+        } else {
+            //try to resolve mysql has gone away problem
+            //if(!mysql_ping($link)){
+            //mysql_close($link); //注意：一定要先执行数据库关闭，这是关键
+            //$link->close();
+            $link = mysqli_connect(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3);
+            if (!$link) {
+                $link = null;
+                $swoole_socket_serv->finish("ER:" . mysqli_error($link));
+                return;
+            }
+        }
+
+        $result = $link->query($sql);//mysqli_result return resultset if the command is SELECT, SHOW, DESCRIBE, EXPLAIN, others will be TRUE instead
+        if (!$result) {
+            $swoole_socket_serv->finish("ER:" . mysqli_error($link));
+            return;
+        }
+        $command = substr($sql, 0, 6);
+        //echo "command is ".$command.PHP_EOL;
+        switch ($command){
+            case "UPDATE":
+                $swoole_socket_serv->finish("OK:".$link->affected_rows);
+                $link->close();
+                break;
+            case "SELECT":
+                $i=0;
+                if($result->num_rows>0){                                               //判断结果集中行的数目是否大于0
+                    while($row =$result->fetch_array() ){
+                        $data[$i]=$row;
+                        $i++;
+                    }
+                }
+                $result->free();
+                $swoole_socket_serv->finish("OK:" . serialize($data));
+                $link->close();
+                break;
+        }
+        return;
     }
 
 
@@ -292,13 +337,15 @@ class classL1MainEntrySocketListenServer
 
     /********************************************HUITP TCP hcuport****************************************************/
 
-    public function huitpxml_tcp_hcuport_onConnect($swoole_socket_serv, $fd, $from_id) {
+    public function huitpxml_tcp_hcuport_onConnect($swoole_socket_serv, $fd, $from_id)
+    {
         echo date('Y/m/d H:i:s', time())." ";
         echo "huitpxml_tcp_hcuport_onConnect: Client [{$fd}] connected, from_reactor_id=$from_id".PHP_EOL;
     }
 
     //HUITP cclport入口函数，收到消息直接转发给HUITP IOT模块并带上socketid，L1socket模块只负责消息收发，不进行任何消息解码工作
-    public function huitpxml_tcp_hcuport_onReceive($swoole_socket_serv, $fd, $reactor_id, $data) {
+    public function huitpxml_tcp_hcuport_onReceive($swoole_socket_serv, $fd, $reactor_id, $data)
+    {
         echo PHP_EOL.date('Y/m/d H:i:s', time())." ";
         echo "huitpxml_tcp_hcuport_onReceive: From Client [{$fd}] : {$data}".PHP_EOL;
 
@@ -307,7 +354,8 @@ class classL1MainEntrySocketListenServer
         $obj->mfun_l1vm_task_main_entry(MFUN_MAIN_ENTRY_IOT_HUITP, MSG_ID_L2SDK_HUITP_DATA_COMING, "MSG_ID_L2SDK_HUITP_DATA_COMING", $msg);
     }
 
-    public function huitpxml_tcp_hcuport_onClose($swoole_socket_serv, $fd, $reactor_id) {
+    public function huitpxml_tcp_hcuport_onClose($swoole_socket_serv, $fd, $reactor_id)
+    {
         echo date('Y/m/d H:i:s', time())." ";
         echo "huitpxml_tcp_hcuport_onClose: Client [{$fd}] connection closed.".PHP_EOL;
 
@@ -348,7 +396,8 @@ class classL1MainEntrySocketListenServer
         $obj->mfun_l1vm_task_main_entry(MFUN_MAIN_ENTRY_SOCKET_LISTEN, MSG_ID_L2SOCKET_LISTEN_DATA_COMING, "MSG_ID_L2SOCKET_LISTEN_DATA_COMING", $msg);
     }
 
-    public function huitpxml_tcp_picport_onClose( $swoole_socket_serv, $fd, $from_id ) {
+    public function huitpxml_tcp_picport_onClose( $swoole_socket_serv, $fd, $from_id )
+    {
         echo date('Y/m/d H:i:s', time())." ";
         echo "huitpxml_tcp_picport_onClose: Client [{$fd}] connection closed".PHP_EOL;
 

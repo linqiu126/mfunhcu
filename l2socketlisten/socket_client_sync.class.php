@@ -12,7 +12,7 @@ class socket_client_sync
     private $DevCode, $respCmd;
 
     public function __construct($DevCode, $respCmd) {
-        $this->client = new swoole_client(SWOOLE_SOCK_TCP);
+        $this->client = new swoole_client(SWOOLE_SOCK_TCP | SWOOLE_KEEP);
         $this->DevCode = $DevCode;
         $this->respCmd = $respCmd;
     }
