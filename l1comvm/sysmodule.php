@@ -826,7 +826,7 @@ class classConstL1vmSysTaskList
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_BATT]["PRESENT"] = true;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_BLE]["PRESENT"] = true;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_DOORLOCK]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_CCL]["PRESENT"] = false;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_CCL]["PRESENT"] = true;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_GPRS]["PRESENT"] = true;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_RFID]["PRESENT"] = true;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_SMOK]["PRESENT"] = true;
