@@ -230,8 +230,8 @@ class classDbiL3apF4icm
             $port = $row['rtsp_port'];
             $cam_ctrl = $row['camctrl'];
 
-            //$rtsp = $row['videourl'];  //老的直接调用rtsp link的方法，在http上OK，换成https后用下面的方法
-            $rtsp = "./video/video_jump.php?rtsp_port=".$port;
+            $rtsp = $row['videourl'];  //老的直接调用rtsp link的方法，在http上OK，换成https后用下面的方法
+            //$rtsp = "./video/video_jump.php?rtsp_port=".$port;
 
             $camweb = array('video'=>$rtsp, 'camera'=>$cam_ctrl);
         }
