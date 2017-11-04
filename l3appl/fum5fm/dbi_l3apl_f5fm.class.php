@@ -323,12 +323,14 @@ class classDbiL3apF5fm
         //获取授权站点-项目列表
         $auth_list = $this->dbi_user_statproj_inqury($uid);
 
-        array_push($resp["column"], "监测点编号");
-        array_push($resp["column"], "监测点名称");
+        array_push($resp["column"], "设备编号");
+        array_push($resp["column"], "处理状态");
+        array_push($resp["column"], "站点编号");
+        array_push($resp["column"], "站点名称");
         array_push($resp["column"], "地址");
         array_push($resp["column"], "负责人");
         array_push($resp["column"], "联系电话");
-        array_push($resp["column"], "告警等级");
+        array_push($resp["column"], "告警级别");
         array_push($resp["column"], "告警内容");
         array_push($resp["column"], "告警产生时间");
         array_push($resp["column"], "告警关闭时间");
@@ -363,6 +365,8 @@ class classDbiL3apF5fm
             while (($result != false) && (($row = $result->fetch_array()) > 0))
             {
                 $one_row = array();
+                $devCode = $row["devcode"];
+                $alarmflag = $row["alarmflag"];
                 $alarmSeverity =  $row["alarmseverity"];
                 $alarmContent = $row["alarmcontent"];
                 $tsGen = $row["tsgen"];
@@ -400,6 +404,8 @@ class classDbiL3apF5fm
                 else
                     $alarmContent = "未知";
 
+                array_push($one_row, $devCode);
+                array_push($one_row, $alarmflag);
                 array_push($one_row, $statCode);
                 array_push($one_row, $statName);
                 array_push($one_row, $address);
@@ -436,15 +442,16 @@ class classDbiL3apF5fm
         $auth_list["p_code"] = array();
         $auth_list = $this->dbi_user_statproj_inqury($uid);
 
-        array_push($resp["column"], "站点编号");
+        array_push($resp["column"], "设备编号");
         array_push($resp["column"], "处理状态");
+        array_push($resp["column"], "站点编号");
         array_push($resp["column"], "站点名称");
         array_push($resp["column"], "区县");
         array_push($resp["column"], "地址");
         array_push($resp["column"], "负责人");
         array_push($resp["column"], "联系电话");
         array_push($resp["column"], "告警级别");
-        array_push($resp["column"], "告警描述");
+        array_push($resp["column"], "告警内容");
         array_push($resp["column"], "告警产生时间");
         array_push($resp["column"], "告警关闭时间");
         array_push($resp["column"], "告警处理");
@@ -457,9 +464,9 @@ class classDbiL3apF5fm
         $telephone = "";
 
         $objFhysAlarm = new classConstFhysEngpar();
-        for($i=0; $i<count($auth_list["stat_code"]); $i++)
+        for($i=0; $i<count($auth_list); $i++)
         {
-            $statCode = $auth_list["stat_code"][$i];
+            $statCode = $auth_list[$i]["stat_code"];
             //删除超期的历史数据
             $this->dbi_l3f5fm_fhys_alarmdata_old_delete($statCode, MFUN_HCU_DATA_SAVE_DURATION_BY_PROJ);
 
@@ -478,6 +485,7 @@ class classDbiL3apF5fm
             $result = $mysqli->query($query_str);
             while (($result != false) && (($row = $result->fetch_array()) > 0)) {
                 $one_row = array();
+                $devCode = $row["devcode"];
                 $alarmflag = $row["alarmflag"];
                 $alarmseverity = $row["alarmseverity"];
                 $alarmcode = intval($row["alarmcode"]) ;
@@ -486,8 +494,9 @@ class classDbiL3apF5fm
                 $tsclose = $row["tsclose"];
                 $alarmproc = $row["alarmproc"];
 
-                array_push($one_row, $statCode);
+                array_push($one_row, $devCode);
                 array_push($one_row, $alarmflag);
+                array_push($one_row, $statCode);
                 array_push($one_row, $statname);
                 array_push($one_row, $country);
                 array_push($one_row, $address);

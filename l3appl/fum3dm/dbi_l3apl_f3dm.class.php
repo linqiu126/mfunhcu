@@ -1649,7 +1649,6 @@ class classDbiL3apF3dm
 
         $mysqli->close();
         return $resp;
-
     }
 
 //UI GetStaticMonitorTable Request, 获取用户聚合数据
@@ -1676,13 +1675,14 @@ class classDbiL3apF3dm
         array_push($resp["column"], "地址");
         array_push($resp["column"], "负责人");
         array_push($resp["column"], "联系电话");
+        array_push($resp["column"], "上次报告时间");
+        array_push($resp["column"], "设备状态");
         array_push($resp["column"], "PM2.5");
         array_push($resp["column"], "温度");
         array_push($resp["column"], "湿度");
         array_push($resp["column"], "噪音");
         array_push($resp["column"], "风速");
         array_push($resp["column"], "风向");
-        array_push($resp["column"], "设备状态");
 
         for($i=0; $i<count($auth_list); $i++)
         {
@@ -1711,6 +1711,7 @@ class classDbiL3apF3dm
             $noise = 0;
             $windspeed = 0;
             $winddir = 0;
+            $reportTime = "NULL";
             $status = "停止";
             if (($result->num_rows) > 0)
             {
@@ -1721,21 +1722,23 @@ class classDbiL3apF3dm
                 $noise = $row["noise"];
                 $windspeed = $row["windspeed"];
                 $winddir = $row["winddirection"];
+                $reportTime = $row["createtime"];
 
-                $timestamp = strtotime($row["createtime"]);
+                $timestamp = strtotime($reportTime);
                 $currenttime = time();
                 if ($currenttime > ($timestamp+180))  //如果最后一次测量报告距离现在已经超过3分钟
                     $status = "停止";
                 else
                     $status = "运行";
             }
+            array_push($one_row, $reportTime);
+            array_push($one_row, $status);
             array_push($one_row, $pm25);
             array_push($one_row, $temperature);
             array_push($one_row, $humidity);
             array_push($one_row, $noise);
             array_push($one_row, $windspeed);
             array_push($one_row, $winddir);
-            array_push($one_row, $status);
 
             array_push($resp['data'], $one_row);
         }
