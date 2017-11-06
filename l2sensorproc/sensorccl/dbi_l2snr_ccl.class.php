@@ -20,6 +20,38 @@ class classDbiL2snrCcl
         return $str;
     }
 
+    //删除超期告警数据，缺省做成90天，如果参数错误，导致90天以内的数据强行删除，则不被认可
+    private function dbi_fhys_l2snr_alarmdata_old_delete($devCode, $days)
+    {
+        if ($days < MFUN_HCU_DATA_SAVE_DURATION_IN_DAYS) $days = MFUN_HCU_DATA_SAVE_DURATION_IN_DAYS;  //不允许删除90天以内的数据
+        //建立连接
+        $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli)
+        {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $query_str = "DELETE FROM `t_l3f5fm_fhys_alarmdata` WHERE ((`devcode` = '$devCode') AND (TO_DAYS(NOW()) - TO_DAYS(`tsgen`) > '$days'))";
+        $result = $mysqli->query($query_str);
+
+        $mysqli->close();
+        return $result;
+    }
+
+    //删除超期告警数据，缺省做成90天，如果参数错误，导致90天以内的数据强行删除，则不被认可
+    private function dbi_fhys_l2snr_locklog_old_delete($statCode, $days)
+    {
+        if ($days < MFUN_HCU_DATA_SAVE_DURATION_IN_DAYS) $days = MFUN_HCU_DATA_SAVE_DURATION_IN_DAYS;  //不允许删除90天以内的数据
+        //建立连接
+        $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli){
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $query_str = "DELETE FROM `t_l3fxprcm_fhys_locklog` WHERE ((`statcode` = '$statCode') AND (TO_DAYS(NOW()) - TO_DAYS(`createtime`) > '$days'))";
+        $result = $mysqli->query($query_str);
+
+        $mysqli->close();
+        return $result;
+    }
 
     private function dbi_hcu_event_log_process($keyid, $statcode, $eventtype,$picname)
     {
@@ -292,6 +324,9 @@ class classDbiL2snrCcl
             $authResp = HUITP_IEID_UNI_CCL_LOCK_AUTH_RESP_NO;
         }
 
+        //删除超期开锁记录
+        $result = $this->dbi_fhys_l2snr_locklog_old_delete($statCode,MFUN_HCU_DATA_SAVE_DURATION_BY_PROJ);
+
         //生成 HUITP_MSGID_uni_ccl_lock_auth_resp 消息的内容
         $respMsgContent = array();
         $comRespIE = array();
@@ -553,6 +588,9 @@ class classDbiL2snrCcl
                             VALUES ('$devCode','$statcode','$alarm_flag','$alarm_severity','$alarm_code','$currenttime','$alarm_proc')";
             $result = $mysqli->query($query_str);
         }
+
+        //删除超期历史告警
+        $result = $this->dbi_fhys_l2snr_alarmdata_old_delete($devCode, MFUN_HCU_DATA_SAVE_DURATION_BY_PROJ);
 
         //生成 HUITP_MSGID_uni_ccl_state_confirm 消息的内容
         $respMsgContent = array();

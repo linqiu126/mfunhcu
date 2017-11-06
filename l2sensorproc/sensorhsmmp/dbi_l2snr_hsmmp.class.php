@@ -65,17 +65,31 @@ class classDbiL2snrHsmmp
         return $result;
     }
 
-    //缺省做成90天，如果参数错误，导致90天以内的数据强行删除，则不被认可
-    private function dbi_picturedata_delete_3monold($statCode, $days)
+    //删除超期照片数据，缺省做成90天，如果参数错误，导致90天以内的数据强行删除，则不被认可
+    private function dbi_fhys_l2snr_picturedata_old_delete($statCode, $days)
     {
         if ($days < MFUN_HCU_DATA_SAVE_DURATION_IN_DAYS) $days = MFUN_HCU_DATA_SAVE_DURATION_IN_DAYS;  //不允许删除90天以内的数据
         //建立连接
         $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
-        if (!$mysqli)
-        {
+        if (!$mysqli) {
             die('Could not connect: ' . mysqli_error($mysqli));
         }
-        $result = $mysqli->query("DELETE FROM `t_l2snr_picturedata` WHERE (`statcode` = '$statCode'  AND (TO_DAYS(NOW()) - TO_DAYS(`date`) > '$days'))");
+        $query_str = "SELECT * FROM `t_l2snr_picturedata` WHERE ((`statcode` = '$statCode') AND (TO_DAYS(NOW()) - TO_DAYS(`reportdate`) > '$days'))";
+        $result = $mysqli->query($query_str);
+        while (($result != false) && (($row = $result->fetch_array()) > 0)) {
+            $sid = $row['sid'];
+            $filename = $row['filename'];
+            //清理过期照片
+            if(!empty($picname)){
+                $filelink = $fileLink = MFUN_HCU_SITE_PIC_BASE_DIR.$statCode.'/'.$filename;
+                chmod($filelink, 0777);
+                $resp = unlink($filelink);
+            }
+            //删除对应的告警记录
+            $query_str = "DELETE FROM `t_l2snr_picturedata` WHERE (`sid` = '$sid')";
+            $mysqli->query($query_str);
+        }
+
         $mysqli->close();
         return $result;
     }
@@ -164,7 +178,7 @@ class classDbiL2snrHsmmp
         }
 
         //删除超期照片
-        $result = $this->dbi_picturedata_delete_3monold($statCode, MFUN_HCU_DATA_SAVE_DURATION_BY_PROJ);
+        $this->dbi_fhys_l2snr_picturedata_old_delete($statCode, MFUN_HCU_DATA_SAVE_DURATION_BY_PROJ);
 
         $mysqli->close();
         return $result;
@@ -203,6 +217,9 @@ class classDbiL2snrHsmmp
         }
         else
             $comConfirm = HUITP_IEID_UNI_COM_CONFIRM_NO;
+
+        //删除超期照片
+        $result = $this->dbi_fhys_l2snr_picturedata_old_delete($statCode, MFUN_HCU_DATA_SAVE_DURATION_BY_PROJ);
 
         //生成 HUITP_MSGID_uni_picture_data_confirm 消息的内容
         $respMsgContent = array();

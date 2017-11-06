@@ -266,7 +266,7 @@ class classDbiL2snrPm25
         $result = $mysqli->query($query_str);
         if (($result != false) && ($result->num_rows)>0)   //重复，则覆盖
         {
-            $query_str = "UPDATE `t_l2snr_pm25data` SET `pm01` = '$pm01',`pm25` = '$pm25',`pm10` = '$pm10',`dataflag` = '$dataFlag' WHERE (`deviceid` = '$devCode' AND `reportdate` = '$date' AND `hourminindex` = '$hourminindex')";
+            $query_str = "UPDATE `t_l2snr_pm25data` SET `pm01` = '$pm01',`pm25` = '$pm25',`pm10` = '$pm10',`dataflag` = '$dataFlag' WHERE (`deviceid` = '$devCode' AND `reportdate` = '$reportdate' AND `hourminindex` = '$hourminindex')";
             $result=$mysqli->query($query_str);
         }
         else   //不存在，新增
@@ -553,7 +553,7 @@ class classDbiL2snrPm25
             $result = $mysqli->query($query_str);
         }
         else {
-            $query_str = "INSERT INTO `t_l3f3dm_aqyc_currentreport` (deviceid,statcode,createtime,pm01,pm25,pm10,noise,windspeed,winddirection,temperature,humidity,) VALUES ('$devCode','$statCode','$currenttime','$tspValue','$pm25Value','$pm10Value','$noiseValue','$windspdValue','$winddirValue','$tempValue','$humidValue')";
+            $query_str = "INSERT INTO `t_l3f3dm_aqyc_currentreport` (deviceid,statcode,createtime,pm01,pm25,pm10,noise,windspeed,winddirection,temperature,humidity) VALUES ('$devCode','$statCode','$currenttime','$tspValue','$pm25Value','$pm10Value','$noiseValue','$windspdValue','$winddirValue','$tempValue','$humidValue')";
             $result = $mysqli->query($query_str);
         }
         $mysqli->close();
