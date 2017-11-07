@@ -323,9 +323,9 @@ class classDbiL3apF5fm
         //获取授权站点-项目列表
         $auth_list = $this->dbi_user_statproj_inqury($uid);
 
-        array_push($resp["column"], "设备编号");
-        array_push($resp["column"], "处理状态");
         array_push($resp["column"], "站点编号");
+        array_push($resp["column"], "处理状态");
+        array_push($resp["column"], "设备编号");
         array_push($resp["column"], "站点名称");
         array_push($resp["column"], "地址");
         array_push($resp["column"], "负责人");
@@ -404,9 +404,9 @@ class classDbiL3apF5fm
                 else
                     $alarmContent = "未知";
 
-                array_push($one_row, $devCode);
-                array_push($one_row, $alarmflag);
                 array_push($one_row, $statCode);
+                array_push($one_row, $alarmflag);
+                array_push($one_row, $devCode);
                 array_push($one_row, $statName);
                 array_push($one_row, $address);
                 array_push($one_row, $chargeMan);
@@ -442,11 +442,10 @@ class classDbiL3apF5fm
         $auth_list["p_code"] = array();
         $auth_list = $this->dbi_user_statproj_inqury($uid);
 
-        array_push($resp["column"], "设备编号");
-        array_push($resp["column"], "处理状态");
         array_push($resp["column"], "站点编号");
+        array_push($resp["column"], "处理状态");
+        array_push($resp["column"], "设备编号");
         array_push($resp["column"], "站点名称");
-        array_push($resp["column"], "区县");
         array_push($resp["column"], "地址");
         array_push($resp["column"], "负责人");
         array_push($resp["column"], "联系电话");
@@ -475,7 +474,6 @@ class classDbiL3apF5fm
             if (($result->num_rows) > 0) {
                 $row = $result->fetch_array();
                 $statname = $row["statname"];
-                $country = $row["country"];
                 $address = $row["address"];
                 $chargeman = $row["chargeman"];
                 $telephone = $row["telephone"];
@@ -494,11 +492,10 @@ class classDbiL3apF5fm
                 $tsclose = $row["tsclose"];
                 $alarmproc = $row["alarmproc"];
 
-                array_push($one_row, $devCode);
-                array_push($one_row, $alarmflag);
                 array_push($one_row, $statCode);
+                array_push($one_row, $alarmflag);
+                array_push($one_row, $devCode);
                 array_push($one_row, $statname);
-                array_push($one_row, $country);
                 array_push($one_row, $address);
                 array_push($one_row, $chargeman);
                 array_push($one_row, $telephone);

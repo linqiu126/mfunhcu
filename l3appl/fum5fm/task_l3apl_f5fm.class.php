@@ -285,6 +285,7 @@ class classTaskL3aplF5fm
         }
         else{
             //解开消息
+            if (isset($msg["project"])) $project = $msg["project"]; else  $project = "NULL";
             if (isset($msg["action"])) $action = $msg["action"]; else  $action = "";
             if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
             if (isset($msg["user"])) $user = $msg["user"]; else  $user = "";
@@ -293,62 +294,52 @@ class classTaskL3aplF5fm
 
         switch($msgId)
         {
+            //功能Alarm Query
+            case MSG_ID_L4AQYCUI_TO_L3F5_ALARMQUERY:
+                $resp = $this->func_aqyc_alarm_query_process($action, $user, $body);
+                break;
+
             //功能Dev Alarm
             case MSG_ID_L4AQYCUI_TO_L3F5_DEVALARM:
                 $resp = $this->func_aqyc_dev_alarm_process($action, $user, $body);
-                $project = MFUN_PRJ_HCU_AQYCUI;
-                break;
-
-            //功能Alarm Query
-            case MSG_ID_L4COMUI_TO_L3F5_ALARMQUERY:
-                $resp = $this->func_aqyc_alarm_query_process($action, $user, $body);
-                $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 
             //功能Alarm Type, 获取所有告警传感器类型
             case MSG_ID_L4AQYCUI_TO_L3F5_ALARMTYPE:
                 $resp = $this->func_aqyc_alarmtype_list_process($action, $user, $body);
-                $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 
             //告警地图查看
             case MSG_ID_L4AQYCUI_TO_L3F5_ALARMMONITORLIST:
                 $resp = $this->func_aqyc_alarm_monitor_list_process($action, $user, $body);
-                $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 
             //告警处理表
             case MSG_ID_L4AQYCUI_TO_L3F5_ALARMHANDLETABLE:
                 $resp = $this->func_aqyc_get_alarm_handle_table_process($action, $user, $body);
-                $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 
-/*********************************智能云锁新增处理************************************************/
+            /*********************************智能云锁新增处理************************************************/
             //功能Dev Alarm
             case MSG_ID_L4FHYSUI_TO_L3F5_DEVALARM:
                 $resp = $this->func_fhys_dev_alarm_process($action, $user, $body);
-                $project = MFUN_PRJ_HCU_FHYSUI;
                 break;
 
             //功能Alarm Type, 获取所有告警传感器类型
             case MSG_ID_L4FHYSUI_TO_L3F5_ALARMTYPE:
                 $resp = $this->func_fhys_alarmtype_list_process($action, $user, $body);
-                $project = MFUN_PRJ_HCU_FHYSUI;
                 break;
 
             case MSG_ID_L4FHYSUI_TO_L3F5_ALARMHANDLETABLE:
                 $resp = $this->func_fhys_get_alarm_handle_table_process($action, $user, $body);
-                $project = MFUN_PRJ_HCU_FHYSUI;
                 break;
 
             case MSG_ID_L4FHYSUI_TO_L3F5_ALARMHANDLE:
                 $resp = $this->func_fhys_alarm_handle_process($action, $user, $body);
-                $project = MFUN_PRJ_HCU_FHYSUI;
                 break;
 
             case MSG_ID_L4FHYSUI_TO_L3F5_ALARMCLOSE:
                 $resp = $this->func_fhys_alarm_close_process($action, $user, $body);
-                $project = MFUN_PRJ_HCU_FHYSUI;
                 break;
 
             default:

@@ -156,7 +156,7 @@ class classTaskL3wxOprFhys
     {
         //定义本入口函数的logger处理对象及函数
         $loggerObj = new classApiL1vmFuncCom();
-        $project = MFUN_PRJ_HCU_FHYSWX;
+        $project = "NULL";
 
         //入口消息内容判断
         if (empty($msg) == true) {
@@ -166,6 +166,7 @@ class classTaskL3wxOprFhys
         }
         else{
             //解开消息
+            if (isset($msg["project"])) $project = $msg["project"];
             if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
             if (isset($msg["user"])) $user = $msg["user"]; else  $user = "";
             if (isset($msg["body"])) $body = $msg["body"]; else  $body = "";

@@ -301,15 +301,26 @@ class classDbiL3apF3dm
                 $result = $mysqli->query($query_str);
             }
         }
-        else{//替换一个时间最早的站点
-            $query_str = "SELECT * FROM `t_l3f2cm_favourlist` WHERE (`createtime` = (SELECT MIN(`createtime`) FROM `t_l3f2cm_favourlist` where `uid` = '$uid' )) AND (`uid` = '$uid')";
-            $result = $mysqli->query($query_str);
-            if (($result->num_rows)>0) {
-                $row = $result->fetch_array();
+        else{//替换一个站点
+            $query_str = "SELECT * FROM `t_l3f2cm_favourlist` WHERE (`uid` = '$uid' AND `statcode` = '$statCode')";
+            $resp = $mysqli->query($query_str);
+            if (($resp->num_rows)>0){//如果有重复，则更新这个站点的点击日期
+                $row = $resp->fetch_array();
                 $sid = $row['sid'];
-                $query_str = "UPDATE `t_l3f2cm_favourlist` SET `uid` = '$uid',`statcode` = '$statCode', `createtime` = '$currenttime' WHERE (`sid` = '$sid' )";
+                $query_str = "UPDATE `t_l3f2cm_favourlist` SET `createtime` = '$currenttime' WHERE (`sid` = '$sid' )";
                 $result = $mysqli->query($query_str);
             }
+            else{ //替换一个时间最早的站点
+                $query_str = "SELECT * FROM `t_l3f2cm_favourlist` WHERE (`createtime` = (SELECT MIN(`createtime`) FROM `t_l3f2cm_favourlist` where `uid` = '$uid' )) AND (`uid` = '$uid')";
+                $result = $mysqli->query($query_str);
+                if (($result->num_rows)>0) {
+                    $row = $result->fetch_array();
+                    $sid = $row['sid'];
+                    $query_str = "UPDATE `t_l3f2cm_favourlist` SET `uid` = '$uid',`statcode` = '$statCode', `createtime` = '$currenttime' WHERE (`sid` = '$sid' )";
+                    $result = $mysqli->query($query_str);
+                }
+            }
+
         }
         $mysqli->close();
         return $result;

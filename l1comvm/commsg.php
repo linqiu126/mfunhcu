@@ -141,7 +141,7 @@ define("MSG_ID_L3APPL_DATA_COMING", $index++);
 define("MSG_ID_L3NBIOT_OPR_METERTO_STD_QG376_DL_REQUEST", $index++);
 define("MSG_ID_L3NBIOT_OPR_METERTO_STD_CJ188_DL_REQUEST", $index++);
 
-//L4AQYCUI部分
+//L4COMCUI部分
 define("MSG_ID_L4COMUI_CLICK_INCOMING", $index++);
 define("MSG_ID_L4COMUI_TO_L3F1_LOGIN", $index++);
 define("MSG_ID_L4COMUI_TO_L3F1_USERAUTHCODE", $index++);
@@ -157,7 +157,7 @@ define("MSG_ID_L4COMUI_TO_L3F2_PROJECTLIST", $index++);
 define("MSG_ID_L4COMUI_TO_L3F2_USERPROJ", $index++);
 define("MSG_ID_L4COMUI_TO_L3F2_PGTABLE", $index++);
 define("MSG_ID_L4COMUI_TO_L3F2_PGNEW", $index++);
-define("MSG_ID_L4COMCUI_TO_L3F2_PGMOD", $index++);
+define("MSG_ID_L4COMUI_TO_L3F2_PGMOD", $index++);
 define("MSG_ID_L4COMUI_TO_L3F2_PGDEL", $index++);
 define("MSG_ID_L4COMUI_TO_L3F2_PGPROJ", $index++);
 define("MSG_ID_L4COMUI_TO_L3F2_PROJTABLE", $index++);
@@ -168,6 +168,8 @@ define("MSG_ID_L4COMUI_TO_L3F2_ONEPROJPOINT", $index++);
 define("MSG_ID_L4COMUI_TO_L3F2_POINTTABLE", $index++);
 define("MSG_ID_L4COMUI_TO_L3F2_POINTNEW", $index++);
 define("MSG_ID_L4COMUI_TO_L3F2_POINTMOD", $index++);
+define("MSG_ID_L4COMUI_TO_L3F2_POINTACTIVESET", $index++);
+define("MSG_ID_L4COMUI_TO_L3F2_POINTACTIVEINFO", $index++);
 define("MSG_ID_L4COMUI_TO_L3F2_POINTDEV", $index++);
 define("MSG_ID_L4COMUI_TO_L3F2_DEVTABLE", $index++);
 define("MSG_ID_L4COMUI_TO_L3F2_DEVNEW", $index++);
@@ -181,7 +183,6 @@ define("MSG_ID_L4COMUI_TO_L3F4_HSMMPPLAY", $index++);  //请求播放某指定�
 define("MSG_ID_L4COMUI_TO_L3F4_GETCAMERASTATUS", $index++);  //查询垂直和水平角度，同时报告传一个照片给后台
 define("MSG_ID_L4COMUI_TO_L3F4_GETCAMERAUNIT", $index++);
 define("MSG_ID_L4COMUI_TO_L3F4_SENSORUPDATE", $index++);
-define("MSG_ID_L4COMUI_TO_L3F5_ALARMQUERY", $index++);
 define("MSG_ID_L4COMUI_TO_L3F6_PERFORMANCETABLE", $index++);
 define("MSG_ID_L4COMUI_TO_L3F7_SETUSERMSG", $index++);
 define("MSG_ID_L4COMUI_TO_L3F7_GETUSERMSG", $index++);
@@ -189,11 +190,10 @@ define("MSG_ID_L4COMUI_TO_L3F7_SHOWUSERMSG", $index++);
 define("MSG_ID_L4COMUI_TO_L3F7_GETUSERIMG", $index++);
 define("MSG_ID_L4COMUI_TO_L3F7_CLEARUSERIMG", $index++);
 
+//L4AQYCUI部分
 define("MSG_ID_L4AQYCUI_CLICK_INCOMING", $index++);
 define("MSG_ID_L4AQYCUI_TO_L3F2_PROJDEL", $index++);
-define("MSG_ID_L4AQYCUI_TO_L3F2_POINTDETAIL", $index++);
 define("MSG_ID_L4AQYCUI_TO_L3F2_POINTDEL", $index++);
-define("MSG_ID_L4AQYCUI_TO_L3F2_POINTACTIVEINFO", $index++);
 define("MSG_ID_L4AQYCUI_TO_L3F2_DEVDEL", $index++);
 define("MSG_ID_L4AQYCUI_TO_L3F3_SENSORLIST", $index++);
 define("MSG_ID_L4AQYCUI_TO_L3F3_DEVSENSOR", $index++);
@@ -202,10 +202,10 @@ define("MSG_ID_L4AQYCUI_TO_L3F5_ALARMTYPE", $index++);
 define("MSG_ID_L4AQYCUI_TO_L3F5_DEVALARM", $index++);
 define("MSG_ID_L4AQYCUI_TO_L3F5_ALARMMONITORLIST", $index++);
 define("MSG_ID_L4AQYCUI_TO_L3F5_ALARMHANDLETABLE", $index++);
+define("MSG_ID_L4AQYCUI_TO_L3F5_ALARMQUERY", $index++);
 
 //L4FHYS部分
 define("MSG_ID_L4FHYSUI_CLICK_INCOMING", $index++);
-define("MSG_ID_L4FHYSUI_TO_L3F2_POINTACTIVESET", $index++);
 define("MSG_ID_L4FHYSUI_TO_L3F2_PROJDEL", $index++);
 define("MSG_ID_L4FHYSUI_TO_L3F2_POINTDEL", $index++);
 define("MSG_ID_L4FHYSUI_TO_L3F2_DEVDEL", $index++);
@@ -248,8 +248,6 @@ define("MSG_ID_FHYSWECHAT_TO_L3WXOPR_LOCKOPEN", $index++);
 //for BFSC
 define("MSG_ID_L4BFSCUI_CLICK_INCOMING", $index++);
 define("MSG_ID_L4BFSCUI_TO_L3F3_GETSTATICMONITORTABLE", $index++);
-define("MSG_ID_L4BFSCUI_TO_L3F4_WEIGHTOPEN", $index++);
-define("MSG_ID_L4BFSCUI_TO_L3F4_WEIGHTCLOSE", $index++);
 
 //L4EMCWXUI部分
 define("MSG_ID_L4EMCWXUI_CLICK_INCOMING", $index++);

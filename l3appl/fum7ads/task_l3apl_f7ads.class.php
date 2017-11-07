@@ -156,6 +156,7 @@ class classTaskL3aplF7ads
         }
         else{
             //解开消息
+            if (isset($msg["project"])) $project = $msg["project"]; else  $project = "NULL";
             if (isset($msg["action"])) $action = $msg["action"]; else  $action = "";
             if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
             if (isset($msg["user"])) $user = $msg["user"]; else  $user = "";
@@ -166,27 +167,22 @@ class classTaskL3aplF7ads
         {
             case MSG_ID_L4COMUI_TO_L3F7_SETUSERMSG://功能Set User Message
                 $resp = $this->func_set_user_msg_process($action, $user, $body);
-                $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 
             case MSG_ID_L4COMUI_TO_L3F7_GETUSERMSG://功能Get User Message
                 $resp = $this->func_get_user_msg_process($action, $user, $body);
-                $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 
             case MSG_ID_L4COMUI_TO_L3F7_SHOWUSERMSG://功能Show User Message
                 $resp = $this->func_show_user_msg_process($action, $user, $body);
-                $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 
             case MSG_ID_L4COMUI_TO_L3F7_GETUSERIMG://功能Get User Image
                 $resp = $this->func_get_user_image_process($action, $user, $body);
-                $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 
             case MSG_ID_L4COMUI_TO_L3F7_CLEARUSERIMG://功能Clear User Image
                 $resp = $this->func_clear_user_image_process($action, $user, $body);
-                $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 
             default:

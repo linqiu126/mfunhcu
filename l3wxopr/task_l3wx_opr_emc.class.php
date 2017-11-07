@@ -165,7 +165,7 @@ class classTaskL3wxOprEmc
     {
         //定义本入口函数的logger处理对象及函数
         $loggerObj = new classApiL1vmFuncCom();
-        $project = MFUN_PRJ_IHU_EMCWXUI;
+        $project = "NULL";
         $user = "";
 
         //入口消息内容判断
@@ -174,10 +174,12 @@ class classTaskL3wxOprEmc
             $loggerObj->mylog($project,"NULL","MFUN_TASK_ID_L4EMCWX_UI","MFUN_TASK_ID_L3WX_OPR_EMC",$msgName,$log_content);
             return false;
         }
-
-        //解开消息
-        if (isset($msg["code"])) $code = $msg["code"]; else  $code = "";
-        if (isset($msg["openid"])) $openid = $msg["openid"]; else  $openid = "";
+        else{
+            //解开消息
+            if (isset($msg["project"])) $project = $msg["project"];
+            if (isset($msg["code"])) $code = $msg["code"]; else  $code = "";
+            if (isset($msg["openid"])) $openid = $msg["openid"]; else  $openid = "";
+        }
 
         //功能:EMC H5界面请求当前微信用户OPEN ID
         if ($msgId == MSG_ID_L4EMCWXUI_TO_L3WXOPR_EMCUSER){

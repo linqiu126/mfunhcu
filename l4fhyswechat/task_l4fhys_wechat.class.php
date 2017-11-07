@@ -46,7 +46,7 @@ class classTaskL4fhysWechat
                 if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
                 if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
-                $input = array("type" => $type,"user" => $user,"body" => $body);
+                $input = array("project" => $project, "type" => $type,"user" => $user,"body" => $body);
                 if ($parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_WECHAT,
                         MFUN_TASK_ID_L3WX_OPR_FHYS,
                         MSG_ID_FHYSWECHAT_TO_L3WXOPR_LOGIN,
@@ -60,7 +60,7 @@ class classTaskL4fhysWechat
                 if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
                 if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
-                $input = array("type" => $type,"user" => $user,"body" => $body);
+                $input = array("project" => $project, "type" => $type,"user" => $user,"body" => $body);
                 if ($parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_WECHAT,
                         MFUN_TASK_ID_L3WX_OPR_FHYS,
                         MSG_ID_FHYSWECHAT_TO_L3WXOPR_USERBIND,
@@ -74,7 +74,7 @@ class classTaskL4fhysWechat
                 if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
                 if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
-                $input = array("type" => $type,"user" => $user,"body" => $body);
+                $input = array("project" => $project, "type" => $type,"user" => $user,"body" => $body);
                 if ($parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_WECHAT,
                         MFUN_TASK_ID_L3WX_OPR_FHYS,
                         MSG_ID_FHYSWECHAT_TO_L3WXOPR_LOCKQUERY,
@@ -88,7 +88,7 @@ class classTaskL4fhysWechat
                 if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
                 if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
-                $input = array("type" => $type,"user" => $user,"body" => $body);
+                $input = array("project" => $project, "type" => $type,"user" => $user,"body" => $body);
                 if ($parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_WECHAT,
                         MFUN_TASK_ID_L3WX_OPR_FHYS,
                         MSG_ID_FHYSWECHAT_TO_L3WXOPR_LOCKSTATUS,
@@ -102,7 +102,7 @@ class classTaskL4fhysWechat
                 if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
                 if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
-                $input = array("type" => $type,"user" => $user,"body" => $body);
+                $input = array("project" => $project, "type" => $type,"user" => $user,"body" => $body);
                 if ($parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_WECHAT,
                         MFUN_TASK_ID_L3WX_OPR_FHYS,
                         MSG_ID_FHYSWECHAT_TO_L3WXOPR_LOCKOPEN,

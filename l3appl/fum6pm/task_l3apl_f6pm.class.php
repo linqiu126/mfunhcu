@@ -80,6 +80,7 @@ class classTaskL3aplF6pm
         }
         else{
             //解开消息
+            if (isset($msg["project"])) $project = $msg["project"]; else  $project = "NULL";
             if (isset($msg["action"])) $action = $msg["action"]; else  $action = "";
             if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
             if (isset($msg["user"])) $user = $msg["user"]; else  $user = "";
@@ -90,7 +91,6 @@ class classTaskL3aplF6pm
         {
             case MSG_ID_L4COMUI_TO_L3F6_PERFORMANCETABLE:
                 $resp = $this->func_aqyc_get_performance_table_process($action, $user, $body);
-                $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
             default :
                 $resp = ""; //啥都不ECHO

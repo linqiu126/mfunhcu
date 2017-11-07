@@ -205,33 +205,6 @@ class classTaskL3aplF4icm
         return $retval;
     }
 
-    /*********************************BFSC组合秤新增处理 Start*********************************************/
-    function func_hcu_weight_compel_open($uid, $StatCode)
-    {
-        $uiF4icmDbObj = new classDbiL3apF4icm();
-        $resp = $uiF4icmDbObj->dbi_hcu_weight_compel_open($uid, $StatCode);
-
-        $retval=array(
-            'status'=>'true',
-            'msg'=>$resp
-        );
-
-        return $retval;
-    }
-
-    function func_hcu_weight_compel_close($uid, $StatCode)
-    {
-        $uiF4icmDbObj = new classDbiL3apF4icm();
-        $resp = $uiF4icmDbObj->dbi_hcu_weight_compel_close($uid, $StatCode);
-
-        $retval=array(
-            'status'=>'true',
-            'msg'=>$resp
-        );
-
-        return $retval;
-    }
-
 
     /**************************************************************************************
      *                             任务入口函数                                           *
@@ -250,6 +223,7 @@ class classTaskL3aplF4icm
         }
         else{
             //解开消息
+            if (isset($msg["project"])) $project = $msg["project"]; else  $project = "NULL";
             if (isset($msg["action"])) $action = $msg["action"]; else  $action = "";
             if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
             if (isset($msg["user"])) $user = $msg["user"]; else  $user = "";
@@ -260,34 +234,33 @@ class classTaskL3aplF4icm
         {
             case MSG_ID_L4COMUI_TO_L3F4_SENSORUPDATE://功能Sensor update
                 $resp = $this->func_sensor_update_process($action, $user, $body);
-                $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 
             case MSG_ID_L4COMUI_TO_L3F4_CAMWEB:
                 $resp = $this->func_hcu_camweb_process($action, $user, $body);
-                $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 
             case MSG_ID_L4COMUI_TO_L3F4_HSMMPLIST: //这里沿用以前的Video消息，实际上是处理picture
                 $resp = $this->func_hcu_hsmmplist_process($action, $user, $body);
-                $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
             case MSG_ID_L4COMUI_TO_L3F4_HSMMPPLAY:  //这里沿用以前的Video消息，实际上是处理picture
                 $resp = $this->func_hcu_hsmmpdisplay_process($action, $user, $body);
-                $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 
             case MSG_ID_L4COMUI_TO_L3F4_GETCAMERASTATUS://功能Get Camera Status
                 $resp = $this->func_get_camera_status_process($action, $user, $body);
-                $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 
             case MSG_ID_L4COMUI_TO_L3F4_GETCAMERAUNIT:
                 $resp = $this->func_get_camera_unit_process($action, $user, $body);
-                $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 
-/*********************************TBSWR新增处理 Start*********************************************/
+            /*********************************智能云锁新增处理 Start*********************************************/
+            case MSG_ID_L4FHYSUI_TO_L3F4_LOCKOPEN://功能HCU_Lock_Open
+                $resp = $this->func_hcu_lock_compel_open($action, $user, $body);
+                break;
+
+            /*********************************TBSWR新增处理 Start*********************************************/
             case MSG_ID_L4TBSWRUI_TO_L3F4_GETTEMPSTATUS://功能TBSWR GetTempStatus,暂时放个例子，待后面修改
                 //解开消息
                 if (isset($_GET["id"])) $uid = trim($_GET["id"]); else  $uid = "";
@@ -295,32 +268,6 @@ class classTaskL3aplF4icm
                 $input = array("uid" => $uid, "StatCode" => $StatCode);
                 //具体处理函数
                 $resp = $this->func_tbswr_gettempstatus_process($uid, $StatCode);
-                $project = MFUN_PRJ_HCU_AQYCUI;
-                break;
-
-/*********************************智能云锁新增处理 Start*********************************************/
-            case MSG_ID_L4FHYSUI_TO_L3F4_LOCKOPEN://功能HCU_Lock_Open
-                $resp = $this->func_hcu_lock_compel_open($action, $user, $body);
-                $project = MFUN_PRJ_HCU_FHYSUI;
-                break;
-
-/*********************************BFSC组合秤新增处理 Start*********************************************/
-            case MSG_ID_L4BFSCUI_TO_L3F4_WEIGHTOPEN:
-                //解开消息
-                if (isset($msg["uid"])) $uid = trim($msg["uid"]); else  $uid = "";
-                if (isset($msg["statcode"])) $statcode = trim($msg["statcode"]); else  $statcode= "";
-                //具体处理函数
-                $resp = $this->func_hcu_weight_compel_open($uid, $statcode);
-                $project = MFUN_PRJ_HCU_BFSCUI;
-                break;
-
-            case MSG_ID_L4BFSCUI_TO_L3F4_WEIGHTCLOSE:
-                //解开消息
-                if (isset($msg["uid"])) $uid = trim($msg["uid"]); else  $uid = "";
-                if (isset($msg["statcode"])) $statcode = trim($msg["statcode"]); else  $statcode= "";
-                //具体处理函数
-                $resp = $this->func_hcu_weight_compel_close($uid, $statcode);
-                $project = MFUN_PRJ_HCU_BFSCUI;
                 break;
 
             default:

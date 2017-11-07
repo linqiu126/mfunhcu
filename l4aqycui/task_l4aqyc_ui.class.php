@@ -51,7 +51,7 @@ class classTaskL4aqycUi
                 if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
                 if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
-                $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
+                $input = array("project" => $project, "action" => $action, "type" => $type,"user" => $user,"body" => $body);
                 $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4AQYCUI_TO_L3F2_PROJDEL, "MSG_ID_L4AQYCUI_TO_L3F2_PROJDEL",$input);
                 break;
 
@@ -60,7 +60,7 @@ class classTaskL4aqycUi
                 if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
                 if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
-                $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
+                $input = array("project" => $project, "action" => $action, "type" => $type,"user" => $user,"body" => $body);
                 $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4AQYCUI_TO_L3F2_POINTDEL, "MSG_ID_L4AQYCUI_TO_L3F2_POINTDEL",$input);
                 break;
 
@@ -69,52 +69,15 @@ class classTaskL4aqycUi
                 if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
                 if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
-                $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
+                $input = array("project" => $project, "action" => $action, "type" => $type,"user" => $user,"body" => $body);
                 $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4AQYCUI_TO_L3F2_DEVDEL, "MSG_ID_L4AQYCUI_TO_L3F2_DEVDEL",$input);
                 break;
-
-            case "GetStationActiveInfo"://查询站点是否激活状态
-                if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
-                if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
-                if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
-
-                $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
-                $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4AQYCUI_TO_L3F2_POINTACTIVEINFO, "MSG_ID_L4AQYCUI_TO_L3F2_POINTACTIVEINFO",$input);
-                break;
-
-            case "MonitorAlarmList":      // get alarm monitorList in map by user id
-                if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
-                if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
-                if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
-
-                $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
-                $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM5FM, MSG_ID_L4AQYCUI_TO_L3F5_ALARMMONITORLIST, "MSG_ID_L4AQYCUI_TO_L3F5_ALARMMONITORLIST",$input);
-                break;
-
-            case "DevAlarm":  //获取当前的测量值，如果测量值超出范围，提示告警
-                if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
-                if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
-                if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
-
-                $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
-                $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM5FM, MSG_ID_L4AQYCUI_TO_L3F5_DEVALARM, "MSG_ID_L4AQYCUI_TO_L3F5_DEVALARM",$input);
-                break;
-
-            case "AlarmType":  //获取所有传感器类型
-                if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
-                if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
-                if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
-
-                $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
-                $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM5FM, MSG_ID_L4AQYCUI_TO_L3F5_ALARMTYPE, "MSG_ID_L4AQYCUI_TO_L3F5_ALARMTYPE",$input);
-                break;
-
             case "SensorList":  //获取传感器列表
                 if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
                 if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
                 if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
-                $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
+                $input = array("project" => $project, "action" => $action, "type" => $type,"user" => $user,"body" => $body);
                 $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM3DM, MSG_ID_L4AQYCUI_TO_L3F3_SENSORLIST, "MSG_ID_L4AQYCUI_TO_L3F3_SENSORLIST",$input);
                 break;
 
@@ -123,7 +86,7 @@ class classTaskL4aqycUi
                 if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
                 if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
-                $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
+                $input = array("project" => $project, "action" => $action, "type" => $type,"user" => $user,"body" => $body);
                 $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM3DM, MSG_ID_L4AQYCUI_TO_L3F3_DEVSENSOR, "MSG_ID_L4AQYCUI_TO_L3F3_DEVSENSOR",$input);
                 break;
 
@@ -132,8 +95,44 @@ class classTaskL4aqycUi
                 if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
                 if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
-                $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
+                $input = array("project" => $project, "action" => $action, "type" => $type,"user" => $user,"body" => $body);
                 $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM3DM, MSG_ID_L4AQYCUI_TO_L3F3_GETSTATICMONITORTABLE, "MSG_ID_L4AQYCUI_TO_L3F3_GETSTATICMONITORTABLE",$input);
+                break;
+
+            case "MonitorAlarmList":      // get alarm monitorList in map by user id
+                if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
+                if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
+                if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
+
+                $input = array("project" => $project, "action" => $action, "type" => $type,"user" => $user,"body" => $body);
+                $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM5FM, MSG_ID_L4AQYCUI_TO_L3F5_ALARMMONITORLIST, "MSG_ID_L4AQYCUI_TO_L3F5_ALARMMONITORLIST",$input);
+                break;
+
+            case "DevAlarm":  //获取当前的测量值，如果测量值超出范围，提示告警
+                if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
+                if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
+                if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
+
+                $input = array("project" => $project, "action" => $action, "type" => $type,"user" => $user,"body" => $body);
+                $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM5FM, MSG_ID_L4AQYCUI_TO_L3F5_DEVALARM, "MSG_ID_L4AQYCUI_TO_L3F5_DEVALARM",$input);
+                break;
+
+            case "AlarmType":  //获取所有传感器类型
+                if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
+                if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
+                if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
+
+                $input = array("project" => $project, "action" => $action, "type" => $type,"user" => $user,"body" => $body);
+                $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM5FM, MSG_ID_L4AQYCUI_TO_L3F5_ALARMTYPE, "MSG_ID_L4AQYCUI_TO_L3F5_ALARMTYPE",$input);
+                break;
+
+            case "AlarmQuery": //查询一个监测点历史告警数据 minute/hour/day
+                if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
+                if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
+                if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
+
+                $input = array("project" => $project, "action" => $action, "type" => $type,"user" => $user,"body" => $body);
+                $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4COM_UI, MFUN_TASK_ID_L3APPL_FUM5FM, MSG_ID_L4AQYCUI_TO_L3F5_ALARMQUERY, "MSG_ID_L4AQYCUI_TO_L3F5_ALARMQUERY",$input);
                 break;
 
             case "GetWarningHandleListTable":  //告警处理表
@@ -141,12 +140,12 @@ class classTaskL4aqycUi
                 if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
                 if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
-                $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
+                $input = array("project" => $project, "action" => $action, "type" => $type,"user" => $user,"body" => $body);
                 $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM5FM, MSG_ID_L4AQYCUI_TO_L3F5_ALARMHANDLETABLE, "MSG_ID_L4AQYCUI_TO_L3F5_ALARMHANDLETABLE",$input);
                 break;
 
             default:
-                $msg = array("action" => $action, 'project' => MFUN_PRJ_HCU_AQYCUI);
+                $msg = array("project" => $project, "action" => $action);
                 $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L4COM_UI, MSG_ID_L4COMUI_CLICK_INCOMING, "MSG_ID_L4COMUI_CLICK_INCOMING",$msg);
                 break;
         }

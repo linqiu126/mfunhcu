@@ -327,6 +327,7 @@ class classTaskL3aplF3dm
         }
         else{
             //解开消息
+            if (isset($msg["project"])) $project = $msg["project"]; else  $project = "NULL";
             if (isset($msg["action"])) $action = $msg["action"]; else  $action = "";
             if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
             if (isset($msg["user"])) $user = $msg["user"]; else  $user = "";
@@ -337,68 +338,57 @@ class classTaskL3aplF3dm
         {
             case MSG_ID_L4COMUI_TO_L3F3_MONITORLIST://功能Monitor List
                 $resp = $this->func_monitor_list_process($action, $user, $body);
-                $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 
             case MSG_ID_L4COMUI_TO_L3F3_FAVOURITELIST:
                 $resp = $this->func_favourite_list_process($action, $user, $body);
-                $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 
             case MSG_ID_L4COMUI_TO_L3F3_FAVOURITECOUNT:
                 $resp = $this->func_favourite_count_process($action, $user, $body);
-                $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 
+            /*********************************扬尘项目特殊处理函数 Start*********************************************/
             case MSG_ID_L4AQYCUI_TO_L3F3_SENSORLIST://功能Sensor List
                 $resp = $this->func_aqyc_sensor_list_process($action, $user, $body);
-                $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 
             case MSG_ID_L4AQYCUI_TO_L3F3_DEVSENSOR://功能Dev Sensor
                 $resp = $this->func_aqyc_dev_sensor_process($action, $user, $body);
-                $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 
             case MSG_ID_L4AQYCUI_TO_L3F3_GETSTATICMONITORTABLE://功能GetStaticMonitorTable
                 $resp = $this->func_aqyc_get_static_monitor_table_process($action, $user, $body);
-                $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 
-/*********************************波峰智能组合秤新增处理 Start*********************************************/
+            /*********************************波峰智能组合秤新增处理 Start*********************************************/
             case MSG_ID_L4BFSCUI_TO_L3F3_GETSTATICMONITORTABLE://功能GetStaticMonitorTable
                 $resp = $this->func_bfsc_get_static_monitor_table_process($action, $user, $body);
-                $project = MFUN_PRJ_HCU_BFSCUI;
                 break;
-/*************************************智能云锁新增处理 Start*********************************************/
+
+            /*********************************智能云锁新增处理 Start*********************************************/
             case MSG_ID_L4FHYSUI_TO_L3F3_SENSORLIST://功能Sensor List
                 $resp = $this->func_fhys_sensor_list_process($action, $user, $body);
-                $project = MFUN_PRJ_HCU_FHYSUI;
                 break;
 
             case MSG_ID_L4FHYSUI_TO_L3F3_DEVSENSOR://功能Dev Sensor
                 $resp = $this->func_fhys_dev_sensor_process($action, $user, $body);
-                $project = MFUN_PRJ_HCU_FHYSUI;
                 break;
 
             case MSG_ID_L4FHYSUI_TO_L3F3_GETSTATICMONITORTABLE://功能GetStaticMonitorTable
                 $resp = $this->func_fhys_get_static_monitor_table_process($action, $user, $body);
-                $project = MFUN_PRJ_HCU_FHYSUI;
                 break;
 
             case MSG_ID_L4FHYSUI_TO_L3F3_KEYHISTORY://开锁事件历史记录
                 $resp = $this->func_key_event_history_process($action, $user, $body);
-                $project = MFUN_PRJ_HCU_FHYSUI;
                 break;
 
             case MSG_ID_L4FHYSUI_TO_L3F3_DOOROPENPIC://开锁抓拍照片
                 $resp = $this->func_door_open_picture_process($action, $user, $body);
-                $project = MFUN_PRJ_HCU_FHYSUI;
                 break;
 
             case MSG_ID_L4FHYSUI_TO_L3F3_POINTPICTURE: //开站安装上传照片
                 $resp = $this->func_point_install_picture_process($action, $user, $body);
-                $project = MFUN_PRJ_HCU_FHYSUI;
                 break;
 
             default :

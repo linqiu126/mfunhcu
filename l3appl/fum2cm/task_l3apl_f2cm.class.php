@@ -978,6 +978,7 @@ class classTaskL3aplF2cm
         }
         else{
             //解开消息
+            if (isset($msg["project"])) $project = $msg["project"]; else  $project = "NULL";
             if (isset($msg["action"])) $action = $msg["action"]; else  $action = "";
             if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
             if (isset($msg["user"])) $user = $msg["user"]; else  $user = "";
@@ -988,223 +989,180 @@ class classTaskL3aplF2cm
         {
             case MSG_ID_L4COMUI_TO_L3F2_TABLEQUERY://功能Tabel Query
                 $resp = $this->func_print_excel_table_query_process($action, $user, $body);
-                $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 
             case MSG_ID_L4COMUI_TO_L3F2_PROJECTPGLIST://功能Project Pg List
                 $resp = $this->func_all_project_pg_list_process($action, $user, $body);
-                $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 
             case MSG_ID_L4COMUI_TO_L3F2_PROJECTLIST://功能Project List
                 $resp = $this->func_all_project_list_process($action, $user, $body);
-                $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 
             case MSG_ID_L4COMUI_TO_L3F2_USERPROJ://功能User Project
                 $resp = $this->func_user_project_list_process($action, $user, $body);
-                $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 
             case MSG_ID_L4COMUI_TO_L3F2_PGTABLE://功能PG Table
                 $resp = $this->func_user_pg_table_process($action, $user, $body);
-                $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 
             case MSG_ID_L4COMUI_TO_L3F2_PGNEW://功能PG New
                 $resp = $this->func_pg_new_process($action, $user, $body);
-                $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 
-            case MSG_ID_L4COMCUI_TO_L3F2_PGMOD://功能PG Mod
+            case MSG_ID_L4COMUI_TO_L3F2_PGMOD://功能PG Mod
                 $resp = $this->func_pg_modify_process($action, $user, $body);
-                $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 
             case MSG_ID_L4COMUI_TO_L3F2_PGDEL://功能PG Del
                 $resp = $this->func_pg_del_process($action, $user, $body);
-                $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 
             case MSG_ID_L4COMUI_TO_L3F2_PGPROJ://功能PG Project
                 $resp = $this->func_pg_project_process($action, $user, $body);
-                $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 
             case MSG_ID_L4COMUI_TO_L3F2_PROJTABLE://功能Project Table
                 $resp = $this->func_project_table_process($action, $user, $body);
-                $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 
             case MSG_ID_L4COMUI_TO_L3F2_PROJNEW://功能ProjNew
                 $resp = $this->func_project_new_process($action, $user, $body);
-                $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 
             case MSG_ID_L4COMUI_TO_L3F2_PROJMOD://功能ProjMod
                 $resp = $this->func_project_modify_process($action, $user, $body);
-                $project = MFUN_PRJ_HCU_AQYCUI;
-                break;
-
-            case MSG_ID_L4AQYCUI_TO_L3F2_PROJDEL://功能ProjDel
-                $resp = $this->func_project_delete_process($action, $user, $body);
-                $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 
             case MSG_ID_L4COMUI_TO_L3F2_ALLPROJPOINT://功能Project Point 查询所有监控点列表
                 $resp = $this->func_all_project_point_process($action, $user, $body);
-                $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 
             case MSG_ID_L4COMUI_TO_L3F2_ONEPROJPOINT://功能Point project查询该项目下面对应监控点列表
                 $resp = $this->func_one_project_point_process($action, $user, $body);
-                $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 
             case MSG_ID_L4COMUI_TO_L3F2_POINTTABLE://功能Point Table
                 $resp = $this->func_point_table_process($action, $user, $body);
-                $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 
-            case MSG_ID_L4AQYCUI_TO_L3F2_POINTACTIVEINFO: //功能GetStationActiveInfo
+            case MSG_ID_L4COMUI_TO_L3F2_POINTACTIVEINFO: //功能GetStationActiveInfo
                 $resp = $this->func_point_get_activeinfo($action, $user, $body);
-                $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 
-            case MSG_ID_L4FHYSUI_TO_L3F2_POINTACTIVESET: //功能StationActive
+            case MSG_ID_L4COMUI_TO_L3F2_POINTACTIVESET: //功能StationActive
                 $resp = $this->func_point_set_activeinfo($action, $user, $body);
-                $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 
             case MSG_ID_L4COMUI_TO_L3F2_POINTNEW://功能Point New
                 $resp = $this->func_point_new_process($action, $user, $body);
-                $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 
             case MSG_ID_L4COMUI_TO_L3F2_POINTMOD://功能Point Mod
                 $resp = $this->func_point_mod_process($action, $user, $body);
-                $project = MFUN_PRJ_HCU_AQYCUI;
-                break;
-
-            case MSG_ID_L4AQYCUI_TO_L3F2_POINTDEL://功能Point Del
-                $resp = $this->func_point_delete_process($action, $user, $body);
-                $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 
             case MSG_ID_L4COMUI_TO_L3F2_POINTDEV://功能Point Dev
                 $resp = $this->func_point_dev_process($action, $user, $body);
-                $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 
             case MSG_ID_L4COMUI_TO_L3F2_DEVTABLE://功能Dev Table
                 $resp = $this->func_dev_table_process($action, $user, $body);
-                $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 
             case MSG_ID_L4COMUI_TO_L3F2_DEVNEW://功能Dev New
                 $resp = $this->func_dev_new_process($action, $user, $body);
-                $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 
             case MSG_ID_L4COMUI_TO_L3F2_DEVMOD://功能Dev Mod
                 $resp = $this->func_dev_mod_process($action, $user, $body);
-                $project = MFUN_PRJ_HCU_AQYCUI;
+                break;
+
+            /*********************************扬尘项目特殊处理函数 Start*********************************************/
+            case MSG_ID_L4AQYCUI_TO_L3F2_PROJDEL://功能ProjDel
+                $resp = $this->func_project_delete_process($action, $user, $body);
+                break;
+
+            case MSG_ID_L4AQYCUI_TO_L3F2_POINTDEL://功能Point Del
+                $resp = $this->func_point_delete_process($action, $user, $body);
                 break;
 
             case MSG_ID_L4AQYCUI_TO_L3F2_DEVDEL://功能Dev Del
                 $resp = $this->func_aqyc_dev_delete_process($action, $user, $body);
-                $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 
-            /*********************************智能云锁新增处理 Start*********************************************/
+            /*********************************智能云锁特殊处理函数 Start*********************************************/
             case MSG_ID_L4FHYSUI_TO_L3F2_PROJDEL://功能ProjDel
                 $resp = $this->func_fhys_project_delete_process($action, $user, $body);
-                $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 
             case MSG_ID_L4FHYSUI_TO_L3F2_POINTDEL://功能Point Del
                 $resp = $this->func_fhys_point_delete_process($action, $user, $body);
-                $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 
             case MSG_ID_L4FHYSUI_TO_L3F2_DEVDEL://功能Dev Del
                 $resp = $this->func_fhys_dev_delete_process($action, $user, $body);
-                $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 
             case MSG_ID_L4FHYSUI_TO_L3F2_USERKEY:
                 $resp = $this->func_project_userkey_process($action, $user, $body);
-                $project = MFUN_PRJ_HCU_FHYSUI;
                 break;
 
             case MSG_ID_L4FHYSUI_TO_L3F2_PROJKEYLIST:
                 $resp = $this->func_all_projkey_process($action, $user, $body);
-                $project = MFUN_PRJ_HCU_FHYSUI;
                 break;
 
             case MSG_ID_L4FHYSUI_TO_L3F2_PROJKEY:
                 $resp = $this->func_project_keylist_process($action, $user, $body);
-                $project = MFUN_PRJ_HCU_FHYSUI;
                 break;
 
             case MSG_ID_L4FHYSUI_TO_L3F2_PROJKEYUSERLIST:
                 $resp = $this->func_all_projkeyuser_process($action, $user, $body);
-                $project = MFUN_PRJ_HCU_FHYSUI;
                 break;
 
             case MSG_ID_L4FHYSUI_TO_L3F2_KEYTABLE:
                 $resp = $this->func_key_table_process($action, $user, $body);
-                $project = MFUN_PRJ_HCU_FHYSUI;
                 break;
 
             case MSG_ID_L4FHYSUI_TO_L3F2_KEYNEW:
                 $resp = $this->func_key_new_process($action, $user, $body);
-                $project = MFUN_PRJ_HCU_FHYSUI;
                 break;
 
             case MSG_ID_L4FHYSUI_TO_L3F2_KEYMOD:
                 $resp = $this->func_key_mod_process($action, $user, $body);
-                $project = MFUN_PRJ_HCU_FHYSUI;
                 break;
 
             case MSG_ID_L4FHYSUI_TO_L3F2_KEYDEL:
                 $resp = $this->func_key_del_process($action, $user, $body);
-                $project = MFUN_PRJ_HCU_FHYSUI;
                 break;
 
             case MSG_ID_L4FHYSUI_TO_L3F2_OBJAUTHLIST:
                 $resp = $this->func_obj_authlist_process($action, $user, $body);
-                $project = MFUN_PRJ_HCU_FHYSUI;
                 break;
 
             case MSG_ID_L4FHYSUI_TO_L3F2_KEYAUTHLIST:
                 $resp = $this->func_key_authlist_process($action, $user, $body);
-                $project = MFUN_PRJ_HCU_FHYSUI;
                 break;
 
             case MSG_ID_L4FHYSUI_TO_L3F2_KEYGRANT:
                 $resp = $this->func_key_grant_process($action, $user, $body);
-                $project = MFUN_PRJ_HCU_FHYSUI;
                 break;
 
             case MSG_ID_L4FHYSUI_TO_L3F2_KEYAUTHNEW:
                 $resp = $this->func_key_authnew_process($action, $user, $body);
-                $project = MFUN_PRJ_HCU_FHYSUI;
                 break;
 
             case MSG_ID_L4FHYSUI_TO_L3F2_KEYAUTHDEL:
                 $resp = $this->func_key_authdel_process($action, $user, $body);
-                $project = MFUN_PRJ_HCU_FHYSUI;
                 break;
 
             case MSG_ID_L4FHYSUI_TO_L3F2_RTUTABLE:
                 $resp = $this->func_get_rtutable_process($action, $user, $body);
-                $project = MFUN_PRJ_HCU_FHYSUI;
                 break;
 
             case MSG_ID_L4FHYSUI_TO_L3F2_OTDRTABLE:
                 $resp = $this->func_get_otdrtable_process($action, $user, $body);
-                $project = MFUN_PRJ_HCU_FHYSUI;
                 break;
 
             default :

@@ -192,7 +192,7 @@ class classTaskL3aplF1sym
     {
         //定义本入口函数的logger处理对象及函数
         $loggerObj = new classApiL1vmFuncCom();
-        $project =""; //初始化
+        $project ="NULL"; //初始化
         $user = "";
 
         //入口消息内容判断
@@ -212,48 +212,49 @@ class classTaskL3aplF1sym
         {
             case MSG_ID_L4COMUI_TO_L3F1_LOGIN:  //功能Login
                 //解开消息
+                if (isset($msg["project"])) $project = $msg["project"]; else  $project = "NULL";
                 if (isset($msg["user"])) $user = $msg["user"]; else  $user = "";
                 if (isset($msg["pwd"])) $pwd = $msg["pwd"]; else  $pwd = "";
                 //具体处理函数
                 $resp = $this->func_login_process($user, $pwd);
-                $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 
             case MSG_ID_L4COMUI_TO_L3F1_USERAUTHCODE: //发送手机验证码
                 //解开消息
+                if (isset($msg["project"])) $project = $msg["project"]; else  $project = "NULL";
                 if (isset($msg["action"])) $action = $msg["action"]; else  $action = "";
                 if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
                 if (isset($msg["user"])) $user = $msg["user"]; else  $user = "";
                 if (isset($msg["body"])) $body = $msg["body"]; else  $body = "";
                 //具体处理函数
                 $resp = $this->func_userauthcode_process($action, $user, $body);
-                $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 
             case MSG_ID_L4COMUI_TO_L3F1_PWRESET: //重置密码
                 //解开消息
+                if (isset($msg["project"])) $project = $msg["project"]; else  $project = "NULL";
                 if (isset($msg["action"])) $action = $msg["action"]; else  $action = "";
                 if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
                 if (isset($msg["user"])) $user = $msg["user"]; else  $user = "";
                 if (isset($msg["body"])) $body = $msg["body"]; else  $body = "";
                 //具体处理函数
                 $resp = $this->func_reset_password_process($action, $user, $body);
-                $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 
             case MSG_ID_L4COMUI_TO_L3F1_USERINFO://功能UserInfo
                 //解开消息
+                if (isset($msg["project"])) $project = $msg["project"]; else  $project = "NULL";
                 if (isset($msg["action"])) $action = $msg["action"]; else  $action = "";
                 if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
                 if (isset($msg["user"])) $user = $msg["user"]; else  $user = "";
                 if (isset($msg["body"])) $body = $msg["body"]; else  $body = "";
                 //具体处理函数
                 $resp = $this->func_userinfo_process($action, $user, $body);
-                $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 
             case MSG_ID_L4COMUI_TO_L3F1_USERNEW://功能UserNew
                 //解开消息
+                if (isset($msg["project"])) $project = $msg["project"]; else  $project = "NULL";
                 if (isset($msg["action"])) $action = $msg["action"]; else  $action = "";
                 if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
                 if (isset($msg["user"])) $user = $msg["user"]; else  $user = "";
@@ -261,11 +262,11 @@ class classTaskL3aplF1sym
 
                 //具体处理函数
                 $resp = $this->func_usernew_process($action, $user, $body);
-                $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 
             case MSG_ID_L4COMUI_TO_L3F1_USERMOD://功能UserMod
                 //解开消息
+                if (isset($msg["project"])) $project = $msg["project"]; else  $project = "NULL";
                 if (isset($msg["action"])) $action = $msg["action"]; else  $action = "";
                 if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
                 if (isset($msg["user"])) $user = $msg["user"]; else  $user = "";
@@ -273,11 +274,11 @@ class classTaskL3aplF1sym
 
                 //具体处理函数
                 $resp = $this->func_usermod_process($action, $user, $body);
-                $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 
             case MSG_ID_L4COMUI_TO_L3F1_USERDEL://功能UserDel
                 //解开消息
+                if (isset($msg["project"])) $project = $msg["project"]; else  $project = "NULL";
                 if (isset($msg["action"])) $action = $msg["action"]; else  $action = "";
                 if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
                 if (isset($msg["user"])) $user = $msg["user"]; else  $user = "";
@@ -285,11 +286,11 @@ class classTaskL3aplF1sym
 
                 //具体处理函数
                 $resp = $this->func_userdel_process($action, $user, $body);
-                $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 
             case MSG_ID_L4COMUI_TO_L3F1_USERTABLE://功能UserTable
                 //解开消息
+                if (isset($msg["project"])) $project = $msg["project"]; else  $project = "NULL";
                 if (isset($msg["action"])) $action = $msg["action"]; else  $action = "";
                 if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
                 if (isset($msg["user"])) $user = $msg["user"]; else  $user = "";
@@ -297,7 +298,6 @@ class classTaskL3aplF1sym
 
                 //具体处理函数
                 $resp = $this->func_usertable_process($action, $user, $body);
-                $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 
             default:

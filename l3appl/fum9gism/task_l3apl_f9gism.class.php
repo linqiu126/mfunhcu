@@ -67,6 +67,7 @@ class classTaskL3aplF9gism
         }
         else{
             //解开消息
+            if (isset($msg["project"])) $project = $msg["project"]; else  $project = "NULL";
             if (isset($msg["action"])) $action = $msg["action"]; else  $action = "";
             if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
             if (isset($msg["user"])) $user = $msg["user"]; else  $user = "";
@@ -80,7 +81,6 @@ class classTaskL3aplF9gism
             if (isset($msg["user"])) $user = $msg["user"]; else  $user = "";
             //具体处理函数
             $resp = $this->func_xxx_process($user);
-            $project = MFUN_PRJ_HCU_AQYCUI;
         }
 
         else{
