@@ -986,62 +986,62 @@ class classTaskL3aplF2cm
 
         switch($msgId)
         {
-            case MSG_ID_L4AQYCUI_TO_L3F2_TABLEQUERY://功能Tabel Query
+            case MSG_ID_L4COMUI_TO_L3F2_TABLEQUERY://功能Tabel Query
                 $resp = $this->func_print_excel_table_query_process($action, $user, $body);
                 $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 
-            case MSG_ID_L4AQYCUI_TO_L3F2_PROJECTPGLIST://功能Project Pg List
+            case MSG_ID_L4COMUI_TO_L3F2_PROJECTPGLIST://功能Project Pg List
                 $resp = $this->func_all_project_pg_list_process($action, $user, $body);
                 $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 
-            case MSG_ID_L4AQYCUI_TO_L3F2_PROJECTLIST://功能Project List
+            case MSG_ID_L4COMUI_TO_L3F2_PROJECTLIST://功能Project List
                 $resp = $this->func_all_project_list_process($action, $user, $body);
                 $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 
-            case MSG_ID_L4AQYCUI_TO_L3F2_USERPROJ://功能User Project
+            case MSG_ID_L4COMUI_TO_L3F2_USERPROJ://功能User Project
                 $resp = $this->func_user_project_list_process($action, $user, $body);
                 $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 
-            case MSG_ID_L4AQYCUI_TO_L3F2_PGTABLE://功能PG Table
+            case MSG_ID_L4COMUI_TO_L3F2_PGTABLE://功能PG Table
                 $resp = $this->func_user_pg_table_process($action, $user, $body);
                 $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 
-            case MSG_ID_L4AQYCUI_TO_L3F2_PGNEW://功能PG New
+            case MSG_ID_L4COMUI_TO_L3F2_PGNEW://功能PG New
                 $resp = $this->func_pg_new_process($action, $user, $body);
                 $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 
-            case MSG_ID_L4AQYCUI_TO_L3F2_PGMOD://功能PG Mod
+            case MSG_ID_L4COMCUI_TO_L3F2_PGMOD://功能PG Mod
                 $resp = $this->func_pg_modify_process($action, $user, $body);
                 $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 
-            case MSG_ID_L4AQYCUI_TO_L3F2_PGDEL://功能PG Del
+            case MSG_ID_L4COMUI_TO_L3F2_PGDEL://功能PG Del
                 $resp = $this->func_pg_del_process($action, $user, $body);
                 $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 
-            case MSG_ID_L4AQYCUI_TO_L3F2_PGPROJ://功能PG Project
+            case MSG_ID_L4COMUI_TO_L3F2_PGPROJ://功能PG Project
                 $resp = $this->func_pg_project_process($action, $user, $body);
                 $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 
-            case MSG_ID_L4AQYCUI_TO_L3F2_PROJTABLE://功能Project Table
+            case MSG_ID_L4COMUI_TO_L3F2_PROJTABLE://功能Project Table
                 $resp = $this->func_project_table_process($action, $user, $body);
                 $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 
-            case MSG_ID_L4AQYCUI_TO_L3F2_PROJNEW://功能ProjNew
+            case MSG_ID_L4COMUI_TO_L3F2_PROJNEW://功能ProjNew
                 $resp = $this->func_project_new_process($action, $user, $body);
                 $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 
-            case MSG_ID_L4AQYCUI_TO_L3F2_PROJMOD://功能ProjMod
+            case MSG_ID_L4COMUI_TO_L3F2_PROJMOD://功能ProjMod
                 $resp = $this->func_project_modify_process($action, $user, $body);
                 $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
@@ -1051,17 +1051,17 @@ class classTaskL3aplF2cm
                 $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 
-            case MSG_ID_L4AQYCUI_TO_L3F2_ALLPROJPOINT://功能Project Point 查询所有监控点列表
+            case MSG_ID_L4COMUI_TO_L3F2_ALLPROJPOINT://功能Project Point 查询所有监控点列表
                 $resp = $this->func_all_project_point_process($action, $user, $body);
                 $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 
-            case MSG_ID_L4AQYCUI_TO_L3F2_ONEPROJPOINT://功能Point project查询该项目下面对应监控点列表
+            case MSG_ID_L4COMUI_TO_L3F2_ONEPROJPOINT://功能Point project查询该项目下面对应监控点列表
                 $resp = $this->func_one_project_point_process($action, $user, $body);
                 $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 
-            case MSG_ID_L4AQYCUI_TO_L3F2_POINTTABLE://功能Point Table
+            case MSG_ID_L4COMUI_TO_L3F2_POINTTABLE://功能Point Table
                 $resp = $this->func_point_table_process($action, $user, $body);
                 $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
@@ -1076,12 +1076,12 @@ class classTaskL3aplF2cm
                 $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 
-            case MSG_ID_L4AQYCUI_TO_L3F2_POINTNEW://功能Point New
+            case MSG_ID_L4COMUI_TO_L3F2_POINTNEW://功能Point New
                 $resp = $this->func_point_new_process($action, $user, $body);
                 $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 
-            case MSG_ID_L4AQYCUI_TO_L3F2_POINTMOD://功能Point Mod
+            case MSG_ID_L4COMUI_TO_L3F2_POINTMOD://功能Point Mod
                 $resp = $this->func_point_mod_process($action, $user, $body);
                 $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
@@ -1091,22 +1091,22 @@ class classTaskL3aplF2cm
                 $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 
-            case MSG_ID_L4AQYCUI_TO_L3F2_POINTDEV://功能Point Dev
+            case MSG_ID_L4COMUI_TO_L3F2_POINTDEV://功能Point Dev
                 $resp = $this->func_point_dev_process($action, $user, $body);
                 $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 
-            case MSG_ID_L4AQYCUI_TO_L3F2_DEVTABLE://功能Dev Table
+            case MSG_ID_L4COMUI_TO_L3F2_DEVTABLE://功能Dev Table
                 $resp = $this->func_dev_table_process($action, $user, $body);
                 $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 
-            case MSG_ID_L4AQYCUI_TO_L3F2_DEVNEW://功能Dev New
+            case MSG_ID_L4COMUI_TO_L3F2_DEVNEW://功能Dev New
                 $resp = $this->func_dev_new_process($action, $user, $body);
                 $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 
-            case MSG_ID_L4AQYCUI_TO_L3F2_DEVMOD://功能Dev Mod
+            case MSG_ID_L4COMUI_TO_L3F2_DEVMOD://功能Dev Mod
                 $resp = $this->func_dev_mod_process($action, $user, $body);
                 $project = MFUN_PRJ_HCU_AQYCUI;
                 break;

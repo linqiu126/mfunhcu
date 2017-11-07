@@ -335,17 +335,17 @@ class classTaskL3aplF3dm
 
         switch($msgId)
         {
-            case MSG_ID_L4AQYCUI_TO_L3F3_MONITORLIST://功能Monitor List
+            case MSG_ID_L4COMUI_TO_L3F3_MONITORLIST://功能Monitor List
                 $resp = $this->func_monitor_list_process($action, $user, $body);
                 $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 
-            case MSG_ID_L4AQYCUI_TO_L3F3_FAVOURITELIST:
+            case MSG_ID_L4COMUI_TO_L3F3_FAVOURITELIST:
                 $resp = $this->func_favourite_list_process($action, $user, $body);
                 $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 
-            case MSG_ID_L4AQYCUI_TO_L3F3_FAVOURITECOUNT:
+            case MSG_ID_L4COMUI_TO_L3F3_FAVOURITECOUNT:
                 $resp = $this->func_favourite_count_process($action, $user, $body);
                 $project = MFUN_PRJ_HCU_AQYCUI;
                 break;

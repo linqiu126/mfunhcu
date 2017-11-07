@@ -258,31 +258,31 @@ class classTaskL3aplF4icm
 
         switch($msgId)
         {
-            case MSG_ID_L4AQYCUI_TO_L3F4_SENSORUPDATE://功能Sensor update
+            case MSG_ID_L4COMUI_TO_L3F4_SENSORUPDATE://功能Sensor update
                 $resp = $this->func_sensor_update_process($action, $user, $body);
                 $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 
-            case MSG_ID_L4AQYCUI_TO_L3F4_CAMWEB:
+            case MSG_ID_L4COMUI_TO_L3F4_CAMWEB:
                 $resp = $this->func_hcu_camweb_process($action, $user, $body);
                 $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 
-            case MSG_ID_L4AQYCUI_TO_L3F4_HSMMPLIST: //这里沿用以前的Video消息，实际上是处理picture
+            case MSG_ID_L4COMUI_TO_L3F4_HSMMPLIST: //这里沿用以前的Video消息，实际上是处理picture
                 $resp = $this->func_hcu_hsmmplist_process($action, $user, $body);
                 $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
-            case MSG_ID_L4AQYCUI_TO_L3F4_HSMMPPLAY:  //这里沿用以前的Video消息，实际上是处理picture
+            case MSG_ID_L4COMUI_TO_L3F4_HSMMPPLAY:  //这里沿用以前的Video消息，实际上是处理picture
                 $resp = $this->func_hcu_hsmmpdisplay_process($action, $user, $body);
                 $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 
-            case MSG_ID_L4AQYCUI_TO_L3F4_GETCAMERASTATUS://功能Get Camera Status
+            case MSG_ID_L4COMUI_TO_L3F4_GETCAMERASTATUS://功能Get Camera Status
                 $resp = $this->func_get_camera_status_process($action, $user, $body);
                 $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 
-            case MSG_ID_L4AQYCUI_TO_L3F4_GETCAMERAUNIT:
+            case MSG_ID_L4COMUI_TO_L3F4_GETCAMERAUNIT:
                 $resp = $this->func_get_camera_unit_process($action, $user, $body);
                 $project = MFUN_PRJ_HCU_AQYCUI;
                 break;

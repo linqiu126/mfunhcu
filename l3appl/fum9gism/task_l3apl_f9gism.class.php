@@ -74,7 +74,7 @@ class classTaskL3aplF9gism
         }
 
         //功能Login
-        if ($msgId == MSG_ID_L4AQYCUI_TO_L3F1_LOGIN)
+        if ($msgId == MSG_ID_L4COMUI_TO_L3F1_LOGIN)
         {
             //解开消息
             if (isset($msg["user"])) $user = $msg["user"]; else  $user = "";

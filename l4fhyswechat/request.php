@@ -1,6 +1,5 @@
 <?php
 include_once "../l1comvm/vmlayer.php";
-require_once "dbi_l4fhys_wechat.class.php";
 
 //L4FHYS Wechat的入口起点
 //这里调用h5ui_entry_fhys_wechat是为了保证所有的入口都在/l1mainentry下面

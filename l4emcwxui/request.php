@@ -1,7 +1,7 @@
 <?php
 
 include_once "../l1comvm/vmlayer.php";
-require_once "dbi_l4emcwx_ui.class.php";
+
 //header("Content-type:text/html;charset=utf-8");
 //require '/php/req.php';
 

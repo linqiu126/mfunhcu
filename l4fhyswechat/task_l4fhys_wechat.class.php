@@ -6,7 +6,6 @@
  * Time: 11:55
  */
 include_once "../l1comvm/vmlayer.php";
-include_once "dbi_l4fhys_wechat.class.php";
 
 class classTaskL4fhysWechat
 {

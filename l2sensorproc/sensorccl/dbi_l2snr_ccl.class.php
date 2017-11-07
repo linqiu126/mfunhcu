@@ -233,7 +233,7 @@ class classDbiL2snrCcl
         $event = "";
 
         //判断是否检测到RFID开锁请求
-        if (($authRequestType == HUITP_IEID_UNI_CCL_LOCK_AUTH_REQ_TYPE_RFID) AND !empty($rfidAddr))
+        if (($authRequestType == HUITP_IEID_UNI_CCL_LOCK_AUTH_REQ_TYPE_RFID) AND !empty($rfidAddr) AND ($auth_check == false))
         {
             $key_type = MFUN_L3APL_F2CM_KEY_TYPE_RFID;
             $query_str = "SELECT * FROM `t_l3f2cm_fhys_keyinfo` WHERE (`hwcode` = '$rfidAddr' AND `keytype` = '$key_type')"; //暂时只判断是否有
@@ -247,7 +247,7 @@ class classDbiL2snrCcl
             $event = MFUN_L3APL_F2CM_EVENT_TYPE_RFID;
         }
         //判断是否检测到BLE开锁请求且RFID开锁没有授权
-        elseif (($authRequestType == HUITP_IEID_UNI_CCL_LOCK_AUTH_REQ_TYPE_BLE) AND !empty($bleMacAddr) AND ($auth_check == false))
+        if (($authRequestType == HUITP_IEID_UNI_CCL_LOCK_AUTH_REQ_TYPE_BLE) AND !empty($bleMacAddr) AND ($auth_check == false) AND ($auth_check == false))
         {
             $key_type = MFUN_L3APL_F2CM_KEY_TYPE_BLE;
             $query_str = "SELECT * FROM `t_l3f2cm_fhys_keyinfo` WHERE (`hwcode` = '$bleMacAddr' AND `keytype` = '$key_type')"; //暂时只判断是否有
@@ -277,7 +277,7 @@ class classDbiL2snrCcl
             $event = MFUN_L3APL_F2CM_EVENT_TYPE_BLE;
         }
         //如果RFID和BLE开锁认证都不通过，看看是否有有用户名开锁授权
-        elseif (($authRequestType == HUITP_IEID_UNI_CCL_LOCK_AUTH_REQ_TYPE_LOCK) AND ($auth_check == false))
+        if (($authRequestType == HUITP_IEID_UNI_CCL_LOCK_AUTH_REQ_TYPE_LOCK) AND ($auth_check == false) AND ($auth_check == false))
         {
             //暂时只判断是否有针对该站点的有效次数授权
             $auth_type = MFUN_L3APL_F2CM_AUTH_TYPE_NUMBER;

@@ -210,7 +210,7 @@ class classTaskL3aplF1sym
 
         switch($msgId)
         {
-            case MSG_ID_L4AQYCUI_TO_L3F1_LOGIN:  //功能Login
+            case MSG_ID_L4COMUI_TO_L3F1_LOGIN:  //功能Login
                 //解开消息
                 if (isset($msg["user"])) $user = $msg["user"]; else  $user = "";
                 if (isset($msg["pwd"])) $pwd = $msg["pwd"]; else  $pwd = "";
@@ -219,7 +219,7 @@ class classTaskL3aplF1sym
                 $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 
-            case MSG_ID_L4AQYCUI_TO_L3F1_USERAUTHCODE: //发送手机验证码
+            case MSG_ID_L4COMUI_TO_L3F1_USERAUTHCODE: //发送手机验证码
                 //解开消息
                 if (isset($msg["action"])) $action = $msg["action"]; else  $action = "";
                 if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
@@ -230,7 +230,7 @@ class classTaskL3aplF1sym
                 $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 
-            case MSG_ID_L4AQYCUI_TO_L3F1_PWRESET: //重置密码
+            case MSG_ID_L4COMUI_TO_L3F1_PWRESET: //重置密码
                 //解开消息
                 if (isset($msg["action"])) $action = $msg["action"]; else  $action = "";
                 if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
@@ -241,7 +241,7 @@ class classTaskL3aplF1sym
                 $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 
-            case MSG_ID_L4AQYCUI_TO_L3F1_USERINFO://功能UserInfo
+            case MSG_ID_L4COMUI_TO_L3F1_USERINFO://功能UserInfo
                 //解开消息
                 if (isset($msg["action"])) $action = $msg["action"]; else  $action = "";
                 if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
@@ -252,7 +252,7 @@ class classTaskL3aplF1sym
                 $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 
-            case MSG_ID_L4AQYCUI_TO_L3F1_USERNEW://功能UserNew
+            case MSG_ID_L4COMUI_TO_L3F1_USERNEW://功能UserNew
                 //解开消息
                 if (isset($msg["action"])) $action = $msg["action"]; else  $action = "";
                 if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
@@ -264,7 +264,7 @@ class classTaskL3aplF1sym
                 $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 
-            case MSG_ID_L4AQYCUI_TO_L3F1_USERMOD://功能UserMod
+            case MSG_ID_L4COMUI_TO_L3F1_USERMOD://功能UserMod
                 //解开消息
                 if (isset($msg["action"])) $action = $msg["action"]; else  $action = "";
                 if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
@@ -276,7 +276,7 @@ class classTaskL3aplF1sym
                 $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 
-            case MSG_ID_L4AQYCUI_TO_L3F1_USERDEL://功能UserDel
+            case MSG_ID_L4COMUI_TO_L3F1_USERDEL://功能UserDel
                 //解开消息
                 if (isset($msg["action"])) $action = $msg["action"]; else  $action = "";
                 if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";
@@ -288,7 +288,7 @@ class classTaskL3aplF1sym
                 $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
 
-            case MSG_ID_L4AQYCUI_TO_L3F1_USERTABLE://功能UserTable
+            case MSG_ID_L4COMUI_TO_L3F1_USERTABLE://功能UserTable
                 //解开消息
                 if (isset($msg["action"])) $action = $msg["action"]; else  $action = "";
                 if (isset($msg["type"])) $type = $msg["type"]; else  $type = "";

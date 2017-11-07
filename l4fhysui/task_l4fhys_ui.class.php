@@ -6,7 +6,6 @@
  * Time: 11:55
  */
 include_once "../l1comvm/vmlayer.php";
-include_once "dbi_l4fhys_ui.class.php";
 
 class classTaskL4fhysUi
 {
@@ -45,258 +44,13 @@ class classTaskL4fhysUi
         //这里是L4FHYS与L3APPL功能之间的交换矩阵，从而让UI对应的多种不确定组合变换为L3APPL确定的功能组合
         switch($action)
         {
-            case "login":  //login message:
-                if (isset($_GET["name"])) $name = trim($_GET["name"]); else $name = "";
-                if (isset($_GET["password"])) $pwd = trim($_GET["password"]); else $pwd = "";
-                $input = array("user" => $name, "pwd" => $pwd);
-                $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM1SYM, MSG_ID_L4AQYCUI_TO_L3F1_LOGIN, "MSG_ID_L4AQYCUI_TO_L3F1_LOGIN",$input);
-                break;
-
-            case "Get_user_auth_code": //找回密码发送手机验证码
-                if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
-                if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
-                if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
-
-                $input = array("action" => $action, "type" => $type, "user" => $user,"body" => $body);
-                $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM1SYM, MSG_ID_L4AQYCUI_TO_L3F1_USERAUTHCODE, "MSG_ID_L4AQYCUI_TO_L3F1_USERAUTHCODE",$input);
-                break;
-
-            case "Reset_password":  //重置密码
-                if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
-                if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
-                if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
-
-                $input = array("action" => $action, "type" => $type, "user" => $user,"body" => $body);
-                $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM1SYM, MSG_ID_L4AQYCUI_TO_L3F1_PWRESET, "MSG_ID_L4AQYCUI_TO_L3F1_PWRESET",$input);
-                break;
-
-            case "UserInfo":    // get User Information after login
-                if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
-                if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
-                if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
-
-                $input = array("action" => $action, "type" => $type, "user" => $user,"body" => $body);
-                $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM1SYM, MSG_ID_L4AQYCUI_TO_L3F1_USERINFO, "MSG_ID_L4AQYCUI_TO_L3F1_USERINFO",$input);
-                break;
-
-            case "UserNew": //Add new user
-                if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
-                if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
-                if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
-
-                $input = array("action" => $action, "type" => $type, "user" => $user,"body" => $body);
-                $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM1SYM, MSG_ID_L4AQYCUI_TO_L3F1_USERNEW, "MSG_ID_L4AQYCUI_TO_L3F1_USERNEW",$input);
-                break;
-
-            case "UserMod":  //modify user
-                if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
-                if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
-                if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
-
-                $input = array("action" => $action, "type" => $type, "user" => $user,"body" => $body);
-                $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM1SYM, MSG_ID_L4AQYCUI_TO_L3F1_USERMOD, "MSG_ID_L4AQYCUI_TO_L3F1_USERMOD",$input);
-                break;
-
-            case "UserDel": //Delete the user
-                if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
-                if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
-                if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
-
-                $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
-                $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM1SYM, MSG_ID_L4AQYCUI_TO_L3F1_USERDEL, "MSG_ID_L4AQYCUI_TO_L3F1_USERDEL",$input);
-                break;
-
-            case "UserTable": //查询所有用户信息表
-                if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
-                if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
-                if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
-
-                $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
-                $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM1SYM, MSG_ID_L4AQYCUI_TO_L3F1_USERTABLE, "MSG_ID_L4AQYCUI_TO_L3F1_USERTABLE",$input);
-                break;
-
-            case "TableQuery": //用户表，项目组/项目/站点/设备表的打印按钮对应的excel表导出
-                if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
-                if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
-                if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
-
-                $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
-                $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4AQYCUI_TO_L3F2_TABLEQUERY, "MSG_ID_L4AQYCUI_TO_L3F2_TABLEQUERY",$input);
-                break;
-
-            case "ProjectPGList":  //Get the Project & Project Group list which will be use in user auth
-                if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
-                if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
-                if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
-
-                $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
-                $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4AQYCUI_TO_L3F2_PROJECTPGLIST, "MSG_ID_L4AQYCUI_TO_L3F2_PROJECTPGLIST",$input);
-                break;
-
-            case "ProjectList":   //Get the Project list 获取某用户授权的所有项目列表
-                if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
-                if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
-                if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
-
-                $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
-                $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4AQYCUI_TO_L3F2_PROJECTLIST, "MSG_ID_L4AQYCUI_TO_L3F2_PROJECTLIST",$input);
-                break;
-
-            case "UserProj":    // query project list belong to one user
-                if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
-                if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
-                if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
-
-                $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
-                $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4AQYCUI_TO_L3F2_USERPROJ, "MSG_ID_L4AQYCUI_TO_L3F2_USERPROJ",$input);
-                break;
-
-            case "PGTable":    // query project group table
-                if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
-                if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
-                if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
-
-                $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
-                $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4AQYCUI_TO_L3F2_PGTABLE, "MSG_ID_L4AQYCUI_TO_L3F2_PGTABLE",$input);
-                break;
-
-            case "PGNew":  //创建新的项目组
-                if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
-                if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
-                if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
-
-                $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
-                $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4AQYCUI_TO_L3F2_PGNEW, "MSG_ID_L4AQYCUI_TO_L3F2_PGNEW",$input);
-                break;
-
-            case "PGMod":  //修改项目组信息
-                if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
-                if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
-                if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
-
-                $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
-                $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4AQYCUI_TO_L3F2_PGMOD, "MSG_ID_L4AQYCUI_TO_L3F2_PGMOD",$input);
-                break;
-
-            case "PGDel":  //删除项目组信息
-                if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
-                if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
-                if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
-
-                $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
-                $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4AQYCUI_TO_L3F2_PGDEL, "MSG_ID_L4AQYCUI_TO_L3F2_PGDEL",$input);
-                break;
-
-            case "PGProj":    // 查询属于项目组的所有项目列表
-                if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
-                if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
-                if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
-
-                $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
-                $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4AQYCUI_TO_L3F2_PGPROJ, "MSG_ID_L4AQYCUI_TO_L3F2_PGPROJ",$input);
-                break;
-
-            case "ProjTable":    // query project table
-                if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
-                if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
-                if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
-
-                $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
-                $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4AQYCUI_TO_L3F2_PROJTABLE, "MSG_ID_L4AQYCUI_TO_L3F2_PROJTABLE",$input);
-                break;
-
-            case "ProjNew": //创建新的项目信息
-                if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
-                if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
-                if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
-
-                $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
-                $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4AQYCUI_TO_L3F2_PROJNEW, "MSG_ID_L4AQYCUI_TO_L3F2_PROJNEW",$input);
-                break;
-
-            case "ProjMod": //修改项目信息
-                if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
-                if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
-                if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
-
-                $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
-                $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4AQYCUI_TO_L3F2_PROJMOD, "MSG_ID_L4AQYCUI_TO_L3F2_PROJMOD",$input);
-                break;
-
-            case "ProjDel":  //删除一个项目，对于云控锁，删除项目要相应清除项目相关的钥匙信息，所以这里的处理不是通用的，使用MSG_ID_L4FHYSUI_TO_L3F2_PROJDEL消息
+             case "ProjDel":  //删除一个项目，对于云控锁，删除项目要相应清除项目相关的钥匙信息，所以这里的处理不是通用的，使用MSG_ID_L4FHYSUI_TO_L3F2_PROJDEL消息
                 if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
                 if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
                 if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
                 $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
                 $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4FHYSUI_TO_L3F2_PROJDEL, "MSG_ID_L4FHYSUI_TO_L3F2_PROJDEL",$input);
-                break;
-
-            case "ProjPoint":   //查询该用户授权项目下的所有监控点列表
-                if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
-                if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
-                if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
-
-                $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
-                $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4AQYCUI_TO_L3F2_ALLPROJPOINT, "MSG_ID_L4AQYCUI_TO_L3F2_ALLPROJPOINT",$input);
-                break;
-
-            case "PointProj": //查询该项目下面对应监控点列表
-                if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
-                if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
-                if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
-
-                $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
-                $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4AQYCUI_TO_L3F2_ONEPROJPOINT, "MSG_ID_L4AQYCUI_TO_L3F2_ONEPROJPOINT",$input);
-                break;
-
-            case "PointTable":  //查询所有监控点信息
-                if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
-                if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
-                if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
-
-                $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
-                $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4AQYCUI_TO_L3F2_POINTTABLE, "MSG_ID_L4AQYCUI_TO_L3F2_POINTTABLE",$input);
-                break;
-
-            case "PointDetail":
-                //abandon
-                break;
-
-            case "GetStationActiveInfo"://查询站点是否激活状态
-                if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
-                if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
-                if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
-
-                $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
-                $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4AQYCUI_TO_L3F2_POINTACTIVEINFO, "MSG_ID_L4AQYCUI_TO_L3F2_POINTACTIVEINFO",$input);
-                break;
-
-            case "StationActive": //确认站点激活成功
-                if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
-                if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
-                if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
-
-                $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
-                $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4FHYSUI_TO_L3F2_POINTACTIVESET, "MSG_ID_L4FHYSUI_TO_L3F2_POINTACTIVESET",$input);
-                break;
-
-            case "PointNew":  //新建监测点
-                if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
-                if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
-                if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
-
-                $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
-                $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4AQYCUI_TO_L3F2_POINTNEW, "MSG_ID_L4AQYCUI_TO_L3F2_POINTNEW",$input);
-                break;
-
-            case "PointMod"://修改监测点信息
-                if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
-                if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
-                if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
-
-                $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
-                $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4AQYCUI_TO_L3F2_POINTMOD, "MSG_ID_L4AQYCUI_TO_L3F2_POINTMOD",$input);
                 break;
 
             case "PointDel":  //删除一个监测点
@@ -308,42 +62,6 @@ class classTaskL4fhysUi
                 $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4FHYSUI_TO_L3F2_POINTDEL, "MSG_ID_L4FHYSUI_TO_L3F2_POINTDEL",$input);
                 break;
 
-            case "PointDev": //查询监测点下的HCU设备列表
-                if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
-                if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
-                if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
-
-                $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
-                $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4AQYCUI_TO_L3F2_POINTDEV, "MSG_ID_L4AQYCUI_TO_L3F2_POINTDEV",$input);
-                break;
-
-            case "DevTable": //查询HCU设备列表信息
-                if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
-                if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
-                if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
-
-                $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
-                $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4AQYCUI_TO_L3F2_DEVTABLE, "MSG_ID_L4AQYCUI_TO_L3F2_DEVTABLE",$input);
-                break;
-
-            case "DevNew":  //创建新的HCU信息
-                if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
-                if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
-                if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
-
-                $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
-                $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4AQYCUI_TO_L3F2_DEVNEW, "MSG_ID_L4AQYCUI_TO_L3F2_DEVNEW",$input);
-                break;
-
-            case "DevMod": //修改监测设备信息
-                if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
-                if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
-                if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
-
-                $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
-                $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4AQYCUI_TO_L3F2_DEVMOD, "MSG_ID_L4AQYCUI_TO_L3F2_DEVMOD",$input);
-                break;
-
             case "DevDel":  //删除HCU设备
                 if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
                 if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
@@ -353,137 +71,15 @@ class classTaskL4fhysUi
                 $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4FHYSUI_TO_L3F2_DEVDEL, "MSG_ID_L4FHYSUI_TO_L3F2_DEVDEL",$input);
                 break;
 
-            case "MonitorList":      // get monitorList in map by user id
+            case "StationActive": //确认站点激活成功
                 if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
                 if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
                 if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
                 $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
-                $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM3DM, MSG_ID_L4AQYCUI_TO_L3F3_MONITORLIST, "MSG_ID_L4AQYCUI_TO_L3F3_MONITORLIST",$input);
+                $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4FHYSUI_TO_L3F2_POINTACTIVESET, "MSG_ID_L4FHYSUI_TO_L3F2_POINTACTIVESET",$input);
                 break;
 
-            case "Favourite_list": //获取用户常用站点
-                if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
-                if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
-                if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
-
-                $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
-                $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM3DM, MSG_ID_L4AQYCUI_TO_L3F3_FAVOURITELIST, "MSG_ID_L4AQYCUI_TO_L3F3_FAVOURITELIST",$input);
-                break;
-
-            case "Favourite_count":
-                if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
-                if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
-                if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
-
-                $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
-                $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM3DM, MSG_ID_L4AQYCUI_TO_L3F3_FAVOURITECOUNT, "MSG_ID_L4AQYCUI_TO_L3F3_FAVOURITECOUNT",$input);
-                break;
-
-            case "AlarmQuery": //查询一个监测点历史告警数据 minute/hour/day
-                if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
-                if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
-                if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
-
-                $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
-                $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM5FM, MSG_ID_L4AQYCUI_TO_L3F5_ALARMQUERY, "MSG_ID_L4AQYCUI_TO_L3F5_ALARMQUERY",$input);
-                break;
-
-            case "SensorUpdate":
-                if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
-                if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
-                if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
-
-                $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
-                $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM4ICM, MSG_ID_L4AQYCUI_TO_L3F4_SENSORUPDATE, "MSG_ID_L4AQYCUI_TO_L3F4_SENSORUPDATE",$input);
-                break;
-
-            case "SetUserMsg":
-                if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
-                if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
-                if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
-
-                $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
-                $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM7ADS, MSG_ID_L4AQYCUI_TO_L3F7_SETUSERMSG, "MSG_ID_L4AQYCUI_TO_L3F7_SETUSERMSG",$input);
-                break;
-
-            case "GetUserMsg":
-                if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
-                if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
-                if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
-
-                $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
-                $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM7ADS, MSG_ID_L4AQYCUI_TO_L3F7_GETUSERMSG, "MSG_ID_L4AQYCUI_TO_L3F7_GETUSERMSG",$input);
-                break;
-
-            case "ShowUserMsg":
-                if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
-                if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
-                if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
-
-                $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
-                $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM7ADS, MSG_ID_L4AQYCUI_TO_L3F7_SHOWUSERMSG, "MSG_ID_L4AQYCUI_TO_L3F7_SHOWUSERMSG",$input);
-                break;
-
-            case "GetUserImg":
-                if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
-                if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
-                if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
-
-                $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
-                $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM7ADS, MSG_ID_L4AQYCUI_TO_L3F7_GETUSERIMG, "MSG_ID_L4AQYCUI_TO_L3F7_GETUSERIMG",$input);
-                break;
-
-            case "ClearUserImg":
-                if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
-                if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
-                if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
-
-                $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
-                $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM7ADS, MSG_ID_L4AQYCUI_TO_L3F7_CLEARUSERIMG, "MSG_ID_L4AQYCUI_TO_L3F7_CLEARUSERIMG",$input);
-                break;
-
-            case "GetVideoList": //获取指定站点指定时间段内的所有视频文件列表
-                if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
-                if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
-                if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
-
-                $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
-                $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM4ICM, MSG_ID_L4AQYCUI_TO_L3F4_HSMMPLIST, "MSG_ID_L4AQYCUI_TO_L3F4_HSMMPLIST",$input);
-                break;
-
-            case "GetVideo":
-                if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
-                if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
-                if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
-
-                $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
-                $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM4ICM, MSG_ID_L4AQYCUI_TO_L3F4_HSMMPPLAY, "MSG_ID_L4AQYCUI_TO_L3F4_HSMMPPLAY",$input);
-                break;
-
-            case "GetCameraStatus": //Get camera vertical and horizontal angle and fetch a current photo
-                if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
-                if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
-                if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
-
-                $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
-                $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM4ICM, MSG_ID_L4AQYCUI_TO_L3F4_GETCAMERASTATUS, "MSG_ID_L4AQYCUI_TO_L3F4_GETCAMERASTATUS",$input);
-                break;
-
-            case "GetCameraUnit":
-                if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
-                if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
-                if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
-
-                $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
-                $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM4ICM, MSG_ID_L4AQYCUI_TO_L3F4_GETCAMERAUNIT, "MSG_ID_L4AQYCUI_TO_L3F4_GETCAMERAUNIT",$input);
-                break;
-            case "CameraVAdj":
-                break;
-            case "CameraHAdj":
-                break;
-
-/*********************************智能云锁新增处理 Start*********************************************/
             /*以下5条消息是公用，要考虑不同项目的适配*/
             case "DevAlarm":  //获取当前的测量值，如果测量值超出范围，提示告警
                 if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
@@ -537,6 +133,10 @@ class classTaskL4fhysUi
 
                 $input = array("action" => $action, "type" => $type,"user" => $user,"body" => $body);
                 $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM3DM, MSG_ID_L4FHYSUI_TO_L3F3_GETSTATICMONITORTABLE, "MSG_ID_L4FHYSUI_TO_L3F3_GETSTATICMONITORTABLE",$input);
+                break;
+
+            case "MonitorAlarmList":  //map alarm site
+                //TBD
                 break;
 
             case "GetWarningHandleListTable":  //告警处理表
@@ -744,14 +344,15 @@ class classTaskL4fhysUi
                 break;
 
             default:
-                $resp = "E: receive unknown UI action request";
+                $msg = array("action" => $action, 'project' => MFUN_PRJ_HCU_AQYCUI);
+                $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L4COM_UI, MSG_ID_L4COMUI_CLICK_INCOMING, "MSG_ID_L4COMUI_CLICK_INCOMING",$msg);
                 break;
         }
 
         if (!empty($resp)) {
             $jsonencode = json_encode($resp, JSON_UNESCAPED_UNICODE);
             $log_content = "T:" . $jsonencode;
-            $loggerObj->mylog($project,$user,"H5UI_ENTRY_FHYS","MFUN_TASK_ID_L4FHYS_UI",$msgName,$log_content);
+            $loggerObj->mylog($project,$user,"NULL","MFUN_TASK_ID_L4FHYS_UI",$msgName,$log_content);
             echo trim($jsonencode);
         }
 

@@ -6,7 +6,6 @@
  * Time: 22:50
  */
 include_once "../l1comvm/vmlayer.php";
-include_once "dbi_l4tbswr_ui.class.php";
 
 class classTaskL4tbswrUi
 {

@@ -300,7 +300,7 @@ class classTaskL3aplF5fm
                 break;
 
             //功能Alarm Query
-            case MSG_ID_L4AQYCUI_TO_L3F5_ALARMQUERY:
+            case MSG_ID_L4COMUI_TO_L3F5_ALARMQUERY:
                 $resp = $this->func_aqyc_alarm_query_process($action, $user, $body);
                 $project = MFUN_PRJ_HCU_AQYCUI;
                 break;

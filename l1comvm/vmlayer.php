@@ -80,6 +80,7 @@ include_once "../l3wxopr/task_l3wx_opr_fhys.class.php";
 include_once "../l3nbiotopr/task_l3nbiot_opr_meter.class.php";
 include_once "../l2timercron/task_l2timer_cron.class.php";
 include_once "../l4emcwxui/task_l4emcwx_ui.class.php";
+include_once "../l4comui/task_l4com_ui.class.php";
 include_once "../l4aqycui/task_l4aqyc_ui.class.php";
 include_once "../l4fhysui/task_l4fhys_ui.class.php";
 include_once "../l4fhyswechat/task_l4fhys_wechat.class.php";
@@ -1053,6 +1054,11 @@ class classTaskL1vmCoreRouter
                 case MFUN_TASK_ID_L3NBIOT_OPR_METER:
                     $obj = new classTaskL3nbiotOprMeter();
                     $obj->mfun_l3nbiot_opr_meter_task_main_entry($this, $result["msgId"], $result["msgName"], $result["msgBody"]);
+                    break;
+
+                case MFUN_TASK_ID_L4COM_UI:
+                    $obj = new classTaskL4comUi();
+                    $obj->mfun_l4com_ui_task_main_entry($this, $result["msgId"], $result["msgName"], $result["msgBody"]);
                     break;
 
                 case MFUN_TASK_ID_L4AQYC_UI:

@@ -379,7 +379,7 @@ class classDbiL2snrDoorlock
         $event = "NULL";
         $format = "A8rfid/A12blemac";
         $msg= unpack($format, $data);
-        if ($msg['rfid'] != MFUN_HCU_FHYS_RFID_NULL)//判断是否检测到RFID开锁请求
+        if (($msg['rfid'] != MFUN_HCU_FHYS_RFID_NULL) AND ($auth_check == false))//判断是否检测到RFID开锁请求
         {
             $rfid = $msg['rfid'];
             $keyid = "";
@@ -401,7 +401,7 @@ class classDbiL2snrDoorlock
             }
         }
         //判断是否检测到BLE开锁请求且RFID开锁没有授权
-        elseif (($msg['blemac'] != MFUN_HCU_FHYS_BLEMAC_NULL) AND ($auth_check == false))
+        if (($msg['blemac'] != MFUN_HCU_FHYS_BLEMAC_NULL) AND ($auth_check == false))
         {
             $blemac = $msg['blemac'];
             $key_type = MFUN_L3APL_F2CM_KEY_TYPE_BLE;
@@ -438,7 +438,7 @@ class classDbiL2snrDoorlock
             }
         }
         //如果RFID和BLE开锁认证都不通过，看看是否有有用户名开锁授权
-        else
+        if($auth_check == false)
         {
             $opt_key = $dbiL1vmCommonObj->byte2string(MFUN_HCU_OPT_FHYS_USERID_LOCKOPEN_RESP);
             //暂时只判断是否有针对该站点的有效次数授权

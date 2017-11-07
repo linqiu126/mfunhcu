@@ -214,7 +214,7 @@ class classDbiL3apF5fm
         }
 
         //PM2.5，噪声或温度任意一个超标，这显示该站点告警
-        if(($pm25>MFUN_L3APL_F3DM_TH_ALARM_PM25) OR ($noise)>MFUN_L3APL_F3DM_TH_ALARM_NOISE OR ($temperature)>MFUN_L3APL_F3DM_TH_ALARM_TEMP )
+        if(($pm25>MFUN_L3APL_F3DM_TH_ALARM_PM25) OR ($noise>MFUN_L3APL_F3DM_TH_ALARM_NOISE) OR ($temperature>MFUN_L3APL_F3DM_TH_ALARM_TEMP))
             $resp = true;
         else
             $resp = false;

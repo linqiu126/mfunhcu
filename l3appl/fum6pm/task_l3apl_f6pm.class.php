@@ -88,7 +88,7 @@ class classTaskL3aplF6pm
 
         switch($msgId)
         {
-            case MSG_ID_L4AQYCUI_TO_L3F6_PERFORMANCETABLE:
+            case MSG_ID_L4COMUI_TO_L3F6_PERFORMANCETABLE:
                 $resp = $this->func_aqyc_get_performance_table_process($action, $user, $body);
                 $project = MFUN_PRJ_HCU_AQYCUI;
                 break;
