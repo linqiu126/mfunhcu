@@ -78,6 +78,7 @@ define("MFUN_TASK_ID_L4FHYS_WECHAT", $taskIndex++);
 define("MFUN_TASK_ID_L4BFSC_UI", $taskIndex++);
 define("MFUN_TASK_ID_L4EMCWX_UI", $taskIndex++);
 define("MFUN_TASK_ID_L4TBSWR_UI", $taskIndex++);
+define("MFUN_TASK_ID_L4FDWQ_UI", $taskIndex++);
 define("MFUN_TASK_ID_L4NBIOT_IPM_UI", $taskIndex++);
 define("MFUN_TASK_ID_L4NBIOT_IGM_UI", $taskIndex++);
 define("MFUN_TASK_ID_L4NBIOT_IWM_UI", $taskIndex++);
@@ -100,78 +101,79 @@ class classConstL1vmSysTaskList
 {
     public static $mfunTaskArrayConst = array(
         MFUN_TASK_ID_MIN => array("NAME" => "MFUN_TASK_MIN", "PRESENT" => true),
-        MFUN_TASK_ID_L1VM => array("NAME" => "MFUN_TASK_L1VM", "PRESENT" => true),
-        MFUN_TASK_ID_L2SDK_IOT_APPLE => array("NAME" => "MFUN_TASK_L2SDK_IOT_APPLE", "PRESENT" => true),
-        MFUN_TASK_ID_L2SDK_IOT_JD => array("NAME" => "MFUN_TASK_L2SDK_IOT_JD", "PRESENT" => true),
-        MFUN_TASK_ID_L2SDK_WECHAT => array("NAME" => "MFUN_TASK_L2SDK_WECHAT", "PRESENT" => true),
-        MFUN_TASK_ID_L2SDK_IOT_WX => array("NAME" => "MFUN_TASK_L2SDK_IOT_WX", "PRESENT" => true),
-        MFUN_TASK_ID_L2SDK_IOT_WX_JSSDK => array("NAME" => "MFUN_TASK_L2SDK_IOT_WX_JSSDK", "PRESENT" => true),
-        MFUN_TASK_ID_L2SDK_IOT_STDXML => array("NAME" => "MFUN_TASK_L2SDK_IOT_STDXML", "PRESENT" => true),
-        MFUN_TASK_ID_L2SDK_IOT_HUITP => array("NAME" => "MFUN_TASK_ID_L2SDK_IOT_HUITP", "PRESENT" => true),
-        MFUN_TASK_ID_L2SDK_NBIOT_STD_QG376 => array("NAME" => "MFUN_TASK_ID_L2SDK_NBIOT_STD_QG376", "PRESENT" => true),
-        MFUN_TASK_ID_L2SDK_NBIOT_STD_CJ188 => array("NAME" => "MFUN_TASK_ID_L2SDK_NBIOT_STD_CJ188", "PRESENT" => true),
-        MFUN_TASK_ID_L2SDK_NBIOT_LTEV => array("NAME" => "MFUN_TASK_ID_L2SDK_NBIOT_LTEV", "PRESENT" => true),
-        MFUN_TASK_ID_L2SDK_NBIOT_AGC => array("NAME" => "MFUN_TASK_ID_L2SDK_NBIOT_AGC", "PRESENT" => true),
-        MFUN_TASK_ID_L2SENSOR_COMMON => array("NAME" => "MFUN_TASK_ID_L2SENSOR_COMMON", "PRESENT" => true),
-        MFUN_TASK_ID_L2SENSOR_EMC => array("NAME" => "MFUN_TASK_L2SENSOR_EMC", "PRESENT" => true),
-        MFUN_TASK_ID_L2SENSOR_HSMMP => array("NAME" => "MFUN_TASK_L2SENSOR_HSMMP", "PRESENT" => true),
-        MFUN_TASK_ID_L2SENSOR_HUMID => array("NAME" => "MFUN_TASK_L2SENSOR_HUMID", "PRESENT" => true),
-        MFUN_TASK_ID_L2SENSOR_NOISE => array("NAME" => "MFUN_TASK_L2SENSOR_NOISE", "PRESENT" => true),
-        MFUN_TASK_ID_L2SENSOR_PM25 => array("NAME" => "MFUN_TASK_L2SENSOR_PM25", "PRESENT" => true),
-        MFUN_TASK_ID_L2SENSOR_TEMP => array("NAME" => "MFUN_TASK_L2SENSOR_TEMP", "PRESENT" => true),
-        MFUN_TASK_ID_L2SENSOR_WINDDIR => array("NAME" => "MFUN_TASK_L2SENSOR_WINDDIR", "PRESENT" => true),
-        MFUN_TASK_ID_L2SENSOR_WINDSPD => array("NAME" => "MFUN_TASK_L2SENSOR_WINDSPD", "PRESENT" => true),
-        MFUN_TASK_ID_L2SENSOR_AIRPRS => array("NAME" => "MFUN_TASK_L2SENSOR_AIRPRS", "PRESENT" => true),
-        MFUN_TASK_ID_L2SENSOR_ALCOHOL => array("NAME" => "MFUN_TASK_L2SENSOR_ALCOHOL", "PRESENT" => true),
-        MFUN_TASK_ID_L2SENSOR_CO1 =>array("NAME" => "MFUN_TASK_L2SENSOR_CO1", "PRESENT" => true),
-        MFUN_TASK_ID_L2SENSOR_HCHO => array("NAME" => "MFUN_TASK_L2SENSOR_HCHO", "PRESENT" => true),
-        MFUN_TASK_ID_L2SENSOR_TOXICGAS => array("NAME" => "MFUN_TASK_L2SENSOR_TOXICGAS", "PRESENT" => true),
-        MFUN_TASK_ID_L2SENSOR_LIGHTSTR => array("NAME" => "MFUN_TASK_L2SENSOR_LIGHTSTR", "PRESENT" => true),
-        MFUN_TASK_ID_L2SENSOR_RAIN => array("NAME" => "MFUN_TASK_ID_L2SENSOR_RAIN", "PRESENT" => true),
-        MFUN_TASK_ID_L2SENSOR_IPM => array("NAME" => "MFUN_TASK_ID_L2SENSOR_IPM", "PRESENT" => true),
-        MFUN_TASK_ID_L2SENSOR_IWM => array("NAME" => "MFUN_TASK_ID_L2SENSOR_IWM", "PRESENT" => true),
-        MFUN_TASK_ID_L2SENSOR_IGM => array("NAME" => "MFUN_TASK_ID_L2SENSOR_IGM", "PRESENT" => true),
-        MFUN_TASK_ID_L2SENSOR_IHM => array("NAME" => "MFUN_TASK_ID_L2SENSOR_IHM", "PRESENT" => true),
-        MFUN_TASK_ID_L2SENSOR_BATT => array("NAME" => "MFUN_TASK_ID_L2SENSOR_BATT", "PRESENT" => true), //FHYS云控锁
-        MFUN_TASK_ID_L2SENSOR_BLE => array("NAME" => "MFUN_TASK_ID_L2SENSOR_BLE", "PRESENT" => true),
-        MFUN_TASK_ID_L2SENSOR_DOORLOCK => array("NAME" => "MFUN_TASK_ID_L2SENSOR_DOORLOCK", "PRESENT" => true),
-        MFUN_TASK_ID_L2SENSOR_CCL => array("NAME" => "MFUN_TASK_ID_L2SENSOR_CCL", "PRESENT" => true),
-        MFUN_TASK_ID_L2SENSOR_GPRS => array("NAME" => "MFUN_TASK_ID_L2SENSOR_GPRS", "PRESENT" => true),
-        MFUN_TASK_ID_L2SENSOR_RFID => array("NAME" => "MFUN_TASK_ID_L2SENSOR_RFID", "PRESENT" => true),
-        MFUN_TASK_ID_L2SENSOR_SMOK => array("NAME" => "MFUN_TASK_ID_L2SENSOR_SMOK", "PRESENT" => true),
-        MFUN_TASK_ID_L2SENSOR_VIBR => array("NAME" => "MFUN_TASK_ID_L2SENSOR_VIBR", "PRESENT" => true),
-        MFUN_TASK_ID_L2SENSOR_WATER => array("NAME" => "MFUN_TASK_ID_L2SENSOR_WATER", "PRESENT" => true),
-        MFUN_TASK_ID_L2SENSOR_WEIGHT => array("NAME" => "MFUN_TASK_ID_L2SENSOR_WEIGHT", "PRESENT" => true), //BFSC组合秤
-        MFUN_TASK_ID_L2TIMER_CRON => array("NAME" => "MFUN_TASK_ID_L2TIMER_CRON", "PRESENT" => true),
-        MFUN_TASK_ID_L2SOCKET_LISTEN => array("NAME" => "MFUN_TASK_ID_L2SOCKET_LISTEN", "PRESENT" => true),
-        MFUN_TASK_ID_L2DECODE_HUITP => array("NAME" => "MFUN_TASK_ID_L2DECODE_HUITP", "PRESENT" => true),
-        MFUN_TASK_ID_L2ENCODE_HUITP => array("NAME" => "MFUN_TASK_ID_L2ENCODE_HUITP", "PRESENT" => true),
-        MFUN_TASK_ID_L3APPL_FUM1SYM => array("NAME" => "MFUN_TASK_L3APPL_FUM1SYM", "PRESENT" => true),
-        MFUN_TASK_ID_L3APPL_FUM2CM => array("NAME" => "MFUN_TASK_L3APPL_FUM2CM", "PRESENT" => true),
-        MFUN_TASK_ID_L3APPL_FUM3DM => array("NAME" => "MFUN_TASK_L3APPL_FUM3DM", "PRESENT" => true),
-        MFUN_TASK_ID_L3APPL_FUM4ICM => array("NAME" => "MFUN_TASK_L3APPL_FUM4ICM", "PRESENT" => true),
-        MFUN_TASK_ID_L3APPL_FUM5FM => array("NAME" => "MFUN_TASK_L3APPL_FUM5FM", "PRESENT" => true),
-        MFUN_TASK_ID_L3APPL_FUM6PM => array("NAME" => "MFUN_TASK_L3APPL_FUM6PM", "PRESENT" => true),
-        MFUN_TASK_ID_L3APPL_FUM7ADS => array("NAME" => "MFUN_TASK_L3APPL_FUM7ADS", "PRESENT" => true),
-        MFUN_TASK_ID_L3APPL_FUM8PSM => array("NAME" => "MFUN_TASK_L3APPL_FUM8PSM", "PRESENT" => true),
-        MFUN_TASK_ID_L3APPL_FUM9GISM => array("NAME" => "MFUN_TASK_L3APPL_FUM9GISM", "PRESENT" => true),
-        MFUN_TASK_ID_L3APPL_FUMXPRCM => array("NAME" => "MFUN_TASK_L3APPL_FUMXPRCM", "PRESENT" => true),
-        MFUN_TASK_ID_L3WX_OPR_EMC => array("NAME" => "MFUN_TASK_ID_L3WX_OPR_EMC", "PRESENT" => true),
-        MFUN_TASK_ID_L3WX_OPR_FHYS => array("NAME" => "MFUN_TASK_ID_L3WX_OPR_FHYS", "PRESENT" => true),
-        MFUN_TASK_ID_L3NBIOT_OPR_METER => array("NAME" => "MFUN_TASK_ID_L3NBIOT_OPR_METER", "PRESENT" => true),
-        MFUN_TASK_ID_L4COM_UI => array("NAME" => "MFUN_TASK_ID_L4COM_UI", "PRESENT" => true),
-        MFUN_TASK_ID_L4AQYC_UI => array("NAME" => "MFUN_TASK_L4AQYC_UI", "PRESENT" => true),
-        MFUN_TASK_ID_L4FHYS_UI => array("NAME" => "MFUN_TASK_L4FHYS_UI", "PRESENT" => true),
-        MFUN_TASK_ID_L4FHYS_WECHAT => array("NAME" => "MFUN_TASK_ID_L4FHYS_WECHAT", "PRESENT" => true),
-        MFUN_TASK_ID_L4BFSC_UI => array("NAME" => "MFUN_TASK_L4BFSC_UI", "PRESENT" => true),
-        MFUN_TASK_ID_L4EMCWX_UI => array("NAME" => "MFUN_TASK_L4EMCWX_UI", "PRESENT" => true),
-        MFUN_TASK_ID_L4TBSWR_UI => array("NAME" => "MFUN_TASK_L4TBSWR_UI", "PRESENT" => true),
-        MFUN_TASK_ID_L4NBIOT_IPM_UI => array("NAME" => "MFUN_TASK_ID_L4NBIOT_IPM_UI", "PRESENT" => true),
-        MFUN_TASK_ID_L4NBIOT_IGM_UI => array("NAME" => "MFUN_TASK_ID_L4NBIOT_IGM_UI", "PRESENT" => true),
-        MFUN_TASK_ID_L4NBIOT_IWM_UI => array("NAME" => "MFUN_TASK_ID_L4NBIOT_IWM_UI", "PRESENT" => true),
-        MFUN_TASK_ID_L4NBIOT_IHM_UI => array("NAME" => "MFUN_TASK_ID_L4NBIOT_IHM_UI", "PRESENT" => true),
-        MFUN_TASK_ID_L4OAMTOOLS => array("NAME" => "MFUN_TASK_L4OAMTOOLS", "PRESENT" => true),
-        MFUN_TASK_ID_L5BI => array("NAME" => "MFUN_TASK_L5BI", "PRESENT" => true),
+        MFUN_TASK_ID_L1VM => array("NAME" => "MFUN_TASK_L1VM", "PRESENT" => false),
+        MFUN_TASK_ID_L2SDK_IOT_APPLE => array("NAME" => "MFUN_TASK_L2SDK_IOT_APPLE", "PRESENT" => false),
+        MFUN_TASK_ID_L2SDK_IOT_JD => array("NAME" => "MFUN_TASK_L2SDK_IOT_JD", "PRESENT" => false),
+        MFUN_TASK_ID_L2SDK_WECHAT => array("NAME" => "MFUN_TASK_L2SDK_WECHAT", "PRESENT" => false),
+        MFUN_TASK_ID_L2SDK_IOT_WX => array("NAME" => "MFUN_TASK_L2SDK_IOT_WX", "PRESENT" => false),
+        MFUN_TASK_ID_L2SDK_IOT_WX_JSSDK => array("NAME" => "MFUN_TASK_L2SDK_IOT_WX_JSSDK", "PRESENT" => false),
+        MFUN_TASK_ID_L2SDK_IOT_STDXML => array("NAME" => "MFUN_TASK_L2SDK_IOT_STDXML", "PRESENT" => false),
+        MFUN_TASK_ID_L2SDK_IOT_HUITP => array("NAME" => "MFUN_TASK_ID_L2SDK_IOT_HUITP", "PRESENT" => false),
+        MFUN_TASK_ID_L2SDK_NBIOT_STD_QG376 => array("NAME" => "MFUN_TASK_ID_L2SDK_NBIOT_STD_QG376", "PRESENT" => false),
+        MFUN_TASK_ID_L2SDK_NBIOT_STD_CJ188 => array("NAME" => "MFUN_TASK_ID_L2SDK_NBIOT_STD_CJ188", "PRESENT" => false),
+        MFUN_TASK_ID_L2SDK_NBIOT_LTEV => array("NAME" => "MFUN_TASK_ID_L2SDK_NBIOT_LTEV", "PRESENT" => false),
+        MFUN_TASK_ID_L2SDK_NBIOT_AGC => array("NAME" => "MFUN_TASK_ID_L2SDK_NBIOT_AGC", "PRESENT" => false),
+        MFUN_TASK_ID_L2SENSOR_COMMON => array("NAME" => "MFUN_TASK_ID_L2SENSOR_COMMON", "PRESENT" => false),
+        MFUN_TASK_ID_L2SENSOR_EMC => array("NAME" => "MFUN_TASK_L2SENSOR_EMC", "PRESENT" => false),
+        MFUN_TASK_ID_L2SENSOR_HSMMP => array("NAME" => "MFUN_TASK_L2SENSOR_HSMMP", "PRESENT" => false),
+        MFUN_TASK_ID_L2SENSOR_HUMID => array("NAME" => "MFUN_TASK_L2SENSOR_HUMID", "PRESENT" => false),
+        MFUN_TASK_ID_L2SENSOR_NOISE => array("NAME" => "MFUN_TASK_L2SENSOR_NOISE", "PRESENT" => false),
+        MFUN_TASK_ID_L2SENSOR_PM25 => array("NAME" => "MFUN_TASK_L2SENSOR_PM25", "PRESENT" => false),
+        MFUN_TASK_ID_L2SENSOR_TEMP => array("NAME" => "MFUN_TASK_L2SENSOR_TEMP", "PRESENT" => false),
+        MFUN_TASK_ID_L2SENSOR_WINDDIR => array("NAME" => "MFUN_TASK_L2SENSOR_WINDDIR", "PRESENT" => false),
+        MFUN_TASK_ID_L2SENSOR_WINDSPD => array("NAME" => "MFUN_TASK_L2SENSOR_WINDSPD", "PRESENT" => false),
+        MFUN_TASK_ID_L2SENSOR_AIRPRS => array("NAME" => "MFUN_TASK_L2SENSOR_AIRPRS", "PRESENT" => false),
+        MFUN_TASK_ID_L2SENSOR_ALCOHOL => array("NAME" => "MFUN_TASK_L2SENSOR_ALCOHOL", "PRESENT" => false),
+        MFUN_TASK_ID_L2SENSOR_CO1 =>array("NAME" => "MFUN_TASK_L2SENSOR_CO1", "PRESENT" => false),
+        MFUN_TASK_ID_L2SENSOR_HCHO => array("NAME" => "MFUN_TASK_L2SENSOR_HCHO", "PRESENT" => false),
+        MFUN_TASK_ID_L2SENSOR_TOXICGAS => array("NAME" => "MFUN_TASK_L2SENSOR_TOXICGAS", "PRESENT" => false),
+        MFUN_TASK_ID_L2SENSOR_LIGHTSTR => array("NAME" => "MFUN_TASK_L2SENSOR_LIGHTSTR", "PRESENT" => false),
+        MFUN_TASK_ID_L2SENSOR_RAIN => array("NAME" => "MFUN_TASK_ID_L2SENSOR_RAIN", "PRESENT" => false),
+        MFUN_TASK_ID_L2SENSOR_IPM => array("NAME" => "MFUN_TASK_ID_L2SENSOR_IPM", "PRESENT" => false),
+        MFUN_TASK_ID_L2SENSOR_IWM => array("NAME" => "MFUN_TASK_ID_L2SENSOR_IWM", "PRESENT" => false),
+        MFUN_TASK_ID_L2SENSOR_IGM => array("NAME" => "MFUN_TASK_ID_L2SENSOR_IGM", "PRESENT" => false),
+        MFUN_TASK_ID_L2SENSOR_IHM => array("NAME" => "MFUN_TASK_ID_L2SENSOR_IHM", "PRESENT" => false),
+        MFUN_TASK_ID_L2SENSOR_BATT => array("NAME" => "MFUN_TASK_ID_L2SENSOR_BATT", "PRESENT" => false), //FHYS云控锁
+        MFUN_TASK_ID_L2SENSOR_BLE => array("NAME" => "MFUN_TASK_ID_L2SENSOR_BLE", "PRESENT" => false),
+        MFUN_TASK_ID_L2SENSOR_DOORLOCK => array("NAME" => "MFUN_TASK_ID_L2SENSOR_DOORLOCK", "PRESENT" => false),
+        MFUN_TASK_ID_L2SENSOR_CCL => array("NAME" => "MFUN_TASK_ID_L2SENSOR_CCL", "PRESENT" => false),
+        MFUN_TASK_ID_L2SENSOR_GPRS => array("NAME" => "MFUN_TASK_ID_L2SENSOR_GPRS", "PRESENT" => false),
+        MFUN_TASK_ID_L2SENSOR_RFID => array("NAME" => "MFUN_TASK_ID_L2SENSOR_RFID", "PRESENT" => false),
+        MFUN_TASK_ID_L2SENSOR_SMOK => array("NAME" => "MFUN_TASK_ID_L2SENSOR_SMOK", "PRESENT" => false),
+        MFUN_TASK_ID_L2SENSOR_VIBR => array("NAME" => "MFUN_TASK_ID_L2SENSOR_VIBR", "PRESENT" => false),
+        MFUN_TASK_ID_L2SENSOR_WATER => array("NAME" => "MFUN_TASK_ID_L2SENSOR_WATER", "PRESENT" => false),
+        MFUN_TASK_ID_L2SENSOR_WEIGHT => array("NAME" => "MFUN_TASK_ID_L2SENSOR_WEIGHT", "PRESENT" => false), //BFSC组合秤
+        MFUN_TASK_ID_L2TIMER_CRON => array("NAME" => "MFUN_TASK_ID_L2TIMER_CRON", "PRESENT" => false),
+        MFUN_TASK_ID_L2SOCKET_LISTEN => array("NAME" => "MFUN_TASK_ID_L2SOCKET_LISTEN", "PRESENT" => false),
+        MFUN_TASK_ID_L2DECODE_HUITP => array("NAME" => "MFUN_TASK_ID_L2DECODE_HUITP", "PRESENT" => false),
+        MFUN_TASK_ID_L2ENCODE_HUITP => array("NAME" => "MFUN_TASK_ID_L2ENCODE_HUITP", "PRESENT" => false),
+        MFUN_TASK_ID_L3APPL_FUM1SYM => array("NAME" => "MFUN_TASK_L3APPL_FUM1SYM", "PRESENT" => false),
+        MFUN_TASK_ID_L3APPL_FUM2CM => array("NAME" => "MFUN_TASK_L3APPL_FUM2CM", "PRESENT" => false),
+        MFUN_TASK_ID_L3APPL_FUM3DM => array("NAME" => "MFUN_TASK_L3APPL_FUM3DM", "PRESENT" => false),
+        MFUN_TASK_ID_L3APPL_FUM4ICM => array("NAME" => "MFUN_TASK_L3APPL_FUM4ICM", "PRESENT" => false),
+        MFUN_TASK_ID_L3APPL_FUM5FM => array("NAME" => "MFUN_TASK_L3APPL_FUM5FM", "PRESENT" => false),
+        MFUN_TASK_ID_L3APPL_FUM6PM => array("NAME" => "MFUN_TASK_L3APPL_FUM6PM", "PRESENT" => false),
+        MFUN_TASK_ID_L3APPL_FUM7ADS => array("NAME" => "MFUN_TASK_L3APPL_FUM7ADS", "PRESENT" => false),
+        MFUN_TASK_ID_L3APPL_FUM8PSM => array("NAME" => "MFUN_TASK_L3APPL_FUM8PSM", "PRESENT" => false),
+        MFUN_TASK_ID_L3APPL_FUM9GISM => array("NAME" => "MFUN_TASK_L3APPL_FUM9GISM", "PRESENT" => false),
+        MFUN_TASK_ID_L3APPL_FUMXPRCM => array("NAME" => "MFUN_TASK_L3APPL_FUMXPRCM", "PRESENT" => false),
+        MFUN_TASK_ID_L3WX_OPR_EMC => array("NAME" => "MFUN_TASK_ID_L3WX_OPR_EMC", "PRESENT" => false),
+        MFUN_TASK_ID_L3WX_OPR_FHYS => array("NAME" => "MFUN_TASK_ID_L3WX_OPR_FHYS", "PRESENT" => false),
+        MFUN_TASK_ID_L3NBIOT_OPR_METER => array("NAME" => "MFUN_TASK_ID_L3NBIOT_OPR_METER", "PRESENT" => false),
+        MFUN_TASK_ID_L4COM_UI => array("NAME" => "MFUN_TASK_ID_L4COM_UI", "PRESENT" => false),
+        MFUN_TASK_ID_L4AQYC_UI => array("NAME" => "MFUN_TASK_L4AQYC_UI", "PRESENT" => false),
+        MFUN_TASK_ID_L4FHYS_UI => array("NAME" => "MFUN_TASK_L4FHYS_UI", "PRESENT" => false),
+        MFUN_TASK_ID_L4FHYS_WECHAT => array("NAME" => "MFUN_TASK_ID_L4FHYS_WECHAT", "PRESENT" => false),
+        MFUN_TASK_ID_L4BFSC_UI => array("NAME" => "MFUN_TASK_L4BFSC_UI", "PRESENT" => false),
+        MFUN_TASK_ID_L4EMCWX_UI => array("NAME" => "MFUN_TASK_L4EMCWX_UI", "PRESENT" => false),
+        MFUN_TASK_ID_L4TBSWR_UI => array("NAME" => "MFUN_TASK_L4TBSWR_UI", "PRESENT" => false),
+        MFUN_TASK_ID_L4FDWQ_UI => array("NAME" => "MFUN_TASK_ID_L4FDWQ_UI", "PRESENT" => false),
+        MFUN_TASK_ID_L4NBIOT_IPM_UI => array("NAME" => "MFUN_TASK_ID_L4NBIOT_IPM_UI", "PRESENT" => false),
+        MFUN_TASK_ID_L4NBIOT_IGM_UI => array("NAME" => "MFUN_TASK_ID_L4NBIOT_IGM_UI", "PRESENT" => false),
+        MFUN_TASK_ID_L4NBIOT_IWM_UI => array("NAME" => "MFUN_TASK_ID_L4NBIOT_IWM_UI", "PRESENT" => false),
+        MFUN_TASK_ID_L4NBIOT_IHM_UI => array("NAME" => "MFUN_TASK_ID_L4NBIOT_IHM_UI", "PRESENT" => false),
+        MFUN_TASK_ID_L4OAMTOOLS => array("NAME" => "MFUN_TASK_L4OAMTOOLS", "PRESENT" => false),
+        MFUN_TASK_ID_L5BI => array("NAME" => "MFUN_TASK_L5BI", "PRESENT" => false),
         MFUN_TASK_ID_MAX => array("NAME" => "MFUN_TASK_MAX", "PRESENT" => true),
         MFUN_TASK_ID_NULL => array("NAME" => "MFUN_TASK_NULL", "PRESENT" => true),
     );
@@ -179,13 +181,10 @@ class classConstL1vmSysTaskList
     //构造函数，根据配置信息初始化Present状态
     public function __construct()
     {
-        //按照不同的工作配置情况，设置模块标识及PRESENT情况
+        //按照不同的工作配置情况，设置模块标识及PRESENT情况. 系统初始化为false，根据项目需要打开对应的模块为true
         if (MFUN_CURRENT_WORKING_PROGRAM_NAME_UNIQUE == MFUN_WORKING_PROGRAM_NAME_UNIQUE_AQYC)
         {
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_MIN]["PRESENT"] = true;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L1VM]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_IOT_APPLE]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_IOT_JD]["PRESENT"] = false;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_WECHAT]["PRESENT"] = true;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_IOT_WX]["PRESENT"] = true;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_IOT_WX_JSSDK]["PRESENT"] = true;
@@ -193,10 +192,6 @@ class classConstL1vmSysTaskList
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_IOT_HUITP]["PRESENT"] =  true;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L2DECODE_HUITP]["PRESENT"] =  true;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L2ENCODE_HUITP]["PRESENT"] =  true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_NBIOT_STD_QG376]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_NBIOT_STD_CJ188]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_NBIOT_LTEV]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_NBIOT_AGC]["PRESENT"] = false;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_COMMON]["PRESENT"] = true;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_EMC]["PRESENT"] = true;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_HSMMP]["PRESENT"] = true;
@@ -217,16 +212,6 @@ class classConstL1vmSysTaskList
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_IWM]["PRESENT"] = true;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_IGM]["PRESENT"] = true;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_IHM]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_BATT]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_BLE]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_DOORLOCK]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_CCL]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_GPRS]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_RFID]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_SMOK]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_VIBR]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_WATER]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_WEIGHT]["PRESENT"] = false;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L2TIMER_CRON]["PRESENT"] = true;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SOCKET_LISTEN]["PRESENT"] = true;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM1SYM]["PRESENT"] = true;
@@ -240,106 +225,14 @@ class classConstL1vmSysTaskList
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM9GISM]["PRESENT"] = true;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUMXPRCM]["PRESENT"] = true;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L3WX_OPR_EMC]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L3WX_OPR_FHYS]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L3NBIOT_OPR_METER]["PRESENT"] = false;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L4COM_UI]["PRESENT"] = true;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L4AQYC_UI]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L4FHYS_UI]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L4FHYS_WECHAT]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L4EMCWX_UI]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L4TBSWR_UI]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L4NBIOT_IPM_UI]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L4NBIOT_IGM_UI]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L4NBIOT_IWM_UI]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L4NBIOT_IHM_UI]["PRESENT"] = false;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L4OAMTOOLS]["PRESENT"] = true;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L5BI]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_MAX]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_NULL]["PRESENT"] = false;
         }
         elseif (MFUN_CURRENT_WORKING_PROGRAM_NAME_UNIQUE == MFUN_WORKING_PROGRAM_NAME_UNIQUE_EMCWX)
         {
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_MIN]["PRESENT"] = true;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L1VM]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_IOT_APPLE]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_IOT_JD]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_WECHAT]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_IOT_WX]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_IOT_WX_JSSDK]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_IOT_HUITP]["PRESENT"] =  true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2DECODE_HUITP]["PRESENT"] =  true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2ENCODE_HUITP]["PRESENT"] =  true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_IOT_STDXML]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_NBIOT_STD_QG376]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_NBIOT_STD_CJ188]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_NBIOT_LTEV]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_NBIOT_AGC]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_COMMON]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_EMC]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_HSMMP]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_HUMID]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_NOISE]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_PM25]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_TEMP]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_WINDDIR]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_WINDSPD]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_AIRPRS]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_ALCOHOL]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_CO1]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_HCHO]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_TOXICGAS]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_LIGHTSTR]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_RAIN]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_IPM]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_IWM]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_IGM]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_IHM]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_BATT]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_BLE]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_DOORLOCK]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_CCL]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_GPRS]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_RFID]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_SMOK]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_VIBR]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_WATER]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_WEIGHT]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2TIMER_CRON]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SOCKET_LISTEN]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM1SYM]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM2CM]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM3DM]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM4ICM]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM5FM]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM6PM]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM7ADS]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM8PSM]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM9GISM]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUMXPRCM]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L3WX_OPR_EMC]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L3WX_OPR_FHYS]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L3NBIOT_OPR_METER]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L4COM_UI]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L4AQYC_UI]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L4FHYS_UI]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L4FHYS_WECHAT]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L4EMCWX_UI]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L4TBSWR_UI]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L4NBIOT_IPM_UI]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L4NBIOT_IGM_UI]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L4NBIOT_IWM_UI]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L4NBIOT_IHM_UI]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L4OAMTOOLS]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L5BI]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_MAX]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_NULL]["PRESENT"] = false;
-        }
-        elseif (MFUN_CURRENT_WORKING_PROGRAM_NAME_UNIQUE == MFUN_WORKING_PROGRAM_NAME_UNIQUE_TBSWR)
-        {
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_MIN]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L1VM]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_IOT_APPLE]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_IOT_JD]["PRESENT"] = false;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_WECHAT]["PRESENT"] = true;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_IOT_WX]["PRESENT"] = true;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_IOT_WX_JSSDK]["PRESENT"] = true;
@@ -347,10 +240,26 @@ class classConstL1vmSysTaskList
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L2DECODE_HUITP]["PRESENT"] =  true;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L2ENCODE_HUITP]["PRESENT"] =  true;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_IOT_STDXML]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_NBIOT_STD_QG376]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_NBIOT_STD_CJ188]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_NBIOT_LTEV]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_NBIOT_AGC]["PRESENT"] = false;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_COMMON]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_EMC]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2TIMER_CRON]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SOCKET_LISTEN]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L3WX_OPR_EMC]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L3WX_OPR_FHYS]["PRESENT"] = false;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L4EMCWX_UI]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L4OAMTOOLS]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L5BI]["PRESENT"] = true;
+        }
+        elseif (MFUN_CURRENT_WORKING_PROGRAM_NAME_UNIQUE == MFUN_WORKING_PROGRAM_NAME_UNIQUE_TBSWR)
+        {
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L1VM]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_WECHAT]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_IOT_WX]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_IOT_WX_JSSDK]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_IOT_HUITP]["PRESENT"] =  true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2DECODE_HUITP]["PRESENT"] =  true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2ENCODE_HUITP]["PRESENT"] =  true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_IOT_STDXML]["PRESENT"] = true;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_COMMON]["PRESENT"] = true;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_EMC]["PRESENT"] = true;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_HSMMP]["PRESENT"] = true;
@@ -367,20 +276,6 @@ class classConstL1vmSysTaskList
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_TOXICGAS]["PRESENT"] = true;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_LIGHTSTR]["PRESENT"] = true;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_RAIN]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_IPM]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_IWM]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_IGM]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_IHM]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_BATT]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_BLE]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_DOORLOCK]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_CCL]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_GPRS]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_RFID]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_SMOK]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_VIBR]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_WATER]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_WEIGHT]["PRESENT"] = false;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L2TIMER_CRON]["PRESENT"] = true;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SOCKET_LISTEN]["PRESENT"] = true;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM1SYM]["PRESENT"] = true;
@@ -394,29 +289,14 @@ class classConstL1vmSysTaskList
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM9GISM]["PRESENT"] = true;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUMXPRCM]["PRESENT"] = true;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L3WX_OPR_EMC]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L3WX_OPR_FHYS]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L3NBIOT_OPR_METER]["PRESENT"] = false;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L4COM_UI]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L4AQYC_UI]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L4FHYS_UI]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L4FHYS_WECHAT]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L4EMCWX_UI]["PRESENT"] = true;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L4TBSWR_UI]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L4NBIOT_IPM_UI]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L4NBIOT_IGM_UI]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L4NBIOT_IWM_UI]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L4NBIOT_IHM_UI]["PRESENT"] = false;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L4OAMTOOLS]["PRESENT"] = true;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L5BI]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_MAX]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_NULL]["PRESENT"] = false;
         }
         elseif (MFUN_CURRENT_WORKING_PROGRAM_NAME_UNIQUE == MFUN_WORKING_PROGRAM_NAME_UNIQUE_FHYS)
         {
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_MIN]["PRESENT"] = true;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L1VM]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_IOT_APPLE]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_IOT_JD]["PRESENT"] = false;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_WECHAT]["PRESENT"] = true;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_IOT_WX]["PRESENT"] = true;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_IOT_WX_JSSDK]["PRESENT"] = true;
@@ -424,30 +304,10 @@ class classConstL1vmSysTaskList
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L2DECODE_HUITP]["PRESENT"] =  true;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L2ENCODE_HUITP]["PRESENT"] =  true;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_IOT_STDXML]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_NBIOT_STD_QG376]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_NBIOT_STD_CJ188]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_NBIOT_LTEV]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_NBIOT_AGC]["PRESENT"] = false;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_COMMON]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_EMC]["PRESENT"] = false;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_HSMMP]["PRESENT"] = true;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_HUMID]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_NOISE]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_PM25]["PRESENT"] = false;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_TEMP]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_WINDDIR]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_WINDSPD]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_AIRPRS]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_ALCOHOL]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_CO1]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_HCHO]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_TOXICGAS]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_LIGHTSTR]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_RAIN]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_IPM]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_IWM]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_IGM]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_IHM]["PRESENT"] = false;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_BATT]["PRESENT"] = true;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_BLE]["PRESENT"] = true;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_DOORLOCK]["PRESENT"] = true;
@@ -470,30 +330,16 @@ class classConstL1vmSysTaskList
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM8PSM]["PRESENT"] = true;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM9GISM]["PRESENT"] = true;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUMXPRCM]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L3WX_OPR_EMC]["PRESENT"] = false;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L3WX_OPR_FHYS]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L3NBIOT_OPR_METER]["PRESENT"] = false;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L4COM_UI]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L4AQYC_UI]["PRESENT"] = false;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L4FHYS_UI]["PRESENT"] = true;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L4FHYS_WECHAT]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L4EMCWX_UI]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L4TBSWR_UI]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L4NBIOT_IPM_UI]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L4NBIOT_IGM_UI]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L4NBIOT_IWM_UI]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L4NBIOT_IHM_UI]["PRESENT"] = false;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L4OAMTOOLS]["PRESENT"] = true;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L5BI]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_MAX]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_NULL]["PRESENT"] = false;
         }
         elseif (MFUN_CURRENT_WORKING_PROGRAM_NAME_UNIQUE == MFUN_WORKING_PROGRAM_NAME_UNIQUE_NBIOT_IPM)
         {
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_MIN]["PRESENT"] = true;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L1VM]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_IOT_APPLE]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_IOT_JD]["PRESENT"] = false;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_WECHAT]["PRESENT"] = true;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_IOT_WX]["PRESENT"] = true;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_IOT_WX_JSSDK]["PRESENT"] = true;
@@ -502,9 +348,199 @@ class classConstL1vmSysTaskList
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L2ENCODE_HUITP]["PRESENT"] =  true;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_IOT_STDXML]["PRESENT"] = true;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_NBIOT_STD_QG376]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_NBIOT_STD_CJ188]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_NBIOT_LTEV]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_NBIOT_AGC]["PRESENT"] = false;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_NBIOT_STD_CJ188]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_NBIOT_LTEV]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_NBIOT_AGC]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_COMMON]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_HSMMP]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_HUMID]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_NOISE]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_PM25]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_TEMP]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_WINDDIR]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_WINDSPD]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_AIRPRS]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_ALCOHOL]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_CO1]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_HCHO]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_TOXICGAS]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_LIGHTSTR]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_RAIN]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_IPM]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2TIMER_CRON]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SOCKET_LISTEN]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM1SYM]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM2CM]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM3DM]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM4ICM]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM5FM]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM6PM]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM7ADS]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM8PSM]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM9GISM]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUMXPRCM]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L3WX_OPR_EMC]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L3NBIOT_OPR_METER]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L4COM_UI]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L4EMCWX_UI]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L4NBIOT_IPM_UI]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L4OAMTOOLS]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L5BI]["PRESENT"] = true;
+        }
+        elseif (MFUN_CURRENT_WORKING_PROGRAM_NAME_UNIQUE == MFUN_WORKING_PROGRAM_NAME_UNIQUE_NBIOT_IWM)
+        {
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L1VM]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_WECHAT]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_IOT_WX]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_IOT_WX_JSSDK]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_IOT_HUITP]["PRESENT"] =  true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_COMMON]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2DECODE_HUITP]["PRESENT"] =  true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2ENCODE_HUITP]["PRESENT"] =  true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_IOT_STDXML]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_NBIOT_STD_QG376]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_NBIOT_STD_CJ188]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_NBIOT_LTEV]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_NBIOT_AGC]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_HSMMP]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_HUMID]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_NOISE]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_PM25]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_TEMP]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_WINDDIR]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_WINDSPD]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_AIRPRS]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_ALCOHOL]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_CO1]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_HCHO]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_TOXICGAS]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_LIGHTSTR]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_RAIN]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_IWM]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2TIMER_CRON]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SOCKET_LISTEN]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM1SYM]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM2CM]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM3DM]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM4ICM]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM5FM]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM6PM]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM7ADS]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM8PSM]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM9GISM]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUMXPRCM]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L3NBIOT_OPR_METER]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L4COM_UI]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L4NBIOT_IWM_UI]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L4OAMTOOLS]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L5BI]["PRESENT"] = true;
+        }
+        elseif (MFUN_CURRENT_WORKING_PROGRAM_NAME_UNIQUE == MFUN_WORKING_PROGRAM_NAME_UNIQUE_NBIOT_IGM)
+        {
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L1VM]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_WECHAT]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_IOT_WX]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_IOT_WX_JSSDK]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_IOT_HUITP]["PRESENT"] =  true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2DECODE_HUITP]["PRESENT"] =  true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2ENCODE_HUITP]["PRESENT"] =  true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_IOT_STDXML]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_NBIOT_STD_QG376]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_NBIOT_STD_CJ188]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_NBIOT_LTEV]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_NBIOT_AGC]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_COMMON]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_HSMMP]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_HUMID]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_NOISE]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_PM25]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_TEMP]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_WINDDIR]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_WINDSPD]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_AIRPRS]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_ALCOHOL]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_CO1]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_HCHO]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_TOXICGAS]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_LIGHTSTR]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_RAIN]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_IGM]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2TIMER_CRON]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SOCKET_LISTEN]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM1SYM]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM2CM]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM3DM]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM4ICM]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM5FM]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM6PM]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM7ADS]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM8PSM]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM9GISM]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUMXPRCM]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L3NBIOT_OPR_METER]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L4COM_UI]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L4NBIOT_IGM_UI]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L4OAMTOOLS]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L5BI]["PRESENT"] = true;
+        }
+        elseif (MFUN_CURRENT_WORKING_PROGRAM_NAME_UNIQUE == MFUN_WORKING_PROGRAM_NAME_UNIQUE_NBIOT_IHM)
+        {
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L1VM]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_WECHAT]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_IOT_WX]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_IOT_WX_JSSDK]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_IOT_HUITP]["PRESENT"] =  true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2DECODE_HUITP]["PRESENT"] =  true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2ENCODE_HUITP]["PRESENT"] =  true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_IOT_STDXML]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_NBIOT_STD_QG376]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_NBIOT_STD_CJ188]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_NBIOT_LTEV]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_NBIOT_AGC]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_COMMON]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_HSMMP]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_HUMID]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_NOISE]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_PM25]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_TEMP]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_WINDDIR]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_WINDSPD]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_AIRPRS]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_ALCOHOL]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_CO1]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_HCHO]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_TOXICGAS]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_LIGHTSTR]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_RAIN]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_IHM]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2TIMER_CRON]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SOCKET_LISTEN]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM1SYM]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM2CM]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM3DM]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM4ICM]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM5FM]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM6PM]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM7ADS]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM8PSM]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM9GISM]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUMXPRCM]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L3NBIOT_OPR_METER]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L4COM_UI]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L4NBIOT_IHM_UI]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L4OAMTOOLS]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L5BI]["PRESENT"] = true;
+        }
+        elseif(MFUN_CURRENT_WORKING_PROGRAM_NAME_UNIQUE == MFUN_WORKING_PROGRAM_NAME_UNIQUE_FDWQ)
+        {
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L1VM]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_WECHAT]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_IOT_WX]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_IOT_WX_JSSDK]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_IOT_STDXML]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_IOT_HUITP]["PRESENT"] =  true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2DECODE_HUITP]["PRESENT"] =  true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2ENCODE_HUITP]["PRESENT"] =  true;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_COMMON]["PRESENT"] = true;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_EMC]["PRESENT"] = true;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_HSMMP]["PRESENT"] = true;
@@ -522,250 +558,9 @@ class classConstL1vmSysTaskList
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_LIGHTSTR]["PRESENT"] = true;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_RAIN]["PRESENT"] = true;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_IPM]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_IWM]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_IGM]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_IHM]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_BATT]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_BLE]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_DOORLOCK]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_CCL]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_GPRS]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_RFID]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_SMOK]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_VIBR]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_WATER]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_WEIGHT]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2TIMER_CRON]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SOCKET_LISTEN]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM1SYM]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM2CM]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM3DM]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM4ICM]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM5FM]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM6PM]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM7ADS]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM8PSM]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM9GISM]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUMXPRCM]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L3WX_OPR_EMC]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L3WX_OPR_FHYS]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L3NBIOT_OPR_METER]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L4COM_UI]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L4AQYC_UI]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L4FHYS_UI]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L4FHYS_WECHAT]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L4EMCWX_UI]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L4TBSWR_UI]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L4NBIOT_IPM_UI]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L4NBIOT_IGM_UI]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L4NBIOT_IWM_UI]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L4NBIOT_IHM_UI]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L4OAMTOOLS]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L5BI]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_MAX]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_NULL]["PRESENT"] = false;
-        }
-        elseif (MFUN_CURRENT_WORKING_PROGRAM_NAME_UNIQUE == MFUN_WORKING_PROGRAM_NAME_UNIQUE_NBIOT_IWM)
-        {
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_MIN]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L1VM]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_IOT_APPLE]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_IOT_JD]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_WECHAT]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_IOT_WX]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_IOT_WX_JSSDK]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_IOT_HUITP]["PRESENT"] =  true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_COMMON]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2DECODE_HUITP]["PRESENT"] =  true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2ENCODE_HUITP]["PRESENT"] =  true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_IOT_STDXML]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_NBIOT_STD_QG376]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_NBIOT_STD_CJ188]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_NBIOT_LTEV]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_NBIOT_AGC]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_EMC]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_HSMMP]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_HUMID]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_NOISE]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_PM25]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_TEMP]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_WINDDIR]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_WINDSPD]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_AIRPRS]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_ALCOHOL]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_CO1]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_HCHO]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_TOXICGAS]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_LIGHTSTR]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_RAIN]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_IPM]["PRESENT"] = false;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_IWM]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_IGM]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_IHM]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_BATT]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_BLE]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_DOORLOCK]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_CCL]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_GPRS]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_RFID]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_SMOK]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_VIBR]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_WATER]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_WEIGHT]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2TIMER_CRON]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SOCKET_LISTEN]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM1SYM]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM2CM]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM3DM]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM4ICM]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM5FM]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM6PM]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM7ADS]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM8PSM]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM9GISM]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUMXPRCM]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L3WX_OPR_EMC]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L3WX_OPR_FHYS]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L3NBIOT_OPR_METER]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L4COM_UI]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L4AQYC_UI]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L4FHYS_UI]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L4FHYS_WECHAT]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L4EMCWX_UI]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L4TBSWR_UI]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L4NBIOT_IPM_UI]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L4NBIOT_IGM_UI]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L4NBIOT_IWM_UI]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L4NBIOT_IHM_UI]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L4OAMTOOLS]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L5BI]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_MAX]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_NULL]["PRESENT"] = false;
-        }
-        elseif (MFUN_CURRENT_WORKING_PROGRAM_NAME_UNIQUE == MFUN_WORKING_PROGRAM_NAME_UNIQUE_NBIOT_IGM)
-        {
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_MIN]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L1VM]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_IOT_APPLE]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_IOT_JD]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_WECHAT]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_IOT_WX]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_IOT_WX_JSSDK]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_IOT_HUITP]["PRESENT"] =  true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2DECODE_HUITP]["PRESENT"] =  true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2ENCODE_HUITP]["PRESENT"] =  true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_IOT_STDXML]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_NBIOT_STD_QG376]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_NBIOT_STD_CJ188]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_NBIOT_LTEV]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_NBIOT_AGC]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_COMMON]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_EMC]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_HSMMP]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_HUMID]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_NOISE]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_PM25]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_TEMP]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_WINDDIR]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_WINDSPD]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_AIRPRS]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_ALCOHOL]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_CO1]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_HCHO]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_TOXICGAS]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_LIGHTSTR]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_RAIN]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_IPM]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_IWM]["PRESENT"] = false;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_IGM]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_IHM]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_BATT]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_BLE]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_DOORLOCK]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_CCL]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_GPRS]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_RFID]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_SMOK]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_VIBR]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_WATER]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_WEIGHT]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2TIMER_CRON]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SOCKET_LISTEN]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM1SYM]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM2CM]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM3DM]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM4ICM]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM5FM]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM6PM]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM7ADS]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM8PSM]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM9GISM]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUMXPRCM]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L3WX_OPR_EMC]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L3WX_OPR_FHYS]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L3NBIOT_OPR_METER]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L4COM_UI]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L4AQYC_UI]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L4FHYS_UI]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L4FHYS_WECHAT]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L4EMCWX_UI]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L4TBSWR_UI]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L4NBIOT_IPM_UI]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L4NBIOT_IGM_UI]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L4NBIOT_IWM_UI]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L4NBIOT_IHM_UI]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L4OAMTOOLS]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L5BI]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_MAX]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_NULL]["PRESENT"] = false;
-        }
-        elseif (MFUN_CURRENT_WORKING_PROGRAM_NAME_UNIQUE == MFUN_WORKING_PROGRAM_NAME_UNIQUE_NBIOT_IHM)
-        {
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_MIN]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L1VM]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_IOT_APPLE]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_IOT_JD]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_WECHAT]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_IOT_WX]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_IOT_WX_JSSDK]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_IOT_HUITP]["PRESENT"] =  true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2DECODE_HUITP]["PRESENT"] =  true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2ENCODE_HUITP]["PRESENT"] =  true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_IOT_STDXML]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_NBIOT_STD_QG376]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_NBIOT_STD_CJ188]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_NBIOT_LTEV]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_NBIOT_AGC]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_COMMON]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_EMC]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_HSMMP]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_HUMID]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_NOISE]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_PM25]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_TEMP]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_WINDDIR]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_WINDSPD]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_AIRPRS]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_ALCOHOL]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_CO1]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_HCHO]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_TOXICGAS]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_LIGHTSTR]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_RAIN]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_IPM]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_IWM]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_IGM]["PRESENT"] = false;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_IHM]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_BATT]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_BLE]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_DOORLOCK]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_CCL]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_GPRS]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_RFID]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_SMOK]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_VIBR]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_WATER]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_WEIGHT]["PRESENT"] = false;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L2TIMER_CRON]["PRESENT"] = true;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SOCKET_LISTEN]["PRESENT"] = true;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM1SYM]["PRESENT"] = true;
@@ -779,22 +574,10 @@ class classConstL1vmSysTaskList
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM9GISM]["PRESENT"] = true;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUMXPRCM]["PRESENT"] = true;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L3WX_OPR_EMC]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L3WX_OPR_FHYS]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L3NBIOT_OPR_METER]["PRESENT"] = true;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L4COM_UI]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L4AQYC_UI]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L4FHYS_UI]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L4FHYS_WECHAT]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L4EMCWX_UI]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L4TBSWR_UI]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L4NBIOT_IPM_UI]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L4NBIOT_IGM_UI]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L4NBIOT_IWM_UI]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L4NBIOT_IHM_UI]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L4FDWQ_UI]["PRESENT"] = true;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L4OAMTOOLS]["PRESENT"] = true;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L5BI]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_MAX]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_NULL]["PRESENT"] = false;
         }
         elseif (MFUN_CURRENT_WORKING_PROGRAM_NAME_UNIQUE == MFUN_WORKING_PROGRAM_NAME_UNIQUE_TESTMODE)
         {
@@ -861,6 +644,7 @@ class classConstL1vmSysTaskList
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L4COM_UI]["PRESENT"] = true;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L4AQYC_UI]["PRESENT"] = true;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L4FHYS_UI]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L4FDWQ_UI]["PRESENT"] = true;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L4FHYS_WECHAT]["PRESENT"] = true;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L4BFSC_UI]["PRESENT"] = true;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L4EMCWX_UI]["PRESENT"] = true;
@@ -873,85 +657,6 @@ class classConstL1vmSysTaskList
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L5BI]["PRESENT"] = true;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_MAX]["PRESENT"] = true;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_NULL]["PRESENT"] = true;
-        }
-        else
-        {
-            //缺省配置成AQYC项目
-            define("MFUN_CURRENT_WORKING_PROGRAM_NAME_UNIQUE", MFUN_WORKING_PROGRAM_NAME_UNIQUE_AQYC);
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_MIN]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L1VM]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_IOT_APPLE]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_IOT_JD]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_WECHAT]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_IOT_WX]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_IOT_WX_JSSDK]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_IOT_HUITP]["PRESENT"] =  true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2DECODE_HUITP]["PRESENT"] =  true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2ENCODE_HUITP]["PRESENT"] =  true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_IOT_STDXML]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_NBIOT_STD_QG376]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_NBIOT_STD_CJ188]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_NBIOT_LTEV]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_NBIOT_AGC]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_COMMON]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_EMC]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_HSMMP]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_HUMID]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_NOISE]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_PM25]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_TEMP]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_WINDDIR]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_WINDSPD]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_AIRPRS]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_ALCOHOL]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_CO1]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_HCHO]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_TOXICGAS]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_LIGHTSTR]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_RAIN]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_IPM]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_IWM]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_IGM]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_IHM]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_BATT]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_BLE]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_DOORLOCK]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_CCL]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_GPRS]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_RFID]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_SMOK]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_VIBR]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_WATER]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_WEIGHT]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2TIMER_CRON]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SOCKET_LISTEN]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM1SYM]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM2CM]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM3DM]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM4ICM]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM5FM]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM6PM]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM7ADS]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM8PSM]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM9GISM]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUMXPRCM]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L3WX_OPR_EMC]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L3WX_OPR_FHYS]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L3NBIOT_OPR_METER]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L4COM_UI]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L4AQYC_UI]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L4FHYS_UI]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L4FHYS_WECHAT]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L4EMCWX_UI]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L4TBSWR_UI]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L4NBIOT_IPM_UI]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L4NBIOT_IGM_UI]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L4NBIOT_IWM_UI]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L4NBIOT_IHM_UI]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L4OAMTOOLS]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L5BI]["PRESENT"] = true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_MAX]["PRESENT"] = false;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_NULL]["PRESENT"] = false;
         }
     }
 

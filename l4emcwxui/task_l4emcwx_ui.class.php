@@ -12,11 +12,6 @@ header("Content-type:text/html;charset=utf-8");
 
 class classTaskL4emcwxUi
 {
-    //构造函数
-    public function __construct()
-    {
-
-    }
 
     /**************************************************************************************
      *                             任务入口函数                                           *

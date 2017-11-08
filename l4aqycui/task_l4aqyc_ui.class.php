@@ -9,11 +9,6 @@ include_once "../l1comvm/vmlayer.php";
 
 class classTaskL4aqycUi
 {
-    //构造函数
-    public function __construct()
-    {
-
-    }
 
     /**************************************************************************************
      *                             任务入口函数                                           *
@@ -41,7 +36,7 @@ class classTaskL4aqycUi
         $resp = "";
         $user = "";
         if (isset($msg)) $action = trim($msg); else $action = "";
-        //这里是L4FHYS与L3APPL功能之间的交换矩阵，从而让UI对应的多种不确定组合变换为L3APPL确定的功能组合
+        //这里是L4AQYC与L3APPL功能之间的交换矩阵，从而让UI对应的多种不确定组合变换为L3APPL确定的功能组合
         switch($action)
         {
 
@@ -132,7 +127,7 @@ class classTaskL4aqycUi
                 if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
                 $input = array("project" => $project, "action" => $action, "type" => $type,"user" => $user,"body" => $body);
-                $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4COM_UI, MFUN_TASK_ID_L3APPL_FUM5FM, MSG_ID_L4AQYCUI_TO_L3F5_ALARMQUERY, "MSG_ID_L4AQYCUI_TO_L3F5_ALARMQUERY",$input);
+                $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM5FM, MSG_ID_L4AQYCUI_TO_L3F5_ALARMQUERY, "MSG_ID_L4AQYCUI_TO_L3F5_ALARMQUERY",$input);
                 break;
 
             case "GetWarningHandleListTable":  //告警处理表
@@ -153,7 +148,7 @@ class classTaskL4aqycUi
         if (!empty($resp)) {
             $jsonencode = json_encode($resp, JSON_UNESCAPED_UNICODE);
             $log_content = "T:" . $jsonencode;
-            $loggerObj->mylog($project,$user,"H5UI_ENTRY_AQYC","MFUN_TASK_ID_L4FHYS_UI",$msgName,$log_content);
+            $loggerObj->mylog($project,$user,"H5UI_ENTRY_AQYC","MFUN_TASK_ID_L4AQYC_UI",$msgName,$log_content);
             echo trim($jsonencode);
         }
 

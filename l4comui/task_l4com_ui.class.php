@@ -9,11 +9,6 @@ include_once "../l1comvm/vmlayer.php";
 
 class classTaskL4comUi
 {
-    //构造函数
-    public function __construct()
-    {
-
-    }
 
     /**************************************************************************************
      *                             任务入口函数                                           *
@@ -317,7 +312,7 @@ class classTaskL4comUi
                 if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
                 $input = array("project" => $project, "action" => $action, "type" => $type,"user" => $user,"body" => $body);
-                $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4COMUI_TO_L3F2_POINTACTIVEINFO, "MSG_ID_L4COMUI_TO_L3F2_POINTACTIVEINFO",$input);
+                $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4COM_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4COMUI_TO_L3F2_POINTACTIVEINFO, "MSG_ID_L4COMUI_TO_L3F2_POINTACTIVEINFO",$input);
                 break;
 
             case "StationActive": //确认站点激活成功
@@ -326,7 +321,7 @@ class classTaskL4comUi
                 if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
 
                 $input = array("project" => $project, "action" => $action, "type" => $type,"user" => $user,"body" => $body);
-                $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FHYS_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4COMUI_TO_L3F2_POINTACTIVESET, "MSG_ID_L4COMUI_TO_L3F2_POINTACTIVESET",$input);
+                $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4COM_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4COMUI_TO_L3F2_POINTACTIVESET, "MSG_ID_L4COMUI_TO_L3F2_POINTACTIVESET",$input);
                 break;
 
             case "Favourite_list": //获取用户常用站点

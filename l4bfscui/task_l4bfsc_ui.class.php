@@ -10,12 +10,6 @@ include_once "../l1comvm/vmlayer.php";
 class classTaskL4bfscUi
 {
 
-    //构造函数
-    public function __construct()
-    {
-
-    }
-
     /**************************************************************************************
      *                             任务入口函数                                           *
      *************************************************************************************/
@@ -42,7 +36,7 @@ class classTaskL4bfscUi
         $resp = "";
         $user = "";
         if (isset($msg)) $action = trim($msg); else $action = "";
-        //这里是L4FHYS与L3APPL功能之间的交换矩阵，从而让UI对应的多种不确定组合变换为L3APPL确定的功能组合
+        //这里是L4BFSC与L3APPL功能之间的交换矩阵，从而让UI对应的多种不确定组合变换为L3APPL确定的功能组合
         switch($action)
         {
             case "GetStaticMonitorTable":  //查询测量点聚合信息
