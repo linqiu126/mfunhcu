@@ -19,9 +19,10 @@ if (TC_L4AQYC_UI == true) {
 
 
     echo " [TC L4AQYC: LOGIN START]\n";
-    $_GET["action"] = "MonitorAlarmList";
-    $_GET["user"] = $sessionid;
-    require("../l4aqycui/request.php");
+    $_GET["action"] = "login";
+    $_GET["name"] = "admin";
+    $_GET["password"] = "admin";
+    require("../l4gtjyui/request.php");
     echo " [TC L4AQYC: LOGIN END]\n";
 
     //TEST CASE: L4AQYC-UI界面: START

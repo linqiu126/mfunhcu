@@ -821,6 +821,102 @@ class classConstL1vmUserWebRight
             self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_4]['query'] = 'true';
             self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_4]['mod'] = 'true';
         }
+        elseif (MFUN_CURRENT_WORKING_PROGRAM_NAME_UNIQUE == MFUN_WORKING_PROGRAM_NAME_UNIQUE_GTJY)
+        {
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['webauth']['UserManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['webauth']['ProjManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['webauth']['MPManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['webauth']['DevManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['webauth']['KeyManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['webauth']['KeyAuth'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['webauth']['KeyHistory'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['webauth']['MPMonitor'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['webauth']['MPStaticMonitorTable'] = 'true';
+            //self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['webauth']['WarningCheck'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['webauth']['WarningHandle'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['actionauth']['UserNew'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['actionauth']['UserMod'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['actionauth']['UserDel'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['actionauth']['ProjNew'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['actionauth']['ProjMod'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['actionauth']['ProjDel'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['actionauth']['PointNew'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['actionauth']['PointMod'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['actionauth']['PointDel'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['actionauth']['DevNew'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['actionauth']['DevMod'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['actionauth']['DevDel'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['actionauth']['KeyNew'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['actionauth']['KeyMod'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['actionauth']['KeyDel'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['actionauth']['OpenLock'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['actionauth']['KeyAuthNew'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['actionauth']['KeyGrant'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['query'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['mod'] = 'true';
+
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['webauth']['UserManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['webauth']['ProjManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['webauth']['MPManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['webauth']['DevManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['webauth']['KeyManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['webauth']['KeyAuth'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['webauth']['KeyHistory'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['webauth']['MPMonitor'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['webauth']['MPStaticMonitorTable'] = 'true';
+            //self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['webauth']['WarningCheck'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['webauth']['WarningHandle'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['actionauth']['UserNew'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['actionauth']['UserMod'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['actionauth']['UserDel'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['actionauth']['ProjNew'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['actionauth']['ProjMod'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['actionauth']['ProjDel'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['actionauth']['PointNew'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['actionauth']['PointMod'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['actionauth']['PointDel'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['actionauth']['DevNew'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['actionauth']['DevMod'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['actionauth']['DevDel'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['actionauth']['KeyNew'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['actionauth']['KeyMod'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['actionauth']['KeyDel'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['actionauth']['OpenLock'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['actionauth']['KeyAuthNew'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['actionauth']['KeyGrant'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['query'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['mod'] = 'true';
+
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_3]['webauth']['UserManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_3]['webauth']['ProjManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_3]['webauth']['MPManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_3]['webauth']['DevManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_3]['webauth']['KeyManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_3]['webauth']['KeyAuth'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_3]['webauth']['KeyHistory'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_3]['webauth']['MPMonitor'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_3]['webauth']['MPStaticMonitorTable'] = 'true';
+            //self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_3]['webauth']['WarningCheck'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_3]['webauth']['WarningHandle'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_3]['actionauth']['OpenLock'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_3]['query'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_3]['mod'] = 'true';
+
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_4]['webauth']['UserManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_4]['webauth']['ProjManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_4]['webauth']['MPManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_4]['webauth']['DevManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_4]['webauth']['KeyManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_4]['webauth']['KeyAuth'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_4]['webauth']['KeyHistory'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_4]['webauth']['MPMonitor'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_4]['webauth']['MPStaticMonitorTable'] = 'true';
+            //self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_4]['webauth']['WarningCheck'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_4]['webauth']['WarningHandle'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_4]['actionauth']['OpenLock'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_4]['query'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_4]['mod'] = 'true';
+        }
     }
 
     //通过授权级别获取详细授权菜单信息

@@ -87,6 +87,7 @@ include_once "../l4fhyswechat/task_l4fhys_wechat.class.php";
 include_once "../l4bfscui/task_l4bfsc_ui.class.php";
 include_once "../l4tbswrui/task_l4tbswr_ui.class.php";
 include_once "../l4fdwqui/task_l4fdwq_ui.class.php";
+include_once "../l4gtjyui/task_l4gtjy_ui.class.php";
 include_once "../l4nbiotipmui/task_l4nbiot_ipm_ui.class.php";
 include_once "../l4nbiotiwmui/task_l4nbiot_iwm_ui.class.php";
 include_once "../l4nbiotigmui/task_l4nbiot_igm_ui.class.php";
@@ -675,6 +676,20 @@ class classTaskL1vmCoreRouter
                     return false;
                 }
                 break;
+            case MFUN_MAIN_ENTRY_GTJY_UI:
+                $resp = $this->mfun_l1vm_msg_send(MFUN_TASK_ID_L1VM,
+                    MFUN_TASK_ID_L4GTJY_UI,
+                    MSG_ID_L4GTJYUI_CLICK_INCOMING,
+                    "MSG_ID_L4GTJYUI_CLICK_INCOMING",
+                    $msg);
+                if ($resp == false){
+                    $result = "Cloud: Send to message buffer error.";
+                    $log_content = "P:" . json_encode($result,JSON_UNESCAPED_UNICODE);
+                    $loggerObj->mylog(MFUN_MAIN_ENTRY_GTJY_UI,"NULL","MFUN_TASK_ID_L1VM","MFUN_TASK_ID_L4GTJY_UI","MSG_ID_L4GTJYUI_CLICK_INCOMING",$log_content);
+                    echo trim($result);
+                    return false;
+                }
+                break;
             case MFUN_MAIN_ENTRY_NBIOT_IPM_UI:
                 $resp = $this->mfun_l1vm_msg_send(MFUN_TASK_ID_L1VM,
                     MFUN_TASK_ID_L4NBIOT_IPM_UI,
@@ -1109,6 +1124,11 @@ class classTaskL1vmCoreRouter
                 case MFUN_TASK_ID_L4FDWQ_UI:
                     $obj = new classTaskL4fdwqUi();
                     $obj->mfun_l4fdwq_ui_task_main_entry($this, $result["msgId"], $result["msgName"], $result["msgBody"]);
+                    break;
+
+                case MFUN_TASK_ID_L4GTJY_UI:
+                    $obj = new classTaskL4gtjyUi();
+                    $obj->mfun_l4gtjy_ui_task_main_entry($this, $result["msgId"], $result["msgName"], $result["msgBody"]);
                     break;
 
                 case MFUN_TASK_ID_L4NBIOT_IPM_UI:

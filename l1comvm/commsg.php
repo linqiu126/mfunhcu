@@ -264,6 +264,9 @@ define("MSG_ID_L4TBSWRUI_TO_L3F4_GETTEMPSTATUS", $index++);  //查询温度状�
 //L4FDWQUI部分
 define("MSG_ID_L4FDWQUI_CLICK_INCOMING", $index++);
 
+//L4GTJY部分
+define("MSG_ID_L4GTJYUI_CLICK_INCOMING", $index++);
+
 //L4NBIOTIPMUI部分
 define("MSG_ID_L4NBIOT_IPMUI_CLICK_INCOMING", $index++);
 define("MSG_ID_L4NBIOT_IPMUI_TO_L3F1_LOGIN", $index++);
