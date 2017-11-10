@@ -524,13 +524,22 @@ class classDbiL3apF1sym
                     $grade_idx = $row['grade'];
                     $city = $row['city'];
                     $name = $row['user'];
+                    $map_online = $row['maponline'];
+                    if ($map_online == MFUN_L3APL_F1SYM_ONLINE_MAP_FLAG)
+                        $if_online = true;
+                    elseif($map_online == MFUN_L3APL_F1SYM_OFFLINE_MAP_FLAG)
+                        $if_online = false;
+
+                    $map_latitude = $row['maplatitude']/1000000;
+                    $map_longitude = $row['maplongitude']/1000000;
+                    $userpoint=array('Latitude'=>$map_latitude,'Longitude'=>$map_longitude);
                     $taskObj = new classConstL1vmUserWebRight();
                     $grade_info = $taskObj->mfun_vm_getUserGrade($grade_idx);
                     if (isset($grade_info["webauth"])) $userauth['webauth'] = $grade_info["webauth"]; else  $userauth['webauth'] = "";
                     if (isset($grade_info["query"])) $userauth['query'] = $grade_info["query"]; else  $userauth['query'] = "";
                     if (isset($grade_info["mod"])) $userauth['mod'] = $grade_info["mod"]; else  $userauth['mod'] = "";
 
-                    $userinfo = array('id'=>$sessionid,'name'=>$name,'level'=>$grade_idx,'city'=>$city,'userauth'=>$userauth);
+                    $userinfo = array('id'=>$sessionid,'name'=>$name,'level'=>$grade_idx,'city'=>$city,'online'=>$if_online,'point'=>$userpoint,'userauth'=>$userauth);
                 }
             }
         }

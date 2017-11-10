@@ -37,6 +37,8 @@ define("MFUN_L1VM_DBI_MAX_LOG_NUM", 50000);  //防止t_loginfo表单数据无限
 define("MFUN_L3APL_F1SYM_SESSION_ID_LEN", 10); //UI界面session id字符串长度
 define("MFUN_L3APL_F1SYM_USER_ID_LEN", 6); //UI界面user id字符串长度=该值+3 （UID）
 define("MFUN_L3APL_F1SYM_UID_PREFIX", "UID");  //定义用户ID的特征字，用户ID必须以UID开头
+define("MFUN_L3APL_F1SYM_ONLINE_MAP_FLAG", "Y");  //用户使用在线地图
+define("MFUN_L3APL_F1SYM_OFFLINE_MAP_FLAG", "N"); //用户使用离线地图
 
 //Socket通讯有关常量定义
 define("MFUN_SWOOLE_SOCKET_STDXML_TCP_HCUPORT", 9501); //原有XML协议swoole socket server TCP端口,处理与下位机的连接
