@@ -310,6 +310,25 @@ class classDbiL1vmCommon
         return $output;
     }
 
+
+    public function dbi_huitp_huc_socketid_inqery($devCode)
+    {
+        $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli) {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $socketid = 0;
+        $query_str = "SELECT `socketid` FROM `t_l2sdk_iothcu_inventory` WHERE (`devcode` = '$devCode')";
+        $result = $mysqli->query($query_str);
+        if ($result->num_rows>0 ){
+            $row = $result->fetch_array();
+            $socketid = $row['socketid'];
+        }
+
+        $mysqli->close();
+        return $socketid;
+    }
+
     //存储logger信息，以便用于调试任务
     public function dbi_log_process_save($project,$fromuser,$createtime,$log_content)
     {

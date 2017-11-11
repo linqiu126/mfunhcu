@@ -290,44 +290,29 @@ class classL1MainEntrySocketListenServer
     {
         //$swoole_socket_serv->send($fd, $data);//临时增加，等协商好之后修改
         $arr = json_decode($data);
-        $query="SELECT devcode,socketid from t_l2sdk_iothcu_inventory where devcode=\"$arr[0]\"";
-        $result = $swoole_socket_serv->taskwait($query);
-        if ($result !== false) {
-            list($status, $db_res) = explode(':', $result, 2);
-            if ($status == 'OK') {
-                //数据库操作成功了，执行业务逻辑代码，这里就自动释放掉MySQL连接的占用
-                //$swoole_socket_serv->send($fd, var_export(unserialize($db_res), true) .Y/m/d h:i:s a "\n");
-                $devcode=unserialize($db_res)[0]['devcode']; //restore to array
-                $socketid=unserialize($db_res)[0]['socketid'];
-                echo PHP_EOL.date('Y/m/d H:i:s', time())." ";
-                echo ("stdxml_tcp_uiport_onReceive: Device = {$devcode}, Command from UI = ").$arr[1].PHP_EOL;
-                if ($socketid != 0){
-                    $sendresult = $swoole_socket_serv->send($socketid, $arr[1]);
-                    if ($sendresult){
-                        echo date('Y/m/d H:i:s', time())." ";
-                        echo ("stdxml_tcp_uiport_onReceive: Message delivered to {$devcode} success.").PHP_EOL;
-                    } else {
-                        echo date('Y/m/d H:i:s', time())." ";
-                        echo ("[ERROR]stdxml_tcp_uiport_onReceive: Message delivery to {$devcode} failed.").PHP_EOL;
-                    }
-                } else {
-                    echo date('Y/m/d H:i:s', time())." ";
-                    echo ("[ERROR]stdxml_tcp_uiport_onReceive: sockid = 0, {$devcode} is offline.".PHP_EOL);
-                }
-                //$swoole_socket_serv->close($fd);
-            } else {
-                //$swoole_socket_serv->send($fd, $db_res);
-                echo date('Y/m/d H:i:s', time())." ";
-                echo ("[ERROR]stdxml_tcp_uiport_onReceive: query mysql failed.").PHP_EOL;
-                //$swoole_socket_serv->close($fd);
-            }
-            return;
-        } else {
-            //$swoole_socket_serv->send($fd, "Error. Task timeout\n");
+        $socketid = $arr[0];
+        $devCode = $arr[1];
+        $respData = $arr[2];
+
+        //数据库操作成功了，执行业务逻辑代码，这里就自动释放掉MySQL连接的占用
+        //$swoole_socket_serv->send($fd, var_export(unserialize($db_res), true) .Y/m/d h:i:s a "\n");
+        //$devcode=unserialize($db_res)[0]['devcode']; //restore to array
+        //$socketid=unserialize($db_res)[0]['socketid'];
+        echo PHP_EOL.date('Y/m/d H:i:s', time())." ";
+        echo ("stdxml_tcp_uiport_onReceive: Device = {$devCode}, Command from UI = ").$respData.PHP_EOL;
+
+        $result = $swoole_socket_serv->send($socketid, $respData);
+        if ($result){
             echo date('Y/m/d H:i:s', time())." ";
-            echo ("[ERROR]stdxml_tcp_uiport_onReceive: query mysql timeout.").PHP_EOL;
+            echo ("stdxml_tcp_uiport_onReceive: Message delivered to {$devCode} [socket={$socketid}] success.").PHP_EOL;
         }
-        //$swoole_socket_serv->close($fd);
+        else {
+            echo date('Y/m/d H:i:s', time())." ";
+            echo ("[ERROR]stdxml_tcp_uiport_onReceive: Message delivery to {$devCode} [socket={$socketid}] failure.").PHP_EOL;
+        }
+
+        $swoole_socket_serv->close($fd);
+        return;
     }
 
     public function stdxml_tcp_uiport_onClose($swoole_socket_serv, $fd, $reactor_id)
@@ -335,7 +320,6 @@ class classL1MainEntrySocketListenServer
         echo date('Y/m/d H:i:s', time())." ";
         echo "stdxml_tcp_uiport_onClose: Client [{$fd}] connection closed.".PHP_EOL;
     }
-
 
     /********************************************HUITP TCP hcuport****************************************************/
 

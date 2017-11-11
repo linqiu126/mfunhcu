@@ -230,9 +230,8 @@ class classDbiL2snrPm25
         //先判断数据是否缺失
         $fakedata = array();
         $query_str = "SELECT MAX(`sid`) FROM `t_l2snr_pm25data` WHERE (`deviceid` = '$devCode')";
-        $result = $mysqli->query($query_str);
-        if (($result->num_rows)>0){
-            $row = $result->fetch_array();
+        $resp = $mysqli->query($query_str);
+        if (($resp != false) && (($row = $resp->fetch_array()) > 0)){
             $last_reportdate = $row['reportdate'];
             $last_hourminindex = $row['hourminindex'];
             $last_pm01 = $row['pm01'];
@@ -271,7 +270,7 @@ class classDbiL2snrPm25
     }
 
     //更新传感器分钟聚合表
-    public function dbi_l2snr_pmdata_minreport_update($mysqli,$devCode,$statCode,$timeStamp,$pm01, $pm25, $pm10)
+    private function dbi_l2snr_pmdata_minreport_update($mysqli,$devCode,$statCode,$timeStamp,$pm01, $pm25, $pm10)
     {
         $reportdate = date("Y-m-d", $timeStamp);
         $stamp = getdate($timeStamp);
@@ -315,7 +314,6 @@ class classDbiL2snrPm25
             $result = $mysqli->query($query_str);
         }
 
-        $mysqli->close();
         return $result;
     }
 
@@ -411,11 +409,9 @@ class classDbiL2snrPm25
         $hourminindex = intval(($stamp["hours"] * 60 + floor($stamp["minutes"]/MFUN_HCU_AQYC_TIME_GRID_SIZE)));
 
         //更新数据前先判断上次记录到现在是否有缺失，如果有则补充缺失记录
-        $value_last = array();
         $query_str = "SELECT * FROM `t_l2snr_aqyc_minreport` WHERE `sid` = (SELECT MAX(`sid`) FROM `t_l2snr_aqyc_minreport` WHERE (`devcode` = '$devCode' AND `statcode` = '$statCode'))";
-        $result = $mysqli->query($query_str);
-        if (($result->num_rows)>0) {
-            $row = $result->fetch_array();
+        $resp = $mysqli->query($query_str);
+        if (($resp != false) && (($row = $resp->fetch_array()) > 0)) {
             $reportdate_last = $row['reportdate'];
             $hourminindex_last = intval($row['hourminindex']);
             $pm01_last = intval($row['pm01']);
@@ -426,14 +422,15 @@ class classDbiL2snrPm25
             $humid_last = intval($row['humidity']);
             $windspd_last = intval($row['windspeed']);
             $winddir_last = intval($row['winddirection']);
+            //数据表中最后一条记录数据
             $value_last = array("pm01"=>$pm01_last,"pm25"=>$pm25_last,"pm10"=>$pm10_last,"noise"=>$noise_last,"temp"=>$temp_last,"humid"=>$humid_last,"windspd"=>$windspd_last,"winddir"=>$winddir_last);
-        }
-
-        if (!empty($value_last)){
+            //本次报告数据
             $value_now = array("pm01"=>$tspValue,"pm25"=>$pm25Value,"pm10"=>$pm10Value,"noise"=>$noiseValue,"temp"=>$tempValue,"humid"=>$humidValue,"windspd"=>$windspdValue,"winddir"=>$winddirValue);
+            //计算插入值
             $dbiL2snrCommonObj = new classDbiL2snrCommon();
             $fakedata = $dbiL2snrCommonObj->dbi_l2snr_missingdata_insert($value_last,$reportdate_last,$hourminindex_last,$value_now,$reportdate,$hourminindex);
             $dataFlag = MFUN_HCU_DATA_FLAG_FAKE;
+            //循环插入记录
             for($i=0; $i<count($fakedata); $i++){
                 $fake_tsp = $fakedata[$i]['pm01'];
                 $fake_pm25 = $fakedata[$i]['pm25'];

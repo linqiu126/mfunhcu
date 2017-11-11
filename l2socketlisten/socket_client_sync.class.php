@@ -9,11 +9,12 @@
 class socket_client_sync
 {
     private $client;
-    private $DevCode, $respCmd;
+    private $socketId, $devCode, $respCmd;
 
-    public function __construct($DevCode, $respCmd) {
-        $this->client = new swoole_client(SWOOLE_SOCK_TCP | SWOOLE_KEEP);
-        $this->DevCode = $DevCode;
+    public function __construct($socketId, $devCode, $respCmd) {
+        $this->client = new swoole_client(SWOOLE_SOCK_TCP);
+        $this->socketId = $socketId;
+        $this->devCode = $devCode;
         $this->respCmd = $respCmd;
     }
 
@@ -27,7 +28,7 @@ class socket_client_sync
         echo date('Y/m/d H:i:s', time())." ";
         echo "Get Message From Server:{$message}\n";*/
 
-        $arr = array ($this->DevCode,$this->respCmd);
+        $arr = array ($this->socketId,$this->devCode,$this->respCmd);
         $this->client->send(json_encode($arr));
 
         //$message = $this->client->recv();

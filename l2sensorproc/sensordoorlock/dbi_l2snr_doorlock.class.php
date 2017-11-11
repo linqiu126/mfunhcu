@@ -341,9 +341,15 @@ class classDbiL2snrDoorlock
         $respCmd = $ctrl_key . $len . $para;
 
         //通过9502端口建立tcp阻塞式socket连接，向HCU转发操控命令
-        $client = new socket_client_sync($devCode, $respCmd);
-        $client->connect();
-        $resp = "Box status response send success";
+        $socketid = $dbiL1vmCommonObj->dbi_huitp_huc_socketid_inqery($devCode);
+        if ($socketid != 0){
+            $client = new socket_client_sync($socketid, $devCode, $respCmd);
+            $client->connect();
+            $resp = "Box status response send success";
+        }
+        else{
+            $resp = "E: Socket closed or not connected!";
+        }
 
         $mysqli->close();
         return $resp;//返回Response
@@ -360,14 +366,17 @@ class classDbiL2snrDoorlock
         $mysqli->query("SET NAMES utf8");
 
         $dbiL1vmCommonObj = new classDbiL1vmCommon();
+        $resp_msg = "";
+        $keyid = "";
+        $opt_key = "";
         $auth_check = false; //初始化
         $event = "NULL";
         $format = "A8rfid/A12blemac";
         $msg= unpack($format, $data);
         if (($msg['rfid'] != MFUN_HCU_FHYS_RFID_NULL) AND ($auth_check == false))//判断是否检测到RFID开锁请求
         {
+            $opt_key = $dbiL1vmCommonObj->byte2string(MFUN_HCU_OPT_FHYS_RFID_LOCKOPEN_RESP);
             $rfid = $msg['rfid'];
-            $keyid = "";
             $key_type = MFUN_L3APL_F2CM_KEY_TYPE_RFID;
             $query_str = "SELECT * FROM `t_l3f2cm_fhys_keyinfo` WHERE (`hwcode` = '$rfid' AND `keytype` = '$key_type')"; //暂时只判断是否有
             $result = $mysqli->query($query_str);
@@ -376,7 +385,6 @@ class classDbiL2snrDoorlock
                 $keyid = $row['keyid'];
                 $auth_check = $this->dbi_hcu_lock_keyauth_check($mysqli, $keyid, $statcode);
             }
-            $opt_key = $dbiL1vmCommonObj->byte2string(MFUN_HCU_OPT_FHYS_RFID_LOCKOPEN_RESP);
             if($auth_check == true){
                 $event = MFUN_L3APL_F2CM_EVENT_TYPE_RFID;
                 $resp_msg = "Lock open with RFID success: ";
@@ -388,6 +396,7 @@ class classDbiL2snrDoorlock
         //判断是否检测到BLE开锁请求且RFID开锁没有授权
         if (($msg['blemac'] != MFUN_HCU_FHYS_BLEMAC_NULL) AND ($auth_check == false))
         {
+            $opt_key = $dbiL1vmCommonObj->byte2string(MFUN_HCU_OPT_FHYS_BLE_LOCKOPEN_RESP);
             $blemac = $msg['blemac'];
             $key_type = MFUN_L3APL_F2CM_KEY_TYPE_BLE;
             $query_str = "SELECT * FROM `t_l3f2cm_fhys_keyinfo` WHERE (`hwcode` = '$blemac' AND `keytype` = '$key_type')"; //暂时只判断是否有
@@ -413,7 +422,6 @@ class classDbiL2snrDoorlock
                                       VALUES ('$keyid','$keyname','$pcode','$keystatus','$keytype','$blemac','$memo')";
                 $result = $mysqli->query($query_str);
             }
-            $opt_key = $dbiL1vmCommonObj->byte2string(MFUN_HCU_OPT_FHYS_BLE_LOCKOPEN_RESP);
             if($auth_check == true){
                 $event = MFUN_L3APL_F2CM_EVENT_TYPE_BLE;
                 $resp_msg = "Lock open with BLE success: ";
@@ -427,7 +435,6 @@ class classDbiL2snrDoorlock
         {
             $opt_key = $dbiL1vmCommonObj->byte2string(MFUN_HCU_OPT_FHYS_USERID_LOCKOPEN_RESP);
             //暂时只判断是否有针对该站点的有效次数授权
-            $keyid = "";
             $auth_type = MFUN_L3APL_F2CM_AUTH_TYPE_NUMBER;
             $query_str = "SELECT * FROM `t_l3f2cm_fhys_keyauth` WHERE (`authobjcode` = '$statcode' AND `authtype` = '$auth_type')";
             $result = $mysqli->query($query_str);
@@ -493,9 +500,15 @@ class classDbiL2snrDoorlock
         $respCmd = $ctrl_key . $len_1 . $opt_key . $para . $len_2 . $filename;
 
         //通过9502端口建立tcp阻塞式socket连接，向HCU转发操控命令
-        $client = new socket_client_sync($devCode, $respCmd);
-        $client->connect();
-        $resp = $resp_msg . $respCmd;
+        $socketid = $dbiL1vmCommonObj->dbi_huitp_huc_socketid_inqery($devCode);
+        if ($socketid != 0){
+            $client = new socket_client_sync($socketid, $devCode, $respCmd);
+            $client->connect();
+            $resp = "T: " . $resp_msg . $respCmd;
+        }
+        else{
+            $resp = "E: Socket closed or not connected!";
+        }
 
         $mysqli->close();
         return $resp;//返回Response

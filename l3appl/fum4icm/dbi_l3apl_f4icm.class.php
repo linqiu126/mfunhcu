@@ -160,41 +160,55 @@ class classDbiL3apF4icm
                 $respCmd = $ctrl_key . $len . $optkey_switch_set . $equip_id . $switch;
 
                 //通过9502端口建立tcp阻塞式socket连接，向HCU转发操控命令
-                $client = new socket_client_sync($DevCode, $respCmd);
-                $client->connect();
-
+                $socketid = $dbiL1vmCommonObj->dbi_huitp_huc_socketid_inqery($DevCode);
+                if ($socketid != 0){
+                    $client = new socket_client_sync($socketid, $DevCode, $respCmd);
+                    $client->connect();
+                }
             }
             if(!empty($ctrl_key)AND !empty($optkey_modbus_set)){
                 $modebus_addr = $dbiL1vmCommonObj->ushort2string($modebus_addr & 0xFFFF);
                 $len = $dbiL1vmCommonObj->byte2string(strlen( $optkey_modbus_set . $equip_id . $modebus_addr)/2);
                 $respCmd = $ctrl_key . $len . $optkey_modbus_set . $equip_id . $modebus_addr;
                 //通过9502端口建立tcp阻塞式socket连接，向HCU转发操控命令
-                $client = new socket_client_sync($DevCode, $respCmd);
-                $client->connect();
+                $socketid = $dbiL1vmCommonObj->dbi_huitp_huc_socketid_inqery($DevCode);
+                if ($socketid != 0){
+                    $client = new socket_client_sync($socketid, $DevCode, $respCmd);
+                    $client->connect();
+                }
             }
             if(!empty($ctrl_key)AND !empty($optkey_period_set)){
                 $meas_period = $dbiL1vmCommonObj->ushort2string($meas_period & 0xFFFF);
                 $len = $dbiL1vmCommonObj->byte2string(strlen( $optkey_period_set . $equip_id . $meas_period)/2);
                 $respCmd = $ctrl_key . $len . $optkey_period_set . $equip_id . $meas_period;
                 //通过9502端口建立tcp阻塞式socket连接，向HCU转发操控命令
-                $client = new socket_client_sync($DevCode, $respCmd);
-                $client->connect();
+                $socketid = $dbiL1vmCommonObj->dbi_huitp_huc_socketid_inqery($DevCode);
+                if ($socketid != 0){
+                    $client = new socket_client_sync($socketid, $DevCode, $respCmd);
+                    $client->connect();
+                }
             }
             if(!empty($ctrl_key) AND !empty($optkey_samples_set)){
                 $sample_interval = $dbiL1vmCommonObj->ushort2string($sample_interval & 0xFFFF);
                 $len = $dbiL1vmCommonObj->byte2string(strlen( $optkey_samples_set . $equip_id . $sample_interval)/2);
                 $respCmd = $ctrl_key . $len . $optkey_samples_set . $equip_id . $sample_interval;
                 //通过9502端口建立tcp阻塞式socket连接，向HCU转发操控命令
-                $client = new socket_client_sync($DevCode, $respCmd);
-                $client->connect();
+                $socketid = $dbiL1vmCommonObj->dbi_huitp_huc_socketid_inqery($DevCode);
+                if ($socketid != 0){
+                    $client = new socket_client_sync($socketid, $DevCode, $respCmd);
+                    $client->connect();
+                }
             }
             if(!empty($ctrl_key) AND !empty($optkey_times_set)){
                 $meas_times = $dbiL1vmCommonObj->ushort2string($meas_times & 0xFFFF);
                 $len = $dbiL1vmCommonObj->byte2string(strlen( $optkey_times_set . $equip_id . $meas_times)/2);
                 $respCmd = $ctrl_key . $len . $optkey_times_set . $equip_id . $meas_times;
                 //通过9502端口建立tcp阻塞式socket连接，向HCU转发操控命令
-                $client = new socket_client_sync($DevCode, $respCmd);
-                $client->connect();
+                $socketid = $dbiL1vmCommonObj->dbi_huitp_huc_socketid_inqery($DevCode);
+                if ($socketid != 0){
+                    $client = new socket_client_sync($socketid, $DevCode, $respCmd);
+                    $client->connect();
+                }
             }
 
             $resp = "Success";
@@ -394,10 +408,14 @@ class classDbiL3apF4icm
             $respCmd = $ctrl_key . $len . $opt_key;
 
             //通过9502端口建立tcp阻塞式socket连接，向HCU转发操控命令
-            $client = new socket_client_sync($DevCode, $respCmd);
-            $client->connect();
-
-            $resp = "Success";
+            $socketid = $dbiL1vmCommonObj->dbi_huitp_huc_socketid_inqery($DevCode);
+            if ($socketid != 0){
+                $client = new socket_client_sync($socketid, $DevCode, $respCmd);
+                $client->connect();
+                $resp = "Success";
+            }
+            else
+                $resp = "Failure";
         }
         else
             $resp = "";
@@ -499,7 +517,7 @@ class classDbiL3apF4icm
             $respCmd = $ctrl_key . $len . $opt_key . $para;
 
             //通过9502端口建立tcp阻塞式socket连接，向HCU转发操控命令
-            $client = new socket_client_sync($devCode, $respCmd);
+            $client = new socket_client_sync($socketId, $DevCode, $respCmd);
             $client->connect();
             $resp = "Lock open with UI command send success";
         }

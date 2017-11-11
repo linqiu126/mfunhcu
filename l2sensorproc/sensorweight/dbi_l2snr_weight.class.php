@@ -130,9 +130,15 @@ class classDbiL2snrWeight
             $respCmd = $ctrl_key . $len . $opt_key;
 
             //通过9502端口建立tcp阻塞式socket连接，向HCU转发操控命令
-            $client = new socket_client_sync($devCode, $respCmd);
-            $client->connect();
-            $resp = "Sensor water alarm response send success";
+            $socketid = $dbiL1vmCommonObj->dbi_huitp_huc_socketid_inqery($devCode);
+            if ($socketid != 0){
+                $client = new socket_client_sync($socketid, $devCode, $respCmd);
+                $client->connect();
+                $resp = "Sensor water alarm response send success";
+            }
+            else{
+                $resp = "E: Socket closed or not connected!";
+            }
         }
         else
             $resp = "Sensor water alarm response send failure";

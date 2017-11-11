@@ -7,9 +7,10 @@
  */
 include "socket_client_sync.class.php";
 
-$DevCode = $argv[1];
-$respCmd = $argv[2];
-$client = new socket_client_sync($DevCode, $respCmd);
+$socketId = $argv[1];
+$devCode = $argv[2];
+$respCmd = $argv[3];
+$client = new socket_client_sync($socketId, $devCode, $respCmd);
 
 $client->connect();
 
