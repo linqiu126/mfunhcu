@@ -159,7 +159,7 @@ class classDbiL2snrHsmmp
         $timeStamp = time();
         $reportDate = date("Y-m-d", $timeStamp);
         $stamp = getdate($timeStamp);
-        $hourminindex = intval(($stamp["hours"] * 60 + floor($stamp["minutes"]/MFUN_TIME_GRID_SIZE)));
+        $hourminindex = intval(($stamp["hours"] * 60 + floor($stamp["minutes"]/MFUN_HCU_AQYC_TIME_GRID_SIZE)));
 
         $dataFlag = MFUN_HCU_DATA_FLAG_VALID;
         $description = "来自设备".$devCode."上传的照片";
@@ -204,7 +204,7 @@ class classDbiL2snrHsmmp
             $timeStamp = time();
             $reportdate = date("Y-m-d", $timeStamp);
             $stamp = getdate($timeStamp);
-            $hourminindex = intval(($stamp["hours"] * 60 + floor($stamp["minutes"]/MFUN_TIME_GRID_SIZE)));
+            $hourminindex = intval(($stamp["hours"] * 60 + floor($stamp["minutes"]/MFUN_HCU_AQYC_TIME_GRID_SIZE)));
 
             $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
             if (!$mysqli) {

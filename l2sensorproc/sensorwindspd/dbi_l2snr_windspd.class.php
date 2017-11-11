@@ -62,7 +62,7 @@ class classDbiL2snrWindspd
         //存储新记录，如果发现是已经存在的数据，则覆盖，否则新增
         $reportdate = date("Y-m-d", $timeStamp);
         $stamp = getdate($timeStamp);
-        $hourminindex = intval(($stamp["hours"] * 60 + floor($stamp["minutes"]/MFUN_TIME_GRID_SIZE)));
+        $hourminindex = intval(($stamp["hours"] * 60 + floor($stamp["minutes"]/MFUN_HCU_AQYC_TIME_GRID_SIZE)));
 
         $query_str = "SELECT * FROM `t_l2snr_windspd` WHERE (`deviceid` = '$devCode' AND `reportdate` = '$reportdate' AND `hourminindex` = '$hourminindex')";
         $result = $mysqli->query($query_str);
@@ -92,7 +92,7 @@ class classDbiL2snrWindspd
 
         $reportdate = date("Y-m-d", $timeStamp);
         $stamp = getdate($timeStamp);
-        $hourminindex = intval(($stamp["hours"] * 60 + floor($stamp["minutes"]/MFUN_TIME_GRID_SIZE)));
+        $hourminindex = intval(($stamp["hours"] * 60 + floor($stamp["minutes"]/MFUN_HCU_AQYC_TIME_GRID_SIZE)));
 
         //存储新记录，如果发现是已经存在的数据，则覆盖，否则新增
         $query_str = "SELECT * FROM `t_l2snr_aqyc_minreport` WHERE (`devcode` = '$devCode' AND `statcode` = '$statCode'

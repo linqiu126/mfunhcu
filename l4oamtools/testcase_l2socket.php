@@ -83,7 +83,7 @@ if (TC_SOCKET == true) {
    // $data = "<xml><ToUserName><![CDATA[XHZN_HCU]]></ToUserName><FromUserName><![CDATA[HCU_G502_FHYS_P0001]]></FromUserName><CreateTime>1485033671</CreateTime><MsgType><![CDATA[huitp_text]]></MsgType><Content><![CDATA[A181001900030001010032001013F00002000300B40203000101F800E8]]></Content><FuncFlag>0</FuncFlag></xml>";
 
     //3081 HUITP_MSGID_uni_ycjk_data_report
-    //$data = "<xml><ToUserName><![CDATA[XHZN_HCU]]></ToUserName><FromUserName><![CDATA[HCU_G201_AQYC_SH001]]></FromUserName><CreateTime>1504340558</CreateTime><MsgType><![CDATA[huitp_text]]></MsgType><Content><![CDATA[3081002E00030001013000002504000000000000000000004204000000000000DA5C00000000000000000000000000000000]]></Content><FuncFlag>0</FuncFlag></xml>";
+    $data = "<xml><ToUserName><![CDATA[XHZN_HCU]]></ToUserName><FromUserName><![CDATA[HCU_G201_AQYC_SH001]]></FromUserName><CreateTime>1504340558</CreateTime><MsgType><![CDATA[huitp_text]]></MsgType><Content><![CDATA[3081002E00030001013000002504000000000000000000004204000000000000DA5C00000000000000000000000000000000]]></Content><FuncFlag>0</FuncFlag></xml>";
 
     $msg = array("socketid" => 1, "data"=>$data);
     $obj->mfun_l1vm_task_main_entry(MFUN_MAIN_ENTRY_IOT_HUITP, MSG_ID_L2SDK_HUITP_DATA_COMING, "MSG_ID_L2SDK_HUITP_DATA_COMING", $msg);

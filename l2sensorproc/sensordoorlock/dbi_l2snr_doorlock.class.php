@@ -20,15 +20,8 @@ class classDbiL2snrDoorlock
         return $str;
     }
 
-    private function dbi_hcu_event_log_process($keyid, $statcode, $eventtype,$picname)
+    private function dbi_hcu_event_log_process($mysqli, $keyid, $statcode, $eventtype,$picname)
     {
-        //建立连接
-        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
-        if (!$mysqli) {
-            die('Could not connect: ' . mysqli_error($mysqli));
-        }
-        $mysqli->query("SET NAMES utf8");
-
         //确认钥匙是否存在
         $query_str = "SELECT * FROM `t_l3f2cm_fhys_keyinfo` WHERE (`keyid` = '$keyid')";
         $result = $mysqli->query($query_str);
@@ -70,19 +63,11 @@ class classDbiL2snrDoorlock
             $result = $mysqli->query($query_str);
         }
 
-        $mysqli->close();
         return $result;
     }
 
-    private function dbi_hcu_lock_keyauth_check($keyid, $statcode)
+    private function dbi_hcu_lock_keyauth_check($mysqli, $keyid, $statcode)
     {
-        //建立连接
-        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
-        if (!$mysqli) {
-            die('Could not connect: ' . mysqli_error($mysqli));
-        }
-        $mysqli->query("SET NAMES utf8");
-
         $auth_check = false;
         $query_str = "SELECT * FROM `t_l3f2cm_fhys_keyauth` WHERE (`keyid` = '$keyid')";
         $result = $mysqli->query($query_str);
@@ -389,7 +374,7 @@ class classDbiL2snrDoorlock
             if (($result != false) && ($result->num_rows)>0){
                 $row = $result->fetch_array();
                 $keyid = $row['keyid'];
-                $auth_check = $this->dbi_hcu_lock_keyauth_check($keyid, $statcode);
+                $auth_check = $this->dbi_hcu_lock_keyauth_check($mysqli, $keyid, $statcode);
             }
             $opt_key = $dbiL1vmCommonObj->byte2string(MFUN_HCU_OPT_FHYS_RFID_LOCKOPEN_RESP);
             if($auth_check == true){
@@ -410,7 +395,7 @@ class classDbiL2snrDoorlock
             if (($result != false) && ($result->num_rows)>0){
                 $row = $result->fetch_array();
                 $keyid = $row['keyid'];
-                $auth_check = $this->dbi_hcu_lock_keyauth_check($keyid, $statcode);
+                $auth_check = $this->dbi_hcu_lock_keyauth_check($mysqli, $keyid, $statcode);
             }
             else{ //为该MAC地址生成一把蓝牙虚拟钥匙
                 $keyid = MFUN_L3APL_F2CM_KEY_PREFIX.$this->getRandomKeyid(MFUN_L3APL_F2CM_KEY_ID_LEN);  //KEYID的分配机制将来要重新考虑，避免重复
@@ -487,7 +472,7 @@ class classDbiL2snrDoorlock
             $timestamp = time();
             $filename = $statcode . "_" . $timestamp; //生成jpg文件名
             $picname = $filename . MFUN_HCU_SITE_PIC_FILE_TYPE;
-            $result = $this->dbi_hcu_event_log_process($keyid, $statcode, $event, $picname); //保存开锁记录，预存开锁照片名
+            $result = $this->dbi_hcu_event_log_process($mysqli, $keyid, $statcode, $event, $picname); //保存开锁记录，预存开锁照片名
 
             //生成控制命令
             $para = $dbiL1vmCommonObj->byte2string(MFUN_HCU_DATA_FHYS_LOCK_OPEN);

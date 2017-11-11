@@ -191,33 +191,21 @@ class classDbiL2snrCommon
 
     //删除对应用户所有超过90天的数据
     //缺省做成90天，如果参数错误，导致90天以内的数据强行删除，则不被认可
-    private function dbi_l2snr_perfdata_old_delete($devCode, $days)
+    private function dbi_l2snr_perfdata_old_delete($mysqli, $devCode, $days)
     {
         if ($days < MFUN_HCU_DATA_SAVE_DURATION_IN_DAYS) $days = MFUN_HCU_DATA_SAVE_DURATION_IN_DAYS;  //不允许删除90天以内的数据
-        //建立连接
-        $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
-        if (!$mysqli)
-        {
-            die('Could not connect: ' . mysqli_error($mysqli));
-        }
+
         $query_str = "DELETE FROM `t_l3f6pm_perfdata` WHERE ((`devcode` = '$devCode') AND (TO_DAYS(NOW()) - TO_DAYS(`createtime`) > '$days'))";
         $result = $mysqli->query($query_str);
-
-        $mysqli->close();
         return $result;
     }
 
     //删除对应用户所有超过90天的数据
     //缺省做成90天，如果参数错误，导致90天以内的数据强行删除，则不被认可
-    private function dbi_aqyc_l2snr_alarmdata_old_delete($devCode, $statCode, $days)
+    private function dbi_aqyc_l2snr_alarmdata_old_delete($mysqli, $devCode, $statCode, $days)
     {
         if ($days < MFUN_HCU_DATA_SAVE_DURATION_IN_DAYS) $days = MFUN_HCU_DATA_SAVE_DURATION_IN_DAYS;  //不允许删除90天以内的数据
-        //建立连接
-        $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
-        if (!$mysqli)
-        {
-            die('Could not connect: ' . mysqli_error($mysqli));
-        }
+
         $query_str = "SELECT * FROM `t_l3f5fm_aqyc_alarmdata` WHERE ((`devcode` = '$devCode') AND (`statcode` = '$statCode') AND (TO_DAYS(NOW()) - TO_DAYS(`tsgen`) > '$days'))";
         $result = $mysqli->query($query_str);
         while (($result != false) && (($row = $result->fetch_array()) > 0)) {
@@ -234,7 +222,6 @@ class classDbiL2snrCommon
             $mysqli->query($query_str);
         }
 
-        $mysqli->close();
         return $result;
     }
 
@@ -302,7 +289,7 @@ class classDbiL2snrCommon
 
         if ($diff_day == 0){
             //同一天，从上次的hourminindex插值到当前的hourminindex
-            for ($i=$timeindex_start+1; $i<$timeindex_end; $i++){
+            for ($i=$timeindex_start+MFUN_HCU_AQYC_TIME_GRID_SIZE; $i<$timeindex_end; $i=$i+MFUN_HCU_AQYC_TIME_GRID_SIZE){
                 $pm01 = rand ($pm01_start, $pm01_end);
                 $pm25 = rand ($pm25_start, $pm25_end);
                 $pm10 = rand ($pm10_start, $pm10_end);
@@ -317,7 +304,7 @@ class classDbiL2snrCommon
         }
         elseif ($diff_day == 1){
             //先插入上次记录当天剩余值
-            for ($i=$timeindex_start+1; $i<(23*60+60/MFUN_TIME_GRID_SIZE); $i++){
+            for ($i=$timeindex_start+MFUN_HCU_AQYC_TIME_GRID_SIZE; $i<(23*60+60/MFUN_HCU_AQYC_TIME_GRID_SIZE); $i=$i+MFUN_HCU_AQYC_TIME_GRID_SIZE){
                 $pm01 = rand ($pm01_start, $pm01_end);
                 $pm25 = rand ($pm25_start, $pm25_end);
                 $pm10 = rand ($pm10_start, $pm10_end);
@@ -330,7 +317,7 @@ class classDbiL2snrCommon
                 array_push($resp, $onerow);
             }
             //再插入今天当前hourminindex前的记录
-            for ($i=1; $i<$timeindex_end; $i++){
+            for ($i=1; $i<$timeindex_end; $i=$i+MFUN_HCU_AQYC_TIME_GRID_SIZE){
                 $pm01 = rand ($pm01_start, $pm01_end);
                 $pm25 = rand ($pm25_start, $pm25_end);
                 $pm10 = rand ($pm10_start, $pm10_end);
@@ -346,7 +333,7 @@ class classDbiL2snrCommon
         }
         elseif ($diff_day > 1){
             //先插入上次记录当天剩余值
-            for ($i=$timeindex_start+1; $i<(23*60+60/MFUN_TIME_GRID_SIZE); $i++){
+            for ($i=$timeindex_start+MFUN_HCU_AQYC_TIME_GRID_SIZE; $i<(23*60+60/MFUN_HCU_AQYC_TIME_GRID_SIZE); $i=$i+MFUN_HCU_AQYC_TIME_GRID_SIZE){
                 $pm01 = rand ($pm01_start, $pm01_end);
                 $pm25 = rand ($pm25_start, $pm25_end);
                 $pm10 = rand ($pm10_start, $pm10_end);
@@ -362,7 +349,7 @@ class classDbiL2snrCommon
             for($j = 1; $j<$diff_day; $j++){
                 $format = '+'.$j.' day';
                 $date_current = date('Y-m-d',strtotime($format,strtotime($date_start)));
-                for ($i=1; $i<(23*60+60/MFUN_TIME_GRID_SIZE); $i++){
+                for ($i=1; $i<(23*60+60/MFUN_HCU_AQYC_TIME_GRID_SIZE); $i=$i+MFUN_HCU_AQYC_TIME_GRID_SIZE){
                     $pm01 = rand ($pm01_start, $pm01_end);
                     $pm25 = rand ($pm25_start, $pm25_end);
                     $pm10 = rand ($pm10_start, $pm10_end);
@@ -376,7 +363,7 @@ class classDbiL2snrCommon
                 }
             }
             //再插入今天当前hourminindex前的记录
-            for ($i=1; $i<$timeindex_end; $i++){
+            for ($i=1; $i<$timeindex_end; $i=$i+MFUN_HCU_AQYC_TIME_GRID_SIZE){
                 $pm01 = rand ($pm01_start, $pm01_end);
                 $pm25 = rand ($pm25_start, $pm25_end);
                 $pm10 = rand ($pm10_start, $pm10_end);
@@ -698,13 +685,6 @@ class classDbiL2snrCommon
 
     public function dbi_huitp_xmlmsg_heart_beat_report($devCode, $statCode, $data)
     {
-        //建立连接
-        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
-        if (!$mysqli) {
-            die('Could not connect: ' . mysqli_error($mysqli));
-        }
-        $mysqli->query("SET NAMES utf8");
-
         //$data[0] = HUITP_IEID_uni_com_report，暂时没有使用
 
         //$data[1] = HUITP_IEID_uni_heart_beat_ping
@@ -736,7 +716,6 @@ class classDbiL2snrCommon
         array_push($respMsgContent, $baseConfirmIE);
         array_push($respMsgContent, $pongIE);
 
-        $mysqli->close();
         return $respMsgContent;
     }
 
@@ -747,7 +726,6 @@ class classDbiL2snrCommon
         if (!$mysqli) {
             die('Could not connect: ' . mysqli_error($mysqli));
         }
-        $mysqli->query("SET NAMES utf8");
 
         //$data[0] = HUITP_IEID_uni_com_report，暂时没有使用
 
@@ -797,7 +775,7 @@ class classDbiL2snrCommon
                     //保存照片信息
                     $date = date("Y-m-d", $timeStamp);
                     $stamp = getdate($timeStamp);
-                    $hourminindex = intval(($stamp["hours"] * 60 + floor($stamp["minutes"]/MFUN_TIME_GRID_SIZE)));
+                    $hourminindex = intval(($stamp["hours"] * 60 + floor($stamp["minutes"]/MFUN_HCU_AQYC_TIME_GRID_SIZE)));
                     $description = "站点".$statCode."告警抓拍的照片";
                     $dataflag = "Y";
                     $query_str = "INSERT INTO `t_l2snr_picturedata` (statcode,filename,filesize,filedescription,reportdate,hourminindex,dataflag)
@@ -821,7 +799,7 @@ class classDbiL2snrCommon
             $comConfirm = HUITP_IEID_UNI_COM_CONFIRM_NO;
 
         //清理过期告警记录，包括数据库记录和告警抓拍的照片
-        $result = $this->dbi_aqyc_l2snr_alarmdata_old_delete($devCode, $statCode, MFUN_HCU_DATA_SAVE_DURATION_BY_PROJ);
+        $result = $this->dbi_aqyc_l2snr_alarmdata_old_delete($mysqli, $devCode, $statCode, MFUN_HCU_DATA_SAVE_DURATION_BY_PROJ);
 
         //生成 HUITP_MSGID_uni_alarm_info_confirm 消息的内容
         $respMsgContent = array();
@@ -849,7 +827,6 @@ class classDbiL2snrCommon
         if (!$mysqli) {
             die('Could not connect: ' . mysqli_error($mysqli));
         }
-        $mysqli->query("SET NAMES utf8");
 
         //$data[0] = HUITP_IEID_uni_com_report，暂时没有使用
 
@@ -877,7 +854,7 @@ class classDbiL2snrCommon
             $comConfirm = HUITP_IEID_UNI_COM_CONFIRM_NO;
 
         //清除超期数据
-        $result = $this->dbi_l2snr_perfdata_old_delete($devCode, MFUN_HCU_DATA_SAVE_DURATION_BY_PROJ);
+        $result = $this->dbi_l2snr_perfdata_old_delete($mysqli, $devCode, MFUN_HCU_DATA_SAVE_DURATION_BY_PROJ);
 
         //生成 HUITP_MSGID_uni_performance_info_confirm 消息的内容
         $respMsgContent = array();

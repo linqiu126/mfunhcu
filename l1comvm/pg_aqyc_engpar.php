@@ -18,14 +18,11 @@ define("MFUN_L2SNR_COMAPI_DAY_VALIDE_NUM", 21);  // HCU环保标准：每日应�
 define("MFUN_L2SDK_IOTHCU_ZHB_HRB_FRAME","ZHB_HRB");  //中环保协议帧格式：心跳帧
 define("MFUN_L2SDK_IOTHCU_ZHB_NOM_FRAME","ZHB_NOM");  //中环保协议帧格式：正常数据帧
 
-//HCU_ID命名常量定义
-define ("MFUN_HCU_NAME_HWTYPE_PREFIX", "G201_");
-define ("MFUN_HCU_NAME_PROJ_PREFIX", "AQYC_");
-
 //HCU设备状态
 define ("MFUN_HCU_AQYC_STATUS_ON", "Y");
 define ("MFUN_HCU_AQYC_STATUS_OFF", "N");
 define("MFUN_HCU_AQYC_SLEEP_DURATION", 600); //如果最后一次测量报告距离现在已经超过10x60秒
+define("MFUN_HCU_AQYC_TIME_GRID_SIZE", 3); //定义用于数据存储的时间网格为。单位为分钟
 
 //扬尘摄像头访问常量
 define ("MFUN_HCU_AQYC_CAM_USERNAME", "admin");
@@ -33,7 +30,6 @@ define ("MFUN_HCU_AQYC_CAM_PASSWORD", "Bxxh!123");
 
 //定义传感器类型
 define("MFUN_L3APL_F3DM_AQYC_STYPE_PREFIX", "YC"); //AQYC传感器类型特征字
-
 define("MFUN_L3APL_F3DM_AQYC_STYPE_PM", "YC_001");
 define("MFUN_L3APL_F3DM_AQYC_STYPE_WINDSPD", "YC_002");
 define("MFUN_L3APL_F3DM_AQYC_STYPE_WINDDIR", "YC_003");

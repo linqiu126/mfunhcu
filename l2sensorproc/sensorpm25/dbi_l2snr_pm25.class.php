@@ -168,7 +168,7 @@ class classDbiL2snrPm25
         }
         elseif ($diff_day == 1){
             //先插入上次记录当天剩余值
-            for ($i=$timeindex_start+1; $i<(23*60+60/MFUN_TIME_GRID_SIZE); $i++){
+            for ($i=$timeindex_start+1; $i<(23*60+60/MFUN_HCU_AQYC_TIME_GRID_SIZE); $i++){
                 $pm01 = rand ($pm01_start, $pm01_end);
                 $pm25 = rand ($pm25_start, $pm25_end);
                 $pm10 = rand ($pm10_start, $pm10_end);
@@ -186,7 +186,7 @@ class classDbiL2snrPm25
         }
         elseif ($diff_day > 1){
             //先插入上次记录当天剩余值
-            for ($i=$timeindex_start+1; $i<(23*60+60/MFUN_TIME_GRID_SIZE); $i++){
+            for ($i=$timeindex_start+1; $i<(23*60+60/MFUN_HCU_AQYC_TIME_GRID_SIZE); $i++){
                 $pm01 = rand ($pm01_start, $pm01_end);
                 $pm25 = rand ($pm25_start, $pm25_end);
                 $pm10 = rand ($pm10_start, $pm10_end);
@@ -197,7 +197,7 @@ class classDbiL2snrPm25
             for($j = 1; $j<$diff_day; $j++){
                 $format = '+'.$j.' day';
                 $date_current = date('Y-m-d',strtotime($format,strtotime($date_start)));
-                for ($i=1; $i<(23*60+60/MFUN_TIME_GRID_SIZE); $i++){
+                for ($i=1; $i<(23*60+60/MFUN_HCU_AQYC_TIME_GRID_SIZE); $i++){
                     $pm01 = rand ($pm01_start, $pm01_end);
                     $pm25 = rand ($pm25_start, $pm25_end);
                     $pm10 = rand ($pm10_start, $pm10_end);
@@ -220,19 +220,12 @@ class classDbiL2snrPm25
 
 
     //更新每个传感器自己对应的l2snr data表
-    private function dbi_l2snr_pmdata_update($devCode, $timeStamp, $pm01, $pm25, $pm10)
+    private function dbi_l2snr_pmdata_update($mysqli, $devCode, $timeStamp, $pm01, $pm25, $pm10)
     {
-        //建立连接
-        $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
-        if (!$mysqli)
-        {
-            die('Could not connect: ' . mysqli_error($mysqli));
-        }
-
         //在更新之前先判断从上次记录到现在是否有数据缺失，如果有缺失则插入从上次上报值到当前值的随机值，补全记录
         $reportdate = date("Y-m-d", $timeStamp);
         $stamp = getdate($timeStamp);
-        $hourminindex = intval(($stamp["hours"] * 60 + floor($stamp["minutes"]/MFUN_TIME_GRID_SIZE)));
+        $hourminindex = intval(($stamp["hours"] * 60 + floor($stamp["minutes"]/MFUN_HCU_AQYC_TIME_GRID_SIZE)));
 
         //先判断数据是否缺失
         $fakedata = array();
@@ -274,23 +267,15 @@ class classDbiL2snrPm25
             $query_str = "INSERT INTO `t_l2snr_pm25data` (deviceid,pm01,pm25,pm10,dataflag,reportdate,hourminindex) VALUES ('$devCode','$pm01','$pm25','$pm10','$dataFlag','$reportdate','$hourminindex')";
             $result=$mysqli->query($query_str);
         }
-        $mysqli->close();
         return $result;
     }
 
     //更新传感器分钟聚合表
-    public function dbi_l2snr_pmdata_minreport_update($devCode,$statCode,$timeStamp,$pm01, $pm25, $pm10)
+    public function dbi_l2snr_pmdata_minreport_update($mysqli,$devCode,$statCode,$timeStamp,$pm01, $pm25, $pm10)
     {
-        //建立连接
-        $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
-        if (!$mysqli)
-        {
-            die('Could not connect: ' . mysqli_error($mysqli));
-        }
-
         $reportdate = date("Y-m-d", $timeStamp);
         $stamp = getdate($timeStamp);
-        $hourminindex = intval(($stamp["hours"] * 60 + floor($stamp["minutes"]/MFUN_TIME_GRID_SIZE)));
+        $hourminindex = intval(($stamp["hours"] * 60 + floor($stamp["minutes"]/MFUN_HCU_AQYC_TIME_GRID_SIZE)));
         $dataFlag = MFUN_HCU_DATA_FLAG_VALID;
 
         //存储新记录，如果发现是已经存在的数据，则覆盖，否则新增
@@ -309,20 +294,13 @@ class classDbiL2snrPm25
                                   VALUES ('$devCode', '$statCode', '$pm01','$pm25','$pm10','$dataFlag','$reportdate','$hourminindex')";
             $result=$mysqli->query($query_str);
         }
-        $mysqli->close();
+
         return $result;
     }
 
     //更新传感器当前报告聚合表
-    private function dbi_l2snr_pmdata_currentreport_update($devCode, $statCode, $timeStamp, $pm01, $pm25, $pm10)
+    private function dbi_l2snr_pmdata_currentreport_update($mysqli, $devCode, $statCode, $timeStamp, $pm01, $pm25, $pm10)
     {
-        //建立连接
-        $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
-        if (!$mysqli)
-        {
-            die('Could not connect: ' . mysqli_error($mysqli));
-        }
-
         $currenttime = date("Y-m-d H:i:s",$timeStamp);
 
         //存储新记录，如果发现是已经存在的数据，则覆盖，否则新增
@@ -342,35 +320,21 @@ class classDbiL2snrPm25
     }
 
     //缺省做成90天，如果参数错误，导致90天以内的数据强行删除，则不被认可
-    private function dbi_l2snr_pmdata_old_delete($devCode, $days)
+    private function dbi_l2snr_pmdata_old_delete($mysqli, $devCode, $days)
     {
         if ($days < MFUN_HCU_DATA_SAVE_DURATION_IN_DAYS) $days = MFUN_HCU_DATA_SAVE_DURATION_IN_DAYS;  //不允许删除90天以内的数据
-        //建立连接
-        $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
-        if (!$mysqli)
-        {
-            die('Could not connect: ' . mysqli_error($mysqli));
-        }
+
         $query_str = "DELETE FROM `t_l2snr_pm25data` WHERE ((`deviceid` = '$devCode') AND (TO_DAYS(NOW()) - TO_DAYS(`reportdate`) > '$days'))";
         $result = $mysqli->query($query_str);
-
-        $mysqli->close();
         return $result;
     }
 
-    private function dbi_l2snr_ycjk_data_update($devCode,$timeStamp,$report)
+    private function dbi_l2snr_ycjk_data_update($mysqli,$devCode,$timeStamp,$report)
     {
-        //建立连接
-        $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
-        if (!$mysqli)
-        {
-            die('Could not connect: ' . mysqli_error($mysqli));
-        }
-
         //存储新记录，如果发现是已经存在的数据，则覆盖，否则新增
         $reportdate = date("Y-m-d", $timeStamp);
         $stamp = getdate($timeStamp);
-        $hourminindex = intval(($stamp["hours"] * 60 + floor($stamp["minutes"]/MFUN_TIME_GRID_SIZE)));
+        $hourminindex = intval(($stamp["hours"] * 60 + floor($stamp["minutes"]/MFUN_HCU_AQYC_TIME_GRID_SIZE)));
 
         $tempValue = $report['tempValue'];
         $humidValue = $report['humidValue'];
@@ -402,20 +366,12 @@ class classDbiL2snrPm25
         $query_str = " REPLACE INTO `t_l2snr_pm25data`  (`deviceid`,`pm01`,`pm25`,`pm10`,`dataflag`,`reportdate`,`hourminindex`) VALUES ('$devCode','$tspValue','$pm25Value','$pm10Value','$dataFlag','$reportdate','$hourminindex')";
         $result = $mysqli->query($query_str);
 
-
-        $mysqli->close();
         return $result;
     }
 
-    private function dbi_l2snr_ycjk_data_old_delete($devCode, $days)
+    private function dbi_l2snr_ycjk_data_old_delete($mysqli, $devCode, $days)
     {
         if ($days < MFUN_HCU_DATA_SAVE_DURATION_IN_DAYS) $days = MFUN_HCU_DATA_SAVE_DURATION_IN_DAYS;  //不允许删除90天以内的数据
-        //建立连接
-        $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
-        if (!$mysqli)
-        {
-            die('Could not connect: ' . mysqli_error($mysqli));
-        }
 
         $query_str = "DELETE FROM `t_l2snr_tempdata` WHERE ((`deviceid` = '$devCode') AND (TO_DAYS(NOW()) - TO_DAYS(`reportdate`) > '$days'))";
         $result = $mysqli->query($query_str);
@@ -435,19 +391,11 @@ class classDbiL2snrPm25
         $query_str = "DELETE FROM `t_l2snr_pm25data` WHERE ((`deviceid` = '$devCode') AND (TO_DAYS(NOW()) - TO_DAYS(`reportdate`) > '$days'))";
         $result = $mysqli->query($query_str);
 
-        $mysqli->close();
         return $result;
     }
 
-    private function dbi_l2snr_ycjk_data_minreport_update($devCode,$statCode,$timeStamp,$report)
+    private function dbi_l2snr_ycjk_data_minreport_update($mysqli,$devCode,$statCode,$timeStamp,$report)
     {
-        //建立连接
-        $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
-        if (!$mysqli)
-        {
-            die('Could not connect: ' . mysqli_error($mysqli));
-        }
-
         $tempValue = $report['tempValue'];
         $humidValue = $report['humidValue'];
         $winddirValue = $report['winddirValue'];
@@ -460,7 +408,7 @@ class classDbiL2snrPm25
 
         $reportdate = date("Y-m-d", $timeStamp);
         $stamp = getdate($timeStamp);
-        $hourminindex = intval(($stamp["hours"] * 60 + floor($stamp["minutes"]/MFUN_TIME_GRID_SIZE)));
+        $hourminindex = intval(($stamp["hours"] * 60 + floor($stamp["minutes"]/MFUN_HCU_AQYC_TIME_GRID_SIZE)));
 
         //更新数据前先判断上次记录到现在是否有缺失，如果有则补充缺失记录
         $value_last = array();
@@ -469,7 +417,7 @@ class classDbiL2snrPm25
         if (($result->num_rows)>0) {
             $row = $result->fetch_array();
             $reportdate_last = $row['reportdate'];
-            $hourminindex_last = $row['hourminindex'];
+            $hourminindex_last = intval($row['hourminindex']);
             $pm01_last = intval($row['pm01']);
             $pm25_last = intval($row['pm25']);
             $pm10_last = intval($row['pm10']);
@@ -520,19 +468,11 @@ class classDbiL2snrPm25
                           VALUES ('$devCode', '$statCode', '$tspValue','$pm25Value','$pm10Value','$noiseValue','$windspdValue','$winddirValue','$tempValue','$humidValue','$reportdate','$hourminindex','$dataFlag')";
             $result=$mysqli->query($query_str);
         }
-        $mysqli->close();
         return $result;
     }
 
-    private function dbi_l2snr_ycjk_data_currentreport_update($devCode,$statCode,$timeStamp,$report)
+    private function dbi_l2snr_ycjk_data_currentreport_update($mysqli,$devCode,$statCode,$timeStamp,$report)
     {
-        //建立连接
-        $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
-        if (!$mysqli)
-        {
-            die('Could not connect: ' . mysqli_error($mysqli));
-        }
-
         $tempValue = $report['tempValue'];
         $humidValue = $report['humidValue'];
         $winddirValue = $report['winddirValue'];
@@ -556,7 +496,6 @@ class classDbiL2snrPm25
             $query_str = "INSERT INTO `t_l3f3dm_aqyc_currentreport` (deviceid,statcode,createtime,pm01,pm25,pm10,noise,windspeed,winddirection,temperature,humidity) VALUES ('$devCode','$statCode','$currenttime','$tspValue','$pm25Value','$pm10Value','$noiseValue','$windspdValue','$winddirValue','$tempValue','$humidValue')";
             $result = $mysqli->query($query_str);
         }
-        $mysqli->close();
         return $result;
     }
 
@@ -579,16 +518,21 @@ class classDbiL2snrPm25
 
         $timeStamp = time();
 
+        //建立连接
+        $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli)        {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
         //保存记录到对应l2snr表
-        $result = $this->dbi_l2snr_pmdata_update($devCode, $timeStamp, $pm01Value, $pm25Value, $pm10Value);
+        $result = $this->dbi_l2snr_pmdata_update($mysqli, $devCode, $timeStamp, $pm01Value, $pm25Value, $pm10Value);
         //清理超期的数据
-        $result = $this->dbi_l2snr_pmdata_old_delete($devCode, MFUN_HCU_DATA_SAVE_DURATION_BY_PROJ);  //remove old data.
+        $result = $this->dbi_l2snr_pmdata_old_delete($mysqli, $devCode, MFUN_HCU_DATA_SAVE_DURATION_BY_PROJ);  //remove old data.
 
         //更新分钟测量报告聚合表
-        $result = $this->dbi_l2snr_pmdata_minreport_update($devCode,$statCode,$timeStamp,$pm01Value, $pm25Value, $pm10Value);
+        $result = $this->dbi_l2snr_pmdata_minreport_update($mysqli, $devCode,$statCode,$timeStamp,$pm01Value, $pm25Value, $pm10Value);
 
         //更新瞬时测量值聚合表
-        $result = $this->dbi_l2snr_pmdata_currentreport_update($devCode,$statCode,$timeStamp,$pm01Value, $pm25Value, $pm10Value);
+        $result = $this->dbi_l2snr_pmdata_currentreport_update($mysqli,$devCode,$statCode,$timeStamp,$pm01Value, $pm25Value, $pm10Value);
 
         //生成 HUITP_MSGID_uni_pm25_data_confirm 消息的内容
         $respMsgContent = array();
@@ -605,6 +549,7 @@ class classDbiL2snrPm25
 
         array_push($respMsgContent, $baseConfirmIE);
 
+        $mysqli->close();
         return $respMsgContent;
     }
 
@@ -645,16 +590,23 @@ class classDbiL2snrPm25
         $report = array('tempValue'=>$tempValue,'humidValue'=>$humidValue,'winddirValue'=>$winddirValue,'windspdValue'=>$windspdValue,'noiseValue'=>$noiseValue,'pm01Value'=>$pm01Value, 'pm25Value'=>$pm25Value, 'pm10Value'=>$pm10Value,'tspValue'=>$tspValue);
 
         $timeStamp = time();
+
+        //建立连接
+        $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli){
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+
         //保存记录到对应l2snr表
-        $result = $this->dbi_l2snr_ycjk_data_update($devCode,$timeStamp,$report);
+        $result = $this->dbi_l2snr_ycjk_data_update($mysqli,$devCode,$timeStamp,$report);
         //清理超过90天记录的数据
-        $result = $this->dbi_l2snr_ycjk_data_old_delete($devCode, MFUN_HCU_DATA_SAVE_DURATION_IN_DAYS);  //remove old data.
+        $result = $this->dbi_l2snr_ycjk_data_old_delete($mysqli,$devCode,MFUN_HCU_DATA_SAVE_DURATION_IN_DAYS);  //remove old data.
 
         //更新分钟测量报告聚合表
-        $result = $this->dbi_l2snr_ycjk_data_minreport_update($devCode,$statCode,$timeStamp,$report);
+        $result = $this->dbi_l2snr_ycjk_data_minreport_update($mysqli,$devCode,$statCode,$timeStamp,$report);
 
         //更新瞬时测量值聚合表
-        $result = $this->dbi_l2snr_ycjk_data_currentreport_update($devCode,$statCode,$timeStamp,$report);
+        $result = $this->dbi_l2snr_ycjk_data_currentreport_update($mysqli,$devCode,$statCode,$timeStamp,$report);
 
         //生成 HUITP_MSGID_uni_ycjk_data_confirm 消息的内容
         $respMsgContent = array();
@@ -671,6 +623,7 @@ class classDbiL2snrPm25
 
         array_push($respMsgContent, $baseConfirmIE);
 
+        $mysqli->close();
         return $respMsgContent;
     }
 

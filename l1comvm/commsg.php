@@ -417,14 +417,7 @@ define("MSG_ID_MFUN_MAX", 0xFEFF);
 /**************************************************************************************
  *                             公共消息全局量定义                                     *
  *************************************************************************************/
-define("MFUN_TIME_GRID_SIZE", 1); //定义用于数据存储的时间网格为。单位为分钟
-define("MFUN_L2_FRAME_FORMAT_PREFIX_XML", "<x"); //XML数据格式，消息以<xml开头
-define("MFUN_L2_FRAME_FORMAT_PREFIX_ZHB", "##"); //中环保数据格式，消息以##开头
-define("MFUN_L2_FRAME_FORMAT_PREFIX_APPLE", "$<"); //APPLE数据格式
-define("MFUN_L2_FRAME_FORMAT_PREFIX_JD", "#$"); //JD数据格式
 
-define("MFUN_HCU_CMD_RESP_FAILURE",  0x00);  //HCU响应消息失败，
-define("MFUN_HCU_CMD_RESP_SUCCESS",  0x01);  //HCU响应消息成功
 
 //公共命令操作字
 define("MFUN_HCU_OPT_INVENTORY_REQ", 0x01);

@@ -30,7 +30,7 @@ class classDbiL3wxOprEmc
             $timestamp = time();
             $date = date("Y-m-d", $timestamp);
             $stamp = getdate($timestamp);
-            $hourminindex = intval(($stamp["hours"] * 60 + floor($stamp["minutes"]/MFUN_TIME_GRID_SIZE)));
+            $hourminindex = intval(($stamp["hours"] * 60 + floor($stamp["minutes"]/MFUN_HCU_AQYC_TIME_GRID_SIZE)));
 
             $query_str = "SELECT * FROM `t_l2snr_emcdata` WHERE (`deviceid` = '$deviceid' AND `reportdate` = '$date' AND `hourminindex` = '$hourminindex')";
             $result = $mysqli->query($query_str);
@@ -66,7 +66,7 @@ class classDbiL3wxOprEmc
             $timestamp = time();
             $date = date("Y-m-d", $timestamp);
             $stamp = getdate($timestamp);
-            $hourminindex = intval(($stamp["hours"] * 60 + floor($stamp["minutes"]/MFUN_TIME_GRID_SIZE)));
+            $hourminindex = intval(($stamp["hours"] * 60 + floor($stamp["minutes"]/MFUN_HCU_AQYC_TIME_GRID_SIZE)));
 
             for($i=0; $i<24; $i++){
                 $emcvalue = 0;
