@@ -529,6 +529,8 @@ class classDbiL3apF1sym
                         $if_online = true;
                     elseif($map_online == MFUN_L3APL_F1SYM_OFFLINE_MAP_FLAG)
                         $if_online = false;
+                    else //默认为在线地图
+                        $if_online = true;
 
                     $map_latitude = $row['maplatitude']/1000000;
                     $map_longitude = $row['maplongitude']/1000000;
