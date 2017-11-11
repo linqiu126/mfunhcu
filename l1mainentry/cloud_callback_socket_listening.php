@@ -242,14 +242,14 @@ class classL1MainEntrySocketListenServer
     //具体port处理函数
     public function stdxml_tcp_hcuport_onConnect($swoole_socket_serv, $fd, $from_id ) {
         echo date('Y/m/d H:i:s', time())." ";
-        echo "stdxml_tcp_hcuport_onConnect: Client [{$fd}] connected, from_reactor_id=$from_id".PHP_EOL;
+        echo "stdxml_tcp_hcuport_onConnect: HCU_Client [{$fd}] connected".PHP_EOL;
         //$swoole_socket_serv->send( $fd, "Hello {$fd}!" );
     }
 
     //STDXML hcuport入口函数，收到消息直接转发给HCU IOT模块并带上socketid，L1socket模块只负责消息收发，不进行任何消息解码工作
     public function stdxml_tcp_hcuport_onReceive($swoole_socket_serv, $fd, $reactor_id, $data) {
         echo PHP_EOL.date('Y/m/d H:i:s', time())." ";
-        echo "stdxml_tcp_hcuport_onReceive: From Client [{$fd}] : {$data}".PHP_EOL;
+        echo "stdxml_tcp_hcuport_onReceive: From HCU_Client [{$fd}] : {$data}".PHP_EOL;
 
         $msg = array("socketid" => $fd, "data"=>$data);
         $obj = new classTaskL1vmCoreRouter();
@@ -258,7 +258,7 @@ class classL1MainEntrySocketListenServer
 
     public function stdxml_tcp_hcuport_onClose($swoole_socket_serv, $fd, $reactor_id) {
         echo date('Y/m/d H:i:s', time())." ";
-        echo "stdxml_tcp_hcuport_onClose: Client [{$fd}] closed connection.".PHP_EOL;
+        echo "stdxml_tcp_hcuport_onClose: HCU_Client [{$fd}] closed connection.".PHP_EOL;
         //reset socketid in t_l2sdk_iothcu_inventory when connection closed.
         $query="UPDATE t_l2sdk_iothcu_inventory  SET socketid = 0 WHERE socketid = $fd"; 
         $result = $swoole_socket_serv->taskwait($query);
@@ -283,7 +283,7 @@ class classL1MainEntrySocketListenServer
     public  function stdxml_tcp_uiport_onConnect($swoole_socket_serv, $fd, $from_id)
     {
         echo date('Y/m/d H:i:s', time())." ";
-        echo "stdxml_tcp_uiport_onConnect: Client [{$fd}] connected, from_reactor_id=$from_id".PHP_EOL;
+        echo "stdxml_tcp_uiport_onConnect: UI_Client [{$fd}] connected".PHP_EOL;
     }
 
     public function stdxml_tcp_uiport_onReceive($swoole_socket_serv, $fd, $reactor_id, $data)
@@ -318,7 +318,7 @@ class classL1MainEntrySocketListenServer
     public function stdxml_tcp_uiport_onClose($swoole_socket_serv, $fd, $reactor_id)
     {
         echo date('Y/m/d H:i:s', time())." ";
-        echo "stdxml_tcp_uiport_onClose: Client [{$fd}] connection closed.".PHP_EOL;
+        echo "stdxml_tcp_uiport_onClose: UI_Client [{$fd}] connection closed.".PHP_EOL;
     }
 
     /********************************************HUITP TCP hcuport****************************************************/
@@ -326,14 +326,14 @@ class classL1MainEntrySocketListenServer
     public function huitpxml_tcp_hcuport_onConnect($swoole_socket_serv, $fd, $from_id)
     {
         echo date('Y/m/d H:i:s', time())." ";
-        echo "huitpxml_tcp_hcuport_onConnect: Client [{$fd}] connected, from_reactor_id=$from_id".PHP_EOL;
+        echo "huitpxml_tcp_hcuport_onConnect: HCU_Client [{$fd}] connected".PHP_EOL;
     }
 
     //HUITP cclport入口函数，收到消息直接转发给HUITP IOT模块并带上socketid，L1socket模块只负责消息收发，不进行任何消息解码工作
     public function huitpxml_tcp_hcuport_onReceive($swoole_socket_serv, $fd, $reactor_id, $data)
     {
         echo PHP_EOL.date('Y/m/d H:i:s', time())." ";
-        echo "huitpxml_tcp_hcuport_onReceive: From Client [{$fd}] : {$data}".PHP_EOL;
+        echo "huitpxml_tcp_hcuport_onReceive: From HCU_Client [{$fd}] : {$data}".PHP_EOL;
 
         $msg = array("socketid" => $fd, "data"=>$data);
         $obj = new classTaskL1vmCoreRouter();
@@ -343,7 +343,7 @@ class classL1MainEntrySocketListenServer
     public function huitpxml_tcp_hcuport_onClose($swoole_socket_serv, $fd, $reactor_id)
     {
         echo date('Y/m/d H:i:s', time())." ";
-        echo "huitpxml_tcp_hcuport_onClose: Client [{$fd}] connection closed.".PHP_EOL;
+        echo "huitpxml_tcp_hcuport_onClose: HCU_Client [{$fd}] connection closed.".PHP_EOL;
 
         //reset socketid in t_l2sdk_iothcu_inventory when connection closed.
         $query="UPDATE t_l2sdk_iothcu_inventory  SET socketid = 0 WHERE socketid = $fd";
@@ -368,7 +368,7 @@ class classL1MainEntrySocketListenServer
 
     public function huitpxml_tcp_picport_onConnect($swoole_socket_serv, $fd, $from_id ) {
         echo date('Y/m/d H:i:s', time())." ";
-        echo "huitpxml_tcp_picport_onConnect: Client [{$fd}] connected, from_reactor_id=$from_id".PHP_EOL;
+        echo "huitpxml_tcp_picport_onConnect: HCU_Client [{$fd}] connected".PHP_EOL;
         //$swoole_socket_serv->send( $fd, "Hello {$fd}!" );
     }
 
@@ -385,7 +385,7 @@ class classL1MainEntrySocketListenServer
     public function huitpxml_tcp_picport_onClose( $swoole_socket_serv, $fd, $from_id )
     {
         echo date('Y/m/d H:i:s', time())." ";
-        echo "huitpxml_tcp_picport_onClose: Client [{$fd}] connection closed".PHP_EOL;
+        echo "huitpxml_tcp_picport_onClose: HCU_Client [{$fd}] connection closed".PHP_EOL;
 
         //reset socketid in t_l2sdk_iothcu_inventory when connection closed.
         $query="UPDATE t_l2sdk_iothcu_inventory  SET socketid = 0 WHERE socketid = $fd";
