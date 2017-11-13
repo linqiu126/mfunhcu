@@ -96,44 +96,6 @@ ALTER TABLE `t_l3f5fm_fhys_alarmdata`
 
 class classDbiL3apF5fm
 {
-    //构造函数
-    public function __construct()
-    {
-
-    }
-
-    //删除对应设备所有超期的告警数据
-    //缺省做成90天，如果参数错误，导致90天以内的数据强行删除，则不被认可
-    private function dbi_l3f5fm_aqyc_alarmdata_old_delete($statCode, $days)
-    {
-        if ($days < MFUN_HCU_DATA_SAVE_DURATION_IN_DAYS) $days = MFUN_HCU_DATA_SAVE_DURATION_IN_DAYS;  //不允许删除90天以内的数据
-        //建立连接
-        $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
-        if (!$mysqli)
-        {
-            die('Could not connect: ' . mysqli_error($mysqli));
-        }
-        $result = $mysqli->query("DELETE FROM `t_l3f5fm_aqyc_alarmdata` WHERE ((`statcode` = '$statCode') AND (TO_DAYS(NOW()) - TO_DAYS(`timestamp`) > '$days'))");
-        $mysqli->close();
-        return $result;
-    }
-
-    //删除对应设备所有超期的告警数据
-    //缺省做成90天，如果参数错误，导致90天以内的数据强行删除，则不被认可
-    private function dbi_l3f5fm_fhys_alarmdata_old_delete($statCode, $days)
-    {
-        if ($days < MFUN_HCU_DATA_SAVE_DURATION_IN_DAYS) $days = MFUN_HCU_DATA_SAVE_DURATION_IN_DAYS;  //不允许删除90天以内的数据
-        //建立连接
-        $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
-        if (!$mysqli)
-        {
-            die('Could not connect: ' . mysqli_error($mysqli));
-        }
-        $result = $mysqli->query("DELETE FROM `t_l3f5fm_fhys_alarmdata` WHERE ((`statcode` = '$statCode') AND (TO_DAYS(NOW()) - TO_DAYS(`tsgen`) > '$days'))");
-        $mysqli->close();
-        return $result;
-    }
-
     //查询用户授权的stat_code和proj_code list
     private function dbi_user_statproj_inqury($uid)
     {
@@ -346,9 +308,6 @@ class classDbiL3apF5fm
             //$projCode = $auth_list[$i]["p_code"];
             $statCode = $auth_list[$i]["stat_code"];
 
-            //删除超期的历史数据
-            $this->dbi_l3f5fm_aqyc_alarmdata_old_delete($statCode, MFUN_HCU_DATA_SAVE_DURATION_BY_PROJ);
-
             $query_str = "SELECT * FROM `t_l3f3dm_siteinfo` WHERE `statcode` = '$statCode'";
             $result = $mysqli->query($query_str);
             if (($result->num_rows) > 0){
@@ -466,8 +425,6 @@ class classDbiL3apF5fm
         for($i=0; $i<count($auth_list); $i++)
         {
             $statCode = $auth_list[$i]["stat_code"];
-            //删除超期的历史数据
-            $this->dbi_l3f5fm_fhys_alarmdata_old_delete($statCode, MFUN_HCU_DATA_SAVE_DURATION_BY_PROJ);
 
             $query_str = "SELECT * FROM `t_l3f3dm_siteinfo` WHERE `statcode` = '$statCode'";
             $result = $mysqli->query($query_str);

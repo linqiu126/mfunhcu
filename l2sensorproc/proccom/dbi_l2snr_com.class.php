@@ -188,43 +188,6 @@ ALTER TABLE `t_l2snr_fhys_minreport`
 
 class classDbiL2snrCommon
 {
-
-    //删除对应用户所有超过90天的数据
-    //缺省做成90天，如果参数错误，导致90天以内的数据强行删除，则不被认可
-    private function dbi_l2snr_perfdata_old_delete($mysqli, $devCode, $days)
-    {
-        if ($days < MFUN_HCU_DATA_SAVE_DURATION_IN_DAYS) $days = MFUN_HCU_DATA_SAVE_DURATION_IN_DAYS;  //不允许删除90天以内的数据
-
-        $query_str = "DELETE FROM `t_l3f6pm_perfdata` WHERE ((`devcode` = '$devCode') AND (TO_DAYS(NOW()) - TO_DAYS(`createtime`) > '$days'))";
-        $result = $mysqli->query($query_str);
-        return $result;
-    }
-
-    //删除对应用户所有超过90天的数据
-    //缺省做成90天，如果参数错误，导致90天以内的数据强行删除，则不被认可
-    private function dbi_aqyc_l2snr_alarmdata_old_delete($mysqli, $devCode, $statCode, $days)
-    {
-        if ($days < MFUN_HCU_DATA_SAVE_DURATION_IN_DAYS) $days = MFUN_HCU_DATA_SAVE_DURATION_IN_DAYS;  //不允许删除90天以内的数据
-
-        $query_str = "SELECT * FROM `t_l3f5fm_aqyc_alarmdata` WHERE ((`devcode` = '$devCode') AND (`statcode` = '$statCode') AND (TO_DAYS(NOW()) - TO_DAYS(`tsgen`) > '$days'))";
-        $result = $mysqli->query($query_str);
-        while (($result != false) && (($row = $result->fetch_array()) > 0)) {
-            $sid = $row['sid'];
-            $alarmpic = $row['alarmpic'];
-            //清理过期照片
-            if(!empty($alarmpic)){
-                $filelink = $fileLink = MFUN_HCU_SITE_PIC_BASE_DIR.$statCode.'/'.$alarmpic;
-                chmod($filelink, 0777);
-                $resp = unlink($filelink);
-            }
-            //删除对应的告警记录
-            $query_str = "DELETE FROM `t_l3f5fm_aqyc_alarmdata` WHERE (`sid` = '$sid')";
-            $mysqli->query($query_str);
-        }
-
-        return $result;
-    }
-
     //用于HUITP汇报数值根据format进行转换
     public function dbi_l2snr_datavalue_convert($format, $data)
     {
@@ -798,9 +761,6 @@ class classDbiL2snrCommon
         else
             $comConfirm = HUITP_IEID_UNI_COM_CONFIRM_NO;
 
-        //清理过期告警记录，包括数据库记录和告警抓拍的照片
-        $result = $this->dbi_aqyc_l2snr_alarmdata_old_delete($mysqli, $devCode, $statCode, MFUN_HCU_DATA_SAVE_DURATION_BY_PROJ);
-
         //生成 HUITP_MSGID_uni_alarm_info_confirm 消息的内容
         $respMsgContent = array();
         $baseConfirmIE = array();
@@ -852,9 +812,6 @@ class classDbiL2snrCommon
             $comConfirm = HUITP_IEID_UNI_COM_CONFIRM_YES;
         else
             $comConfirm = HUITP_IEID_UNI_COM_CONFIRM_NO;
-
-        //清除超期数据
-        $result = $this->dbi_l2snr_perfdata_old_delete($mysqli, $devCode, MFUN_HCU_DATA_SAVE_DURATION_BY_PROJ);
 
         //生成 HUITP_MSGID_uni_performance_info_confirm 消息的内容
         $respMsgContent = array();

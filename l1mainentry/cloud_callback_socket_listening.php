@@ -87,14 +87,14 @@ class classL1MainEntrySocketListenServer
             'package_eof ' => '</xml>') //设置EOF字符串, package_eof最大只允许传入8个字节的字符串
         );*/
 
-        //stdxml_tcp_uiport 来自UI界面或者上层发送给远端设备的消息，TCP端口9502
-        $stdxml_tcp_uiport = $this->swoole_socket_serv->listen("0.0.0.0", MFUN_SWOOLE_SOCKET_STDXML_TCP_UIPORT, SWOOLE_SOCK_TCP);
-        //$stdxml_tcp_uiport->set(array(
+        //tcp_uiport 来自UI界面或者上层发送给远端设备的消息，TCP端口9502
+        $tcp_uiport = $this->swoole_socket_serv->listen("0.0.0.0", MFUN_SWOOLE_SOCKET_STDXML_TCP_UIPORT, SWOOLE_SOCK_TCP);
+        //$tcp_uiport->set(array(
         //    'open_tcp_nodelay' => true ) //开启后TCP连接发送数据时会无关闭Nagle合并算法，立即发往客户端连接。在某些场景下，如http服务器，可以提升响应速度。
         //);
-        $stdxml_tcp_uiport->on('Connect', array($this, 'stdxml_tcp_uiport_onConnect'));
-        $stdxml_tcp_uiport->on('Receive', array($this, 'stdxml_tcp_uiport_onReceive'));
-        $stdxml_tcp_uiport->on('Close', array($this, 'stdxml_tcp_uiport_onClose'));
+        $tcp_uiport->on('Connect', array($this, 'tcp_uiport_onConnect'));
+        $tcp_uiport->on('Receive', array($this, 'tcp_uiport_onReceive'));
+        $tcp_uiport->on('Close', array($this, 'tcp_uiport_onClose'));
 
         //huitpxml_tcp_port, 传送HUITP消息，TCP端口9511
         $huitpxml_tcp_hcuport = $this->swoole_socket_serv->listen("0.0.0.0", MFUN_SWOOLE_SOCKET_HUITPXML_TCP, SWOOLE_SOCK_TCP);
@@ -278,15 +278,15 @@ class classL1MainEntrySocketListenServer
         }
     }
 
-    /********************************************STDXML TCP uiport****************************************************/
+    /***********************************************TCP uiport********************************************************/
 
-    public  function stdxml_tcp_uiport_onConnect($swoole_socket_serv, $fd, $from_id)
+    public  function tcp_uiport_onConnect($swoole_socket_serv, $fd, $from_id)
     {
         echo date('Y/m/d H:i:s', time())." ";
-        echo "stdxml_tcp_uiport_onConnect: UI_Client [{$fd}] connected".PHP_EOL;
+        echo "tcp_uiport_onConnect: UI_Client [{$fd}] connected".PHP_EOL;
     }
 
-    public function stdxml_tcp_uiport_onReceive($swoole_socket_serv, $fd, $reactor_id, $data)
+    public function tcp_uiport_onReceive($swoole_socket_serv, $fd, $reactor_id, $data)
     {
         //$swoole_socket_serv->send($fd, $data);//临时增加，等协商好之后修改
         $arr = json_decode($data);
@@ -299,26 +299,26 @@ class classL1MainEntrySocketListenServer
         //$devcode=unserialize($db_res)[0]['devcode']; //restore to array
         //$socketid=unserialize($db_res)[0]['socketid'];
         echo PHP_EOL.date('Y/m/d H:i:s', time())." ";
-        echo ("stdxml_tcp_uiport_onReceive: Device = {$devCode}, Command from UI = ").$respData.PHP_EOL;
+        echo ("tcp_uiport_onReceive: Device = {$devCode}, Command from UI = ").$respData.PHP_EOL;
 
         $result = $swoole_socket_serv->send($socketid, $respData);
         if ($result){
             echo date('Y/m/d H:i:s', time())." ";
-            echo ("stdxml_tcp_uiport_onReceive: Message delivered to {$devCode} [socket={$socketid}] success.").PHP_EOL;
+            echo ("tcp_uiport_onReceive: Message delivered to {$devCode} [socket={$socketid}] success.").PHP_EOL;
         }
         else {
             echo date('Y/m/d H:i:s', time())." ";
-            echo ("[ERROR]stdxml_tcp_uiport_onReceive: Message delivery to {$devCode} [socket={$socketid}] failure.").PHP_EOL;
+            echo ("[ERROR]tcp_uiport_onReceive: Message delivery to {$devCode} [socket={$socketid}] failure.").PHP_EOL;
         }
 
         $swoole_socket_serv->close($fd);
         return;
     }
 
-    public function stdxml_tcp_uiport_onClose($swoole_socket_serv, $fd, $reactor_id)
+    public function tcp_uiport_onClose($swoole_socket_serv, $fd, $reactor_id)
     {
         echo date('Y/m/d H:i:s', time())." ";
-        echo "stdxml_tcp_uiport_onClose: UI_Client [{$fd}] connection closed.".PHP_EOL;
+        echo "tcp_uiport_onClose: UI_Client [{$fd}] connection closed.".PHP_EOL;
     }
 
     /********************************************HUITP TCP hcuport****************************************************/
@@ -385,7 +385,7 @@ class classL1MainEntrySocketListenServer
     public function huitpxml_tcp_picport_onClose( $swoole_socket_serv, $fd, $from_id )
     {
         echo date('Y/m/d H:i:s', time())." ";
-        echo "huitpxml_tcp_picport_onClose: HCU_Client [{$fd}] connection closed".PHP_EOL;
+        echo "huitpxml_tcp_picport_onClose: Client [{$fd}] connection closed".PHP_EOL;
 
         //reset socketid in t_l2sdk_iothcu_inventory when connection closed.
         $query="UPDATE t_l2sdk_iothcu_inventory  SET socketid = 0 WHERE socketid = $fd";

@@ -20,7 +20,6 @@ class classTaskL2snrHsmmp
     {
         $content = pack("H*", $content); //将收到的16进制字符串pack成HEX data
         $timeStamp = time();
-        $log_time = date("Y-m-d H:i:s", $timeStamp);
         $dbiL2snrHsmmpObj = new classDbiL2snrHsmmp();
 
         if ($funcFlag == "01"){ //第一包数据，创建一个新JPG文件

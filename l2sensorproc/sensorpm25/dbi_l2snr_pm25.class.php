@@ -317,17 +317,7 @@ class classDbiL2snrPm25
         return $result;
     }
 
-    //缺省做成90天，如果参数错误，导致90天以内的数据强行删除，则不被认可
-    private function dbi_l2snr_pmdata_old_delete($mysqli, $devCode, $days)
-    {
-        if ($days < MFUN_HCU_DATA_SAVE_DURATION_IN_DAYS) $days = MFUN_HCU_DATA_SAVE_DURATION_IN_DAYS;  //不允许删除90天以内的数据
-
-        $query_str = "DELETE FROM `t_l2snr_pm25data` WHERE ((`deviceid` = '$devCode') AND (TO_DAYS(NOW()) - TO_DAYS(`reportdate`) > '$days'))";
-        $result = $mysqli->query($query_str);
-        return $result;
-    }
-
-    private function dbi_l2snr_ycjk_data_update($mysqli,$devCode,$timeStamp,$report)
+    private function dbi_l2snr_ycjk_data_l2snr_update($mysqli,$devCode,$timeStamp,$report)
     {
         //存储新记录，如果发现是已经存在的数据，则覆盖，否则新增
         $reportdate = date("Y-m-d", $timeStamp);
@@ -362,31 +352,6 @@ class classDbiL2snrPm25
         $result = $mysqli->query($query_str);
 
         $query_str = " REPLACE INTO `t_l2snr_pm25data`  (`deviceid`,`pm01`,`pm25`,`pm10`,`dataflag`,`reportdate`,`hourminindex`) VALUES ('$devCode','$tspValue','$pm25Value','$pm10Value','$dataFlag','$reportdate','$hourminindex')";
-        $result = $mysqli->query($query_str);
-
-        return $result;
-    }
-
-    private function dbi_l2snr_ycjk_data_old_delete($mysqli, $devCode, $days)
-    {
-        if ($days < MFUN_HCU_DATA_SAVE_DURATION_IN_DAYS) $days = MFUN_HCU_DATA_SAVE_DURATION_IN_DAYS;  //不允许删除90天以内的数据
-
-        $query_str = "DELETE FROM `t_l2snr_tempdata` WHERE ((`deviceid` = '$devCode') AND (TO_DAYS(NOW()) - TO_DAYS(`reportdate`) > '$days'))";
-        $result = $mysqli->query($query_str);
-
-        $query_str = "DELETE FROM `t_l2snr_humiddata` WHERE ((`deviceid` = '$devCode') AND (TO_DAYS(NOW()) - TO_DAYS(`reportdate`) > '$days'))";
-        $result = $mysqli->query($query_str);
-
-        $query_str = "DELETE FROM `t_l2snr_winddir` WHERE ((`deviceid` = '$devCode') AND (TO_DAYS(NOW()) - TO_DAYS(`reportdate`) > '$days'))";
-        $result = $mysqli->query($query_str);
-
-        $query_str = "DELETE FROM `t_l2snr_windspd` WHERE ((`deviceid` = '$devCode') AND (TO_DAYS(NOW()) - TO_DAYS(`reportdate`) > '$days'))";
-        $result = $mysqli->query($query_str);
-
-        $query_str = "DELETE FROM `t_l2snr_noisedata` WHERE ((`deviceid` = '$devCode') AND (TO_DAYS(NOW()) - TO_DAYS(`reportdate`) > '$days'))";
-        $result = $mysqli->query($query_str);
-
-        $query_str = "DELETE FROM `t_l2snr_pm25data` WHERE ((`deviceid` = '$devCode') AND (TO_DAYS(NOW()) - TO_DAYS(`reportdate`) > '$days'))";
         $result = $mysqli->query($query_str);
 
         return $result;
@@ -522,8 +487,6 @@ class classDbiL2snrPm25
         }
         //保存记录到对应l2snr表
         $result = $this->dbi_l2snr_pmdata_update($mysqli, $devCode, $timeStamp, $pm01Value, $pm25Value, $pm10Value);
-        //清理超期的数据
-        $result = $this->dbi_l2snr_pmdata_old_delete($mysqli, $devCode, MFUN_HCU_DATA_SAVE_DURATION_BY_PROJ);  //remove old data.
 
         //更新分钟测量报告聚合表
         $result = $this->dbi_l2snr_pmdata_minreport_update($mysqli, $devCode,$statCode,$timeStamp,$pm01Value, $pm25Value, $pm10Value);
@@ -587,7 +550,6 @@ class classDbiL2snrPm25
         $report = array('tempValue'=>$tempValue,'humidValue'=>$humidValue,'winddirValue'=>$winddirValue,'windspdValue'=>$windspdValue,'noiseValue'=>$noiseValue,'pm01Value'=>$pm01Value, 'pm25Value'=>$pm25Value, 'pm10Value'=>$pm10Value,'tspValue'=>$tspValue);
 
         $timeStamp = time();
-
         //建立连接
         $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
         if (!$mysqli){
@@ -595,15 +557,12 @@ class classDbiL2snrPm25
         }
 
         //保存记录到对应l2snr表
-        $result = $this->dbi_l2snr_ycjk_data_update($mysqli,$devCode,$timeStamp,$report);
-        //清理超过90天记录的数据
-        $result = $this->dbi_l2snr_ycjk_data_old_delete($mysqli,$devCode,MFUN_HCU_DATA_SAVE_DURATION_IN_DAYS);  //remove old data.
-
+        $result1 = $this->dbi_l2snr_ycjk_data_l2snr_update($mysqli,$devCode,$timeStamp,$report);
         //更新分钟测量报告聚合表
-        $result = $this->dbi_l2snr_ycjk_data_minreport_update($mysqli,$devCode,$statCode,$timeStamp,$report);
-
+        $result2 = $this->dbi_l2snr_ycjk_data_minreport_update($mysqli,$devCode,$statCode,$timeStamp,$report);
         //更新瞬时测量值聚合表
-        $result = $this->dbi_l2snr_ycjk_data_currentreport_update($mysqli,$devCode,$statCode,$timeStamp,$report);
+        $result3 = $this->dbi_l2snr_ycjk_data_currentreport_update($mysqli,$devCode,$statCode,$timeStamp,$report);
+        $result = $result1 AND $result2 AND $result3;
 
         //生成 HUITP_MSGID_uni_ycjk_data_confirm 消息的内容
         $respMsgContent = array();
@@ -613,7 +572,10 @@ class classDbiL2snrPm25
         //组装IE HUITP_IEID_uni_com_confirm
         $huitpIe = $l2codecHuitpIeDictObj->mfun_l2codec_getHuitpIeFormat(HUITP_IEID_uni_com_confirm);
         $huitpIeLen = intval($huitpIe['len']);
-        $comConfirm = HUITP_IEID_UNI_COM_CONFIRM_YES;
+        if($result)
+            $comConfirm = HUITP_IEID_UNI_COM_CONFIRM_YES;
+        else
+            $comConfirm = HUITP_IEID_UNI_COM_CONFIRM_NO;
         array_push($baseConfirmIE, HUITP_IEID_uni_com_confirm);
         array_push($baseConfirmIE, $huitpIeLen);
         array_push($baseConfirmIE, $comConfirm);

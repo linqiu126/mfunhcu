@@ -47,17 +47,9 @@ ALTER TABLE `t_l2snr_humiddata`
 
 class classDbiL2snrHumid
 {
-
     //更新每个传感器自己对应的l2snr data表
-    private function dbi_l2snr_humiddata_update($devCode, $timeStamp, $humidValue)
+    private function dbi_l2snr_humiddata_update($mysqli, $devCode, $timeStamp, $humidValue)
     {
-        //建立连接
-        $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
-        if (!$mysqli)
-        {
-            die('Could not connect: ' . mysqli_error($mysqli));
-        }
-
         //存储新记录，如果发现是已经存在的数据，则覆盖，否则新增
         $reportdate = date("Y-m-d", $timeStamp);
         $stamp = getdate($timeStamp);
@@ -75,20 +67,13 @@ class classDbiL2snrHumid
             $query_str = "INSERT INTO `t_l2snr_humiddata` (deviceid,humidity,reportdate,hourminindex) VALUES ('$devCode','$humidValue','$reportdate','$hourminindex')";
             $result=$mysqli->query($query_str);
         }
-        $mysqli->close();
+
         return $result;
     }
 
     //更新传感器分钟聚合表
-    public function dbi_l2snr_humiddata_minreport_update($devCode,$statCode,$timeStamp,$humidValue)
+    private function dbi_l2snr_humiddata_minreport_update($mysqli, $devCode,$statCode,$timeStamp,$humidValue)
     {
-        //建立连接
-        $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
-        if (!$mysqli)
-        {
-            die('Could not connect: ' . mysqli_error($mysqli));
-        }
-
         $reportdate = date("Y-m-d", $timeStamp);
         $stamp = getdate($timeStamp);
         $hourminindex = intval(($stamp["hours"] * 60 + floor($stamp["minutes"]/MFUN_HCU_AQYC_TIME_GRID_SIZE)));
@@ -109,20 +94,13 @@ class classDbiL2snrHumid
                                   VALUES ('$devCode', '$statCode', '$humidValue','$reportdate','$hourminindex')";
             $result=$mysqli->query($query_str);
         }
-        $mysqli->close();
+
         return $result;
     }
 
     //更新传感器当前报告聚合表
-    private function dbi_l2snr_humiddata_currentreport_update($devCode,$statCode,$timeStamp,$humidValue)
+    private function dbi_l2snr_humiddata_currentreport_update($mysqli,$devCode,$statCode,$timeStamp,$humidValue)
     {
-        //建立连接
-        $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
-        if (!$mysqli)
-        {
-            die('Could not connect: ' . mysqli_error($mysqli));
-        }
-
         $currenttime = date("Y-m-d H:i:s",$timeStamp);
 
         //存储新记录，如果发现是已经存在的数据，则覆盖，否则新增
@@ -137,24 +115,6 @@ class classDbiL2snrHumid
             $result = $mysqli->query($query_str);
         }
 
-        $mysqli->close();
-        return $result;
-    }
-
-    //缺省做成90天，如果参数错误，导致90天以内的数据强行删除，则不被认可
-    private function dbi_l2snr_humiddata_old_delete($devCode, $days)
-    {
-        if ($days < MFUN_HCU_DATA_SAVE_DURATION_IN_DAYS) $days = MFUN_HCU_DATA_SAVE_DURATION_IN_DAYS;  //不允许删除90天以内的数据
-        //建立连接
-        $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
-        if (!$mysqli)
-        {
-            die('Could not connect: ' . mysqli_error($mysqli));
-        }
-        $query_str = "DELETE FROM `t_l2snr_humiddata` WHERE ((`deviceid` = '$devCode') AND (TO_DAYS(NOW()) - TO_DAYS(`reportdate`) > '$days'))";
-        $result = $mysqli->query($query_str);
-
-        $mysqli->close();
         return $result;
     }
 
@@ -170,16 +130,19 @@ class classDbiL2snrHumid
 
         $timeStamp = time();
 
+        //建立连接
+        $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli){
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
         //保存记录到对应l2snr表
-        $result = $this->dbi_l2snr_humiddata_update($devCode, $timeStamp, $humidValue);
-        //清理超过90天记录的数据
-        $result = $this->dbi_l2snr_humiddata_old_delete($devCode, MFUN_HCU_DATA_SAVE_DURATION_BY_PROJ);  //remove old data.
+        $result = $this->dbi_l2snr_humiddata_update($mysqli,$devCode,$timeStamp,$humidValue);
 
         //更新分钟测量报告聚合表
-        $result = $this->dbi_l2snr_humiddata_minreport_update($devCode,$statCode,$timeStamp,$humidValue);
+        $result = $this->dbi_l2snr_humiddata_minreport_update($mysqli,$devCode,$statCode,$timeStamp,$humidValue);
 
         //更新瞬时测量值聚合表
-        $result = $this->dbi_l2snr_humiddata_currentreport_update($devCode,$statCode,$timeStamp,$humidValue);
+        $result = $this->dbi_l2snr_humiddata_currentreport_update($mysqli,$devCode,$statCode,$timeStamp,$humidValue);
 
         //生成 HUITP_MSGID_uni_humid_data_confirm 消息的内容
         $respMsgContent = array();
@@ -196,6 +159,7 @@ class classDbiL2snrHumid
 
         array_push($respMsgContent, $baseConfirmIE);
 
+        $mysqli->close();
         return $respMsgContent;
     }
 
