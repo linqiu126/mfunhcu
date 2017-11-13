@@ -75,6 +75,7 @@ define("MFUN_TECH_PLTF_NBIOT_CJ188", "MFUN_TECH_PLTF_NBIOT_CJ188");  //窄带物
 
 //为了重用不同情形下的传感器处理任务，这里定义不同的技术平台和项目概念，以便不同的SDK可以统一调用相同的传感器处理任务函数
 //这里的PRJ目前只是为了在Log记录中起到应用场景的区分作用，还没有在消息处理中起到真正的作用
+define("MFUN_PRJ_HCU_CRON", "MFUN_PRJ_HCU_CRON");
 define("MFUN_PRJ_HCU_WECHAT", "MFUN_PRJ_HCU_WECHAT");
 define("MFUN_PRJ_HCU_HEXDATA", "MFUN_PRJ_HCU_HEXDATA");
 define("MFUN_PRJ_HCU_STDXML", "MFUN_PRJ_HCU_STDXML");

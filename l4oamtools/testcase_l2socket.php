@@ -15,6 +15,9 @@ if (TC_SOCKET == true) {
 //SOCKET测试开始
     echo " [TC SOCKET: xxx START]\n";
 
+    $argv[1] = 7;
+    require("../l1mainentry/cloud_callback_cron.php");
+
     $t = time();
     $stamp = getdate($t);
     $pic_name = "S_24520057_1504960825.jpg";

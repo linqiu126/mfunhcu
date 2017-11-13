@@ -17,7 +17,7 @@ class classDbiL2timerCron
     {
         if ($days < MFUN_HCU_DATA_SAVE_DURATION_IN_DAYS) $days = MFUN_HCU_DATA_SAVE_DURATION_IN_DAYS;  //不允许删除90天以内的数据
 
-        $query_str = "DELETE FROM `t_l2snr_humiddata` WHERE ((TO_DAYS(NOW()) - TO_DAYS(`reportdate`) > '$days')";
+        $query_str = "DELETE FROM `t_l2snr_humiddata` WHERE (TO_DAYS(NOW()) - TO_DAYS(`reportdate`) > $days)";
         $result = $mysqli->query($query_str);
         return $result;
     }
@@ -27,7 +27,7 @@ class classDbiL2timerCron
     {
         if ($days < MFUN_HCU_DATA_SAVE_DURATION_IN_DAYS) $days = MFUN_HCU_DATA_SAVE_DURATION_IN_DAYS;  //不允许删除90天以内的数据
 
-        $query_str = "DELETE FROM `t_l2snr_tempdata` WHERE ((TO_DAYS(NOW()) - TO_DAYS(`reportdate`) > '$days')";
+        $query_str = "DELETE FROM `t_l2snr_tempdata` WHERE (TO_DAYS(NOW()) - TO_DAYS(`reportdate`) > $days)";
         $result = $mysqli->query($query_str);
         return $result;
     }
@@ -37,7 +37,7 @@ class classDbiL2timerCron
     {
         if ($days < MFUN_HCU_DATA_SAVE_DURATION_IN_DAYS) $days = MFUN_HCU_DATA_SAVE_DURATION_IN_DAYS;  //不允许删除90天以内的数据
 
-        $query_str = "DELETE FROM `t_l2snr_noisedata` WHERE ((TO_DAYS(NOW()) - TO_DAYS(`reportdate`) > '$days')";
+        $query_str = "DELETE FROM `t_l2snr_noisedata` WHERE (TO_DAYS(NOW()) - TO_DAYS(`reportdate`) > $days)";
         $result = $mysqli->query($query_str);
         return $result;
     }
@@ -47,7 +47,7 @@ class classDbiL2timerCron
     {
         if ($days < MFUN_HCU_DATA_SAVE_DURATION_IN_DAYS) $days = MFUN_HCU_DATA_SAVE_DURATION_IN_DAYS;  //不允许删除90天以内的数据
 
-        $query_str = "DELETE FROM `t_l2snr_pm25data` WHERE ((TO_DAYS(NOW()) - TO_DAYS(`reportdate`) > '$days')";
+        $query_str = "DELETE FROM `t_l2snr_pm25data` WHERE (TO_DAYS(NOW()) - TO_DAYS(`reportdate`) > $days)";
         $result = $mysqli->query($query_str);
         return $result;
     }
@@ -57,7 +57,7 @@ class classDbiL2timerCron
     {
         if ($days < MFUN_HCU_DATA_SAVE_DURATION_IN_DAYS) $days = MFUN_HCU_DATA_SAVE_DURATION_IN_DAYS;  //不允许删除90天以内的数据
 
-        $query_str = "DELETE FROM `t_l2snr_windspd` WHERE ((TO_DAYS(NOW()) - TO_DAYS(`reportdate`) > '$days')";
+        $query_str = "DELETE FROM `t_l2snr_windspd` WHERE (TO_DAYS(NOW()) - TO_DAYS(`reportdate`) > $days)";
         $result = $mysqli->query($query_str);
         return $result;
     }
@@ -67,7 +67,7 @@ class classDbiL2timerCron
     {
         if ($days < MFUN_HCU_DATA_SAVE_DURATION_IN_DAYS) $days = MFUN_HCU_DATA_SAVE_DURATION_IN_DAYS;  //不允许删除90天以内的数据
 
-        $query_str = "DELETE FROM `t_l2snr_winddir` WHERE ((TO_DAYS(NOW()) - TO_DAYS(`reportdate`) > '$days')";
+        $query_str = "DELETE FROM `t_l2snr_winddir` WHERE (TO_DAYS(NOW()) - TO_DAYS(`reportdate`) > $days)";
         $result = $mysqli->query($query_str);
         return $result;
     }
@@ -77,7 +77,7 @@ class classDbiL2timerCron
     {
         if ($days < MFUN_HCU_DATA_SAVE_DURATION_IN_DAYS) $days = MFUN_HCU_DATA_SAVE_DURATION_IN_DAYS;  //不允许删除90天以内的数据
 
-        $query_str = "DELETE FROM `t_l2snr_emcdata` WHERE ((TO_DAYS(NOW()) - TO_DAYS(`reportdate`) > '$days')";
+        $query_str = "DELETE FROM `t_l2snr_emcdata` WHERE (TO_DAYS(NOW()) - TO_DAYS(`reportdate`) > $days)";
         $result = $mysqli->query($query_str);
         return $result;
     }
@@ -87,7 +87,7 @@ class classDbiL2timerCron
     {
         if ($days < MFUN_HCU_DATA_SAVE_DURATION_IN_DAYS) $days = MFUN_HCU_DATA_SAVE_DURATION_IN_DAYS;  //不允许删除90天以内的数据
 
-        $query_str = "SELECT * FROM `t_l2snr_picturedata` WHERE ((TO_DAYS(NOW()) - TO_DAYS(`reportdate`) > '$days')";
+        $query_str = "SELECT * FROM `t_l2snr_picturedata` WHERE (TO_DAYS(NOW()) - TO_DAYS(`reportdate`) > $days)";
         $result = $mysqli->query($query_str);
         while (($result != false) && (($row = $result->fetch_array()) > 0)) {
             $sid = $row['sid'];
@@ -111,7 +111,7 @@ class classDbiL2timerCron
     {
         if ($days < MFUN_HCU_DATA_SAVE_DURATION_IN_DAYS) $days = MFUN_HCU_DATA_SAVE_DURATION_IN_DAYS;  //不允许删除90天以内的数据
 
-        $query_str = "SELECT * FROM `t_l2snr_hsmmpdata` WHERE ((TO_DAYS(NOW()) - TO_DAYS(`reportdate`) > '$days')";
+        $query_str = "SELECT * FROM `t_l2snr_hsmmpdata` WHERE (TO_DAYS(NOW()) - TO_DAYS(`reportdate`) > $days)";
         $result = $mysqli->query($query_str);
         while (($result != false) && (($row = $result->fetch_array()) > 0)) {
             $sid = $row['sid'];
@@ -135,7 +135,7 @@ class classDbiL2timerCron
     {
         if ($days < MFUN_HCU_DATA_SAVE_DURATION_IN_DAYS) $days = MFUN_HCU_DATA_SAVE_DURATION_IN_DAYS;  //不允许删除90天以内的数据
 
-        $query_str = "DELETE FROM `t_l2snr_aqyc_minreport` WHERE ((TO_DAYS(NOW()) - TO_DAYS(`reportdate`) > '$days')";
+        $query_str = "DELETE FROM `t_l2snr_aqyc_minreport` WHERE (TO_DAYS(NOW()) - TO_DAYS(`reportdate`) > $days)";
         $result = $mysqli->query($query_str);
         return $result;
     }
@@ -145,7 +145,7 @@ class classDbiL2timerCron
     {
         if ($days < MFUN_HCU_DATA_SAVE_DURATION_IN_DAYS) $days = MFUN_HCU_DATA_SAVE_DURATION_IN_DAYS;  //不允许删除90天以内的数据
 
-        $query_str = "DELETE FROM `t_l3f6pm_perfdata` WHERE (TO_DAYS(NOW()) - TO_DAYS(`createtime`) > '$days')";
+        $query_str = "DELETE FROM `t_l3f6pm_perfdata` WHERE (TO_DAYS(NOW()) - TO_DAYS(`createtime`) > $days)";
         $result = $mysqli->query($query_str);
         return $result;
     }
@@ -155,7 +155,7 @@ class classDbiL2timerCron
     {
         if ($days < MFUN_HCU_DATA_SAVE_DURATION_IN_DAYS) $days = MFUN_HCU_DATA_SAVE_DURATION_IN_DAYS;  //不允许删除90天以内的数据
 
-        $query_str = "SELECT * FROM `t_l3f5fm_aqyc_alarmdata` WHERE (TO_DAYS(NOW()) - TO_DAYS(`tsgen`) > '$days')";
+        $query_str = "SELECT * FROM `t_l3f5fm_aqyc_alarmdata` WHERE (TO_DAYS(NOW()) - TO_DAYS(`tsgen`) > $days)";
         $result = $mysqli->query($query_str);
         while (($result != false) && (($row = $result->fetch_array()) > 0)) {
             $sid = $row['sid'];
@@ -180,7 +180,7 @@ class classDbiL2timerCron
     {
         if ($days < MFUN_HCU_DATA_SAVE_DURATION_IN_DAYS) $days = MFUN_HCU_DATA_SAVE_DURATION_IN_DAYS;  //不允许删除90天以内的数据
 
-        $query_str = "DELETE FROM `t_l3f5fm_fhys_alarmdata` WHERE ((TO_DAYS(NOW()) - TO_DAYS(`tsgen`) > '$days')";
+        $query_str = "DELETE FROM `t_l3f5fm_fhys_alarmdata` WHERE (TO_DAYS(NOW()) - TO_DAYS(`tsgen`) > $days)";
         $result = $mysqli->query($query_str);
         return $result;
     }
@@ -190,7 +190,7 @@ class classDbiL2timerCron
     {
         if ($days < MFUN_HCU_DATA_SAVE_DURATION_IN_DAYS) $days = MFUN_HCU_DATA_SAVE_DURATION_IN_DAYS;  //不允许删除90天以内的数据
 
-        $query_str = "SELECT * FROM `t_l3fxprcm_fhys_locklog` WHERE ((TO_DAYS(NOW()) - TO_DAYS(`createtime`) > '$days')";
+        $query_str = "SELECT * FROM `t_l3fxprcm_fhys_locklog` WHERE (TO_DAYS(NOW()) - TO_DAYS(`createtime`) > $days)";
         $result = $mysqli->query($query_str);
         while (($result != false) && (($row = $result->fetch_array()) > 0)) {
             $sid = $row['sid'];
@@ -214,7 +214,7 @@ class classDbiL2timerCron
     {
         if ($days < MFUN_HCU_DATA_SAVE_DURATION_IN_DAYS) $days = MFUN_HCU_DATA_SAVE_DURATION_IN_DAYS;  //不允许删除90天以内的数据
 
-        $query_str = "DELETE FROM `t_l2snr_fhys_minreport` WHERE ((TO_DAYS(NOW()) - TO_DAYS(`reportdate`) > '$days')";
+        $query_str = "DELETE FROM `t_l2snr_fhys_minreport` WHERE (TO_DAYS(NOW()) - TO_DAYS(`reportdate`) > $days)";
         $result = $mysqli->query($query_str);
         return $result;
     }
@@ -222,8 +222,14 @@ class classDbiL2timerCron
 
     /***AQYC扬尘项目超期历史数据清理***/
 
-    public function dbi_cron_aqyc_olddata_cleanup($mysqli, $days)
+    public function dbi_cron_aqyc_olddata_cleanup($days)
     {
+        //建立连接
+        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli) {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+
         if ($days < MFUN_HCU_DATA_SAVE_DURATION_IN_DAYS) $days = MFUN_HCU_DATA_SAVE_DURATION_IN_DAYS;  //不允许删除90天以内的数据
         //温度
         $result1 = $this->dbi_cron_l2snr_tempdata_cleanup($mysqli, $days);
@@ -252,10 +258,15 @@ class classDbiL2timerCron
 
     /***FHYS云控锁项目超期历史数据清理***/
 
-    public function dbi_cron_fhys_olddata_cleanup($mysqli, $days)
+    public function dbi_cron_fhys_olddata_cleanup($days)
     {
-        if ($days < MFUN_HCU_DATA_SAVE_DURATION_IN_DAYS) $days = MFUN_HCU_DATA_SAVE_DURATION_IN_DAYS;  //不允许删除90天以内的数据
+        //建立连接
+        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli) {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
 
+        if ($days < MFUN_HCU_DATA_SAVE_DURATION_IN_DAYS) $days = MFUN_HCU_DATA_SAVE_DURATION_IN_DAYS;  //不允许删除90天以内的数据
         //告警数据
         $result1 = $this->dbi_cron_l3f5fm_fhys_alarmdata_cleanup($mysqli, $days);
         //开锁历史数据

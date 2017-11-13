@@ -5,7 +5,8 @@
  * Date: 2016/7/4
  * Time: 20:40
  */
-//include_once "../l1comvm/vmlayer.php";
+
+include_once "dbi_l2timer_cron.class.php";
 
 class classTaskL2TimerCron
 {
@@ -88,9 +89,33 @@ class classTaskL2TimerCron
         return "";
     }
 
-    function func_timer_24hour_process()
+    private function func_timer_24hour_process($day)
     {
-        return "";
+        $dbiL2timerCronObj = new classDbiL2timerCron();
+        if (MFUN_CURRENT_WORKING_PROGRAM_NAME_UNIQUE == MFUN_WORKING_PROGRAM_NAME_UNIQUE_AQYC){
+            $result = $dbiL2timerCronObj->dbi_cron_aqyc_olddata_cleanup($day);
+            if($result)
+              $resp = "AQYC history data cleanup success";
+            else
+                $resp = "AQYC history data cleanup failure";
+        }
+        elseif (MFUN_CURRENT_WORKING_PROGRAM_NAME_UNIQUE == MFUN_WORKING_PROGRAM_NAME_UNIQUE_FHYS){
+            $result = $dbiL2timerCronObj->dbi_cron_fhys_olddata_cleanup($day);
+            if($result)
+                $resp = "FHYS history data cleanup success";
+            else
+                $resp = "FHYS history data cleanup failure";
+        }
+        else {
+            $result1 = $dbiL2timerCronObj->dbi_cron_aqyc_olddata_cleanup($day);
+            $result2 = $dbiL2timerCronObj->dbi_cron_fhys_olddata_cleanup($day);
+            $result = $result1 AND $result2;
+            if($result)
+                $resp = "All project history data cleanup success";
+            else
+                $resp = "All project history data cleanup failure";
+        }
+        return $resp;
     }
 
     function func_timer_2day_process()
@@ -114,90 +139,58 @@ class classTaskL2TimerCron
     {
         //定义本入口函数的logger处理对象及函数
         $loggerObj = new classApiL1vmFuncCom();
-        $log_time = date("Y-m-d H:i:s", time());
+        $project = MFUN_PRJ_HCU_CRON;
 
         //入口消息内容判断
         if (empty($msg) == true) {
-            $result = "Received null message body";
-            $log_content = "R:" . json_encode($result);
-            $loggerObj->logger("MFUN_TASK_ID_L2TIMER_CRON", "mfun_l2timer_cron_task_main_entry", $log_time, $log_content);
-            echo trim($result);
+            $log_content = "E: receive null message body";
+            $loggerObj->mylog($project,"NULL","MFUN_MAIN_ENTRY_CRON","MFUN_TASK_ID_L2TIMER_CRON",$msgName,$log_content);
             return false;
+
         }
-        //多条消息发送到L2TIMER_CRON，这里潜在的消息太多，没法一个一个的判断，故而只检查上下界
-        if (($msgId <= MSG_ID_MFUN_MIN) || ($msgId >= MSG_ID_MFUN_MAX)){
-            $result = "Msgid or MsgName error";
-            $log_content = "P:" . json_encode($result);
-            $loggerObj->logger("MFUN_TASK_ID_L2TIMER_CRON", "mfun_l2timer_cron_task_main_entry", $log_time, $log_content);
-            echo trim($result);
-            return false;
+        switch($msgId){
+            case MSG_ID_L2TIMER_CRON_1MIN_COMING:
+                $resp = $this->func_timer_1min_process();
+                break;
+            case MSG_ID_L2TIMER_CRON_3MIN_COMING:
+                $resp = $this->func_timer_3min_process();
+                break;
+            case MSG_ID_L2TIMER_CRON_10MIN_COMING:
+                $resp = $this->func_timer_10min_process();
+                break;
+            case MSG_ID_L2TIMER_CRON_30MIN_COMING:
+                $resp = $this->func_timer_30min_process();
+                break;
+            case MSG_ID_L2TIMER_CRON_1HOUR_COMING:
+                $resp = $this->func_timer_1hour_process();
+                break;
+            case MSG_ID_L2TIMER_CRON_6HOUR_COMING:
+                $resp = $this->func_timer_6hour_process();
+                break;
+            case MSG_ID_L2TIMER_CRON_24HOUR_COMING:
+                $resp = $this->func_timer_24hour_process(MFUN_HCU_DATA_SAVE_DURATION_BY_PROJ);
+                break;
+            case MSG_ID_L2TIMER_CRON_2DAY_COMING:
+                $resp = $this->func_timer_2day_process();
+                break;
+            case MSG_ID_L2TIMER_CRON_7DAY_COMING:
+                $resp = $this->func_timer_7day_process();
+                break;
+            case MSG_ID_L2TIMER_CRON_30DAY_COMING:
+                $resp = $this->func_timer_30day_process();
+                break;
+            default:
+                $resp = "";
+                break;
         }
 
-        if ($msgId == MSG_ID_L2TIMER_CRON_1MIN_COMING)
-        {
-            $this->func_timer_1min_process();
-        }
-
-        elseif ($msgId == MSG_ID_L2TIMER_CRON_3MIN_COMING)
-        {
-            $this->func_timer_3min_process();
-        }
-
-        elseif ($msgId == MSG_ID_L2TIMER_CRON_10MIN_COMING)
-        {
-            $this->func_timer_10min_process();
-        }
-
-        elseif ($msgId == MSG_ID_L2TIMER_CRON_30MIN_COMING)
-        {
-            $this->func_timer_30min_process();
-        }
-
-        elseif ($msgId == MSG_ID_L2TIMER_CRON_1HOUR_COMING)
-        {
-            $this->func_timer_1hour_process();
-        }
-
-        elseif ($msgId == MSG_ID_L2TIMER_CRON_6HOUR_COMING)
-        {
-            $this->func_timer_6hour_process();
-        }
-
-        elseif ($msgId == MSG_ID_L2TIMER_CRON_24HOUR_COMING)
-        {
-            $this->func_timer_24hour_process();
-        }
-
-        elseif ($msgId == MSG_ID_L2TIMER_CRON_2DAY_COMING)
-        {
-            $this->func_timer_2day_process();
-        }
-
-        elseif ($msgId == MSG_ID_L2TIMER_CRON_7DAY_COMING)
-        {
-            $this->func_timer_7day_process();
-        }
-
-        elseif ($msgId == MSG_ID_L2TIMER_CRON_30DAY_COMING)
-        {
-            $this->func_timer_30day_process();
-        }
-
-        else{
-            $resp = ""; //啥都不ECHO
-        }
-
-        //返回ECHO
-        if (!empty($resp))
-        {
-            $log_content = "T:" . json_encode($resp);
-            $loggerObj->logger("L2TIMERCRON", "MFUN_TASK_ID_L2TIMER_CRON", $log_time, $log_content);
-            echo trim($resp);
+        if (!empty($resp)) {
+            $log_content = json_encode($resp,JSON_UNESCAPED_UNICODE);
+            $loggerObj->mylog($project,"NULL","MFUN_MAIN_ENTRY_CRON","MFUN_TASK_ID_L2TIMER_CRON",$msgName,$log_content);
         }
 
         //返回
         return true;
-
     }
 
 }//End of class_task_service
