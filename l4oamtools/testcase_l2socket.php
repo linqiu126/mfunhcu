@@ -15,16 +15,6 @@ if (TC_SOCKET == true) {
 //SOCKET测试开始
     echo " [TC SOCKET: xxx START]\n";
 
-    $argv[1] = 7;
-    require("../l1mainentry/cloud_callback_cron.php");
-
-    $t = time();
-    $stamp = getdate($t);
-    $pic_name = "S_24520057_1504960825.jpg";
-    $str_temp = strstr($pic_name,MFUN_HCU_SITE_PIC_FILE_TYPE,true);
-    $str_pos = strripos($str_temp,"_");
-    $timestamp = substr($str_temp, $str_pos+1);
-
     /*********************图片数据，消息来自9501端口*********************/
     $data = "4843555F473530325F464859535F50303030315F303132333435363738395F5F000000024040";
 
@@ -37,6 +27,7 @@ if (TC_SOCKET == true) {
     //$data ="<xml><ToUserName><![CDATA[XHZN_HCU]]></ToUserName><FromUserName><![CDATA[HCU_G502_FHYS_P0001]]></FromUserName><CreateTime>1477323704</CreateTime><MsgType><![CDATA[hcu_text]]></MsgType><Content><![CDATA[4C1001010101010018291A00520001000000]]></Content><FuncFlag>0</FuncFlag></xml>";
      $data = "<xml><ToUserName><![CDATA[XHZN_HCU]]></ToUserName><FromUserName><![CDATA[HCU_G502_FHYS_P0001]]></FromUserName><CreateTime>1477323704</CreateTime><MsgType><![CDATA[hcu_text]]></MsgType><Content><![CDATA[4C10000000000100144518004E0001000000]]></Content><FuncFlag>0</FuncFlag></xml>";
      $data = "<xml><ToUserName><![CDATA[XHZN_HCU]]></ToUserName><FromUserName><![CDATA[HCU_G502_FHYS_P0001]]></FromUserName><CreateTime>1477323704</CreateTime><MsgType><![CDATA[hcu_text]]></MsgType><Content><![CDATA[4C10030003000100174511004D0001000000]]></Content><FuncFlag>0</FuncFlag></xml>";
+     $data = "<xml><ToUserName><![CDATA[XHZN_HCU]]></ToUserName><FromUserName><![CDATA[HCU_G502_FHYS_P0001]]></FromUserName><CreateTime>1477323704</CreateTime><MsgType><![CDATA[hcu_text]]></MsgType><Content><![CDATA[4C10000000000100194016005F0000000000]]></Content><FuncFlag>0</FuncFlag></xml>";
     //开锁请求
     //$data = "<xml><ToUserName><![CDATA[XHZN_HCU]]></ToUserName><FromUserName><![CDATA[HCU_G502_FHYS_P0001]]></FromUserName><CreateTime>1477323704</CreateTime><MsgType><![CDATA[hcu_text]]></MsgType><Content><![CDATA[4B0A00000000a0934765c0dd]]></Content><FuncFlag>0</FuncFlag></xml>";
     //$data = "<xml><ToUserName><![CDATA[XHZN_HCU]]></ToUserName><FromUserName><![CDATA[HCU_G502_FHYS_P0001]]></FromUserName><CreateTime>1477323704</CreateTime><MsgType><![CDATA[hcu_text]]></MsgType><Content><![CDATA[4B0A00000000000000000000]]></Content><FuncFlag>0</FuncFlag></xml>";
@@ -45,7 +36,7 @@ if (TC_SOCKET == true) {
 
     $msg = array("socketid" => 1, "data"=>$data);
     $obj = new classTaskL1vmCoreRouter();
-    //$obj->mfun_l1vm_task_main_entry(MFUN_MAIN_ENTRY_IOT_STDXML, MSG_ID_L2SDK_HCU_DATA_COMING, "MSG_ID_L2SDK_HCU_DATA_COMING", $msg);
+    $obj->mfun_l1vm_task_main_entry(MFUN_MAIN_ENTRY_IOT_STDXML, MSG_ID_L2SDK_HCU_DATA_COMING, "MSG_ID_L2SDK_HCU_DATA_COMING", $msg);
 
     /********************HUITP消息，来自9511端口************************/
 

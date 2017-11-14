@@ -1946,49 +1946,96 @@ class classDbiL3apF3dm
                     $dev_status = "运行中";
 
                 //门锁-1运行状态
-                if($row["door_1"] == HUITP_IEID_UNI_DOOR_STATE_OPEN)
-                    $doorlock_1 = "正常打开";
-                elseif($row["door_1"] == HUITP_IEID_UNI_DOOR_STATE_CLOSE)
-                    $doorlock_1 = "正常关闭";
-                elseif($row["door_1"] == HUITP_IEID_UNI_DOOR_STATE_NULL)
-                    $doorlock_1 = "未安装";
-
-                if(($row["door_1"] == HUITP_IEID_UNI_DOOR_STATE_OPEN) AND ($row["reporttype"] == HUITP_IEID_UNI_CCL_REPORT_TYPE_FAULT_EVENT))
-                    $doorlock_1 = "异常打开";
+                if($row["lock_1"] == HUITP_IEID_UNI_LOCK_STATE_OPEN AND $row["door_1"] == HUITP_IEID_UNI_DOOR_STATE_OPEN){
+                    $doorlock_1 = "门锁打开";
+                }
+                elseif($row["lock_1"] == HUITP_IEID_UNI_LOCK_STATE_CLOSE AND $row["door_1"] == HUITP_IEID_UNI_DOOR_STATE_CLOSE){
+                    $doorlock_1 = "门锁关闭";
+                }
+                elseif($row["lock_1"] == HUITP_IEID_UNI_LOCK_STATE_CLOSE AND $row["door_1"] == HUITP_IEID_UNI_DOOR_STATE_ALARM){
+                    $doorlock_1 = "暴力开门";
+                }
+                elseif($row["lock_1"] == HUITP_IEID_UNI_LOCK_STATE_CLOSE AND $row["door_1"] == HUITP_IEID_UNI_DOOR_STATE_OPEN){
+                    $doorlock_1 = "锁关门开";
+                }
+                elseif($row["lock_1"] == HUITP_IEID_UNI_LOCK_STATE_OPEN AND $row["door_1"] == HUITP_IEID_UNI_DOOR_STATE_CLOSE){
+                    $doorlock_1 = "锁开门关";
+                }
+                elseif($row["lock_1"] == HUITP_IEID_UNI_LOCK_STATE_OPEN AND $row["door_1"] == HUITP_IEID_UNI_DOOR_STATE_INVALID){
+                    $doorlock_1 = "状态异常";
+                }
+                else{
+                    $doorlock_1 = "状态未知";
+                }
 
                 //门锁-2运行状态
-                if($row["door_2"] == HUITP_IEID_UNI_DOOR_STATE_OPEN)
-                    $doorlock_2 = "正常打开";
-                elseif($row["door_2"] == HUITP_IEID_UNI_DOOR_STATE_CLOSE)
-                    $doorlock_2 = "正常关闭";
-                elseif($row["door_2"] == HUITP_IEID_UNI_DOOR_STATE_NULL)
-                    $doorlock_2 = "未安装";
-
-                if(($row["door_2"] == HUITP_IEID_UNI_DOOR_STATE_OPEN) AND ($row["reporttype"] == HUITP_IEID_UNI_CCL_REPORT_TYPE_FAULT_EVENT))
-                    $doorlock_2 = "异常打开";
+                if($row["lock_2"] == HUITP_IEID_UNI_LOCK_STATE_OPEN AND $row["door_2"] == HUITP_IEID_UNI_DOOR_STATE_OPEN){
+                    $doorlock_2 = "门锁打开";
+                }
+                elseif($row["lock_2"] == HUITP_IEID_UNI_LOCK_STATE_CLOSE AND $row["door_2"] == HUITP_IEID_UNI_DOOR_STATE_CLOSE){
+                    $doorlock_2 = "门锁关闭";
+                }
+                elseif($row["lock_2"] == HUITP_IEID_UNI_LOCK_STATE_CLOSE AND $row["door_2"] == HUITP_IEID_UNI_DOOR_STATE_ALARM){
+                    $doorlock_2 = "暴力开门";
+                }
+                elseif($row["lock_2"] == HUITP_IEID_UNI_LOCK_STATE_CLOSE AND $row["door_2"] == HUITP_IEID_UNI_DOOR_STATE_OPEN){
+                    $doorlock_2 = "锁关门开";
+                }
+                elseif($row["lock_2"] == HUITP_IEID_UNI_LOCK_STATE_OPEN AND $row["door_2"] == HUITP_IEID_UNI_DOOR_STATE_CLOSE){
+                    $doorlock_2 = "锁开门关";
+                }
+                elseif($row["lock_2"] == HUITP_IEID_UNI_LOCK_STATE_OPEN AND $row["door_2"] == HUITP_IEID_UNI_DOOR_STATE_INVALID){
+                    $doorlock_2 = "状态异常";
+                }
+                else{
+                    $doorlock_2 = "状态未知";
+                }
 
                 //门锁-3运行状态
-                if($row["door_3"] == HUITP_IEID_UNI_DOOR_STATE_OPEN)
-                    $doorlock_3 = "正常打开";
-                elseif($row["door_3"] == HUITP_IEID_UNI_DOOR_STATE_CLOSE)
-                    $doorlock_3 = "正常关闭";
-                elseif($row["door_3"] == HUITP_IEID_UNI_DOOR_STATE_NULL)
-                    $doorlock_3 = "未安装";
-
-                if(($row["door_3"] == HUITP_IEID_UNI_DOOR_STATE_OPEN) AND ($row["reporttype"] == HUITP_IEID_UNI_CCL_REPORT_TYPE_FAULT_EVENT))
-                    $doorlock_3 = "异常打开";
+                if($row["lock_3"] == HUITP_IEID_UNI_LOCK_STATE_OPEN AND $row["door_3"] == HUITP_IEID_UNI_DOOR_STATE_OPEN){
+                    $doorlock_3 = "门锁打开";
+                }
+                elseif($row["lock_3"] == HUITP_IEID_UNI_LOCK_STATE_CLOSE AND $row["door_3"] == HUITP_IEID_UNI_DOOR_STATE_CLOSE){
+                    $doorlock_3 = "门锁关闭";
+                }
+                elseif($row["lock_3"] == HUITP_IEID_UNI_LOCK_STATE_CLOSE AND $row["door_3"] == HUITP_IEID_UNI_DOOR_STATE_ALARM){
+                    $doorlock_3 = "暴力开门";
+                }
+                elseif($row["lock_3"] == HUITP_IEID_UNI_LOCK_STATE_CLOSE AND $row["door_3"] == HUITP_IEID_UNI_DOOR_STATE_OPEN){
+                    $doorlock_3 = "锁关门开";
+                }
+                elseif($row["lock_3"] == HUITP_IEID_UNI_LOCK_STATE_OPEN AND $row["door_3"] == HUITP_IEID_UNI_DOOR_STATE_CLOSE){
+                    $doorlock_3 = "锁开门关";
+                }
+                elseif($row["lock_3"] == HUITP_IEID_UNI_LOCK_STATE_OPEN AND $row["door_3"] == HUITP_IEID_UNI_DOOR_STATE_INVALID){
+                    $doorlock_3 = "状态异常";
+                }
+                else{
+                    $doorlock_3 = "状态未知";
+                }
 
                 //门锁-4运行状态
-                if($row["door_4"] == HUITP_IEID_UNI_DOOR_STATE_OPEN)
-                    $doorlock_4 = "正常打开";
-                elseif($row["door_4"] == HUITP_IEID_UNI_DOOR_STATE_CLOSE)
-                    $doorlock_4 = "正常关闭";
-                elseif($row["door_4"] == HUITP_IEID_UNI_DOOR_STATE_NULL)
-                    $doorlock_4 = "未安装";
-
-                if(($row["door_4"] == HUITP_IEID_UNI_DOOR_STATE_OPEN) AND ($row["reporttype"] == HUITP_IEID_UNI_CCL_REPORT_TYPE_FAULT_EVENT))
-                    $doorlock_4 = "异常打开";
-
+                if($row["lock_4"] == HUITP_IEID_UNI_LOCK_STATE_OPEN AND $row["door_4"] == HUITP_IEID_UNI_DOOR_STATE_OPEN){
+                    $doorlock_4 = "门锁打开";
+                }
+                elseif($row["lock_4"] == HUITP_IEID_UNI_LOCK_STATE_CLOSE AND $row["door_4"] == HUITP_IEID_UNI_DOOR_STATE_CLOSE){
+                    $doorlock_4 = "门锁关闭";
+                }
+                elseif($row["lock_4"] == HUITP_IEID_UNI_LOCK_STATE_CLOSE AND $row["door_4"] == HUITP_IEID_UNI_DOOR_STATE_ALARM){
+                    $doorlock_4 = "暴力开门";
+                }
+                elseif($row["lock_4"] == HUITP_IEID_UNI_LOCK_STATE_CLOSE AND $row["door_4"] == HUITP_IEID_UNI_DOOR_STATE_OPEN){
+                    $doorlock_4 = "锁关门开";
+                }
+                elseif($row["lock_4"] == HUITP_IEID_UNI_LOCK_STATE_OPEN AND $row["door_4"] == HUITP_IEID_UNI_DOOR_STATE_CLOSE){
+                    $doorlock_4 = "锁开门关";
+                }
+                elseif($row["lock_4"] == HUITP_IEID_UNI_LOCK_STATE_OPEN AND $row["door_4"] == HUITP_IEID_UNI_DOOR_STATE_INVALID){
+                    $doorlock_4 = "状态异常";
+                }
+                else{
+                    $doorlock_4 = "状态未知";
+                }
 
                 //更新GPRS信号强度
                 $sig_level = (string)$row["rssivalue"];
@@ -2103,31 +2150,40 @@ class classDbiL3apF3dm
             array_push($currentvalue,$temp);
 
             //更新门锁-1运行状态
-            if($row["door_1"] == HUITP_IEID_UNI_DOOR_STATE_OPEN){
-                $doorlock_1_status = "正常打开";
-                $doorlock_1_alarm = "true";
+            if($row["lock_1"] == HUITP_IEID_UNI_LOCK_STATE_OPEN AND $row["door_1"] == HUITP_IEID_UNI_DOOR_STATE_OPEN){
+                $doorlock_1_status = "门锁打开";
+                $doorlock_1_alarm = "false";
                 $doorlock_1_picname = "FHYS_locko";
             }
-            elseif($row["door_1"] == HUITP_IEID_UNI_DOOR_STATE_CLOSE){
-                $doorlock_1_status = "正常关闭";
+            elseif($row["lock_1"] == HUITP_IEID_UNI_LOCK_STATE_CLOSE AND $row["door_1"] == HUITP_IEID_UNI_DOOR_STATE_CLOSE){
+                $doorlock_1_status = "门锁关闭";
                 $doorlock_1_alarm = "false";
                 $doorlock_1_picname = "FHYS_lockc";
             }
-            elseif($row["door_1"] == HUITP_IEID_UNI_DOOR_STATE_NULL){
-                $doorlock_1_status = "未安装";
+            elseif($row["lock_1"] == HUITP_IEID_UNI_LOCK_STATE_CLOSE AND $row["door_1"] == HUITP_IEID_UNI_DOOR_STATE_ALARM){
+                $doorlock_1_status = "暴力开门";
+                $doorlock_1_alarm = "true";
+                $doorlock_1_picname = "FHYS_door";
+            }
+            elseif($row["lock_1"] == HUITP_IEID_UNI_LOCK_STATE_CLOSE AND $row["door_1"] == HUITP_IEID_UNI_DOOR_STATE_OPEN){
+                $doorlock_1_status = "锁关门开";
                 $doorlock_1_alarm = "false";
                 $doorlock_1_picname = "FHYS_lockc";
+            }
+            elseif($row["lock_1"] == HUITP_IEID_UNI_LOCK_STATE_OPEN AND $row["door_1"] == HUITP_IEID_UNI_DOOR_STATE_CLOSE){
+                $doorlock_1_status = "锁开门关";
+                $doorlock_1_alarm = "false";
+                $doorlock_1_picname = "FHYS_locko";
+            }
+            elseif($row["lock_1"] == HUITP_IEID_UNI_LOCK_STATE_OPEN AND $row["door_1"] == HUITP_IEID_UNI_DOOR_STATE_INVALID){
+                $doorlock_1_status = "状态异常";
+                $doorlock_1_alarm = "true";
+                $doorlock_1_picname = "FHYS_locko";
             }
             else{
                 $doorlock_1_status = "状态未知";
-                $doorlock_1_alarm = "false";
-                $doorlock_1_picname = "FHYS_lockc";
-            }
-
-            if($row["door_1"] == HUITP_IEID_UNI_DOOR_STATE_OPEN AND $row["reporttype"] == HUITP_IEID_UNI_CCL_REPORT_TYPE_FAULT_EVENT){
-                $doorlock_1_status = "异常打开";
                 $doorlock_1_alarm = "true";
-                $doorlock_1_picname = "FHYS_locko";
+                $doorlock_1_picname = "FHYS_lock";
             }
 
             $temp = array(
@@ -2139,31 +2195,40 @@ class classDbiL3apF3dm
             array_push($currentvalue,$temp);
 
             //更新门锁-2运行状态
-            if($row["door_2"] == HUITP_IEID_UNI_DOOR_STATE_OPEN){
-                $doorlock_2_status = "正常打开";
-                $doorlock_2_alarm = "true";
+            if($row["lock_2"] == HUITP_IEID_UNI_LOCK_STATE_OPEN AND $row["door_2"] == HUITP_IEID_UNI_DOOR_STATE_OPEN){
+                $doorlock_2_status = "门锁打开";
+                $doorlock_2_alarm = "false";
                 $doorlock_2_picname = "FHYS_locko";
             }
-            elseif($row["door_2"] == HUITP_IEID_UNI_DOOR_STATE_CLOSE){
-                $doorlock_2_status = "正常关闭";
+            elseif($row["lock_2"] == HUITP_IEID_UNI_LOCK_STATE_CLOSE AND $row["door_2"] == HUITP_IEID_UNI_DOOR_STATE_CLOSE){
+                $doorlock_2_status = "门锁关闭";
                 $doorlock_2_alarm = "false";
                 $doorlock_2_picname = "FHYS_lockc";
             }
-            elseif($row["door_2"] == HUITP_IEID_UNI_DOOR_STATE_NULL){
-                $doorlock_2_status = "未安装";
+            elseif($row["lock_2"] == HUITP_IEID_UNI_LOCK_STATE_CLOSE AND $row["door_2"] == HUITP_IEID_UNI_DOOR_STATE_ALARM){
+                $doorlock_2_status = "暴力开门";
+                $doorlock_2_alarm = "true";
+                $doorlock_2_picname = "FHYS_door";
+            }
+            elseif($row["lock_2"] == HUITP_IEID_UNI_LOCK_STATE_CLOSE AND $row["door_2"] == HUITP_IEID_UNI_DOOR_STATE_OPEN){
+                $doorlock_2_status = "锁关门开";
                 $doorlock_2_alarm = "false";
                 $doorlock_2_picname = "FHYS_lockc";
+            }
+            elseif($row["lock_2"] == HUITP_IEID_UNI_LOCK_STATE_OPEN AND $row["door_2"] == HUITP_IEID_UNI_DOOR_STATE_CLOSE){
+                $doorlock_2_status = "锁开门关";
+                $doorlock_2_alarm = "false";
+                $doorlock_2_picname = "FHYS_locko";
+            }
+            elseif($row["lock_2"] == HUITP_IEID_UNI_LOCK_STATE_OPEN AND $row["door_2"] == HUITP_IEID_UNI_DOOR_STATE_INVALID){
+                $doorlock_2_status = "状态异常";
+                $doorlock_2_alarm = "true";
+                $doorlock_2_picname = "FHYS_locko";
             }
             else{
                 $doorlock_2_status = "状态未知";
-                $doorlock_2_alarm = "false";
-                $doorlock_2_picname = "FHYS_lockc";
-            }
-
-            if($row["door_2"] == HUITP_IEID_UNI_DOOR_STATE_OPEN AND $row["reporttype"] == HUITP_IEID_UNI_CCL_REPORT_TYPE_FAULT_EVENT){
-                $doorlock_2_status = "异常打开";
                 $doorlock_2_alarm = "true";
-                $doorlock_2_picname = "FHYS_locko";
+                $doorlock_2_picname = "FHYS_lock";
             }
 
             $temp = array(

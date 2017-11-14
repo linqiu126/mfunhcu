@@ -221,27 +221,37 @@ class classDbiL2snrDoorlock
         $humid_l = hexdec(substr($msg['humid'], 2, 2)) & 0xFF;
         $humidValue = $humid_h + $humid_l/100;
 
-        if ($msg['door1'] == MFUN_HCU_DATA_FHYS_STATUS_OK){
+        if ($msg['lock1'] == MFUN_HCU_DATA_FHYS_STATUS_OK AND $msg['door1'] == MFUN_HCU_DATA_FHYS_STATUS_OK){
             $lock_1 = HUITP_IEID_UNI_LOCK_STATE_CLOSE;
             $door_1 = HUITP_IEID_UNI_DOOR_STATE_CLOSE;
             $reportType = HUITP_IEID_UNI_CCL_REPORT_TYPE_CLOSE_EVENT;
         }
-        elseif ($msg['door1'] == MFUN_HCU_DATA_FHYS_STATUS_NOK){
-            $lock_1 = HUITP_IEID_UNI_LOCK_STATE_OPEN;
+        elseif ($msg['lock1'] == MFUN_HCU_DATA_FHYS_STATUS_OK AND $msg['door1'] == MFUN_HCU_DATA_FHYS_STATUS_NOK){
+            $lock_1 = HUITP_IEID_UNI_LOCK_STATE_CLOSE;
             $door_1 = HUITP_IEID_UNI_DOOR_STATE_OPEN;
             $reportType = HUITP_IEID_UNI_CCL_REPORT_TYPE_PERIOD_EVENT;
         }
-        elseif($msg['door1'] == MFUN_HCU_DATA_FHYS_STATUS_NULL){
-            $lock_1 = HUITP_IEID_UNI_LOCK_STATE_NULL;
-            $door_1 = HUITP_IEID_UNI_DOOR_STATE_NULL;
-            $reportType = HUITP_IEID_UNI_CCL_REPORT_TYPE_PERIOD_EVENT;
-        }
-        elseif($msg['door1'] == MFUN_HCU_DATA_FHYS_STATUS_ALARM){
-            $lock_1 = HUITP_IEID_UNI_LOCK_STATE_OPEN;
-            $door_1 = HUITP_IEID_UNI_DOOR_STATE_OPEN;
+        elseif($msg['lock1'] == MFUN_HCU_DATA_FHYS_STATUS_OK AND $msg['door1'] == MFUN_HCU_DATA_FHYS_STATUS_ALARM){
+            $lock_1 = HUITP_IEID_UNI_LOCK_STATE_CLOSE;
+            $door_1 = HUITP_IEID_UNI_DOOR_STATE_ALARM;
             $reportType = HUITP_IEID_UNI_CCL_REPORT_TYPE_FAULT_EVENT;
             $alarm_code = MFUN_HCU_FHYS_ALARM_DOOR1_OPEN;
             $alarm_severity = MFUN_HCU_FHYS_ALARM_LEVEL_H;
+        }
+        elseif($msg['lock1'] == MFUN_HCU_DATA_FHYS_STATUS_NOK AND $msg['door1'] == MFUN_HCU_DATA_FHYS_STATUS_OK){
+            $lock_1 = HUITP_IEID_UNI_LOCK_STATE_OPEN;
+            $door_1 = HUITP_IEID_UNI_DOOR_STATE_CLOSE;
+            $reportType = HUITP_IEID_UNI_CCL_REPORT_TYPE_PERIOD_EVENT;
+        }
+        elseif($msg['lock1'] == MFUN_HCU_DATA_FHYS_STATUS_NOK AND $msg['door1'] == MFUN_HCU_DATA_FHYS_STATUS_NOK){
+            $lock_1 = HUITP_IEID_UNI_LOCK_STATE_OPEN;
+            $door_1 = HUITP_IEID_UNI_DOOR_STATE_OPEN;
+            $reportType = HUITP_IEID_UNI_CCL_REPORT_TYPE_PERIOD_EVENT;
+        }
+        elseif($msg['lock1'] == MFUN_HCU_DATA_FHYS_STATUS_NOK AND $msg['door1'] == MFUN_HCU_DATA_FHYS_STATUS_ALARM){
+            $lock_1 = HUITP_IEID_UNI_LOCK_STATE_OPEN;
+            $door_1 = HUITP_IEID_UNI_DOOR_STATE_INVALID;
+            $reportType = HUITP_IEID_UNI_CCL_REPORT_TYPE_PERIOD_EVENT;
         }
         else{
             $lock_1 =HUITP_IEID_UNI_LOCK_STATE_INVALID;
@@ -249,27 +259,37 @@ class classDbiL2snrDoorlock
             $reportType = HUITP_IEID_UNI_CCL_REPORT_TYPE_PERIOD_EVENT;
         }
 
-        if ($msg['door2'] == MFUN_HCU_DATA_FHYS_STATUS_OK){
+        if ($msg['lock2'] == MFUN_HCU_DATA_FHYS_STATUS_OK AND $msg['door2'] == MFUN_HCU_DATA_FHYS_STATUS_OK){
             $lock_2 = HUITP_IEID_UNI_LOCK_STATE_CLOSE;
             $door_2 = HUITP_IEID_UNI_DOOR_STATE_CLOSE;
             $reportType = HUITP_IEID_UNI_CCL_REPORT_TYPE_CLOSE_EVENT;
         }
-        elseif ($msg['door2'] == MFUN_HCU_DATA_FHYS_STATUS_NOK){
-            $lock_2 = HUITP_IEID_UNI_LOCK_STATE_OPEN;
+        elseif ($msg['lock2'] == MFUN_HCU_DATA_FHYS_STATUS_OK AND $msg['door2'] == MFUN_HCU_DATA_FHYS_STATUS_NOK){
+            $lock_2 = HUITP_IEID_UNI_LOCK_STATE_CLOSE;
             $door_2 = HUITP_IEID_UNI_DOOR_STATE_OPEN;
             $reportType = HUITP_IEID_UNI_CCL_REPORT_TYPE_PERIOD_EVENT;
         }
-        elseif($msg['door2'] == MFUN_HCU_DATA_FHYS_STATUS_NULL){
-            $lock_2 = HUITP_IEID_UNI_LOCK_STATE_NULL;
-            $door_2 = HUITP_IEID_UNI_DOOR_STATE_NULL;
-            $reportType = HUITP_IEID_UNI_CCL_REPORT_TYPE_PERIOD_EVENT;
-        }
-        elseif($msg['door2'] == MFUN_HCU_DATA_FHYS_STATUS_ALARM){
-            $lock_2 = HUITP_IEID_UNI_LOCK_STATE_OPEN;
-            $door_2 = HUITP_IEID_UNI_DOOR_STATE_OPEN;
+        elseif($msg['lock2'] == MFUN_HCU_DATA_FHYS_STATUS_OK AND $msg['door2'] == MFUN_HCU_DATA_FHYS_STATUS_ALARM){
+            $lock_2 = HUITP_IEID_UNI_LOCK_STATE_CLOSE;
+            $door_2 = HUITP_IEID_UNI_DOOR_STATE_ALARM;
             $reportType = HUITP_IEID_UNI_CCL_REPORT_TYPE_FAULT_EVENT;
-            $alarm_code = MFUN_HCU_FHYS_ALARM_DOOR2_OPEN;
+            $alarm_code = MFUN_HCU_FHYS_ALARM_DOOR1_OPEN;
             $alarm_severity = MFUN_HCU_FHYS_ALARM_LEVEL_H;
+        }
+        elseif($msg['lock2'] == MFUN_HCU_DATA_FHYS_STATUS_NOK AND $msg['door2'] == MFUN_HCU_DATA_FHYS_STATUS_OK){
+            $lock_2 = HUITP_IEID_UNI_LOCK_STATE_OPEN;
+            $door_2 = HUITP_IEID_UNI_DOOR_STATE_CLOSE;
+            $reportType = HUITP_IEID_UNI_CCL_REPORT_TYPE_PERIOD_EVENT;
+        }
+        elseif($msg['lock2'] == MFUN_HCU_DATA_FHYS_STATUS_NOK AND $msg['door2'] == MFUN_HCU_DATA_FHYS_STATUS_NOK){
+            $lock_2 = HUITP_IEID_UNI_LOCK_STATE_OPEN;
+            $door_2 = HUITP_IEID_UNI_DOOR_STATE_OPEN;
+            $reportType = HUITP_IEID_UNI_CCL_REPORT_TYPE_PERIOD_EVENT;
+        }
+        elseif($msg['lock2'] == MFUN_HCU_DATA_FHYS_STATUS_NOK AND $msg['door2'] == MFUN_HCU_DATA_FHYS_STATUS_ALARM){
+            $lock_2 = HUITP_IEID_UNI_LOCK_STATE_OPEN;
+            $door_2 = HUITP_IEID_UNI_DOOR_STATE_INVALID;
+            $reportType = HUITP_IEID_UNI_CCL_REPORT_TYPE_PERIOD_EVENT;
         }
         else{
             $lock_2 =HUITP_IEID_UNI_LOCK_STATE_INVALID;
