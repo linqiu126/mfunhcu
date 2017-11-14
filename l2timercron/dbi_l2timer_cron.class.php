@@ -219,6 +219,41 @@ class classDbiL2timerCron
         return $result;
     }
 
+    //系统日志表 t_l1vm_loginfo
+    private function dbi_cron_l1vm_loginfo_cleanup()
+    {
+        //连接log数据库
+        $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_DEBUG, MFUN_CLOUD_DBPORT);
+        if (!$mysqli) {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+
+        //初始化
+        $sid_min = 0;
+        $sid_max = 0;
+        //查找最大SID
+        $result = $mysqli->query("SELECT  MAX(`sid`)  FROM `t_l1vm_loginfo` WHERE 1 ");
+        if ($result->num_rows>0){
+            $row_max =  $result->fetch_array();
+            $sid_max = $row_max['MAX(`sid`)'];
+        }
+        //查找最小SID
+        $result = $mysqli->query("SELECT  MIN(`sid`)  FROM `t_l1vm_loginfo` WHERE 1 ");
+        if ($result->num_rows>0) {
+            $row_min =  $result->fetch_array();
+            $sid_min = $row_min['MIN(`sid`)'] ;
+        }
+
+        //检查记录数如果超过MAX_LOG_NUM，则删除老的记录
+        if (($sid_max - $sid_min) > MFUN_L1VM_DBI_MAX_LOG_NUM) {
+            $count = $sid_max - MFUN_L1VM_DBI_MAX_LOG_NUM;
+            $result = $mysqli->query("DELETE FROM `t_l1vm_loginfo` WHERE (`sid` >0 AND `sid`< $count) ");
+        }
+
+        $mysqli->close();
+        return $result;
+    }
+
 
     /***AQYC扬尘项目超期历史数据清理***/
 
@@ -251,8 +286,13 @@ class classDbiL2timerCron
         $result9 = $this->dbi_cron_l3f6pm_perfdata_cleanup($mysqli, $days);
         //告警数据
         $result10 = $this->dbi_cron_l3f5fm_aqyc_alarmdata_cleanup($mysqli, $days);
+        //关闭数据库
+        $mysqli->close();
 
-        $result = $result1 AND $result2 AND $result3 AND $result4 AND $result5 AND $result6 AND $result7 AND $result8 AND $result9 AND $result10;
+        //系统日志，log表在不同的数据库，需要重新连接
+        $result11 = $this->dbi_cron_l1vm_loginfo_cleanup();
+
+        $result = $result1 AND $result2 AND $result3 AND $result4 AND $result5 AND $result6 AND $result7 AND $result8 AND $result9 AND $result10 AND $result11;
         return $result;
     }
 
@@ -275,8 +315,13 @@ class classDbiL2timerCron
         $result3 = $this->dbi_cron_l2snr_fhys_minreport_cleanup($mysqli, $days);
         //照片
         $result4 = $this->dbi_cron_l2snr_picturedata_cleanup($mysqli, $days);
+        //关闭数据库
+        $mysqli->close();
 
-        $result = $result1 AND $result2 AND $result3 AND $result4;
+        //系统日志，log表在不同的数据库，需要重新连接
+        $result5 = $this->dbi_cron_l1vm_loginfo_cleanup();
+
+        $result = $result1 AND $result2 AND $result3 AND $result4 AND $result5;
         return $result;
     }
 }

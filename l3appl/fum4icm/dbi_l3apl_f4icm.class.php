@@ -277,7 +277,7 @@ class classDbiL3apF4icm
             $hourindex = floor($hourminindex/60);
             $minindex = $hourminindex - $hourindex*60;
 
-            $pictureUrl = MFUN_CLOUD_XHZN_WWW.MFUN_HCU_SITE_PIC_WWW_PATH.$statcode.'/'.$pic_name;
+            $pictureUrl = MFUN_CLOUD_WWW.MFUN_HCU_SITE_PIC_WWW_PATH.$statcode.'/'.$pic_name;
             $attr = '照片_'.$date.'_'.$hourindex.":".$minindex;
             $temp = array('id'=> $pictureUrl,'attr'=> $attr);
             array_push($hsmmp_list, $temp);
@@ -292,7 +292,7 @@ class classDbiL3apF4icm
             $hourindex = floor($hourminindex/60);
             $minindex = $hourminindex - $hourindex*60;
 
-            $videoUrl = MFUN_CLOUD_XHZN_WWW.MFUN_HCU_SITE_VIDEO_WWW_PATH.$statcode.'/'.$video_name;
+            $videoUrl = MFUN_CLOUD_WWW.MFUN_HCU_SITE_VIDEO_WWW_PATH.$statcode.'/'.$video_name;
             $attr = '视频_'.$date.'_'.$hourindex.":".$minindex;
             $temp = array('id'=> $videoUrl,'attr'=> $attr);
             array_push($hsmmp_list, $temp);
