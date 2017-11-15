@@ -269,11 +269,12 @@ class classDbiL3apF5fm
         return $alarm_type;
     }
 
-    public function dbi_aqyc_alarm_handle_table_req($uid)
+    //GetWarningHandleListTable
+    public function dbi_aqyc_alarm_history_table_req($projCode,$duration,$keyWord)
     {
         //初始化返回值
-        $resp["column"] = array();
-        $resp['data'] = array();
+        $alarm_list["column"] = array();
+        $alarm_list['data'] = array();
 
         //建立连接
         $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
@@ -282,56 +283,56 @@ class classDbiL3apF5fm
         }
         $mysqli->query("SET NAMES utf8");
 
-        //获取授权站点-项目列表
-        $auth_list = $this->dbi_user_statproj_inqury($uid);
+        array_push($alarm_list["column"], "序号");
+        array_push($alarm_list["column"], "处理状态");
+        array_push($alarm_list["column"], "站点编号");
+        array_push($alarm_list["column"], "设备编号");
+        array_push($alarm_list["column"], "站点名称");
+        array_push($alarm_list["column"], "地址");
+        array_push($alarm_list["column"], "负责人");
+        array_push($alarm_list["column"], "联系电话");
+        array_push($alarm_list["column"], "告警级别");
+        array_push($alarm_list["column"], "告警内容");
+        array_push($alarm_list["column"], "告警产生时间");
+        array_push($alarm_list["column"], "告警关闭时间");
+        array_push($alarm_list["column"], "告警处理");
 
-        array_push($resp["column"], "站点编号");
-        array_push($resp["column"], "处理状态");
-        array_push($resp["column"], "设备编号");
-        array_push($resp["column"], "站点名称");
-        array_push($resp["column"], "地址");
-        array_push($resp["column"], "负责人");
-        array_push($resp["column"], "联系电话");
-        array_push($resp["column"], "告警级别");
-        array_push($resp["column"], "告警内容");
-        array_push($resp["column"], "告警产生时间");
-        array_push($resp["column"], "告警关闭时间");
-        array_push($resp["column"], "告警处理");
+        $objAqycAlarm = new classConstAqycEngpar();
+        $timestamp = time();
+        $end = intval(date("Ymd", $timestamp));
+        $start = $end;
+        if($duration == MFUN_L3APL_F2CM_EVENT_DURATION_DAY)
+            $start = intval(date("Ymd",strtotime('-1 day')));
+        elseif($duration == MFUN_L3APL_F2CM_EVENT_DURATION_WEEK)
+            $start = intval(date("Ymd",strtotime('-7 day')));
+        elseif($duration == MFUN_L3APL_F2CM_EVENT_DURATION_MONTH)
+            $start = intval(date("Ymd",strtotime('-30 day')));
 
-        //初始化返回值，确保数据库查询不到的情况下界面返回数据长度不报错
-        $statName = "";
-        $address = "";
-        $chargeMan = "";
-        $telephone = "";
-        for($i=0; $i<count($auth_list); $i++)
-        {
-            //$projCode = $auth_list[$i]["p_code"];
-            $statCode = $auth_list[$i]["stat_code"];
-
-            $query_str = "SELECT * FROM `t_l3f3dm_siteinfo` WHERE `statcode` = '$statCode'";
-            $result = $mysqli->query($query_str);
-            if (($result->num_rows) > 0){
-                $row = $result->fetch_array();
-                $statName = $row["statname"];
-                $address = $row["address"];
-                $chargeMan = $row["chargeman"];
-                $telephone = $row["telephone"];
-            }
+        $query_str = "SELECT * FROM `t_l3f3dm_siteinfo` WHERE `p_code` = '$projCode'";
+        $result = $mysqli->query($query_str);
+        while (($result != false) && (($row = $result->fetch_array()) > 0)){
+            $statCode = $row['statcode'];
+            $statName = $row["statname"];
+            $address = $row["address"];
+            $chargeMan = $row["chargeman"];
+            $telephone = $row["telephone"];
 
             $alarmFlag = MFUN_HCU_ALARM_PROC_FLAG_C;
-            $query_str = "SELECT * FROM `t_l3f5fm_aqyc_alarmdata` WHERE (`statcode` = '$statCode' AND `alarmflag` != '$alarmFlag')";
-            $result = $mysqli->query($query_str);
-            while (($result != false) && (($row = $result->fetch_array()) > 0))
-            {
-                $one_row = array();
-                $devCode = $row["devcode"];
-                $alarmflag = $row["alarmflag"];
-                $alarmSeverity =  $row["alarmseverity"];
-                $alarmContent = $row["alarmcontent"];
-                $tsGen = $row["tsgen"];
-                $tsClose = $row["tsclose"];
-                $alarmPic = $row["alarmpic"];
-                $alarmProc = $row["alarmproc"];
+            $query_str = "SELECT * FROM `t_l3f5fm_aqyc_alarmdata` WHERE (`statcode` = '$statCode' AND `alarmflag` != '$alarmFlag' AND (concat(`tsgen`,`alarmproc`) like '%$keyWord%'))";
+            $resp = $mysqli->query($query_str);
+            while (($resp != false) && (($resp_row = $resp->fetch_array()) > 0)) {
+                $sid = $resp_row["sid"];
+                $devCode = $resp_row["devcode"];
+                $alarmflag = $resp_row["alarmflag"];
+                $alarmSeverity =  $resp_row["alarmseverity"];
+                $alarmContent = $resp_row["alarmcontent"];
+                $tsGen = $resp_row["tsgen"];
+                $tsClose = $resp_row["tsclose"];
+                //$alarmPic = $resp_row["alarmpic"];
+                $alarmProc = $resp_row["alarmproc"];
+
+                $dateintval = intval(date('Ymd',strtotime($tsGen)));
+                if($dateintval < $start OR $dateintval > $end)  continue; //如果不在查询时间范围内，直接跳过
 
                 if ($alarmSeverity == HUITP_IEID_UNI_ALARM_SEVERITY_HIGH)
                     $alarmSeverity = "高";
@@ -342,49 +343,121 @@ class classDbiL3apF5fm
                 else
                     $alarmSeverity = "无";
 
-                if ($alarmContent == HUITP_IEID_UNI_ALARM_CONTENT_PM25_NO_CONNECT)
-                    $alarmContent = "颗粒物传感器故障";
-                elseif ($alarmContent == HUITP_IEID_UNI_ALARM_CONTENT_TEMP_NO_CONNECT)
-                    $alarmContent = "温度传感器故障";
-                elseif ($alarmContent == HUITP_IEID_UNI_ALARM_CONTENT_HUMID_NO_CONNECT)
-                    $alarmContent = "湿度传感器故障";
-                elseif ($alarmContent == HUITP_IEID_UNI_ALARM_CONTENT_WINDDIR_NO_CONNECT)
-                    $alarmContent = "风向传感器故障";
-                elseif ($alarmContent == HUITP_IEID_UNI_ALARM_CONTENT_WINDSPD_NO_CONNECT)
-                    $alarmContent = "风速传感器故障";
-                elseif ($alarmContent == HUITP_IEID_UNI_ALARM_CONTENT_NOISE_NO_CONNECT)
-                    $alarmContent = "噪声传感器故障";
-                elseif ($alarmContent == HUITP_IEID_UNI_ALARM_CONTENT_VIDEO_NO_CONNECT)
-                    $alarmContent = "摄像头故障";
-                elseif ($alarmContent == HUITP_IEID_UNI_ALARM_CONTENT_TSP_VALUE_EXCEED_THRESHLOD)
-                    $alarmContent = "扬尘超标";
-                elseif ($alarmContent == HUITP_IEID_UNI_ALARM_CONTENT_NOISE_VALUE_EXCEED_THRESHLOD)
-                    $alarmContent = "噪声超标";
-                else
-                    $alarmContent = "未知";
+                $alarmDesc = $objAqycAlarm->mfun_hcu_aqyc_getAlarmDescription($alarmContent);
 
-                array_push($one_row, $statCode);
+                $one_row = array();
+                array_push($one_row, $sid);
                 array_push($one_row, $alarmflag);
+                array_push($one_row, $statCode);
                 array_push($one_row, $devCode);
                 array_push($one_row, $statName);
                 array_push($one_row, $address);
                 array_push($one_row, $chargeMan);
                 array_push($one_row, $telephone);
                 array_push($one_row, $alarmSeverity);
-                array_push($one_row, $alarmContent);
+                array_push($one_row, $alarmDesc);
                 array_push($one_row, $tsGen);
                 array_push($one_row, $tsClose);
                 array_push($one_row, $alarmProc);
 
-                array_push($resp['data'], $one_row);
+                array_push($alarm_list['data'], $one_row);
             }
+        }
+        $mysqli->close();
+        return $alarm_list;
+    }
+
+    public function dbi_aqyc_alarm_img_req($sid)
+    {
+        //建立连接
+        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli) {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $query_str = "SELECT * FROM `t_l3f5fm_aqyc_alarmdata` WHERE `sid` = '$sid' ";
+        $result = $mysqli->query($query_str);
+
+        $pic_result = array();
+        if (($result->num_rows)>0) {
+            $row = $result->fetch_array();
+            $file_name = $row['alarmpic'];
+            $statCode = $row['statcode'];
+            if(!empty($file_name)){
+                $file_url = MFUN_HCU_SITE_PIC_WWW_PATH.$statCode.'/'.$file_name;
+                $pic_result = array('ifpicture' => 'true', 'picture' => $file_url);
+            }
+            else
+                $pic_result = array('ifpicture' => 'false', 'picture' => '');
+        }
+        $mysqli->close();
+        return $pic_result;
+    }
+
+    public function dbi_aqyc_alarm_handle_process($uid, $statCode,$mobile,$action)
+    {
+        //建立连接
+        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli) {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $mysqli->query("SET NAMES utf8");
+        $timestamp = time();
+        $alarmproc = "";
+
+        $query_str = "SELECT * FROM `t_l3f3dm_siteinfo` WHERE `statcode` = '$statCode'";
+        $result = $mysqli->query($query_str);
+        if (($result->num_rows) > 0) {
+            $row = $result->fetch_array();
+            $projcode = $row['p_code'];
+            $statname = $row["statname"];
+            $chargeman = $row["chargeman"];
+            $telephone = $row["telephone"];
+            //LEXIN短信平台
+            //$url = MFUN_HCU_FHYS_LEXIN_URL.MFUN_HCU_FHYS_LEXIN_ACCNAME."&".MFUN_HCU_FHYS_LEXIN_ACCPWD."&aimcodes=".trim($mobile).
+            //    "&content=".trim($action).MFUN_HCU_FHYS_LEXIN_SIGNATURE."&bizId=".$timestamp."&dataType=string";
+
+            //CMCC短信平台
+            //http://api.sms.heclouds.com/tempsmsSend?sicode=a2bb3546a41649a29e2fcb635e091dd5&mobiles=13917334681&tempid=10003&name=foha
+            $url = MFUN_HCU_FHYS_CMCC_URL.'?sicode='.MFUN_HCU_FHYS_CMCC_SICODE.'&mobiles='.trim($mobile).
+                '&tempid='.MFUN_HCU_FHYS_CMCC_TEMPCODE_ALARM.'&name='.$statname.'&action='.$action;
+            $l2sdkIotWxObj = new classTaskL2sdkIotWx();
+            $resp =$l2sdkIotWxObj->https_request($url);
+
+            $flag_new = MFUN_HCU_ALARM_PROC_FLAG_N;
+            $flag_proc = MFUN_HCU_ALARM_PROC_FLAG_Y;
+            $currenttime = date("Y-m-d H:i:s", $timestamp);
+            $alarmproc = "{$currenttime} 操作员[{$uid}]发送信息[{$action}]到手机[{$mobile}];";
+            $query_str = "UPDATE `t_l3f5fm_aqyc_alarmdata` SET `alarmflag` = '$flag_proc', `alarmproc` = concat(`alarmproc`,'$alarmproc') WHERE (`statcode` = '$statCode' AND `alarmflag` = '$flag_new')";
+            $result = $mysqli->query($query_str);
         }
 
         $mysqli->close();
-        return $resp;
+        return $alarmproc;
     }
 
-    public function dbi_fhys_alarm_handle_table_req($uid)
+    public function dbi_aqyc_alarm_close_process($uid,$statCode)
+    {
+        //建立连接
+        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli) {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $mysqli->query("SET NAMES utf8");
+
+        $timestamp = time();
+        $currenttime = date("Y-m-d H:i:s",$timestamp);
+        $flag_proc = MFUN_HCU_ALARM_PROC_FLAG_Y;
+        $flag_close = MFUN_HCU_ALARM_PROC_FLAG_C;
+        $alarmproc = "操作员[{$uid}]关闭告警";
+        $query_str = "UPDATE `t_l3f5fm_aqyc_alarmdata` SET `alarmflag` = '$flag_close', `alarmproc` = concat(`alarmproc`,'$alarmproc'), `tsclose` = '$currenttime' WHERE (`statcode` = '$statCode' AND `alarmflag` = '$flag_proc')";
+        $result = $mysqli->query($query_str);
+
+        $mysqli->close();
+        return $result;
+    }
+
+    /*********************************智能云锁新增处理************************************************/
+    public function dbi_fhys_alarm_history_table_req($uid)
     {
         //初始化返回值
         $resp["column"] = array();
@@ -470,7 +543,7 @@ class classDbiL3apF5fm
         return $resp;
     }
 
-    public function dbi_fhys_alarm_handle_process($statCode,$mobile,$action)
+    public function dbi_fhys_alarm_handle_process($uid,$statCode,$mobile,$action)
     {
         //建立连接
         $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
@@ -524,9 +597,10 @@ class classDbiL3apF5fm
                 $resp = $l2sdkIotWxObj->send_template_message(json_encode($template, JSON_UNESCAPED_UNICODE));
             }
 
-            $alarmflag = MFUN_HCU_ALARM_PROC_FLAG_Y;
-            $alarmproc = $currenttime . ":发送信息（".$action."）到手机".$mobile;
-            $query_str = "UPDATE `t_l3f5fm_fhys_alarmdata` SET `alarmflag` = '$alarmflag', `alarmproc` = '$alarmproc' WHERE (`statcode` = '$statCode')";
+            $flag_new = MFUN_HCU_ALARM_PROC_FLAG_N;
+            $flag_proc = MFUN_HCU_ALARM_PROC_FLAG_Y;
+            $alarmproc = "{$currenttime} 操作员[{$uid}]发送信息[{$action}]到手机[{$mobile}];";
+            $query_str = "UPDATE `t_l3f5fm_fhys_alarmdata` SET `alarmflag` = '$flag_proc', `alarmproc` = concat(`alarmproc`,'$alarmproc') WHERE (`statcode` = '$statCode' AND `alarmflag` = '$flag_new')";
             $result = $mysqli->query($query_str);
         }
 
@@ -545,9 +619,10 @@ class classDbiL3apF5fm
 
         $timestamp = time();
         $currenttime = date("Y-m-d H:i:s",$timestamp);
-        $closeflag = MFUN_HCU_ALARM_PROC_FLAG_C;
-        $alarmproc = $currenttime . ":操作员（".$uid."）关闭告警";
-        $query_str = "UPDATE `t_l3f5fm_fhys_alarmdata` SET `alarmflag` = '$closeflag', `alarmproc` = '$alarmproc', `tsclose` = '$currenttime' WHERE (`statcode` = '$statCode' AND `alarmflag` != '$closeflag')";
+        $flag_proc = MFUN_HCU_ALARM_PROC_FLAG_Y;
+        $flag_close = MFUN_HCU_ALARM_PROC_FLAG_C;
+        $alarmproc = "操作员[{$uid}]关闭告警";
+        $query_str = "UPDATE `t_l3f5fm_fhys_alarmdata` SET `alarmflag` = '$flag_close', `alarmproc` = concat(`alarmproc`,'$alarmproc'), `tsclose` = '$currenttime' WHERE (`statcode` = '$statCode' AND `alarmflag` = '$flag_proc')";
         $result = $mysqli->query($query_str);
 
         $mysqli->close();

@@ -231,14 +231,13 @@ class classConstFhysEngpar
         MFUN_HCU_FHYS_ALARM_LOW_BATT => '低电量告警'
     );
 
-    //通过授权级别获取详细授权菜单信息
+    //通过告警码获取详细告警信息
     public static function mfun_hcu_fhys_getAlarmDescription($alarmcode)
     {
-
         if ($alarmcode >= 0 AND $alarmcode <MFUN_HCU_FHYS_ALARM_CODE_MAX) {
             return self::$mfunFhysAlarmCode[$alarmcode];
         }else {
-            return false;
+            return '未知告警';
         }
     }
 

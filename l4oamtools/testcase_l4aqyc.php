@@ -12,11 +12,28 @@ include_once "../l1comvm/vmlayer.php";
  *                             L4AQYC-UI TEST CASES                                   *
  *************************************************************************************/
 if (TC_L4AQYC_UI == true) {
-    $sessionid = "O1pxjnzpJm";
+    $sessionid = "lx7HNmGADy";
     $uerid = "UID000001";
     $statcode = "120101002";
     $projcode = "P_0002";
 
+    echo " [TC L4AQYC: AlarmHandle START]\n";
+    $_GET["action"] = "AlarmHandle";
+    $_GET["type"] = "query";
+    $body = array('StatCode' => "120101025",'Mobile'=>"13917334681",'Action'=>"快来抢红包");
+    $_GET["body"] = $body;
+    $_GET["user"] = $sessionid;
+    require("../l4aqycui/request.php");
+    echo " [TC L4AQYC: AlarmHandle END]\n";
+
+    echo " [TC L4AQYC: GetWarningHandleListTable START]\n";
+    $_GET["action"] = "GetWarningHandleListTable";
+    $_GET["type"] = "query";
+    $body = array('ProjCode' => "P_0004",'Time' => "30",'KeyWord' => "");
+    $_GET["body"] = $body;
+    $_GET["user"] = $sessionid;
+    require("../l4aqycui/request.php");
+    echo " [TC L4AQYC: GetWarningHandleListTable END]\n";
 
     echo " [TC L4AQYC: LOGIN START]\n";
     $_GET["action"] = "login";

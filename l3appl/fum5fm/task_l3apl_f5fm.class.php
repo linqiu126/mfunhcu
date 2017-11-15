@@ -11,12 +11,6 @@ include_once "dbi_l3apl_f5fm.class.php";
 
 class classTaskL3aplF5fm
 {
-    //构造函数
-    public function __construct()
-    {
-
-    }
-
     private function _encode($arr)
     {
         $na = array();
@@ -138,23 +132,94 @@ class classTaskL3aplF5fm
     }
 
     //告警处理表
-    function func_aqyc_get_alarm_handle_table_process($action, $user, $body)
+    private function func_aqyc_get_alarm_history_table_process($action, $user, $body)
     {
+        if (isset($body["ProjCode"])) $projCode = $body["ProjCode"]; else  $projCode = "";
+        if (isset($body["Time"])) $duration = $body["Time"]; else  $duration = "";
+        if (isset($body["KeyWord"])) $keyWord = $body["KeyWord"]; else  $keyWord = "";
+
+        $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
+        $usercheck = $uiF1symDbObj->dbi_user_authcheck($action, $user);
+        if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
+            $uiF5fmDbObj = new classDbiL3apF5fm(); //初始化一个UI DB对象
+            $resp = $uiF5fmDbObj->dbi_aqyc_alarm_history_table_req($projCode,$duration,$keyWord);
+            if(!empty($resp)){
+                $ret = array('ColumnName' => $resp["column"],'TableData' => $resp["data"]);
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$ret,'msg'=>"获取历史告警表成功");
+            }
+            else
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>"获取历史告警表失败");
+        }
+        else
+            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
+
+        return $retval;
+    }
+
+    private function func_aqyc_get_alarm_img_process($action, $user, $body)
+    {
+        if (isset($body["warningid"])) $alarmId = $body["warningid"]; else  $alarmId = "";
+
+        $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
+        $usercheck = $uiF1symDbObj->dbi_user_authcheck($action, $user);
+        if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
+
+            $uiF5fmDbObj = new classDbiL3apF5fm(); //初始化一个UI DB对象
+            $resp = $uiF5fmDbObj->dbi_aqyc_alarm_img_req($alarmId);
+            if(!empty($resp)){
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$resp,'msg'=>"获取告警照片成功");
+            }
+            else
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>"获取告警照片失败");
+        }
+        else
+            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
+
+        return $retval;
+    }
+
+    private function func_aqyc_alarm_handle_process($action, $user, $body)
+    {
+        if (isset($body["StatCode"])) $statcode = $body["StatCode"]; else  $statcode = "";
+        if (isset($body["Mobile"])) $mobile = $body["Mobile"]; else  $mobile = "";
+        if (isset($body["Action"])) $action = $body["Action"]; else  $action = "";
+
+        $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
+        $usercheck = $uiF1symDbObj->dbi_user_authcheck($action, $user);
+        if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
+            if (!empty($mobile) AND !empty($action)){
+                $uid = $uiF1symDbObj->dbi_session_check($user);
+                $uiF5fmDbObj = new classDbiL3apF5fm(); //初始化一个UI DB对象
+                $alarm_proc = $uiF5fmDbObj->dbi_aqyc_alarm_handle_process($uid, $statcode,$mobile,$action);
+            }
+            if(!empty($alarm_proc))
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"告警处理成功");
+            else
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"告警处理失败");
+        }
+        else
+            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"超时退出");
+
+        return $retval;
+    }
+
+    private function func_aqyc_alarm_close_process($action, $user, $body)
+    {
+        if (isset($body["StatCode"])) $statcode = $body["StatCode"]; else  $statcode = "";
+
         $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
         $usercheck = $uiF1symDbObj->dbi_user_authcheck($action, $user);
         if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
             $uid = $uiF1symDbObj->dbi_session_check($user);
             $uiF5fmDbObj = new classDbiL3apF5fm(); //初始化一个UI DB对象
-            $resp = $uiF5fmDbObj->dbi_aqyc_alarm_handle_table_req($uid);
-            if(!empty($resp)){
-                $ret = array('ColumnName' => $resp["column"],'TableData' => $resp["data"]);
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$ret,'msg'=>"获取告警处理表成功");
-            }
+            $result = $uiF5fmDbObj->dbi_aqyc_alarm_close_process($uid,$statcode);
+            if($result == true)
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"告警关闭成功");
             else
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>"获取告警处理表失败");
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"告警关闭失败");
         }
         else
-            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
+            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"超时退出");
 
         return $retval;
     }
@@ -200,20 +265,20 @@ class classTaskL3aplF5fm
         return $retval;
     }
 
-    private function func_fhys_get_alarm_handle_table_process($action, $user, $body)
+    private function func_fhys_get_alarm_history_table_process($action, $user, $body)
     {
         $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
         $usercheck = $uiF1symDbObj->dbi_user_authcheck($action, $user);
         if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
             $uid = $uiF1symDbObj->dbi_session_check($user);
             $uiF5fmDbObj = new classDbiL3apF5fm(); //初始化一个UI DB对象
-            $resp = $uiF5fmDbObj->dbi_fhys_alarm_handle_table_req($uid);
+            $resp = $uiF5fmDbObj->dbi_fhys_alarm_history_table_req($uid);
             if(!empty($resp)){
                 $ret = array('ColumnName' => $resp["column"],'TableData' => $resp["data"]);
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$ret,'msg'=>"获取告警处理表成功");
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$ret,'msg'=>"获取历史告警表成功");
             }
             else
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>"获取告警处理表失败");
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>"获取历史告警表失败");
         }
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
@@ -230,12 +295,11 @@ class classTaskL3aplF5fm
         $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
         $usercheck = $uiF1symDbObj->dbi_user_authcheck($action, $user);
         if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
-            $uid = $uiF1symDbObj->dbi_session_check($user);
             if (!empty($mobile) AND !empty($action)){
+                $uid = $uiF1symDbObj->dbi_session_check($user);
                 $uiF5fmDbObj = new classDbiL3apF5fm(); //初始化一个UI DB对象
-                $alarm_proc = $uiF5fmDbObj->dbi_fhys_alarm_handle_process($statcode,$mobile,$action);
+                $alarm_proc = $uiF5fmDbObj->dbi_fhys_alarm_handle_process($uid,$statcode,$mobile,$action);
             }
-
             if(!empty($alarm_proc))
                 $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"告警处理成功");
             else
@@ -316,7 +380,20 @@ class classTaskL3aplF5fm
 
             //告警处理表
             case MSG_ID_L4AQYCUI_TO_L3F5_ALARMHANDLETABLE:
-                $resp = $this->func_aqyc_get_alarm_handle_table_process($action, $user, $body);
+                $resp = $this->func_aqyc_get_alarm_history_table_process($action, $user, $body);
+                break;
+
+            //获取告警抓拍照片
+            case MSG_ID_L4AQYCUI_TO_L3F5_ALARMIMGGET:
+                $resp = $this->func_aqyc_get_alarm_img_process($action, $user, $body);
+                break;
+
+            case MSG_ID_L4AQYCUI_TO_L3F5_ALARMHANDLE:
+                $resp = $this->func_aqyc_alarm_handle_process($action, $user, $body);
+                break;
+
+            case MSG_ID_L4AQYCUI_TO_L3F5_ALARMCLOSE:
+                $resp = $this->func_aqyc_alarm_close_process($action, $user, $body);
                 break;
 
             /*********************************智能云锁新增处理************************************************/
@@ -331,7 +408,7 @@ class classTaskL3aplF5fm
                 break;
 
             case MSG_ID_L4FHYSUI_TO_L3F5_ALARMHANDLETABLE:
-                $resp = $this->func_fhys_get_alarm_handle_table_process($action, $user, $body);
+                $resp = $this->func_fhys_get_alarm_history_table_process($action, $user, $body);
                 break;
 
             case MSG_ID_L4FHYSUI_TO_L3F5_ALARMHANDLE:

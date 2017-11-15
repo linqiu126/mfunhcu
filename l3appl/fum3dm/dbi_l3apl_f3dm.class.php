@@ -338,7 +338,7 @@ class classDbiL3apF3dm
         $sitelist = array();
         $query_str = "SELECT * FROM `t_l3f2cm_favourlist` WHERE `uid` = '$uid'";
         $result = $mysqli->query($query_str);
-        while ($row = $result->fetch_array()){
+        while (($result != false) && (($row = $result->fetch_array()) > 0)){
             $statCode = $row['statcode'];
 
             $query_str = "SELECT * FROM `t_l3f3dm_siteinfo` WHERE `statcode` = '$statCode'";      //查询监测点对应的项目号
@@ -2448,12 +2448,12 @@ class classDbiL3apF3dm
         $query_str = "SELECT * FROM `t_l3f3dm_siteinfo` WHERE `p_code` = '$projCode'";
         $result = $mysqli->query($query_str);
 
-        while ($row = $result->fetch_array()){
+        while (($result != false) && (($row = $result->fetch_array()) > 0)){
             $statCode = $row['statcode'];
             $statname = $row['statname'];
             $query_str = "SELECT * FROM `t_l3fxprcm_fhys_locklog` WHERE (`statcode` = '$statCode' AND (concat(`keyname`,`keyusername`) like '%$keyWord%'))";
             $resp = $mysqli->query($query_str);
-            while($resp_row = $resp->fetch_array()){
+            while (($resp != false) && (($resp_row = $resp->fetch_array()) > 0)){
                 $sid = $resp_row['sid'];
                 $woid = $resp_row['woid'];
                 $keyid = $resp_row['keyid'];
@@ -2461,6 +2461,11 @@ class classDbiL3apF3dm
                 $keyuserid = $resp_row['keyuserid'];
                 $keyusername = $resp_row['keyusername'];
                 $eventtype = $resp_row['eventtype'];
+                $eventtime = $resp_row['createtime'];
+
+                $dateintval = intval(date('Ymd',strtotime($eventtime)));
+                if($dateintval < $start AND $dateintval > $end) continue; //如果不在查询时间范围内，直接跳过
+
                 if ($eventtype == MFUN_L3APL_F2CM_EVENT_TYPE_RFID)
                     $eventtype = "RFID开锁";
                 elseif ($eventtype == MFUN_L3APL_F2CM_EVENT_TYPE_BLE)
@@ -2480,22 +2485,18 @@ class classDbiL3apF3dm
                 else
                     $eventtype = "未知事件";
 
-                $eventtime = $resp_row['createtime'];
-                $dateintval = intval(date('Ymd',strtotime($eventtime)));
                 $temp = array();
-                if($dateintval >= $start AND $dateintval <= $end){
-                    array_push($temp, $sid);
-                    array_push($temp, $statname);
-                    array_push($temp, $eventtime);
-                    array_push($temp, $eventtype);
-                    //array_push($temp, $woid);
-                    array_push($temp, $keyid);
-                    array_push($temp, $keyname);
-                    array_push($temp, $keyuserid);
-                    array_push($temp, $keyusername);
+                array_push($temp, $sid);
+                array_push($temp, $statname);
+                array_push($temp, $eventtime);
+                array_push($temp, $eventtype);
+                //array_push($temp, $woid);
+                array_push($temp, $keyid);
+                array_push($temp, $keyname);
+                array_push($temp, $keyuserid);
+                array_push($temp, $keyusername);
 
-                    array_push($history['TableData'], $temp);
-                }
+                array_push($history['TableData'], $temp);
             }
         }
 

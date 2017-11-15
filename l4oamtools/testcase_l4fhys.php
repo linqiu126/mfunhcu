@@ -71,15 +71,7 @@ if (TC_L4FHYS_WECHAT == true) {
  *                             L4FHYS-UI TEST CASES                                   *
  *************************************************************************************/
 if (TC_L4FHYS_UI == true) {
-    $sessionid = "uQBJUG1qSr";
-
-    echo " [TC L4FHYS: GetWarningHandleListTable START]\n";
-    $_GET["action"] = "GetWarningHandleListTable";
-    $_GET["type"] = "query";
-    $_GET["user"] = $sessionid;
-    require("../l4fhysui/request.php");
-    echo " [TC L4FHYS: GetWarningHandleListTable END]\n";
-
+    $sessionid = "jKtb20t626";
 
     echo " [TC L4FHYS: USERNEW START]\n";
     $_GET["action"] = "UserNew";
@@ -118,6 +110,8 @@ if (TC_L4FHYS_UI == true) {
     echo " [TC L4FHYS: GetWarningHandleListTable START]\n";
     $_GET["action"] = "GetWarningHandleListTable";
     $_GET["type"] = "query";
+    $body = array('ProjCode' => "P_0004",'Time' => "30",'KeyWord' => "");
+    $_GET["body"] = $body;
     $_GET["user"] = $sessionid;
     require("../l4fhysui/request.php");
     echo " [TC L4FHYS: GetWarningHandleListTable END]\n";

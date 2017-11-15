@@ -750,7 +750,9 @@ class classDbiL2snrCommon
 
         //生成告警记录，同时将抓拍的告警照片和告警记录关联
         $alarmFlag = MFUN_HCU_ALARM_PROC_FLAG_N;
-        $alarmProc = "新增告警，等待处理";
+        $objAqycAlarm = new classConstAqycEngpar();
+        $alarmDesc = $objAqycAlarm->mfun_hcu_aqyc_getAlarmDescription($alarmContent);
+        $alarmProc = "新增告警[{$alarmDesc}];";
         $tsGen = date("Y-m-d H:m:s", $timeStamp);
         $query_str = "INSERT INTO `t_l3f5fm_aqyc_alarmdata` (`devcode`,`statcode`,`alarmflag`,`alarmseverity`,`alarmcontent`,`alarmtype`,`clearflag`,`causeid`,`tsgen`,`alarmpic`,`alarmproc`)
                       VALUES ('$devCode','$statCode','$alarmFlag','$alarmServerity', '$alarmContent','$alarmType','$alarmClearFlag','$causeId','$tsGen','$picName','$alarmProc')";

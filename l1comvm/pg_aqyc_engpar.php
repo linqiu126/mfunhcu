@@ -85,10 +85,11 @@ define("MFUN_HCU_MODBUS_TIMES_READ_ACK", 0x8B);
 /**************************************************************************************
  * AQYC: 爱启杨尘项目相关缺省配置参数                                                 *
  *************************************************************************************/
-//定义数据保存不删的时间长度
+define ("MFUN_HCU_AQYC_ALARM_CODE_MAX", 0x0A); //Alarmcode的最大值，如有新alarmcode添加，该值要顺延
+
 if (MFUN_CURRENT_WORKING_PROGRAM_NAME_UNIQUE == MFUN_WORKING_PROGRAM_NAME_UNIQUE_AQYC){
     define("MFUN_CLOUD_WWW", "www.hkrob.com");
-    define ("MFUN_HCU_DATA_SAVE_DURATION_BY_PROJ", 180);
+    define ("MFUN_HCU_DATA_SAVE_DURATION_BY_PROJ", 180); //定义数据保存不删的时间长度
     define ("MFUN_HCU_USER_NAME_GRADE_0", "管理员");
     define ("MFUN_HCU_USER_NAME_GRADE_1", "高级用户");
     define ("MFUN_HCU_USER_NAME_GRADE_2", "一级用户");
@@ -97,5 +98,31 @@ if (MFUN_CURRENT_WORKING_PROGRAM_NAME_UNIQUE == MFUN_WORKING_PROGRAM_NAME_UNIQUE
     define ("MFUN_HCU_USER_NAME_GRADE_N", "用户等级未知");
 }
 
+class classConstAqycEngpar
+{
+    public static $mfunAqycAlarmCode=array(
+        HUITP_IEID_UNI_ALARM_CONTENT_NONE => '工作正常',
+        HUITP_IEID_UNI_ALARM_CONTENT_PM25_NO_CONNECT => '颗粒物传感器故障',
+        HUITP_IEID_UNI_ALARM_CONTENT_TEMP_NO_CONNECT => '温度传感器故障',
+        HUITP_IEID_UNI_ALARM_CONTENT_HUMID_NO_CONNECT => '湿度传感器故障',
+        HUITP_IEID_UNI_ALARM_CONTENT_WINDDIR_NO_CONNECT => '风向传感器故障',
+        HUITP_IEID_UNI_ALARM_CONTENT_WINDSPD_NO_CONNECT => '风速传感器故障',
+        HUITP_IEID_UNI_ALARM_CONTENT_NOISE_NO_CONNECT => '噪声传感器故障',
+        HUITP_IEID_UNI_ALARM_CONTENT_VIDEO_NO_CONNECT => '摄像头故障',
+        HUITP_IEID_UNI_ALARM_CONTENT_TSP_VALUE_EXCEED_THRESHLOD => '扬尘超标',
+        HUITP_IEID_UNI_ALARM_CONTENT_NOISE_VALUE_EXCEED_THRESHLOD => '噪声超标'
+    );
+
+    //通过告警码获取详细告警信息
+    public static function mfun_hcu_aqyc_getAlarmDescription($alarmcode)
+    {
+        if ($alarmcode >= 0 AND $alarmcode <MFUN_HCU_AQYC_ALARM_CODE_MAX) {
+            return self::$mfunAqycAlarmCode[$alarmcode];
+        }else {
+            return '未知告警';
+        }
+    }
+
+}
 
 ?>

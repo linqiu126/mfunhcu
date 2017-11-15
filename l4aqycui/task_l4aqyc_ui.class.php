@@ -139,6 +139,33 @@ class classTaskL4aqycUi
                 $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM5FM, MSG_ID_L4AQYCUI_TO_L3F5_ALARMHANDLETABLE, "MSG_ID_L4AQYCUI_TO_L3F5_ALARMHANDLETABLE",$input);
                 break;
 
+            case "GetWarningImg":  //查询告警抓拍照片
+                if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
+                if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
+                if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
+
+                $input = array("project" => $project, "action" => $action, "type" => $type,"user" => $user,"body" => $body);
+                $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM5FM, MSG_ID_L4AQYCUI_TO_L3F5_ALARMIMGGET, "MSG_ID_L4AQYCUI_TO_L3F5_ALARMIMGGET",$input);
+                break;
+
+            case "AlarmHandle":  //告警处理
+                if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
+                if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
+                if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
+
+                $input = array("project" => $project,"action" => $action, "type" => $type,"user" => $user,"body" => $body);
+                $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM5FM, MSG_ID_L4AQYCUI_TO_L3F5_ALARMHANDLE, "MSG_ID_L4AQYCUI_TO_L3F5_ALARMHANDLE",$input);
+                break;
+
+            case "AlarmClose":  //告警关闭
+                if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
+                if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
+                if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
+
+                $input = array("project" => $project,"action" => $action, "type" => $type,"user" => $user,"body" => $body);
+                $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM5FM, MSG_ID_L4AQYCUI_TO_L3F5_ALARMCLOSE, "MSG_ID_L4AQYCUI_TO_L3F5_ALARMCLOSE",$input);
+                break;
+
             default:
                 $msg = array("project" => $project, "action" => $action);
                 $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L4COM_UI, MSG_ID_L4COMUI_CLICK_INCOMING, "MSG_ID_L4COMUI_CLICK_INCOMING",$msg);

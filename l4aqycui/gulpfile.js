@@ -4,7 +4,7 @@
 var gulp=require('gulp');
 
 var jshint = require('gulp-jshint');
-var sass = require('gulp-sass');
+//var sass = require('gulp-sass');
 var minifycss = require("gulp-minify-css");
 var concat = require('gulp-concat');
 var uglify = require('gulp-uglify');
@@ -16,7 +16,7 @@ var replace = require('gulp-replace');
 
 
 
-var replace_content = "../avorion/upload/";
+var replace_content = "../avorion/picture/";
 var replace_install = "/www/dist";
 var option = {
 
@@ -45,13 +45,15 @@ gulp.task('clean',function(){
 })
 // ����Sass
 gulp.task('sass', function() {
-    gulp.src('./scss/*.scss')
-        .pipe(sass())
-        .pipe(gulp.dest('./css'));
+    //gulp.src('./scss/*.scss')
+    //    .pipe(sass())
+    //    .pipe(gulp.dest('./css'));
 });
 gulp.task("resourcecopy",function(){
     gulp.src("./image/*")
         .pipe(gulp.dest(option.buildPath+"/image/"));
+    gulp.src("./imageshow/**/*")
+        .pipe(gulp.dest(option.buildPath+"/imageshow/"));
     gulp.src("./img/*")
         .pipe(gulp.dest(option.buildPath+"/img/"));
     gulp.src("./resource/**/*")

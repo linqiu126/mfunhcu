@@ -248,8 +248,8 @@ class classL1MainEntrySocketListenServer
 
     //STDXML hcuport入口函数，收到消息直接转发给HCU IOT模块并带上socketid，L1socket模块只负责消息收发，不进行任何消息解码工作
     public function stdxml_tcp_hcuport_onReceive($swoole_socket_serv, $fd, $reactor_id, $data) {
-        echo PHP_EOL.date('Y/m/d H:i:s', time())." ";
-        echo "stdxml_tcp_hcuport_onReceive: From HCU_Client [{$fd}] : {$data}".PHP_EOL;
+        //echo PHP_EOL.date('Y/m/d H:i:s', time())." ";
+        //echo "stdxml_tcp_hcuport_onReceive: From HCU_Client [{$fd}] : {$data}".PHP_EOL;
 
         $msg = array("socketid" => $fd, "data"=>$data);
         $obj = new classTaskL1vmCoreRouter();
@@ -298,18 +298,18 @@ class classL1MainEntrySocketListenServer
         //$swoole_socket_serv->send($fd, var_export(unserialize($db_res), true) .Y/m/d h:i:s a "\n");
         //$devcode=unserialize($db_res)[0]['devcode']; //restore to array
         //$socketid=unserialize($db_res)[0]['socketid'];
-        echo PHP_EOL.date('Y/m/d H:i:s', time())." ";
-        echo ("tcp_uiport_onReceive: Device = {$devCode}, Command from UI = ").$respData.PHP_EOL;
 
+        //echo PHP_EOL.date('Y/m/d H:i:s', time())." ";
+        //echo ("tcp_uiport_onReceive: Device = {$devCode}, Command from UI = ").$respData.PHP_EOL;
         $result = $swoole_socket_serv->send($socketid, $respData);
-        if ($result){
-            echo date('Y/m/d H:i:s', time())." ";
-            echo ("tcp_uiport_onReceive: Message delivered to {$devCode} [socket={$socketid}] success.").PHP_EOL;
-        }
-        else {
+        if ($result == false){
             echo date('Y/m/d H:i:s', time())." ";
             echo ("[ERROR]tcp_uiport_onReceive: Message delivery to {$devCode} [socket={$socketid}] failure.").PHP_EOL;
         }
+        /*else {
+            echo date('Y/m/d H:i:s', time())." ";
+            echo ("tcp_uiport_onReceive: Message delivered to {$devCode} [socket={$socketid}] success.").PHP_EOL;
+        }*/
 
         $swoole_socket_serv->close($fd);
         return;
@@ -332,8 +332,8 @@ class classL1MainEntrySocketListenServer
     //HUITP cclport入口函数，收到消息直接转发给HUITP IOT模块并带上socketid，L1socket模块只负责消息收发，不进行任何消息解码工作
     public function huitpxml_tcp_hcuport_onReceive($swoole_socket_serv, $fd, $reactor_id, $data)
     {
-        echo PHP_EOL.date('Y/m/d H:i:s', time())." ";
-        echo "huitpxml_tcp_hcuport_onReceive: From HCU_Client [{$fd}] : {$data}".PHP_EOL;
+        //echo PHP_EOL.date('Y/m/d H:i:s', time())." ";
+        //echo "huitpxml_tcp_hcuport_onReceive: From HCU_Client [{$fd}] : {$data}".PHP_EOL;
 
         $msg = array("socketid" => $fd, "data"=>$data);
         $obj = new classTaskL1vmCoreRouter();
@@ -374,10 +374,10 @@ class classL1MainEntrySocketListenServer
 
     public function huitpxml_tcp_picport_onReceive($swoole_socket_serv, $fd, $reactor_id, $data)
     {
-        echo PHP_EOL.date('Y/m/d H:i:s', time())." ";
-        echo "huitpxml_tcp_picport_onReceive: receive picture data from Client [{$fd}]".PHP_EOL;
-        $msg = array("socketid" => $fd, "data"=>$data);
+        //echo PHP_EOL.date('Y/m/d H:i:s', time())." ";
+        //echo "huitpxml_tcp_picport_onReceive: receive picture data from Client [{$fd}]".PHP_EOL;
 
+        $msg = array("socketid" => $fd, "data"=>$data);
         $obj = new classTaskL1vmCoreRouter();
         $obj->mfun_l1vm_task_main_entry(MFUN_MAIN_ENTRY_SOCKET_LISTEN, MSG_ID_L2SOCKET_LISTEN_DATA_COMING, "MSG_ID_L2SOCKET_LISTEN_DATA_COMING", $msg);
     }
