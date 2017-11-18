@@ -301,17 +301,23 @@ class classL1MainEntrySocketListenServer
 
         //echo PHP_EOL.date('Y/m/d H:i:s', time())." ";
         //echo ("tcp_uiport_onReceive: Device = {$devCode}, Command from UI = ").$respData.PHP_EOL;
-        $result = $swoole_socket_serv->send($socketid, $respData);
-        if ($result == false){
-            echo date('Y/m/d H:i:s', time())." ";
-            echo ("[ERROR]tcp_uiport_onReceive: Message delivery to {$devCode} [socket={$socketid}] failure.").PHP_EOL;
+        if ($socketid != 0){
+            $result = $swoole_socket_serv->send($socketid, $respData);
+            if ($result == false){
+                echo date('Y/m/d H:i:s', time())." ";
+                echo ("[ERROR]tcp_uiport_onReceive: UI message delivery to {$devCode} [socket={$socketid}] failure.").PHP_EOL;
+            }
+            /*else {
+                echo date('Y/m/d H:i:s', time())." ";
+                echo ("tcp_uiport_onReceive: Message delivered to {$devCode} [socket={$socketid}] success.").PHP_EOL;
+            }*/
+            $swoole_socket_serv->close($fd);
         }
-        /*else {
+        else{
             echo date('Y/m/d H:i:s', time())." ";
-            echo ("tcp_uiport_onReceive: Message delivered to {$devCode} [socket={$socketid}] success.").PHP_EOL;
-        }*/
+            echo ("[ERROR]tcp_uiport_onReceive: UI message to {$devCode} [socket=0] failure.").PHP_EOL;
+        }
 
-        $swoole_socket_serv->close($fd);
         return;
     }
 

@@ -41,11 +41,6 @@ INSERT INTO `t_l2snr_airprsdata` (`sid`, `deviceid`, `sensorid`, `airprs`, `data
 
 class classDbiL2snrAirprs
 {
-    //构造函数
-    public function __construct()
-    {
-
-    }
 
     public function dbi_airprs_data_save($deviceid,$sensorid,$timestamp,$data,$gps)
     {
@@ -90,22 +85,6 @@ class classDbiL2snrAirprs
             $result=$mysqli->query("INSERT INTO `t_l2snr_airprsdata` (deviceid,sensorid,airprs,reportdate,hourminindex,altitude,flag_la,latitude,flag_lo,longitude)
                     VALUES ('$deviceid','$sensorid','$airprs','$date','$hourminindex','$altitude', '$flag_la','$latitude', '$flag_lo','$longitude')");
         }
-        $mysqli->close();
-        return $result;
-    }
-
-    //删除对应用户所有超过90天的数据
-    //缺省做成90天，如果参数错误，导致90天以内的数据强行删除，则不被认可
-    public function dbi_airprsData_delete_3monold($deviceid, $sensorid,$days)
-    {
-        if ($days <90) $days = 90;  //不允许删除90天以内的数据
-        //建立连接
-        $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
-        if (!$mysqli)
-        {
-            die('Could not connect: ' . mysqli_error($mysqli));
-        }
-        $result = $mysqli->query("DELETE FROM `t_l2snr_airprsdata` WHERE ((`deviceid` = '$deviceid' AND `sensorid` ='$sensorid') AND (TO_DAYS(NOW()) - TO_DAYS(`date`) > '$days'))");
         $mysqli->close();
         return $result;
     }

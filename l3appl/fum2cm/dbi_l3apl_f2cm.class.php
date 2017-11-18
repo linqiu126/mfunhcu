@@ -168,27 +168,15 @@ ALTER TABLE `t_l3f2cm_projinfo`
 
 class classDbiL3apF2cm
 {
-    //构造函数
-    public function __construct()
-    {
-
-    }
 
 /***********************************************************************************************************************
 *                                              与UI界面无关的私有函数API                                                 *
 ***********************************************************************************************************************/
 
     //获取用户授权的项目组列表，如果没有直接授权项目组，则默认授权项目对应的项目组允许访问
-    private function dbi_get_user_auth_projgroup($uid)
+    private function dbi_get_user_auth_projgroup($mysqli, $uid)
     {
-        //建立连接
-        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
-        if (!$mysqli) {
-            die('Could not connect: ' . mysqli_error($mysqli));
-        }
-        $mysqli->query("SET NAMES utf8");
-
-        $projectlist = $this->dbi_get_user_auth_project($uid);
+        $projectlist = $this->dbi_get_user_auth_project($mysqli, $uid);
 
         $pg_list = array();
         for($i=0; $i<count($projectlist); $i++)
@@ -214,20 +202,13 @@ class classDbiL3apF2cm
         //删除项目组列表里重复的项
         $dbiL1vmCommonObj = new classDbiL1vmCommon();
         $unique_pglist = $dbiL1vmCommonObj->unique_array($pg_list, false, true);
-        $mysqli->close();
+
         return $unique_pglist;
     }
 
     //获取该用户授权的全部项目列表,包括授权项目组下面的项目列表
-    private function dbi_get_user_auth_project($uid)
+    private function dbi_get_user_auth_project($mysqli, $uid)
     {
-        //建立连接
-        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
-        if (!$mysqli) {
-            die('Could not connect: ' . mysqli_error($mysqli));
-        }
-        $mysqli->query("SET NAMES utf8");
-
         $query_str = "SELECT * FROM `t_l3f1sym_authlist` WHERE `uid` = '$uid' ";
         $result = $mysqli->query($query_str);
 
@@ -264,21 +245,14 @@ class classDbiL3apF2cm
         //删除项目列表里重复的项
         $dbiL1vmCommonObj = new classDbiL1vmCommon();
         $unique_projlist = $dbiL1vmCommonObj->unique_array($projlist,false,true);
-        $mysqli->close();
+
         return $unique_projlist;
     }
 
     //获取该用户授权的站点列表
-    private function dbi_get_user_auth_site($uid)
+    private function dbi_get_user_auth_site($mysqli, $uid)
     {
-        //建立连接
-        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
-        if (!$mysqli) {
-            die('Could not connect: ' . mysqli_error($mysqli));
-        }
-        $mysqli->query("SET NAMES utf8");
-
-        $projectlist = $this->dbi_get_user_auth_project($uid);
+        $projectlist = $this->dbi_get_user_auth_project($mysqli, $uid);
 
         $site_list = array();
         for($i=0; $i<count($projectlist); $i++)
@@ -297,18 +271,11 @@ class classDbiL3apF2cm
             }
         }
 
-        $mysqli->close();
         return $site_list;
     }
 
-    private function dbi_print_export_usertable($uid)
+    private function dbi_print_export_usertable($mysqli, $uid)
     {
-        //建立连接
-        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
-        if (!$mysqli) {
-            die('Could not connect: ' . mysqli_error($mysqli));
-        }
-        $mysqli->query("SET NAMES utf8");
         $user_table["column"] = array();
         $user_table['data'] = array();
 
@@ -426,18 +393,11 @@ class classDbiL3apF2cm
             }
         }
 
-        $mysqli->close();
         return $user_table;
     }
 
-    private function dbi_print_export_pgtable($uid)
+    private function dbi_print_export_pgtable($mysqli, $uid)
     {
-        //建立连接
-        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
-        if (!$mysqli) {
-            die('Could not connect: ' . mysqli_error($mysqli));
-        }
-        $mysqli->query("SET NAMES utf8");
         $pg_table["column"] = array();
         $pg_table['data'] = array();
         array_push($pg_table["column"],"项目组编号");
@@ -448,7 +408,7 @@ class classDbiL3apF2cm
         array_push($pg_table["column"],"地址");
         array_push($pg_table["column"],"备注");
 
-        $pglist = $this->dbi_get_user_auth_projgroup($uid);
+        $pglist = $this->dbi_get_user_auth_projgroup($mysqli, $uid);
 
         for($i=0; $i<count($pglist); $i++)
         {
@@ -468,19 +428,12 @@ class classDbiL3apF2cm
                 array_push($pg_table['data'],$one_row);
             }
         }
-        $mysqli->close();
+
         return $pg_table;
     }
 
-    private function dbi_print_export_projtable($uid)
+    private function dbi_print_export_projtable($mysqli, $uid)
     {
-        //建立连接
-        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
-        if (!$mysqli) {
-            die('Could not connect: ' . mysqli_error($mysqli));
-        }
-        $mysqli->query("SET NAMES utf8");
-
         $proj_table["column"] = array();
         $proj_table['data'] = array();
         array_push($proj_table["column"],"项目编号");
@@ -491,7 +444,7 @@ class classDbiL3apF2cm
         array_push($proj_table["column"],"地址");
         array_push($proj_table["column"],"备注");
 
-        $projectlist = $this->dbi_get_user_auth_project($uid);
+        $projectlist = $this->dbi_get_user_auth_project($mysqli, $uid);
 
         for($i=0; $i<count($projectlist); $i++)
         {
@@ -511,19 +464,12 @@ class classDbiL3apF2cm
                 array_push($proj_table['data'],$one_row);
             }
         }
-        $mysqli->close();
+
         return $proj_table;
     }
 
-    private function dbi_print_export_sitetable($uid)
+    private function dbi_print_export_sitetable($mysqli, $uid)
     {
-        //建立连接
-        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
-        if (!$mysqli) {
-            die('Could not connect: ' . mysqli_error($mysqli));
-        }
-        $mysqli->query("SET NAMES utf8");
-
         $site_table["column"] = array();
         $site_table['data'] = array();
         array_push($site_table["column"],"站点编号");
@@ -538,7 +484,7 @@ class classDbiL3apF2cm
         array_push($site_table["column"],"开通时间");
         array_push($site_table["column"],"备注");
 
-        $projectlist = $this->dbi_get_user_auth_project($uid);
+        $projectlist = $this->dbi_get_user_auth_project($mysqli, $uid);
 
         for($i=0; $i<count($projectlist); $i++)
         {
@@ -562,19 +508,12 @@ class classDbiL3apF2cm
                 array_push($site_table['data'],$one_row);
             }
         }
-        $mysqli->close();
+
         return $site_table;
     }
 
-    private function dbi_print_export_devtable($uid)
+    private function dbi_print_export_devtable($mysqli, $uid)
     {
-        //建立连接
-        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
-        if (!$mysqli) {
-            die('Could not connect: ' . mysqli_error($mysqli));
-        }
-        $mysqli->query("SET NAMES utf8");
-
         $dev_table["column"] = array();
         $dev_table['data'] = array();
         array_push($dev_table["column"],"设备编号");
@@ -582,7 +521,7 @@ class classDbiL3apF2cm
         array_push($dev_table["column"],"所属项目");
         array_push($dev_table["column"],"安装时间");
 
-        $site_list = $this->dbi_get_user_auth_site($uid);
+        $site_list = $this->dbi_get_user_auth_site($mysqli, $uid);
 
         for($i=0; $i<count($site_list); $i++)
         {
@@ -608,36 +547,43 @@ class classDbiL3apF2cm
                 }
             }
         }
-        $mysqli->close();
+
         return $dev_table;
     }
 
     public function dbi_print_excel_table_query_process($uid, $tablename)
     {
+        //建立连接
+        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli) {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $mysqli->query("SET NAMES utf8");
+
         $resp["column"] = array();
         $resp['data'] = array();
         switch ($tablename)
         {
             case "usertable":
-                $resp = $this->dbi_print_export_usertable($uid);
+                $resp = $this->dbi_print_export_usertable($mysqli, $uid);
                 break;
             case "PGtable":
-                $resp = $this->dbi_print_export_pgtable($uid);
+                $resp = $this->dbi_print_export_pgtable($mysqli, $uid);
                 break;
             case "Projtable":
-                $resp = $this->dbi_print_export_projtable($uid);
+                $resp = $this->dbi_print_export_projtable($mysqli, $uid);
                 break;
             case "Pointtable":
-                $resp = $this->dbi_print_export_sitetable($uid);
+                $resp = $this->dbi_print_export_sitetable($mysqli, $uid);
                 break;
             case "Devtable":
-                $resp = $this->dbi_print_export_devtable($uid);
+                $resp = $this->dbi_print_export_devtable($mysqli, $uid);
                 break;
             default:
                 //do nothing
                 break;
         }
-
+        $mysqli->close();
         return $resp;
     }
 
@@ -689,7 +635,7 @@ class classDbiL3apF2cm
         }
         $mysqli->query("SET NAMES utf8");
 
-        $pglist = $this->dbi_get_user_auth_projgroup($uid);
+        $pglist = $this->dbi_get_user_auth_projgroup($mysqli, $uid);
 
         $pgtable = array();
         $pgtotal = count($pglist);
@@ -749,7 +695,7 @@ class classDbiL3apF2cm
         }
         $mysqli->query("SET NAMES utf8");
 
-        $projectlist = $this->dbi_get_user_auth_project($uid);
+        $projectlist = $this->dbi_get_user_auth_project($mysqli, $uid);
 
         $projtotal = count($projectlist);
         if(($startseq <= $projtotal) AND ($startseq + $query_length > $projtotal))
@@ -851,7 +797,7 @@ class classDbiL3apF2cm
         $mysqli->query("SET NAMES utf8");
 
         $list = array();
-        $list = $this->dbi_get_user_auth_project($uid);
+        $list = $this->dbi_get_user_auth_project($mysqli, $uid);
 
         $mysqli->close();
         return $list;
@@ -1280,7 +1226,7 @@ class classDbiL3apF2cm
         }
         $mysqli->query("SET NAMES utf8");
 
-        $projectlist = $this->dbi_get_user_auth_project($uid);
+        $projectlist = $this->dbi_get_user_auth_project($mysqli, $uid);
         $projtotal = count($projectlist);
         $sitelist = array();
 
@@ -1342,7 +1288,7 @@ class classDbiL3apF2cm
         }
         $mysqli->query("SET NAMES utf8");
 
-        $projectlist = $this->dbi_get_user_auth_project($uid);
+        $projectlist = $this->dbi_get_user_auth_project($mysqli, $uid);
 
         $projtotal = count($projectlist);
         if(($startseq <= $projtotal) AND ($startseq + $query_length > $projtotal))
@@ -1566,7 +1512,7 @@ class classDbiL3apF2cm
         }
         $mysqli->query("SET NAMES utf8");
 
-        $site_list = $this->dbi_get_user_auth_site($uid);
+        $site_list = $this->dbi_get_user_auth_site($mysqli, $uid);
 
         $sitetotal = count($site_list);
         if(($startseq <= $sitetotal) AND ($startseq + $query_length > $sitetotal))
@@ -1975,7 +1921,7 @@ class classDbiL3apF2cm
         $mysqli->query("SET NAMES utf8");
 
         $all_keylist = array();
-        $projectlist = $this->dbi_get_user_auth_project($uid);
+        $projectlist = $this->dbi_get_user_auth_project($mysqli, $uid);
 
         for($i=0; $i<count($projectlist); $i++)
         {
@@ -2111,7 +2057,7 @@ class classDbiL3apF2cm
         }
         $mysqli->query("SET NAMES utf8");
 
-        $projectlist = $this->dbi_get_user_auth_project($uid);
+        $projectlist = $this->dbi_get_user_auth_project($mysqli, $uid);
 
         $all_projuser = array();
         for($i=0; $i<count($projectlist);$i++)
@@ -2162,7 +2108,7 @@ class classDbiL3apF2cm
         }
         $mysqli->query("SET NAMES utf8");
 
-        $projectlist = $this->dbi_get_user_auth_project($uid);
+        $projectlist = $this->dbi_get_user_auth_project($mysqli, $uid);
 
         $projtotal = count($projectlist);
         if(($startseq <= $projtotal) AND ($startseq + $query_length > $projtotal))

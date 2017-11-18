@@ -48,12 +48,6 @@ CREATE TABLE IF NOT EXISTS `t_l2snr_igmdata` (
 
 class classDbiL2snrIgm
 {
-    //构造函数
-    public function __construct()
-    {
-
-    }
-
     public function dbi_igm_std_cj188_data_save($cj188address, $equtype, $curaccuvolume, $curaccuvolumeunit, $todayaccuvolume, $todayaccuvolumeunit, $realtime, $st)
     {
         //建立连接

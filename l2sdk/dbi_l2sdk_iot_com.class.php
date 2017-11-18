@@ -61,12 +61,6 @@ ALTER TABLE `t_l2sdk_iothcu_inventory`
 
 class classDbiL2sdkIotcom
 {
-    //构造函数
-    public function __construct()
-    {
-
-    }
-
     //验证设备的合法性，输入的设备编号是否在HCU设备信息表（t_l2sdk_iothcu_inventory）中有记录
     public function dbi_hcuDevice_valid_device($devcode)
     {

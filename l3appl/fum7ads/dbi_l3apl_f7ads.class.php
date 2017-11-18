@@ -41,12 +41,6 @@ INSERT INTO `t_l3f7ads_adsdata` (`sid`, `termid`, `adstitle`, `hightlights`) VAL
 
 class classDbiL3apF7ads
 {
-    //构造函数
-    public function __construct()
-    {
-
-    }
-
     public function dbi_ads_data_save($sid, $adstitle)
     {
         //建立连接
@@ -66,22 +60,6 @@ class classDbiL3apF7ads
         {
             $result=$mysqli->query("INSERT INTO `t_l3f7ads_adsdata` (sid, adstitle) VALUES ('$sid', '$adstitle')");
         }
-        $mysqli->close();
-        return $result;
-    }
-
-    //删除对应用户所有超过90天的数据
-    //缺省做成90天，如果参数错误，导致90天以内的数据强行删除，则不被认可
-    public function dbi_ads_data_3mondel($sid, $days)
-    {
-        if ($days <90) $days = 90;  //不允许删除90天以内的数据
-        //建立连接
-        $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
-        if (!$mysqli)
-        {
-            die('Could not connect: ' . mysqli_error($mysqli));
-        }
-        $result = $mysqli->query("DELETE FROM `t_l3f7ads_adsdata` WHERE ((`sid` = '$sid') AND (TO_DAYS(NOW()) - TO_DAYS(`date`) > '$days'))");
         $mysqli->close();
         return $result;
     }

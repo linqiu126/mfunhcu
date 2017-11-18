@@ -17,11 +17,6 @@ include_once "../l2sdk/dbi_l2sdk_iot_wx.class.php";
 
 class classDbiL2sdkIotWx
 {
-    //构造函数
-    public function __construct()
-    {
-
-    }
 
     public function dbi_fhys_wechatkey_unbind($openid)
     {

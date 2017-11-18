@@ -138,22 +138,10 @@ ALTER TABLE `t_l3f3dm_siteinfo`
 
 class classDbiL3apF3dm
 {
-    //构造函数
-    public function __construct()
-    {
-
-    }
 
     //查询用户授权的stat_code和proj_code list
-    private function dbi_user_statproj_inqury($uid)
+    private function dbi_user_statproj_inqury($mysqli, $uid)
     {
-        //建立连接
-        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
-        if (!$mysqli) {
-            die('Could not connect: ' . mysqli_error($mysqli));
-        }
-        $mysqli->query("SET NAMES utf8");
-
         //查询该用户授权的项目和项目组列表
         $query_str = "SELECT `auth_code` FROM `t_l3f1sym_authlist` WHERE `uid` = '$uid'";
         $result = $mysqli->query($query_str);
@@ -192,7 +180,6 @@ class classDbiL3apF3dm
         $dbiL1vmCommonObj = new classDbiL1vmCommon();
         $unique_authlist = $dbiL1vmCommonObj->unique_array($auth_list,false,true);
 
-        $mysqli->close();
         return $unique_authlist;
     }
 
@@ -234,7 +221,7 @@ class classDbiL3apF3dm
         $mysqli->query("SET NAMES utf8");
 
         //获取授权站点-项目列表
-        $auth_list = $this->dbi_user_statproj_inqury($uid);
+        $auth_list = $this->dbi_user_statproj_inqury($mysqli, $uid);
 
         $sitelist = array();
         for($i=0; $i<count($auth_list); $i++)
@@ -1677,7 +1664,7 @@ class classDbiL3apF3dm
         $mysqli->query("SET NAMES utf8");
 
         //获取授权站点-项目列表
-        $auth_list = $this->dbi_user_statproj_inqury($uid);
+        $auth_list = $this->dbi_user_statproj_inqury($mysqli, $uid);
 
         array_push($resp["column"], "监测点编号");
         array_push($resp["column"], "监测点名称");
@@ -1775,7 +1762,7 @@ class classDbiL3apF3dm
         $mysqli->query("SET NAMES utf8");
 
         //获取授权站点-项目列表
-        $auth_list = $this->dbi_user_statproj_inqury($uid);
+        $auth_list = $this->dbi_user_statproj_inqury($mysqli, $uid);
 
         array_push($resp["column"], "站点编号");
         array_push($resp["column"], "设备编号");
@@ -1878,7 +1865,7 @@ class classDbiL3apF3dm
         $mysqli->query("SET NAMES utf8");
 
         //获取授权站点-项目列表
-        $auth_list = $this->dbi_user_statproj_inqury($uid);
+        $auth_list = $this->dbi_user_statproj_inqury($mysqli, $uid);
 
         array_push($resp["column"], "站点编号");
         array_push($resp["column"], "站点名称");

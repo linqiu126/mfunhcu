@@ -71,12 +71,6 @@ INSERT INTO `t_l2snr_emcaccumulation` (`sid`, `deviceid`, `lastupdatedate`, `avg
 
 class classDbiL2snrEmc
 {
-    //构造函数
-    public function __construct()
-    {
-
-    }
-
     //存储EMC数据，每一次存储，都是新增一条记录
     //记录存储是以TIME_GRID_SIZE分钟为网格化的，保证每一个时间网格只有一条记录
     public function dbi_emcData_save($deviceid, $sensorid,$timestamp,$data,$gps)
@@ -130,32 +124,6 @@ class classDbiL2snrEmc
                       VALUES ('$deviceid','$sensorid','$emc', '$date', '$hourminindex','$altitude', '$flag_la','$latitude', '$flag_lo','$longitude')";
             $result = $mysqli->query($query_str);
         }
-        $mysqli->close();
-        return $result;
-    }
-
-    //删除对应用户所有超过90天的数据
-    //缺省做成90天，如果参数错误，导致90天以内的数据强行删除，则不被认可
-    public function dbi_emcData_delete_3monold($deviceid,$sensorid,$days)
-    {
-        if ($days <90) $days = 90;  //不允许删除90天以内的数据
-        //建立连接
-        $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
-        if (!$mysqli)
-        {
-            die('Could not connect: ' . mysqli_error($mysqli));
-        }
-        //删除距离当前超过90天的数据，数据的第90天稍微有点截断，但问题不大
-        //比较蠢的细节方法
-        /*$result = $mysqli->query("SELECT `sid` FROM `emcdatainfo` WHERE `date` < (now()-$days)");
-        while($row = $result->fetch_array())
-        {
-            $sidtmp = $row['sid'];
-            $res = $mysqli->query("DELETE FROM `emcdatainfo` WHERE `sid` = '$sidtmp'");
-        }*/
-        //尝试使用一次性删除技巧，结果非常好!!!
-        $result = $mysqli->query("DELETE FROM `t_l2snr_emcdata` WHERE ((`deviceid` = '$deviceid' AND `sensorid` = '$sensorid')
-                      AND (TO_DAYS(NOW()) - TO_DAYS(`reportdate`) > '$days'))");
         $mysqli->close();
         return $result;
     }

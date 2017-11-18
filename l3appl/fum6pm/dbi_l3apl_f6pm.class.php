@@ -59,22 +59,9 @@ ALTER TABLE `t_l3f6pm_perfdata`
 
 class classDbiL3apF6pm
 {
-    //构造函数
-    public function __construct()
-    {
-
-    }
-
     //查询用户授权的stat_code和proj_code list
-    private function dbi_user_statproj_inqury($uid)
+    private function dbi_user_statproj_inqury($mysqli, $uid)
     {
-        //建立连接
-        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
-        if (!$mysqli) {
-            die('Could not connect: ' . mysqli_error($mysqli));
-        }
-        $mysqli->query("SET NAMES utf8");
-
         //查询该用户授权的项目和项目组列表
         $query_str = "SELECT `auth_code` FROM `t_l3f1sym_authlist` WHERE `uid` = '$uid'";
         $result = $mysqli->query($query_str);
@@ -117,23 +104,6 @@ class classDbiL3apF6pm
         return $unique_authlist;
     }
 
-    //删除对应设备所有超期的告警数据
-    //缺省做成90天，如果参数错误，导致90天以内的数据强行删除，则不被认可
-    private function dbi_perform_data_3mondel($statCode, $days)
-    {
-        if ($days < MFUN_HCU_DATA_SAVE_DURATION_IN_DAYS) $days = MFUN_HCU_DATA_SAVE_DURATION_IN_DAYS;  //不允许删除90天以内的数据
-        //建立连接
-        $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
-        if (!$mysqli)
-        {
-            die('Could not connect: ' . mysqli_error($mysqli));
-        }
-        $result = $mysqli->query("DELETE FROM `t_l3f6pm_perfdata` WHERE ((`statcode` = '$statCode') AND (TO_DAYS(NOW()) - TO_DAYS(`date`) > '$days'))");
-        $mysqli->close();
-        return $result;
-    }
-
-
     public function dbi_aqyc_performance_table_req($uid)
     {
         //初始化返回值
@@ -147,7 +117,7 @@ class classDbiL3apF6pm
         }
         $mysqli->query("SET NAMES utf8");
 
-        $auth_list = $this->dbi_user_statproj_inqury($uid);
+        $auth_list = $this->dbi_user_statproj_inqury($mysqli, $uid);
         array_push($resp["column"], "设备编号");
         array_push($resp["column"], "监测点编号");
         array_push($resp["column"], "监测点名称");
@@ -168,8 +138,6 @@ class classDbiL3apF6pm
             //$pcode = $auth_list[$i]["p_code"];
             $statCode = $auth_list[$i]["stat_code"];
 
-            //删除超期的历史数据
-            $this->dbi_perform_data_3mondel($statCode, MFUN_HCU_DATA_SAVE_DURATION_BY_PROJ);
             //查询站点相关信息
             $query_str = "SELECT * FROM `t_l3f3dm_siteinfo` WHERE `statcode` = '$statCode'";
             $result = $mysqli->query($query_str);

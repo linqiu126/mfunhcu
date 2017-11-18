@@ -228,11 +228,6 @@ ALTER TABLE `t_l3f10oam_swloadinfo`
 
 class classDbiL3apF1sym
 {
-    //构造函数
-    public function __construct()
-    {
-
-    }
 
     /**********************************************************************************************************************
      *                                         UI用户相关操作DB API                                                        *
@@ -265,15 +260,8 @@ class classDbiL3apF1sym
     }
 
     //更新UI用户session ID
-    private function updateSession ($uid, $sessionid)
+    private function updateSession ($mysqli, $uid, $sessionid)
     {
-        //建立连接
-        $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
-        if (!$mysqli)
-        {
-            die('Could not connect: ' . mysqli_error($mysqli));
-        }
-
         $timestamp = time();
         //先检查用户名是否存在
         $result = $mysqli->query("SELECT * FROM `t_l3f1sym_session` WHERE `uid` = '$uid'");
@@ -287,7 +275,6 @@ class classDbiL3apF1sym
             $result=$mysqli->query("INSERT INTO `t_l3f1sym_session` (uid, sessionid, lastupdate) VALUES ('$uid', '$sessionid', '$timestamp')");
         }
 
-        $mysqli->close();
         return $result;
     }
 
@@ -389,7 +376,7 @@ class classDbiL3apF1sym
                 $sessionid = $this->getRandomSid($strlen);
                 $body = array('key'=> $sessionid, 'admin'=> $admin);
                 $msg = "登录成功";
-                $this->updateSession($uid, $sessionid);
+                $this->updateSession($mysqli, $uid, $sessionid);
             }
             else {
                 $body = array('key'=> "", 'admin'=> "");
@@ -472,7 +459,7 @@ class classDbiL3apF1sym
                 $sessionid = $this->getRandomSid($strlen);
                 $body = array('key'=> $sessionid, 'admin'=> $admin);
                 $msg = "验证码正确，登录成功";
-                $this->updateSession($uid, $sessionid);
+                $this->updateSession($mysqli, $uid, $sessionid);
                 //更新密码
                 $query_str = "UPDATE `t_l3f1sym_account` SET `pwd` = '$password' WHERE `user` = '$username'";
                 $result = $mysqli->query($query_str);

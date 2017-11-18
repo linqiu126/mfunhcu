@@ -48,11 +48,6 @@ INSERT INTO `t_l2sdk_nbiot_std_cj188_context` (`sid`, `cj188address`, `cntser`, 
 
 class classDbiL2sdkNbiotIpm376
 {
-    //构造函数
-    public function __construct()
-    {
-
-    }
 
     public function dbi_ipm376_context_data_save($ipmaddress, $cntpfc, $deviceflag)
     {

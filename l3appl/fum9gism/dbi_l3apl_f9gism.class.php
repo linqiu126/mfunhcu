@@ -58,12 +58,6 @@ INSERT INTO `t_l3f9gism_accidencedirection` (`sid`, `title`) VALUES
 
 class classDbiL3apF9gism
 {
-    //构造函数
-    public function __construct()
-    {
-
-    }
-
     public function dbi_schedule_direction_save($sid, $title)
     {
         //建立连接
@@ -87,22 +81,6 @@ class classDbiL3apF9gism
         return $result;
     }
 
-    //删除对应用户所有超过90天的数据
-    //缺省做成90天，如果参数错误，导致90天以内的数据强行删除，则不被认可
-    public function dbi_schedule_direction_3mondel($sid, $days)
-    {
-        if ($days <90) $days = 90;  //不允许删除90天以内的数据
-        //建立连接
-        $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
-        if (!$mysqli)
-        {
-            die('Could not connect: ' . mysqli_error($mysqli));
-        }
-        $result = $mysqli->query("DELETE FROM `t_l3f9gism_scheduledirection` WHERE ((`sid` = '$sid') AND (TO_DAYS(NOW()) - TO_DAYS(`date`) > '$days'))");
-        $mysqli->close();
-        return $result;
-    }
-
     public function dbi_schedule_direction_inqury($sid)
     {
         $LatestValue = "";
@@ -120,8 +98,6 @@ class classDbiL3apF9gism
         return $LatestValue;
     }
 
-
-    
 }
 
 ?>

@@ -41,12 +41,6 @@ INSERT INTO `t_l2snr_raindata` (`sid`, `deviceid`, `sensorid`, `rain`, `dataflag
 
 class classDbiL2snrRain
 {
-    //构造函数
-    public function __construct()
-    {
-
-    }
-
     public function dbi_rain_data_save($deviceid,$sensorid,$timestamp,$data,$gps)
     {
         //建立连接

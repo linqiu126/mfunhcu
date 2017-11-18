@@ -80,11 +80,6 @@ INSERT INTO `t_l2sdk_wechat_deviceqrcode` (`deviceid`, `qrcode`, `devicetype`, `
 
 class classDbiL2sdkWechat
 {
-    //构造函数
-    public function __construct()
-    {
-
-    }
 
     //存储更新Token信息
     public function dbi_accesstoken_save($appid, $appsecret, $lasttime, $access_token, $js_ticket)

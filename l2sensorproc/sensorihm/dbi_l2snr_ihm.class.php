@@ -52,12 +52,6 @@ CREATE TABLE IF NOT EXISTS `t_l2snr_ihmdata` (
 
 class classDbiL2snrIhm
 {
-    //构造函数
-    public function __construct()
-    {
-
-    }
-
     public function dbi_ihm_std_cj188_data_save($cj188address, $equtype, $todayheat, $todayheatuint, $currentheat, $currentheatuint, $heatpower, $heatpoweruint, $flowvolume, $flowvolumeuint, $currentaccuvolume, $currentaccuvolumeuint, $supplywatertemp, $backwatertemp, $accumuworktime, $realtime, $st)
     {
         //建立连接

@@ -93,12 +93,6 @@ CREATE TABLE IF NOT EXISTS `t_l2snr_ipmdata` (
 
 class classDbiL2snrIpm
 {
-    //构造函数
-    public function __construct()
-    {
-
-    }
-
     public function dbi_ipm_afndata1_f25_data_save($deviceid, $cur_terminaltime, $cur_sumusepower, $cur_phaseausepwr, $cur_phasebusepwr, $cur_phasecusepwr, $cur_sumnupower,
                                       $cur_phaseanupwr, $cur_phasebnupwr, $cur_sumphasecnupwr, $cur_powerfactor, $cur_phaseapwrfac, $cur_phasebpwrfac, $cur_phasecpwrfac,
                                       $cur_phaseavoltage, $cur_phasebvoltage, $cur_phasecvoltage, $cur_phaseacurrent, $cur_phasebcurrent, $cur_phaseccurrent,
@@ -117,22 +111,6 @@ class classDbiL2snrIpm
                     '$cur_phasebvoltage', '$cur_phasecvoltage', '$cur_phaseacurrent', '$cur_phasebcurrent', '$cur_phaseccurrent', '$cur_zeroordercurrent', '$cur_sumvisualpower',
                     '$cur_phaseavisualpower', '$cur_phasebvisualpower', '$cur_phasecvisualpower')");
 
-        $mysqli->close();
-        return $result;
-    }
-
-    //删除对应用户所有超过90天的数据
-    //缺省做成90天，如果参数错误，导致90天以内的数据强行删除，则不被认可
-    public function dbi_ipm_afndata1_f25_data_delete_3monold($deviceid, $days)
-    {
-        if ($days <90) $days = 90;  //不允许删除90天以内的数据
-        //建立连接
-        $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
-        if (!$mysqli)
-        {
-            die('Could not connect: ' . mysqli_error($mysqli));
-        }
-        $result = $mysqli->query("DELETE FROM `t_l2snr_ipm_afndata1_f25` WHERE ((`deviceid` = '$deviceid') AND (TO_DAYS(NOW()) - TO_DAYS(`date`) > '$days'))");
         $mysqli->close();
         return $result;
     }

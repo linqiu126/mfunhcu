@@ -97,15 +97,8 @@ ALTER TABLE `t_l3f5fm_fhys_alarmdata`
 class classDbiL3apF5fm
 {
     //查询用户授权的stat_code和proj_code list
-    private function dbi_user_statproj_inqury($uid)
+    private function dbi_user_statproj_inqury($mysqli, $uid)
     {
-        //建立连接
-        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
-        if (!$mysqli) {
-            die('Could not connect: ' . mysqli_error($mysqli));
-        }
-        $mysqli->query("SET NAMES utf8");
-
         //查询该用户授权的项目和项目组列表
         $query_str = "SELECT `auth_code` FROM `t_l3f1sym_authlist` WHERE `uid` = '$uid'";
         $result = $mysqli->query($query_str);
@@ -144,20 +137,12 @@ class classDbiL3apF5fm
         $dbiL1vmCommonObj = new classDbiL1vmCommon();
         $unique_authlist = $dbiL1vmCommonObj->unique_array($auth_list,false,true);
 
-        $mysqli->close();
         return $unique_authlist;
     }
 
     //查询该站点是否正处于告警状态
-    private function dbi_site_alarm_check($statCode)
+    private function dbi_site_alarm_check($mysqli, $statCode)
     {
-        //建立连接
-        $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
-        if (!$mysqli)
-        {
-            die('Could not connect: ' . mysqli_error($mysqli));
-        }
-
         $result = $mysqli->query("SELECT * FROM `t_l3f3dm_aqyc_currentreport` WHERE `statcode` = '$statCode'");
         if ($result->num_rows>0){
             $row = $result->fetch_array();
@@ -181,7 +166,6 @@ class classDbiL3apF5fm
         else
             $resp = false;
 
-        $mysqli->close();
         return $resp;
     }
 
@@ -197,7 +181,7 @@ class classDbiL3apF5fm
         $mysqli->query("SET NAMES utf8");
 
         //获取授权站点-项目列表
-        $auth_list = $this->dbi_user_statproj_inqury($uid);
+        $auth_list = $this->dbi_user_statproj_inqury($mysqli, $uid);
 
         $sitelist = array();
         for($i=0; $i<count($auth_list); $i++)
@@ -207,7 +191,7 @@ class classDbiL3apF5fm
             $query_str = "SELECT * FROM `t_l3f3dm_siteinfo` WHERE `statcode` = '$statCode'";      //查询监测点对应的项目号
             $resp = $mysqli->query($query_str);
             if (($resp->num_rows)>0) {
-                $alarm_check = $this->dbi_site_alarm_check($statCode);
+                $alarm_check = $this->dbi_site_alarm_check($mysqli, $statCode);
                 if ($alarm_check){
                     $info = $resp->fetch_array();
 
@@ -472,7 +456,7 @@ class classDbiL3apF5fm
 
         $auth_list["stat_code"] = array();
         $auth_list["p_code"] = array();
-        $auth_list = $this->dbi_user_statproj_inqury($uid);
+        $auth_list = $this->dbi_user_statproj_inqury($mysqli, $uid);
 
         array_push($resp["column"], "站点编号");
         array_push($resp["column"], "处理状态");
