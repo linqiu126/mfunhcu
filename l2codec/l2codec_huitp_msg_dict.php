@@ -542,6 +542,14 @@ define("HUITP_MSGID_uni_ccl_state_confirm",  0x4E01);
 define("HUITP_MSGID_uni_ccl_state_pic_report",  0x4E82);
 define("HUITP_MSGID_uni_ccl_state_pic_confirm",  0x4E02);
 
+//复旦卫勤
+define("HUITP_MSGID_uni_fdwq_data_req", 0x4F00);
+define("HUITP_MSGID_uni_fdwq_data_resp", 0x4F80);
+define("HUITP_MSGID_uni_fdwq_data_report", 0x4F81);
+define("HUITP_MSGID_uni_fdwq_data_confirm", 0x4F01);
+define("HUITP_MSGID_uni_fdwq_profile_report", 0x4F82);
+define("HUITP_MSGID_uni_fdwq_profile_confirm", 0x4F02);
+
 //串口读取命令/返回结果
 define("HUITP_MSGID_uni_itf_sps_min",  0x5000);
 define("HUITP_MSGID_uni_itf_sps_req",  0x5000);
@@ -1408,9 +1416,33 @@ class classL2codecHuitpMsgDict
         HUITP_MSGID_uni_ccl_state_pic_confirm => array("MSGNAME" => "HUITP_MSGID_uni_ccl_state_pic_confirm",
             "MSGIE" => array(HUITP_IEID_uni_com_confirm)),
 
+        //国通教育NB-IOT
+        //0x4F00
+        HUITP_MSGID_uni_fdwq_data_req => array("MSGNAME" => "HUITP_MSGID_uni_fdwq_data_req",
+            "MSGIE" => array(HUITP_IEID_uni_com_req)),
+        //0x4F80
+        HUITP_MSGID_uni_fdwq_data_resp => array("MSGNAME" => "HUITP_MSGID_uni_fdwq_data_resp",
+            "MSGIE" => array(HUITP_IEID_uni_com_resp,
+                            HUITP_IEID_uni_fdwq_sports_wrist_data)),
+        //0x4F81
+        HUITP_MSGID_uni_fdwq_data_report => array("MSGNAME" => "HUITP_MSGID_uni_fdwq_data_report",
+            "MSGIE" => array(HUITP_IEID_uni_com_report,
+                            HUITP_IEID_uni_fdwq_sports_wrist_data)),
+        //0x4F01
+        HUITP_MSGID_uni_fdwq_data_confirm => array("MSGNAME" => "HUITP_MSGID_uni_fdwq_data_confirm",
+            "MSGIE" => array(HUITP_IEID_uni_com_confirm)),
+        //0x4F82
+        HUITP_MSGID_uni_fdwq_profile_report => array("MSGNAME" => "HUITP_MSGID_uni_fdwq_profile_report",
+            "MSGIE" => array(HUITP_IEID_uni_com_report,
+                            HUITP_IEID_uni_fdwq_profile_simple_data)),
+        //0x4F02
+        HUITP_MSGID_uni_fdwq_profile_confirm => array("MSGNAME" => "HUITP_MSGID_uni_fdwq_profile_confirm",
+            "MSGIE" => array(HUITP_IEID_uni_com_confirm,
+                            HUITP_IEID_uni_fdwq_profile_detail_data)),
+
         //串口读取命令/返回结果
         HUITP_MSGID_uni_itf_sps_req => array("MSGNAME" => "","MSGIE" => array(HUITP_IEID_uni_com_req)),  //0x5000
-        HUITP_MSGID_uni_itf_sps_resp => array("MSGNAME" => "","MSGIE" => array(HUITP_IEID_uni_com_req)),  //0x5080
+        HUITP_MSGID_uni_itf_sps_resp => array("MSGNAME" => "","MSGIE" => array(HUITP_IEID_uni_com_resp)),  //0x5080
         HUITP_MSGID_uni_itf_sps_report => array("MSGNAME" => "","MSGIE" => array(HUITP_IEID_uni_com_req)),  //0x5001
         HUITP_MSGID_uni_itf_sps_confirm => array("MSGNAME" => "","MSGIE" => array(HUITP_IEID_uni_com_req)),  //0x5081
 
