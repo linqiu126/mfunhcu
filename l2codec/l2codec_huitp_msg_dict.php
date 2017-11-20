@@ -1766,6 +1766,9 @@ class classL2codecHuitpMsgDict
         MFUN_TASK_ID_L2TIMER_CRON => array(),
         MFUN_TASK_ID_L2SOCKET_LISTEN => array(),
         MFUN_TASK_ID_L2SENSOR_WEIGHT => array(), //BFSC组合秤
+        MFUN_TASK_ID_L2SENSOR_FDWQ => array(HUITP_MSGID_uni_fdwq_data_resp,
+                                            HUITP_MSGID_uni_fdwq_data_report,
+                                            HUITP_MSGID_uni_fdwq_profile_report),
         MFUN_TASK_ID_L3APPL_FUM1SYM => array(),
         MFUN_TASK_ID_L3APPL_FUM2CM => array(),
         MFUN_TASK_ID_L3APPL_FUM3DM => array(),

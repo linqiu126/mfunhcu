@@ -55,6 +55,7 @@ define("MFUN_TASK_ID_L2SENSOR_SMOK", $taskIndex++);
 define("MFUN_TASK_ID_L2SENSOR_VIBR", $taskIndex++);
 define("MFUN_TASK_ID_L2SENSOR_WATER", $taskIndex++);
 define("MFUN_TASK_ID_L2SENSOR_WEIGHT", $taskIndex++); //BFSC组合秤
+define("MFUN_TASK_ID_L2SENSOR_FDWQ", $taskIndex++);   //FDWQ项目
 define("MFUN_TASK_ID_L2TIMER_CRON", $taskIndex++);
 define("MFUN_TASK_ID_L2SOCKET_LISTEN", $taskIndex++);
 define("MFUN_TASK_ID_L3APPL_FUM1SYM", $taskIndex++);
