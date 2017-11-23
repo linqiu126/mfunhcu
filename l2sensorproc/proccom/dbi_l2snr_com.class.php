@@ -689,6 +689,7 @@ class classDbiL2snrCommon
         if (!$mysqli) {
             die('Could not connect: ' . mysqli_error($mysqli));
         }
+        $mysqli->query("SET NAMES utf8");
 
         //$data[0] = HUITP_IEID_uni_com_report，暂时没有使用
 
@@ -789,6 +790,7 @@ class classDbiL2snrCommon
         if (!$mysqli) {
             die('Could not connect: ' . mysqli_error($mysqli));
         }
+        $mysqli->query("SET NAMES utf8");
 
         //$data[0] = HUITP_IEID_uni_com_report，暂时没有使用
 
