@@ -65,6 +65,7 @@ include_once "../l2sensorproc/sensorsmok/task_l2snr_smok.class.php";
 include_once "../l2sensorproc/sensorvibr/task_l2snr_vibr.class.php";
 include_once "../l2sensorproc/sensorwater/task_l2snr_water.class.php";
 include_once "../l2sensorproc/sensorweight/task_l2snr_weight.class.php";
+include_once "../l2sensorproc/sensorfdwq/task_l2snr_fdwq.class.php";
 include_once "../l3appl/fum1sym/task_l3apl_f1sym.class.php";
 include_once "../l3appl/fum2cm/task_l3apl_f2cm.class.php";
 include_once "../l3appl/fum3dm/task_l3apl_f3dm.class.php";
@@ -1030,6 +1031,11 @@ class classTaskL1vmCoreRouter
                 case MFUN_TASK_ID_L2SENSOR_WEIGHT:
                     $obj = new classTaskL2snrWeight();
                     $obj->mfun_l2snr_weight_task_main_entry($this, $result["msgId"], $result["msgName"], $result["msgBody"]);
+                    break;
+
+                case MFUN_TASK_ID_L2SENSOR_FDWQ:
+                    $obj = new classTaskL2snrFdwq();
+                    $obj->mfun_l2snr_fdwq_task_main_entry($this, $result["msgId"], $result["msgName"], $result["msgBody"]);
                     break;
 
                 case MFUN_TASK_ID_L3APPL_FUM1SYM:

@@ -12,7 +12,7 @@ include_once "../l1comvm/pg_general_engpar.php";
 define("MFUN_HCU_FHYS_LEXIN_URL","http://www.lx198.com/sdk/send?");  //乐信短信平台请求地址
 define("MFUN_HCU_FHYS_LEXIN_ACCNAME","accName=18616271103");  //用户名(乐信登录账号)
 define("MFUN_HCU_FHYS_LEXIN_ACCPWD","accPwd=E10ADC3949BA59ABBE56E057F20F883E");  //密码123456(乐信登录密码32位MD5加密后转大写)
-define("MFUN_HCU_FHYS_LEXIN_SIGNATURE","【阜华光交箱云平台】"); //短信签名
+define("MFUN_HCU_FHYS_LEXIN_SIGNATURE","【光交箱云平台】"); //短信签名
 define("MFUN_HCU_FHYS_LEXIN_AUTHCODE_LEN", 6); //短信验证码长度
 
 //中国移动短彩信平台

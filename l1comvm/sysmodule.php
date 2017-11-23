@@ -145,6 +145,7 @@ class classConstL1vmSysTaskList
         MFUN_TASK_ID_L2SENSOR_VIBR => array("NAME" => "MFUN_TASK_ID_L2SENSOR_VIBR", "PRESENT" => false),
         MFUN_TASK_ID_L2SENSOR_WATER => array("NAME" => "MFUN_TASK_ID_L2SENSOR_WATER", "PRESENT" => false),
         MFUN_TASK_ID_L2SENSOR_WEIGHT => array("NAME" => "MFUN_TASK_ID_L2SENSOR_WEIGHT", "PRESENT" => false), //BFSC组合秤
+        MFUN_TASK_ID_L2SENSOR_FDWQ => array("NAME" => "MFUN_TASK_ID_L2SENSOR_FDWQ", "PRESENT" => false), //FDWQ
         MFUN_TASK_ID_L2TIMER_CRON => array("NAME" => "MFUN_TASK_ID_L2TIMER_CRON", "PRESENT" => false),
         MFUN_TASK_ID_L2SOCKET_LISTEN => array("NAME" => "MFUN_TASK_ID_L2SOCKET_LISTEN", "PRESENT" => false),
         MFUN_TASK_ID_L2DECODE_HUITP => array("NAME" => "MFUN_TASK_ID_L2DECODE_HUITP", "PRESENT" => false),
@@ -607,6 +608,7 @@ class classConstL1vmSysTaskList
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_IWM]["PRESENT"] = true;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_IGM]["PRESENT"] = true;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_IHM]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_FDWQ]["PRESENT"] = true;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L2TIMER_CRON]["PRESENT"] = true;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SOCKET_LISTEN]["PRESENT"] = true;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM1SYM]["PRESENT"] = true;
@@ -672,6 +674,7 @@ class classConstL1vmSysTaskList
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_VIBR]["PRESENT"] = true;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_WATER]["PRESENT"] = true;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_WEIGHT]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_FDWQ]["PRESENT"] = true;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L2TIMER_CRON]["PRESENT"] = true;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SOCKET_LISTEN]["PRESENT"] = true;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM1SYM]["PRESENT"] = true;

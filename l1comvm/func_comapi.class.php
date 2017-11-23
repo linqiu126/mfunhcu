@@ -8,12 +8,6 @@
 
 class classApiL1vmFuncCom
 {
-    //构造函数
-    public function __construct()
-    {
-
-    }
-
     //日志记录
     public function logger($project,$fromUser,$createTime,$log_content)
     {

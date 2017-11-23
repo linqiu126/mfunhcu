@@ -19,7 +19,7 @@ var replace_content = "/var/www/html/avorion";
 var replace_content_admintools = "/var/www/html/mfunhcu/l4admintools";
 
 var replace_content_admintools_url = "/mfunhcu/l4admintools";
-var replace_install = "/mfunhcu/l4fhysui";
+var replace_install = "/mfunhcu/l4gtjyui";
 
 var option = {
     admin_tools_path:"../www/dist/admintools",

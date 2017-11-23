@@ -2215,7 +2215,7 @@ class classDbiL3apF3dm
             else{
                 $doorlock_2_status = "状态未知";
                 $doorlock_2_alarm = "true";
-                $doorlock_2_picname = "FHYS_lock";
+                $doorlock_2_picname = "FHYS_lockc";
             }
 
             $temp = array(
