@@ -23,6 +23,8 @@ define("MFUN_HUITP_IELEN_4B", 8); //4Byte
 
 define("HUITP_IEID_UNI_CCL_LOCK_MAX_NUMBER", 4); //最多支持4把锁
 define("HUITP_IEID_UNI_CCL_GEN_PIC_ID_LEN_MAX", 32);
+define("HUITP_IEID_UNI_FDWQ_GEN_RFID_ID_LEN_MAX", 16);
+define("HUITP_IEID_UNI_FDWQ_GEN_NAME_LEN_MAX", 20);
 
 /*********************************************HUITP命令字HuitpCmdId*****************************************************/
 define("HUITP_CMDID_uni_none",                  0x00);

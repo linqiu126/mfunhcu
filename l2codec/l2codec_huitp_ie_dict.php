@@ -170,6 +170,23 @@ define("HUITP_IEID_UNI_TEST_CMD_ID_READ_ALL", 2);
 define("HUITP_IEID_UNI_TEST_CMD_ID_READ_LABLE", 3);
 define("HUITP_IEID_UNI_TEST_CMD_ID_INVALID", 0xFFFFFFFF);
 
+//FDWQ项目
+//性别
+define("HUITP_IEID_UNI_FDWQ_PROFILE_GENDER_NULL", 0);
+define("HUITP_IEID_UNI_FDWQ_PROFILE_GENDER_MALE", 1);
+define("HUITP_IEID_UNI_FDWQ_PROFILE_GENDER_FEMALE", 2);
+define("HUITP_IEID_UNI_FDWQ_PROFILE_GENDER_BOTH", 3);
+define("HUITP_IEID_UNI_FDWQ_PROFILE_GENDER_UNDETERMIN", 4);
+define("HUITP_IEID_UNI_FDWQ_PROFILE_GENDER_INVALID", 0xFF);
+
+//血型
+define("HUITP_IEID_UNI_FDWQ_PROFILE_BLOOD_TYPE_NULL", 0);
+define("HUITP_IEID_UNI_FDWQ_PROFILE_BLOOD_TYPE_A", 1);
+define("HUITP_IEID_UNI_FDWQ_PROFILE_BLOOD_TYPE_B", 2);
+define("HUITP_IEID_UNI_FDWQ_PROFILE_BLOOD_TYPE_AB", 3);
+define("HUITP_IEID_UNI_FDWQ_PROFILE_BLOOD_TYPE_O", 4);
+define("HUITP_IEID_UNI_FDWQ_PROFILE_BLOOD_TYPE_INVALID", 0xFF);
+
 
 /**********************************************HUITP公共信息单元IE定义***************************************************/
 define("HUITP_IEID_uni_min", 0x0000);
@@ -861,9 +878,9 @@ class classL2codecHuitpIeDict
           HUITP_IEID_uni_ccl_gen_picid                    => array("format"=>"A4ieId/A4ieLen/A64picId","len"=>"32","name"=>"HUITP_IEID_uni_ccl_gen_picid"),
 
           //复旦卫勤项目
-          HUITP_IEID_uni_fdwq_sports_wrist_data           => array("format"=>"A4ieId/A4ieLen/A8equId/A8rfId/A8reportTime/A8sampleTime/A2dataFormat/A8temp/A8miles/A4curHbRate/A4hbRateMax/A4hbRateMin/A4hbRateAvg/A8bloodPress/A8sleepLvl/A8airPress/A8energyLvl/A8waterDrink/A2skinAttached","len"=>"54","name"=>"HUITP_IEID_uni_fdwq_sports_wrist_data"),
-          HUITP_IEID_uni_fdwq_profile_simple_data         => array("format"=>"A4ieId/A4ieLen/A8rfId","len"=>"4","name"=>"HUITP_IEID_uni_fdwq_profile_simple_data"),
-          HUITP_IEID_uni_fdwq_profile_detail_data         => array("format"=>"A4ieId/A4ieLen/A8rfId/A40name/A2gender/A2dataFormat/A8high/A8weight/A2bloodType","len"=>"35","name"=>"HUITP_IEID_uni_fdwq_profile_detail_data"),
+          HUITP_IEID_uni_fdwq_sports_wrist_data           => array("format"=>"A4ieId/A4ieLen/A8equId/A32rfId/A8reportTime/A8sampleTime/A2dataFormat/A8temp/A8miles/A4curHbRate/A4hbRateMax/A4hbRateMin/A4hbRateAvg/A8bloodPress/A8sleepLvl/A8airPress/A8energyLvl/A8waterDrink/A2skinAttached","len"=>"66","name"=>"HUITP_IEID_uni_fdwq_sports_wrist_data"),
+          HUITP_IEID_uni_fdwq_profile_simple_data         => array("format"=>"A4ieId/A4ieLen/A32rfId","len"=>"16","name"=>"HUITP_IEID_uni_fdwq_profile_simple_data"),
+          HUITP_IEID_uni_fdwq_profile_detail_data         => array("format"=>"A4ieId/A4ieLen/A32rfId/A40name/A2gender/A2dataFormat/A8high/A8weight/A2bloodType","len"=>"47","name"=>"HUITP_IEID_uni_fdwq_profile_detail_data"),
 
           //串口读取命令/返回结果
           HUITP_IEID_uni_itf_sps_value                    => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
