@@ -15,6 +15,16 @@ if (TC_SOCKET == true) {
 //SOCKET测试开始
     echo " [TC SOCKET: xxx START]\n";
 
+    $name = "汪洪源";
+    $len = strlen($name);
+
+    $nameDataArray = array();
+    for($i = 0; $i < $len; $i++){
+        $one_char = substr($name, $i, 1);
+        $int_char = ord($one_char);
+        array_push($nameDataArray, $int_char);
+    }
+
     /*********************图片数据，消息来自9501端口*********************/
     $data = "4843555F473530325F464859535F50303030315F303132333435363738395F5F000000024040";
 
@@ -83,8 +93,8 @@ if (TC_SOCKET == true) {
     //FDWQ
     //4F81
     $data = "<xml><ToUserName><![CDATA[XHZN_HCU]]></ToUserName ><FromUserName><![CDATA[HCU_G9000FDWQ_SH001]]></FromUserName><CreateTime>1511322531</CreateTime><MsgType><![CDATA[huitp_text]]></MsgType><Content><![CDATA[4F81004200030001014F00003900000123000001235A14F3A3000000000000000000000027000000000050000000000000000000000000000000000000000000000000000000]]></Content><FuncFlag>0</FuncFlag></xml>";
-    //4F81 HUITP_MSGID_uni_fdwq_profile_report
-    $data = "<xml><ToUserName><![CDATA[XHZN_HCU]]></ToUserName ><FromUserName><![CDATA[HCU_G9000FDWQ_SH001]]></FromUserName><CreateTime>1511322531</CreateTime><MsgType><![CDATA[huitp_text]]></MsgType><Content><![CDATA[4F82004200030001014F00003900000123000001235A14F3A3000000000000000000000027000000000050000000000000000000000000000000000000000000000000000000]]></Content><FuncFlag>0</FuncFlag></xml>";
+    //4F82 HUITP_MSGID_uni_fdwq_profile_report
+    $data = "<xml><ToUserName><![CDATA[XHZN_HCU]]></ToUserName ><FromUserName><![CDATA[HCU_G9000FDWQ_SH001]]></FromUserName><CreateTime>1511428837</CreateTime><MsgType><![CDATA[huitp_text]]></MsgType><Content><![CDATA[4F82001900030001014F01001036413734393234325F5F5F5F5F5F5F5F]]></Content><FuncFlag>0</FuncFlag></xml>";
 
 
     $msg = array("socketid" => 1, "data"=>$data);

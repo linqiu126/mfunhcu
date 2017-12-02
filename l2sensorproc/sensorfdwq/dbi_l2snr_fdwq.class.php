@@ -91,8 +91,15 @@ class classDbiL2snrFdwq
         $mysqli->query("SET NAMES utf8");
 
         //$data[0] = HUITP_IEID_uni_com_report，暂时没有使用
-
         $rfId = $data[1]['HUITP_IEID_uni_fdwq_profile_simple_data']['rfId'];
+
+        $rfid_str = "";
+        for($i = 0; $i < strlen($rfId)/2; $i++){
+            $hexdata = substr($rfId,$i*2,2);
+            $strdata = chr(hexdec($hexdata));
+            $rfid_str = $rfid_str. $strdata;
+        }
+        $rfid_str = trim($rfid_str, "_"); //去除可能的填充字符
 
         //初始化
         $name = "";
@@ -102,38 +109,38 @@ class classDbiL2snrFdwq
         $weight = 0;
         $bloodType = 0;
 
-        $query_str ="SELECT * FROM `t_l3f2cm_fdwq_soldierinfo` WHERE (`rfid` = '$rfId')";
+        $query_str ="SELECT * FROM `t_l3f2cm_fdwq_soldierinfo` WHERE (`rfid` = '$rfid_str')";
         $result = $mysqli->query($query_str);
         if (($result != false) && ($result->num_rows)>0){
             $row = $result->fetch_array();
             $name = $row['soldiername'];
-            $gender = $row['gender'];
+            $gender = intval($row['gender']);
             $dataFormat = HUITP_IEID_UNI_COM_FORMAT_TYPE_INT_ONLY;
-            $hight = $row['hight'];
-            $weight = $row['weight'];
-            $bloodType = $row['bloodtype'];
+            $hight = intval($row['hight']);
+            $weight = intval($row['weight']);
+            $bloodType = intval($row['bloodtype']);
         }
 
         //处理RFID，将其补足固定长度
         $dbiL1vmCommonObj = new classDbiL1vmCommon();
-        $rfId = $dbiL1vmCommonObj->str_padding($rfId, "_", HUITP_IEID_UNI_FDWQ_GEN_RFID_ID_LEN_MAX);
-        //将RFID字符串转成Hex字符串
-        $rfidHex = array();
-        for($i = 0; $i < strlen($rfId); $i++){
-            $one_char = substr($rfId, $i, 1);
+        $rfid_str = $dbiL1vmCommonObj->str_padding($rfid_str, "_", HUITP_IEID_UNI_FDWQ_GEN_RFID_ID_LEN_MAX);
+        //将文件名字符串转成Hex字符串
+        $rfidDataArray = array();
+        for($i = 0; $i < HUITP_IEID_UNI_FDWQ_GEN_RFID_ID_LEN_MAX; $i++){
+            $one_char = substr($rfid_str, $i, 1);
             $int_char = ord($one_char);
-            array_push($rfidHex, $int_char);
+            array_push($rfidDataArray, $int_char);
         }
 
         //处理姓名，将其补足固定长度
         $dbiL1vmCommonObj = new classDbiL1vmCommon();
         $name = $dbiL1vmCommonObj->str_padding($name, "_", HUITP_IEID_UNI_FDWQ_GEN_NAME_LEN_MAX);
         //将RFID字符串转成Hex字符串
-        $nameHex = array();
+        $nameDataArray = array();
         for($i = 0; $i < strlen($name); $i++){
             $one_char = substr($name, $i, 1);
             $int_char = ord($one_char);
-            array_push($nameHex, $int_char);
+            array_push($nameDataArray, $int_char);
         }
 
         //生成 HUITP_MSGID_uni_fdwq_profile_confirm 消息的内容
@@ -156,8 +163,8 @@ class classDbiL2snrFdwq
         $huitpIeLen = intval($huitpIe['len']);
         array_push($profileIE, HUITP_IEID_uni_fdwq_profile_detail_data);
         array_push($profileIE, $huitpIeLen);
-        array_push($profileIE, $rfidHex);
-        array_push($profileIE, $nameHex);
+        array_push($profileIE, $rfidDataArray);
+        array_push($profileIE, $nameDataArray);
         array_push($profileIE, $gender);
         array_push($profileIE, $dataFormat);
         array_push($profileIE, $hight);
