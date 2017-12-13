@@ -71,7 +71,7 @@ class classDbiL2snrDoorlock
         $auth_check = false;
         $query_str = "SELECT * FROM `t_l3f2cm_fhys_keyauth` WHERE (`keyid` = '$keyid')";
         $result = $mysqli->query($query_str);
-        while ($row = $result->fetch_array())
+        while (($result != false) && (($row = $result->fetch_array()) > 0))
         {
             $sid = $row['sid'];
             $authlevel = $row['authlevel'];

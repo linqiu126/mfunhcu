@@ -158,7 +158,7 @@ class classDbiL2sdkWechat
 
         $i=0;
         $resp = false; //初始化
-        while($row = $result->fetch_array())
+        while(($result != false) && (($row = $result->fetch_array()) > 0))
         {
             $resp[$i]["sid"] = $row['sid'];
             $resp[$i]["fromUserName"] = $row['fromuser'];

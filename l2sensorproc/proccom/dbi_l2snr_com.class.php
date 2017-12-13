@@ -357,7 +357,7 @@ class classDbiL2snrCommon
         $result = $mysqli->query($query_str);
 
         $sensor_list = array();
-        while($row = $result->fetch_array())
+        while(($result != false) && (($row = $result->fetch_array()) > 0))
         {
             $type_check = $row['typeid'];
             $tye_prefix =  substr($type_check, 0, MFUN_L3APL_F3DM_SENSOR_TYPE_PREFIX_LEN);
@@ -391,7 +391,7 @@ class classDbiL2snrCommon
         $result = $mysqli->query($query_str);
 
         $sensorinfo = array();
-        while($row = $result->fetch_array())
+        while(($result != false) && (($row = $result->fetch_array()) > 0))
         {
             $typeid = $row['sensortype'];
             $onoff = $row['onoffstatus'];
@@ -478,7 +478,7 @@ class classDbiL2snrCommon
         {
             $result = $mysqli->query("SELECT `sid` FROM `t_l2snr_hourreport` WHERE 1");
             $sid =0;
-            while($row = $result->fetch_array())
+            while(($result != false) && (($row = $result->fetch_array()) > 0))
             {
                 if ($row['sid'] > $sid)
                 {
@@ -518,7 +518,7 @@ class classDbiL2snrCommon
         $count_temperature = 0;
         $count_humidity = 0;
 
-        while($row = $result->fetch_array())
+        while(($result != false) && (($row = $result->fetch_array()) > 0))
         {
             if (!empty($row['emcvalue']))
             {
@@ -623,7 +623,7 @@ class classDbiL2snrCommon
         $result = $mysqli->query($query_str);
 
         $sensorinfo = array();
-        while($row = $result->fetch_array())
+        while(($result != false) && (($row = $result->fetch_array()) > 0))
         {
             $typeid = $row['sensortype'];
             $onoff = $row['onoffstatus'];

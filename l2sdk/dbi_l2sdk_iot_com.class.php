@@ -130,7 +130,7 @@ class classDbiL2sdkIotcom
         $result = $mysqli->query("SELECT `devcode` FROM `t_l2sdk_iothcu_inventory` WHERE 1");
 
         $i=0;
-        while($row = $result->fetch_array())
+        while(($result != false) && (($row = $result->fetch_array()) > 0))
         {
             $resp[$i]["devcode"] = $row['devcode'];
             $i++;

@@ -249,7 +249,6 @@ class classDbiL3apF1sym
 
     private function getRandomUid($strlen)
     {
-
         $str = "";
         $str_pol = "0123456789";
         $max = strlen($str_pol) - 1;
