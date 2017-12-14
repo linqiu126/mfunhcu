@@ -84,9 +84,50 @@ class classDbiL3wxOprFaam
         return $resp;
     }
 
-    public function dbi_faam_qrcode_sc_process()
+    public function dbi_faam_qrcode_sc_process($scanCode,$latitude,$longitude,$nickName)
     {
-        return true;
+        //建立连接
+        $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli) {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $mysqli->query("SET NAMES utf8");
+
+        $timeStamp = time();
+        $currentTime = date("Y-m-d H:i:s",$timeStamp);
+
+        $query_str = "SELECT * FROM `t_l3f11faam_appleproduction` WHERE (`qrcode` = '$scanCode') ";
+        $codeResult = $mysqli->query($query_str);
+        if (($codeResult != false) AND (($row = $codeResult->fetch_array()) > 0)){  //判断二维码是否有效
+            $activeTime = $row['activetime'];
+            $qrcode_owner = $row['owner'];
+            $appleWeight = $row['appleweight'];
+            $appleGrade = $row['applegrade'];
+            $appleNum = $row['applenum'];
+            $query_str = "SELECT * FROM `t_l3f11faam_membersheet` WHERE (`openid` = '$nickName') ";
+            $memberResult = $mysqli->query($query_str);
+            if (($memberResult != false) AND (($row = $memberResult->fetch_array()) > 0)){ //判断扫描人员是否合法
+                $scan_operator = $row['employee'];
+                $position = $row['position'];  //是否指定岗位才能扫描？
+                if (empty($activeTime)){  //二维码没有激活
+                    $query_str = "UPDATE `t_l3f11faam_appleproduction` SET `activetime` = '$currentTime',  `activeman` = '$scan_operator' WHERE (`qrcode` = '$scanCode')";
+                    $mysqli->query($query_str);
+                    $resp = array('flag'=>true,'employee'=>$scan_operator, 'message'=>"统计成功");
+                }
+                else{ //二维码已经激活，回显包装信息
+                    $resp = array('flag'=>false,'employee'=>$qrcode_owner, 'message'=>"姓名:".$qrcode_owner."; 重量:".$appleWeight."; 粒数:".$appleNum."; 品级:".$appleGrade);
+                }
+            }
+            else{ //未注册用户扫描
+                $resp = array('flag'=>false,'employee'=>$nickName, 'message'=>"扫描用户未注册");
+            }
+        }
+        else{
+            $resp = array('flag'=>false,'employee'=>$nickName, 'message'=>"二维码无效");
+        }
+
+        $mysqli->close();
+        return $resp;
     }
 
     public function dbi_faam_qrcode_sh_process()

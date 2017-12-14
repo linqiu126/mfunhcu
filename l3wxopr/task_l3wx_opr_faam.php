@@ -28,7 +28,7 @@ switch($codeType) {
         break;
 
     case "QRCODE_SC":  //生产二维码
-        $resp = $l3wxOprFaamDbObj->dbi_faam_qrcode_sc_process();
+        $resp = $l3wxOprFaamDbObj->dbi_faam_qrcode_sc_process($scanCode,$latitude,$longitude,$nickName);
         break;
 
     case "QRCODE_SH":  //收货二维码
