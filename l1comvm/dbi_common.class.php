@@ -207,7 +207,7 @@ class classDbiL1vmCommon
         while ($len < $lenInput)
         {
             $strInput = $strInput . $padding;
-            $len++;
+            $len = $len + strlen($padding);
         }
 
         return $strInput;

@@ -116,11 +116,14 @@ class classTaskL2encodeHuitpXml
                 //如果是数组，需要区分是字符还是U8的整数，这部分编码需要在发送模块处理成HEX字符，这里直接当作字符串copy
                 else{
                     $arrayPara = $content[$i][$j];
-                    if (is_array($arrayPara)){
+                    if (is_array($arrayPara)){  //U8整数
                         for($n = 0; $n < count($arrayPara); $n++)  $respIeStr = $respIeStr.$dbiL1vmCommonObj->byte2string($arrayPara[$n]);
                     }
-                    else
-                        $respIeStr = $respIeStr.$arrayPara;
+                    else{  //字符
+                        $arrayStr = $dbiL1vmCommonObj->str_padding($arrayPara, "5F", $ieNumList[$j]); //填充5F，对应字符 ‘_'
+                        $respIeStr = $respIeStr.$arrayStr;
+                    }
+
                 }
             }
             $i++;
