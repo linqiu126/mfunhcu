@@ -119,6 +119,8 @@ class classTaskL2encodeHuitpXml
                     if (is_array($arrayPara)){
                         for($n = 0; $n < count($arrayPara); $n++)  $respIeStr = $respIeStr.$dbiL1vmCommonObj->byte2string($arrayPara[$n]);
                     }
+                    else
+                        $respIeStr = $respIeStr.$arrayPara;
                 }
             }
             $i++;

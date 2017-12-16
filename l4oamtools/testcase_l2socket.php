@@ -15,11 +15,24 @@ if (TC_SOCKET == true) {
 //SOCKET测试开始
     echo " [TC SOCKET: xxx START]\n";
 
-    $y = date('y');
-    $w = "FAM_SDQX_W175100101";
+    function urlstr($str){
+        $url="";
+        $m1="";
+        for($i=0;$i<=strlen($str);$i++){
+            $m1=base_convert(ord(substr($str,$i,1)),10,16);
+            if ($m1!="0")
+                $url=$url.$m1;
+        }
+        return $url;
+    }
+
+
+    $y = '534451585F';
+    $w = pack('H*',$y);
     $n = substr($w, 14,5);
     $d = intval($n);
-    $name = "汪洪源";
+    $name = "李;";
+    $da = urlstr($name);
     $len = strlen($name);
 
     $nameDataArray = array();
@@ -100,6 +113,8 @@ if (TC_SOCKET == true) {
     //4F82 HUITP_MSGID_uni_fdwq_profile_report
     //$data = "<xml><ToUserName><![CDATA[XHZN_HCU]]></ToUserName ><FromUserName><![CDATA[HCU_G9000FDWQ_SH001]]></FromUserName><CreateTime>1511428837</CreateTime><MsgType><![CDATA[huitp_text]]></MsgType><Content><![CDATA[4F82001900030001014F01001036413734393234325F5F5F5F5F5F5F5F]]></Content><FuncFlag>0</FuncFlag></xml>";
 
+    //FAAM
+    $data = "<xml><ToUserName><![CDATA[XHZN_HCU]]></ToUserName><FromUserName><![CDATA[HCU_G0000FAAM_SD001]]></FromUserName><CreateTime>1513164786</CreateTime><MsgType><![CDATA[huitp_text]]></MsgType><Content><![CDATA[A28400100003000101A2030007534451585F0000]]></Content><FuncFlag>0</FuncFlag></xml>";
 
     $msg = array("socketid" => 1, "data"=>$data);
     $obj->mfun_l1vm_task_main_entry(MFUN_MAIN_ENTRY_IOT_HUITP, MSG_ID_L2SDK_HUITP_DATA_COMING, "MSG_ID_L2SDK_HUITP_DATA_COMING", $msg);

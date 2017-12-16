@@ -31,6 +31,17 @@ class classDbiL3wxOprFaam
         return $strInput;
     }
 
+    private function urlstr($str){
+        $url="";
+        $m1="";
+        for($i=0;$i<=strlen($str);$i++){
+            $m1=base_convert(ord(substr($str,$i,1)),10,16);
+            if ($m1!="0")
+                $url=$url.$m1;
+        }
+        return $url;
+    }
+
     //考勤二维码处理
     public function dbi_faam_qrcode_kq_process($scanCode,$latitude,$longitude,$nickName)
     {
@@ -280,15 +291,17 @@ class classDbiL3wxOprFaam
         //$data[0] = HUITP_IEID_uni_com_report，暂时没有使用
 
         //$data[1] = HUITP_IEID_uni_equlable_userlist_sync_report
-        $pjCode = trim($data[1]['HUITP_IEID_uni_equlable_userlist_sync_report']['pjCode'], '_');
+        $pjCode = trim(pack('H*',$data[1]['HUITP_IEID_uni_equlable_userlist_sync_report']['pjCode']), '_');
         $syncStart = hexdec($data[1]['HUITP_IEID_uni_equlable_userlist_sync_report']['syncStart']) & 0xFFFF;
 
         $userList = "";
         $currentNum = 0;
         $counter = 0;
-        $query_str = "SELECT * FROM `t_l3f11faam_membersheet` WHERE (`pjcode` = '$pjCode' ) ";
+
+        $query_str = "SELECT * FROM `t_l3f11faam_membersheet` WHERE (`pjcode` = '$pjCode') ";
         $memberResult = $mysqli->query($query_str);
-        if (($memberResult != false) AND (($total_num = $memberResult->num_rows) > 0)){
+        if ($memberResult != false) {
+            $total_num = $memberResult->num_rows;
             if ($total_num < $syncStart+100){ //每次同步最多100名员工信息
                 while (($row = $memberResult->fetch_array()) > 0){
                     $counter = $counter + 1;
@@ -328,10 +341,12 @@ class classDbiL3wxOprFaam
         //组装IE HUITP_IEID_uni_equlable_userlist_sync_confirm
         $huitpIe = $l2codecHuitpIeDictObj->mfun_l2codec_getHuitpIeFormat(HUITP_IEID_uni_equlable_userlist_sync_confirm);
         $huitpIeLen = intval($huitpIe['len']);
+        $userList = $this->urlstr($userList);
 
         array_push($userListIE, HUITP_IEID_uni_equlable_userlist_sync_confirm);
         array_push($userListIE, $huitpIeLen);
         array_push($userListIE, $total_num);
+        array_push($userListIE, $currentNum);
         array_push($userListIE, $syncStart);
         array_push($userListIE, $userList);
 
