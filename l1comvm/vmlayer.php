@@ -78,6 +78,7 @@ include_once "../l3appl/fum9gism/task_l3apl_f9gism.class.php";
 include_once "../l3appl/fumxprcm/task_l3apl_fxprcm.class.php";
 include_once "../l3wxopr/task_l3wx_opr_emc.class.php";
 include_once "../l3wxopr/task_l3wx_opr_fhys.class.php";
+include_once "../l3wxopr/task_l3wx_opr_faam.php";
 include_once "../l3nbiotopr/task_l3nbiot_opr_meter.class.php";
 include_once "../l2timercron/task_l2timer_cron.class.php";
 include_once "../l4emcwxui/task_l4emcwx_ui.class.php";
@@ -430,6 +431,20 @@ class classTaskL1vmCoreRouter
                     $result = "Cloud: Send to message buffer error.";
                     $log_content = "P:" . json_encode($result,JSON_UNESCAPED_UNICODE);
                     $loggerObj->mylog(MFUN_MAIN_ENTRY_WECHAT,"NULL","MFUN_TASK_ID_L1VM","MFUN_TASK_ID_L2SDK_WECHAT","MSG_ID_L1VM_TO_L2SDK_WECHAT_INCOMING",$log_content);
+                    echo trim($result);
+                    return false;
+                }
+                break;
+            case MFUN_MAIN_ENTRY_WECHAT_XCX:
+                $resp = $this->mfun_l1vm_msg_send(MFUN_TASK_ID_L1VM,
+                    MFUN_TASK_ID_L3WX_OPR_FAAM,
+                    MSG_ID_L1VM_TO_L3WXL3WXOPR_FAAM_XCXPOST,
+                    "MSG_ID_L1VM_TO_L3WXL3WXOPR_FAAM_XCXPOST",
+                    $msg);
+                if ($resp == false){
+                    $result = "Cloud: Send to message buffer error.";
+                    $log_content = "P:" . json_encode($result,JSON_UNESCAPED_UNICODE);
+                    $loggerObj->mylog(MFUN_MAIN_ENTRY_WECHAT_XCX,"NULL","MFUN_TASK_ID_L1VM","MFUN_TASK_ID_L3WX_OPR_FAAM","MSG_ID_L1VM_TO_L3WX_XCX_FAAM",$log_content);
                     echo trim($result);
                     return false;
                 }
@@ -825,6 +840,11 @@ class classTaskL1vmCoreRouter
                     }else{
                         $obj->mfun_l2sdk_wechat_task_main_entry($this, $result["msgId"], $result["msgName"], $result["msgBody"]);
                     }
+                    break;
+
+                case MFUN_TASK_ID_L3WX_OPR_FAAM:
+                    $obj = new classTaskL3wxOprFaam();
+                    $obj->mfun_l3wx_opr_faam_task_main_entry($this, $result["msgId"], $result["msgName"], $result["msgBody"]);
                     break;
 
                 case MFUN_TASK_ID_L2SDK_IOT_WX:

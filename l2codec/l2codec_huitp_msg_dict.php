@@ -650,6 +650,12 @@ define("HUITP_MSGID_uni_sw_package_resp",  0xA180);
 define("HUITP_MSGID_uni_sw_package_report",  0xA181);
 define("HUITP_MSGID_uni_sw_package_confirm",  0xA101);
 
+//工厂批量生产相关
+define("HUITP_MSGID_uni_equlable_apply_report",  0xA281);
+define("HUITP_MSGID_uni_equlable_apply_confirm",  0xA201);
+define("HUITP_MSGID_uni_equlable_userlist_sync_report",  0xA284);
+define("HUITP_MSGID_uni_equlable_userlist_sync_confirm",  0xA204);
+
 //ALARM REPORT
 define("HUITP_MSGID_uni_alarm_info_min",  0xB000);
 define("HUITP_MSGID_uni_alarm_info_req",  0xB000);
@@ -1552,6 +1558,25 @@ class classL2codecHuitpMsgDict
                             HUITP_IEID_uni_com_segment,
                             HUITP_IEID_uni_sw_package_body)),
 
+
+        //工厂批量生产相关
+        //0xA281
+        HUITP_MSGID_uni_equlable_apply_report => array("MSGNAME" => "HUITP_MSGID_uni_equlable_apply_report",
+            "MSGIE" => array(HUITP_IEID_uni_com_report,
+                            HUITP_IEID_uni_equlable_apply_user_info)),
+        //0xA201
+        HUITP_MSGID_uni_equlable_apply_confirm => array("MSGNAME" => "HUITP_MSGID_uni_equlable_apply_confirm",
+            "MSGIE" => array(HUITP_IEID_uni_com_confirm,
+                            HUITP_IEID_uni_equlable_apply_allocation)),
+        //0xA284
+        HUITP_MSGID_uni_equlable_userlist_sync_report => array("MSGNAME" => "HUITP_MSGID_uni_equlable_userlist_sync_report",
+            "MSGIE" => array(HUITP_IEID_uni_com_report,
+                            HUITP_IEID_uni_equlable_userlist_sync_report)),
+        //0xA204
+        HUITP_MSGID_uni_equlable_userlist_sync_confirm => array("MSGNAME" => "HUITP_MSGID_uni_equlable_userlist_sync_confirm",
+            "MSGIE" => array(HUITP_IEID_uni_com_confirm,
+                            HUITP_IEID_uni_equlable_userlist_sync_confirm)),
+
         //ALARM REPORT
         HUITP_MSGID_uni_alarm_info_req => array("MSGNAME" => "","MSGIE" => array(HUITP_IEID_uni_com_req)),  //0xB000
         HUITP_MSGID_uni_alarm_info_resp => array("MSGNAME" => "","MSGIE" => array(HUITP_IEID_uni_com_req)),  //0xB080
@@ -1783,6 +1808,8 @@ class classL2codecHuitpMsgDict
         MFUN_TASK_ID_L3APPL_FUMXPRCM => array(),
         MFUN_TASK_ID_L3WX_OPR_EMC => array(),  //用于EMC微信H5界面处理L3 task
         MFUN_TASK_ID_L3WX_OPR_FHYS => array(), //用于FHYS微信H5界面处理L3 task
+        MFUN_TASK_ID_L3WX_OPR_FAAM => array(HUITP_MSGID_uni_equlable_apply_report,
+                                            HUITP_MSGID_uni_equlable_userlist_sync_report),
         MFUN_TASK_ID_L3NBIOT_OPR_METER => array(),
         MFUN_TASK_ID_L4AQYC_UI => array(),
         MFUN_TASK_ID_L4FHYS_UI => array(),

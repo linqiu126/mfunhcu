@@ -187,6 +187,25 @@ define("HUITP_IEID_UNI_FDWQ_PROFILE_BLOOD_TYPE_AB", 3);
 define("HUITP_IEID_UNI_FDWQ_PROFILE_BLOOD_TYPE_O", 4);
 define("HUITP_IEID_UNI_FDWQ_PROFILE_BLOOD_TYPE_INVALID", 0xFF);
 
+//工厂批量生产二维码申请
+define("HUITP_IEID_UNI_EQULABLE_APPLY_USER_INFO_NONE", 0);
+define("HUITP_IEID_UNI_EQULABLE_APPLY_USER_INFO_HCU", 1);
+define("HUITP_IEID_UNI_EQULABLE_APPLY_USER_INFO_IHU", 2);
+define("HUITP_IEID_UNI_EQULABLE_APPLY_USER_INFO_FAM", 3);
+define("HUITP_IEID_UNI_EQULABLE_APPLY_USER_INFO_INVALID", 0xFF);
+
+define("HUITP_IEID_UNI_EQULABLE_USAGE_NONE", 0);
+define("HUITP_IEID_UNI_EQULABLE_USAGE_APPLE_INCOME", 0x0101);
+define("HUITP_IEID_UNI_EQULABLE_USAGE_APPLE_PRODUCTION", 0x0102);
+define("HUITP_IEID_UNI_EQULABLE_USAGE_INVALID", 0xFFFF);
+
+define("HUITP_IEID_UNI_EQULABLE_ALLOCATION_FLAG_FALSE", 1);
+define("HUITP_IEID_UNI_EQULABLE_ALLOCATION_FLAG_TRUE", 2);
+
+define("HUITP_IEID_UNI_EQULABLE_ALLOCATION_NUM_MAX", 99999); //一次最大可分配二维码
+define("HUITP_IEID_UNI_EQULABLE_DIGCODE_NUM_MAX", 5);  //二维码代码末尾最大保留5位数字
+
+
 
 /**********************************************HUITP公共信息单元IE定义***************************************************/
 define("HUITP_IEID_uni_min", 0x0000);
@@ -589,6 +608,12 @@ define("HUITP_IEID_uni_sw_package_min", 0xA100);
 define("HUITP_IEID_uni_sw_package_body", 0xA100);
 define("HUITP_IEID_uni_sw_package_max", 0xA100);
 
+//工厂批量生产相关
+define("HUITP_IEID_uni_equlable_apply_user_info", 0xA200);
+define("HUITP_IEID_uni_equlable_apply_allocation", 0xA201);
+define("HUITP_IEID_uni_equlable_userlist_sync_report", 0xA203);
+define("HUITP_IEID_uni_equlable_userlist_sync_confirm", 0xA204);
+
 //ALARM REPORT
 define("HUITP_IEID_uni_alarm_info_min", 0xB000);
 define("HUITP_IEID_uni_alarm_info_element", 0xB000);
@@ -928,7 +953,13 @@ class classL2codecHuitpIeDict
           //软件版本体
           HUITP_IEID_uni_sw_package_body                  => array("format"=>"A4ieId/A4ieLen/A4segValidLen/A4segCheckSum/A608swPkgBody","len"=>"308","name"=>"HUITP_IEID_uni_sw_package_body"),
           //for CCL test
-          //HUITP_IEID_uni_sw_package_body                  => array("format"=>"A4ieId/A4ieLen/A4segValidLen/A4segCheckSum/A200swPkgBody","len"=>"100","name"=>"HUITP_IEID_uni_sw_package_body"),
+          //HUITP_IEID_uni_sw_package_body                => array("format"=>"A4ieId/A4ieLen/A4segValidLen/A4segCheckSum/A200swPkgBody","len"=>"100","name"=>"HUITP_IEID_uni_sw_package_body"),
+
+          //工厂批量生产相关
+          HUITP_IEID_uni_equlable_apply_user_info         => array("format"=>"A4ieId/A4ieLen/A2productType/A10pdCode/A10pjCode/A6userCode/A40facCode/A4labelUsage/A40uAccount/A40uPsd/A40macAddr/A40userTabTL/A40userTabTR/A40userTabBL/A40userTabBR/A2formalFlag/A4applyNum","len"=>"358","name"=>"HUITP_IEID_uni_equlable_apply_user_info"),
+          HUITP_IEID_uni_equlable_apply_allocation        => array("format"=>"A4ieId/A4ieLen/A2allocateResp/A4allocateNum/A4lableStart/A4lableEnd/A200labelBaseInfo","len"=>"214","name"=>"HUITP_IEID_uni_equlable_apply_allocation"),
+          HUITP_IEID_uni_equlable_userlist_sync_report    => array("format"=>"A4ieId/A4ieLen/A10pjCode/A4syncStart","len"=>"14","name"=>"HUITP_IEID_uni_equlable_userlist_sync_report"),
+          HUITP_IEID_uni_equlable_userlist_sync_confirm   => array("format"=>"A4ieId/A4ieLen/A4totalNum/A4currentNum/A4syncStart/A800userList","len"=>"812","name"=>"HUITP_IEID_uni_equlable_userlist_sync_confirm"),
 
           //ALARM REPORT
           HUITP_IEID_uni_alarm_info_element               => array("format"=>"A4ieId/A4ieLen/A4alarmType/A2alarmServerity/A2alarmClearFlag/A8equID/A8causeId/A8alarmContent/A8timeStamp","len"=>"20","name"=>"HUITP_IEID_uni_alarm_info_element"),

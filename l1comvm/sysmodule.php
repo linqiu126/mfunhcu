@@ -70,6 +70,7 @@ define("MFUN_TASK_ID_L3APPL_FUM9GISM", $taskIndex++);
 define("MFUN_TASK_ID_L3APPL_FUMXPRCM", $taskIndex++);
 define("MFUN_TASK_ID_L3WX_OPR_EMC", $taskIndex++);  //用于EMC微信H5界面处理L3 task
 define("MFUN_TASK_ID_L3WX_OPR_FHYS", $taskIndex++); //用于FHYS微信H5界面处理L3 task
+define("MFUN_TASK_ID_L3WX_OPR_FAAM", $taskIndex++); //用于工厂辅助管理系统微信小程序处理
 define("MFUN_TASK_ID_L3NBIOT_OPR_METER", $taskIndex++);
 
 define("MFUN_TASK_ID_L4COM_UI", $taskIndex++); //公共界面处理模块
@@ -162,6 +163,7 @@ class classConstL1vmSysTaskList
         MFUN_TASK_ID_L3APPL_FUMXPRCM => array("NAME" => "MFUN_TASK_L3APPL_FUMXPRCM", "PRESENT" => false),
         MFUN_TASK_ID_L3WX_OPR_EMC => array("NAME" => "MFUN_TASK_ID_L3WX_OPR_EMC", "PRESENT" => false),
         MFUN_TASK_ID_L3WX_OPR_FHYS => array("NAME" => "MFUN_TASK_ID_L3WX_OPR_FHYS", "PRESENT" => false),
+        MFUN_TASK_ID_L3WX_OPR_FAAM => array("NAME" => "MFUN_TASK_ID_L3WX_OPR_FAAM", "PRESENT" => false),
         MFUN_TASK_ID_L3NBIOT_OPR_METER => array("NAME" => "MFUN_TASK_ID_L3NBIOT_OPR_METER", "PRESENT" => false),
         MFUN_TASK_ID_L4COM_UI => array("NAME" => "MFUN_TASK_ID_L4COM_UI", "PRESENT" => false),
         MFUN_TASK_ID_L4AQYC_UI => array("NAME" => "MFUN_TASK_L4AQYC_UI", "PRESENT" => false),
@@ -689,6 +691,7 @@ class classConstL1vmSysTaskList
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUMXPRCM]["PRESENT"] = true;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L3WX_OPR_EMC]["PRESENT"] = true;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L3WX_OPR_FHYS]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L3WX_OPR_FAAM]["PRESENT"] = true;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L3NBIOT_OPR_METER]["PRESENT"] = true;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L4COM_UI]["PRESENT"] = true;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L4AQYC_UI]["PRESENT"] = true;

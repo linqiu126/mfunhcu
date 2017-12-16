@@ -10,12 +10,6 @@ include_once "l2codec_huitp_msg_dict.php";
 
 class classTaskL2decodeHuitpXml
 {
-    //构造函数
-    public function __construct()
-    {
-
-    }
-
     public function mfun_l2decode_huitp_xml_task_main_entry($parObj, $msgId, $msgName, $msg)
     {
         //定义本入口函数的logger处理对象及函数
