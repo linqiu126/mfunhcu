@@ -262,6 +262,7 @@ class classDbiL3wxOprFaam
         //组装IE HUITP_IEID_uni_equlable_apply_allocation
         $huitpIe = $l2codecHuitpIeDictObj->mfun_l2codec_getHuitpIeFormat(HUITP_IEID_uni_equlable_apply_allocation);
         $huitpIeLen = intval($huitpIe['len']);
+        $labelBaseInfo = $this->urlstr($labelBaseInfo);
 
         array_push($allocationValueIE, HUITP_IEID_uni_equlable_apply_allocation);
         array_push($allocationValueIE, $huitpIeLen);
