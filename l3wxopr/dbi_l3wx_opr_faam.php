@@ -174,18 +174,18 @@ class classDbiL3wxOprFaam
 
         //$data[1] = HUITP_IEID_uni_equlable_apply_user_info
         $productType = hexdec($data[1]['HUITP_IEID_uni_equlable_apply_user_info']['productType']) & 0xFF;
-        $pdCode = trim($data[1]['HUITP_IEID_uni_equlable_apply_user_info']['pdCode'], '_');
-        $pjCode = trim($data[1]['HUITP_IEID_uni_equlable_apply_user_info']['pjCode'], '_');
-        $userCode = trim($data[1]['HUITP_IEID_uni_equlable_apply_user_info']['userCode'], '_');
-        $facCode = trim($data[1]['HUITP_IEID_uni_equlable_apply_user_info']['facCode'], '_');
+        $pdCode = trim(pack('H*',$data[1]['HUITP_IEID_uni_equlable_apply_user_info']['pdCode']), '_');
+        $pjCode = trim(pack('H*',$data[1]['HUITP_IEID_uni_equlable_apply_user_info']['pjCode']), '_');
+        $userCode = trim(pack('H*',$data[1]['HUITP_IEID_uni_equlable_apply_user_info']['userCode']), '_');
+        $facCode = trim(pack('H*',$data[1]['HUITP_IEID_uni_equlable_apply_user_info']['facCode']), '_');
         $labelUsage = hexdec($data[1]['HUITP_IEID_uni_equlable_apply_user_info']['labelUsage']) & 0xFFFF;
-        $uAccount = trim($data[1]['HUITP_IEID_uni_equlable_apply_user_info']['uAccount'], '_');
-        $uPsd = trim($data[1]['HUITP_IEID_uni_equlable_apply_user_info']['uPsd'], '_');
-        $macAddr = trim($data[1]['HUITP_IEID_uni_equlable_apply_user_info']['macAddr'], '_');
-        $userTabTL = trim($data[1]['HUITP_IEID_uni_equlable_apply_user_info']['userTabTL'], '_');
-        $userTabTR = trim($data[1]['HUITP_IEID_uni_equlable_apply_user_info']['userTabTR'], '_');
-        $userTabBL = trim($data[1]['HUITP_IEID_uni_equlable_apply_user_info']['userTabBL'], '_');
-        $userTabBR = trim($data[1]['HUITP_IEID_uni_equlable_apply_user_info']['userTabBR'], '_');
+        $uAccount = trim(pack('H*',$data[1]['HUITP_IEID_uni_equlable_apply_user_info']['uAccount']), '_');
+        $uPsd = trim(pack('H*',$data[1]['HUITP_IEID_uni_equlable_apply_user_info']['uPsd']), '_');
+        $macAddr = trim(pack('H*',$data[1]['HUITP_IEID_uni_equlable_apply_user_info']['macAddr']), '_');
+        $userTabTL = trim(pack('H*',$data[1]['HUITP_IEID_uni_equlable_apply_user_info']['userTabTL']), '_');
+        $userTabTR = trim(pack('H*',$data[1]['HUITP_IEID_uni_equlable_apply_user_info']['userTabTR']), '_');
+        $userTabBL = trim(pack('H*',$data[1]['HUITP_IEID_uni_equlable_apply_user_info']['userTabBL']), '_');
+        $userTabBR = trim(pack('H*',$data[1]['HUITP_IEID_uni_equlable_apply_user_info']['userTabBR']), '_');
         $formalFlag = hexdec($data[1]['HUITP_IEID_uni_equlable_apply_user_info']['formalFlag']) & 0xFF;
         $applyNum = hexdec($data[1]['HUITP_IEID_uni_equlable_apply_user_info']['applyNum']) & 0xFFFF;
 
@@ -200,7 +200,7 @@ class classDbiL3wxOprFaam
             $productType = "XXX";
 
         $timeStamp = time();
-        $currentTime = date("H:i:s",$timeStamp);
+        $currentTime = date("Y-m-d H:i:s",$timeStamp);
         $workYear = date('y');
         $workWeek = date('W');
         $labelBaseInfo = $productType."_".$pjCode."_W".$workYear.$workWeek;
