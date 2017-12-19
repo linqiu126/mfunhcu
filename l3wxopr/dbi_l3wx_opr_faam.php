@@ -59,11 +59,11 @@ class classDbiL3wxOprFaam
         $query_str = "SELECT * FROM `t_l3f11faam_factorysheet` WHERE (`pjcode` = '$scanCode') ";
         $factorysheet = $mysqli->query($query_str);
         if (($factorysheet !=false) AND (($row = $factorysheet->fetch_array()) > 0)){
-            $targetLatitude = round($row['latitude']/1000000, 2); //GPS取2位小数
-            $targetLongitude = round($row['longitude']/1000000, 2);
-            $latitude = round($latitude/1000000, 2);
-            $longitude = round($longitude/1000000, 2);
-            if($targetLatitude != $latitude OR $targetLongitude != $longitude){
+            $targetLatitude = intval($row['latitude']); //GPS取2位小数
+            $targetLongitude = intval($row['longitude']);
+            $delta_latitude = abs($latitude - $targetLatitude);
+            $delta_longitude = abs($longitude - $targetLongitude);
+            if($delta_latitude > 10000 OR $delta_longitude > 10000){
                 $resp = array('employee'=>$nickName, 'message'=>"考勤位置错误");
                 $mysqli->close();
                 return $resp;

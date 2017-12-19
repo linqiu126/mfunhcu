@@ -81,21 +81,63 @@ include_once "../l3wxopr/task_l3wx_opr_fhys.class.php";
 include_once "../l3wxopr/task_l3wx_opr_faam.php";
 include_once "../l3nbiotopr/task_l3nbiot_opr_meter.class.php";
 include_once "../l2timercron/task_l2timer_cron.class.php";
-include_once "../l4emcwxui/task_l4emcwx_ui.class.php";
 include_once "../l4comui/task_l4com_ui.class.php";
-include_once "../l4aqycui/task_l4aqyc_ui.class.php";
-include_once "../l4fhysui/task_l4fhys_ui.class.php";
-include_once "../l4fhyswechat/task_l4fhys_wechat.class.php";
-include_once "../l4bfscui/task_l4bfsc_ui.class.php";
-include_once "../l4tbswrui/task_l4tbswr_ui.class.php";
-include_once "../l4fdwqui/task_l4fdwq_ui.class.php";
-include_once "../l4gtjyui/task_l4gtjy_ui.class.php";
-include_once "../l4nbiotipmui/task_l4nbiot_ipm_ui.class.php";
-include_once "../l4nbiotiwmui/task_l4nbiot_iwm_ui.class.php";
-include_once "../l4nbiotigmui/task_l4nbiot_igm_ui.class.php";
-include_once "../l4nbiotihmui/task_l4nbiot_ihm_ui.class.php";
 include_once "../l5bi/task_bi_service.class.php";
-date_default_timezone_set('PRC'); //设置北京时间为系统的缺省时间
+
+//分项目include文件
+if(MFUN_CURRENT_WORKING_PROGRAM_NAME_UNIQUE == MFUN_WORKING_PROGRAM_NAME_UNIQUE_AQYC){
+    include_once "../l4aqycui/task_l4aqyc_ui.class.php";
+    include_once "../l4faamui/task_l4faam_ui.class.php"; //公用AQ云HTTPS
+}
+elseif(MFUN_CURRENT_WORKING_PROGRAM_NAME_UNIQUE == MFUN_WORKING_PROGRAM_NAME_UNIQUE_FAAM){
+    include_once "../l4faamui/task_l4faam_ui.class.php";
+}
+elseif(MFUN_CURRENT_WORKING_PROGRAM_NAME_UNIQUE == MFUN_WORKING_PROGRAM_NAME_UNIQUE_FHYS){
+    include_once "../l4fhysui/task_l4fhys_ui.class.php";
+    include_once "../l4fhyswechat/task_l4fhys_wechat.class.php";
+}
+elseif(MFUN_CURRENT_WORKING_PROGRAM_NAME_UNIQUE == MFUN_WORKING_PROGRAM_NAME_UNIQUE_BFZN){
+    include_once "../l4bfscui/task_l4bfsc_ui.class.php";
+}
+elseif(MFUN_CURRENT_WORKING_PROGRAM_NAME_UNIQUE == MFUN_WORKING_PROGRAM_NAME_UNIQUE_EMCWX){
+    include_once "../l4emcwxui/task_l4emcwx_ui.class.php";
+}
+elseif(MFUN_CURRENT_WORKING_PROGRAM_NAME_UNIQUE == MFUN_WORKING_PROGRAM_NAME_UNIQUE_GTJY){
+    include_once "../l4gtjyui/task_l4gtjy_ui.class.php";
+}
+elseif(MFUN_CURRENT_WORKING_PROGRAM_NAME_UNIQUE == MFUN_WORKING_PROGRAM_NAME_UNIQUE_FDWQ){
+    include_once "../l4fdwqui/task_l4fdwq_ui.class.php";
+}
+elseif(MFUN_CURRENT_WORKING_PROGRAM_NAME_UNIQUE == MFUN_WORKING_PROGRAM_NAME_UNIQUE_TBSWR){
+    include_once "../l4tbswrui/task_l4tbswr_ui.class.php";
+}
+elseif(MFUN_CURRENT_WORKING_PROGRAM_NAME_UNIQUE == MFUN_WORKING_PROGRAM_NAME_UNIQUE_NBIOT_IPM){
+    include_once "../l4nbiotipmui/task_l4nbiot_ipm_ui.class.php";
+}
+elseif(MFUN_CURRENT_WORKING_PROGRAM_NAME_UNIQUE == MFUN_WORKING_PROGRAM_NAME_UNIQUE_NBIOT_IWM){
+    include_once "../l4nbiotiwmui/task_l4nbiot_iwm_ui.class.php";
+}
+elseif(MFUN_CURRENT_WORKING_PROGRAM_NAME_UNIQUE == MFUN_WORKING_PROGRAM_NAME_UNIQUE_NBIOT_IGM){
+    include_once "../l4nbiotigmui/task_l4nbiot_igm_ui.class.php";
+}
+elseif(MFUN_CURRENT_WORKING_PROGRAM_NAME_UNIQUE == MFUN_WORKING_PROGRAM_NAME_UNIQUE_NBIOT_IHM){
+    include_once "../l4nbiotihmui/task_l4nbiot_ihm_ui.class.php";
+}
+elseif(MFUN_CURRENT_WORKING_PROGRAM_NAME_UNIQUE == MFUN_WORKING_PROGRAM_NAME_UNIQUE_TESTMODE){
+    include_once "../l4aqycui/task_l4aqyc_ui.class.php";
+    include_once "../l4faamui/task_l4faam_ui.class.php";
+    include_once "../l4fhysui/task_l4fhys_ui.class.php";
+    include_once "../l4fhyswechat/task_l4fhys_wechat.class.php";
+    include_once "../l4bfscui/task_l4bfsc_ui.class.php";
+    include_once "../l4emcwxui/task_l4emcwx_ui.class.php";
+    include_once "../l4gtjyui/task_l4gtjy_ui.class.php";
+    include_once "../l4fdwqui/task_l4fdwq_ui.class.php";
+    include_once "../l4tbswrui/task_l4tbswr_ui.class.php";
+    include_once "../l4nbiotipmui/task_l4nbiot_ipm_ui.class.php";
+    include_once "../l4nbiotiwmui/task_l4nbiot_iwm_ui.class.php";
+    include_once "../l4nbiotigmui/task_l4nbiot_igm_ui.class.php";
+    include_once "../l4nbiotihmui/task_l4nbiot_ihm_ui.class.php";
+}
 
 
 class classTaskL1vmCoreRouter
@@ -717,6 +759,20 @@ class classTaskL1vmCoreRouter
                     return false;
                 }
                 break;
+            case MFUN_MAIN_ENTRY_FAAM_UI:
+                $resp = $this->mfun_l1vm_msg_send(MFUN_TASK_ID_L1VM,
+                    MFUN_TASK_ID_L4FAAM_UI,
+                    MSG_ID_L4FAAMUI_CLICK_INCOMING,
+                    "MSG_ID_L4FAAMUI_CLICK_INCOMING",
+                    $msg);
+                if ($resp == false){
+                    $result = "Cloud: Send to message buffer error.";
+                    $log_content = "P:" . json_encode($result,JSON_UNESCAPED_UNICODE);
+                    $loggerObj->mylog(MFUN_MAIN_ENTRY_FAAM_UI,"NULL","MFUN_TASK_ID_L1VM","MFUN_TASK_ID_L4FAAM_UI","MSG_ID_L4FAAMUI_CLICK_INCOMING",$log_content);
+                    echo trim($result);
+                    return false;
+                }
+                break;
             case MFUN_MAIN_ENTRY_NBIOT_IPM_UI:
                 $resp = $this->mfun_l1vm_msg_send(MFUN_TASK_ID_L1VM,
                     MFUN_TASK_ID_L4NBIOT_IPM_UI,
@@ -1166,6 +1222,11 @@ class classTaskL1vmCoreRouter
                 case MFUN_TASK_ID_L4GTJY_UI:
                     $obj = new classTaskL4gtjyUi();
                     $obj->mfun_l4gtjy_ui_task_main_entry($this, $result["msgId"], $result["msgName"], $result["msgBody"]);
+                    break;
+
+                case MFUN_TASK_ID_L4FAAM_UI:
+                    $obj = new classTaskL4faamUi();
+                    $obj->mfun_l4faam_ui_task_main_entry($this, $result["msgId"], $result["msgName"], $result["msgBody"]);
                     break;
 
                 case MFUN_TASK_ID_L4NBIOT_IPM_UI:

@@ -271,6 +271,9 @@ define("MSG_ID_L4FDWQUI_CLICK_INCOMING", $index++);
 //L4GTJY部分
 define("MSG_ID_L4GTJYUI_CLICK_INCOMING", $index++);
 
+//L4FAAM
+define("MSG_ID_L4FAAMUI_CLICK_INCOMING", $index++);
+
 //L4NBIOTIPMUI部分
 define("MSG_ID_L4NBIOT_IPMUI_CLICK_INCOMING", $index++);
 define("MSG_ID_L4NBIOT_IPMUI_TO_L3F1_LOGIN", $index++);
