@@ -139,6 +139,9 @@ define("MFUN_HCU_OPT_BFSC_WEIGHTDATA_IND", 0x81);
 define("MFUN_HCU_OPT_BFSC_WEIGHTSTART_RESP", 0x82);
 define("MFUN_HCU_OPT_BFSC_WEIGHTSTOP_RESP", 0x83);
 
+//FAAM常量
+define("MFUN_HCU_FAAM_PJCODE", "XHZN");
+
 class classConstL1vmUserWebRight
 {
 //定义界面菜单显示权限，如果为false则该菜单在用户登录时隐藏

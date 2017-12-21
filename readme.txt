@@ -400,6 +400,9 @@ Make By：ZJL
 > 增加L4COMUI模块，处理例如界面用户登录，项目组/项目/站点/设备管理等COMMON功能，其他项目独特操作放到对应的L4XXXXUI模块，提高代码的复用性
 > 添加FDWQ项目第一版
 
+//= LZH, 2017 Dec.21, CURRENT_SW_DELIVERY R03.D26
+> 添加FAAM工厂辅助管理系统
+
 //待完善的功能
 1. dbi_devinfo_update（）需要修改，添加设备时预计结束时间和实际结束时间应该在项目信息里
 2. 添加设备时没有选择该设备装配了那些传感器，sensorctrl表没有更新

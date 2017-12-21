@@ -76,6 +76,7 @@ include_once "../l3appl/fum7ads/task_l3apl_f7ads.class.php";
 include_once "../l3appl/fum8psm/task_l3apl_f8psm.class.php";
 include_once "../l3appl/fum9gism/task_l3apl_f9gism.class.php";
 include_once "../l3appl/fumxprcm/task_l3apl_fxprcm.class.php";
+include_once "../l3appl/fum11faam/task_l3apl_f11faam.class.php";
 include_once "../l3wxopr/task_l3wx_opr_emc.class.php";
 include_once "../l3wxopr/task_l3wx_opr_fhys.class.php";
 include_once "../l3wxopr/task_l3wx_opr_faam.php";
@@ -90,6 +91,7 @@ if(MFUN_CURRENT_WORKING_PROGRAM_NAME_UNIQUE == MFUN_WORKING_PROGRAM_NAME_UNIQUE_
     include_once "../l4faamui/task_l4faam_ui.class.php"; //公用AQ云HTTPS
 }
 elseif(MFUN_CURRENT_WORKING_PROGRAM_NAME_UNIQUE == MFUN_WORKING_PROGRAM_NAME_UNIQUE_FAAM){
+
     include_once "../l4faamui/task_l4faam_ui.class.php";
 }
 elseif(MFUN_CURRENT_WORKING_PROGRAM_NAME_UNIQUE == MFUN_WORKING_PROGRAM_NAME_UNIQUE_FHYS){
@@ -1162,6 +1164,11 @@ class classTaskL1vmCoreRouter
                 case MFUN_TASK_ID_L3APPL_FUMXPRCM:
                     $obj = new classTaskL3aplFxprcm();
                     $obj->mfun_l3apl_fxprcm_task_main_entry($this, $result["msgId"], $result["msgName"], $result["msgBody"]);
+                    break;
+
+                case MFUN_TASK_ID_L3APPL_FUM11FAAM:
+                    $obj = new classTaskL3aplF11faam();
+                    $obj->mfun_l3apl_f11faam_task_main_entry($this, $result["msgId"], $result["msgName"], $result["msgBody"]);
                     break;
 
                 case MFUN_TASK_ID_L3WX_OPR_EMC:

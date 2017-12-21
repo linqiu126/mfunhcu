@@ -2451,7 +2451,7 @@ class classDbiL3apF3dm
                 $eventtime = $resp_row['createtime'];
 
                 $dateintval = intval(date('Ymd',strtotime($eventtime)));
-                if($dateintval < $start AND $dateintval > $end) continue; //如果不在查询时间范围内，直接跳过
+                if($dateintval < $start OR $dateintval > $end) continue; //如果不在查询时间范围内，直接跳过
 
                 if ($eventtype == MFUN_L3APL_F2CM_EVENT_TYPE_RFID)
                     $eventtype = "RFID开锁";
