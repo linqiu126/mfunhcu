@@ -61,6 +61,7 @@ class classDbiL3apF11faam
                     'id' => $row['mid'],
                     'name' => $row['employee'],
                     'PJcode'=> $row['pjcode'],
+                    'nickname' => $row['openid'],
                     'mobile' => $row['phone'],
                     'gender' => $row['gender'],
                     'address' => $row['address'],
@@ -80,6 +81,7 @@ class classDbiL3apF11faam
                     'id' => $row['mid'],
                     'name' => $row['employee'],
                     'PJcode'=> $row['pjcode'],
+                    'nickname' => $row['openid'],
                     'mobile' => $row['phone'],
                     'gender' => $row['gender'],
                     'address' => $row['address'],
@@ -94,8 +96,8 @@ class classDbiL3apF11faam
         return $staffTable;
     }
 
-    // UI StaffNew & StaffMod request, 新建/修改员工信息表
-    public function dbi_faam_staff_table_update($staffInfo)
+    // UI StaffMod request, 修改员工信息表
+    public function dbi_faam_staff_table_modify($staffInfo)
     {
         //建立连接
         $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
@@ -104,7 +106,33 @@ class classDbiL3apF11faam
         }
         $mysqli->query("SET NAMES utf8");
 
-        $mid = MFUN_L3APL_F1SYM_MID_PREFIX.$this->getRandomUid(MFUN_L3APL_F1SYM_USER_ID_LEN);  //随机生成员工ID
+        if (isset($staffInfo["staffid"])) $staffId = trim($staffInfo["staffid"]); else  $staffId = "";
+        if (isset($staffInfo["name"])) $employee = trim($staffInfo["name"]); else  $employee = "";
+        if (isset($staffInfo["PJcode"])) $pjCode = trim($staffInfo["PJcode"]); else  $pjCode = "";
+        if (isset($staffInfo["position"])) $position = trim($staffInfo["position"]); else  $position = "";
+        if (isset($staffInfo["gender"])) $gender = trim($staffInfo["gender"]); else  $gender = "";
+        if (isset($staffInfo["mobile"])) $phone = trim($staffInfo["mobile"]); else  $phone = "";
+        if (isset($staffInfo["address"])) $address = trim($staffInfo["address"]); else  $address = "";
+        if (isset($staffInfo["memo"])) $memo = trim($staffInfo["memo"]); else  $memo = "";
+
+        $date = date("Y-m-d", time());
+        $query_str = "UPDATE `t_l3f11faam_membersheet` SET `pjcode` = '$pjCode',`employee` = '$employee',`gender` = '$gender',`phone` = '$phone',
+                      `regdate` = '$date',`position` = '$position',`address` = '$address', `memo` = '$memo' WHERE (`mid` = '$staffId')";
+        $result = $mysqli->query($query_str);
+
+        $mysqli->close();
+        return $result;
+    }
+
+    // UI StaffNew request, 新建员工信息表
+    public function dbi_faam_staff_table_new($staffInfo)
+    {
+        //建立连接
+        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli) {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $mysqli->query("SET NAMES utf8");
 
         if (isset($staffInfo["name"])) $employee = trim($staffInfo["name"]); else  $employee = "";
         if (isset($staffInfo["PJcode"])) $pjCode = trim($staffInfo["PJcode"]); else  $pjCode = "";
@@ -115,20 +143,11 @@ class classDbiL3apF11faam
         if (isset($staffInfo["memo"])) $memo = trim($staffInfo["memo"]); else  $memo = "";
 
         $date = date("Y-m-d", time());
-        $query_str = "SELECT * FROM `t_l3f11faam_membersheet` WHERE `employee` = '$employee'";
+        $mid = MFUN_L3APL_F1SYM_MID_PREFIX.$this->getRandomUid(MFUN_L3APL_F1SYM_USER_ID_LEN);  //随机生成员工ID
+
+        $query_str = "INSERT INTO `t_l3f11faam_membersheet` (mid,pjcode,employee,gender,phone,regdate,position,address,memo)
+                              VALUES ('$mid','$pjCode','$employee','$gender','$phone','$date','$position','$address','$memo')";
         $result = $mysqli->query($query_str);
-        if (($result != false) && ($result->num_rows) > 0) //重复，则覆盖
-        {
-            $query_str = "UPDATE `t_l3f11faam_membersheet` SET `pjcode` = '$pjCode',`gender` = '$gender',`phone` = '$phone',`regdate` = '$date',
-                          `position` = '$position',`address` = '$address', `memo` = '$memo' WHERE (`employee` = '$employee')";
-            $result = $mysqli->query($query_str);
-        }
-        else //不存在，新增
-        {
-            $query_str = "INSERT INTO `t_l3f11faam_membersheet` (mid,pjcode,employee,gender,phone,regdate,position,address,memo)
-                                  VALUES ('$mid','$pjCode','$employee','$gender','$phone','$date','$phone','$address', '$memo')";
-            $result = $mysqli->query($query_str);
-        }
 
         $mysqli->close();
         return $result;

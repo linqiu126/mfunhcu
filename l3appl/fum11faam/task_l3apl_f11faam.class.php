@@ -71,7 +71,7 @@ class classTaskL3aplF11faam
         $usercheck = $uiF1symDbObj->dbi_user_authcheck($action, $user);
         if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
             $uiF11faamDbObj = new classDbiL3apF11faam();
-            $result = $uiF11faamDbObj->dbi_faam_staff_table_update($body);
+            $result = $uiF11faamDbObj->dbi_faam_staff_table_new($body);
             if($result == true)
                 $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"员工信息新增成功");
             else
@@ -89,7 +89,7 @@ class classTaskL3aplF11faam
         $usercheck = $uiF1symDbObj->dbi_user_authcheck($action, $user);
         if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
             $uiF11faamDbObj = new classDbiL3apF11faam();
-            $result = $uiF11faamDbObj->dbi_faam_staff_table_update($body);
+            $result = $uiF11faamDbObj->dbi_faam_staff_table_modify($body);
             if($result == true)
                 $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"员工信息修改成功");
             else
@@ -151,9 +151,9 @@ class classTaskL3aplF11faam
             $uiF11faamDbObj = new classDbiL3apF11faam();
             $result = $uiF11faamDbObj->dbi_faam_attendance_record_new($body);
             if($result == true)
-                $retval=array('status'=>"true",'auth'=>$usercheck['auth'],'msg'=>"新建考勤记录成功");
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"新建考勤记录成功");
             else
-                $retval=array('status'=>"false",'auth'=>$usercheck['auth'],'msg'=>"新建考勤记录失败");
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"新建考勤记录失败");
         }
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>$usercheck['msg']);

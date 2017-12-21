@@ -1574,9 +1574,14 @@ $(document).ready(function() {
 
 
 
-function show_searchbar(){
+function show_searchbar(placehold){
     global_key_word = "";
     $("#CommonQueryInput").val("");
+    if(placehold !==""){
+        $("#CommonQueryInput").attr("placeholder",placehold);
+    }else{
+        $("#CommonQueryInput").attr("placeholder","查询...");
+    }
     $("#QueryBar").css("display","block");
 }
 function hide_searchbar(){
@@ -1605,7 +1610,7 @@ function user_manager(){
     clear_window();
     write_title("用户管理","根据您的权限对用户进行添加/删除/修改等操作");
     $("#UserManageView").css("display","block");
-    show_searchbar();
+    show_searchbar("");
     //if(!user_initial){ user_intialize(0);}
     user_intialize(0);
 }
@@ -1615,7 +1620,7 @@ function staff_manager(){
     clear_window();
     write_title("员工管理","根据您的权限对用户进行添加/删除/修改等操作");
     $("#StaffManageView").css("display","block");
-    show_searchbar();
+    show_searchbar("查询员工名或手机关键字...");
     //if(!user_initial){ user_intialize(0);}
     staff_intialize(0);
 }
@@ -1623,7 +1628,7 @@ function pg_manage(){
     clear_window();
     write_title("项目组管理","根据您的权限对项目组进行添加/删除/修改等操作");
     $("#PGManageView").css("display","block");
-    show_searchbar();
+    show_searchbar("");
     //if(!pg_initial){ pg_intialize(0);}
     pg_intialize(0);
 }
@@ -1631,7 +1636,7 @@ function key_manage(){
     clear_window();
     write_title("钥匙管理","根据您的权限对项目组进行添加/删除/修改等操作");
     $("#KeyManageView").css("display","block");
-    show_searchbar();
+    show_searchbar("");
     //if(!key_initial){ key_intialize(0);}
     key_intialize(0);
 }
@@ -1639,7 +1644,7 @@ function proj_manage(){
     clear_window();
     write_title("项目管理","根据您的权限对项目进行添加/删除/修改等操作");
     $("#ProjManageView").css("display","block");
-    show_searchbar();
+    show_searchbar("");
     proj_intialize(0);
 }
 function para_manage(){
@@ -1653,7 +1658,7 @@ function para_manage(){
 function mp_manage(){
     clear_window();
     write_title("站点管理","根据您的权限对站点进行配置");
-    show_searchbar();
+    show_searchbar("");
     $("#MPManageView").css("display","block");
     //需求修改，项目变成站点，变量名字不改了
     //if(!point_initial){ point_intialize(0);}
@@ -1662,7 +1667,7 @@ function mp_manage(){
 function dev_manage(){
     clear_window();
     write_title("设备管理","根据您的权限对设备进行配置");
-    show_searchbar();
+    show_searchbar("");
     $("#DevManageView").css("display","block");
     //if(!device_initial){ dev_intialize(0);}
     dev_intialize(0);
@@ -1911,7 +1916,7 @@ function attendance_history(){
 function assemble_history(){
     clear_window();
     hide_searchbar();
-    write_title("生产记录查询","请输入查询条件");
+    write_title("考勤历史查询","请输入查询条件");
     $("#AssembleHistoryView").css("display","block");
     assemble_history_initialize();
     //key_history_initialize();
@@ -2855,7 +2860,7 @@ function draw_staff_table_head(){
         "</li>";
     $("#Staff_Page_control").append(txt);
     table_head="<thead>"+
-        "<tr>"+"<th>序号</th>"+"<th>员工名</th>"+"<th>性别</th>"+"<th>岗位</th>"+"<th>手机号</th>"+"<th>地址</th>";
+        "<tr>"+"<th>序号</th>"+"<th>员工名</th>"+"<th>性别</th>"+"<th>微信昵称</th>"+"<th>岗位</th>"+"<th>手机号</th>";
     table_head=table_head+"</tr></thread>";
     click_draw_staff_table = function(){
         draw_staff_table($(this));
@@ -2908,12 +2913,12 @@ function draw_staff_table(data){
                 txt =txt+ "<tr class='success li_menu' id='staff_table_cell"+i+"' staffid='"+staff_table[sequence+i].id+"'>";
             }else{ txt =txt+ "<tr class='li_menu' id='staff_table_cell"+i+"' staffid='"+staff_table[sequence+i].id+"'>";}
             txt = txt +"<td>" + staff_table[sequence+i].id+"</td>" +"<td>" + staff_table[sequence+i].name+"</td>" ;
-            txt = txt+"<td>"+get_staff_gender(staff_table[sequence+i].gender)+"</td>"+"<td>" + staff_table[sequence+i].position+"</td>" +"<td>" + staff_table[sequence+i].mobile+"</td>"+"<td>" + staff_table[sequence+i].address+"</td>";
+            txt = txt+"<td>"+get_staff_gender(staff_table[sequence+i].gender)+"</td>"+"<td>" + staff_table[sequence+i].nickname+"</td>"+"<td>" + staff_table[sequence+i].position+"</td>" +"<td>" + staff_table[sequence+i].mobile+"</td>";
             txt = txt +"</tr>";
         }else{
             if(0!==i%2){
-                txt =txt+ "<tr class='success' id='staff_table_cell"+i+"' userid='null'>";
-            }else{ txt =txt+ "<tr  id='staff_table_cell"+i+"' userid='null'>";}
+                txt =txt+ "<tr class='success' id='staff_table_cell"+i+"' staffid='null'>";
+            }else{ txt =txt+ "<tr  id='staff_table_cell"+i+"' staffid='null'>";}
             txt = txt +"<td>--</td>" +"<td>--</td>" +"<td>--</td>" +"<td>--</td>" +"<td>--</td>" +"<td>--</td>";
             txt = txt +"</tr>";
         }
@@ -2956,13 +2961,15 @@ function clear_staff_detail_panel(){
         "</div>"+
         "<div class='col-md-6 col-sm-6 col-xs-12 column'>"+
         "<dl >"+
+        "<dt>微信昵称：</dt><dd>&nbsp&nbsp&nbsp&nbsp</dd>"+
         "<dt>工厂代码：</dt><dd>&nbsp&nbsp&nbsp&nbsp</dd>"+
         "<dt>联系电话：</dt><dd>&nbsp&nbsp&nbsp&nbsp</dd>"+
-        "<dt>地址：</dt><dd>&nbsp&nbsp&nbsp&nbsp</dd>"+
         "</dl>"+
         "</div>"+
         "<div class='col-md-12 col-sm-12 col-xs-12 column'>"+
         "<dl >"+
+
+        "<dt>地址：</dt><dd>&nbsp&nbsp&nbsp&nbsp</dd>"+
         "<dt>备注：</dt><dd>&nbsp&nbsp&nbsp&nbsp</dd>"+
         "</dl>"+
         "</div>";
@@ -2983,13 +2990,15 @@ function draw_staff_detail_panel(){
         "</div>"+
         "<div class='col-md-6 col-sm-6 col-xs-12 column'>"+
         "<dl >"+
+
+        "<dt>地址：</dt><dd>"+staff_selected.nickname+"</dd>"+
         "<dt>工厂代码：</dt><dd>"+staff_selected.PJcode+"</dd>"+
         "<dt>联系电话：</dt><dd>"+staff_selected.mobile+"</dd>"+
-        "<dt>地址：</dt><dd>"+staff_selected.address+"</dd>"+
         "</dl>"+
         "</div>"+
         "<div class='col-md-12 col-sm-12 col-xs-12 column'>"+
         "<dl >"+
+        "<dt>地址：</dt><dd>"+staff_selected.address+"</dd>"+
         "<dt>备注：</dt><dd>"+staff_selected.memo+"</dd>"+
         "</dl>"+
         "</div>";
@@ -3007,6 +3016,7 @@ function show_new_staff_module(){
     $("#NewStaffPosition_Input").val("");
     $("#NewStaffAddress_Input").val("");
     $("#NewStaffMemo_Input").val("");
+    $("#NewStaffNickname_Input").val("");
     $("#newStaffname_Input").attr("placeholder","员工名");
     $("#NewStaffPJcode_Input").attr("placeholder","工厂代码");
     $("#NewStaffMobile_Input").attr("placeholder","联系电话");
@@ -3028,6 +3038,7 @@ function submit_new_staff_module(){
     var new_staff_possion = $("#NewStaffPosition_Input").val();
     var new_staff_address = $("#NewStaffAddress_Input").val();
     var new_staff_memo = $("#NewStaffMemo_Input").val();
+    var new_staff_nickname = $("#NewStaffNickname_Input").val();
     //console.log("new_usr_name:"+new_usr_name);
     if(new_staff_name === null || new_staff_name === ""){
         $("#newStaffname_Input").attr("placeholder","员工名不能为空");
@@ -3059,7 +3070,8 @@ function submit_new_staff_module(){
         mobile: new_staff_mobile,
         address: new_staff_address,
         gender: new_staff_gender,
-        memo: new_staff_memo
+        memo: new_staff_memo,
+        nickname:new_staff_nickname
     };
     new_staff(staff);
 }
@@ -3073,6 +3085,7 @@ function show_mod_staff_module(staff){
     $("#NewStaffPosition_Input").val(staff.position);
     $("#NewStaffAddress_Input").val(staff.address);
     $("#NewStaffMemo_Input").val(staff.memo);
+    $("#NewStaffNickname_Input").val(staff.nickname);
     $("#newStaffname_Input").attr("placeholder","员工名");
     $("#NewStaffPJcode_Input").attr("placeholder","工厂代码");
     $("#NewStaffMobile_Input").attr("placeholder","联系电话");
@@ -3092,6 +3105,7 @@ function submit_mod_staff_module(){
     var new_staff_possion = $("#NewStaffPosition_Input").val();
     var new_staff_address = $("#NewStaffAddress_Input").val();
     var new_staff_memo = $("#NewStaffMemo_Input").val();
+    var new_staff_nickname = $("#NewStaffNickname_Input").val();
     //console.log("new_usr_name:"+new_usr_name);
     if(new_staff_name === null || new_staff_name === ""){
         $("#newStaffname_Input").attr("placeholder","员工名不能为空");
@@ -3115,14 +3129,15 @@ function submit_mod_staff_module(){
         return;
     }
     var staff = {
-        id: staff_selected.id,
+        staffid: staff_selected.id,
         name: new_staff_name,
         position: new_staff_possion,
         PJcode: new_staff_pjcode,
         mobile: new_staff_mobile,
         address: new_staff_address,
         gender: new_staff_gender,
-        memo: new_staff_memo
+        memo: new_staff_memo,
+        nickname:new_staff_nickname
     };
     modify_staff(staff);
 }
