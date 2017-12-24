@@ -22,6 +22,36 @@ class classDbiL3apF11faam
         return $str;
     }
 
+    //获取该用户授权的工厂号，暂时复用用户表里的backup字段，将来考虑利用现有的项目表和项目组表
+    private function dbi_get_user_auth_factory($mysqli, $uid)
+    {
+        $pjCode = ""; //初始化
+        $query_str = "SELECT * FROM `t_l3f1sym_account` WHERE `uid` = '$uid' ";
+        $result = $mysqli->query($query_str);
+        if(($result != false) AND ($result->num_rows>0)) {
+            $row = $result->fetch_array();
+            $pjCode = $row['backup'];
+        }
+
+        return $pjCode;
+    }
+
+    private function dbi_get_factory_config($mysqli, $pjCode)
+    {
+        $config = ""; //初始化
+        $query_str = "SELECT * FROM `t_l3f11faam_factorysheet` WHERE `pjcode` = '$pjCode' ";
+        $result = $mysqli->query($query_str);
+        if(($result != false) AND ($result->num_rows>0)) {
+            $row = $result->fetch_array();
+            $config = array("workstart" => $row['workstart'],
+                            "workend" => $row['workend'],
+                            "resttime" => $row['resttime'],
+                            "fullwork" => $row['fullwork']);
+        }
+
+        return $config;
+    }
+
     //查询员工记录表中记录总数
     public function dbi_faam_employeenum_inqury()
     {
@@ -39,8 +69,30 @@ class classDbiL3apF11faam
         return $total;
     }
 
+    //UI StaffnameList request
+    public function dbi_faam_staff_namelist_query($uid)
+    {
+        //建立连接
+        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli) {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $mysqli->query("SET NAMES utf8");
+
+        $nameList = array();
+        $pjCode = $this->dbi_get_user_auth_factory($mysqli, $uid);
+        $query_str = "SELECT * FROM `t_l3f11faam_membersheet` WHERE (`pjcode` = '$pjCode')";
+        $result = $mysqli->query($query_str);
+        while (($result != false) && (($row = $result->fetch_array()) > 0)){
+            $temp = array('id' => $row['mid'],'name' => $row['employee']);
+            array_push($nameList, $temp);
+        }
+        $mysqli->close();
+        return $nameList;
+    }
+
     //UI StaffTable request, 获取所有员工信息表
-    public function dbi_faam_stafftable_query($uid_start, $uid_total,$keyword)
+    public function dbi_faam_stafftable_query($uid,$start,$query_length,$keyword)
     {
         //建立连接
         $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
@@ -50,7 +102,7 @@ class classDbiL3apF11faam
         $mysqli->query("SET NAMES utf8");
 
         //考虑到多工厂情况，将来需要根据登录用户属性选择对应工厂的员工列表显示
-        $pjCode = MFUN_HCU_FAAM_PJCODE;
+        $pjCode = $this->dbi_get_user_auth_factory($mysqli, $uid);
         $staffTable = array(); //初始化
         $query_str = "SELECT * FROM `t_l3f11faam_membersheet` WHERE (`pjcode` = '$pjCode')";
         $result = $mysqli->query($query_str);
@@ -65,6 +117,7 @@ class classDbiL3apF11faam
                     'mobile' => $row['phone'],
                     'gender' => $row['gender'],
                     'address' => $row['address'],
+                    'salary' => $row['unitprice'],
                     'position' => $row['position'],
                     'memo' => $row['memo']
                 );
@@ -75,8 +128,7 @@ class classDbiL3apF11faam
         else{
             $query_str = "SELECT * FROM `t_l3f11faam_membersheet` where concat(`employee`,`phone`) like '%$keyword%'";
             $result = $mysqli->query($query_str);
-            while (($result != false) && (($row = $result->fetch_array()) > 0))
-            {
+            while (($result != false) && (($row = $result->fetch_array()) > 0)) {
                 $temp = array(
                     'id' => $row['mid'],
                     'name' => $row['employee'],
@@ -85,6 +137,7 @@ class classDbiL3apF11faam
                     'mobile' => $row['phone'],
                     'gender' => $row['gender'],
                     'address' => $row['address'],
+                    'salary' => $row['unitprice'],
                     'position' => $row['position'],
                     'memo' => $row['memo']
                 );
@@ -113,11 +166,12 @@ class classDbiL3apF11faam
         if (isset($staffInfo["gender"])) $gender = trim($staffInfo["gender"]); else  $gender = "";
         if (isset($staffInfo["mobile"])) $phone = trim($staffInfo["mobile"]); else  $phone = "";
         if (isset($staffInfo["address"])) $address = trim($staffInfo["address"]); else  $address = "";
+        if (isset($staffInfo["salary"])) $unitPrice = intval($staffInfo["salary"]); else  $unitPrice = 0;
         if (isset($staffInfo["memo"])) $memo = trim($staffInfo["memo"]); else  $memo = "";
 
         $date = date("Y-m-d", time());
         $query_str = "UPDATE `t_l3f11faam_membersheet` SET `pjcode` = '$pjCode',`employee` = '$employee',`gender` = '$gender',`phone` = '$phone',
-                      `regdate` = '$date',`position` = '$position',`address` = '$address', `memo` = '$memo' WHERE (`mid` = '$staffId')";
+                      `regdate` = '$date',`position` = '$position',`address` = '$address',`unitprice` = '$unitPrice',`memo` = '$memo' WHERE (`mid` = '$staffId')";
         $result = $mysqli->query($query_str);
 
         $mysqli->close();
@@ -140,13 +194,14 @@ class classDbiL3apF11faam
         if (isset($staffInfo["gender"])) $gender = trim($staffInfo["gender"]); else  $gender = "";
         if (isset($staffInfo["mobile"])) $phone = trim($staffInfo["mobile"]); else  $phone = "";
         if (isset($staffInfo["address"])) $address = trim($staffInfo["address"]); else  $address = "";
+        if (isset($staffInfo["salary"])) $unitPrice = intval($staffInfo["salary"]); else  $unitPrice = 0;
         if (isset($staffInfo["memo"])) $memo = trim($staffInfo["memo"]); else  $memo = "";
 
         $date = date("Y-m-d", time());
         $mid = MFUN_L3APL_F1SYM_MID_PREFIX.$this->getRandomUid(MFUN_L3APL_F1SYM_USER_ID_LEN);  //随机生成员工ID
 
-        $query_str = "INSERT INTO `t_l3f11faam_membersheet` (mid,pjcode,employee,gender,phone,regdate,position,address,memo)
-                              VALUES ('$mid','$pjCode','$employee','$gender','$phone','$date','$position','$address','$memo')";
+        $query_str = "INSERT INTO `t_l3f11faam_membersheet` (mid,pjcode,employee,gender,phone,regdate,position,address,unitprice,memo)
+                              VALUES ('$mid','$pjCode','$employee','$gender','$phone','$date','$position','$address','$unitPrice','$memo')";
         $result = $mysqli->query($query_str);
 
         $mysqli->close();
@@ -168,8 +223,8 @@ class classDbiL3apF11faam
         return $result;
     }
 
-    //UI AttendanceHistory request, 考勤记录查询
-    public function dbi_faam_attendance_history_query($duration, $keyWord)
+    //UI AttendanceHistory request, 考勤记录表查询
+    public function dbi_faam_attendance_history_query($uid, $timeStart, $timeEnd, $keyWord)
     {
         //初始化返回值
         $history["ColumnName"] = array();
@@ -187,19 +242,12 @@ class classDbiL3apF11faam
         array_push($history["ColumnName"], "日期");
         array_push($history["ColumnName"], "上班时间");
         array_push($history["ColumnName"], "下班时间");
-        array_push($history["ColumnName"], "工作时长");
+        array_push($history["ColumnName"], "工时(小时)");
 
-        $timestamp = time();
-        $end = intval(date("Ymd", $timestamp));
-        $start = $end;
-        if($duration == MFUN_L3APL_F2CM_EVENT_DURATION_DAY)
-            $start = intval(date("Ymd",strtotime('-1 day')));
-        elseif($duration == MFUN_L3APL_F2CM_EVENT_DURATION_WEEK)
-            $start = intval(date("Ymd",strtotime('-7 day')));
-        elseif($duration == MFUN_L3APL_F2CM_EVENT_DURATION_MONTH)
-            $start = intval(date("Ymd",strtotime('-30 day')));
+        $timeStart = intval(date('Ymd', strtotime($timeStart)));
+        $timeEnd = intval(date('Ymd', strtotime($timeEnd)));
+        $pjCode = $this->dbi_get_user_auth_factory($mysqli, $uid);
 
-        $pjCode = MFUN_HCU_FAAM_PJCODE;
         $query_str = "SELECT * FROM `t_l3f11faam_dailysheet` WHERE (`pjcode` = '$pjCode' AND (concat(`employee`) like '%$keyWord%'))";
         $result = $mysqli->query($query_str);
         while (($result != false) && (($row = $result->fetch_array()) > 0)){
@@ -208,18 +256,10 @@ class classDbiL3apF11faam
             $workDay = $row['workday'];
             $arriveTime = $row['arrivetime'];
             $leaveTime = $row['leavetime'];
+            $workTime = $row['worktime'];
 
             $dateintval = intval(date('Ymd',strtotime($workDay)));
-            if($dateintval < $start OR $dateintval > $end) continue; //如果不在查询时间范围内，直接跳过
-
-            if(!empty($arriveTime) AND !empty($leaveTime)){
-                $timeInterval = strtotime($leaveTime) - strtotime($arriveTime);
-                $hour = (int)(($timeInterval%(3600*24))/(3600));
-                $min = (int)($timeInterval%(3600)/60);
-                $workTime = $hour."小时".$min."分";
-            }
-            else
-                $workTime = "0小时0分";
+            if($dateintval < $timeStart OR $dateintval > $timeEnd) continue; //如果不在查询时间范围内，直接跳过
 
             $temp = array();
             array_push($temp, $sid);
@@ -235,8 +275,65 @@ class classDbiL3apF11faam
         return $history;
     }
 
+    public function dbi_faam_attendance_history_audit($uid, $timeStart, $timeEnd, $keyWord)
+    {
+        //初始化返回值
+        $history["ColumnName"] = array();
+        $history['TableData'] = array();
+
+        //建立连接
+        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli) {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $mysqli->query("SET NAMES utf8");
+
+        array_push($history["ColumnName"], "序号");
+        array_push($history["ColumnName"], "姓名");
+        array_push($history["ColumnName"], "开始日期");
+        array_push($history["ColumnName"], "结束日期");
+        array_push($history["ColumnName"], "迟到次数");
+        array_push($history["ColumnName"], "早退次数");
+        array_push($history["ColumnName"], "请假次数");
+        array_push($history["ColumnName"], "请假时长");
+        array_push($history["ColumnName"], "工作时长");
+        array_push($history["ColumnName"], "工资合计");
+
+        array_push($history['TableData'], array());
+        /*
+        $timeStart = intval(strtotime($timeStart));
+        $timeEnd = intval(strtotime($timeEnd));
+        $pjCode = $this->dbi_get_user_auth_factory($mysqli, $uid);
+
+        $query_str = "SELECT * FROM `t_l3f11faam_dailysheet` WHERE (`pjcode` = '$pjCode' AND (concat(`employee`) like '%$keyWord%'))";
+        $result = $mysqli->query($query_str);
+        while (($result != false) && (($row = $result->fetch_array()) > 0)){
+            $sid = $row['sid'];
+            $employee = $row['employee'];
+            $workDay = $row['workday'];
+            $arriveTime = $row['arrivetime'];
+            $leaveTime = $row['leavetime'];
+            $workTime = $row['worktime'];
+
+            $dateintval = intval(date('Ymd',strtotime($workDay)));
+            if($dateintval < $timeStart OR $dateintval > $timeEnd) continue; //如果不在查询时间范围内，直接跳过
+
+            $temp = array();
+            array_push($temp, $sid);
+            array_push($temp, $employee);
+            array_push($temp, $workDay);
+            array_push($temp, $arriveTime);
+            array_push($temp, $leaveTime);
+            array_push($temp, $workTime);
+            array_push($history['TableData'], $temp);
+        }*/
+
+        $mysqli->close();
+        return $history;
+    }
+
     //UI AttendanceNew request,手动添加一条考勤记录
-    public function dbi_faam_attendance_record_new($record)
+    public function dbi_faam_attendance_record_new($uid, $record)
     {
         //建立连接
         $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
@@ -246,26 +343,66 @@ class classDbiL3apF11faam
         $mysqli->query("SET NAMES utf8");
 
         if (isset($record["name"])) $employee = trim($record["name"]); else  $employee = "";
-        if (isset($record["PJcode"])) $pjCode = trim($record["PJcode"]); else  $pjCode = "";
+        //if (isset($record["PJcode"])) $pjCode = trim($record["PJcode"]); else  $pjCode = "";
+        if (isset($record["PJcode"])) $offWork = trim($record["PJcode"]); else  $offWork = 0;  //暂时使用此字段作为请假时间
         if (isset($record["date"])) $workDay = trim($record["date"]); else  $workDay = "";
         if (isset($record["arrivetime"])) $arriveTime = trim($record["arrivetime"]); else  $arriveTime = "";
         if (isset($record["leavetime"])) $leaveTime = trim($record["leavetime"]); else  $leaveTime = "";
 
-        $pjCode = MFUN_HCU_FAAM_PJCODE;
+        $pjCode = $this->dbi_get_user_auth_factory($mysqli, $uid);
+        $factory_config = $this->dbi_get_factory_config($mysqli, $pjCode);
+        $restTime = round($factory_config['resttime']/60, 1);
+        $timeInterval = strtotime($leaveTime) - strtotime($arriveTime);
+        $hour = (int)(($timeInterval%(3600*24))/(3600));
+        $min = (int)($timeInterval%(3600)/60);
+        $workTime = $hour + round($min/60, 1)  - round($offWork, 1) - $restTime; //扣除请假时间和午休时间
+
         $query_str = "SELECT * FROM `t_l3f11faam_membersheet` WHERE (`employee` = '$employee' AND `pjcode` = '$pjCode')";
         $result = $mysqli->query($query_str);
         if(($result != false) && ($result->num_rows)>0){ //输入员工姓名合法
-            $query_str = "SELECT * FROM `t_l3f11faam_dailysheet` WHERE (`pjcode` = '$pjCode' AND `employee` = '$employee' AND `workday` = '$workDay')";
+            $query_str = "INSERT INTO `t_l3f11faam_dailysheet` (pjcode,employee,workday,arrivetime,leavetime,offwork,worktime)
+                                  VALUES ('$pjCode','$employee','$workDay','$arriveTime','$leaveTime','$offWork','$workTime')";
             $result = $mysqli->query($query_str);
-            if(($result != false) && ($result->num_rows)>0){
-                $query_str = "UPDATE `t_l3f11faam_dailysheet` SET `arrivetime` = '$arriveTime',`leavetime` = '$leaveTime' WHERE (`pjcode` = '$pjCode' AND `employee` = '$employee' AND `workday` = '$workDay')";
-                $result = $mysqli->query($query_str);
-            }
-            else{
-                $query_str = "INSERT INTO `t_l3f11faam_dailysheet` (pjcode,employee,workday,arrivetime,leavetime)
-                                  VALUES ('$pjCode','$employee','$workDay','$arriveTime','$leaveTime')";
-                $result = $mysqli->query($query_str);
-            }
+        }
+        else
+            $result = false;
+
+        $mysqli->close();
+        return $result;
+    }
+
+    //UI AttendanceMod request
+    public function dbi_faam_attendance_record_modify($uid, $record)
+    {
+        //建立连接
+        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli) {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $mysqli->query("SET NAMES utf8");
+
+        if (isset($record["attendanceID"])) $sid = trim($record["attendanceID"]); else  $sid = "";
+        if (isset($record["name"])) $employee = trim($record["name"]); else  $employee = "";
+        //if (isset($record["PJcode"])) $pjCode = trim($record["PJcode"]); else  $pjCode = "";
+        if (isset($record["PJcode"])) $offWork = (float)($record["PJcode"]); else  $offWork = 0;  //暂时使用此字段作为请假时间
+        if (isset($record["date"])) $workDay = trim($record["date"]); else  $workDay = "";
+        if (isset($record["arrivetime"])) $arriveTime = trim($record["arrivetime"]); else  $arriveTime = "";
+        if (isset($record["leavetime"])) $leaveTime = trim($record["leavetime"]); else  $leaveTime = "";
+
+        $pjCode = $this->dbi_get_user_auth_factory($mysqli, $uid);
+        $factory_config = $this->dbi_get_factory_config($mysqli, $pjCode);
+        $restTime = round($factory_config['resttime']/60, 1);
+
+        $timeInterval = strtotime($leaveTime) - strtotime($arriveTime);
+        $hour = (int)(($timeInterval%(3600*24))/(3600));
+        $min = (int)($timeInterval%(3600)/60);
+        $workTime = $hour + round($min/60, 1) - round($offWork, 1) - $restTime; //扣除请假时间和午休时间
+
+        $query_str = "SELECT * FROM `t_l3f11faam_membersheet` WHERE (`employee` = '$employee' AND `pjcode` = '$pjCode')";
+        $result = $mysqli->query($query_str);
+        if(($result != false) && ($result->num_rows)>0){ //输入员工姓名合法
+            $query_str = "UPDATE `t_l3f11faam_dailysheet` SET `workday` = '$workDay',`arrivetime` = '$arriveTime',`leavetime` = '$leaveTime',`offwork` = '$offWork',`worktime` = '$workTime' WHERE (`sid` = '$sid')";
+            $result = $mysqli->query($query_str);
         }
         else
             $result = false;
@@ -289,7 +426,34 @@ class classDbiL3apF11faam
         return $result;
     }
 
-    public function dbi_faam_production_history_query($duration, $keyWord)
+    //UI GetAttendance request
+    public function dbi_faam_attendance_record_get($recordId)
+    {
+        //建立连接
+        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli) {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $mysqli->query("SET NAMES utf8");
+
+        $record = array();
+        $query_str = "SELECT * FROM `t_l3f11faam_dailysheet` WHERE (`sid` = '$recordId')";
+        $result = $mysqli->query($query_str);
+        if (($result != false) && ($result->num_rows)>0){
+            $row = $result->fetch_array();
+            $record = array("attendanceID" => $row['sid'],
+                            "PJcode" => $row['offwork'],
+                            "name" => $row['employee'],
+                            "arrivetime" => $row['arrivetime'],
+                            "leavetime" => $row['leavetime'],
+                            "date" => $row['workday']);
+        }
+        $mysqli->close();
+        return $record;
+    }
+
+    //UI AssembleHistory request
+    public function dbi_faam_production_history_query($uid, $timeStart, $timeEnd, $keyWord)
     {
         //初始化返回值
         $history["ColumnName"] = array();
@@ -309,17 +473,10 @@ class classDbiL3apF11faam
         array_push($history["ColumnName"], "申请时间");
         array_push($history["ColumnName"], "成品时间");
 
-        $timestamp = time();
-        $end = intval(date("Ymd", $timestamp));
-        $start = $end;
-        if($duration == MFUN_L3APL_F2CM_EVENT_DURATION_DAY)
-            $start = intval(date("Ymd",strtotime('-1 day')));
-        elseif($duration == MFUN_L3APL_F2CM_EVENT_DURATION_WEEK)
-            $start = intval(date("Ymd",strtotime('-7 day')));
-        elseif($duration == MFUN_L3APL_F2CM_EVENT_DURATION_MONTH)
-            $start = intval(date("Ymd",strtotime('-30 day')));
+        $timeStart = intval(date('Ymd', strtotime($timeStart)));
+        $timeEnd = intval(date('Ymd', strtotime($timeEnd)));
+        $pjCode = $this->dbi_get_user_auth_factory($mysqli, $uid);
 
-        $pjCode = MFUN_HCU_FAAM_PJCODE;
         $query_str = "SELECT * FROM `t_l3f11faam_appleproduction` WHERE (`pjcode` = '$pjCode' AND (concat(`owner`,`applegrade`) like '%$keyWord%'))";
         $result = $mysqli->query($query_str);
         while (($result != false) && (($row = $result->fetch_array()) > 0)){
@@ -331,7 +488,7 @@ class classDbiL3apF11faam
             $activeTime = $row['activetime'];
 
             $dateintval = intval(date('Ymd',strtotime($activeTime)));
-            if($dateintval < $start OR $dateintval > $end) continue; //如果不在查询时间范围内，直接跳过
+            if($dateintval < $timeStart OR $dateintval > $timeEnd) continue; //如果不在查询时间范围内，直接跳过
 
             $temp = array();
             array_push($temp, $sid);
@@ -347,7 +504,58 @@ class classDbiL3apF11faam
         return $history;
     }
 
+    //UI AssembleAudit request
+    public function dbi_faam_production_history_audit($uid, $timeStart, $timeEnd, $keyWord)
+    {
+        //初始化返回值
+        $history["ColumnName"] = array();
+        $history['TableData'] = array();
 
+        //建立连接
+        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli) {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $mysqli->query("SET NAMES utf8");
+
+        array_push($history["ColumnName"], "序号");
+        array_push($history["ColumnName"], "开始日期");
+        array_push($history["ColumnName"], "结束日期");
+        array_push($history["ColumnName"], "统计关键字");
+        array_push($history["ColumnName"], "总箱数");
+
+        array_push($history['TableData'], array());
+        /*
+        $timeStart = intval(strtotime($timeStart));
+        $timeEnd = intval(strtotime($timeEnd));
+        $pjCode = $this->dbi_get_user_auth_factory($mysqli, $uid);
+
+        $query_str = "SELECT * FROM `t_l3f11faam_appleproduction` WHERE (`pjcode` = '$pjCode' AND (concat(`owner`,`applegrade`) like '%$keyWord%'))";
+        $result = $mysqli->query($query_str);
+        while (($result != false) && (($row = $result->fetch_array()) > 0)){
+            $sid = $row['sid'];
+            $employee = $row['owner'];
+            $qrcode = $row['qrcode'];
+            $appleGrade = $row['applegrade'];
+            $applyTime = $row['applytime'];
+            $activeTime = $row['activetime'];
+
+            $dateintval = intval(date('Ymd',strtotime($activeTime)));
+            if($dateintval < $timeStart OR $dateintval > $timeEnd) continue; //如果不在查询时间范围内，直接跳过
+
+            $temp = array();
+            array_push($temp, $sid);
+            array_push($temp, $qrcode);
+            array_push($temp, $employee);
+            array_push($temp, $appleGrade);
+            array_push($temp, $applyTime);
+            array_push($temp, $activeTime);
+            array_push($history['TableData'], $temp);
+        }
+        */
+        $mysqli->close();
+        return $history;
+    }
 
 }
 

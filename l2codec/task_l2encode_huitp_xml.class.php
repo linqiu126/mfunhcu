@@ -136,6 +136,7 @@ class classTaskL2encodeHuitpXml
             $respMsgStr = $dbiL1vmCommonObj->ushort2string($huitpMsgId).$respMsgStr;
 
             $xmlMsgStr = $this->func_huitp_xml_format_encode($devCode, MFUN_CLOUD_HCU,$respMsgStr);
+            $xmlMsgStr = $xmlMsgStr.PHP_EOL; //添加结束符
             //通过建立tcp阻塞式socket连接，向HCU发送回复消息
             $socketid = $dbiL1vmCommonObj->dbi_huitp_huc_socketid_inqery($devCode);
             if ($socketid != 0){

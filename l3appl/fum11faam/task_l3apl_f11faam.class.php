@@ -35,6 +35,25 @@ class classTaskL3aplF11faam
         return urlencode($elem);
     }
 
+    function func_faam_staff_namelist_query($action, $user, $body)
+    {
+        $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
+        $usercheck = $uiF1symDbObj->dbi_user_authcheck($action, $user);
+        if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
+            $uid = $usercheck['uid'];
+            $uiF11faamDbObj = new classDbiL3apF11faam();
+            $nameList = $uiF11faamDbObj->dbi_faam_staff_namelist_query($uid);
+            if(!empty($nameList))
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$nameList,'msg'=>"获取员工姓名列表成功");
+            else
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$nameList,'msg'=>"获取员工姓名列表失败");
+        }
+        else
+            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>$usercheck['msg']);
+
+        return $retval;
+    }
+
     //查询员工信息表
     function func_faam_staff_table_query($action, $user, $body)
     {
@@ -51,7 +70,8 @@ class classTaskL3aplF11faam
         $uiF1symDbObj = new classDbiL3apF1sym();
         $usercheck = $uiF1symDbObj->dbi_user_authcheck($action, $user);
         if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
-            $staffTable = $uiF11faamDbObj->dbi_faam_stafftable_query($start, $query_length,$keyword);
+            $uid = $usercheck['uid'];
+            $staffTable = $uiF11faamDbObj->dbi_faam_stafftable_query($uid,$start, $query_length,$keyword);
             if(!empty($staffTable)){
                 $ret = array('start'=> (string)$start,'total'=> (string)$total,'length'=>(string)$query_length,'stafftable'=>$staffTable);
                 $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$ret,'msg'=>"员工信息表获取成功");
@@ -123,19 +143,45 @@ class classTaskL3aplF11faam
 
     function func_faam_attendance_history_query($action, $user, $body)
     {
-        if (isset($body["Time"])) $duration = $body["Time"]; else  $duration = "";
+        if (isset($body["Timestart"])) $timeStart = $body["Timestart"]; else  $timeStart = "";
+        if (isset($body["Timeend"])) $timeEnd = $body["Timeend"]; else  $timeEnd = "";
         if (isset($body["KeyWord"])) $keyWord = $body["KeyWord"]; else  $keyWord = "";
 
         $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
         $usercheck = $uiF1symDbObj->dbi_user_authcheck($action, $user);
         if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
+            $uid = $usercheck['uid'];
             $uiF11faamDbObj = new classDbiL3apF11faam();
-            $resp = $uiF11faamDbObj->dbi_faam_attendance_history_query($duration, $keyWord);
+            $resp = $uiF11faamDbObj->dbi_faam_attendance_history_query($uid, $timeStart, $timeEnd, $keyWord);
             $ret = array('ColumnName' => $resp["ColumnName"],'TableData' => $resp["TableData"]);
             if(!empty($resp['TableData']))
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$ret,'msg'=>"获取考勤历史记录成功");
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$ret,'msg'=>"获取考勤历史记录表成功");
             else
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$ret,'msg'=>"获取考勤历史记录失败");
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$ret,'msg'=>"获取考勤历史记录表失败");
+        }
+        else
+            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
+
+        return $retval;
+    }
+
+    function func_faam_attendance_history_audit($action, $user, $body)
+    {
+        if (isset($body["TimeStart"])) $timeStart = $body["TimeStart"]; else  $timeStart = "";
+        if (isset($body["TimeEnd"])) $timeEnd = $body["TimeEnd"]; else  $timeEnd = "";
+        if (isset($body["KeyWord"])) $keyWord = $body["KeyWord"]; else  $keyWord = "";
+
+        $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
+        $usercheck = $uiF1symDbObj->dbi_user_authcheck($action, $user);
+        if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
+            $uid = $usercheck['uid'];
+            $uiF11faamDbObj = new classDbiL3apF11faam();
+            $resp = $uiF11faamDbObj->dbi_faam_attendance_history_audit($uid, $timeStart, $timeEnd, $keyWord);
+            $ret = array('ColumnName' => $resp["ColumnName"],'TableData' => $resp["TableData"]);
+            if(!empty($resp['TableData']))
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$ret,'msg'=>"获取考勤历史统计表成功");
+            else
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$ret,'msg'=>"获取考勤历史统计表失败");
         }
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
@@ -148,12 +194,13 @@ class classTaskL3aplF11faam
         $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
         $usercheck = $uiF1symDbObj->dbi_user_authcheck($action, $user);
         if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
+            $uid = $usercheck['uid'];
             $uiF11faamDbObj = new classDbiL3apF11faam();
-            $result = $uiF11faamDbObj->dbi_faam_attendance_record_new($body);
+            $result = $uiF11faamDbObj->dbi_faam_attendance_record_new($uid, $body);
             if($result == true)
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"新建考勤记录成功");
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"新建一条考勤记录成功");
             else
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"新建考勤记录失败");
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"新建一条考勤记录失败");
         }
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>$usercheck['msg']);
@@ -171,9 +218,48 @@ class classTaskL3aplF11faam
             $uiF11faamDbObj = new classDbiL3apF11faam();
             $result = $uiF11faamDbObj->dbi_faam_attendance_record_delete($recordId);
             if($result == true)
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"删除考勤记录成功");
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"删除一条考勤记录成功");
             else
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"删除考勤记录失败");
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"删除一条考勤记录失败");
+        }
+        else
+            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>$usercheck['msg']);
+
+        return $retval;
+    }
+
+    function func_faam_attendance_record_get($action, $user, $body)
+    {
+        if (isset($body["attendanceID"])) $recordId = $body["attendanceID"]; else  $recordId = "";
+
+        $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
+        $usercheck = $uiF1symDbObj->dbi_user_authcheck($action, $user);
+        if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
+            $uiF11faamDbObj = new classDbiL3apF11faam();
+            $record = $uiF11faamDbObj->dbi_faam_attendance_record_get($recordId);
+            if(!empty($record))
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$record,'msg'=>"查询一条考勤记录成功");
+            else
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>array(),'msg'=>"查询一条考勤记录失败");
+        }
+        else
+            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>$usercheck['msg']);
+
+        return $retval;
+    }
+
+    function func_faam_attendance_record_modify($action, $user, $body)
+    {
+        $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
+        $usercheck = $uiF1symDbObj->dbi_user_authcheck($action, $user);
+        if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
+            $uid = $usercheck['uid'];
+            $uiF11faamDbObj = new classDbiL3apF11faam();
+            $result = $uiF11faamDbObj->dbi_faam_attendance_record_modify($uid, $body);
+            if($result == true)
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"修改一条考勤记录成功");
+            else
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"修改一条考勤记录失败");
         }
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>$usercheck['msg']);
@@ -183,19 +269,45 @@ class classTaskL3aplF11faam
 
     function func_faam_production_history_query($action, $user, $body)
     {
-        if (isset($body["Time"])) $duration = $body["Time"]; else  $duration = "";
+        if (isset($body["TimeStart"])) $timeStart = $body["TimeStart"]; else  $timeStart = "";
+        if (isset($body["TimeEnd"])) $timeEnd = $body["TimeEnd"]; else  $timeEnd = "";
         if (isset($body["KeyWord"])) $keyWord = $body["KeyWord"]; else  $keyWord = "";
 
         $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
         $usercheck = $uiF1symDbObj->dbi_user_authcheck($action, $user);
         if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
+            $uid = $usercheck['uid'];
             $uiF11faamDbObj = new classDbiL3apF11faam();
-            $resp = $uiF11faamDbObj->dbi_faam_production_history_query($duration, $keyWord);
+            $resp = $uiF11faamDbObj->dbi_faam_production_history_query($uid, $timeStart, $timeEnd, $keyWord);
             $ret = array('ColumnName' => $resp["ColumnName"],'TableData' => $resp["TableData"]);
             if(!empty($resp['TableData']))
                 $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$ret,'msg'=>"获取生产历史记录成功");
             else
                 $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$ret,'msg'=>"获取生产历史记录失败");
+        }
+        else
+            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
+
+        return $retval;
+    }
+
+    function func_faam_production_history_audit($action, $user, $body)
+    {
+        if (isset($body["TimeStart"])) $timeStart = $body["TimeStart"]; else  $timeStart = "";
+        if (isset($body["TimeEnd"])) $timeEnd = $body["TimeEnd"]; else  $timeEnd = "";
+        if (isset($body["KeyWord"])) $keyWord = $body["KeyWord"]; else  $keyWord = "";
+
+        $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
+        $usercheck = $uiF1symDbObj->dbi_user_authcheck($action, $user);
+        if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
+            $uid = $usercheck['uid'];
+            $uiF11faamDbObj = new classDbiL3apF11faam();
+            $resp = $uiF11faamDbObj->dbi_faam_production_history_audit($uid, $timeStart, $timeEnd, $keyWord);
+            $ret = array('ColumnName' => $resp["ColumnName"],'TableData' => $resp["TableData"]);
+            if(!empty($resp['TableData']))
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$ret,'msg'=>"获取生产历史统计表成功");
+            else
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$ret,'msg'=>"获取生产历史统计表失败");
         }
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
@@ -229,6 +341,9 @@ class classTaskL3aplF11faam
         }
 
         switch ($msgId){
+            case MSG_ID_L4FAAMUI_TO_L3F11_STAFFNAMELIST:
+                $resp = $this->func_faam_staff_namelist_query($action, $user, $body);
+                break;
             case MSG_ID_L4FAAMUI_TO_L3F11_STAFFTABLE:
                 $resp = $this->func_faam_staff_table_query($action, $user, $body);
                 break;
@@ -244,14 +359,26 @@ class classTaskL3aplF11faam
             case MSG_ID_L4FAAMUI_TO_L3F11_ATTENDANCEHISTORY:
                 $resp = $this->func_faam_attendance_history_query($action, $user, $body);
                 break;
+            case MSG_ID_L4FAAMUI_TO_L3F11_ATTENDANCEAUDIT:
+                $resp = $this->func_faam_attendance_history_audit($action, $user, $body);
+                break;
             case MSG_ID_L4FAAMUI_TO_L3F11_ATTENDANCERECORDNEW:
                 $resp = $this->func_faam_attendance_record_new($action, $user, $body);
                 break;
             case MSG_ID_L4FAAMUI_TO_L3F11_ATTENDANCEDEL:
                 $resp = $this->func_faam_attendance_record_delete($action, $user, $body);
                 break;
+            case MSG_ID_L4FAAMUI_TO_L3F11_ATTENDANCEGET:
+                $resp = $this->func_faam_attendance_record_get($action, $user, $body);
+                break;
+            case MSG_ID_L4FAAMUI_TO_L3F11_ATTENDANCEMOD:
+                $resp = $this->func_faam_attendance_record_modify($action, $user, $body);
+                break;
             case MSG_ID_L4FAAMUI_TO_L3F11_PRODUCTIONHISTORY:
                 $resp = $this->func_faam_production_history_query($action, $user, $body);
+                break;
+            case MSG_ID_L4FAAMUI_TO_L3F11_PRODUCTIONAUDIT:
+                $resp = $this->func_faam_production_history_audit($action, $user, $body);
                 break;
             default:
                 break;

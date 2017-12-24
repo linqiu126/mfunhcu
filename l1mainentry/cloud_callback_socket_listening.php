@@ -49,7 +49,8 @@ class classL1MainEntrySocketListenServer
             'open_cpu_affinity' => true, //启用CPU亲和性设置, 在多核的硬件平台中，启用此特性会将swoole的reactor线程/worker进程绑定到固定的一个核上。可以避免进程/线程的运行时在多个核之间互相切换，提高CPU Cache的命中率。
             'reactor_num' => 2, //指定Reactor线程数,通过此参数来调节poll线程的数量，以充分利用多核,reactor_num和writer_num默认设置为CPU核数
             'package_max_length' => 2048,
-            'debug_mode'=> 1
+            'debug_mode'=> 1,
+            'open_tcp_nodelay' => true
         ));
 
         //创建 HTTP swoole server

@@ -42,6 +42,11 @@ class classTaskL4faamUi
         //这里是L4AQYC与L3APPL功能之间的交换矩阵，从而让UI对应的多种不确定组合变换为L3APPL确定的功能组合
         switch($action)
         {
+            case "StaffnameList": //查询员工名单
+                $input = array("project" => $project, "action" => $action, "type" => $type,"user" => $user,"body" => $body);
+                $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FAAM_UI, MFUN_TASK_ID_L3APPL_FUM11FAAM, MSG_ID_L4FAAMUI_TO_L3F11_STAFFNAMELIST, "MSG_ID_L4FAAMUI_TO_L3F11_STAFFNAMELIST",$input);
+                break;
+
             case "StaffTable":  //查询员工信息表
                 $input = array("project" => $project, "action" => $action, "type" => $type,"user" => $user,"body" => $body);
                 $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FAAM_UI, MFUN_TASK_ID_L3APPL_FUM11FAAM, MSG_ID_L4FAAMUI_TO_L3F11_STAFFTABLE, "MSG_ID_L4FAAMUI_TO_L3F11_STAFFTABLE",$input);
@@ -62,7 +67,7 @@ class classTaskL4faamUi
                 $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FAAM_UI, MFUN_TASK_ID_L3APPL_FUM11FAAM, MSG_ID_L4FAAMUI_TO_L3F11_STAFFDEL, "MSG_ID_L4FAAMUI_TO_L3F11_STAFFDEL",$input);
                 break;
 
-            case "AttendanceHistory": //查询考勤记录
+            case "AttendanceHistory": //查询考勤历史记录表
                 $input = array("project" => $project, "action" => $action, "type" => $type,"user" => $user,"body" => $body);
                 $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FAAM_UI, MFUN_TASK_ID_L3APPL_FUM11FAAM, MSG_ID_L4FAAMUI_TO_L3F11_ATTENDANCEHISTORY, "MSG_ID_L4FAAMUI_TO_L3F11_ATTENDANCEHISTORY",$input);
                 break;
@@ -77,9 +82,29 @@ class classTaskL4faamUi
                 $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FAAM_UI, MFUN_TASK_ID_L3APPL_FUM11FAAM, MSG_ID_L4FAAMUI_TO_L3F11_ATTENDANCEDEL, "MSG_ID_L4FAAMUI_TO_L3F11_ATTENDANCEDEL",$input);
                 break;
 
-            case "AssembleHistory":
+            case "GetAttendance":  //查询一条考勤记录
+                $input = array("project" => $project, "action" => $action, "type" => $type,"user" => $user,"body" => $body);
+                $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FAAM_UI, MFUN_TASK_ID_L3APPL_FUM11FAAM, MSG_ID_L4FAAMUI_TO_L3F11_ATTENDANCEGET, "MSG_ID_L4FAAMUI_TO_L3F11_ATTENDANCEGET",$input);
+                break;
+
+            case "AttendanceMod": //修改一条考勤记录
+                $input = array("project" => $project, "action" => $action, "type" => $type,"user" => $user,"body" => $body);
+                $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FAAM_UI, MFUN_TASK_ID_L3APPL_FUM11FAAM, MSG_ID_L4FAAMUI_TO_L3F11_ATTENDANCEMOD, "MSG_ID_L4FAAMUI_TO_L3F11_ATTENDANCEMOD",$input);
+                break;
+
+            case "AttendanceAudit": //考勤统计
+                $input = array("project" => $project, "action" => $action, "type" => $type,"user" => $user,"body" => $body);
+                $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FAAM_UI, MFUN_TASK_ID_L3APPL_FUM11FAAM, MSG_ID_L4FAAMUI_TO_L3F11_ATTENDANCEAUDIT, "MSG_ID_L4FAAMUI_TO_L3F11_ATTENDANCEAUDIT",$input);
+                break;
+
+            case "AssembleHistory": //考勤历史记录
                 $input = array("project" => $project, "action" => $action, "type" => $type,"user" => $user,"body" => $body);
                 $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FAAM_UI, MFUN_TASK_ID_L3APPL_FUM11FAAM, MSG_ID_L4FAAMUI_TO_L3F11_PRODUCTIONHISTORY, "MSG_ID_L4FAAMUI_TO_L3F11_ATTENDANCEDEL",$input);
+                break;
+
+            case "AssembleAudit":  //生产统计
+                $input = array("project" => $project, "action" => $action, "type" => $type,"user" => $user,"body" => $body);
+                $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FAAM_UI, MFUN_TASK_ID_L3APPL_FUM11FAAM, MSG_ID_L4FAAMUI_TO_L3F11_PRODUCTIONAUDIT, "MSG_ID_L4FAAMUI_TO_L3F11_PRODUCTIONAUDIT",$input);
                 break;
 
             default:
