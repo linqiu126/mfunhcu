@@ -59,11 +59,12 @@ class classDbiL3wxOprFaam
         $query_str = "SELECT * FROM `t_l3f11faam_factorysheet` WHERE (`pjcode` = '$scanCode') ";
         $factorysheet = $mysqli->query($query_str);
         if (($factorysheet !=false) AND (($row = $factorysheet->fetch_array()) > 0)){
+            $restTime = round($row['resttime']/60, 1);
             $targetLatitude = intval($row['latitude']); //GPS取2位小数
             $targetLongitude = intval($row['longitude']);
             $delta_latitude = abs($latitude - $targetLatitude);
             $delta_longitude = abs($longitude - $targetLongitude);
-            if($delta_latitude > 10000 OR $delta_longitude > 10000){
+            if($delta_latitude > 50000 OR $delta_longitude > 50000){
                 $resp = array('employee'=>$nickName, 'message'=>"考勤位置错误");
                 $mysqli->close();
                 return $resp;
@@ -82,8 +83,16 @@ class classDbiL3wxOprFaam
             if (!empty($employee)){ //合法用户，记录考勤信息
                 $query_str = "SELECT * FROM `t_l3f11faam_dailysheet` WHERE (`employee` = '$employee' AND `workday` = '$workDay') ";
                 $dailysheet = $mysqli->query($query_str);
-                if (($dailysheet !=false) AND ($dailysheet->num_rows>0)){ //当天已经有考勤记录，则该次考勤时间记录为下班时间
-                    $query_str = "UPDATE `t_l3f11faam_dailysheet` SET `leavetime` = '$currentTime' WHERE (`employee` = '$employee' AND `workday` = '$workDay')";
+                if (($dailysheet !=false) AND ($row = $dailysheet->fetch_array()) > 0){ //当天已经有考勤记录，则该次考勤时间记录为下班时间
+                    $arriveTime = $row['arrivetime'];
+                    $offWorkTime = $row['offwork'];
+                    $timeInterval = strtotime($currentTime) - strtotime($arriveTime);
+                    $hour = (int)(($timeInterval%(3600*24))/(3600));
+                    $min = (int)($timeInterval%(3600)/60);
+                    $workTime = $hour + round($min/60, 1)  - round($offWorkTime, 1) - $restTime; //扣除请假时间和午休时间
+                    if ($workTime < 0) $workTime = 0; //避免工作时间为负数
+
+                    $query_str = "UPDATE `t_l3f11faam_dailysheet` SET `leavetime` = '$currentTime',`worktime` = '$workTime' WHERE (`pjcode` = '$scanCode' AND `employee` = '$employee' AND `workday` = '$workDay')";
                     $mysqli->query($query_str);
                     $resp = array('employee'=>$employee, 'message'=>"考勤成功");
                 }

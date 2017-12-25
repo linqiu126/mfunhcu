@@ -12,8 +12,35 @@ include_once "../l1comvm/vmlayer.php";
  *                             L4TBSWR-UI TEST CASES                                   *
  *************************************************************************************/
 if (TC_L4FAAM_UI == true) {
-    $sessionid = "C6jiTaW62g";
+    $sessionid = "0FDfiQ58z8";
     $uerid = "UID000001";
+
+    $timeStart = '2017-12-01';
+    $timeEnd = '2017-12-25';
+
+    echo " [TC L4FAAM: AttendanceMod START]\n";
+    $_GET["action"] = "AttendanceMod";
+    $_GET["user"] = $sessionid;
+    $body = array("attendanceID"=>"7","PJcode"=>0.5,"name"=>'小慧同学',"arrivetime"=>'12:52:56',"leavetime"=>'18:00:00',"date"=>'2017-12-19');
+    $_GET["body"] = $body;
+    require("../l4faamui/request.php");
+    echo " [TC L4FAAM: AttendanceMod END]\n";
+
+    echo " [TC L4FAAM: AttendanceAudit START]\n";
+    $_GET["action"] = "AttendanceAudit";
+    $_GET["user"] = $sessionid;
+    $body = array("TimeStart"=>"2017-12-01", "TimeEnd"=>"2017-12-26","KeyWord"=>"孙尚翠");
+    $_GET["body"] = $body;
+    require("../l4faamui/request.php");
+    echo " [TC L4FAAM: AttendanceAudit END]\n";
+
+    echo " [TC L4FAAM: StaffNew START]\n";
+    $_GET["action"] = "StaffNew";
+    $_GET["user"] = $sessionid;
+    $body = array("staffid"=>"MID391949","name"=>'老李',"position"=>'管理员',"PJcode"=>'XHZN',"mobile"=>'13912345678',"address"=>'上海浦东',"gender"=>1,"memo"=>'恒源果蔬',"salary"=>100);
+    $_GET["body"] = $body;
+    require("../l4faamui/request.php");
+    echo " [TC L4FAAM: StaffNew END]\n";
 
     echo " [TC L4FAAM: AssembleHistory START]\n";
     $_GET["action"] = "AssembleHistory";
@@ -38,14 +65,6 @@ if (TC_L4FAAM_UI == true) {
     $_GET["body"] = $body;
     require("../l4faamui/request.php");
     echo " [TC L4FAAM: AttendanceNew END]\n";
-
-    echo " [TC L4FAAM: AttendanceMod START]\n";
-    $_GET["action"] = "AttendanceMod";
-    $_GET["user"] = $sessionid;
-    $body = array("attendanceID"=>"5","PJcode"=>0.5,"name"=>'老刘',"arrivetime"=>'12:52:56',"leavetime"=>'18:00:00',"date"=>'2017-12-16');
-    $_GET["body"] = $body;
-    require("../l4faamui/request.php");
-    echo " [TC L4FAAM: AttendanceMod END]\n";
 
     echo " [TC L4FAAM: GetAttendance START]\n";
     $_GET["action"] = "GetAttendance";
