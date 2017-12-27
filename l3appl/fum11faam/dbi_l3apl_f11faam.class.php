@@ -36,6 +36,18 @@ class classDbiL3apF11faam
         return $pjCode;
     }
 
+    private function dbi_get_product_type($mysqli, $pjCode)
+    {
+        $typeList = array(); //初始化
+        $query_str = "SELECT * FROM `t_l3f11faam_typesheet` WHERE `pjcode` = '$pjCode' ";
+        $result = $mysqli->query($query_str);
+        while (($result != false) && (($row = $result->fetch_array()) > 0)){
+            array_push($typeList, $row);
+        }
+
+        return $typeList;
+    }
+
     private function dbi_get_factory_config($mysqli, $pjCode)
     {
         $config = ""; //初始化
@@ -45,8 +57,23 @@ class classDbiL3apF11faam
             $row = $result->fetch_array();
             $config = array("workstart" => $row['workstart'],
                             "workend" => $row['workend'],
-                            "resttime" => $row['resttime'],
+                            "reststart" => $row['reststart'],
+                            "restend" => $row['restend'],
                             "fullwork" => $row['fullwork']);
+        }
+
+        return $config;
+    }
+
+    private function dbi_get_employee_config($mysqli, $pjCode,$employee)
+    {
+        $config = ""; //初始化
+        $query_str = "SELECT * FROM `t_l3f11faam_membersheet` WHERE (`pjcode` = '$pjCode' AND `employee` = '$employee')";
+        $result = $mysqli->query($query_str);
+        if(($result != false) AND ($result->num_rows>0)) {
+            $row = $result->fetch_array();
+            $config = array("unitprice" => $row['unitprice'],
+                            "standardnum" => $row['standardnum']);
         }
 
         return $config;
@@ -296,94 +323,99 @@ class classDbiL3apF11faam
         array_push($history["ColumnName"], "工作天数");
         array_push($history["ColumnName"], "工作时长");
 
-        array_push($history['TableData'], array());
-
         $pjCode = $this->dbi_get_user_auth_factory($mysqli, $uid);
-        //查询工厂配置
-        $factoryConfig = $this->dbi_get_factory_config($mysqli, $pjCode);
-        $workStartTime = $factoryConfig['workstart'];
-        $workEndTime = $factoryConfig['workend'];
 
-        $workingDay = 0;    //工作天数
-        $offWorkDay = 0;    //请假天数
-        $lateWorkDay = 0;   //迟到天数
-        $leaveEarlyDay = 0; //早退天数
-        $totalWorkTime = 0; //工作总时间
-        $totalOffWorkTime = 0; //请假总时长
-        if (!empty($keyWord)){
-            $query_str = "SELECT * FROM `t_l3f11faam_dailysheet` WHERE (`pjcode`='$pjCode' AND `employee`='$keyWord' AND `workday`>='$timeStart' AND `workday`<='$timeEnd')";
+        $buffer = array();
+        if(!empty($keyWord)) { //关键字不空，查找指定员工
+            $query_str = "SELECT * FROM `t_l3f11faam_dailysheet` WHERE (`pjcode`='$pjCode' AND `workday`>='$timeStart' AND `workday`<='$timeEnd' AND `employee`='$keyWord')";
             $result = $mysqli->query($query_str);
-            while (($result != false) && (($row = $result->fetch_array()) > 0)){
-                $arriveTime = $row['arrivetime'];
-                $leaveTime = $row['leavetime'];
-                $offWorkTime = $row['offwork'];
-                $workTime = $row['worktime'];
+            if (($result != false) && ($result->num_rows) > 0) {  //输入的关键字为用户名
+                while (($row = $result->fetch_array()) > 0)
+                    array_push($buffer, $row);
+            }
+        }
+        else{ //关键字为空，查找全部员工
+            $query_str = "SELECT * FROM `t_l3f11faam_dailysheet` WHERE (`pjcode`='$pjCode' AND `workday`>='$timeStart' AND `workday`<='$timeEnd')";
+            $result = $mysqli->query($query_str);
+            if (($result != false) && ($result->num_rows) > 0) {
+                while (($row = $result->fetch_array()) > 0)
+                    array_push($buffer, $row);
+            }
+        }
+        if(empty($buffer)) {  //如果查询结果为空，这直接返回
+            $mysqli->close();
+            return $history;
+        }
+        //查询员工列表
+        $query_str = "SELECT * FROM `t_l3f11faam_membersheet` WHERE (`pjcode` = '$pjCode')";
+        $result = $mysqli->query($query_str);
+        $nameList = array();
+        while (($result != false) && (($row = $result->fetch_array()) > 0)){
+            $temp = array('employee' => $row['employee']);
+            array_push($nameList, $temp);
+        }
 
-                if($arriveTime > $workStartTime) $lateWorkDay++;
-                if($leaveTime > $workEndTime) $leaveEarlyDay++;
+        //处理查询结果
+        for($i=0; $i<count($buffer); $i++){
+            $employee = $buffer[$i]['employee'];
+            $lateWorkFlag = $buffer[$i]['lateworkflag'];
+            $earlyLeaveFlag = $buffer[$i]['earlyleaveflag'];
+            $offWorkTime = $buffer[$i]['offwork'];
+            $workTime = $buffer[$i]['worktime'];
+
+            if(isset($workingDay[$employee]) AND isset($lateWorkDay[$employee]) AND isset($earlyLeaveDay[$employee]) AND
+                isset($totalWorkTime[$employee]) AND isset($offWorkDay[$employee]) AND isset($totalOffWorkTime[$employee])){
+                if($lateWorkFlag) $lateWorkDay[$employee]++;
+                if($earlyLeaveFlag) $earlyLeaveDay[$employee]++;
                 if($workTime != 0) {
-                    $workingDay++;
-                    $totalWorkTime = $totalWorkTime + $workTime;
+                    $workingDay[$employee]++;
+                    $totalWorkTime[$employee] = $totalWorkTime[$employee] + $workTime;
                 }
                 if($offWorkTime != 0){
-                    $offWorkDay++;
-                    $totalOffWorkTime = $totalOffWorkTime + $offWorkTime;
+                    $offWorkDay[$employee]++;
+                    $totalOffWorkTime[$employee] = $totalOffWorkTime[$employee] + $offWorkTime;
                 }
             }
-            $temp = array();
-            array_push($temp, "1");
-            array_push($temp, $keyWord);
-            array_push($temp, $timeStart);
-            array_push($temp, $timeEnd);
-            array_push($temp, $lateWorkDay);
-            array_push($temp, $leaveEarlyDay);
-            array_push($temp, $offWorkDay);
-            array_push($temp, $totalOffWorkTime);
-            array_push($temp, $workingDay);
-            array_push($temp, $totalWorkTime);
-            array_push($history['TableData'], $temp);
-        }
-        else{
-            $nameList = $this->dbi_faam_staff_namelist_query($uid);
-            for($i=0; $i<count($nameList); $i++){
-                $employee = $nameList[$i]['name'];
-                $workingDay = 0;    //工作天数
-                $offWorkDay = 0;    //请假天数
-                $lateWorkDay = 0;   //迟到天数
-                $leaveEarlyDay = 0; //早退天数
-                $totalWorkTime = 0; //工作总时间
-                $totalOffWorkTime = 0; //请假总时长
-
-                $query_str = "SELECT * FROM `t_l3f11faam_dailysheet` WHERE (`pjcode`='$pjCode' AND `employee`='$employee' AND `workday`>='$timeStart' AND `workday`<='$timeEnd')";
-                $result = $mysqli->query($query_str);
-                while (($result != false) && (($row = $result->fetch_array()) > 0)){
-                    $arriveTime = $row['arrivetime'];
-                    $leaveTime = $row['leavetime'];
-                    $offWorkTime = $row['offwork'];
-                    $workTime = $row['worktime'];
-
-                    if($arriveTime > $workStartTime) $lateWorkDay++;
-                    if($leaveTime > $workEndTime) $leaveEarlyDay++;
-                    if($workTime != 0) {
-                        $workingDay++;
-                        $totalWorkTime = $totalWorkTime + $workTime;
-                    }
-                    if($offWorkTime != 0){
-                        $offWorkDay++;
-                        $totalOffWorkTime = $totalOffWorkTime + $offWorkTime;
-                    }
+            else{ //第一次查询到某员工
+                if($lateWorkFlag) $lateWorkDay[$employee] = 1;else $lateWorkDay[$employee] = 0;
+                if($earlyLeaveFlag) $earlyLeaveDay[$employee] = 1; else $earlyLeaveDay[$employee] = 0;
+                if($workTime != 0) {
+                    $workingDay[$employee] = 1;
+                    $totalWorkTime[$employee] = $workTime;
                 }
+                else{
+                    $workingDay[$employee] = 0;
+                    $totalWorkTime[$employee] = 0;
+                }
+
+                if($offWorkTime != 0){
+                    $offWorkDay[$employee] = 1;
+                    $totalOffWorkTime[$employee] = $offWorkTime;
+                }
+                else{
+                    $offWorkDay[$employee] = 0;
+                    $totalOffWorkTime[$employee] = 0;
+                }
+            }
+        }
+        //显示查询结果
+        $sid = 0;
+        for($i=0; $i<count($nameList); $i++){
+            $employee = $nameList[$i]['employee'];
+            if(isset($workingDay[$employee]) AND isset($lateWorkDay[$employee]) AND isset($earlyLeaveDay[$employee]) AND
+                isset($totalWorkTime[$employee]) AND isset($offWorkDay[$employee]) AND isset($totalOffWorkTime[$employee])){
+                $sid++;
                 $temp = array();
-                array_push($temp, $i+1);
+                array_push($temp, $sid++);
                 array_push($temp, $employee);
                 array_push($temp, $timeStart);
                 array_push($temp, $timeEnd);
-                array_push($temp, $lateWorkDay);
-                array_push($temp, $leaveEarlyDay);
-                array_push($temp, $offWorkDay);
-                array_push($temp, $totalOffWorkTime);
-                array_push($temp, $workingDay);
-                array_push($temp, $totalWorkTime);
+                array_push($temp, $lateWorkDay[$employee]);
+                array_push($temp, $earlyLeaveDay[$employee]);
+                array_push($temp, $offWorkDay[$employee]);
+                array_push($temp, $totalOffWorkTime[$employee]);
+                array_push($temp, $workingDay[$employee]);
+                array_push($temp, $totalWorkTime[$employee]);
                 array_push($history['TableData'], $temp);
             }
         }
@@ -410,20 +442,60 @@ class classDbiL3apF11faam
         if (isset($record["leavetime"])) $leaveTime = trim($record["leavetime"]); else  $leaveTime = "";
 
         $pjCode = $this->dbi_get_user_auth_factory($mysqli, $uid);
+        $employee_config = $this->dbi_get_employee_config($mysqli, $pjCode, $employee);
+        $unitPrice = $employee_config['unitprice'];
+
         $factory_config = $this->dbi_get_factory_config($mysqli, $pjCode);
-        $restTime = round($factory_config['resttime']/60, 1);
-        $timeInterval = strtotime($leaveTime) - strtotime($arriveTime);
+        $restStart = strtotime($factory_config['reststart']);
+        $restEnd = strtotime($factory_config['restend']);
+        $stdWorkStart = strtotime($factory_config['workstart']);
+        $stdWorkEnd = strtotime($factory_config['workend']);
+
+        $arriveTimeInt = strtotime($arriveTime);
+        $leaveTimeInt = strtotime($leaveTime);
+        $offWorkTime = round($offWork, 1);
+        if($arriveTimeInt <= $restStart AND $leaveTimeInt >= $restEnd){ //正常情况，在午休前上班，午休后下班
+            $timeInterval = ($restStart - $arriveTimeInt) + ($leaveTimeInt - $restEnd);
+        }
+        elseif($arriveTimeInt >= $restStart AND $arriveTimeInt <= $restEnd){ //在午休中间上班
+            $timeInterval = ($leaveTimeInt - $restEnd);
+        }
+        elseif($leaveTimeInt >= $restStart AND $leaveTimeInt <= $restEnd){ //在午休中间下班
+            $timeInterval = ($restStart - $arriveTimeInt);
+        }
+        elseif($arriveTimeInt >= $restEnd){ //在午休后上班
+            $timeInterval = ($leaveTimeInt - $arriveTimeInt);
+        }
+        elseif($leaveTimeInt <= $restStart){ //在午休前下班
+            $timeInterval = ($leaveTimeInt - $arriveTimeInt);
+        }
+        else{
+            $timeInterval = 0;
+        }
+
         $hour = (int)(($timeInterval%(3600*24))/(3600));
         $min = (int)($timeInterval%(3600)/60);
-        $workTime = $hour + round($min/60, 1)  - round($offWork, 1) - $restTime; //扣除请假时间和午休时间
+        $workTime = $hour + round($min/60, 1)  - $offWorkTime; //扣除请假时间
         if ($workTime < 0) $workTime = 0; //避免工作时间为负数
+
+        if($arriveTimeInt < $stdWorkStart) $lateWorkFlag = false; else $lateWorkFlag = true;  //迟到标志
+        if($leaveTimeInt > $stdWorkEnd) $earlyLeaveFlag = false; else $earlyLeaveFlag = true; //早退标志
 
         $query_str = "SELECT * FROM `t_l3f11faam_membersheet` WHERE (`employee` = '$employee' AND `pjcode` = '$pjCode')";
         $result = $mysqli->query($query_str);
         if(($result != false) && ($result->num_rows)>0){ //输入员工姓名合法
-            $query_str = "INSERT INTO `t_l3f11faam_dailysheet` (pjcode,employee,workday,arrivetime,leavetime,offwork,worktime)
-                                  VALUES ('$pjCode','$employee','$workDay','$arriveTime','$leaveTime','$offWork','$workTime')";
+            $query_str = "SELECT * FROM `t_l3f11faam_dailysheet` WHERE (`pjcode` = '$pjCode' AND `employee` = '$employee' AND `workday` = '$workDay')";
             $result = $mysqli->query($query_str);
+            if(($result != false) && ($result->num_rows)>0){  //如果该员工当天已经有考勤记录则更新，否则插入新纪录
+                $query_str = "UPDATE `t_l3f11faam_dailysheet` SET `arrivetime` = '$arriveTime',`leavetime` = '$leaveTime',`offwork` = '$offWork',`worktime` = '$workTime',
+                          `unitprice` = '$unitPrice',`lateworkflag` = '$lateWorkFlag',`earlyleaveflag` = '$earlyLeaveFlag' WHERE (`pjcode` = '$pjCode' AND `employee` = '$employee' AND `workday` = '$workDay')";
+                $result = $mysqli->query($query_str);
+            }
+            else{
+                $query_str = "INSERT INTO `t_l3f11faam_dailysheet` (pjcode,employee,workday,arrivetime,leavetime,offwork,worktime,unitprice,lateworkflag,earlyleaveflag)
+                                  VALUES ('$pjCode','$employee','$workDay','$arriveTime','$leaveTime','$offWork','$workTime','$unitPrice','$lateWorkFlag','$earlyLeaveFlag')";
+                $result = $mysqli->query($query_str);
+            }
         }
         else
             $result = false;
@@ -451,19 +523,50 @@ class classDbiL3apF11faam
         if (isset($record["leavetime"])) $leaveTime = trim($record["leavetime"]); else  $leaveTime = "";
 
         $pjCode = $this->dbi_get_user_auth_factory($mysqli, $uid);
-        $factory_config = $this->dbi_get_factory_config($mysqli, $pjCode);
-        $restTime = round($factory_config['resttime']/60, 1);
+        $employee_config = $this->dbi_get_employee_config($mysqli, $pjCode, $employee);
+        if (isset($employee_config['unitprice'])) $unitPrice = $employee_config['unitprice']; else  $unitPrice = 0;
 
-        $timeInterval = strtotime($leaveTime) - strtotime($arriveTime);
+        $factory_config = $this->dbi_get_factory_config($mysqli, $pjCode);
+        $restStart = strtotime($factory_config['reststart']);
+        $restEnd = strtotime($factory_config['restend']);
+        $stdWorkStart = strtotime($factory_config['workstart']);
+        $stdWorkEnd = strtotime($factory_config['workend']);
+
+        $arriveTimeInt = strtotime($arriveTime);
+        $leaveTimeInt = strtotime($leaveTime);
+        $offWorkTime = round($offWork, 1);
+        if($arriveTimeInt <= $restStart AND $leaveTimeInt >= $restEnd){ //正常情况，在午休前上班，午休后下班
+            $timeInterval = ($restStart - $arriveTimeInt) + ($leaveTimeInt - $restEnd);
+        }
+        elseif($arriveTimeInt >= $restStart AND $arriveTimeInt <= $restEnd){ //在午休中间上班
+            $timeInterval = ($leaveTimeInt - $restEnd);
+        }
+        elseif($leaveTimeInt >= $restStart AND $leaveTimeInt <= $restEnd){ //在午休中间下班
+            $timeInterval = ($restStart - $arriveTimeInt);
+        }
+        elseif($arriveTimeInt >= $restEnd){ //在午休后上班
+            $timeInterval = ($leaveTimeInt - $arriveTimeInt);
+        }
+        elseif($leaveTimeInt <= $restStart){ //在午休前下班
+            $timeInterval = ($leaveTimeInt - $arriveTimeInt);
+        }
+        else{
+            $timeInterval = 0;
+        }
+
         $hour = (int)(($timeInterval%(3600*24))/(3600));
         $min = (int)($timeInterval%(3600)/60);
-        $workTime = $hour + round($min/60, 1) - round($offWork, 1) - $restTime; //扣除请假时间和午休时间
+        $workTime = $hour + round($min/60, 1) - $offWorkTime; //扣除请假时间
         if ($workTime < 0) $workTime = 0; //避免工作时间为负数
+
+        if($arriveTimeInt < $stdWorkStart) $lateWorkFlag = false; else $lateWorkFlag = true;  //迟到标志
+        if($leaveTimeInt > $stdWorkEnd) $earlyLeaveFlag = false; else $earlyLeaveFlag = true; //早退标志
 
         $query_str = "SELECT * FROM `t_l3f11faam_membersheet` WHERE (`employee` = '$employee' AND `pjcode` = '$pjCode')";
         $result = $mysqli->query($query_str);
         if(($result != false) && ($result->num_rows)>0){ //输入员工姓名合法
-            $query_str = "UPDATE `t_l3f11faam_dailysheet` SET `workday` = '$workDay',`arrivetime` = '$arriveTime',`leavetime` = '$leaveTime',`offwork` = '$offWork',`worktime` = '$workTime' WHERE (`sid` = '$sid')";
+            $query_str = "UPDATE `t_l3f11faam_dailysheet` SET `workday` = '$workDay',`arrivetime` = '$arriveTime',`leavetime` = '$leaveTime',`offwork` = '$offWork',`worktime` = '$workTime',
+                          `unitprice` = '$unitPrice',`lateworkflag` = '$lateWorkFlag',`earlyleaveflag` = '$earlyLeaveFlag' WHERE (`sid` = '$sid')";
             $result = $mysqli->query($query_str);
         }
         else
@@ -535,14 +638,16 @@ class classDbiL3apF11faam
         array_push($history["ColumnName"], "申请时间");
         array_push($history["ColumnName"], "成品时间");
 
+        $dayTimeStart = $timeStart." 00:00:00";
+        $dayTimeEnd = $timeEnd." 23:59:59";
         $pjCode = $this->dbi_get_user_auth_factory($mysqli, $uid);
-        $query_str = "SELECT * FROM `t_l3f11faam_appleproduction` WHERE (`pjcode` = '$pjCode' AND `applytime`>='$timeStart' AND `applytime`<='$timeEnd' AND (concat(`owner`,`applegrade`) like '%$keyWord%'))";
+        $query_str = "SELECT * FROM `t_l3f11faam_appleproduction` WHERE (`pjcode` = '$pjCode' AND `applytime`>='$dayTimeStart' AND `applytime`<='$dayTimeEnd' AND (concat(`owner`,`typecode`) like '%$keyWord%'))";
         $result = $mysqli->query($query_str);
         while (($result != false) && (($row = $result->fetch_array()) > 0)){
             $sid = $row['sid'];
             $employee = $row['owner'];
             $qrcode = $row['qrcode'];
-            $appleGrade = $row['applegrade'];
+            $appleGrade = $row['typecode'];
             $applyTime = $row['applytime'];
             $activeTime = $row['activetime'];
 
@@ -575,58 +680,94 @@ class classDbiL3apF11faam
         $mysqli->query("SET NAMES utf8");
 
         array_push($history["ColumnName"], "序号");
-        array_push($history["ColumnName"], "统计关键字");
+        array_push($history["ColumnName"], "员工姓名");
         array_push($history["ColumnName"], "开始日期");
         array_push($history["ColumnName"], "结束日期");
-        array_push($history["ColumnName"], "条码申请总数");
-        array_push($history["ColumnName"], "实际产出箱数");
-
-        array_push($history['TableData'], array());
+        array_push($history["ColumnName"], "产品规格");
+        array_push($history["ColumnName"], "总箱数");
+        array_push($history["ColumnName"], "总粒数");
+        array_push($history["ColumnName"], "总重量");
 
         $pjCode = $this->dbi_get_user_auth_factory($mysqli, $uid);
-        $totalApplyNum = 0;
-        $totalActiveNum = 0;
-        if(!empty($keyWord)){
-            $query_str = "SELECT `sid` FROM `t_l3f11faam_appleproduction` WHERE (`pjcode` = '$pjCode' AND `applytime`>='$timeStart' AND `applytime`<='$timeEnd' AND (concat(`owner`,`applegrade`) like '%$keyWord%'))";
-            $result = $mysqli->query($query_str);
-            if(($result != false)) $totalApplyNum = $result->num_rows;
+        $dayTimeStart = $timeStart." 00:00:00";
+        $dayTimeEnd = $timeEnd." 23:59:59";
 
-            $query_str = "SELECT `sid` FROM `t_l3f11faam_appleproduction` WHERE (`pjcode` = '$pjCode' AND `activetime`>='$timeStart' AND `activetime`<='$timeEnd' AND (concat(`owner`,`applegrade`) like '%$keyWord%'))";
+        $buffer = array();
+        if(!empty($keyWord)) {
+            $query_str = "SELECT * FROM `t_l3f11faam_appleproduction` WHERE (`pjcode` = '$pjCode' AND `activetime`>='$dayTimeStart' AND `activetime`<='$dayTimeEnd' AND `owner` = '$keyWord')";
             $result = $mysqli->query($query_str);
-            if(($result != false)) $totalActiveNum = $result->num_rows;
-
-            $temp =array();
-            array_push($temp, "1");
-            array_push($temp, $keyWord);
-            array_push($temp, $timeStart);
-            array_push($temp, $timeEnd);
-            array_push($temp, $totalApplyNum);
-            array_push($temp, $totalActiveNum);
-            array_push($history['TableData'], $temp);
+            if (($result != false) && ($result->num_rows) > 0) {  //输入的关键字为用户名
+                while (($row = $result->fetch_array()) > 0)
+                    array_push($buffer, $row);
+            }
+            else {  //使用用户名查询结果为0，尝试用产品类型查询
+                $query_str = "SELECT * FROM `t_l3f11faam_appleproduction` WHERE (`pjcode` = '$pjCode' AND `activetime`>='$dayTimeStart' AND `activetime`<='$dayTimeEnd' AND (concat(`typecode`) like '%$keyWord%'))";
+                $result = $mysqli->query($query_str);
+                if (($result != false) && ($result->num_rows) > 0) {  //输入的关键字为产品类型
+                    while (($row = $result->fetch_array()) > 0)
+                        array_push($buffer, $row);
+                }
+            }
         }
-        else{
-            $nameList = $this->dbi_faam_staff_namelist_query($uid);
-            for($i=0; $i<count($nameList); $i++){
-                $employee = $nameList[$i]['name'];
-                $totalApplyNum = 0;
-                $totalActiveNum = 0;
-                $temp =array();
+        else{ //关键字为空
+            $query_str = "SELECT * FROM `t_l3f11faam_appleproduction` WHERE (`pjcode` = '$pjCode' AND `activetime`>='$dayTimeStart' AND `activetime`<='$dayTimeEnd')";
+            $result = $mysqli->query($query_str);
+            if (($result != false) && ($result->num_rows) > 0) {
+                while (($row = $result->fetch_array()) > 0)
+                    array_push($buffer, $row);
+            }
+        }
 
-                $query_str = "SELECT * FROM `t_l3f11faam_appleproduction` WHERE (`pjcode` = '$pjCode' AND `applytime`>='$timeStart' AND `applytime`<='$timeEnd' AND `owner`='$employee')";
-                $result = $mysqli->query($query_str);
-                if(($result != false)) $totalApplyNum = $result->num_rows;
+        if(empty($buffer)) {  //如果查询结果为空，这直接返回
+            $mysqli->close();
+            return $history;
+        }
 
-                $query_str = "SELECT * FROM `t_l3f11faam_appleproduction` WHERE (`pjcode` = '$pjCode' AND `activetime`>='$timeStart' AND `activetime`<='$timeEnd' AND `owner`='$employee')";
-                $result = $mysqli->query($query_str);
-                if(($result != false)) $totalActiveNum = $result->num_rows;
+        //查询员工列表
+        $query_str = "SELECT * FROM `t_l3f11faam_membersheet` WHERE (`pjcode` = '$pjCode')";
+        $result = $mysqli->query($query_str);
+        $nameList = array();
+        while (($result != false) && (($row = $result->fetch_array()) > 0)){
+            $temp = array('employee' => $row['employee']);
+            array_push($nameList, $temp);
+        }
+        //查询产品规格列表
+        $typeList = $this->dbi_get_product_type($mysqli, $pjCode);
 
-                array_push($temp, $i+1);
-                array_push($temp, $employee);
-                array_push($temp, $timeStart);
-                array_push($temp, $timeEnd);
-                array_push($temp, $totalApplyNum);
-                array_push($temp, $totalActiveNum);
-                array_push($history['TableData'], $temp);
+        //处理查询结果
+        for($i=0; $i<count($buffer); $i++){
+            $employee = $buffer[$i]['owner'];
+            $typeCode = $buffer[$i]['typecode'];
+            if(isset($package[$employee][$typeCode]))
+                $package[$employee][$typeCode]++;
+            else
+                $package[$employee][$typeCode] = 1;
+        }
+
+        //显示查询结果
+        $sid = 0;
+        for($i=0; $i<count($nameList); $i++){
+            $employee = $nameList[$i]['employee'];
+            for($j=0; $j<count($typeList); $j++){
+                $typeCode = $typeList[$j]['typecode'];
+                $appleNum = $typeList[$j]['applenum'];
+                $appleWeight = $typeList[$j]['appleweight'];
+                if(isset($package[$employee][$typeCode])){
+                    $sid++;
+                    $totalPackage = (int)$package[$employee][$typeCode];
+                    $totalNum = $totalPackage * (int)$appleNum;
+                    $totalWeight = $totalPackage * (int)$appleWeight;
+                    $temp =array();
+                    array_push($temp, $sid);
+                    array_push($temp, $employee);
+                    array_push($temp, $timeStart);
+                    array_push($temp, $timeEnd);
+                    array_push($temp, $typeCode);
+                    array_push($temp, $totalPackage);
+                    array_push($temp, $totalNum);
+                    array_push($temp, $totalWeight);
+                    array_push($history['TableData'], $temp);
+                }
             }
         }
 

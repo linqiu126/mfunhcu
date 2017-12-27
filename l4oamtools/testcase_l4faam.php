@@ -12,11 +12,35 @@ include_once "../l1comvm/vmlayer.php";
  *                             L4TBSWR-UI TEST CASES                                   *
  *************************************************************************************/
 if (TC_L4FAAM_UI == true) {
-    $sessionid = "0FDfiQ58z8";
+    $sessionid = "Jf8vkJKmFD";
     $uerid = "UID000001";
 
     $timeStart = '2017-12-01';
     $timeEnd = '2017-12-25';
+
+    echo " [TC L4FAAM: AssembleAudit START]\n";
+    $_GET["action"] = "AssembleAudit";
+    $_GET["user"] = $sessionid;
+    $body = array("TimeStart"=>"2017-12-01", "TimeEnd"=>"2017-12-26","KeyWord"=>"");
+    $_GET["body"] = $body;
+    //require("../l4faamui/request.php");
+    echo " [TC L4FAAM: AssembleAudit END]\n";
+
+    echo " [TC L4FAAM: AttendanceAudit START]\n";
+    $_GET["action"] = "AttendanceAudit";
+    $_GET["user"] = $sessionid;
+    $body = array("TimeStart"=>"2017-12-01", "TimeEnd"=>"2017-12-26","KeyWord"=>"");
+    $_GET["body"] = $body;
+    require("../l4faamui/request.php");
+    echo " [TC L4FAAM: AttendanceAudit END]\n";
+
+    echo " [TC L4FAAM: AssembleHistory START]\n";
+    $_GET["action"] = "AssembleHistory";
+    $_GET["user"] = $sessionid;
+    $body = array("TimeStart"=>"2017-12-01", "TimeEnd"=>"2017-12-26","KeyWord"=>"");
+    $_GET["body"] = $body;
+    require("../l4faamui/request.php");
+    echo " [TC L4FAAM: AssembleHistory END]\n";
 
     echo " [TC L4FAAM: AttendanceMod START]\n";
     $_GET["action"] = "AttendanceMod";
@@ -26,14 +50,6 @@ if (TC_L4FAAM_UI == true) {
     require("../l4faamui/request.php");
     echo " [TC L4FAAM: AttendanceMod END]\n";
 
-    echo " [TC L4FAAM: AttendanceAudit START]\n";
-    $_GET["action"] = "AttendanceAudit";
-    $_GET["user"] = $sessionid;
-    $body = array("TimeStart"=>"2017-12-01", "TimeEnd"=>"2017-12-26","KeyWord"=>"孙尚翠");
-    $_GET["body"] = $body;
-    require("../l4faamui/request.php");
-    echo " [TC L4FAAM: AttendanceAudit END]\n";
-
     echo " [TC L4FAAM: StaffNew START]\n";
     $_GET["action"] = "StaffNew";
     $_GET["user"] = $sessionid;
@@ -42,13 +58,7 @@ if (TC_L4FAAM_UI == true) {
     require("../l4faamui/request.php");
     echo " [TC L4FAAM: StaffNew END]\n";
 
-    echo " [TC L4FAAM: AssembleHistory START]\n";
-    $_GET["action"] = "AssembleHistory";
-    $_GET["user"] = $sessionid;
-    $body = array("TimeStart"=>"2017-12-01", "TimeEnd"=>"2017-12-24","KeyWord"=>"");
-    $_GET["body"] = $body;
-    require("../l4faamui/request.php");
-    echo " [TC L4FAAM: AssembleHistory END]\n";
+
 
     echo " [TC L4FAAM: StaffMod START]\n";
     $_GET["action"] = "StaffMod";

@@ -959,7 +959,7 @@ class classL2codecHuitpIeDict
           HUITP_IEID_uni_equlable_apply_user_info         => array("format"=>"A4ieId/A4ieLen/A2productType/A10pdCode/A10pjCode/A6userCode/A40facCode/A4labelUsage/A40uAccount/A40uPsd/A40macAddr/A40userTabTL/A40userTabTR/A40userTabBL/A40userTabBR/A2formalFlag/A4applyNum","len"=>"358","name"=>"HUITP_IEID_uni_equlable_apply_user_info"),
           HUITP_IEID_uni_equlable_apply_allocation        => array("format"=>"A4ieId/A4ieLen/A2allocateResp/A4allocateNum/A4lableStart/A4lableEnd/A200labelBaseInfo","len"=>"214","name"=>"HUITP_IEID_uni_equlable_apply_allocation"),
           HUITP_IEID_uni_equlable_userlist_sync_report    => array("format"=>"A4ieId/A4ieLen/A10pjCode/A4syncStart","len"=>"14","name"=>"HUITP_IEID_uni_equlable_userlist_sync_report"),
-          HUITP_IEID_uni_equlable_userlist_sync_confirm   => array("format"=>"A4ieId/A4ieLen/A4totalNum/A4currentNum/A4syncStart/A800userList","len"=>"812","name"=>"HUITP_IEID_uni_equlable_userlist_sync_confirm"),
+          HUITP_IEID_uni_equlable_userlist_sync_confirm   => array("format"=>"A4ieId/A4ieLen/A4totalNum/A4currentNum/A4syncStart/A1600userList","len"=>"1612","name"=>"HUITP_IEID_uni_equlable_userlist_sync_confirm"),
 
           //ALARM REPORT
           HUITP_IEID_uni_alarm_info_element               => array("format"=>"A4ieId/A4ieLen/A4alarmType/A2alarmServerity/A2alarmClearFlag/A8equID/A8causeId/A8alarmContent/A8timeStamp","len"=>"20","name"=>"HUITP_IEID_uni_alarm_info_element"),

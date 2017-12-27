@@ -59,7 +59,10 @@ class classDbiL3wxOprFaam
         $query_str = "SELECT * FROM `t_l3f11faam_factorysheet` WHERE (`pjcode` = '$scanCode') ";
         $factorysheet = $mysqli->query($query_str);
         if (($factorysheet !=false) AND (($row = $factorysheet->fetch_array()) > 0)){
-            $restTime = round($row['resttime']/60, 1);
+            $restStart = strtotime($row['reststart']);
+            $restEnd = strtotime($row['restend']);
+            $stdWorkStart = strtotime($row['workstart']);
+            $stdWorkEnd = strtotime($row['workend']);
             $targetLatitude = intval($row['latitude']); //GPS取2位小数
             $targetLongitude = intval($row['longitude']);
             $delta_latitude = abs($latitude - $targetLatitude);
@@ -79,20 +82,43 @@ class classDbiL3wxOprFaam
         $query_str = "SELECT * FROM `t_l3f11faam_membersheet` WHERE (`openid` = '$nickName' AND `pjcode` = '$scanCode') ";
         $membersheet = $mysqli->query($query_str);
         if (($membersheet !=false) AND (($row = $membersheet->fetch_array()) > 0)){
-            $employee = $row['employee'];
+            if (isset($row['employee'])) $employee = $row['employee']; else  $employee = "";
             if (!empty($employee)){ //合法用户，记录考勤信息
-                $query_str = "SELECT * FROM `t_l3f11faam_dailysheet` WHERE (`employee` = '$employee' AND `workday` = '$workDay') ";
+                $unitPrice = $row['unitprice'];
+                $query_str = "SELECT * FROM `t_l3f11faam_dailysheet` WHERE (`pjcode` = '$scanCode' AND `employee` = '$employee' AND `workday` = '$workDay') ";
                 $dailysheet = $mysqli->query($query_str);
                 if (($dailysheet !=false) AND ($row = $dailysheet->fetch_array()) > 0){ //当天已经有考勤记录，则该次考勤时间记录为下班时间
-                    $arriveTime = $row['arrivetime'];
-                    $offWorkTime = $row['offwork'];
-                    $timeInterval = strtotime($currentTime) - strtotime($arriveTime);
+                    $arriveTimeInt = strtotime($row['arrivetime']);
+                    $leaveTimeInt = strtotime($currentTime);
+                    $offWorkTime = round($row['offwork'], 1);
+                    if($arriveTimeInt < $restStart AND $leaveTimeInt > $restEnd){ //正常情况，在午休前上班，午休后下班
+                        $timeInterval = ($restStart - $arriveTimeInt) + ($leaveTimeInt - $restEnd);
+                    }
+                    elseif($arriveTimeInt > $restStart AND $arriveTimeInt < $restEnd){ //在午休中间上班
+                        $timeInterval = ($leaveTimeInt - $restEnd);
+                    }
+                    elseif($leaveTimeInt > $restStart AND $leaveTimeInt < $restEnd){ //在午休中间下班
+                        $timeInterval = ($restStart - $arriveTimeInt);
+                    }
+                    elseif($arriveTimeInt > $restEnd){ //在午休后上班
+                        $timeInterval = ($leaveTimeInt - $arriveTimeInt);
+                    }
+                    elseif($leaveTimeInt < $restStart){ //在午休前下班
+                        $timeInterval = ($leaveTimeInt - $arriveTimeInt);
+                    }
+                    else{
+                        $timeInterval = 0;
+                    }
                     $hour = (int)(($timeInterval%(3600*24))/(3600));
                     $min = (int)($timeInterval%(3600)/60);
-                    $workTime = $hour + round($min/60, 1)  - round($offWorkTime, 1) - $restTime; //扣除请假时间和午休时间
+                    $workTime = $hour + round($min/60, 1)  - $offWorkTime; //扣除请假时间
                     if ($workTime < 0) $workTime = 0; //避免工作时间为负数
 
-                    $query_str = "UPDATE `t_l3f11faam_dailysheet` SET `leavetime` = '$currentTime',`worktime` = '$workTime' WHERE (`pjcode` = '$scanCode' AND `employee` = '$employee' AND `workday` = '$workDay')";
+                    if($arriveTimeInt < $stdWorkStart) $lateWorkFlag = false; else $lateWorkFlag = true;  //迟到标志
+                    if($leaveTimeInt > $stdWorkEnd) $earlyLeaveFlag = false; else $earlyLeaveFlag = true; //早退标志
+
+                    $query_str = "UPDATE `t_l3f11faam_dailysheet` SET `leavetime` = '$currentTime',`worktime` = '$workTime',`unitprice` = '$unitPrice',`lateworkflag` = '$lateWorkFlag',
+                                  `earlyleaveflag` = '$earlyLeaveFlag' WHERE (`pjcode` = '$scanCode' AND `employee` = '$employee' AND `workday` = '$workDay')";
                     $mysqli->query($query_str);
                     $resp = array('employee'=>$employee, 'message'=>"考勤成功");
                 }
@@ -136,7 +162,7 @@ class classDbiL3wxOprFaam
             $activeTime = $row['activetime'];
             $pjCode = $row['pjcode'];
             $qrcode_owner = $row['owner'];
-            $appleGrade = $row['applegrade'];
+            $appleGrade = $row['typecode'];
             $query_str = "SELECT * FROM `t_l3f11faam_membersheet` WHERE (`openid` = '$nickName' AND `pjcode` = '$pjCode' ) ";
             $memberResult = $mysqli->query($query_str);
             if (($memberResult != false) AND (($row = $memberResult->fetch_array()) > 0)){ //判断扫描人员是否合法
@@ -222,10 +248,10 @@ class classDbiL3wxOprFaam
             if (($lastNum + $applyNum) < HUITP_IEID_UNI_EQULABLE_ALLOCATION_NUM_MAX){
                 $start = $lastNum + 1;
                 $end = $start + $applyNum;
-                for ($i = $start; $i <= $end; $i++){ //保存分配的二维码
+                for ($i = $start; $i < $end; $i++){ //保存分配的二维码
                     $digNum = $this->str_pre_padding($i, "0", 5); //二维码最后为5位数字
                     $rqcode = $labelBaseInfo.$digNum;
-                    $query_str = "INSERT INTO `t_l3f11faam_appleproduction` (pjcode,qrcode,owner,applegrade,applyweek,applytime) VALUES ('$pjCode','$rqcode','$userTabTL','$userTabTR','$workWeek','$currentTime')";
+                    $query_str = "INSERT INTO `t_l3f11faam_appleproduction` (pjcode,qrcode,owner,typecode,applyweek,applytime) VALUES ('$pjCode','$rqcode','$userTabTL','$userTabTR','$workWeek','$currentTime')";
                     $mysqli->query($query_str);
                 }
                 $allocateResp = HUITP_IEID_UNI_EQULABLE_ALLOCATION_FLAG_TRUE; //1-FALSE/2-TRUE
@@ -239,11 +265,11 @@ class classDbiL3wxOprFaam
         else{
             if ($applyNum < HUITP_IEID_UNI_EQULABLE_ALLOCATION_NUM_MAX){
                 $start = 1;
-                $end = $applyNum;
-                for ($i = $start; $i <= $end; $i++){ //保存分配的二维码
+                $end = $start + $applyNum;
+                for ($i = $start; $i < $end; $i++){ //保存分配的二维码
                     $digNum = $this->str_pre_padding($i, "0", HUITP_IEID_UNI_EQULABLE_DIGCODE_NUM_MAX); //二维码最后为5位数字
                     $rqcode = $labelBaseInfo.$digNum;
-                    $query_str = "INSERT INTO `t_l3f11faam_appleproduction` (pjcode,qrcode,owner,applegrade,applyweek,applytime) VALUES ('$pjCode','$rqcode','$userTabTL','$userTabTR','$workWeek','$currentTime')";
+                    $query_str = "INSERT INTO `t_l3f11faam_appleproduction` (pjcode,qrcode,owner,typecode,applyweek,applytime) VALUES ('$pjCode','$rqcode','$userTabTL','$userTabTR','$workWeek','$currentTime')";
                     $mysqli->query($query_str);
                 }
                 $allocateResp = HUITP_IEID_UNI_EQULABLE_ALLOCATION_FLAG_TRUE;
