@@ -41,11 +41,15 @@ $request_body = file_get_contents('php://input');
 $payload = json_decode($request_body,true);
 
 //echo $payload;
-if (isset($payload["action"])) $key = trim($payload["action"]); else $key = "";
-if (isset($payload["body"])) $body = trim($payload["body"]); else $body = "";
+if (isset($payload["action"])) $key = $payload["action"]; else $key = "";
+if (isset($payload["body"])) $body = $payload["body"]; else $body = "";
 
 $loggerObj = new classApiL1vmFuncCom();
 $project = MFUN_PRJ_HCU_FAAMWX;
+
+$loggerObj->mylog($project,$session,"MFUN_TASK_ID_L4FAAM_WECHAT","MFUN_TASK_ID_L4FAAM_WECHAT","XXXX",$request_body);
+
+
 //echo $key;
 switch ($key){
     case "XH_QRcode_Session_enable":
@@ -55,7 +59,7 @@ switch ($key){
             $loggerObj->mylog($project,$session,"MFUN_TASK_ID_L4FAAM_WECHAT","MFUN_TASK_ID_L4FAAM_WECHAT","XH_QRcode_Session_enable",$session);
         }
         else{
-            $loggerObj->mylog($project,$session,"MFUN_TASK_ID_L4FAAM_WECHAT","MFUN_TASK_ID_L4FAAM_WECHAT","XH_QRcode_Session_enable","Wechat code empty");
+            $loggerObj->mylog($project,$session,"MFUN_TASK_ID_L4FAAM_WECHAT","MFUN_TASK_ID_L4FAAM_WECHAT","XH_QRcode_Session_enable","Session id empty");
         }
         $temp=rand(1,100);
         if($temp<10){

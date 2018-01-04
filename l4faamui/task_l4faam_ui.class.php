@@ -42,6 +42,51 @@ class classTaskL4faamUi
         //这里是L4AQYC与L3APPL功能之间的交换矩阵，从而让UI对应的多种不确定组合变换为L3APPL确定的功能组合
         switch($action)
         {
+            case "FactoryCodeList":
+                $input = array("project" => $project, "action" => $action, "type" => $type,"user" => $user,"body" => $body);
+                $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FAAM_UI, MFUN_TASK_ID_L3APPL_FUM11FAAM, MSG_ID_L4FAAMUI_TO_L3F11_FACTORYCODELIST, "MSG_ID_L4FAAMUI_TO_L3F11_FACTORYCODELIST",$input);
+                break;
+
+            case "FactoryTable":
+                $input = array("project" => $project, "action" => $action, "type" => $type,"user" => $user,"body" => $body);
+                $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FAAM_UI, MFUN_TASK_ID_L3APPL_FUM11FAAM, MSG_ID_L4FAAMUI_TO_L3F11_FACTORYTABLE, "MSG_ID_L4FAAMUI_TO_L3F11_FACTORYTABLE",$input);
+                break;
+
+            case "FactoryMod":
+                $input = array("project" => $project, "action" => $action, "type" => $type,"user" => $user,"body" => $body);
+                $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FAAM_UI, MFUN_TASK_ID_L3APPL_FUM11FAAM, MSG_ID_L4FAAMUI_TO_L3F11_FACTORYMOD, "MSG_ID_L4FAAMUI_TO_L3F11_FACTORYMOD",$input);
+                break;
+
+            case "FactoryNew":
+                $input = array("project" => $project, "action" => $action, "type" => $type,"user" => $user,"body" => $body);
+                $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FAAM_UI, MFUN_TASK_ID_L3APPL_FUM11FAAM, MSG_ID_L4FAAMUI_TO_L3F11_FACTORYNEW, "MSG_ID_L4FAAMUI_TO_L3F11_FACTORYNEW",$input);
+                break;
+
+            case "FactoryDel":
+                $input = array("project" => $project, "action" => $action, "type" => $type,"user" => $user,"body" => $body);
+                $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FAAM_UI, MFUN_TASK_ID_L3APPL_FUM11FAAM, MSG_ID_L4FAAMUI_TO_L3F11_FACTORYDEL, "MSG_ID_L4FAAMUI_TO_L3F11_FACTORYDEL",$input);
+                break;
+
+            case "SpecificationTable":
+                $input = array("project" => $project, "action" => $action, "type" => $type,"user" => $user,"body" => $body);
+                $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FAAM_UI, MFUN_TASK_ID_L3APPL_FUM11FAAM, MSG_ID_L4FAAMUI_TO_L3F11_PRODUCTTYPE, "MSG_ID_L4FAAMUI_TO_L3F11_PRODUCTTYPE",$input);
+                break;
+
+            case "SpecificationMod":
+                $input = array("project" => $project, "action" => $action, "type" => $type,"user" => $user,"body" => $body);
+                $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FAAM_UI, MFUN_TASK_ID_L3APPL_FUM11FAAM, MSG_ID_L4FAAMUI_TO_L3F11_PRODUCTTYPEMOD, "MSG_ID_L4FAAMUI_TO_L3F11_PRODUCTTYPEMOD",$input);
+                break;
+
+            case "SpecificationNew":
+                $input = array("project" => $project, "action" => $action, "type" => $type,"user" => $user,"body" => $body);
+                $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FAAM_UI, MFUN_TASK_ID_L3APPL_FUM11FAAM, MSG_ID_L4FAAMUI_TO_L3F11_PRODUCTTYPENEW, "MSG_ID_L4FAAMUI_TO_L3F11_PRODUCTTYPENEW",$input);
+                break;
+
+            case "SpecificationDel":
+                $input = array("project" => $project, "action" => $action, "type" => $type,"user" => $user,"body" => $body);
+                $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FAAM_UI, MFUN_TASK_ID_L3APPL_FUM11FAAM, MSG_ID_L4FAAMUI_TO_L3F11_PRODUCTTYPEDEL, "MSG_ID_L4FAAMUI_TO_L3F11_PRODUCTTYPEDEL",$input);
+                break;
+
             case "StaffnameList": //查询员工名单
                 $input = array("project" => $project, "action" => $action, "type" => $type,"user" => $user,"body" => $body);
                 $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FAAM_UI, MFUN_TASK_ID_L3APPL_FUM11FAAM, MSG_ID_L4FAAMUI_TO_L3F11_STAFFNAMELIST, "MSG_ID_L4FAAMUI_TO_L3F11_STAFFNAMELIST",$input);
@@ -105,6 +150,11 @@ class classTaskL4faamUi
             case "AssembleAudit":  //生产统计
                 $input = array("project" => $project, "action" => $action, "type" => $type,"user" => $user,"body" => $body);
                 $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FAAM_UI, MFUN_TASK_ID_L3APPL_FUM11FAAM, MSG_ID_L4FAAMUI_TO_L3F11_PRODUCTIONAUDIT, "MSG_ID_L4FAAMUI_TO_L3F11_PRODUCTIONAUDIT",$input);
+                break;
+
+            case "KPIAudit": //绩效统计
+                $input = array("project" => $project, "action" => $action, "type" => $type,"user" => $user,"body" => $body);
+                $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FAAM_UI, MFUN_TASK_ID_L3APPL_FUM11FAAM, MSG_ID_L4FAAMUI_TO_L3F11_KPIAUDIT, "MSG_ID_L4FAAMUI_TO_L3F11_KPIAUDIT",$input);
                 break;
 
             default:

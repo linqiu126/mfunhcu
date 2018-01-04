@@ -35,6 +35,198 @@ class classTaskL3aplF11faam
         return urlencode($elem);
     }
 
+    function func_faam_factory_codelist_query($action, $user, $body)
+    {
+        $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
+        $usercheck = $uiF1symDbObj->dbi_user_authcheck($action, $user);
+        if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
+            $uid = $usercheck['uid'];
+            $uiF11faamDbObj = new classDbiL3apF11faam();
+            $codeList = $uiF11faamDbObj->dbi_faam_factory_codelist_query($uid);
+            if(!empty($codeList))
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$codeList,'msg'=>"获取工厂代码列表成功");
+            else
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$codeList,'msg'=>"获取工厂代码列表失败");
+        }
+        else
+            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>$usercheck['msg']);
+
+        return $retval;
+    }
+
+    function func_faam_factory_table_query($action, $user, $body)
+    {
+        if (isset($body["length"])) $length = $body["length"]; else  $length = "";
+        if (isset($body["startseq"])) $startseq = $body["startseq"]; else  $startseq = "";
+        if (isset($body["keyword"])) $keyword = $body["keyword"]; else  $keyword = "";
+
+        $uiF1symDbObj = new classDbiL3apF1sym();
+        $usercheck = $uiF1symDbObj->dbi_user_authcheck($action, $user);
+        if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
+            $uid = $usercheck['uid'];
+            $uiF11faamDbObj = new classDbiL3apF11faam(); //初始化一个UI DB对象
+            $total = (int)($length);  //多工厂时要按照授权工厂查询数量
+            $query_length = (int)($length);
+            $start = (int)($startseq);
+            if($query_length > $total-$start) $query_length = $total-$start;
+
+            $factoryTable = $uiF11faamDbObj->dbi_faam_factory_table_query($uid,$start, $query_length,$keyword);
+            if(!empty($factoryTable)){
+                $ret = array('start'=> (string)$start,'total'=> (string)$total,'length'=>(string)$query_length,'factorytable'=>$factoryTable);
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$ret,'msg'=>"获取工厂信息列表成功");
+            }
+            else
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>array(),'msg'=>"获取工厂信息列表失败");
+        }
+        else
+            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
+
+        return $retval;
+    }
+
+    function func_faam_factory_table_modify($action, $user, $body)
+    {
+        $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
+        $usercheck = $uiF1symDbObj->dbi_user_authcheck($action, $user);
+        if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
+            $uiF11faamDbObj = new classDbiL3apF11faam();
+            $result = $uiF11faamDbObj->dbi_faam_factory_table_modify($body);
+            if($result == true)
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"工厂信息修改成功");
+            else
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"工厂信息修改失败");
+        }
+        else
+            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>$usercheck['msg']);
+
+        return $retval;
+    }
+
+    function func_faam_factory_table_new($action, $user, $body)
+    {
+        $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
+        $usercheck = $uiF1symDbObj->dbi_user_authcheck($action, $user);
+        if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
+            $uiF11faamDbObj = new classDbiL3apF11faam();
+            $result = $uiF11faamDbObj->dbi_faam_factory_table_new($body);
+            if($result == true)
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"工厂信息新建成功");
+            else
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"工厂信息新建失败");
+        }
+        else
+            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>$usercheck['msg']);
+
+        return $retval;
+    }
+
+    function func_faam_factory_table_delete($action, $user, $body)
+    {
+        if (isset($body["factoryid"])) $factoryId = $body["factoryid"]; else  $factoryId = "";
+
+        $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
+        $usercheck = $uiF1symDbObj->dbi_user_authcheck($action, $user);
+        if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
+            $uiF11faamDbObj = new classDbiL3apF11faam();
+            $result = $uiF11faamDbObj->dbi_faam_factory_table_delete($factoryId);
+            if($result == true)
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"工厂信息删除成功");
+            else
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"工厂信息删除失败");
+        }
+        else
+            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>$usercheck['msg']);
+
+        return $retval;
+    }
+
+    function func_faam_product_type_query($action, $user, $body)
+    {
+        if (isset($body["length"])) $length = $body["length"]; else  $length = "";
+        if (isset($body["startseq"])) $startseq = $body["startseq"]; else  $startseq = "";
+        if (isset($body["keyword"])) $keyword = $body["keyword"]; else  $keyword = "";
+
+        $uiF1symDbObj = new classDbiL3apF1sym();
+        $usercheck = $uiF1symDbObj->dbi_user_authcheck($action, $user);
+        if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
+            $uid = $usercheck['uid'];
+            $uiF11faamDbObj = new classDbiL3apF11faam(); //初始化一个UI DB对象
+            $total = $uiF11faamDbObj->dbi_faam_product_type_num_inqury($uid);
+            $query_length = (int)($length);
+            $start = (int)($startseq);
+            if($query_length > $total-$start) $query_length = $total-$start;
+
+            $productType = $uiF11faamDbObj->dbi_faam_product_type_table_query($uid,$start, $query_length,$keyword);
+            if(!empty($productType)){
+                $ret = array('start'=> (string)$start,'total'=> (string)$total,'length'=>(string)$query_length,'specificationtable'=>$productType);
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$ret,'msg'=>"获取产品规格列表成功");
+            }
+            else
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>array(),'msg'=>"获取产品规格列表失败");
+        }
+        else
+            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
+
+        return $retval;
+    }
+
+    function func_faam_product_type_modify($action, $user, $body)
+    {
+        $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
+        $usercheck = $uiF1symDbObj->dbi_user_authcheck($action, $user);
+        if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
+            $uiF11faamDbObj = new classDbiL3apF11faam();
+            $result = $uiF11faamDbObj->dbi_faam_product_type_modify($body);
+            if($result == true)
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"产品规格信息修改成功");
+            else
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"产品规格信息修改失败");
+        }
+        else
+            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>$usercheck['msg']);
+
+        return $retval;
+    }
+
+    function func_faam_product_type_new($action, $user, $body)
+    {
+        $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
+        $usercheck = $uiF1symDbObj->dbi_user_authcheck($action, $user);
+        if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
+            $uid = $usercheck['uid'];
+            $uiF11faamDbObj = new classDbiL3apF11faam();
+            $result = $uiF11faamDbObj->dbi_faam_product_type_new($uid, $body);
+            if($result == true)
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"产品规格信息新建成功");
+            else
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"产品规格信息新建失败");
+        }
+        else
+            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>$usercheck['msg']);
+
+        return $retval;
+    }
+
+    function func_faam_product_type_delete($action, $user, $body)
+    {
+        if (isset($body["specificationid"])) $typeId = $body["specificationid"]; else  $typeId = "";
+
+        $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
+        $usercheck = $uiF1symDbObj->dbi_user_authcheck($action, $user);
+        if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
+            $uiF11faamDbObj = new classDbiL3apF11faam();
+            $result = $uiF11faamDbObj->dbi_faam_product_type_delete($typeId);
+            if($result == true)
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"产品规格信息删除成功");
+            else
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"产品规格信息删除失败");
+        }
+        else
+            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>$usercheck['msg']);
+
+        return $retval;
+    }
+
     function func_faam_staff_namelist_query($action, $user, $body)
     {
         $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
@@ -61,16 +253,15 @@ class classTaskL3aplF11faam
         if (isset($body["startseq"])) $startseq = $body["startseq"]; else  $startseq = "";
         if (isset($body["keyword"])) $keyword = $body["keyword"]; else  $keyword = "";
 
-        $uiF11faamDbObj = new classDbiL3apF11faam(); //初始化一个UI DB对象
-        $total = $uiF11faamDbObj->dbi_faam_employeenum_inqury();
-        $query_length = (int)($length);
-        $start = (int)($startseq);
-        if($query_length > $total-$start) $query_length = $total-$start;
-
         $uiF1symDbObj = new classDbiL3apF1sym();
         $usercheck = $uiF1symDbObj->dbi_user_authcheck($action, $user);
         if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
             $uid = $usercheck['uid'];
+            $uiF11faamDbObj = new classDbiL3apF11faam(); //初始化一个UI DB对象
+            $total = $uiF11faamDbObj->dbi_faam_employeenum_inqury($uid);
+            $query_length = (int)($length);
+            $start = (int)($startseq);
+            if($query_length > $total-$start) $query_length = $total-$start;
             $staffTable = $uiF11faamDbObj->dbi_faam_stafftable_query($uid,$start, $query_length,$keyword);
             if(!empty($staffTable)){
                 $ret = array('start'=> (string)$start,'total'=> (string)$total,'length'=>(string)$query_length,'stafftable'=>$staffTable);
@@ -315,6 +506,30 @@ class classTaskL3aplF11faam
         return $retval;
     }
 
+    function func_faam_employee_kpi_audit($action, $user, $body)
+    {
+        if (isset($body["TimeStart"])) $timeStart = $body["TimeStart"]; else  $timeStart = "";
+        if (isset($body["TimeEnd"])) $timeEnd = $body["TimeEnd"]; else  $timeEnd = "";
+        if (isset($body["KeyWord"])) $keyWord = $body["KeyWord"]; else  $keyWord = "";
+
+        $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
+        $usercheck = $uiF1symDbObj->dbi_user_authcheck($action, $user);
+        if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
+            $uid = $usercheck['uid'];
+            $uiF11faamDbObj = new classDbiL3apF11faam();
+            $resp = $uiF11faamDbObj->dbi_faam_employee_kpi_audit($uid, $timeStart, $timeEnd, $keyWord);
+            $ret = array('ColumnName' => $resp["ColumnName"],'TableData' => $resp["TableData"]);
+            if(!empty($resp['TableData']))
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$ret,'msg'=>"获取员工绩效统计表成功");
+            else
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$ret,'msg'=>"获取员工绩效统计表失败");
+        }
+        else
+            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
+
+        return $retval;
+    }
+
 
     /**************************************************************************************
      *                             任务入口函数                                           *
@@ -341,6 +556,39 @@ class classTaskL3aplF11faam
         }
 
         switch ($msgId){
+            case MSG_ID_L4FAAMUI_TO_L3F11_FACTORYCODELIST:
+                $resp = $this->func_faam_factory_codelist_query($action, $user, $body);
+                break;
+            case MSG_ID_L4FAAMUI_TO_L3F11_FACTORYTABLE:
+                $resp = $this->func_faam_factory_table_query($action, $user, $body);
+                break;
+            case MSG_ID_L4FAAMUI_TO_L3F11_FACTORYMOD:
+                $resp = $this->func_faam_factory_table_modify($action, $user, $body);
+                break;
+            case MSG_ID_L4FAAMUI_TO_L3F11_FACTORYNEW:
+                $resp = $this->func_faam_factory_table_new($action, $user, $body);
+                break;
+
+            case MSG_ID_L4FAAMUI_TO_L3F11_FACTORYDEL:
+                $resp = $this->func_faam_factory_table_delete($action, $user, $body);
+                break;
+
+            case MSG_ID_L4FAAMUI_TO_L3F11_PRODUCTTYPE:
+                $resp = $this->func_faam_product_type_query($action, $user, $body);
+                break;
+
+            case MSG_ID_L4FAAMUI_TO_L3F11_PRODUCTTYPEMOD:
+                $resp = $this->func_faam_product_type_modify($action, $user, $body);
+                break;
+
+            case MSG_ID_L4FAAMUI_TO_L3F11_PRODUCTTYPENEW:
+                $resp = $this->func_faam_product_type_new($action, $user, $body);
+                break;
+
+            case MSG_ID_L4FAAMUI_TO_L3F11_PRODUCTTYPEDEL:
+                $resp = $this->func_faam_product_type_delete($action, $user, $body);
+                break;
+
             case MSG_ID_L4FAAMUI_TO_L3F11_STAFFNAMELIST:
                 $resp = $this->func_faam_staff_namelist_query($action, $user, $body);
                 break;
@@ -379,6 +627,9 @@ class classTaskL3aplF11faam
                 break;
             case MSG_ID_L4FAAMUI_TO_L3F11_PRODUCTIONAUDIT:
                 $resp = $this->func_faam_production_history_audit($action, $user, $body);
+                break;
+            case MSG_ID_L4FAAMUI_TO_L3F11_KPIAUDIT:
+                $resp = $this->func_faam_employee_kpi_audit($action, $user, $body);
                 break;
             default:
                 break;

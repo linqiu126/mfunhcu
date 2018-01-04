@@ -61,7 +61,6 @@ class classDbiL3apF11faam
                             "restend" => $row['restend'],
                             "fullwork" => $row['fullwork']);
         }
-
         return $config;
     }
 
@@ -75,12 +74,296 @@ class classDbiL3apF11faam
             $config = array("unitprice" => $row['unitprice'],
                             "standardnum" => $row['standardnum']);
         }
-
         return $config;
     }
 
+    public function dbi_faam_factory_codelist_query($uid)
+    {
+        //建立连接
+        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli) {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $mysqli->query("SET NAMES utf8");
+
+        $codeList = array();
+        $pjCode = $this->dbi_get_user_auth_factory($mysqli, $uid);
+        $query_str = "SELECT * FROM `t_l3f11faam_factorysheet` WHERE (`pjcode` = '$pjCode')";
+        $result = $mysqli->query($query_str);
+        while (($result != false) && (($row = $result->fetch_array()) > 0)){
+            $temp = array('id' => $row['pjcode']);
+            array_push($codeList, $temp);
+        }
+        $mysqli->close();
+        return $codeList;
+    }
+
+    public function dbi_faam_factory_table_query($uid,$start, $query_length,$keyword)
+    {
+        //建立连接
+        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli) {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $mysqli->query("SET NAMES utf8");
+
+        //考虑到多工厂情况，将来需要根据登录用户属性选择对应工厂的员工列表显示
+        $pjCode = $this->dbi_get_user_auth_factory($mysqli, $uid);
+        $factoryTable = array(); //初始化
+        $query_str = "SELECT * FROM `t_l3f11faam_factorysheet` WHERE (`pjcode` = '$pjCode')";
+        $result = $mysqli->query($query_str);
+        //没有关键字查询
+        if (empty($keyword)){
+            while (($result != false) && (($row = $result->fetch_array()) > 0)) {
+                $temp = array(
+                    'factoryid' => $row['sid'],
+                    'factorycode' => $row['pjcode'],
+                    'factorydutyday'=> $row['fullwork'],
+                    'factorylongitude' => $row['longitude'],
+                    'factorylatitude' => $row['latitude'],
+                    'factoryworkstarttime' => $row['workstart'],
+                    'factoryworkendtime' => $row['workend'],
+                    'factorylaunchstarttime' => $row['reststart'],
+                    'factorylaunchendtime' => $row['restend'],
+                    'factoryaddress' => $row['address'],
+                    'factorymemo' => $row['memo']
+                );
+                array_push($factoryTable, $temp);
+            }
+        }
+        //有关键字模糊查询
+        else{
+            $query_str = "SELECT * FROM `t_l3f11faam_factorysheet` where (`pjcode` = '$pjCode' AND concat(`pjcode`) like '%$keyword%')";
+            $result = $mysqli->query($query_str);
+            while (($result != false) && (($row = $result->fetch_array()) > 0)) {
+                $temp = array(
+                    'factoryid' => $row['sid'],
+                    'factorycode' => $row['pjcode'],
+                    'factorydutyday'=> $row['fullwork'],
+                    'factorylongitude' => $row['longitude'],
+                    'factorylatitude' => $row['latitude'],
+                    'factoryworkstarttime' => $row['workstart'],
+                    'factoryworkendtime' => $row['workend'],
+                    'factorylaunchstarttime' => $row['reststart'],
+                    'factorylaunchendtime' => $row['restend'],
+                    'factoryaddress' => $row['address'],
+                    'factorymemo' => $row['memo']
+                );
+                array_push($factoryTable, $temp);
+            }
+        }
+
+        $mysqli->close();
+        return $factoryTable;
+    }
+
+    //新增工厂信息表
+    public function dbi_faam_factory_table_new($factoryInfo)
+    {
+        //建立连接
+        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli) {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $mysqli->query("SET NAMES utf8");
+
+        if (isset($factoryInfo["factorycode"])) $pjCode = trim($factoryInfo["factorycode"]); else  $pjCode = "";
+        if (isset($factoryInfo["factorydutyday"])) $fullWork = trim($factoryInfo["factorydutyday"]); else  $fullWork = "";
+        if (isset($factoryInfo["factorylongitude"])) $longitude = trim($factoryInfo["factorylongitude"]); else  $longitude = "";
+        if (isset($factoryInfo["factorylatitude"])) $latitude = trim($factoryInfo["factorylatitude"]); else  $latitude = "";
+        if (isset($factoryInfo["factoryworkstarttime"])) $workStart = trim($factoryInfo["factoryworkstarttime"]); else  $workStart = "";
+        if (isset($factoryInfo["factoryworkendtime"])) $workEnd = trim($factoryInfo["factoryworkendtime"]); else  $workEnd = "";
+        if (isset($factoryInfo["factorylaunchstarttime"])) $restStart = trim($factoryInfo["factorylaunchstarttime"]); else  $restStart = "";
+        if (isset($factoryInfo["factorylaunchendtime"])) $restEnd = trim($factoryInfo["factorylaunchendtime"]); else  $restEnd = 0;
+        if (isset($factoryInfo["factoryaddress"])) $address = trim($factoryInfo["factoryaddress"]); else  $address = "";
+        if (isset($factoryInfo["factorymemo"])) $memo = trim($factoryInfo["factorymemo"]); else  $memo = "";
+
+        $query_str = "INSERT INTO `t_l3f11faam_factorysheet` (pjcode,workstart,workend,reststart,restend,fullwork,address,latitude,longitude,memo)
+                              VALUES ('$pjCode','$workStart','$workEnd','$restStart','$restEnd','$fullWork','$address','$latitude','$longitude','$memo')";
+        $result = $mysqli->query($query_str);
+
+        $mysqli->close();
+        return $result;
+    }
+
+    //修改工厂信息表
+    public function dbi_faam_factory_table_modify($factoryInfo)
+    {
+        //建立连接
+        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli) {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $mysqli->query("SET NAMES utf8");
+
+        if (isset($factoryInfo["factoryid"])) $sid = trim($factoryInfo["factoryid"]); else  $sid = "";
+        if (isset($factoryInfo["factorycode"])) $pjCode = trim($factoryInfo["factorycode"]); else  $pjCode = "";
+        if (isset($factoryInfo["factorydutyday"])) $fullWork = trim($factoryInfo["factorydutyday"]); else  $fullWork = "";
+        if (isset($factoryInfo["factorylongitude"])) $longitude = trim($factoryInfo["factorylongitude"]); else  $longitude = "";
+        if (isset($factoryInfo["factorylatitude"])) $latitude = trim($factoryInfo["factorylatitude"]); else  $latitude = "";
+        if (isset($factoryInfo["factoryworkstarttime"])) $workStart = trim($factoryInfo["factoryworkstarttime"]); else  $workStart = "";
+        if (isset($factoryInfo["factoryworkendtime"])) $workEnd = trim($factoryInfo["factoryworkendtime"]); else  $workEnd = "";
+        if (isset($factoryInfo["factorylaunchstarttime"])) $restStart = trim($factoryInfo["factorylaunchstarttime"]); else  $restStart = "";
+        if (isset($factoryInfo["factorylaunchendtime"])) $restEnd = trim($factoryInfo["factorylaunchendtime"]); else  $restEnd = 0;
+        if (isset($factoryInfo["factoryaddress"])) $address = trim($factoryInfo["factoryaddress"]); else  $address = "";
+        if (isset($factoryInfo["factorymemo"])) $memo = trim($factoryInfo["factorymemo"]); else  $memo = "";
+
+        $query_str = "UPDATE `t_l3f11faam_factorysheet` SET `pjcode` = '$pjCode',`workstart` = '$workStart',`workend` = '$workEnd',`reststart` = '$restStart',
+                      `restend` = '$restEnd',`fullwork` = '$fullWork',`address` = '$address',`latitude` = '$latitude',`longitude` = '$longitude',`memo` = '$memo' WHERE (`sid` = '$sid')";
+        $result = $mysqli->query($query_str);
+
+        $mysqli->close();
+        return $result;
+    }
+
+    //删除工厂信息
+    public function dbi_faam_factory_table_delete($factoryId)
+    {
+        //建立连接
+        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli) {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $query_str = "DELETE FROM `t_l3f11faam_factorysheet` WHERE `sid` = '$factoryId'";  //删除员工信息
+        $result = $mysqli->query($query_str);
+
+        $mysqli->close();
+        return $result;
+    }
+
+    //查询产品规格表中记录总数
+    public function dbi_faam_product_type_num_inqury($uid)
+    {
+        //建立连接
+        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli) {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $mysqli->query("SET NAMES utf8");
+        $pjCode = $this->dbi_get_user_auth_factory($mysqli, $uid);
+
+        $query_str = "SELECT * FROM `t_l3f11faam_typesheet` WHERE (`pjcode` = '$pjCode')";
+        $result = $mysqli->query($query_str);
+        $total = $result->num_rows;
+
+        $mysqli->close();
+        return $total;
+    }
+
+    //查询产品规格列表
+    public function dbi_faam_product_type_table_query($uid,$start, $query_length,$keyword)
+    {
+        //建立连接
+        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli) {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $mysqli->query("SET NAMES utf8");
+
+        //考虑到多工厂情况，将来需要根据登录用户属性选择对应工厂的员工列表显示
+        $pjCode = $this->dbi_get_user_auth_factory($mysqli, $uid);
+        $productType = array(); //初始化
+        $query_str = "SELECT * FROM `t_l3f11faam_typesheet` WHERE (`pjcode` = '$pjCode')";
+        $result = $mysqli->query($query_str);
+        //没有关键字查询
+        if (empty($keyword)){
+            while (($result != false) && (($row = $result->fetch_array()) > 0)) {
+                $temp = array(
+                    'specificationid' => $row['sid'],
+                    'specificationcode' => $row['typecode'],
+                    'specificationlevel'=> $row['applegrade'],
+                    'specificationnumber' => $row['applenum'],
+                    'specificationweight' => $row['appleweight'],
+                    'specificationmemo' => $row['memo']
+                );
+                array_push($productType, $temp);
+            }
+        }
+        //有关键字模糊查询
+        else{
+            $query_str = "SELECT * FROM `t_l3f11faam_typesheet` where (`pjcode` = '$pjCode' AND concat(`typecode`) like '%$keyword%')";
+            $result = $mysqli->query($query_str);
+            while (($result != false) && (($row = $result->fetch_array()) > 0)) {
+                $temp = array(
+                    'specificationid' => $row['sid'],
+                    'specificationcode' => $row['typecode'],
+                    'specificationlevel'=> $row['applegrade'],
+                    'specificationnumber' => $row['applenum'],
+                    'specificationweight' => $row['appleweight'],
+                    'specificationmemo' => $row['memo']
+                );
+                array_push($productType, $temp);
+            }
+        }
+
+        $mysqli->close();
+        return $productType;
+    }
+
+    public function dbi_faam_product_type_modify($typeInfo)
+    {
+        //建立连接
+        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli) {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $mysqli->query("SET NAMES utf8");
+
+        if (isset($typeInfo["specificationid"])) $sid = trim($typeInfo["specificationid"]); else  $sid = "";
+        if (isset($typeInfo["specificationcode"])) $typeCode = trim($typeInfo["specificationcode"]); else  $typeCode = "";
+        if (isset($typeInfo["specificationlevel"])) $appleGrade = trim($typeInfo["specificationlevel"]); else  $appleGrade = "";
+        if (isset($typeInfo["specificationnumber"])) $appleNum = intval($typeInfo["specificationnumber"]); else  $appleNum = 0;
+        if (isset($typeInfo["specificationweight"])) $appleWeight = intval($typeInfo["specificationweight"]); else  $appleWeight = 0;
+        if (isset($typeInfo["specificationmemo"])) $memo = trim($typeInfo["specificationmemo"]); else  $memo = "";
+
+        $query_str = "UPDATE `t_l3f11faam_typesheet` SET `typecode` = '$typeCode',`applenum` = '$appleNum',`appleweight` = '$appleWeight',
+                        `applegrade` = '$appleGrade',`memo` = '$memo' WHERE (`sid` = '$sid')";
+        $result = $mysqli->query($query_str);
+
+        $mysqli->close();
+        return $result;
+    }
+
+    public function dbi_faam_product_type_new($uid, $typeInfo)
+    {
+        //建立连接
+        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli) {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $mysqli->query("SET NAMES utf8");
+
+        if (isset($typeInfo["specificationcode"])) $typeCode = trim($typeInfo["specificationcode"]); else  $typeCode = "";
+        if (isset($typeInfo["specificationlevel"])) $appleGrade = trim($typeInfo["specificationlevel"]); else  $appleGrade = "";
+        if (isset($typeInfo["specificationnumber"])) $appleNum = intval($typeInfo["specificationnumber"]); else  $appleNum = 0;
+        if (isset($typeInfo["specificationweight"])) $appleWeight = intval($typeInfo["specificationweight"]); else  $appleWeight = 0;
+        if (isset($typeInfo["specificationmemo"])) $memo = trim($typeInfo["specificationmemo"]); else  $memo = "";
+
+        $pjCode = $this->dbi_get_user_auth_factory($mysqli, $uid);
+        $query_str = "INSERT INTO `t_l3f11faam_typesheet` (pjcode,typecode,applenum,appleweight,applegrade,memo)
+                              VALUES ('$pjCode','$typeCode','$appleNum','$appleWeight','$appleGrade','$memo')";
+        $result = $mysqli->query($query_str);
+
+        $mysqli->close();
+        return $result;
+    }
+
+    public function dbi_faam_product_type_delete($typeId)
+    {
+        //建立连接
+        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli) {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $query_str = "DELETE FROM `t_l3f11faam_typesheet` WHERE `sid` = '$typeId'";
+        $result = $mysqli->query($query_str);
+
+        $mysqli->close();
+        return $result;
+    }
+
     //查询员工记录表中记录总数
-    public function dbi_faam_employeenum_inqury()
+    public function dbi_faam_employeenum_inqury($uid)
     {
         //建立连接
         $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
@@ -88,7 +371,8 @@ class classDbiL3apF11faam
             die('Could not connect: ' . mysqli_error($mysqli));
         }
 
-        $query_str = "SELECT * FROM `t_l3f11faam_membersheet` WHERE 1";
+        $pjCode = $this->dbi_get_user_auth_factory($mysqli, $uid);
+        $query_str = "SELECT * FROM `t_l3f11faam_membersheet` WHERE (`pjcode` = '$pjCode')";
         $result = $mysqli->query($query_str);
         $total = $result->num_rows;
 
@@ -146,6 +430,7 @@ class classDbiL3apF11faam
                     'address' => $row['address'],
                     'salary' => $row['unitprice'],
                     'position' => $row['position'],
+                    'KPI' => $row['standardnum'],
                     'memo' => $row['memo']
                 );
                 array_push($staffTable, $temp);
@@ -153,7 +438,7 @@ class classDbiL3apF11faam
         }
         //有关键字模糊查询
         else{
-            $query_str = "SELECT * FROM `t_l3f11faam_membersheet` where concat(`employee`,`phone`) like '%$keyword%'";
+            $query_str = "SELECT * FROM `t_l3f11faam_membersheet` where (`pjcode` = '$pjCode' AND concat(`employee`,`phone`) like '%$keyword%')";
             $result = $mysqli->query($query_str);
             while (($result != false) && (($row = $result->fetch_array()) > 0)) {
                 $temp = array(
@@ -166,6 +451,7 @@ class classDbiL3apF11faam
                     'address' => $row['address'],
                     'salary' => $row['unitprice'],
                     'position' => $row['position'],
+                    'KPI' => $row['standardnum'],
                     'memo' => $row['memo']
                 );
                 array_push($staffTable, $temp);
@@ -194,11 +480,12 @@ class classDbiL3apF11faam
         if (isset($staffInfo["mobile"])) $phone = trim($staffInfo["mobile"]); else  $phone = "";
         if (isset($staffInfo["address"])) $address = trim($staffInfo["address"]); else  $address = "";
         if (isset($staffInfo["salary"])) $unitPrice = intval($staffInfo["salary"]); else  $unitPrice = 0;
+        if (isset($staffInfo["KPI"])) $standardNum = intval($staffInfo["KPI"]); else  $standardNum = 0;
         if (isset($staffInfo["memo"])) $memo = trim($staffInfo["memo"]); else  $memo = "";
 
         $date = date("Y-m-d", time());
-        $query_str = "UPDATE `t_l3f11faam_membersheet` SET `pjcode` = '$pjCode',`employee` = '$employee',`gender` = '$gender',`phone` = '$phone',
-                      `regdate` = '$date',`position` = '$position',`address` = '$address',`unitprice` = '$unitPrice',`memo` = '$memo' WHERE (`mid` = '$staffId')";
+        $query_str = "UPDATE `t_l3f11faam_membersheet` SET `pjcode` = '$pjCode',`employee` = '$employee',`gender` = '$gender',`phone` = '$phone',`regdate` = '$date',
+                      `position` = '$position',`address` = '$address',`unitprice` = '$unitPrice',`standardnum` = '$standardNum',`memo` = '$memo' WHERE (`mid` = '$staffId')";
         $result = $mysqli->query($query_str);
 
         $mysqli->close();
@@ -222,13 +509,14 @@ class classDbiL3apF11faam
         if (isset($staffInfo["mobile"])) $phone = trim($staffInfo["mobile"]); else  $phone = "";
         if (isset($staffInfo["address"])) $address = trim($staffInfo["address"]); else  $address = "";
         if (isset($staffInfo["salary"])) $unitPrice = intval($staffInfo["salary"]); else  $unitPrice = 0;
+        if (isset($staffInfo["KPI"])) $standardNum = intval($staffInfo["KPI"]); else  $standardNum = 0;
         if (isset($staffInfo["memo"])) $memo = trim($staffInfo["memo"]); else  $memo = "";
 
         $date = date("Y-m-d", time());
         $mid = MFUN_L3APL_F1SYM_MID_PREFIX.$this->getRandomUid(MFUN_L3APL_F1SYM_USER_ID_LEN);  //随机生成员工ID
 
-        $query_str = "INSERT INTO `t_l3f11faam_membersheet` (mid,pjcode,employee,gender,phone,regdate,position,address,unitprice,memo)
-                              VALUES ('$mid','$pjCode','$employee','$gender','$phone','$date','$position','$address','$unitPrice','$memo')";
+        $query_str = "INSERT INTO `t_l3f11faam_membersheet` (mid,pjcode,employee,gender,phone,regdate,position,address,unitprice,standardnum,memo)
+                              VALUES ('$mid','$pjCode','$employee','$gender','$phone','$date','$position','$address','$unitPrice','$standardNum','$memo')";
         $result = $mysqli->query($query_str);
 
         $mysqli->close();
@@ -436,7 +724,7 @@ class classDbiL3apF11faam
 
         if (isset($record["name"])) $employee = trim($record["name"]); else  $employee = "";
         //if (isset($record["PJcode"])) $pjCode = trim($record["PJcode"]); else  $pjCode = "";
-        if (isset($record["PJcode"])) $offWork = trim($record["PJcode"]); else  $offWork = 0;  //暂时使用此字段作为请假时间
+        if (isset($record["leavehour"])) $offWorkTime = $record["leavehour"]; else  $offWorkTime = 0;
         if (isset($record["date"])) $workDay = trim($record["date"]); else  $workDay = "";
         if (isset($record["arrivetime"])) $arriveTime = trim($record["arrivetime"]); else  $arriveTime = "";
         if (isset($record["leavetime"])) $leaveTime = trim($record["leavetime"]); else  $leaveTime = "";
@@ -453,7 +741,7 @@ class classDbiL3apF11faam
 
         $arriveTimeInt = strtotime($arriveTime);
         $leaveTimeInt = strtotime($leaveTime);
-        $offWorkTime = round($offWork, 1);
+
         if($arriveTimeInt <= $restStart AND $leaveTimeInt >= $restEnd){ //正常情况，在午休前上班，午休后下班
             $timeInterval = ($restStart - $arriveTimeInt) + ($leaveTimeInt - $restEnd);
         }
@@ -493,7 +781,7 @@ class classDbiL3apF11faam
             }
             else{
                 $query_str = "INSERT INTO `t_l3f11faam_dailysheet` (pjcode,employee,workday,arrivetime,leavetime,offwork,worktime,unitprice,lateworkflag,earlyleaveflag)
-                                  VALUES ('$pjCode','$employee','$workDay','$arriveTime','$leaveTime','$offWork','$workTime','$unitPrice','$lateWorkFlag','$earlyLeaveFlag')";
+                                  VALUES ('$pjCode','$employee','$workDay','$arriveTime','$leaveTime','$offWorkTime','$workTime','$unitPrice','$lateWorkFlag','$earlyLeaveFlag')";
                 $result = $mysqli->query($query_str);
             }
         }
@@ -517,7 +805,7 @@ class classDbiL3apF11faam
         if (isset($record["attendanceID"])) $sid = trim($record["attendanceID"]); else  $sid = "";
         if (isset($record["name"])) $employee = trim($record["name"]); else  $employee = "";
         //if (isset($record["PJcode"])) $pjCode = trim($record["PJcode"]); else  $pjCode = "";
-        if (isset($record["PJcode"])) $offWork = (float)($record["PJcode"]); else  $offWork = 0;  //暂时使用此字段作为请假时间
+        if (isset($record["leavehour"])) $offWorkTime = $record["leavehour"]; else  $offWorkTime = 0;
         if (isset($record["date"])) $workDay = trim($record["date"]); else  $workDay = "";
         if (isset($record["arrivetime"])) $arriveTime = trim($record["arrivetime"]); else  $arriveTime = "";
         if (isset($record["leavetime"])) $leaveTime = trim($record["leavetime"]); else  $leaveTime = "";
@@ -534,7 +822,7 @@ class classDbiL3apF11faam
 
         $arriveTimeInt = strtotime($arriveTime);
         $leaveTimeInt = strtotime($leaveTime);
-        $offWorkTime = round($offWork, 1);
+
         if($arriveTimeInt <= $restStart AND $leaveTimeInt >= $restEnd){ //正常情况，在午休前上班，午休后下班
             $timeInterval = ($restStart - $arriveTimeInt) + ($leaveTimeInt - $restEnd);
         }
@@ -565,7 +853,7 @@ class classDbiL3apF11faam
         $query_str = "SELECT * FROM `t_l3f11faam_membersheet` WHERE (`employee` = '$employee' AND `pjcode` = '$pjCode')";
         $result = $mysqli->query($query_str);
         if(($result != false) && ($result->num_rows)>0){ //输入员工姓名合法
-            $query_str = "UPDATE `t_l3f11faam_dailysheet` SET `workday` = '$workDay',`arrivetime` = '$arriveTime',`leavetime` = '$leaveTime',`offwork` = '$offWork',`worktime` = '$workTime',
+            $query_str = "UPDATE `t_l3f11faam_dailysheet` SET `workday` = '$workDay',`arrivetime` = '$arriveTime',`leavetime` = '$leaveTime',`offwork` = '$offWorkTime',`worktime` = '$workTime',
                           `unitprice` = '$unitPrice',`lateworkflag` = '$lateWorkFlag',`earlyleaveflag` = '$earlyLeaveFlag' WHERE (`sid` = '$sid')";
             $result = $mysqli->query($query_str);
         }
@@ -607,10 +895,11 @@ class classDbiL3apF11faam
         if (($result != false) && ($result->num_rows)>0){
             $row = $result->fetch_array();
             $record = array("attendanceID" => $row['sid'],
-                            "PJcode" => $row['offwork'],
+                            "PJcode" => $row['pjcode'],
                             "name" => $row['employee'],
                             "arrivetime" => $row['arrivetime'],
                             "leavetime" => $row['leavetime'],
+                            "leavehour" => $row['offwork'],
                             "date" => $row['workday']);
         }
         $mysqli->close();
@@ -771,6 +1060,176 @@ class classDbiL3apF11faam
             }
         }
 
+        $mysqli->close();
+        return $history;
+    }
+
+    public function dbi_faam_employee_kpi_audit($uid, $timeStart, $timeEnd, $keyWord)
+    {
+        //初始化返回值
+        $history["ColumnName"] = array();
+        $history['TableData'] = array();
+
+        //建立连接
+        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli) {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $mysqli->query("SET NAMES utf8");
+
+        array_push($history["ColumnName"], "序号");
+        array_push($history["ColumnName"], "员工姓名");
+        array_push($history["ColumnName"], "开始日期");
+        array_push($history["ColumnName"], "结束日期");
+        array_push($history["ColumnName"], "工作天数");
+        array_push($history["ColumnName"], "工作时间");
+        array_push($history["ColumnName"], "单位时薪");
+        array_push($history["ColumnName"], "总时薪");
+        array_push($history["ColumnName"], "总箱数");
+        array_push($history["ColumnName"], "总重量");
+        array_push($history["ColumnName"], "总粒数");
+        array_push($history["ColumnName"], "标准绩效");
+        array_push($history["ColumnName"], "完成比例");
+
+
+        $pjCode = $this->dbi_get_user_auth_factory($mysqli, $uid);
+        $dayTimeStart = $timeStart." 00:00:00";
+        $dayTimeEnd = $timeEnd." 23:59:59";
+
+        $workBuf = array();
+        if(!empty($keyWord)) { //关键字不空，查找指定员工
+            $query_str = "SELECT * FROM `t_l3f11faam_dailysheet` WHERE (`pjcode`='$pjCode' AND `workday`>='$timeStart' AND `workday`<='$timeEnd' AND `employee`='$keyWord')";
+            $result = $mysqli->query($query_str);
+            if (($result != false) && ($result->num_rows) > 0) {  //输入的关键字为用户名
+                while (($row = $result->fetch_array()) > 0)
+                    array_push($workBuf, $row);
+            }
+        }
+        else{ //关键字为空，查找全部员工
+            $query_str = "SELECT * FROM `t_l3f11faam_dailysheet` WHERE (`pjcode`='$pjCode' AND `workday`>='$timeStart' AND `workday`<='$timeEnd')";
+            $result = $mysqli->query($query_str);
+            if (($result != false) && ($result->num_rows) > 0) {
+                while (($row = $result->fetch_array()) > 0)
+                    array_push($workBuf, $row);
+            }
+        }
+
+        $productBuf = array();
+        if(!empty($keyWord)) {//关键字不空，查找指定员工
+            $query_str = "SELECT * FROM `t_l3f11faam_appleproduction` WHERE (`pjcode` = '$pjCode' AND `activetime`>='$dayTimeStart' AND `activetime`<='$dayTimeEnd' AND `owner` = '$keyWord')";
+            $result = $mysqli->query($query_str);
+            if (($result != false) && ($result->num_rows) > 0) {  //输入的关键字为用户名
+                while (($row = $result->fetch_array()) > 0)
+                    array_push($productBuf, $row);
+            }
+        }
+        else{ //关键字为空，查找全部员工
+            $query_str = "SELECT * FROM `t_l3f11faam_appleproduction` WHERE (`pjcode` = '$pjCode' AND `activetime`>='$dayTimeStart' AND `activetime`<='$dayTimeEnd')";
+            $result = $mysqli->query($query_str);
+            if (($result != false) && ($result->num_rows) > 0) {
+                while (($row = $result->fetch_array()) > 0)
+                    array_push($productBuf, $row);
+            }
+        }
+
+        //查询员工列表
+        $query_str = "SELECT * FROM `t_l3f11faam_membersheet` WHERE (`pjcode` = '$pjCode')";
+        $result = $mysqli->query($query_str);
+        $nameList = array();
+        while (($result != false) && (($row = $result->fetch_array()) > 0)){
+            $temp = array('employee' => $row['employee'],'unitprice'=>$row['unitprice'],'kpi'=>$row['standardnum']);
+            array_push($nameList, $temp);
+        }
+        //查询产品规格列表
+        $typeList = $this->dbi_get_product_type($mysqli, $pjCode);
+
+        //处理考勤查询结果
+        for($i=0; $i<count($workBuf); $i++){
+            $employee = $workBuf[$i]['employee'];
+            $workTime = $workBuf[$i]['worktime'];
+            if(isset($workingDay[$employee]) AND isset($totalWorkTime[$employee])){
+                if($workTime != 0) {
+                    $workingDay[$employee]++;
+                    $totalWorkTime[$employee] = $totalWorkTime[$employee] + $workTime;
+                }
+            }
+            else{ //第一次查询到某员工
+                if($workTime != 0) {
+                    $workingDay[$employee] = 1;
+                    $totalWorkTime[$employee] = $workTime;
+                }
+                else{
+                    $workingDay[$employee] = 0;
+                    $totalWorkTime[$employee] = 0;
+                }
+            }
+        }
+
+        //处理生产查询结果
+        for($i=0; $i<count($productBuf); $i++){
+            $employee = $productBuf[$i]['owner'];
+            $typeCode = $productBuf[$i]['typecode'];
+            if(isset($package[$employee][$typeCode]))
+                $package[$employee][$typeCode]++;
+            else
+                $package[$employee][$typeCode] = 1;
+        }
+        for($i=0; $i<count($nameList); $i++){
+            $employee = $nameList[$i]['employee'];
+            $totalPackage = 0;
+            $totalNum = 0;
+            $totalWeight = 0;
+            for($j=0; $j<count($typeList); $j++){
+                $typeCode = $typeList[$j]['typecode'];
+                $appleNum = $typeList[$j]['applenum'];
+                $appleWeight = $typeList[$j]['appleweight'];
+                if(isset($package[$employee][$typeCode])){
+                    $totalPackage = (int)$package[$employee][$typeCode];
+                    $totalNum = $totalPackage * (int)$appleNum;
+                    $totalWeight = $totalPackage * (int)$appleWeight;
+                }
+            }
+            if (($totalPackage == 0) OR ($totalNum == 0) OR ($totalWeight == 0)) continue;
+            $packageSum[$employee] = $totalPackage;
+            $numSum[$employee] = $totalNum;
+            $weightSum[$employee] = $totalWeight;
+        }
+
+        //聚合显示绩效结果
+        $sid = 0;
+        for($i=0; $i<count($nameList); $i++){
+            $employee = $nameList[$i]['employee'];
+            $unitPrice = intval($nameList[$i]['unitprice']);
+            $kpi = intval($nameList[$i]['kpi']);
+            if (isset($workingDay[$employee]) AND isset($totalWorkTime[$employee])){
+                //如果该员工有考勤但没有生产记录
+                if (isset($packageSum[$employee])) $tempPackageSum = $packageSum[$employee]; else $tempPackageSum = 0;
+                if (isset($weightSum[$employee])) $tempWeightSum = $weightSum[$employee]; else $tempWeightSum = 0;
+                if (isset($numSum[$employee])) $tempNumSum = $numSum[$employee]; else $tempNumSum = 0;
+
+                $timeSalary =  $totalWorkTime[$employee]*$unitPrice;
+                if ($kpi != 0)
+                    $kpiSalary = round((float)($tempPackageSum/$kpi)*100, 2).'%';
+                else
+                    $kpiSalary = "%";
+                $sid++;
+                $temp =array();
+                array_push($temp, $sid);
+                array_push($temp, $employee);
+                array_push($temp, $timeStart);
+                array_push($temp, $timeEnd);
+                array_push($temp, $workingDay[$employee]);
+                array_push($temp, $totalWorkTime[$employee]);
+                array_push($temp, $unitPrice);
+                array_push($temp, $timeSalary);
+                array_push($temp, $tempPackageSum);
+                array_push($temp, $tempWeightSum);
+                array_push($temp, $tempNumSum);
+                array_push($temp, $kpi);
+                array_push($temp, $kpiSalary);
+                array_push($history['TableData'], $temp);
+            }
+        }
         $mysqli->close();
         return $history;
     }
