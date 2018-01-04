@@ -474,6 +474,7 @@ class classDbiL3apF11faam
 
         if (isset($staffInfo["staffid"])) $staffId = trim($staffInfo["staffid"]); else  $staffId = "";
         if (isset($staffInfo["name"])) $employee = trim($staffInfo["name"]); else  $employee = "";
+        if (isset($staffInfo["nickname"])) $nickName = trim($staffInfo["nickname"]); else  $nickName = "";
         if (isset($staffInfo["PJcode"])) $pjCode = trim($staffInfo["PJcode"]); else  $pjCode = "";
         if (isset($staffInfo["position"])) $position = trim($staffInfo["position"]); else  $position = "";
         if (isset($staffInfo["gender"])) $gender = trim($staffInfo["gender"]); else  $gender = "";
@@ -484,7 +485,7 @@ class classDbiL3apF11faam
         if (isset($staffInfo["memo"])) $memo = trim($staffInfo["memo"]); else  $memo = "";
 
         $date = date("Y-m-d", time());
-        $query_str = "UPDATE `t_l3f11faam_membersheet` SET `pjcode` = '$pjCode',`employee` = '$employee',`gender` = '$gender',`phone` = '$phone',`regdate` = '$date',
+        $query_str = "UPDATE `t_l3f11faam_membersheet` SET `pjcode` = '$pjCode',`employee` = '$employee',`openid` = '$nickName',`gender` = '$gender',`phone` = '$phone',`regdate` = '$date',
                       `position` = '$position',`address` = '$address',`unitprice` = '$unitPrice',`standardnum` = '$standardNum',`memo` = '$memo' WHERE (`mid` = '$staffId')";
         $result = $mysqli->query($query_str);
 
@@ -731,7 +732,7 @@ class classDbiL3apF11faam
 
         $pjCode = $this->dbi_get_user_auth_factory($mysqli, $uid);
         $employee_config = $this->dbi_get_employee_config($mysqli, $pjCode, $employee);
-        $unitPrice = $employee_config['unitprice'];
+        if (isset($employee_config['unitprice'])) $unitPrice = $employee_config['unitprice']; else  $unitPrice = 0;
 
         $factory_config = $this->dbi_get_factory_config($mysqli, $pjCode);
         $restStart = strtotime($factory_config['reststart']);
@@ -775,7 +776,7 @@ class classDbiL3apF11faam
             $query_str = "SELECT * FROM `t_l3f11faam_dailysheet` WHERE (`pjcode` = '$pjCode' AND `employee` = '$employee' AND `workday` = '$workDay')";
             $result = $mysqli->query($query_str);
             if(($result != false) && ($result->num_rows)>0){  //如果该员工当天已经有考勤记录则更新，否则插入新纪录
-                $query_str = "UPDATE `t_l3f11faam_dailysheet` SET `arrivetime` = '$arriveTime',`leavetime` = '$leaveTime',`offwork` = '$offWork',`worktime` = '$workTime',
+                $query_str = "UPDATE `t_l3f11faam_dailysheet` SET `arrivetime` = '$arriveTime',`leavetime` = '$leaveTime',`offwork` = '$offWorkTime',`worktime` = '$workTime',
                           `unitprice` = '$unitPrice',`lateworkflag` = '$lateWorkFlag',`earlyleaveflag` = '$earlyLeaveFlag' WHERE (`pjcode` = '$pjCode' AND `employee` = '$employee' AND `workday` = '$workDay')";
                 $result = $mysqli->query($query_str);
             }
@@ -1035,8 +1036,14 @@ class classDbiL3apF11faam
 
         //显示查询结果
         $sid = 0;
+        $packageSum = 0;
+        $numSum = 0;
+        $weightSum = 0;
         for($i=0; $i<count($nameList); $i++){
             $employee = $nameList[$i]['employee'];
+            $totalPackage = 0;
+            $totalNum = 0;
+            $totalWeight = 0;
             for($j=0; $j<count($typeList); $j++){
                 $typeCode = $typeList[$j]['typecode'];
                 $appleNum = $typeList[$j]['applenum'];
@@ -1056,8 +1063,24 @@ class classDbiL3apF11faam
                     array_push($temp, $totalNum);
                     array_push($temp, $totalWeight);
                     array_push($history['TableData'], $temp);
+
+                    $packageSum = $packageSum + $totalPackage;
+                    $numSum = $numSum + $totalNum;
+                    $weightSum = $weightSum + $totalWeight;
                 }
             }
+        }
+        if ($packageSum != 0){ //所有统计汇总
+            $temp =array();
+            array_push($temp, 0);
+            array_push($temp, "汇总");
+            array_push($temp, $timeStart);
+            array_push($temp, $timeEnd);
+            array_push($temp, "-------");
+            array_push($temp, $packageSum);
+            array_push($temp, $numSum);
+            array_push($temp, $weightSum);
+            array_push($history['TableData'], $temp);
         }
 
         $mysqli->close();
@@ -1093,8 +1116,10 @@ class classDbiL3apF11faam
 
 
         $pjCode = $this->dbi_get_user_auth_factory($mysqli, $uid);
-        $dayTimeStart = $timeStart." 00:00:00";
-        $dayTimeEnd = $timeEnd." 23:59:59";
+        $dayTimeStart = $timeStart." 00:00:00";  //默认从查询起始天零点开始
+        $dayTimeEnd = $timeEnd." 23:59:59";      //到查询结束天24时结束
+        $interval = date_diff(date_create($timeStart), date_create($timeEnd));
+        $intervalDay = $interval->days + 1;  //总查询天数
 
         $workBuf = array();
         if(!empty($keyWord)) { //关键字不空，查找指定员工
@@ -1209,7 +1234,7 @@ class classDbiL3apF11faam
 
                 $timeSalary =  $totalWorkTime[$employee]*$unitPrice;
                 if ($kpi != 0)
-                    $kpiSalary = round((float)($tempPackageSum/$kpi)*100, 2).'%';
+                    $kpiSalary = round((float)($tempNumSum/($kpi*$intervalDay))*100, 2).'%';
                 else
                     $kpiSalary = "%";
                 $sid++;

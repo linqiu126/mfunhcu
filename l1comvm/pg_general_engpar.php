@@ -173,6 +173,15 @@ class classConstL1vmUserWebRight
                 'AuditAvailability' => 'true',
                 'AuditError' => 'true',
                 'AuditQuality' => 'true',
+                //工厂管理
+                'StaffManage' => 'true',
+                'AttendanceManage' => 'true',
+                'FactoryManage' => 'true',
+                'SpecificationManage' => 'true',
+                'AssembleManage' => 'true',
+                'AssembleAudit' => 'true',
+                'AttendanceAudit' => 'true',
+                'KPIAudit' => 'true',
                 //仪器操作
                 'InstConf' => 'true',
                 'InstRead' => 'true',
@@ -248,6 +257,15 @@ class classConstL1vmUserWebRight
                 'AuditAvailability' => 'false',
                 'AuditError' => 'false',
                 'AuditQuality' => 'false',
+                //工厂管理
+                'StaffManage' => 'false',
+                'AttendanceManage' => 'false',
+                'FactoryManage' => 'false',
+                'SpecificationManage' => 'false',
+                'AssembleManage' => 'false',
+                'AssembleAudit' => 'false',
+                'AttendanceAudit' => 'false',
+                'KPIAudit' => 'false',
                 //仪器操作
                 'InstConf' => 'false',
                 'InstRead' => 'false',
@@ -292,7 +310,9 @@ class classConstL1vmUserWebRight
                 'KeyDel' => 'false',
                 'OpenLock' => 'false',
                 'KeyAuthNew' => 'false',
-                'KeyGrant' => 'false'
+                'KeyGrant' => 'false',
+                'FactoryDel' => 'false',
+                'FactoryNew' => 'false'
             ),
             'query' => 'false',
             'mod' => 'false'),
@@ -323,6 +343,15 @@ class classConstL1vmUserWebRight
                 'AuditAvailability' => 'false',
                 'AuditError' => 'false',
                 'AuditQuality' => 'false',
+                //工厂管理
+                'StaffManage' => 'false',
+                'AttendanceManage' => 'false',
+                'FactoryManage' => 'false',
+                'SpecificationManage' => 'false',
+                'AssembleManage' => 'false',
+                'AssembleAudit' => 'false',
+                'AttendanceAudit' => 'false',
+                'KPIAudit' => 'false',
                 //仪器操作
                 'InstConf' => 'false',
                 'InstRead' => 'false',
@@ -367,7 +396,9 @@ class classConstL1vmUserWebRight
                 'KeyDel' => 'false',
                 'OpenLock' => 'false',
                 'KeyAuthNew' => 'false',
-                'KeyGrant' => 'false'
+                'KeyGrant' => 'false',
+                'FactoryDel' => 'false',
+                'FactoryNew' => 'false'
             ),
             'query' => 'false',
             'mod' => 'false'),
@@ -398,6 +429,15 @@ class classConstL1vmUserWebRight
                 'AuditAvailability' => 'false',
                 'AuditError' => 'false',
                 'AuditQuality' => 'false',
+                //工厂管理
+                'StaffManage' => 'false',
+                'AttendanceManage' => 'false',
+                'FactoryManage' => 'false',
+                'SpecificationManage' => 'false',
+                'AssembleManage' => 'false',
+                'AssembleAudit' => 'false',
+                'AttendanceAudit' => 'false',
+                'KPIAudit' => 'false',
                 //仪器操作
                 'InstConf' => 'false',
                 'InstRead' => 'false',
@@ -442,7 +482,9 @@ class classConstL1vmUserWebRight
                 'KeyDel' => 'false',
                 'OpenLock' => 'false',
                 'KeyAuthNew' => 'false',
-                'KeyGrant' => 'false'
+                'KeyGrant' => 'false',
+                'FactoryDel' => 'false',
+                'FactoryNew' => 'false'
             ),
             'query' => 'false',
             'mod' => 'false'),
@@ -473,6 +515,15 @@ class classConstL1vmUserWebRight
                 'AuditAvailability' => 'false',
                 'AuditError' => 'false',
                 'AuditQuality' => 'false',
+                //工厂管理
+                'StaffManage' => 'false',
+                'AttendanceManage' => 'false',
+                'FactoryManage' => 'false',
+                'SpecificationManage' => 'false',
+                'AssembleManage' => 'false',
+                'AssembleAudit' => 'false',
+                'AttendanceAudit' => 'false',
+                'KPIAudit' => 'false',
                 //仪器操作
                 'InstConf' => 'false',
                 'InstRead' => 'false',
@@ -517,7 +568,9 @@ class classConstL1vmUserWebRight
                 'KeyDel' => 'false',
                 'OpenLock' => 'false',
                 'KeyAuthNew' => 'false',
-                'KeyGrant' => 'false'
+                'KeyGrant' => 'false',
+                'FactoryDel' => 'false',
+                'FactoryNew' => 'false'
             ),
             'query' => 'false',
             'mod' => 'false'),
@@ -542,6 +595,14 @@ class classConstL1vmUserWebRight
             self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['webauth']['KeyHistory'] = 'true';
             self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['webauth']['RTUManage'] = 'true';
             self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['webauth']['OTDRManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['webauth']['StaffManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['webauth']['AttendanceManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['webauth']['FactoryManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['webauth']['SpecificationManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['webauth']['AssembleManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['webauth']['AssembleAudit'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['webauth']['AttendanceAudit'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['webauth']['KPIAudit'] = 'true';
             self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['actionauth']['UserNew'] = 'true';
             self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['actionauth']['UserMod'] = 'true';
             self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['actionauth']['UserDel'] = 'true';
@@ -580,6 +641,12 @@ class classConstL1vmUserWebRight
             self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['webauth']['KeyHistory'] = 'true';
             self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['webauth']['RTUManage'] = 'true';
             self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['webauth']['OTDRManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['webauth']['StaffManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['webauth']['AttendanceManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['webauth']['FactoryManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['webauth']['SpecificationManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['webauth']['AssembleManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['webauth']['AssembleAudit'] = 'true';
             self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['actionauth']['UserNew'] = 'true';
             self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['actionauth']['UserMod'] = 'true';
             self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['actionauth']['PGNew'] = 'true';
@@ -613,6 +680,11 @@ class classConstL1vmUserWebRight
             self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_3]['webauth']['KeyHistory'] = 'true';
             self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_3]['webauth']['RTUManage'] = 'true';
             self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_3]['webauth']['OTDRManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_3]['webauth']['StaffManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_3]['webauth']['AttendanceManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_3]['webauth']['FactoryManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_3]['webauth']['AssembleManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_3]['webauth']['AssembleAudit'] = 'true';
             self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_3]['actionauth']['UserNew'] = 'true';
             self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_3]['actionauth']['PGNew'] = 'true';
             self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_3]['actionauth']['ProjNew'] = 'true';
@@ -640,6 +712,10 @@ class classConstL1vmUserWebRight
             self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_4]['webauth']['KeyHistory'] = 'true';
             self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_4]['webauth']['RTUManage'] = 'true';
             self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_4]['webauth']['OTDRManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_4]['webauth']['StaffManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_4]['webauth']['AttendanceManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_4]['webauth']['FactoryManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_4]['webauth']['AssembleManage'] = 'true';
             self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_4]['query'] = 'true';
             self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_4]['mod'] = 'false';
         }
@@ -655,6 +731,14 @@ class classConstL1vmUserWebRight
             self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['webauth']['WarningCheck'] = 'true';
             self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['webauth']['WarningHandle'] = 'true';
             self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['webauth']['AuditStability'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['webauth']['StaffManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['webauth']['AttendanceManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['webauth']['FactoryManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['webauth']['SpecificationManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['webauth']['AssembleManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['webauth']['AssembleAudit'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['webauth']['AttendanceAudit'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['webauth']['KPIAudit'] = 'true';
             self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['actionauth']['UserNew'] = 'true';
             self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['actionauth']['UserMod'] = 'true';
             self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['actionauth']['UserDel'] = 'true';
@@ -682,6 +766,12 @@ class classConstL1vmUserWebRight
             self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['webauth']['WarningCheck'] = 'true';
             self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['webauth']['WarningHandle'] = 'true';
             self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['webauth']['AuditStability'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['webauth']['StaffManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['webauth']['AttendanceManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['webauth']['FactoryManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['webauth']['SpecificationManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['webauth']['AssembleManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['webauth']['AssembleAudit'] = 'true';
             self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['actionauth']['UserNew'] = 'true';
             self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['actionauth']['UserMod'] = 'true';
             self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['actionauth']['PGNew'] = 'true';
@@ -704,6 +794,11 @@ class classConstL1vmUserWebRight
             self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_3]['webauth']['WarningCheck'] = 'true';
             self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_3]['webauth']['WarningHandle'] = 'true';
             self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_3]['webauth']['AuditStability'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_3]['webauth']['StaffManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_3]['webauth']['AttendanceManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_3]['webauth']['FactoryManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_3]['webauth']['AssembleManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_3]['webauth']['AssembleAudit'] = 'true';
             self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_3]['actionauth']['UserNew'] = 'true';
             self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_3]['actionauth']['PGNew'] = 'true';
             self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_3]['actionauth']['ProjNew'] = 'true';
@@ -721,6 +816,10 @@ class classConstL1vmUserWebRight
             self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_4]['webauth']['WarningCheck'] = 'true';
             self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_4]['webauth']['WarningHandle'] = 'true';
             self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_4]['webauth']['AuditStability'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_4]['webauth']['StaffManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_4]['webauth']['AttendanceManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_4]['webauth']['FactoryManage'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_4]['webauth']['AssembleManage'] = 'true';
             self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_4]['query'] = 'true';
             self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_4]['mod'] = 'false';
         }

@@ -12,7 +12,7 @@ include_once "../l1comvm/vmlayer.php";
  *                             L4TBSWR-UI TEST CASES                                   *
  *************************************************************************************/
 if (TC_L4FAAM_UI == true) {
-    $sessionid = "Jf8vkJKmFD";
+    $sessionid = "ft84i8zDxf";
     $uerid = "UID000001";
 
     $timeStart = '2017-12-01';
@@ -21,9 +21,9 @@ if (TC_L4FAAM_UI == true) {
     echo " [TC L4FAAM: AssembleAudit START]\n";
     $_GET["action"] = "AssembleAudit";
     $_GET["user"] = $sessionid;
-    $body = array("TimeStart"=>"2017-12-01", "TimeEnd"=>"2017-12-26","KeyWord"=>"");
+    $body = array("TimeStart"=>"2017-12-04", "TimeEnd"=>"2018-01-04","KeyWord"=>"");
     $_GET["body"] = $body;
-    //require("../l4faamui/request.php");
+    require("../l4faamui/request.php");
     echo " [TC L4FAAM: AssembleAudit END]\n";
 
     echo " [TC L4FAAM: AttendanceAudit START]\n";
