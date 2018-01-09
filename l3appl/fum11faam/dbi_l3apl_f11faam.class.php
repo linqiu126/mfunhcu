@@ -66,13 +66,12 @@ class classDbiL3apF11faam
 
     private function dbi_get_employee_config($mysqli, $pjCode,$employee)
     {
-        $config = ""; //初始化
+        $config = array(); //初始化
         $query_str = "SELECT * FROM `t_l3f11faam_membersheet` WHERE (`pjcode` = '$pjCode' AND `employee` = '$employee')";
         $result = $mysqli->query($query_str);
         if(($result != false) AND ($result->num_rows>0)) {
             $row = $result->fetch_array();
-            $config = array("unitprice" => $row['unitprice'],
-                            "standardnum" => $row['standardnum']);
+            $config = array("unitprice" => $row['unitprice'], "standardnum" => $row['standardnum']);
         }
         return $config;
     }
@@ -767,8 +766,8 @@ class classDbiL3apF11faam
         $workTime = $hour + round($min/60, 1)  - $offWorkTime; //扣除请假时间
         if ($workTime < 0) $workTime = 0; //避免工作时间为负数
 
-        if($arriveTimeInt < $stdWorkStart) $lateWorkFlag = false; else $lateWorkFlag = true;  //迟到标志
-        if($leaveTimeInt > $stdWorkEnd) $earlyLeaveFlag = false; else $earlyLeaveFlag = true; //早退标志
+        if($arriveTimeInt < $stdWorkStart) $lateWorkFlag = 0; else $lateWorkFlag = 1;  //迟到标志
+        if($leaveTimeInt > $stdWorkEnd) $earlyLeaveFlag = 0; else $earlyLeaveFlag = 1; //早退标志
 
         $query_str = "SELECT * FROM `t_l3f11faam_membersheet` WHERE (`employee` = '$employee' AND `pjcode` = '$pjCode')";
         $result = $mysqli->query($query_str);
@@ -803,7 +802,7 @@ class classDbiL3apF11faam
         }
         $mysqli->query("SET NAMES utf8");
 
-        if (isset($record["attendanceID"])) $sid = trim($record["attendanceID"]); else  $sid = "";
+        if (isset($record["attendanceID"])) $sid = intval($record["attendanceID"]); else  $sid = 0;
         if (isset($record["name"])) $employee = trim($record["name"]); else  $employee = "";
         //if (isset($record["PJcode"])) $pjCode = trim($record["PJcode"]); else  $pjCode = "";
         if (isset($record["leavehour"])) $offWorkTime = $record["leavehour"]; else  $offWorkTime = 0;
@@ -848,8 +847,8 @@ class classDbiL3apF11faam
         $workTime = $hour + round($min/60, 1) - $offWorkTime; //扣除请假时间
         if ($workTime < 0) $workTime = 0; //避免工作时间为负数
 
-        if($arriveTimeInt < $stdWorkStart) $lateWorkFlag = false; else $lateWorkFlag = true;  //迟到标志
-        if($leaveTimeInt > $stdWorkEnd) $earlyLeaveFlag = false; else $earlyLeaveFlag = true; //早退标志
+        if($arriveTimeInt < $stdWorkStart) $lateWorkFlag = 0; else $lateWorkFlag = 1;  //迟到标志
+        if($leaveTimeInt > $stdWorkEnd) $earlyLeaveFlag = 0; else $earlyLeaveFlag = 1; //早退标志
 
         $query_str = "SELECT * FROM `t_l3f11faam_membersheet` WHERE (`employee` = '$employee' AND `pjcode` = '$pjCode')";
         $result = $mysqli->query($query_str);
