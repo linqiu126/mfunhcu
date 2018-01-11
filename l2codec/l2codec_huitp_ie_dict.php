@@ -791,7 +791,7 @@ class classL2codecHuitpIeDict
           HUITP_IEID_uni_noise_value                      => array("format"=>"A4ieId/A4ieLen/A2dataFormat/A8noiseValue","len"=>"5","name"=>"HUITP_IEID_uni_noise_value"),
 
           //相机Camer or audio high speed
-          HUITP_IEID_uni_hsmmp_value                      => array("format"=>"A4ieId/A4ieLen","len"=>"","name"=>""),
+          HUITP_IEID_uni_hsmmp_value                      => array("format"=>"A4ieId/A4ieLen/A160linkName/A8timeStampStart/A8timeStampEnd","len"=>"88","name"=>"HUITP_IEID_uni_hsmmp_value"),
           HUITP_IEID_uni_hsmmp_motive                     => array("format"=>"A4ieId/A4ieLen/A2motive/A8value","len"=>"5","name"=>"HUITP_IEID_uni_hsmmp_motive"),
 
           //声音

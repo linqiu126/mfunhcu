@@ -1117,7 +1117,8 @@ class classL2codecHuitpMsgDict
             "MSGIE" => array(HUITP_IEID_uni_com_resp)),
         //0x2C81
         HUITP_MSGID_uni_hsmmp_data_report => array("MSGNAME" => "HUITP_MSGID_uni_hsmmp_data_report",
-            "MSGIE" => array(HUITP_IEID_uni_com_report)),
+            "MSGIE" => array(HUITP_IEID_uni_com_report,
+                        HUITP_IEID_uni_hsmmp_value)),
         //0x2C01
         HUITP_MSGID_uni_hsmmp_data_confirm => array("MSGNAME" => "HUITP_MSGID_uni_hsmmp_data_confirm",
             "MSGIE" => array(HUITP_IEID_uni_com_confirm)),

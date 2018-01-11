@@ -160,6 +160,25 @@ class classTaskL2snrHsmmp
                     else $resp = "";
                 }
                 break;
+            case HUITP_MSGID_uni_hsmmp_data_report:
+                $dbiL2snrHsmmpObj = new classDbiL2snrHsmmp();
+                $respHuitpMsg = $dbiL2snrHsmmpObj->dbi_huitp_msg_uni_hsmmp_data_report($devCode, $statCode, $content);
+
+                //发送HUITP_MSGID_uni_hsmmp_data_confirm
+                if (!empty($respHuitpMsg)) {
+                    $msg = array("project" => $project,
+                        "devCode" => $devCode,
+                        "respMsg" => HUITP_MSGID_uni_hsmmp_data_confirm,
+                        "content" => $respHuitpMsg);
+                    if ($parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L2SENSOR_HSMMP,
+                            MFUN_TASK_ID_L2ENCODE_HUITP,
+                            MSG_ID_L2CODEC_ENCODE_HUITP_INCOMING,
+                            "MSG_ID_L2CODEC_ENCODE_HUITP_INCOMING",
+                            $msg) == false
+                    ) $resp = "E: send to message buffer error";
+                    else $resp = "";
+                }
+                break;
             default:
                 $resp = "E: receive unknown MsgId";
                 break;

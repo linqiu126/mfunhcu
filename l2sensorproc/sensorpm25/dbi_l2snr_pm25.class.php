@@ -258,7 +258,9 @@ class classDbiL2snrPm25
         $result = $mysqli->query($query_str);
         if (($result != false) && ($result->num_rows)>0)   //重复，则覆盖
         {
-            $query_str = "UPDATE `t_l2snr_pm25data` SET `pm01` = '$pm01',`pm25` = '$pm25',`pm10` = '$pm10',`dataflag` = '$dataFlag' WHERE (`deviceid` = '$devCode' AND `reportdate` = '$reportdate' AND `hourminindex` = '$hourminindex')";
+            $row = $result->fetch_array();
+            $sid = $row['sid'];
+            $query_str = "UPDATE `t_l2snr_pm25data` SET `pm01` = '$pm01',`pm25` = '$pm25',`pm10` = '$pm10',`dataflag` = '$dataFlag' WHERE (`sid` = '$sid')";
             $result=$mysqli->query($query_str);
         }
         else   //不存在，新增
@@ -283,8 +285,9 @@ class classDbiL2snrPm25
         $result = $mysqli->query($query_str);
         if (($result != false) && ($result->num_rows)>0)  //重复，则覆盖
         {
-            $query_str = "UPDATE `t_l2snr_aqyc_minreport` SET `pm01` = '$pm01',`pm25` = '$pm25',`pm10` = '$pm10',`dataflag` = '$dataFlag'
-                          WHERE (`devcode` = '$devCode' AND `statcode` = '$statCode' AND `reportdate` = '$reportdate' AND `hourminindex` = '$hourminindex')";
+            $row = $result->fetch_array();
+            $sid = $row['sid'];
+            $query_str = "UPDATE `t_l2snr_aqyc_minreport` SET `pm01` = '$pm01',`pm25` = '$pm25',`pm10` = '$pm10',`dataflag` = '$dataFlag' WHERE (`sid` = '$sid')";
             $result=$mysqli->query($query_str);
         }
         else   //不存在，新增
@@ -420,8 +423,9 @@ class classDbiL2snrPm25
         $result = $mysqli->query($query_str);
         if (($result != false) && ($result->num_rows)>0)  //重复，则覆盖
         {
-            $query_str = "UPDATE `t_l2snr_aqyc_minreport` SET `pm01` = '$tspValue',`pm25` = '$pm25Value',`pm10` = '$pm10Value',`noise` = '$noiseValue',`windspeed` = '$windspdValue',`winddirection` = '$winddirValue',`temperature` = '$tempValue',`humidity` = '$humidValue',`dataflag` = '$dataFlag'
-                          WHERE (`devcode` = '$devCode' AND `statcode` = '$statCode' AND `reportdate` = '$reportdate' AND `hourminindex` = '$hourminindex')";
+            $row = $result->fetch_array();
+            $sid = $row['sid'];
+            $query_str = "UPDATE `t_l2snr_aqyc_minreport` SET `pm01` = '$tspValue',`pm25` = '$pm25Value',`pm10` = '$pm10Value',`noise` = '$noiseValue',`windspeed` = '$windspdValue',`winddirection` = '$winddirValue',`temperature` = '$tempValue',`humidity` = '$humidValue',`dataflag` = '$dataFlag' WHERE (`sid` = '$sid')";
             $result=$mysqli->query($query_str);
         }
         else   //不存在，新增

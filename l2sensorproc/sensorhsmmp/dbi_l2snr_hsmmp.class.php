@@ -187,6 +187,62 @@ class classDbiL2snrHsmmp
         return $respMsgContent;
     }
 
+    public function dbi_huitp_msg_uni_hsmmp_data_report($devCode, $statCode, $content)
+    {
+        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli) {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+
+        //$data[0] = HUITP_IEID_uni_com_report，暂时没有使用
+
+        $linkName = $content[1]['HUITP_IEID_uni_hsmmp_value']['linkName'];
+        $timeStampStart = hexdec($content[1]['HUITP_IEID_uni_hsmmp_value']['timeStampStart']) & 0xFFFFFFFF;
+        $timeStampEnd = hexdec($content[1]['HUITP_IEID_uni_hsmmp_value']['timeStampEnd']) & 0xFFFFFFFF;
+
+        $timeStamp = time();
+        $reportdate = date("Y-m-d", $timeStamp);
+        $stamp = getdate($timeStamp);
+        $hourminindex = intval(($stamp["hours"] * 60 + floor($stamp["minutes"]/MFUN_HCU_AQYC_TIME_GRID_SIZE)));
+
+        $dataFlag = MFUN_HCU_DATA_FLAG_VALID;
+        //存储新记录，如果发现是已经存在的数据，则覆盖，否则新增
+        $query_str = "SELECT * FROM `t_l2snr_hsmmpdata` WHERE (`statcode` = '$statCode' AND `reportdate` = '$reportdate' AND `hourminindex` = '$hourminindex')";
+        $result = $mysqli->query($query_str);
+        if (($result != false) && ($result->num_rows)>0){  //重复，则覆盖
+            $row = $result->fetch_array();
+            $sid = $row['sid'];
+            $query_str = "UPDATE `t_l2snr_hsmmpdata` SET `filename` = '$linkName',`videostart` = '$timeStampStart',`videostop` = '$timeStampEnd' WHERE (`sid` = '$sid')";
+            $result=$mysqli->query($query_str);
+        }
+        else {   //不存在，新增
+            $query_str = "INSERT INTO `t_l2snr_hsmmpdata` (statcode,reportdate,hourminindex,filename,videostart,videoend,dataflag)
+                          VALUES ('$statCode','$reportdate','$hourminindex','$linkName','$timeStampStart','$timeStampEnd','$dataFlag')";
+            $result=$mysqli->query($query_str);
+        }
+
+        if($result == true)
+            $comConfirm = HUITP_IEID_UNI_COM_CONFIRM_YES;
+        else
+            $comConfirm = HUITP_IEID_UNI_COM_CONFIRM_NO;
+        //生成 HUITP_MSGID_uni_picture_data_confirm 消息的内容
+        $respMsgContent = array();
+        $baseConfirmIE = array();
+
+        $l2codecHuitpIeDictObj = new classL2codecHuitpIeDict;
+        //组装IE HUITP_IEID_uni_com_confirm
+        $huitpIe = $l2codecHuitpIeDictObj->mfun_l2codec_getHuitpIeFormat(HUITP_IEID_uni_com_confirm);
+        $huitpIeLen = intval($huitpIe['len']);
+        array_push($baseConfirmIE, HUITP_IEID_uni_com_confirm);
+        array_push($baseConfirmIE, $huitpIeLen);
+        array_push($baseConfirmIE, $comConfirm);
+
+        array_push($respMsgContent, $baseConfirmIE);
+
+        return $respMsgContent;
+    }
+
+
 }
 
 ?>
