@@ -477,67 +477,81 @@ class classDbiL2snrCcl
             $result = $mysqli->query($query_str);
         }
 
-        //初始化
+        //告警处理
+        $objFhysAlarm = new classConstFhysEngpar();
         $alarm_severity = MFUN_HCU_FHYS_ALARM_LEVEL_0;
         $alarm_code = MFUN_HCU_FHYS_ALARM_NONE;
+        $alarmProc = "";
 
         //告警处理, 根据客户要求为简化告警处理,告警记录以站点为单位,每次只记录最高等级的告警,同一等级的告警只记录一项,人工处理关闭的告警记录将保存.
-        if($reportType == HUITP_IEID_UNI_CCL_REPORT_TYPE_FAULT_EVENT) //状态报告为故障事件触发
-        {
-            if ($door_1==HUITP_IEID_UNI_DOOR_STATE_OPEN){
-                $alarm_code = MFUN_HCU_FHYS_ALARM_DOOR1_OPEN;
-                $alarm_severity = MFUN_HCU_FHYS_ALARM_LEVEL_H;
-            }
-            elseif ($door_2==HUITP_IEID_UNI_DOOR_STATE_OPEN){
-                $alarm_code = MFUN_HCU_FHYS_ALARM_DOOR2_OPEN;
-                $alarm_severity = MFUN_HCU_FHYS_ALARM_LEVEL_H;
-            }
-            elseif ($door_3==HUITP_IEID_UNI_DOOR_STATE_OPEN){
-                $alarm_code = MFUN_HCU_FHYS_ALARM_DOOR3_OPEN;
-                $alarm_severity = MFUN_HCU_FHYS_ALARM_LEVEL_H;
-            }
-            elseif ($door_4==HUITP_IEID_UNI_DOOR_STATE_OPEN){
-                $alarm_code = MFUN_HCU_FHYS_ALARM_DOOR4_OPEN;
-                $alarm_severity = MFUN_HCU_FHYS_ALARM_LEVEL_H;
-            }
-            elseif ($waterState == HUITP_IEID_UNI_WATER_STATE_ACTIVE){
-                $alarm_code = MFUN_HCU_FHYS_ALARM_WATER;
-                $alarm_severity = MFUN_HCU_FHYS_ALARM_LEVEL_H;
-            }
-            elseif ($smokeState == HUITP_IEID_UNI_SMOKE_STATE_ACTIVE){
-                $alarm_code = MFUN_HCU_FHYS_ALARM_SMOK;
-                $alarm_severity = MFUN_HCU_FHYS_ALARM_LEVEL_H;
-            }
-            elseif ($fallState == HUITP_IEID_UNI_FALL_STATE_ACTIVE){
-                $alarm_code = MFUN_HCU_FHYS_ALARM_SMOK;
-                $alarm_severity = MFUN_HCU_FHYS_ALARM_LEVEL_M;
-            }
-            elseif ($shakeState == HUITP_IEID_UNI_SHAKE_STATE_ACTIVE){
-                $alarm_code = MFUN_HCU_FHYS_ALARM_VIBR;
-                $alarm_severity = MFUN_HCU_FHYS_ALARM_LEVEL_M;
-            }
-            elseif ($battValue < MFUN_L3APL_F3DM_TH_ALARM_BATT){
-                $alarm_code = MFUN_HCU_FHYS_ALARM_LOW_BATT;
-                $alarm_severity = MFUN_HCU_FHYS_ALARM_LEVEL_M;
-            }
-            elseif ($rssiValue < MFUN_L3APL_F3DM_TH_ALARM_GPRS_LOW){
-                $alarm_code = MFUN_HCU_FHYS_ALARM_LOW_SIG;
-                $alarm_severity = MFUN_HCU_FHYS_ALARM_LEVEL_L;
-            }
-            else{
-                $alarm_code = MFUN_HCU_FHYS_ALARM_NONE;
-                $alarm_severity = MFUN_HCU_FHYS_ALARM_LEVEL_0;
-            }
+        //低级告警
+        if ($fallState == HUITP_IEID_UNI_FALL_STATE_ACTIVE){
+            $alarm_code = MFUN_HCU_FHYS_ALARM_SMOK;
+            $alarmDesc = $objFhysAlarm->mfun_hcu_fhys_getAlarmDescription($alarm_code);
+            $alarmProc = $alarmProc."[{$alarmDesc}];";
+            $alarm_severity = MFUN_HCU_FHYS_ALARM_LEVEL_L;
+        }
+        if ($shakeState == HUITP_IEID_UNI_SHAKE_STATE_ACTIVE){
+            $alarm_code = MFUN_HCU_FHYS_ALARM_VIBR;
+            $alarmDesc = $objFhysAlarm->mfun_hcu_fhys_getAlarmDescription($alarm_code);
+            $alarmProc = $alarmProc."[{$alarmDesc}];";
+            $alarm_severity = MFUN_HCU_FHYS_ALARM_LEVEL_L;
+        }
+        //中级告警
+        if ($waterState == HUITP_IEID_UNI_WATER_STATE_ACTIVE){
+            $alarm_code = MFUN_HCU_FHYS_ALARM_WATER;
+            $alarmDesc = $objFhysAlarm->mfun_hcu_fhys_getAlarmDescription($alarm_code);
+            $alarmProc = $alarmProc."[{$alarmDesc}];";
+            $alarm_severity = MFUN_HCU_FHYS_ALARM_LEVEL_M;
+        }
+        if ($rssiValue < MFUN_L3APL_F3DM_TH_ALARM_GPRS_LOW){
+            $alarm_code = MFUN_HCU_FHYS_ALARM_LOW_SIG;
+            $alarmDesc = $objFhysAlarm->mfun_hcu_fhys_getAlarmDescription($alarm_code);
+            $alarmProc = $alarmProc."[{$alarmDesc}];";
+            $alarm_severity = MFUN_HCU_FHYS_ALARM_LEVEL_M;
+        }
+        if ($smokeState == HUITP_IEID_UNI_SMOKE_STATE_ACTIVE){
+            $alarm_code = MFUN_HCU_FHYS_ALARM_SMOK;
+            $alarmDesc = $objFhysAlarm->mfun_hcu_fhys_getAlarmDescription($alarm_code);
+            $alarmProc = $alarmProc."[{$alarmDesc}];";
+            $alarm_severity = MFUN_HCU_FHYS_ALARM_LEVEL_M;
+        }
+        //高级告警
+        if ($battValue < MFUN_L3APL_F3DM_TH_ALARM_BATT){
+            $alarm_code = MFUN_HCU_FHYS_ALARM_LOW_BATT;
+            $alarmDesc = $objFhysAlarm->mfun_hcu_fhys_getAlarmDescription($alarm_code);
+            $alarmProc = $alarmProc."[{$alarmDesc}];";
+            $alarm_severity = MFUN_HCU_FHYS_ALARM_LEVEL_H;
+        }
+        if ($reportType == HUITP_IEID_UNI_CCL_REPORT_TYPE_FAULT_EVENT AND $door_1 == HUITP_IEID_UNI_DOOR_STATE_OPEN){
+            $alarm_code = MFUN_HCU_FHYS_ALARM_DOOR1_OPEN;
+            $alarmDesc = $objFhysAlarm->mfun_hcu_fhys_getAlarmDescription($alarm_code);
+            $alarmProc = $alarmProc."[{$alarmDesc}];";
+            $alarm_severity = MFUN_HCU_FHYS_ALARM_LEVEL_H;
+        }
+        if ($reportType == HUITP_IEID_UNI_CCL_REPORT_TYPE_FAULT_EVENT AND $door_2 == HUITP_IEID_UNI_DOOR_STATE_OPEN){
+            $alarm_code = MFUN_HCU_FHYS_ALARM_DOOR2_OPEN;
+            $alarmDesc = $objFhysAlarm->mfun_hcu_fhys_getAlarmDescription($alarm_code);
+            $alarmProc = $alarmProc."[{$alarmDesc}];";
+            $alarm_severity = MFUN_HCU_FHYS_ALARM_LEVEL_H;
+        }
+        if ($reportType == HUITP_IEID_UNI_CCL_REPORT_TYPE_FAULT_EVENT AND $door_3 == HUITP_IEID_UNI_DOOR_STATE_OPEN){
+            $alarm_code = MFUN_HCU_FHYS_ALARM_DOOR3_OPEN;
+            $alarmDesc = $objFhysAlarm->mfun_hcu_fhys_getAlarmDescription($alarm_code);
+            $alarmProc = $alarmProc."[{$alarmDesc}];";
+            $alarm_severity = MFUN_HCU_FHYS_ALARM_LEVEL_H;
+        }
+        if ($reportType == HUITP_IEID_UNI_CCL_REPORT_TYPE_FAULT_EVENT AND $door_4 == HUITP_IEID_UNI_DOOR_STATE_OPEN){
+            $alarm_code = MFUN_HCU_FHYS_ALARM_DOOR4_OPEN;
+            $alarmDesc = $objFhysAlarm->mfun_hcu_fhys_getAlarmDescription($alarm_code);
+            $alarmProc = $alarmProc."[{$alarmDesc}];";
+            $alarm_severity = MFUN_HCU_FHYS_ALARM_LEVEL_H;
         }
 
         //告警等级大于0，则新插入一条新纪录
-        if(($alarm_severity != MFUN_HCU_FHYS_ALARM_LEVEL_0) AND ($alarm_code != MFUN_HCU_FHYS_ALARM_NONE))
-        {
+        if(($alarm_severity != MFUN_HCU_FHYS_ALARM_LEVEL_0) AND ($alarm_code != MFUN_HCU_FHYS_ALARM_NONE)) {
             //更新告警记录表
             $alarm_flag = MFUN_HCU_ALARM_PROC_FLAG_N;
-            $objFhysAlarm = new classConstFhysEngpar();
-            $alarmDesc = $objFhysAlarm->mfun_hcu_fhys_getAlarmDescription($alarm_code);
-            $alarmProc = "新增告警[{$alarmDesc}];";
             $query_str = "INSERT INTO `t_l3f5fm_fhys_alarmdata` (devcode,statcode,alarmflag,alarmseverity,alarmcode,tsgen,alarmproc)
                             VALUES ('$devCode','$statcode','$alarm_flag','$alarm_severity','$alarm_code','$currenttime','$alarmProc')";
             $result = $mysqli->query($query_str);

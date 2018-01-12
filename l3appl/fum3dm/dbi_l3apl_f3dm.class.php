@@ -835,16 +835,15 @@ class classDbiL3apF3dm
         array_push($resp["column"], "上次报告时间");
         array_push($resp["column"], "门锁-1状态");
         array_push($resp["column"], "门锁-2状态");
-        array_push($resp["column"], "门锁-3状态");
-        array_push($resp["column"], "门锁-4状态");
+        //array_push($resp["column"], "门锁-3状态");
+        //array_push($resp["column"], "门锁-4状态");
         array_push($resp["column"], "信号强度");
         array_push($resp["column"], "剩余电量");
         array_push($resp["column"], "温度");
         array_push($resp["column"], "湿度");
         array_push($resp["column"], "震动告警");
+        array_push($resp["column"], "倾斜告警");
         array_push($resp["column"], "水浸告警");
-        array_push($resp["column"], "烟雾告警");
-
 
         for($i=0; $i<count($auth_list); $i++)
         {
@@ -868,13 +867,12 @@ class classDbiL3apF3dm
             $dev_status = "状态未知";
             $doorlock_1 = "状态未知";
             $doorlock_2 = "状态未知";
-            $doorlock_3 = "状态未知";
-            $doorlock_4 = "状态未知";
-            $sig_level = "0";
+            //$doorlock_3 = "状态未知";
+            //$doorlock_4 = "状态未知";
             $batt_level = "0%";
             $vibr_alarm = "未知";
             $water_alarm = "未知";
-            $smok_alarm = "未知";
+            $fall_alarm = "未知";
             $temperature = "0";
             $humidity = "0%";
 
@@ -906,11 +904,11 @@ class classDbiL3apF3dm
                 elseif($row["lock_1"] == HUITP_IEID_UNI_LOCK_STATE_OPEN AND $row["door_1"] == HUITP_IEID_UNI_DOOR_STATE_CLOSE){
                     $doorlock_1 = "锁开门关";
                 }
-                elseif($row["lock_1"] == HUITP_IEID_UNI_LOCK_STATE_OPEN AND $row["door_1"] == HUITP_IEID_UNI_DOOR_STATE_INVALID){
+                else{
                     $doorlock_1 = "状态异常";
                 }
-                else{
-                    $doorlock_1 = "状态未知";
+                if($row["lock_1"] == HUITP_IEID_UNI_LOCK_STATE_NULL AND $row["door_1"] == HUITP_IEID_UNI_DOOR_STATE_NULL){
+                    $doorlock_1 = "未安装";
                 }
 
                 //门锁-2运行状态
@@ -929,14 +927,14 @@ class classDbiL3apF3dm
                 elseif($row["lock_2"] == HUITP_IEID_UNI_LOCK_STATE_OPEN AND $row["door_2"] == HUITP_IEID_UNI_DOOR_STATE_CLOSE){
                     $doorlock_2 = "锁开门关";
                 }
-                elseif($row["lock_2"] == HUITP_IEID_UNI_LOCK_STATE_OPEN AND $row["door_2"] == HUITP_IEID_UNI_DOOR_STATE_INVALID){
+                else{
                     $doorlock_2 = "状态异常";
                 }
-                else{
-                    $doorlock_2 = "状态未知";
+                if($row["lock_2"] == HUITP_IEID_UNI_LOCK_STATE_NULL AND $row["door_2"] == HUITP_IEID_UNI_DOOR_STATE_NULL){
+                    $doorlock_2 = "未安装";
                 }
 
-                //门锁-3运行状态
+/*                //门锁-3运行状态
                 if($row["lock_3"] == HUITP_IEID_UNI_LOCK_STATE_OPEN AND $row["door_3"] == HUITP_IEID_UNI_DOOR_STATE_OPEN){
                     $doorlock_3 = "门锁打开";
                 }
@@ -981,9 +979,9 @@ class classDbiL3apF3dm
                 else{
                     $doorlock_4 = "状态未知";
                 }
-
+*/
                 //更新GPRS信号强度
-                $sig_level = (string)$row["rssivalue"];
+                $sig_level = intval($row["rssivalue"]);
                 if ($sig_level < MFUN_L3APL_F3DM_TH_ALARM_GPRS_LOW)
                     $gprs = "较差";
                 elseif (($sig_level >= MFUN_L3APL_F3DM_TH_ALARM_GPRS_LOW) AND ($sig_level <= MFUN_L3APL_F3DM_TH_ALARM_GPRS_HIGH))
@@ -992,7 +990,10 @@ class classDbiL3apF3dm
                     $gprs = "良好";
 
                 //更新电池剩余电量
-                $batt_level = (string)($row["battvalue"])."%";
+                if($row["battvalue"] < 100)
+                    $batt_level = (string)($row["battvalue"])."%";
+                else
+                    $batt_level = "100%";
                 //更新温度,
                 $temperature = (string)($row["tempvalue"]);
                 //更新湿度
@@ -1007,25 +1008,25 @@ class classDbiL3apF3dm
                     $water_alarm = "有";
                 elseif($row["waterstate"] == HUITP_IEID_UNI_WATER_STATE_DEACTIVE)
                     $water_alarm = "无";
-                //更新烟雾告警状态
-                if($row["smokestate"] == HUITP_IEID_UNI_SMOKE_STATE_ACTIVE)
-                    $smok_alarm = "有";
-                elseif($row["smokestate"] == HUITP_IEID_UNI_SMOKE_STATE_DEACTIVE)
-                    $smok_alarm = "无";
+                //更新倾斜告警状态
+                if($row["fallstate"] == HUITP_IEID_UNI_FALL_STATE_ACTIVE)
+                    $fall_alarm = "有";
+                elseif($row["fallstate"] == HUITP_IEID_UNI_FALL_STATE_DEACTIVE)
+                    $fall_alarm = "无";
             }
             array_push($one_row, $dev_status);
             array_push($one_row, $last_report);
             array_push($one_row, $doorlock_1);
             array_push($one_row, $doorlock_2);
-            array_push($one_row, $doorlock_3);
-            array_push($one_row, $doorlock_4);
+            //array_push($one_row, $doorlock_3);
+            //array_push($one_row, $doorlock_4);
             array_push($one_row, $gprs);
             array_push($one_row, $batt_level);
             array_push($one_row, $temperature);
             array_push($one_row, $humidity);
             array_push($one_row, $vibr_alarm);
+            array_push($one_row, $fall_alarm);
             array_push($one_row, $water_alarm);
-            array_push($one_row, $smok_alarm);
 
             array_push($resp['data'], $one_row);
         }
@@ -1120,23 +1121,23 @@ class classDbiL3apF3dm
                 $doorlock_1_alarm = "false";
                 $doorlock_1_picname = "FHYS_locko";
             }
-            elseif($row["lock_1"] == HUITP_IEID_UNI_LOCK_STATE_OPEN AND $row["door_1"] == HUITP_IEID_UNI_DOOR_STATE_INVALID){
+            else{
                 $doorlock_1_status = "状态异常";
                 $doorlock_1_alarm = "true";
                 $doorlock_1_picname = "FHYS_locko";
             }
-            else{
-                $doorlock_1_status = "状态未知";
+            if ($row["lock_1"] == HUITP_IEID_UNI_LOCK_STATE_NULL OR $row["door_1"] == HUITP_IEID_UNI_DOOR_STATE_NULL) {
+                $doorlock_1_status = "未安装";
                 $doorlock_1_alarm = "true";
                 $doorlock_1_picname = "FHYS_lockc";
             }
 
             $temp = array(
-                        'AlarmName'=> "门锁-1 状态：",
-                        'AlarmEName'=> (string)$doorlock_1_picname,
-                        'AlarmValue'=> (string)$doorlock_1_status,
-                        'AlarmUnit'=> "",
-                        'WarningTarget'=>$doorlock_1_alarm);
+                'AlarmName'=> "门锁-1 状态：",
+                'AlarmEName'=> (string)$doorlock_1_picname,
+                'AlarmValue'=> (string)$doorlock_1_status,
+                'AlarmUnit'=> "",
+                'WarningTarget'=>$doorlock_1_alarm);
             array_push($currentvalue,$temp);
 
             //更新门锁-2运行状态
@@ -1165,13 +1166,13 @@ class classDbiL3apF3dm
                 $doorlock_2_alarm = "false";
                 $doorlock_2_picname = "FHYS_locko";
             }
-            elseif($row["lock_2"] == HUITP_IEID_UNI_LOCK_STATE_OPEN AND $row["door_2"] == HUITP_IEID_UNI_DOOR_STATE_INVALID){
+            else{
                 $doorlock_2_status = "状态异常";
                 $doorlock_2_alarm = "true";
                 $doorlock_2_picname = "FHYS_locko";
             }
-            else{
-                $doorlock_2_status = "状态未知";
+            if($row["lock_2"] == HUITP_IEID_UNI_LOCK_STATE_NULL OR $row["door_2"] == HUITP_IEID_UNI_DOOR_STATE_NULL){
+                $doorlock_2_status = "未安装";
                 $doorlock_2_alarm = "true";
                 $doorlock_2_picname = "FHYS_lockc";
             }
@@ -1200,7 +1201,7 @@ class classDbiL3apF3dm
                 }
 
                 $temp = array(
-                            'AlarmName'=>"GPRS信号强度：",
+                            'AlarmName'=>"信号强度：",
                             'AlarmEName'=> "FHYS_sig",
                             'AlarmValue'=>(string)$gprs,
                             'AlarmUnit'=>"",
@@ -1208,7 +1209,7 @@ class classDbiL3apF3dm
             }
             else{ //防止数据缺失，保持界面显示完整性
                 $temp = array(
-                    'AlarmName'=>"GPRS信号强度：",
+                    'AlarmName'=>"信号强度：",
                     'AlarmEName'=> "FHYS_sig",
                     'AlarmValue'=>"NULL",
                     'AlarmUnit'=>"",
@@ -1222,6 +1223,8 @@ class classDbiL3apF3dm
                     $alarm = "true";
                 else
                     $alarm = "false";
+                if ($battlevel > 100) $battlevel = 100;
+
                 $temp = array(
                             'AlarmName'=>"剩余电量：",
                             'AlarmEName'=> "FHYS_batt",
@@ -1249,7 +1252,7 @@ class classDbiL3apF3dm
                     'AlarmName' => "温度：",
                     'AlarmEName' => "FHYS_temp",
                     'AlarmValue' => (string)$temperature,
-                    'AlarmUnit' => " 摄氏度",
+                    'AlarmUnit' => " °C",
                     'WarningTarget' => $alarm );
             }
             else{ //防止数据缺失，保持界面显示完整性
@@ -1327,23 +1330,23 @@ class classDbiL3apF3dm
                 'WarningTarget'=>$alarm );
             array_push($currentvalue,$temp);
 
-            //更新烟雾告警状态
-            if($row["smokestate"] == HUITP_IEID_UNI_SMOKE_STATE_ACTIVE){
-                $smokalarm = "有";
+            //更新倾斜告警状态
+            if($row["fallstate"] == HUITP_IEID_UNI_FALL_STATE_ACTIVE){
+                $fallalarm = "有";
                 $alarm = "true";
             }
-            elseif($row["smokestate"] == HUITP_IEID_UNI_SMOKE_STATE_DEACTIVE){
-                $smokalarm = "无";
+            elseif($row["fallstate"] == HUITP_IEID_UNI_FALL_STATE_DEACTIVE){
+                $fallalarm = "无";
                 $alarm = "false";
             }
             else{
-                $smokalarm = "未知";
+                $fallalarm = "未知";
                 $alarm = "true";
             }
             $temp = array(
-                'AlarmName'=>"烟雾告警：",
+                'AlarmName'=>"倾斜告警：",
                 'AlarmEName'=> "FHYS_smok",
-                'AlarmValue'=>(string)$smokalarm,
+                'AlarmValue'=>(string)$fallalarm,
                 'AlarmUnit'=>"",
                 'WarningTarget'=>$alarm );
             array_push($currentvalue,$temp);

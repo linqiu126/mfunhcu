@@ -1426,10 +1426,9 @@ class classDbiL3apF5fm
         array_push($resp["column"], "负责人");
         array_push($resp["column"], "联系电话");
         array_push($resp["column"], "告警级别");
-        array_push($resp["column"], "告警内容");
         array_push($resp["column"], "告警产生时间");
         array_push($resp["column"], "告警关闭时间");
-        array_push($resp["column"], "告警处理");
+        array_push($resp["column"], "告警内容及处理");
 
         //初始化返回值，确保数据库查询不到的情况下界面返回数据长度不报错
         $statname = "";
@@ -1460,8 +1459,6 @@ class classDbiL3apF5fm
                 $devCode = $row["devcode"];
                 $alarmflag = $row["alarmflag"];
                 $alarmseverity = $row["alarmseverity"];
-                $alarmcode = intval($row["alarmcode"]) ;
-                $alarmdescription = $objFhysAlarm->mfun_hcu_fhys_getAlarmDescription($alarmcode);
                 $tsgen = $row["tsgen"];
                 $tsclose = $row["tsclose"];
                 $alarmproc = $row["alarmproc"];
@@ -1474,7 +1471,6 @@ class classDbiL3apF5fm
                 array_push($one_row, $chargeman);
                 array_push($one_row, $telephone);
                 array_push($one_row, $alarmseverity);
-                array_push($one_row, $alarmdescription);
                 array_push($one_row, $tsgen);
                 array_push($one_row, $tsclose);
                 array_push($one_row, $alarmproc);

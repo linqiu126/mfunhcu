@@ -223,11 +223,11 @@ class classConstFhysEngpar
         MFUN_HCU_FHYS_ALARM_LOCK2_OPEN => '锁-2暴力打开',
         MFUN_HCU_FHYS_ALARM_LOCK3_OPEN => '锁-3暴力打开',
         MFUN_HCU_FHYS_ALARM_LOCK4_OPEN => '锁-4暴力打开',
-        MFUN_HCU_FHYS_ALARM_SMOK => '烟雾报警',
-        MFUN_HCU_FHYS_ALARM_WATER => '水浸报警',
-        MFUN_HCU_FHYS_ALARM_VIBR => '震动报警',
-        MFUN_HCU_FHYS_ALARM_TILT => '箱体倾斜报警',
-        MFUN_HCU_FHYS_ALARM_LOW_SIG => 'GPRS信号强度弱',
+        MFUN_HCU_FHYS_ALARM_SMOK => '烟雾告警',
+        MFUN_HCU_FHYS_ALARM_WATER => '水浸告警',
+        MFUN_HCU_FHYS_ALARM_VIBR => '震动告警',
+        MFUN_HCU_FHYS_ALARM_TILT => '箱体倾斜告警',
+        MFUN_HCU_FHYS_ALARM_LOW_SIG => '信号弱告警',
         MFUN_HCU_FHYS_ALARM_LOW_BATT => '低电量告警'
     );
 
