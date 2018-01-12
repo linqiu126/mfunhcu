@@ -64,8 +64,8 @@ class classTaskL3aplF5fm
         $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
         $usercheck = $uiF1symDbObj->dbi_user_authcheck($action, $user);
         if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
-            $uiF3dmDbObj = new classDbiL3apF3dm(); //初始化一个UI DB对象
-            $table = $uiF3dmDbObj->dbi_aqyc_dev_alarmhistory_req($StatCode, $date, $alarmtype);
+            $uiF5fmDbObj = new classDbiL3apF5fm(); //初始化一个UI DB对象
+            $table = $uiF5fmDbObj->dbi_aqyc_dev_alarmhistory_req($StatCode, $date, $alarmtype);
 
             if(!empty($table)){
                 $ret = array('StatCode'=> $StatCode,

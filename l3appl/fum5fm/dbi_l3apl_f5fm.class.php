@@ -440,6 +440,966 @@ class classDbiL3apF5fm
         return $result;
     }
 
+    //UI AlarmQuery Request, 获取告警数据highchart
+    public function dbi_aqyc_dev_alarmhistory_req($statCode, $date, $alarm_type)
+    {
+        //建立连接
+        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli) {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $mysqli->query("SET NAMES utf8");
+
+        //根据监测点号查找对应的设备号
+        $query_str = "SELECT * FROM `t_l2sdk_iothcu_inventory` WHERE `statcode` = '$statCode'";
+        $result = $mysqli->query($query_str);
+        if (($result->num_rows) > 0) {
+            $row = $result->fetch_array();
+            $devcode = $row['devcode'];
+        }
+
+        //查询highchart坐标轴的最大和最小值
+        $query_str = "SELECT * FROM `t_l2snr_sensortype` WHERE `typeid` = '$alarm_type'";
+        $result = $mysqli->query($query_str);
+        if (($result->num_rows) > 0) {
+            $row = $result->fetch_array();
+            $value_min = $row['value_min']/1;
+            $value_max = $row['value_max']/1;
+            $resp["value_min"] = $value_min;
+            $resp["value_max"] = $value_max;
+        }
+
+        switch($alarm_type) {
+            case MFUN_L3APL_F3DM_AQYC_STYPE_PM:
+                $resp["alarm_name"] = "细颗粒物";
+                $resp["alarm_unit"] = "微克/立方米";
+                $resp["warning"] = MFUN_L3APL_F3DM_TH_ALARM_PM25;
+
+                $resp["minute_alarm"] = array();
+                $resp["minute_head"] = array();
+                $resp["hour_alarm"] = array();
+                $resp["hour_head"] = array();
+                $resp["day_alarm"] = array();
+                $resp["day_head"] = array();
+
+                //24小时的分钟图表
+                $query_str = "SELECT * FROM `t_l2snr_pm25data` WHERE `deviceid` = '$devcode' AND `reportdate` = '$date' ORDER BY `sid` ASC";
+                $result = $mysqli->query($query_str);
+                if ($result->num_rows > 0) {
+                    for($i=0; $i<$result->num_rows; $i++) {
+                        $row = $result->fetch_array();
+                        $data = $row["pm25"];
+                        $hourminindex = $row["hourminindex"];
+                        $hour = floor($hourminindex/60) ;
+                        $min = $hourminindex - $hour*60;
+                        $head = $hour.":".$min;
+                        array_push($resp["minute_alarm"], $data);
+                        array_push($resp["minute_head"], $head);
+                    }
+                }
+                else {
+                    //临时填的随机数
+                    for ($i=0; $i<(60*24); $i++){
+                        array_push($resp["minute_alarm"],0);
+                        array_push($resp["minute_head"],(string)$i);
+                    }
+                }
+
+                //一周小时图表
+                //$date = $date." 00:00:00";
+                $start_date = date('Y-m-d',strtotime($date)-6*24*60*60); //找到一周前的起始日期
+                $query_str = "SELECT * FROM `t_l2snr_pm25data` WHERE `deviceid` = '$devcode' AND `reportdate` between '$start_date' AND '$date' ORDER BY `sid` ASC";
+                $result = $mysqli->query($query_str);
+                if ($result->num_rows > 0) {
+                    //将一周内的数值，按小时归组，先按小时清零
+                    for ($day_index=0;$day_index<8;$day_index++) {
+                        for ($hour_index=0;$hour_index<24;$hour_index++) {
+                            $pm25[$day_index][$hour_index]["sum"]=0;
+                            $pm25[$day_index][$hour_index]["counter"]=0;
+                            $pm25[$day_index][$hour_index]["average"]=0;
+                        }
+                    }
+
+                    //将查询到的数值扔进去
+                    for($i=0; $i<$result->num_rows; $i++) {
+                        $row = $result->fetch_array();
+                        $data = $row["pm25"];
+                        $hourminindex = $row["hourminindex"];
+                        $hour_index = floor($hourminindex/60) ;
+
+                        // 取值这一周内的第几天
+                        $day_index = date("d",strtotime($row["reportdate"])-strtotime($start_date));
+                        $day_index = intval($day_index);
+
+                        $pm25[$day_index][$hour_index]["sum"] = $pm25[$day_index][$hour_index]["sum"] + $data;
+                        $pm25[$day_index][$hour_index]["counter"] ++;
+                    }
+
+                    //将一周内的数值，按小时求算术平均值
+                    for ($day_index=0;$day_index<7;$day_index++)
+                    {
+                        for ($hour_index=0;$hour_index<24;$hour_index++)
+                        {
+                            if ($pm25[$day_index][$hour_index]["counter"]!=0)
+                            {
+                                $pm25[$day_index][$hour_index]["average"]=$pm25[$day_index][$hour_index]["sum"]/$pm25[$day_index][$hour_index]["counter"];
+                            }
+                            else
+                            {
+                                $pm25[$day_index][$hour_index]["average"]=0; //或者跳过这个值？
+                            }
+
+                            $date_value = date("Y-m-d",strtotime($start_date) + $day_index*24*60*60);
+                            $head = $date_value." ".$hour_index.":00";
+                            $average = round($pm25[$day_index][$hour_index]["average"],1);
+                            array_push($resp["hour_alarm"], $average);
+                            array_push($resp["hour_head"], $head);
+                        }
+                    }
+
+                }
+                else
+                {
+                    for ($i=0; $i<(7*24); $i++){
+                        array_push($resp["hour_alarm"],0);
+                        array_push($resp["hour_head"],(string)$i);
+                    }
+                }
+
+
+                //30天按天的图表
+                $start_date = date('Y-m-d',strtotime($date)-29*24*60*60); //找到起始日期
+                $query_str = "SELECT * FROM `t_l2snr_pm25data` WHERE `deviceid` = '$devcode' AND `reportdate` between '$start_date' AND '$date'  ORDER BY `sid` ASC";
+                $result = $mysqli->query($query_str);
+                if ($result->num_rows > 0)
+                {
+                    //将30天内的数值，按天归组，先按天清零
+                    for ($day_index=0;$day_index<31;$day_index++)
+                    {
+                        $pm25[$day_index]["sum"]=0;
+                        $pm25[$day_index]["counter"]=0;
+                        $pm25[$day_index]["average"]=0;
+                    }
+
+                    //将查询到的数值扔进去
+                    for($i=0; $i<$result->num_rows; $i++)
+                    {
+                        $row = $result->fetch_array();
+                        $data = $row["pm25"];
+
+                        // 取值这30天内的第几天
+                        $day_index = date("d",strtotime($row["reportdate"])-strtotime($start_date));
+                        $day_index = intval($day_index);
+
+                        $pm25[$day_index]["sum"] = $pm25[$day_index]["sum"] + $data;
+                        $pm25[$day_index]["counter"] ++;
+
+                    }
+
+                    //将30天内的数值，按天求算术平均值
+                    for ($day_index=0;$day_index<30;$day_index++)
+                    {
+                        if ($pm25[$day_index]["counter"]!=0)
+                        {
+                            $pm25[$day_index]["average"]=$pm25[$day_index]["sum"]/$pm25[$day_index]["counter"];
+                        }
+                        else
+                        {
+                            $pm25[$day_index]["average"]=0; //或者跳过这个值？
+                        }
+
+                        $date_value = date("Y-m-d",strtotime($start_date) + $day_index*24*60*60);
+                        $head = $date_value;
+                        $average = round($pm25[$day_index]["average"],1);
+                        array_push($resp["day_alarm"], $average);
+                        array_push($resp["day_head"], $head);
+                    }
+
+                }
+                else
+                {
+                    for ($i=0; $i<30; $i++) {
+                        array_push($resp["day_alarm"], 0);
+                        array_push($resp["day_head"], (string)$i);
+                    }
+                }
+
+                break;
+
+            case MFUN_L3APL_F3DM_AQYC_STYPE_WINDSPD:
+                $resp["alarm_name"] = "风速";
+                $resp["alarm_unit"] = "米/秒";
+                $resp["warning"] = MFUN_L3APL_F3DM_TH_ALARM_WINDSPD;
+
+                $resp["minute_alarm"] = array();
+                $resp["minute_head"] = array();
+                $resp["hour_alarm"] = array();
+                $resp["hour_head"] = array();
+                $resp["day_alarm"] = array();
+                $resp["day_head"] = array();
+
+                //24小时的分钟图表
+                $query_str = "SELECT * FROM `t_l2snr_windspd` WHERE `deviceid` = '$devcode' AND `reportdate` = '$date' ORDER BY `sid` ASC";
+                $result = $mysqli->query($query_str);
+                if ($result->num_rows > 0)
+                {
+                    for($i=0; $i<$result->num_rows; $i++)
+                    {
+                        $row = $result->fetch_array();
+                        $data = $row["windspeed"];
+                        $hourminindex = $row["hourminindex"];
+                        $hour = floor($hourminindex/60) ;
+                        $min = $hourminindex - $hour*60;
+                        $head = $hour.":".$min;
+                        array_push($resp["minute_alarm"], $data);
+                        array_push($resp["minute_head"], $head);
+                    }
+                }
+                else
+                {
+                    //临时填的随机数
+                    for ($i=0; $i<(60*24); $i++){
+                        array_push($resp["minute_alarm"],0);
+                        array_push($resp["minute_head"],(string)$i);
+                    }
+                }
+
+                //一周小时图表
+                //$date = $date." 00:00:00";
+                $start_date = date('Y-m-d',strtotime($date)-6*24*60*60); //找到一周前的起始日期
+                $query_str = "SELECT * FROM `t_l2snr_windspd` WHERE `deviceid` = '$devcode' AND `reportdate` between '$start_date' AND '$date' ORDER BY `sid` ASC";
+                $result = $mysqli->query($query_str);
+                if ($result->num_rows > 0)
+                {
+                    //将一周内的数值，按小时归组，先按小时清零
+                    for ($day_index=0;$day_index<8;$day_index++)
+                    {
+                        for ($hour_index=0;$hour_index<24;$hour_index++)
+                        {
+                            $windspeed[$day_index][$hour_index]["sum"]=0;
+                            $windspeed[$day_index][$hour_index]["counter"]=0;
+                            $windspeed[$day_index][$hour_index]["average"]=0;
+                        }
+                    }
+
+                    //将查询到的数值扔进去
+                    for($i=0; $i<$result->num_rows; $i++)
+                    {
+                        $row = $result->fetch_array();
+                        $data = $row["windspeed"];
+                        $hourminindex = $row["hourminindex"];
+                        $hour_index = floor($hourminindex/60) ;
+
+                        // 取值这一周内的第几天
+                        $day_index = date("d",strtotime($row["reportdate"])-strtotime($start_date));
+                        $day_index = intval($day_index);
+
+                        $windspeed[$day_index][$hour_index]["sum"] = $windspeed[$day_index][$hour_index]["sum"] + $data;
+                        $windspeed[$day_index][$hour_index]["counter"] ++;
+
+                    }
+
+                    //将一周内的数值，按小时求算术平均值
+                    for ($day_index=0;$day_index<7;$day_index++)
+                    {
+                        for ($hour_index=0;$hour_index<24;$hour_index++)
+                        {
+                            if ($windspeed[$day_index][$hour_index]["counter"]!=0)
+                            {
+                                $windspeed[$day_index][$hour_index]["average"]=$windspeed[$day_index][$hour_index]["sum"]/$windspeed[$day_index][$hour_index]["counter"];
+                            }
+                            else
+                            {
+                                $windspeed[$day_index][$hour_index]["average"]=0; //或者跳过这个值？
+                            }
+
+                            $date_value = date("Y-m-d",strtotime($start_date) + $day_index*24*60*60);
+                            $head = $date_value." ".$hour_index.":00";
+                            $average = round($windspeed[$day_index][$hour_index]["average"],1);
+                            array_push($resp["hour_alarm"], $average);
+                            array_push($resp["hour_head"], $head);
+                        }
+                    }
+
+                }
+                else
+                {
+                    for ($i=0; $i<(7*24); $i++){
+                        array_push($resp["hour_alarm"],0);
+                        array_push($resp["hour_head"],(string)$i);
+                    }
+                }
+
+
+                //30天按天的图表
+                $start_date = date('Y-m-d',strtotime($date)-29*24*60*60); //找到起始日期
+                $query_str = "SELECT * FROM `t_l2snr_windspd` WHERE `deviceid` = '$devcode' AND `reportdate` between '$start_date' AND '$date' ORDER BY `sid` ASC";
+                $result = $mysqli->query($query_str);
+                if ($result->num_rows > 0)
+                {
+                    //将30天内的数值，按天归组，先按天清零
+                    for ($day_index=0;$day_index<31;$day_index++)
+                    {
+                        $windspeed[$day_index]["sum"]=0;
+                        $windspeed[$day_index]["counter"]=0;
+                        $windspeed[$day_index]["average"]=0;
+                    }
+
+                    //将查询到的数值扔进去
+                    for($i=0; $i<$result->num_rows; $i++)
+                    {
+                        $row = $result->fetch_array();
+                        $data = $row["windspeed"];
+
+                        // 取值这30天内的第几天
+                        $day_index = date("d",strtotime($row["reportdate"])-strtotime($start_date));
+                        $day_index = intval($day_index);
+
+                        $windspeed[$day_index]["sum"] = $windspeed[$day_index]["sum"] + $data;
+                        $windspeed[$day_index]["counter"] ++;
+
+                    }
+
+                    //将30天内的数值，按天求算术平均值
+                    for ($day_index=0;$day_index<30;$day_index++)
+                    {
+                        if ($windspeed[$day_index]["counter"]!=0)
+                        {
+                            $windspeed[$day_index]["average"]=$windspeed[$day_index]["sum"]/$windspeed[$day_index]["counter"];
+                        }
+                        else
+                        {
+                            $windspeed[$day_index]["average"]=0; //或者跳过这个值？
+                        }
+
+                        $date_value = date("Y-m-d",strtotime($start_date) + $day_index*24*60*60);
+                        $head = $date_value;
+                        $average = round($windspeed[$day_index]["average"],1);
+                        array_push($resp["day_alarm"], $average);
+                        array_push($resp["day_head"], $head);
+                    }
+
+                }
+                else
+                {
+                    for ($i=0; $i<30; $i++) {
+                        array_push($resp["day_alarm"], 0);
+                        array_push($resp["day_head"], (string)$i);
+                    }
+                }
+
+                break;
+
+            case MFUN_L3APL_F3DM_AQYC_STYPE_WINDDIR:
+                $resp["alarm_name"] = "风向";
+                $resp["alarm_unit"] = "度";
+                $resp["warning"] = MFUN_L3APL_F3DM_TH_ALARM_WINDDIR;
+
+                $resp["minute_alarm"] = array();
+                $resp["minute_head"] = array();
+                $resp["hour_alarm"] = array();
+                $resp["hour_head"] = array();
+                $resp["day_alarm"] = array();
+                $resp["day_head"] = array();
+
+                $query_str = "SELECT * FROM `t_l2snr_winddir` WHERE `deviceid` = '$devcode' AND `reportdate` = '$date' ORDER BY `sid` ASC";
+                $result = $mysqli->query($query_str);
+                if ($result->num_rows > 0)
+                {
+                    for($i=0; $i<$result->num_rows; $i++)
+                    {
+                        $row = $result->fetch_array();
+                        $data = $row["winddirection"];
+                        $huorminindex = $row["hourminindex"];
+                        $hour = floor($huorminindex/60) ;
+                        $min = $huorminindex - $hour*60;
+                        $head = $hour.":".$min;
+                        array_push($resp["minute_alarm"], $data);
+                        array_push($resp["minute_head"], $head);
+                    }
+                    //临时填的随机数
+                    for ($i=0; $i<(7*24); $i++){
+                        array_push($resp["hour_alarm"],0);
+                        array_push($resp["hour_head"],(string)$i);
+                    }
+                    for ($i=0; $i<30; $i++){
+                        array_push($resp["day_alarm"],0);
+                        array_push($resp["day_head"],(string)$i);
+                    }
+                }
+                else
+                {
+                    //临时填的随机数
+                    for ($i=0; $i<(60*24); $i++){
+                        array_push($resp["minute_alarm"],0);
+                        array_push($resp["minute_head"],(string)$i);
+                    }
+                    for ($i=0; $i<(7*24); $i++){
+                        array_push($resp["hour_alarm"],0);
+                        array_push($resp["hour_head"],(string)$i);
+                    }
+                    for ($i=0; $i<30; $i++){
+                        array_push($resp["day_alarm"],0);
+                        array_push($resp["day_head"],(string)$i);
+                    }
+                }
+                break;
+
+            case MFUN_L3APL_F3DM_AQYC_STYPE_EMC:
+                $resp["alarm_name"] = "电磁辐射";
+                $resp["alarm_unit"] = "毫瓦/平方毫米";
+                $resp["warning"] = MFUN_L3APL_F3DM_TH_ALARM_EMC;
+
+                $resp["minute_alarm"] = array();
+                $resp["minute_head"] = array();
+                $resp["hour_alarm"] = array();
+                $resp["hour_head"] = array();
+                $resp["day_alarm"] = array();
+                $resp["day_head"] = array();
+
+                $query_str = "SELECT * FROM `t_l2snr_emcdata` WHERE `deviceid` = '$devcode' AND `reportdate` = '$date' ORDER BY `sid` ASC";
+                $result = $mysqli->query($query_str);
+                if ($result->num_rows > 0)
+                {
+                    for($i=0; $i<$result->num_rows; $i++)
+                    {
+                        $row = $result->fetch_array();
+                        $data = $row["emcvalue"]/100;
+                        $huorminindex = $row["hourminindex"];
+                        $hour = floor($huorminindex/60) ;
+                        $min = $huorminindex - $hour*60;
+                        $head = $hour.":".$min;
+                        array_push($resp["minute_alarm"], $data);
+                        array_push($resp["minute_head"], $head);
+                    }
+                    //临时填的随机数
+                    for ($i=0; $i<(7*24); $i++){
+                        array_push($resp["hour_alarm"],0);
+                        array_push($resp["hour_head"],(string)$i);
+                    }
+                    for ($i=0; $i<30; $i++){
+                        array_push($resp["day_alarm"],0);
+                        array_push($resp["day_head"],(string)$i);
+                    }
+                }
+                else
+                {
+                    //临时填的随机数
+                    for ($i=0; $i<(60*24); $i++){
+                        array_push($resp["minute_alarm"],0);
+                        array_push($resp["minute_head"],(string)$i);
+                    }
+                    for ($i=0; $i<(7*24); $i++){
+                        array_push($resp["hour_alarm"],0);
+                        array_push($resp["hour_head"],(string)$i);
+                    }
+                    for ($i=0; $i<30; $i++){
+                        array_push($resp["day_alarm"],0);
+                        array_push($resp["day_head"],(string)$i);
+                    }
+                }
+                break;
+
+            case MFUN_L3APL_F3DM_AQYC_STYPE_TEMP:
+                $resp["alarm_name"] = "温度";
+                $resp["alarm_unit"] = "摄氏度";
+                $resp["warning"] = MFUN_L3APL_F3DM_TH_ALARM_TEMP;
+
+                $resp["minute_alarm"] = array();
+                $resp["minute_head"] = array();
+                $resp["hour_alarm"] = array();
+                $resp["hour_head"] = array();
+                $resp["day_alarm"] = array();
+                $resp["day_head"] = array();
+
+                //24小时的分钟图表
+                $query_str = "SELECT * FROM `t_l2snr_tempdata` WHERE `deviceid` = '$devcode' AND `reportdate` = '$date' ORDER BY `sid` ASC";
+                $result = $mysqli->query($query_str);
+                if ($result->num_rows > 0)
+                {
+                    for($i=0; $i<$result->num_rows; $i++)
+                    {
+                        $row = $result->fetch_array();
+                        $data = $row["temperature"];
+                        $hourminindex = $row["hourminindex"];
+                        $hour = floor($hourminindex/60) ;
+                        $min = $hourminindex - $hour*60;
+                        $head = $hour.":".$min;
+                        array_push($resp["minute_alarm"], $data);
+                        array_push($resp["minute_head"], $head);
+                    }
+                }
+                else
+                {
+                    //临时填的随机数
+                    for ($i=0; $i<(60*24); $i++){
+                        array_push($resp["minute_alarm"],0);
+                        array_push($resp["minute_head"],(string)$i);
+                    }
+                }
+
+                //一周小时图表
+                //$date = $date." 00:00:00";
+                $start_date = date('Y-m-d',strtotime($date)-6*24*60*60); //找到一周前的起始日期
+                $query_str = "SELECT * FROM `t_l2snr_tempdata` WHERE `deviceid` = '$devcode' AND `reportdate` between '$start_date' AND '$date' ORDER BY `sid` ASC";
+                $result = $mysqli->query($query_str);
+                if ($result->num_rows > 0)
+                {
+                    //将一周内的数值，按小时归组，先按小时清零
+                    for ($day_index=0;$day_index<8;$day_index++)
+                    {
+                        for ($hour_index=0;$hour_index<24;$hour_index++)
+                        {
+                            $temperature[$day_index][$hour_index]["sum"]=0;
+                            $temperature[$day_index][$hour_index]["counter"]=0;
+                            $temperature[$day_index][$hour_index]["average"]=0;
+                        }
+                    }
+
+                    //将查询到的数值扔进去
+                    for($i=0; $i<$result->num_rows; $i++)
+                    {
+                        $row = $result->fetch_array();
+                        $data = $row["temperature"];
+                        $hourminindex = $row["hourminindex"];
+                        $hour_index = floor($hourminindex/60) ;
+
+                        // 取值这一周内的第几天
+                        $day_index = date("d",strtotime($row["reportdate"])-strtotime($start_date));
+                        $day_index = intval($day_index);
+
+                        $temperature[$day_index][$hour_index]["sum"] = $temperature[$day_index][$hour_index]["sum"] + $data;
+                        $temperature[$day_index][$hour_index]["counter"] ++;
+
+                    }
+
+                    //将一周内的数值，按小时求算术平均值
+                    for ($day_index=0;$day_index<7;$day_index++)
+                    {
+                        for ($hour_index=0;$hour_index<24;$hour_index++)
+                        {
+                            if ($temperature[$day_index][$hour_index]["counter"]!=0)
+                            {
+                                $temperature[$day_index][$hour_index]["average"]=$temperature[$day_index][$hour_index]["sum"]/$temperature[$day_index][$hour_index]["counter"];
+                            }
+                            else
+                            {
+                                $temperature[$day_index][$hour_index]["average"]=0; //或者跳过这个值？
+                            }
+
+                            $date_value = date("Y-m-d",strtotime($start_date) + $day_index*24*60*60);
+                            $head = $date_value." ".$hour_index.":00";
+                            $average = round($temperature[$day_index][$hour_index]["average"],1);
+                            array_push($resp["hour_alarm"], $average);
+                            array_push($resp["hour_head"], $head);
+                        }
+                    }
+                }
+                else
+                {
+                    for ($i=0; $i<(7*24); $i++){
+                        array_push($resp["hour_alarm"],0);
+                        array_push($resp["hour_head"],(string)$i);
+                    }
+                }
+
+                //30天按天的图表
+                $start_date = date('Y-m-d',strtotime($date)-29*24*60*60); //找到起始日期
+                $query_str = "SELECT * FROM `t_l2snr_tempdata` WHERE `deviceid` = '$devcode' AND `reportdate` between '$start_date' AND '$date' ORDER BY `sid` ASC";
+                $result = $mysqli->query($query_str);
+                if ($result->num_rows > 0)
+                {
+                    //将30天内的数值，按天归组，先按天清零
+                    for ($day_index=0;$day_index<31;$day_index++)
+                    {
+                        $noise[$day_index]["sum"]=0;
+                        $noise[$day_index]["counter"]=0;
+                        $noise[$day_index]["average"]=0;
+                    }
+
+                    //将查询到的数值扔进去
+                    for($i=0; $i<$result->num_rows; $i++)
+                    {
+                        $row = $result->fetch_array();
+                        $data = $row["temperature"];
+
+                        // 取值这30天内的第几天
+                        $day_index = date("d",strtotime($row["reportdate"])-strtotime($start_date));
+                        $day_index = intval($day_index);
+
+                        $temperature[$day_index]["sum"] = $temperature[$day_index]["sum"] + $data;
+                        $temperature[$day_index]["counter"] ++;
+
+                    }
+
+                    //将30天内的数值，按天求算术平均值
+                    for ($day_index=0;$day_index<30;$day_index++)
+                    {
+                        if ($temperature[$day_index]["counter"]!=0)
+                        {
+                            $temperature[$day_index]["average"]=$temperature[$day_index]["sum"]/$temperature[$day_index]["counter"];
+                        }
+                        else
+                        {
+                            $temperature[$day_index]["average"]=0; //或者跳过这个值？
+                        }
+
+                        $date_value = date("Y-m-d",strtotime($start_date) + $day_index*24*60*60);
+                        $head = $date_value;
+                        $average = round($temperature[$day_index]["average"],1);
+                        array_push($resp["day_alarm"], $average);
+                        array_push($resp["day_head"], $head);
+                    }
+                }
+                else
+                {
+                    for ($i=0; $i<30; $i++) {
+                        array_push($resp["day_alarm"], 0);
+                        array_push($resp["day_head"], (string)$i);
+                    }
+                }
+
+                break;
+
+            case MFUN_L3APL_F3DM_AQYC_STYPE_HUMID:
+                $resp["alarm_name"] = "湿度";
+                $resp["alarm_unit"] = "%";
+                $resp["warning"] = MFUN_L3APL_F3DM_TH_ALARM_HUMID;
+
+                $resp["minute_alarm"] = array();
+                $resp["minute_head"] = array();
+                $resp["hour_alarm"] = array();
+                $resp["hour_head"] = array();
+                $resp["day_alarm"] = array();
+                $resp["day_head"] = array();
+
+                //24小时的分钟图表
+                $query_str = "SELECT * FROM `t_l2snr_humiddata` WHERE `deviceid` = '$devcode' AND `reportdate` = '$date' ORDER BY `sid` ASC";
+                $result = $mysqli->query($query_str);
+                if ($result->num_rows > 0)
+                {
+                    for($i=0; $i<$result->num_rows; $i++)
+                    {
+                        $row = $result->fetch_array();
+                        $data = $row["humidity"];
+                        $hourminindex = $row["hourminindex"];
+                        $hour = floor($hourminindex/60) ;
+                        $min = $hourminindex - $hour*60;
+                        $head = $hour.":".$min;
+                        array_push($resp["minute_alarm"], $data);
+                        array_push($resp["minute_head"], $head);
+                    }
+                }
+                else
+                {
+                    //临时填的随机数
+                    for ($i=0; $i<(60*24); $i++){
+                        array_push($resp["minute_alarm"],0);
+                        array_push($resp["minute_head"],(string)$i);
+                    }
+                }
+
+                //一周小时图表
+                //$date = $date." 00:00:00";
+                $start_date = date('Y-m-d',strtotime($date)-6*24*60*60); //找到一周前的起始日期
+                $date_temp = $start_date;
+                $query_str = "SELECT * FROM `t_l2snr_humiddata` WHERE `deviceid` = '$devcode' AND `reportdate` between '$start_date' AND '$date' ORDER BY `sid` ASC";
+                $result = $mysqli->query($query_str);
+                if ($result->num_rows > 0)
+                {
+                    //将一周内的数值，按小时归组，先按小时清零
+                    for ($day_index=0;$day_index<8;$day_index++)
+                    {
+                        for ($hour_index=0;$hour_index<24;$hour_index++)
+                        {
+                            $humidity[$day_index][$hour_index]["sum"]=0;
+                            $humidity[$day_index][$hour_index]["counter"]=0;
+                            $humidity[$day_index][$hour_index]["average"]=0;
+                        }
+                    }
+
+                    //将查询到的数值扔进去
+                    for($i=0; $i<$result->num_rows; $i++)
+                    {
+                        $row = $result->fetch_array();
+                        $data = $row["humidity"];
+                        $hourminindex = $row["hourminindex"];
+                        $hour_index = floor($hourminindex/60) ;
+
+                        // 取值这一周内的第几天
+                        $day_index = date("d",strtotime($row["reportdate"])-strtotime($start_date));
+                        $day_index = intval($day_index);
+
+                        $humidity[$day_index][$hour_index]["sum"] = $humidity[$day_index][$hour_index]["sum"] + $data;
+                        $humidity[$day_index][$hour_index]["counter"] ++;
+
+                    }
+
+                    //将一周内的数值，按小时求算术平均值
+                    for ($day_index=0;$day_index<7;$day_index++)
+                    {
+                        for ($hour_index=0;$hour_index<24;$hour_index++)
+                        {
+                            if ($humidity[$day_index][$hour_index]["counter"]!=0)
+                            {
+                                $humidity[$day_index][$hour_index]["average"]=$humidity[$day_index][$hour_index]["sum"]/$humidity[$day_index][$hour_index]["counter"];
+                            }
+                            else
+                            {
+                                $humidity[$day_index][$hour_index]["average"]=0; //或者跳过这个值？
+                            }
+
+                            $date_value = date("Y-m-d",strtotime($start_date) + $day_index*24*60*60);
+                            $head = $date_value." ".$hour_index.":00";
+                            $average = round($humidity[$day_index][$hour_index]["average"],1);
+                            array_push($resp["hour_alarm"], $average);
+                            array_push($resp["hour_head"], $head);
+                        }
+                    }
+
+                }
+                else
+                {
+                    for ($i=0; $i<(7*24); $i++){
+                        array_push($resp["hour_alarm"],0);
+                        array_push($resp["hour_head"],(string)$i);
+                    }
+                }
+
+
+                //30天按天的图表
+                $start_date = date('Y-m-d',strtotime($date)-29*24*60*60); //找到起始日期
+                $query_str = "SELECT * FROM `t_l2snr_humiddata` WHERE `deviceid` = '$devcode' AND `reportdate` between '$start_date' AND '$date' ORDER BY `sid` ASC";
+                $result = $mysqli->query($query_str);
+                if ($result->num_rows > 0)
+                {
+                    //将30天内的数值，按天归组，先按天清零
+                    for ($day_index=0;$day_index<31;$day_index++)
+                    {
+                        $noise[$day_index]["sum"]=0;
+                        $noise[$day_index]["counter"]=0;
+                        $noise[$day_index]["average"]=0;
+                    }
+
+                    //将查询到的数值扔进去
+                    for($i=0; $i<$result->num_rows; $i++)
+                    {
+                        $row = $result->fetch_array();
+                        $data = $row["humidity"];
+
+                        // 取值这30天内的第几天
+                        $day_index = date("d",strtotime($row["reportdate"])-strtotime($start_date));
+                        $day_index = intval($day_index);
+
+                        $humidity[$day_index]["sum"] = $humidity[$day_index]["sum"] + $data;
+                        $humidity[$day_index]["counter"] ++;
+
+                    }
+
+                    //将30天内的数值，按天求算术平均值
+                    for ($day_index=0;$day_index<30;$day_index++)
+                    {
+                        if ($humidity[$day_index]["counter"]!=0)
+                        {
+                            $humidity[$day_index]["average"]=$humidity[$day_index]["sum"]/$humidity[$day_index]["counter"];
+                        }
+                        else
+                        {
+                            $humidity[$day_index]["average"]=0; //或者跳过这个值？
+                        }
+
+                        $date_value = date("Y-m-d",strtotime($start_date) + $day_index*24*60*60);
+                        $head = $date_value;
+                        $average = round($humidity[$day_index]["average"],1);
+                        array_push($resp["day_alarm"], $average);
+                        array_push($resp["day_head"], $head);
+                    }
+
+                }
+                else
+                {
+                    for ($i=0; $i<30; $i++) {
+                        array_push($resp["day_alarm"], 0);
+                        array_push($resp["day_head"], (string)$i);
+                    }
+                }
+
+                break;
+
+            case MFUN_L3APL_F3DM_AQYC_STYPE_NOISE:
+                $resp["alarm_name"] = "噪声";
+                $resp["alarm_unit"] = "分贝";
+                $resp["warning"] = MFUN_L3APL_F3DM_TH_ALARM_NOISE;
+
+                $resp["minute_alarm"] = array();
+                $resp["minute_head"] = array();
+                $resp["hour_alarm"] = array();
+                $resp["hour_head"] = array();
+                $resp["day_alarm"] = array();
+                $resp["day_head"] = array();
+
+                //24小时的分钟图表
+                $query_str = "SELECT * FROM `t_l2snr_noisedata` WHERE `deviceid` = '$devcode' AND `reportdate` = '$date' ORDER BY `sid` ASC";
+                $result = $mysqli->query($query_str);
+                if ($result->num_rows > 0)
+                {
+                    for($i=0; $i<$result->num_rows; $i++)
+                    {
+                        $row = $result->fetch_array();
+                        $data = $row["noise"];
+                        $hourminindex = $row["hourminindex"];
+                        $hour = floor($hourminindex/60) ;
+                        $min = $hourminindex - $hour*60;
+                        $head = $hour.":".$min;
+                        $data=intval($data);
+                        array_push($resp["minute_alarm"], $data);
+                        array_push($resp["minute_head"], $head);
+                    }
+                }
+                else
+                {
+                    //临时填的随机数
+                    for ($i=0; $i<(60*24); $i++){
+                        array_push($resp["minute_alarm"],0);
+                        array_push($resp["minute_head"],(string)$i);
+                    }
+                }
+
+                //一周小时图表
+                //$date = $date." 00:00:00";
+                $start_date = date('Y-m-d',strtotime($date)-6*24*60*60); //找到一周前的起始日期
+                $date_temp = $start_date;
+                $query_str = "SELECT * FROM `t_l2snr_noisedata` WHERE `deviceid` = '$devcode' AND `reportdate` between '$start_date' AND '$date' ORDER BY `sid` ASC";
+                $result = $mysqli->query($query_str);
+                if ($result->num_rows > 0)
+                {
+                    //将一周内的数值，按小时归组，先按小时清零
+                    for ($day_index=0;$day_index<8;$day_index++)
+                    {
+                        for ($hour_index=0;$hour_index<24;$hour_index++)
+                        {
+                            $noise[$day_index][$hour_index]["sum"]=0;
+                            $noise[$day_index][$hour_index]["counter"]=0;
+                            $noise[$day_index][$hour_index]["average"]=0;
+                        }
+                    }
+
+                    //将查询到的数值扔进去
+                    for($i=0; $i<$result->num_rows; $i++)
+                    {
+                        $row = $result->fetch_array();
+                        $data = $row["noise"];
+                        $hourminindex = $row["hourminindex"];
+                        $hour_index = floor($hourminindex/60) ;
+
+                        // 取值这一周内的第几天
+                        $day_index = date("d",strtotime($row["reportdate"])-strtotime($start_date));
+                        $day_index = intval($day_index);
+
+                        $noise[$day_index][$hour_index]["sum"] = $noise[$day_index][$hour_index]["sum"] + $data;
+                        $noise[$day_index][$hour_index]["counter"] ++;
+
+                    }
+
+                    //将一周内的数值，按小时求算术平均值
+                    for ($day_index=0;$day_index<7;$day_index++)
+                    {
+                        for ($hour_index=0;$hour_index<24;$hour_index++)
+                        {
+                            if ($noise[$day_index][$hour_index]["counter"]!=0)
+                            {
+                                $noise[$day_index][$hour_index]["average"]=$noise[$day_index][$hour_index]["sum"]/$noise[$day_index][$hour_index]["counter"];
+                            }
+                            else
+                            {
+                                $noise[$day_index][$hour_index]["average"]=0; //或者跳过这个值？
+                            }
+
+                            $date_value = date("Y-m-d",strtotime($start_date) + $day_index*24*60*60);
+                            $head = $date_value." ".$hour_index.":00";
+                            $average = round($noise[$day_index][$hour_index]["average"],1);
+                            array_push($resp["hour_alarm"], $average);
+                            array_push($resp["hour_head"], $head);
+                        }
+                    }
+
+                }
+                else
+                {
+                    for ($i=0; $i<(7*24); $i++){
+                        array_push($resp["hour_alarm"],0);
+                        array_push($resp["hour_head"],(string)$i);
+                    }
+                }
+
+                //30天按天的图表
+                $start_date = date('Y-m-d',strtotime($date)-29*24*60*60); //找到起始日期
+                $query_str = "SELECT * FROM `t_l2snr_noisedata` WHERE `deviceid` = '$devcode' AND `reportdate` between '$start_date' AND '$date' ORDER BY `sid` ASC";
+                $result = $mysqli->query($query_str);
+                if ($result->num_rows > 0)
+                {
+                    //将30天内的数值，按天归组，先按天清零
+                    for ($day_index=0;$day_index<31;$day_index++)
+                    {
+                        $noise[$day_index]["sum"]=0;
+                        $noise[$day_index]["counter"]=0;
+                        $noise[$day_index]["average"]=0;
+                    }
+
+                    //将查询到的数值扔进去
+                    for($i=0; $i<$result->num_rows; $i++)
+                    {
+                        $row = $result->fetch_array();
+                        $data = $row["noise"];
+
+                        // 取值这30天内的第几天
+                        $day_index = date("d",strtotime($row["reportdate"])-strtotime($start_date));
+                        $day_index = intval($day_index);
+
+                        $noise[$day_index]["sum"] = $noise[$day_index]["sum"] + $data;
+                        $noise[$day_index]["counter"] ++;
+
+                    }
+
+                    //将30天内的数值，按天求算术平均值
+                    for ($day_index=0;$day_index<30;$day_index++)
+                    {
+                        if ($noise[$day_index]["counter"]!=0)
+                        {
+                            $noise[$day_index]["average"]=$noise[$day_index]["sum"]/$noise[$day_index]["counter"];
+                        }
+                        else
+                        {
+                            $noise[$day_index]["average"]=0; //或者跳过这个值？
+                        }
+
+                        $date_value = date("Y-m-d",strtotime($start_date) + $day_index*24*60*60);
+                        $head = $date_value;
+                        $average = round($noise[$day_index]["average"],1);
+                        array_push($resp["day_alarm"], $average);
+                        array_push($resp["day_head"], $head);
+                    }
+
+                }
+                else
+                {
+                    for ($i=0; $i<30; $i++) {
+                        array_push($resp["day_alarm"], 0);
+                        array_push($resp["day_head"], (string)$i);
+                    }
+                }
+
+                break;
+
+            default:
+                $resp = "";
+                break;
+        }
+
+        $mysqli->close();
+        return $resp;
+    }
+
     /*********************************智能云锁新增处理************************************************/
     public function dbi_fhys_alarm_history_table_req($uid)
     {
