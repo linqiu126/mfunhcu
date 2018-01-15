@@ -402,7 +402,7 @@ class classDbiL3apF11faam
     }
 
     //UI StaffTable request, 获取所有员工信息表
-    public function dbi_faam_stafftable_query($uid,$start,$query_length,$keyword)
+    public function dbi_faam_stafftable_query($uid,$start,$query_length,$keyword,$containLeave)
     {
         //建立连接
         $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
@@ -411,49 +411,103 @@ class classDbiL3apF11faam
         }
         $mysqli->query("SET NAMES utf8");
 
-        //考虑到多工厂情况，将来需要根据登录用户属性选择对应工厂的员工列表显示
-        $pjCode = $this->dbi_get_user_auth_factory($mysqli, $uid);
-        $staffTable = array(); //初始化
-        $query_str = "SELECT * FROM `t_l3f11faam_membersheet` WHERE (`pjcode` = '$pjCode')";
-        $result = $mysqli->query($query_str);
-        //没有关键字查询
-        if (empty($keyword)){
-            while (($result != false) && (($row = $result->fetch_array()) > 0)) {
-                $temp = array(
-                    'id' => $row['mid'],
-                    'name' => $row['employee'],
-                    'PJcode'=> $row['pjcode'],
-                    'nickname' => $row['openid'],
-                    'mobile' => $row['phone'],
-                    'gender' => $row['gender'],
-                    'address' => $row['address'],
-                    'salary' => $row['unitprice'],
-                    'position' => $row['position'],
-                    'KPI' => $row['standardnum'],
-                    'memo' => $row['memo']
-                );
-                array_push($staffTable, $temp);
+        if ($containLeave == "true") { //包含离职员工
+            //考虑到多工厂情况，将来需要根据登录用户属性选择对应工厂的员工列表显示
+            $pjCode = $this->dbi_get_user_auth_factory($mysqli, $uid);
+            $staffTable = array(); //初始化
+            $query_str = "SELECT * FROM `t_l3f11faam_membersheet` WHERE (`pjcode` = '$pjCode')";
+            $result = $mysqli->query($query_str);
+            //没有关键字查询
+            if (empty($keyword)){
+                while (($result != false) && (($row = $result->fetch_array()) > 0)) {
+                    $temp = array(
+                        'id' => $row['mid'],
+                        'name' => $row['employee'],
+                        'PJcode'=> $row['pjcode'],
+                        'nickname' => $row['openid'],
+                        'mobile' => $row['phone'],
+                        'gender' => $row['gender'],
+                        'address' => $row['address'],
+                        'salary' => $row['unitprice'],
+                        'position' => $row['position'],
+                        'status' => (string)$row['onjob'],
+                        'KPI' => $row['standardnum'],
+                        'memo' => $row['memo']
+                    );
+                    array_push($staffTable, $temp);
+                }
+            }
+            //有关键字模糊查询
+            else{
+                $query_str = "SELECT * FROM `t_l3f11faam_membersheet` where (`pjcode` = '$pjCode' AND concat(`employee`,`phone`) like '%$keyword%')";
+                $result = $mysqli->query($query_str);
+                while (($result != false) && (($row = $result->fetch_array()) > 0)) {
+                    $temp = array(
+                        'id' => $row['mid'],
+                        'name' => $row['employee'],
+                        'PJcode'=> $row['pjcode'],
+                        'nickname' => $row['openid'],
+                        'mobile' => $row['phone'],
+                        'gender' => $row['gender'],
+                        'address' => $row['address'],
+                        'salary' => $row['unitprice'],
+                        'position' => $row['position'],
+                        'status' => (string)$row['onjob'],
+                        'KPI' => $row['standardnum'],
+                        'memo' => $row['memo']
+                    );
+                    array_push($staffTable, $temp);
+                }
             }
         }
-        //有关键字模糊查询
-        else{
-            $query_str = "SELECT * FROM `t_l3f11faam_membersheet` where (`pjcode` = '$pjCode' AND concat(`employee`,`phone`) like '%$keyword%')";
+        else{ //只包含在职员工
+            $onjob = 1;
+            //考虑到多工厂情况，将来需要根据登录用户属性选择对应工厂的员工列表显示
+            $pjCode = $this->dbi_get_user_auth_factory($mysqli, $uid);
+            $staffTable = array(); //初始化
+            $query_str = "SELECT * FROM `t_l3f11faam_membersheet` WHERE (`pjcode` = '$pjCode' AND `onjob` = '$onjob')";
             $result = $mysqli->query($query_str);
-            while (($result != false) && (($row = $result->fetch_array()) > 0)) {
-                $temp = array(
-                    'id' => $row['mid'],
-                    'name' => $row['employee'],
-                    'PJcode'=> $row['pjcode'],
-                    'nickname' => $row['openid'],
-                    'mobile' => $row['phone'],
-                    'gender' => $row['gender'],
-                    'address' => $row['address'],
-                    'salary' => $row['unitprice'],
-                    'position' => $row['position'],
-                    'KPI' => $row['standardnum'],
-                    'memo' => $row['memo']
-                );
-                array_push($staffTable, $temp);
+            //没有关键字查询
+            if (empty($keyword)){
+                while (($result != false) && (($row = $result->fetch_array()) > 0)) {
+                    $temp = array(
+                        'id' => $row['mid'],
+                        'name' => $row['employee'],
+                        'PJcode'=> $row['pjcode'],
+                        'nickname' => $row['openid'],
+                        'mobile' => $row['phone'],
+                        'gender' => $row['gender'],
+                        'address' => $row['address'],
+                        'salary' => $row['unitprice'],
+                        'position' => $row['position'],
+                        'status' => (string)$row['onjob'],
+                        'KPI' => $row['standardnum'],
+                        'memo' => $row['memo']
+                    );
+                    array_push($staffTable, $temp);
+                }
+            }
+            //有关键字模糊查询
+            else{
+                $query_str = "SELECT * FROM `t_l3f11faam_membersheet` where (`pjcode` = '$pjCode' AND `onjob` = '$onjob' AND concat(`employee`,`phone`) like '%$keyword%')";
+                $result = $mysqli->query($query_str);
+                while (($result != false) && (($row = $result->fetch_array()) > 0)) {
+                    $temp = array(
+                        'id' => $row['mid'],
+                        'name' => $row['employee'],
+                        'PJcode'=> $row['pjcode'],
+                        'nickname' => $row['openid'],
+                        'mobile' => $row['phone'],
+                        'gender' => $row['gender'],
+                        'address' => $row['address'],
+                        'salary' => $row['unitprice'],
+                        'position' => $row['position'],
+                        'status' => (string)$row['onjob'],
+                        'KPI' => $row['standardnum'],
+                        'memo' => $row['memo']
+                    );
+                    array_push($staffTable, $temp);
+                }
             }
         }
 
@@ -480,12 +534,13 @@ class classDbiL3apF11faam
         if (isset($staffInfo["mobile"])) $phone = trim($staffInfo["mobile"]); else  $phone = "";
         if (isset($staffInfo["address"])) $address = trim($staffInfo["address"]); else  $address = "";
         if (isset($staffInfo["salary"])) $unitPrice = intval($staffInfo["salary"]); else  $unitPrice = 0;
+        if (isset($staffInfo["status"])) $onjob = intval($staffInfo["status"]); else  $onjob = 0;
         if (isset($staffInfo["KPI"])) $standardNum = intval($staffInfo["KPI"]); else  $standardNum = 0;
         if (isset($staffInfo["memo"])) $memo = trim($staffInfo["memo"]); else  $memo = "";
 
         $date = date("Y-m-d", time());
         $query_str = "UPDATE `t_l3f11faam_membersheet` SET `pjcode` = '$pjCode',`employee` = '$employee',`openid` = '$nickName',`gender` = '$gender',`phone` = '$phone',`regdate` = '$date',
-                      `position` = '$position',`address` = '$address',`unitprice` = '$unitPrice',`standardnum` = '$standardNum',`memo` = '$memo' WHERE (`mid` = '$staffId')";
+                      `position` = '$position',`address` = '$address',`unitprice` = '$unitPrice',`standardnum` = '$standardNum',`onjob` = '$onjob',`memo` = '$memo' WHERE (`mid` = '$staffId')";
         $result = $mysqli->query($query_str);
 
         $mysqli->close();
@@ -788,6 +843,58 @@ class classDbiL3apF11faam
         else
             $result = false;
 
+        $mysqli->close();
+        return $result;
+    }
+
+    //UI AttendanceBatchNew
+    public function dbi_faam_attendance_record_batch_add($uid)
+    {
+        //建立连接
+        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli) {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $mysqli->query("SET NAMES utf8");
+
+        $pjCode = $this->dbi_get_user_auth_factory($mysqli, $uid);
+
+        $factory_config = $this->dbi_get_factory_config($mysqli, $pjCode);
+        $restStart = strtotime($factory_config['reststart']);
+        $restEnd = strtotime($factory_config['restend']);
+        $workStart = $factory_config['workstart'];
+        $workEnd = $factory_config['workend'];
+        $stdWorkStart = strtotime($workStart);
+        $stdWorkEnd = strtotime($workEnd);
+        $timeInterval = ($restStart - $stdWorkStart) + ($stdWorkEnd - $restEnd);
+        $hour = (int)(($timeInterval%(3600*24))/(3600));
+        $min = (int)($timeInterval%(3600)/60);
+        $workTime = $hour + round($min/60, 1);
+        $workDay = date('Y-m-d', time());
+        $offWorkTime = 0;
+        $lateWorkFlag = 0;
+        $earlyLeaveFlag = 0;
+
+        //查询员工列表
+        $onjob = 1; //只查询在职员工
+        $query_str = "SELECT * FROM `t_l3f11faam_membersheet` WHERE (`pjcode` = '$pjCode' AND `onjob` = '$onjob')";
+        $result = $mysqli->query($query_str);
+        $nameList = array();
+        while (($result != false) && (($row = $result->fetch_array()) > 0)){
+            $temp = array('employee' => $row['employee'],'unitprice'=>$row['unitprice']);
+            array_push($nameList, $temp);
+        }
+        for ($i = 0; $i < count($nameList); $i++){
+            $employee = $nameList[$i]['employee'];
+            $unitPrice = $nameList[$i]['unitprice'];
+            $query_str = "SELECT * FROM `t_l3f11faam_dailysheet` WHERE (`pjcode` = '$pjCode' AND `employee` = '$employee' AND `workday` = '$workDay')";
+            $result = $mysqli->query($query_str);
+            if($result->num_rows == 0){
+                $query_str = "INSERT INTO `t_l3f11faam_dailysheet` (pjcode,employee,workday,arrivetime,leavetime,offwork,worktime,unitprice,lateworkflag,earlyleaveflag)
+                                  VALUES ('$pjCode','$employee','$workDay','$workStart','$workEnd','$offWorkTime','$workTime','$unitPrice','$lateWorkFlag','$earlyLeaveFlag')";
+                $result = $mysqli->query($query_str);
+            }
+        }
         $mysqli->close();
         return $result;
     }

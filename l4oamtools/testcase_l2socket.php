@@ -12,7 +12,7 @@ include_once "../l1comvm/vmlayer.php";
  *                             SOCKET TEST CASES                              *
  *************************************************************************************/
 if (TC_SOCKET == true) {
-//SOCKET测试开始
+    //SOCKET测试开始
     echo " [TC SOCKET: xxx START]\n";
 
     function urlstr($str){
@@ -107,6 +107,7 @@ if (TC_SOCKET == true) {
     //3081 HUITP_MSGID_uni_ycjk_data_report
     //$data = "<xml><ToUserName><![CDATA[XHZN_HCU]]></ToUserName><FromUserName><![CDATA[HCU_G201_AQYC_SH001]]></FromUserName><CreateTime>1504340558</CreateTime><MsgType><![CDATA[huitp_text]]></MsgType><Content><![CDATA[3081002E00030001013000002504000000000000000000004204000000000000DA5C00000000000000000000000000000000]]></Content><FuncFlag>0</FuncFlag></xml>";
 
+    $data = "<xml><ToUserName><![CDATA[XHZN_HCU]]></ToUserName><FromUserName><![CDATA[HCU_G201_AQYC_SH001]]></FromUserName><CreateTime>1515826252</CreateTime><MsgType><![CDATA[huitp_text]]></MsgType><Content><![CDATA[2C81006100030001012C00005800000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000005A59AC0D5A59AC4C]]></Content><FuncFlag>0</FuncFlag></xml>";
     //FDWQ
     //4F81
     //$data = "<xml><ToUserName><![CDATA[XHZN_HCU]]></ToUserName ><FromUserName><![CDATA[HCU_G9000FDWQ_SH001]]></FromUserName><CreateTime>1511322531</CreateTime><MsgType><![CDATA[huitp_text]]></MsgType><Content><![CDATA[4F81004200030001014F00003900000123000001235A14F3A3000000000000000000000027000000000050000000000000000000000000000000000000000000000000000000]]></Content><FuncFlag>0</FuncFlag></xml>";

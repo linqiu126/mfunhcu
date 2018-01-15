@@ -122,6 +122,11 @@ class classTaskL4faamUi
                 $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FAAM_UI, MFUN_TASK_ID_L3APPL_FUM11FAAM, MSG_ID_L4FAAMUI_TO_L3F11_ATTENDANCERECORDNEW, "MSG_ID_L4FAAMUI_TO_L3F11_ATTENDANCERECORDNEW",$input);
                 break;
 
+            case "AttendanceBatchNew": //批量添加考勤记录
+                $input = array("project" => $project, "action" => $action, "type" => $type,"user" => $user,"body" => $body);
+                $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FAAM_UI, MFUN_TASK_ID_L3APPL_FUM11FAAM, MSG_ID_L4FAAMUI_TO_L3F11_ATTENDANCERECORDBATCH, "MSG_ID_L4FAAMUI_TO_L3F11_ATTENDANCERECORDBATCH",$input);
+                break;
+
             case "AttendanceDel":  //删除一条考勤记录
                 $input = array("project" => $project, "action" => $action, "type" => $type,"user" => $user,"body" => $body);
                 $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FAAM_UI, MFUN_TASK_ID_L3APPL_FUM11FAAM, MSG_ID_L4FAAMUI_TO_L3F11_ATTENDANCEDEL, "MSG_ID_L4FAAMUI_TO_L3F11_ATTENDANCEDEL",$input);

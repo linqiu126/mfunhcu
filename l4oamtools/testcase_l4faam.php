@@ -12,11 +12,25 @@ include_once "../l1comvm/vmlayer.php";
  *                             L4TBSWR-UI TEST CASES                                   *
  *************************************************************************************/
 if (TC_L4FAAM_UI == true) {
-    $sessionid = "ft84i8zDxf";
+    $sessionid = "q7MIRcQkYh";
     $uerid = "UID000001";
 
     $timeStart = '2017-12-01';
     $timeEnd = '2017-12-25';
+
+    echo " [TC L4FAAM: StaffTable START]\n";
+    $_GET["action"] = "StaffTable";
+    $_GET["user"] = $sessionid;
+    $body = array("startseq"=>0,"length"=>35,"keyword"=>"","containleave"=>"true");
+    $_GET["body"] = $body;
+    //require("../l4faamui/request.php");
+    echo " [TC L4FAAM: StaffTable END]\n";
+
+    echo " [TC L4FAAM: AttendanceBatchNew START]\n";
+    $_GET["action"] = "AttendanceBatchNew";
+    $_GET["user"] = $sessionid;
+    require("../l4faamui/request.php");
+    echo " [TC L4FAAM: AttendanceBatchNew END]\n";
 
     echo " [TC L4FAAM: AssembleAudit START]\n";
     $_GET["action"] = "AssembleAudit";
@@ -58,8 +72,6 @@ if (TC_L4FAAM_UI == true) {
     require("../l4faamui/request.php");
     echo " [TC L4FAAM: StaffNew END]\n";
 
-
-
     echo " [TC L4FAAM: StaffMod START]\n";
     $_GET["action"] = "StaffMod";
     $_GET["user"] = $sessionid;
@@ -91,12 +103,6 @@ if (TC_L4FAAM_UI == true) {
     $_GET["body"] = $body;
     require("../l4faamui/request.php");
     echo " [TC L4FAAM: AttendanceHistory END]\n";
-
-    echo " [TC L4FAAM: StaffTable START]\n";
-    $_GET["action"] = "StaffTable";
-    $_GET["user"] = $sessionid;
-    require("../l4faamui/request.php");
-    echo " [TC L4FAAM: StaffTable END]\n";
 
     echo " [TC L4FAAM: StaffDel START]\n";
     $_GET["action"] = "StaffDel";

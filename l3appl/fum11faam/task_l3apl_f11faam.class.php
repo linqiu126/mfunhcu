@@ -58,7 +58,7 @@ class classTaskL3aplF11faam
     {
         if (isset($body["length"])) $length = $body["length"]; else  $length = "";
         if (isset($body["startseq"])) $startseq = $body["startseq"]; else  $startseq = "";
-        if (isset($body["keyword"])) $keyword = $body["keyword"]; else  $keyword = "";
+        if (isset($body["keyword"])) $keyWord = $body["keyword"]; else  $keyWord = "";
 
         $uiF1symDbObj = new classDbiL3apF1sym();
         $usercheck = $uiF1symDbObj->dbi_user_authcheck($action, $user);
@@ -70,7 +70,7 @@ class classTaskL3aplF11faam
             $start = (int)($startseq);
             if($query_length > $total-$start) $query_length = $total-$start;
 
-            $factoryTable = $uiF11faamDbObj->dbi_faam_factory_table_query($uid,$start, $query_length,$keyword);
+            $factoryTable = $uiF11faamDbObj->dbi_faam_factory_table_query($uid,$start, $query_length,$keyWord);
             if(!empty($factoryTable)){
                 $ret = array('start'=> (string)$start,'total'=> (string)$total,'length'=>(string)$query_length,'factorytable'=>$factoryTable);
                 $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$ret,'msg'=>"获取工厂信息列表成功");
@@ -144,7 +144,7 @@ class classTaskL3aplF11faam
     {
         if (isset($body["length"])) $length = $body["length"]; else  $length = "";
         if (isset($body["startseq"])) $startseq = $body["startseq"]; else  $startseq = "";
-        if (isset($body["keyword"])) $keyword = $body["keyword"]; else  $keyword = "";
+        if (isset($body["keyword"])) $keyWord = $body["keyword"]; else  $keyWord = "";
 
         $uiF1symDbObj = new classDbiL3apF1sym();
         $usercheck = $uiF1symDbObj->dbi_user_authcheck($action, $user);
@@ -156,7 +156,7 @@ class classTaskL3aplF11faam
             $start = (int)($startseq);
             if($query_length > $total-$start) $query_length = $total-$start;
 
-            $productType = $uiF11faamDbObj->dbi_faam_product_type_table_query($uid,$start, $query_length,$keyword);
+            $productType = $uiF11faamDbObj->dbi_faam_product_type_table_query($uid,$start, $query_length,$keyWord);
             if(!empty($productType)){
                 $ret = array('start'=> (string)$start,'total'=> (string)$total,'length'=>(string)$query_length,'specificationtable'=>$productType);
                 $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$ret,'msg'=>"获取产品规格列表成功");
@@ -251,7 +251,8 @@ class classTaskL3aplF11faam
     {
         if (isset($body["length"])) $length = $body["length"]; else  $length = "";
         if (isset($body["startseq"])) $startseq = $body["startseq"]; else  $startseq = "";
-        if (isset($body["keyword"])) $keyword = $body["keyword"]; else  $keyword = "";
+        if (isset($body["keyword"])) $keyWord = $body["keyword"]; else  $keyWord = "";
+        if (isset($body["containleave"])) $containLeave = $body["containleave"]; else  $containLeave = "";
 
         $uiF1symDbObj = new classDbiL3apF1sym();
         $usercheck = $uiF1symDbObj->dbi_user_authcheck($action, $user);
@@ -262,7 +263,7 @@ class classTaskL3aplF11faam
             $query_length = (int)($length);
             $start = (int)($startseq);
             if($query_length > $total-$start) $query_length = $total-$start;
-            $staffTable = $uiF11faamDbObj->dbi_faam_stafftable_query($uid,$start, $query_length,$keyword);
+            $staffTable = $uiF11faamDbObj->dbi_faam_stafftable_query($uid,$start, $query_length,$keyWord,$containLeave);
             if(!empty($staffTable)){
                 $ret = array('start'=> (string)$start,'total'=> (string)$total,'length'=>(string)$query_length,'stafftable'=>$staffTable);
                 $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$ret,'msg'=>"员工信息表获取成功");
@@ -392,6 +393,25 @@ class classTaskL3aplF11faam
                 $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"新建一条考勤记录成功");
             else
                 $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"新建一条考勤记录失败");
+        }
+        else
+            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>$usercheck['msg']);
+
+        return $retval;
+    }
+
+    function func_faam_attendance_record_batch_add($action, $user, $body)
+    {
+        $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
+        $usercheck = $uiF1symDbObj->dbi_user_authcheck($action, $user);
+        if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
+            $uid = $usercheck['uid'];
+            $uiF11faamDbObj = new classDbiL3apF11faam();
+            $result = $uiF11faamDbObj->dbi_faam_attendance_record_batch_add($uid);
+            if($result == true)
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"批量添加考勤记录成功");
+            else
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"批量添加考勤记录失败");
         }
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>$usercheck['msg']);
@@ -612,6 +632,9 @@ class classTaskL3aplF11faam
                 break;
             case MSG_ID_L4FAAMUI_TO_L3F11_ATTENDANCERECORDNEW:
                 $resp = $this->func_faam_attendance_record_new($action, $user, $body);
+                break;
+            case MSG_ID_L4FAAMUI_TO_L3F11_ATTENDANCERECORDBATCH:
+                $resp = $this->func_faam_attendance_record_batch_add($action, $user, $body);
                 break;
             case MSG_ID_L4FAAMUI_TO_L3F11_ATTENDANCEDEL:
                 $resp = $this->func_faam_attendance_record_delete($action, $user, $body);
