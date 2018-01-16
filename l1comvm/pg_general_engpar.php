@@ -766,6 +766,8 @@ class classConstL1vmUserWebRight
             self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['actionauth']['DevNew'] = 'true';
             self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['actionauth']['DevMod'] = 'true';
             self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['actionauth']['DevDel'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['actionauth']['AttendanceAudit'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['actionauth']['KPIAudit'] = 'true';
             self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['query'] = 'true';
             self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['mod'] = 'true';
 
