@@ -226,7 +226,9 @@ class classConstL1vmUserWebRight
                 'KeyDel' => 'true',
                 'OpenLock' => 'true',
                 'KeyAuthNew' => 'true',
-                'KeyGrant' => 'true'
+                'KeyGrant' => 'true',
+                'AttendanceAudit' => 'true',
+                'KPIAudit' => 'true'
             ),
             'query' => 'true',
             'mod' => 'true'),
@@ -312,7 +314,9 @@ class classConstL1vmUserWebRight
                 'KeyAuthNew' => 'false',
                 'KeyGrant' => 'false',
                 'FactoryDel' => 'false',
-                'FactoryNew' => 'false'
+                'FactoryNew' => 'false',
+                'AttendanceAudit' => 'false',
+                'KPIAudit' => 'false'
             ),
             'query' => 'false',
             'mod' => 'false'),
@@ -398,7 +402,9 @@ class classConstL1vmUserWebRight
                 'KeyAuthNew' => 'false',
                 'KeyGrant' => 'false',
                 'FactoryDel' => 'false',
-                'FactoryNew' => 'false'
+                'FactoryNew' => 'false',
+                'AttendanceAudit' => 'false',
+                'KPIAudit' => 'false'
             ),
             'query' => 'false',
             'mod' => 'false'),
@@ -484,7 +490,9 @@ class classConstL1vmUserWebRight
                 'KeyAuthNew' => 'false',
                 'KeyGrant' => 'false',
                 'FactoryDel' => 'false',
-                'FactoryNew' => 'false'
+                'FactoryNew' => 'false',
+                'AttendanceAudit' => 'false',
+                'KPIAudit' => 'false'
             ),
             'query' => 'false',
             'mod' => 'false'),
@@ -570,7 +578,9 @@ class classConstL1vmUserWebRight
                 'KeyAuthNew' => 'false',
                 'KeyGrant' => 'false',
                 'FactoryDel' => 'false',
-                'FactoryNew' => 'false'
+                'FactoryNew' => 'false',
+                'AttendanceAudit' => 'false',
+                'KPIAudit' => 'false'
             ),
             'query' => 'false',
             'mod' => 'false'),
@@ -624,6 +634,8 @@ class classConstL1vmUserWebRight
             self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['actionauth']['OpenLock'] = 'true';
             self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['actionauth']['KeyAuthNew'] = 'true';
             self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['actionauth']['KeyGrant'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['actionauth']['AttendanceAudit'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['actionauth']['KPIAudit'] = 'true';
             self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['query'] = 'true';
             self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['mod'] = 'true';
 
