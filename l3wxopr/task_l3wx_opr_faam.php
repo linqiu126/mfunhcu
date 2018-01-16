@@ -36,10 +36,12 @@ class classTaskL3wxOprFaam
             if (isset($msg["longitude"])) $longitude = $msg["longitude"]; else $longitude = 0;
             if (isset($msg["nickName"])) $nickName = trim($msg["nickName"]); else $nickName = "";
 
+            if (isset($msg["phone"])) $phone = trim($msg["phone"]); else $phone = ""; ///////////////////////////////////////////joe modify///////////////////////////////////
+
             $l3wxOprFaamDbObj = new classDbiL3wxOprFaam(); //初始化一个UI DB对象
             switch($codeType) {
                 case "QRCODE_KQ":  //考勤二维码
-                    $resp = $l3wxOprFaamDbObj->dbi_faam_qrcode_kq_process($scanCode,$latitude,$longitude,$nickName);
+                    $resp = $l3wxOprFaamDbObj->dbi_faam_qrcode_kq_process($scanCode,$latitude,$longitude,$nickName,$phone); ///////////////////////////////////////////joe modify///////////////////////////////////
                     break;
 
                 case "QRCODE_SC":  //生产二维码

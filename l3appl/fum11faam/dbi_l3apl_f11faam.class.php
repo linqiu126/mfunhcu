@@ -1267,7 +1267,7 @@ class classDbiL3apF11faam
         $query_str = "SELECT * FROM `t_l3f11faam_membersheet` WHERE (`pjcode` = '$pjCode')";
         $result = $mysqli->query($query_str);
         $nameList = array();
-        while (($result != false) && (($row = $result->fetch_array()) > 0)){
+        while (($result != false) && (($row = $result->fetch_array()) > 0)){    ///取出工厂中每个人的信息
             $temp = array('employee' => $row['employee'],'unitprice'=>$row['unitprice'],'kpi'=>$row['standardnum']);
             array_push($nameList, $temp);
         }
@@ -1275,7 +1275,7 @@ class classDbiL3apF11faam
         $typeList = $this->dbi_get_product_type($mysqli, $pjCode);
 
         //处理考勤查询结果
-        for($i=0; $i<count($workBuf); $i++){
+        for($i=0; $i<count($workBuf); $i++){///////////////////////////////////////////////////////////////////////////////////////////////////////////
             $employee = $workBuf[$i]['employee'];
             $workTime = $workBuf[$i]['worktime'];
             if(isset($workingDay[$employee]) AND isset($totalWorkTime[$employee])){
@@ -1286,7 +1286,7 @@ class classDbiL3apF11faam
             }
             else{ //第一次查询到某员工
                 if($workTime != 0) {
-                    $workingDay[$employee] = 1;
+                    $workingDay[$employee] = 1;////////////////////////////////
                     $totalWorkTime[$employee] = $workTime;
                 }
                 else{
@@ -1307,17 +1307,19 @@ class classDbiL3apF11faam
         }
         for($i=0; $i<count($nameList); $i++){
             $employee = $nameList[$i]['employee'];
-            $totalPackage = 0;
-            $totalNum = 0;
-            $totalWeight = 0;
-            for($j=0; $j<count($typeList); $j++){
+            $totalPackage = 0;//箱数
+            $totalNum = 0;//总数量
+            $totalWeight = 0;//总重
+            for($j=0; $j<count($typeList); $j++){////////////////////////////////////////////////////////////////////////////////////////////
                 $typeCode = $typeList[$j]['typecode'];
                 $appleNum = $typeList[$j]['applenum'];
                 $appleWeight = $typeList[$j]['appleweight'];
                 if(isset($package[$employee][$typeCode])){
-                    $totalPackage = (int)$package[$employee][$typeCode];
-                    $totalNum = $totalPackage * (int)$appleNum;
-                    $totalWeight = $totalPackage * (int)$appleWeight;
+                    $perPackage = (int)$package[$employee][$typeCode];//////////////////////////////////////////joe modify
+//                    $totalPackage += (int)$package[$employee][$typeCode];
+                    $totalPackage += $perPackage;
+                    $totalNum += $perPackage * (int)$appleNum;
+                    $totalWeight += $perPackage * (int)$appleWeight;
                 }
             }
             if (($totalPackage == 0) OR ($totalNum == 0) OR ($totalWeight == 0)) continue;
@@ -1338,9 +1340,11 @@ class classDbiL3apF11faam
                 if (isset($weightSum[$employee])) $tempWeightSum = $weightSum[$employee]; else $tempWeightSum = 0;
                 if (isset($numSum[$employee])) $tempNumSum = $numSum[$employee]; else $tempNumSum = 0;
 
+                $totalKpi = $kpi * $workingDay[$employee];
+
                 $timeSalary =  $totalWorkTime[$employee]*$unitPrice;
-                if ($kpi != 0)
-                    $kpiSalary = round((float)($tempNumSum/($kpi*$intervalDay))*100, 2).'%';
+                if ($totalKpi != 0)
+                    $kpiSalary = round((float)($tempNumSum/($totalKpi))*100, 2).'%';
                 else
                     $kpiSalary = "%";
                 $sid++;
@@ -1356,7 +1360,7 @@ class classDbiL3apF11faam
                 array_push($temp, $tempPackageSum);
                 array_push($temp, $tempWeightSum);
                 array_push($temp, $tempNumSum);
-                array_push($temp, $kpi);
+                array_push($temp ,$totalKpi);
                 array_push($temp, $kpiSalary);
                 array_push($history['TableData'], $temp);
             }

@@ -43,7 +43,7 @@ class classDbiL3wxOprFaam
     }
 
     //考勤二维码处理
-    public function dbi_faam_qrcode_kq_process($scanCode,$latitude,$longitude,$nickName)
+    public function dbi_faam_qrcode_kq_process($scanCode,$latitude,$longitude,$nickName,$pagephone)
     {
         //建立连接
         $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
@@ -79,11 +79,21 @@ class classDbiL3wxOprFaam
             return $resp;
         }
 
+//        if (!empty($pagephone)){
+//            $query_str = "UPDATE `t_l3f11faam_membersheet` SET `phone`='$pagephone' WHERE (`openid` = '$nickName' AND `pjcode` = '$scanCode')";   /////////////joe modify/////////////////////////
+//            $mysqli->query($query_str);
+//        }
+
         $query_str = "SELECT * FROM `t_l3f11faam_membersheet` WHERE (`openid` = '$nickName' AND `pjcode` = '$scanCode') ";
         $membersheet = $mysqli->query($query_str);
         if (($membersheet !=false) AND (($row = $membersheet->fetch_array()) > 0)){
             if (isset($row['employee'])) $employee = $row['employee']; else  $employee = "";
+
+           // if (isset($row['phone'])) $phone = $row['phone']; else  $phone = "";//////////////////////////////////////////////////////////////////joe modify/////////////////////////
+
+
             if (!empty($employee)){ //合法用户，记录考勤信息
+
                 $unitPrice = $row['unitprice'];
                 $query_str = "SELECT * FROM `t_l3f11faam_dailysheet` WHERE (`pjcode` = '$scanCode' AND `employee` = '$employee' AND `workday` = '$workDay') ";
                 $dailysheet = $mysqli->query($query_str);
@@ -94,7 +104,7 @@ class classDbiL3wxOprFaam
                     if($arriveTimeInt < $restStart AND $leaveTimeInt > $restEnd){ //正常情况，在午休前上班，午休后下班
                         $timeInterval = ($restStart - $arriveTimeInt) + ($leaveTimeInt - $restEnd);
                     }
-                    elseif($arriveTimeInt > $restStart AND $arriveTimeInt < $restEnd){ //在午休中间上班
+                    elseif($arriveTimeInt >= $restStart AND $arriveTimeInt < $restEnd){ //在午休中间上班
                         $timeInterval = ($leaveTimeInt - $restEnd);
                     }
                     elseif($leaveTimeInt > $restStart AND $leaveTimeInt < $restEnd){ //在午休中间下班
@@ -114,8 +124,8 @@ class classDbiL3wxOprFaam
                     $workTime = $hour + round($min/60, 1)  - $offWorkTime; //扣除请假时间
                     if ($workTime < 0) $workTime = 0; //避免工作时间为负数
 
-                    if($arriveTimeInt < $stdWorkStart) $lateWorkFlag = false; else $lateWorkFlag = true;  //迟到标志
-                    if($leaveTimeInt > $stdWorkEnd) $earlyLeaveFlag = false; else $earlyLeaveFlag = true; //早退标志
+                    if($arriveTimeInt <= $stdWorkStart) $lateWorkFlag = false; else $lateWorkFlag = true;  //迟到标志
+                    if($leaveTimeInt >= $stdWorkEnd) $earlyLeaveFlag = false; else $earlyLeaveFlag = true; //早退标志
 
                     $query_str = "UPDATE `t_l3f11faam_dailysheet` SET `leavetime` = '$currentTime',`worktime` = '$workTime',`unitprice` = '$unitPrice',`lateworkflag` = '$lateWorkFlag',
                                   `earlyleaveflag` = '$earlyLeaveFlag' WHERE (`pjcode` = '$scanCode' AND `employee` = '$employee' AND `workday` = '$workDay')";
@@ -132,11 +142,33 @@ class classDbiL3wxOprFaam
                 $resp = array('employee'=>$nickName, 'message'=>"用户注册未审核");
             }
         }
-        else{ //初次扫码，未注册用户
-            $mid = MFUN_L3APL_F1SYM_MID_PREFIX.$this->getRandomUid(MFUN_L3APL_F1SYM_USER_ID_LEN);  //随机生成员工ID
-            $query_str = "INSERT INTO `t_l3f11faam_membersheet` (mid,pjcode,openid,regdate) VALUES ('$mid','$scanCode','$nickName','$workDay')";
-            $mysqli->query($query_str);
-            $resp = array('employee'=>$nickName, 'message'=>"用户未注册");
+        else{ //初次扫码，未注册用户  // 初次扫码 ，跳回让用户输入手机号码 ，看管理员是否在表中添加了该员工的部分信息
+
+            if (empty($pagephone)){
+                    $resp = array('employee'=>$nickName, 'message'=>"请输入手机号");       //////////////////////////////////////////////////////////////////joe modify/////////////////////////
+                    return $resp;
+                }
+
+            $query_member = "SELECT * FROM `t_l3f11faam_membersheet` WHERE (`phone`='$pagephone') ";
+            $member_by_phone_sheet = $mysqli->query($query_member);
+
+            if (($member_by_phone_sheet !=false) AND ($row = $member_by_phone_sheet->fetch_array()) > 0){ // 说明表中管理员添加了一些用户信息
+//                $mid = MFUN_L3APL_F1SYM_MID_PREFIX.$this->getRandomUid(MFUN_L3APL_F1SYM_USER_ID_LEN);///////////joe modify/////////////////////////
+//                $query_str = "UPDATE `t_l3f11faam_membersheet` SET `openid` = '$nickName',`mid`='$mid',`regdate` = '$workDay' WHERE (`phone`='$pagephone' AND `pjcode` = '$scanCode')";
+                $query_str = "UPDATE `t_l3f11faam_membersheet` SET `openid` = '$nickName' WHERE (`phone`='$pagephone')";
+                $mysqli->query($query_str);
+                $resp = array('employee'=>$nickName, 'message'=>"注册成功");
+            }else{  //管理员没有添加
+                $mid = MFUN_L3APL_F1SYM_MID_PREFIX.$this->getRandomUid(MFUN_L3APL_F1SYM_USER_ID_LEN);  //随机生成员工ID
+                $query_str = "INSERT INTO `t_l3f11faam_membersheet` (mid,pjcode,openid,regdate) VALUES ('$mid','$scanCode','$nickName','$workDay')";
+                $mysqli->query($query_str);
+                $resp = array('employee'=>$nickName, 'message'=>"用户未注册");
+            }
+
+//            $mid = MFUN_L3APL_F1SYM_MID_PREFIX.$this->getRandomUid(MFUN_L3APL_F1SYM_USER_ID_LEN);  //随机生成员工ID
+//            $query_str = "INSERT INTO `t_l3f11faam_membersheet` (mid,pjcode,openid,regdate) VALUES ('$mid','$scanCode','$nickName','$workDay')";
+//            $mysqli->query($query_str);
+//            $resp = array('employee'=>$nickName, 'message'=>"用户未注册");
         }
 
         $mysqli->close();
@@ -334,7 +366,7 @@ class classDbiL3wxOprFaam
         $currentNum = 0;
         $counter = 0;
 
-        $query_str = "SELECT * FROM `t_l3f11faam_membersheet` WHERE (`pjcode` = '$pjCode') ";
+        $query_str = "SELECT * FROM `t_l3f11faam_membersheet` WHERE (`pjcode` = '$pjCode' AND `onjob` = '1') ";///////////////////////////////////joe modify////////////////////////////////
         $memberResult = $mysqli->query($query_str);
         if ($memberResult != false) {
             $total_num = $memberResult->num_rows;

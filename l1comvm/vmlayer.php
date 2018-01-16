@@ -162,7 +162,7 @@ class classTaskL1vmCoreRouter
     }
 
     //核心API：发送消息的函数
-    public function mfun_l1vm_msg_send($srcId, $destId, $msgId, $msgName, $msgBody)
+    public function mfun_l1vm_msg_send($srcId, $destId, $msgId, $msgName, $msgBody)/////msgbody ==msg///////////////////////////////////////////////////////////////////////////////////////////////////////
     {
         //判断是否越界
         if ($this->msgBufferUsedCnt >= MFUN_MSG_BUFFER_NBR_MAX){
@@ -479,7 +479,7 @@ class classTaskL1vmCoreRouter
                     return false;
                 }
                 break;
-            case MFUN_MAIN_ENTRY_WECHAT_XCX:
+            case MFUN_MAIN_ENTRY_WECHAT_XCX:   //////////////////////////////////////////////////////////////////////////////////////////////////////////////
                 $resp = $this->mfun_l1vm_msg_send(MFUN_TASK_ID_L1VM,
                     MFUN_TASK_ID_L3WX_OPR_FAAM,
                     MSG_ID_L1VM_TO_L3WXL3WXOPR_FAAM_XCXPOST,
