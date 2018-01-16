@@ -1275,7 +1275,7 @@ class classDbiL3apF11faam
         $typeList = $this->dbi_get_product_type($mysqli, $pjCode);
 
         //处理考勤查询结果
-        for($i=0; $i<count($workBuf); $i++){///////////////////////////////////////////////////////////////////////////////////////////////////////////
+        for($i=0; $i<count($workBuf); $i++){
             $employee = $workBuf[$i]['employee'];
             $workTime = $workBuf[$i]['worktime'];
             if(isset($workingDay[$employee]) AND isset($totalWorkTime[$employee])){
@@ -1286,7 +1286,7 @@ class classDbiL3apF11faam
             }
             else{ //第一次查询到某员工
                 if($workTime != 0) {
-                    $workingDay[$employee] = 1;////////////////////////////////
+                    $workingDay[$employee] = 1;
                     $totalWorkTime[$employee] = $workTime;
                 }
                 else{
@@ -1310,12 +1310,12 @@ class classDbiL3apF11faam
             $totalPackage = 0;//箱数
             $totalNum = 0;//总数量
             $totalWeight = 0;//总重
-            for($j=0; $j<count($typeList); $j++){////////////////////////////////////////////////////////////////////////////////////////////
+            for($j=0; $j<count($typeList); $j++){
                 $typeCode = $typeList[$j]['typecode'];
                 $appleNum = $typeList[$j]['applenum'];
                 $appleWeight = $typeList[$j]['appleweight'];
                 if(isset($package[$employee][$typeCode])){
-                    $perPackage = (int)$package[$employee][$typeCode];//////////////////////////////////////////joe modify
+                    $perPackage = (int)$package[$employee][$typeCode];
 //                    $totalPackage += (int)$package[$employee][$typeCode];
                     $totalPackage += $perPackage;
                     $totalNum += $perPackage * (int)$appleNum;

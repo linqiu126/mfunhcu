@@ -366,7 +366,7 @@ class classDbiL3wxOprFaam
         $currentNum = 0;
         $counter = 0;
 
-        $query_str = "SELECT * FROM `t_l3f11faam_membersheet` WHERE (`pjcode` = '$pjCode' AND `onjob` = '1') ";///////////////////////////////////joe modify////////////////////////////////
+        $query_str = "SELECT * FROM `t_l3f11faam_membersheet` WHERE (`pjcode` = '$pjCode' AND `onjob` = 1)";
         $memberResult = $mysqli->query($query_str);
         if ($memberResult != false) {
             $total_num = $memberResult->num_rows;
