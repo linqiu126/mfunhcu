@@ -206,6 +206,8 @@ class classDbiL3wxOprFaam
                     $resp = array('flag'=>true,'employee'=>$scan_operator, 'message'=>"统计成功");
                 }
                 else{ //二维码已经激活，回显包装信息
+                    $query_str = "UPDATE `t_l3f11faam_appleproduction` SET `lastactivetime` = '$currentTime'' WHERE (`qrcode` = '$scanCode')";/////////////////////joe modify
+                    $mysqli->query($query_str);
                     $resp = array('flag'=>false,'employee'=>$qrcode_owner, 'message'=>"姓名:".$qrcode_owner."; 粒数:".$appleGrade);
                 }
             }

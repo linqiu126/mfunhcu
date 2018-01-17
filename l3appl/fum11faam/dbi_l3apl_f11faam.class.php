@@ -1077,6 +1077,7 @@ class classDbiL3apF11faam
 
         array_push($history["ColumnName"], "序号");
         array_push($history["ColumnName"], "员工姓名");
+        array_push($history["ColumnName"], "工种");// joe modify////////////////////////////////////////////////////////////
         array_push($history["ColumnName"], "开始日期");
         array_push($history["ColumnName"], "结束日期");
         array_push($history["ColumnName"], "产品规格");
@@ -1124,7 +1125,7 @@ class classDbiL3apF11faam
         $result = $mysqli->query($query_str);
         $nameList = array();
         while (($result != false) && (($row = $result->fetch_array()) > 0)){
-            $temp = array('employee' => $row['employee']);
+            $temp = array('employee' => $row['employee'],'position'=>$row['position']);///////////////////////////////////////////////////////joe modify
             array_push($nameList, $temp);
         }
         //查询产品规格列表
@@ -1147,6 +1148,7 @@ class classDbiL3apF11faam
         $weightSum = 0;
         for($i=0; $i<count($nameList); $i++){
             $employee = $nameList[$i]['employee'];
+            $position = $nameList[$i]['position']; ////////// joe modify//////////////////////////////////////////
             $totalPackage = 0;
             $totalNum = 0;
             $totalWeight = 0;
@@ -1162,6 +1164,7 @@ class classDbiL3apF11faam
                     $temp =array();
                     array_push($temp, $sid);
                     array_push($temp, $employee);
+                    array_push($temp, $position);  ///////////////////////////////////////////  joe modify//
                     array_push($temp, $timeStart);
                     array_push($temp, $timeEnd);
                     array_push($temp, $typeCode);
@@ -1180,6 +1183,7 @@ class classDbiL3apF11faam
             $temp =array();
             array_push($temp, 0);
             array_push($temp, "汇总");
+            array_push($temp, "-------");
             array_push($temp, $timeStart);
             array_push($temp, $timeEnd);
             array_push($temp, "-------");
@@ -1208,6 +1212,7 @@ class classDbiL3apF11faam
 
         array_push($history["ColumnName"], "序号");
         array_push($history["ColumnName"], "员工姓名");
+        array_push($history["ColumnName"], "工种"); ////////////////////////////////joe modify
         array_push($history["ColumnName"], "开始日期");
         array_push($history["ColumnName"], "结束日期");
         array_push($history["ColumnName"], "工作天数");
@@ -1268,7 +1273,7 @@ class classDbiL3apF11faam
         $result = $mysqli->query($query_str);
         $nameList = array();
         while (($result != false) && (($row = $result->fetch_array()) > 0)){    ///取出工厂中每个人的信息
-            $temp = array('employee' => $row['employee'],'unitprice'=>$row['unitprice'],'kpi'=>$row['standardnum']);
+            $temp = array('employee' => $row['employee'],'unitprice'=>$row['unitprice'],'kpi'=>$row['standardnum'],'position'=>$row['position']);
             array_push($nameList, $temp);
         }
         //查询产品规格列表
@@ -1331,6 +1336,9 @@ class classDbiL3apF11faam
         //聚合显示绩效结果
         $sid = 0;
         for($i=0; $i<count($nameList); $i++){
+
+            $position = $nameList[$i]['position'];    ///////joe modify 得到工种
+
             $employee = $nameList[$i]['employee'];
             $unitPrice = intval($nameList[$i]['unitprice']);
             $kpi = intval($nameList[$i]['kpi']);
@@ -1340,7 +1348,7 @@ class classDbiL3apF11faam
                 if (isset($weightSum[$employee])) $tempWeightSum = $weightSum[$employee]; else $tempWeightSum = 0;
                 if (isset($numSum[$employee])) $tempNumSum = $numSum[$employee]; else $tempNumSum = 0;
 
-                $totalKpi = $kpi * $workingDay[$employee];
+                $totalKpi = $kpi * $totalWorkTime[$employee];//////////绩效标准 工作小时 * 每小时工作绩效
 
                 $timeSalary =  $totalWorkTime[$employee]*$unitPrice;
                 if ($totalKpi != 0)
@@ -1351,6 +1359,7 @@ class classDbiL3apF11faam
                 $temp =array();
                 array_push($temp, $sid);
                 array_push($temp, $employee);
+                array_push($temp, $position);///////joe modify
                 array_push($temp, $timeStart);
                 array_push($temp, $timeEnd);
                 array_push($temp, $workingDay[$employee]);
