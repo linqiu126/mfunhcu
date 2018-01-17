@@ -297,15 +297,6 @@ class classTaskL4comUi
                 $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4COM_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4COMUI_TO_L3F2_DEVMOD, "MSG_ID_L4COMUI_TO_L3F2_DEVMOD",$input);
                 break;
 
-            case "MonitorList":      // get monitorList in map by user id
-                if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
-                if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
-                if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
-
-                $input = array("project" => $project, "action" => $action, "type" => $type,"user" => $user,"body" => $body);
-                $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4COM_UI, MFUN_TASK_ID_L3APPL_FUM3DM, MSG_ID_L4COMUI_TO_L3F3_MONITORLIST, "MSG_ID_L4COMUI_TO_L3F3_MONITORLIST",$input);
-                break;
-
             case "GetStationActiveInfo"://查询站点是否激活状态
                 if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
                 if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
@@ -324,6 +315,33 @@ class classTaskL4comUi
                 $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4COM_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4COMUI_TO_L3F2_POINTACTIVESET, "MSG_ID_L4COMUI_TO_L3F2_POINTACTIVESET",$input);
                 break;
 
+            case "TableQuery"://用户表，项目组/项目/站点/设备表的打印按钮对应的excel表导出
+                if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
+                if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
+                if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
+
+                $input = array("project" => $project, "action" => $action, "type" => $type,"user" => $user,"body" => $body);
+                $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4COM_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4COMUI_TO_L3F2_TABLEQUERY, "MSG_ID_L4COMUI_TO_L3F2_TABLEQUERY",$input);
+                break;
+
+            case "MonitorList":      // get monitorList in map by user id
+                if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
+                if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
+                if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
+
+                $input = array("project" => $project, "action" => $action, "type" => $type,"user" => $user,"body" => $body);
+                $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4COM_UI, MFUN_TASK_ID_L3APPL_FUM3DM, MSG_ID_L4COMUI_TO_L3F3_MONITORLIST, "MSG_ID_L4COMUI_TO_L3F3_MONITORLIST",$input);
+                break;
+
+            case "FakeMonitorList": //查询伪造（未激活）站点
+                if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
+                if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
+                if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
+
+                $input = array("project" => $project, "action" => $action, "type" => $type,"user" => $user,"body" => $body);
+                $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4COM_UI, MFUN_TASK_ID_L3APPL_FUM3DM, MSG_ID_L4COMUI_TO_L3F3_FAKEMONITORLIST, "MSG_ID_L4COMUI_TO_L3F3_FAKEMONITORLIST",$input);
+                break;
+
             case "Favourite_list": //获取用户常用站点
                 if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
                 if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
@@ -340,15 +358,6 @@ class classTaskL4comUi
 
                 $input = array("project" => $project, "action" => $action, "type" => $type,"user" => $user,"body" => $body);
                 $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4COM_UI, MFUN_TASK_ID_L3APPL_FUM3DM, MSG_ID_L4COMUI_TO_L3F3_FAVOURITECOUNT, "MSG_ID_L4COMUI_TO_L3F3_FAVOURITECOUNT",$input);
-                break;
-
-            case "TableQuery"://用户表，项目组/项目/站点/设备表的打印按钮对应的excel表导出
-                if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
-                if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
-                if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
-
-                $input = array("project" => $project, "action" => $action, "type" => $type,"user" => $user,"body" => $body);
-                $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4COM_UI, MFUN_TASK_ID_L3APPL_FUM2CM, MSG_ID_L4COMUI_TO_L3F2_TABLEQUERY, "MSG_ID_L4COMUI_TO_L3F2_TABLEQUERY",$input);
                 break;
 
             case "SensorUpdate":

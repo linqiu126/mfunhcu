@@ -236,7 +236,7 @@ class classDbiL3apF3dm
      *                                                 地图显示相关操作DB API                                               *
      *********************************************************************************************************************/
     //UI MonitorList request, 获取该用户地图显示的所有监测点信息
-    public function dbi_map_sitetinfo_req($uid)
+    public function dbi_map_active_sitetinfo_req($uid)
     {
         //建立连接
         $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
@@ -249,14 +249,14 @@ class classDbiL3apF3dm
         $auth_list = $this->dbi_user_statproj_inqury($mysqli, $uid);
 
         $sitelist = array();
+        $siteStatus = MFUN_HCU_SITE_STATUS_INITIAL;
         for($i=0; $i<count($auth_list); $i++)
         {
             $statCode = $auth_list[$i]['stat_code'];
-            $query_str = "SELECT * FROM `t_l3f3dm_siteinfo` WHERE `statcode` = '$statCode'";      //查询监测点对应的项目号
+            $query_str = "SELECT * FROM `t_l3f3dm_siteinfo` WHERE (`statcode` = '$statCode' AND `status` != '$siteStatus')";      //查询监测点对应的项目号
             $resp = $mysqli->query($query_str);
             if (($resp->num_rows)>0) {
                 $info = $resp->fetch_array();
-
                 $latitude = (string)(($info['latitude'])/1000000);  //百度地图经纬度转换
                 $longitude = (string)(($info['longitude'])/1000000);
 
@@ -284,6 +284,56 @@ class classDbiL3apF3dm
         $mysqli->close();
         return $sitelist;
     }
+
+    public function dbi_map_inactive_sitetinfo_req($uid)
+    {
+        //建立连接
+        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli) {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $mysqli->query("SET NAMES utf8");
+
+        //获取授权站点-项目列表
+        $auth_list = $this->dbi_user_statproj_inqury($mysqli, $uid);
+
+        $sitelist = array();
+        $siteStatus = MFUN_HCU_SITE_STATUS_INITIAL;
+        for($i=0; $i<count($auth_list); $i++)
+        {
+            $statCode = $auth_list[$i]['stat_code'];
+            $query_str = "SELECT * FROM `t_l3f3dm_siteinfo` WHERE (`statcode` = '$statCode' AND `status` = '$siteStatus')";      //查询监测点对应的项目号
+            $resp = $mysqli->query($query_str);
+            if (($resp->num_rows)>0) {
+                $info = $resp->fetch_array();
+                $latitude = (string)(($info['latitude'])/1000000);  //百度地图经纬度转换
+                $longitude = (string)(($info['longitude'])/1000000);
+
+                $temp = array(
+                    'StatCode' => $info['statcode'],
+                    'StatName' => $info['statname'],
+                    'ChargeMan' => $info['chargeman'],
+                    'Telephone' => $info['telephone'],
+                    'Department' => $info['department'],
+                    'Address' => $info['address'],
+                    'Country' => $info['country'],
+                    'Street' => $info['street'],
+                    'Square' => $info['square'],
+                    'Flag_la' => $info['flag_la'],
+                    'Latitude' => $latitude,
+                    'Flag_lo' =>  $info['flag_lo'],
+                    'Longitude' => $longitude,
+                    'ProStartTime' => $info['starttime'],
+                    'Stage' => $info['memo'],
+                );
+                array_push($sitelist, $temp);
+            }
+        }
+
+        $mysqli->close();
+        return $sitelist;
+    }
+
 
     public function dbi_favourite_count_process($uid, $statCode)
     {

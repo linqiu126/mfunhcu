@@ -176,6 +176,7 @@ define("MSG_ID_L4COMUI_TO_L3F2_DEVTABLE", $index++);
 define("MSG_ID_L4COMUI_TO_L3F2_DEVNEW", $index++);
 define("MSG_ID_L4COMUI_TO_L3F2_DEVMOD", $index++);
 define("MSG_ID_L4COMUI_TO_L3F3_MONITORLIST", $index++);
+define("MSG_ID_L4COMUI_TO_L3F3_FAKEMONITORLIST", $index++);
 define("MSG_ID_L4COMUI_TO_L3F3_FAVOURITELIST", $index++);
 define("MSG_ID_L4COMUI_TO_L3F3_FAVOURITECOUNT", $index++);
 define("MSG_ID_L4COMUI_TO_L3F4_CAMWEB", $index++);     //使用第三方控件实现视频和摄像头处理
