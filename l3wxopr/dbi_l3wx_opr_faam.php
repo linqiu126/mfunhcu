@@ -88,6 +88,9 @@ class classDbiL3wxOprFaam
         $membersheet = $mysqli->query($query_str);
         if (($membersheet !=false) AND (($row = $membersheet->fetch_array()) > 0)){
             if (isset($row['employee'])) $employee = $row['employee']; else  $employee = "";
+            if (isset($row['pjcode'])) $pjCode = $row['pjcode']; else  $pjCode = "";
+            if (isset($row['standardnum'])) $standardnum = $row['standardnum']; else  $standardnum = "";
+
 
            // if (isset($row['phone'])) $phone = $row['phone']; else  $phone = "";//////////////////////////////////////////////////////////////////joe modify/////////////////////////
 
@@ -127,8 +130,33 @@ class classDbiL3wxOprFaam
                     if($arriveTimeInt <= $stdWorkStart) $lateWorkFlag = false; else $lateWorkFlag = true;  //迟到标志
                     if($leaveTimeInt >= $stdWorkEnd) $earlyLeaveFlag = false; else $earlyLeaveFlag = true; //早退标志
 
+                    $totalnum = $standardnum * $workTime;
+                    $today = date("Y.m.d");
+                    $dayTimeStart = $today." 00:00:00";  //今天开始
+                    $dayTimeEnd = $today." 23:59:59";      //今天结束
+
+/////////////////////////////////////
+
+                    $typeList = array(); //获取苹果类型
+                    $query_str = "SELECT * FROM `t_l3f11faam_typesheet` WHERE `pjcode` = '$pjCode' ";
+                    $result = $mysqli->query($query_str);
+                    while (($result != false) && (($row = $result->fetch_array()) > 0)) {
+                        array_push($typeList, $row);
+                    }
+
+                    $completeNum = 0; //初始化完成个数
+                    $query_str = "SELECT * FROM `t_l3f11faam_appleproduction` WHERE (`owner` = '$employee' AND `activetime`>'$dayTimeStart' AND `activetime`<='$dayTimeEnd')";
+                    $result = $mysqli->query($query_str);
+                    if (($result != false) && ($result->num_rows) > 0) {
+                        while (($row = $result->fetch_array()) > 0){
+                            if (isset($row['typecode'])) $typeCode = $row['typecode']; else  $typeCode = "";
+                            $completeNum += $typeList[$typeCode]['applenum'];
+                        }
+                    }
+
+////////////////////////////////////////
                     $query_str = "UPDATE `t_l3f11faam_dailysheet` SET `leavetime` = '$currentTime',`worktime` = '$workTime',`unitprice` = '$unitPrice',`lateworkflag` = '$lateWorkFlag',
-                                  `earlyleaveflag` = '$earlyLeaveFlag' WHERE (`pjcode` = '$scanCode' AND `employee` = '$employee' AND `workday` = '$workDay')";
+                                  `earlyleaveflag` = '$earlyLeaveFlag' WHERE (`pjcode` = '$scanCode' AND `employee` = '$employee' AND `workday` = '$workDay'AND `totalstandardnum` = '$totalnum'AND `completenumber` = '$completeNum')"; ///////////////////////////////////////joe modify
                     $mysqli->query($query_str);
                     $resp = array('employee'=>$employee, 'message'=>"考勤成功");
                 }
@@ -159,9 +187,9 @@ class classDbiL3wxOprFaam
                 $mysqli->query($query_str);
                 $resp = array('employee'=>$nickName, 'message'=>"注册成功");
             }else{  //管理员没有添加
-                $mid = MFUN_L3APL_F1SYM_MID_PREFIX.$this->getRandomUid(MFUN_L3APL_F1SYM_USER_ID_LEN);  //随机生成员工ID
-                $query_str = "INSERT INTO `t_l3f11faam_membersheet` (mid,pjcode,openid,regdate) VALUES ('$mid','$scanCode','$nickName','$workDay')";
-                $mysqli->query($query_str);
+//                $mid = MFUN_L3APL_F1SYM_MID_PREFIX.$this->getRandomUid(MFUN_L3APL_F1SYM_USER_ID_LEN);     //  /////joe modify///////////////////////// 不每次添加员工 ，需要工厂管理员先添加用户信息到数据库中
+//                $query_str = "INSERT INTO `t_l3f11faam_membersheet` (mid,pjcode,openid,regdate) VALUES ('$mid','$scanCode','$nickName','$workDay')";
+//                $mysqli->query($query_str);
                 $resp = array('employee'=>$nickName, 'message'=>"用户未注册");
             }
 

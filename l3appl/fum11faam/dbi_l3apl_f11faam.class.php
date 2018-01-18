@@ -657,6 +657,8 @@ class classDbiL3apF11faam
 
         array_push($history["ColumnName"], "序号");
         array_push($history["ColumnName"], "姓名");
+        array_push($history["ColumnName"], "工种");////////////////////
+        array_push($history["ColumnName"], "区域");//////////////////////
         array_push($history["ColumnName"], "开始日期");
         array_push($history["ColumnName"], "结束日期");
         array_push($history["ColumnName"], "迟到次数");
@@ -694,7 +696,7 @@ class classDbiL3apF11faam
         $result = $mysqli->query($query_str);
         $nameList = array();
         while (($result != false) && (($row = $result->fetch_array()) > 0)){
-            $temp = array('employee' => $row['employee']);
+            $temp = array('employee' => $row['employee'],'position' => $row['position'],'zone' => $row['address']);
             array_push($nameList, $temp);
         }
 
@@ -745,12 +747,17 @@ class classDbiL3apF11faam
         $sid = 0;
         for($i=0; $i<count($nameList); $i++){
             $employee = $nameList[$i]['employee'];
+            $position = $nameList[$i]['position'];
+            $zone = $nameList[$i]['zone'];
+
             if(isset($workingDay[$employee]) AND isset($lateWorkDay[$employee]) AND isset($earlyLeaveDay[$employee]) AND
                 isset($totalWorkTime[$employee]) AND isset($offWorkDay[$employee]) AND isset($totalOffWorkTime[$employee])){
                 $sid++;
                 $temp = array();
                 array_push($temp, $sid++);
                 array_push($temp, $employee);
+                array_push($temp, $position);
+                array_push($temp, $zone);
                 array_push($temp, $timeStart);
                 array_push($temp, $timeEnd);
                 array_push($temp, $lateWorkDay[$employee]);
@@ -1268,6 +1275,36 @@ class classDbiL3apF11faam
             }
         }
 
+/////////////////////////////////////////查询dailysheet
+        $dailybuf = array();
+        if(!empty($keyWord)) {//关键字不空，查找指定员工
+            $query_str = "SELECT * FROM `t_l3f11faam_dailysheet` WHERE (`pjcode` = '$pjCode' AND `workday`>='$dayTimeStart' AND `workday`<='$dayTimeEnd' AND `owner` = '$keyWord')";
+            $result = $mysqli->query($query_str);
+            if (($result != false) && ($result->num_rows) > 0) {  //输入的关键字为用户名
+                while (($row = $result->fetch_array()) > 0)
+                    array_push($dailybuf, $row);
+            }
+        }
+        else{ //关键字为空，查找全部员工
+            $query_str = "SELECT * FROM `t_l3f11faam_dailysheet` WHERE (`pjcode` = '$pjCode' AND `workday`>='$dayTimeStart' AND `workday`<='$dayTimeEnd')";
+            $result = $mysqli->query($query_str);
+            if (($result != false) && ($result->num_rows) > 0) {
+                while (($row = $result->fetch_array()) > 0)
+                    array_push($dailybuf, $row);
+            }
+        }
+
+        $totalcompletenum = array();
+        for($i=0; $i<count($dailybuf); $i++){
+            $employee = $dailybuf[$i]['employee'];
+            if (isset($totalstandardnum[$employee])){
+                $totalstandardnum[$employee] = $totalstandardnum[$employee] + $dailybuf[$i]['totalstandardnum'] ;
+            }else{
+                $totalstandardnum[$employee] = $dailybuf[$i]['totalstandardnum'] ;
+            }
+        }
+////////////////////////////////////////////////////////////
+
         //查询员工列表
         $query_str = "SELECT * FROM `t_l3f11faam_membersheet` WHERE (`pjcode` = '$pjCode')";
         $result = $mysqli->query($query_str);
@@ -1320,8 +1357,8 @@ class classDbiL3apF11faam
                 $appleNum = $typeList[$j]['applenum'];
                 $appleWeight = $typeList[$j]['appleweight'];
                 if(isset($package[$employee][$typeCode])){
-                    $perPackage = (int)$package[$employee][$typeCode];
-//                    $totalPackage += (int)$package[$employee][$typeCode];
+                    $perPackage = (int)$package[$employee][$typeCode];////////////////////////////////
+                    $totalPackage += (int)$package[$employee][$typeCode];
                     $totalPackage += $perPackage;
                     $totalNum += $perPackage * (int)$appleNum;
                     $totalWeight += $perPackage * (int)$appleWeight;
@@ -1348,11 +1385,11 @@ class classDbiL3apF11faam
                 if (isset($weightSum[$employee])) $tempWeightSum = $weightSum[$employee]; else $tempWeightSum = 0;
                 if (isset($numSum[$employee])) $tempNumSum = $numSum[$employee]; else $tempNumSum = 0;
 
-                $totalKpi = $kpi * $totalWorkTime[$employee];//////////绩效标准 工作小时 * 每小时工作绩效
+//                $totalKpi = $kpi * $totalWorkTime[$employee];//////////绩效标准 工作小时 * 每小时工作绩效$totalcompletenum[$employee]
 
                 $timeSalary =  $totalWorkTime[$employee]*$unitPrice;
-                if ($totalKpi != 0)
-                    $kpiSalary = round((float)($tempNumSum/($totalKpi))*100, 2).'%';
+                if ($totalstandardnum[$employee] != 0)
+                    $kpiSalary = round((float)($tempNumSum/($totalstandardnum[$employee]))*100, 2).'%';
                 else
                     $kpiSalary = "%";
                 $sid++;
@@ -1369,7 +1406,7 @@ class classDbiL3apF11faam
                 array_push($temp, $tempPackageSum);
                 array_push($temp, $tempWeightSum);
                 array_push($temp, $tempNumSum);
-                array_push($temp ,$totalKpi);
+                array_push($temp ,$totalstandardnum[$employee]);
                 array_push($temp, $kpiSalary);
                 array_push($history['TableData'], $temp);
             }
