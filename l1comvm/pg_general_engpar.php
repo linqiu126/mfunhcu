@@ -139,8 +139,10 @@ define("MFUN_HCU_OPT_BFSC_WEIGHTDATA_IND", 0x81);
 define("MFUN_HCU_OPT_BFSC_WEIGHTSTART_RESP", 0x82);
 define("MFUN_HCU_OPT_BFSC_WEIGHTSTOP_RESP", 0x83);
 
-//FAAM常量
+//FAAM常量，将来视情况可以创立单独的工厂管理项目工参表pg_faam_engpar
 define("MFUN_HCU_FAAM_PJCODE", "XHZN");
+define("MFUN_HCU_FAAM_EMPLOYEE_ONJOB_NO", 0);  //离职
+define("MFUN_HCU_FAAM_EMPLOYEE_ONJOB_YES", 1); //在职
 
 class classConstL1vmUserWebRight
 {

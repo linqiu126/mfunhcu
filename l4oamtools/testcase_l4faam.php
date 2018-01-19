@@ -15,6 +15,23 @@ if (TC_L4FAAM_UI == true) {
     $sessionid = "q7MIRcQkYh";
     $uerid = "UID000001";
 
+    $today = date("Y-m-d");
+    $dayTimeStart = strtotime($today." 00:00:00");  //今天开始
+    $dayTimeEnd = strtotime($today." 23:59:59");      //今天结束
+    $activetime = strtotime("2018-1-18 00:00:00");
+
+    if($activetime < $dayTimeStart)
+        $a = 1;
+    else
+        $a = 0;
+
+
+
+
+
+
+
+
     $timeStart = '2017-12-01';
     $timeEnd = '2017-12-25';
 
