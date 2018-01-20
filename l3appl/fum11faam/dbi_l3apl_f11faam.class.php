@@ -1241,8 +1241,8 @@ class classDbiL3apF11faam
         $pjCode = $this->dbi_get_user_auth_factory($mysqli, $uid);
         $dayTimeStart = $timeStart." 00:00:00";  //默认从查询起始天零点开始
         $dayTimeEnd = $timeEnd." 23:59:59";      //到查询结束天24时结束
-        $interval = date_diff(date_create($timeStart), date_create($timeEnd));
-        $intervalDay = $interval->days + 1;  //总查询天数
+        //$interval = date_diff(date_create($timeStart), date_create($timeEnd));
+        //$intervalDay = $interval->days + 1;  //总查询天数
 
         $workBuf = array();
         if(!empty($keyWord)) { //关键字不空，查找指定员工
@@ -1341,7 +1341,6 @@ class classDbiL3apF11faam
                 $appleWeight = $typeList[$j]['appleweight'];
                 if(isset($package[$employee][$typeCode])){
                     $perPackage = (int)$package[$employee][$typeCode];
-                    $totalPackage += (int)$package[$employee][$typeCode];
                     $totalPackage += $perPackage;
                     $totalNum += $perPackage * (int)$appleNum;
                     $totalWeight += $perPackage * (int)$appleWeight;

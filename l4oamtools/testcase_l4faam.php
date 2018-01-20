@@ -12,28 +12,10 @@ include_once "../l1comvm/vmlayer.php";
  *                             L4TBSWR-UI TEST CASES                                   *
  *************************************************************************************/
 if (TC_L4FAAM_UI == true) {
-    $sessionid = "q7MIRcQkYh";
+    $sessionid = "7uVXBSuUrA";
     $uerid = "UID000001";
 
-    $today = date("Y-m-d");
-    $dayTimeStart = strtotime($today." 00:00:00");  //今天开始
-    $dayTimeEnd = strtotime($today." 23:59:59");      //今天结束
-    $activetime = strtotime("2018-1-18 00:00:00");
-
-    if($activetime < $dayTimeStart)
-        $a = 1;
-    else
-        $a = 0;
-
-
-
-
-
-
-
-
-    $timeStart = '2017-12-01';
-    $timeEnd = '2017-12-25';
+    $today = date("Y-m-d", time());
 
     echo " [TC L4FAAM: StaffTable START]\n";
     $_GET["action"] = "StaffTable";
@@ -46,8 +28,16 @@ if (TC_L4FAAM_UI == true) {
     echo " [TC L4FAAM: AttendanceBatchNew START]\n";
     $_GET["action"] = "AttendanceBatchNew";
     $_GET["user"] = $sessionid;
-    require("../l4faamui/request.php");
+    //require("../l4faamui/request.php");
     echo " [TC L4FAAM: AttendanceBatchNew END]\n";
+
+    echo " [TC L4FAAM: KPIAudit START]\n";
+    $_GET["action"] = "KPIAudit";
+    $_GET["user"] = $sessionid;
+    $body = array("TimeStart"=>"2018-01-20", "TimeEnd"=>"2018-01-20","KeyWord"=>"");
+    $_GET["body"] = $body;
+    require("../l4faamui/request.php");
+    echo " [TC L4FAAM: KPIAudit END]\n";
 
     echo " [TC L4FAAM: AssembleAudit START]\n";
     $_GET["action"] = "AssembleAudit";

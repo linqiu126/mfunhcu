@@ -254,6 +254,97 @@ class classDbiL2timerCron
         return $result;
     }
 
+    public function dbi_cron_10min_process_sae_database_backup()
+    {
+        $dj = new SaeDeferredJob();
+        //添加任务，导入数据库
+        // $taskID=$dj->addTask("import","mysql","domainA","abc.sql","databaseA","tableA","callback.php");
+        // if($taskID===false)
+        //     var_dump($dj->errno(), $dj->errmsg());
+        // else
+        // var_dump($taskID);
+        $tasktype = "export";
+        $dbtype = "mysql";
+        $stor_domain = "backupdatabase";
+        $dbname = "app_mfuncard";
+        $tbname = null;
+
+        //$tbname = null应该是选择全部表，需要试试
+        //$tbname = "loginfo";
+        date_default_timezone_set("Asia/Shanghai");
+        $my_t=getdate(date("U"));
+        $stor_filename = "$dbname-$my_t[year]-$my_t[mon]-$my_t[mday]-$my_t[hours]-$my_t[minutes]-$my_t[seconds].sql.zip";
+        //$stor_filename = "201509191321.sql.zip";
+        $callbackurl = null;
+        //$callbackurl = null 设置为null是否就不出错，要试试
+        //$callbackurl = "csv.php";
+        $ignore_errors = true;
+
+        $taskID=$dj->addTask($tasktype,$dbtype,$stor_domain,$stor_filename,$dbname,$tbname,$callbackurl, $ignore_errors);
+        if($taskID===false) var_dump($dj->errno(), $dj->errmsg());
+
+        // //获得任务状态
+        // $ret=$dj->getStatus($taskID);
+        // if($ret===false)
+        //     var_dump($dj->errno(), $dj->errmsg());
+
+        // //删除任务
+        // $ret=$dj->deleteTask($taskID);
+        // if($ret===false)
+        //     var_dump($dj->errno(), $dj->errmsg());
+
+        return "";
+    }
+
+    /***FAAM工厂智能管理项目计算工人当天标准绩效***/
+    public function dbi_cron_faam_employee_standard_kpi_calc($pjCode)
+    {
+        //连接log数据库
+        $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli) {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $mysqli->query("SET NAMES utf8");
+
+        //查询员工列表
+        $onJob = MFUN_HCU_FAAM_EMPLOYEE_ONJOB_YES; //在职员工
+        $query_str = "SELECT * FROM `t_l3f11faam_membersheet` WHERE (`pjcode` = '$pjCode' AND `onjob` = '$onJob')";
+        $result = $mysqli->query($query_str);
+        $nameList = array();
+        while (($result != false) && (($row = $result->fetch_array()) > 0)){
+            array_push($nameList, $row);
+        }
+
+        //查询当天有上下班考勤的记录
+        $workDay = date('Y-m-d', time());
+        $dailySheet = array();
+        $query_str = "SELECT * FROM `t_l3f11faam_dailysheet` WHERE (`pjcode`='$pjCode' AND `workday`='$workDay')";
+        $result = $mysqli->query($query_str);
+        if (($result != false) && ($result->num_rows) > 0) {
+            while (($row = $result->fetch_array()) > 0)
+                array_push($dailySheet, $row);
+        }
+        //处理员工表查询结果
+        for($i=0; $i<count($nameList); $i++) {
+            $employee = $nameList[$i]['employee'];
+            $standardNum = $nameList[$i]['standardnum'];
+            $standardNumList[$employee] = $standardNum;
+        }
+        //处理考勤表查询结果
+        for($i=0; $i<count($dailySheet); $i++) {
+            $employee = $dailySheet[$i]['employee'];
+            if(isset($standardNumList[$employee])){
+                $hourStandardNum = intval($standardNumList[$employee]);
+                $workTime = $dailySheet[$i]['worktime'];
+                $dayStandardNum = $hourStandardNum * $workTime;
+                $query_str = "UPDATE `t_l3f11faam_dailysheet` SET `daystandardnum` = '$dayStandardNum' WHERE (`pjcode`='$pjCode' AND `workday`='$workDay' AND `employee`='$employee')";
+                $result = $mysqli->query($query_str);
+            }
+        }
+
+        $mysqli->close();
+        return $result;
+    }
 
     /***AQYC扬尘项目超期历史数据清理***/
 
@@ -293,6 +384,8 @@ class classDbiL2timerCron
         $result11 = $this->dbi_cron_l1vm_loginfo_cleanup();
 
         $result = $result1 AND $result2 AND $result3 AND $result4 AND $result5 AND $result6 AND $result7 AND $result8 AND $result9 AND $result10 AND $result11;
+
+        $mysqli->close();
         return $result;
     }
 
@@ -322,6 +415,8 @@ class classDbiL2timerCron
         $result5 = $this->dbi_cron_l1vm_loginfo_cleanup();
 
         $result = $result1 AND $result2 AND $result3 AND $result4 AND $result5;
+
+        $mysqli->close();
         return $result;
     }
 }

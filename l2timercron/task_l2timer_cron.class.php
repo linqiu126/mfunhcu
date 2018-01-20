@@ -10,81 +10,40 @@ include_once "dbi_l2timer_cron.class.php";
 
 class classTaskL2TimerCron
 {
-    //构造函数
-    public function __construct()
-    {
-
-    }
-
-    function func_timer_1min_process()
+    private function func_timer_1min_process()
     {
         return "";
     }
 
-    function func_timer_3min_process()
+    private function func_timer_3min_process()
     {
         return "";
     }
 
-    function func_timer_10min_process()
-    {
-        $this->func_timer_10min_process_sae_database_backup();
-        return "";
-    }
-
-    function func_timer_10min_process_sae_database_backup()
-    {
-        $dj = new SaeDeferredJob();
-        //添加任务，导入数据库
-        // $taskID=$dj->addTask("import","mysql","domainA","abc.sql","databaseA","tableA","callback.php");
-        // if($taskID===false)
-        //     var_dump($dj->errno(), $dj->errmsg());
-        // else
-        // var_dump($taskID);
-        $tasktype = "export";
-        $dbtype = "mysql";
-        $stor_domain = "backupdatabase";
-        $dbname = "app_mfuncard";
-        $tbname = null;
-
-        //$tbname = null应该是选择全部表，需要试试
-        //$tbname = "loginfo";
-        date_default_timezone_set("Asia/Shanghai");
-        $my_t=getdate(date("U"));
-        $stor_filename = "$dbname-$my_t[year]-$my_t[mon]-$my_t[mday]-$my_t[hours]-$my_t[minutes]-$my_t[seconds].sql.zip";
-        //$stor_filename = "201509191321.sql.zip";
-        $callbackurl = null;
-        //$callbackurl = null 设置为null是否就不出错，要试试
-        //$callbackurl = "csv.php";
-        $ignore_errors = true;
-
-        $taskID=$dj->addTask($tasktype,$dbtype,$stor_domain,$stor_filename,$dbname,$tbname,$callbackurl, $ignore_errors);
-        if($taskID===false) var_dump($dj->errno(), $dj->errmsg());
-
-        // //获得任务状态
-        // $ret=$dj->getStatus($taskID);
-        // if($ret===false)
-        //     var_dump($dj->errno(), $dj->errmsg());
-
-        // //删除任务
-        // $ret=$dj->deleteTask($taskID);
-        // if($ret===false)
-        //     var_dump($dj->errno(), $dj->errmsg());
-
-        return "";
-    }
-
-    function func_timer_30min_process()
+    private function func_timer_10min_process()
     {
         return "";
     }
 
-    function func_timer_1hour_process()
+    private function func_timer_30min_process()
     {
         return "";
     }
 
-    function func_timer_6hour_process()
+    public function func_timer_1hour_process()
+    {
+        //每小时计算FAAM工厂标准绩效数据
+        $dbiL2timerCronObj = new classDbiL2timerCron();
+        $result = $dbiL2timerCronObj->dbi_cron_faam_employee_standard_kpi_calc('HYGS');
+        if($result)
+            $resp = "HYGS employee standard KPI calculation success";
+        else
+            $resp = "HYGS employee standard KPI calculation failure";
+
+        return $resp;
+    }
+
+    private function func_timer_6hour_process()
     {
         return "";
     }
@@ -95,7 +54,7 @@ class classTaskL2TimerCron
         if (MFUN_CURRENT_WORKING_PROGRAM_NAME_UNIQUE == MFUN_WORKING_PROGRAM_NAME_UNIQUE_AQYC){
             $result = $dbiL2timerCronObj->dbi_cron_aqyc_olddata_cleanup($day);
             if($result)
-              $resp = "AQYC history data cleanup success";
+                $resp = "AQYC history data cleanup success";
             else
                 $resp = "AQYC history data cleanup failure";
         }
@@ -118,17 +77,17 @@ class classTaskL2TimerCron
         return $resp;
     }
 
-    function func_timer_2day_process()
+    private function func_timer_2day_process()
     {
         return "";
     }
 
-    function func_timer_7day_process()
+    private function func_timer_7day_process()
     {
         return "";
     }
 
-    function func_timer_30day_process()
+    private function func_timer_30day_process()
     {
         return "";
     }
@@ -146,7 +105,6 @@ class classTaskL2TimerCron
             $log_content = "E: receive null message body";
             $loggerObj->mylog($project,"NULL","MFUN_MAIN_ENTRY_CRON","MFUN_TASK_ID_L2TIMER_CRON",$msgName,$log_content);
             return false;
-
         }
         switch($msgId){
             case MSG_ID_L2TIMER_CRON_1MIN_COMING:
@@ -188,7 +146,6 @@ class classTaskL2TimerCron
             $log_content = json_encode($resp,JSON_UNESCAPED_UNICODE);
             $loggerObj->mylog($project,"NULL","MFUN_MAIN_ENTRY_CRON","MFUN_TASK_ID_L2TIMER_CRON",$msgName,$log_content);
         }
-
         //返回
         return true;
     }
