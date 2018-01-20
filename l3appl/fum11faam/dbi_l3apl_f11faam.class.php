@@ -428,6 +428,8 @@ class classDbiL3apF11faam
                         'nickname' => $row['openid'],
                         'mobile' => $row['phone'],
                         'gender' => $row['gender'],
+                        'identify' => $row['idcard'],
+                        'geoinfo' => $row['zone'],
                         'address' => $row['address'],
                         'salary' => $row['unitprice'],
                         'position' => $row['position'],
@@ -450,6 +452,8 @@ class classDbiL3apF11faam
                         'nickname' => $row['openid'],
                         'mobile' => $row['phone'],
                         'gender' => $row['gender'],
+                        'identify' => $row['idcard'],
+                        'geoinfo' => $row['zone'],
                         'address' => $row['address'],
                         'salary' => $row['unitprice'],
                         'position' => $row['position'],
@@ -478,6 +482,8 @@ class classDbiL3apF11faam
                         'nickname' => $row['openid'],
                         'mobile' => $row['phone'],
                         'gender' => $row['gender'],
+                        'identify' => $row['idcard'],
+                        'geoinfo' => $row['zone'],
                         'address' => $row['address'],
                         'salary' => $row['unitprice'],
                         'position' => $row['position'],
@@ -500,6 +506,8 @@ class classDbiL3apF11faam
                         'nickname' => $row['openid'],
                         'mobile' => $row['phone'],
                         'gender' => $row['gender'],
+                        'identify' => $row['idcard'],
+                        'geoinfo' => $row['zone'],
                         'address' => $row['address'],
                         'salary' => $row['unitprice'],
                         'position' => $row['position'],
@@ -533,6 +541,8 @@ class classDbiL3apF11faam
         if (isset($staffInfo["position"])) $position = trim($staffInfo["position"]); else  $position = "";
         if (isset($staffInfo["gender"])) $gender = trim($staffInfo["gender"]); else  $gender = "";
         if (isset($staffInfo["mobile"])) $phone = trim($staffInfo["mobile"]); else  $phone = "";
+        if (isset($staffInfo["geoinfo"])) $zone = trim($staffInfo["geoinfo"]); else  $zone = "";
+        if (isset($staffInfo["identify"])) $idCard = trim($staffInfo["identify"]); else  $idCard = "";
         if (isset($staffInfo["address"])) $address = trim($staffInfo["address"]); else  $address = "";
         if (isset($staffInfo["salary"])) $unitPrice = intval($staffInfo["salary"]); else  $unitPrice = 0;
         if (isset($staffInfo["status"])) $onjob = intval($staffInfo["status"]); else  $onjob = 0;
@@ -540,8 +550,8 @@ class classDbiL3apF11faam
         if (isset($staffInfo["memo"])) $memo = trim($staffInfo["memo"]); else  $memo = "";
 
         $date = date("Y-m-d", time());
-        $query_str = "UPDATE `t_l3f11faam_membersheet` SET `pjcode` = '$pjCode',`employee` = '$employee',`openid` = '$nickName',`gender` = '$gender',`phone` = '$phone',`regdate` = '$date',
-                      `position` = '$position',`address` = '$address',`unitprice` = '$unitPrice',`standardnum` = '$standardNum',`onjob` = '$onjob',`memo` = '$memo' WHERE (`mid` = '$staffId')";
+        $query_str = "UPDATE `t_l3f11faam_membersheet` SET `pjcode` = '$pjCode',`employee` = '$employee',`openid` = '$nickName',`gender` = '$gender',`phone` = '$phone',`regdate` = '$date',`position` = '$position',
+                      `idcard` = '$idCard',`zone` = '$zone',`address` = '$address',`unitprice` = '$unitPrice',`standardnum` = '$standardNum',`onjob` = '$onjob',`memo` = '$memo' WHERE (`mid` = '$staffId')";
         $result = $mysqli->query($query_str);
 
         $mysqli->close();
@@ -563,6 +573,8 @@ class classDbiL3apF11faam
         if (isset($staffInfo["position"])) $position = trim($staffInfo["position"]); else  $position = "";
         if (isset($staffInfo["gender"])) $gender = trim($staffInfo["gender"]); else  $gender = "";
         if (isset($staffInfo["mobile"])) $phone = trim($staffInfo["mobile"]); else  $phone = "";
+        if (isset($staffInfo["geoinfo"])) $zone = trim($staffInfo["geoinfo"]); else  $zone = "";
+        if (isset($staffInfo["identify"])) $idCard = trim($staffInfo["identify"]); else  $idCard = "";
         if (isset($staffInfo["address"])) $address = trim($staffInfo["address"]); else  $address = "";
         if (isset($staffInfo["salary"])) $unitPrice = intval($staffInfo["salary"]); else  $unitPrice = 0;
         if (isset($staffInfo["KPI"])) $standardNum = intval($staffInfo["KPI"]); else  $standardNum = 0;
@@ -571,8 +583,8 @@ class classDbiL3apF11faam
         $date = date("Y-m-d", time());
         $mid = MFUN_L3APL_F1SYM_MID_PREFIX.$this->getRandomUid(MFUN_L3APL_F1SYM_USER_ID_LEN);  //随机生成员工ID
 
-        $query_str = "INSERT INTO `t_l3f11faam_membersheet` (mid,pjcode,employee,gender,phone,regdate,position,address,unitprice,standardnum,memo)
-                              VALUES ('$mid','$pjCode','$employee','$gender','$phone','$date','$position','$address','$unitPrice','$standardNum','$memo')";
+        $query_str = "INSERT INTO `t_l3f11faam_membersheet` (mid,pjcode,employee,gender,phone,regdate,position,zone,idcard,address,unitprice,standardnum,memo)
+                              VALUES ('$mid','$pjCode','$employee','$gender','$phone','$date','$position','$zone','$idCard','$address','$unitPrice','$standardNum','$memo')";
         $result = $mysqli->query($query_str);
 
         $mysqli->close();

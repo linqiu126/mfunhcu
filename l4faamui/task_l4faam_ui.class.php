@@ -10,6 +10,17 @@ include_once "../l1comvm/vmlayer.php";
 class classTaskL4faamUi
 {
 
+    private function get_file_detail($path){
+        $ret = "";
+        if(!file_exists($path)) {
+            //echo $path." is not exist!";
+            return "";
+        }
+        $afile=$path;
+        $json_string = file_get_contents($afile);
+        return $json_string;
+    }
+
     /**************************************************************************************
      *                             任务入口函数                                           *
      *************************************************************************************/
@@ -160,6 +171,12 @@ class classTaskL4faamUi
             case "KPIAudit": //绩效统计
                 $input = array("project" => $project, "action" => $action, "type" => $type,"user" => $user,"body" => $body);
                 $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FAAM_UI, MFUN_TASK_ID_L3APPL_FUM11FAAM, MSG_ID_L4FAAMUI_TO_L3F11_KPIAUDIT, "MSG_ID_L4FAAMUI_TO_L3F11_KPIAUDIT",$input);
+                break;
+
+            case "GetGeoList":  //获取山东的地理区域信息
+                $retarray = $this->get_file_detail("./json/geography.json");
+                $obj = json_decode($retarray,true);
+                $resp = array('status'=>'true','ret'=>$obj['shandong'],'auth'=>'true','msg'=>'');
                 break;
 
             default:
