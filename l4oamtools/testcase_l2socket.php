@@ -15,32 +15,6 @@ if (TC_SOCKET == true) {
     //SOCKET测试开始
     echo " [TC SOCKET: xxx START]\n";
 
-    function urlstr($str){
-        $url="";
-        $m1="";
-        for($i=0;$i<=strlen($str);$i++){
-            $m1=base_convert(ord(substr($str,$i,1)),10,16);
-            if ($m1!="0")
-                $url=$url.$m1;
-        }
-        return $url;
-    }
-
-
-    $y = '534451585F';
-    $w = pack('H*',$y);
-    $n = substr($w, 14,5);
-    $d = intval($n);
-    $name = "李;";
-    $da = urlstr($name);
-    $len = strlen($name);
-
-    $nameDataArray = array();
-    for($i = 0; $i < $len; $i++){
-        $one_char = substr($name, $i, 1);
-        $int_char = ord($one_char);
-        array_push($nameDataArray, $int_char);
-    }
 
     /*********************图片数据，消息来自9501端口*********************/
     $data = "4843555F473530325F464859535F50303030315F303132333435363738395F5F000000024040";
