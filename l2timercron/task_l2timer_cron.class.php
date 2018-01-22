@@ -51,6 +51,11 @@ class classTaskL2TimerCron
     private function func_timer_24hour_process($day)
     {
         $dbiL2timerCronObj = new classDbiL2timerCron();
+
+        //清除过期log数据
+        $dbiL2timerCronObj->dbi_cron_l1vm_loginfo_cleanup();
+
+        //清理过期业务数据
         if (MFUN_CURRENT_WORKING_PROGRAM_NAME_UNIQUE == MFUN_WORKING_PROGRAM_NAME_UNIQUE_AQYC){
             $result = $dbiL2timerCronObj->dbi_cron_aqyc_olddata_cleanup($day);
             if($result)
