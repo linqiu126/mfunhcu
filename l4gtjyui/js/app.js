@@ -3448,12 +3448,12 @@ function draw_key_table_head(){
     draw_key_table($("#key_page_0"));
 }
 function key_type_transfer(keyType){
-    if(keyType == "R") return "射频卡";
-    if(keyType == "B") return "蓝牙";
-    if(keyType == "U") return "用户名";
-    if(keyType == "I") return "身份证";
-    if(keyType == "W") return "微信号";
-    if(keyType == "P") return "电话号码";
+    if(keyType == "R") return "RFID钥匙";
+    if(keyType == "B") return "手机蓝牙钥匙";
+    if(keyType == "U") return "用户账号钥匙";
+    //if(keyType == "I") return "身份证";
+    //if(keyType == "W") return "微信号";
+    //if(keyType == "P") return "电话号码";
     return "未知类型";
 
 }

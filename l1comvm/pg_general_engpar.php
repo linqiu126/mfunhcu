@@ -143,6 +143,8 @@ define("MFUN_HCU_OPT_BFSC_WEIGHTSTOP_RESP", 0x83);
 define("MFUN_HCU_FAAM_PJCODE", "XHZN");
 define("MFUN_HCU_FAAM_EMPLOYEE_ONJOB_NO", 0);  //离职
 define("MFUN_HCU_FAAM_EMPLOYEE_ONJOB_YES", 1); //在职
+define("MFUN_HCU_FAAM_EMPLOYEE_PHOTO_WWW_DIR", "/xhzn/avorion/userphoto/"); //员工照片地址
+define("MFUN_HCU_FAAM_EMPLOYEE_PHOTO_UPLOAD_DIR", "../../avorion/userphoto/");
 
 class classConstL1vmUserWebRight
 {

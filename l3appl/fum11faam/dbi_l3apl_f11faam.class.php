@@ -431,6 +431,9 @@ class classDbiL3apF11faam
                         'identify' => $row['idcard'],
                         'geoinfo' => $row['zone'],
                         'address' => $row['address'],
+                        'bank' => $row['bank'],
+                        'account' => $row['account'],
+                        'photo' => MFUN_HCU_FAAM_EMPLOYEE_PHOTO_WWW_DIR.$row['photo'],
                         'salary' => $row['unitprice'],
                         'position' => $row['position'],
                         'status' => (string)$row['onjob'],
@@ -455,6 +458,9 @@ class classDbiL3apF11faam
                         'identify' => $row['idcard'],
                         'geoinfo' => $row['zone'],
                         'address' => $row['address'],
+                        'bank' => $row['bank'],
+                        'account' => $row['account'],
+                        'photo' => MFUN_HCU_FAAM_EMPLOYEE_PHOTO_WWW_DIR.$row['photo'],
                         'salary' => $row['unitprice'],
                         'position' => $row['position'],
                         'status' => (string)$row['onjob'],
@@ -485,6 +491,9 @@ class classDbiL3apF11faam
                         'identify' => $row['idcard'],
                         'geoinfo' => $row['zone'],
                         'address' => $row['address'],
+                        'bank' => $row['bank'],
+                        'account' => $row['account'],
+                        'photo' => MFUN_HCU_FAAM_EMPLOYEE_PHOTO_WWW_DIR.$row['photo'],
                         'salary' => $row['unitprice'],
                         'position' => $row['position'],
                         'status' => (string)$row['onjob'],
@@ -509,6 +518,9 @@ class classDbiL3apF11faam
                         'identify' => $row['idcard'],
                         'geoinfo' => $row['zone'],
                         'address' => $row['address'],
+                        'bank' => $row['bank'],
+                        'account' => $row['account'],
+                        'photo' => MFUN_HCU_FAAM_EMPLOYEE_PHOTO_WWW_DIR.$row['photo'],
                         'salary' => $row['unitprice'],
                         'position' => $row['position'],
                         'status' => (string)$row['onjob'],
@@ -544,15 +556,33 @@ class classDbiL3apF11faam
         if (isset($staffInfo["geoinfo"])) $zone = trim($staffInfo["geoinfo"]); else  $zone = "";
         if (isset($staffInfo["identify"])) $idCard = trim($staffInfo["identify"]); else  $idCard = "";
         if (isset($staffInfo["address"])) $address = trim($staffInfo["address"]); else  $address = "";
+        if (isset($staffInfo["bank"])) $bank = trim($staffInfo["bank"]); else  $bank = "";
+        if (isset($staffInfo["account"])) $account = trim($staffInfo["account"]); else  $account = "";
+        if (isset($staffInfo["photo"])) $photo = trim($staffInfo["photo"]); else  $photo = "";
         if (isset($staffInfo["salary"])) $unitPrice = intval($staffInfo["salary"]); else  $unitPrice = 0;
         if (isset($staffInfo["status"])) $onjob = intval($staffInfo["status"]); else  $onjob = 0;
         if (isset($staffInfo["KPI"])) $standardNum = intval($staffInfo["KPI"]); else  $standardNum = 0;
         if (isset($staffInfo["memo"])) $memo = trim($staffInfo["memo"]); else  $memo = "";
 
         $date = date("Y-m-d", time());
-        $query_str = "UPDATE `t_l3f11faam_membersheet` SET `pjcode` = '$pjCode',`employee` = '$employee',`openid` = '$nickName',`gender` = '$gender',`phone` = '$phone',`regdate` = '$date',`position` = '$position',
-                      `idcard` = '$idCard',`zone` = '$zone',`address` = '$address',`unitprice` = '$unitPrice',`standardnum` = '$standardNum',`onjob` = '$onjob',`memo` = '$memo' WHERE (`mid` = '$staffId')";
-        $result = $mysqli->query($query_str);
+
+        $file_link = MFUN_HCU_FAAM_EMPLOYEE_PHOTO_UPLOAD_DIR.$photo;
+        if(file_exists($file_link)){
+            $filename_new = $staffId.".jpg";
+            $filelink_new = MFUN_HCU_FAAM_EMPLOYEE_PHOTO_UPLOAD_DIR.$filename_new;
+            chmod($file_link, 0777);
+            if(file_exists($filelink_new))
+                unlink($filelink_new);          //先删除老的以员工ID命名的照片文件
+            rename($file_link, $filelink_new);  //再将新上传的照片文件名修改为对应员工ID.jpg
+            $query_str = "UPDATE `t_l3f11faam_membersheet` SET `pjcode` = '$pjCode',`employee` = '$employee',`openid` = '$nickName',`gender` = '$gender',`phone` = '$phone',`regdate` = '$date',`position` = '$position',`idcard` = '$idCard',
+                      `zone` = '$zone',`address` = '$address',`bank` = '$bank',`account` = '$account',`photo` = '$filename_new',`unitprice` = '$unitPrice',`standardnum` = '$standardNum',`onjob` = '$onjob',`memo` = '$memo' WHERE (`mid` = '$staffId')";
+            $result = $mysqli->query($query_str);
+        }
+        else{ //照片为空则不更新照片
+            $query_str = "UPDATE `t_l3f11faam_membersheet` SET `pjcode` = '$pjCode',`employee` = '$employee',`openid` = '$nickName',`gender` = '$gender',`phone` = '$phone',`regdate` = '$date',`position` = '$position',`idcard` = '$idCard',
+                      `zone` = '$zone',`address` = '$address',`bank` = '$bank',`account` = '$account',`unitprice` = '$unitPrice',`standardnum` = '$standardNum',`onjob` = '$onjob',`memo` = '$memo' WHERE (`mid` = '$staffId')";
+            $result = $mysqli->query($query_str);
+        }
 
         $mysqli->close();
         return $result;
@@ -576,6 +606,9 @@ class classDbiL3apF11faam
         if (isset($staffInfo["geoinfo"])) $zone = trim($staffInfo["geoinfo"]); else  $zone = "";
         if (isset($staffInfo["identify"])) $idCard = trim($staffInfo["identify"]); else  $idCard = "";
         if (isset($staffInfo["address"])) $address = trim($staffInfo["address"]); else  $address = "";
+        if (isset($staffInfo["bank"])) $bank = trim($staffInfo["bank"]); else  $bank = "";
+        if (isset($staffInfo["account"])) $account = trim($staffInfo["account"]); else  $account = "";
+        if (isset($staffInfo["photo"])) $photo = trim($staffInfo["photo"]); else  $photo = "";
         if (isset($staffInfo["salary"])) $unitPrice = intval($staffInfo["salary"]); else  $unitPrice = 0;
         if (isset($staffInfo["KPI"])) $standardNum = intval($staffInfo["KPI"]); else  $standardNum = 0;
         if (isset($staffInfo["memo"])) $memo = trim($staffInfo["memo"]); else  $memo = "";
@@ -583,9 +616,23 @@ class classDbiL3apF11faam
         $date = date("Y-m-d", time());
         $mid = MFUN_L3APL_F1SYM_MID_PREFIX.$this->getRandomUid(MFUN_L3APL_F1SYM_USER_ID_LEN);  //随机生成员工ID
 
-        $query_str = "INSERT INTO `t_l3f11faam_membersheet` (mid,pjcode,employee,gender,phone,regdate,position,zone,idcard,address,unitprice,standardnum,memo)
-                              VALUES ('$mid','$pjCode','$employee','$gender','$phone','$date','$position','$zone','$idCard','$address','$unitPrice','$standardNum','$memo')";
-        $result = $mysqli->query($query_str);
+        $file_link = MFUN_HCU_FAAM_EMPLOYEE_PHOTO_UPLOAD_DIR.$photo;
+        if(file_exists($file_link)) {
+            $filename_new = $mid . ".jpg";
+            $filelink_new = MFUN_HCU_FAAM_EMPLOYEE_PHOTO_UPLOAD_DIR . $filename_new;
+            chmod($file_link, 0777);
+            if(file_exists($filelink_new))
+                unlink($filelink_new);          //先删除老的以员工ID命名的照片文件
+            rename($file_link, $filelink_new);  //再将新上传的照片文件名修改为对应员工ID.jpg
+            $query_str = "INSERT INTO `t_l3f11faam_membersheet` (mid,pjcode,employee,gender,phone,regdate,position,zone,idcard,address,bank,account,photo,unitprice,standardnum,memo)
+                              VALUES ('$mid','$pjCode','$employee','$gender','$phone','$date','$position','$zone','$idCard','$address','$bank','$account','$filename_new','$unitPrice','$standardNum','$memo')";
+            $result = $mysqli->query($query_str);
+        }
+        else{
+            $query_str = "INSERT INTO `t_l3f11faam_membersheet` (mid,pjcode,employee,gender,phone,regdate,position,zone,idcard,address,bank,account,unitprice,standardnum,memo)
+                              VALUES ('$mid','$pjCode','$employee','$gender','$phone','$date','$position','$zone','$idCard','$address','$bank','$account','$unitPrice','$standardNum','$memo')";
+            $result = $mysqli->query($query_str);
+        }
 
         $mysqli->close();
         return $result;
@@ -622,6 +669,8 @@ class classDbiL3apF11faam
 
         array_push($history["ColumnName"], "序号");
         array_push($history["ColumnName"], "姓名");
+        array_push($history["ColumnName"], "岗位");
+        array_push($history["ColumnName"], "区域");
         array_push($history["ColumnName"], "日期");
         array_push($history["ColumnName"], "上班时间");
         array_push($history["ColumnName"], "下班时间");
@@ -640,9 +689,20 @@ class classDbiL3apF11faam
             $offWork = $row['offwork'];
             $workTime = $row['worktime'];
 
+            $position = "";
+            $zone = "";
+            $query_str = "SELECT * FROM `t_l3f11faam_membersheet` WHERE (`pjcode` = '$pjCode' AND `employee` = '$employee')";
+            $employee_sheet = $mysqli->query($query_str);
+            if (($employee_sheet != false) && (($employee_row = $employee_sheet->fetch_array()) > 0)){
+                $position = $employee_row['position'];
+                $zone = $employee_row['zone'];
+            }
+
             $temp = array();
             array_push($temp, $sid);
             array_push($temp, $employee);
+            array_push($temp, $position);
+            array_push($temp, $zone);
             array_push($temp, $workDay);
             array_push($temp, $arriveTime);
             array_push($temp, $leaveTime);
@@ -670,7 +730,7 @@ class classDbiL3apF11faam
 
         array_push($history["ColumnName"], "序号");
         array_push($history["ColumnName"], "姓名");
-        array_push($history["ColumnName"], "工种");
+        array_push($history["ColumnName"], "岗位");
         array_push($history["ColumnName"], "区域");
         array_push($history["ColumnName"], "开始日期");
         array_push($history["ColumnName"], "结束日期");
@@ -1100,7 +1160,8 @@ class classDbiL3apF11faam
 
         array_push($history["ColumnName"], "序号");
         array_push($history["ColumnName"], "员工姓名");
-        array_push($history["ColumnName"], "工种");
+        array_push($history["ColumnName"], "岗位");
+        array_push($history["ColumnName"], "区域");
         array_push($history["ColumnName"], "开始日期");
         array_push($history["ColumnName"], "结束日期");
         array_push($history["ColumnName"], "产品规格");
@@ -1149,7 +1210,7 @@ class classDbiL3apF11faam
         $result = $mysqli->query($query_str);
         $nameList = array();
         while (($result != false) && (($row = $result->fetch_array()) > 0)){
-            $temp = array('employee' => $row['employee'],'position'=>$row['position']);
+            $temp = array('employee' => $row['employee'],'position'=>$row['position'],'zone'=>$row['zone']);
             array_push($nameList, $temp);
         }
         //查询产品规格列表
@@ -1173,9 +1234,7 @@ class classDbiL3apF11faam
         for($i=0; $i<count($nameList); $i++){
             $employee = $nameList[$i]['employee'];
             $position = $nameList[$i]['position'];
-            $totalPackage = 0;
-            $totalNum = 0;
-            $totalWeight = 0;
+            $zone = $nameList[$i]['zone'];
             for($j=0; $j<count($typeList); $j++){
                 $typeCode = $typeList[$j]['typecode'];
                 $appleNum = $typeList[$j]['applenum'];
@@ -1189,6 +1248,7 @@ class classDbiL3apF11faam
                     array_push($temp, $sid);
                     array_push($temp, $employee);
                     array_push($temp, $position);
+                    array_push($temp, $zone);
                     array_push($temp, $timeStart);
                     array_push($temp, $timeEnd);
                     array_push($temp, $typeCode);
@@ -1236,7 +1296,8 @@ class classDbiL3apF11faam
 
         array_push($history["ColumnName"], "序号");
         array_push($history["ColumnName"], "员工姓名");
-        array_push($history["ColumnName"], "工种");
+        array_push($history["ColumnName"], "岗位");
+        array_push($history["ColumnName"], "区域");
         array_push($history["ColumnName"], "开始日期");
         array_push($history["ColumnName"], "结束日期");
         array_push($history["ColumnName"], "工作天数");
@@ -1298,7 +1359,7 @@ class classDbiL3apF11faam
         $result = $mysqli->query($query_str);
         $nameList = array();
         while (($result != false) && (($row = $result->fetch_array()) > 0)){    ///取出工厂中每个人的信息
-            $temp = array('employee' => $row['employee'],'unitprice'=>$row['unitprice'],'kpi'=>$row['standardnum'],'position'=>$row['position']);
+            $temp = array('employee' => $row['employee'],'unitprice'=>$row['unitprice'],'position'=>$row['position'],'zone'=>$row['zone']);
             array_push($nameList, $temp);
         }
         //查询产品规格列表
@@ -1368,11 +1429,10 @@ class classDbiL3apF11faam
         $sid = 0;
         for($i=0; $i<count($nameList); $i++){
 
-            $position = $nameList[$i]['position'];    ///////joe modify 得到工种
-
+            $position = $nameList[$i]['position'];
+            $zone = $nameList[$i]['zone'];
             $employee = $nameList[$i]['employee'];
             $unitPrice = intval($nameList[$i]['unitprice']);
-            $kpi = intval($nameList[$i]['kpi']);
             if (isset($workingDay[$employee]) AND isset($totalWorkTime[$employee])){
                 //如果该员工有考勤但没有生产记录
                 if (isset($packageSum[$employee])) $tempPackageSum = $packageSum[$employee]; else $tempPackageSum = 0;
@@ -1390,6 +1450,7 @@ class classDbiL3apF11faam
                 array_push($temp, $sid);
                 array_push($temp, $employee);
                 array_push($temp, $position);
+                array_push($temp, $zone);
                 array_push($temp, $timeStart);
                 array_push($temp, $timeEnd);
                 array_push($temp, $workingDay[$employee]);

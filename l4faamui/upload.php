@@ -1,6 +1,6 @@
 <?php
 	$id= $_REQUEST["id"];
-	$upload_path="D:/webrd/www/dist/usr_img/";
+	$upload_path="../../avorion/userphoto/";
 	function _encode($arr)
     {
       $na = array();
