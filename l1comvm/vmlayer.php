@@ -6,6 +6,7 @@
  * Time: 9:26
  */
 //包含所有本目录下的基础定义
+include_once "../l2sdk/task_l2sdk_iot_json.class.php";
 include_once "../l1comvm/func_comapi.class.php";
 include_once "../l1comvm/commsg.php";
 include_once "../l1comvm/errCode.php";
@@ -144,7 +145,7 @@ elseif(MFUN_CURRENT_WORKING_PROGRAM_NAME_UNIQUE == MFUN_WORKING_PROGRAM_NAME_UNI
 
 class classTaskL1vmCoreRouter
 {
-    public $msgBufferList = array();
+    public $msgBufferList = array();//  消息盒子！！！！！！！！！！！！！！！！！
         //0 => array("valid" => "false", "srcId" => 0, "destId" => 0, "msgId" => 0, "msgName" => "", "msgBody" => ""));
     public $msgBufferReadCnt;
     public $msgBufferWriteCnt;
@@ -183,12 +184,13 @@ class classTaskL1vmCoreRouter
             $this->msgBufferList[$this->msgBufferWriteCnt]["valid"] = false;
             return false;
         }
-        $this->msgBufferList[$this->msgBufferWriteCnt] = array("valid" => "true",
-            "srcId" => $srcId,
-            "destId" => $destId,
-            "msgId" => $msgId,
-            "msgName" => $msgName,
-            "msgBody" => $msgBody);
+        $this->msgBufferList[$this->msgBufferWriteCnt] = array(/////////////////////////////////////////////////////////////
+                        "valid" => "true",
+                        "srcId" => $srcId,
+                        "destId" => $destId,
+                        "msgId" => $msgId,
+                        "msgName" => $msgName,
+                        "msgBody" => $msgBody);
 
         //写完之后，更新计数器
         $this->msgBufferUsedCnt++;
@@ -465,6 +467,21 @@ class classTaskL1vmCoreRouter
         //然后发送从L1_MAIN_ENTRY接收到的消息到缓冲区中
         switch($parObj)
         {
+            case EARTHQUICK_MQ://////earth????????????????????????????????
+                $resp = $this->mfun_l1vm_msg_send(MFUN_TASK_ID_L1VM,
+                    EARTH,
+                    EARTHQUICK_COMING,
+                    "EARTHQUICK_COMING",
+                    $msg);
+                if ($resp == false){
+                    $result = "Cloud: Send to message buffer error.";
+//                    $log_content = "P:" . json_encode($result,JSON_UNESCAPED_UNICODE);
+//                    $loggerObj->mylog(MFUN_MAIN_ENTRY_WECHAT,"NULL","MFUN_TASK_ID_L1VM","MFUN_TASK_ID_L2SDK_WECHAT","MSG_ID_L1VM_TO_L2SDK_WECHAT_INCOMING",$log_content);
+                    echo trim($result);
+                    return false;
+                }
+                break;
+
             case MFUN_MAIN_ENTRY_WECHAT:
                 $resp = $this->mfun_l1vm_msg_send(MFUN_TASK_ID_L1VM,
                     MFUN_TASK_ID_L2SDK_WECHAT,
@@ -521,6 +538,9 @@ class classTaskL1vmCoreRouter
                     return false;
                 }
                 break;
+
+//            case josn入口
+
             case MFUN_MAIN_ENTRY_JINGDONG:
                 $resp = $this->mfun_l1vm_msg_send(MFUN_TASK_ID_L1VM,
                     MFUN_TASK_ID_L2SDK_IOT_JD,
@@ -846,7 +866,7 @@ class classTaskL1vmCoreRouter
         //每个不同任务模块之间的消息结构，由发送者和接收者自行商量结构，因为PHP下是无法定义结构的。同一个CLASS内部可以使
         //用ARRAY进行传递，不同CLASS任务之间则只能采用JSON进行传递，因为不同空间内显然无法将数组传递过去
         $modObj = new classConstL1vmSysTaskList();
-        while(($result = $this->mfun_l1vm_msg_rcv()) != false){
+        while(($result = $this->mfun_l1vm_msg_rcv()) != false){                  ////////////////////////////////////////////////////
             //语法差错检查
             if (isset($result["srcId"]) != true) continue;
             if (isset($result["destId"]) != true) continue;
@@ -858,7 +878,7 @@ class classTaskL1vmCoreRouter
             if (($result["msgId"] <= MSG_ID_MFUN_MIN) || ($result["msgId"] >=MSG_ID_MFUN_MAX)) continue;
 
             //检查目标任务模块是否激活
-            if ($modObj->mfun_vm_getTaskPresent($result["destId"]) != true){
+            if ($modObj->mfun_vm_getTaskPresent($result["destId"]) != true){///////////////////////////////////要打开
                 $result = "Cloud: Target module is not actived.";
                 $log_content = "P:" . json_encode($result,JSON_UNESCAPED_UNICODE);
                 $loggerObj->mylog("NULL","NULL","MFUN_TASK_ID_L1VM",$result["destId"],$result["msgName"],$log_content);
@@ -868,6 +888,13 @@ class classTaskL1vmCoreRouter
 
             //具体开始处理目标消息的大循环
             switch($result["destId"]){
+
+                case EARTH:
+                    $result["msgBody"];
+                    $obj = new classTaskEarth();/////////////////////////earth
+                    $obj->mfun_l2sdk_task_earth($this, $result["msgId"], $result["msgName"], $result["msgBody"]);
+                    break;
+
                 case MFUN_TASK_ID_L1VM:
                     $obj = new classTaskL1vmCoreRouter();
                     $obj->mfun_l1vm_task_main_entry($this, $result["msgId"], $result["msgName"], $result["msgBody"]);

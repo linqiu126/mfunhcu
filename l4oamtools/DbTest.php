@@ -24,10 +24,13 @@ define ("TC_L4AQYC_UI", false);
 define ("TC_L4FHYS_UI", false);
 define ("TC_L4FHYS_WECHAT", false);
 define ("TC_L4BFSC_UI", false);
-define ("TC_L4FAAM_UI", true);
+define ("TC_L4FAAM_UI", false);
 define ("TC_NBIOT_CJ188_UL", false);
 define ("TC_NBIOT_CJ188_DL", false);
 define ("TC_NBIOT_QG376", false);
+
+define ("EARTH_QUICK",true);
+require("testcase_earth.php");
 
 require("testcase_wxemc.php");
 require("testcase_l2socket.php");

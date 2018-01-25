@@ -13,6 +13,11 @@
 $index = 0;
 define("MSG_ID_MFUN_MIN", $index++);
 //L1L2部分消息
+
+//earthquick
+define("EARTHQUICK_COMING",$index++);
+
+
 define("MSG_ID_L1VM_TO_L2SDK_WECHAT_INCOMING", $index++);
 define("MSG_ID_WECHAT_TO_L2SDK_IOT_WX_INCOMING", $index++);
 define("MSG_ID_IOTWX_TO_L2SDK_IOT_WX_JSSDK_INCOMING", $index++);
