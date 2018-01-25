@@ -23,6 +23,12 @@ define("MFUN_TASK_ID_L2SDK_NBIOT_STD_CJ188", $taskIndex++);//基于CJ188规范
 define("MFUN_TASK_ID_L2SDK_NBIOT_LTEV", $taskIndex++);    //车联网
 define("MFUN_TASK_ID_L2SDK_NBIOT_AGC", $taskIndex++);     //农业用途
 define("MFUN_TASK_ID_L2SDK_IOT_HUITP", $taskIndex++); //HUITP协议处理
+
+//地震 ????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????
+define("EARTH", $taskIndex++);
+
+
+
 define("MFUN_TASK_ID_L2DECODE_HUITP",$taskIndex++); //HUITP 解码任务模块
 define("MFUN_TASK_ID_L2ENCODE_HUITP",$taskIndex++); //HUITP 编码任务模块
 define("MFUN_TASK_ID_L2SENSOR_COMMON",$taskIndex++);
@@ -105,6 +111,9 @@ define("MFUN_TASK_ID_NULL", $taskIndex++); //注意，不能超过系统DIMENSIO
 class classConstL1vmSysTaskList
 {
     public static $mfunTaskArrayConst = array(
+
+        EARTH =>array("NAME" => "EARTH", "PRESENT" => true),
+
         MFUN_TASK_ID_MIN => array("NAME" => "MFUN_TASK_MIN", "PRESENT" => true),
         MFUN_TASK_ID_L1VM => array("NAME" => "MFUN_TASK_L1VM", "PRESENT" => false),
         MFUN_TASK_ID_L2SDK_IOT_APPLE => array("NAME" => "MFUN_TASK_L2SDK_IOT_APPLE", "PRESENT" => false),
@@ -194,6 +203,8 @@ class classConstL1vmSysTaskList
         //按照不同的工作配置情况，设置模块标识及PRESENT情况. 系统初始化为false，根据项目需要打开对应的模块为true
         if (MFUN_CURRENT_WORKING_PROGRAM_NAME_UNIQUE == MFUN_WORKING_PROGRAM_NAME_UNIQUE_TESTMODE)
         {
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_MIN]["PRESENT"] = true;////////////////////////////////////////////////////////////////////////////////
+
             self::$mfunTaskArrayConst[MFUN_TASK_ID_MIN]["PRESENT"] = true;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L1VM]["PRESENT"] = true;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_IOT_APPLE]["PRESENT"] = true;
