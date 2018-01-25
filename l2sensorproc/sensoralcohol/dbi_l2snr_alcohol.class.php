@@ -53,7 +53,7 @@ class classDbiL2snrAlcohol
 
         $date = intval(date("ymd", $timestamp));
         $stamp = getdate($timestamp);
-        $hourminindex = intval(($stamp["hours"] * 60 + floor($stamp["minutes"]/MFUN_HCU_AQYC_TIME_GRID_SIZE)));
+        $hourminindex = floor(($stamp["hours"] * 60 + $stamp["minutes"])/MFUN_HCU_AQYC_TIME_GRID_SIZE);
 
         if(!empty($gps)){
             $altitude = $gps["altitude"];
@@ -117,7 +117,7 @@ class classDbiL2snrAlcohol
 
         $date = intval(date("ymd", $timestamp));
         $stamp = getdate($timestamp);
-        $hourminindex = intval(($stamp["hours"] * 60 + floor($stamp["minutes"]/MFUN_HCU_AQYC_TIME_GRID_SIZE)));
+        $hourminindex = floor(($stamp["hours"] * 60 + $stamp["minutes"])/MFUN_HCU_AQYC_TIME_GRID_SIZE);
 
         $alcohol = $data["value"];
 

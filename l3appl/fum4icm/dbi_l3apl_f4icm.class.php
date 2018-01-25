@@ -350,7 +350,7 @@ class classDbiL3apF4icm
                 //保存照片信息
                 $date = date("Y-m-d", $timestamp);
                 $stamp = getdate($timestamp);
-                $hourminindex = intval(($stamp["hours"] * 60 + floor($stamp["minutes"]/MFUN_HCU_AQYC_TIME_GRID_SIZE)));
+                $hourminindex = floor(($stamp["hours"] * 60 + $stamp["minutes"])/MFUN_HCU_AQYC_TIME_GRID_SIZE);
                 $filesize = (int)$filesize;
                 $description = "站点".$statCode."上传的照片";
                 $dataflag = "Y";

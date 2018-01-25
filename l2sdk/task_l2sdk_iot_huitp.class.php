@@ -63,8 +63,8 @@ class classTaskL2sdkIotHuitp
                         <FuncFlag>0</FuncFlag></xml>";
 
         //XML消息解码
-        $toUser = trim($postObj->ToUserName);
-        $fromUser = trim($postObj->FromUserName);
+        $toUser = strtoupper(trim($postObj->ToUserName));
+        $fromUser = strtoupper(trim($postObj->FromUserName));
         $createTime = trim($postObj->CreateTime);
         $msgType = trim($postObj->MsgType);
         $content = trim($postObj->Content);

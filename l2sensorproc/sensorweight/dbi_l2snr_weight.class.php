@@ -36,9 +36,9 @@ class classDbiL2snrWeight
         $status = MFUN_HCU_BFSC_STATUS_OK;
 
         $timestamp = time();
-        $date = intval(date("ymd", $timestamp));
-        $temp = getdate($timestamp);
-        $hourminindex = intval(($temp["hours"] * 60 + floor($temp["minutes"]/MFUN_HCU_FHYS_TIME_GRID_SIZE)));
+        $date = date("Y-m-d", $timestamp);
+        $stamp = getdate($timestamp);
+        $hourminindex = floor(($stamp["hours"] * 60 + $stamp["minutes"])/MFUN_HCU_FHYS_TIME_GRID_SIZE);
 
         //更新分钟报告表
         /*
@@ -85,9 +85,9 @@ class classDbiL2snrWeight
 
         $status = MFUN_HCU_FHYS_ALARM_YES;
         $timestamp = time();
-        $date = intval(date("ymd", $timestamp));
-        $temp = getdate($timestamp);
-        $hourminindex = intval(($temp["hours"] * 60 + floor($temp["minutes"]/MFUN_HCU_FHYS_TIME_GRID_SIZE)));
+        $date = date("Y-m-d", $timestamp);
+        $stamp = getdate($timestamp);
+        $hourminindex = floor(($stamp["hours"] * 60 + $stamp["minutes"])/MFUN_HCU_FHYS_TIME_GRID_SIZE);
 
         //更新分钟报告表
         $result = $mysqli->query("SELECT * FROM `t_l2snr_fhys_minreport` WHERE (( `devcode` = '$devCode' AND `statcode` = '$statCode')

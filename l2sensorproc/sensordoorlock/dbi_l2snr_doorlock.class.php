@@ -299,8 +299,8 @@ class classDbiL2snrDoorlock
 
         $timestamp = time();
         $reportdate = date("Y-m-d", $timestamp);
-        $temp = getdate($timestamp);
-        $hourminindex = intval(($temp["hours"] * 60 + floor($temp["minutes"]/MFUN_HCU_FHYS_TIME_GRID_SIZE)));
+        $stamp = getdate($timestamp);
+        $hourminindex = floor(($stamp["hours"] * 60 + $stamp["minutes"])/MFUN_HCU_FHYS_TIME_GRID_SIZE);
         //更新分钟报告表
         $query_str ="SELECT * FROM `t_l2snr_fhys_minreport` WHERE (( `devcode` = '$devCode' AND `statcode` = '$statcode') AND (`reportdate` = '$reportdate' AND `hourminindex` = '$hourminindex'))";
         $result = $mysqli->query($query_str);
