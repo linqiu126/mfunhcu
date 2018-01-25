@@ -517,7 +517,7 @@ class classDbiL2snrCcl
             $alarm_severity = MFUN_HCU_FHYS_ALARM_LEVEL_M;
         }
         //高级告警
-        if ($battValue < MFUN_L3APL_F3DM_TH_ALARM_BATT){
+        if ($battState == HUITP_IEID_UNI_BAT_STATE_WARNING){
             $alarm_code = MFUN_HCU_FHYS_ALARM_LOW_BATT;
             $alarmDesc = $objFhysAlarm->mfun_hcu_fhys_getAlarmDescription($alarm_code);
             $alarmProc = $alarmProc."[{$alarmDesc}];";
