@@ -196,27 +196,43 @@ class classDbiL2snrHsmmp
 
         //$data[0] = HUITP_IEID_uni_com_report，暂时没有使用
 
-        //$linkName = $content[1]['HUITP_IEID_uni_hsmmp_value']['linkName'];
-        $timeStampStart = hexdec($content[1]['HUITP_IEID_uni_hsmmp_value']['timeStampStart']) & 0xFFFFFFFF;
-        $timeStampEnd = hexdec($content[1]['HUITP_IEID_uni_hsmmp_value']['timeStampEnd']) & 0xFFFFFFFF;
+        $alarmFlag = hexdec($content[1]['HUITP_IEID_uni_hsmmp_value']['alarmFlag']) & 0xFFF;
+        $alarmTime = hexdec($content[1]['HUITP_IEID_uni_hsmmp_value']['timeStamp']) & 0xFFFFFFFF;
 
         $timeStamp = time();
         $reportdate = date("Y-m-d", $timeStamp);
         $stamp = getdate($timeStamp);
         $hourminindex = floor(($stamp["hours"] * 60 + $stamp["minutes"])/MFUN_HCU_AQYC_TIME_GRID_SIZE);
 
-        $dataFlag = MFUN_HCU_DATA_FLAG_VALID;
-        $query_str = "INSERT INTO `t_l2snr_hsmmpdata` (statcode,reportdate,hourminindex,videostart,videoend,dataflag)
-                      VALUES ('$statCode','$reportdate','$hourminindex','$timeStampStart','$timeStampEnd','$dataFlag')";
-        $result=$mysqli->query($query_str);
+        if ($alarmFlag == HUITP_IEID_UNI_HSMMP_ALARM_FLAG_ON){
+            $query_str = "SELECT * FROM `t_l2snr_hsmmpdata`  WHERE (`statcode`= '$statCode' AND `reportdate`= '$reportdate' AND `alarmflag`= '$alarmFlag')";
+            $result = $mysqli->query($query_str);
+            if (($result != false) && ($row = $result->fetch_array())>0){
+                $sid = $row['sid'];
+                $query_str = "UPDATE `t_l2snr_hsmmpdata` SET `hourminindex` = '$hourminindex',`videostart` = '$alarmTime',`videoend` = '$timeStamp' WHERE (`sid`= '$sid')";
+                $result=$mysqli->query($query_str);
+            }
+            else{
+                $query_str = "INSERT INTO `t_l2snr_hsmmpdata` (statcode,reportdate,hourminindex,videostart,alarmflag) VALUES ('$statCode','$reportdate','$hourminindex','$alarmTime','$alarmFlag')";
+                $result=$mysqli->query($query_str);
+            }
+        }
+        elseif ($alarmFlag == HUITP_IEID_UNI_HSMMP_ALARM_FLAG_OFF){
+            $flag_on = HUITP_IEID_UNI_HSMMP_ALARM_FLAG_ON;
+            $query_str = "UPDATE `t_l2snr_hsmmpdata` SET `hourminindex` = '$hourminindex',`videoend` = '$alarmTime',`dataflag` = '$alarmFlag'
+                          WHERE (`statcode`= '$statCode' AND `reportdate`= '$reportdate' AND `alarmflag`= '$flag_on')";
+            $result=$mysqli->query($query_str);
+        }
+        else
+            $result = false;
 
+        //生成 HUITP_MSGID_uni_picture_data_confirm 消息的内容
+        $respMsgContent = array();
+        $baseConfirmIE = array();
         if($result == true)
             $comConfirm = HUITP_IEID_UNI_COM_CONFIRM_YES;
         else
             $comConfirm = HUITP_IEID_UNI_COM_CONFIRM_NO;
-        //生成 HUITP_MSGID_uni_picture_data_confirm 消息的内容
-        $respMsgContent = array();
-        $baseConfirmIE = array();
 
         $l2codecHuitpIeDictObj = new classL2codecHuitpIeDict;
         //组装IE HUITP_IEID_uni_com_confirm
