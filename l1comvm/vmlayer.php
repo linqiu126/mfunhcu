@@ -6,7 +6,6 @@
  * Time: 9:26
  */
 //包含所有本目录下的基础定义
-include_once "../l2sdk/task_l2sdk_iot_json.class.php";
 include_once "../l1comvm/func_comapi.class.php";
 include_once "../l1comvm/commsg.php";
 include_once "../l1comvm/errCode.php";
@@ -35,6 +34,7 @@ include_once "../l2sdk/task_l2sdk_iot_wx.class.php";
 include_once "../l2sdk/task_l2sdk_iot_wx_jssdk.php";
 include_once "../l2sdk/task_l2sdk_nbiot_std_qg376.class.php";
 include_once "../l2sdk/task_l2sdk_nbiot_std_cj188.class.php";
+include_once "../l2sdk/task_l2sdk_iot_json.class.php";
 include_once "../l2socketlisten/task_l2socket_listen.class.php";
 include_once "../l2sensorproc/proccom/task_l2snr_com.class.php";
 include_once "../l2sensorproc/sensorccl/task_l2snr_ccl.class.php";
@@ -67,6 +67,7 @@ include_once "../l2sensorproc/sensorvibr/task_l2snr_vibr.class.php";
 include_once "../l2sensorproc/sensorwater/task_l2snr_water.class.php";
 include_once "../l2sensorproc/sensorweight/task_l2snr_weight.class.php";
 include_once "../l2sensorproc/sensorfdwq/task_l2snr_fdwq.class.php";
+include_once "../l2sensorproc/sensorearthdin/task_l2snr_earthdin.class.php";
 include_once "../l3appl/fum1sym/task_l3apl_f1sym.class.php";
 include_once "../l3appl/fum2cm/task_l3apl_f2cm.class.php";
 include_once "../l3appl/fum3dm/task_l3apl_f3dm.class.php";
@@ -145,8 +146,7 @@ elseif(MFUN_CURRENT_WORKING_PROGRAM_NAME_UNIQUE == MFUN_WORKING_PROGRAM_NAME_UNI
 
 class classTaskL1vmCoreRouter
 {
-    public $msgBufferList = array();//  消息盒子！！！！！！！！！！！！！！！！！
-        //0 => array("valid" => "false", "srcId" => 0, "destId" => 0, "msgId" => 0, "msgName" => "", "msgBody" => ""));
+    public $msgBufferList = array();
     public $msgBufferReadCnt;
     public $msgBufferWriteCnt;
     public $msgBufferUsedCnt;
@@ -163,7 +163,7 @@ class classTaskL1vmCoreRouter
     }
 
     //核心API：发送消息的函数
-    public function mfun_l1vm_msg_send($srcId, $destId, $msgId, $msgName, $msgBody)/////msgbody ==msg///////////////////////////////////////////////////////////////////////////////////////////////////////
+    public function mfun_l1vm_msg_send($srcId, $destId, $msgId, $msgName, $msgBody)
     {
         //判断是否越界
         if ($this->msgBufferUsedCnt >= MFUN_MSG_BUFFER_NBR_MAX){
@@ -184,7 +184,7 @@ class classTaskL1vmCoreRouter
             $this->msgBufferList[$this->msgBufferWriteCnt]["valid"] = false;
             return false;
         }
-        $this->msgBufferList[$this->msgBufferWriteCnt] = array(/////////////////////////////////////////////////////////////
+        $this->msgBufferList[$this->msgBufferWriteCnt] = array(
                         "valid" => "true",
                         "srcId" => $srcId,
                         "destId" => $destId,
@@ -467,22 +467,7 @@ class classTaskL1vmCoreRouter
         //然后发送从L1_MAIN_ENTRY接收到的消息到缓冲区中
         switch($parObj)
         {
-            case EARTHQUICK_MQ://////earth????????????????????????????????
-                $resp = $this->mfun_l1vm_msg_send(MFUN_TASK_ID_L1VM,
-                    EARTH,
-                    EARTHQUICK_COMING,
-                    "EARTHQUICK_COMING",
-                    $msg);
-                if ($resp == false){
-                    $result = "Cloud: Send to message buffer error.";
-//                    $log_content = "P:" . json_encode($result,JSON_UNESCAPED_UNICODE);
-//                    $loggerObj->mylog(MFUN_MAIN_ENTRY_WECHAT,"NULL","MFUN_TASK_ID_L1VM","MFUN_TASK_ID_L2SDK_WECHAT","MSG_ID_L1VM_TO_L2SDK_WECHAT_INCOMING",$log_content);
-                    echo trim($result);
-                    return false;
-                }
-                break;
-
-            case MFUN_MAIN_ENTRY_WECHAT:
+            case MFUN_MAIN_ENTRY_WECHAT:  //微信公众号
                 $resp = $this->mfun_l1vm_msg_send(MFUN_TASK_ID_L1VM,
                     MFUN_TASK_ID_L2SDK_WECHAT,
                     MSG_ID_L1VM_TO_L2SDK_WECHAT_INCOMING,
@@ -496,11 +481,11 @@ class classTaskL1vmCoreRouter
                     return false;
                 }
                 break;
-            case MFUN_MAIN_ENTRY_WECHAT_XCX:   //////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            case MFUN_MAIN_ENTRY_WECHAT_XCX: //微信小程序
                 $resp = $this->mfun_l1vm_msg_send(MFUN_TASK_ID_L1VM,
                     MFUN_TASK_ID_L3WX_OPR_FAAM,
-                    MSG_ID_L1VM_TO_L3WXL3WXOPR_FAAM_XCXPOST,
-                    "MSG_ID_L1VM_TO_L3WXL3WXOPR_FAAM_XCXPOST",
+                    MSG_ID_L1VM_TO_L3WXOPR_FAAM_INCOMING,
+                    "MSG_ID_L1VM_TO_L3WXOPR_FAAM_INCOMING",
                     $msg);
                 if ($resp == false){
                     $result = "Cloud: Send to message buffer error.";
@@ -538,9 +523,20 @@ class classTaskL1vmCoreRouter
                     return false;
                 }
                 break;
-
-//            case josn入口
-
+            case MFUN_MAIN_ENTRY_IOT_JSON:
+                $resp = $this->mfun_l1vm_msg_send(MFUN_TASK_ID_L1VM,
+                    MFUN_TASK_ID_L2SDK_IOT_JSON,
+                    MSG_ID_L1VM_TO_L2SDK_IOT_JSON_INCOMING,
+                    "MSG_ID_L1VM_TO_L2SDK_IOT_JSON_INCOMING",
+                    $msg);
+                if ($resp == false){
+                    $result = "Cloud: Send to message buffer error.";
+                    $log_content = "P:" . json_encode($result,JSON_UNESCAPED_UNICODE);
+                    $loggerObj->mylog(MFUN_MAIN_ENTRY_IOT_JSON,"NULL","MFUN_TASK_ID_L1VM","MFUN_TASK_ID_L2SDK_IOT_JSON","MSG_ID_L1VM_TO_L2SDK_IOT_JSON_INCOMING",$log_content);
+                    echo trim($result);
+                    return false;
+                }
+                break;
             case MFUN_MAIN_ENTRY_JINGDONG:
                 $resp = $this->mfun_l1vm_msg_send(MFUN_TASK_ID_L1VM,
                     MFUN_TASK_ID_L2SDK_IOT_JD,
@@ -599,7 +595,7 @@ class classTaskL1vmCoreRouter
                     return false;
                 }
                 break;
-            case MFUN_MAIN_ENTRY_SOCKET_LISTEN://暂时不用干啥，由钩子函数发送给MAIN_ENTRY，然后直接执行相应内容
+            case MFUN_MAIN_ENTRY_SOCKET://暂时只处理从swoole socket收到的HEX DATA（照片码流）
                 $resp = $this->mfun_l1vm_msg_send(MFUN_TASK_ID_L1VM,
                     MFUN_TASK_ID_L2SOCKET_LISTEN,
                     MSG_ID_L2SOCKET_LISTEN_DATA_COMING,
@@ -608,7 +604,7 @@ class classTaskL1vmCoreRouter
                 if ($resp == false){
                     $result = "Cloud: Send to message buffer error.";
                     $log_content = "P:" . json_encode($result,JSON_UNESCAPED_UNICODE);
-                    $loggerObj->mylog(MFUN_MAIN_ENTRY_SOCKET_LISTEN,"NULL","MFUN_TASK_ID_L1VM","MFUN_TASK_ID_L2SOCKET_LISTEN","MSG_ID_L2SOCKET_LISTEN_DATA_COMING",$log_content);
+                    $loggerObj->mylog(MFUN_MAIN_ENTRY_SOCKET,"NULL","MFUN_TASK_ID_L1VM","MFUN_TASK_ID_L2SOCKET_LISTEN","MSG_ID_L2SOCKET_LISTEN_DATA_COMING",$log_content);
                     echo trim($result);
                     return false;
                 }
@@ -888,13 +884,6 @@ class classTaskL1vmCoreRouter
 
             //具体开始处理目标消息的大循环
             switch($result["destId"]){
-
-                case EARTH:
-                    $result["msgBody"];
-                    $obj = new classTaskEarth();/////////////////////////earth
-                    $obj->mfun_l2sdk_task_earth($this, $result["msgId"], $result["msgName"], $result["msgBody"]);
-                    break;
-
                 case MFUN_TASK_ID_L1VM:
                     $obj = new classTaskL1vmCoreRouter();
                     $obj->mfun_l1vm_task_main_entry($this, $result["msgId"], $result["msgName"], $result["msgBody"]);
@@ -945,6 +934,11 @@ class classTaskL1vmCoreRouter
                 case MFUN_TASK_ID_L2SDK_IOT_STDXML:
                     $obj = new classTaskL2sdkIotStdxml();
                     $obj->mfun_l2sdk_iot_stdxml_task_main_entry($this, $result["msgId"], $result["msgName"], $result["msgBody"]);
+                    break;
+
+                case MFUN_TASK_ID_L2SDK_IOT_JSON:
+                    $obj = new classTaskL2sdkIotJson();
+                    $obj->mfun_l2sdk_iot_json_task_main_entry($this, $result["msgId"], $result["msgName"], $result["msgBody"]);
                     break;
 
                 case MFUN_TASK_ID_L2SDK_IOT_HUITP:
@@ -1141,6 +1135,11 @@ class classTaskL1vmCoreRouter
                 case MFUN_TASK_ID_L2SENSOR_FDWQ:
                     $obj = new classTaskL2snrFdwq();
                     $obj->mfun_l2snr_fdwq_task_main_entry($this, $result["msgId"], $result["msgName"], $result["msgBody"]);
+                    break;
+
+                case MFUN_TASK_ID_L2SENSOR_EARTHDIN:
+                    $obj = new classTaskL2snrEarthdin();
+                    $obj->mfun_l2snr_earthdin_task_main_entry($this, $result["msgId"], $result["msgName"], $result["msgBody"]);
                     break;
 
                 case MFUN_TASK_ID_L3APPL_FUM1SYM:

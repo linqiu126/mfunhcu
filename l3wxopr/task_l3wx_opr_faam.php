@@ -27,7 +27,7 @@ class classTaskL3wxOprFaam
             return false;
         }
 
-        if ($msgId == MSG_ID_L1VM_TO_L3WXL3WXOPR_FAAM_XCXPOST){  //来自微信小程序的消息
+        if ($msgId == MSG_ID_L1VM_TO_L3WXOPR_FAAM_INCOMING){  //来自微信小程序的消息
             $msg = json_decode($msg,true);
             //解开消息
             if (isset($msg["codeType"])) $codeType = trim($msg["codeType"]); else $codeType = "";
@@ -43,15 +43,12 @@ class classTaskL3wxOprFaam
                 case "QRCODE_KQ":  //考勤二维码
                     $resp = $l3wxOprFaamDbObj->dbi_faam_qrcode_kq_process($scanCode,$latitude,$longitude,$nickName,$phone); ///////////////////////////////////////////joe modify///////////////////////////////////
                     break;
-
                 case "QRCODE_SC":  //生产二维码
                     $resp = $l3wxOprFaamDbObj->dbi_faam_qrcode_sc_process($scanCode,$latitude,$longitude,$nickName);
                     break;
-
                 case "QRCODE_SH":  //收货二维码
                     $resp = $l3wxOprFaamDbObj->dbi_faam_qrcode_sh_process();
                     break;
-
                 default:
                     $resp = "";
                     break;

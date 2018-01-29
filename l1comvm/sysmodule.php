@@ -22,15 +22,10 @@ define("MFUN_TASK_ID_L2SDK_NBIOT_STD_QG376", $taskIndex++);  //基于376的规�
 define("MFUN_TASK_ID_L2SDK_NBIOT_STD_CJ188", $taskIndex++);//基于CJ188规范
 define("MFUN_TASK_ID_L2SDK_NBIOT_LTEV", $taskIndex++);    //车联网
 define("MFUN_TASK_ID_L2SDK_NBIOT_AGC", $taskIndex++);     //农业用途
+define("MFUN_TASK_ID_L2SDK_IOT_JSON", $taskIndex++);  //JSON协议处理
 define("MFUN_TASK_ID_L2SDK_IOT_HUITP", $taskIndex++); //HUITP协议处理
-
-//地震 ????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????
-define("EARTH", $taskIndex++);
-define("MFUN_TASK_ID_L2SDK_IOT_JSON", $taskIndex++);
-
-
-define("MFUN_TASK_ID_L2DECODE_HUITP",$taskIndex++); //HUITP 解码任务模块
-define("MFUN_TASK_ID_L2ENCODE_HUITP",$taskIndex++); //HUITP 编码任务模块
+define("MFUN_TASK_ID_L2DECODE_HUITP",$taskIndex++);   //HUITP 解码任务模块
+define("MFUN_TASK_ID_L2ENCODE_HUITP",$taskIndex++);   //HUITP 编码任务模块
 define("MFUN_TASK_ID_L2SENSOR_COMMON",$taskIndex++);
 define("MFUN_TASK_ID_L2SENSOR_EMC", $taskIndex++);
 define("MFUN_TASK_ID_L2SENSOR_HSMMP", $taskIndex++);
@@ -60,6 +55,7 @@ define("MFUN_TASK_ID_L2SENSOR_RFID", $taskIndex++);
 define("MFUN_TASK_ID_L2SENSOR_SMOK", $taskIndex++);
 define("MFUN_TASK_ID_L2SENSOR_VIBR", $taskIndex++);
 define("MFUN_TASK_ID_L2SENSOR_WATER", $taskIndex++);
+define("MFUN_TASK_ID_L2SENSOR_EARTHDIN", $taskIndex++);  //地震传感器
 define("MFUN_TASK_ID_L2SENSOR_WEIGHT", $taskIndex++); //BFSC组合秤
 define("MFUN_TASK_ID_L2SENSOR_FDWQ", $taskIndex++);   //FDWQ项目
 define("MFUN_TASK_ID_L2TIMER_CRON", $taskIndex++);
@@ -111,9 +107,6 @@ define("MFUN_TASK_ID_NULL", $taskIndex++); //注意，不能超过系统DIMENSIO
 class classConstL1vmSysTaskList
 {
     public static $mfunTaskArrayConst = array(
-
-        EARTH =>array("NAME" => "EARTH", "PRESENT" => true),
-
         MFUN_TASK_ID_MIN => array("NAME" => "MFUN_TASK_MIN", "PRESENT" => true),
         MFUN_TASK_ID_L1VM => array("NAME" => "MFUN_TASK_L1VM", "PRESENT" => false),
         MFUN_TASK_ID_L2SDK_IOT_APPLE => array("NAME" => "MFUN_TASK_L2SDK_IOT_APPLE", "PRESENT" => false),
@@ -123,6 +116,7 @@ class classConstL1vmSysTaskList
         MFUN_TASK_ID_L2SDK_IOT_WX_JSSDK => array("NAME" => "MFUN_TASK_L2SDK_IOT_WX_JSSDK", "PRESENT" => false),
         MFUN_TASK_ID_L2SDK_IOT_STDXML => array("NAME" => "MFUN_TASK_L2SDK_IOT_STDXML", "PRESENT" => false),
         MFUN_TASK_ID_L2SDK_IOT_HUITP => array("NAME" => "MFUN_TASK_ID_L2SDK_IOT_HUITP", "PRESENT" => false),
+        MFUN_TASK_ID_L2SDK_IOT_JSON => array("NAME" => "MFUN_TASK_ID_L2SDK_IOT_HUITP", "PRESENT" => false),
         MFUN_TASK_ID_L2SDK_NBIOT_STD_QG376 => array("NAME" => "MFUN_TASK_ID_L2SDK_NBIOT_STD_QG376", "PRESENT" => false),
         MFUN_TASK_ID_L2SDK_NBIOT_STD_CJ188 => array("NAME" => "MFUN_TASK_ID_L2SDK_NBIOT_STD_CJ188", "PRESENT" => false),
         MFUN_TASK_ID_L2SDK_NBIOT_LTEV => array("NAME" => "MFUN_TASK_ID_L2SDK_NBIOT_LTEV", "PRESENT" => false),
@@ -158,6 +152,7 @@ class classConstL1vmSysTaskList
         MFUN_TASK_ID_L2SENSOR_WATER => array("NAME" => "MFUN_TASK_ID_L2SENSOR_WATER", "PRESENT" => false),
         MFUN_TASK_ID_L2SENSOR_WEIGHT => array("NAME" => "MFUN_TASK_ID_L2SENSOR_WEIGHT", "PRESENT" => false), //BFSC组合秤
         MFUN_TASK_ID_L2SENSOR_FDWQ => array("NAME" => "MFUN_TASK_ID_L2SENSOR_FDWQ", "PRESENT" => false), //FDWQ
+        MFUN_TASK_ID_L2SENSOR_EARTHDIN => array("NAME" => "MFUN_TASK_ID_L2SENSOR_EARTHDIN", "PRESENT" => false),
         MFUN_TASK_ID_L2TIMER_CRON => array("NAME" => "MFUN_TASK_ID_L2TIMER_CRON", "PRESENT" => false),
         MFUN_TASK_ID_L2SOCKET_LISTEN => array("NAME" => "MFUN_TASK_ID_L2SOCKET_LISTEN", "PRESENT" => false),
         MFUN_TASK_ID_L2DECODE_HUITP => array("NAME" => "MFUN_TASK_ID_L2DECODE_HUITP", "PRESENT" => false),
@@ -203,8 +198,6 @@ class classConstL1vmSysTaskList
         //按照不同的工作配置情况，设置模块标识及PRESENT情况. 系统初始化为false，根据项目需要打开对应的模块为true
         if (MFUN_CURRENT_WORKING_PROGRAM_NAME_UNIQUE == MFUN_WORKING_PROGRAM_NAME_UNIQUE_TESTMODE)
         {
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_MIN]["PRESENT"] = true;////////////////////////////////////////////////////////////////////////////////
-
             self::$mfunTaskArrayConst[MFUN_TASK_ID_MIN]["PRESENT"] = true;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L1VM]["PRESENT"] = true;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_IOT_APPLE]["PRESENT"] = true;
@@ -216,6 +209,7 @@ class classConstL1vmSysTaskList
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L2DECODE_HUITP]["PRESENT"] =  true;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L2ENCODE_HUITP]["PRESENT"] =  true;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_IOT_STDXML]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_IOT_JSON]["PRESENT"] = true;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_NBIOT_STD_QG376]["PRESENT"] = true;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_NBIOT_STD_CJ188]["PRESENT"] = true;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_NBIOT_LTEV]["PRESENT"] = true;
@@ -251,6 +245,7 @@ class classConstL1vmSysTaskList
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_WATER]["PRESENT"] = true;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_WEIGHT]["PRESENT"] = true;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_FDWQ]["PRESENT"] = true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_EARTHDIN]["PRESENT"] = true;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L2TIMER_CRON]["PRESENT"] = true;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SOCKET_LISTEN]["PRESENT"] = true;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L3APPL_FUM1SYM]["PRESENT"] = true;

@@ -13,18 +13,14 @@
 $index = 0;
 define("MSG_ID_MFUN_MIN", $index++);
 //L1L2部分消息
-
-//earthquick
-define("EARTHQUICK_COMING",$index++);
-
-
 define("MSG_ID_L1VM_TO_L2SDK_WECHAT_INCOMING", $index++);
 define("MSG_ID_WECHAT_TO_L2SDK_IOT_WX_INCOMING", $index++);
 define("MSG_ID_IOTWX_TO_L2SDK_IOT_WX_JSSDK_INCOMING", $index++);
 define("MSG_ID_L1VM_TO_L2SDK_IOT_STDXML_INCOMING", $index++);
+define("MSG_ID_L1VM_TO_L2SDK_IOT_JSON_INCOMING", $index++);
 define("MSG_ID_L1VM_TO_L2SDK_IOT_APPLE_INCOMING", $index++);
 define("MSG_ID_L1VM_TO_L2SDK_IOT_JD_INCOMING", $index++);
-define("MSG_ID_L1VM_TO_L3WXL3WXOPR_FAAM_XCXPOST", $index++);
+define("MSG_ID_L1VM_TO_L3WXOPR_FAAM_INCOMING", $index++);
 //L2CODEC
 define("MSG_ID_L1VM_TO_L2SDK_IOT_HUITP_INCOMING", $index++);
 define("MSG_ID_L2CODEC_ENCODE_HUITP_INCOMING", $index++);
@@ -58,9 +54,10 @@ define("MSG_ID_L2SDK_EMCWX_TO_L2SNR_LIGHTSTR_DATA_REPORT_TIMING", $index++);
 define("MSG_ID_L2SDK_HCU_TO_L2SNR_RAIN", $index++);
 define("MSG_ID_L2SDK_EMCWX_TO_L2SNR_RAIN_DATA_READ_INSTANT", $index++);
 define("MSG_ID_L2SDK_EMCWX_TO_L2SNR_RAIN_DATA_REPORT_TIMING", $index++);
-define("MSG_ID_L2SDK_WECHAT_DATA_COMING", $index++);
-define("MSG_ID_L2SDK_HCU_DATA_COMING", $index++);
-define("MSG_ID_L2SDK_HUITP_DATA_COMING", $index++);
+//来自Swoole socket
+define("MSG_ID_L2SDK_STDXML_DATA_INCOMING", $index++); //Socket入口的STDXML消息
+define("MSG_ID_L2SDK_HUITP_DATA_INCOMING", $index++);  //Socket入口的HUITP XML消息
+define("MSG_ID_L2SDK_JSON_DATA_INCOMING", $index++);   //Socket入口的JSON消息
 //FHYS智能云锁消息
 define("MSG_ID_L2SDK_HCU_TO_L2SNR_HSMMP", $index++); //兼容老的云控锁消息(照片发送)
 define("MSG_ID_L2SDK_HCU_TO_L2SNR_DOORLOCK", $index++); //用于兼容老的郑州FHYS方案
@@ -71,6 +68,8 @@ define("MSG_ID_L2SDK_HCU_TO_L2SNR_RFID", $index++);
 define("MSG_ID_L2SDK_HCU_TO_L2SNR_SMOK", $index++);
 define("MSG_ID_L2SDK_HCU_TO_L2SNR_VIBR", $index++);
 define("MSG_ID_L2SDK_HCU_TO_L2SNR_WATER", $index++);
+//地震传感器消息
+define("MSG_ID_L2SDK_HCU_TO_L2SNR_EARTHDIN", $index++);
 //BFSC组合秤消息
 define("MSG_ID_L2SDK_HCU_TO_L2SNR_WEIGHT", $index++);
 //L2SDK_JD消息部分

@@ -37,7 +37,7 @@ if (TC_SOCKET == true) {
 
     $msg = array("socketid" => 1, "data"=>$data);
     $obj = new classTaskL1vmCoreRouter();
-    //$obj->mfun_l1vm_task_main_entry(MFUN_MAIN_ENTRY_IOT_STDXML, MSG_ID_L2SDK_HCU_DATA_COMING, "MSG_ID_L2SDK_HCU_DATA_COMING", $msg);
+    //$obj->mfun_l1vm_task_main_entry(MFUN_MAIN_ENTRY_IOT_STDXML, MSG_ID_L2SDK_STDXML_DATA_INCOMING, "MSG_ID_L2SDK_STDXML_DATA_INCOMING", $msg);
 
     /********************HUITP消息，来自9511端口************************/
 
@@ -93,7 +93,7 @@ if (TC_SOCKET == true) {
     //$data = "<xml><ToUserName><![CDATA[XHZN_HCU]]></ToUserName><FromUserName><![CDATA[HCU_G0000FAAM_SD001]]></FromUserName><CreateTime>1513164786</CreateTime><MsgType><![CDATA[huitp_text]]></MsgType><Content><![CDATA[A28100BC0003000101000000000346414D5F5F58485A4E5F53480046414300000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000E69D8EE6B5A95F5F5F5F5F5F5F5F5F5F5F5F5F5F313733235F5F5F5F5F5F5F5F5F5F5F5F5F5F5F5F00000000000000000000000000000000000000000000000000000000000000000000000000000000000005]]></Content><FuncFlag>0</FuncFlag></xml>";
 
     $msg = array("socketid" => 1, "data"=>$data);
-    $obj->mfun_l1vm_task_main_entry(MFUN_MAIN_ENTRY_IOT_HUITP, MSG_ID_L2SDK_HUITP_DATA_COMING, "MSG_ID_L2SDK_HUITP_DATA_COMING", $msg);
+    $obj->mfun_l1vm_task_main_entry(MFUN_MAIN_ENTRY_IOT_HUITP, MSG_ID_L2SDK_HUITP_DATA_INCOMING, "MSG_ID_L2SDK_HUITP_DATA_INCOMING", $msg);
 
 
     $data = "<xml><ToUserName><![CDATA[XHZN_HCU]]></ToUserName><FromUserName><![CDATA[HCU_CL_0301]]></FromUserName><CreateTime>1477323704</CreateTime><MsgType><![CDATA[hcu_text]]></MsgType><Content><![CDATA[400182]]></Content><FuncFlag>0</FuncFlag></xml>";

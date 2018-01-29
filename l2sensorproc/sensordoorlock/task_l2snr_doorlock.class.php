@@ -11,11 +11,6 @@ include_once "dbi_l2snr_doorlock.class.php";
 
 class classTaskL2snrDoorlock
 {
-    //构造函数
-    public function __construct()
-    {
-
-    }
 
     private function func_fhys_doorlock_status_process($devCode, $statCode, $content, $funcFlag)
     {

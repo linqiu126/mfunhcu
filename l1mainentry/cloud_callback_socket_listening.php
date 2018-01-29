@@ -97,7 +97,7 @@ class classL1MainEntrySocketListenServer
         $tcp_uiport->on('Receive', array($this, 'tcp_uiport_onReceive'));
         $tcp_uiport->on('Close', array($this, 'tcp_uiport_onClose'));
 
-        //huitpxml_tcp_port, 传送HUITP消息，TCP端口9511
+        //huitpxml_tcp_port, 传送HUITP XML消息，TCP端口9511
         $huitpxml_tcp_hcuport = $this->swoole_socket_serv->listen("0.0.0.0", MFUN_SWOOLE_SOCKET_HUITPXML_TCP, SWOOLE_SOCK_TCP);
 /*
         $huitpxml_tcp_hcuport->set(array(
@@ -109,6 +109,12 @@ class classL1MainEntrySocketListenServer
         $huitpxml_tcp_hcuport->on('Connect', array($this, 'huitpxml_tcp_hcuport_onConnect'));
         $huitpxml_tcp_hcuport->on('Receive', array($this, 'huitpxml_tcp_hcuport_onReceive'));
         $huitpxml_tcp_hcuport->on('Close', array($this, 'huitpxml_tcp_hcuport_onClose'));
+
+        //huitpjson_tcp_port, 传送HUITP JSON消息，TCP端口9517
+        $huitpjson_tcp_port = $this->swoole_socket_serv->listen("0.0.0.0", MFUN_SWOOLE_SOCKET_HUITPJSON_TCP, SWOOLE_SOCK_TCP);
+        $huitpjson_tcp_port->on('Connect', array($this, 'huitpjson_tcp_hcuport_onConnect'));
+        $huitpjson_tcp_port->on('Receive', array($this, 'huitpjson_tcp_hcuport_onReceive'));
+        $huitpjson_tcp_port->on('Close', array($this, 'huitpjson_tcp_hcuport_onClose'));
 
         //CCL图片传输端口
         $huitpxml_tcp_picport = $this->swoole_socket_serv->listen("0.0.0.0", MFUN_SWOOLE_SOCKET_DATA_STREAM_TCP, SWOOLE_SOCK_TCP);
@@ -254,7 +260,7 @@ class classL1MainEntrySocketListenServer
 
         $msg = array("socketid" => $fd, "data"=>$data);
         $obj = new classTaskL1vmCoreRouter();
-        $obj->mfun_l1vm_task_main_entry(MFUN_MAIN_ENTRY_IOT_STDXML, MSG_ID_L2SDK_HCU_DATA_COMING, "MSG_ID_L2SDK_HCU_DATA_COMING", $msg);
+        $obj->mfun_l1vm_task_main_entry(MFUN_MAIN_ENTRY_IOT_STDXML, MSG_ID_L2SDK_STDXML_DATA_INCOMING, "MSG_ID_L2SDK_STDXML_DATA_INCOMING", $msg);
     }
 
     public function stdxml_tcp_hcuport_onClose($swoole_socket_serv, $fd, $reactor_id) {
@@ -328,7 +334,7 @@ class classL1MainEntrySocketListenServer
         echo "tcp_uiport_onClose: UI_Client [{$fd}] connection closed.".PHP_EOL;
     }
 
-    /********************************************HUITP TCP hcuport****************************************************/
+    /*****************************************HUITP XML TCP hcuport****************************************************/
 
     public function huitpxml_tcp_hcuport_onConnect($swoole_socket_serv, $fd, $from_id)
     {
@@ -344,7 +350,7 @@ class classL1MainEntrySocketListenServer
 
         $msg = array("socketid" => $fd, "data"=>$data);
         $obj = new classTaskL1vmCoreRouter();
-        $obj->mfun_l1vm_task_main_entry(MFUN_MAIN_ENTRY_IOT_HUITP, MSG_ID_L2SDK_HUITP_DATA_COMING, "MSG_ID_L2SDK_HUITP_DATA_COMING", $msg);
+        $obj->mfun_l1vm_task_main_entry(MFUN_MAIN_ENTRY_IOT_HUITP, MSG_ID_L2SDK_HUITP_DATA_INCOMING, "MSG_ID_L2SDK_HUITP_DATA_INCOMING", $msg);
     }
 
     public function huitpxml_tcp_hcuport_onClose($swoole_socket_serv, $fd, $reactor_id)
@@ -371,6 +377,49 @@ class classL1MainEntrySocketListenServer
         }
     }
 
+    /****************************************HUITP JSON TCP hcuport****************************************************/
+
+    public function huitpjson_tcp_hcuport_onConnect($swoole_socket_serv, $fd, $from_id)
+    {
+        echo date('Y/m/d H:i:s', time())." ";
+        echo "huitpjson_tcp_hcuport_onConnect: HCU_Client [{$fd}] connected".PHP_EOL;
+    }
+
+    //HUITP cclport入口函数，收到消息直接转发给HUITP IOT模块并带上socketid，L1socket模块只负责消息收发，不进行任何消息解码工作
+    public function huitpjson_tcp_hcuport_onReceive($swoole_socket_serv, $fd, $reactor_id, $data)
+    {
+        //echo PHP_EOL.date('Y/m/d H:i:s', time())." ";
+        //echo "huitpxml_tcp_hcuport_onReceive: From HCU_Client [{$fd}] : {$data}".PHP_EOL;
+
+        $msg = array("socketid" => $fd, "data"=>$data);
+        $obj = new classTaskL1vmCoreRouter();
+        $obj->mfun_l1vm_task_main_entry(MFUN_MAIN_ENTRY_IOT_JSON, MSG_ID_L2SDK_JSON_DATA_INCOMING, "MSG_ID_L2SDK_JSON_DATA_INCOMING", $msg);
+    }
+
+    public function huitpjson_tcp_hcuport_onClose($swoole_socket_serv, $fd, $reactor_id)
+    {
+        echo date('Y/m/d H:i:s', time())." ";
+        echo "huitpjson_tcp_hcuport_onClose: HCU_Client [{$fd}] connection closed.".PHP_EOL;
+
+        //reset socketid in t_l2sdk_iothcu_inventory when connection closed.
+        $query="UPDATE t_l2sdk_iothcu_inventory  SET socketid = 0 WHERE socketid = $fd";
+        $result = $swoole_socket_serv->taskwait($query);
+        if ($result !== false) {
+            list($status, $db_res) = explode(':', $result, 2);
+            if ($status == 'OK') {
+                echo date('Y/m/d H:i:s', time())." ";
+                echo "huitpjson_tcp_hcuport_onClose: socketid [{$fd}] was set to 0. Affacted_rows : {$db_res}".PHP_EOL;
+            } else {
+                echo date('Y/m/d H:i:s', time())." ";
+                echo "[ERROR]huitpjson_tcp_hcuport_onClose: socketid [{$fd}] set to 0 failed.".PHP_EOL;
+            }
+            return;
+        } else {
+            echo date('Y/m/d H:i:s', time())." ";
+            echo "[ERROR]huitpjson_tcp_hcuport_onClose: socketid [{$fd}] not found".PHP_EOL;
+        }
+    }
+
     /********************************************HUITP TCP picport****************************************************/
 
     public function huitpxml_tcp_picport_onConnect($swoole_socket_serv, $fd, $from_id ) {
@@ -386,7 +435,7 @@ class classL1MainEntrySocketListenServer
 
         $msg = array("socketid" => $fd, "data"=>$data);
         $obj = new classTaskL1vmCoreRouter();
-        $obj->mfun_l1vm_task_main_entry(MFUN_MAIN_ENTRY_SOCKET_LISTEN, MSG_ID_L2SOCKET_LISTEN_DATA_COMING, "MSG_ID_L2SOCKET_LISTEN_DATA_COMING", $msg);
+        $obj->mfun_l1vm_task_main_entry(MFUN_MAIN_ENTRY_SOCKET, MSG_ID_L2SOCKET_LISTEN_DATA_COMING, "MSG_ID_L2SOCKET_LISTEN_DATA_COMING", $msg);
     }
 
     public function huitpxml_tcp_picport_onClose( $swoole_socket_serv, $fd, $from_id )

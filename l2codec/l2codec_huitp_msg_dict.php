@@ -636,6 +636,14 @@ define("HUITP_MSGID_uni_itf_485_resp",  0x5B80);
 define("HUITP_MSGID_uni_itf_485_report",  0x5B81);
 define("HUITP_MSGID_uni_itf_485_confirm",  0x5B01);
 
+//地震
+define("HUITP_JSON_MSGID_uni_earthquake_ctrl_req", 0x5C00);
+define("HUITP_JSON_MSGID_uni_earthquake_ctrl_resp", 0x5C80);
+define("HUITP_JSON_MSGID_uni_earthquake_data_report", 0x5C81);
+define("HUITP_JSON_MSGID_uni_earthquake_data_confirm", 0x5C01);
+define("HUITP_JSON_MSGID_uni_heart_beat_report", 0x5CFF);
+define("HUITP_JSON_MSGID_uni_heart_beat_confirm", 0x5C7F);
+
 //软件清单
 define("HUITP_MSGID_uni_inventory_min",  0xA000);
 define("HUITP_MSGID_uni_inventory_req",  0xA000);

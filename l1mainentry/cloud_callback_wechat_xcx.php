@@ -8,7 +8,7 @@
 
 include_once "../l1comvm/vmlayer.php";
 
-// 主程序MAIN()
+// 微信小程序主入口
 $obj = new classTaskL1vmCoreRouter();
 //$postStr = $GLOBALS["HTTP_RAW_POST_DATA"];
 $postStr = file_get_contents('php://input','r');
