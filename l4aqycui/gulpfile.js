@@ -153,6 +153,9 @@ gulp.task('scripts', function() {
     gulp.src('./scope.html')
         .pipe(htmlmin(option_html))
         .pipe(gulp.dest(option.buildPath));
+    gulp.src('./middle.html')
+        .pipe(htmlmin(option_html))
+        .pipe(gulp.dest(option.buildPath));
 });
 
 // Ĭ������
