@@ -116,7 +116,7 @@ class classTaskL2sdkIotStdxml
                         MFUN_TASK_ID_L2SENSOR_DOORLOCK,
                         MSG_ID_L2SDK_HCU_TO_L2SNR_DOORLOCK,
                         "MSG_ID_L2SDK_HCU_TO_L2SNR_DOORLOCK",
-                        $msg) == false) $resp = "E: send to message buffer error";
+                        $msg) == false)$resp = "E: send to message buffer error";
                 else $resp = "";
                 break;
             case "hcu_pic":
@@ -139,7 +139,7 @@ class classTaskL2sdkIotStdxml
         }
 
         //处理结果
-        if (!empty($resp)) {
+        if (!empty($resp)){
             $log_content = json_encode($resp,JSON_UNESCAPED_UNICODE);
             $loggerObj->mylog($project,$fromUser,"MFUN_TASK_ID_L2SDK_IOT_STDXML","NULL",$msgName,$log_content);
             echo trim($log_content); //这里echo主要是为了swoole log打印，帮助查找问题
