@@ -53,19 +53,19 @@ class classDbiL2snrHumid
         //存储新记录，如果发现是已经存在的数据，则覆盖，否则新增
         $reportdate = date("Y-m-d", $timeStamp);
         $stamp = getdate($timeStamp);
-        $hourminindex = intval(($stamp["hours"] * 60 + floor($stamp["minutes"]/MFUN_HCU_AQYC_TIME_GRID_SIZE)));
+        $hourminindex = floor(($stamp["hours"] * 60 + $stamp["minutes"])/MFUN_HCU_AQYC_TIME_GRID_SIZE);
+        $dataFlag = MFUN_HCU_DATA_FLAG_VALID;
 
         $query_str = "SELECT * FROM `t_l2snr_humiddata` WHERE (`deviceid` = '$devCode' AND `reportdate` = '$reportdate' AND `hourminindex` = '$hourminindex')";
         $result = $mysqli->query($query_str);
-        if (($result != false) && ($result->num_rows)>0)   //重复，则覆盖
-        {
-            $query_str = "UPDATE `t_l2snr_humiddata` SET `humidity` = '$humidValue' WHERE (`deviceid` = '$devCode' AND `reportdate` = '$reportdate' AND `hourminindex` = '$hourminindex')";
-            $result=$mysqli->query($query_str);
+        if (($result != false) && ($row = $result->fetch_array())>0) {  //重复，则覆盖
+            $sid = $row['sid'];
+            $query_str = "UPDATE `t_l2snr_humiddata` SET `humidity` = '$humidValue' WHERE (`sid` = '$sid')";
+            $result = $mysqli->query($query_str);
         }
-        else   //不存在，新增
-        {
-            $query_str = "INSERT INTO `t_l2snr_humiddata` (deviceid,humidity,reportdate,hourminindex) VALUES ('$devCode','$humidValue','$reportdate','$hourminindex')";
-            $result=$mysqli->query($query_str);
+        else {  //不存在，新增
+            $query_str = "INSERT INTO `t_l2snr_humiddata` (deviceid,humidity,dataflag,reportdate,hourminindex) VALUES ('$devCode','$humidValue','$dataFlag','$reportdate','$hourminindex')";
+            $result = $mysqli->query($query_str);
         }
 
         return $result;
@@ -76,7 +76,7 @@ class classDbiL2snrHumid
     {
         $reportdate = date("Y-m-d", $timeStamp);
         $stamp = getdate($timeStamp);
-        $hourminindex = intval(($stamp["hours"] * 60 + floor($stamp["minutes"]/MFUN_HCU_AQYC_TIME_GRID_SIZE)));
+        $hourminindex = floor(($stamp["hours"] * 60 + $stamp["minutes"])/MFUN_HCU_AQYC_TIME_GRID_SIZE);
 
         //存储新记录，如果发现是已经存在的数据，则覆盖，否则新增
         $query_str = "SELECT * FROM `t_l2snr_aqyc_minreport` WHERE (`devcode` = '$devCode' AND `statcode` = '$statCode'

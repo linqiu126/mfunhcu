@@ -102,7 +102,7 @@ class classDbiL2snrEmc
         //存储新记录，如果发现是已经存在的数据，则覆盖，否则新增
         $date = intval(date("ymd", $timestamp));
         $stamp = getdate($timestamp);
-        $hourminindex = intval(($stamp["hours"] * 60 + floor($stamp["minutes"]/MFUN_HCU_AQYC_TIME_GRID_SIZE)));
+        $hourminindex = floor(($stamp["hours"] * 60 + $stamp["minutes"])/MFUN_HCU_AQYC_TIME_GRID_SIZE);
 
         $result = $mysqli->query("SELECT * FROM `t_l2snr_emcdata` WHERE (( `deviceid` = '$deviceid' AND `sensorid` = '$sensorid')
                         AND (`reportdate` = '$date' AND `hourminindex` = '$hourminindex'))");
@@ -276,7 +276,7 @@ class classDbiL2snrEmc
 
         $date = intval(date("ymd", $timestamp));
         $stamp = getdate($timestamp);
-        $hourminindex = intval(($stamp["hours"] * 60 + floor($stamp["minutes"]/MFUN_HCU_AQYC_TIME_GRID_SIZE)));
+        $hourminindex = floor(($stamp["hours"] * 60 + $stamp["minutes"])/MFUN_HCU_AQYC_TIME_GRID_SIZE);
 
         $emc = $data["value"];
 
@@ -352,7 +352,7 @@ class classDbiL2snrEmc
         //计算时间网格
         $date = intval(date("ymd", $timestamp));
         $stamp = getdate($timestamp);
-        $hourminindex = intval(($stamp["hours"] * 60 + floor($stamp["minutes"]/MFUN_HCU_AQYC_TIME_GRID_SIZE)));
+        $hourminindex = floor(($stamp["hours"] * 60 + $stamp["minutes"])/MFUN_HCU_AQYC_TIME_GRID_SIZE);
 
         //查询是否有相同时间网格的记录
         $result = $mysqli->query("SELECT * FROM `t_l2snr_emcdata` WHERE (`deviceid` = '$deviceid' AND `reportdate` = '$date' AND `hourminindex` = '$hourminindex')");

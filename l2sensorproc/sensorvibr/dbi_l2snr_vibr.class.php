@@ -25,9 +25,9 @@ class classDbiL2snrVibr
         else
             $status = MFUN_HCU_FHYS_STATUS_UNKNOWN;
         $timestamp = time();
-        $date = intval(date("ymd", $timestamp));
-        $temp = getdate($timestamp);
-        $hourminindex = intval(($temp["hours"] * 60 + floor($temp["minutes"]/MFUN_HCU_FHYS_TIME_GRID_SIZE)));
+        $date = date("Y-m-d", $timestamp);
+        $stamp = getdate($timestamp);
+        $hourminindex = floor(($stamp["hours"] * 60 + $stamp["minutes"])/MFUN_HCU_FHYS_TIME_GRID_SIZE);
 
         //更新分钟报告表
         $result = $mysqli->query("SELECT * FROM `t_l2snr_fhys_minreport` WHERE (( `devcode` = '$devCode' AND `statcode` = '$statCode')
@@ -99,9 +99,9 @@ class classDbiL2snrVibr
 
         $status = MFUN_HCU_FHYS_ALARM_YES;
         $timestamp = time();
-        $date = intval(date("ymd", $timestamp));
-        $temp = getdate($timestamp);
-        $hourminindex = intval(($temp["hours"] * 60 + floor($temp["minutes"]/MFUN_HCU_FHYS_TIME_GRID_SIZE)));
+        $date = date("Y-m-d", $timestamp);
+        $stamp = getdate($timestamp);
+        $hourminindex = floor(($stamp["hours"] * 60 + $stamp["minutes"])/MFUN_HCU_FHYS_TIME_GRID_SIZE);
 
         //更新分钟报告表
         $result = $mysqli->query("SELECT * FROM `t_l2snr_fhys_minreport` WHERE (( `devcode` = '$devCode' AND `statcode` = '$statCode')

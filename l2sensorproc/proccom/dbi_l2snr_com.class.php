@@ -739,7 +739,7 @@ class classDbiL2snrCommon
                     //保存照片信息
                     $date = date("Y-m-d", $timeStamp);
                     $stamp = getdate($timeStamp);
-                    $hourminindex = intval(($stamp["hours"] * 60 + floor($stamp["minutes"]/MFUN_HCU_AQYC_TIME_GRID_SIZE)));
+                    $hourminindex = floor(($stamp["hours"] * 60 + $stamp["minutes"])/MFUN_HCU_AQYC_TIME_GRID_SIZE);
                     $description = "站点".$statCode."告警抓拍的照片";
                     $dataflag = "Y";
                     $query_str = "INSERT INTO `t_l2snr_picturedata` (statcode,filename,filesize,filedescription,reportdate,hourminindex,dataflag)

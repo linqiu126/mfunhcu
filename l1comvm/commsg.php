@@ -213,6 +213,7 @@ define("MSG_ID_L4AQYCUI_TO_L3F5_ALARMIMGGET", $index++);
 define("MSG_ID_L4AQYCUI_TO_L3F5_ALARMHANDLE", $index++);
 define("MSG_ID_L4AQYCUI_TO_L3F5_ALARMCLOSE", $index++);
 define("MSG_ID_L4AQYCUI_TO_L3F5_ALARMQUERY", $index++);
+define("MSG_ID_L4AQYCUI_TO_L3F5_ALARMRTSP", $index++);
 
 //L4FHYS部分
 define("MSG_ID_L4FHYSUI_CLICK_INCOMING", $index++);

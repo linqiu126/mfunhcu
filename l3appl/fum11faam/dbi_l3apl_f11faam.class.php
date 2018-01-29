@@ -1268,6 +1268,7 @@ class classDbiL3apF11faam
             array_push($temp, 0);  //显示在第一行
             array_push($temp, "汇总");
             array_push($temp, "-------");
+            array_push($temp, "-------");
             array_push($temp, $timeStart);
             array_push($temp, $timeEnd);
             array_push($temp, "-------");
