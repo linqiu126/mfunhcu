@@ -486,13 +486,13 @@ class classDbiL2snrCcl
         //告警处理, 根据客户要求为简化告警处理,告警记录以站点为单位,每次只记录最高等级的告警,同一等级的告警只记录一项,人工处理关闭的告警记录将保存.
         //低级告警
         if ($fallState == HUITP_IEID_UNI_FALL_STATE_ACTIVE){
-            $alarm_code = MFUN_HCU_FHYS_ALARM_SMOK;
+            $alarm_code = MFUN_HCU_FHYS_ALARM_FALL;
             $alarmDesc = $objFhysAlarm->mfun_hcu_fhys_getAlarmDescription($alarm_code);
             $alarmProc = $alarmProc."[{$alarmDesc}];";
             $alarm_severity = MFUN_HCU_FHYS_ALARM_LEVEL_L;
         }
         if ($shakeState == HUITP_IEID_UNI_SHAKE_STATE_ACTIVE){
-            $alarm_code = MFUN_HCU_FHYS_ALARM_VIBR;
+            $alarm_code = MFUN_HCU_FHYS_ALARM_SHAKE;
             $alarmDesc = $objFhysAlarm->mfun_hcu_fhys_getAlarmDescription($alarm_code);
             $alarmProc = $alarmProc."[{$alarmDesc}];";
             $alarm_severity = MFUN_HCU_FHYS_ALARM_LEVEL_L;

@@ -174,7 +174,7 @@ class classDbiL2snrDoorlock
             $fallState = HUITP_IEID_UNI_FALL_STATE_DEACTIVE;
         elseif ($msg['fall'] == MFUN_HCU_DATA_FHYS_STATUS_NOK){
             $fallState = HUITP_IEID_UNI_FALL_STATE_ACTIVE;
-            $alarm_code = MFUN_HCU_FHYS_ALARM_TILT;
+            $alarm_code = MFUN_HCU_FHYS_ALARM_FALL;
             $alarm_severity = MFUN_HCU_FHYS_ALARM_LEVEL_L;
         }
         else
@@ -184,7 +184,7 @@ class classDbiL2snrDoorlock
             $shakeState = HUITP_IEID_UNI_SHAKE_STATE_DEACTIVE;
         elseif ($msg['shake'] == MFUN_HCU_DATA_FHYS_STATUS_NOK){
             $shakeState = HUITP_IEID_UNI_SHAKE_STATE_ACTIVE;
-            $alarm_code = MFUN_HCU_FHYS_ALARM_VIBR;
+            $alarm_code = MFUN_HCU_FHYS_ALARM_SHAKE;
             $alarm_severity = MFUN_HCU_FHYS_ALARM_LEVEL_M;
         }
         else

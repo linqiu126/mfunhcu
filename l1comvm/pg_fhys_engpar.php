@@ -189,8 +189,8 @@ define ("MFUN_HCU_FHYS_ALARM_LOCK3_OPEN", 0x07); //锁-3暴力打开
 define ("MFUN_HCU_FHYS_ALARM_LOCK4_OPEN", 0x08); //锁-4暴力打开
 define ("MFUN_HCU_FHYS_ALARM_SMOK", 0x09); //烟雾报警
 define ("MFUN_HCU_FHYS_ALARM_WATER", 0x0A); //水浸报警
-define ("MFUN_HCU_FHYS_ALARM_VIBR", 0x0B); //震动报警
-define ("MFUN_HCU_FHYS_ALARM_TILT", 0x0C);  //倾斜报警
+define ("MFUN_HCU_FHYS_ALARM_SHAKE", 0x0B); //震动报警
+define ("MFUN_HCU_FHYS_ALARM_FALL", 0x0C);  //倾斜报警
 define ("MFUN_HCU_FHYS_ALARM_LOW_SIG", 0x0D); //GPRS信号强度弱
 define ("MFUN_HCU_FHYS_ALARM_LOW_BATT", 0x0E); //低电量告警
 define ("MFUN_HCU_FHYS_ALARM_CODE_MAX", 0x0F); //Alarmcode的最大值，如有新alarmcode添加，该值要顺延
@@ -225,8 +225,8 @@ class classConstFhysEngpar
         MFUN_HCU_FHYS_ALARM_LOCK4_OPEN => '锁-4暴力打开',
         MFUN_HCU_FHYS_ALARM_SMOK => '烟雾告警',
         MFUN_HCU_FHYS_ALARM_WATER => '水浸告警',
-        MFUN_HCU_FHYS_ALARM_VIBR => '震动告警',
-        MFUN_HCU_FHYS_ALARM_TILT => '箱体倾斜告警',
+        MFUN_HCU_FHYS_ALARM_SHAKE => '震动告警',
+        MFUN_HCU_FHYS_ALARM_FALL => '箱体倾斜告警',
         MFUN_HCU_FHYS_ALARM_LOW_SIG => '信号弱告警',
         MFUN_HCU_FHYS_ALARM_LOW_BATT => '低电量告警'
     );
