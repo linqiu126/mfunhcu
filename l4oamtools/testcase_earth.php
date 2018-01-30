@@ -7,7 +7,7 @@ include_once "../l1comvm/vmlayer.php";
  * Date: 2018/1/23
  * Time: 10:31
  */
-if (EARTH_QUICK == true) {
+if (EARTH_QUAKE == true) {
 
 //    {
 //        “ToUsr”:”XHZN”,
@@ -55,7 +55,7 @@ if (EARTH_QUICK == true) {
     $msg = array("socketid" => 1, "data"=>$json);
 //    $msg = json_encode($msg);
 
-    $obj->mfun_l1vm_task_main_entry(EARTHQUICK_MQ, EARTHQUICK_COMING, "EARTHQUICK_COMING", $msg);
+    $obj->mfun_l1vm_task_main_entry(MFUN_MAIN_ENTRY_IOT_JSON, MSG_ID_L2SDK_JSON_DATA_INCOMING, "MSG_ID_L2SDK_JSON_DATA_INCOMING", $msg);
 }
 
 ?>

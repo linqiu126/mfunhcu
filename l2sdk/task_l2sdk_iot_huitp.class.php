@@ -106,7 +106,6 @@ class classTaskL2sdkIotHuitp
                     return true;
                 }
                 $msg = array("project" => $project,
-                            "platform" => MFUN_TECH_PLTF_HCUGX_HUITP,
                             "devCode" => $fromUser,
                             "statCode" => $statCode,
                             "content" => $content,

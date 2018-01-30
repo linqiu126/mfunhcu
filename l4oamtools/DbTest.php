@@ -17,7 +17,7 @@ include_once "../l1comvm/vmlayer.php";
 //$path3 = $_SERVER['DOCUMENT_ROOT'];
 
 define ("TC_EMCWX", false);
-define ("TC_SOCKET", false);
+define ("TC_SOCKET", true);
 define ("TC_CRON", false);
 define ("TC_IOT_STDXML", false);
 define ("TC_L4AQYC_UI", false);
@@ -28,9 +28,7 @@ define ("TC_L4FAAM_UI", false);
 define ("TC_NBIOT_CJ188_UL", false);
 define ("TC_NBIOT_CJ188_DL", false);
 define ("TC_NBIOT_QG376", false);
-
-define ("EARTH_QUICK",true);
-require("testcase_earth.php");
+define ("TC_EARTH_QUAKE",false);
 
 require("testcase_wxemc.php");
 require("testcase_l2socket.php");
@@ -41,6 +39,7 @@ require("testcase_l4fhys.php");
 require("testcase_l4bfsc.php");
 require("testcase_l4faam.php");
 require("testcase_nbiot188.php");
+require("testcase_earth.php");
 
 
 /**************************************************************************************

@@ -534,7 +534,7 @@ define ("TRACE_MSG_MODE_COMBINE_FROM_ALLOW", 32);  //通过模块和消息枚举
 define ("TRACE_MSG_MODE_COMBINE_FROM_RESTRICT", 33);  //通过模块和消息枚举
 define ("TRACE_MSG_MODE_COMBINE_DOUBLE_ALLOW", 34);  //通过模块和消息枚举
 define ("TRACE_MSG_MODE_COMBINE_DOUBLE_RESTRICT", 35);  //通过模块和消息枚举
-define ("TRACE_MSG_ON", TRACE_MSG_MODE_ALL_ON);
+define ("TRACE_MSG_ON", TRACE_MSG_MODE_ALL_OFF);
 
 
 ?>

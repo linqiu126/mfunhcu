@@ -107,7 +107,6 @@ class classTaskL2sdkIotStdxml
         switch ($msgType) {
             case "hcu_text":
                 $msg = array("project" => $project,
-                    "platform" => MFUN_TECH_PLTF_HCUSTM,
                     "devCode" => $fromUser,
                     "statCode" => $statCode,
                     "content" => $content,
@@ -121,7 +120,6 @@ class classTaskL2sdkIotStdxml
                 break;
             case "hcu_pic":
                 $msg = array("project" => $project,
-                    "platform" => MFUN_TECH_PLTF_HCUSTM,
                     "devCode" => $fromUser,
                     "statCode" => $statCode,
                     "content" => $content,
