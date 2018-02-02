@@ -501,8 +501,8 @@ class classDbiL3apF5fm
             $resp["value_max"] = $row['value_max'];
         }
 
-        $monthStart = date("Y-m-d", strtotime("-1 months", strtotime($inputDate))); //倒推一个月的起始日期
-        $weekStart = date("Y-m-d", strtotime("-1 weeks", strtotime($inputDate)));   //倒推一周的起始日期
+        $monthStart = date("Y-m-d", strtotime("-1 months", strtotime($inputDate))+24*60*60); //倒推一个月的起始日期
+        $weekStart = date("Y-m-d", strtotime("-1 weeks", strtotime($inputDate))+24*60*60);   //倒推一周的起始日期
         $monthStartInt = strtotime($monthStart);
         $weekStartInt = strtotime($weekStart);
 
@@ -523,7 +523,7 @@ class classDbiL3apF5fm
         }
         //将30天内的数值，按天归组，先按天清零
         $dayValue = array();
-        for ($day_index=0;$day_index<31;$day_index++){
+        for ($day_index=0;$day_index<=30;$day_index++){
             $dayValue[$day_index]["sum"]=0;
             $dayValue[$day_index]["counter"]=0;
             $dayValue[$day_index]["average"]=0;
@@ -552,7 +552,7 @@ class classDbiL3apF5fm
                 }
 
                 for($i=0; $i<count($buffer); $i++) {
-                    $value = $buffer[$i]['pm25'];
+                    $value = (float)$buffer[$i]['pm25'];
                     $reportDate = $buffer[$i]['reportdate'];
                     $hourminindex = $buffer[$i]['hourminindex'];
                     $dateInt = strtotime($reportDate);
@@ -859,7 +859,7 @@ class classDbiL3apF5fm
         }
 
         //将30天内的数值，按天求算术平均值
-        for ($day_index=0;$day_index<30;$day_index++)
+        for ($day_index=0;$day_index<=30;$day_index++)
         {
             if ($dayValue[$day_index]["counter"]!=0)
                 $dayValue[$day_index]["average"]=$dayValue[$day_index]["sum"]/$dayValue[$day_index]["counter"];
