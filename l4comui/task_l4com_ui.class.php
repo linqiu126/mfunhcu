@@ -414,6 +414,15 @@ class classTaskL4comUi
                 $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4COM_UI, MFUN_TASK_ID_L3APPL_FUM7ADS, MSG_ID_L4COMUI_TO_L3F7_CLEARUSERIMG, "MSG_ID_L4COMUI_TO_L3F7_CLEARUSERIMG",$input);
                 break;
 
+            case "GetVideoCameraWeb": //使用第三方播放器(完美解码)实现对站点实时视频播放
+                if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
+                if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
+                if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
+
+                $input = array("project" => $project, "action" => $action, "type" => $type,"user" => $user,"body" => $body);
+                $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4COM_UI, MFUN_TASK_ID_L3APPL_FUM4ICM, MSG_ID_L4COMUI_TO_L3F4_CAMWEB, "MSG_ID_L4COMUI_TO_L3F4_CAMWEB",$input);
+                break;
+
             //以下视频和摄像头处理为老的方法，保留在这里暂时不起作用
             case "GetVideoList": //获取指定站点指定时间段内的所有视频文件列表
                 if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
@@ -431,15 +440,6 @@ class classTaskL4comUi
 
                 $input = array("project" => $project, "action" => $action, "type" => $type,"user" => $user,"body" => $body);
                 $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4COM_UI, MFUN_TASK_ID_L3APPL_FUM4ICM, MSG_ID_L4COMUI_TO_L3F4_HSMMPPLAY, "MSG_ID_L4COMUI_TO_L3F4_HSMMPPLAY",$input);
-                break;
-
-            case "GetVideoCameraWeb": //使用第三方控件实现视频和摄像头处理
-                if (isset($_GET["type"])) $type = trim($_GET["type"]); else $type = "";
-                if (isset($_GET["user"])) $user = trim($_GET["user"]); else $user = "";
-                if (isset($_GET["body"])) $body = $_GET["body"]; else $body = "";
-
-                $input = array("project" => $project, "action" => $action, "type" => $type,"user" => $user,"body" => $body);
-                $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4COM_UI, MFUN_TASK_ID_L3APPL_FUM4ICM, MSG_ID_L4COMUI_TO_L3F4_CAMWEB, "MSG_ID_L4COMUI_TO_L3F4_CAMWEB",$input);
                 break;
 
             case "GetCameraStatus": //Get camera vertical and horizontal angle and fetch a current photo

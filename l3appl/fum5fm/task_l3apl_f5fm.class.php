@@ -57,7 +57,7 @@ class classTaskL3aplF5fm
 
     private function func_aqyc_alarm_query_process($action, $user, $body)
     {
-        if (isset($body["StatCode"])) $StatCode = $body["StatCode"]; else  $StatCode = "";
+        if (isset($body["StatCode"])) $statCode = $body["StatCode"]; else  $statCode = "";
         if (isset($body["date"])) $date = $body["date"]; else  $date = "";
         if (isset($body["type"])) $alarmtype = $body["type"]; else  $alarmtype = "";
 
@@ -65,10 +65,10 @@ class classTaskL3aplF5fm
         $usercheck = $uiF1symDbObj->dbi_user_authcheck($action, $user);
         if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
             $uiF5fmDbObj = new classDbiL3apF5fm(); //初始化一个UI DB对象
-            $table = $uiF5fmDbObj->dbi_aqyc_dev_alarmhistory_req($StatCode, $date, $alarmtype);
+            $table = $uiF5fmDbObj->dbi_aqyc_dev_alarmhistory_req($statCode, $date, $alarmtype);
 
             if(!empty($table)){
-                $ret = array('StatCode'=> $StatCode,
+                $ret = array('StatCode'=> $statCode,
                         'date'=> $date,
                         'AlarmName'=> $table["alarm_name"],
                         'AlarmUnit'=> $table["alarm_unit"],
@@ -156,7 +156,7 @@ class classTaskL3aplF5fm
         return $retval;
     }
 
-    private function func_aqyc_get_alarm_img_process($action, $user, $body)
+    private function func_aqyc_get_alarm_image_process($action, $user, $body)
     {
         if (isset($body["warningid"])) $alarmId = $body["warningid"]; else  $alarmId = "";
 
@@ -165,12 +165,34 @@ class classTaskL3aplF5fm
         if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
 
             $uiF5fmDbObj = new classDbiL3apF5fm(); //初始化一个UI DB对象
-            $resp = $uiF5fmDbObj->dbi_aqyc_alarm_img_req($alarmId);
+            $resp = $uiF5fmDbObj->dbi_aqyc_alarm_image_req($alarmId);
             if(!empty($resp)){
                 $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$resp,'msg'=>"获取告警照片成功");
             }
             else
                 $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>"获取告警照片失败");
+        }
+        else
+            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
+
+        return $retval;
+    }
+
+    private function func_aqyc_alarm_rtsp_process($action, $user, $body)
+    {
+        if (isset($body["alarmcode"])) $alarmId = $body["alarmcode"]; else  $alarmId = "";
+
+        $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
+        $usercheck = $uiF1symDbObj->dbi_user_authcheck($action, $user);
+        if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
+
+            $uiF5fmDbObj = new classDbiL3apF5fm(); //初始化一个UI DB对象
+            $resp = $uiF5fmDbObj->dbi_aqyc_alarm_rtsp_req($alarmId);
+            if(!empty($resp)){
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$resp,'msg'=>"获取告警视频RTSP成功");
+            }
+            else
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>"获取告警视频RTSP失败");
         }
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
@@ -378,20 +400,27 @@ class classTaskL3aplF5fm
                 $resp = $this->func_aqyc_alarm_monitor_list_process($action, $user, $body);
                 break;
 
-            //告警处理表
+            //告警历史表
             case MSG_ID_L4AQYCUI_TO_L3F5_ALARMHANDLETABLE:
                 $resp = $this->func_aqyc_get_alarm_history_table_process($action, $user, $body);
                 break;
 
             //获取告警抓拍照片
             case MSG_ID_L4AQYCUI_TO_L3F5_ALARMIMGGET:
-                $resp = $this->func_aqyc_get_alarm_img_process($action, $user, $body);
+                $resp = $this->func_aqyc_get_alarm_image_process($action, $user, $body);
                 break;
 
+            //告警视频播放
+            case MSG_ID_L4AQYCUI_TO_L3F5_ALARMRTSP:
+                $resp = $this->func_aqyc_alarm_rtsp_process($action, $user, $body);
+                break;
+
+            //告警处理
             case MSG_ID_L4AQYCUI_TO_L3F5_ALARMHANDLE:
                 $resp = $this->func_aqyc_alarm_handle_process($action, $user, $body);
                 break;
 
+            //告警关闭
             case MSG_ID_L4AQYCUI_TO_L3F5_ALARMCLOSE:
                 $resp = $this->func_aqyc_alarm_close_process($action, $user, $body);
                 break;

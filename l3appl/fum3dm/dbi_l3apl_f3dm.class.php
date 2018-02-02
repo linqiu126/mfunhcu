@@ -718,7 +718,7 @@ class classDbiL3apF3dm
             $windspeed = 0;
             $winddir = 0;
             $reportTime = "NULL";
-            $status = "停止";
+            $status = "休眠中";
             if (($result->num_rows) > 0)
             {
                 $row = $result->fetch_array();
@@ -732,10 +732,10 @@ class classDbiL3apF3dm
 
                 $timestamp = strtotime($reportTime);
                 $currenttime = time();
-                if ($currenttime > ($timestamp+180))  //如果最后一次测量报告距离现在已经超过3分钟
-                    $status = "停止";
+                if ($currenttime > ($timestamp+MFUN_HCU_AQYC_SLEEP_DURATION))  //如果最后一次测量报告距离现在已经超过休眠间隔门限
+                    $status = "休眠中";
                 else
-                    $status = "运行";
+                    $status = "运行中";
             }
             array_push($one_row, $reportTime);
             array_push($one_row, $status);

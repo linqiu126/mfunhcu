@@ -12,9 +12,9 @@ include_once "../l1comvm/vmlayer.php";
  *                             L4AQYC-UI TEST CASES                                   *
  *************************************************************************************/
 if (TC_L4AQYC_UI == true) {
-    $sessionid = "lx7HNmGADy";
+    $sessionid = "eCpF0pAKHD";
     $uerid = "UID000001";
-    $statcode = "120101002";
+    $statcode = "120101024";
     $projcode = "P_0002";
 
     echo " [TC L4AQYC: AlarmHandle START]\n";
@@ -23,7 +23,7 @@ if (TC_L4AQYC_UI == true) {
     $body = array('StatCode' => "120101025",'Mobile'=>"13917334681",'Action'=>"快来抢红包");
     $_GET["body"] = $body;
     $_GET["user"] = $sessionid;
-    require("../l4aqycui/request.php");
+    //require("../l4aqycui/request.php");
     echo " [TC L4AQYC: AlarmHandle END]\n";
 
     echo " [TC L4AQYC: GetWarningHandleListTable START]\n";
@@ -32,14 +32,14 @@ if (TC_L4AQYC_UI == true) {
     $body = array('ProjCode' => "P_0004",'Time' => "30",'KeyWord' => "");
     $_GET["body"] = $body;
     $_GET["user"] = $sessionid;
-    require("../l4aqycui/request.php");
+    //require("../l4aqycui/request.php");
     echo " [TC L4AQYC: GetWarningHandleListTable END]\n";
 
     echo " [TC L4AQYC: LOGIN START]\n";
     $_GET["action"] = "login";
     $_GET["name"] = "admin";
     $_GET["password"] = "admin";
-    require("../l4gtjyui/request.php");
+    //require("../l4gtjyui/request.php");
     echo " [TC L4AQYC: LOGIN END]\n";
 
     //TEST CASE: L4AQYC-UI界面: START
@@ -59,13 +59,13 @@ if (TC_L4AQYC_UI == true) {
     $body = array('StatCode' => $statcode, 'date'=>"2017-09-13", 'hour'=>'11');
     $_GET["body"] = $body;
     $_GET["user"] = $sessionid;
-    require("../l4aqycui/request.php");
+    //require("../l4aqycui/request.php");
     echo " [TC L4AQYC: GetVideoList END]\n";
 
     echo " [TC L4AQYC: AlarmQuery START]\n";
     $_GET["action"] = "AlarmQuery";
     //$body = array('StatCode' => $statcode,'date'=>"2016-12-17",'type'=>"1");
-    $body = array('StatCode' => $statcode,'date'=>"2017-05-23",'type'=>"YC_00A");
+    $body = array('StatCode' => $statcode,'date'=>"2018-01-25",'type'=>"YC_001");
     $_GET["body"] = $body;
     $_GET["type"] = "query";
     $_GET["user"] = $sessionid;

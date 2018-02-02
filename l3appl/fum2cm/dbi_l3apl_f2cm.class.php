@@ -213,35 +213,34 @@ class classDbiL3apF2cm
         $result = $mysqli->query($query_str);
 
         $projlist = array();
-        if($result->num_rows>0)
+
+        while(($result != false) && (($row = $result->fetch_array()) > 0))
         {
-            while(($result != false) && (($row = $result->fetch_array()) > 0))
+            $authcode = $row['auth_code'];
+            $fromat = substr($authcode, 0, MFUN_L3APL_F2CM_CODE_FORMAT_LEN);
+            if($fromat == MFUN_L3APL_F2CM_PROJ_CODE_PREFIX)  //取得code为项目号
             {
-                $authcode = $row['auth_code'];
-                $fromat = substr($authcode, 0, MFUN_L3APL_F2CM_CODE_FORMAT_LEN);
-                if($fromat == MFUN_L3APL_F2CM_PROJ_CODE_PREFIX)  //取得code为项目号
-                {
-                    $pcode = $authcode;
-                    $query_str = "SELECT * FROM `t_l3f2cm_projinfo` WHERE `p_code` = '$pcode'";
-                    $resp = $mysqli->query($query_str);
-                    if (($resp->num_rows)>0) {
-                        $list = $resp->fetch_array();
-                        $temp = array(
-                            'id' => $list['p_code'],
-                            'name' => $list['p_name']
-                        );
-                        array_push($projlist, $temp);
-                    }
-                }
-                elseif($fromat == MFUN_L3APL_F2CM_PG_CODE_PREFIX)  //取得的code为项目组号
-                {
-                    $pgcode = $authcode;
-                    $temp = $this->dbi_pg_projlist_req($pgcode);
-                    for($i=0; $i<count($temp); $i++)
-                        array_push($projlist, $temp[$i]);
+                $pcode = $authcode;
+                $query_str = "SELECT * FROM `t_l3f2cm_projinfo` WHERE `p_code` = '$pcode'";
+                $resp = $mysqli->query($query_str);
+                if (($resp->num_rows)>0) {
+                    $list = $resp->fetch_array();
+                    $temp = array(
+                        'id' => $list['p_code'],
+                        'name' => $list['p_name']
+                    );
+                    array_push($projlist, $temp);
                 }
             }
+            elseif($fromat == MFUN_L3APL_F2CM_PG_CODE_PREFIX)  //取得的code为项目组号
+            {
+                $pgcode = $authcode;
+                $temp = $this->dbi_pg_projlist_req($pgcode);
+                for($i=0; $i<count($temp); $i++)
+                    array_push($projlist, $temp[$i]);
+            }
         }
+
         //删除项目列表里重复的项
         $dbiL1vmCommonObj = new classDbiL1vmCommon();
         $unique_projlist = $dbiL1vmCommonObj->unique_array($projlist,false,true);
