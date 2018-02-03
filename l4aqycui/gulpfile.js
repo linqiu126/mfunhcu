@@ -1,4 +1,4 @@
-/**
+  /**
  * Created by hyj on 2016/7/25.
  */
 var gulp=require('gulp');
@@ -43,7 +43,7 @@ gulp.task('clean',function(){
         read:false
     }).pipe(clean({force:true}));
 })
-// ����Sass
+// ????Sass
 gulp.task('sass', function() {
     //gulp.src('./scss/*.scss')
     //    .pipe(sass())
@@ -88,7 +88,7 @@ gulp.task("resourcecopy",function(){
      //   .pipe(gulp.dest(option.buildPath+"/"));
 })
 
-// �ϲ���ѹ���ļ�
+// ???????????
 gulp.task('scripts', function() {
     gulp.src('./js/app.js')
         .pipe(concat('app.js'))
@@ -153,16 +153,13 @@ gulp.task('scripts', function() {
     gulp.src('./scope.html')
         .pipe(htmlmin(option_html))
         .pipe(gulp.dest(option.buildPath));
-    gulp.src('./middle.html')
-        .pipe(htmlmin(option_html))
-        .pipe(gulp.dest(option.buildPath));
 });
 
-// Ĭ������
+// ???????
 gulp.task('default',['clean'], function(){
     gulp.run('lint', 'sass', 'scripts','resourcecopy');
 /*
-    // �����ļ��仯
+    // ????????仯
     gulp.watch('./js/*.js', function(){
         gulp.run('lint', 'sass', 'scripts');
     });*/

@@ -175,6 +175,23 @@ class classTaskL4aqycUi
                 $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L3APPL_FUM5FM, MSG_ID_L4AQYCUI_TO_L3F5_ALARMRTSP, "MSG_ID_L4AQYCUI_TO_L3F5_ALARMRTSP",$input);
                 break;
 
+            case "GetShowAction":
+                /*
+                    $component = array(
+                    ""
+                    );
+                    $length = count($component);
+                    $key = rand(0,$length);*/
+                $retval=array(
+                    'status'=>'true',
+                    'auth'=>'true',
+                    'ret'=>'true',
+                    'msg'=>''
+                );
+                $jsonencode = _encode($retval);
+                echo $jsonencode; 
+                break;
+
             default:
                 $msg = array("project" => $project, "action" => $action);
                 $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4AQYC_UI, MFUN_TASK_ID_L4COM_UI, MSG_ID_L4COMUI_CLICK_INCOMING, "MSG_ID_L4COMUI_CLICK_INCOMING",$msg);
