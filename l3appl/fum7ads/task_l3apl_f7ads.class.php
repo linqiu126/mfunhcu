@@ -138,6 +138,11 @@ class classTaskL3aplF7ads
         return $retval;
     }
 
+    function func_get_demo_show_action_process($action, $user, $body)
+    {
+
+    }
+
 
     /**************************************************************************************
      *                             任务入口函数                                           *
@@ -183,6 +188,10 @@ class classTaskL3aplF7ads
 
             case MSG_ID_L4COMUI_TO_L3F7_CLEARUSERIMG://功能Clear User Image
                 $resp = $this->func_clear_user_image_process($action, $user, $body);
+                break;
+
+            case MSG_ID_L4AQYCUI_TO_L3F7_GETSHOWACTIONE:
+                $resp = $this->func_get_demo_show_action_process($action, $user, $body);
                 break;
 
             default:
