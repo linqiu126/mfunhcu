@@ -140,9 +140,16 @@ class classTaskL3aplF7ads
 
     function func_get_demo_show_action_process($action, $user, $body)
     {
+        $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
+        $usercheck = $uiF1symDbObj->dbi_user_authcheck($action, $user);
+        $account = $usercheck['account'];
+        if($account == "ycjk")
+            $retval=array('status'=>'true','auth'=>'true','ret'=>'true','msg'=>"获取Demo演示成功");
+        else
+            $retval=array('status'=>'true','auth'=>'true','ret'=>'false','msg'=>"获取Demo演示失败");
 
+        return $retval;
     }
-
 
     /**************************************************************************************
      *                             任务入口函数                                           *

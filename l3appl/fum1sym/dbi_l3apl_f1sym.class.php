@@ -323,6 +323,7 @@ class classDbiL3apF1sym
         $auth = "true";
         $status = "true";
         $msg = "";
+        $account = "";
 
         $uid = $this->dbi_session_check($sessionid);
         if (!empty($uid)){
@@ -331,6 +332,7 @@ class classDbiL3apF1sym
             if (($result->num_rows)>0) {
                 $row = $result->fetch_array();
                 $grade_idx = intval($row['grade']);
+                $account = $row['user'];
 
                 $taskObj = new classConstL1vmUserWebRight();
                 $grade_info = $taskObj->mfun_vm_getUserGrade($grade_idx);
@@ -344,7 +346,7 @@ class classDbiL3apF1sym
             $msg = "网页长时间没有操作，会话超时";
         }
 
-        $authcheck = array('status' => $status,'auth' => $auth,'uid' =>$uid, 'msg' => $msg);
+        $authcheck = array('status' => $status,'auth' => $auth,'uid' =>$uid, 'account'=>$account, 'msg' => $msg);
         $mysqli->close();
         return $authcheck;
     }
