@@ -44,8 +44,8 @@ class classL1MainEntrySocketListenServer
             'daemonize' => 0, //设置程序进入后台作为守护进程运行。长时间运行的服务器端程序必须启用此项。如果不启用守护进程，当ssh终端退出后，程序将被终止运行。启用守护进程后，标准输入和输出会被重定向到 log_file，如果 log_file未设置，则所有输出会被丢弃。
             //'log_file' => '/home/swoole_server.log', //指定swoole错误日志文件
             //'log_file' => '/home/hitpony/swoole_server.log', //指定swoole错误日志文件, vmware环境使用
-            //'heartbeat_check_interval' => 60,  //设置心跳检测间隔，每隔多久轮循一次，单位为秒。每次检测时遍历所有连接，如果某个连接在间隔时间内没有数据发送，则强制关闭连接（会有onClose回调）。
-            //'heartbeat_idle_time' => 600, //设置某个连接允许的最大闲置时间,如果某个连接在heartbeat_idle_time时间内没有数据发送，则强制关闭连接。
+            'heartbeat_check_interval' => 60,  //设置心跳检测间隔，每隔多久轮循一次，单位为秒。每次检测时遍历所有连接，如果某个连接在间隔时间内没有数据发送，则强制关闭连接（会有onClose回调）。
+            'heartbeat_idle_time' => 600, //设置某个连接允许的最大闲置时间,如果某个连接在heartbeat_idle_time时间内没有数据发送，则强制关闭连接。
             'open_cpu_affinity' => true, //启用CPU亲和性设置, 在多核的硬件平台中，启用此特性会将swoole的reactor线程/worker进程绑定到固定的一个核上。可以避免进程/线程的运行时在多个核之间互相切换，提高CPU Cache的命中率。
             'reactor_num' => 2, //指定Reactor线程数,通过此参数来调节poll线程的数量，以充分利用多核,reactor_num和writer_num默认设置为CPU核数
             'package_max_length' => 2048,
@@ -111,10 +111,10 @@ class classL1MainEntrySocketListenServer
         $huitpxml_tcp_hcuport->on('Close', array($this, 'huitpxml_tcp_hcuport_onClose'));
 
         //huitpjson_tcp_port, 传送HUITP JSON消息，TCP端口9517
-        $huitpjson_tcp_port = $this->swoole_socket_serv->listen("0.0.0.0", MFUN_SWOOLE_SOCKET_HUITPJSON_TCP, SWOOLE_SOCK_TCP);
-        $huitpjson_tcp_port->on('Connect', array($this, 'huitpjson_tcp_hcuport_onConnect'));
-        $huitpjson_tcp_port->on('Receive', array($this, 'huitpjson_tcp_hcuport_onReceive'));
-        $huitpjson_tcp_port->on('Close', array($this, 'huitpjson_tcp_hcuport_onClose'));
+//        $huitpjson_tcp_port = $this->swoole_socket_serv->listen("0.0.0.0", MFUN_SWOOLE_SOCKET_HUITPJSON_TCP, SWOOLE_SOCK_TCP);
+//        $huitpjson_tcp_port->on('Connect', array($this, 'huitpjson_tcp_hcuport_onConnect'));
+//        $huitpjson_tcp_port->on('Receive', array($this, 'huitpjson_tcp_hcuport_onReceive'));
+//        $huitpjson_tcp_port->on('Close', array($this, 'huitpjson_tcp_hcuport_onClose'));
 
         //CCL图片传输端口
         $huitpxml_tcp_picport = $this->swoole_socket_serv->listen("0.0.0.0", MFUN_SWOOLE_SOCKET_DATA_STREAM_TCP, SWOOLE_SOCK_TCP);

@@ -197,19 +197,19 @@ class classDbiL2snrCommon
                 $value = false;
                 break;
             case HUITP_IEID_UNI_COM_FORMAT_TYPE_INT_ONLY:
-                $value = intval($data);
+                $value = (float)$data;
                 break;
             case HUITP_IEID_UNI_COM_FORMAT_TYPE_FLOAT_WITH_NF1:
-                $value = intval($data)/10;
+                $value = floatval($data)/10;
                 break;
             case HUITP_IEID_UNI_COM_FORMAT_TYPE_FLOAT_WITH_NF2:
-                $value = intval($data)/100;
+                $value = floatval($data)/100;
                 break;
             case HUITP_IEID_UNI_COM_FORMAT_TYPE_FLOAT_WITH_NF3:
-                $value = intval($data)/1000;
+                $value = floatval($data)/1000;
                 break;
             case HUITP_IEID_UNI_COM_FORMAT_TYPE_FLOAT_WITH_NF4:
-                $value = intval($data)/10000;
+                $value = floatval($data)/10000;
                 break;
             case HUITP_IEID_UNI_COM_FORMAT_TYPE_INVALID:
                 $value = false;
@@ -706,7 +706,7 @@ class classDbiL2snrCommon
 
         //如果是扬尘超标或者噪声超标告警，则进行照片抓取
         $picName = ""; //初始化
-        if($alarmContent == HUITP_IEID_UNI_ALARM_CONTENT_TSP_VALUE_EXCEED_THRESHLOD ){ //HUITP_IEID_UNI_ALARM_CONTENT_NOISE_VALUE_EXCEED_THRESHLOD
+        if($alarmContent == HUITP_IEID_UNI_ALARM_CONTENT_TSP_VALUE_EXCEED_THRESHLOD OR $alarmContent == HUITP_IEID_UNI_ALARM_CONTENT_NOISE_VALUE_EXCEED_THRESHLOD){ //只记录扬尘和噪声告警
             $query_str = "SELECT * FROM `t_l2sdk_iothcu_inventory` WHERE `statcode` = '$statCode' ";
             $result = $mysqli->query($query_str);
 
@@ -737,33 +737,30 @@ class classDbiL2snrCommon
                     fclose($newFile);
 
                     //保存照片信息
+                    $objAqycAlarm = new classConstAqycEngpar();
+                    $alarmDesc = $objAqycAlarm->mfun_hcu_aqyc_getAlarmDescription($alarmContent);
+
                     $date = date("Y-m-d", $timeStamp);
                     $stamp = getdate($timeStamp);
                     $hourminindex = floor(($stamp["hours"] * 60 + $stamp["minutes"])/MFUN_HCU_AQYC_TIME_GRID_SIZE);
-                    $description = "站点".$statCode."告警抓拍的照片";
-                    $dataflag = "Y";
+                    $picDesc = "告警[{$alarmDesc}]抓拍的照片;";;
+                    $dataflag = MFUN_HCU_DATA_FLAG_VALID;
                     $query_str = "INSERT INTO `t_l2snr_picturedata` (statcode,filename,filesize,filedescription,reportdate,hourminindex,dataflag)
-                                  VALUES ('$statCode','$picName','$fileSize','$description','$date','$hourminindex','$dataflag')";
+                                  VALUES ('$statCode','$picName','$fileSize','$picDesc','$date','$hourminindex','$dataflag')";
+                    $result=$mysqli->query($query_str);
+
+                    //生成告警记录，同时将抓拍的告警照片和告警记录关联
+                    $alarmFlag = MFUN_HCU_ALARM_PROC_FLAG_N;
+                    $alarmProc = "新增告警[{$alarmDesc}];";
+                    $tsGen = date("Y-m-d H:m:s", $timeStamp);
+                    $query_str = "INSERT INTO `t_l3f5fm_aqyc_alarmdata` (`devcode`,`statcode`,`alarmflag`,`alarmseverity`,`alarmcontent`,`alarmtype`,`clearflag`,`causeid`,`tsgen`,`alarmpic`,`alarmproc`)
+                                  VALUES ('$devCode','$statCode','$alarmFlag','$alarmServerity', '$alarmContent','$alarmType','$alarmClearFlag','$causeId','$tsGen','$picName','$alarmProc')";
                     $result=$mysqli->query($query_str);
                 }
             }
         }
 
-        //生成告警记录，同时将抓拍的告警照片和告警记录关联
-        $alarmFlag = MFUN_HCU_ALARM_PROC_FLAG_N;
-        $objAqycAlarm = new classConstAqycEngpar();
-        $alarmDesc = $objAqycAlarm->mfun_hcu_aqyc_getAlarmDescription($alarmContent);
-        $alarmProc = "新增告警[{$alarmDesc}];";
-        $tsGen = date("Y-m-d H:m:s", $timeStamp);
-        $query_str = "INSERT INTO `t_l3f5fm_aqyc_alarmdata` (`devcode`,`statcode`,`alarmflag`,`alarmseverity`,`alarmcontent`,`alarmtype`,`clearflag`,`causeid`,`tsgen`,`alarmpic`,`alarmproc`)
-                      VALUES ('$devCode','$statCode','$alarmFlag','$alarmServerity', '$alarmContent','$alarmType','$alarmClearFlag','$causeId','$tsGen','$picName','$alarmProc')";
-        $result=$mysqli->query($query_str);
-
-        if ($result == true)
-            $comConfirm = HUITP_IEID_UNI_COM_CONFIRM_YES;
-        else
-            $comConfirm = HUITP_IEID_UNI_COM_CONFIRM_NO;
-
+        $comConfirm = HUITP_IEID_UNI_COM_CONFIRM_YES;
         //生成 HUITP_MSGID_uni_alarm_info_confirm 消息的内容
         $respMsgContent = array();
         $baseConfirmIE = array();

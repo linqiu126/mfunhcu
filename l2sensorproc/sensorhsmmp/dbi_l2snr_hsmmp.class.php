@@ -204,18 +204,74 @@ class classDbiL2snrHsmmp
         $stamp = getdate($timeStamp);
         $hourminindex = floor(($stamp["hours"] * 60 + $stamp["minutes"])/MFUN_HCU_AQYC_TIME_GRID_SIZE);
 
+        //目前只有扬尘超标触发视频拍照
         if ($alarmFlag == HUITP_IEID_UNI_HSMMP_ALARM_FLAG_ON){
+            $alarmContent = HUITP_IEID_UNI_ALARM_CONTENT_TSP_VALUE_EXCEED_THRESHLOD;
+            $alarmServerity = HUITP_IEID_UNI_ALARM_SEVERITY_HIGH;
+            $alarmType = HUITP_IEID_UNI_ALARM_TYPE_TSP_VALUE;
+            $objAqycAlarm = new classConstAqycEngpar();
+            $alarmDesc = $objAqycAlarm->mfun_hcu_aqyc_getAlarmDescription($alarmContent);
+
+            //抓拍一张告警照片
+            $picName = "";
+            $query_str = "SELECT * FROM `t_l2sdk_iothcu_inventory` WHERE `statcode` = '$statCode' ";
+            $result = $mysqli->query($query_str);
+            if (($result != false) && ($row = $result->fetch_array())>0) {
+                $url = $row['camctrl'];
+                $username = MFUN_HCU_AQYC_CAM_USERNAME;
+                $password = MFUN_HCU_AQYC_CAM_PASSWORD;
+                $curl = curl_init();
+                curl_setopt($curl, CURLOPT_URL, $url);
+                curl_setopt($curl, CURLOPT_HEADER, 0);
+                curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+                curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_ANY);
+                curl_setopt($curl, CURLOPT_USERPWD, "$username:$password");
+                curl_setopt($curl, CURLOPT_TIMEOUT, 30); //timeout after 30 seconds
+                $picData = curl_exec($curl);
+                $fileSize = curl_getinfo($curl, CURLINFO_SIZE_DOWNLOAD);
+                curl_close($curl);
+
+                if ($fileSize != 0){
+                    if(!file_exists(MFUN_HCU_SITE_PIC_BASE_DIR.$statCode))
+                        $result = mkdir(MFUN_HCU_SITE_PIC_BASE_DIR.$statCode,0777,true);
+
+                    $picName = $statCode . "_" . $alarmTime . MFUN_HCU_SITE_PIC_FILE_TYPE;//生成jpg文件名
+                    $fileLink = MFUN_HCU_SITE_PIC_BASE_DIR.$statCode.'/'.$picName;
+                    $newFile = fopen($fileLink, "wb+") or die("Unable to open file!");
+                    fwrite($newFile, $picData);
+                    fclose($newFile);
+
+                    //保存照片信息
+                    $picDesc = "告警[{$alarmDesc}]抓拍的照片;";;
+                    $dataflag = MFUN_HCU_DATA_FLAG_VALID;
+                    $query_str = "INSERT INTO `t_l2snr_picturedata` (statcode,filename,filesize,filedescription,reportdate,hourminindex,dataflag)
+                                  VALUES ('$statCode','$picName','$fileSize','$picDesc','$reportdate','$hourminindex','$dataflag')";
+                    $result=$mysqli->query($query_str);
+                }
+            }
+
+            //保存告警视频信息
             $query_str = "SELECT * FROM `t_l2snr_hsmmpdata`  WHERE (`statcode`= '$statCode' AND `reportdate`= '$reportdate' AND `alarmflag`= '$alarmFlag')";
             $result = $mysqli->query($query_str);
             if (($result != false) && ($row = $result->fetch_array())>0){
                 $sid = $row['sid'];
-                $query_str = "UPDATE `t_l2snr_hsmmpdata` SET `hourminindex` = '$hourminindex',`videostart` = '$alarmTime',`videoend` = '$timeStamp' WHERE (`sid`= '$sid')";
+                $query_str = "UPDATE `t_l2snr_hsmmpdata` SET `hourminindex` = '$hourminindex',`videostart` = '$alarmTime' WHERE (`sid`= '$sid')";
                 $result=$mysqli->query($query_str);
             }
             else{
                 $query_str = "INSERT INTO `t_l2snr_hsmmpdata` (statcode,reportdate,hourminindex,videostart,alarmflag) VALUES ('$statCode','$reportdate','$hourminindex','$alarmTime','$alarmFlag')";
                 $result=$mysqli->query($query_str);
             }
+
+            //生成告警记录，同时将抓拍的告警照片和告警记录关联
+            $alarmProcFlag = MFUN_HCU_ALARM_PROC_FLAG_N;
+            $alarmClearFlag = HUITP_IEID_UNI_ALARM_CLEAR_FLAG_OFF;
+            $causeId = 0; //该标志暂时没有使用
+            $alarmProc = "新增告警[{$alarmDesc}];";
+            $tsGen = date("Y-m-d H:m:s", $alarmTime);
+            $query_str = "INSERT INTO `t_l3f5fm_aqyc_alarmdata` (`devcode`,`statcode`,`alarmflag`,`alarmseverity`,`alarmcontent`,`alarmtype`,`clearflag`,`causeid`,`tsgen`,`alarmpic`,`alarmproc`)
+                                  VALUES ('$devCode','$statCode','$alarmProcFlag','$alarmServerity', '$alarmContent','$alarmType','$alarmClearFlag','$causeId','$tsGen','$picName','$alarmProc')";
+            $result=$mysqli->query($query_str);
         }
         elseif ($alarmFlag == HUITP_IEID_UNI_HSMMP_ALARM_FLAG_OFF){
             $flag_on = HUITP_IEID_UNI_HSMMP_ALARM_FLAG_ON;

@@ -479,15 +479,12 @@ class classDbiL2snrPm25
         //存储新记录，如果发现是已经存在的数据，则覆盖，否则新增
         $query_str = "SELECT * FROM `t_l2snr_aqyc_minreport` WHERE (`devcode` = '$devCode' AND `statcode` = '$statCode' AND `reportdate` = '$reportdate' AND `hourminindex` = '$hourminindex')";
         $result = $mysqli->query($query_str);
-        if (($result != false) && ($result->num_rows)>0)  //重复，则覆盖
-        {
-            $row = $result->fetch_array();
+        if (($result != false) && ($row = $result->fetch_array())>0){  //重复，则覆盖
             $sid = $row['sid'];
             $query_str = "UPDATE `t_l2snr_aqyc_minreport` SET `pm01` = '$tspValue',`pm25` = '$pm25Value',`pm10` = '$pm10Value',`noise` = '$noiseValue',`windspeed` = '$windspdValue',`winddirection` = '$winddirValue',`temperature` = '$tempValue',`humidity` = '$humidValue',`dataflag` = '$dataFlag' WHERE (`sid` = '$sid')";
             $result=$mysqli->query($query_str);
         }
-        else   //不存在，新增
-        {
+        else {  //不存在，新增
             $query_str = "INSERT INTO `t_l2snr_aqyc_minreport` (devcode,statcode,pm01,pm25,pm10,noise,windspeed,winddirection,temperature,humidity,reportdate,hourminindex,dataflag)
                           VALUES ('$devCode', '$statCode', '$tspValue','$pm25Value','$pm10Value','$noiseValue','$windspdValue','$winddirValue','$tempValue','$humidValue','$reportdate','$hourminindex','$dataFlag')";
             $result=$mysqli->query($query_str);
@@ -512,7 +509,7 @@ class classDbiL2snrPm25
         //存储新记录，如果发现是已经存在的数据，则覆盖，否则新增
         $query_str = "SELECT * FROM `t_l3f3dm_aqyc_currentreport` WHERE (`deviceid` = '$devCode')";
         $result = $mysqli->query($query_str);
-        if (($result->num_rows)>0) {
+        if (($result != false) && ($result->num_rows)>0) {
             $query_str = "UPDATE `t_l3f3dm_aqyc_currentreport` SET `statcode` = '$statCode',`pm01` = '$tspValue',`pm25` = '$pm25Value',`pm10` = '$pm10Value',`noise` = '$noiseValue',`windspeed` = '$windspdValue',`winddirection` = '$winddirValue',`temperature` = '$tempValue',`humidity` = '$humidValue',`createtime` = '$currenttime' WHERE (`deviceid` = '$devCode')";
             $result = $mysqli->query($query_str);
         }
