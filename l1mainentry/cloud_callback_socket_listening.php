@@ -254,7 +254,8 @@ class classL1MainEntrySocketListenServer
     }
 
     //STDXML hcuport入口函数，收到消息直接转发给HCU IOT模块并带上socketid，L1socket模块只负责消息收发，不进行任何消息解码工作
-    public function stdxml_tcp_hcuport_onReceive($swoole_socket_serv, $fd, $reactor_id, $data) {
+    public function stdxml_tcp_hcuport_onReceive($swoole_socket_serv, $fd, $reactor_id, $data)
+    {
         //echo PHP_EOL.date('Y/m/d H:i:s', time())." ";
         //echo "stdxml_tcp_hcuport_onReceive: From HCU_Client [{$fd}] : {$data}".PHP_EOL;
 
@@ -263,9 +264,8 @@ class classL1MainEntrySocketListenServer
         $obj->mfun_l1vm_task_main_entry(MFUN_MAIN_ENTRY_IOT_STDXML, MSG_ID_L2SDK_STDXML_DATA_INCOMING, "MSG_ID_L2SDK_STDXML_DATA_INCOMING", $msg);
     }
 
-    public function stdxml_tcp_hcuport_onClose($swoole_socket_serv, $fd, $reactor_id) {
-        echo date('Y/m/d H:i:s', time())." ";
-        echo "stdxml_tcp_hcuport_onClose: HCU_Client [{$fd}] closed connection.".PHP_EOL;
+    public function stdxml_tcp_hcuport_onClose($swoole_socket_serv, $fd, $reactor_id)
+    {
         //reset socketid in t_l2sdk_iothcu_inventory when connection closed.
         $query="UPDATE t_l2sdk_iothcu_inventory  SET socketid = 0 WHERE socketid = $fd"; 
         $result = $swoole_socket_serv->taskwait($query);
@@ -273,24 +273,26 @@ class classL1MainEntrySocketListenServer
             list($status, $db_res) = explode(':', $result, 2);
             if ($status == 'OK') {
                 echo date('Y/m/d H:i:s', time())." ";
-                echo "stdxml_tcp_hcuport_onClose: socketid [{$fd}] was set to 0. Affacted_rows : {$db_res}".PHP_EOL;
+                echo "stdxml_tcp_hcuport_onClose: socketid [{$fd}] closed. Affacted_rows : {$db_res}".PHP_EOL;
             } else {
                 echo date('Y/m/d H:i:s', time())." ";
                 echo "[ERROR]stdxml_tcp_hcuport_onClose: socketid [{$fd}] set to 0 failed.".PHP_EOL;
             }
-            return;
         } else {
             echo date('Y/m/d H:i:s', time())." ";
             echo "[ERROR]stdxml_tcp_hcuport_onClose: socketid [{$fd}] not found".PHP_EOL;
         }
+
+        return;
     }
 
     /***********************************************TCP uiport********************************************************/
 
     public  function tcp_uiport_onConnect($swoole_socket_serv, $fd, $from_id)
     {
-        echo date('Y/m/d H:i:s', time())." ";
-        echo "tcp_uiport_onConnect: UI_Client [{$fd}] connected".PHP_EOL;
+        //正常情况不再打印
+        //echo date('Y/m/d H:i:s', time())." ";
+        //echo "tcp_uiport_onConnect: UI_Client [{$fd}] connected".PHP_EOL;
     }
 
     public function tcp_uiport_onReceive($swoole_socket_serv, $fd, $reactor_id, $data)
@@ -330,8 +332,9 @@ class classL1MainEntrySocketListenServer
 
     public function tcp_uiport_onClose($swoole_socket_serv, $fd, $reactor_id)
     {
-        echo date('Y/m/d H:i:s', time())." ";
-        echo "tcp_uiport_onClose: UI_Client [{$fd}] connection closed.".PHP_EOL;
+        //正常情况不再打印
+        //echo date('Y/m/d H:i:s', time())." ";
+        //echo "tcp_uiport_onClose: UI_Client [{$fd}] connection closed.".PHP_EOL;
     }
 
     /*****************************************HUITP XML TCP hcuport****************************************************/
@@ -355,9 +358,6 @@ class classL1MainEntrySocketListenServer
 
     public function huitpxml_tcp_hcuport_onClose($swoole_socket_serv, $fd, $reactor_id)
     {
-        echo date('Y/m/d H:i:s', time())." ";
-        echo "huitpxml_tcp_hcuport_onClose: HCU_Client [{$fd}] connection closed.".PHP_EOL;
-
         //reset socketid in t_l2sdk_iothcu_inventory when connection closed.
         $query="UPDATE t_l2sdk_iothcu_inventory  SET socketid = 0 WHERE socketid = $fd";
         $result = $swoole_socket_serv->taskwait($query);
@@ -365,16 +365,17 @@ class classL1MainEntrySocketListenServer
             list($status, $db_res) = explode(':', $result, 2);
             if ($status == 'OK') {
                 echo date('Y/m/d H:i:s', time())." ";
-                echo "huitpxml_tcp_hcuport_onClose: socketid [{$fd}] was set to 0. Affacted_rows : {$db_res}".PHP_EOL;
+                echo "huitpxml_tcp_hcuport_onClose: socketid [{$fd}] closed. Affacted_rows : {$db_res}".PHP_EOL;
             } else {
                 echo date('Y/m/d H:i:s', time())." ";
                 echo "[ERROR]huitpxml_tcp_hcuport_onClose: socketid [{$fd}] set to 0 failed.".PHP_EOL;
             }
-            return;
         } else {
             echo date('Y/m/d H:i:s', time())." ";
             echo "[ERROR]huitpxml_tcp_hcuport_onClose: socketid [{$fd}] not found".PHP_EOL;
         }
+
+        return;
     }
 
     /****************************************HUITP JSON TCP hcuport****************************************************/
@@ -398,9 +399,6 @@ class classL1MainEntrySocketListenServer
 
     public function huitpjson_tcp_hcuport_onClose($swoole_socket_serv, $fd, $reactor_id)
     {
-        echo date('Y/m/d H:i:s', time())." ";
-        echo "huitpjson_tcp_hcuport_onClose: HCU_Client [{$fd}] connection closed.".PHP_EOL;
-
         //reset socketid in t_l2sdk_iothcu_inventory when connection closed.
         $query="UPDATE t_l2sdk_iothcu_inventory  SET socketid = 0 WHERE socketid = $fd";
         $result = $swoole_socket_serv->taskwait($query);
@@ -408,16 +406,17 @@ class classL1MainEntrySocketListenServer
             list($status, $db_res) = explode(':', $result, 2);
             if ($status == 'OK') {
                 echo date('Y/m/d H:i:s', time())." ";
-                echo "huitpjson_tcp_hcuport_onClose: socketid [{$fd}] was set to 0. Affacted_rows : {$db_res}".PHP_EOL;
+                echo "huitpjson_tcp_hcuport_onClose: socketid [{$fd}] closed. Affacted_rows : {$db_res}".PHP_EOL;
             } else {
                 echo date('Y/m/d H:i:s', time())." ";
                 echo "[ERROR]huitpjson_tcp_hcuport_onClose: socketid [{$fd}] set to 0 failed.".PHP_EOL;
             }
-            return;
         } else {
             echo date('Y/m/d H:i:s', time())." ";
             echo "[ERROR]huitpjson_tcp_hcuport_onClose: socketid [{$fd}] not found".PHP_EOL;
         }
+
+        return;
     }
 
     /********************************************HUITP TCP picport****************************************************/
@@ -440,9 +439,6 @@ class classL1MainEntrySocketListenServer
 
     public function huitpxml_tcp_picport_onClose( $swoole_socket_serv, $fd, $from_id )
     {
-        echo date('Y/m/d H:i:s', time())." ";
-        echo "huitpxml_tcp_picport_onClose: Client [{$fd}] connection closed".PHP_EOL;
-
         //reset socketid in t_l2sdk_iothcu_inventory when connection closed.
         $query="UPDATE t_l2sdk_iothcu_inventory  SET socketid = 0 WHERE socketid = $fd";
         $result = $swoole_socket_serv->taskwait($query);
@@ -450,21 +446,21 @@ class classL1MainEntrySocketListenServer
             list($status, $db_res) = explode(':', $result, 2);
             if ($status == 'OK') {
                 echo date('Y/m/d H:i:s', time())." ";
-                echo "huitpxml_tcp_picport_onClose: socketid [{$fd}] was set to 0. Affacted_rows : {$db_res}".PHP_EOL;
+                echo "huitpxml_tcp_picport_onClose: socketid [{$fd}] closed. Affacted_rows : {$db_res}".PHP_EOL;
             } else {
                 echo date('Y/m/d H:i:s', time())." ";
                 echo "[ERROR]huitpxml_tcp_picport_onClose: socketid [{$fd}] set to 0 failed.".PHP_EOL;
             }
-            return;
         } else {
             echo date('Y/m/d H:i:s', time())." ";
             echo "[ERROR]huitpxml_tcp_picport_onClose: socketid [{$fd}] not found".PHP_EOL;
         }
+
+        return;
     }
 
 }//end of classL1MainEntrySocketListenServer
 
-//该服务目前只能在AQ云下跑，其它的待开发完善
 $server = new classL1MainEntrySocketListenServer();
 
 ?>
