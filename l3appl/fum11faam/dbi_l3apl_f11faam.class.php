@@ -646,7 +646,10 @@ class classDbiL3apF11faam
         if (!$mysqli) {
             die('Could not connect: ' . mysqli_error($mysqli));
         }
-        $query_str = "DELETE FROM `t_l3f11faam_membersheet` WHERE `mid` = '$staffId'";  //删除员工信息
+        //应客户要求，用户离职不能删除，改成离职状态
+        //$query_str = "DELETE FROM `t_l3f11faam_membersheet` WHERE `mid` = '$staffId'";  //删除员工信息
+        $onJob = MFUN_HCU_FAAM_EMPLOYEE_ONJOB_NO;
+        $query_str = "UPDATE `t_l3f11faam_membersheet` SET `onjob` = '$onJob' WHERE `mid` = '$staffId'";
         $result = $mysqli->query($query_str);
 
         $mysqli->close();
@@ -715,6 +718,7 @@ class classDbiL3apF11faam
         return $history;
     }
 
+    //考勤统计
     public function dbi_faam_attendance_history_audit($uid, $timeStart, $timeEnd, $keyWord)
     {
         //初始化返回值
@@ -765,8 +769,8 @@ class classDbiL3apF11faam
             return $history;
         }
         //查询员工列表
-        $onJob = MFUN_HCU_FAAM_EMPLOYEE_ONJOB_YES; //在职员工
-        $query_str = "SELECT * FROM `t_l3f11faam_membersheet` WHERE (`pjcode` = '$pjCode' AND `onjob` = '$onJob')";
+        //$onJob = MFUN_HCU_FAAM_EMPLOYEE_ONJOB_YES; //在职员工
+        $query_str = "SELECT * FROM `t_l3f11faam_membersheet` WHERE (`pjcode` = '$pjCode')";
         $result = $mysqli->query($query_str);
         $nameList = array();
         while (($result != false) && (($row = $result->fetch_array()) > 0)){
@@ -1144,7 +1148,7 @@ class classDbiL3apF11faam
         return $history;
     }
 
-    //UI AssembleAudit request
+    //UI AssembleAudit request 生产统计
     public function dbi_faam_production_history_audit($uid, $timeStart, $timeEnd, $keyWord)
     {
         //初始化返回值
@@ -1205,8 +1209,8 @@ class classDbiL3apF11faam
         }
 
         //查询员工列表
-        $onJob = MFUN_HCU_FAAM_EMPLOYEE_ONJOB_YES;
-        $query_str = "SELECT * FROM `t_l3f11faam_membersheet` WHERE (`pjcode` = '$pjCode' AND `onjob` = '$onJob')";
+        //$onJob = MFUN_HCU_FAAM_EMPLOYEE_ONJOB_YES;
+        $query_str = "SELECT * FROM `t_l3f11faam_membersheet` WHERE (`pjcode` = '$pjCode')";
         $result = $mysqli->query($query_str);
         $nameList = array();
         while (($result != false) && (($row = $result->fetch_array()) > 0)){
@@ -1282,6 +1286,7 @@ class classDbiL3apF11faam
         return $history;
     }
 
+    //绩效统计
     public function dbi_faam_employee_kpi_audit($uid, $timeStart, $timeEnd, $keyWord)
     {
         //初始化返回值
@@ -1355,8 +1360,8 @@ class classDbiL3apF11faam
         }
 
         //查询员工列表
-        $onJob = MFUN_HCU_FAAM_EMPLOYEE_ONJOB_YES;
-        $query_str = "SELECT * FROM `t_l3f11faam_membersheet` WHERE (`pjcode` = '$pjCode' AND `onjob` = '$onJob')";
+        //$onJob = MFUN_HCU_FAAM_EMPLOYEE_ONJOB_YES;
+        $query_str = "SELECT * FROM `t_l3f11faam_membersheet` WHERE (`pjcode` = '$pjCode')";
         $result = $mysqli->query($query_str);
         $nameList = array();
         while (($result != false) && (($row = $result->fetch_array()) > 0)){    ///取出工厂中每个人的信息

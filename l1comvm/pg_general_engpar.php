@@ -232,7 +232,8 @@ class classConstL1vmUserWebRight
                 'KeyAuthNew' => 'true',
                 'KeyGrant' => 'true',
                 'AttendanceAudit' => 'true',
-                'KPIAudit' => 'true'
+                'KPIAudit' => 'true',
+                'StaffDel' => 'true'
             ),
             'query' => 'true',
             'mod' => 'true'),
@@ -320,7 +321,8 @@ class classConstL1vmUserWebRight
                 'FactoryDel' => 'false',
                 'FactoryNew' => 'false',
                 'AttendanceAudit' => 'false',
-                'KPIAudit' => 'false'
+                'KPIAudit' => 'false',
+                'StaffDel' => 'false'
             ),
             'query' => 'false',
             'mod' => 'false'),
@@ -408,7 +410,8 @@ class classConstL1vmUserWebRight
                 'FactoryDel' => 'false',
                 'FactoryNew' => 'false',
                 'AttendanceAudit' => 'false',
-                'KPIAudit' => 'false'
+                'KPIAudit' => 'false',
+                'StaffDel' => 'false'
             ),
             'query' => 'false',
             'mod' => 'false'),
@@ -496,7 +499,8 @@ class classConstL1vmUserWebRight
                 'FactoryDel' => 'false',
                 'FactoryNew' => 'false',
                 'AttendanceAudit' => 'false',
-                'KPIAudit' => 'false'
+                'KPIAudit' => 'false',
+                'StaffDel' => 'false'
             ),
             'query' => 'false',
             'mod' => 'false'),
@@ -584,7 +588,8 @@ class classConstL1vmUserWebRight
                 'FactoryDel' => 'false',
                 'FactoryNew' => 'false',
                 'AttendanceAudit' => 'false',
-                'KPIAudit' => 'false'
+                'KPIAudit' => 'false',
+                'StaffDel' => 'false'
             ),
             'query' => 'false',
             'mod' => 'false'),
@@ -772,6 +777,7 @@ class classConstL1vmUserWebRight
             self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['actionauth']['DevDel'] = 'true';
             self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['actionauth']['AttendanceAudit'] = 'true';
             self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['actionauth']['KPIAudit'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['actionauth']['StaffDel'] = 'true';
             self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['query'] = 'true';
             self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['mod'] = 'true';
 
