@@ -110,7 +110,7 @@ define ("MFUN_L3APL_F4ICM_ID_EQUIP_TEMP", 0x06);
 define ("MFUN_L3APL_F4ICM_ID_EQUIP_HUMID", 0x06);
 define ("MFUN_L3APL_F4ICM_ID_EQUIP_NOISE", 0x0A);
 
-define ("MFUN_HCU_DATA_SAVE_DURATION_IN_DAYS", 90); //限定最低保存时间，项目定义的时间如果小于这个时间则不被接受
+define ("MFUN_HCU_DATA_SAVE_DURATION_IN_DAYS", 30); //限定最低保存时间，项目定义的时间如果小于这个时间则不被接受
 if (MFUN_CURRENT_WORKING_PROGRAM_NAME_UNIQUE == MFUN_WORKING_PROGRAM_NAME_UNIQUE_TESTMODE){
     define("MFUN_CLOUD_WWW", "www.hkrob.com");  //默认小慧智能主页
     define ("MFUN_HCU_DATA_SAVE_DURATION_BY_PROJ", 90);
