@@ -41,7 +41,7 @@ class classL1MainEntrySocketListenServer
             'task_worker_num' => 1, //=1,服务器开启的task进程数,设置此参数后，服务器会开启异步task功能。可以使用task方法投递异步任务。必须要给swoole_server设置onTask/onFinish两个回调函数
             'task_max_request' => 10000, //每个task进程允许处理的最大任务数。
             'task_ipc_mode' => 2, //设置task进程与worker进程之间通信的方式。
-            'daemonize' => 1, //设置程序进入后台作为守护进程运行。长时间运行的服务器端程序必须启用此项。如果不启用守护进程，当ssh终端退出后，程序将被终止运行。启用守护进程后，标准输入和输出会被重定向到 log_file，如果 log_file未设置，则所有输出会被丢弃。
+            'daemonize' => true, //设置程序进入后台作为守护进程运行。长时间运行的服务器端程序必须启用此项。如果不启用守护进程，当ssh终端退出后，程序将被终止运行。启用守护进程后，标准输入和输出会被重定向到 log_file，如果 log_file未设置，则所有输出会被丢弃。
             'log_file' => '/home/swoole_server.log', //指定swoole错误日志文件
             //'log_file' => '/home/hitpony/swoole_server.log', //指定swoole错误日志文件, vmware环境使用
             'heartbeat_check_interval' => 60,  //设置心跳检测间隔，每隔多久轮循一次，单位为秒。每次检测时遍历所有连接，如果某个连接在间隔时间内没有数据发送，则强制关闭连接（会有onClose回调）。

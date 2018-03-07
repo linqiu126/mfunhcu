@@ -706,7 +706,7 @@ class classDbiL2snrCommon
 
         //如果是扬尘超标或者噪声超标告警，则进行照片抓取
         $picName = ""; //初始化
-        if($alarmContent == HUITP_IEID_UNI_ALARM_CONTENT_TSP_VALUE_EXCEED_THRESHLOD OR $alarmContent == HUITP_IEID_UNI_ALARM_CONTENT_NOISE_VALUE_EXCEED_THRESHLOD){ //只记录扬尘和噪声告警
+        if($alarmContent == HUITP_IEID_UNI_ALARM_CONTENT_TSP_VALUE_EXCEED_THRESHLOD){ //只记录扬尘和噪声告警  OR $alarmContent == HUITP_IEID_UNI_ALARM_CONTENT_NOISE_VALUE_EXCEED_THRESHLOD
             $query_str = "SELECT * FROM `t_l2sdk_iothcu_inventory` WHERE `statcode` = '$statCode' ";
             $result = $mysqli->query($query_str);
 

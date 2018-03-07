@@ -89,7 +89,7 @@ define ("MFUN_HCU_AQYC_ALARM_CODE_MAX", 0x0A); //Alarmcode的最大值，如有�
 
 if (MFUN_CURRENT_WORKING_PROGRAM_NAME_UNIQUE == MFUN_WORKING_PROGRAM_NAME_UNIQUE_AQYC){
     define("MFUN_CLOUD_WWW", "www.hkrob.com");
-    define ("MFUN_HCU_DATA_SAVE_DURATION_BY_PROJ", 180); //定义数据保存不删的时间长度
+    define ("MFUN_HCU_DATA_SAVE_DURATION_BY_PROJ", 90); //定义数据保存不删的时间长度
     define ("MFUN_HCU_USER_NAME_GRADE_0", "管理员");
     define ("MFUN_HCU_USER_NAME_GRADE_1", "高级用户");
     define ("MFUN_HCU_USER_NAME_GRADE_2", "一级用户");
