@@ -33,7 +33,7 @@ class classL1MainEntrySocketListenServer
 
         //swoole_server->set函数用于设置swoole_server运行时的各项参数，端口相关专用参数在端口listen时set
         $this->swoole_socket_serv->set(array(
-            'worker_num' => 4,  //设置启动的worker进程数量。开启的worker进程数越多，server负载能力越大，但是相应的server占有的内存也会更多,配置为CPU核数的1-4倍即可
+            'worker_num' => 8,  //设置启动的worker进程数量。开启的worker进程数越多，server负载能力越大，但是相应的server占有的内存也会更多,配置为CPU核数的1-4倍即可
             'max_request' => 10000,  //=2000,每个worker进程允许处理的最大任务数,每个worker进程在处理完max_request个请求后就会自动重启。设置该值的主要目的是为了防止worker进程处理大量请求后可能引起的内存溢出
             'max_conn' => 10000, //服务器允许维持的最大TCP连接数。超过此数量后，新进入的连接将被拒绝。
             'ipc_mode' => 1, //设置进程间的通信方式,1 => 使用unix socket通信/2 => 使用消息队列通信/3 => 使用消息队列通信，并设置为争抢模式
@@ -47,9 +47,9 @@ class classL1MainEntrySocketListenServer
             'heartbeat_check_interval' => 60,  //设置心跳检测间隔，每隔多久轮循一次，单位为秒。每次检测时遍历所有连接，如果某个连接在间隔时间内没有数据发送，则强制关闭连接（会有onClose回调）。
             'heartbeat_idle_time' => 600, //设置某个连接允许的最大闲置时间,如果某个连接在heartbeat_idle_time时间内没有数据发送，则强制关闭连接。
             'open_cpu_affinity' => true, //启用CPU亲和性设置, 在多核的硬件平台中，启用此特性会将swoole的reactor线程/worker进程绑定到固定的一个核上。可以避免进程/线程的运行时在多个核之间互相切换，提高CPU Cache的命中率。
-            'reactor_num' => 2, //指定Reactor线程数,通过此参数来调节poll线程的数量，以充分利用多核,reactor_num和writer_num默认设置为CPU核数
-            'package_max_length' => 2048,
-            'debug_mode'=> 1,
+            'reactor_num' => 8, //指定Reactor线程数,通过此参数来调节poll线程的数量，以充分利用多核,reactor_num和writer_num默认设置为CPU核数
+            'package_max_length' => 8192,
+            //'debug_mode'=> 1,
             'open_tcp_nodelay' => true
         ));
 
