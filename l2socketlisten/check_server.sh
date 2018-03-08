@@ -18,9 +18,15 @@ ipfumei='10.51.14.195'
 #ipfuhua='119.23.215.93'
 ipfuhua='172.18.136.122'
 
+ipxiaohuitest='10.174.33.93'
+
 if [ "$ipaddr" = "$ipxiaohui" ]
 then
     swoole_server_logfile='/home/swoole_server.log'
+    mfunhcu_l1mainentry_directory='/var/www/html/mfunhcu/l1mainentry'
+elif [ "$ipaddr" = "$ipxiaohuitest" ]
+then
+    swoole_server_logfile='/root/swoole_server.log'
     mfunhcu_l1mainentry_directory='/var/www/html/mfunhcu/l1mainentry'
 elif [ "$ipaddr" = "$ipfumei" ]
 then
