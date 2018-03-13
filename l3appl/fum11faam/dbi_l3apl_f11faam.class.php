@@ -1474,7 +1474,527 @@ class classDbiL3apF11faam
         $mysqli->close();
         return $history;
     }
+    /*****************************自己更改起始处*************************************/
+    //耗材入库的函数
+    public function dbi_faam_consumables_buy($uid,$consumablesInfo,$reason)
+    {
+        //建立连接
+        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli) {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $mysqli->query("SET NAMES utf8");
+        if (isset($consumablesInfo["vendor"])) $supplier = trim($consumablesInfo["vendor"]); else $supplier = "";
+        if (isset($consumablesInfo["item"])) $datatype = trim($consumablesInfo["item"]); else $datatype = "";
+        if (isset($consumablesInfo["number"])) $number = trim($consumablesInfo["number"]); else $number = "";
+        if (isset($consumablesInfo["unit"])) $unit_price = trim($consumablesInfo["unit"]); else $unit_price = "";
+        if (isset($consumablesInfo["total"])) $total_price = trim($consumablesInfo["total"]); else $total_price = "";
+        $datype = "标准规格";
+        switch ($datatype) {
+            case 1:$datatype = "纸箱";break;
+            case 2:$datatype = "保鲜袋";break;
+            case 3:$datatype = "胶带";break;
+            case 4:$datatype = "标签";break;
+            case 5:$datatype = "托盘";break;
+            case 6:$datatype = "垫片";break;
+            case 7:$datatype = "网套";break;
+            case 8:$datatype = "打包带";break;
+            default:break;
+        }
+        date_default_timezone_set("PRC");//设置默认时间为中国
+        $storage_time = date("Y-m-d H:i:s", time());;
+        $query_str = "INSERT INTO `t_l3f11faam_buy_suppliessheet`(supplier,reason,datatype,amount,unitprice,storagetime,totalprice,datype)VALUES('$supplier','$reason','$datatype','$number','$unit_price','$storage_time','$total_price','$datype')";
+        $result = $mysqli->query($query_str);
+        $mysqli->close();
+        return $result;
+    }
+    //整个耗材表的信息
+    public function dbi_faam_consumables_history($timeStart,$timeEnd,$type)
+    {
+        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli) {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $mysqli->query("SET NAMES utf8");
+        $history["ColumnName"] = array();
+        $history["TableData"] = array();
+        $sid = 0;
+        array_push($history["ColumnName"], "序号");
+        array_push($history["ColumnName"], "供应单位");
+        array_push($history["ColumnName"], "名称");
+        array_push($history["ColumnName"], "单价");
+        array_push($history["ColumnName"], "数量");
+        array_push($history["ColumnName"], "总价");
+        array_push($history["ColumnName"], "入库时间");
+        array_push($history["ColumnName"], "规格");
+        array_push($history["ColumnName"], "状态");
+        if (!empty($type)) {
+            //$query_str="SELECT * FROM `t_l3f11faam_buy_suppliessheet`WHERE(`storagetime`>='$timeStart' AND `storagetime`<='$timeEnd' AND `datatype`='%$type%')";
+            $query_str = "SELECT * FROM `t_l3f11faam_buy_suppliessheet` WHERE (`storagetime`>='$timeStart' AND `storagetime`<='$timeEnd' AND `datatype`like '%$type%')";
+        } else {
+            $query_str = "SELECT * FROM `t_l3f11faam_buy_suppliessheet`WHERE(`storagetime`>='$timeStart' AND `storagetime`<='$timeEnd')";
+        }
+        $result = $mysqli->query($query_str);
 
+        while (($result != false) && (($row = $result->fetch_array()) > 0)) {
+            $sid = $sid + 1;
+            $supplyunit = $row['supplier'];
+            $reason = $row['reason'];
+            $datatype = $row['datatype'];
+            $amount = $row['amount'];
+            $unitprice = $row['unitprice'];
+            $storagetime = $row['storagetime'];
+            $totalprice = $row['totalprice'];
+            $datype = $row['datype'];
+
+            $temp = array();
+            array_push($temp, $sid);
+            array_push($temp, $supplyunit);
+            array_push($temp, $datatype);
+            array_push($temp, $unitprice);
+            array_push($temp, $amount);
+            array_push($temp, $totalprice);
+            array_push($temp, $storagetime);
+            array_push($temp, $datype);
+            array_push($temp, $reason);
+
+            array_push($history['TableData'], $temp);
+        }
+        $mysqli->close();
+        return $history;
+    }
+    //UI耗材历史表
+    public function dbi_faam_consumables_history_table($uid,$key,$timeStart,$timeEnd,$keyWord){
+        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli) {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $mysqli->query("SET NAMES utf8");
+        $history["ColumnName"] = array();
+        $history["TableData"] = array();
+        array_push($history["ColumnName"], "序号");
+        array_push($history["ColumnName"], "名称");
+        array_push($history["ColumnName"], "单价");
+        array_push($history["ColumnName"], "数量");
+        array_push($history["ColumnName"], "总价");
+        array_push($history["ColumnName"], "供应单位");
+        array_push($history["ColumnName"], "入库时间");
+        array_push($history["ColumnName"], "规格");
+        array_push($history["ColumnName"], "状态");
+        if(empty($keyWord)){
+            if(empty($key)){
+                $query_str="SELECT * FROM `t_l3f11faam_buy_suppliessheet`WHERE(`storagetime`>='$timeStart' AND `storagetime`<='$timeEnd')";
+            }else{
+                $query_str="SELECT * FROM `t_l3f11faam_buy_suppliessheet`WHERE(`storagetime`>='$timeStart'AND `storagetime`<='$timeEnd' AND `datatype`='$key')";
+            }
+        }
+        else{
+            if(empty($key)){
+                $query_str="SELECT * FROM `t_l3f11faam_buy_suppliessheet`WHERE(`storagetime`>='$timeStart' AND `storagetime`<='$timeEnd' AND `supplier`like '%$keyWord%')";
+            }
+            else{
+                $query_str="SELECT * FROM `t_l3f11faam_buy_suppliessheet`WHERE(`storagetime`>='$timeStart'AND `storagetime`<='$timeEnd' AND `datatype`='$key' AND `supplier`like '%$keyWord%')";
+            }
+        }
+        $result=$mysqli->query($query_str);
+        $product_table=$this->dbi_faam_consumables_table($uid);
+        $consumables_used=array();
+        $consumables=array(0,0,0,0,0,0,0,0);
+        $used=$product_table['TableData'];
+        for($i=0;$i<count($used);$i++){
+            array_push($consumables_used,$used[$i][3]);
+        }
+        while (($result != false) && (($row = $result->fetch_array()) > 0)) {
+            switch($row['datatype']){
+                case "纸箱":
+                    $consumables[0]=$consumables[0]+$row["amount"];
+                    if(($consumables[0]-$consumables_used[0])<=0){
+                        $single="";
+                        $reason="已经用完，不可修改";
+                    }
+                    elseif($consumables[0]-$consumables_used[0]>=$row["amount"]){
+                        //$single="1";
+                        $single=(string)($row["sid"]);
+                        $reason="尚未使用，可以修改";
+                    }
+                    else{
+                        $single="";
+                        $reason="正在使用，不可修改";
+                    }
+                    break;
+                case "网套":
+                    $consumables[1]=$consumables[1]+$row["amount"];
+                    if(($consumables[1]-$consumables_used[1])<=0){
+                        $single="";
+                        $reason="已经用完，不可修改";
+                    }
+                    elseif($consumables[1]-$consumables_used[1]>=$row["amount"]){
+                        //$single="1";
+                        $single=(string)($row["sid"]);
+                        $reason="尚未使用，可以修改";
+                    }
+                    else{
+                        $single="";
+                        $reason="正在使用，不可修改";
+                    }
+                    break;
+                case "托盘":
+                    $consumables[2]=$consumables[2]+$row["amount"];
+                    if(($consumables[2]-$consumables_used[2])<=0){
+                        $single="";
+                        $reason="已经用完，不可修改";
+                    }
+                    elseif($consumables[2]-$consumables_used[2]>=$row["amount"]){
+                        //$single="1";
+                        $single=(string)($row["sid"]);
+                        $reason="尚未使用，可以修改";
+                    }
+                    else{
+                        $single="";
+                        $reason="正在使用，不可修改";
+                    }
+                    break;
+                case "胶带":
+                    $consumables[3]=$consumables[3]+$row["amount"];
+                    if(($consumables[3]-$consumables_used[3])<=0){
+                        $single="";
+                        $reason="已经用完，不可修改";
+                    }
+                    elseif($consumables[3]-$consumables_used[3]>=$row["amount"]){
+                        //$single="1";
+                        $single=(string)($row["sid"]);
+                        $reason="尚未使用，可以修改";
+                    }
+                    else{
+                        $single="";
+                        $reason="正在使用，不可修改";
+                    }
+                    break;
+                case "标签":
+                    $consumables[4]=$consumables[4]+$row["amount"];
+                    if(($consumables[4]-$consumables_used[4])<=0){
+                        $single="";
+                        $reason="已经用完，不可修改";
+                    }
+                    elseif($consumables[4]-$consumables_used[4]>=$row["amount"]){
+                        //$single="1";
+                        $single=(string)($row["sid"]);
+                        $reason="尚未使用，可以修改";
+                    }
+                    else{
+                        $single="";
+                        $reason="正在使用，不可修改";
+                    }
+                    break;
+                case "保鲜袋":
+                    $consumables[5]=$consumables[5]+$row["amount"];
+                    if(($consumables[5]-$consumables_used[5])<=0){
+                        $single="";
+                        $reason="已经用完，不可修改";
+                    }
+                    elseif($consumables[5]-$consumables_used[5]>=$row["amount"]){
+                        //$single="1";
+                        $single=(string)($row["sid"]);
+                        $reason="尚未使用，可以修改";
+                    }
+                    else{
+                        $single="";
+                        $reason="正在使用，不可修改";
+                    }
+                    break;
+                case "打包带":
+                    $consumables[6]=$consumables[6]+$row["amount"];
+                    if(($consumables[6]-$consumables_used[6])<=0){
+                        $single="";
+                        $reason="已经用完，不可修改";
+                    }
+                    elseif($consumables[6]-$consumables_used[6]>=$row["amount"]){
+                        //$single="1";
+                        $single=(string)($row["sid"]);
+                        $reason="尚未使用，可以修改";
+                    }
+                    else{
+                        $single="";
+                        $reason="正在使用，不可修改";
+                    }
+                    break;
+                case "垫片":
+                    $consumables[7]=$consumables[7]+$row["amount"];
+                    if(($consumables[7]-$consumables_used[7])<=0){
+                        $single="";
+                        $reason="已经用完，不可修改";
+                    }
+                    elseif($consumables[7]-$consumables_used[7]>=$row["amount"]){
+                        //$single="1";
+                        $single=(string)($row["sid"]);
+                        $reason="尚未使用，可以修改";
+                    }
+                    else{
+                        $single="";
+                        $reason="正在使用，不可修改";
+                    }
+                    break;
+                default:
+                    break;
+            }
+            $sid=$row['sid'];
+            $supplyunit = $row['supplier'];
+            $datype = $row['datype'];
+            $datatype = $row['datatype'];
+            $amount = $row['amount'];
+            $unitprice = $row['unitprice'];
+            $storagetime = $row['storagetime'];
+            $totalprice = $row['totalprice'];
+            $temp = array();
+            array_push($temp, $single);
+            array_push($temp, $sid);
+            array_push($temp, $datatype);
+            array_push($temp, $unitprice);
+            array_push($temp, $amount);
+            array_push($temp, $totalprice);
+            array_push($temp, $supplyunit);
+            array_push($temp, $storagetime);
+            array_push($temp, $datype);
+            array_push($temp, $reason);
+            array_push($history['TableData'], $temp);
+        }
+        $mysqli->close();
+        return $history;
+    }
+    //耗材的现存信息
+    public function dbi_faam_consumables_table($uid){
+        $table["ColumnName"]=array();
+        $table["TableData"]=array();
+        $datatype=array("纸箱","网套","托盘","胶带","标签","保鲜袋","打包带","垫片");
+
+        $timeStart="0000-00-00 00:00:00";
+        date_default_timezone_set("PRC");
+        $timeEnd=date("Y-m-d H:i:s",time());
+        $sid=1;
+        array_push($table["ColumnName"],"序号");
+        array_push($table["ColumnName"],"名称");
+        array_push($table["ColumnName"],"历史总量");
+        array_push($table["ColumnName"],"已使用总量");
+        array_push($table["ColumnName"],"剩余量");
+        array_push($table["ColumnName"],"规格");
+        array_push($table["ColumnName"],"状态");
+        //dbi_faam_production_history_audit
+        $temp=$this->dbi_faam_consumables_history($timeStart,$timeEnd,"");
+        $data=array(0,0,0,0,0,0,0,0);
+        $middle=$temp["TableData"];
+        for($i=0;$i<count($temp["TableData"]);$i++){
+            switch($middle[$i][2]){
+                case "纸箱":$data[0]=$data[0]+$middle[$i][4];break;
+                case "网套":$data[1]=$data[1]+$middle[$i][4];break;
+                case "托盘":$data[2]=$data[2]+$middle[$i][4];break;
+                case "胶带":$data[3]=$data[3]+$middle[$i][4];break;
+                case "标签":$data[4]=$data[4]+$middle[$i][4];break;
+                case "保鲜袋":$data[5]=$data[5]+$middle[$i][4];break;
+                case "打包带":$data[6]=$data[6]+$middle[$i][4];break;
+                case "垫片":$data[7]=$data[7]+$middle[$i][4];break;
+                default:break;
+            }
+        }
+        //调用函数，获得历史上的成品数量
+        $history=$this->dbi_faam_production_history_audit($uid,$timeStart,$timeEnd,"");
+        $product=$history["TableData"][count($history["TableData"])-1];
+        $packageSum=$product[7];
+        $appleSum=$product[8];
+        /*耗材的损耗与成品的关系，暂时定为一像苹果消耗1.02套箱子（箱子中可能有残次品以及装箱过程中损坏的箱子），
+        消耗1.1个网套（网套比较易碎），300个网套为一包，一个箱子中装有2.01个托盘（分上下两层，损耗计入在内）,托
+        盘为30个为一包，10个箱子消耗一卷胶带，一箱胶带25卷，每个苹果消耗1.02个标签,一本有100个标签，每个苹果消
+        耗1.02个保鲜袋，100个保鲜袋为一包，25个箱子消耗一扎打包带，每个箱子消耗2.02个垫片*/
+        $box=ceil(1.02*$packageSum);//箱子已使用（套）
+        $metal_net=ceil((1.1*$appleSum)/300);//网套已使用（包）
+        $tray=ceil((2.01*$packageSum)/30);//托盘
+        $tape=ceil($packageSum/250);//胶带
+        $label=ceil(($appleSum*1.02)/100);//标签
+        $fresh_package=ceil(($appleSum*1.02)/100);//保鲜袋
+        $packing_belt=ceil($packageSum/25);//打包带
+        $shim=ceil($packageSum*2.02);//垫片
+        $consumables_used=array();
+        array_push($consumables_used,$box);
+        array_push($consumables_used,$metal_net);
+        array_push($consumables_used,$tray);
+        array_push($consumables_used,$tape);
+        array_push($consumables_used,$label);
+        array_push($consumables_used,$fresh_package);
+        array_push($consumables_used,$packing_belt);
+        array_push($consumables_used,$shim);
+        //最终计算
+        for($i=0;$i<8;$i++){
+            $mid=array();
+            //$mm=$data[$i]-0;
+            array_push($mid,$sid);
+            array_push($mid,$datatype[$i]);
+            array_push($mid,$data[$i]);
+            array_push($mid,$consumables_used[$i]);
+            array_push($mid,$data[$i]-$consumables_used[$i]);
+
+            array_push($mid,"标准规格");
+            if($data[$i]-$consumables_used[$i]<=7){
+                array_push($mid,"需要补充");
+            }
+            else{
+                array_push($mid,"数量充足");
+            }
+            $sid++;
+            array_push($table["TableData"],$mid);
+        }
+        return $table;
+    }
+    //耗材的记录信息
+    public function dbi_faam_get_consumbales_purchase($sid)
+    {
+        //建立连接
+        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli) {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $mysqli->query("SET NAMES utf8");
+        $consumables_key = array('consumablespurchaseID','item','number','unit','total','vendor','type');
+        $consumables_values=array();
+        $query_str = "SELECT * FROM `t_l3f11faam_buy_suppliessheet`WHERE(`sid`='$sid')";
+        $result=$mysqli->query($query_str);
+        while (($result != false) && (($row = $result->fetch_array()) > 0)) {
+            array_push($consumables_values,$row["sid"]);
+            switch($row["datatype"]){
+                case "纸箱":array_push($consumables_values,"1");break;
+                case "保鲜袋":array_push($consumables_values,"2");break;
+                case "胶带":array_push($consumables_values,"3");break;
+                case "标签":array_push($consumables_values,"4");break;
+                case "托盘":array_push($consumables_values,"5");break;
+                case "垫片":array_push($consumables_values,"6");break;
+                case "网套":array_push($consumables_values,"7");break;
+                case "打包带":array_push($consumables_values,"8");break;
+                default:break;
+            }
+            array_push($consumables_values,$row["amount"]);
+            array_push($consumables_values,$row["unitprice"]);
+            array_push($consumables_values,$row["totalprice"]);
+            array_push($consumables_values,$row["supplier"]);
+            array_push($consumables_values,$row["datype"]);
+            $consumables=array_combine($consumables_key,$consumables_values);
+        }
+        return $consumables;
+    }
+    //耗材修改
+    public function dbi_faam_consumables_purchase_mod($body){
+        //建立连接
+        date_default_timezone_set("PRC");
+        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli) {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $mysqli->query("SET NAMES utf8");
+        $sid=$body["consumablespurchaseID"];
+        $item=$body["item"];
+        $number=$body["number"];
+        $unit=$body["unit"];
+        $total=$body["total"];
+        $vendor=$body["vendor"];
+        $time=date("Y-m-d H:i:s",time());
+        switch($item){
+            case "1":$type="纸箱";break;
+            case "2":$type="保鲜袋";break;
+            case "3":$type="胶带";break;
+            case "4":$type="标签";break;
+            case "5":$type="托盘";break;
+            case "6":$type="垫片";break;
+            case "7":$type="网套";break;
+            case "8":$type="打包带";break;
+            default;break;
+        }
+        $query_str = "UPDATE `t_l3f11faam_buy_suppliessheet` SET `supplier`='$vendor',`datatype`='$type',`amount`='$number',`unitprice`='$unit',`storagetime`='$time',`totalprice`='$total'WHERE `sid`='$sid'";
+        $result=$mysqli->query($query_str);
+        return $result;
+    }
+    //耗材信息删除
+    public function dbi_faam_consumables_purchase_del($body){
+        //建立连接
+        date_default_timezone_set("PRC");
+        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli) {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $mysqli->query("SET NAMES utf8");
+        $sid=$body["consumablespurchaseID"];
+        $query_str = "DELETE FROM `t_l3f11faam_buy_suppliessheet`WHERE `sid`='$sid'";
+        $result=$mysqli->query($query_str);
+        return $result;
+    }
+    /*public function dbi_faam_attendance_record_modify($uid, $record)
+    {
+        //建立连接
+        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli) {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $mysqli->query("SET NAMES utf8");
+
+        if (isset($record["attendanceID"])) $sid = intval($record["attendanceID"]); else  $sid = 0;
+        if (isset($record["name"])) $employee = trim($record["name"]); else  $employee = "";
+        //if (isset($record["PJcode"])) $pjCode = trim($record["PJcode"]); else  $pjCode = "";
+        if (isset($record["leavehour"])) $offWorkTime = $record["leavehour"]; else  $offWorkTime = 0;
+        if (isset($record["date"])) $workDay = trim($record["date"]); else  $workDay = "";
+        if (isset($record["arrivetime"])) $arriveTime = trim($record["arrivetime"]); else  $arriveTime = "";
+        if (isset($record["leavetime"])) $leaveTime = trim($record["leavetime"]); else  $leaveTime = "";
+
+        $pjCode = $this->dbi_get_user_auth_factory($mysqli, $uid);
+        $employee_config = $this->dbi_get_employee_config($mysqli, $pjCode, $employee);
+        if (isset($employee_config['unitprice'])) $unitPrice = $employee_config['unitprice']; else  $unitPrice = 0;
+
+        $factory_config = $this->dbi_get_factory_config($mysqli, $pjCode);
+        $restStart = strtotime($factory_config['reststart']);
+        $restEnd = strtotime($factory_config['restend']);
+        $stdWorkStart = strtotime($factory_config['workstart']);
+        $stdWorkEnd = strtotime($factory_config['workend']);
+
+        $arriveTimeInt = strtotime($arriveTime);
+        $leaveTimeInt = strtotime($leaveTime);
+
+        if($arriveTimeInt <= $restStart AND $leaveTimeInt >= $restEnd){ //正常情况，在午休前上班，午休后下班
+            $timeInterval = ($restStart - $arriveTimeInt) + ($leaveTimeInt - $restEnd);
+        }
+        elseif($arriveTimeInt >= $restStart AND $arriveTimeInt <= $restEnd){ //在午休中间上班
+            $timeInterval = ($leaveTimeInt - $restEnd);
+        }
+        elseif($leaveTimeInt >= $restStart AND $leaveTimeInt <= $restEnd){ //在午休中间下班
+            $timeInterval = ($restStart - $arriveTimeInt);
+        }
+        elseif($arriveTimeInt >= $restEnd){ //在午休后上班
+            $timeInterval = ($leaveTimeInt - $arriveTimeInt);
+        }
+        elseif($leaveTimeInt <= $restStart){ //在午休前下班
+            $timeInterval = ($leaveTimeInt - $arriveTimeInt);
+        }
+        else{
+            $timeInterval = 0;
+        }
+
+        $hour = (int)(($timeInterval%(3600*24))/(3600));
+        $min = (int)($timeInterval%(3600)/60);
+        $workTime = $hour + round($min/60, 1) - $offWorkTime; //扣除请假时间
+        if ($workTime < 0) $workTime = 0; //避免工作时间为负数
+
+        if($arriveTimeInt < $stdWorkStart) $lateWorkFlag = 0; else $lateWorkFlag = 1;  //迟到标志
+        if($leaveTimeInt > $stdWorkEnd) $earlyLeaveFlag = 0; else $earlyLeaveFlag = 1; //早退标志
+
+        $onJob = MFUN_HCU_FAAM_EMPLOYEE_ONJOB_YES; //在职员工
+        $query_str = "SELECT * FROM `t_l3f11faam_membersheet` WHERE (`employee` = '$employee' AND `onjob` = '$onJob' AND `pjcode` = '$pjCode')";
+        $result = $mysqli->query($query_str);
+        if(($result != false) && ($result->num_rows)>0){ //输入员工姓名合法
+            $query_str = "UPDATE `t_l3f11faam_dailysheet` SET `workday` = '$workDay',`arrivetime` = '$arriveTime',`leavetime` = '$leaveTime',`offwork` = '$offWorkTime',`worktime` = '$workTime',
+                          `unitprice` = '$unitPrice',`lateworkflag` = '$lateWorkFlag',`earlyleaveflag` = '$earlyLeaveFlag' WHERE (`sid` = '$sid')";
+            $result = $mysqli->query($query_str);
+        }
+        else
+            $result = false;
+
+        $mysqli->close();
+        return $result;
+    }*/
+    /*****************************自己更改终止处*************************************/
 }
 
 ?>

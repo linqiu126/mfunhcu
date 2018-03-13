@@ -407,7 +407,7 @@ if (isset($_SERVER['SERVER_NAME']))
             //主数据库定义
             define("MFUN_HOME_DBHOST", "121.40.118.33");    //小慧云HOME服务器地址
             define("MFUN_CLOUD_DBHOST", "localhost");    //连接的服务器地址
-            define("MFUN_CLOUD_DBUSER", "TestUser");     //连接数据库的用户名
+            define("MFUN_CLOUD_DBUSER", "root");     //连接数据库的用户名
             define("MFUN_CLOUD_DBPSW", "123456");        //连接数据库的密码
             define("MFUN_CLOUD_DBNAME_L1L2L3", "bxxhl1l2l3");         //连接的数据库名称
             define("MFUN_CLOUD_DBNAME_DEBUG", "bxxhl1vmlog");         //连接的log数据库名称
@@ -442,7 +442,7 @@ if (isset($_SERVER['SERVER_NAME']))
             //主数据库定义
             define("MFUN_HOME_DBHOST", "121.40.118.33");    //小慧云HOME服务器地址
             define("MFUN_CLOUD_DBHOST", "localhost");    //连接的服务器地址
-            define("MFUN_CLOUD_DBUSER", "TestUser");     //连接数据库的用户名
+            define("MFUN_CLOUD_DBUSER", "root");     //连接数据库的用户名
             define("MFUN_CLOUD_DBPSW", "123456");        //连接数据库的密码
             define("MFUN_CLOUD_DBNAME_L1L2L3", "bxxhl1l2l3");         //连接的数据库名称
             define("MFUN_CLOUD_DBNAME_DEBUG", "bxxhl1vmlog");         //连接的log数据库名称
@@ -481,7 +481,7 @@ if (isset($_SERVER['SERVER_NAME']))
     //主数据库定义
     define("MFUN_HOME_DBHOST", "121.40.118.33");    //小慧云HOME服务器地址
     define("MFUN_CLOUD_DBHOST", "localhost");    //连接的服务器地址
-    define("MFUN_CLOUD_DBUSER", "TestUser");     //连接数据库的用户名
+    define("MFUN_CLOUD_DBUSER", "root");     //连接数据库的用户名
     define("MFUN_CLOUD_DBPSW", "123456");        //连接数据库的密码
     define("MFUN_CLOUD_DBNAME_L1L2L3", "bxxhl1l2l3");         //连接的数据库名称
     define("MFUN_CLOUD_DBNAME_DEBUG", "bxxhl1vmlog");         //连接的log数据库名称

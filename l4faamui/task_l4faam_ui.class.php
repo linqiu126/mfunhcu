@@ -172,12 +172,38 @@ class classTaskL4faamUi
                 $input = array("project" => $project, "action" => $action, "type" => $type,"user" => $user,"body" => $body);
                 $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FAAM_UI, MFUN_TASK_ID_L3APPL_FUM11FAAM, MSG_ID_L4FAAMUI_TO_L3F11_KPIAUDIT, "MSG_ID_L4FAAMUI_TO_L3F11_KPIAUDIT",$input);
                 break;
-
+            /*************************************自己更改起始处***********************************************/
+            case "ConsumablesPurchaseNew";//耗材入库
+                $input=array("project"=>$project,"action"=>$action,"type"=>$type,"user"=>$user,"body"=>$body);
+                $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FAAM_UI, MFUN_TASK_ID_L3APPL_FUM11FAAM, MSG_ID_L4FAAMUI_TO_L3F11_BUYCONSUMABLES, "MSG_ID_L4FAAMUI_TO_L3F11_BUYCONSUMABLES",$input);
+                break;
+            case "ConsumablesTable":
+                $input=array("project"=>$project,"action"=>$action,"type"=>$type,"user"=>$user,"body"=>$body);
+                $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FAAM_UI, MFUN_TASK_ID_L3APPL_FUM11FAAM, MSG_ID_L4FAAMUI_TO_L3F11_CONSUMABLESTABLES, "MSG_ID_L4FAAMUI_TO_L3F11_CONSUMABLESTABLES",$input);
+                break;
+            case "ConsumablesHistory":
+                $input=array("project"=>$project,"action"=>$action,"type"=>$type,"user"=>$user,"body"=>$body);
+                $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FAAM_UI, MFUN_TASK_ID_L3APPL_FUM11FAAM, MSG_ID_L4FAAMUI_TO_L3F11_CONSUMABLESHISTORY, "MSG_ID_L4FAAMUI_TO_L3F11_CONSUMABLESHISTORY",$input);
+                break;
+            case "GetConsumablesPurchase":
+                $input=array("project"=>$project,"action"=>$action,"type"=>$type,"user"=>$user,"body"=>$body);
+                $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FAAM_UI, MFUN_TASK_ID_L3APPL_FUM11FAAM, MSG_ID_L4FAAMUI_TO_L3F11_GETCONSUMABLESPURCHASE, "MSG_ID_L4FAAMUI_TO_L3F11_GETCONSUMABLESPURCHASE",$input);
+                break;
+            case "ConsumablesPurchaseMod":
+                $input=array("project"=>$project,"action"=>$action,"type"=>$type,"user"=>$user,"body"=>$body);
+                $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FAAM_UI, MFUN_TASK_ID_L3APPL_FUM11FAAM, MSG_ID_L4FAAMUI_TO_L3F11_CONSUMABLESPURCHASEMOD, "MSG_ID_L4FAAMUI_TO_L3F11_CONSUMABLESPURCHASEMOD",$input);
+                break;
+            case "ConsumablesPurchaseDel":
+                $input=array("project"=>$project,"action"=>$action,"type"=>$type,"user"=>$user,"body"=>$body);
+                $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FAAM_UI, MFUN_TASK_ID_L3APPL_FUM11FAAM, MSG_ID_L4FAAMUI_TO_L3F11_CONSUMABLESPUTCHASEDEL, "MSG_ID_L4FAAMUI_TO_L3F11_CONSUMABLESPUTCHASEDEL",$input);
+                break;
+            /*************************************自己更改终止处***********************************************/
             case "GetGeoList":  //获取山东的地理区域信息
                 $retarray = $this->get_file_detail("./json/geography.json");
                 $obj = json_decode($retarray,true);
                 $resp = array('status'=>'true','ret'=>$obj['shandong'],'auth'=>'true','msg'=>'');
                 break;
+
 
             default:
                 $msg = array("project" => $project, "action" => $action);

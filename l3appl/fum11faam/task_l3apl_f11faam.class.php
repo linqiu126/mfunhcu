@@ -549,6 +549,138 @@ class classTaskL3aplF11faam
 
         return $retval;
     }
+    /**************************************自己更改起始处*********************************************************/
+    function func_faam_consumables_buys($action, $user, $body)
+    {
+        $reason="正常入库";
+        $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
+        $usercheck = $uiF1symDbObj->dbi_user_authcheck($action, $user);
+        if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
+            $uid = $usercheck['uid'];
+            $uiF11faamDbObj = new classDbiL3apF11faam();
+            $result = $uiF11faamDbObj->dbi_faam_consumables_buy($uid,$body,$reason);
+            if($result == true)
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"入库成功");
+            else
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"入库失败");
+        }
+        else
+            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>$usercheck['msg']);
+
+        return $retval;
+    }
+    function func_faam_consumables_table($action, $user, $body){
+        $uiFlsymDbObj=new classDbiL3apF1sym();
+        $usercheck=$uiFlsymDbObj->dbi_user_authcheck($action,$user);
+        if($usercheck["status"]=="true" AND $usercheck["auth"]=="true") {
+            $uid = $usercheck["uid"];
+            $uiF11faamDbObj = new classDbiL3apF11faam();
+            $resp = $uiF11faamDbObj->dbi_faam_consumables_table($uid);
+            $ret = array('ColumnName' => $resp["ColumnName"], 'TableData' => $resp["TableData"]);
+            $retval = array('status' => $usercheck['status'], 'auth' => $usercheck['auth'], 'ret' => $ret, 'msg' => "获取耗材表成功");
+        }
+        else
+            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>$usercheck['msg']);
+        return $retval;
+    }
+    function func_faam_consumables_history($action,$user,$body){
+        date_default_timezone_set("PRC");
+        $uiFlsymDbObj=new classDbiL3apF1sym();
+        $usercheck=$uiFlsymDbObj->dbi_user_authcheck($action,$user);
+        $timeEnd=date("Y-m-d",time());
+        if($usercheck["status"]=="true" AND $usercheck["auth"]=="true") {
+            $uid = $usercheck["uid"];
+            $uiF11faamDbObj = new classDbiL3apF11faam();
+            switch($body["Item"]){
+                case "0";$key="";break;
+                case "1":$key="纸箱";break;
+                case "2";$key="保鲜袋";break;
+                case "3":$key="胶带";break;
+                case "4";$key="标签";break;
+                case "5":$key="托盘";break;
+                case "6";$key="垫片";break;
+                case "7":$key="网套";break;
+                case "8";$key="打包带";break;
+                default:break;
+            }
+            switch($body["Period"]){
+                case "1":$timeStart=$timeEnd;
+                case "7":$timeStart=date('Y-m-d', strtotime("-6 day"));break;
+                case "30":$timeStart=date('Y-m-d',strtotime("-29 day"));break;
+                case "all":$timeStart="0000-00-00";break;
+            }
+            $timeStart=$timeStart." 00:00:00";
+            $timeEnd=$timeEnd." 23:59:59";
+            $keyWord=$body["KeyWord"];
+            $resp = $uiF11faamDbObj->dbi_faam_consumables_history_table($uid,$key,$timeStart,$timeEnd,$keyWord);
+            $ret = array('ColumnName' => $resp["ColumnName"], 'TableData' => $resp["TableData"]);
+            $retval = array('status' => $usercheck['status'], 'auth' => $usercheck['auth'], 'ret' => $ret, 'msg' => "获取耗材表成功");
+        }
+        else
+            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>$usercheck['msg']);
+        return $retval;
+    }
+    //获取一条信息
+    function func_faam_get_consumbales_purchase($action,$user,$body){
+        $uiFlsymDbObj=new classDbiL3apF1sym();
+        $usercheck=$uiFlsymDbObj->dbi_user_authcheck($action,$user);
+        $sid=$body["consumablespurchaseID"];
+        if($usercheck["status"]=="true" AND $usercheck["auth"]=="true") {
+            $uid = $usercheck["uid"];
+            $uiF11faamDbObj = new classDbiL3apF11faam();
+            $resp=$uiF11faamDbObj->dbi_faam_get_consumbales_purchase($sid);
+            if(!empty($resp)) {
+                $retval = array('status' => $usercheck['status'], 'auth' => $usercheck['auth'], 'ret' => $resp, 'msg' => "获取耗材信息成功");
+            }
+            else{
+                $retval = array('status' => $usercheck['status'], 'auth' => $usercheck['auth'], 'ret' => $resp, 'msg' => "获取耗材信息失败");
+            }
+        }
+        else
+            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>$usercheck['msg']);
+        return $retval;
+    }
+    //修改一条信息
+    function func_faam_consumables_purchase_mod($action,$user,$body){
+        $uiFlsymDbObj=new classDbiL3apF1sym();
+        $usercheck=$uiFlsymDbObj->dbi_user_authcheck($action,$user);
+
+        if($usercheck["status"]=="true" AND $usercheck["auth"]=="true") {
+            $uid = $usercheck["uid"];
+            $uiF11faamDbObj = new classDbiL3apF11faam();
+            $resp=$uiF11faamDbObj->dbi_faam_consumables_purchase_mod($body);
+            if($resp){
+                $retval=array('status'=>$usercheck['status'],'msg'=>'success','auth'=>$usercheck['auth']);
+            }
+            else{
+                $retval=array('status'=>$usercheck['status'],'msg'=>'failed','auth'=>$usercheck['auth']);
+            }
+        }
+        else
+            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>$usercheck['msg']);
+        return $retval;
+    }
+    //删除一条信息
+    function func_faam_consumables_purchase_del($action,$user,$body){
+        $uiFlsymDbObj=new classDbiL3apF1sym();
+        $usercheck=$uiFlsymDbObj->dbi_user_authcheck($action,$user);
+
+        if($usercheck["status"]=="true" AND $usercheck["auth"]=="true") {
+            $uid = $usercheck["uid"];
+            $uiF11faamDbObj = new classDbiL3apF11faam();
+            $resp=$uiF11faamDbObj->dbi_faam_consumables_purchase_del($body);
+            if($resp){
+                $retval=array('status'=>$usercheck['status'],'msg'=>'success','auth'=>$usercheck['auth']);
+            }
+            else{
+                $retval=array('status'=>$usercheck['status'],'msg'=>'failed','auth'=>$usercheck['auth']);
+            }
+        }
+        else
+            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>$usercheck['msg']);
+        return $retval;
+    }
+    /**************************************自己更改终止处*********************************************************/
 
 
     /**************************************************************************************
@@ -654,6 +786,26 @@ class classTaskL3aplF11faam
             case MSG_ID_L4FAAMUI_TO_L3F11_KPIAUDIT:
                 $resp = $this->func_faam_employee_kpi_audit($action, $user, $body);
                 break;
+            /*****************************自己更改起始处*******************************************/
+            case MSG_ID_L4FAAMUI_TO_L3F11_BUYCONSUMABLES:
+                $resp=$this->func_faam_consumables_buys($action, $user, $body);
+                break;
+            case MSG_ID_L4FAAMUI_TO_L3F11_CONSUMABLESTABLES:
+                $resp=$this->func_faam_consumables_table($action,$user,$body);
+                break;
+            case MSG_ID_L4FAAMUI_TO_L3F11_CONSUMABLESHISTORY:
+                $resp=$this->func_faam_consumables_history($action,$user,$body);
+                break;
+            case MSG_ID_L4FAAMUI_TO_L3F11_GETCONSUMABLESPURCHASE:
+                $resp=$this->func_faam_get_consumbales_purchase($action,$user,$body);
+                break;
+            case MSG_ID_L4FAAMUI_TO_L3F11_CONSUMABLESPURCHASEMOD:
+                $resp=$this->func_faam_consumables_purchase_mod($action,$user,$body);
+                break;
+            case MSG_ID_L4FAAMUI_TO_L3F11_CONSUMABLESPUTCHASEDEL:
+                $resp=$this->func_faam_consumables_purchase_del($action,$user,$body);
+                break;
+            /*****************************自己更改终止处*******************************************/
             default:
                 break;
         }
