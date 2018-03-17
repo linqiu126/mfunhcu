@@ -129,6 +129,15 @@ class classL1MainEntrySocketListenServer
         $huitpxml_tcp_picport->on('Receive', array($this, 'huitpxml_tcp_picport_onReceive'));
         $huitpxml_tcp_picport->on('Close', array($this, 'huitpxml_tcp_picport_onClose'));
 
+        //ZXGT NB-IOT接入第三方设备
+        $tcp_uiport = $this->swoole_socket_serv->listen("0.0.0.0", MFUN_SWOOLE_SOCKET_GTJY_TCP, SWOOLE_SOCK_TCP);
+        //$tcp_uiport->set(array(
+        //    'open_tcp_nodelay' => true ) //开启后TCP连接发送数据时会无关闭Nagle合并算法，立即发往客户端连接。在某些场景下，如http服务器，可以提升响应速度。
+        //);
+        $tcp_uiport->on('Connect', array($this, 'tcp_gtjyport_onConnect'));
+        $tcp_uiport->on('Receive', array($this, 'tcp_gtjyport_onReceive'));
+        $tcp_uiport->on('Close', array($this, 'tcp_gtjyport_onClose'));
+
         $this->swoole_socket_serv->start();
 
         return;
@@ -458,6 +467,60 @@ class classL1MainEntrySocketListenServer
 
         return;
     }
+
+
+    /********************************************STDXML TCP hcuport****************************************************/
+
+    //具体port处理函数
+    public function tcp_gtjyport_onConnect($swoole_socket_serv, $fd, $from_id ) {
+        echo date('Y/m/d H:i:s', time())." ";
+        echo "tcp_gtjyport_onConnect: HCU_Client [{$fd}] connected".PHP_EOL;
+        $swoole_socket_serv->send($fd, "Client [{$fd}] connected");
+
+        //$swoole_socket_serv->send( $fd, "Hello {$fd}!" );
+    }
+
+    //STDXML hcuport入口函数，收到消息直接转发给HCU IOT模块并带上socketid，L1socket模块只负责消息收发，不进行任何消息解码工作
+    public function tcp_gtjyport_onReceive($swoole_socket_serv, $fd, $reactor_id, $data)
+    {
+        echo PHP_EOL.date('Y/m/d H:i:s', time())." ";
+        echo "tcp_gtjyport_onReceive: From HCU_Client [{$fd}] : {$data}".PHP_EOL;
+
+        $swoole_socket_serv->send($fd, $data);
+
+        //$msg = array("socketid" => $fd, "data"=>$data);
+        //$obj = new classTaskL1vmCoreRouter();
+        //$obj->mfun_l1vm_task_main_entry(MFUN_MAIN_ENTRY_IOT_STDXML, MSG_ID_L2SDK_STDXML_DATA_INCOMING, "MSG_ID_L2SDK_STDXML_DATA_INCOMING", $msg);
+    }
+
+    public function tcp_gtjyport_onClose($swoole_socket_serv, $fd, $reactor_id)
+    {
+        echo date('Y/m/d H:i:s', time())." ";
+        echo "tcp_gtjyport_onClose: HCU_Client [{$fd}] closed".PHP_EOL;
+
+        //reset socketid in t_l2sdk_iothcu_inventory when connection closed.
+        /*
+        $query="UPDATE t_l2sdk_iothcu_inventory  SET socketid = 0 WHERE socketid = $fd";
+        $result = $swoole_socket_serv->taskwait($query);
+        if ($result == true) {
+            list($status, $db_res) = explode(':', $result, 2);
+            if ($status == 'OK') {
+                echo date('Y/m/d H:i:s', time())." ";
+                echo "stdxml_tcp_hcuport_onClose: socketid [{$fd}] closed. Affacted_rows : {$db_res}".PHP_EOL;
+            } else {
+                echo date('Y/m/d H:i:s', time())." ";
+                echo "[ERROR]stdxml_tcp_hcuport_onClose: socketid [{$fd}] set to 0 failed.".PHP_EOL;
+            }
+        } else {
+            echo date('Y/m/d H:i:s', time())." ";
+            echo "[ERROR]stdxml_tcp_hcuport_onClose: socketid [{$fd}] not found".PHP_EOL;
+        }
+
+        return;*/
+    }
+
+
+
 
 }//end of classL1MainEntrySocketListenServer
 
