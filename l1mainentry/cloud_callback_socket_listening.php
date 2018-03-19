@@ -37,14 +37,15 @@ class classL1MainEntrySocketListenServer
             'max_request' => 10000,  //=2000,每个worker进程允许处理的最大任务数,每个worker进程在处理完max_request个请求后就会自动重启。设置该值的主要目的是为了防止worker进程处理大量请求后可能引起的内存溢出
             'max_conn' => 10000, //服务器允许维持的最大TCP连接数。超过此数量后，新进入的连接将被拒绝。
             'ipc_mode' => 1, //设置进程间的通信方式,1 => 使用unix socket通信/2 => 使用消息队列通信/3 => 使用消息队列通信，并设置为争抢模式
-            'dispatch_mode' => 2,  //指定数据包分发策略,1 => 轮循模式，收到会轮循分配给每一个worker进程/2 => 固定模式，根据连接的文件描述符分配worker。这样可以保证同一个连接发来的数据只会被同一个worker处理/3 => 抢占模式，主进程会根据Worker的忙闲状态选择投递，只会投递给处于闲置状态的Worker
-            'task_worker_num' => 1, //=1,服务器开启的task进程数,设置此参数后，服务器会开启异步task功能。可以使用task方法投递异步任务。必须要给swoole_server设置onTask/onFinish两个回调函数
+            'dispatch_mode' => 1,  //（异步非阻塞Server使用1）指定数据包分发策略,1 => 轮循模式，收到会轮循分配给每一个worker进程/2 => 固定模式，根据连接的文件描述符分配worker。这样可以保证同一个连接发来的数据只会被同一个worker处理/3 => 抢占模式，主进程会根据Worker的忙闲状态选择投递，只会投递给处于闲置状态的Worker
+            'task_worker_num' => 200, //=1,服务器开启的task进程数,设置此参数后，服务器会开启异步task功能。可以使用task方法投递异步任务。必须要给swoole_server设置onTask/onFinish两个回调函数
             'task_max_request' => 10000, //每个task进程允许处理的最大任务数。
             'task_ipc_mode' => 2, //设置task进程与worker进程之间通信的方式。
             'daemonize' => true, //设置程序进入后台作为守护进程运行。长时间运行的服务器端程序必须启用此项。如果不启用守护进程，当ssh终端退出后，程序将被终止运行。启用守护进程后，标准输入和输出会被重定向到 log_file，如果 log_file未设置，则所有输出会被丢弃。
             'log_file' => '/home/swoole_server.log', //指定swoole错误日志文件
+            //'log_level' => 1, //0 =>DEBUG, 1 =>TRACE, 2 =>INFO, 3 =>NOTICE, 4 =>WARNING, 5 =>ERROR
             //'log_file' => '/home/hitpony/swoole_server.log', //指定swoole错误日志文件, vmware环境使用
-            'heartbeat_check_interval' => 60,  //设置心跳检测间隔，每隔多久轮循一次，单位为秒。每次检测时遍历所有连接，如果某个连接在间隔时间内没有数据发送，则强制关闭连接（会有onClose回调）。
+            'heartbeat_check_interval' => 120,  //设置心跳检测间隔，每隔多久轮循一次，单位为秒。每次检测时遍历所有连接，如果某个连接在间隔时间内没有数据发送，则强制关闭连接（会有onClose回调）。
             'heartbeat_idle_time' => 600, //设置某个连接允许的最大闲置时间,如果某个连接在heartbeat_idle_time时间内没有数据发送，则强制关闭连接。
             'open_cpu_affinity' => true, //启用CPU亲和性设置, 在多核的硬件平台中，启用此特性会将swoole的reactor线程/worker进程绑定到固定的一个核上。可以避免进程/线程的运行时在多个核之间互相切换，提高CPU Cache的命中率。
             'reactor_num' => 8, //指定Reactor线程数,通过此参数来调节poll线程的数量，以充分利用多核,reactor_num和writer_num默认设置为CPU核数

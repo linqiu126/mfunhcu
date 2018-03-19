@@ -20,6 +20,7 @@ include_once "../l1comvm/sysmodule.php";
 include_once "../l1comvm/dbi_common.class.php";
 include_once "../l1comvm/func_comapi.class.php";
 //HUITP任务模块
+include_once "../l2codec/task_l2codec_gtjy_nbiot.class.php";
 include_once "../l2codec/l2codec_huitp_msg_dict.php";
 include_once "../l2codec/l2codec_huitp_ie_dict.php";
 include_once "../l2codec/task_l2decode_huitp_xml.class.php";
