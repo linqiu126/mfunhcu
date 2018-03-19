@@ -22,6 +22,7 @@ define("MSG_ID_L1VM_TO_L2SDK_IOT_APPLE_INCOMING", $index++);
 define("MSG_ID_L1VM_TO_L2SDK_IOT_JD_INCOMING", $index++);
 define("MSG_ID_L1VM_TO_L3WXOPR_FAAM_INCOMING", $index++);
 //L2CODEC
+define("MSG_ID_L2CODEC_GTJY_NBIOT_DATA_INCOMING", $index++);
 define("MSG_ID_L1VM_TO_L2SDK_IOT_HUITP_INCOMING", $index++);
 define("MSG_ID_L2CODEC_ENCODE_HUITP_INCOMING", $index++);
 define("MSG_ID_L2SDK_WECHAT_TO_L2DECODE_HUITP", $index++);
@@ -58,6 +59,7 @@ define("MSG_ID_L2SDK_EMCWX_TO_L2SNR_RAIN_DATA_REPORT_TIMING", $index++);
 define("MSG_ID_L2SDK_STDXML_DATA_INCOMING", $index++); //Socket入口的STDXML消息
 define("MSG_ID_L2SDK_HUITP_DATA_INCOMING", $index++);  //Socket入口的HUITP XML消息
 define("MSG_ID_L2SDK_JSON_DATA_INCOMING", $index++);   //Socket入口的JSON消息
+define("MSG_ID_L2SDK_GTJY_NBIOT_DATA_INCOMING", $index++); //用于接收来自国通第三方NBIOT设备的socket消息
 //FHYS智能云锁消息
 define("MSG_ID_L2SDK_HCU_TO_L2SNR_HSMMP", $index++); //兼容老的云控锁消息(照片发送)
 define("MSG_ID_L2SDK_HCU_TO_L2SNR_DOORLOCK", $index++); //用于兼容老的郑州FHYS方案

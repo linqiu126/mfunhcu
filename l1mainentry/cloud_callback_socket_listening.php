@@ -469,7 +469,7 @@ class classL1MainEntrySocketListenServer
     }
 
 
-    /********************************************STDXML TCP hcuport****************************************************/
+    /********************************************GTJY TCP hcuport****************************************************/
 
     //具体port处理函数
     public function tcp_gtjyport_onConnect($swoole_socket_serv, $fd, $from_id ) {
@@ -488,9 +488,9 @@ class classL1MainEntrySocketListenServer
 
         $swoole_socket_serv->send($fd, $data);
 
-        //$msg = array("socketid" => $fd, "data"=>$data);
-        //$obj = new classTaskL1vmCoreRouter();
-        //$obj->mfun_l1vm_task_main_entry(MFUN_MAIN_ENTRY_IOT_STDXML, MSG_ID_L2SDK_STDXML_DATA_INCOMING, "MSG_ID_L2SDK_STDXML_DATA_INCOMING", $msg);
+        $msg = array("socketid" => $fd, "data"=>$data);
+        $obj = new classTaskL1vmCoreRouter();
+        $obj->mfun_l1vm_task_main_entry(MFUN_MAIN_ENTRY_GTJY_NBIOT, MSG_ID_L2SDK_GTJY_NBIOT_DATA_INCOMING, "MSG_ID_L2SDK_GTJY_NBIOT_DATA_INCOMING", $msg);
     }
 
     public function tcp_gtjyport_onClose($swoole_socket_serv, $fd, $reactor_id)

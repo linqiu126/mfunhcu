@@ -777,6 +777,20 @@ class classTaskL1vmCoreRouter
                     return false;
                 }
                 break;
+            case MFUN_MAIN_ENTRY_GTJY_NBIOT:
+                $resp = $this->mfun_l1vm_msg_send(MFUN_TASK_ID_L1VM,
+                    MFUN_TASK_ID_L2CODEC_GTJY_NBIOT,
+                    MSG_ID_L2CODEC_GTJY_NBIOT_DATA_INCOMING,
+                    "MSG_ID_L2CODEC_GTJY_NBIOT_DATA_INCOMING",
+                    $msg);
+                if ($resp == false){
+                    $result = "Cloud: Send to message buffer error.";
+                    $log_content = "P:" . json_encode($result,JSON_UNESCAPED_UNICODE);
+                    $loggerObj->mylog(MFUN_MAIN_ENTRY_GTJY_NBIOT,"NULL","MFUN_TASK_ID_L1VM","MFUN_TASK_ID_L2CODEC_GTJY_NBIOT","MSG_ID_L2CODEC_GTJY_NBIOT_DATA_INCOMING",$log_content);
+                    echo trim($result);
+                    return false;
+                }
+                break;
             case MFUN_MAIN_ENTRY_FAAM_UI:
                 $resp = $this->mfun_l1vm_msg_send(MFUN_TASK_ID_L1VM,
                     MFUN_TASK_ID_L4FAAM_UI,

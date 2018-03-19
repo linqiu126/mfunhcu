@@ -58,6 +58,7 @@ define ("MFUN_MAIN_ENTRY_NBIOT_IGM_UI", "MFUN_MAIN_ENTRY_NBIOT_IGM_UI");
 define ("MFUN_MAIN_ENTRY_NBIOT_IWM_UI", "MFUN_MAIN_ENTRY_NBIOT_IWM_UI");
 define ("MFUN_MAIN_ENTRY_NBIOT_IHM_UI", "MFUN_MAIN_ENTRY_NBIOT_IHM_UI");
 define ("MFUN_MAIN_ENTRY_DIRECT_IN", "MFUN_MAIN_ENTRY_DIRECT_IN");
+define ("MFUN_MAIN_ENTRY_GTJY_NBIOT", "MFUN_MAIN_ENTRY_GTJY_NBIOT");
 
 //定义技术平台，用于SDK在相互之间调用以及SDK调用不同的SENSOR任务时的一种技术性交换矩阵，以节省代码的重复性
 //技术平台本身没有任何意义，它纯粹从实用性角度，人为的给调用函数提供了一种方便性的区分而已
@@ -391,6 +392,41 @@ if (isset($_SERVER['SERVER_NAME']))
             define("MFUN_WX_TOOL_APPID", "wx1183be5c8f6a24b4");
             define("MFUN_WX_TOOL_APPSECRET", "d52a63064ed543c5eecae6c3df35be55");
             define("MFUN_WX_TOOL_BLEMAC", "D03972A5EF27");
+            //RabbitMQ消息队列定义
+            define("MFUN_MQ_RABBIT_HOST", "127.0.0.1");
+            define("MFUN_MQ_RABBIT_PORT", "5672");
+            define("MFUN_MQ_RABBIT_LOGIN", "guest");
+            define("MFUN_MQ_RABBIT_PSWD", "guest");
+            define("MFUN_MQ_RABBIT_VHOST", "/");
+            define("MFUN_MQ_RABBIT_EXCHANGE", "e_linvo");
+            define("MFUN_MQ_RABBIT_QUEUE", "q_linvo");
+            define("MFUN_MQ_RABBIT_ROUTE_KEY", "key_1");
+            break;
+        case "120.55.125.100": //小慧test server
+            define("MFUN_CLOUD_HCU", "LOCAL_HCU"); //HCU后台云应用
+            define("MFUN_CLOUD_WX", "LOCAL_WX"); //微信后台云应用
+            //主数据库定义
+            define("MFUN_HOME_DBHOST", "120.55.125.100");    //小慧云HOME服务器地址
+            define("MFUN_CLOUD_DBHOST", "127.0.0.1");    //连接的服务器地址
+            define("MFUN_CLOUD_DBUSER", "root");     //连接数据库的用户名
+            define("MFUN_CLOUD_DBPSW", "123456");        //连接数据库的密码
+            define("MFUN_CLOUD_DBNAME_L1L2L3", "bxxhl1l2l3");         //连接的数据库名称
+            define("MFUN_CLOUD_DBNAME_DEBUG", "bxxhl1vmlog");         //连接的log数据库名称
+            define("MFUN_CLOUD_DBNAME_L4EMCWX", "bxxhl4emcwx");         //连接的数据库名称
+            define("MFUN_CLOUD_DBNAME_L4AQYC", "bxxhl4aqyc");         //连接的数据库名称
+            define("MFUN_CLOUD_DBNAME_L4TBSWR", "bxxhl4tbswr");         //连接的数据库名称
+            define("MFUN_CLOUD_DBNAME_L5BI", "bxxhl5bi");         //连接的数据库名称
+            define("MFUN_CLOUD_DBPORT", 3306);           //缺省设置
+            define("MFUN_CLOUD_DBHOST_S", "");          //无效
+            //EMCWX应用定义
+            define("MFUN_WX_APPID", "wx1183be5c8f6a24b4");  //微信测试号AppID
+            define("MFUN_WX_APPSECRET", "d52a63064ed543c5eecae6c3df35be55");  //填写高级调用功能的app id, 请在微信开发模式后台查询
+            define("MFUN_WX_ENCODINGAESKEY", "ihIyvJ8LLAnOHpHzKTG0yIJxlzl1Fzw5ygRgHO96ieW");   //填写加密用的EncodingAESKey，如接口为明文模式可忽略
+            //测试公号的后台运行配置参数
+            define("MFUN_WX_TOOL_SERVICENUM", "gh_70c714952b02");
+            define("MFUN_WX_TOOL_APPID", "wx1183be5c8f6a24b4");
+            define("MFUN_WX_TOOL_APPSECRET", "d52a63064ed543c5eecae6c3df35be55");
+            define("MFUN_WX_TOOL_BLEMAC", "D03972A5EF28");
             //RabbitMQ消息队列定义
             define("MFUN_MQ_RABBIT_HOST", "127.0.0.1");
             define("MFUN_MQ_RABBIT_PORT", "5672");
