@@ -24,7 +24,8 @@ define("MFUN_TASK_ID_L2SDK_NBIOT_LTEV", $taskIndex++);    //车联网
 define("MFUN_TASK_ID_L2SDK_NBIOT_AGC", $taskIndex++);     //农业用途
 define("MFUN_TASK_ID_L2SDK_IOT_JSON", $taskIndex++);  //JSON协议处理
 define("MFUN_TASK_ID_L2SDK_IOT_HUITP", $taskIndex++); //HUITP协议处理
-define("MFUN_TASK_ID_L2CODEC_GTJY_NBIOT", $taskIndex++);
+define("MFUN_TASK_ID_L2CODEC_PRIVATE_GTJY", $taskIndex++);
+define("MFUN_TASK_ID_L2CODEC_WSDL_YCJK", $taskIndex++);  //WSDL 扬尘监控联通平台对接编解码模块
 define("MFUN_TASK_ID_L2DECODE_HUITP",$taskIndex++);   //HUITP 解码任务模块
 define("MFUN_TASK_ID_L2ENCODE_HUITP",$taskIndex++);   //HUITP 编码任务模块
 define("MFUN_TASK_ID_L2SENSOR_COMMON",$taskIndex++);
@@ -156,7 +157,8 @@ class classConstL1vmSysTaskList
         MFUN_TASK_ID_L2SENSOR_EARTHDIN => array("NAME" => "MFUN_TASK_ID_L2SENSOR_EARTHDIN", "PRESENT" => false),
         MFUN_TASK_ID_L2TIMER_CRON => array("NAME" => "MFUN_TASK_ID_L2TIMER_CRON", "PRESENT" => false),
         MFUN_TASK_ID_L2SOCKET_LISTEN => array("NAME" => "MFUN_TASK_ID_L2SOCKET_LISTEN", "PRESENT" => false),
-        MFUN_TASK_ID_L2CODEC_GTJY_NBIOT => array("NAME" => "MFUN_TASK_ID_L2CODEC_GTJY_NBIOT", "PRESENT" => false),
+        MFUN_TASK_ID_L2CODEC_PRIVATE_GTJY => array("NAME" => "MFUN_TASK_ID_L2CODEC_PRIVATE_GTJY", "PRESENT" => false),
+        MFUN_TASK_ID_L2CODEC_WSDL_YCJK => array("NAME" => "MFUN_TASK_ID_L2CODEC_WSDL_YCJK", "PRESENT" => false),
         MFUN_TASK_ID_L2DECODE_HUITP => array("NAME" => "MFUN_TASK_ID_L2DECODE_HUITP", "PRESENT" => false),
         MFUN_TASK_ID_L2ENCODE_HUITP => array("NAME" => "MFUN_TASK_ID_L2ENCODE_HUITP", "PRESENT" => false),
         MFUN_TASK_ID_L3APPL_FUM1SYM => array("NAME" => "MFUN_TASK_L3APPL_FUM1SYM", "PRESENT" => false),
@@ -208,7 +210,8 @@ class classConstL1vmSysTaskList
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_IOT_WX]["PRESENT"] = true;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_IOT_WX_JSSDK]["PRESENT"] = true;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_IOT_HUITP]["PRESENT"] =  true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2CODEC_GTJY_NBIOT]["PRESENT"] =  true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2CODEC_PRIVATE_GTJY]["PRESENT"] =  true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2CODEC_WSDL_YCJK]["PRESENT"] =  true;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L2DECODE_HUITP]["PRESENT"] =  true;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L2ENCODE_HUITP]["PRESENT"] =  true;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_IOT_STDXML]["PRESENT"] = true;
@@ -293,6 +296,7 @@ class classConstL1vmSysTaskList
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_IOT_WX_JSSDK]["PRESENT"] = true;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_IOT_STDXML]["PRESENT"] = true;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_IOT_HUITP]["PRESENT"] =  true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2CODEC_WSDL_YCJK]["PRESENT"] =  true;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L2DECODE_HUITP]["PRESENT"] =  true;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L2ENCODE_HUITP]["PRESENT"] =  true;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SENSOR_COMMON]["PRESENT"] = true;
@@ -478,7 +482,7 @@ class classConstL1vmSysTaskList
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_IOT_WX]["PRESENT"] = true;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_IOT_WX_JSSDK]["PRESENT"] = true;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_IOT_HUITP]["PRESENT"] =  true;
-            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2CODEC_GTJY_NBIOT]["PRESENT"] =  true;
+            self::$mfunTaskArrayConst[MFUN_TASK_ID_L2CODEC_PRIVATE_GTJY]["PRESENT"] =  true;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L2DECODE_HUITP]["PRESENT"] =  true;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L2ENCODE_HUITP]["PRESENT"] =  true;
             self::$mfunTaskArrayConst[MFUN_TASK_ID_L2SDK_IOT_STDXML]["PRESENT"] = true;

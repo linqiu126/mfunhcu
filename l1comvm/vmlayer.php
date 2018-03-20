@@ -19,14 +19,15 @@ include_once "../l1comvm/sysversion.php";
 include_once "../l1comvm/sysmodule.php";
 include_once "../l1comvm/dbi_common.class.php";
 include_once "../l1comvm/func_comapi.class.php";
-//HUITP任务模块
-include_once "../l2codec/task_l2codec_gtjy_nbiot.class.php";
-include_once "../l2codec/l2codec_huitp_msg_dict.php";
-include_once "../l2codec/l2codec_huitp_ie_dict.php";
-include_once "../l2codec/task_l2decode_huitp_xml.class.php";
-include_once "../l2codec/task_l2encode_huitp_xml.class.php";
-include_once "../l2sdk/task_l2sdk_iot_huitp.class.php";
+//层2编解码任务模块
+include_once "../l2codec/l2codec_huitp_msg_dict.php"; //HUITP消息字典
+include_once "../l2codec/l2codec_huitp_ie_dict.php";  //HUITP消息IE字典
+include_once "../l2codec/task_l2decode_huitp_xml.php";
+include_once "../l2codec/task_l2encode_huitp_xml.php";
+include_once "../l2codec/task_l2codec_private_gtjy.php";
+include_once "../l2codec/task_l2codec_wsdl_ycjk.php";
 //包含所有的任务模块，不然无法调用
+include_once "../l2sdk/task_l2sdk_iot_huitp.class.php";
 include_once "../l2sdk/task_l2sdk_iot_stdxml.class.php";
 include_once "../l2sdk/task_l2sdk_wechat.class.php";
 include_once "../l2sdk/task_l2sdk_iot_apple.class.php";
@@ -780,14 +781,14 @@ class classTaskL1vmCoreRouter
                 break;
             case MFUN_MAIN_ENTRY_GTJY_NBIOT:
                 $resp = $this->mfun_l1vm_msg_send(MFUN_TASK_ID_L1VM,
-                    MFUN_TASK_ID_L2CODEC_GTJY_NBIOT,
-                    MSG_ID_L2CODEC_GTJY_NBIOT_DATA_INCOMING,
-                    "MSG_ID_L2CODEC_GTJY_NBIOT_DATA_INCOMING",
+                    MFUN_TASK_ID_L2CODEC_PRIVATE_GTJY,
+                    MSG_ID_L2CODEC_PRIVATE_GTJY_DATA_INCOMING,
+                    "MSG_ID_L2CODEC_PRIVATE_GTJY_DATA_INCOMING",
                     $msg);
                 if ($resp == false){
                     $result = "Cloud: Send to message buffer error.";
                     $log_content = "P:" . json_encode($result,JSON_UNESCAPED_UNICODE);
-                    $loggerObj->mylog(MFUN_MAIN_ENTRY_GTJY_NBIOT,"NULL","MFUN_TASK_ID_L1VM","MFUN_TASK_ID_L2CODEC_GTJY_NBIOT","MSG_ID_L2CODEC_GTJY_NBIOT_DATA_INCOMING",$log_content);
+                    $loggerObj->mylog(MFUN_MAIN_ENTRY_GTJY_NBIOT,"NULL","MFUN_TASK_ID_L1VM","MFUN_TASK_ID_L2CODEC_PRIVATE_GTJY","MSG_ID_L2CODEC_PRIVATE_GTJY_DATA_INCOMING",$log_content);
                     echo trim($result);
                     return false;
                 }
