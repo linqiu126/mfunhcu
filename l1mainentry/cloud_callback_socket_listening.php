@@ -38,7 +38,7 @@ class classL1MainEntrySocketListenServer
             'max_conn' => 10000, //服务器允许维持的最大TCP连接数。超过此数量后，新进入的连接将被拒绝。
             'ipc_mode' => 1, //设置进程间的通信方式,1 => 使用unix socket通信/2 => 使用消息队列通信/3 => 使用消息队列通信，并设置为争抢模式
             'dispatch_mode' => 1,  //（异步非阻塞Server使用1）指定数据包分发策略,1 => 轮循模式，收到会轮循分配给每一个worker进程/2 => 固定模式，根据连接的文件描述符分配worker。这样可以保证同一个连接发来的数据只会被同一个worker处理/3 => 抢占模式，主进程会根据Worker的忙闲状态选择投递，只会投递给处于闲置状态的Worker
-            'task_worker_num' => 200, //=1,服务器开启的task进程数,设置此参数后，服务器会开启异步task功能。可以使用task方法投递异步任务。必须要给swoole_server设置onTask/onFinish两个回调函数
+            'task_worker_num' => 20, //=1,服务器开启的task进程数,设置此参数后，服务器会开启异步task功能。可以使用task方法投递异步任务。必须要给swoole_server设置onTask/onFinish两个回调函数
             'task_max_request' => 10000, //每个task进程允许处理的最大任务数。
             'task_ipc_mode' => 2, //设置task进程与worker进程之间通信的方式。
             'daemonize' => true, //设置程序进入后台作为守护进程运行。长时间运行的服务器端程序必须启用此项。如果不启用守护进程，当ssh终端退出后，程序将被终止运行。启用守护进程后，标准输入和输出会被重定向到 log_file，如果 log_file未设置，则所有输出会被丢弃。
@@ -135,9 +135,9 @@ class classL1MainEntrySocketListenServer
         //$tcp_uiport->set(array(
         //    'open_tcp_nodelay' => true ) //开启后TCP连接发送数据时会无关闭Nagle合并算法，立即发往客户端连接。在某些场景下，如http服务器，可以提升响应速度。
         //);
-        $tcp_uiport->on('Connect', array($this, 'tcp_gtjyport_onConnect'));
-        $tcp_uiport->on('Receive', array($this, 'tcp_gtjyport_onReceive'));
-        $tcp_uiport->on('Close', array($this, 'tcp_gtjyport_onClose'));
+        $tcp_uiport->on('Connect', array($this, 'udp_gtjyport_onConnect'));
+        $tcp_uiport->on('Receive', array($this, 'udp_gtjyport_onReceive'));
+        $tcp_uiport->on('Close', array($this, 'udp_gtjyport_onClose'));
 
         $this->swoole_socket_serv->start();
 
@@ -399,8 +399,8 @@ class classL1MainEntrySocketListenServer
     //HUITP cclport入口函数，收到消息直接转发给HUITP IOT模块并带上socketid，L1socket模块只负责消息收发，不进行任何消息解码工作
     public function huitpjson_tcp_hcuport_onReceive($swoole_socket_serv, $fd, $reactor_id, $data)
     {
-        //echo PHP_EOL.date('Y/m/d H:i:s', time())." ";
-        //echo "huitpxml_tcp_hcuport_onReceive: From HCU_Client [{$fd}] : {$data}".PHP_EOL;
+        echo PHP_EOL.date('Y/m/d H:i:s', time())." ";
+        echo "huitpxml_tcp_hcuport_onReceive: From HCU_Client [{$fd}] : {$data}".PHP_EOL;
 
         $msg = array("socketid" => $fd, "data"=>$data);
         $obj = new classTaskL1vmCoreRouter();
@@ -473,19 +473,19 @@ class classL1MainEntrySocketListenServer
     /********************************************GTJY TCP hcuport****************************************************/
 
     //具体port处理函数
-    public function tcp_gtjyport_onConnect($swoole_socket_serv, $fd, $from_id ) {
+    public function udp_gtjyport_onConnect($swoole_socket_serv, $fd, $from_id ) {
         echo date('Y/m/d H:i:s', time())." ";
-        echo "tcp_gtjyport_onConnect: HCU_Client [{$fd}] connected".PHP_EOL;
+        echo "udp_gtjyport_onConnect: HCU_Client [{$fd}] connected".PHP_EOL;
         $swoole_socket_serv->send($fd, "Client [{$fd}] connected");
 
         //$swoole_socket_serv->send( $fd, "Hello {$fd}!" );
     }
 
     //STDXML hcuport入口函数，收到消息直接转发给HCU IOT模块并带上socketid，L1socket模块只负责消息收发，不进行任何消息解码工作
-    public function tcp_gtjyport_onReceive($swoole_socket_serv, $fd, $reactor_id, $data)
+    public function udp_gtjyport_onReceive($swoole_socket_serv, $fd, $reactor_id, $data)
     {
         echo PHP_EOL.date('Y/m/d H:i:s', time())." ";
-        echo "tcp_gtjyport_onReceive: From HCU_Client [{$fd}] : {$data}".PHP_EOL;
+        echo "udp_gtjyport_onReceive: From HCU_Client [{$fd}] : {$data}".PHP_EOL;
 
         $swoole_socket_serv->send($fd, $data);
 
@@ -494,10 +494,10 @@ class classL1MainEntrySocketListenServer
         $obj->mfun_l1vm_task_main_entry(MFUN_MAIN_ENTRY_GTJY_NBIOT, MSG_ID_L2SDK_GTJY_NBIOT_DATA_INCOMING, "MSG_ID_L2SDK_GTJY_NBIOT_DATA_INCOMING", $msg);
     }
 
-    public function tcp_gtjyport_onClose($swoole_socket_serv, $fd, $reactor_id)
+    public function udp_gtjyport_onClose($swoole_socket_serv, $fd, $reactor_id)
     {
         echo date('Y/m/d H:i:s', time())." ";
-        echo "tcp_gtjyport_onClose: HCU_Client [{$fd}] closed".PHP_EOL;
+        echo "udp_gtjyport_onClose: HCU_Client [{$fd}] closed".PHP_EOL;
 
         //reset socketid in t_l2sdk_iothcu_inventory when connection closed.
         /*
