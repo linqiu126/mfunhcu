@@ -476,7 +476,6 @@ class classL1MainEntrySocketListenServer
     public function udp_gtjyport_onConnect($swoole_socket_serv, $fd, $from_id ) {
         echo date('Y/m/d H:i:s', time())." ";
         echo "udp_gtjyport_onConnect: HCU_Client [{$fd}] connected".PHP_EOL;
-        $swoole_socket_serv->send($fd, "Client [{$fd}] connected");
 
         //$swoole_socket_serv->send( $fd, "Hello {$fd}!" );
     }
@@ -486,6 +485,7 @@ class classL1MainEntrySocketListenServer
     {
         echo PHP_EOL.date('Y/m/d H:i:s', time())." ";
         echo "udp_gtjyport_onReceive: From HCU_Client [{$fd}] : {$data}".PHP_EOL;
+        echo "Data[0]=".intval(bin2hex($data[0]),16)."Data[1]=".intval(bin2hex($data[1]),16);
 
         //$swoole_socket_serv->send($fd, $data);
 

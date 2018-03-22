@@ -972,6 +972,16 @@ class classTaskL1vmCoreRouter
                     $obj->mfun_l2encode_huitp_xml_task_main_entry($this, $result["msgId"], $result["msgName"], $result["msgBody"]);
                     break;
 
+                case MFUN_TASK_ID_L2CODEC_PRIVATE_GTJY:
+                    $obj = new classTaskL2codecPrivateGtjy();
+                    $obj->mfun_l2codec_private_gtjy_task_main_entry($this, $result["msgId"], $result["msgName"], $result["msgBody"]);
+                    break;
+
+                case MFUN_TASK_ID_L2CODEC_WSDL_YCJK:
+                    $obj = new classTaskL2codecWsdlYcjk();
+                    $obj->mfun_l2codec_wsdl_ycjk_task_main_entry($this, $result["msgId"], $result["msgName"], $result["msgBody"]);
+                    break;
+
                 case MFUN_TASK_ID_L2SDK_NBIOT_STD_QG376:
                     $obj = new classTaskL2sdkNbiotStdQg376();
                     $obj->mfun_l2sdk_nbiot_std_qg376_task_main_entry($this, $result["msgId"], $result["msgName"], $result["msgBody"]);

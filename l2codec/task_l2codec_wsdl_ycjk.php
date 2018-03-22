@@ -12,6 +12,7 @@ class classTaskL2codecWsdlYcjk
     //1、EmsProject 工程信息
     private function func_wsdl_ycjk_EmsProject_encode($input)
     {
+        //判断是否存在
         if (isset($input["code"])) $code = $input["code"]; else  $code = "";
         if (isset($input["name"])) $name = $input["name"]; else  $name = "";
         if (isset($input["district"])) $district = $input["district"]; else  $district = "";
@@ -55,8 +56,191 @@ class classTaskL2codecWsdlYcjk
                     <stage><![CDATA[%s]]></stage>
                     <isCompleted><![CDATA[%s]]></isCompleted>
                     <status><![CDATA[%s]]></status></EmsProject>";
+        //sprintf :主要是把格式化数据写入字符串中
         $result = sprintf($xmlTpl,$code,$name,$district,$prjType,$prjCategory,$prjPeriod,$region,$street,$longitude,$latitude,$contractors,$superintendent,$telephone,$address,$siteArea,$buildingArea,$startDate,$endDate,$stage,$isCompleted,$status);
         return $result;
+    }
+    //2、EmsDevice 设备信息
+    private function  func_wsdl_ycjk_EmsDevice_encode($input)
+    {
+        //判断是否存在？
+        if (isset($input["code"])) $code = $input["code"]; else  $code = "";
+        if (isset($input["name"])) $name = $input["name"]; else  $name = "";
+        if (isset($input["ipAddr"])) $ipAddr = $input["ipAddr"]; else  $ipAddr = "";
+        if (isset($input["macAddr"])) $macAddr = $input["macAddr"]; else  $macAddr = "";
+        if (isset($input["port"])) $port = $input["port"]; else  $port = "";
+        if (isset($input["version"])) $version = $input["version"]; else  $version = "";
+        if (isset($input["projectCode"])) $projectCode = $input["projectCode"]; else  $projectCode = "";
+        if (isset($input["longitude"])) $longitude = $input["longitude"]; else  $longitude = "";
+        if (isset($input["latitude"])) $latitude = $input["latitude"]; else  $latitude = "";
+        if (isset($input["startDate"])) $startDate = $input["startDate"]; else  $startDate = "";
+        if (isset($input["endDate"])) $endDate = $input["endDate"]; else  $endDate = "";
+        if (isset($input["installDate"])) $installDate = $input["installDate"]; else  $installDate = "";
+        if (isset($input["onlineStatus"])) $onlineStatus = $input["onlineStatus"]; else  $onlineStatus = "";
+        if (isset($input["videoUrl"])) $videoUrl = $input["videoUrl"]; else  $videoUrl = "";
+
+        $xmlTpl = "<EmsDevice>
+                    <code><![CDATA[%s]]></code>
+                    <name><![CDATA[%s]]></name>
+                    <ipAddr><![CDATA[%s]]></ipAddr>
+                    <macAddr><![CDATA[%s]]></macAddr>
+                    <port><![CDATA[%s]]></port>
+                    <version><![CDATA[%s]]></version>
+                    <projectCode><![CDATA[%s]]></projectCode>
+                    <longitude><![CDATA[%s]]></longitude>
+                    <latitude><![CDATA[%s]]></latitude>
+                    <startDate><![CDATA[%s]]></startDate>
+                    <endDate><![CDATA[%s]]></endDate>
+                    <installDate><![CDATA[%s]]></installDate>
+                    <onlineStatus><![CDATA[%s]]></onlineStatus>
+                    <videoUrl><![CDATA[%s]]></videoUrl>
+                 </EmsDevice>";
+        $result = sprintf($xmlTpl,$code,$name,$ipAddr,$macAddr,$port,$version,$projectCode,$longitude,$latitude,$startDate,$endDate,$installDate,$onlineStatus,$videoUrl);
+        return $result;
+    }
+    //3.EmsData 设备数据
+    private function  func_wsdl_ycjk_EmsData_encode($input)
+    {
+        //判断是否存在
+        if (isset($input["devCode"])) $devCode = $input["devCode"]; else  $devCode = "";
+        if (isset($input["prjCode"])) $prjCode = $input["prjCode"]; else  $prjCode = "";
+        if (isset($input["prjType"])) $prjType = $input["prjType"]; else  $prjType = "";
+        if (isset($input["dust"]))    $dust =  $input["dust"];      else  $dust = "";
+        if (isset($input["maxDust"])) $maxDust = $input["maxDust"]; else  $maxDust = "";
+
+        if (isset($input["minDust"]))  $minDust = $input["minDust"]; else  $minDust = "";
+        if (isset($input["temperature"])) $temperature = $input["temperature"]; else  $temperature = "";
+        if (isset($input["maxTemperature"])) $maxTemperature = $input["maxTemperature"]; else  $maxTemperature = "";
+        if (isset($input["minTemperature"])) $minTemperature = $input["minTemperature"]; else  $minTemperature = "";
+        if (isset($input["humidity"])) $humidity = $input["humidity"]; else  $humidity = "";
+
+        if (isset($input["maxHumidity"])) $maxHumidity = $input["maxHumidity"]; else  $maxHumidity = "";
+        if (isset($input["minHumidity"])) $minHumidity = $input["minHumidity"]; else  $minHumidity = "";
+        if (isset($input["noise"])) $noise = $input["noise"]; else  $noise = "";
+        if (isset($input["maxNoise"])) $maxNoise = $input["maxNoise"]; else  $maxNoise = "";
+        if (isset($input["minNoise"])) $minNoise = $input["minNoise"]; else  $minNoise = "";
+
+        if (isset($input["pressure"])) $pressure = $input["pressure"]; else  $pressure = "";
+        if (isset($input["maxPressure"])) $maxPressure = $input["maxPressure"]; else  $maxPressure  = "";
+        if (isset($input["minPressure"])) $minPressure = $input["minPressure"]; else  $minPressure = "";
+        if (isset($input["rainfall"])) $rainfall = $input["rainfall"]; else  $rainfall = "";
+        if (isset($input["maxRainfall"])) $maxRainfall = $input["maxRainfall"]; else  $maxRainfall = "";
+
+        if (isset($input["minRainfall"])) $minRainfall = $input["minRainfall"]; else  $minRainfall = "";
+        if (isset($input["windSpeed"])) $windSpeed = $input["windSpeed"]; else  $windSpeed = "";
+        if (isset($input["windDirection"])) $windDirection = $input["windDirection"]; else  $windDirection = "";
+        if (isset($input["dateTime"])) $dateTime = $input["dateTime"]; else  $dateTime = "";
+        if (isset($input["dustFlag"])) $dustFlag = $input["dustFlag"]; else  $dustFlag = "";
+        if (isset($input["humiFlag"])) $humiFlag = $input["humiFlag"]; else  $humiFlag = "";
+        if (isset($input["noiseFlag"])) $noiseFlag = $input["noiseFlag"]; else  $noiseFlag = "";
+
+        $xmlTpl = "<EmsData>
+                    <devCode><![CDATA[%s]]></devCode>
+                    <prjCode><![CDATA[%s]]></prjCode>
+                    <prjType><![CDATA[%s]]></prjType>
+                    <dust><![CDATA[%s]]></dust>
+                    <maxDust><![CDATA[%s]]></maxDust>
+
+                    <minDust><![CDATA[%s]]></minDust>
+                    <temperature><![CDATA[%s]]></temperature>
+                    <maxTemperature><![CDATA[%s]]></maxTemperature>
+                    <minTemperature><![CDATA[%s]]></minTemperature>
+                    <humidity><![CDATA[%s]]></humidity>
+
+                    <maxHumidity><![CDATA[%s]]></maxHumidity>
+                    <minHumidity><![CDATA[%s]]></minHumidity>
+                    <noise><![CDATA[%s]]></noise>
+                    <maxNoise><![CDATA[%s]]></maxNoise>
+                    <minNoise><![CDATA[%s]]></minNoise>
+
+                    <pressure><![CDATA[%s]]></pressure>
+                    <maxPressure><![CDATA[%s]]></maxPressure>
+                    <minPressure><![CDATA[%s]]></minPressure>
+                    <rainfall><![CDATA[%s]]></rainfall>
+                    <maxRainfall><![CDATA[%s]]></maxRainfall>
+
+                    <minRainfall><![CDATA[%s]]></minRainfall>
+                    <windSpeed><![CDATA[%s]]></windSpeed>
+                    <windDirection><![CDATA[%s]]></windDirection>
+                    <dateTime><![CDATA[%s]]></dateTime>
+                    <dustFlag><![CDATA[%s]]></dustFlag>
+                    <humiFlag><![CDATA[%s]]></humiFlag>
+                    <noiseFlag><![CDATA[%s]]></noiseFlag>
+                 </EmsData>";
+        $result = sprintf($xmlTpl,$devCode,$prjCode,$prjType,$dust,$maxDust,$minDust,$temperature,$maxTemperature,$minTemperature,$humidity,$maxHumidity,$minHumidity,$noise,$maxNoise,$minNoise,$pressure,$maxPressure,$minPressure,$rainfall,$maxRainfall,$minRainfall,$windSpeed,$windDirection,$dateTime,$dustFlag,$humiFlag,$noiseFlag);
+        return $result;
+
+    }
+    //4.EmsPrjType（工程类型）
+    private function  func_wsdl_ycjk_EmsPrjType_encode($input)
+    {
+
+        //判断是否存在？
+        if (isset($input["code"])) $code = $input["code"]; else  $code = "";
+        if (isset($input["name"])) $name = $input["name"]; else  $name = "";
+
+        $xmlTpl = "<EmsPrjType>
+                   <code><![CDATA[%s]]></code>
+                   <name><![CDATA[%s]]></name>
+                  </EmsPrjType>";
+        $result =sprintf($xmlTpl,$code,$name);
+        return $result;
+    }
+    //5、EmsPrjCategory  (工程性质)
+    private function  func_wsdl_ycjk_EmsPrjCategory_encode($input)
+    {
+
+        //判断是否存在？
+        if (isset($input["code"])) $code = $input["code"]; else  $code = "";
+        if (isset($input["name"])) $name = $input["name"]; else  $name = "";
+        $xmlTpl = "<EmsPrjCategory>
+                   <code><![CDATA[%s]]></code>
+                   <name><![CDATA[%s]]></name>
+                  </EmsPrjCategory>";
+        $result =sprintf($xmlTpl,$code,$name);
+        return $result;
+
+    }
+    //6、EmsPrjPeriod  工程工期
+    private function  func_wsdl_ycjk_EmsPrjPeriod_encode($input)
+    {
+        //判断是否存在？
+        if (isset($input["code"])) $code = $input["code"]; else  $code = "";
+        if (isset($input["name"])) $name = $input["name"]; else  $name = "";
+        $xmlTpl = "<EmsPrjPeriod>
+                   <code><![CDATA[%s]]></code>
+                   <name><![CDATA[%s]]></name>
+                  </EmsPrjPeriod>";
+        $result =sprintf($xmlTpl,$code,$name);
+        return $result;
+
+    }
+    //7、EmsDistrict  区县信息
+    private function  func_wsdl_ycjk_EmsDistrict_encode($input)
+    {
+        //判断是否存在？
+        if (isset($input["code"])) $code = $input["code"]; else  $code = "";
+        if (isset($input["name"])) $name = $input["name"]; else  $name = "";
+        $xmlTpl = "<EmsDistrict>
+                   <code><![CDATA[%s]]></code>
+                   <name><![CDATA[%s]]></name>
+                  </EmsDistrict>";
+        $result =sprintf($xmlTpl,$code,$name);
+        return $result;
+    }
+    //8、EmsRegion  区域信息
+    private function  func_wsdl_ycjk_EmsRegion_encode($input)
+    {
+        //判断是否存在？
+        if (isset($input["code"])) $code = $input["code"]; else  $code = "";
+        if (isset($input["name"])) $name = $input["name"]; else  $name = "";
+        $xmlTpl = "<EmsRegion>
+                   <code><![CDATA[%s]]></code>
+                   <name><![CDATA[%s]]></name>
+                  </EmsRegion>";
+        $result =sprintf($xmlTpl,$code,$name);
+        return $result;
+
     }
 
 
