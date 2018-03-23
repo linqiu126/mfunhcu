@@ -3,3 +3,6 @@
 .idea/workspace.xml
 .idea/encodings.xml
 .idea/scopes/scope_settings.xml
+.settings/*
+.project/
+.buildpath/
