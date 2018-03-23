@@ -470,7 +470,7 @@ class classL1MainEntrySocketListenServer
     }
 
 
-    /********************************************GTJY TCP hcuport****************************************************/
+    /********************************************GTJY UDP hcuport****************************************************/
 
     //具体port处理函数
     public function udp_gtjyport_onConnect($swoole_socket_serv, $fd, $from_id ) {
@@ -487,7 +487,7 @@ class classL1MainEntrySocketListenServer
         echo PHP_EOL.date('Y/m/d H:i:s', time())." ";
         echo "udp_gtjyport_onReceive: From HCU_Client [{$fd}] : {$data}".PHP_EOL;
 
-        $swoole_socket_serv->send($fd, $data);
+        //$swoole_socket_serv->send($fd, $data);
 
         $msg = array("socketid" => $fd, "data"=>$data);
         $obj = new classTaskL1vmCoreRouter();
