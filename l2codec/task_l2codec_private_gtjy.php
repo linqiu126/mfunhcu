@@ -52,12 +52,22 @@ class classTaskL2codecPrivateGtjy
             return false;
         }
         else{ // HUIREST decode
+            //$msg = array("inputBinCode"=>"AA11C538326217CCA301092A0C0E1C1B7E2C01640000002C010000881300000000000024CC1000CC1000000000000100002100000000000000E803000001000D0B191B7E460111176309813D0D00F401C10341BB");
+            $inputBinCode = "";
+            for($i=0; $i<strlen($msg["data"]); $i++){
+                $inputBinCode = $inputBinCode.bin2hex($msg["data"][$i]);
+            }
+
+            $parContent = array("inputBinCode"=>$inputBinCode);
             $parJson = array("restTag" =>HUIREST_ACCESS_CONST_SVRTAG_SPECIAL_IN_STRING,
                             "actionId" => HUIREST_ACTIONID_SPECIAL_GTJY_water_meter_decode,
                             "parFlag" => 1,
-                            "parConent" => $msg);
+                            "parContent" => $parContent);
 
-            $result = $this->https_request(HUIRST_ACTIONID_SPECIAL_URL, $parJson);
+            $result = $this->https_request(HUIRST_ACTIONID_SPECIAL_URL, json_encode($parJson));
+
+            $resp = json_decode($result);
+
 
             if (!empty($result)) {
                 $log_content = "HUIREST decode result: " . json_encode($result, JSON_UNESCAPED_UNICODE);

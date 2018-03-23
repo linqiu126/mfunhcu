@@ -130,7 +130,7 @@ class classL1MainEntrySocketListenServer
         $huitpxml_tcp_picport->on('Receive', array($this, 'huitpxml_tcp_picport_onReceive'));
         $huitpxml_tcp_picport->on('Close', array($this, 'huitpxml_tcp_picport_onClose'));
 
-        //ZXGT NB-IOT接入第三方设备
+        //ZXGT NB-IOT接入第三方设备 9530
         $tcp_uiport = $this->swoole_socket_serv->listen("0.0.0.0", MFUN_SWOOLE_SOCKET_GTJY_UDP, SWOOLE_SOCK_UDP);
         //$tcp_uiport->set(array(
         //    'open_tcp_nodelay' => true ) //开启后TCP连接发送数据时会无关闭Nagle合并算法，立即发往客户端连接。在某些场景下，如http服务器，可以提升响应速度。
@@ -485,8 +485,7 @@ class classL1MainEntrySocketListenServer
     {
         echo PHP_EOL.date('Y/m/d H:i:s', time())." ";
         echo "udp_gtjyport_onReceive: From HCU_Client [{$fd}] : {$data}".PHP_EOL;
-        echo "Data[0]=".intval(bin2hex($data[0]),16)."Data[1]=".intval(bin2hex($data[1]),16);
-
+        //echo "Data[0]=".bin2hex($data[0])." Data[1]=".bin2hex($data[1]).PHP_EOL;
         //$swoole_socket_serv->send($fd, $data);
 
         $msg = array("socketid" => $fd, "data"=>$data);

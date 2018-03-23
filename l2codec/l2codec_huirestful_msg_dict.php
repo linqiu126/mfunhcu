@@ -9,6 +9,7 @@
 //HuirestActionidDefination
 
 define("HUIRST_ACTIONID_SPECIAL_URL", "http://localhost:8000");
+define("HUIRST_ACTIONID_SPECIAL_MSG_LEN", 72);
 
 define("HUIREST_ACTIONID_SPECIAL_test1", 0x5000);
 define("HUIREST_ACTIONID_SPECIAL_GTJY_water_meter_encode", 0x5001);
