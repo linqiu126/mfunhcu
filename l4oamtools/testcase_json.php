@@ -7,7 +7,7 @@ include_once "../l1comvm/vmlayer.php";
  * Date: 2018/1/23
  * Time: 10:31
  */
-if (EARTH_QUAKE == true) {
+if (TC_EARTH_QUAKE_JSON == true) {
 
 //    {
 //        “ToUsr”:”XHZN”,
@@ -56,6 +56,20 @@ if (EARTH_QUAKE == true) {
 //    $msg = json_encode($msg);
 
     $obj->mfun_l1vm_task_main_entry(MFUN_MAIN_ENTRY_IOT_JSON, MSG_ID_L2SDK_JSON_DATA_INCOMING, "MSG_ID_L2SDK_JSON_DATA_INCOMING", $msg);
+}
+
+elseif(TC_GTJY_SPECIAL_JSON == true){
+    $json =  "{\"restTag\": \"special\", \"actionId\": 20482, \"parFlag\": 1, \"parContent\": {\"returnStringCode\": {\"剩余量\":0.0,\"GPRS累计充值量\":0.0,\"阀门状态\":\"开阀\",\"单价\":0.48,\"累积量\":0.0,\"负计数\":2304.0,\"rtn\":\"9000\",\"最后一次充值量\":0.0,\"启动日期\":\"05-06\",\"信号强度\":0,\"表类型\":\"A8\",\"累计金额\":0.0,\"表内运行状态\":\" \",\"表内时间\":\"912-1-1 126:23:11\",\"IC卡最后一次充值量\":0.0,\"表号\":\"04140318\"}}}";
+
+    $obj = new classTaskL2codecPrivateGtjy();
+
+    $resp = $obj->func_private_gtjy_json_process($json);
+
+
+    $msg = array("socketid" => 1, "data"=>$json);
+//    $obj = new classTaskL1vmCoreRouter();
+//    $obj->mfun_l1vm_task_main_entry(MFUN_MAIN_ENTRY_GTJY_NBIOT, MSG_ID_L2SDK_GTJY_NBIOT_DATA_INCOMING, "MSG_ID_L2SDK_GTJY_NBIOT_DATA_INCOMING", $msg);
+
 }
 
 ?>

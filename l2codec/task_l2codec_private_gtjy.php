@@ -6,6 +6,7 @@
  * Time: 15:06
  */
 
+header("Content-type:text/html;charset=utf-8");
 include_once "l2codec_huirestful_msg_dict.php";
 
 class classTaskL2codecPrivateGtjy
@@ -25,6 +26,62 @@ class classTaskL2codecPrivateGtjy
         $output = curl_exec($curl);
         curl_close($curl);
         return $output;
+    }
+
+    public function func_private_gtjy_json_process($json_input)
+    {
+        //建立连接
+        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli) {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $mysqli->query("SET NAMES utf8");
+
+        $input = json_decode($json_input);
+        //一级解码
+        $restTag = $input->restTag;
+        if (isset($input->restTag)) $restTag = $input->restTag; else  $restTag = "";
+        if (isset($input->actionId)) $actionId = intval($input->actionId); else  $actionId = 0;
+        if (isset($input->parFlag)) $parFlag = $input->parFlag; else  $parFlag = "";
+        if (isset($input->parContent)) $parContent = $input->parContent; else  $parContent = "";
+        if (isset($parContent->returnStringCode)) $returnStringCode = $parContent->returnStringCode; else  $returnStringCode = "";
+        //二级解码
+        if (isset($returnStringCode->剩余量)) $remainVol= $returnStringCode->剩余量; else  $remainVol = "";
+        if (isset($returnStringCode->GPRS累计充值量)) $accGprsVol= $returnStringCode->GPRS累计充值量; else  $accGprsVol = "";
+        if (isset($returnStringCode->阀门状态)) $valveState= $returnStringCode->阀门状态; else  $valveState = "";
+        if (isset($returnStringCode->单价)) $unitPrice= $returnStringCode->单价; else  $unitPrice = "";
+        if (isset($returnStringCode->累积量)) $accVol= $returnStringCode->累积量; else  $accVol = "";
+        if (isset($returnStringCode->负计数)) $minusNum= $returnStringCode->负计数; else  $minusNum = "";
+        if (isset($returnStringCode->rtn)) $rtn= $returnStringCode->rtn; else  $rtn = "";
+        if (isset($returnStringCode->最后一次充值量)) $lastRecharge= $returnStringCode->最后一次充值量; else  $lastRecharge = "";
+        if (isset($returnStringCode->启动日期)) $startDate= $returnStringCode->启动日期; else  $startDate = "";
+        if (isset($returnStringCode->信号强度)) $sigLevel= $returnStringCode->信号强度; else  $sigLevel = "";
+        if (isset($returnStringCode->表类型)) $meterType= $returnStringCode->表类型; else  $meterType = "";
+        if (isset($returnStringCode->累计金额)) $accMoney= $returnStringCode->累计金额; else  $accMoney = "";
+        if (isset($returnStringCode->表内运行状态)) $meterState= $returnStringCode->表内运行状态; else  $meterState = "";
+        if (isset($returnStringCode->表内时间)) $meterTime= $returnStringCode->表内时间; else  $meterTime = "";
+        if (isset($returnStringCode->IC卡最后一次充值量)) $lastIcRecharge= $returnStringCode->IC卡最后一次充值量; else  $lastIcRecharge = "";
+        if (isset($returnStringCode->表号)) $devCode= MFUN_HCU_GTJY_DEVICE_NAME_PREFIX.$returnStringCode->表号; else  $devCode = "";
+
+        $statCode = "";
+        //更新当前聚合表
+        $timestamp = time();
+        $currentTime = date("Y-m-d H:i:s",$timestamp);
+        $result = $mysqli->query("SELECT * FROM `t_l3f3dm_gtjy_currentreport` WHERE (`devcode` = '$devCode') ");
+        if (($result->num_rows)>0) {
+            $query_str = "UPDATE `t_l3f3dm_gtjy_currentreport` SET `statcode` = '$statCode',`createtime` = '$currentTime',`remainvol` = '$remainVol',`accgprsvol` = '$accGprsVol',
+                          `valvestate` = '$valveState',`unitprice` = '$unitPrice',`accvol` = '$accVol',`minusnum` = '$minusNum',`rtn` = '$rtn',`lastrecharge` = '$lastRecharge',`startdate` = '$startDate',
+                          `siglevel` = '$sigLevel',`metertype` = '$meterType',`accmoney` = '$accMoney',`meterstate` = '$meterState',`metertime` = '$meterTime',`lasticrecharge` = '$lastIcRecharge'
+                          WHERE (`devcode` = '$devCode')";
+            $result = $mysqli->query($query_str);
+        }
+        else {
+            $query_str = "INSERT INTO `t_l3f3dm_gtjy_currentreport` (`devcode`,`statcode`,`createtime`,`remainvol`,`accgprsvol`,`valvestate`,`unitprice`,`accvol`,`minusnum`,`rtn`,`lastrecharge`,`startdate`,`siglevel`,`metertype`,`accmoney`,`meterstate`,`metertime`,`lasticrecharge`)
+                            VALUES ('$devCode','$statCode','$currentTime','$remainVol','$accGprsVol','$valveState','$unitPrice','$accVol','$minusNum','$rtn','$lastRecharge','$startDate','$sigLevel','$meterType','$accMoney','$meterState','$meterTime','$lastIcRecharge')";
+            $result = $mysqli->query($query_str);
+        }
+
+        return $result;
     }
 
 
@@ -64,12 +121,11 @@ class classTaskL2codecPrivateGtjy
                             "parFlag" => 1,
                             "parContent" => $parContent);
 
-            $result = $this->https_request(HUIRST_ACTIONID_SPECIAL_URL, json_encode($parJson));
+            $huirest = $this->https_request(HUIRST_ACTIONID_SPECIAL_URL, json_encode($parJson)); //HTTP发送参数需要JSON编码成string
 
-            $resp = json_decode($result);
+            $result = $this->func_private_gtjy_json_process($huirest);
 
-
-            if (!empty($result)) {
+            if (!empty($huirest)) {
                 $log_content = "HUIREST decode result: " . json_encode($result, JSON_UNESCAPED_UNICODE);
                 $loggerObj->mylog($project,"NULL","MFUN_TASK_ID_L2CODEC_PRIVATE_GTJY","MFUN_TASK_ID_L2CODEC_PRIVATE_GTJY",$msgName,$log_content);
                 return false;
