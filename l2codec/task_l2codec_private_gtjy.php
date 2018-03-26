@@ -39,7 +39,6 @@ class classTaskL2codecPrivateGtjy
 
         $input = json_decode($json_input);
         //一级解码
-        $restTag = $input->restTag;
         if (isset($input->restTag)) $restTag = $input->restTag; else  $restTag = "";
         if (isset($input->actionId)) $actionId = intval($input->actionId); else  $actionId = 0;
         if (isset($input->parFlag)) $parFlag = $input->parFlag; else  $parFlag = "";
@@ -122,6 +121,12 @@ class classTaskL2codecPrivateGtjy
                             "parContent" => $parContent);
 
             $huirest = $this->https_request(HUIRST_ACTIONID_SPECIAL_URL, json_encode($parJson)); //HTTP发送参数需要JSON编码成string
+
+            if (empty($huirest)){
+                $log_content = "E: HUIREST decode error";
+                $loggerObj->mylog($project,"NULL","MFUN_TASK_ID_L1VM","MFUN_TASK_ID_L2CODEC_PRIVATE_GTJY",$msgName,$log_content);
+                return false;
+            }
 
             $result = $this->func_private_gtjy_json_process($huirest);
 
