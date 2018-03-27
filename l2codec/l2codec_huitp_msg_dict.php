@@ -1708,6 +1708,8 @@ class classL2codecHuitpMsgDict
         MFUN_TASK_ID_L2SDK_NBIOT_AGC => array(),
         MFUN_TASK_ID_L2SDK_IOT_JSON => array(),
         MFUN_TASK_ID_L2SDK_IOT_HUITP => array(),
+        MFUN_TASK_ID_L2CODEC_PRIVATE_GTJY => array(),
+        MFUN_TASK_ID_L2CODEC_WSDL_YCJK => array(),
         MFUN_TASK_ID_L2DECODE_HUITP => array(),
         MFUN_TASK_ID_L2ENCODE_HUITP => array(HUITP_MSGID_uni_ccl_state_req,
                                             HUITP_MSGID_uni_ccl_state_confirm,
