@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.4.15.8
+-- version 4.4.15.10
 -- https://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: 2017-09-05 07:45:10
--- 服务器版本： 5.6.32
--- PHP Version: 5.4.16
+-- Generation Time: 2018-03-28 06:44:34
+-- 服务器版本： 5.6.37
+-- PHP Version: 7.0.27
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -44,6 +44,18 @@ CREATE TABLE IF NOT EXISTS `t_l1vm_engpar` (
 -- --------------------------------------------------------
 
 --
+-- 表的结构 `t_l1vm_hcuswdb`
+--
+
+CREATE TABLE IF NOT EXISTS `t_l1vm_hcuswdb` (
+  `date` date NOT NULL,
+  `hcu_sw_ver` varchar(20) NOT NULL,
+  `hcu_db_ver` varchar(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
 -- 表的结构 `t_l2sdk_iothcu_inventory`
 --
 
@@ -54,6 +66,7 @@ CREATE TABLE IF NOT EXISTS `t_l2sdk_iothcu_inventory` (
   `macaddr_wlan0` varchar(20) DEFAULT NULL,
   `ip_wlan0` varchar(20) DEFAULT NULL,
   `macaddr_eth0` char(20) DEFAULT NULL,
+  `ip_eth0` varchar(20) DEFAULT NULL,
   `socketid` int(2) DEFAULT '0',
   `status` char(1) NOT NULL DEFAULT 'Y',
   `simcard` char(20) DEFAULT NULL,
@@ -74,6 +87,8 @@ CREATE TABLE IF NOT EXISTS `t_l2sdk_iothcu_inventory` (
   `service_port` int(4) DEFAULT NULL,
   `ssh_port` int(4) DEFAULT NULL,
   `vnc_port` int(4) DEFAULT NULL,
+  `nvr_web_port` int(4) DEFAULT NULL,
+  `nvr_rtsp_port` int(4) DEFAULT NULL,
   `image_version` varchar(20) DEFAULT NULL,
   `remark` varchar(100) DEFAULT NULL,
   `desc` varchar(50) DEFAULT NULL
@@ -195,12 +210,12 @@ CREATE TABLE IF NOT EXISTS `t_l2snr_alcoholdata` (
 --
 
 CREATE TABLE IF NOT EXISTS `t_l2snr_aqyc_minreport` (
-  `sid` int(4) NOT NULL,
-  `devcode` char(20) NOT NULL,
-  `statcode` char(20) NOT NULL,
+  `sid` int(6) NOT NULL,
+  `devcode` varchar(20) NOT NULL,
+  `statcode` varchar(20) NOT NULL,
   `reportdate` date NOT NULL,
   `hourminindex` int(2) NOT NULL,
-  `dataflag` char(10) NOT NULL DEFAULT 'Y',
+  `dataflag` char(1) NOT NULL DEFAULT 'Y',
   `pm01` float DEFAULT NULL,
   `pm25` float DEFAULT NULL,
   `pm10` float DEFAULT NULL,
@@ -299,6 +314,32 @@ CREATE TABLE IF NOT EXISTS `t_l2snr_emcdata` (
 -- --------------------------------------------------------
 
 --
+-- 表的结构 `t_l2snr_fdwq_wrist`
+--
+
+CREATE TABLE IF NOT EXISTS `t_l2snr_fdwq_wrist` (
+  `sid` int(6) NOT NULL,
+  `devcode` varchar(20) NOT NULL,
+  `rfid` varchar(16) NOT NULL,
+  `reporttime` datetime NOT NULL,
+  `sampletime` datetime NOT NULL,
+  `temp` int(4) NOT NULL DEFAULT '0',
+  `miles` int(4) NOT NULL DEFAULT '0',
+  `curhbrate` int(2) NOT NULL DEFAULT '0',
+  `hbratemax` int(2) NOT NULL DEFAULT '0',
+  `hbratemin` int(2) NOT NULL DEFAULT '0',
+  `hbrateavg` int(2) NOT NULL DEFAULT '0',
+  `bloodpress` int(4) NOT NULL DEFAULT '0',
+  `sleeplvl` int(4) NOT NULL DEFAULT '0',
+  `airpress` int(4) NOT NULL DEFAULT '0',
+  `energylvl` int(4) NOT NULL DEFAULT '0',
+  `waterdrink` int(4) NOT NULL DEFAULT '0',
+  `skinatttached` int(1) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
 -- 表的结构 `t_l2snr_fhys_minreport`
 --
 
@@ -385,11 +426,14 @@ CREATE TABLE IF NOT EXISTS `t_l2snr_hourreport` (
 
 CREATE TABLE IF NOT EXISTS `t_l2snr_hsmmpdata` (
   `sid` int(4) NOT NULL,
-  `deviceid` char(50) NOT NULL,
-  `videourl` text NOT NULL,
-  `dataflag` char(1) NOT NULL DEFAULT 'N',
+  `statcode` varchar(20) NOT NULL,
   `reportdate` date NOT NULL,
-  `hourminindex` int(2) NOT NULL
+  `hourminindex` int(2) NOT NULL,
+  `filename` varchar(100) DEFAULT NULL,
+  `videostart` int(4) NOT NULL DEFAULT '0',
+  `videoend` int(4) NOT NULL DEFAULT '0',
+  `filesize` int(4) NOT NULL DEFAULT '0',
+  `dataflag` char(1) NOT NULL DEFAULT 'Y'
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -642,10 +686,9 @@ CREATE TABLE IF NOT EXISTS `t_l2snr_picturedata` (
   `reportdate` date NOT NULL,
   `hourminindex` int(2) NOT NULL,
   `filename` varchar(100) NOT NULL,
-  `filetype` varchar(10) DEFAULT NULL,
-  `filesize` varchar(10) NOT NULL DEFAULT '0',
-  `filedescription` char(50) DEFAULT NULL,
-  `dataflag` char(1) NOT NULL DEFAULT 'N'
+  `filesize` int(4) NOT NULL DEFAULT '0',
+  `filedescription` varchar(100) DEFAULT NULL,
+  `dataflag` char(1) NOT NULL DEFAULT 'Y'
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -689,11 +732,11 @@ CREATE TABLE IF NOT EXISTS `t_l2snr_raindata` (
 
 CREATE TABLE IF NOT EXISTS `t_l2snr_sensortype` (
   `typeid` char(10) NOT NULL,
-  `name` char(10) NOT NULL,
-  `value_min` int(2) NOT NULL DEFAULT '0',
-  `value_max` int(2) NOT NULL,
-  `model` char(20) DEFAULT NULL,
-  `vendor` char(20) DEFAULT NULL,
+  `name` varchar(10) NOT NULL,
+  `value_min` float NOT NULL DEFAULT '0',
+  `value_max` float NOT NULL,
+  `model` varchar(20) DEFAULT NULL,
+  `vendor` varchar(20) DEFAULT NULL,
   `dataformat` int(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -706,7 +749,7 @@ CREATE TABLE IF NOT EXISTS `t_l2snr_sensortype` (
 CREATE TABLE IF NOT EXISTS `t_l2snr_tempdata` (
   `sid` int(4) NOT NULL,
   `deviceid` char(50) NOT NULL,
-  `temperature` float DEFAULT NULL,
+  `temperature` float DEFAULT '0',
   `dataflag` char(1) DEFAULT NULL,
   `reportdate` date NOT NULL,
   `hourminindex` int(2) NOT NULL
@@ -780,6 +823,9 @@ CREATE TABLE IF NOT EXISTS `t_l3f1sym_account` (
   `email` char(50) DEFAULT NULL,
   `regdate` date DEFAULT NULL,
   `city` char(10) DEFAULT NULL,
+  `maponline` char(1) NOT NULL DEFAULT 'Y',
+  `maplatitude` int(4) NOT NULL DEFAULT '0',
+  `maplongitude` int(4) NOT NULL DEFAULT '0',
   `backup` text
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -856,6 +902,31 @@ CREATE TABLE IF NOT EXISTS `t_l3f2cm_favourlist` (
   `uid` varchar(10) NOT NULL,
   `statcode` varchar(20) NOT NULL,
   `createtime` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `t_l3f2cm_fdwq_soldierinfo`
+--
+
+CREATE TABLE IF NOT EXISTS `t_l3f2cm_fdwq_soldierinfo` (
+  `sid` int(4) NOT NULL,
+  `soldiername` varchar(20) NOT NULL,
+  `soldierid` varchar(20) NOT NULL DEFAULT 'NULL',
+  `department` varchar(100) NOT NULL DEFAULT 'NULL',
+  `title` varchar(20) NOT NULL DEFAULT 'NULL',
+  `gender` int(1) NOT NULL DEFAULT '0',
+  `birthday` date NOT NULL,
+  `idcard` char(18) NOT NULL DEFAULT 'NULL',
+  `rfid` varchar(16) NOT NULL DEFAULT 'NULL',
+  `hight` int(4) NOT NULL DEFAULT '0',
+  `weight` int(4) NOT NULL DEFAULT '0',
+  `bloodtype` int(1) NOT NULL DEFAULT '0',
+  `group` varchar(20) NOT NULL DEFAULT 'NULL',
+  `telephone` varchar(20) NOT NULL DEFAULT 'NULL',
+  `email` varchar(50) NOT NULL DEFAULT 'NULL',
+  `soldierpic` varchar(100) NOT NULL DEFAULT 'NULL'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -959,7 +1030,6 @@ CREATE TABLE IF NOT EXISTS `t_l3f2cm_projinfo` (
   `telephone` char(20) DEFAULT NULL,
   `department` char(30) DEFAULT NULL,
   `address` char(30) DEFAULT NULL,
-  `sw_base` char(1) NOT NULL DEFAULT '0',
   `starttime` date DEFAULT NULL,
   `pre_endtime` date DEFAULT NULL,
   `true_endtime` date DEFAULT NULL,
@@ -1049,12 +1119,40 @@ CREATE TABLE IF NOT EXISTS `t_l3f3dm_fhys_currentreport` (
 -- --------------------------------------------------------
 
 --
+-- 表的结构 `t_l3f3dm_gtjy_currentreport`
+--
+
+CREATE TABLE IF NOT EXISTS `t_l3f3dm_gtjy_currentreport` (
+  `devcode` varchar(20) NOT NULL,
+  `statcode` varchar(20) DEFAULT NULL,
+  `createtime` datetime DEFAULT NULL,
+  `remainvol` int(4) DEFAULT NULL,
+  `accgprsvol` int(4) DEFAULT NULL,
+  `valvestate` varchar(10) DEFAULT NULL,
+  `unitprice` varchar(10) DEFAULT NULL,
+  `accvol` int(4) DEFAULT NULL,
+  `minusnum` int(4) DEFAULT NULL,
+  `rtn` varchar(10) DEFAULT NULL,
+  `lastrecharge` int(4) DEFAULT NULL,
+  `startdate` date DEFAULT NULL,
+  `siglevel` int(4) DEFAULT NULL,
+  `metertype` varchar(10) DEFAULT NULL,
+  `accmoney` int(4) DEFAULT NULL,
+  `meterstate` varchar(10) DEFAULT NULL,
+  `metertime` datetime DEFAULT NULL,
+  `lasticrecharge` int(4) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
 -- 表的结构 `t_l3f3dm_siteinfo`
 --
 
 CREATE TABLE IF NOT EXISTS `t_l3f3dm_siteinfo` (
   `statcode` char(20) NOT NULL,
   `statname` char(50) NOT NULL,
+  `status` char(1) DEFAULT 'I',
   `p_code` char(20) DEFAULT NULL,
   `chargeman` char(20) DEFAULT NULL,
   `telephone` char(15) DEFAULT NULL,
@@ -1063,7 +1161,7 @@ CREATE TABLE IF NOT EXISTS `t_l3f3dm_siteinfo` (
   `street` char(20) DEFAULT NULL,
   `address` char(50) DEFAULT NULL,
   `starttime` date DEFAULT NULL,
-  `square` char(10) NOT NULL DEFAULT '0',
+  `square` char(10) DEFAULT '0',
   `altitude` int(4) DEFAULT '0',
   `flag_la` char(1) DEFAULT 'N',
   `latitude` int(4) DEFAULT '0',
@@ -1093,27 +1191,6 @@ CREATE TABLE IF NOT EXISTS `t_l3f4icm_sensorctrl` (
 -- --------------------------------------------------------
 
 --
--- 表的结构 `t_l3f10oam_swloadinfo`
---
-
-CREATE TABLE IF NOT EXISTS `t_l3f10oam_swloadinfo` (
-  `sid` int(4) NOT NULL,
-  `equentry` int(1) NOT NULL DEFAULT '0',
-  `validflag` int(1) NOT NULL DEFAULT '0',
-  `upgradeflag` int(1) NOT NULL DEFAULT '0',
-  `hwtype` int(2) NOT NULL DEFAULT '0',
-  `hwid` int(2) NOT NULL DEFAULT '0',
-  `swrel` int(2) NOT NULL DEFAULT '0',
-  `swver` int(2) NOT NULL DEFAULT '0',
-  `dbver` int(2) NOT NULL DEFAULT '0',
-  `filelink` varchar(100) NOT NULL DEFAULT 'NULL',
-  `filesize` int(4) NOT NULL DEFAULT '0',
-  `checksum` int(2) NOT NULL DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
 -- 表的结构 `t_l3f4icm_swfactory`
 --
 
@@ -1131,35 +1208,23 @@ CREATE TABLE IF NOT EXISTS `t_l3f4icm_swfactory` (
 -- --------------------------------------------------------
 
 --
--- 表的结构 `t_l3f10oam_suhistory`
---
-
-CREATE TABLE IF NOT EXISTS `t_l3f10oam_suhistory` (
-  `devcode` varchar(20) NOT NULL,
-  `sutimes` int(2) NOT NULL DEFAULT '0',
-  `lastsu` date NOT NULL,
-  `lastrel` int(2) NOT NULL,
-  `lastver` int(2) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
 -- 表的结构 `t_l3f5fm_aqyc_alarmdata`
 --
 
 CREATE TABLE IF NOT EXISTS `t_l3f5fm_aqyc_alarmdata` (
   `sid` int(4) NOT NULL,
   `devcode` varchar(20) NOT NULL,
-  `equipmentid` int(4) NOT NULL,
-  `alarmtype` int(4) DEFAULT NULL,
-  `alarmdesc` int(4) DEFAULT NULL,
-  `alarmseverity` int(4) DEFAULT '0',
-  `alarmclearflag` int(4) NOT NULL,
-  `timestamp` datetime NOT NULL,
-  `picturename` varchar(100) DEFAULT NULL,
+  `statcode` varchar(20) NOT NULL,
+  `alarmflag` char(1) NOT NULL DEFAULT 'N',
+  `alarmseverity` int(1) NOT NULL DEFAULT '0',
+  `alarmcontent` int(4) NOT NULL DEFAULT '0',
+  `alarmtype` int(2) DEFAULT '0',
+  `clearflag` int(1) NOT NULL DEFAULT '0',
   `causeid` int(4) DEFAULT NULL,
-  `alarmcontent` int(4) DEFAULT NULL
+  `tsgen` datetime NOT NULL,
+  `tsclose` datetime DEFAULT NULL,
+  `alarmpic` varchar(100) DEFAULT NULL,
+  `alarmproc` varchar(200) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -1177,7 +1242,7 @@ CREATE TABLE IF NOT EXISTS `t_l3f5fm_fhys_alarmdata` (
   `alarmcode` int(2) NOT NULL,
   `tsgen` datetime NOT NULL,
   `tsclose` datetime DEFAULT NULL,
-  `alarmproc` varchar(100) DEFAULT NULL
+  `alarmproc` varchar(200) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -1259,6 +1324,286 @@ CREATE TABLE IF NOT EXISTS `t_l3f9gism_scheduledirection` (
 -- --------------------------------------------------------
 
 --
+-- 表的结构 `t_l3f10oam_qrcodeinfo`
+--
+
+CREATE TABLE IF NOT EXISTS `t_l3f10oam_qrcodeinfo` (
+  `sid` int(4) NOT NULL,
+  `pdtype` char(3) NOT NULL,
+  `pdcode` char(5) NOT NULL,
+  `pjcode` char(5) NOT NULL,
+  `devcode` varchar(20) NOT NULL,
+  `validflag` char(1) NOT NULL DEFAULT 'N',
+  `validdate` date DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `t_l3f10oam_regqrcode`
+--
+
+CREATE TABLE IF NOT EXISTS `t_l3f10oam_regqrcode` (
+  `sid` int(4) NOT NULL,
+  `applytime` datetime NOT NULL,
+  `applyuser` varchar(20) NOT NULL,
+  `faccode` varchar(20) NOT NULL,
+  `pdtype` char(3) NOT NULL,
+  `pdcode` char(5) NOT NULL,
+  `pjcode` char(5) NOT NULL,
+  `usercode` char(3) NOT NULL,
+  `formalflag` char(1) NOT NULL,
+  `applynum` int(2) NOT NULL,
+  `approvenum` int(2) NOT NULL,
+  `digstart` int(2) NOT NULL,
+  `digstop` int(2) NOT NULL,
+  `zipfile` varchar(30) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `t_l3f10oam_suhistory`
+--
+
+CREATE TABLE IF NOT EXISTS `t_l3f10oam_suhistory` (
+  `devcode` varchar(20) NOT NULL,
+  `sutimes` int(2) NOT NULL DEFAULT '0',
+  `lastsu` date NOT NULL,
+  `lastrel` int(2) NOT NULL,
+  `lastver` int(2) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `t_l3f10oam_swloadinfo`
+--
+
+CREATE TABLE IF NOT EXISTS `t_l3f10oam_swloadinfo` (
+  `sid` int(4) NOT NULL,
+  `equentry` int(1) NOT NULL DEFAULT '0',
+  `validflag` int(1) NOT NULL DEFAULT '0',
+  `upgradeflag` int(1) NOT NULL DEFAULT '0',
+  `hwtype` int(2) NOT NULL DEFAULT '0',
+  `hwid` int(2) NOT NULL DEFAULT '0',
+  `swrel` int(2) NOT NULL DEFAULT '0',
+  `swver` int(2) NOT NULL DEFAULT '0',
+  `dbver` int(2) NOT NULL DEFAULT '0',
+  `filelink` varchar(100) NOT NULL DEFAULT 'NULL',
+  `filesize` int(4) NOT NULL DEFAULT '0',
+  `checksum` int(2) NOT NULL DEFAULT '0',
+  `note` text
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `t_l3f11faam_appleproduction`
+--
+
+CREATE TABLE IF NOT EXISTS `t_l3f11faam_appleproduction` (
+  `sid` int(6) NOT NULL,
+  `pjcode` char(5) NOT NULL,
+  `qrcode` char(20) NOT NULL,
+  `owner` varchar(20) NOT NULL,
+  `applegrade` int(2) NOT NULL,
+  `applyweek` int(1) NOT NULL,
+  `applytime` datetime NOT NULL,
+  `activetime` datetime DEFAULT NULL,
+  `activeman` varchar(20) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `t_l3f11faam_buy_suppliessheet`
+--
+
+CREATE TABLE IF NOT EXISTS `t_l3f11faam_buy_suppliessheet` (
+  `sid` int(4) NOT NULL,
+  `supplier` char(50) NOT NULL,
+  `reason` char(50) NOT NULL,
+  `datatype` char(50) NOT NULL,
+  `amount` int(10) NOT NULL,
+  `unitprice` double NOT NULL,
+  `storagetime` datetime NOT NULL,
+  `totalprice` int(20) NOT NULL,
+  `datype` char(50) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `t_l3f11faam_dailysheet`
+--
+
+CREATE TABLE IF NOT EXISTS `t_l3f11faam_dailysheet` (
+  `sid` int(4) NOT NULL,
+  `pjcode` char(5) NOT NULL,
+  `employee` varchar(20) NOT NULL,
+  `workday` date NOT NULL,
+  `arrivetime` time NOT NULL,
+  `leavetime` time DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `t_l3f11faam_factorysheet`
+--
+
+CREATE TABLE IF NOT EXISTS `t_l3f11faam_factorysheet` (
+  `sid` int(4) NOT NULL,
+  `pjcode` char(5) NOT NULL,
+  `address` varchar(100) NOT NULL,
+  `latitude` int(4) NOT NULL,
+  `longitude` int(4) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `t_l3f11faam_material_history`
+--
+
+CREATE TABLE IF NOT EXISTS `t_l3f11faam_material_history` (
+  `sid` int(4) NOT NULL,
+  `stockid` char(50) NOT NULL,
+  `stockname` char(50) NOT NULL,
+  `into` char(2) NOT NULL,
+  `bucketnum` int(8) NOT NULL,
+  `price` int(20) NOT NULL,
+  `vendor` char(50) DEFAULT NULL,
+  `charge` char(50) NOT NULL,
+  `mobile` char(50) NOT NULL,
+  `trunk` char(50) DEFAULT NULL,
+  `target` char(50) DEFAULT NULL,
+  `logistics` char(50) DEFAULT NULL,
+  `time` datetime NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `t_l3f11faam_material_stocksheet`
+--
+
+CREATE TABLE IF NOT EXISTS `t_l3f11faam_material_stocksheet` (
+  `sid` int(4) NOT NULL,
+  `stockname` char(50) NOT NULL,
+  `stockaddress` char(50) NOT NULL,
+  `stockheader` char(50) NOT NULL,
+  `stocktime` datetime NOT NULL,
+  `isself` char(20) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `t_l3f11faam_material_table`
+--
+
+CREATE TABLE IF NOT EXISTS `t_l3f11faam_material_table` (
+  `sid` int(4) NOT NULL,
+  `stockname` char(50) NOT NULL,
+  `bucketnum` int(8) NOT NULL,
+  `totalprice` int(20) NOT NULL,
+  `operatime` datetime NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `t_l3f11faam_membersheet`
+--
+
+CREATE TABLE IF NOT EXISTS `t_l3f11faam_membersheet` (
+  `mid` char(10) NOT NULL,
+  `pjcode` char(5) NOT NULL,
+  `employee` varchar(20) DEFAULT NULL,
+  `gender` char(1) DEFAULT NULL,
+  `phone` char(11) DEFAULT NULL,
+  `openid` varchar(50) NOT NULL,
+  `regdate` date NOT NULL,
+  `position` varchar(10) DEFAULT NULL,
+  `address` varchar(100) DEFAULT NULL,
+  `memo` text
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `t_l3f11faam_products_into`
+--
+
+CREATE TABLE IF NOT EXISTS `t_l3f11faam_products_into` (
+  `sid` int(4) NOT NULL,
+  `stockname` char(50) NOT NULL,
+  `productweight` double NOT NULL,
+  `productsize` char(50) NOT NULL,
+  `productnum` int(10) NOT NULL,
+  `number` int(10) NOT NULL,
+  `productcharge` char(50) NOT NULL,
+  `stocktime` datetime NOT NULL,
+  `message` char(50) DEFAULT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `t_l3f11faam_products_out`
+--
+
+CREATE TABLE IF NOT EXISTS `t_l3f11faam_products_out` (
+  `sid` int(8) NOT NULL,
+  `stockname` char(50) NOT NULL,
+  `productweight` double NOT NULL,
+  `productsize` char(50) NOT NULL,
+  `productnum` int(10) NOT NULL,
+  `number` int(10) NOT NULL,
+  `containernumber` char(50) NOT NULL,
+  `platenumber` char(50) NOT NULL,
+  `drivername` char(50) NOT NULL,
+  `driverpho` char(50) NOT NULL,
+  `receivingunit` char(50) NOT NULL,
+  `logisticsunit` char(50) NOT NULL,
+  `outtime` datetime NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `t_l3f11faam_products_stocksheet`
+--
+
+CREATE TABLE IF NOT EXISTS `t_l3f11faam_products_stocksheet` (
+  `sid` int(4) NOT NULL,
+  `stockname` char(50) NOT NULL,
+  `stockaddress` char(50) NOT NULL,
+  `stockheader` char(50) NOT NULL,
+  `stocktime` datetime NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `t_l3f11faam_typesheet`
+--
+
+CREATE TABLE IF NOT EXISTS `t_l3f11faam_typesheet` (
+  `sid` int(4) NOT NULL,
+  `pjcode` char(5) NOT NULL,
+  `typecode` varchar(10) NOT NULL,
+  `applenum` int(2) NOT NULL,
+  `appleweight` float NOT NULL,
+  `applegrade` char(1) NOT NULL,
+  `memo` text
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
 -- 表的结构 `t_l3fxprcm_fhys_locklog`
 --
 
@@ -1271,7 +1616,7 @@ CREATE TABLE IF NOT EXISTS `t_l3fxprcm_fhys_locklog` (
   `keyusername` varchar(20) NOT NULL,
   `eventtype` char(1) NOT NULL,
   `statcode` varchar(20) NOT NULL,
-  `createtime` char(20) NOT NULL,
+  `createtime` datetime NOT NULL,
   `picname` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -1297,6 +1642,12 @@ CREATE TABLE IF NOT EXISTS `t_l3fxprcm_workerbill` (
 --
 ALTER TABLE `t_l1vm_engpar`
   ADD PRIMARY KEY (`sid`);
+
+--
+-- Indexes for table `t_l1vm_hcuswdb`
+--
+ALTER TABLE `t_l1vm_hcuswdb`
+  ADD UNIQUE KEY `date` (`date`);
 
 --
 -- Indexes for table `t_l2sdk_iothcu_inventory`
@@ -1375,6 +1726,12 @@ ALTER TABLE `t_l2snr_emcaccumulation`
 -- Indexes for table `t_l2snr_emcdata`
 --
 ALTER TABLE `t_l2snr_emcdata`
+  ADD PRIMARY KEY (`sid`);
+
+--
+-- Indexes for table `t_l2snr_fdwq_wrist`
+--
+ALTER TABLE `t_l2snr_fdwq_wrist`
   ADD PRIMARY KEY (`sid`);
 
 --
@@ -1537,6 +1894,12 @@ ALTER TABLE `t_l3f2cm_favourlist`
   ADD PRIMARY KEY (`sid`);
 
 --
+-- Indexes for table `t_l3f2cm_fdwq_soldierinfo`
+--
+ALTER TABLE `t_l3f2cm_fdwq_soldierinfo`
+  ADD PRIMARY KEY (`sid`);
+
+--
 -- Indexes for table `t_l3f2cm_fhys_keyauth`
 --
 ALTER TABLE `t_l3f2cm_fhys_keyauth`
@@ -1583,6 +1946,12 @@ ALTER TABLE `t_l3f3dm_fhys_currentreport`
   ADD UNIQUE KEY `statcode` (`statcode`);
 
 --
+-- Indexes for table `t_l3f3dm_gtjy_currentreport`
+--
+ALTER TABLE `t_l3f3dm_gtjy_currentreport`
+  ADD PRIMARY KEY (`devcode`);
+
+--
 -- Indexes for table `t_l3f3dm_siteinfo`
 --
 ALTER TABLE `t_l3f3dm_siteinfo`
@@ -1596,9 +1965,9 @@ ALTER TABLE `t_l3f4icm_sensorctrl`
   ADD PRIMARY KEY (`sid`);
 
 --
--- Indexes for table `t_l3f10oam_swloadinfo`
+-- Indexes for table `t_l3f4icm_swfactory`
 --
-ALTER TABLE `t_l3f10oam_swloadinfo`
+ALTER TABLE `t_l3f4icm_swfactory`
   ADD PRIMARY KEY (`sid`);
 
 --
@@ -1641,6 +2010,96 @@ ALTER TABLE `t_l3f9gism_accidencedirection`
 -- Indexes for table `t_l3f9gism_scheduledirection`
 --
 ALTER TABLE `t_l3f9gism_scheduledirection`
+  ADD PRIMARY KEY (`sid`);
+
+--
+-- Indexes for table `t_l3f10oam_qrcodeinfo`
+--
+ALTER TABLE `t_l3f10oam_qrcodeinfo`
+  ADD PRIMARY KEY (`sid`);
+
+--
+-- Indexes for table `t_l3f10oam_regqrcode`
+--
+ALTER TABLE `t_l3f10oam_regqrcode`
+  ADD PRIMARY KEY (`sid`);
+
+--
+-- Indexes for table `t_l3f10oam_swloadinfo`
+--
+ALTER TABLE `t_l3f10oam_swloadinfo`
+  ADD PRIMARY KEY (`sid`);
+
+--
+-- Indexes for table `t_l3f11faam_appleproduction`
+--
+ALTER TABLE `t_l3f11faam_appleproduction`
+  ADD PRIMARY KEY (`sid`);
+
+--
+-- Indexes for table `t_l3f11faam_buy_suppliessheet`
+--
+ALTER TABLE `t_l3f11faam_buy_suppliessheet`
+  ADD PRIMARY KEY (`sid`);
+
+--
+-- Indexes for table `t_l3f11faam_dailysheet`
+--
+ALTER TABLE `t_l3f11faam_dailysheet`
+  ADD PRIMARY KEY (`sid`);
+
+--
+-- Indexes for table `t_l3f11faam_factorysheet`
+--
+ALTER TABLE `t_l3f11faam_factorysheet`
+  ADD PRIMARY KEY (`sid`);
+
+--
+-- Indexes for table `t_l3f11faam_material_history`
+--
+ALTER TABLE `t_l3f11faam_material_history`
+  ADD PRIMARY KEY (`sid`);
+
+--
+-- Indexes for table `t_l3f11faam_material_stocksheet`
+--
+ALTER TABLE `t_l3f11faam_material_stocksheet`
+  ADD PRIMARY KEY (`sid`);
+
+--
+-- Indexes for table `t_l3f11faam_material_table`
+--
+ALTER TABLE `t_l3f11faam_material_table`
+  ADD PRIMARY KEY (`sid`);
+
+--
+-- Indexes for table `t_l3f11faam_membersheet`
+--
+ALTER TABLE `t_l3f11faam_membersheet`
+  ADD PRIMARY KEY (`mid`);
+
+--
+-- Indexes for table `t_l3f11faam_products_into`
+--
+ALTER TABLE `t_l3f11faam_products_into`
+  ADD PRIMARY KEY (`sid`);
+
+--
+-- Indexes for table `t_l3f11faam_products_out`
+--
+ALTER TABLE `t_l3f11faam_products_out`
+  ADD PRIMARY KEY (`sid`);
+
+--
+-- Indexes for table `t_l3f11faam_products_stocksheet`
+--
+ALTER TABLE `t_l3f11faam_products_stocksheet`
+  ADD PRIMARY KEY (`sid`);
+
+--
+-- Indexes for table `t_l3f11faam_typesheet`
+--
+ALTER TABLE `t_l3f11faam_typesheet`
   ADD PRIMARY KEY (`sid`);
 
 --
@@ -1693,7 +2152,7 @@ ALTER TABLE `t_l2snr_alcoholdata`
 -- AUTO_INCREMENT for table `t_l2snr_aqyc_minreport`
 --
 ALTER TABLE `t_l2snr_aqyc_minreport`
-  MODIFY `sid` int(4) NOT NULL AUTO_INCREMENT;
+  MODIFY `sid` int(6) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `t_l2snr_bfsc_minreport`
 --
@@ -1714,6 +2173,11 @@ ALTER TABLE `t_l2snr_emcaccumulation`
 --
 ALTER TABLE `t_l2snr_emcdata`
   MODIFY `sid` int(4) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `t_l2snr_fdwq_wrist`
+--
+ALTER TABLE `t_l2snr_fdwq_wrist`
+  MODIFY `sid` int(6) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `t_l2snr_fhys_minreport`
 --
@@ -1830,6 +2294,11 @@ ALTER TABLE `t_l3f1sym_userprofile`
 ALTER TABLE `t_l3f2cm_favourlist`
   MODIFY `sid` int(4) NOT NULL AUTO_INCREMENT;
 --
+-- AUTO_INCREMENT for table `t_l3f2cm_fdwq_soldierinfo`
+--
+ALTER TABLE `t_l3f2cm_fdwq_soldierinfo`
+  MODIFY `sid` int(4) NOT NULL AUTO_INCREMENT;
+--
 -- AUTO_INCREMENT for table `t_l3f2cm_fhys_keyauth`
 --
 ALTER TABLE `t_l3f2cm_fhys_keyauth`
@@ -1843,11 +2312,6 @@ ALTER TABLE `t_l3f3dm_aqyc_currentreport`
 -- AUTO_INCREMENT for table `t_l3f4icm_sensorctrl`
 --
 ALTER TABLE `t_l3f4icm_sensorctrl`
-  MODIFY `sid` int(4) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `t_l3f10oam_swloadinfo`
---
-ALTER TABLE `t_l3f10oam_swloadinfo`
   MODIFY `sid` int(4) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `t_l3f4icm_swfactory`
@@ -1888,6 +2352,76 @@ ALTER TABLE `t_l3f9gism_accidencedirection`
 -- AUTO_INCREMENT for table `t_l3f9gism_scheduledirection`
 --
 ALTER TABLE `t_l3f9gism_scheduledirection`
+  MODIFY `sid` int(4) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `t_l3f10oam_qrcodeinfo`
+--
+ALTER TABLE `t_l3f10oam_qrcodeinfo`
+  MODIFY `sid` int(4) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `t_l3f10oam_regqrcode`
+--
+ALTER TABLE `t_l3f10oam_regqrcode`
+  MODIFY `sid` int(4) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `t_l3f10oam_swloadinfo`
+--
+ALTER TABLE `t_l3f10oam_swloadinfo`
+  MODIFY `sid` int(4) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `t_l3f11faam_appleproduction`
+--
+ALTER TABLE `t_l3f11faam_appleproduction`
+  MODIFY `sid` int(6) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `t_l3f11faam_buy_suppliessheet`
+--
+ALTER TABLE `t_l3f11faam_buy_suppliessheet`
+  MODIFY `sid` int(4) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `t_l3f11faam_dailysheet`
+--
+ALTER TABLE `t_l3f11faam_dailysheet`
+  MODIFY `sid` int(4) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `t_l3f11faam_factorysheet`
+--
+ALTER TABLE `t_l3f11faam_factorysheet`
+  MODIFY `sid` int(4) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `t_l3f11faam_material_history`
+--
+ALTER TABLE `t_l3f11faam_material_history`
+  MODIFY `sid` int(4) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `t_l3f11faam_material_stocksheet`
+--
+ALTER TABLE `t_l3f11faam_material_stocksheet`
+  MODIFY `sid` int(4) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `t_l3f11faam_material_table`
+--
+ALTER TABLE `t_l3f11faam_material_table`
+  MODIFY `sid` int(4) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `t_l3f11faam_products_into`
+--
+ALTER TABLE `t_l3f11faam_products_into`
+  MODIFY `sid` int(4) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `t_l3f11faam_products_out`
+--
+ALTER TABLE `t_l3f11faam_products_out`
+  MODIFY `sid` int(8) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `t_l3f11faam_products_stocksheet`
+--
+ALTER TABLE `t_l3f11faam_products_stocksheet`
+  MODIFY `sid` int(4) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `t_l3f11faam_typesheet`
+--
+ALTER TABLE `t_l3f11faam_typesheet`
   MODIFY `sid` int(4) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `t_l3fxprcm_fhys_locklog`

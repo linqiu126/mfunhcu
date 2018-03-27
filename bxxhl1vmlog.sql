@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.4.15.8
+-- version 4.4.15.10
 -- https://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: 2017-07-25 13:29:38
--- 服务器版本： 5.6.32
--- PHP Version: 5.4.16
+-- Generation Time: 2018-03-28 06:45:22
+-- 服务器版本： 5.6.37
+-- PHP Version: 7.0.27
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -28,12 +28,14 @@ SET time_zone = "+00:00";
 
 CREATE TABLE IF NOT EXISTS `t_l1vm_loginfo` (
   `sid` int(6) NOT NULL,
-  `sysprog` char(20) NOT NULL,
   `sysver` char(20) NOT NULL,
-  `project` char(50) NOT NULL,
-  `fromuser` char(50) NOT NULL,
-  `createtime` char(20) NOT NULL,
-  `logtime` char(20) NOT NULL,
+  `sysprog` char(20) NOT NULL,
+  `project` varchar(50) DEFAULT NULL,
+  `fromuser` varchar(50) DEFAULT NULL,
+  `srcname` varchar(50) DEFAULT NULL,
+  `destname` varchar(50) DEFAULT NULL,
+  `msgid` varchar(50) DEFAULT NULL,
+  `logtime` datetime NOT NULL,
   `logdata` text NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
