@@ -12,6 +12,10 @@ include_once "../l1comvm/pg_general_engpar.php";
 /**************************************************************************************
  *                             HCU公共消息全局量定义                                  *
  *************************************************************************************/
+//上海扬尘联通平台SOAP server
+define("MFUN_HCU_AQYC_CU_SOAP_SERVER_URL", "http://112.64.17.60:9080/services/pushResource?wsdl");
+define("MFUN_HCU_AQYC_VENDOR_NAME", "上海申环信息科技有限公司");
+
 //ZHB关键字
 define("MFUN_L2SNR_COMAPI_HOUR_VALIDE_NUM", 54); // HCU环保标准：1小时采集的有效分钟数据应不少于 54个
 define("MFUN_L2SNR_COMAPI_DAY_VALIDE_NUM", 21);  // HCU环保标准：每日应有不少于21个有效小时均值的算术平均值为有效日均值
