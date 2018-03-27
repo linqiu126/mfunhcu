@@ -64,7 +64,7 @@ define("MFUN_SWOOLE_SOCKET_NBIOTQG376_HTTP", 9522); //NBIOT_QG376协议swoole so
 define("MFUN_SWOOLE_SOCKET_NBIOTQG376_TCP", 9523);  //NBIOT_QG376协议swoole socket server TCP端口
 define("MFUN_SWOOLE_SOCKET_NBIOTQG376_UDP", 9524); //NBIOT_QG376协议swoole socket server UDP端口
 
-define("MFUN_SWOOLE_SOCKET_GTJY_UDP", 9530); //用于国通NBIOT接入第三方仪表
+define("MFUN_SWOOLE_SOCKET_GTJY_UDP", 4028); //用于国通NBIOT接入第三方仪表 气表
 
 define("MFUN_SWOOLE_SOCKET_DATA_STREAM_TCP", 9550); //DATA_STREAM协议swoole socket server FTP端口
 
