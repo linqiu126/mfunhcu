@@ -130,8 +130,8 @@ class classTaskL2codecPrivateGtjy
 
             $result = $this->func_private_gtjy_json_process($huirest);
 
-            if (!empty($huirest)) {
-                $log_content = "HUIREST decode result: " . json_encode($result, JSON_UNESCAPED_UNICODE);
+            if ($result) {
+                $log_content = "HUIREST decode result: " . json_encode($huirest, JSON_UNESCAPED_UNICODE);
                 $loggerObj->mylog($project,"NULL","MFUN_TASK_ID_L2CODEC_PRIVATE_GTJY","MFUN_TASK_ID_L2CODEC_PRIVATE_GTJY",$msgName,$log_content);
                 return false;
             }

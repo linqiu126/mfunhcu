@@ -1085,33 +1085,9 @@ class classDbiL3apF3dm
         return $resp;
     }
 
-    //UI DevAlarm Request, 获取当前的测量值，如果测量值超出范围，提示告警
-    public function dbi_fhys_dev_currentvalue_req($statCode)
+    private function func_fhys_map_currentvalue_build($mysqli, $devCode)
     {
-        //建立连接
-        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
-        if (!$mysqli) {
-            die('Could not connect: ' . mysqli_error($mysqli));
-        }
-        $mysqli->query("SET NAMES utf8");
-
-        $vcrname = array();
-        $vcrlink = array();
-        $vcrlist = array();
-        $query_str = "SELECT * FROM `t_l2sdk_iothcu_inventory` WHERE `statcode` = '$statCode'";
-        $result = $mysqli->query($query_str);
-        if (($result->num_rows)>0) {
-            $row = $result->fetch_array();
-            array_push($vcrname,"RTSP");
-            array_push($vcrname,"CAMCTRL");
-            $rtsp = $row['videourl'];
-            $cam_ctrl = $row['camctrl'];
-            array_push($vcrlink,$rtsp);
-            array_push($vcrlink,$cam_ctrl);
-            $vcrlist = array('vcrname'=>$vcrname, 'vcraddress'=>$vcrlink);
-        }
-
-        $query_str = "SELECT * FROM `t_l3f3dm_fhys_currentreport` WHERE `statcode` = '$statCode'";
+        $query_str = "SELECT * FROM `t_l3f3dm_fhys_currentreport` WHERE `devcode` = '$devCode'";
         $result = $mysqli->query($query_str);
         if (($result->num_rows)>0)
         {
@@ -1138,11 +1114,11 @@ class classDbiL3apF3dm
                 $alarm = "false";
             }
             $temp = array(
-                        'AlarmName'=> "设备状态：",
-                        'AlarmEName'=> "FHYS_fibbox",
-                        'AlarmValue'=> $devstat,
-                        'AlarmUnit'=> "",
-                        'WarningTarget'=>$alarm);
+                'AlarmName'=> "设备状态：",
+                'AlarmEName'=> "FHYS_fibbox",
+                'AlarmValue'=> $devstat,
+                'AlarmUnit'=> "",
+                'WarningTarget'=>$alarm);
             array_push($currentvalue,$temp);
 
             //更新门锁-1运行状态
@@ -1251,11 +1227,11 @@ class classDbiL3apF3dm
                 }
 
                 $temp = array(
-                            'AlarmName'=>"信号强度：",
-                            'AlarmEName'=> "FHYS_sig",
-                            'AlarmValue'=>(string)$gprs,
-                            'AlarmUnit'=>"",
-                            'WarningTarget'=>$alarm);
+                    'AlarmName'=>"信号强度：",
+                    'AlarmEName'=> "FHYS_sig",
+                    'AlarmValue'=>(string)$gprs,
+                    'AlarmUnit'=>"",
+                    'WarningTarget'=>$alarm);
             }
             else{ //防止数据缺失，保持界面显示完整性
                 $temp = array(
@@ -1276,11 +1252,11 @@ class classDbiL3apF3dm
                 if ($battlevel > 100) $battlevel = 100;
 
                 $temp = array(
-                            'AlarmName'=>"剩余电量：",
-                            'AlarmEName'=> "FHYS_batt",
-                            'AlarmValue'=>(string)($battlevel),
-                            'AlarmUnit'=>" %",
-                            'WarningTarget'=>$alarm);
+                    'AlarmName'=>"剩余电量：",
+                    'AlarmEName'=> "FHYS_batt",
+                    'AlarmValue'=>(string)($battlevel),
+                    'AlarmUnit'=>" %",
+                    'WarningTarget'=>$alarm);
             }
             else{ //防止数据缺失，保持界面显示完整性
                 $temp = array(
@@ -1352,11 +1328,11 @@ class classDbiL3apF3dm
                 $alarm = "true";
             }
             $temp = array(
-                        'AlarmName'=>"震动告警：",
-                        'AlarmEName'=> "FHYS_vibr",
-                        'AlarmValue'=>(string)$vibralarm,
-                        'AlarmUnit'=>"",
-                        'WarningTarget'=>$alarm );
+                'AlarmName'=>"震动告警：",
+                'AlarmEName'=> "FHYS_vibr",
+                'AlarmValue'=>(string)$vibralarm,
+                'AlarmUnit'=>"",
+                'WarningTarget'=>$alarm );
             array_push($currentvalue,$temp);
 
             //更新水浸告警状态
@@ -1403,6 +1379,127 @@ class classDbiL3apF3dm
         }
         else
             $currentvalue = "";
+
+        return $currentvalue;
+    }
+
+    private function func_gtjy_map_currentvalue_build($mysqli, $devCode)
+    {
+        $currentvalue = array();
+        $query_str = "SELECT * FROM `t_l3f3dm_gtjy_currentreport` WHERE `devcode` = '$devCode'";
+        $result = $mysqli->query($query_str);
+        if (($result->num_rows)>0) {
+            $row = $result->fetch_array();
+
+            $valveState = $row['valvestate'];
+            $temp = array(
+                'AlarmName'=> "阀门状态：",
+                'AlarmEName'=> "FHYS_gprs",
+                'AlarmValue'=> (string)$valveState,
+                'AlarmUnit'=> "",
+                'WarningTarget'=>"false");
+            array_push($currentvalue,$temp);
+
+            $sigLevel = $row['siglevel'];
+            $temp = array(
+                'AlarmName'=> "信号强度：",
+                'AlarmEName'=> "FHYS_sig",
+                'AlarmValue'=> (string)$sigLevel,
+                'AlarmUnit'=> "",
+                'WarningTarget'=>"false");
+            array_push($currentvalue,$temp);
+
+            $meterState = $row['meterstate'];
+            $temp = array(
+                'AlarmName'=> "表内运行状态：",
+                'AlarmEName'=> "GTJY_state",
+                'AlarmValue'=> (string)$meterState,
+                'AlarmUnit'=> "",
+                'WarningTarget'=>"false");
+            array_push($currentvalue,$temp);
+
+            $remainVol = $row['remainvol'];
+            $temp = array(
+                'AlarmName'=> "剩余量：",
+                'AlarmEName'=> "GTJY_meter",
+                'AlarmValue'=> (string)$remainVol,
+                'AlarmUnit'=> "",
+                'WarningTarget'=>"false");
+            array_push($currentvalue,$temp);
+
+            $accVol = $row['accvol'];
+            $temp = array(
+                'AlarmName'=> "累积量：",
+                'AlarmEName'=> "GTJY_meter",
+                'AlarmValue'=> (string)$accVol,
+                'AlarmUnit'=> "",
+                'WarningTarget'=>"false");
+            array_push($currentvalue,$temp);
+
+            $minusNum = $row['minusnum'];
+            $temp = array(
+                'AlarmName'=> "负计数：",
+                'AlarmEName'=> "GTJY_meter",
+                'AlarmValue'=> (string)$minusNum,
+                'AlarmUnit'=> "",
+                'WarningTarget'=>"false");
+            array_push($currentvalue,$temp);
+
+            $accGprsVol = $row['accgprsvol'];
+            $temp = array(
+                'AlarmName'=> "累计充值：",
+                'AlarmEName'=> "GTJY_meter",
+                'AlarmValue'=> (string)$accGprsVol,
+                'AlarmUnit'=> "",
+                'WarningTarget'=>"false");
+            array_push($currentvalue,$temp);
+
+            $lastRecharge = $row['lastrecharge'];
+            $temp = array(
+                'AlarmName'=> "最后充值：",
+                'AlarmEName'=> "GTJY_meter",
+                'AlarmValue'=> (string)$lastRecharge,
+                'AlarmUnit'=> "",
+                'WarningTarget'=>"false");
+            array_push($currentvalue,$temp);
+        }
+
+        return $currentvalue;
+    }
+
+    //UI DevAlarm Request, 获取当前的测量值，如果测量值超出范围，提示告警
+    public function dbi_fhys_dev_currentvalue_req($statCode)
+    {
+        //建立连接
+        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli) {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $mysqli->query("SET NAMES utf8");
+
+        $vcrname = array();
+        $vcrlink = array();
+        $vcrlist = array();
+        $devCode = "";
+        $query_str = "SELECT * FROM `t_l2sdk_iothcu_inventory` WHERE `statcode` = '$statCode'";
+        $result = $mysqli->query($query_str);
+        if (($result->num_rows)>0) {
+            $row = $result->fetch_array();
+            $devCode = $row['devcode'];
+            array_push($vcrname,"RTSP");
+            array_push($vcrname,"CAMCTRL");
+            $rtsp = $row['videourl'];
+            $cam_ctrl = $row['camctrl'];
+            array_push($vcrlink,$rtsp);
+            array_push($vcrlink,$cam_ctrl);
+            $vcrlist = array('vcrname'=>$vcrname, 'vcraddress'=>$vcrlink);
+        }
+
+        $prefix = substr($devCode, 0, 10);
+        if ($prefix == MFUN_HCU_GTJY_DEVICE_NAME_PREFIX)
+            $currentvalue = $this->func_gtjy_map_currentvalue_build($mysqli, $devCode);
+        else
+            $currentvalue = $this->func_fhys_map_currentvalue_build($mysqli, $devCode);
 
         $resp = array('StatCode'=>$statCode, 'alarmlist'=>$currentvalue, 'vcr'=>$vcrlist);
 

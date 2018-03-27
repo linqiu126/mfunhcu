@@ -9,7 +9,7 @@ include_once "../l1comvm/sysconfig.php";
 include_once "../l1comvm/pg_general_engpar.php";
 
 //
-define("MFUN_HCU_GTJY_DEVICE_NAME_PREFIX", "HCU_G5XXX_");
+define("MFUN_HCU_GTJY_DEVICE_NAME_PREFIX", "HCU_G5300_");
 
 //FHYS项目用于短信通知的系统常量定义
 define("MFUN_HCU_FHYS_LEXIN_URL","http://www.lx198.com/sdk/send?");  //乐信短信平台请求地址
