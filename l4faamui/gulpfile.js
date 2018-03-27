@@ -14,17 +14,27 @@ var htmlmin = require('gulp-htmlmin');
 var replace = require('gulp-replace');
 var mkdirp = require('mkdirp');
 
+var replace_content = "C:/wamp/www/mfunhcu11/l4faamui/usr_img/";
+var replace_content_admintools = "C:/wamp/www/mfunhcu11/l4faamui/admintools/upload/";
 
-var replace_content = "D:/webrd/www/dist/usr_img/";
-var replace_content_admintools = "D:/webrd/www/dist/admintools/upload/";
 
-
-var replace_content_admintools_url = "/dist/admintools";
-var replace_install = "/dist";
+var replace_content_admintools_url = "/l4faamui/admintools";
+var replace_install = "/l4faamui";
 var option = {
-    admin_tools_path:"../www/dist/admintools",
-    buildPath: "../www/dist"
+    admin_tools_path:"../../wamp/www/mfunhcu11/l4faamui/admintools",
+    buildPath: "../../wamp/www/mfunhcu11/l4faamui"
 }
+
+//var replace_content = "C:/wamp/www/mfunhcu/l4faamui/usr_img/";
+//var replace_content_admintools = "C:/wamp/www/mfunhcu/l4faamui/admintools/upload/";
+//
+//
+//var replace_content_admintools_url = "/mfunhcu/l4faamui/admintools";
+//var replace_install = "mfunhcu/l4faamui";
+//var option = {
+//    admin_tools_path:"../../wamp/www/mfunhcu/l4faamui/admintools",
+//    buildPath: "../../wamp/www/mfunhcu/l4faamui"
+//}
 var online_replace="true";
 var option_html = {
     collapseWhitespace:true,
@@ -64,6 +74,8 @@ gulp.task("resourcecopy",function(){
         .pipe(gulp.dest(option.admin_tools_path+"/resource/"));
     gulp.src("./php/*")
         .pipe(gulp.dest(option.buildPath+"/php/"));
+    gulp.src("./photo/*")
+        .pipe(gulp.dest(option.buildPath+"/photo/"));
     gulp.src("./ejs/*")
         .pipe(gulp.dest(option.buildPath+"/ejs/"));
     gulp.src("./svg/**/*")
@@ -74,6 +86,8 @@ gulp.task("resourcecopy",function(){
         .pipe(gulp.dest(option.buildPath+"/video/"));
     gulp.src("./screensaver/**/*")
         .pipe(gulp.dest(option.buildPath+"/screensaver/"));
+    gulp.src("./json/**/*")
+        .pipe(gulp.dest(option.buildPath+"/json/"));
     gulp.src("./PHPresource/**/*")
         .pipe(gulp.dest(option.buildPath+"/PHPresource/"));
     gulp.src("./jump.php")

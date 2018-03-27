@@ -197,6 +197,83 @@ class classTaskL4faamUi
                 $input=array("project"=>$project,"action"=>$action,"type"=>$type,"user"=>$user,"body"=>$body);
                 $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FAAM_UI, MFUN_TASK_ID_L3APPL_FUM11FAAM, MSG_ID_L4FAAMUI_TO_L3F11_CONSUMABLESPUTCHASEDEL, "MSG_ID_L4FAAMUI_TO_L3F11_CONSUMABLESPUTCHASEDEL",$input);
                 break;
+            case "ProductStockNew":
+                $input=array("project"=>$project,"action"=>$action,"type"=>$type,"user"=>$user,"body"=>$body);
+                $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FAAM_UI, MFUN_TASK_ID_L3APPL_FUM11FAAM, MSG_ID_L4FAAMUI_TO_L3F11_PRODUCTSTOCKNEW, "MSG_ID_L4FAAMUI_TO_L3F11_PRODUCTSTOCKNEW",$input);
+                break;
+            case "GetProductWeightAndSize":
+                $input=array("project"=>$project,"action"=>$action,"type"=>$type,"user"=>$user,"body"=>$body);
+                $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FAAM_UI, MFUN_TASK_ID_L3APPL_FUM11FAAM, MSG_ID_L4FAAMUI_TO_L3F11_GETPRODUCTWEIGHTANDSIZE, "MSG_ID_L4FAAMUI_TO_L3F11_GETPRODUCTWEIGHTANDSIZE",$input);
+                break;
+            case "GetProductStockList":
+                $input=array("project"=>$project,"action"=>$action,"type"=>$type,"user"=>$user,"body"=>$body);
+                $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FAAM_UI, MFUN_TASK_ID_L3APPL_FUM11FAAM, MSG_ID_L4FAAMUI_TO_L3F11_GETPRODUCTSTOCKLIST, "MSG_ID_L4FAAMUI_TO_L3F11_GETPRODUCTSTOCKLIST",$input);
+                break;
+            case "GetProductEmptyStock":
+                $input=array("project"=>$project,"action"=>$action,"type"=>$type,"user"=>$user,"body"=>$body);
+                $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FAAM_UI, MFUN_TASK_ID_L3APPL_FUM11FAAM, MSG_ID_L4FAAMUI_TO_L3F11_GETPRODUCTEMPTYSTOCK, "MSG_ID_L4FAAMUI_TO_L3F11_GETPRODUCTEMPTYSTOCK",$input);
+                break;
+            case "ProductStockTable":
+                $input=array("project"=>$project,"action"=>$action,"type"=>$type,"user"=>$user,"body"=>$body);
+                $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FAAM_UI, MFUN_TASK_ID_L3APPL_FUM11FAAM, MSG_ID_L4FAAMUI_TO_L3F11_PRODUCTSTOCKTABLE, "MSG_ID_L4FAAMUI_TO_L3F11_PRODUCTSTOCKTABLE",$input);
+                break;
+            case "ProductStockDel":
+                $input=array("project"=>$project,"action"=>$action,"type"=>$type,"user"=>$user,"body"=>$body);
+                $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FAAM_UI, MFUN_TASK_ID_L3APPL_FUM11FAAM, MSG_ID_L4FAAMUI_TO_L3F11_PRODUCTSTOCKDEL, "MSG_ID_L4FAAMUI_TO_L3F11_PRODUCTSTOCKDEL",$input);
+                break;
+            case "GetProductStockDetail":
+                $input=array("project"=>$project,"action"=>$action,"type"=>$type,"user"=>$user,"body"=>$body);
+                $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FAAM_UI, MFUN_TASK_ID_L3APPL_FUM11FAAM, MSG_ID_L4FAAMUI_TO_L3F11_GETPRODUCTSTOCKDETAIL, "MSG_ID_L4FAAMUI_TO_L3F11_GETPRODUCTSTOCKDETAIL",$input);
+                break;
+            case "ProductStockTransfer":
+                $input=array("project"=>$project,"action"=>$action,"type"=>$type,"user"=>$user,"body"=>$body);
+                $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FAAM_UI, MFUN_TASK_ID_L3APPL_FUM11FAAM, MSG_ID_L4FAAMUI_TO_L3F11_PRODUCTSTOCKTRANSFER, "MSG_ID_L4FAAMUI_TO_L3F11_PRODUCTSTOCKTRANSFER",$input);
+                break;
+            case "ProductStockHistory":
+                $input=array("project"=>$project,"action"=>$action,"type"=>$type,"user"=>$user,"body"=>$body);
+                $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FAAM_UI, MFUN_TASK_ID_L3APPL_FUM11FAAM, MSG_ID_L4FAAMUI_TO_L3F11_PRODUCTSTOCKHISTORY, "MSG_ID_L4FAAMUI_TO_L3F11_PRODUCTSTOCKHISTORY",$input);
+                break;
+            case "MaterialStockNew":
+                $input=array("project"=>$project,"action"=>$action,"type"=>$type,"user"=>$user,"body"=>$body);
+                $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FAAM_UI, MFUN_TASK_ID_L3APPL_FUM11FAAM, MSG_ID_L4FAAMUI_TO_L3F11_MATERIALSTOCKNEW, "MSG_ID_L4FAAMUI_TO_L3F11_MATERIALSTOCKNEW",$input);
+                break;
+            case "GetMaterialStockList":
+                $input=array("project"=>$project,"action"=>$action,"type"=>$type,"user"=>$user,"body"=>$body);
+                $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FAAM_UI, MFUN_TASK_ID_L3APPL_FUM11FAAM, MSG_ID_L4FAAMUI_TO_L3F11_GETMATERIALSTOCKLIST, "MSG_ID_L4FAAMUI_TO_L3F11_GETMATERIALSTOCKLIST",$input);
+                break;
+            case "GetMaterialEmptyStock":
+                $input=array("project"=>$project,"action"=>$action,"type"=>$type,"user"=>$user,"body"=>$body);
+                $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FAAM_UI, MFUN_TASK_ID_L3APPL_FUM11FAAM, MSG_ID_L4FAAMUI_TO_L3F11_GETMATERIALEMPTYSTOCK, "MSG_ID_L4FAAMUI_TO_L3F11_GETMATERIALEMPTYSTOCK",$input);
+                break;
+            case "MaterialStockDel":
+                $input=array("project"=>$project,"action"=>$action,"type"=>$type,"user"=>$user,"body"=>$body);
+                $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FAAM_UI, MFUN_TASK_ID_L3APPL_FUM11FAAM, MSG_ID_L4FAAMUI_TO_L3F11_MATERIALSTOCKDEL, "MSG_ID_L4FAAMUI_TO_L3F11_MATERIALSTOCKDEL",$input);
+                break;
+            //显示原料仓库的信息及存储量
+            case "MaterialStockTable":
+                $input=array("project"=>$project,"action"=>$action,"type"=>$type,"user"=>$user,"body"=>$body);
+                $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FAAM_UI, MFUN_TASK_ID_L3APPL_FUM11FAAM, MSG_ID_L4FAAMUI_TO_L3F11_MATERIALSTOCKTABLE, "MSG_ID_L4FAAMUI_TO_L3F11_MATERIALSTOCKTABLE",$input);
+                break;
+            case "GetMaterialStockDetail":
+                $input=array("project"=>$project,"action"=>$action,"type"=>$type,"user"=>$user,"body"=>$body);
+                $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FAAM_UI, MFUN_TASK_ID_L3APPL_FUM11FAAM, MSG_ID_L4FAAMUI_TO_L3F11_GETMATERIALSTOCKDETAIL, "MSG_ID_L4FAAMUI_TO_L3F11_GETMATERIALSTOCKDETAIL",$input);
+                break;
+            case "MaterialStockIncomeNew":
+                $input=array("project"=>$project,"action"=>$action,"type"=>$type,"user"=>$user,"body"=>$body);
+                $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FAAM_UI, MFUN_TASK_ID_L3APPL_FUM11FAAM, MSG_ID_L4FAAMUI_TO_L3F11_MATERIALSTOCKINCOMENEW, "MSG_ID_L4FAAMUI_TO_L3F11_MATERIALSTOCKINCOMENEW",$input);
+                break;
+            case "MaterialStockRemovalNew":
+                $input=array("project"=>$project,"action"=>$action,"type"=>$type,"user"=>$user,"body"=>$body);
+                $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FAAM_UI, MFUN_TASK_ID_L3APPL_FUM11FAAM, MSG_ID_L4FAAMUI_TO_L3F11_MATERIALSTOCKREMOVANEW, "MSG_ID_L4FAAMUI_TO_L3F11_MATERIALSTOCKREMOVANEW",$input);
+                break;
+            case "MaterialStockHistory":
+                $input=array("project"=>$project,"action"=>$action,"type"=>$type,"user"=>$user,"body"=>$body);
+                $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FAAM_UI, MFUN_TASK_ID_L3APPL_FUM11FAAM, MSG_ID_L4FAAMUI_TO_L3F11_MATERIALSTOCKHISTORY, "MSG_ID_L4FAAMUI_TO_L3F11_MATERIALSTOCKHISTORY",$input);
+                break;
+            case "GetMaterialStockHistoryDetail":
+                $input=array("project"=>$project,"action"=>$action,"type"=>$type,"user"=>$user,"body"=>$body);
+                $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FAAM_UI, MFUN_TASK_ID_L3APPL_FUM11FAAM, MSG_ID_L4FAAMUI_TO_L3F11_GETMATERIALSTOCKHISTORYDETAIL, "MSG_ID_L4FAAMUI_TO_L3F11_GETMATERIALSTOCKHISTORYDETAIL",$input);
+                break;
             /*************************************自己更改终止处***********************************************/
             case "GetGeoList":  //获取山东的地理区域信息
                 $retarray = $this->get_file_detail("./json/geography.json");

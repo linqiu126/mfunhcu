@@ -468,7 +468,7 @@ class classTaskL1vmCoreRouter
         //然后发送从L1_MAIN_ENTRY接收到的消息到缓冲区中
         switch($parObj)
         {
-            case MFUN_MAIN_ENTRY_WECHAT:  //微信公众号
+                    case MFUN_MAIN_ENTRY_WECHAT:  //微信公众号
                 $resp = $this->mfun_l1vm_msg_send(MFUN_TASK_ID_L1VM,
                     MFUN_TASK_ID_L2SDK_WECHAT,
                     MSG_ID_L1VM_TO_L2SDK_WECHAT_INCOMING,
