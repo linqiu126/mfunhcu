@@ -14,6 +14,4 @@ include_once "../l1comvm/vmlayer.php";
 
 $obj = new classTaskL1vmCoreRouter();
 $obj->mfun_l1vm_task_main_entry(MFUN_MAIN_ENTRY_FAAM_UI, NULL, NULL, $_GET["action"]);
-
-
 ?>
