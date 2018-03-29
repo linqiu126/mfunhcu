@@ -839,6 +839,12 @@ class classTaskL3aplF11faam
             $uid = $usercheck["uid"];
             $uif11faamDbObj = new classDbiL3apF11faam();
             $resp=$uif11faamDbObj->dbi_faam_product_stock_removal_new($body);
+            if($resp){
+                $retval=array('status'=>$usercheck['status'],'ret'=>$resp,'msg'=>'转库成功','auth'=>$usercheck['auth']);
+            }
+            else{
+                $retval=array('status'=>$usercheck['status'],'ret'=>"",'msg'=>'转库失败','auth'=>$usercheck['auth']);
+            }
         }
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>$usercheck['msg']);
@@ -871,6 +877,12 @@ class classTaskL3aplF11faam
             $uid = $usercheck["uid"];
             $uif11faamDbObj = new classDbiL3apF11faam();
             $resp = $uif11faamDbObj->dbi_faam_get_product_stock_history_detail($body);
+            if($resp){
+                $retval=array('status'=>$usercheck['status'],'ret'=>$resp,'msg'=>'success','auth'=>$usercheck['auth']);
+            }
+            else{
+                $retval=array('status'=>$usercheck['status'],'ret'=>"",'msg'=>'failed','auth'=>$usercheck['auth']);
+            }
         }
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>$usercheck['msg']);
@@ -1039,10 +1051,10 @@ class classTaskL3aplF11faam
             $uif11faamDbObj = new classDbiL3apF11faam();
             $resp=$uif11faamDbObj->dbi_faam_material_stock_history($body);
             if($resp){
-                $retval=array('status'=>$usercheck['status'],'ret'=>$resp,'msg'=>'success','auth'=>$usercheck['auth']);
+                $retval=array('status'=>$usercheck['status'],'ret'=>$resp,'msg'=>'查看原料历史成功','auth'=>$usercheck['auth']);
             }
             else{
-                $retval=array('status'=>$usercheck['status'],'ret'=>"",'msg'=>'failed','auth'=>$usercheck['auth']);
+                $retval=array('status'=>$usercheck['status'],'ret'=>"",'msg'=>'查看原料历史失败','auth'=>$usercheck['auth']);
             }
         }
         else
@@ -1058,10 +1070,105 @@ class classTaskL3aplF11faam
             $uif11faamDbObj = new classDbiL3apF11faam();
             $resp=$uif11faamDbObj->dbi_faam_get_material_stock_history_detail($body);
             if($resp){
-                $retval=array('status'=>$usercheck['status'],'ret'=>$resp,'msg'=>'success','auth'=>$usercheck['auth']);
+                $retval=array('status'=>$usercheck['status'],'ret'=>$resp,'msg'=>'记录查看成功','auth'=>$usercheck['auth']);
             }
             else{
-                $retval=array('status'=>$usercheck['status'],'ret'=>"",'msg'=>'failed','auth'=>$usercheck['auth']);
+                $retval=array('status'=>$usercheck['status'],'ret'=>"",'msg'=>'记录查看失败','auth'=>$usercheck['auth']);
+            }
+        }
+        else
+            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>$usercheck['msg']);
+        return $retval;
+    }
+    //更新入库信息
+    function func_faam_material_stock_income_mod($action,$user,$body){
+        $uiFlsymDbObj=new classDbiL3apF1sym();
+        $usercheck=$uiFlsymDbObj->dbi_user_authcheck($action,$user);
+        if($usercheck["status"]=="true" AND $usercheck["auth"]=="true") {
+            $uid = $usercheck["uid"];
+            $uif11faamDbObj = new classDbiL3apF11faam();
+            $resp=$uif11faamDbObj->dbi_faam_material_stock_income_mod($body);
+            if($resp!=""){
+                $retval=array('status'=>$usercheck['status'],'msg'=>'记录修改成功','auth'=>$usercheck['auth']);
+            }
+            else{
+                $retval=array('status'=>$usercheck['status'],'msg'=>'记录修改失败','auth'=>$usercheck['auth']);
+            }
+        }
+        else
+            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>$usercheck['msg']);
+        return $retval;
+    }
+    //更新出库信息
+    function func_faam_material_stock_remova_mod($action,$user,$body){
+        $uiFlsymDbObj=new classDbiL3apF1sym();
+        $usercheck=$uiFlsymDbObj->dbi_user_authcheck($action,$user);
+        if($usercheck["status"]=="true" AND $usercheck["auth"]=="true") {
+            $uid = $usercheck["uid"];
+            $uif11faamDbObj = new classDbiL3apF11faam();
+            $resp=$uif11faamDbObj->dbi_faam_material_stock_remova_mod($body);
+            if($resp!=""){
+                $retval=array('status'=>$usercheck['status'],'msg'=>'记录修改成功','auth'=>$usercheck['auth']);
+            }
+            else{
+                $retval=array('status'=>$usercheck['status'],'msg'=>'记录修改失败','auth'=>$usercheck['auth']);
+            }
+        }
+        else
+            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>$usercheck['msg']);
+        return $retval;
+    }
+    //删除一条信息
+    function func_faam_material_stock_removal_del($action,$user,$body){
+        $uiFlsymDbObj=new classDbiL3apF1sym();
+        $usercheck=$uiFlsymDbObj->dbi_user_authcheck($action,$user);
+        if($usercheck["status"]=="true" AND $usercheck["auth"]=="true") {
+            $uid = $usercheck["uid"];
+            $uif11faamDbObj = new classDbiL3apF11faam();
+            $resp=$uif11faamDbObj->dbi_faam_material_stock_removal_del($body);
+            if($resp!=""){
+                $retval=array('status'=>$usercheck['status'],'msg'=>'记录修改成功','auth'=>$usercheck['auth']);
+            }
+            else{
+                $retval=array('status'=>$usercheck['status'],'msg'=>'记录修改失败','auth'=>$usercheck['auth']);
+            }
+        }
+        else
+            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>$usercheck['msg']);
+        return $retval;
+    }
+    //更新成品
+    function func_faam_product_stock_removal_mod($action,$user,$body){
+        $uiFlsymDbObj=new classDbiL3apF1sym();
+        $usercheck=$uiFlsymDbObj->dbi_user_authcheck($action,$user);
+        if($usercheck["status"]=="true" AND $usercheck["auth"]=="true") {
+            $uid = $usercheck["uid"];
+            $uif11faamDbObj = new classDbiL3apF11faam();
+            $resp=$uif11faamDbObj->dbi_faam_product_stock_removal_mod($body);
+            if($resp!=""){
+                $retval=array('status'=>$usercheck['status'],'msg'=>'记录修改成功','auth'=>$usercheck['auth']);
+            }
+            else{
+                $retval=array('status'=>$usercheck['status'],'msg'=>'记录修改失败','auth'=>$usercheck['auth']);
+            }
+        }
+        else
+            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>$usercheck['msg']);
+        return $retval;
+    }
+    //成品删除
+    function func_faam_product_stock_removal_del($action,$user,$body){
+        $uiFlsymDbObj=new classDbiL3apF1sym();
+        $usercheck=$uiFlsymDbObj->dbi_user_authcheck($action,$user);
+        if($usercheck["status"]=="true" AND $usercheck["auth"]=="true") {
+            $uid = $usercheck["uid"];
+            $uif11faamDbObj = new classDbiL3apF11faam();
+            $resp=$uif11faamDbObj->dbi_faam_product_stock_removal_del($body);
+            if($resp!=""){
+                $retval=array('status'=>$usercheck['status'],'msg'=>'记录删除成功','auth'=>$usercheck['auth']);
+            }
+            else{
+                $retval=array('status'=>$usercheck['status'],'msg'=>'记录删除失败','auth'=>$usercheck['auth']);
             }
         }
         else
@@ -1255,6 +1362,21 @@ class classTaskL3aplF11faam
                 break;
             case MSG_ID_L4FAAMUI_TO_L3F11_GETMATERIALSTOCKHISTORYDETAIL:
                 $resp=$this->func_faam_get_material_stock_history_detail($action,$user,$body);
+                break;
+            case MSG_ID_L4FAAMUI_TO_L3F11_METERIALSTOCKINCOMEMOD:
+                $resp=$this->func_faam_material_stock_income_mod($action,$user,$body);
+                break;
+            case MSG_ID_L4FAAMUI_TO_L3F11_METERIALSTOCKREMOVAMOD:
+                $resp=$this->func_faam_material_stock_remova_mod($action,$user,$body);
+                break;
+            case MSG_ID_L4FAAMUI_TO_L3F11_METERIALSTOCKREMOVALDEL:
+                $resp=$this->func_faam_material_stock_removal_del($action,$user,$body);
+                break;
+            case MSG_ID_L4FAAMUI_TO_L3F11_PRODUCTSTOCKREMOVALMOD:
+                $resp=$this->func_faam_product_stock_removal_mod($action,$user,$body);
+                break;
+            case MSG_ID_L4FAAMUI_TO_L3F11_PRODUCTSTOCKREMOVALDEL:
+                $resp=$this->func_faam_product_stock_removal_del($action,$user,$body);
                 break;
             /*****************************自己更改终止处*******************************************/
             default:

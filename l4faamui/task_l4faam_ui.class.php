@@ -274,6 +274,34 @@ class classTaskL4faamUi
                 $input=array("project"=>$project,"action"=>$action,"type"=>$type,"user"=>$user,"body"=>$body);
                 $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FAAM_UI, MFUN_TASK_ID_L3APPL_FUM11FAAM, MSG_ID_L4FAAMUI_TO_L3F11_GETMATERIALSTOCKHISTORYDETAIL, "MSG_ID_L4FAAMUI_TO_L3F11_GETMATERIALSTOCKHISTORYDETAIL",$input);
                 break;
+            case "MaterialStockIncomeMod":
+                $input=array("project"=>$project,"action"=>$action,"type"=>$type,"user"=>$user,"body"=>$body);
+                $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FAAM_UI, MFUN_TASK_ID_L3APPL_FUM11FAAM, MSG_ID_L4FAAMUI_TO_L3F11_METERIALSTOCKINCOMEMOD, "MSG_ID_L4FAAMUI_TO_L3F11_METERIALSTOCKINCOMEMOD",$input);
+                break;
+            case "MaterialStockRemovalMod":
+                $input=array("project"=>$project,"action"=>$action,"type"=>$type,"user"=>$user,"body"=>$body);
+                $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FAAM_UI, MFUN_TASK_ID_L3APPL_FUM11FAAM, MSG_ID_L4FAAMUI_TO_L3F11_METERIALSTOCKREMOVAMOD, "MSG_ID_L4FAAMUI_TO_L3F11_METERIALSTOCKREMOVAMOD",$input);
+                break;
+            case "MaterialStockRemovalDel":
+                $input=array("project"=>$project,"action"=>$action,"type"=>$type,"user"=>$user,"body"=>$body);
+                $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FAAM_UI, MFUN_TASK_ID_L3APPL_FUM11FAAM, MSG_ID_L4FAAMUI_TO_L3F11_METERIALSTOCKREMOVALDEL, "MSG_ID_L4FAAMUI_TO_L3F11_METERIALSTOCKREMOVALDEL",$input);
+                break;
+            case "GetProductStockHistoryDetail":
+                $input=array("project"=>$project,"action"=>$action,"type"=>$type,"user"=>$user,"body"=>$body);
+                $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FAAM_UI, MFUN_TASK_ID_L3APPL_FUM11FAAM, MSG_ID_L4FAAMUI_TO_L3F11_GETPRODUCTSTOCKHISTORYDETAIL, "MSG_ID_L4FAAMUI_TO_L3F11_GETPRODUCTSTOCKHISTORYDETAIL",$input);
+                break;
+            case "ProductStockRemovalMod":
+                $input=array("project"=>$project,"action"=>$action,"type"=>$type,"user"=>$user,"body"=>$body);
+                $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FAAM_UI, MFUN_TASK_ID_L3APPL_FUM11FAAM, MSG_ID_L4FAAMUI_TO_L3F11_PRODUCTSTOCKREMOVALMOD, "MSG_ID_L4FAAMUI_TO_L3F11_PRODUCTSTOCKREMOVALMOD",$input);
+                break;
+            case "ProductStockRemovalDel":
+                $input=array("project"=>$project,"action"=>$action,"type"=>$type,"user"=>$user,"body"=>$body);
+                $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FAAM_UI, MFUN_TASK_ID_L3APPL_FUM11FAAM, MSG_ID_L4FAAMUI_TO_L3F11_PRODUCTSTOCKREMOVALDEL, "MSG_ID_L4FAAMUI_TO_L3F11_PRODUCTSTOCKREMOVALDEL",$input);
+                break;
+            case "ProductStockRemovalNew":
+                $input=array("project"=>$project,"action"=>$action,"type"=>$type,"user"=>$user,"body"=>$body);
+                $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FAAM_UI, MFUN_TASK_ID_L3APPL_FUM11FAAM, MSG_ID_L4FAAMUI_TO_L3F11_PRODUCTSTOCKREMOVALNEW, "MSG_ID_L4FAAMUI_TO_L3F11_PRODUCTSTOCKREMOVALNEW",$input);
+                break;
             /*************************************自己更改终止处***********************************************/
             case "GetGeoList":  //获取山东的地理区域信息
                 $retarray = $this->get_file_detail("./json/geography.json");
