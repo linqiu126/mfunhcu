@@ -195,7 +195,7 @@ class classDbiL3apF3dm
         else if ($degree >= 112.5 AND $degree < 157.5)
             $winddir = "东南风";
         else if ($degree >= 157.5 AND $degree < 202.5)
-            $winddir = "东南风";
+            $winddir = "南风";
         else if ($degree >= 202.5 AND $degree < 247.5)
             $winddir = "西南风";
         else if ($degree >= 247.5 AND $degree < 292.5)
