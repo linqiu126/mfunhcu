@@ -302,6 +302,10 @@ class classTaskL4faamUi
                 $input=array("project"=>$project,"action"=>$action,"type"=>$type,"user"=>$user,"body"=>$body);
                 $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FAAM_UI, MFUN_TASK_ID_L3APPL_FUM11FAAM, MSG_ID_L4FAAMUI_TO_L3F11_PRODUCTSTOCKREMOVALNEW, "MSG_ID_L4FAAMUI_TO_L3F11_PRODUCTSTOCKREMOVALNEW",$input);
                 break;
+//            case "MaterialStockIncomeDel":
+//                $input=array("project"=>$project,"action"=>$action,"type"=>$type,"user"=>$user,"body"=>$body);
+//                $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FAAM_UI, MFUN_TASK_ID_L3APPL_FUM11FAAM, MSG_ID_L4FAAMUI_TO_L3F11_MATERIALSTOCKINCOMEDEL, "MSG_ID_L4FAAMUI_TO_L3F11_MATERIALSTOCKINCOMEDEL",$input);
+//                break;
             /*************************************自己更改终止处***********************************************/
             case "GetGeoList":  //获取山东的地理区域信息
                 $retarray = $this->get_file_detail("./json/geography.json");

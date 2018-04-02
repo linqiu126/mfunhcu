@@ -2062,6 +2062,8 @@ class classDbiL3apF11faam
         array_push($Product["ColumnName"],"粒数/箱");
         array_push($Product["ColumnName"],"箱数");
         array_push($Product["ColumnName"],"仓库地址");
+        array_push($Product["ColumnName"],"最后操作时间");
+        array_push($Product["ColumnName"],"备注");
         $mysqli->query("SET NAMES utf8");
         if($body["StockID"]!="all") $id=(integer)$body["StockID"];
         else $id="";
@@ -2122,6 +2124,9 @@ class classDbiL3apF11faam
             while(($temp2!=false)&&(($row2=$temp2->fetch_array())>0)){
                 $address=$row2["stockaddress"];
             }
+            if($address==""){
+                $address="该库已删除";
+            }
             array_push($info,$row1["sid"]);
             array_push($info,(string)$i);
             array_push($info,$name1);
@@ -2130,6 +2135,8 @@ class classDbiL3apF11faam
             array_push($info,$row1["productnum"]);
             array_push($info,$row1["number"]);
             array_push($info,$address);
+            array_push($info,$row1["datime"]);
+            array_push($info,$row1["message"]);
             array_push($Product["TableData"],$info);
             $i=$i+1;
         }
@@ -2169,13 +2176,91 @@ class classDbiL3apF11faam
         return $result;
     }
     //转库
-    public function dbi_faam_product_stock_transfer($body,$id){
+    public function dbi_faam_product_stock_transfer($body){
         $mysqli=new mysqli(MFUN_CLOUD_DBHOST,MFUN_CLOUD_DBUSER,MFUN_CLOUD_DBPSW,MFUN_CLOUD_DBNAME_L1L2L3,MFUN_CLOUD_DBPORT);
         if(!$mysqli){
             die("Could not connect:".mysqli_error($mysqli));
         }
         $mysqli->query("SET NAMES utf8");
+        $name=array();
+        date_default_timezone_set("Asia/Shanghai");
+        $time=date("Y-m-d H:i;s",time());
+        $productnum=28;
+        $storageID=(integer)$body["storageID"];//出库方
+        $weight=(integer)$body['weight'];//重量
+        $size=$body["size"];//规格
+        $productcharge="李四";
+        $number=(integer)$body["number"];//数量
+        $target=$body["target"];//目标库
+        $note=$body["note"];//备注
+        switch($size){
+            case "特级":$size="A";break;
+            case "一级":$size="1";break;
+            case "二级":$size="2";break;
+            case "三级":$size="3";break;
+            case "混合":$size="S";break;
+            default:break;
+        }
+        $query_name="SELECT * FROM `t_l3f11faam_products_stocksheet` WHERE `sid`='$storageID'";
+        $temp_name=$mysqli->query($query_name);
+        while(($temp_name!=false)&&($row_name=$temp_name->fetch_array())>0) {
+            array_push($name,$row_name["stockname"]);
+        }
+        $query_into_name = "SELECT * FROM `t_l3f11faam_products_stocksheet` WHERE `sid`='$target'";
+        $temp_into_name = $mysqli->query($query_into_name);
+        while (($temp_into_name != false) && ($row_into_name = $temp_into_name->fetch_array()) > 0) {
+            array_push($name,$row_into_name["stockname"]);
+        }
+        $out_name=$name[0];//出库方
+        $into_name=$name[1];//入库方
+        $query_into = "SELECT * FROM `t_l3f11faam_products_into` WHERE `stockname`='$into_name' AND `productweight`='$weight' AND `productsize`='$size' AND `productnum`='$productnum'";
+        $temp_into = $mysqli->query($query_into);
+        $query_out="SELECT * FROM `t_l3f11faam_products_into` WHERE `stockname`='$out_name' AND `productweight`='$weight' AND `productsize`='$size' AND `productnum`='$productnum'";
+        $temp_out=$mysqli->query($query_out);
+        while(($temp_out!=false)&&($row_out=$temp_out->fetch_array())>0){
+            $history_number=$row_out["number"];
+        }
+        $surplus=$history_number-$number;
+        if($surplus>=0){
+            if(mysqli_num_rows($temp_into)>0){
+                $temp=$temp_into->fetch_array();
+                $total=$number+$temp["number"];
+                if(($note=="")&&(trim($note))==""){
+                    $query_into_insert = "UPDATE `t_l3f11faam_products_into` SET `number`='$total',`datime`='$time' ,`message`='转库入库'WHERE `stockname`='$into_name' AND `productweight`='$weight' AND `productsize`='$size' AND `productnum`='$productnum'";
+                    $query_into_update = "UPDATE `t_l3f11faam_products_into` SET `number`='$surplus',`datime`='$time' WHERE `stockname`='$out_name' AND `productweight`='$weight' AND `productsize`='$size' AND `productnum`='$productnum'";
+                    $query_out_insert = "INSERT INTO `t_l3f11faam_products_out`(`stockname`,`productweight`,`productsize`,`productnum`,`number`, `containernumber`, `platenumber`, `drivername`, `driverpho`, `receivingunit`, `logisticsunit`, `outtime`,`message`)
+                                                                        VALUES('$out_name','$weight','$size','$productnum','$number','----','----','----','----','----','----','$time','转库出库')";
+                }
+                else{
+                    $query_into_insert = "UPDATE `t_l3f11faam_products_into` SET `number`='$total',`datime`='$time' ，`message`='$note'WHERE `stockname`='$into_name' AND `productweight`='$weight' AND `productsize`='$size' AND `productnum`='$productnum'";
+                    $query_into_update = "UPDATE `t_l3f11faam_products_into` SET `number`='$surplus',`datime`='$time' WHERE `stockname`='$out_name' AND `productweight`='$weight' AND `productsize`='$size' AND `productnum`='$productnum' ";
+                    $query_out_insert = "INSERT INTO `t_l3f11faam_products_out`(`stockname`,`productweight`,`productsize`,`productnum`,`number`, `containernumber`, `platenumber`, `drivername`, `driverpho`, `receivingunit`, `logisticsunit`, `outtime`,`message`)
+                                                                        VALUES('$out_name','$weight','$size','$productnum','$number','----','----','----','----','----','----','$time','$note')";
+                }
+            }
+            else {
+                if (($note == "") && (trim($note)) == "") {
+                    $query_into_insert = "INSERT INTO `t_l3f11faam_products_into`(`stockname`, `productweight`, `productsize`, `productnum`, `number`, `productcharge`, `message`, `datime`) VALUES ('$into_name','$weight','$size','$productnum','$number','$productcharge','转库入库','$time')";
+                    $query_into_update = "UPDATE `t_l3f11faam_products_into` SET `number`='$surplus',`datime`='$time' WHERE `stockname`='$out_name' AND `productweight`='$weight' AND `productsize`='$size' AND `productnum`='$productnum'";
+                    $query_out_insert = "INSERT INTO `t_l3f11faam_products_out`(`stockname`,`productweight`,`productsize`,`productnum`,`number`, `containernumber`, `platenumber`, `drivername`, `driverpho`, `receivingunit`, `logisticsunit`, `outtime`,`message`)
+                                                                        VALUES('$out_name','$weight','$size','$productnum','$number','----','----','----','----','----','----','$time','转库出库')";
+                } else {
+                    $query_into_insert = "INSERT INTO `t_l3f11faam_products_into`(`stockname`, `productweight`, `productsize`, `productnum`, `number`, `productcharge`, `message`, `datime`) VALUES ('$into_name','$weight','$size','$productnum','$number','$productcharge','$note','$time')";
+                    $query_into_update = "UPDATE `t_l3f11faam_products_into` SET `number`='$surplus',`datime`='$time' WHERE `stockname`='$out_name' AND `productweight`='$weight' AND `productsize`='$size' AND `productnum`='$productnum' ";
+                    $query_out_insert = "INSERT INTO `t_l3f11faam_products_out`(`stockname`,`productweight`,`productsize`,`productnum`,`number`, `containernumber`, `platenumber`, `drivername`, `driverpho`, `receivingunit`, `logisticsunit`, `outtime`,`message`)
+                                                                        VALUES('$out_name','$weight','$size','$productnum','$number','----','----','----','----','----','----','$time','$note')";
+
+                }
+            }
+            $mysqli->query($query_into_insert);
+            $mysqli->query($query_into_update);
+            $result=$mysqli->query($query_out_insert);
+        }
+        else{
+            $result="";
+        }
         $mysqli->close();
+        return $result;
     }
     //出库
     public function dbi_faam_product_stock_removal_new($body){
@@ -2215,9 +2300,9 @@ class classDbiL3apF11faam
             while(($temp_into!=false)&&($row_into=$temp_into->fetch_array())>0){
                 if($row_into["number"]>=$number){
                     $total_num=$row_into["number"]-$number;
-                    $query_out_insert="INSERT INTO `t_l3f11faam_products_out`(`stockname`,`productweight`,`productsize`,`productnum`,`number`, `containernumber`, `platenumber`, `drivername`, `driverpho`, `receivingunit`, `logisticsunit`, `outtime`) VALUES('$name','$weight','$size','$productnum','$number','$container','$trunk','$driver','$mobile','$target','$logistics','$time')";
+                    $query_out_insert="INSERT INTO `t_l3f11faam_products_out`(`stockname`,`productweight`,`productsize`,`productnum`,`number`, `containernumber`, `platenumber`, `drivername`, `driverpho`, `receivingunit`, `logisticsunit`, `outtime`,`message`) VALUES('$name','$weight','$size','$productnum','$number','$container','$trunk','$driver','$mobile','$target','$logistics','$time','正常出库')";
                     $mysqli->query($query_out_insert);
-                    $query_into_update="UPDATE `t_l3f11faam_products_into` SET `number`='$total_num'WHERE `stockname`='$name' AND `productweight`='$weight' AND `productsize`='$size' AND `productnum` ='$productnum'";
+                    $query_into_update="UPDATE `t_l3f11faam_products_into` SET `number`='$total_num',`datime`='$time'WHERE `stockname`='$name' AND `productweight`='$weight' AND `productsize`='$size' AND `productnum` ='$productnum'";
                     $result=$mysqli->query($query_into_update);
                 }
             }
@@ -2243,6 +2328,7 @@ class classDbiL3apF11faam
         array_push($history["ColumnName"],"收货单位");
         array_push($history["ColumnName"],"物流单位");
         array_push($history["ColumnName"],"出库时间");
+        array_push($history["ColumnName"],"备注");
         $history["TableData"]=array();
         $mysqli=new mysqli(MFUN_CLOUD_DBHOST,MFUN_CLOUD_DBUSER,MFUN_CLOUD_DBPSW,MFUN_CLOUD_DBNAME_L1L2L3,MFUN_CLOUD_DBPORT);
         if(!$mysqli){
@@ -2253,7 +2339,7 @@ class classDbiL3apF11faam
         if($body["StockID"]=="all") $ID="";
         else $ID=(integer)$body["StockID"];
         if($body["KeyWord"]=="") $keyWord="";
-        else $keyWord=$body["KeyWord"];
+        else $keyWord=trim($body["KeyWord"]);
         if($ID!="") {
             $query_name = "SELECT * FROM `t_l3f11faam_products_stocksheet` WHERE `sid`='$ID'";
             $temp_name = $mysqli->query($query_name);
@@ -2310,6 +2396,7 @@ class classDbiL3apF11faam
             array_push($middle,$row["receivingunit"]);
             array_push($middle,$row["logisticsunit"]);
             array_push($middle,$row["outtime"]);
+            array_push($middle,$row["message"]);
             array_push($history["TableData"],$middle);
             $i=$i+1;
         }
@@ -2470,7 +2557,7 @@ class classDbiL3apF11faam
         array_push($material["ColumnName"],"库名");
         array_push($material["ColumnName"],"自有");
         array_push($material["ColumnName"],"桶数");
-        array_push($material["ColumnName"],"花费费用");
+        array_push($material["ColumnName"],"总费用");
         array_push($material["ColumnName"],"最后一次操作时间");
         array_push($material["ColumnName"],"仓库地址");
         $temp_name=$mysqli->query($query);
@@ -2589,6 +2676,7 @@ class classDbiL3apF11faam
         }
         $mysqli->query("SET NAMES utf8");
         date_default_timezone_set("PRC");
+        $result="";
         $ID=$body["storageID"];
         $bucket=(integer)$body["bucket"];
         $price=(integer)$body["price"];
@@ -2651,7 +2739,7 @@ class classDbiL3apF11faam
         array_push($history["ColumnName"],"时间");
         $ID=$body["StockID"];
         $day=$body["Period"];
-        $keyWord=$body["KeyWord"];
+        $keyWord=trim($body["KeyWord"]);
         switch($day){
             case "1":$timeStart=$timeEnd;break;;
             case "7":$timeStart=date('Y-m-d', strtotime("-6 day"));break;
@@ -2666,7 +2754,7 @@ class classDbiL3apF11faam
                 $query_str="SELECT * FROM `t_l3f11faam_material_history` WHERE `time`>='$timeStart' AND `time`<='$timeEnd'";
             }
             else
-                $query_str="SELECT * FROM `t_l3f11faam_material_history` WHERE `time`>='$timeStart' AND `time`<='$timeEnd' AND `charge`='$keyWord'";
+                $query_str="SELECT * FROM `t_l3f11faam_material_history` WHERE `time`>='$timeStart' AND `time`<='$timeEnd' AND `charge`LIKE'%$keyWord%'";
         }
         else{
             $query_name="SELECT * FROM `t_l3f11faam_material_stocksheet` WHERE `sid`='$ID'";
@@ -2677,7 +2765,7 @@ class classDbiL3apF11faam
                     $query_str="SELECT * FROM `t_l3f11faam_material_history` WHERE `time`>='$timeStart' AND `time`<='$timeEnd' AND `stockname`='$name'";
                 }
                 else
-                    $query_str="SELECT * FROM `t_l3f11faam_material_history` WHERE `time`>='$timeStart' AND `time`<='$timeEnd' AND `charge`='$keyWord' AND `stockname`='$name'";
+                    $query_str="SELECT * FROM `t_l3f11faam_material_history` WHERE `time`>='$timeStart' AND `time`<='$timeEnd' AND `charge`LIKE'%$keyWord%' AND `stockname`='$name'";
             }
         }
         $temp=$mysqli->query($query_str);
@@ -2727,7 +2815,6 @@ class classDbiL3apF11faam
     //显示一条原料历史的信息
     public function dbi_faam_get_material_stock_history_detail($body){
         $ID=$body["removalID"];
-        $result=array();
         $mysqli=new mysqli(MFUN_CLOUD_DBHOST,MFUN_CLOUD_DBUSER,MFUN_CLOUD_DBPSW,MFUN_CLOUD_DBNAME_L1L2L3,MFUN_CLOUD_DBPORT);
         if(!$mysqli){
             die("Could not connect:".mysqli_error($mysqli));
@@ -2735,13 +2822,14 @@ class classDbiL3apF11faam
         $mysqli->query("SET NAMES utf8");
         $query_str="SELECT * FROM `t_l3f11faam_material_history` WHERE `sid`='$ID'";
         $temp=$mysqli->query($query_str);
+        $result=array();
         while(($temp!=false)&&($row=$temp->fetch_array())>0){
             if($row["into"]==1){
-                $result=array("type"=>"0","storageID"=>$row["stockid"],"materialMode"=>"0","bucket"=>$row["bucketnum"],
+                $result=array("type"=>"0","storageID"=>$row["stockid"],'materialMode'=>(string)(rand(0,1)),"bucket"=>$row["bucketnum"],
                 "price"=>$row["price"],"buyer"=>$row["charge"],"vendor"=>$row["vendor"],"mobile"=>$row["mobile"]);
             }
             else{
-                $result=array("type"=>"1","storageID"=>$row["stockid"],"materialMode"=>"0","bucket"=>$row["bucketnum"],
+                $result=array("type"=>"1","storageID"=>$row["stockid"],"materialMode"=>(string)(rand(0,1)),"bucket"=>$row["bucketnum"],
                     "price"=>$row["price"],"trunk"=>$row["trunk"],"driver"=>$row["charge"],"mobile"=>$row["mobile"],"target"=>$row["target"],
                 "logistics"=>$row["logistics"]);
             }
@@ -2776,7 +2864,7 @@ class classDbiL3apF11faam
                 while(($temp_table!=false)&&($row_table=$temp_table->fetch_array())>0){
                     $bucket_number=$row_table["bucketnum"]-$row_middle["bucketnum"]+$bucket;
                     $price_total=$row_table["totalprice"]-$row_middle["price"]+$price;
-                    if($bucket_number>0){
+                    if($bucket_number>=0){
                         $update_table="UPDATE `t_l3f11faam_material_table` SET `bucketnum`='$bucket_number',`totalprice`='$price_total',`operatime`='$time' WHERE `stockname`='$name'";
                         $mysqli->query($update_table);
                         $update_history="UPDATE `t_l3f11faam_material_history` SET `bucketnum`='$bucket',`price`='$price',`vendor`='$vendor',`charge`='$buyer',`mobile`='$mobile',`time`='$time' WHERE `sid`='$incomeID'";
@@ -2817,7 +2905,7 @@ class classDbiL3apF11faam
                 while(($temp_table!=false)&&($row_table=$temp_table->fetch_array())>0){
                     $bucket_number=$row_table["bucketnum"]+$row_middle["bucketnum"]-$bucket;
                     $price_total=$row_table["totalprice"]-$row_middle["price"]+$price;
-                    if($bucket_number>0){
+                    if($bucket_number>=0){
                         $update_table="UPDATE `t_l3f11faam_material_table` SET `bucketnum`='$bucket_number',`totalprice`='$price_total',`operatime`='$time' WHERE `stockname`='$name'";
                         $mysqli->query($update_table);
                         $update_history="UPDATE `t_l3f11faam_material_history` SET `bucketnum`='$bucket',`price`='$price',`charge`='$driver',`mobile`='$mobile',`trunk`='$trunk',`target`='$target',`logistics`='$logistics',`time`='$time' WHERE  `sid`='$incomeID'";
@@ -2961,6 +3049,38 @@ class classDbiL3apF11faam
         $mysqli->close();
         return $result;
     }
+    //入库记录删除，删除掉的入库记录中的数据需返还给原数据库
+//    public function  dbi_faam_material_stock_income_del($body){
+//        $removalID=$body["incomeID"];
+//        $mysqli=new mysqli(MFUN_CLOUD_DBHOST,MFUN_CLOUD_DBUSER,MFUN_CLOUD_DBPSW,MFUN_CLOUD_DBNAME_L1L2L3,MFUN_CLOUD_DBPORT);
+//        if(!$mysqli){
+//            die("Could not connect:".mysqli_error($mysqli));
+//        }
+//        $result="";
+//        $mysqli->query("SET NAMES utf8");
+//        $query_name="SELECT * FROM `t_l3f11faam_products_out` WHERE `sid`='$removalID'";
+//        $temp_name=$mysqli->query($query_name);
+//        while(($temp_name!=false)&&($row_name=$temp_name->fetch_array())>0) {
+//            $stock_name=$row_name["stockname"];
+//            $product_weight=$row_name["productweight"];
+//            $product_size=$row_name["productsize"];
+//            $product_num=$row_name["productnum"];
+//            $num=$row_name["number"];
+//            $query_into="SELECT * FROM `t_l3f11faam_products_into` WHERE `stockname`='$stock_name' AND `productweight`='$product_weight' AND `productsize`='$product_size' AND `productnum`='$product_num'";
+//            $temp_into=$mysqli->query($query_into);
+//            while(($temp_into!=false)&&($row_into=$temp_into->fetch_array())>0) {
+//                $total_num = $row_into["number"] + $num;
+//                if ($total_num >= 0) {
+//                    $query_out_update = "DELETE FROM `t_l3f11faam_products_out` WHERE `sid`='$removalID'";
+//                    $mysqli->query($query_out_update);
+//                    $query_into_update = "UPDATE `t_l3f11faam_products_into` SET `number`='$total_num'WHERE `stockname`='$stock_name' AND `productweight`='$product_weight' AND `productsize`='$product_size' AND `productnum`='$product_num'";
+//                    $result = $mysqli->query($query_into_update);
+//                }
+//            }
+//        }
+//        $mysqli->close();
+//        return $result;
+//    }
     /*****************************自己更改终止处*************************************/
 }
 ?>
