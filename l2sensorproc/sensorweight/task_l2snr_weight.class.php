@@ -16,7 +16,7 @@ class classTaskL2snrWeight
 
     }
 
-    public function func_weight_data_process($platform, $devCode, $statCode, $content)
+    public function func_weight_data_process( $devCode, $statCode, $content)
     {
         $raw_MsgHead = substr($content, 0, MFUN_HCU_MSG_HEAD_LENGTH);  //截取6Byte MsgHead
         $msgHead = unpack(MFUN_HCU_MSG_HEAD_FORMAT, $raw_MsgHead);
@@ -53,53 +53,58 @@ class classTaskL2snrWeight
     {
         //定义本入口函数的logger处理对象及函数
         $loggerObj = new classApiL1vmFuncCom();
-        $log_time = date("Y-m-d H:i:s", time());
+        $project = MFUN_PRJ_HCU_JSON;
 
         //入口消息内容判断
         if (empty($msg) == true) {
-            $result = "Received null message body";
-            $log_content = "R:" . json_encode($result);
-            $loggerObj->logger("MFUN_TASK_ID_L2SNR_WEIGHT", "mfun_l2snr_weight_task_main_entry", $log_time, $log_content);
-            echo trim($result);
+            $log_content = "E: receive null message body";
+            $loggerObj->mylog($project,"","MFUN_TASK_ID_L2SDK_IOT_JSON","MFUN_TASK_ID_L2SNR_WEIGHT",$msgName,$log_content);
             return false;
         }
-        if (($msgId != MSG_ID_L2SDK_HCU_TO_L2SNR_WEIGHT) || ($msgName != "MSG_ID_L2SDK_HCU_TO_L2SNR_WEIGHT")){
-            $result = "Msgid or MsgName error";
-            $log_content = "P:" . json_encode($result);
-            $loggerObj->logger("MFUN_TASK_ID_L2SNR_WEIGHT", "mfun_l2snr_weight_task_main_entry", $log_time, $log_content);
-            echo trim($result);
-            return false;
+        else{ //解开消息
+            if (isset($msg["project"])) $project = $msg["project"]; else $project = "";
+            if (isset($msg["devCode"])) $devCode = $msg["devCode"]; else $devCode = "";
+            if (isset($msg["statCode"])) $statCode = $msg["statCode"]; else $statCode = "";
+            if (isset($msg["content"])) $content = $msg["content"]; else $content = "";
+            if (isset($msg["funcFlag"])) $funcFlag = $msg["funcFlag"]; else $funcFlag = "";
         }
-
-        //初始化消息内容
-        $project= "";
-        $log_from = "";
-        $platform ="";
-        $deviceId="";
-        $statCode = "";
-        $content="";
 
         //具体处理函数
-        if ($msgId == MSG_ID_L2SDK_HCU_TO_L2SNR_WEIGHT)
-        {
-            if (isset($msg["project"])) $project = $msg["project"];
-            if (isset($msg["log_from"])) $log_from = $msg["log_from"];
-            if (isset($msg["platform"])) $platform = $msg["platform"];
-            if (isset($msg["deviceId"])) $deviceId = $msg["deviceId"];
-            if (isset($msg["statCode"])) $statCode = $msg["statCode"];
-            if (isset($msg["content"])) $content = $msg["content"];
-            $resp = $this->func_weight_data_process($platform, $deviceId, $statCode, $content);
+        if ($msgId == MSG_ID_L2SDK_HCU_TO_L2SNR_WEIGHT){ //for old BFSC project
+            $resp = $this->func_weight_data_process( $devCode, $statCode, $content);
+        }
+        elseif($msgId == HUITP_JSON_MSGID_uni_faws_data_report){
+            $respJson = array("ToUsr" => $devCode,
+                            "FrUsr" => MFUN_CLOUD_HCU,
+                            "CrTim" => time(),
+                            "MsgTp" => "huitp-json",
+                            "MsgId" => HUITP_JSON_MSGID_uni_faws_data_confirm,
+                            "MsgLn" => 0,
+                            "IeCnt" => 0,
+                            "FnFlg" => 0);
+            //通过建立tcp阻塞式socket连接，向HCU发送回复消息
+            $dbiL1vmCommonObj = new classDbiL1vmCommon();
+            $socketid = $dbiL1vmCommonObj->dbi_huitp_huc_socketid_inqery($devCode);
+            if ($socketid != 0){
+                $client = new socket_client_sync($socketid, $devCode, $respJson);
+                $client->connect();
+                //返回消息log
+                $log_content = "T:" . json_encode($respJson);
+                $loggerObj->mylog($project,$devCode,"MFUN_TASK_ID_L2SNR_WEIGHT","MFUN_TASK_VID_L1VM_SWOOLE","MSG_VID_L2CODEC_ENCODE_HUITP_OUTPUT",$log_content);
+            }
+            else{
+                $log_content = "E: Socket closed!";
+                $loggerObj->mylog($project,$devCode,"MFUN_TASK_ID_L2SNR_WEIGHT","MFUN_TASK_VID_L1VM_SWOOLE","MSG_VID_L2CODEC_ENCODE_HUITP_OUTPUT",$log_content);
+            }
         }
         else{
             $resp = ""; //啥都不ECHO
         }
 
         //返回ECHO
-        if (!empty($resp))
-        {
-            $log_content = "T:" . json_encode($resp);
-            $loggerObj->logger($project, $log_from, $log_time, $log_content);
-            echo trim($resp);
+        if (!empty($resp)) {
+            $log_content = json_encode($resp,JSON_UNESCAPED_UNICODE);
+            $loggerObj->mylog($project,$devCode,"MFUN_TASK_ID_L2SDK_IOT_JSON","MFUN_TASK_ID_L2SNR_WEIGHT",$msgName,$log_content);
         }
 
         //返回
