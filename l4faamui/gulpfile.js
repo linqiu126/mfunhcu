@@ -14,15 +14,15 @@ var htmlmin = require('gulp-htmlmin');
 var replace = require('gulp-replace');
 var mkdirp = require('mkdirp');
 
-var replace_content = "C:/wamp/www/mfunhcu11/l4faamui/usr_img/";
-var replace_content_admintools = "C:/wamp/www/mfunhcu11/l4faamui/admintools/upload/";
+var replace_content = "C:/wamp/www/mfunhcu/l4faamui/usr_img/";
+var replace_content_admintools = "C:/wamp/www/mfunhcu/l4faamui/admintools/upload/";
 
 
-var replace_content_admintools_url = "/l4faamui/admintools";
-var replace_install = "/l4faamui";
+var replace_content_admintools_url = "mfunhcu/l4faamui/admintools";
+var replace_install = "mfunhcu/l4faamui";
 var option = {
-    admin_tools_path:"../../wamp/www/mfunhcu11/l4faamui/admintools",
-    buildPath: "../../wamp/www/mfunhcu11/l4faamui"
+    admin_tools_path:"../../wamp/www/mfunhcu/l4faamui/admintools",
+    buildPath: "../../wamp/www/mfunhcu/l4faamui"
 }
 
 //var replace_content = "C:/wamp/www/mfunhcu/l4faamui/usr_img/";
