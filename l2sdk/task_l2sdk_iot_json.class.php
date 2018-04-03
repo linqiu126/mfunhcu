@@ -73,6 +73,11 @@ class classTaskL2sdkIotJson
             $result = $dbiL2sdkIotcomObj->dbi_huitp_huc_socketid_update($fromUser, $socketid);
         }
 
+        $l2codecHuitpMsgDictObj = new classL2codecHuitpMsgDict();
+        $jsonDestId = $l2codecHuitpMsgDictObj->mfun_l2codec_getHuitpDestTaskId($jsonMsgId);
+        $respArray = $l2codecHuitpMsgDictObj->mfun_l2codec_getHuitpIeArray($jsonMsgId);
+        if (isset($respArray['MSGNAME'])) $jsonMsgName = $respArray['MSGNAME']; else  $jsonMsgName = "";
+
         switch ($msgType) {
             case "huitp-json":
                 $msg = array("project" => $project,
@@ -82,9 +87,9 @@ class classTaskL2sdkIotJson
                     "content" => $ieContent,
                     "funcFlag" => $funcFlag);
                 if ($parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L2SDK_IOT_JSON,
-                        MFUN_TASK_ID_L2SENSOR_EARTHDIN,
-                        MSG_ID_L2SDK_HCU_TO_L2SNR_EARTHDIN,
-                        "MSG_ID_L2SDK_HCU_TO_L2SNR_EARTHDIN",
+                        $jsonDestId,
+                        $jsonMsgId,
+                        $jsonMsgName,
                         $msg) == false)$resp = "E: send to message buffer error";
                 else $resp = "";
                 break;

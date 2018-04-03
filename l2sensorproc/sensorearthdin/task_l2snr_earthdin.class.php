@@ -32,7 +32,7 @@ class classTaskL2snrEarthdin
             if (isset($msg["content"])) $content = $msg["content"]; else $content="";
         }
 
-        if ($jsonMsgId == HUITP_JSON_MSGID_uni_earthquake_data_report)
+        if ($jsonMsgId == HUITP_JSON_MSGID_uni_mxiot_earthquake_data_report)
         {
 
         }
