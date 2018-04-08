@@ -1,0 +1,14 @@
+<!--logs.wxml-->
+
+<form bindsubmit="formSubmit" bindreset="formReset">
+<view name='nn' style="text-align:center"> {{nick}} </view>
+    <view class="input">
+        <view class="phonenumber">手机号码:</view>
+        <input name="input" placeholder="请输入手机号" />
+        <text>{{tt}}</text>
+    </view>
+    <view class="btn-area">
+        <button formType="submit">提交</button>
+        <button formType="reset">重置</button>
+    </view>
+</form>

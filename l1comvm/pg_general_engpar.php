@@ -54,8 +54,8 @@ define("MFUN_SWOOLE_SOCKET_HUITPXML_UDP", 9512); //新HUITP XML协议swoole sock
 define("MFUN_SWOOLE_SOCKET_ZHBHJT212_HTTP", 9513); //新ZHB HJT212协议swoole socket server HTTP端口
 define("MFUN_SWOOLE_SOCKET_ZHBHJT212_TCP", 9514);  //新ZHB HJT212协议swoole socket server TCP端口
 define("MFUN_SWOOLE_SOCKET_ZHBHJT212_UDP", 9515); //新ZHB HJT212协议swoole socket server UDP端口
-define("MFUN_SWOOLE_SOCKET_HUITPJSON_HTTP", 9516); //新HUITP JSON协议swoole socket server HTTP端口
-define("MFUN_SWOOLE_SOCKET_HUITPJSON_TCP", 9517);  //新HUITP JSON协议swoole socket server TCP端口
+define("MFUN_SWOOLE_SOCKET_HUITPJSON_TCP", 9516); //新HUITP JSON协议swoole socket server TCP端口
+define("MFUN_SWOOLE_SOCKET_HUITPJSON_HTTP", 9517);  //新HUITP JSON协议swoole socket server HTTP端口
 define("MFUN_SWOOLE_SOCKET_HUITPJSON_UDP", 9518); //新HUITP JSON协议swoole socket server UDP端口
 define("MFUN_SWOOLE_SOCKET_NBIOTCJ188_HTTP", 9519); //NBIOT_CJ188协议swoole socket server HTTP端口
 define("MFUN_SWOOLE_SOCKET_NBIOTCJ188_TCP", 9520);  //NBIOT_CJ188协议swoole socket server TCP端口
