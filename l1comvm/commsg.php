@@ -193,13 +193,6 @@ define("MSG_ID_L4COMUI_TO_L3F4_GETCAMERASTATUS", $index++);  //查询垂直和�
 define("MSG_ID_L4COMUI_TO_L3F4_GETCAMERAUNIT", $index++);
 define("MSG_ID_L4COMUI_TO_L3F4_SENSORUPDATE", $index++);
 define("MSG_ID_L4COMUI_TO_L3F6_PERFORMANCETABLE", $index++);
-define("MSG_ID_L4COMUI_TO_L3F7_SETUSERMSG", $index++);
-define("MSG_ID_L4COMUI_TO_L3F7_GETUSERMSG", $index++);
-define("MSG_ID_L4COMUI_TO_L3F7_SHOWUSERMSG", $index++);
-define("MSG_ID_L4COMUI_TO_L3F7_GETUSERIMG", $index++);
-define("MSG_ID_L4COMUI_TO_L3F7_CLEARUSERIMG", $index++);
-define("MSG_ID_L4AQYCUI_TO_L3F7_GETSHOWACTIONE", $index++);
-
 //L4AQYCUI部分
 define("MSG_ID_L4AQYCUI_CLICK_INCOMING", $index++);
 define("MSG_ID_L4AQYCUI_TO_L3F2_PROJDEL", $index++);

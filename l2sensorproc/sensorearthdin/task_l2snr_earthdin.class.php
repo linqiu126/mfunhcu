@@ -39,16 +39,12 @@ class classTaskL2snrEarthdin
         else{
             $resp ="E: received invalid MSGID!";
         }
-
         if (!empty($resp)) {
             $log_content = json_encode($resp,JSON_UNESCAPED_UNICODE);
             $loggerObj->mylog($project,$devCode,"MFUN_TASK_ID_L2SENSOR_EARTHDIN","NULL",$msgName,$log_content);
         }
-
         //返回
         return true;
     }
 }
-
-
 ?>

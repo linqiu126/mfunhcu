@@ -1226,7 +1226,6 @@ class classTaskL3aplF11faam
             if (isset($msg["user"])) $user = $msg["user"]; else  $user = "";
             if (isset($msg["body"])) $body = $msg["body"]; else  $body = "";
         }
-
         switch ($msgId){
             case MSG_ID_L4FAAMUI_TO_L3F11_FACTORYCODELIST:
                 $resp = $this->func_faam_factory_codelist_query($action, $user, $body);

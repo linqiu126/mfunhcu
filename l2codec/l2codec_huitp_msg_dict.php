@@ -1864,9 +1864,6 @@ class classL2codecHuitpMsgDict
             $taskId++;
         }
         return false;
-
     }
-
-
 }
 ?>
