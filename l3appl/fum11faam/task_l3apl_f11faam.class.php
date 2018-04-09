@@ -1181,7 +1181,26 @@ class classTaskL3aplF11faam
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>$usercheck['msg']);
         return $retval;
     }
+    //获取打印报表
+    function func_faam_table_query($action,$user,$body){
+        $uiFlsymDbObj=new classDbiL3apF1sym();
+        $usercheck=$uiFlsymDbObj->dbi_user_authcheck($action,$user);
 
+        if($usercheck["status"]=="true" AND $usercheck["auth"]=="true") {
+            $uid = $usercheck["uid"];
+            $uiF11faamDbObj = new classDbiL3apF11faam();
+            $resp=$uiF11faamDbObj->dbi_faam_table_query($uid);
+            if($resp){
+                $retval=array('status'=>$usercheck['status'],'ret'=>$resp,'msg'=>'success','auth'=>$usercheck['auth']);
+            }
+            else{
+                $retval=array('status'=>$usercheck['status'],'ret'=>"",'msg'=>'failed','auth'=>$usercheck['auth']);
+            }
+        }
+        else
+            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>$usercheck['msg']);
+        return $retval;
+    }
 //    function func_faam_material_stock_income_del($action,$user,$body){
 //        $uiFlsymDbObj=new classDbiL3apF1sym();
 //        $usercheck=$uiFlsymDbObj->dbi_user_authcheck($action,$user);
@@ -1401,6 +1420,9 @@ class classTaskL3aplF11faam
                 break;
             case MSG_ID_L4FAAMUI_TO_L3F11_PRODUCTSTOCKREMOVALDEL:
                 $resp=$this->func_faam_product_stock_removal_del($action,$user,$body);
+                break;
+            case MSG_ID_L4FAAMUI_TO_L3F11_TABLEQUERY:
+                $resp=$this->func_faam_table_query($action,$user,$body);
                 break;
 //            case MSG_ID_L4FAAMUI_TO_L3F11_MATERIALSTOCKINCOMEDEL:
 //                $resp=$this->func_faam_material_stock_income_del($action,$user,$body);

@@ -1489,7 +1489,10 @@ class classDbiL3apF11faam
         if (isset($consumablesInfo["number"])) $number = trim($consumablesInfo["number"]); else $number = "";
         if (isset($consumablesInfo["unit"])) $unit_price = trim($consumablesInfo["unit"]); else $unit_price = "";
         if (isset($consumablesInfo["total"])) $total_price = trim($consumablesInfo["total"]); else $total_price = "";
-        $datype = "标准规格";
+        if (isset($consumablesInfo["type"])) $datype = trim($consumablesInfo["type"]); else $datype = "";
+        if($datype==""){
+            $datype="标准规格";
+        }
         switch ($datatype) {
             case 1:$datatype = "纸箱";break;
             case 2:$datatype = "保鲜袋";break;
@@ -1778,7 +1781,6 @@ class classDbiL3apF11faam
         array_push($table["ColumnName"],"历史总量");
         array_push($table["ColumnName"],"已使用总量");
         array_push($table["ColumnName"],"剩余量");
-        array_push($table["ColumnName"],"规格");
         array_push($table["ColumnName"],"状态");
         //dbi_faam_production_history_audit
         $temp=$this->dbi_faam_consumables_history($timeStart,$timeEnd,"");
@@ -1833,7 +1835,6 @@ class classDbiL3apF11faam
             array_push($mid,$consumables_used[$i]);
             array_push($mid,$data[$i]-$consumables_used[$i]);
 
-            array_push($mid,"标准规格");
             if($data[$i]-$consumables_used[$i]<=7){
                 array_push($mid,"需要补充");
             }
@@ -3048,6 +3049,52 @@ class classDbiL3apF11faam
         }
         $mysqli->close();
         return $result;
+    }
+    //获取打印报表
+    public function dbi_faam_table_query($uid){
+        $mysqli=new mysqli(MFUN_CLOUD_DBHOST,MFUN_CLOUD_DBUSER,MFUN_CLOUD_DBPSW,MFUN_CLOUD_DBNAME_L1L2L3,MFUN_CLOUD_DBPORT);
+        if(!$mysqli){
+            die("Could not connect:".mysqli_error($mysqli));
+        }
+        $pjCode = $this->dbi_get_user_auth_factory($mysqli, $uid);
+        $mysqli->query("SET NAMES utf8");
+        $table["ColumnName"]=array();
+        $table["TableData"]=array();
+        $query_str="SELECT * FROM `t_l3f11faam_membersheet` WHERE `pjcode`='$pjCode'";
+        $result=$mysqli->query($query_str);
+        array_push($table["ColumnName"],"序号");
+        array_push($table["ColumnName"],"员工名");
+        array_push($table["ColumnName"],"性别");
+        array_push($table["ColumnName"],"微信昵称");
+        array_push($table["ColumnName"],"联系方式");
+        array_push($table["ColumnName"],"在职");
+        array_push($table["ColumnName"],"地址");
+        array_push($table["ColumnName"],"岗位");
+        array_push($table["ColumnName"],"时薪");
+        $i=1;
+        while(($result!=false)&&($row=$result->fetch_array())>0){
+            $history=array();
+            array_push($history,$i);
+            array_push($history,$row['employee']);
+            if($row['gender']==1)
+                array_push($history,'男');
+            else
+                array_push($history,'女');
+            array_push($history,$row['openid']);
+            array_push($history,$row['phone']);
+            if($row['onjob']=='1')
+                array_push($history,'是');
+            else
+                array_push($history,'否');
+            array_push($history,$row['address']);
+            array_push($history,$row['position']);
+            array_push($history,$row['unitprice']);
+            array_push($table["TableData"],$history);
+            $i=$i+1;
+        }
+
+        $mysqli->close();
+        return $table;
     }
     //入库记录删除，删除掉的入库记录中的数据需返还给原数据库
 //    public function  dbi_faam_material_stock_income_del($body){

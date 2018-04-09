@@ -333,6 +333,7 @@ define("MSG_ID_L4FAAMUI_TO_L3F11_METERIALSTOCKREMOVAMOD",$index++);
 define("MSG_ID_L4FAAMUI_TO_L3F11_METERIALSTOCKREMOVALDEL",$index++);
 define("MSG_ID_L4FAAMUI_TO_L3F11_PRODUCTSTOCKREMOVALMOD",$index++);
 define("MSG_ID_L4FAAMUI_TO_L3F11_PRODUCTSTOCKREMOVALDEL",$index++);
+define("MSG_ID_L4FAAMUI_TO_L3F11_TABLEQUERY",$index++);
 //define("MSG_ID_L4FAAMUI_TO_L3F11_MATERIALSTOCKINCOMEDEL",$index++);
 /*************************自己更改终止处**********************************************/
 

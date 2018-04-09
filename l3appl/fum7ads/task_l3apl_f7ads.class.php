@@ -88,11 +88,11 @@ class classTaskL3aplF7ads
         if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
             //$uiF7adsDbObj = new classDbiL3apF7ads(); //初始化一个UI DB对象
             $temp =(string)rand(1000,9999);
-            $msg =$temp.'您好，今天是'.$temp.'号，欢迎领导前来视察，今天的气温是 今天的PM2.5是....';
-            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>$msg);
+            $his=array('msg'=>'您好，今天是'.$temp.'号，欢迎领导前来视察，今天的气温是 今天的PM2.5是....','ifdev'=>'true');
+            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>'success','ret'=>$his);
         }
         else
-            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>$usercheck['msg']);
+            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>$usercheck['msg'],'ret'=>"");
 
         return $retval;
     }
