@@ -1548,7 +1548,6 @@ class classL2codecHuitpMsgDict
         HUITP_JSON_MSGID_uni_mxiot_water_sensor_data_report => array("MSGNAME" => "HUITP_JSON_MSGID_uni_mxiot_water_sensor_data_report","MSGIE" => array()), //0x5CA0
         HUITP_JSON_MSGID_uni_mxiot_water_sensor_data_confirm => array("MSGNAME" => "HUITP_JSON_MSGID_uni_mxiot_water_sensor_data_confirm","MSGIE" => array()), //0x5C20
 
-
         //FAWS互联网+秤
         HUITP_JSON_MSGID_uni_faws_data_report => array("MSGNAME" => "HUITP_JSON_MSGID_uni_faws_data_report","MSGIE" => array()),  //0x5D80
         HUITP_JSON_MSGID_uni_faws_data_confirm => array("MSGNAME" => "HUITP_JSON_MSGID_uni_faws_data_confirm","MSGIE" => array()),  //0x5D00

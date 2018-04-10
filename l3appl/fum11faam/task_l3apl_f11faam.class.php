@@ -575,8 +575,10 @@ class classTaskL3aplF11faam
             $uid = $usercheck["uid"];
             $uiF11faamDbObj = new classDbiL3apF11faam();
             $resp = $uiF11faamDbObj->dbi_faam_consumables_table($uid);
-            $ret = array('ColumnName' => $resp["ColumnName"], 'TableData' => $resp["TableData"]);
-            $retval = array('status' => $usercheck['status'], 'auth' => $usercheck['auth'], 'ret' => $ret, 'msg' => "获取耗材表成功");
+            if(!empty($resp))
+                $retval = array('status' => $usercheck['status'], 'auth' => $usercheck['auth'], 'ret' => $resp, 'msg' => "获取耗材表成功");
+            else
+                $retval = array('status' => $usercheck['status'], 'auth' => $usercheck['auth'], 'ret' => $resp, 'msg' => "获取耗材表失败");
         }
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>$usercheck['msg']);
@@ -613,8 +615,7 @@ class classTaskL3aplF11faam
             $timeEnd=$timeEnd." 23:59:59";
             $keyWord=$body["KeyWord"];
             $resp = $uiF11faamDbObj->dbi_faam_consumables_history_table($uid,$key,$timeStart,$timeEnd,$keyWord);
-            $ret = array('ColumnName' => $resp["ColumnName"], 'TableData' => $resp["TableData"]);
-            $retval = array('status' => $usercheck['status'], 'auth' => $usercheck['auth'], 'ret' => $ret, 'msg' => "获取耗材表成功");
+            $retval = array('status' => $usercheck['status'], 'auth' => $usercheck['auth'], 'ret' => $resp, 'msg' => "获取耗材表成功");
         }
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>$usercheck['msg']);

@@ -140,7 +140,6 @@ class classTaskL3wxOprEmc
     private function func_get_emctrack_process($deviceId)
     {
         $l3wxOprEmcDbObj = new classDbiL3wxOprEmc(); //初始化一个UI DB对象
-
         $retlist = array();
         for ($i = 0; $i < 48; $i++) {
             $map = array(

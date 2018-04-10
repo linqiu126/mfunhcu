@@ -843,6 +843,9 @@ class classConstL1vmUserWebRight
             self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['actionauth']['KeyGrant'] = 'true';
             self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['actionauth']['AttendanceAudit'] = 'true';
             self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['actionauth']['KPIAudit'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['actionauth']['GetMaterialStockList']='true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['actionauth']['GetProductStockList']='true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['actionauth']['GetProductWeightAndSize']='true';
             self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['query'] = 'true';
             self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['mod'] = 'true';
 
