@@ -1781,7 +1781,7 @@ class classDbiL3apF11faam
         array_push($table["ColumnName"],"名称");
         array_push($table["ColumnName"],"历史总量");
         array_push($table["ColumnName"],"历史总价");
-        array_push($table["ColumnName"],"平均价格");
+        array_push($table["ColumnName"],"历史平均价格");
         array_push($table["ColumnName"],"最后一次入库时间");
         $query_str="SELECT * FROM `t_l3f11faam_buy_suppliessheet` WHERE `storagetime`>='$timeStart' AND `storagetime`<='$timeEnd'ORDER BY `t_l3f11faam_buy_suppliessheet`.`storagetime` ASC";
         $temp=$mysqli->query($query_str);
@@ -1831,20 +1831,29 @@ class classDbiL3apF11faam
 
             }
         }
-        for($m=0;$m<count($datatype);$m++){
-            $result=array();
-            if($total_number[$m]==0){
-                $price=0;
+        for($m=0;$m<count($datatype);$m++) {
+            $result = array();
+            if ($total_number[$m] == 0) {
+                array_push($result, $sid);
+                array_push($result, $datatype[$m]);
+                array_push($result, '暂无数据');
+                array_push($result, '暂无数据');
+                array_push($result, '暂无数据');
+                array_push($result, '暂无数据');
             }
-            else $price=$total_money[$m]/$total_number[$m];
-            array_push($result,$sid);
-            array_push($result,$datatype[$m]);
-            array_push($result,$total_number[$m]);
-            array_push($result,$total_money[$m]);
-            array_push($result,$price);
-            array_push($result,$final_time[$m]);
-            array_push($table["TableData"],$result);
-            $sid=$sid+1;
+            else {
+                if ($total_number[$m] == 0) {
+                    $price = 0;
+                } else $price = $total_money[$m] / $total_number[$m];
+                array_push($result, $sid);
+                array_push($result, $datatype[$m]);
+                array_push($result, $total_number[$m]);
+                array_push($result, $total_money[$m]);
+                array_push($result, $price);
+                array_push($result, $final_time[$m]);
+            }
+            array_push($table["TableData"], $result);
+            $sid = $sid + 1;
         }
         $mysqli->close();
         return $table;
