@@ -43,10 +43,10 @@ class classTaskL2sdkIotJson
         $msgType = trim($jsonData->MsgTp);
         $jsonMsgId = intval($jsonData->MsgId);
         $msgLen = intval($jsonData->MsgLn);
-        $ieContent = $jsonData->IeCnt;
-        $funcFlag = trim($jsonData->FnFlg);
+        $ieCnt = $jsonData->IeCnt;
+        $ieContent = array("rfidUser"=>$ieCnt->rfidUser, "spsValue"=>$ieCnt->spsValue);
 
-        echo "JSON decode success, fromUser=".$fromUser."; value=".$ieContent->spsValue;
+        $funcFlag = trim($jsonData->FnFlg);
 
         //取DB中的硬件信息，判断FromUser合法性
         $dbiL2sdkIotcomObj = new classDbiL2sdkIotcom();
