@@ -456,13 +456,13 @@ class classL1MainEntrySocketListenServer
         echo "spsValue:".$weigh["IeCnt"]["spsValue"]."\n";
         echo "FnFlg:".$weigh["FnFlg"]."\n";
 
-//        $_GET = $request->post;
-//        echo PHP_EOL.date('Y/m/d H:i:s', time())." ";
-//        echo "huitp_json_http_hcuport_onRequest: {$request}".PHP_EOL;
-//
-//        $msg = $_GET;
-//        $obj = new classTaskL1vmCoreRouter();
-//        $obj->mfun_l1vm_task_main_entry(MFUN_MAIN_ENTRY_IOT_JSON, MSG_ID_L2SDK_JSON_DATA_INCOMING, "MSG_ID_L2SDK_JSON_DATA_INCOMING", $msg);
+        //$_GET = $request->post;
+        //echo PHP_EOL.date('Y/m/d H:i:s', time())." ";
+        echo "huitp_json_http_hcuport_onRequest: {$request}".PHP_EOL;
+        $msg=$str;
+        //$msg = $_GET;
+        $obj = new classTaskL1vmCoreRouter();
+        $obj->mfun_l1vm_task_main_entry(MFUN_MAIN_ENTRY_IOT_JSON, MSG_ID_L2SDK_JSON_DATA_INCOMING, "MSG_ID_L2SDK_JSON_DATA_INCOMING", $msg);
     }
 
     /********************************************HUITP TCP picport****************************************************/
