@@ -38,7 +38,6 @@ class classTaskL2snrCommonService
             if (isset($msg["statCode"])) $statCode = $msg["statCode"]; else $statCode = "";
             if (isset($msg["content"])) $content = $msg["content"]; else $content="";
         }
-
         switch($msgId)
         {
             case HUITP_MSGID_uni_heart_beat_report:

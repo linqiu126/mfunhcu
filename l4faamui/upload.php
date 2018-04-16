@@ -1,6 +1,6 @@
 <?php
 	$id= $_REQUEST["id"];
-	$upload_path="C:/wamp/www/mfunhcu11/l4faamui/usr_img/";
+	$upload_path="C:/wamp/www/mfunhcu/l4faamui/usr_img/";
 	function _encode($arr)
     {
       $na = array();

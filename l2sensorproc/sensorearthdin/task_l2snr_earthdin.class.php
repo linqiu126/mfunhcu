@@ -32,23 +32,19 @@ class classTaskL2snrEarthdin
             if (isset($msg["content"])) $content = $msg["content"]; else $content="";
         }
 
-        if ($jsonMsgId == HUITP_JSON_MSGID_uni_earthquake_data_report)
+        if ($jsonMsgId == HUITP_JSON_MSGID_uni_mxiot_earthquake_data_report)
         {
 
         }
         else{
             $resp ="E: received invalid MSGID!";
         }
-
         if (!empty($resp)) {
             $log_content = json_encode($resp,JSON_UNESCAPED_UNICODE);
             $loggerObj->mylog($project,$devCode,"MFUN_TASK_ID_L2SENSOR_EARTHDIN","NULL",$msgName,$log_content);
         }
-
         //返回
         return true;
     }
 }
-
-
 ?>

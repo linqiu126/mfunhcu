@@ -10,7 +10,6 @@ class classDbiL2snrCcl
 {
     private function getRandomKeyid($strlen)
     {
-
         $str = "";
         $str_pol = "0123456789";
         $max = strlen($str_pol) - 1;

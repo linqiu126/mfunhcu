@@ -636,23 +636,30 @@ define("HUITP_MSGID_uni_itf_485_resp",  0x5B80);
 define("HUITP_MSGID_uni_itf_485_report",  0x5B81);
 define("HUITP_MSGID_uni_itf_485_confirm",  0x5B01);
 
-//地震
-define("HUITP_JSON_MSGID_uni_earthquake_ctrl_req", 0x5C00);
-define("HUITP_JSON_MSGID_uni_earthquake_ctrl_resp", 0x5C80);
-define("HUITP_JSON_MSGID_uni_earthquake_data_report", 0x5C81);
-define("HUITP_JSON_MSGID_uni_earthquake_data_confirm", 0x5C01);
-define("HUITP_JSON_MSGID_uni_heart_beat_report", 0x5CFF);
-define("HUITP_JSON_MSGID_uni_heart_beat_confirm", 0x5C7F);
+//MXIOT-地震/广告牌等
+define("HUITP_JSON_MSGID_uni_mxiot_earthquake_ctrl_req", 0x5C00);
+define("HUITP_JSON_MSGID_uni_mxiot_earthquake_ctrl_resp", 0x5C80);
+define("HUITP_JSON_MSGID_uni_mxiot_earthquake_data_report", 0x5C81);
+define("HUITP_JSON_MSGID_uni_mxiot_earthquake_data_confirm", 0x5C01);
+define("HUITP_JSON_MSGID_uni_mxiot_heart_beat_report", 0x5C82);
+define("HUITP_JSON_MSGID_uni_mxiot_heart_beat_confirm", 0x5C02);
+define("HUITP_JSON_MSGID_uni_mxiot_advacc_data_report", 0x5C90);
+define("HUITP_JSON_MSGID_uni_mxiot_advacc_data_confirm", 0x5C10);
+define("HUITP_JSON_MSGID_uni_mxiot_water_sensor_data_report", 0x5CA0);
+define("HUITP_JSON_MSGID_uni_mxiot_water_sensor_data_confirm", 0x5C20);
+
+//FAWS互联网+秤
+define("HUITP_JSON_MSGID_uni_faws_data_report", 0x5D80);
+define("HUITP_JSON_MSGID_uni_faws_data_confirm", 0x5D00);
+
 
 //软件清单
-define("HUITP_MSGID_uni_inventory_min",  0xA000);
 define("HUITP_MSGID_uni_inventory_req",  0xA000);
 define("HUITP_MSGID_uni_inventory_resp",  0xA080);
 define("HUITP_MSGID_uni_inventory_report",  0xA081);
 define("HUITP_MSGID_uni_inventory_confirm",  0xA001);
 
 //软件版本体
-define("HUITP_MSGID_uni_sw_package_min",  0xA100);
 define("HUITP_MSGID_uni_sw_package_req",  0xA100);
 define("HUITP_MSGID_uni_sw_package_resp",  0xA180);
 define("HUITP_MSGID_uni_sw_package_report",  0xA181);
@@ -1529,6 +1536,22 @@ class classL2codecHuitpMsgDict
         HUITP_MSGID_uni_itf_485_report => array("MSGNAME" => "","MSGIE" => array(HUITP_IEID_uni_com_req)),  //0x5B81
         HUITP_MSGID_uni_itf_485_confirm => array("MSGNAME" => "","MSGIE" => array(HUITP_IEID_uni_com_req)),  //0x5B01
 
+        //MXIOT-地震/广告牌等
+        HUITP_JSON_MSGID_uni_mxiot_earthquake_ctrl_req => array("MSGNAME" => "HUITP_JSON_MSGID_uni_mxiot_earthquake_ctrl_req","MSGIE" => array()), //0x5C00
+        HUITP_JSON_MSGID_uni_mxiot_earthquake_ctrl_resp => array("MSGNAME" => "HUITP_JSON_MSGID_uni_mxiot_earthquake_ctrl_resp","MSGIE" => array()), //0x5C80
+        HUITP_JSON_MSGID_uni_mxiot_earthquake_data_report => array("MSGNAME" => "HUITP_JSON_MSGID_uni_mxiot_earthquake_data_report","MSGIE" => array()), //0x5C81
+        HUITP_JSON_MSGID_uni_mxiot_earthquake_data_confirm => array("MSGNAME" => "HUITP_JSON_MSGID_uni_mxiot_earthquake_data_confirm","MSGIE" => array()), //0x5C01
+        HUITP_JSON_MSGID_uni_mxiot_heart_beat_report => array("MSGNAME" => "HUITP_JSON_MSGID_uni_mxiot_heart_beat_report","MSGIE" => array()), //0x5C82
+        HUITP_JSON_MSGID_uni_mxiot_heart_beat_confirm => array("MSGNAME" => "HUITP_JSON_MSGID_uni_mxiot_heart_beat_confirm","MSGIE" => array()), //0x5C02
+        HUITP_JSON_MSGID_uni_mxiot_advacc_data_report => array("MSGNAME" => "HUITP_JSON_MSGID_uni_mxiot_advacc_data_report","MSGIE" => array()), //0x5C90
+        HUITP_JSON_MSGID_uni_mxiot_advacc_data_confirm => array("MSGNAME" => "HUITP_JSON_MSGID_uni_mxiot_advacc_data_confirm","MSGIE" => array()), //0x5C10
+        HUITP_JSON_MSGID_uni_mxiot_water_sensor_data_report => array("MSGNAME" => "HUITP_JSON_MSGID_uni_mxiot_water_sensor_data_report","MSGIE" => array()), //0x5CA0
+        HUITP_JSON_MSGID_uni_mxiot_water_sensor_data_confirm => array("MSGNAME" => "HUITP_JSON_MSGID_uni_mxiot_water_sensor_data_confirm","MSGIE" => array()), //0x5C20
+
+        //FAWS互联网+秤
+        HUITP_JSON_MSGID_uni_faws_data_report => array("MSGNAME" => "HUITP_JSON_MSGID_uni_faws_data_report","MSGIE" => array()),  //0x5D80
+        HUITP_JSON_MSGID_uni_faws_data_confirm => array("MSGNAME" => "HUITP_JSON_MSGID_uni_faws_data_confirm","MSGIE" => array()),  //0x5D00
+
         //软件清单
         //0xA000
         HUITP_MSGID_uni_inventory_req => array("MSGNAME" => "HUITP_MSGID_uni_inventory_req",
@@ -1804,11 +1827,15 @@ class classL2codecHuitpMsgDict
         MFUN_TASK_ID_L2SENSOR_WEIGHT => array(), //BFSC组合秤
         MFUN_TASK_ID_L2TIMER_CRON => array(),
         MFUN_TASK_ID_L2SOCKET_LISTEN => array(),
-        MFUN_TASK_ID_L2SENSOR_WEIGHT => array(), //BFSC组合秤
+        MFUN_TASK_ID_L2SENSOR_WEIGHT => array(HUITP_JSON_MSGID_uni_faws_data_report), //BFSC组合秤
         MFUN_TASK_ID_L2SENSOR_FDWQ => array(HUITP_MSGID_uni_fdwq_data_resp,
                                             HUITP_MSGID_uni_fdwq_data_report,
                                             HUITP_MSGID_uni_fdwq_profile_report),
-        MFUN_TASK_ID_L2SENSOR_EARTHDIN => array(),
+        MFUN_TASK_ID_L2SENSOR_EARTHDIN => array(HUITP_JSON_MSGID_uni_mxiot_earthquake_ctrl_resp,
+                                            HUITP_JSON_MSGID_uni_mxiot_earthquake_data_report,
+                                            HUITP_JSON_MSGID_uni_mxiot_heart_beat_report,
+                                            HUITP_JSON_MSGID_uni_mxiot_advacc_data_report,
+                                            HUITP_JSON_MSGID_uni_mxiot_water_sensor_data_report),
         MFUN_TASK_ID_L3APPL_FUM1SYM => array(),
         MFUN_TASK_ID_L3APPL_FUM2CM => array(),
         MFUN_TASK_ID_L3APPL_FUM3DM => array(),
@@ -1864,9 +1891,6 @@ class classL2codecHuitpMsgDict
             $taskId++;
         }
         return false;
-
     }
-
-
 }
 ?>
