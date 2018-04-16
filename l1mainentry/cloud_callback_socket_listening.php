@@ -437,13 +437,32 @@ class classL1MainEntrySocketListenServer
 
     public function huitp_json_http_hcuport_onRequest($request,  $response)
     {
-        $_GET = $request->post;
-        echo PHP_EOL.date('Y/m/d H:i:s', time())." ";
-        echo "huitp_json_http_hcuport_onRequest: {$request}".PHP_EOL;
+        $msg=$request->post;
+        date_default_timezone_set("PRC");
+        echo PHP_EOL.date('Y/m/d H:i:s', time())."\n";
+        print_r(array_keys($msg));
+        $str=array_keys($msg)[0];
+        //$str='{'.$str.'}';
+        print_r($str);
+        $weigh=json_decode($str,true);
+        var_dump($weigh);
+        echo "ToUsr:".$weigh["ToUsr"]."\n";
+        echo "FrUsr:".$weigh["FrUsr"]."\n";
+        echo "CrTim:".$weigh["CrTim"]."\n";
+        echo "MsgTp:".$weigh["MsgTp"]."\n";
+        echo "MsgId:".$weigh["MsgId"]."\n";
+        echo "MsgLn:".$weigh["MsgLn"]."\n";
+        echo "rfidUser:".$weigh["IeCnt"]["rfidUser"]."\n";
+        echo "spsValue:".$weigh["IeCnt"]["spsValue"]."\n";
+        echo "FnFlg:".$weigh["FnFlg"]."\n";
 
-        $msg = $_GET;
-        $obj = new classTaskL1vmCoreRouter();
-        $obj->mfun_l1vm_task_main_entry(MFUN_MAIN_ENTRY_IOT_JSON, MSG_ID_L2SDK_JSON_DATA_INCOMING, "MSG_ID_L2SDK_JSON_DATA_INCOMING", $msg);
+//        $_GET = $request->post;
+//        echo PHP_EOL.date('Y/m/d H:i:s', time())." ";
+//        echo "huitp_json_http_hcuport_onRequest: {$request}".PHP_EOL;
+//
+//        $msg = $_GET;
+//        $obj = new classTaskL1vmCoreRouter();
+//        $obj->mfun_l1vm_task_main_entry(MFUN_MAIN_ENTRY_IOT_JSON, MSG_ID_L2SDK_JSON_DATA_INCOMING, "MSG_ID_L2SDK_JSON_DATA_INCOMING", $msg);
     }
 
     /********************************************HUITP TCP picport****************************************************/
