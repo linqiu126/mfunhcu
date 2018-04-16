@@ -31,12 +31,12 @@ class classTaskL2sdkIotJson
         }
 
         if (isset($msg["socketid"])) $socketid = $msg["socketid"]; else  $socketid = "";
-        if (isset($msg["data"])) $data = $msg["data"]; else  $data = "";
+        if (isset($msg["data"])) $jsonData = $msg["data"]; else  $jsonData = "";
 
         //Json解码
-        $data = json_decode($data);
+        $data = json_decode($jsonData);
         if(empty($data)){
-            $log_content = "E:IOT_JSON received JSON message format error, socketid = ".$socketid;
+            $log_content = "E:IOT_JSON received JSON message format error";
             $loggerObj->mylog($project,"NULL","MFUN_TASK_VID_L1VM_SWOOLE","MFUN_TASK_ID_L2SDK_IOT_JSON",$msgName,$log_content);//
             echo trim($log_content); //这里echo主要是为了swoole log打印，帮助查找问题
             return false;

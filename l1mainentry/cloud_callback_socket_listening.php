@@ -440,6 +440,7 @@ class classL1MainEntrySocketListenServer
         $msg=$request->post;
         date_default_timezone_set("PRC");
         echo PHP_EOL.date('Y/m/d H:i:s', time())."\n";
+        var_dump($msg)."\n";
         print_r(array_keys($msg));
         $str=array_keys($msg)[0];
         //$str='{'.$str.'}';
@@ -458,9 +459,10 @@ class classL1MainEntrySocketListenServer
 
         //$_GET = $request->post;
         //echo PHP_EOL.date('Y/m/d H:i:s', time())." ";
-        echo "huitp_json_http_hcuport_onRequest: {$request}".PHP_EOL;
+        //echo "huitp_json_http_hcuport_onRequest: {$request}".PHP_EOL;
         $msg=$str;
         //$msg = $_GET;
+        $msg = array("socketid" => 0, "data"=>$str);
         $obj = new classTaskL1vmCoreRouter();
         $obj->mfun_l1vm_task_main_entry(MFUN_MAIN_ENTRY_IOT_JSON, MSG_ID_L2SDK_JSON_DATA_INCOMING, "MSG_ID_L2SDK_JSON_DATA_INCOMING", $msg);
     }
