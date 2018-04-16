@@ -83,7 +83,7 @@ class classTaskL2snrWeight
                             "IeCnt" => 0,
                             "FnFlg" => 0);
 
-            echo $respJson;
+            //echo $respJson;
             //通过建立tcp阻塞式socket连接，向HCU发送回复消息
 //            $dbiL1vmCommonObj = new classDbiL1vmCommon();
 //            $socketid = $dbiL1vmCommonObj->dbi_huitp_huc_socketid_inqery($devCode);
