@@ -117,7 +117,6 @@ class classDbiL2sdkIotcom
         $mysqli->close();
         return $result;
     }
-
     //查询所有HCU list
     public function dbi_hcuDevice_inquiry_device()
     {
@@ -140,7 +139,6 @@ class classDbiL2sdkIotcom
         $mysqli->close();
         return $resp;
     }
-
     public function dbi_huitp_huc_socketid_update($devcode, $socketid)
     {
         $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
@@ -155,7 +153,6 @@ class classDbiL2sdkIotcom
         $mysqli->close();
         return $result;
     }
-
 }
 
 ?>
