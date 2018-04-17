@@ -5,7 +5,7 @@
  * Date: 2016/12/3
  * Time: 15:19
  */
-
+include_once "myconfig";
 class classDbiL2snrWeight
 {
 
@@ -147,7 +147,7 @@ class classDbiL2snrWeight
         return $resp;
     }
     private function check_worker($mid){
-        $mysqli=new mysqli(MFUN_CLOUD_DBHOST,MFUN_CLOUD_DBUSER,MFUN_CLOUD_DBPSW,MFUN_CLOUD_DBNAME_L1L2L3,MFUN_CLOUD_DBPORT);
+        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
         if(!$mysqli){
             die("Could not connect:".mysqli_error($mysqli));
         }
@@ -158,7 +158,7 @@ class classDbiL2snrWeight
         return $result;
     }
     private function check_balance($balance){
-        $mysqli=new mysqli(MFUN_CLOUD_DBHOST,MFUN_CLOUD_DBUSER,MFUN_CLOUD_DBPSW,MFUN_CLOUD_DBNAME_L1L2L3,MFUN_CLOUD_DBPORT);
+        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
         if(!$mysqli){
             die("Could not connect:".mysqli_error($mysqli));
         }
@@ -179,32 +179,35 @@ class classDbiL2snrWeight
 // "spsValue": "000.065"
 //},
 // "FnFlg": 0}
-    public function dbi_weight_product_insert($msg){
+    public function dbi_weight_product_insert($devCode,$content){
         date_default_timezone_set("PRC");
-        $toUser=$msg["ToUsr"];
-        $frUser=$msg["FrUsr"];
-        $crTim=$msg["CrTim"];
-        $rfidUser=$msg["IeCnt"]["rfidUser"];
-        $spsValue=(double)$msg["IeCnt"]["spsValue"];
+        $toUser="XHZN";
+        $frUser=$devCode;
+        $rfidUser=$content["rfidUser"];
+        $spsValue=(double)$content["spsValue"];
         $time=date("Y-m-d H:i:s",time());
         $worker=$this->check_worker($rfidUser);
         $balance=$this->check_balance($frUser);
-        $mysqli=new mysqli(MFUN_CLOUD_DBHOST,MFUN_CLOUD_DBUSER,MFUN_CLOUD_DBPSW,MFUN_CLOUD_DBNAME_L1L2L3,MFUN_CLOUD_DBPORT);
+        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
         if(!$mysqli){
             die("Could not connect:".mysqli_error($mysqli));
         }
+        $res="";
+        print_r($worker);
+        print_r($balance);
         $mysqli->query("SET NAMES utf8");
-        if(($worker==false)&&($worker->fetch_array())<=0){
+        if((mysqli_num_rows($worker))<=0){
             $res="E:Wrong Message for Worker Id";
             return $res;
         }
-        if(($balance==false)&&($balance->fetch_array())<=0){
+        if((mysqli_num_rows($balance))<=0){
             $res="E:Wrong Message for Balance Id";
             return $res;
         }
         $query_str="INSERT INTO `t_l3f11faam_weight_product_sheet`(`tousr`, `fruser`, `crtim`, `rfiduser`, `spsvalue`, `stocktime`)
-                        VALUES ('$toUser','$frUser','$crTim','$rfidUser','$spsValue','$time')";
+                        VALUES ('$toUser','$frUser',NULL,'$rfidUser','$spsValue','$time')";
         $res=$mysqli->query($query_str);
+        $mysqli->close();
         if($res==false){
             $res="E:Wrong Message for Insert";
             return $res;
