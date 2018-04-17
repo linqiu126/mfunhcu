@@ -31,24 +31,22 @@ class classTaskL2sdkIotJson
         }
 
         if (isset($msg["socketid"])) $socketid = $msg["socketid"]; else  $socketid = "";
-        if (isset($msg["data"])) $jsonData = $msg["data"]; else  $jsonData = "";
+        if (isset($msg["data"])) $data = $msg["data"]; else  $data = "";
 
-        //Json解码
-        $data = json_decode($jsonData);
-        if(empty($data)){
-            $log_content = "E:IOT_JSON received JSON message format error";
-            $loggerObj->mylog($project,"NULL","MFUN_TASK_VID_L1VM_SWOOLE","MFUN_TASK_ID_L2SDK_IOT_JSON",$msgName,$log_content);//
-            echo trim($log_content); //这里echo主要是为了swoole log打印，帮助查找问题
-            return false;
-        }
-        $toUser = strtoupper(trim($data->ToUsr));
-        $fromUser = strtoupper(trim($data->FrUsr));
-        $createTime = intval($data->CrTim);
-        $msgType = trim($data->MsgTp);
-        $jsonMsgId = intval($data->MsgId);
-        $msgLen = intval($data->MsgLn);
-        $ieContent = $data->IeCnt;
-        $funcFlag = trim($data->FnFlg);
+        //这里可能收到HTTP header内容，json解码为空，直接返回
+        $jsonData = json_decode($data);
+        if (empty($jsonData)) return false;
+
+        $toUser = strtoupper(trim($jsonData->ToUsr));
+        $fromUser = strtoupper(trim($jsonData->FrUsr));
+        $createTime = intval($jsonData->CrTim);
+        $msgType = trim($jsonData->MsgTp);
+        $jsonMsgId = intval($jsonData->MsgId);
+        $msgLen = intval($jsonData->MsgLn);
+        $ieContent = $jsonData->IeCnt;
+        $funcFlag = trim($jsonData->FnFlg);
+
+        echo "JSON decode success, fromUser=".$fromUser."; value=".$ieContent->spsValue;
 
         //取DB中的硬件信息，判断FromUser合法性
         $dbiL2sdkIotcomObj = new classDbiL2sdkIotcom();

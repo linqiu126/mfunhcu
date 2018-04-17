@@ -146,7 +146,72 @@ class classDbiL2snrWeight
         $mysqli->close();
         return $resp;
     }
+    private function check_worker($mid){
+        $mysqli=new mysqli(MFUN_CLOUD_DBHOST,MFUN_CLOUD_DBUSER,MFUN_CLOUD_DBPSW,MFUN_CLOUD_DBNAME_L1L2L3,MFUN_CLOUD_DBPORT);
+        if(!$mysqli){
+            die("Could not connect:".mysqli_error($mysqli));
+        }
+        $mysqli->query("SET NAMES utf8");
+        $query_str="SELECT * FROM `t_l3f11faam_membersheet` WHERE `mid`='$mid' AND `pjcode`='FISH' AND `onjob`='1'";
+        $result=$mysqli->query($query_str);
+        $mysqli->close();
+        return $result;
+    }
+    private function check_balance($balance){
+        $mysqli=new mysqli(MFUN_CLOUD_DBHOST,MFUN_CLOUD_DBUSER,MFUN_CLOUD_DBPSW,MFUN_CLOUD_DBNAME_L1L2L3,MFUN_CLOUD_DBPORT);
+        if(!$mysqli){
+            die("Could not connect:".mysqli_error($mysqli));
+        }
+        $mysqli->query("SET NAMES utf8");
+        $query_str="SELECT * FROM `t_l3f11faam_balance_sheet` WHERE `balancecode`='$balance'";
+        $result=$mysqli->query($query_str);
+        $mysqli->close();
+        return $result;
 
+    }
+//{"ToUsr": "XHZN",
+// "FrUsr": "IHU_G5104GTJY_RND01",
+// "CrTim": 1523936528, "MsgTp":
+// "huitp-json", "MsgId": 23936,
+// "MsgLn": 49,
+// "IeCnt":
+// {"rfidUser": "1402217203",
+// "spsValue": "000.065"
+//},
+// "FnFlg": 0}
+    public function dbi_weight_product_insert($msg){
+        date_default_timezone_set("PRC");
+        $toUser=$msg["ToUsr"];
+        $frUser=$msg["FrUsr"];
+        $crTim=$msg["CrTim"];
+        $rfidUser=$msg["IeCnt"]["rfidUser"];
+        $spsValue=(double)$msg["IeCnt"]["spsValue"];
+        $time=date("Y-m-d H:i:s",time());
+        $worker=$this->check_worker($rfidUser);
+        $balance=$this->check_balance($frUser);
+        $mysqli=new mysqli(MFUN_CLOUD_DBHOST,MFUN_CLOUD_DBUSER,MFUN_CLOUD_DBPSW,MFUN_CLOUD_DBNAME_L1L2L3,MFUN_CLOUD_DBPORT);
+        if(!$mysqli){
+            die("Could not connect:".mysqli_error($mysqli));
+        }
+        $mysqli->query("SET NAMES utf8");
+        if(($worker==false)&&($worker->fetch_array())<=0){
+            $res="E:Wrong Message for Worker Id";
+            return $res;
+        }
+        if(($balance==false)&&($balance->fetch_array())<=0){
+            $res="E:Wrong Message for Balance Id";
+            return $res;
+        }
+        $query_str="INSERT INTO `t_l3f11faam_weight_product_sheet`(`tousr`, `fruser`, `crtim`, `rfiduser`, `spsvalue`, `stocktime`)
+                        VALUES ('$toUser','$frUser','$crTim','$rfidUser','$spsValue','$time')";
+        $res=$mysqli->query($query_str);
+        if($res==false){
+            $res="E:Wrong Message for Insert";
+            return $res;
+        }
+        else
+            return $res;
+    }
 }
 
 ?>

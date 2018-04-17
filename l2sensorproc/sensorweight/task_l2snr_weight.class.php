@@ -43,6 +43,12 @@ class classTaskL2snrWeight
 
         return $resp;
     }
+    public function func_weight_product_insert($msg){
+        $classDbiL2snrWeight=new classDbiL2snrWeight();
+        $resp=$classDbiL2snrWeight->dbi_weight_product_insert($msg);
+        $result=array("ret"=>$resp);
+        return $result;
+    }
 
 
 
@@ -74,16 +80,33 @@ class classTaskL2snrWeight
             $resp = $this->func_weight_data_process( $devCode, $statCode, $content);
         }
         elseif($msgId == HUITP_JSON_MSGID_uni_faws_data_report){
-            $respJson = array("ToUsr" => $devCode,
-                            "FrUsr" => MFUN_CLOUD_HCU,
-                            "CrTim" => time(),
-                            "MsgTp" => "huitp-json",
-                            "MsgId" => HUITP_JSON_MSGID_uni_faws_data_confirm,
-                            "MsgLn" => 0,
-                            "IeCnt" => 0,
-                            "FnFlg" => 0);
-
-            echo $respJson;
+//            $respJson = array("ToUsr" => $devCode,
+//                            "FrUsr" => MFUN_CLOUD_HCU,
+//                            "CrTim" => time(),
+//                            "MsgTp" => "huitp-json",
+//                            "MsgId" => HUITP_JSON_MSGID_uni_faws_data_confirm,
+//                            "MsgLn" => 0,
+//                            "IeCnt" => 0,
+//                            "FnFlg" => 0);
+//
+//            echo $respJson;
+            $resp=$this->func_weight_product_insert($msg);
+            echo $resp;
+            //echo $respJson;
+            //通过建立tcp阻塞式socket连接，向HCU发送回复消息
+//            $dbiL1vmCommonObj = new classDbiL1vmCommon();
+//            $socketid = $dbiL1vmCommonObj->dbi_huitp_huc_socketid_inqery($devCode);
+//            if ($socketid != 0){
+//                $client = new socket_client_sync($socketid, $devCode, $respJson);
+//                $client->connect();
+//                //返回消息log
+//                $log_content = "T:" . json_encode($respJson);
+//                $loggerObj->mylog($project,$devCode,"MFUN_TASK_ID_L2SNR_WEIGHT","MFUN_TASK_VID_L1VM_SWOOLE","MSG_VID_L2CODEC_ENCODE_HUITP_OUTPUT",$log_content);
+//            }
+//            else{
+//                $log_content = "E: Socket closed!";
+//                $loggerObj->mylog($project,$devCode,"MFUN_TASK_ID_L2SNR_WEIGHT","MFUN_TASK_VID_L1VM_SWOOLE","MSG_VID_L2CODEC_ENCODE_HUITP_OUTPUT",$log_content);
+//            }
         }
         else{
             $resp = ""; //啥都不ECHO
