@@ -5,7 +5,7 @@
  * Date: 2016/12/3
  * Time: 15:19
  */
-include_once "myconfig";
+include_once "myconfig.php";
 class classDbiL2snrWeight
 {
 
@@ -192,28 +192,22 @@ class classDbiL2snrWeight
         if(!$mysqli){
             die("Could not connect:".mysqli_error($mysqli));
         }
-        $res="";
         print_r($worker);
         print_r($balance);
         $mysqli->query("SET NAMES utf8");
         if((mysqli_num_rows($worker))<=0){
-            $res="E:Wrong Message for Worker Id";
+            $res=false;
             return $res;
         }
         if((mysqli_num_rows($balance))<=0){
-            $res="E:Wrong Message for Balance Id";
+            $res=false;
             return $res;
         }
         $query_str="INSERT INTO `t_l3f11faam_weight_product_sheet`(`tousr`, `fruser`, `crtim`, `rfiduser`, `spsvalue`, `stocktime`)
                         VALUES ('$toUser','$frUser',NULL,'$rfidUser','$spsValue','$time')";
         $res=$mysqli->query($query_str);
         $mysqli->close();
-        if($res==false){
-            $res="E:Wrong Message for Insert";
-            return $res;
-        }
-        else
-            return $res;
+        return $res;
     }
 }
 
