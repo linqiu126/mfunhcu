@@ -458,7 +458,7 @@ class classL1MainEntrySocketListenServer
 
         //$_GET = $request->post;
         //echo PHP_EOL.date('Y/m/d H:i:s', time())." ";
-        echo "huitp_json_http_hcuport_onRequest: {$request}".PHP_EOL;
+        //echo "huitp_json_http_hcuport_onRequest: {$request}".PHP_EOL;
         $msg=$str;
         //$msg = $_GET;
         $obj = new classTaskL1vmCoreRouter();
