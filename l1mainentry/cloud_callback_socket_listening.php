@@ -276,7 +276,7 @@ class classL1MainEntrySocketListenServer
 
         $msg = array("socketid" => $fd, "data"=>$data);
         $obj = new classTaskL1vmCoreRouter();
-        $obj->mfun_l1vm_task_main_entry(MFUN_MAIN_ENTRY_IOT_STDXML, MSG_ID_L2SDK_STDXML_DATA_INCOMING, "MSG_ID_L2SDK_STDXML_DATA_INCOMING", $msg);
+        $obj->mfun_l1vm_task_main_entry(MFUN_MAIN_ENTRY_IOT_STDXML, MSG_ID_SWOOLE_TO_IOT_STDXML_DATA, "MSG_ID_SWOOLE_TO_IOT_STDXML_DATA", $msg);
     }
 
     public function stdxml_tcp_hcuport_onClose($swoole_server, $fd, $reactor_id)
@@ -408,7 +408,7 @@ class classL1MainEntrySocketListenServer
 
         $msg = array("socketid" => $fd, "data"=>$data);
         $obj = new classTaskL1vmCoreRouter();
-        $obj->mfun_l1vm_task_main_entry(MFUN_MAIN_ENTRY_IOT_JSON, MSG_ID_L2SDK_JSON_DATA_INCOMING, "MSG_ID_L2SDK_JSON_DATA_INCOMING", $msg);
+        $obj->mfun_l1vm_task_main_entry(MFUN_MAIN_ENTRY_IOT_JSON, MSG_ID_SWOOLE_TO_IOT_JSON_DATA, "MSG_ID_SWOOLE_TO_IOT_JSON_DATA", $msg);
     }
 
     public function huitpjson_tcp_hcuport_onClose($swoole_server, $fd, $reactor_id)
@@ -438,9 +438,7 @@ class classL1MainEntrySocketListenServer
     public function huitp_json_http_hcuport_onRequest($request,  $response)
     {
         $msg=$request->post;
-        date_default_timezone_set("PRC");
         echo PHP_EOL.date('Y/m/d H:i:s', time())."\n";
-        var_dump($msg)."\n";
         print_r(array_keys($msg));
         $str=array_keys($msg)[0];
         //$str='{'.$str.'}';
@@ -464,7 +462,7 @@ class classL1MainEntrySocketListenServer
         //$msg = $_GET;
         $msg = array("socketid" => 0, "data"=>$str);
         $obj = new classTaskL1vmCoreRouter();
-        $obj->mfun_l1vm_task_main_entry(MFUN_MAIN_ENTRY_IOT_JSON, MSG_ID_L2SDK_JSON_DATA_INCOMING, "MSG_ID_L2SDK_JSON_DATA_INCOMING", $msg);
+        $obj->mfun_l1vm_task_main_entry(MFUN_MAIN_ENTRY_IOT_JSON, MSG_ID_SWOOLE_TO_IOT_JSON_DATA, "MSG_ID_SWOOLE_TO_IOT_JSON_DATA", $msg);
     }
 
     /********************************************HUITP TCP picport****************************************************/

@@ -10,13 +10,8 @@ include_once "dbi_l2snr_weight.class.php";
 
 class classTaskL2snrWeight
 {
-    //构造函数
-    public function __construct()
-    {
 
-    }
-
-    public function func_weight_data_process( $devCode, $statCode, $content)
+    private function func_weight_data_process( $devCode, $statCode, $content)
     {
         $raw_MsgHead = substr($content, 0, MFUN_HCU_MSG_HEAD_LENGTH);  //截取6Byte MsgHead
         $msgHead = unpack(MFUN_HCU_MSG_HEAD_FORMAT, $raw_MsgHead);
@@ -43,14 +38,16 @@ class classTaskL2snrWeight
 
         return $resp;
     }
-    public function func_weight_product_insert($devCode,$content){
-        $classDbiL2snrWeight=new classDbiL2snrWeight();
-        $resp=$classDbiL2snrWeight->dbi_weight_product_insert($devCode,$content);
-        var_dump($resp);
-        if($resp=="1")
-            $resp="true";
-        else
-            $resp="false";
+
+    //FAAM物联网秤重量报告处理
+    private function func_weight_product_insert($devCode,$content){
+        $classDbiL2snrWeight = new classDbiL2snrWeight();
+        $content = json_decode($content);
+        if (isset($content->rfidUser)) $rfidUser = $content->rfidUser; else $rfidUser = "";
+        if (isset($content->spsValue)) $spsValue = $content->spsValue; else $spsValue = "";
+
+        $dataArray = array("rfidUser"=>$rfidUser, "spsValue"=>$spsValue);
+        $resp=$classDbiL2snrWeight->dbi_weight_product_insert($devCode, $dataArray);
         return $resp;
     }
 
@@ -73,8 +70,11 @@ class classTaskL2snrWeight
             if (isset($msg["project"])) $project = $msg["project"]; else $project = "";
             if (isset($msg["devCode"])) $devCode = $msg["devCode"]; else $devCode = "";
             if (isset($msg["statCode"])) $statCode = $msg["statCode"]; else $statCode = "";
-            if (isset($msg["content"])) $content = $msg["content"]; else $content = "";
             if (isset($msg["funcFlag"])) $funcFlag = $msg["funcFlag"]; else $funcFlag = "";
+            if (isset($msg["content"]))  //关键参数不能为空
+                $content = $msg["content"];
+            else
+                return false;
         }
 
         //具体处理函数
@@ -82,31 +82,16 @@ class classTaskL2snrWeight
             $resp = $this->func_weight_data_process( $devCode, $statCode, $content);
         }
         elseif($msgId == HUITP_JSON_MSGID_uni_faws_data_report){
-            $resp=$this->func_weight_product_insert($devCode,$content);
+            $result=$this->func_weight_product_insert($devCode,$content);
             $data = array("ToUsr" => $devCode,
                             "FrUsr" => MFUN_CLOUD_HCU,
                             "CrTim" => time(),
                             "MsgTp" => "huitp-json",
                             "MsgId" => HUITP_JSON_MSGID_uni_faws_data_confirm,
                             "MsgLn" => 1,
-                            "IeCnt" => array('resFlag'=>$resp),
+                            "IeCnt" => array('resFlag'=>$result),
                             "FnFlg" => 0);
-            $respJson = json_encode($data);
-            echo $respJson;
-            //通过建立tcp阻塞式socket连接，向HCU发送回复消息
-//            $dbiL1vmCommonObj = new classDbiL1vmCommon();
-//            $socketid = $dbiL1vmCommonObj->dbi_huitp_huc_socketid_inqery($devCode);
-//            if ($socketid != 0){
-//                $client = new socket_client_sync($socketid, $devCode, $respJson);
-//                $client->connect();
-//                //返回消息log
-//                $log_content = "TT:" . json_encode($respJson);
-//                $loggerObj->mylog($project,$devCode,"MFUN_TASK_ID_L2SNR_WEIGHT","MFUN_TASK_VID_L1VM_SWOOLE","MSG_VID_L2CODEC_ENCODE_HUITP_OUTPUT",$log_content);
-//            }
-//            else{
-//                $log_content = "E: Socket closed!";
-//                $loggerObj->mylog($project,$devCode,"MFUN_TASK_ID_L2SNR_WEIGHT","MFUN_TASK_VID_L1VM_SWOOLE","MSG_VID_L2CODEC_ENCODE_HUITP_OUTPUT",$log_content);
-//            }
+            $resp = json_encode($data);
         }
         else{
             $resp = ""; //啥都不ECHO
@@ -114,8 +99,9 @@ class classTaskL2snrWeight
 
         //返回ECHO
         if (!empty($resp)) {
-            $log_content = json_encode($resp,JSON_UNESCAPED_UNICODE);
+            $log_content = "T:".json_encode($resp,JSON_UNESCAPED_UNICODE);
             $loggerObj->mylog($project,$devCode,"MFUN_TASK_ID_L2SDK_IOT_JSON","MFUN_TASK_ID_L2SNR_WEIGHT",$msgName,$log_content);
+            echo $resp; //Http response echo返回
         }
 
         //返回

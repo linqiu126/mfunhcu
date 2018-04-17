@@ -16,7 +16,6 @@ define("MSG_ID_MFUN_MIN", $index++);
 define("MSG_ID_L1VM_TO_L2SDK_WECHAT_INCOMING", $index++);
 define("MSG_ID_WECHAT_TO_L2SDK_IOT_WX_INCOMING", $index++);
 define("MSG_ID_IOTWX_TO_L2SDK_IOT_WX_JSSDK_INCOMING", $index++);
-define("MSG_ID_L1VM_TO_L2SDK_IOT_STDXML_INCOMING", $index++);
 define("MSG_ID_L1VM_TO_L2SDK_IOT_JSON_INCOMING", $index++);
 define("MSG_ID_L1VM_TO_L2SDK_IOT_APPLE_INCOMING", $index++);
 define("MSG_ID_L1VM_TO_L2SDK_IOT_JD_INCOMING", $index++);
@@ -57,10 +56,14 @@ define("MSG_ID_L2SDK_HCU_TO_L2SNR_RAIN", $index++);
 define("MSG_ID_L2SDK_EMCWX_TO_L2SNR_RAIN_DATA_READ_INSTANT", $index++);
 define("MSG_ID_L2SDK_EMCWX_TO_L2SNR_RAIN_DATA_REPORT_TIMING", $index++);
 //来自Swoole socket
-define("MSG_ID_L2SDK_STDXML_DATA_INCOMING", $index++); //Socket入口的STDXML消息
+define("MSG_ID_SWOOLE_TO_IOT_STDXML_DATA", $index++); //Socket入口的STDXML消息
 define("MSG_ID_L2SDK_HUITP_DATA_INCOMING", $index++);  //Socket入口的HUITP XML消息
-define("MSG_ID_L2SDK_JSON_DATA_INCOMING", $index++);   //Socket入口的JSON消息
+define("MSG_ID_SWOOLE_TO_IOT_JSON_DATA", $index++);   //Socket入口的JSON消息
 define("MSG_ID_L2SDK_GTJY_NBIOT_DATA_INCOMING", $index++); //用于接收来自国通第三方NBIOT设备的socket消息
+//来自HTTP callback
+define("MSG_ID_CALLBACK_TO_IOT_JSON_DATA", $index++);
+define("MSG_ID_CALLBACK_TO_IOT_STDXML_DATA", $index++);
+
 //FHYS智能云锁消息
 define("MSG_ID_L2SDK_HCU_TO_L2SNR_HSMMP", $index++); //兼容老的云控锁消息(照片发送)
 define("MSG_ID_L2SDK_HCU_TO_L2SNR_DOORLOCK", $index++); //用于兼容老的郑州FHYS方案
