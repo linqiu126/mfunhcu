@@ -12,11 +12,6 @@ include_once "../l2sdk/dbi_l2sdk_iot_com.class.php";
 //TASK_ID = MFUN_TASK_ID_L2SDK_IOT_STDXML
 class classTaskL2sdkIotStdxml
 {
-    //构造函数
-    public function __construct()
-    {
-
-    }
 
     /**************************************************************************************
      *                             任务入口函数                                           *
@@ -27,22 +22,20 @@ class classTaskL2sdkIotStdxml
         //定义本入口函数的logger处理对象及函数
         $loggerObj = new classApiL1vmFuncCom();
         $project = MFUN_PRJ_HCU_STDXML;
+        $socketid = ""; //初始化
 
-        //入口消息内容判断
-        if (empty($msg) == true) {
-            $log_content = "E: IOT_STDXML received null message body";
-            $loggerObj->mylog($project,"NULL","MFUN_TASK_VID_L1VM_SWOOLE","MFUN_TASK_ID_L2SDK_IOT_STDXML",$msgName,$log_content);
-            echo trim($log_content); //这里echo主要是为了swoole log打印，帮助查找问题
+        if ($msgId == MSG_ID_SWOOLE_TO_IOT_STDXML_DATA){  //来自swoole socket的STDXML消息
+            if (isset($msg["socketid"])) $socketid = $msg["socketid"]; else  $socketid = "";
+            if (isset($msg["data"])) $data = $msg["data"]; else  $data = "";
+        }
+        elseif ($msgId == MSG_ID_CALLBACK_TO_IOT_STDXML_DATA){ //来自HTTP callback的STDXML消息
+            $data = $msg;
+        }
+        else{
+            $log_content = "E: IOT_STDXML received invalid message, ".$msgName;
+            $loggerObj->mylog($project,"NULL","MFUN_TASK_ID_L1VM","MFUN_TASK_ID_L2SDK_IOT_STDXML",$msgName,$log_content);
             return false;
         }
-        if (($msgId != MSG_ID_L1VM_TO_L2SDK_IOT_STDXML_INCOMING) || ($msgName != "MSG_ID_L1VM_TO_L2SDK_IOT_STDXML_INCOMING")){
-            $log_content = "E: IOT_STDXML receive Msgid or MsgName error";
-            $loggerObj->mylog($project,"NULL","MFUN_TASK_VID_L1VM_SWOOLE","MFUN_TASK_ID_L2SDK_IOT_STDXML",$msgName,$log_content);
-            return false;
-        }
-
-        if (isset($msg["socketid"])) $socketid = $msg["socketid"]; else  $socketid = "";
-        if (isset($msg["data"])) $data = $msg["data"]; else  $data = "";
 
         //正式处理消息格式和消息内容的过程
         //FHYS测试时发现有多条xml消息粘连在一起的情况，此处加保护保证只取第一条完整xml消息
@@ -97,10 +90,10 @@ class classTaskL2sdkIotStdxml
             return true;
         }
 
-        //将socket id和设备ID（fromUser）进行绑定
+        //将socket id和设备ID（fromUser）进行绑定, 这个操作只对来自swoole socket的消息有效
         if(!empty($socketid) AND !empty($statCode)){
             $dbiL2sdkIotcomObj = new classDbiL2sdkIotcom();
-            $result = $dbiL2sdkIotcomObj->dbi_huitp_huc_socketid_update($fromUser, $socketid);
+            $dbiL2sdkIotcomObj->dbi_huitp_huc_socketid_update($fromUser, $socketid);
         }
 
         //消息或者说帧类型分离，l2SDK只进行XML类型解码，不对消息的content进行处理,Content处理在具体的L2sensor模块

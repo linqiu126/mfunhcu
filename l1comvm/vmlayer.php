@@ -479,7 +479,6 @@ class classTaskL1vmCoreRouter
                     $result = "Cloud: Send to message buffer error.";
                     $log_content = "P:" . json_encode($result,JSON_UNESCAPED_UNICODE);
                     $loggerObj->mylog(MFUN_MAIN_ENTRY_WECHAT,"NULL","MFUN_TASK_ID_L1VM","MFUN_TASK_ID_L2SDK_WECHAT","MSG_ID_L1VM_TO_L2SDK_WECHAT_INCOMING",$log_content);
-                    echo trim($result);
                     return false;
                 }
                 break;
@@ -493,21 +492,15 @@ class classTaskL1vmCoreRouter
                     $result = "Cloud: Send to message buffer error.";
                     $log_content = "P:" . json_encode($result,JSON_UNESCAPED_UNICODE);
                     $loggerObj->mylog(MFUN_MAIN_ENTRY_WECHAT_XCX,"NULL","MFUN_TASK_ID_L1VM","MFUN_TASK_ID_L3WX_OPR_FAAM","MSG_ID_L1VM_TO_L3WX_XCX_FAAM",$log_content);
-                    echo trim($result);
                     return false;
                 }
                 break;
             case MFUN_MAIN_ENTRY_IOT_STDXML:
-                $resp = $this->mfun_l1vm_msg_send(MFUN_TASK_ID_L1VM,
-                    MFUN_TASK_ID_L2SDK_IOT_STDXML,
-                    MSG_ID_L1VM_TO_L2SDK_IOT_STDXML_INCOMING,
-                    "MSG_ID_L1VM_TO_L2SDK_IOT_STDXML_INCOMING",
-                    $msg);
+                $resp = $this->mfun_l1vm_msg_send(MFUN_TASK_ID_L1VM, MFUN_TASK_ID_L2SDK_IOT_STDXML,$msgId, $msgName, $msg);
                 if ($resp == false){
                     $result = "Cloud: Send to message buffer error.";
                     $log_content = "P:" . json_encode($result,JSON_UNESCAPED_UNICODE);
-                    $loggerObj->mylog(MFUN_MAIN_ENTRY_IOT_STDXML,"NULL","MFUN_TASK_ID_L1VM","MFUN_TASK_ID_L2SDK_IOT_STDXML","MSG_ID_L1VM_TO_L2SDK_IOT_STDXML_INCOMING",$log_content);
-                    echo trim($result);
+                    $loggerObj->mylog(MFUN_MAIN_ENTRY_IOT_STDXML,"NULL","MFUN_TASK_ID_L1VM","MFUN_TASK_ID_L2SDK_IOT_STDXML",$msgName,$log_content);
                     return false;
                 }
                 break;
@@ -521,21 +514,15 @@ class classTaskL1vmCoreRouter
                     $result = "Cloud: Send to message buffer error.";
                     $log_content = "P:" . json_encode($result,JSON_UNESCAPED_UNICODE);
                     $loggerObj->mylog(MFUN_MAIN_ENTRY_IOT_HUITP,"NULL","MFUN_TASK_ID_L1VM","MFUN_TASK_ID_L2SDK_IOT_HUITP","MSG_ID_L1VM_TO_L2SDK_IOT_HUITP_INCOMING",$log_content);
-                    echo trim($result);
                     return false;
                 }
                 break;
             case MFUN_MAIN_ENTRY_IOT_JSON:
-                $resp = $this->mfun_l1vm_msg_send(MFUN_TASK_ID_L1VM,
-                    MFUN_TASK_ID_L2SDK_IOT_JSON,
-                    MSG_ID_L1VM_TO_L2SDK_IOT_JSON_INCOMING,
-                    "MSG_ID_L1VM_TO_L2SDK_IOT_JSON_INCOMING",
-                    $msg);
+                $resp = $this->mfun_l1vm_msg_send(MFUN_TASK_ID_L1VM, MFUN_TASK_ID_L2SDK_IOT_JSON, $msgId, $msgName, $msg);
                 if ($resp == false){
                     $result = "Cloud: Send to message buffer error.";
                     $log_content = "P:" . json_encode($result,JSON_UNESCAPED_UNICODE);
-                    $loggerObj->mylog(MFUN_MAIN_ENTRY_IOT_JSON,"NULL","MFUN_TASK_ID_L1VM","MFUN_TASK_ID_L2SDK_IOT_JSON","MSG_ID_L1VM_TO_L2SDK_IOT_JSON_INCOMING",$log_content);
-                    echo trim($result);
+                    $loggerObj->mylog(MFUN_MAIN_ENTRY_IOT_JSON,"NULL","MFUN_TASK_ID_L1VM","MFUN_TASK_ID_L2SDK_IOT_JSON",$msgName,$log_content);
                     return false;
                 }
                 break;
@@ -549,7 +536,6 @@ class classTaskL1vmCoreRouter
                     $result = "Cloud: Send to message buffer error.";
                     $log_content = "P:" . json_encode($result,JSON_UNESCAPED_UNICODE);
                     $loggerObj->mylog(MFUN_MAIN_ENTRY_JINGDONG,"NULL","MFUN_TASK_ID_L1VM","MFUN_TASK_ID_L2SDK_IOT_JD","MSG_ID_L2SDK_JD_INCOMING",$log_content);
-                    echo trim($result);
                     return false;
                 }
                 break;
@@ -563,7 +549,6 @@ class classTaskL1vmCoreRouter
                     $result = "Cloud: Send to message buffer error.";
                     $log_content = "P:" . json_encode($result,JSON_UNESCAPED_UNICODE);
                     $loggerObj->mylog(MFUN_MAIN_ENTRY_APPLE,"NULL","MFUN_TASK_ID_L1VM","MFUN_TASK_ID_L2SDK_IOT_APPLE","MSG_ID_L2SDK_APPLE_INCOMING",$log_content);
-                    echo trim($result);
                     return false;
                 }
                     break;
@@ -588,12 +573,13 @@ class classTaskL1vmCoreRouter
                     $resp = $this->mfun_l1vm_msg_send(MFUN_TASK_ID_L1VM, MFUN_TASK_ID_L2TIMER_CRON, MSG_ID_L2TIMER_CRON_7DAY_COMING, "MSG_ID_L2TIMER_CRON_7DAY_COMING", MSG_ID_L2TIMER_CRON_7DAY_COMING);
                 elseif ($msg == MSG_ID_L2TIMER_CRON_30DAY_COMING)
                     $resp = $this->mfun_l1vm_msg_send(MFUN_TASK_ID_L1VM, MFUN_TASK_ID_L2TIMER_CRON, MSG_ID_L2TIMER_CRON_30DAY_COMING, "MSG_ID_L2TIMER_CRON_30DAY_COMING", MSG_ID_L2TIMER_CRON_30DAY_COMING);
+                else
+                    $resp = false;
 
                 if ($resp == false){
                     $result = "Cloud: Send to message buffer error.";
                     $log_content = "P:" . json_encode($result,JSON_UNESCAPED_UNICODE);
                     $loggerObj->mylog(MFUN_MAIN_ENTRY_CRON,"NULL","MFUN_TASK_ID_L1VM","MFUN_TASK_ID_L2TIMER_CRON","MSG_ID_L2TIMER_CRON_XXX_COMING",$log_content);
-                    echo trim($result);
                     return false;
                 }
                 break;
@@ -607,7 +593,6 @@ class classTaskL1vmCoreRouter
                     $result = "Cloud: Send to message buffer error.";
                     $log_content = "P:" . json_encode($result,JSON_UNESCAPED_UNICODE);
                     $loggerObj->mylog(MFUN_MAIN_ENTRY_SOCKET,"NULL","MFUN_TASK_ID_L1VM","MFUN_TASK_ID_L2SOCKET_LISTEN","MSG_ID_L2SOCKET_LISTEN_DATA_COMING",$log_content);
-                    echo trim($result);
                     return false;
                 }
                 break;
@@ -621,7 +606,6 @@ class classTaskL1vmCoreRouter
                     $result = "Cloud: Send to message buffer error.";
                     $log_content = "P:" . json_encode($result,JSON_UNESCAPED_UNICODE);
                     $loggerObj->mylog(MFUN_MAIN_ENTRY_NBIOT_STD_QG376,"NULL","MFUN_TASK_ID_L1VM","MFUN_TASK_ID_L2SDK_NBIOT_STD_QG376","MSG_ID_L2SDK_NBIOT_STD_QG376_INCOMING",$log_content);
-                    echo trim($result);
                     return false;
                 }
                 break;
@@ -635,7 +619,6 @@ class classTaskL1vmCoreRouter
                     $result = "Cloud: Send to message buffer error.";
                     $log_content = "P:" . json_encode($result,JSON_UNESCAPED_UNICODE);
                     $loggerObj->mylog(MFUN_MAIN_ENTRY_NBIOT_STD_CJ188,"NULL","MFUN_TASK_ID_L1VM","MFUN_TASK_ID_L2SDK_NBIOT_STD_CJ188","MSG_ID_L2SDK_NBIOT_STD_CJ188_INCOMING",$log_content);
-                    echo trim($result);
                     return false;
                 }
                 break;
@@ -649,7 +632,6 @@ class classTaskL1vmCoreRouter
                     $result = "Cloud: Send to message buffer error.";
                     $log_content = "P:" . json_encode($result,JSON_UNESCAPED_UNICODE);
                     $loggerObj->mylog(MFUN_MAIN_ENTRY_NBIOT_LTEV,"NULL","MFUN_TASK_ID_L1VM","MFUN_TASK_ID_L2SDK_NBIOT_LTEV","MSG_ID_L2SDK_NBIOT_LTEV_INCOMING",$log_content);
-                    echo trim($result);
                     return false;
                 }
                 break;
@@ -663,7 +645,6 @@ class classTaskL1vmCoreRouter
                     $result = "Cloud: Send to message buffer error.";
                     $log_content = "P:" . json_encode($result,JSON_UNESCAPED_UNICODE);
                     $loggerObj->mylog(MFUN_MAIN_ENTRY_NBIOT_AGC,"NULL","MFUN_TASK_ID_L1VM","MFUN_TASK_ID_L2SDK_NBIOT_AGC","MSG_ID_L2SDK_NBIOT_AGC_INCOMING",$log_content);
-                    echo trim($result);
                     return false;
                 }
                 break;
@@ -677,7 +658,6 @@ class classTaskL1vmCoreRouter
                     $result = "Cloud: Send to message buffer error.";
                     $log_content = "P:" . json_encode($result,JSON_UNESCAPED_UNICODE);
                     $loggerObj->mylog(MFUN_MAIN_ENTRY_EMCWX_UI,"NULL","MFUN_TASK_ID_L1VM","MFUN_TASK_ID_L4EMCWX_UI","MSG_ID_L4EMCWXUI_CLICK_INCOMING",$log_content);
-                    echo trim($result);
                     return false;
                 }
                 break;
@@ -691,7 +671,6 @@ class classTaskL1vmCoreRouter
                     $result = "Cloud: Send to message buffer error.";
                     $log_content = "P:" . json_encode($result,JSON_UNESCAPED_UNICODE);
                     $loggerObj->mylog(MFUN_MAIN_ENTRY_AQYC_UI,"NULL","MFUN_TASK_ID_L1VM","MFUN_TASK_ID_L4AQYC_UI","MSG_ID_L4AQYCUI_CLICK_INCOMING",$log_content);
-                    echo trim($result);
                     return false;
                 }
                 break;
@@ -705,7 +684,6 @@ class classTaskL1vmCoreRouter
                     $result = "Cloud: Send to message buffer error.";
                     $log_content = "P:" . json_encode($result,JSON_UNESCAPED_UNICODE);
                     $loggerObj->mylog(MFUN_MAIN_ENTRY_FHYS_UI,"NULL","MFUN_TASK_ID_L1VM","MFUN_TASK_ID_L4FHYS_UI","MSG_ID_L4FHYSUI_CLICK_INCOMING",$log_content);
-                    echo trim($result);
                     return false;
                 }
                 break;
@@ -719,7 +697,6 @@ class classTaskL1vmCoreRouter
                     $result = "Cloud: Send to message buffer error.";
                     $log_content = "P:" . json_encode($result,JSON_UNESCAPED_UNICODE);
                     $loggerObj->mylog(MFUN_MAIN_ENTRY_FHYS_WECHAT,"NULL","MFUN_TASK_ID_L1VM","MFUN_TASK_ID_L4FHYS_WECHAT","MSG_ID_L4FHYS_WECHAT_CLICK_INCOMING",$log_content);
-                    echo trim($result);
                     return false;
                 }
                 break;
@@ -733,7 +710,6 @@ class classTaskL1vmCoreRouter
                     $result = "Cloud: Send to message buffer error.";
                     $log_content = "P:" . json_encode($result,JSON_UNESCAPED_UNICODE);
                     $loggerObj->mylog(MFUN_MAIN_ENTRY_BFSC_UI,"NULL","MFUN_TASK_ID_L1VM","MFUN_TASK_ID_L4BFSC_UI","MSG_ID_L4BFSCUI_CLICK_INCOMING",$log_content);
-                    echo trim($result);
                     return false;
                 }
                 break;
@@ -747,7 +723,6 @@ class classTaskL1vmCoreRouter
                     $result = "Cloud: Send to message buffer error.";
                     $log_content = "P:" . json_encode($result,JSON_UNESCAPED_UNICODE);
                     $loggerObj->mylog(MFUN_MAIN_ENTRY_TBSWR_UI,"NULL","MFUN_TASK_ID_L1VM","MFUN_TASK_ID_L4TBSWR_UI","MSG_ID_L4TBSWR_CLICK_INCOMING",$log_content);
-                    echo trim($result);
                     return false;
                 }
                 break;
@@ -761,7 +736,6 @@ class classTaskL1vmCoreRouter
                     $result = "Cloud: Send to message buffer error.";
                     $log_content = "P:" . json_encode($result,JSON_UNESCAPED_UNICODE);
                     $loggerObj->mylog(MFUN_MAIN_ENTRY_FDWQ_UI,"NULL","MFUN_TASK_ID_L1VM","MFUN_TASK_ID_L4FDWQ_UI","MSG_ID_L4FDWQUI_CLICK_INCOMING",$log_content);
-                    echo trim($result);
                     return false;
                 }
                 break;
@@ -775,7 +749,6 @@ class classTaskL1vmCoreRouter
                     $result = "Cloud: Send to message buffer error.";
                     $log_content = "P:" . json_encode($result,JSON_UNESCAPED_UNICODE);
                     $loggerObj->mylog(MFUN_MAIN_ENTRY_GTJY_UI,"NULL","MFUN_TASK_ID_L1VM","MFUN_TASK_ID_L4GTJY_UI","MSG_ID_L4GTJYUI_CLICK_INCOMING",$log_content);
-                    echo trim($result);
                     return false;
                 }
                 break;
@@ -789,7 +762,6 @@ class classTaskL1vmCoreRouter
                     $result = "Cloud: Send to message buffer error.";
                     $log_content = "P:" . json_encode($result,JSON_UNESCAPED_UNICODE);
                     $loggerObj->mylog(MFUN_MAIN_ENTRY_GTJY_NBIOT,"NULL","MFUN_TASK_ID_L1VM","MFUN_TASK_ID_L2CODEC_PRIVATE_GTJY","MSG_ID_L2CODEC_PRIVATE_GTJY_DATA_INCOMING",$log_content);
-                    echo trim($result);
                     return false;
                 }
                 break;
@@ -803,7 +775,6 @@ class classTaskL1vmCoreRouter
                     $result = "Cloud: Send to message buffer error.";
                     $log_content = "P:" . json_encode($result,JSON_UNESCAPED_UNICODE);
                     $loggerObj->mylog(MFUN_MAIN_ENTRY_FAAM_UI,"NULL","MFUN_TASK_ID_L1VM","MFUN_TASK_ID_L4FAAM_UI","MSG_ID_L4FAAMUI_CLICK_INCOMING",$log_content);
-                    echo trim($result);
                     return false;
                 }
                 break;
@@ -817,7 +788,6 @@ class classTaskL1vmCoreRouter
                     $result = "Cloud: Send to message buffer error.";
                     $log_content = "P:" . json_encode($result,JSON_UNESCAPED_UNICODE);
                     $loggerObj->mylog(MFUN_MAIN_ENTRY_NBIOT_IPM_UI,"NULL","MFUN_TASK_ID_L1VM","MFUN_TASK_ID_L4NBIOT_IPM_UI","MSG_ID_L4NBIOT_IPMUI_CLICK_INCOMING",$log_content);
-                    echo trim($result);
                     return false;
                 }
                 break;
@@ -831,7 +801,6 @@ class classTaskL1vmCoreRouter
                     $result = "Cloud: Send to message buffer error.";
                     $log_content = "P:" . json_encode($result,JSON_UNESCAPED_UNICODE);
                     $loggerObj->mylog(MFUN_MAIN_ENTRY_NBIOT_IWM_UI,"NULL","MFUN_TASK_ID_L1VM","MFUN_TASK_ID_L4NBIOT_IWM_UI","MSG_ID_L4NBIOT_IWMUI_CLICK_INCOMING",$log_content);
-                    echo trim($result);
                     return false;
                 }
                 break;
@@ -845,7 +814,6 @@ class classTaskL1vmCoreRouter
                     $result = "Cloud: Send to message buffer error.";
                     $log_content = "P:" . json_encode($result,JSON_UNESCAPED_UNICODE);
                     $loggerObj->mylog(MFUN_MAIN_ENTRY_NBIOT_IGM_UI,"NULL","MFUN_TASK_ID_L1VM","MFUN_TASK_ID_L4NBIOT_IGM_UI","MSG_ID_L4NBIOT_IGMUI_CLICK_INCOMING",$log_content);
-                    echo trim($result);
                     return false;
                 }
                 break;
@@ -859,7 +827,6 @@ class classTaskL1vmCoreRouter
                     $result = "Cloud: Send to message buffer error.";
                     $log_content = "P:" . json_encode($result,JSON_UNESCAPED_UNICODE);
                     $loggerObj->mylog(MFUN_MAIN_ENTRY_NBIOT_IHM_UI,"NULL","MFUN_TASK_ID_L1VM","MFUN_TASK_ID_L4NBIOT_IHM_UI","MSG_ID_L4NBIOT_IHMUI_CLICK_INCOMING",$log_content);
-                    echo trim($result);
                     return false;
                 }
                 break;
@@ -894,7 +861,6 @@ class classTaskL1vmCoreRouter
                 $result = "Cloud: Target module is not actived.";
                 $log_content = "P:" . json_encode($result,JSON_UNESCAPED_UNICODE);
                 $loggerObj->mylog("NULL","NULL","MFUN_TASK_ID_L1VM",$result["destId"],$result["msgName"],$log_content);
-                echo trim($result);
                 continue;
             }
 
@@ -1320,7 +1286,6 @@ class classTaskL1vmCoreRouter
                     $result = "Cloud: Not supported destination module.";
                     $log_content = "P:" . json_encode($result,JSON_UNESCAPED_UNICODE);
                     $loggerObj->mylog("NULL","NULL","MFUN_TASK_ID_L1VM",$result["destId"],$result["msgName"],$log_content);
-                    echo trim($result);
                     break;
 
             }//End of switch

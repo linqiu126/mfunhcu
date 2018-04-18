@@ -5,7 +5,7 @@
  * Date: 2016/12/3
  * Time: 15:19
  */
-include_once "myconfig.php";
+
 class classDbiL2snrWeight
 {
 
@@ -146,68 +146,54 @@ class classDbiL2snrWeight
         $mysqli->close();
         return $resp;
     }
-    private function check_worker($mid){
-        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
-        if(!$mysqli){
-            die("Could not connect:".mysqli_error($mysqli));
-        }
-        $mysqli->query("SET NAMES utf8");
+
+    //验证工人合法性
+    private function check_worker($mysqli, $mid)
+    {
         $query_str="SELECT * FROM `t_l3f11faam_membersheet` WHERE `mid`='$mid' AND `pjcode`='FISH' AND `onjob`='1'";
         $result=$mysqli->query($query_str);
-        $mysqli->close();
-        return $result;
+        if((mysqli_num_rows($result)) <= 0)
+            return false;
+        else
+            return true;
     }
-    private function check_balance($balance){
+
+    //验证秤设备合法性
+    private function check_balance($mysqli, $balance)
+    {
+        $query_str="SELECT * FROM `t_l3f11faam_balance_sheet` WHERE `balancecode`='$balance'";
+        $result=$mysqli->query($query_str);
+        if((mysqli_num_rows($result)) <= 0)
+            return false;
+        else
+            return true;
+    }
+
+    public function dbi_weight_product_insert($devCode,$content){
         $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
         if(!$mysqli){
             die("Could not connect:".mysqli_error($mysqli));
         }
         $mysqli->query("SET NAMES utf8");
-        $query_str="SELECT * FROM `t_l3f11faam_balance_sheet` WHERE `balancecode`='$balance'";
-        $result=$mysqli->query($query_str);
-        $mysqli->close();
-        return $result;
 
-    }
-//{"ToUsr": "XHZN",
-// "FrUsr": "IHU_G5104GTJY_RND01",
-// "CrTim": 1523936528, "MsgTp":
-// "huitp-json", "MsgId": 23936,
-// "MsgLn": 49,
-// "IeCnt":
-// {"rfidUser": "1402217203",
-// "spsValue": "000.065"
-//},
-// "FnFlg": 0}
-    public function dbi_weight_product_insert($devCode,$content){
-        date_default_timezone_set("PRC");
         $toUser="XHZN";
         $frUser=$devCode;
         $rfidUser=$content["rfidUser"];
         $spsValue=(double)$content["spsValue"];
         $time=date("Y-m-d H:i:s",time());
-        $worker=$this->check_worker($rfidUser);
-        $balance=$this->check_balance($frUser);
-        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
-        if(!$mysqli){
-            die("Could not connect:".mysqli_error($mysqli));
+        $worker=$this->check_worker($mysqli, $rfidUser);
+        $balance=$this->check_balance($mysqli, $frUser);
+
+        if(($worker == false) OR ($balance == false)){
+            $mysqli->close();
+            return false;
         }
-        print_r($worker);
-        print_r($balance);
-        $mysqli->query("SET NAMES utf8");
-        if((mysqli_num_rows($worker))<=0){
-            $res=false;
-            return $res;
-        }
-        if((mysqli_num_rows($balance))<=0){
-            $res=false;
-            return $res;
-        }
+
         $query_str="INSERT INTO `t_l3f11faam_weight_product_sheet`(`tousr`, `fruser`, `crtim`, `rfiduser`, `spsvalue`, `stocktime`)
                         VALUES ('$toUser','$frUser',NULL,'$rfidUser','$spsValue','$time')";
-        $res=$mysqli->query($query_str);
+        $resp=$mysqli->query($query_str);
         $mysqli->close();
-        return $res;
+        return $resp;
     }
 }
 

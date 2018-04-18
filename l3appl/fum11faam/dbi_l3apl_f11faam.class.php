@@ -1504,7 +1504,6 @@ class classDbiL3apF11faam
             case 8:$datatype = "打包带";break;
             default:break;
         }
-        date_default_timezone_set("PRC");//设置默认时间为中国
         $storage_time = date("Y-m-d H:i:s", time());;
         $query_str = "INSERT INTO `t_l3f11faam_buy_suppliessheet`(supplier,reason,datatype,amount,unitprice,storagetime,totalprice,datype)VALUES('$supplier','$reason','$datatype','$number','$unit_price','$storage_time','$total_price','$datype')";
         $result = $mysqli->query($query_str);
@@ -1771,7 +1770,6 @@ class classDbiL3apF11faam
         $table["TableData"]=array();
         $datatype=array("纸箱","网套","托盘","胶带","标签","保鲜袋","打包带","垫片");
         $timeStart="0000-00-00 00:00:00";
-        date_default_timezone_set("PRC");
         $timeEnd=date("Y-m-d H:i:s",time());
         $sid=1;
         $total_number=array(0,0,0,0,0,0,0,0);
@@ -1977,7 +1975,6 @@ class classDbiL3apF11faam
     //耗材修改
     public function dbi_faam_consumables_purchase_mod($body){
         //建立连接
-        date_default_timezone_set("PRC");
         $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
         if (!$mysqli) {
             die('Could not connect: ' . mysqli_error($mysqli));
@@ -2009,7 +2006,6 @@ class classDbiL3apF11faam
     //耗材信息删除
     public function dbi_faam_consumables_purchase_del($body){
         //建立连接
-        //date_default_timezone_set("PRC");
         $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
         if (!$mysqli) {
             die('Could not connect: ' . mysqli_error($mysqli));
@@ -2023,7 +2019,6 @@ class classDbiL3apF11faam
     }
     //仓库增加
     public function dbi_faam_product_stock_new($body){
-        date_default_timezone_set("PRC");
         $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW,MFUN_CLOUD_DBNAME_L1L2L3,MFUN_CLOUD_DBPORT);
         if(!$mysqli){
             die('Could not connect:'.mysqli_error($mysqli));
@@ -2405,7 +2400,6 @@ class classDbiL3apF11faam
     }
     //出库历史表
     public function dbi_faam_product_stock_history($body){
-        date_default_timezone_set("PRC");
         $timeEnd=date("Y-m-d",time());
         $history["ColumnName"]=array();
         array_push($history["ColumnName"],"序号");
@@ -2536,7 +2530,6 @@ class classDbiL3apF11faam
     }
     //新建原料仓库
     public function dbi_faam_material_stock_new($body){
-        date_default_timezone_set("PRC");
         $mysqli=new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW,MFUN_CLOUD_DBNAME_L1L2L3,MFUN_CLOUD_DBPORT);
         if(!$mysqli){
             die('Could not connect:'.mysqli_error($mysqli));
@@ -2728,7 +2721,6 @@ class classDbiL3apF11faam
             die("Could not connect:".mysqli_error($mysqli));
         }
         $mysqli->query("SET NAMES utf8");
-        date_default_timezone_set("PRC");
         $ID=$body["storageID"];
         $bucket=(integer)$body["bucket"];
         $price=(integer)$body["price"];
@@ -2768,7 +2760,6 @@ class classDbiL3apF11faam
             die("Could not connect:".mysqli_error($mysqli));
         }
         $mysqli->query("SET NAMES utf8");
-        date_default_timezone_set("PRC");
         $result="";
         $ID=$body["storageID"];
         $bucket=(integer)$body["bucket"];
@@ -2814,7 +2805,6 @@ class classDbiL3apF11faam
             die("Could not connect:".mysqli_error($mysqli));
         }
         $mysqli->query("SET NAMES utf8");
-        date_default_timezone_set("PRC");
         $timeEnd=date("Y-m-d",time());
         $history["ColumnName"]=array();
         $history["TableData"]=array();

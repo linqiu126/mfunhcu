@@ -14,7 +14,7 @@ $obj = new classTaskL1vmCoreRouter();
 //$postStr = $GLOBALS["HTTP_RAW_POST_DATA"];
 $postStr = file_get_contents('php://input','r');
 
-$obj->mfun_l1vm_task_main_entry(MFUN_MAIN_ENTRY_IOT_JSON, MSG_ID_L2SDK_JSON_DATA_INCOMING, "MSG_ID_L2SDK_JSON_DATA_INCOMING", $postStr);
+$obj->mfun_l1vm_task_main_entry(MFUN_MAIN_ENTRY_IOT_JSON, MSG_ID_CALLBACK_TO_IOT_JSON_DATA, "MSG_ID_CALLBACK_TO_IOT_JSON_DATA", $postStr);
 
 
 ?>

@@ -585,7 +585,6 @@ class classTaskL3aplF11faam
         return $retval;
     }
     function func_faam_consumables_history($action,$user,$body){
-        date_default_timezone_set("PRC");
         $uiFlsymDbObj=new classDbiL3apF1sym();
         $usercheck=$uiFlsymDbObj->dbi_user_authcheck($action,$user);
         $timeStart="0000-00-00";

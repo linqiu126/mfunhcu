@@ -403,6 +403,11 @@ Make By：ZJL
 //= LZH, 2017 Dec.21, CURRENT_SW_DELIVERY R03.D26
 > 添加FAAM工厂辅助管理系统
 
+//= LZH, 2018 Apr.17, CURRENT_SW_DELIVERY R04.D01
+> FAAM工厂辅助管理系统增加出库入库以及耗材管理功能
+> Swoole修改为HTTP server
+> 添加FAAM物联网秤
+
 //待完善的功能
 1. dbi_devinfo_update（）需要修改，添加设备时预计结束时间和实际结束时间应该在项目信息里
 2. 添加设备时没有选择该设备装配了那些传感器，sensorctrl表没有更新

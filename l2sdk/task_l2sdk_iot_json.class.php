@@ -18,23 +18,27 @@ class classTaskL2sdkIotJson
     {
         $loggerObj = new classApiL1vmFuncCom();
         $project = MFUN_PRJ_HCU_JSON;
+        $socketid = ""; //初始化
         if (empty($msg)) {
             $log_content = "E: IOT_JSON received null message body";
             $loggerObj->mylog($project,"NULL","MFUN_TASK_VID_L1VM_SWOOLE","MFUN_TASK_ID_L2SDK_IOT_JSON",$msgName,$log_content);
-            echo trim($log_content); //这里echo主要是为了swoole log打印，帮助查找问题
             return false;
         }
-        if (($msgId != MSG_ID_L1VM_TO_L2SDK_IOT_JSON_INCOMING) || ($msgName != "MSG_ID_L1VM_TO_L2SDK_IOT_JSON_INCOMING")){
-            $log_content = "E: IOT_JSON receive Msgid or MsgName error";
+        if ($msgId == MSG_ID_SWOOLE_TO_IOT_JSON_DATA){  //来自swoole socket的JSON消息
+            if (isset($msg["socketid"])) $socketid = $msg["socketid"]; else  $socketid = "";
+            if (isset($msg["data"])) $data = $msg["data"]; else  $data = "";
+        }
+        elseif ($msgId == MSG_ID_CALLBACK_TO_IOT_JSON_DATA){ //来自HTTP callback的JSON消息
+            $data = $msg;
+        }
+        else{
+            $log_content = "E: IOT_JSON received invalid message, ".$msgName;
             $loggerObj->mylog($project,"NULL","MFUN_TASK_VID_L1VM_SWOOLE","MFUN_TASK_ID_L2SDK_IOT_JSON",$msgName,$log_content);
             return false;
         }
 
-//        if (isset($msg["socketid"])) $socketid = $msg["socketid"]; else  $socketid = "";
-//        if (isset($msg["data"])) $data = $msg["data"]; else  $data = "";
-
-        //这里可能收到HTTP header内容，json解码为空，直接返回
-        $jsonData = json_decode($msg);
+        //JSON格式合法性判断，若格式不对json解码为空，直接返回
+        $jsonData = json_decode($data);
         if (empty($jsonData)) return false;
 
         $toUser = strtoupper(trim($jsonData->ToUsr));
@@ -43,8 +47,7 @@ class classTaskL2sdkIotJson
         $msgType = trim($jsonData->MsgTp);
         $jsonMsgId = intval($jsonData->MsgId);
         $msgLen = intval($jsonData->MsgLn);
-        $ieCnt = $jsonData->IeCnt;
-        $ieContent = array("rfidUser"=>$ieCnt->rfidUser, "spsValue"=>$ieCnt->spsValue);
+        $ieContent = json_encode($jsonData->IeCnt);
         $funcFlag = trim($jsonData->FnFlg);
 
         //取DB中的硬件信息，判断FromUser合法性
@@ -53,22 +56,14 @@ class classTaskL2sdkIotJson
         if (empty($statCode)){
             $log_content = "E: IOT_JSON receive invalid FromUserName = ".$fromUser;
             $loggerObj->mylog($project,$fromUser,"MFUN_TASK_ID_L1VM","MFUN_TASK_ID_L2SDK_IOT_JSON",$msgName,$log_content);
-            //echo trim($log_content); //这里echo主要是为了swoole log打印，帮助查找问题
-            return true;
-        }
-        //判断ToUser合法性
-        if ($toUser != "XHZN" ){
-            $log_content = "E: IOT_JSON receive invalid ToUserName = ".$toUser;
-            $loggerObj->mylog($project,$fromUser,"MFUN_TASK_ID_L1VM","MFUN_TASK_ID_L2SDK_IOT_JSON",$msgName,$log_content);
-            //echo trim($log_content); //这里echo主要是为了swoole log打印，帮助查找问题
             return true;
         }
 
-        //将socket id和设备ID（fromUser）进行绑定
-//        if(!empty($socketid) AND !empty($statCode)){
-//            $dbiL2sdkIotcomObj = new classDbiL2sdkIotcom();
-//            $result = $dbiL2sdkIotcomObj->dbi_huitp_huc_socketid_update($fromUser, $socketid);
-//        }
+        //将socket id和设备ID（fromUser）进行绑定，这个操作只对来自swoole socket的JSON消息有效
+        if(!empty($socketid) AND !empty($statCode)){
+            $dbiL2sdkIotcomObj = new classDbiL2sdkIotcom();
+            $dbiL2sdkIotcomObj->dbi_huitp_huc_socketid_update($fromUser, $socketid);
+        }
 
         $l2codecHuitpMsgDictObj = new classL2codecHuitpMsgDict();
         $jsonDestId = $l2codecHuitpMsgDictObj->mfun_l2codec_getHuitpDestTaskId($jsonMsgId);
