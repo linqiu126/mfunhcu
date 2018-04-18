@@ -79,7 +79,8 @@ class classTaskL2snrWeight
 
         //具体处理函数
         if ($msgId == MSG_ID_L2SDK_HCU_TO_L2SNR_WEIGHT){ //for old BFSC project
-            $resp = $this->func_weight_data_process( $devCode, $statCode, $content);
+            $resp = $this->func_weight_data_process(
+                $devCode, $statCode, $content);
         }
         elseif($msgId == HUITP_JSON_MSGID_uni_faws_data_report){
             $resp=$this->func_weight_product_insert($devCode,$content);

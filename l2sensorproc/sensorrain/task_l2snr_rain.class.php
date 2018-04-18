@@ -70,7 +70,6 @@ class classTaskL2snrRain
             $loggerObj->logger($project, $log_from, $log_time, $log_content);
             echo trim($resp);
         }
-
         //返回
         return true;
     }
