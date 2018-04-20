@@ -830,7 +830,7 @@ class classTaskL3aplF11faam
                 $retval=array('status'=>$usercheck['status'],'ret'=>$resp,'msg'=>'转库成功','auth'=>$usercheck['auth']);
             }
             else{
-                $retval=array('status'=>$usercheck['status'],'ret'=>"",'msg'=>'转库失败','auth'=>$usercheck['auth']);
+                $retval=array('status'=>$usercheck['status'],'msg'=>'转库失败','auth'=>$usercheck['auth']);
             }
         }
         else
@@ -1174,7 +1174,7 @@ class classTaskL3aplF11faam
                 $retval=array('status'=>$usercheck['status'],'ret'=>'true','auth'=>$usercheck['auth']);
             }
             else{
-                $retval=array('status'=>$usercheck['status'],'ret'=>'false','auth'=>$usercheck['auth']);
+                $retval=array('status'=>false,'ret'=>'删除失败','auth'=>$usercheck['auth']);
             }
         }
         else
@@ -1209,8 +1209,10 @@ class classTaskL3aplF11faam
         if($usercheck["status"]=="true" AND $usercheck["auth"]=="true") {
             $uid = $usercheck["uid"];
             $uiF11faamDbObj = new classDbiL3apF11faam();
-            $resp = $uiF11faamDbObj->dbi_faam_get_print($body);
+//            $resp = $uiF11faamDbObj->dbi_faam_get_print($body);
         }
+        $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>' 该功能尚未开通');
+        return  $retval;
     }
     function func_faam_get_consumables_vendor_list($action,$user,$body){
         $uiFlsymDbObj=new classDbiL3apF1sym();
@@ -1264,9 +1266,6 @@ class classTaskL3aplF11faam
                 $retval=array('status'=>'true','ret'=>$resp,'msg'=>'获取水产信息成功','auth'=>$usercheck['auth']);
             }
             else{
-                $table=array();
-                array_push($table,"获取水产信息失败");
-                array_push($resp["TableData"],$table);
                 $retval=array('status'=>false,'ret'=>$resp,'msg'=>'获取水产信息失败','auth'=>$usercheck['auth']);
             }
         }
@@ -1288,9 +1287,6 @@ class classTaskL3aplF11faam
                 $retval=array('status'=>'true','ret'=>$resp,'msg'=>'获取水产信息成功','auth'=>$usercheck['auth']);
             }
             else{
-                $table=array();
-                array_push($table,"获取水产信息失败");
-                array_push($resp["TableData"],$table);
                 $retval=array('status'=>false,'ret'=>$resp,'msg'=>'获取水产信息失败','auth'=>$usercheck['auth']);
             }
         }
