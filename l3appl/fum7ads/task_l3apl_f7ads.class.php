@@ -197,7 +197,7 @@ class classTaskL3aplF7ads
                 $resp = $this->func_clear_user_image_process($action, $user, $body);
                 break;
 
-            case MSG_ID_L4AQYCUI_TO_L3F7_GETSHOWACTIONE:
+            case MSG_ID_L4COMUI_TO_L3F7_GETSHOWACTIONE:
                 $resp = $this->func_get_demo_show_action_process($action, $user, $body);
                 break;
 

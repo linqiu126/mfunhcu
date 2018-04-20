@@ -199,6 +199,8 @@ class classDbiL3apF2cm
                 }
             }
         }
+
+        if(empty($pg_list)) return $pg_list; //如果项目组列表为空直接返回
         //删除项目组列表里重复的项
         $dbiL1vmCommonObj = new classDbiL1vmCommon();
         $unique_pglist = $dbiL1vmCommonObj->unique_array($pg_list, false, true);
@@ -241,6 +243,7 @@ class classDbiL3apF2cm
             }
         }
 
+        if(empty($projlist)) return $projlist;
         //删除项目列表里重复的项
         $dbiL1vmCommonObj = new classDbiL1vmCommon();
         $unique_projlist = $dbiL1vmCommonObj->unique_array($projlist,false,true);

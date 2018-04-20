@@ -133,6 +133,7 @@ class classDbiL3apF5fm
                 array_push($auth_list ,$temp);
             }
         }
+        if(empty($auth_list)) return $auth_list;
         //删除列表里重复的项
         $dbiL1vmCommonObj = new classDbiL1vmCommon();
         $unique_authlist = $dbiL1vmCommonObj->unique_array($auth_list,false,true);
