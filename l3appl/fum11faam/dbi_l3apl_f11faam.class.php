@@ -3293,7 +3293,7 @@ class classDbiL3apF11faam
         }
         $his=array();
         array_push($his,0);
-        array_push($his,"-----");
+        array_push($his,"汇总");
         array_push($his,"-----");
         array_push($his,"-----");
         array_push($his,"-----");
