@@ -3178,6 +3178,181 @@ class classDbiL3apF11faam
         $mysqli->close();
         return $table;
     }
+    public function dbi_faam_get_consumables_type_list(){
+        $mysqli=new mysqli(MFUN_CLOUD_DBHOST,MFUN_CLOUD_DBUSER,MFUN_CLOUD_DBPSW,MFUN_CLOUD_DBNAME_L1L2L3,MFUN_CLOUD_DBPORT);
+        if(!$mysqli){
+            die("Could not connect:".mysqli_error($mysqli));
+        }
+        $mysqli->query("SET NAMES utf8");
+        $type = array("纸箱","保鲜袋","胶带","标签","托盘","垫片","网套","打包带");
+        $retlist = array();
+        for($i=0;$i<sizeof($type);$i++){
+            $cargo = array();
+            $query_str="SELECT * FROM `t_l3f11faam_consumables_type` WHERE `conname`='$type[$i]'";
+            $result=$mysqli->query($query_str);
+            while(($result!=false)&&($row=$result->fetch_array())>0){
+                array_push($cargo,$row["contype"]);
+            }
+            array_push($retlist,$cargo);
+        }
+        return $retlist;
+    }
+    public function dbi_faam_get_consumables_vendor_list(){
+        $mysqli=new mysqli(MFUN_CLOUD_DBHOST,MFUN_CLOUD_DBUSER,MFUN_CLOUD_DBPSW,MFUN_CLOUD_DBNAME_L1L2L3,MFUN_CLOUD_DBPORT);
+        if(!$mysqli){
+            die("Could not connect:".mysqli_error($mysqli));
+        }
+        $mysqli->query("SET NAMES utf8");
+        $query_str="SELECT * FROM `t_l3f11faam_vendor_list`";
+        $result=$mysqli->query($query_str);
+        $vendor=array();
+        while(($result!=false)&&($row=$result->fetch_array())>0){
+            array_push($vendor,$row["vendor"]);
+        }
+        return $vendor;
+    }
+
+    //水产管理
+    public function dbi_faam_seafood_audit($body,$uid){
+        $timeStart=$body["TimeStart"]." 00:00:00";
+        $timeEnd=$body["TimeEnd"]." 23:59:59";
+        if(isset($body["KeyWord"]))
+            $keyWord=$body["KeyWord"];
+        else $keyWord="";
+        $mysqli=new mysqli(MFUN_CLOUD_DBHOST,MFUN_CLOUD_DBUSER,MFUN_CLOUD_DBPSW,MFUN_CLOUD_DBNAME_L1L2L3,MFUN_CLOUD_DBPORT);
+        if(!$mysqli){
+            die("Could not connect:".mysqli_error($mysqli));
+        }
+        $pjCode = $this->dbi_get_user_auth_factory($mysqli, $uid);
+        $mysqli->query("SET NAMES utf8");
+        $table["ColumnName"]=array();
+        $table["TableData"]=array();
+        array_push($table["ColumnName"],"序号");
+        array_push($table["ColumnName"],"工人姓名");
+        array_push($table["ColumnName"],"岗位");
+        array_push($table["ColumnName"],"状态");
+        array_push($table["ColumnName"],"产品规格");
+        array_push($table["ColumnName"],"总重量(KG)");
+        array_push($table["ColumnName"],"开始时间");
+        array_push($table["ColumnName"],"结束时间");
+        $rfidList=array();
+        $typeList=array();
+        $weightList=array();
+        if(!empty($keyWord)) {
+            $query_id = "SELECT * FROM `t_l3f11faam_membersheet` WHERE `employee`LIKE '%$keyWord%' AND `pjcode`='$pjCode'";
+            $rfid = $mysqli->query($query_id);
+            while (($rfid != false) && (($row_id = $rfid->fetch_array()) > 0)) {
+                array_push($rfidList, $row_id);
+            }
+        }
+        else{
+            $query_id = "SELECT * FROM `t_l3f11faam_membersheet` WHERE `pjcode`='$pjCode'";
+            $rfid = $mysqli->query($query_id);
+            while (($rfid != false) && (($row_id = $rfid->fetch_array()) > 0)) {
+                array_push($rfidList, $row_id);
+            }
+        }
+        $query_str="SELECT * FROM `t_l3f11faam_balance_sheet` ";
+        $result=$mysqli->query($query_str);
+        while(($result!=false)&&(($row=$result->fetch_array())>0)){
+            array_push($typeList,$row);
+        }
+        $query_str="SELECT * FROM `t_l3f11faam_weight_product_sheet` WHERE `stocktime`>='$timeStart' AND `stocktime`<='$timeEnd'";
+        $result=$mysqli->query($query_str);
+        while(($result!=false)&&(($row=$result->fetch_array())>0)){
+            array_push($weightList,$row);
+        }
+        $totalWeight=0.00;
+        $sid=1;
+        for ($i = 0; $i < count($rfidList); $i++) {
+            for ($j = 0; $j < count($typeList); $j++) {
+                $list=array();
+                $weight=0.00;
+                for($m = 0;$m < count($weightList); $m++) {
+                    if(($weightList[$m]["rfiduser"]==$rfidList[$i]["mid"])&&($weightList[$m]["fruser"]==$typeList[$j]["balancecode"])){
+                        $weight=$weight+$weightList[$m]["spsvalue"];
+                    }
+                }
+                if($weight!=0){
+                    array_push($list,$sid);
+                    array_push($list,$rfidList[$i]['employee']);
+                    array_push($list,$rfidList[$i]['position']);
+                    if($rfidList[$i]['onjob']=="1") array_push($list,"在职");
+                    else array_push($list,"离职");
+                    array_push($list,$typeList[$j]['fishnote']);
+                    array_push($list,$weight);
+                    array_push($list,$body["TimeStart"]);
+                    array_push($list,$body["TimeEnd"]);
+                    array_push($table["TableData"],$list);
+                    $sid=$sid+1;
+                }
+            }
+        }
+        for($i=0;$i<count($weightList);$i++){
+            $totalWeight=$totalWeight+$weightList[$i]["spsvalue"];
+        }
+        $his=array();
+        array_push($his,0);
+        array_push($his,"-----");
+        array_push($his,"-----");
+        array_push($his,"-----");
+        array_push($his,"-----");
+        array_push($his,$totalWeight);
+        array_push($his,$body["TimeStart"]);
+        array_push($his,$body["TimeEnd"]);
+        array_push($table["TableData"],$his);
+        return $table;
+    }
+    public function dbi_faam_seafood_info($body,$uid){
+        $timeStart=$body["TimeStart"]." 00:00:00";
+        $timeEnd=$body["TimeEnd"]." 23:59:59";
+        if(isset($body["KeyWord"]))
+            $keyWord=$body["KeyWord"];
+        else $keyWord="";
+        if($keyWord=="") $query_name_str="AND 1";
+        else $query_name_str="AND `employee` LIKE '%".$keyWord."%'";
+        $mysqli=new mysqli(MFUN_CLOUD_DBHOST,MFUN_CLOUD_DBUSER,MFUN_CLOUD_DBPSW,MFUN_CLOUD_DBNAME_L1L2L3,MFUN_CLOUD_DBPORT);
+        if(!$mysqli){
+            die("Could not connect:".mysqli_error($mysqli));
+        }
+        $pjCode = $this->dbi_get_user_auth_factory($mysqli, $uid);
+        $mysqli->query("SET NAMES utf8");
+        $table["ColumnName"]=array();
+        $table["TableData"]=array();
+        array_push($table["ColumnName"],"序号");
+        array_push($table["ColumnName"],"工人姓名");
+        array_push($table["ColumnName"],"状态");
+        array_push($table["ColumnName"],"产品规格");
+        array_push($table["ColumnName"],"重量(KG)");
+        array_push($table["ColumnName"],"时间");
+        $query_str="SELECT * FROM t_l3f11faam_weight_product_sheet WHERE `stocktime`>='$timeStart' AND `stocktime`<='$timeEnd'";
+        $result=$mysqli->query($query_str);
+        $i=1;
+        while(($result!=false)&&(($row=$result->fetch_array())>0)){
+            $nameid=$row['rfiduser'];
+            $balanceid=$row["fruser"];
+            $query_balance="SELECT * FROM `t_l3f11faam_balance_sheet` WHERE `balancecode`='$balanceid'";
+            $result_balance=$mysqli->query($query_balance);
+            while(($result_balance!=false)&&(($row_balance=$result_balance->fetch_array())>0)){
+                $balance=$row_balance["fishnote"];
+            }
+            $query_name="SELECT * FROM `t_l3f11faam_membersheet` WHERE `mid`='$nameid' AND `pjcode`='$pjCode'".$query_name_str;
+            $result_name=$mysqli->query($query_name);
+            while(($result_name!=false)&&(($row_name=$result_name->fetch_array())>0)){
+                $data=array();
+                array_push($data,$i);
+                array_push($data,$row_name["employee"]);
+                if($row_name["onjob"]=='1') array_push($data,"在职");
+                else array_push($data,"离职");
+                array_push($data,$balance);
+                array_push($data,$row["spsvalue"]);
+                array_push($data,$row["stocktime"]);
+                array_push($table["TableData"],$data);
+            }
+            $i=$i+1;
+        }
+        return $table;
+    }
     //入库记录删除，删除掉的入库记录中的数据需返还给原数据库
 //    public function  dbi_faam_material_stock_income_del($body){
 //        $removalID=$body["incomeID"];

@@ -306,9 +306,31 @@ class classTaskL4faamUi
 //                $input=array("project"=>$project,"action"=>$action,"type"=>$type,"user"=>$user,"body"=>$body);
 //                $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FAAM_UI, MFUN_TASK_ID_L3APPL_FUM11FAAM, MSG_ID_L4FAAMUI_TO_L3F11_MATERIALSTOCKINCOMEDEL, "MSG_ID_L4FAAMUI_TO_L3F11_MATERIALSTOCKINCOMEDEL",$input);
 //                break;
+            case "GetPrint":
+                $input=array("project"=>$project,"action"=>$action,"type"=>$type,"user"=>$user,"body"=>$body);
+                $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FAAM_UI, MFUN_TASK_ID_L3APPL_FUM11FAAM, MSG_ID_L4FAAMUI_TO_L3F11_GETPRINT, "MSG_ID_L4FAAMUI_TO_L3F11_GETPRINT",$input);
+                break;
+            case "GetConsumablesVendorList":
+                $input=array("project"=>$project,"action"=>$action,"type"=>$type,"user"=>$user,"body"=>$body);
+                $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FAAM_UI, MFUN_TASK_ID_L3APPL_FUM11FAAM, MSG_ID_L4FAAMUI_TO_L3F11_GETCONSUMABLESVENDORLIST, "MSG_ID_L4FAAMUI_TO_L3F11_GETCONSUMABLESVENDORLIST",$input);
+                break;
+            case "GetConsumablesTypeList":
+                $input=array("project"=>$project,"action"=>$action,"type"=>$type,"user"=>$user,"body"=>$body);
+                $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FAAM_UI, MFUN_TASK_ID_L3APPL_FUM11FAAM, MSG_ID_L4FAAMUI_TO_L3F11_GETCONSUMABLESTYPELIST, "MSG_ID_L4FAAMUI_TO_L3F11_GETCONSUMABLESTYPELIST",$input);
+                break;
             case "TableQuery":
                 $input=array("project"=>$project,"action"=>$action,"type"=>$type,"user"=>$user,"body"=>$body);
                 $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FAAM_UI, MFUN_TASK_ID_L3APPL_FUM11FAAM, MSG_ID_L4FAAMUI_TO_L3F11_TABLEQUERY, "MSG_ID_L4FAAMUI_TO_L3F11_TABLEQUERY",$input);
+                break;
+
+            //水产管理
+            case "SeafoodInfo":
+                $input=array("project"=>$project,"action"=>$action,"type"=>$type,"user"=>$user,"body"=>$body);
+                $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FAAM_UI, MFUN_TASK_ID_L3APPL_FUM11FAAM, MSG_ID_L4FAAMUI_TO_L3F11_SEAFOODINFO, "MSG_ID_L4FAAMUI_TO_L3F11_SEAFOODINFO",$input);
+                break;
+            case "SeafoodAudit":
+                $input=array("project"=>$project,"action"=>$action,"type"=>$type,"user"=>$user,"body"=>$body);
+                $parObj->mfun_l1vm_msg_send(MFUN_TASK_ID_L4FAAM_UI, MFUN_TASK_ID_L3APPL_FUM11FAAM, MSG_ID_L4FAAMUI_TO_L3F11_SEAFOODAUDIT, "MSG_ID_L4FAAMUI_TO_L3F11_SEAFOODAUDIT",$input);
                 break;
             /*************************************自己更改终止处***********************************************/
             case "GetGeoList":  //获取山东的地理区域信息

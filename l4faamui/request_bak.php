@@ -1,45 +1,45 @@
 <?php
 header("Content-type:text/html;charset=utf-8");
 #require '/php/req.php';
-$install_path="mfunhcu/l4faamui";
+$install_path="/xherp";
 function _encode($arr)
 {
-  $na = array();
-  foreach ( $arr as $k => $value ) {   
-    $na[_urlencode($k)] = _urlencode ($value);   
-  }
-  return addcslashes(urldecode(json_encode($na)),"\r\n");
+	$na = array();
+	foreach ( $arr as $k => $value ) {
+		$na[_urlencode($k)] = _urlencode ($value);
+	}
+	return addcslashes(urldecode(json_encode($na)),"\r\n");
 }
- 
+
 function _urlencode($elem)
 {
-  if(is_array($elem)&&(!(empty($elem)))){
-    foreach($elem as $k=>$v){
-      $na[_urlencode($k)] = _urlencode($v);
-    }
-    return $na;
-  }
-  if(is_array($elem)&&empty($elem)){
-	  return $elem;
-  }
-  return urlencode($elem);
+	if(is_array($elem)&&(!(empty($elem)))){
+		foreach($elem as $k=>$v){
+			$na[_urlencode($k)] = _urlencode($v);
+		}
+		return $na;
+	}
+	if(is_array($elem)&&empty($elem)){
+		return $elem;
+	}
+	return urlencode($elem);
 }
 function getfiledetail($path){
-    $ret = "";
-    if(!file_exists($path)) {
-        //echo $path." is not exist!";
-        return "";
-    }
-    $afile=$path;
-    $json_string = file_get_contents($afile);
-    return $json_string;
+	$ret = "";
+	if(!file_exists($path)) {
+		//echo $path." is not exist!";
+		return "";
+	}
+	$afile=$path;
+	$json_string = file_get_contents($afile);
+	return $json_string;
 }
 #$basedir="/dist";
 $key=$_GET["action"];
 //echo $key;
 switch ($key){
-case "login":
-/*
+	case "login":
+		/*
 REQUEST:
 var map={
     action:"login",
@@ -58,62 +58,62 @@ RESPONSE:
 	'msg'=>'login successfully'
     );
 */
-	$usr = $_GET["name"];
-	$usrinfo;
-	$body;
-	if($usr == "admin"){
-		$body = array(
-			'key'=> '1234567',
-			'admin'=> 'true'
-		);
-		$usrinfo=array(
-        'status'=>'true',
-		'auth'=>'true',
-        'ret'=>$body,
-        'msg'=>'login successfully'
-		);
-    }else if($usr=="user"){
-		$body = array(
-			'key'=> '7654321',
-			'admin'=> 'false'
-		);
-        $usrinfo=array(
-        'status'=>'true',
-		'auth'=>'true',
-        'ret'=>$body,
-        'msg'=>'login successfully'
-        
-		);
-    }else if($usr=="黄"){
-		$body = array(
-			'key'=> '1111111',
-            'admin'=> 'false'
-		);
-             $usrinfo=array(
-             'status'=>'true',
-			 'auth'=>'true',
-			 'ret'=>$body,
-             'msg'=>'login successfully',
-             
-     		);
-    }
-    else{
-		$body = array(
-			'key'=> '',
-			'admin'=> ''
-		);
-        $usrinfo=array(
-        'status'=>'false',
-		'auth'=>'true',
-	    'ret'=>$body,
-        'msg'=>'no this user or password faile',
-        
-		);
-    }
-    $jsonencode = json_encode($usrinfo);
-	echo $jsonencode; break;
-case "check_session_active":
-/*
+		$usr = $_GET["name"];
+		$usrinfo;
+		$body;
+		if($usr == "admin"){
+			$body = array(
+				'key'=> '1234567',
+				'admin'=> 'true'
+			);
+			$usrinfo=array(
+				'status'=>'true',
+				'auth'=>'true',
+				'ret'=>$body,
+				'msg'=>'login successfully'
+			);
+		}else if($usr=="user"){
+			$body = array(
+				'key'=> '7654321',
+				'admin'=> 'false'
+			);
+			$usrinfo=array(
+				'status'=>'true',
+				'auth'=>'true',
+				'ret'=>$body,
+				'msg'=>'login successfully'
+
+			);
+		}else if($usr=="黄"){
+			$body = array(
+				'key'=> '1111111',
+				'admin'=> 'false'
+			);
+			$usrinfo=array(
+				'status'=>'true',
+				'auth'=>'true',
+				'ret'=>$body,
+				'msg'=>'login successfully',
+
+			);
+		}
+		else{
+			$body = array(
+				'key'=> '',
+				'admin'=> ''
+			);
+			$usrinfo=array(
+				'status'=>'false',
+				'auth'=>'true',
+				'ret'=>$body,
+				'msg'=>'no this user or password faile',
+
+			);
+		}
+		$jsonencode = json_encode($usrinfo);
+		echo $jsonencode; break;
+	case "check_session_active":
+		/*
 REQUEST:
     var body={
         session:session
@@ -137,53 +137,53 @@ RESPONSE:
         'msg'=>'login successfully'
     );
 */
-    $key = rand(1,20);
-    $usrinfo;
-    if($key<3){
-        $body = array(
-            'active'=>"timeout",
-            'key'=> '1234567',
-            'admin'=> 'true'
-        );
-        $usrinfo=array(
-            'status'=>'true',
-            'auth'=>'true',
-            'ret'=>$body,
-            'msg'=>''
-        );
-    }else if($key>15){
-        $body = array(
-            'active'=>"true",
-            'key'=> '1234567',
-            'admin'=> 'true'
-        );
-        $usrinfo=array(
-            'status'=>'true',
-            'auth'=>'true',
-            'ret'=>$body,
-            'msg'=>''
-        );
-    }else{
-        $body = array(
-            'active'=>"false",
-            'key'=> '1234567',
-            'admin'=> 'true'
-        );
-        $usrinfo=array(
-            'status'=>'true',
-            'auth'=>'true',
-            'ret'=>$body,
-            'msg'=>''
-        );
-    }
+		$key = rand(1,20);
+		$usrinfo;
+		if($key<3){
+			$body = array(
+				'active'=>"timeout",
+				'key'=> '1234567',
+				'admin'=> 'true'
+			);
+			$usrinfo=array(
+				'status'=>'true',
+				'auth'=>'true',
+				'ret'=>$body,
+				'msg'=>''
+			);
+		}else if($key>15){
+			$body = array(
+				'active'=>"true",
+				'key'=> '1234567',
+				'admin'=> 'true'
+			);
+			$usrinfo=array(
+				'status'=>'true',
+				'auth'=>'true',
+				'ret'=>$body,
+				'msg'=>''
+			);
+		}else{
+			$body = array(
+				'active'=>"false",
+				'key'=> '1234567',
+				'admin'=> 'true'
+			);
+			$usrinfo=array(
+				'status'=>'true',
+				'auth'=>'true',
+				'ret'=>$body,
+				'msg'=>''
+			);
+		}
 
 
-    $jsonencode = json_encode($usrinfo);
-	echo $jsonencode; break;
+		$jsonencode = json_encode($usrinfo);
+		echo $jsonencode; break;
 
-		
-case "UserInfo":
-/*
+
+	case "UserInfo":
+		/*
 REQUEST:
 var body = {
 	session: session
@@ -209,140 +209,146 @@ $retval=array(
 	'ret'=>($user)
 );
 */
-	$body= $_GET['body'];
-	$session = $body['session'];
-    $user=null;
-	$userauth=null;
-	$webauth=null;
-    $if_offline=true;
-    $userpoint=array(
-        'Latitude'=>'31.240246','Longitude'=>'121.514168'
-    );
-    if($session == "1234567"){
-		$webauth=array(
-			'UserManage' => 'true',
-			'ParaManage' => 'true',
-			'InstControl' => 'true',
-			'PGManage' => 'true',
-			'ProjManage' => 'true',
-			'MPManage' => 'true',
-			'DevManage' => 'true',
-			'KeyManage' => 'true',
-			'KeyAuth' => 'true',
-			'KeyHistory' => 'true',
-			'MPMonitor' => 'true',
-			'MPStaticMonitorTable' => 'true',
-			'WarningCheck' => 'true',
-			'WarningHandle' => 'true',
-			'InstConf' => 'true',
-			'AttendanceAudit' => 'true',
-            'KPIAudit' => 'true',
-			'InstRead' => 'true'
+		$body= $_GET['body'];
+		$session = $body['session'];
+		$user=null;
+		$userauth=null;
+		$webauth=null;
+		$if_offline=true;
+		$userpoint=array(
+			'Latitude'=>'31.240246','Longitude'=>'121.514168'
 		);
-		$userauth=array(
-			'query' => 'true',
-			'mod' => 'true',
-			'webauth' => $webauth
+		if($session == "1234567"){
+			$webauth=array(
+				'UserManage' => 'true',
+				'ParaManage' => 'true',
+				'InstControl' => 'true',
+				'PGManage' => 'true',
+				'ProjManage' => 'true',
+				'MPManage' => 'true',
+				'DevManage' => 'true',
+				'KeyManage' => 'true',
+				'KeyAuth' => 'true',
+				'KeyHistory' => 'true',
+				'MPMonitor' => 'true',
+				'MPStaticMonitorTable' => 'true',
+				'WarningCheck' => 'true',
+				'WarningHandle' => 'true',
+				'InstConf' => 'true',
+				'AttendanceAudit' => 'true',
+				'KPIAudit' => 'true',
+				'InstRead' => 'true',
+				'ConsumablesManage'=>'true',
+				'ConsumablesHistory'=>'true',
+				'ProductStorageManage'=>'true',
+				'ProductDeliveryManage'=>'true',
+				'MaterialStorageManage'=>'true',
+				'MaterialDeliveryManage'=>'true',
+			);
+			$userauth=array(
+				'query' => 'true',
+				'mod' => 'true',
+				'webauth' => $webauth
 
-		);
-        $user = array(
-			'id'=> '1234567',
-			'name'=> 'admin',
-            'level'=> '0',
-            'city'=> ("上海"),
-			'online'=>$if_offline,
-			'point'=>$userpoint,
+			);
+			$user = array(
+				'id'=> '1234567',
+				'name'=> 'admin',
+				'level'=> '0',
+				'city'=> ("上海"),
+				'online'=>$if_offline,
+				'point'=>$userpoint,
 
-			'userauth'=>$userauth
-		);
-    }
-    if($session == "7654321"){
-		$webauth=array(
-			'UserManage' => 'true',
-			'ParaManage' => 'true',
-			'InstControl' => 'false',
-			'PGManage' => 'true',
-			'ProjManage' => 'true',
-			'MPManage' => 'true',
-			'DevManage' => 'true',
-			'KeyManage' => 'true',
-			'KeyAuth' => 'true',
-			'KeyHistory' => 'true',
-			'MPMonitor' => 'true',
-			'MPStaticMonitorTable' => 'true',
-			'WarningCheck' => 'true',
-			'WarningHandle' => 'true',
-			'InstConf' => 'false',
-			'InstRead' => 'false',
-			'AttendanceAudit' => 'false',
-            'KPIAudit' => 'false'
-		);
-		$userauth=array(
-			'query' => 'true',
-			'mod' => 'false',
-			'webauth' => $webauth
-		);
-        $user = array(
-            'id'=>'7654321',
-            'name'=>'user',
-            'level'=>'3',
-            'city'=>("上海"),
-			'online'=>$if_offline,
-			'point'=>$userpoint,
+				'userauth'=>$userauth
+			);
+		}
+		if($session == "7654321"){
+			$webauth=array(
+				'UserManage' => 'true',
+				'ParaManage' => 'true',
+				'InstControl' => 'false',
+				'PGManage' => 'true',
+				'ProjManage' => 'true',
+				'MPManage' => 'true',
+				'DevManage' => 'true',
+				'KeyManage' => 'true',
+				'KeyAuth' => 'true',
+				'KeyHistory' => 'true',
+				'MPMonitor' => 'true',
+				'MPStaticMonitorTable' => 'true',
+				'WarningCheck' => 'true',
+				'WarningHandle' => 'true',
+				'InstConf' => 'false',
+				'InstRead' => 'false',
+				'AttendanceAudit' => 'false',
+				'KPIAudit' => 'false'
+			);
+			$userauth=array(
+				'query' => 'true',
+				'mod' => 'false',
+				'webauth' => $webauth
+			);
+			$user = array(
+				'id'=>'7654321',
+				'name'=>'user',
+				'level'=>'3',
+				'city'=>("上海"),
+				'online'=>$if_offline,
+				'point'=>$userpoint,
 
-			'userauth'=>$userauth
-        );
-    }
-    if($session == "1111111"){
-		$webauth=array(
-			'UserManage' => 'true',
-			'ParaManage' => 'true',
-			'InstControl' => 'true',
-			'PGManage' => 'true',
-			'ProjManage' => 'true',
-			'MPManage' => 'true',
-			'DevManage' => 'true',
-			'KeyManage' => 'true',
-			'KeyAuth' => 'true',
-			'KeyHistory' => 'true',
-			'MPMonitor' => 'true',
-			'MPStaticMonitorTable' => 'true',
-			'WarningCheck' => 'true',
-			'WarningHandle' => 'true',
-			'InstConf' => 'true',
-			'InstRead' => 'true',
-                                			'AttendanceAudit' => 'false',
-                                            'KPIAudit' => 'false'
-		);
-		$userauth=array(
-			'query' => 'true',
-			'mod' => 'true',
-			'webauth' => $webauth
+				'userauth'=>$userauth
+			);
+		}
+		if($session == "1111111"){
+			$webauth=array(
+				'UserManage' => 'true',
+				'ParaManage' => 'true',
+				'InstControl' => 'true',
+				'PGManage' => 'true',
+				'ProjManage' => 'true',
+				'MPManage' => 'true',
+				'DevManage' => 'true',
+				'KeyManage' => 'true',
+				'KeyAuth' => 'true',
+				'KeyHistory' => 'true',
+				'MPMonitor' => 'true',
+				'MPStaticMonitorTable' => 'true',
+				'WarningCheck' => 'true',
+				'WarningHandle' => 'true',
+				'InstConf' => 'true',
+				'InstRead' => 'true',
+				'AttendanceAudit' => 'false',
+				'KPIAudit' => 'false'
+			);
+			$userauth=array(
+				'query' => 'true',
+				'mod' => 'true',
+				'webauth' => $webauth
 
+			);
+			$user = array(
+				'id'=>'7654321',
+				'name'=>'黄',
+				'level'=>'0',
+				'city'=>("上海"),
+				'online'=>$if_offline,
+				'point'=>$userpoint,
+				'userauth'=>$userauth
+			);
+		}
+		$retstatus = 'true';
+		if($user==null) $retstatus = 'false';
+		$retval=array(
+			'status'=>$retstatus,
+			'auth'=>'true',
+			'msg'=>'',
+			'ret'=>($user)
 		);
-		$user = array(
-			'id'=>'7654321',
-			'name'=>'黄',
-			'level'=>'0',
-			'city'=>("上海"),
-			'online'=>$if_offline,
-			'point'=>$userpoint,
-			'userauth'=>$userauth
-		);
-	}
-    $retstatus = 'true';
-    if($user==null) $retstatus = 'false';
-    $retval=array(
-		'status'=>$retstatus,
-		'auth'=>'true',
-		'msg'=>'',
-		'ret'=>($user)
-	);
-    $jsonencode = (_encode($retval));
-	echo $jsonencode; 
-	break;
-case "ProjectPGList":
-/*
+		$jsonencode = (_encode($retval));
+		echo $jsonencode;
+		break;
+	case "ProjectPGList":
+		/*
 REQUEST:
 var map={
 	action:"ProjectPGList",
@@ -362,32 +368,32 @@ $retval=array(
 	'msg'=>''
 );
 */
-    $proj_pg_list=array();
-	for($i=0;$i<14;$i++){
-		$temp = array(
-			'id'=>(string)$i,
-			'name'=>'项目'.(string)$i
+		$proj_pg_list=array();
+		for($i=0;$i<14;$i++){
+			$temp = array(
+				'id'=>(string)$i,
+				'name'=>'项目'.(string)$i
+			);
+			array_push($proj_pg_list,$temp);
+		}
+		for($i=0;$i<4;$i++){
+			$temp = array(
+				'id'=>"x".(string)($i),
+				'name'=>"项目组".(string)($i)
+			);
+			array_push($proj_pg_list,$temp);
+		}
+		$retval=array(
+			'status'=>'true',
+			'ret'=>$proj_pg_list,
+			'auth'=>'true',
+			'msg'=>''
 		);
-		array_push($proj_pg_list,$temp);
-	}
-	for($i=0;$i<4;$i++){
-		$temp = array(
-			'id'=>"x".(string)($i),
-			'name'=>"项目组".(string)($i)
-		);
-		array_push($proj_pg_list,$temp);
-	}
-	$retval=array(
-		'status'=>'true',
-		'ret'=>$proj_pg_list,
-		'auth'=>'true',
-		'msg'=>''
-	);
-	$jsonencode = _encode($retval);
-	echo $jsonencode; break;
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
 
-case "StaffnameList":
-/*
+	case "StaffnameList":
+		/*
 REQUEST:
 var map={
 	action:"StaffnameList",
@@ -409,24 +415,24 @@ for($i=0;$i<14;$i++){
 		'msg'=>''
 	);
 */
-    $staff_name_list=array();
-	for($i=0;$i<14;$i++){
-		$temp = array(
-			'id'=>(string)$i,
-			'name'=>'员工'.(string)$i
+		$staff_name_list=array();
+		for($i=0;$i<14;$i++){
+			$temp = array(
+				'id'=>(string)$i,
+				'name'=>'员工'.(string)$i
+			);
+			array_push($staff_name_list,$temp);
+		}
+		$retval=array(
+			'status'=>'true',
+			'ret'=>$staff_name_list,
+			'auth'=>'true',
+			'msg'=>''
 		);
-		array_push($staff_name_list,$temp);
-	}
-	$retval=array(
-		'status'=>'true',
-		'ret'=>$staff_name_list,
-		'auth'=>'true',
-		'msg'=>''
-	);
-	$jsonencode = _encode($retval);
-	echo $jsonencode; break;
-case "FactoryCodeList":
-/*
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
+	case "FactoryCodeList":
+		/*
 REQUEST:
 var map={
 	action:"FactoryCodeList",
@@ -447,23 +453,23 @@ for($i=0;$i<14;$i++){
 		'msg'=>''
 	);
 */
-    $factory_code_list=array();
-	for($i=0;$i<14;$i++){
-		$temp = array(
-			'id'=>"f".(string)($i)
+		$factory_code_list=array();
+		for($i=0;$i<14;$i++){
+			$temp = array(
+				'id'=>"f".(string)($i)
+			);
+			array_push($factory_code_list,$temp);
+		}
+		$retval=array(
+			'status'=>'true',
+			'ret'=>$factory_code_list,
+			'auth'=>'true',
+			'msg'=>''
 		);
-		array_push($factory_code_list,$temp);
-	}
-	$retval=array(
-		'status'=>'true',
-		'ret'=>$factory_code_list,
-		'auth'=>'true',
-		'msg'=>''
-	);
-	$jsonencode = _encode($retval);
-	echo $jsonencode; break;
-case "ProjectList":
-/*
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
+	case "ProjectList":
+		/*
 REQUEST:
     var map={
         action:"ProjectList",
@@ -482,25 +488,25 @@ $retval=array(
 	'msg'=>''
 );
 */
-	$projlist = array();
-	for($i=0;$i<14;$i++){
-		$temp = array(
-			'id'=> (string)($i),
-			'name'=> "项目".(string)$i
+		$projlist = array();
+		for($i=0;$i<14;$i++){
+			$temp = array(
+				'id'=> (string)($i),
+				'name'=> "项目".(string)$i
+			);
+			array_push($projlist,$temp);
+		}
+		$retval=array(
+			'status'=>'true',
+			'ret'=> $projlist,
+			'auth'=>'true',
+			'msg'=>''
 		);
-		array_push($projlist,$temp);
-	}
-	$retval=array(
-		'status'=>'true',
-		'ret'=> $projlist,
-		'auth'=>'true',
-		'msg'=>''
-	);
-	$jsonencode = _encode($retval);
-	echo $jsonencode; break;
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
 
-case "UserNew":
-/*
+	case "UserNew":
+		/*
 REQUEST:
 var body = {
 	name: user.name,
@@ -526,19 +532,19 @@ $retval=array(
 	'auth'=>'true'
 );
 */
-	$body= $_GET['body'];
-	$auth = array() ;
-    if(isset($_GET['auth'])) $auth= $body['auth'];
-	$retval=array(
-		'status'=>'true',
-		'msg'=>'success',
-		'auth'=>'true'
-	);
-    $jsonencode = _encode($retval);
-	echo $jsonencode; break;
+		$body= $_GET['body'];
+		$auth = array() ;
+		if(isset($_GET['auth'])) $auth= $body['auth'];
+		$retval=array(
+			'status'=>'true',
+			'msg'=>'success',
+			'auth'=>'true'
+		);
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
 
-case "UserMod":
-/*
+	case "UserMod":
+		/*
 REQUEST:
 var body={
 	userid: user.id,
@@ -564,15 +570,15 @@ $retval=array(
 	'auth'=>'true'
 );
 */
-	$retval=array(
-		'status'=>'true',
-		'msg'=>'success',
-		'auth'=>'true'
-	);
-    $jsonencode = _encode($retval);
-	echo $jsonencode; break;
-case "UserDel":
-/*
+		$retval=array(
+			'status'=>'true',
+			'msg'=>'success',
+			'auth'=>'true'
+		);
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
+	case "UserDel":
+		/*
 REQUEST:
 var body = {
 	userid: id
@@ -590,15 +596,15 @@ $retval=array(
 	'auth'=>'true'
 );
 */
-	$retval=array(
-		'status'=>'true',
-		'msg'=>'success',
-		'auth'=>'true'
-	);
-    $jsonencode = _encode($retval);
-	echo $jsonencode; break;
-case "UserTable":
-/*
+		$retval=array(
+			'status'=>'true',
+			'msg'=>'success',
+			'auth'=>'true'
+		);
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
+	case "UserTable":
+		/*
 REQUEST:
 var body = {
 	startseq: start,
@@ -635,45 +641,45 @@ $retval=array(
 	'auth'=>'true'
 );
 */
-	$total = 94;
-	$body_in =$_GET['body'];
-    $query_length = (int)($body_in['length']);
-    $start = (int)($body_in['startseq']);
-    if($query_length> $total-$start){$query_length = $total-$start;}
-    $usertable = array();
-    for($i=0;$i<$query_length;$i++){
-        //$type="false";
-        //if(($i%7)==0) $type= "true";
-		$type = $i%5;
-		$temp = array(
-			'id'=>(string)($start+($i+1)),
-			'name'=>"username".(string)($start+$i),
-			'nickname'=>"用户".(string)($start+$i),
-			'mobile'=>"139139".(string)($start+$i),
-			'mail'=>"139139".(string)($start+$i)."@cmcc.com",
-			'type'=>(string)$type,
-			'date'=>"2016-01-01 12:12:12",
-			'memo'=>"备注".(string)($start+$i)
+		$total = 94;
+		$body_in =$_GET['body'];
+		$query_length = (int)($body_in['length']);
+		$start = (int)($body_in['startseq']);
+		if($query_length> $total-$start){$query_length = $total-$start;}
+		$usertable = array();
+		for($i=0;$i<$query_length;$i++){
+			//$type="false";
+			//if(($i%7)==0) $type= "true";
+			$type = $i%5;
+			$temp = array(
+				'id'=>(string)($start+($i+1)),
+				'name'=>"username".(string)($start+$i),
+				'nickname'=>"用户".(string)($start+$i),
+				'mobile'=>"139139".(string)($start+$i),
+				'mail'=>"139139".(string)($start+$i)."@cmcc.com",
+				'type'=>(string)$type,
+				'date'=>"2016-01-01 12:12:12",
+				'memo'=>"备注".(string)($start+$i)
+			);
+			array_push($usertable,$temp);
+		}
+		$body=array(
+			'start'=> (string)$start,
+			'total'=> (string)$total,
+			'length'=>(string)$query_length,
+			'usertable'=> $usertable
 		);
-		array_push($usertable,$temp);
-    }
-	$body=array(
-		'start'=> (string)$start,
-		'total'=> (string)$total,
-		'length'=>(string)$query_length,
-		'usertable'=> $usertable
-	);
-	$retval=array(
-		'status'=>'true',
-		'ret'=> $body,
-		'msg'=>'success',
-		'auth'=>'true'
-	);
-	$jsonencode = _encode($retval);
-	echo $jsonencode; break;
+		$retval=array(
+			'status'=>'true',
+			'ret'=> $body,
+			'msg'=>'success',
+			'auth'=>'true'
+		);
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
 
 	case "StaffNew":
-    /*
+		/*
     REQUEST:
     var body = {
         staffid:"",
@@ -700,19 +706,19 @@ $retval=array(
     	'auth'=>'true'
     );
     */
-    	$body= $_GET['body'];
-    	$auth = array() ;
-        if(isset($_GET['auth'])) $auth= $body['auth'];
-    	$retval=array(
-    		'status'=>'true',
-    		'msg'=>'success',
-    		'auth'=>'true'
-    	);
-        $jsonencode = _encode($retval);
-    	echo $jsonencode; break;
+		$body= $_GET['body'];
+		$auth = array() ;
+		if(isset($_GET['auth'])) $auth= $body['auth'];
+		$retval=array(
+			'status'=>'true',
+			'msg'=>'success',
+			'auth'=>'true'
+		);
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
 
-    case "StaffMod":
-    /*
+	case "StaffMod":
+		/*
     REQUEST:
     var body={
         staffid:user.staffid,
@@ -738,15 +744,15 @@ $retval=array(
     	'auth'=>'true'
     );
     */
-    	$retval=array(
-    		'status'=>'true',
-    		'msg'=>'success',
-    		'auth'=>'true'
-    	);
-        $jsonencode = _encode($retval);
-    	echo $jsonencode; break;
-    case "StaffDel":
-    /*
+		$retval=array(
+			'status'=>'true',
+			'msg'=>'success',
+			'auth'=>'true'
+		);
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
+	case "StaffDel":
+		/*
     var body = {
             staffid: id
         };
@@ -763,15 +769,15 @@ $retval=array(
     	'auth'=>'true'
     );
     */
-    	$retval=array(
-    		'status'=>'true',
-    		'msg'=>'success',
-    		'auth'=>'true'
-    	);
-        $jsonencode = _encode($retval);
-    	echo $jsonencode; break;
-    case "StaffTable":
-    /*
+		$retval=array(
+			'status'=>'true',
+			'msg'=>'success',
+			'auth'=>'true'
+		);
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
+	case "StaffTable":
+		/*
     var body = {
             startseq: start,
             length:length,
@@ -809,58 +815,58 @@ $retval=array(
     	'auth'=>'true'
     );
     */
-    	$total = 94;
-    	$body_in =$_GET['body'];
-        $query_length = (int)($body_in['length']);
-        $start = (int)($body_in['startseq']);
-        if($query_length> $total-$start){$query_length = $total-$start;}
-        $stafftable = array();
-        for($i=0;$i<$query_length;$i++){
-            //$type="false";
-            //if(($i%7)==0) $type= "true";
-    		$type = $i%2+1;
-    		$temp = array(
-    			'id'=>(string)($start+($i+1)),
-    			'name'=>"staffname".(string)($start+$i),
-    			'PJcode'=>'12345',
-    			'nickname'=>"nickname".(string)($start+$i),
-    			'mobile'=>"139139".(string)($start+$i),
-    			'gender'=>(string)$type,
-    			'address'=>"address".(string)($start+$i),
-    			'salary'=>rand(100,500),
-    			'KPI'=>rand(1000,7000),
-    			'status'=>(string)rand(0,1),
-    			'position'=>"DDDDDDD",
-    			'memo'=>"备注".(string)($start+$i),
-    			'identify'=>"21312031203012",
-    			'geoinfo'=>"山东",
-    			'bank'=>"山东银行",
-    			'account'=>"123321123321-".(string)($start+$i),
-    			'photo'=>"./photo/".(string)(rand(1,4)).".jpg"
-    		);
-    		array_push($stafftable,$temp);
-        }
-    	$body=array(
-    		'start'=> (string)$start,
-    		'total'=> (string)$total,
-    		'length'=>(string)$query_length,
-    		'stafftable'=> $stafftable
-    	);
-    	$retval=array(
-    		'status'=>'true',
-    		'ret'=> $body,
-    		'msg'=>'success',
-    		'auth'=>'true'
-    	);
-    	$jsonencode = _encode($retval);
-    	echo $jsonencode; break;
+		$total = 94;
+		$body_in =$_GET['body'];
+		$query_length = (int)($body_in['length']);
+		$start = (int)($body_in['startseq']);
+		if($query_length> $total-$start){$query_length = $total-$start;}
+		$stafftable = array();
+		for($i=0;$i<$query_length;$i++){
+			//$type="false";
+			//if(($i%7)==0) $type= "true";
+			$type = $i%2+1;
+			$temp = array(
+				'id'=>(string)($start+($i+1)),
+				'name'=>"staffname".(string)($start+$i),
+				'PJcode'=>'12345',
+				'nickname'=>"nickname".(string)($start+$i),
+				'mobile'=>"139139".(string)($start+$i),
+				'gender'=>(string)$type,
+				'address'=>"address".(string)($start+$i),
+				'salary'=>rand(100,500),
+				'KPI'=>rand(1000,7000),
+				'status'=>(string)rand(0,1),
+				'position'=>"DDDDDDD",
+				'memo'=>"备注".(string)($start+$i),
+				'identify'=>"21312031203012",
+				'geoinfo'=>"山东",
+				'bank'=>"山东银行",
+				'account'=>"123321123321-".(string)($start+$i),
+				'photo'=>"./photo/".(string)(rand(1,4)).".jpg"
+			);
+			array_push($stafftable,$temp);
+		}
+		$body=array(
+			'start'=> (string)$start,
+			'total'=> (string)$total,
+			'length'=>(string)$query_length,
+			'stafftable'=> $stafftable
+		);
+		$retval=array(
+			'status'=>'true',
+			'ret'=> $body,
+			'msg'=>'success',
+			'auth'=>'true'
+		);
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
 
 
 
 
 
-case "SpecificationNew":
-    /*
+	case "SpecificationNew":
+		/*
     REQUEST:
     var body = {
         specificationid:"",
@@ -884,19 +890,19 @@ case "SpecificationNew":
     	'auth'=>'true'
     );
     */
-    	$body= $_GET['body'];
-    	$auth = array() ;
-        if(isset($_GET['auth'])) $auth= $body['auth'];
-    	$retval=array(
-    		'status'=>'true',
-    		'msg'=>'success',
-    		'auth'=>'true'
-    	);
-        $jsonencode = _encode($retval);
-    	echo $jsonencode; break;
+		$body= $_GET['body'];
+		$auth = array() ;
+		if(isset($_GET['auth'])) $auth= $body['auth'];
+		$retval=array(
+			'status'=>'true',
+			'msg'=>'success',
+			'auth'=>'true'
+		);
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
 
-    case "SpecificationMod":
-    /*
+	case "SpecificationMod":
+		/*
     REQUEST:
     var body = {
             specificationid:user.specificationid,
@@ -919,15 +925,15 @@ case "SpecificationNew":
     	'auth'=>'true'
     );
     */
-    	$retval=array(
-    		'status'=>'true',
-    		'msg'=>'success',
-    		'auth'=>'true'
-    	);
-        $jsonencode = _encode($retval);
-    	echo $jsonencode; break;
-    case "SpecificationDel":
-    /*
+		$retval=array(
+			'status'=>'true',
+			'msg'=>'success',
+			'auth'=>'true'
+		);
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
+	case "SpecificationDel":
+		/*
     var body = {
             specificationid: id
         };
@@ -944,15 +950,15 @@ case "SpecificationNew":
     	'auth'=>'true'
     );
     */
-    	$retval=array(
-    		'status'=>'true',
-    		'msg'=>'success',
-    		'auth'=>'true'
-    	);
-        $jsonencode = _encode($retval);
-    	echo $jsonencode; break;
-    case "SpecificationTable":
-    /*
+		$retval=array(
+			'status'=>'true',
+			'msg'=>'success',
+			'auth'=>'true'
+		);
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
+	case "SpecificationTable":
+		/*
     var body = {
             startseq: start,
             length:length,
@@ -987,47 +993,47 @@ case "SpecificationNew":
     	'auth'=>'true'
     );
     */
-    	$total = 94;
-    	$body_in =$_GET['body'];
-        $query_length = (int)($body_in['length']);
-        $start = (int)($body_in['startseq']);
-        if($query_length> $total-$start){$query_length = $total-$start;}
-        $specificationtable = array();
-        for($i=0;$i<$query_length;$i++){
-            //$type="false";
-            //if(($i%7)==0) $type= "true";
-    		$type = $i%2+1;
-    		$temp = array(
-                'specificationid'=>(string)($start+($i+1)),
-                'specificationcode'=> "specification".(string)($start+$i),
-                'specificationlevel'=> rand(1,5),
-                'specificationnumber'=> rand(30,50),
-                'specificationweight'=> rand(1000,5000),
-                'specificationmemo'=> "备注".(string)($start+$i)
-    		);
-    		array_push($specificationtable,$temp);
-        }
-    	$body=array(
-    		'start'=> (string)$start,
-    		'total'=> (string)$total,
-    		'length'=>(string)$query_length,
-    		'specificationtable'=> $specificationtable
-    	);
-    	$retval=array(
-    		'status'=>'true',
-    		'ret'=> $body,
-    		'msg'=>'success',
-    		'auth'=>'true'
-    	);
-    	$jsonencode = _encode($retval);
-    	echo $jsonencode; break;
+		$total = 94;
+		$body_in =$_GET['body'];
+		$query_length = (int)($body_in['length']);
+		$start = (int)($body_in['startseq']);
+		if($query_length> $total-$start){$query_length = $total-$start;}
+		$specificationtable = array();
+		for($i=0;$i<$query_length;$i++){
+			//$type="false";
+			//if(($i%7)==0) $type= "true";
+			$type = $i%2+1;
+			$temp = array(
+				'specificationid'=>(string)($start+($i+1)),
+				'specificationcode'=> "specification".(string)($start+$i),
+				'specificationlevel'=> rand(1,5),
+				'specificationnumber'=> rand(30,50),
+				'specificationweight'=> rand(1000,5000),
+				'specificationmemo'=> "备注".(string)($start+$i)
+			);
+			array_push($specificationtable,$temp);
+		}
+		$body=array(
+			'start'=> (string)$start,
+			'total'=> (string)$total,
+			'length'=>(string)$query_length,
+			'specificationtable'=> $specificationtable
+		);
+		$retval=array(
+			'status'=>'true',
+			'ret'=> $body,
+			'msg'=>'success',
+			'auth'=>'true'
+		);
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
 
 
 
 
 
-case "FactoryNew":
-    /*
+	case "FactoryNew":
+		/*
     REQUEST:
     var body = {
 
@@ -1057,19 +1063,19 @@ case "FactoryNew":
     	'auth'=>'true'
     );
     */
-    	$body= $_GET['body'];
-    	$auth = array() ;
-        if(isset($_GET['auth'])) $auth= $body['auth'];
-    	$retval=array(
-    		'status'=>'true',
-    		'msg'=>'success',
-    		'auth'=>'true'
-    	);
-        $jsonencode = _encode($retval);
-    	echo $jsonencode; break;
+		$body= $_GET['body'];
+		$auth = array() ;
+		if(isset($_GET['auth'])) $auth= $body['auth'];
+		$retval=array(
+			'status'=>'true',
+			'msg'=>'success',
+			'auth'=>'true'
+		);
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
 
-    case "FactoryMod":
-    /*
+	case "FactoryMod":
+		/*
     REQUEST:
     var body={
         factoryid: user.factoryid,
@@ -1097,15 +1103,15 @@ case "FactoryNew":
     	'auth'=>'true'
     );
     */
-    	$retval=array(
-    		'status'=>'true',
-    		'msg'=>'success',
-    		'auth'=>'true'
-    	);
-        $jsonencode = _encode($retval);
-    	echo $jsonencode; break;
-    case "FactoryDel":
-    /*
+		$retval=array(
+			'status'=>'true',
+			'msg'=>'success',
+			'auth'=>'true'
+		);
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
+	case "FactoryDel":
+		/*
     var body = {
             factoryid: id
         };
@@ -1122,15 +1128,15 @@ case "FactoryNew":
     	'auth'=>'true'
     );
     */
-    	$retval=array(
-    		'status'=>'true',
-    		'msg'=>'success',
-    		'auth'=>'true'
-    	);
-        $jsonencode = _encode($retval);
-    	echo $jsonencode; break;
-    case "FactoryTable":
-    /*
+		$retval=array(
+			'status'=>'true',
+			'msg'=>'success',
+			'auth'=>'true'
+		);
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
+	case "FactoryTable":
+		/*
     var body = {
             startseq: start,
             length:length,
@@ -1168,53 +1174,53 @@ case "FactoryNew":
     	'auth'=>'true'
     );
     */
-    	$total = 94;
-    	$body_in =$_GET['body'];
-        $query_length = (int)($body_in['length']);
-        $start = (int)($body_in['startseq']);
-        if($query_length> $total-$start){$query_length = $total-$start;}
-        $factorytable = array();
-        for($i=0;$i<$query_length;$i++){
-            //$type="false";
-            //if(($i%7)==0) $type= "true";
-    		$type = $i%2+1;
-    		$temp = array(
-                'factoryid'=>(string)($start+($i+1)),
-                'factorycode'=>"f".(string)($start+($i+1)),
-                'factorydutyday'=> rand(22,28),
-                'factorylongitude'=> "12.345678",
-                'factorylatitude'=> "87.654321",
-                'factoryworkstarttime'=> "12:34:56",
-                'factoryworkendtime'=> "11:22:33",
-                'factorylaunchstarttime'=> "22:33:44",
-                'factorylaunchendtime'=> "10:20:30",
-                'factoryaddress'=>"DDDDDDD",
-                'factorymemo'=>"备注".(string)($start+$i)
-    		);
-    		array_push($factorytable,$temp);
-        }
-    	$body=array(
-    		'start'=> (string)$start,
-    		'total'=> (string)$total,
-    		'length'=>(string)$query_length,
-    		'factorytable'=> $factorytable
-    	);
-    	$retval=array(
-    		'status'=>'true',
-    		'ret'=> $body,
-    		'msg'=>'success',
-    		'auth'=>'true'
-    	);
-    	$jsonencode = _encode($retval);
-    	echo $jsonencode; break;
+		$total = 94;
+		$body_in =$_GET['body'];
+		$query_length = (int)($body_in['length']);
+		$start = (int)($body_in['startseq']);
+		if($query_length> $total-$start){$query_length = $total-$start;}
+		$factorytable = array();
+		for($i=0;$i<$query_length;$i++){
+			//$type="false";
+			//if(($i%7)==0) $type= "true";
+			$type = $i%2+1;
+			$temp = array(
+				'factoryid'=>(string)($start+($i+1)),
+				'factorycode'=>"f".(string)($start+($i+1)),
+				'factorydutyday'=> rand(22,28),
+				'factorylongitude'=> "12.345678",
+				'factorylatitude'=> "87.654321",
+				'factoryworkstarttime'=> "12:34:56",
+				'factoryworkendtime'=> "11:22:33",
+				'factorylaunchstarttime'=> "22:33:44",
+				'factorylaunchendtime'=> "10:20:30",
+				'factoryaddress'=>"DDDDDDD",
+				'factorymemo'=>"备注".(string)($start+$i)
+			);
+			array_push($factorytable,$temp);
+		}
+		$body=array(
+			'start'=> (string)$start,
+			'total'=> (string)$total,
+			'length'=>(string)$query_length,
+			'factorytable'=> $factorytable
+		);
+		$retval=array(
+			'status'=>'true',
+			'ret'=> $body,
+			'msg'=>'success',
+			'auth'=>'true'
+		);
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
 
 
 
 
 
 
-case "UserProj":
-/*
+	case "UserProj":
+		/*
 REQUEST:
     var body = {
         userid: user
@@ -1232,26 +1238,26 @@ RESPONSE:
 		'msg'=>'success',
 		'auth'=>'true'
 	);
-*/							 
-	$userproj = array();
-	for($i=0;$i<4;$i++){
-		$temp = array(
-			'id'=>(string)($i+1),
-			'name'=>"项目".(string)$i
+*/
+		$userproj = array();
+		for($i=0;$i<4;$i++){
+			$temp = array(
+				'id'=>(string)($i+1),
+				'name'=>"项目".(string)$i
+			);
+			array_push($userproj,$temp);
+		}
+		$retval= array(
+			'status'=>"true",
+			'ret'=>$userproj,
+			'msg'=>'success',
+			'auth'=>'true'
 		);
-		array_push($userproj,$temp);
-	}
-	$retval= array(
-		'status'=>"true",
-		'ret'=>$userproj,
-		'msg'=>'success',
-		'auth'=>'true'
-	);
-	$jsonencode = _encode($retval);
-	echo $jsonencode; break;
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
 
-case "PGTable":
-/*
+	case "PGTable":
+		/*
 REQUEST:
     var body={
         startseq: start,
@@ -1274,7 +1280,7 @@ RESPONSE:
 		'Stage'=>"备注".(string)($start+$i)
 	);
 	array_push($pgtable,$temp);
-	
+
 	$body=array(
 		'start'=> (string)$start,
 		'total'=> (string)$total,
@@ -1288,40 +1294,40 @@ RESPONSE:
 		'auth'=>'true'
 	);
 */
-	$total = 14;
-	$body_in = $_GET['body'];
-    $query_length = (int)($body_in['length']);
-    $start = (int)($body_in['startseq']);
-    if($query_length> $total-$start){$query_length = $total-$start;}
-	$pgtable = array();
-	for($i=0;$i<$query_length;$i++){
-		$temp = array(
-			'PGCode'=>(string)($start+($i+1)),
-			'PGName'=>"项目组".(string)($start+$i),
-			'ChargeMan'=>"用户".(string)($start+$i),
-			'Telephone'=>"139139".(string)($start+$i),
-			'Department'=>"单位".(string)($start+$i),
-			'Address'=>"地址".(string)($start+$i),
-			'Stage'=>"备注".(string)($start+$i)
+		$total = 14;
+		$body_in = $_GET['body'];
+		$query_length = (int)($body_in['length']);
+		$start = (int)($body_in['startseq']);
+		if($query_length> $total-$start){$query_length = $total-$start;}
+		$pgtable = array();
+		for($i=0;$i<$query_length;$i++){
+			$temp = array(
+				'PGCode'=>(string)($start+($i+1)),
+				'PGName'=>"项目组".(string)($start+$i),
+				'ChargeMan'=>"用户".(string)($start+$i),
+				'Telephone'=>"139139".(string)($start+$i),
+				'Department'=>"单位".(string)($start+$i),
+				'Address'=>"地址".(string)($start+$i),
+				'Stage'=>"备注".(string)($start+$i)
+			);
+			array_push($pgtable,$temp);
+		}
+		$body=array(
+			'start'=> (string)$start,
+			'total'=> (string)$total,
+			'length'=>(string)$query_length,
+			'pgtable'=> $pgtable
 		);
-		array_push($pgtable,$temp);
-	}
-	$body=array(
-		'start'=> (string)$start,
-		'total'=> (string)$total,
-		'length'=>(string)$query_length,
-		'pgtable'=> $pgtable
-	);
-	$retval=array(
-		'status'=>'true',
-		'ret'=> $body,
-		'msg'=>'success',
-		'auth'=>'true'
-	);
-	$jsonencode = _encode($retval);
-	echo $jsonencode; break;
-case "PGNew":
-/*
+		$retval=array(
+			'status'=>'true',
+			'ret'=> $body,
+			'msg'=>'success',
+			'auth'=>'true'
+		);
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
+	case "PGNew":
+		/*
 REQUEST:
     var body={
         PGCode: pg.PGCode,
@@ -1346,16 +1352,16 @@ RESPONSE:
 		'auth'=>'true'
 	);
 */
-	$retval=array(
-		'status'=>'true',
-		'msg'=>'success',
-		'auth'=>'true'
-	);
-    $jsonencode = _encode($retval);
-	echo $jsonencode; break;
+		$retval=array(
+			'status'=>'true',
+			'msg'=>'success',
+			'auth'=>'true'
+		);
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
 
-case "PGMod":
-/*
+	case "PGMod":
+		/*
 REQUEST:
     var body={
         PGCode: pg.PGCode,
@@ -1381,14 +1387,14 @@ RESPONSE:
 	);
 */
 		$retval=array(
-		'status'=>'true',
-		'msg'=>'success',
-		'auth'=>'true'
-	);
-    $jsonencode = _encode($retval);
-	echo $jsonencode; break;
-case "PGDel":
-/*
+			'status'=>'true',
+			'msg'=>'success',
+			'auth'=>'true'
+		);
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
+	case "PGDel":
+		/*
 REQUEST:
     var body={
         PGCode: id
@@ -1406,15 +1412,15 @@ RESPONSE:
 		'auth'=>'true'
 	);
 */
-	$retval=array(
-		'status'=>'true',
-		'msg'=>'success',
-		'auth'=>'true'
-	);
-    $jsonencode = _encode($retval);
-	echo $jsonencode; break;
-case "PGProj":
-/*
+		$retval=array(
+			'status'=>'true',
+			'msg'=>'success',
+			'auth'=>'true'
+		);
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
+	case "PGProj":
+		/*
 REQUEST:
     var body={
         PGCode: pgid
@@ -1431,7 +1437,7 @@ RESPONSE:
 		'name'=> "项目".(string)$i
 	);
 	array_push($PGProj,$temp);
-	
+
 	$retval=array(
 		'status'=>'true',
 		'ret'=> $PGProj,
@@ -1439,24 +1445,24 @@ RESPONSE:
 		'auth'=>'true'
 	);
 */
-	$PGProj = array();
-	for($i=0;$i<4;$i++){
-		$temp = array(
-			'id'=> (string)($i+1),
-			'name'=> "项目".(string)$i
+		$PGProj = array();
+		for($i=0;$i<4;$i++){
+			$temp = array(
+				'id'=> (string)($i+1),
+				'name'=> "项目".(string)$i
+			);
+			array_push($PGProj,$temp);
+		}
+		$retval=array(
+			'status'=>'true',
+			'ret'=> $PGProj,
+			'msg'=>'success',
+			'auth'=>'true'
 		);
-		array_push($PGProj,$temp);
-	}
-	$retval=array(
-		'status'=>'true',
-		'ret'=> $PGProj,
-		'msg'=>'success',
-		'auth'=>'true'
-	);
-    $jsonencode = _encode($retval);
-	echo $jsonencode; break;
-case "ProjTable":
-/*
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
+	case "ProjTable":
+		/*
 REQUEST:
     var body={
         startseq: start,
@@ -1480,7 +1486,7 @@ RESPONSE:
 		'Stage'=>"备注".(string)($start+$i)
 	);
 	array_push($projtable,$temp);
-	
+
 	$body=array(
 		'start'=> (string)$start,
 		'total'=> (string)$total,
@@ -1494,41 +1500,41 @@ RESPONSE:
 		'auth'=>'true'
 	);
 */
-	$total = 14;
-	$body_in = $_GET['body'];
-    $query_length = (int)($body_in['length']);
-    $start = (int)($body_in['startseq']);
-    if($query_length> $total-$start){$query_length = $total-$start;}
-    $projtable = array();
-    for($i=0;$i<$query_length;$i++){
-		$temp = array(
-			'ProjCode'=> (string)($start+($i+1)),
-			'ProjName'=>"项目".(string)($start+$i),
-			'ChargeMan'=>"用户".(string)($start+$i),
-			'Telephone'=>"139139".(string)($start+$i),
-			'Department'=>"单位".(string)($start+$i),
-			'Address'=>"地址".(string)($start+$i),
-			'ProStartTime'=>"2016-01-01",
-			'Stage'=>"备注".(string)($start+$i)
+		$total = 14;
+		$body_in = $_GET['body'];
+		$query_length = (int)($body_in['length']);
+		$start = (int)($body_in['startseq']);
+		if($query_length> $total-$start){$query_length = $total-$start;}
+		$projtable = array();
+		for($i=0;$i<$query_length;$i++){
+			$temp = array(
+				'ProjCode'=> (string)($start+($i+1)),
+				'ProjName'=>"项目".(string)($start+$i),
+				'ChargeMan'=>"用户".(string)($start+$i),
+				'Telephone'=>"139139".(string)($start+$i),
+				'Department'=>"单位".(string)($start+$i),
+				'Address'=>"地址".(string)($start+$i),
+				'ProStartTime'=>"2016-01-01",
+				'Stage'=>"备注".(string)($start+$i)
+			);
+			array_push($projtable,$temp);
+		}
+		$body=array(
+			'start'=> (string)$start,
+			'total'=> (string)$total,
+			'length'=>(string)$query_length,
+			'projtable'=> $projtable
 		);
-		array_push($projtable,$temp);
-	}
-	$body=array(
-		'start'=> (string)$start,
-		'total'=> (string)$total,
-		'length'=>(string)$query_length,
-		'projtable'=> $projtable
+		$retval=array(
+			'status'=>'true',
+			'ret'=> $body,
+			'msg'=>'success',
+			'auth'=>'true'
 		);
-	$retval=array(
-		'status'=>'true',
-		'ret'=> $body,
-		'msg'=>'success',
-		'auth'=>'true'
-	);
-	$jsonencode = _encode($retval);
-	echo $jsonencode; break;
-case "ProjNew":
-/*
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
+	case "ProjNew":
+		/*
 REQUEST:
     var body={
 	ProjCode: project.ProjCode,
@@ -1553,15 +1559,15 @@ RESPONSE:
 		'auth'=>'true'
 	);
 */
-	$retval=array(
-		'status'=>'true',
-		'msg'=>'success',
-		'auth'=>'true'
-	);
-    $jsonencode = _encode($retval);
-	echo $jsonencode; break;
-case "ProjMod":
-/*
+		$retval=array(
+			'status'=>'true',
+			'msg'=>'success',
+			'auth'=>'true'
+		);
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
+	case "ProjMod":
+		/*
 REQUEST:
 	var body={
 
@@ -1587,15 +1593,15 @@ RESPONSE:
 		'auth'=>'true'
 	);
 */
-	$retval=array(
-		'status'=>'true',
-		'msg'=>'success',
-		'auth'=>'true'
-	);
-    $jsonencode = _encode($retval);
-	echo $jsonencode; break;
-case "ProjDel":
-/*
+		$retval=array(
+			'status'=>'true',
+			'msg'=>'success',
+			'auth'=>'true'
+		);
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
+	case "ProjDel":
+		/*
 REQUEST:
     var body={
 	ProjCode: ProjCode
@@ -1613,15 +1619,15 @@ RESPONSE:
 		'auth'=>'true'
 	);
 */
-	$retval=array(
-		'status'=>'true',
-		'msg'=>'success',
-		'auth'=>'true'
-	);
-    $jsonencode = _encode($retval);
-	echo $jsonencode; break;
-case "ProjPoint":
-/*
+		$retval=array(
+			'status'=>'true',
+			'msg'=>'success',
+			'auth'=>'true'
+		);
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
+	case "ProjPoint":
+		/*
 REQUEST:
     var map={
         action:"ProjPoint",
@@ -1635,7 +1641,7 @@ RESPONSE:
 		'ProjCode'=> $projcode
 	);
 	array_push($ProjPoint,$temp);
-	
+
 	$retval=array(
 		'status'=>'true',
 		'ret'=> $ProjPoint,
@@ -1643,27 +1649,27 @@ RESPONSE:
 		'auth'=>'true'
 	);
 */
-	$ProjPoint = array();
-	for($i=0;$i<40;$i++){
-		$projcode = ($i)%14;
-		$temp = array(
-			'id'=> (string)($i+1),
-			'name'=> "测量点".(string)($i+1),
-			'ProjCode'=> $projcode
+		$ProjPoint = array();
+		for($i=0;$i<40;$i++){
+			$projcode = ($i)%14;
+			$temp = array(
+				'id'=> (string)($i+1),
+				'name'=> "测量点".(string)($i+1),
+				'ProjCode'=> $projcode
+			);
+			array_push($ProjPoint,$temp);
+		}
+		$retval=array(
+			'status'=>'true',
+			'ret'=> $ProjPoint,
+			'msg'=>'success',
+			'auth'=>'true'
 		);
-		array_push($ProjPoint,$temp);
-	}
-	$retval=array(
-		'status'=>'true',
-		'ret'=> $ProjPoint,
-		'msg'=>'success',
-		'auth'=>'true'
-	);
-    $jsonencode = _encode($retval);
-	echo $jsonencode; break;
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
 
-case "PointProj":
-/*
+	case "PointProj":
+		/*
 REQUEST:
     var body={
 	ProjCode: ProjCode
@@ -1681,7 +1687,7 @@ RESPONSE:
 		'ProjCode'=> $projcode
 	);
 	array_push($ProjPoint,$temp);
-	
+
 	$retval=array(
 		'status'=>'true',
 		'ret'=> $ProjPoint,
@@ -1689,28 +1695,28 @@ RESPONSE:
 		'auth'=>'true'
 	);
 */
-	$body_in = $_GET['body'];
-    $projcode = $body_in ['ProjCode'];
-    $ProjPoint = array();
-	for($i=0;$i<4;$i++){
-		$temp = array(
-			'id'=> (string)($i+1),
-			'name'=> "测量点".(string)($i+1),
-			'ProjCode'=> $projcode
+		$body_in = $_GET['body'];
+		$projcode = $body_in ['ProjCode'];
+		$ProjPoint = array();
+		for($i=0;$i<4;$i++){
+			$temp = array(
+				'id'=> (string)($i+1),
+				'name'=> "测量点".(string)($i+1),
+				'ProjCode'=> $projcode
+			);
+			array_push($ProjPoint,$temp);
+		}
+		$retval=array(
+			'status'=>'true',
+			'ret'=> $ProjPoint,
+			'msg'=>'success',
+			'auth'=>'true'
 		);
-		array_push($ProjPoint,$temp);
-	}
-	$retval=array(
-		'status'=>'true',
-		'ret'=> $ProjPoint,
-		'msg'=>'success',
-		'auth'=>'true'
-	);
-    $jsonencode = _encode($retval);
-	echo $jsonencode; break;
-break;
-case "PointTable":
-/*
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
+		break;
+	case "PointTable":
+		/*
 REQUEST:
     var body={
         startseq: start,
@@ -1740,7 +1746,7 @@ RESPONSE:
 		'Stage'=>"备注".(string)($start+$i)
 	);
 	array_push($pointtable,$temp);
-	
+
 	$body = array(
 		'start'=> (string)$start,
 		'total'=> (string)$total,
@@ -1754,52 +1760,52 @@ RESPONSE:
 		'auth'=>'true'
 	);
 */
-	$total = 40;
-	$body_in = $_GET['body'];
-    $query_length = (int)($body_in['length']);
-    $start = (int)($body_in['startseq']);
-    if($query_length> $total-$start){$query_length = $total-$start;}
-    $pointtable = array();
-	for($i=0;$i<$query_length;$i++){
-		
-	$projcode = ($start+$i)%14;
-		$temp = array(
-			'StatCode'=> (string)($start+($i+1)),
-			'StatName'=>"测量点".(string)($start+$i),
-			'ProjCode'=> $projcode,
-			'ChargeMan'=>"用户".(string)($start+$i),
-			'Telephone'=>"139139".(string)($start+$i),
-			'Longitude'=>"121.0000",
-			'Latitude'=>"31.0000",
-			'Department'=>"单位".(string)($start+$i),
-			'Address'=>"地址".(string)($start+$i),
-			'Country'=>"区县".(string)($start+$i),
-			'Street'=>"街镇".(string)($start+$i),
-			'Square'=>"10000",
-			'ProStartTime'=>"2016-01-01",
-			'Stage'=>"备注".(string)($start+$i)
+		$total = 40;
+		$body_in = $_GET['body'];
+		$query_length = (int)($body_in['length']);
+		$start = (int)($body_in['startseq']);
+		if($query_length> $total-$start){$query_length = $total-$start;}
+		$pointtable = array();
+		for($i=0;$i<$query_length;$i++){
+
+			$projcode = ($start+$i)%14;
+			$temp = array(
+				'StatCode'=> (string)($start+($i+1)),
+				'StatName'=>"测量点".(string)($start+$i),
+				'ProjCode'=> $projcode,
+				'ChargeMan'=>"用户".(string)($start+$i),
+				'Telephone'=>"139139".(string)($start+$i),
+				'Longitude'=>"121.0000",
+				'Latitude'=>"31.0000",
+				'Department'=>"单位".(string)($start+$i),
+				'Address'=>"地址".(string)($start+$i),
+				'Country'=>"区县".(string)($start+$i),
+				'Street'=>"街镇".(string)($start+$i),
+				'Square'=>"10000",
+				'ProStartTime'=>"2016-01-01",
+				'Stage'=>"备注".(string)($start+$i)
+			);
+			array_push($pointtable,$temp);
+		}
+		$body = array(
+			'start'=> (string)$start,
+			'total'=> (string)$total,
+			'length'=>(string)$query_length,
+			'pointtable'=> $pointtable
 		);
-		array_push($pointtable,$temp);
-	}
-	$body = array(
-		'start'=> (string)$start,
-		'total'=> (string)$total,
-		'length'=>(string)$query_length,
-		'pointtable'=> $pointtable
+		$retval=array(
+			'status'=>'true',
+			'ret'=> $body,
+			'msg'=>'success',
+			'auth'=>'true'
 		);
-	$retval=array(
-		'status'=>'true',
-		'ret'=> $body,
-		'msg'=>'success',
-		'auth'=>'true'
-	);
-	$jsonencode = _encode($retval);
-	echo $jsonencode; break;
-case "PointDetail":
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
+	case "PointDetail":
 //abandon
-break;
-case "PointNew":
-/*
+		break;
+	case "PointNew":
+		/*
 REQUEST:
     var body={
 		StatCode: point.StatCode,
@@ -1830,15 +1836,15 @@ RESPONSE:
 		'auth'=>'true'
 	);
 */
-	$retval=array(
-		'status'=>'true',
-		'msg'=>'success',
-		'auth'=>'true'
-	);
-    $jsonencode = _encode($retval);
-	echo $jsonencode; break;
-case "PointMod":
-/*
+		$retval=array(
+			'status'=>'true',
+			'msg'=>'success',
+			'auth'=>'true'
+		);
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
+	case "PointMod":
+		/*
 REQUEST:
     var body={
 	StatCode: point.StatCode,
@@ -1869,15 +1875,15 @@ RESPONSE:
 		'auth'=>'true'
 	);
 */
-	$retval=array(
-		'status'=>'true',
-		'msg'=>'success',
-		'auth'=>'true'
-	);
-    $jsonencode = _encode($retval);
-	echo $jsonencode; break;
-case "PointDel":
-/*
+		$retval=array(
+			'status'=>'true',
+			'msg'=>'success',
+			'auth'=>'true'
+		);
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
+	case "PointDel":
+		/*
 REQUEST:
     var body={StatCode: StatCode};
     var map={
@@ -1893,15 +1899,15 @@ RESPONSE:
 		'auth'=>'true'
 	);
 */
-	$retval=array(
-		'status'=>'true',
-		'msg'=>'success',
-		'auth'=>'true'
-	);
-    $jsonencode = _encode($retval);
-	echo $jsonencode; break;
-case "PointDev":
-/*
+		$retval=array(
+			'status'=>'true',
+			'msg'=>'success',
+			'auth'=>'true'
+		);
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
+	case "PointDev":
+		/*
 REQUEST:
     var body={
 	StatCode: StatCode
@@ -1926,24 +1932,24 @@ RESPONSE:
 		'auth'=>'true'
 	);
 */
-	$projdev = array();
-	for($i=0;$i<4;$i++){
-		$temp = array(
-			'id'=> (string)($i+1),
-			'name'=> "设备".(string)$i
+		$projdev = array();
+		for($i=0;$i<4;$i++){
+			$temp = array(
+				'id'=> (string)($i+1),
+				'name'=> "设备".(string)$i
+			);
+			array_push($projdev,$temp);
+		}
+		$retval=array(
+			'status'=>"true",
+			'ret'=> $projdev,
+			'msg'=>'success',
+			'auth'=>'true'
 		);
-		array_push($projdev,$temp);
-	}
-	$retval=array(
-		'status'=>"true",
-		'ret'=> $projdev,
-		'msg'=>'success',
-		'auth'=>'true'
-	);
-	$jsonencode = _encode($retval);
-	echo $jsonencode; break;
-case "PointPicture":
-/*
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
+	case "PointPicture":
+		/*
 REQUEST:
     var body={
 	StatCode: StatCode
@@ -1970,24 +1976,24 @@ RESPONSE:
 		'auth'=>'true'
 	);
 */
-	$projdev = array();
-	for($i=0;$i<4;$i++){
-		$temp = array(
-			'name'=> (string)($i+1),
-            'url'=> $install_path."/video/screenshot/".(string)($i+1).".png"
+		$projdev = array();
+		for($i=0;$i<4;$i++){
+			$temp = array(
+				'name'=> (string)($i+1),
+				'url'=> $install_path."/video/screenshot/".(string)($i+1).".png"
+			);
+			array_push($projdev,$temp);
+		}
+		$retval=array(
+			'status'=>"true",
+			'ret'=> $projdev,
+			'msg'=>'success',
+			'auth'=>'true'
 		);
-		array_push($projdev,$temp);
-	}
-	$retval=array(
-		'status'=>"true",
-		'ret'=> $projdev,
-		'msg'=>'success',
-		'auth'=>'true'
-	);
-	$jsonencode = _encode($retval);
-	echo $jsonencode; break;
-case "DevTable":
-/*
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
+	case "DevTable":
+		/*
 REQUEST:
     var body={
         startseq: start,
@@ -2013,7 +2019,7 @@ RESPONSE:
 		'IP'=>"127.0.0.1"
 	);
 	array_push($devtable,$temp);
-	
+
 	$body=array(
 		'start'=> (string)$start,
 		'total'=> (string)$total,
@@ -2027,46 +2033,46 @@ RESPONSE:
 		'auth'=>'true'
 	);
 */
-	$total = 204;
-	$body_in = $_GET['body'];
-    $query_length = (int)($body_in["length"]);
-    $start = (int)($body_in["startseq"]);
-    if($query_length> $total-$start){$query_length = $total-$start;}
-    $devtable = array();
-	for($i=0;$i<$query_length;$i++){
-		$statcode = ($start+$i+1)%40;
-		$projcode = ($statcode-1)%14;
-		$temp = array(
-			'DevCode'=> (string)($start+($i+1)),
-			'StatCode'=> $statcode,
-			'ProjCode'=> $projcode,
-			'StartTime'=>"2016-01-01",
-			'PreEndTime'=>"2017-01-01",
-			'EndTime'=>"2099-12-31",
-			'DevStatus'=>'true',
-			'VideoURL'=>"www.tokoyhot.com",
-			'MAC'=>'mac',
-            'IP'=>"127.0.0.1"
+		$total = 204;
+		$body_in = $_GET['body'];
+		$query_length = (int)($body_in["length"]);
+		$start = (int)($body_in["startseq"]);
+		if($query_length> $total-$start){$query_length = $total-$start;}
+		$devtable = array();
+		for($i=0;$i<$query_length;$i++){
+			$statcode = ($start+$i+1)%40;
+			$projcode = ($statcode-1)%14;
+			$temp = array(
+				'DevCode'=> (string)($start+($i+1)),
+				'StatCode'=> $statcode,
+				'ProjCode'=> $projcode,
+				'StartTime'=>"2016-01-01",
+				'PreEndTime'=>"2017-01-01",
+				'EndTime'=>"2099-12-31",
+				'DevStatus'=>'true',
+				'VideoURL'=>"www.tokoyhot.com",
+				'MAC'=>'mac',
+				'IP'=>"127.0.0.1"
+			);
+			array_push($devtable,$temp);
+		}
+		$body=array(
+			'start'=> (string)$start,
+			'total'=> (string)$total,
+			'length'=>(string)$query_length,
+			'devtable'=> $devtable
 		);
-		array_push($devtable,$temp);
-	}
-	$body=array(
-		'start'=> (string)$start,
-		'total'=> (string)$total,
-		'length'=>(string)$query_length,
-		'devtable'=> $devtable
+		$retval=array(
+			'status'=>'true',
+			'ret'=> $body,
+			'msg'=>'success',
+			'auth'=>'true'
+
 		);
-	$retval=array(
-		'status'=>'true',
-		'ret'=> $body,
-		'msg'=>'success',
-		'auth'=>'true'
-		
-	);
-	$jsonencode = _encode($retval);
-	echo $jsonencode; break;
-case "DevNew":
-/*
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
+	case "DevNew":
+		/*
 REQUEST:
     var body={
 	DevCode: device.DevCode,
@@ -2090,15 +2096,15 @@ RESPONSE:
 		'auth'=>'true'
 	);
 */
-	$retval=array(
-		'status'=>"true",
-		'msg'=>'success',
-		'auth'=>'true'
-	);
-    $jsonencode = _encode($retval);
-	echo $jsonencode; break;
-case "DevMod":
-/*
+		$retval=array(
+			'status'=>"true",
+			'msg'=>'success',
+			'auth'=>'true'
+		);
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
+	case "DevMod":
+		/*
 REQUEST:
     var body={
 	DevCode: device.DevCode,
@@ -2122,15 +2128,15 @@ RESPONSE:
 		'auth'=>'true'
 	);
 */
-	$retval=array(
-		'status'=>"true",
-		'msg'=>'success',
-		'auth'=>'true'
-	);
-    $jsonencode = _encode($retval);
-	echo $jsonencode; break;
-case "DevDel":
-/*
+		$retval=array(
+			'status'=>"true",
+			'msg'=>'success',
+			'auth'=>'true'
+		);
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
+	case "DevDel":
+		/*
 REQUEST:
     var body={
 	DevCode: DevCode
@@ -2148,15 +2154,15 @@ RESPONSE:
 		'auth'=>'true'
 	);
 */
-	$retval=array(
-		'status'=>"true",
-		'msg'=>'success',
-		'auth'=>'true'
-	);
-    $jsonencode = _encode($retval);
-	echo $jsonencode; break;
-case "DevAlarm":
-/*
+		$retval=array(
+			'status'=>"true",
+			'msg'=>'success',
+			'auth'=>'true'
+		);
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
+	case "DevAlarm":
+		/*
 REQUEST:
     var body={StatCode: monitor_selected.StatCode};
     var map={
@@ -2180,7 +2186,7 @@ RESPONSE:
 	   'vcraddress'=> "127.0.0.1/"
 	);
 	array_push($vcr_list,$map);
-    
+
 	$body=array(
 		'StatCode'=>$StatCode,
 		'alarmlist'=> $alarmlist,
@@ -2193,96 +2199,96 @@ RESPONSE:
 		'auth'=>'true'
 	);
 */
-	$body_in = $_GET['body'];
-	$StatCode =$body_in["StatCode"];
-	$alarmlist= array();
-	$map1 = array(
-		'AlarmName'=>"噪声",
-		'AlarmEName'=> "Noise",
-		'AlarmValue'=>(string)rand(10,110),
-		'AlarmUnit'=>"DB",
-		'WarningTarget'=>"false"
-	);
-	array_push($alarmlist,$map1);
-	$map2 = array(
-		'AlarmName'=>"风向",
-		'AlarmEName'=> "WD",
-		'AlarmValue'=>(string)rand(1,100),
-		'AlarmUnit'=>"mg/m3",
-		'WarningTarget'=>"false"
-	);
-	array_push($alarmlist,$map2);
-	$map3 = array(
-		'AlarmName'=>"湿度",
-		'AlarmEName'=> "Wet",
-		'AlarmValue'=>(string)rand(1,100),
-		'AlarmUnit'=>"%",
-		'WarningTarget'=>"false"
-	);
-	array_push($alarmlist,$map3);
-	$map4 = array(
-		'AlarmName'=>"温度",
-		'AlarmEName'=> "Temperature",
-		'AlarmValue'=>(string)rand(10,50),
-		'AlarmUnit'=>"C",
-		'WarningTarget'=>"false"
-	);
-	array_push($alarmlist,$map4);
-	$map5 = array(
-		'AlarmName'=>"细颗粒物",
-		'AlarmEName'=> "PM",
-		'AlarmValue'=>(string)rand(10,400),
-		'AlarmUnit'=>"ug/m3",
-		'WarningTarget'=>"false"
-	);
-	array_push($alarmlist,$map5);
-	$map6 = array(
-		'AlarmName'=>"录像",
-		'AlarmEName'=> "VCR",
-		'AlarmValue'=>(string)rand(10,150),
-		'AlarmUnit'=>"菌群",
-		'WarningTarget'=>"false"
-	);
-	array_push($alarmlist,$map6);
-	$map7 = array(
-		'AlarmName'=>"GPS",
-		'AlarmEName'=> "GPS",
-		'AlarmValue'=>(string)rand(10,30),
-		'AlarmUnit'=>"ug/L",
-		'WarningTarget'=>"true"
-	);
-	array_push($alarmlist,$map7);
-	$map8 = array(
-		'AlarmName'=>"风速",
-		'AlarmEName'=> "WS",
-		'AlarmValue'=>(string)rand(10,150),
-		'AlarmUnit'=>"km/h",
-		'WarningTarget'=>"false"
-	);
-	array_push($alarmlist,$map8);
-    $vcr_list= array();
-    for($i=0;$i<10;$i++){
-        $map=array(
-           'vcrname'=> "录像".(string)$i,
-           'vcraddress'=> "127.0.0.1/"
-        );
-        array_push($vcr_list,$map);
-    }
-	$body=array(
-		'StatCode'=>$StatCode,
-		'alarmlist'=> $alarmlist,
-		'vcr'=>$vcr_list
-	);
-	$retval=array(
-		'status'=>'true',
-		'ret'=> $body,
-		'msg'=>'success',
-		'auth'=>'true'
-	);
-    $jsonencode = _encode($retval);
-	echo $jsonencode; break;
-case "MonitorList":
-/*
+		$body_in = $_GET['body'];
+		$StatCode =$body_in["StatCode"];
+		$alarmlist= array();
+		$map1 = array(
+			'AlarmName'=>"噪声",
+			'AlarmEName'=> "Noise",
+			'AlarmValue'=>(string)rand(10,110),
+			'AlarmUnit'=>"DB",
+			'WarningTarget'=>"false"
+		);
+		array_push($alarmlist,$map1);
+		$map2 = array(
+			'AlarmName'=>"风向",
+			'AlarmEName'=> "WD",
+			'AlarmValue'=>(string)rand(1,100),
+			'AlarmUnit'=>"mg/m3",
+			'WarningTarget'=>"false"
+		);
+		array_push($alarmlist,$map2);
+		$map3 = array(
+			'AlarmName'=>"湿度",
+			'AlarmEName'=> "Wet",
+			'AlarmValue'=>(string)rand(1,100),
+			'AlarmUnit'=>"%",
+			'WarningTarget'=>"false"
+		);
+		array_push($alarmlist,$map3);
+		$map4 = array(
+			'AlarmName'=>"温度",
+			'AlarmEName'=> "Temperature",
+			'AlarmValue'=>(string)rand(10,50),
+			'AlarmUnit'=>"C",
+			'WarningTarget'=>"false"
+		);
+		array_push($alarmlist,$map4);
+		$map5 = array(
+			'AlarmName'=>"细颗粒物",
+			'AlarmEName'=> "PM",
+			'AlarmValue'=>(string)rand(10,400),
+			'AlarmUnit'=>"ug/m3",
+			'WarningTarget'=>"false"
+		);
+		array_push($alarmlist,$map5);
+		$map6 = array(
+			'AlarmName'=>"录像",
+			'AlarmEName'=> "VCR",
+			'AlarmValue'=>(string)rand(10,150),
+			'AlarmUnit'=>"菌群",
+			'WarningTarget'=>"false"
+		);
+		array_push($alarmlist,$map6);
+		$map7 = array(
+			'AlarmName'=>"GPS",
+			'AlarmEName'=> "GPS",
+			'AlarmValue'=>(string)rand(10,30),
+			'AlarmUnit'=>"ug/L",
+			'WarningTarget'=>"true"
+		);
+		array_push($alarmlist,$map7);
+		$map8 = array(
+			'AlarmName'=>"风速",
+			'AlarmEName'=> "WS",
+			'AlarmValue'=>(string)rand(10,150),
+			'AlarmUnit'=>"km/h",
+			'WarningTarget'=>"false"
+		);
+		array_push($alarmlist,$map8);
+		$vcr_list= array();
+		for($i=0;$i<10;$i++){
+			$map=array(
+				'vcrname'=> "录像".(string)$i,
+				'vcraddress'=> "127.0.0.1/"
+			);
+			array_push($vcr_list,$map);
+		}
+		$body=array(
+			'StatCode'=>$StatCode,
+			'alarmlist'=> $alarmlist,
+			'vcr'=>$vcr_list
+		);
+		$retval=array(
+			'status'=>'true',
+			'ret'=> $body,
+			'msg'=>'success',
+			'auth'=>'true'
+		);
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
+	case "MonitorList":
+		/*
 REQUEST:
     var map={
         action:"MonitorList",
@@ -2315,359 +2321,359 @@ RESPONSE:
 		'auth'=>'true'
 	);
 */
-	$userid = $_GET["user"];
-	$stat_list = array();
-	$map1=array(
-		'StatCode'=>"120101001",
-		'StatName'=>"浦东环球金融中心工程",
-		'ChargeMan'=>"张三",
-		'Telephone'=>"13912345678",
-		'Department'=>"",
-		'Address'=>"世纪大道100号",
-		'Country'=>"浦东新区",
-		'Street'=>"",
-		'Square'=>"40000",
-		'Flag_la'=>"N",
-		'Latitude'=>"31.240246",
-		'Flag_lo'=>"E",
-		'Longitude'=>"121.514168",
-		'ProStartTime'=>"2015-01-01",
-		'Stage'=>""
-	);
-	array_push($stat_list,$map1);
-	$map2=array(
+		$userid = $_GET["user"];
+		$stat_list = array();
+		$map1=array(
+			'StatCode'=>"120101001",
+			'StatName'=>"浦东环球金融中心工程",
+			'ChargeMan'=>"张三",
+			'Telephone'=>"13912345678",
+			'Department'=>"",
+			'Address'=>"世纪大道100号",
+			'Country'=>"浦东新区",
+			'Street'=>"",
+			'Square'=>"40000",
+			'Flag_la'=>"N",
+			'Latitude'=>"31.240246",
+			'Flag_lo'=>"E",
+			'Longitude'=>"121.514168",
+			'ProStartTime'=>"2015-01-01",
+			'Stage'=>""
+		);
+		array_push($stat_list,$map1);
+		$map2=array(
 
-		'StatCode'=>"120101002",
-		'StatName'=>"港运大厦",
-		'ChargeMan'=>"张三",
-		'Telephone'=>"13912345678",
-		'Department'=>"",
-		'Address'=>"杨树浦路1963弄24号",
-		'Country'=>"虹口区",
-		'Street'=>"",
-		'Square'=>"0",
-		'Flag_la'=>"N",
-		'Latitude'=>"31.255719",
-		'Flag_lo'=>"E",
-		'Longitude'=>"121.517700",
-		'ProStartTime'=>"2016-04-01",
-		'Stage'=>""
-	);
-	array_push($stat_list,$map2);
-	$map3= array(
+			'StatCode'=>"120101002",
+			'StatName'=>"港运大厦",
+			'ChargeMan'=>"张三",
+			'Telephone'=>"13912345678",
+			'Department'=>"",
+			'Address'=>"杨树浦路1963弄24号",
+			'Country'=>"虹口区",
+			'Street'=>"",
+			'Square'=>"0",
+			'Flag_la'=>"N",
+			'Latitude'=>"31.255719",
+			'Flag_lo'=>"E",
+			'Longitude'=>"121.517700",
+			'ProStartTime'=>"2016-04-01",
+			'Stage'=>""
+		);
+		array_push($stat_list,$map2);
+		$map3= array(
 
-		'StatCode'=>"120101003",
-		'StatName'=>"万宝国际广场",
-		'ChargeMan'=>"张三",
-		'Telephone'=>"13912345678",
-		'Department'=>"",
-		'Address'=>"延安西路500号",
-		'Country'=>"长宁区",
-		'Street'=>"",
-		'Square'=>"0",
-		'Flag_la'=>"N",
-		'Latitude'=>"31.223441",
-		'Flag_lo'=>"E",
-		'Longitude'=>"121.442703",
-		'ProStartTime'=>"2016-04-01",
-		'Stage'=>""
-	);
-	array_push($stat_list,$map3);
-	$map4= array(
+			'StatCode'=>"120101003",
+			'StatName'=>"万宝国际广场",
+			'ChargeMan'=>"张三",
+			'Telephone'=>"13912345678",
+			'Department'=>"",
+			'Address'=>"延安西路500号",
+			'Country'=>"长宁区",
+			'Street'=>"",
+			'Square'=>"0",
+			'Flag_la'=>"N",
+			'Latitude'=>"31.223441",
+			'Flag_lo'=>"E",
+			'Longitude'=>"121.442703",
+			'ProStartTime'=>"2016-04-01",
+			'Stage'=>""
+		);
+		array_push($stat_list,$map3);
+		$map4= array(
 
-		'StatCode'=>"120101004",
-		'StatName'=>"金桥创科园",
-		'ChargeMan'=>"李四",
-		'Telephone'=>"13912345678",
-		'Department'=>"",
-		'Address'=>"桂桥路255号",
-		'Country'=>"浦东新区",
-		'Street'=>"",
-		'Square'=>"0",
-		'Flag_la'=>"N",
-		'Latitude'=>"31.248271",
-		'Flag_lo'=>"E",
-		'Longitude'=>"121.615476",
-		'ProStartTime'=>"2016-04-01",
-		'Stage'=>""
-	);
-	array_push($stat_list,$map4);
-	$map5= array(
+			'StatCode'=>"120101004",
+			'StatName'=>"金桥创科园",
+			'ChargeMan'=>"李四",
+			'Telephone'=>"13912345678",
+			'Department'=>"",
+			'Address'=>"桂桥路255号",
+			'Country'=>"浦东新区",
+			'Street'=>"",
+			'Square'=>"0",
+			'Flag_la'=>"N",
+			'Latitude'=>"31.248271",
+			'Flag_lo'=>"E",
+			'Longitude'=>"121.615476",
+			'ProStartTime'=>"2016-04-01",
+			'Stage'=>""
+		);
+		array_push($stat_list,$map4);
+		$map5= array(
 
-		'StatCode'=>"120101006",
-		'StatName'=>"江湾体育场",
-		'ChargeMan'=>"李四",
-		'Telephone'=>"13912345678",
-		'Department'=>"",
-		'Address'=>"国和路346号",
-		'Country'=>"杨浦区",
-		'Street'=>"",
-		'Square'=>"0",
-		'Flag_la'=>"N",
-		'Latitude'=>"31.313004",
-		'Flag_lo'=>"E",
-		'Longitude'=>"121.525701",
-		'ProStartTime'=>"2016-04-13",
-		'Stage'=>""
-	);
-	array_push($stat_list,$map5);
-	$map6= array(
+			'StatCode'=>"120101006",
+			'StatName'=>"江湾体育场",
+			'ChargeMan'=>"李四",
+			'Telephone'=>"13912345678",
+			'Department'=>"",
+			'Address'=>"国和路346号",
+			'Country'=>"杨浦区",
+			'Street'=>"",
+			'Square'=>"0",
+			'Flag_la'=>"N",
+			'Latitude'=>"31.313004",
+			'Flag_lo'=>"E",
+			'Longitude'=>"121.525701",
+			'ProStartTime'=>"2016-04-13",
+			'Stage'=>""
+		);
+		array_push($stat_list,$map5);
+		$map6= array(
 
-		'StatCode'=>"120101007",
-		'StatName'=>"滨海新村",
-		'ChargeMan'=>"李四",
-		'Telephone'=>"13912345678",
-		'Department'=>"",
-		'Address'=>"同泰北路100号",
-		'Country'=>"宝山区",
-		'Street'=>"",
-		'Square'=>"0",
-		'Flag_la'=>"N",
-		'Latitude'=>"31.382624",
-		'Flag_lo'=>"E",
-		'Longitude'=>"121.501387",
-		'ProStartTime'=>"2016-02-01",
-		'Stage'=>""
+			'StatCode'=>"120101007",
+			'StatName'=>"滨海新村",
+			'ChargeMan'=>"李四",
+			'Telephone'=>"13912345678",
+			'Department'=>"",
+			'Address'=>"同泰北路100号",
+			'Country'=>"宝山区",
+			'Street'=>"",
+			'Square'=>"0",
+			'Flag_la'=>"N",
+			'Latitude'=>"31.382624",
+			'Flag_lo'=>"E",
+			'Longitude'=>"121.501387",
+			'ProStartTime'=>"2016-02-01",
+			'Stage'=>""
 
-	);
-	array_push($stat_list,$map6);
-	$map7= array(
-		'StatCode'=>"120101008",
-		'StatName'=>"银都苑",
-		'ChargeMan'=>"李四",
-		'Telephone'=>"13912345678",
-		'Department'=>"",
-		'Address'=>"银都路3118弄",
-		'Country'=>"闵行区",
-		'Street'=>"",
-		'Square'=>"0",
-		'Flag_la'=>"N",
-		'Latitude'=>"31.101605",
-		'Flag_lo'=>"E",
-		'Longitude'=>"121.404873",
-		'ProStartTime'=>"2016-02-01",
-		'Stage'=>""
+		);
+		array_push($stat_list,$map6);
+		$map7= array(
+			'StatCode'=>"120101008",
+			'StatName'=>"银都苑",
+			'ChargeMan'=>"李四",
+			'Telephone'=>"13912345678",
+			'Department'=>"",
+			'Address'=>"银都路3118弄",
+			'Country'=>"闵行区",
+			'Street'=>"",
+			'Square'=>"0",
+			'Flag_la'=>"N",
+			'Latitude'=>"31.101605",
+			'Flag_lo'=>"E",
+			'Longitude'=>"121.404873",
+			'ProStartTime'=>"2016-02-01",
+			'Stage'=>""
 
-	);
-	array_push($stat_list,$map7);
-	$map8= array(
-		'StatCode'=>"120101009",
-		'StatName'=>"万科花园小城",
-		'ChargeMan'=>"王五",
-		'Telephone'=>"13912345678",
-		'Department'=>"",
-		'Address'=>"龙吴路5710号",
-		'Country'=>"闵行区",
-		'Street'=>"",
-		'Square'=>"0",
-		'Flag_la'=>"N",
-		'Latitude'=>"31.043827",
-		'Flag_lo'=>"E",
-		'Longitude'=>"121.476450",
-		'ProStartTime'=>"2016-02-18",
-		'Stage'=>""
+		);
+		array_push($stat_list,$map7);
+		$map8= array(
+			'StatCode'=>"120101009",
+			'StatName'=>"万科花园小城",
+			'ChargeMan'=>"王五",
+			'Telephone'=>"13912345678",
+			'Department'=>"",
+			'Address'=>"龙吴路5710号",
+			'Country'=>"闵行区",
+			'Street'=>"",
+			'Square'=>"0",
+			'Flag_la'=>"N",
+			'Latitude'=>"31.043827",
+			'Flag_lo'=>"E",
+			'Longitude'=>"121.476450",
+			'ProStartTime'=>"2016-02-18",
+			'Stage'=>""
 
-	);
-	array_push($stat_list,$map8);
-	$map9= array(
-		'StatCode'=>"120101010",
-		'StatName'=>"合生国际花园",
-		'ChargeMan'=>"王五",
-		'Telephone'=>"13912345678",
-		'Department'=>"",
-		'Address'=>"长兴东路1290",
-		'Country'=>"松江区",
-		'Street'=>"",
-		'Square'=>"0",
-		'Flag_la'=>"N",
-		'Latitude'=>"31.088973",
-		'Flag_lo'=>"E",
-		'Longitude'=>"121.295459",
-		'ProStartTime'=>"2016-02-18",
-		'Stage'=>""
+		);
+		array_push($stat_list,$map8);
+		$map9= array(
+			'StatCode'=>"120101010",
+			'StatName'=>"合生国际花园",
+			'ChargeMan'=>"王五",
+			'Telephone'=>"13912345678",
+			'Department'=>"",
+			'Address'=>"长兴东路1290",
+			'Country'=>"松江区",
+			'Street'=>"",
+			'Square'=>"0",
+			'Flag_la'=>"N",
+			'Latitude'=>"31.088973",
+			'Flag_lo'=>"E",
+			'Longitude'=>"121.295459",
+			'ProStartTime'=>"2016-02-18",
+			'Stage'=>""
 
-	);
-	array_push($stat_list,$map9);
-	$map10= array(
-		'StatCode'=>"120101011",
-		'StatName'=>"江南国际会议中心",
-		'ChargeMan'=>"王五",
-		'Telephone'=>"13912345678",
-		'Department'=>"",
-		'Address'=>"青浦区Y095(阁游路)",
-		'Country'=>"青浦区",
-		'Street'=>"",
-		'Square'=>"0",
-		'Flag_la'=>"N",
-		'Latitude'=>"31.127234",
-		'Flag_lo'=>"E",
-		'Longitude'=>"121.062241",
-		'ProStartTime'=>"2016-02-18",
-		'Stage'=>""
-	);
-	array_push($stat_list,$map10);
-	$map11= array(
+		);
+		array_push($stat_list,$map9);
+		$map10= array(
+			'StatCode'=>"120101011",
+			'StatName'=>"江南国际会议中心",
+			'ChargeMan'=>"王五",
+			'Telephone'=>"13912345678",
+			'Department'=>"",
+			'Address'=>"青浦区Y095(阁游路)",
+			'Country'=>"青浦区",
+			'Street'=>"",
+			'Square'=>"0",
+			'Flag_la'=>"N",
+			'Latitude'=>"31.127234",
+			'Flag_lo'=>"E",
+			'Longitude'=>"121.062241",
+			'ProStartTime'=>"2016-02-18",
+			'Stage'=>""
+		);
+		array_push($stat_list,$map10);
+		$map11= array(
 
-		'StatCode'=>"120101012",
-		'StatName'=>"佳邸别墅",
-		'ChargeMan'=>"王五",
-		'Telephone'=>"13912345678",
-		'Department'=>"",
-		'Address'=>"盈港路1555弄",
-		'Country'=>"青浦区",
-		'Street'=>"",
-		'Square'=>"0",
-		'Flag_la'=>"N",
-		'Latitude'=>"31.164430",
-		'Flag_lo'=>"E",
-		'Longitude'=>"121.102934",
-		'ProStartTime'=>"2016-02-18",
-		'Stage'=>""
-	);
-	array_push($stat_list,$map11);
-	$map12= array(
+			'StatCode'=>"120101012",
+			'StatName'=>"佳邸别墅",
+			'ChargeMan'=>"王五",
+			'Telephone'=>"13912345678",
+			'Department'=>"",
+			'Address'=>"盈港路1555弄",
+			'Country'=>"青浦区",
+			'Street'=>"",
+			'Square'=>"0",
+			'Flag_la'=>"N",
+			'Latitude'=>"31.164430",
+			'Flag_lo'=>"E",
+			'Longitude'=>"121.102934",
+			'ProStartTime'=>"2016-02-18",
+			'Stage'=>""
+		);
+		array_push($stat_list,$map11);
+		$map12= array(
 
-		'StatCode'=>"120101013",
-		'StatName'=>"西郊河畔家园",
-		'ChargeMan'=>"王五",
-		'Telephone'=>"13912345678",
-		'Department'=>"",
-		'Address'=>"繁兴路469弄",
-		'Country'=>"闵行区",
-		'Street'=>"华漕镇",
-		'Square'=>"0",
-		'Flag_la'=>"N",
-		'Latitude'=>"31.218057",
-		'Flag_lo'=>"E",
-		'Longitude'=>"121.297076",
-		'ProStartTime'=>"2016-02-18",
-		'Stage'=>""
-	);
-	array_push($stat_list,$map12);
-	$map13= array(
+			'StatCode'=>"120101013",
+			'StatName'=>"西郊河畔家园",
+			'ChargeMan'=>"王五",
+			'Telephone'=>"13912345678",
+			'Department'=>"",
+			'Address'=>"繁兴路469弄",
+			'Country'=>"闵行区",
+			'Street'=>"华漕镇",
+			'Square'=>"0",
+			'Flag_la'=>"N",
+			'Latitude'=>"31.218057",
+			'Flag_lo'=>"E",
+			'Longitude'=>"121.297076",
+			'ProStartTime'=>"2016-02-18",
+			'Stage'=>""
+		);
+		array_push($stat_list,$map12);
+		$map13= array(
 
-		'StatCode'=>"120101014",
-		'StatName'=>"东视大厦",
-		'ChargeMan'=>"赵六",
-		'Telephone'=>"13912345678",
-		'Department'=>"",
-		'Address'=>"东方路2000号",
-		'Country'=>"浦东新区",
-		'Street'=>"南码头",
-		'Square'=>"0",
-		'Flag_la'=>"N",
-		'Latitude'=>"31.203650",
-		'Flag_lo'=>"E",
-		'Longitude'=>"121.526288",
-		'ProStartTime'=>"2016-02-18",
-		'Stage'=>""
+			'StatCode'=>"120101014",
+			'StatName'=>"东视大厦",
+			'ChargeMan'=>"赵六",
+			'Telephone'=>"13912345678",
+			'Department'=>"",
+			'Address'=>"东方路2000号",
+			'Country'=>"浦东新区",
+			'Street'=>"南码头",
+			'Square'=>"0",
+			'Flag_la'=>"N",
+			'Latitude'=>"31.203650",
+			'Flag_lo'=>"E",
+			'Longitude'=>"121.526288",
+			'ProStartTime'=>"2016-02-18",
+			'Stage'=>""
 
-	);
-	array_push($stat_list,$map13);
-	$map14= array(
-		'StatCode'=>"120101015",
-		'StatName'=>"曙光大厦",
-		'ChargeMan'=>"赵六",
-		'Telephone'=>"13912345678",
-		'Department'=>"",
-		'Address'=>"普安路189号",
-		'Country'=>"黄埔区",
-		'Street'=>"淮海中路街道",
-		'Square'=>"0",
-		'Flag_la'=>"N",
-		'Latitude'=>"31.228283",
-		'Flag_lo'=>"E",
-		'Longitude'=>"121.485388",
-		'ProStartTime'=>"2016-02-29",
-		'Stage'=>""
+		);
+		array_push($stat_list,$map13);
+		$map14= array(
+			'StatCode'=>"120101015",
+			'StatName'=>"曙光大厦",
+			'ChargeMan'=>"赵六",
+			'Telephone'=>"13912345678",
+			'Department'=>"",
+			'Address'=>"普安路189号",
+			'Country'=>"黄埔区",
+			'Street'=>"淮海中路街道",
+			'Square'=>"0",
+			'Flag_la'=>"N",
+			'Latitude'=>"31.228283",
+			'Flag_lo'=>"E",
+			'Longitude'=>"121.485388",
+			'ProStartTime'=>"2016-02-29",
+			'Stage'=>""
 
-	);
-	array_push($stat_list,$map14);
-	$map15= array(
-		'StatCode'=>"120101017",
-		'StatName'=>"上海贝尔",
-		'ChargeMan'=>"赵六",
-		'Telephone'=>"13912345678",
-		'Department'=>"",
-		'Address'=>"西藏北路525号",
-		'Country'=>"闸北区",
-		'Street'=>"芷江西路街道",
-		'Square'=>"0",
-		'Flag_la'=>"N",
-		'Latitude'=>"31.256691",
-		'Flag_lo'=>"E",
-		'Longitude'=>"121.475583",
-		'ProStartTime'=>"2016-03-15",
-		'Stage'=>""
+		);
+		array_push($stat_list,$map14);
+		$map15= array(
+			'StatCode'=>"120101017",
+			'StatName'=>"上海贝尔",
+			'ChargeMan'=>"赵六",
+			'Telephone'=>"13912345678",
+			'Department'=>"",
+			'Address'=>"西藏北路525号",
+			'Country'=>"闸北区",
+			'Street'=>"芷江西路街道",
+			'Square'=>"0",
+			'Flag_la'=>"N",
+			'Latitude'=>"31.256691",
+			'Flag_lo'=>"E",
+			'Longitude'=>"121.475583",
+			'ProStartTime'=>"2016-03-15",
+			'Stage'=>""
 
-	);
-	array_push($stat_list,$map15);
-	$map16= array(
-		'StatCode'=>"120101018",
-		'StatName'=>"嘉宝大厦",
-		'ChargeMan'=>"赵六",
-		'Telephone'=>"13912345678",
-		'Department'=>"",
-		'Address'=>"洪德路1009号",
-		'Country'=>"嘉定区",
-		'Street'=>"马陆镇",
-		'Square'=>"0",
-		'Flag_la'=>"N",
-		'Latitude'=>"31.357885",
-		'Flag_lo'=>"E",
-		'Longitude'=>"121.256060",
-		'ProStartTime'=>"2015-03-19",
-		'Stage'=>""
+		);
+		array_push($stat_list,$map15);
+		$map16= array(
+			'StatCode'=>"120101018",
+			'StatName'=>"嘉宝大厦",
+			'ChargeMan'=>"赵六",
+			'Telephone'=>"13912345678",
+			'Department'=>"",
+			'Address'=>"洪德路1009号",
+			'Country'=>"嘉定区",
+			'Street'=>"马陆镇",
+			'Square'=>"0",
+			'Flag_la'=>"N",
+			'Latitude'=>"31.357885",
+			'Flag_lo'=>"E",
+			'Longitude'=>"121.256060",
+			'ProStartTime'=>"2015-03-19",
+			'Stage'=>""
 
-	);
-	array_push($stat_list,$map16);
-	$map17= array(
-		'StatCode'=>"120101019",
-		'StatName'=>"金山豪庭",
-		'ChargeMan'=>"赵六",
-		'Telephone'=>"13912345678",
-		'Department'=>"",
-		'Address'=>"卫清东路2988",
-		'Country'=>"金山区",
-		'Street'=>"",
-		'Square'=>"0",
-		'Flag_la'=>"N",
-		'Latitude'=>"30.739094",
-		'Flag_lo'=>"E",
-		'Longitude'=>"121.360693",
-		'ProStartTime'=>"2015-08-25",
-		'Stage'=>""
+		);
+		array_push($stat_list,$map16);
+		$map17= array(
+			'StatCode'=>"120101019",
+			'StatName'=>"金山豪庭",
+			'ChargeMan'=>"赵六",
+			'Telephone'=>"13912345678",
+			'Department'=>"",
+			'Address'=>"卫清东路2988",
+			'Country'=>"金山区",
+			'Street'=>"",
+			'Square'=>"0",
+			'Flag_la'=>"N",
+			'Latitude'=>"30.739094",
+			'Flag_lo'=>"E",
+			'Longitude'=>"121.360693",
+			'ProStartTime'=>"2015-08-25",
+			'Stage'=>""
 
-	);
-	array_push($stat_list,$map17);
-	$map18= array(
-		'StatCode'=>"120101020",
-		'StatName'=>"临港城投大厦",
-		'ChargeMan'=>"赵六",
-		'Telephone'=>"13912345678",
-		'Department'=>"",
-		'Address'=>"环湖西一路333号",
-		'Country'=>"浦东新区",
-		'Street'=>"",
-		'Square'=>"0",
-		'Flag_la'=>"N",
-		'Latitude'=>"30.900796",
-		'Flag_lo'=>"E",
-		'Longitude'=>"121.933166",
-		'ProStartTime'=>"2015-11-30",
-		'Stage'=>""
-	);
-	array_push($stat_list,$map18);
-	$retval=array(
-		'status'=>'true',
-		'ret'=> $stat_list,
-		'msg'=>'success',
-		'auth'=>'true'
-	);
-    $jsonencode = _encode($retval);
-	echo $jsonencode; break;
-case "AlarmQuery":
-/*
+		);
+		array_push($stat_list,$map17);
+		$map18= array(
+			'StatCode'=>"120101020",
+			'StatName'=>"临港城投大厦",
+			'ChargeMan'=>"赵六",
+			'Telephone'=>"13912345678",
+			'Department'=>"",
+			'Address'=>"环湖西一路333号",
+			'Country'=>"浦东新区",
+			'Street'=>"",
+			'Square'=>"0",
+			'Flag_la'=>"N",
+			'Latitude'=>"30.900796",
+			'Flag_lo'=>"E",
+			'Longitude'=>"121.933166",
+			'ProStartTime'=>"2015-11-30",
+			'Stage'=>""
+		);
+		array_push($stat_list,$map18);
+		$retval=array(
+			'status'=>'true',
+			'ret'=> $stat_list,
+			'msg'=>'success',
+			'auth'=>'true'
+		);
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
+	case "AlarmQuery":
+		/*
 REQUEST:
     var body={
 		StatCode: alarm_selected.StatCode,
@@ -2701,55 +2707,55 @@ RESPONSE:
 		'auth'=>'true'
 	);
 */
-	$user = $_GET["user"];
-	$body_in = $_GET['body'];
-	$StatCode = $body_in["StatCode"];
-	$query_date = $body_in["date"];
-	$query_type = $body_in["type"];
-	$AlarmName= "噪声";
-	$AlarmUnit="DB";
-	$WarningTarget='65';
-	$minute_alarm = array();
-	$minute_head = array();
-	for($i=0;$i<(60*24);$i++){
-		array_push($minute_alarm,rand(10,110));
-		array_push($minute_head,(string)$i);
-	}
-	$hour_alarm = array();
-	$hour_head = array();
-	for($i=0;$i<(7*24);$i++){
-		array_push($hour_alarm,rand(10,110));
-		array_push($hour_head,(string)$i);
-	}
-	$day_alarm = array();
-	$day_head = array();
-	for($i=0;$i<30;$i++){
-		array_push($day_alarm,rand(10,110));
-		array_push($day_head,(string)$i);
-	}
-	$body=array(
-		'StatCode'=> $StatCode,
-		'date'=> $query_date,
-		'AlarmName'=> $AlarmName,
-		'AlarmUnit'=> $AlarmUnit,
-		'WarningTarget'=>$WarningTarget,
-		'minute_head'=>$minute_head,
-		'day_head'=>$day_head,
-		'hour_head'=>$hour_head,
-		'minute_alarm'=> $minute_alarm,
-		'hour_alarm'=> $hour_alarm,
-		'day_alarm'=> $day_alarm
+		$user = $_GET["user"];
+		$body_in = $_GET['body'];
+		$StatCode = $body_in["StatCode"];
+		$query_date = $body_in["date"];
+		$query_type = $body_in["type"];
+		$AlarmName= "噪声";
+		$AlarmUnit="DB";
+		$WarningTarget='65';
+		$minute_alarm = array();
+		$minute_head = array();
+		for($i=0;$i<(60*24);$i++){
+			array_push($minute_alarm,rand(10,110));
+			array_push($minute_head,(string)$i);
+		}
+		$hour_alarm = array();
+		$hour_head = array();
+		for($i=0;$i<(7*24);$i++){
+			array_push($hour_alarm,rand(10,110));
+			array_push($hour_head,(string)$i);
+		}
+		$day_alarm = array();
+		$day_head = array();
+		for($i=0;$i<30;$i++){
+			array_push($day_alarm,rand(10,110));
+			array_push($day_head,(string)$i);
+		}
+		$body=array(
+			'StatCode'=> $StatCode,
+			'date'=> $query_date,
+			'AlarmName'=> $AlarmName,
+			'AlarmUnit'=> $AlarmUnit,
+			'WarningTarget'=>$WarningTarget,
+			'minute_head'=>$minute_head,
+			'day_head'=>$day_head,
+			'hour_head'=>$hour_head,
+			'minute_alarm'=> $minute_alarm,
+			'hour_alarm'=> $hour_alarm,
+			'day_alarm'=> $day_alarm
 		);
-	$retval= array(
-		'status'=>"true",
-		'ret'=> $body,
-		'msg'=>'success',
-		'auth'=>'true'
-	);
-	$jsonencode = json_encode($retval,JSON_UNESCAPED_UNICODE);
-	echo $jsonencode; break;
-case "AlarmType":
-/*
+		$retval= array(
+			'status'=>"true",
+			'ret'=> $body,
+			'msg'=>'success',
+			'auth'=>'true'
+		);
+		$jsonencode = json_encode($retval,JSON_UNESCAPED_UNICODE);
+		echo $jsonencode; break;
+	case "AlarmType":
+		/*
 REQUEST:
     var map={
         action:"AlarmType",
@@ -2764,57 +2770,57 @@ RESPONSE:
 		'auth'=>'true'
 	);
 */
-	$ret = array();
-	$map = array(
-		'id'=>(string)0,
-		'name'=>"噪音"
-	);
-	array_push($ret,$map);
-	$map = array(
-		'id'=>(string)1,
-		'name'=>"扬尘"
-	);
-	array_push($ret,$map);
-	$map = array(
-		'id'=>(string)2,
-		'name'=>"湿度"
-	);
-	array_push($ret,$map);
-	$map = array(
-		'id'=>(string)3,
-		'name'=>"温度"
-	);
-	array_push($ret,$map);
-	$map = array(
-		'id'=>(string)4,
-		'name'=>"细颗粒物"
-	);
-	array_push($ret,$map);
-	$map = array(
-		'id'=>(string)5,
-		'name'=>"水质"
-	);
-	array_push($ret,$map);
-	$map = array(
-		'id'=>(string)6,
-		'name'=>"SO2"
-	);
-	array_push($ret,$map);
-	$map = array(
-		'id'=>(string)7,
-		'name'=>"风速"
-	);
-	array_push($ret,$map);
-	$retval=array(
-		'status'=>'true',
-		'ret'=> $ret,
-		'msg'=>'success',
-		'auth'=>'true'
-	);
-    $jsonencode = _encode($retval);
-	echo $jsonencode; break;
-case "TableQuery":
-/*
+		$ret = array();
+		$map = array(
+			'id'=>(string)0,
+			'name'=>"噪音"
+		);
+		array_push($ret,$map);
+		$map = array(
+			'id'=>(string)1,
+			'name'=>"扬尘"
+		);
+		array_push($ret,$map);
+		$map = array(
+			'id'=>(string)2,
+			'name'=>"湿度"
+		);
+		array_push($ret,$map);
+		$map = array(
+			'id'=>(string)3,
+			'name'=>"温度"
+		);
+		array_push($ret,$map);
+		$map = array(
+			'id'=>(string)4,
+			'name'=>"细颗粒物"
+		);
+		array_push($ret,$map);
+		$map = array(
+			'id'=>(string)5,
+			'name'=>"水质"
+		);
+		array_push($ret,$map);
+		$map = array(
+			'id'=>(string)6,
+			'name'=>"SO2"
+		);
+		array_push($ret,$map);
+		$map = array(
+			'id'=>(string)7,
+			'name'=>"风速"
+		);
+		array_push($ret,$map);
+		$retval=array(
+			'status'=>'true',
+			'ret'=> $ret,
+			'msg'=>'success',
+			'auth'=>'true'
+		);
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
+	case "TableQuery":
+		/*
 REQUEST:
     var body = {
 	TableName : tablename,
@@ -2837,53 +2843,53 @@ RESPONSE:
 		'ret'=>$body,
 		'msg'=>'success',
 		'auth'=>'true'
-		
+
 	);
 */
-	$body_in = $_GET['body'];
-	$TableName = $body_in["TableName"];
-	$Condition = $body_in["Condition"];
-	//$Filter = $_GET["Filter"];
+		$body_in = $_GET['body'];
+		$TableName = $body_in["TableName"];
+		$Condition = $body_in["Condition"];
+		//$Filter = $_GET["Filter"];
 
-	$column = rand(10,20);
-	$row = rand(40,100);
-	$column_name = array();
-	$row_content = array();
-	for( $i=0;$i<$column;$i++){
-		array_push($column_name,"第".(string)($i+1)."列");
-	}
-	for($i=0;$i<$row;$i++){
-		$one_row = array();
-		array_push($one_row,(string)($i+1));
-		array_push($one_row,"备注".(string)($i+1));
-		for($j=0;$j<($column-6);$j++) array_push($one_row,rand(10,110));
-		
-		//one_row.push("地址"+(i+1)+"xxxxx路"+(i+1)+"xxxxx号");
-		array_push($one_row,"地址".((string)($i+1))."xxxxx路".((string)($i+1))."xxxxx号");
-		//one_row.push("测试");
-		array_push($one_row,"测试");
-		//one_row.push("名称");
-		array_push($one_row,"名称");
-		//one_row.push("长数据长数据长数据"+(i+1)+"xxxxx路"+(i+1)+"xxxxx号");
-		array_push($one_row,"长数据长数据长数据".((string)($i+1))."xxxxx路".((string)($i+1))."xxxxx号");
-		array_push($row_content,$one_row);
-		//row_content.push(one_row);
-	}
-	$body=array(
-		'ColumnName'=> $column_name,
-		'TableData'=>$row_content
+		$column = rand(10,20);
+		$row = rand(40,100);
+		$column_name = array();
+		$row_content = array();
+		for( $i=0;$i<$column;$i++){
+			array_push($column_name,"第".(string)($i+1)."列");
+		}
+		for($i=0;$i<$row;$i++){
+			$one_row = array();
+			array_push($one_row,(string)($i+1));
+			array_push($one_row,"备注".(string)($i+1));
+			for($j=0;$j<($column-6);$j++) array_push($one_row,rand(10,110));
+
+			//one_row.push("地址"+(i+1)+"xxxxx路"+(i+1)+"xxxxx号");
+			array_push($one_row,"地址".((string)($i+1))."xxxxx路".((string)($i+1))."xxxxx号");
+			//one_row.push("测试");
+			array_push($one_row,"测试");
+			//one_row.push("名称");
+			array_push($one_row,"名称");
+			//one_row.push("长数据长数据长数据"+(i+1)+"xxxxx路"+(i+1)+"xxxxx号");
+			array_push($one_row,"长数据长数据长数据".((string)($i+1))."xxxxx路".((string)($i+1))."xxxxx号");
+			array_push($row_content,$one_row);
+			//row_content.push(one_row);
+		}
+		$body=array(
+			'ColumnName'=> $column_name,
+			'TableData'=>$row_content
 		);
-	$retval=array(
-		'status'=>'true',
-		'ret'=>$body,
-		'msg'=>'success',
-		'auth'=>'true'
-		
-	);
-    $jsonencode = _encode($retval);
-	echo $jsonencode; break;
-case "SensorList":
-/*
+		$retval=array(
+			'status'=>'true',
+			'ret'=>$body,
+			'msg'=>'success',
+			'auth'=>'true'
+
+		);
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
+	case "SensorList":
+		/*
 REQUEST:
     var map={
 	action:"SensorList",
@@ -2906,8 +2912,8 @@ RESPONSE:
 		'auth'=>'true'
 	);
 */
-	$ret = array();
-	$map = array(
+		$ret = array();
+		$map = array(
 			'id'=>"101",
 			'name'=>"PM2.5",
 			'nickname'=>"PM2.5",
@@ -3003,7 +3009,7 @@ RESPONSE:
 		$jsonencode = _encode($retval);
 		echo $jsonencode; break;
 	case "DevSensor":
-/*
+		/*
 REQUEST:
     var body={
         DevCode: DevCode
@@ -3026,49 +3032,49 @@ RESPONSE:
 		'ret'=>$ret,
 		'msg'=>'success',
 		'auth'=>'true'
-	);	
+	);
 */
 		$body_in = $_GET['body'];
 		$DevCode = $body_in["DevCode"];
 		$paralist = array();
 		for ($i=0;$i<10;$i++){
-                $temp = array(
-                    'name'=>"Parameter_".(string)$i,
-                    'memo'=>"Parameter".(string)$i,
-                    'value'=>"10"
-                );
-                array_push($paralist,$temp);
-            }
+			$temp = array(
+				'name'=>"Parameter_".(string)$i,
+				'memo'=>"Parameter".(string)$i,
+				'value'=>"10"
+			);
+			array_push($paralist,$temp);
+		}
 		$ret = array();
 		$map = array(
-                'id'=>"101",
-                'status'=>"true",
-                'para'=>$paralist
-            );
-            array_push($ret,$map);
+			'id'=>"101",
+			'status'=>"true",
+			'para'=>$paralist
+		);
+		array_push($ret,$map);
 		$temp = array();
-        $map = array(
-                'id'=>"201",
-                'status'=>"true",
-                'para'=>$temp
-            );
-            array_push($ret,$map);
-         $map = array(
-                'id'=>"a01",
-                'status'=>"false",
-                'para'=>$temp
-            );
-            array_push($ret,$map);
+		$map = array(
+			'id'=>"201",
+			'status'=>"true",
+			'para'=>$temp
+		);
+		array_push($ret,$map);
+		$map = array(
+			'id'=>"a01",
+			'status'=>"false",
+			'para'=>$temp
+		);
+		array_push($ret,$map);
 		$retval=array(
-				'status'=>'true',
-                'ret'=>$ret,
-				'msg'=>'success',
-				'auth'=>'true'
+			'status'=>'true',
+			'ret'=>$ret,
+			'msg'=>'success',
+			'auth'=>'true'
 		);
 		$jsonencode = json_encode($retval,JSON_UNESCAPED_UNICODE);
 		echo $jsonencode; break;
 	case "SensorUpdate":
-/*
+		/*
 REQUEST:
     var body={
 		DevCode: device_selected.DevCode,
@@ -3087,22 +3093,22 @@ RESPONSE:
 		'status'=>'true',
 		'msg'=>'success',
 		'auth'=>'true'
-	);	
+	);
 */
 		$body_in = $_GET['body'];
-        $DevCode = $body_in["DevCode"];
-        $SensorCode = $body_in["SensorCode"];
-        $status = $body_in["status"];
-        $ParaList = $body_in["ParaList"];
-        $retval=array(
-            'status'=>'true',
-            'msg'=>'success',
+		$DevCode = $body_in["DevCode"];
+		$SensorCode = $body_in["SensorCode"];
+		$status = $body_in["status"];
+		$ParaList = $body_in["ParaList"];
+		$retval=array(
+			'status'=>'true',
+			'msg'=>'success',
 			'auth'=>'true'
-        );
-        $jsonencode = _encode($retval);
-        echo $jsonencode; break;
-    case "SetUserMsg":
-/*
+		);
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
+	case "SetUserMsg":
+		/*
 REQUEST:
     var body={
 		id: usr.id,
@@ -3124,18 +3130,18 @@ RESPONSE:
 	);
 */
 		$body_in = $_GET['body'];
-        $usr = $body_in["id"];
-        $msg = $body_in["msg"];
-        $ifdev = $body_in["ifdev"];
-        $retval=array(
-            'status'=>'true',
-            'msg'=>'success',
+		$usr = $body_in["id"];
+		$msg = $body_in["msg"];
+		$ifdev = $body_in["ifdev"];
+		$retval=array(
+			'status'=>'true',
+			'msg'=>'success',
 			'auth'=>'true'
-        );
-        $jsonencode = _encode($retval);
-        echo $jsonencode; break;
-    case "GetUserMsg":
-/*
+		);
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
+	case "GetUserMsg":
+		/*
 REQUEST:
     var body = {
         id: usr.id
@@ -3156,24 +3162,24 @@ RESPONSE:
 		'ret'=>$body,
 		'msg'=>'success',
 		'auth'=>'true'
-	);	
+	);
 */
 		$body_in = $_GET['body'];
-        $usr = $body_in["id"];
+		$usr = $body_in["id"];
 		$body=array(
 			'msg'=>'您好，今天是xxxx号，欢迎领导前来视察，今天的气温是 今天的PM2.5是....',
-            'ifdev'=>"true"
+			'ifdev'=>"true"
 		);
-        $retval=array(
-            'status'=>'true',
+		$retval=array(
+			'status'=>'true',
 			'ret'=>$body,
-            'msg'=>'success',
+			'msg'=>'success',
 			'auth'=>'true'
-        );
-        $jsonencode = _encode($retval);
-        echo $jsonencode; break;
-    case "ShowUserMsg":
-/*
+		);
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
+	case "ShowUserMsg":
+		/*
 REQUEST:
 	var body={
 		id: usr,
@@ -3192,20 +3198,20 @@ RESPONSE:
 		'auth'=>'true'
 	);
 */
-	$body_in = $_GET['body'];
-	$usr = $body_in["id"];
-	$StatCode = $body_in["StatCode"];
-	$temp =(string)rand(1000,9999);
-	$retval=array(
-		 'status'=>'true',
-		 'msg'=>$temp.'您好，今天是'.$temp.'号，欢迎领导前来视察，今天的气温是 今天的PM2.5是....',
-		'auth'=>'true'
-	);
+		$body_in = $_GET['body'];
+		$usr = $body_in["id"];
+		$StatCode = $body_in["StatCode"];
+		$temp =(string)rand(1000,9999);
+		$retval=array(
+			'status'=>'true',
+			'msg'=>$temp.'您好，今天是'.$temp.'号，欢迎领导前来视察，今天的气温是 今天的PM2.5是....',
+			'auth'=>'true'
+		);
 
-	$jsonencode = _encode($retval);
-	echo $jsonencode; break;
-    case "GetUserImg":
-/*
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
+	case "GetUserImg":
+		/*
 REQUEST:
     var body = {
         id: usr.id
@@ -3228,28 +3234,28 @@ RESPONSE:
 		'ret'=>$ImgList,
 		'msg'=>'success',
 		'auth'=>'true'
-	);	
+	);
 */
-	$body_in = $_GET['body'];
-        $usr = $body_in["id"];
-        $ImgList = array();
-        for ($i=1;$i<6;$i++){
-            $map = array(
-                'name'=>"test".(string)$i.".jpg",
-                'url'=>$install_path."/screensaver/assets/img/test".(string)$i.".jpg"
-            );
-            array_push($ImgList,$map);
-        }
-        $retval=array(
+		$body_in = $_GET['body'];
+		$usr = $body_in["id"];
+		$ImgList = array();
+		for ($i=1;$i<6;$i++){
+			$map = array(
+				'name'=>"test".(string)$i.".jpg",
+				'url'=>$install_path."/screensaver/assets/img/test".(string)$i.".jpg"
+			);
+			array_push($ImgList,$map);
+		}
+		$retval=array(
 			'status'=>'true',
 			'ret'=>$ImgList,
 			'msg'=>'success',
 			'auth'=>'true'
-        );
-        $jsonencode = _encode($retval);
-        echo $jsonencode; break;
-    case "ClearUserImg":
-/*
+		);
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
+	case "ClearUserImg":
+		/*
 REQUEST:
     var body = {
         id: usr.id
@@ -3267,17 +3273,17 @@ RESPONSE:
 		'auth'=>'true'
 	);
 */
-	$body_in = $_GET['body'];
-        $usr = $body_in["id"];
-        $retval=array(
-            'status'=>'true',
+		$body_in = $_GET['body'];
+		$usr = $body_in["id"];
+		$retval=array(
+			'status'=>'true',
 			'msg'=>'success',
 			'auth'=>'true'
-        );
-        $jsonencode = _encode($retval);
-        echo $jsonencode; break;
-case "GetStaticMonitorTable":
-/*
+		);
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
+	case "GetStaticMonitorTable":
+		/*
 REQUEST:
     var map={
         action:"GetStaticMonitorTable",
@@ -3295,67 +3301,67 @@ RESPONSE:
 		'msg'=>'success',
 		'auth'=>'true'
     );
-*/	
-    $usr = $_GET["user"];
-        $column = 16;
-        $row = 40;
-        $column_name = array();
-        $row_content = array();
-        //$geo_content = array();
-        for( $i=0;$i<$column;$i++){
-            array_push($column_name,"第".(string)($i+1)."列");
-        }
-        for($i=0;$i<$row;$i++){
-            $one_row = array();
-            //$geo = array();
-    		//if($i%2==0){
+*/
+		$usr = $_GET["user"];
+		$column = 16;
+		$row = 40;
+		$column_name = array();
+		$row_content = array();
+		//$geo_content = array();
+		for( $i=0;$i<$column;$i++){
+			array_push($column_name,"第".(string)($i+1)."列");
+		}
+		for($i=0;$i<$row;$i++){
+			$one_row = array();
+			//$geo = array();
+			//if($i%2==0){
 
-    		//	array_push($geo,"31.223441");
-    		//	array_push($geo,"121.442703");
-    		//}else{
+			//	array_push($geo,"31.223441");
+			//	array_push($geo,"121.442703");
+			//}else{
 
-    		//	array_push($geo,"31.313004");
-    		//	array_push($geo,"121.525701");
-    		//}
-            if($i%2==0){
+			//	array_push($geo,"31.313004");
+			//	array_push($geo,"121.525701");
+			//}
+			if($i%2==0){
 
-    			array_push($one_row,"120101003");
-    			array_push($one_row,"万宝国际广场");
-            }else{
+				array_push($one_row,"120101003");
+				array_push($one_row,"万宝国际广场");
+			}else{
 
-    			array_push($one_row,"120101006");
-    			array_push($one_row,"江湾体育场");
-            }
-            for($j=0;$j<($column-6);$j++) array_push($one_row,rand(10,110));
+				array_push($one_row,"120101006");
+				array_push($one_row,"江湾体育场");
+			}
+			for($j=0;$j<($column-6);$j++) array_push($one_row,rand(10,110));
 
-            //one_row.push("地址"+(i+1)+"xxxxx路"+(i+1)+"xxxxx号");
-            array_push($one_row,"地址".((string)($i+1))."xxxxx路".((string)($i+1))."xxxxx号");
-            //one_row.push("测试");
-            array_push($one_row,"测试");
-            //one_row.push("名称");
-            array_push($one_row,"名称");
-            //one_row.push("长数据长数据长数据"+(i+1)+"xxxxx路"+(i+1)+"xxxxx号");
-            array_push($one_row,"长数据长数据长数据".((string)($i+1))."xxxxx路".((string)($i+1))."xxxxx号");
-            array_push($row_content,$one_row);
-            //array_push($geo_content,$geo);
-            //row_content.push(one_row);
-        }
-    	$body=array(
-            'ColumnName'=> $column_name,
-            'TableData'=>$row_content//,
-            //'GeoData'=>$geo_content
-    		);
-        $retval=array(
-            'status'=>'true',
-            'ret'=> $body,
-    		'msg'=>'success',
-    		'auth'=>'true'
-        );
-        $jsonencode = _encode($retval);
-    	echo $jsonencode; break;
+			//one_row.push("地址"+(i+1)+"xxxxx路"+(i+1)+"xxxxx号");
+			array_push($one_row,"地址".((string)($i+1))."xxxxx路".((string)($i+1))."xxxxx号");
+			//one_row.push("测试");
+			array_push($one_row,"测试");
+			//one_row.push("名称");
+			array_push($one_row,"名称");
+			//one_row.push("长数据长数据长数据"+(i+1)+"xxxxx路"+(i+1)+"xxxxx号");
+			array_push($one_row,"长数据长数据长数据".((string)($i+1))."xxxxx路".((string)($i+1))."xxxxx号");
+			array_push($row_content,$one_row);
+			//array_push($geo_content,$geo);
+			//row_content.push(one_row);
+		}
+		$body=array(
+			'ColumnName'=> $column_name,
+			'TableData'=>$row_content//,
+			//'GeoData'=>$geo_content
+		);
+		$retval=array(
+			'status'=>'true',
+			'ret'=> $body,
+			'msg'=>'success',
+			'auth'=>'true'
+		);
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
 
-    case "GetVideoList":
-/*
+	case "GetVideoList":
+		/*
 REQUEST:
     var body={
 		StatCode:StatCode,
@@ -3374,7 +3380,7 @@ RESPONSE:
 		'attr'=>"Video_" .$StatCode . "_"  .$date ."_" .$hour ."_" .(string)$j."视频属性"
 	);
 	array_push($VideoList,$map);
-    
+
     $retval=array(
         'status'=>'true',
         'ret'=> $VideoList,
@@ -3382,31 +3388,31 @@ RESPONSE:
 		'auth'=>'true'
     );
 */
-    $body_in = $_GET['body'];
-    $usr = $_GET["user"];
-    $StatCode = $body_in["StatCode"];
-    $date = $body_in["date"];
-    $hour = $body_in["hour"];
-    $VideoList = array();
-    for($j=0;$j<5;$j++) {
+		$body_in = $_GET['body'];
+		$usr = $_GET["user"];
+		$StatCode = $body_in["StatCode"];
+		$date = $body_in["date"];
+		$hour = $body_in["hour"];
+		$VideoList = array();
+		for($j=0;$j<5;$j++) {
 
-        $map = array(
-            'id'=>"Video_" .$StatCode . "_"  .$date ."_" .$hour ."_" .(string)$j,
-            'attr'=>"Video_" .$StatCode . "_"  .$date ."_" .$hour ."_" .(string)$j."视频属性"
-        );
-        array_push($VideoList,$map);
-    }
-    $retval=array(
-        'status'=>'true',
-        'ret'=> $VideoList,
-		'msg'=>'success',
-		'auth'=>'true'
-    );
-    $jsonencode = _encode($retval);
-	echo $jsonencode; break;
+			$map = array(
+				'id'=>"Video_" .$StatCode . "_"  .$date ."_" .$hour ."_" .(string)$j,
+				'attr'=>"Video_" .$StatCode . "_"  .$date ."_" .$hour ."_" .(string)$j."视频属性"
+			);
+			array_push($VideoList,$map);
+		}
+		$retval=array(
+			'status'=>'true',
+			'ret'=> $VideoList,
+			'msg'=>'success',
+			'auth'=>'true'
+		);
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
 
-    case "GetVideo":
-/*
+	case "GetVideo":
+		/*
 REQUEST:
 var body = {
 	videoid: videoid
@@ -3425,31 +3431,31 @@ $retval=array(
 	'auth'=>'true'
 );
 */
-	$body_in = $_GET['body'];
-    $videoid = $body_in["videoid"];
-    $number = rand(1,11);
-    if($number == 10){
-        $retval=array(
-            'status'=>'true',
-            'ret'=> $install_path."/video/avorion.mp4",
-			'msg'=>'success',
-			'auth'=>'true'
-        );
-        $jsonencode = _encode($retval);
-    	echo $jsonencode; break;
-    }else{
-        $retval=array(
-            'status'=>'true',
-            'ret'=> "downloading",
-			'msg'=>'success',
-			'auth'=>'true'
-        );
-        $jsonencode = _encode($retval);
-        echo $jsonencode; break;
-    }
+		$body_in = $_GET['body'];
+		$videoid = $body_in["videoid"];
+		$number = rand(1,11);
+		if($number == 10){
+			$retval=array(
+				'status'=>'true',
+				'ret'=> $install_path."/video/avorion.mp4",
+				'msg'=>'success',
+				'auth'=>'true'
+			);
+			$jsonencode = _encode($retval);
+			echo $jsonencode; break;
+		}else{
+			$retval=array(
+				'status'=>'true',
+				'ret'=> "downloading",
+				'msg'=>'success',
+				'auth'=>'true'
+			);
+			$jsonencode = _encode($retval);
+			echo $jsonencode; break;
+		}
 
-    case "GetVersionList":
-/*
+	case "GetVersionList":
+		/*
 REQUEST:
     var map={
         action:"GetVersionList",
@@ -3462,23 +3468,23 @@ RESPONSE:
         'ret'=> $verlist,
 		'msg'=>'success',
 		'auth'=>'true'
-    );	
-*/
-    $verlist = array();
-    for ($i=0;$i<10;$i++){
-        array_push($verlist,"Ver ".(string)($i+1).".00");
-    }
-    $retval=array(
-        'status'=>'true',
-        'ret'=> $verlist,
-		'msg'=>'success',
-		'auth'=>'true'
     );
-    $jsonencode = _encode($retval);
-    echo $jsonencode; break;
+*/
+		$verlist = array();
+		for ($i=0;$i<10;$i++){
+			array_push($verlist,"Ver ".(string)($i+1).".00");
+		}
+		$retval=array(
+			'status'=>'true',
+			'ret'=> $verlist,
+			'msg'=>'success',
+			'auth'=>'true'
+		);
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
 
-    case "GetProjDevVersion":
-/*
+	case "GetProjDevVersion":
+		/*
 REQUEST:
     var body={
 	ProjCode: ProjCode
@@ -3495,32 +3501,32 @@ RESPONSE:
 		'ret'=> $projdev,
 		'msg'=>'success',
 		'auth'=>'true'
-	);	
+	);
 */
-	$body_in = $_GET['body'];
-        $ProjCode = $body_in["ProjCode"];
-        $projdev = array();
-        for($i=0;$i<5;$i++){
-            for($j=0;$j<4;$j++){
-                $temp = array(
-                    'DevCode'=> $ProjCode."_".(string)$i."_".(string)$j,
-                    'ProjName'=> "测量点".(string)$i,
-                    'version'=> "Ver 1.00"
-                );
-                array_push($projdev,$temp);
-            }
-        }
-        $retval=array(
-            'status'=>'true',
-            'ret'=> $projdev,
+		$body_in = $_GET['body'];
+		$ProjCode = $body_in["ProjCode"];
+		$projdev = array();
+		for($i=0;$i<5;$i++){
+			for($j=0;$j<4;$j++){
+				$temp = array(
+					'DevCode'=> $ProjCode."_".(string)$i."_".(string)$j,
+					'ProjName'=> "测量点".(string)$i,
+					'version'=> "Ver 1.00"
+				);
+				array_push($projdev,$temp);
+			}
+		}
+		$retval=array(
+			'status'=>'true',
+			'ret'=> $projdev,
 			'msg'=>'success',
 			'auth'=>'true'
-        );
-        $jsonencode = _encode($retval);
-        echo $jsonencode; break;
+		);
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
 
-    case "UpdateDevVersion":
-/*
+	case "UpdateDevVersion":
+		/*
 REQUEST:
     var body={
 		list: update_list,
@@ -3530,28 +3536,28 @@ REQUEST:
         action:"UpdateDevVersion",
         type:"mod",
         body: body,
-        user:usr.id   
+        user:usr.id
     };
 RESPONSE:
 	$retval=array(
         'status'=>'true',
 		'msg'=>'success',
 		'auth'=>'true'
-    );	
-*/
-    $usr = $_GET["user"];
-		$body_in = $_GET['body'];
-    $list = $body_in["list"];
-    $version = $body_in["version"];
-    $retval=array(
-        'status'=>'true',
-		'msg'=>'success',
-		'auth'=>'true'
     );
-    $jsonencode = _encode($retval);
-    echo $jsonencode; break;
-case "GetCameraStatus":
-/*
+*/
+		$usr = $_GET["user"];
+		$body_in = $_GET['body'];
+		$list = $body_in["list"];
+		$version = $body_in["version"];
+		$retval=array(
+			'status'=>'true',
+			'msg'=>'success',
+			'auth'=>'true'
+		);
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
+	case "GetCameraStatus":
+		/*
 REQUEST:
     var body = {
 	StatCode:statcode
@@ -3575,27 +3581,27 @@ RESPONSE:
 		'auth'=>'true'
 	);
 */
-	$usr = $_GET["user"];
-	
-		$body_in = $_GET['body'];
-	$StatCode = $body_in["StatCode"];
-	$videocode = rand(1,5);
-	$camerastatus=array(
-	   'v'=>"120~",
-	   'h'=>"120~",
-	   'url'=>$install_path."/video/screenshot/".(string)$videocode.".png"
-	);
-	$retval=array(
-		'status'=>'true',
-		'ret'=>$camerastatus,
-		'msg'=>'success',
-		'auth'=>'true'
-	);
-	$jsonencode = _encode($retval);
-	echo $jsonencode; break;
+		$usr = $_GET["user"];
 
-case "GetCameraUnit":
-/*
+		$body_in = $_GET['body'];
+		$StatCode = $body_in["StatCode"];
+		$videocode = rand(1,5);
+		$camerastatus=array(
+			'v'=>"120~",
+			'h'=>"120~",
+			'url'=>$install_path."/video/screenshot/".(string)$videocode.".png"
+		);
+		$retval=array(
+			'status'=>'true',
+			'ret'=>$camerastatus,
+			'msg'=>'success',
+			'auth'=>'true'
+		);
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
+
+	case "GetCameraUnit":
+		/*
 REQUEST:
     var map = {
         action: "GetCameraUnit",
@@ -3614,24 +3620,24 @@ RESPONSE:
 		'auth'=>'true'
 	);
 */
-	$camera=array(
-		'v'=>"3~",
-		'h'=>"3~"
-	);
-	$retval=array(
-		'status'=>'true',
-		'ret'=>$camera,
-		'msg'=>'success',
-		'auth'=>'true'
-	);
-	$jsonencode = _encode($retval);
-	echo $jsonencode; break;
+		$camera=array(
+			'v'=>"3~",
+			'h'=>"3~"
+		);
+		$retval=array(
+			'status'=>'true',
+			'ret'=>$camera,
+			'msg'=>'success',
+			'auth'=>'true'
+		);
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
 
 
 
 
-case "CameraVAdj":
-/*
+	case "CameraVAdj":
+		/*
 REQUEST:
     var body = {
 	StatCode:statcode,
@@ -3644,7 +3650,7 @@ REQUEST:
             body:body,
 	    type:"mod",
 	    user:usr.id
-            
+
         };
     }else{
         map = {
@@ -3670,25 +3676,25 @@ RESPONSE:
 */
 
 		$body_in = $_GET['body'];
-	$usr = $_GET["user"];
-	$StatCode = $body_in["StatCode"];
-	$adj = $body_in["adj"];
-	$videocode = rand(1,5);
-	$camerastatus=array(
-	   'v'=>"120~",
-	   'h'=>"120~",
-	   'url'=>$install_path."/video/screenshot/".(string)$videocode.".png"
-	);
-	$retval=array(
-		'status'=>'true',
-		'ret'=>$camerastatus,
-		'msg'=>'success',
-		'auth'=>'true'
-	);
-	$jsonencode = _encode($retval);
-	echo $jsonencode; break;
-case "CameraHAdj":
-    /*
+		$usr = $_GET["user"];
+		$StatCode = $body_in["StatCode"];
+		$adj = $body_in["adj"];
+		$videocode = rand(1,5);
+		$camerastatus=array(
+			'v'=>"120~",
+			'h'=>"120~",
+			'url'=>$install_path."/video/screenshot/".(string)$videocode.".png"
+		);
+		$retval=array(
+			'status'=>'true',
+			'ret'=>$camerastatus,
+			'msg'=>'success',
+			'auth'=>'true'
+		);
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
+	case "CameraHAdj":
+		/*
             var usr = data.id;
             var StatCode = data.StatCode;
             var adj = data.adj;
@@ -3704,26 +3710,26 @@ case "CameraHAdj":
             }
             return JSON.stringify(retval);
     */
-	$usr = $_GET["user"];
-	$body_in = $_GET['body'];
-	$StatCode = $body_in["StatCode"];
-	$adj = $body_in["adj"];
-	$videocode = rand(1,5);
-	$camerastatus=array(
-		'v'=>"120~",
-		'h'=>"120~",
-		'url'=>$install_path."/video/screenshot/".(string)$videocode.".png"
-	);
-	$retval=array(
-		'status'=>'true',
-		'ret'=>$camerastatus,
-		'msg'=>'success',
-		'auth'=>'true'
-	);
-	$jsonencode = _encode($retval);
-	echo $jsonencode; break;
-    case "OpenLock":
-/*
+		$usr = $_GET["user"];
+		$body_in = $_GET['body'];
+		$StatCode = $body_in["StatCode"];
+		$adj = $body_in["adj"];
+		$videocode = rand(1,5);
+		$camerastatus=array(
+			'v'=>"120~",
+			'h'=>"120~",
+			'url'=>$install_path."/video/screenshot/".(string)$videocode.".png"
+		);
+		$retval=array(
+			'status'=>'true',
+			'ret'=>$camerastatus,
+			'msg'=>'success',
+			'auth'=>'true'
+		);
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
+	case "OpenLock":
+		/*
 REQUEST:
     var body={StatCode:statcode};
     var map = {
@@ -3737,23 +3743,23 @@ RESPONSE:
 		'status'=>'true',
 		'auth'=>$auth,
 		'msg'=>"1231231"
-	);	
+	);
 */
-	$body_in = $_GET['body'];
-        $usr = $_GET["user"];
-        $StatCode = $body_in["StatCode"];
-        $auth = rand(1,4);
-        if($auth == 3) $auth = "false";
-        else $auth="true";
-        $retval=array(
+		$body_in = $_GET['body'];
+		$usr = $_GET["user"];
+		$StatCode = $body_in["StatCode"];
+		$auth = rand(1,4);
+		if($auth == 3) $auth = "false";
+		else $auth="true";
+		$retval=array(
 			'status'=>'true',
 			'auth'=>$auth,
 			'msg'=>"1231231"
 		);
-        $jsonencode = _encode($retval);
-        echo $jsonencode; break;
-    case "UserKey":
-/*
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
+	case "UserKey":
+		/*
 REQUEST:
     var body = {
         userid: user
@@ -3770,37 +3776,37 @@ RESPONSE:
 		'ret'=> $proj_keylist,
 		'auth'=>'true',
 		'msg'=>''
-	);	
+	);
 */
-$body_in = $_GET['body'];
-        $usr = $body_in ["userid"];
-        $usr_keylist = array();
-        $temp = array(
-            'id'=>"xxx1",
-        	'name'=>"0440",
-        	'domain'=>"区域2"
-        );
-        array_push($usr_keylist,$temp);
-        $temp = array(
-            'id'=>"xxx2",
-            'name'=>"0440",
-            'domain'=>"区域2"
-        );
-        array_push($usr_keylist,$temp);
-        $temp = array(
-            'id'=>"xxx1",
-            'name'=>"0440",
-            'domain'=>"区域3"
-        );
-        array_push($usr_keylist,$temp);
-        $retval=array(
-            'status'=>'true',
-            'ret'=>$usr_keylist
-        );
-        $jsonencode = _encode($retval);
-        echo $jsonencode; break;
-    case "ProjKeyList":
-/*
+		$body_in = $_GET['body'];
+		$usr = $body_in ["userid"];
+		$usr_keylist = array();
+		$temp = array(
+			'id'=>"xxx1",
+			'name'=>"0440",
+			'domain'=>"区域2"
+		);
+		array_push($usr_keylist,$temp);
+		$temp = array(
+			'id'=>"xxx2",
+			'name'=>"0440",
+			'domain'=>"区域2"
+		);
+		array_push($usr_keylist,$temp);
+		$temp = array(
+			'id'=>"xxx1",
+			'name'=>"0440",
+			'domain'=>"区域3"
+		);
+		array_push($usr_keylist,$temp);
+		$retval=array(
+			'status'=>'true',
+			'ret'=>$usr_keylist
+		);
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
+	case "ProjKeyList":
+		/*
 REQUEST:
     var map={
         action:"ProjKeyList",
@@ -3822,29 +3828,29 @@ RESPONSE:
 		'msg'=>''
 	);
 */
-        $proj_keylist = array();
-        for($i=0;$i<40;$i++){
-            $projcode = ($i)%14;
-            $temp = array(
-                'id'=> (string)($i+1),
-                'name'=> "钥匙".(string)($i+1),
-                'ProjCode'=> $projcode,
-                'username'=>"巡检员".(string)($i+1)
-            );
-            array_push($proj_keylist,$temp);
-        }
-        $retval=array(
-            'status'=>'true',
-            'ret'=> $proj_keylist,
+		$proj_keylist = array();
+		for($i=0;$i<40;$i++){
+			$projcode = ($i)%14;
+			$temp = array(
+				'id'=> (string)($i+1),
+				'name'=> "钥匙".(string)($i+1),
+				'ProjCode'=> $projcode,
+				'username'=>"巡检员".(string)($i+1)
+			);
+			array_push($proj_keylist,$temp);
+		}
+		$retval=array(
+			'status'=>'true',
+			'ret'=> $proj_keylist,
 			'auth'=>'true',
 			'msg'=>''
-        );
+		);
 
 
-        $jsonencode = _encode($retval);
-        echo $jsonencode; break;
-    case "ProjKey":
-/*
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
+	case "ProjKey":
+		/*
 REQUEST:
     var body={
 	ProjCode: ProjCode
@@ -3869,40 +3875,40 @@ RESPONSE:
 		'auth'=>'true'
 	);
 */
-$body_in = $_GET['body'];
-        $projcode = $body_in["ProjCode"];
-        $proj_keylist = array();
+		$body_in = $_GET['body'];
+		$projcode = $body_in["ProjCode"];
+		$proj_keylist = array();
 
 
-        $proj_keylist = array();
-        $temp = array(
-            'id'=>"0440",
-            'name'=>"0440",
-            'username'=>"巡检员1"
-        );
-        array_push($proj_keylist,$temp);
-        $temp = array(
-            'id'=>"04433",
-            'name'=>"04433",
-            'username'=>"巡检员2"
-        );
-        array_push($proj_keylist,$temp);
-        $temp = array(
-            'id'=>"0xh0",
-            'name'=>"0xh0",
-            'username'=>"未授予"
-        );
-        array_push($proj_keylist,$temp);
-        $retval=array(
-            'status'=>'true',
-            'ret'=>$proj_keylist,
+		$proj_keylist = array();
+		$temp = array(
+			'id'=>"0440",
+			'name'=>"0440",
+			'username'=>"巡检员1"
+		);
+		array_push($proj_keylist,$temp);
+		$temp = array(
+			'id'=>"04433",
+			'name'=>"04433",
+			'username'=>"巡检员2"
+		);
+		array_push($proj_keylist,$temp);
+		$temp = array(
+			'id'=>"0xh0",
+			'name'=>"0xh0",
+			'username'=>"未授予"
+		);
+		array_push($proj_keylist,$temp);
+		$retval=array(
+			'status'=>'true',
+			'ret'=>$proj_keylist,
 			'msg'=>'success',
 			'auth'=>'true'
-        );
-        $jsonencode = _encode($retval);
-        echo $jsonencode; break;
+		);
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
 	case "ProjUserList":
-/*
+		/*
 REQUEST:
 	var map={
         action:"ProjUserList",
@@ -3916,7 +3922,7 @@ RESPONSE:
 		'ProjCode'=> $projcode
 	);
 	array_push($proj_userlist,$temp);
-	
+
 	$retval=array(
 		'status'=>'true',
 		'ret'=> $proj_userlist,
@@ -3924,28 +3930,28 @@ RESPONSE:
 		'auth'=>'true'
 	);
 */
-        $proj_userlist = array();
-        for($i=0;$i<40;$i++){
-            $projcode = ($i)%14;
-            $temp = array(
-                'id'=> (string)($i+1),
-                'name'=> "巡检员".(string)($i+1),
-                'ProjCode'=> $projcode
-            );
-            array_push($proj_userlist,$temp);
-        }
-        $retval=array(
-            'status'=>'true',
-            'ret'=> $proj_userlist,
+		$proj_userlist = array();
+		for($i=0;$i<40;$i++){
+			$projcode = ($i)%14;
+			$temp = array(
+				'id'=> (string)($i+1),
+				'name'=> "巡检员".(string)($i+1),
+				'ProjCode'=> $projcode
+			);
+			array_push($proj_userlist,$temp);
+		}
+		$retval=array(
+			'status'=>'true',
+			'ret'=> $proj_userlist,
 			'msg'=>'success',
 			'auth'=>'true'
-        );
+		);
 
 
-        $jsonencode = _encode($retval);
-        echo $jsonencode; break;
-    case "KeyTable":
-/*
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
+	case "KeyTable":
+		/*
 REQUEST:
     var body={
         startseq: start,
@@ -3962,7 +3968,7 @@ RESPONSE:
 		'start'=> (string)$start,
 		'total'=> (string)$total,
 		'length'=>(string)$query_length,
-		'keytable'=> $keytable	
+		'keytable'=> $keytable
 	);
 	$retval=array(
 		'status'=>'true',
@@ -3971,47 +3977,47 @@ RESPONSE:
 		'auth'=>'true'
 	);
 */
-        $total = 94;
-		
+		$total = 94;
+
 		$body_in = $_GET['body'];
-        $query_length = (int)($body_in['length']);
-        $start = (int)($body_in['startseq']);
-        if($query_length> $total-$start){$query_length = $total-$start;}
-        $keytable = array();
-        for($i=0;$i<$query_length;$i++){
-            $type="R";
-            if(($i%7)==0) $type= "B";
-            if(($i%5)==0) $type= "P";
-            if(($i%11)==0) $type= "I";
-    		$temp = array(
-    			'KeyCode'=>(string)($start+($i+1)),
-    			'KeyName'=>"key".(string)($start+($i+1)),
-    			'KeyType'=>$type,
-    			'HardwareCode'=>"xdsdsd",
-    			'KeyProj'=>(string)($start%5),
-    			'KeyProjName'=>"区域".(string)($start+$i),
+		$query_length = (int)($body_in['length']);
+		$start = (int)($body_in['startseq']);
+		if($query_length> $total-$start){$query_length = $total-$start;}
+		$keytable = array();
+		for($i=0;$i<$query_length;$i++){
+			$type="R";
+			if(($i%7)==0) $type= "B";
+			if(($i%5)==0) $type= "P";
+			if(($i%11)==0) $type= "I";
+			$temp = array(
+				'KeyCode'=>(string)($start+($i+1)),
+				'KeyName'=>"key".(string)($start+($i+1)),
+				'KeyType'=>$type,
+				'HardwareCode'=>"xdsdsd",
+				'KeyProj'=>(string)($start%5),
+				'KeyProjName'=>"区域".(string)($start+$i),
 				'KeyUser'=>"user",
-    			'KeyUserName'=>"user",
-    			'Memo'=>"备注".(string)($start+$i)
-    		);
-    		array_push($keytable,$temp);
-        }
+				'KeyUserName'=>"user",
+				'Memo'=>"备注".(string)($start+$i)
+			);
+			array_push($keytable,$temp);
+		}
 		$body=array(
 			'start'=> (string)$start,
-    		'total'=> (string)$total,
-    		'length'=>(string)$query_length,
-    		'keytable'=> $keytable	
+			'total'=> (string)$total,
+			'length'=>(string)$query_length,
+			'keytable'=> $keytable
 		);
-    	$retval=array(
-    		'status'=>'true',
-    		'ret'=> $body,
+		$retval=array(
+			'status'=>'true',
+			'ret'=> $body,
 			'msg'=>'success',
 			'auth'=>'true'
-    	);
-    	$jsonencode = _encode($retval);
-    	echo $jsonencode; break;
-    case "KeyNew":
-/*
+		);
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
+	case "KeyNew":
+		/*
 REQUEST:
     var body={
         KeyCode: key.KeyCode,
@@ -4032,17 +4038,17 @@ RESPONSE:
 		'status'=>'true',
 		'msg'=>'success',
 		'auth'=>'true'
-	);	
+	);
 */
-    	$retval=array(
-    		'status'=>'true',
+		$retval=array(
+			'status'=>'true',
 			'msg'=>'success',
 			'auth'=>'true'
-    	);
-        $jsonencode = _encode($retval);
-    	echo $jsonencode; break;
+		);
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
 	case "KeyMod":
-/*
+		/*
 REQUEST:
     var body={
         KeyCode: key.KeyCode,
@@ -4065,15 +4071,15 @@ RESPONSE:
 		'auth'=>'true'
 	);
 */
-    	$retval=array(
-    		'status'=>'true',
+		$retval=array(
+			'status'=>'true',
 			'msg'=>'success',
 			'auth'=>'true'
-    	);
-        $jsonencode = _encode($retval);
-    	echo $jsonencode; break;
-    case "KeyDel":
-/*
+		);
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
+	case "KeyDel":
+		/*
 REQUEST:
     var body={
         KeyCode: id
@@ -4091,15 +4097,15 @@ RESPONSE:
 		'auth'=>'true'
 	);
 */
-    	$retval=array(
-    		'status'=>'true',
+		$retval=array(
+			'status'=>'true',
 			'msg'=>'success',
 			'auth'=>'true'
-    	);
-        $jsonencode = _encode($retval);
-    	echo $jsonencode; break;
-    case "DomainAuthlist":
-/*
+		);
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
+	case "DomainAuthlist":
+		/*
 REQUEST:
     var body={
 		DomainCode:DomainCode
@@ -4122,7 +4128,7 @@ RESPONSE:
 		'AuthWay'=>"sssssss"
 	);
 	array_push($authlist,$temp);
-	
+
 	$retval=array(
 		'status'=>'true',
 		'ret'=>$authlist,
@@ -4131,9 +4137,9 @@ RESPONSE:
 	);
 */
 		$body_in = $_GET['body'];
-        $DomainCode=$body_in['DomainCode'];
-        $authlist = array();
-        for($i=0;$i<5;$i++){
+		$DomainCode=$body_in['DomainCode'];
+		$authlist = array();
+		for($i=0;$i<5;$i++){
 			$temp = array(
 				'AuthId'=>(string)($i),
 				'DomainId'=>"区域".(string)($i),
@@ -4154,8 +4160,8 @@ RESPONSE:
 		);
 		$jsonencode = _encode($retval);
 		echo $jsonencode; break;
-    case "KeyAuthlist":
-/*
+	case "KeyAuthlist":
+		/*
 REQUEST:
     var body={KeyCode: KeyId};
     var map={
@@ -4176,7 +4182,7 @@ RESPONSE:
 		'AuthWay'=>"sssssss"
 	);
 	array_push($authlist,$temp);
-	
+
 	$retval=array(
 		'status'=>'true',
 		'ret'=>$authlist,
@@ -4185,9 +4191,9 @@ RESPONSE:
 	);
 */
 		$body_in = $_GET['body'];
-        $keyid=$body_in ['KeyCode'];
-        $authlist = array();
-        for($i=0;$i<5;$i++){
+		$keyid=$body_in ['KeyCode'];
+		$authlist = array();
+		for($i=0;$i<5;$i++){
 			$temp = array(
 				'AuthId'=>(string)($i),
 				'DomainId'=>"区域".(string)($i),
@@ -4199,8 +4205,8 @@ RESPONSE:
 				'AuthWay'=>"sssssss"
 			);
 			array_push($authlist,$temp);
-        }
-        $retval=array(
+		}
+		$retval=array(
 			'status'=>'true',
 			'ret'=>$authlist,
 			'msg'=>'success',
@@ -4208,8 +4214,8 @@ RESPONSE:
 		);
 		$jsonencode = _encode($retval);
 		echo $jsonencode; break;
-    case "KeyGrant":
-/*
+	case "KeyGrant":
+		/*
 REQUEST:
     var body={
 	KeyCode:keyid,
@@ -4228,15 +4234,15 @@ RESPONSE:
 		'auth'=>'true'
 	);
 */
-        	$retval=array(
-        		'status'=>'true',
-				'msg'=>'success',
-				'auth'=>'true'
-        	);
-            $jsonencode = _encode($retval);
-        	echo $jsonencode; break;
-    case "KeyAuthNew":
-/*
+		$retval=array(
+			'status'=>'true',
+			'msg'=>'success',
+			'auth'=>'true'
+		);
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
+	case "KeyAuthNew":
+		/*
 REQUEST:
     var body={
         DomainId: DomainId,
@@ -4254,17 +4260,17 @@ RESPONSE:
 		'status'=>'true',
 		'msg'=>'success',
 		'auth'=>'true'
-	);	
+	);
 */
-        $retval=array(
-            'status'=>'true',
-            'msg'=>'success',
+		$retval=array(
+			'status'=>'true',
+			'msg'=>'success',
 			'auth'=>'true'
-        );
-        $jsonencode = _encode($retval);
-        echo $jsonencode; break;
+		);
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
 	case "KeyAuthDel":
-/*
+		/*
 REQUEST:
     var body={AuthId:authid};
     var map={
@@ -4278,17 +4284,17 @@ RESPONSE;
 		'status'=>'true',
 		'msg'=>'success',
 		'auth'=>'true'
-	);	
+	);
 */
-        $retval=array(
-            'status'=>'true',
-            'msg'=>'success',
+		$retval=array(
+			'status'=>'true',
+			'msg'=>'success',
 			'auth'=>'true'
-        );
-        $jsonencode = _encode($retval);
-        echo $jsonencode; break;
-    case "KeyHistory":
-        /*
+		);
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
+	case "KeyHistory":
+		/*
         REQUEST:
             var condition = {
                 ProjCode:Query_project,
@@ -4312,46 +4318,46 @@ RESPONSE;
                 'auth'=>'true'
             );
         */
-                $usr = $_GET["user"];
-                $condition = $_GET["body"];
-            $column = 16;
-            $row = 40;
-            $column_name = array();
-            $row_content = array();
-            for( $i=0;$i<$column;$i++){
-                array_push($column_name,"第".(string)($i+1)."列");
-            }
-            for($i=0;$i<$row;$i++){
-                $one_row = array();
-                array_push($one_row,(string)($i+1));
-                array_push($one_row,"备注".(string)($i+1));
-                for($j=0;$j<($column-6);$j++) array_push($one_row,rand(10,110));
+		$usr = $_GET["user"];
+		$condition = $_GET["body"];
+		$column = 16;
+		$row = 40;
+		$column_name = array();
+		$row_content = array();
+		for( $i=0;$i<$column;$i++){
+			array_push($column_name,"第".(string)($i+1)."列");
+		}
+		for($i=0;$i<$row;$i++){
+			$one_row = array();
+			array_push($one_row,(string)($i+1));
+			array_push($one_row,"备注".(string)($i+1));
+			for($j=0;$j<($column-6);$j++) array_push($one_row,rand(10,110));
 
-                //one_row.push("地址"+(i+1)+"xxxxx路"+(i+1)+"xxxxx号");
-                array_push($one_row,"地址".((string)($i+1))."xxxxx路".((string)($i+1))."xxxxx号");
-                //one_row.push("测试");
-                array_push($one_row,"测试");
-                //one_row.push("名称");
-                array_push($one_row,"名称");
-                //one_row.push("长数据长数据长数据"+(i+1)+"xxxxx路"+(i+1)+"xxxxx号");
-                array_push($one_row,"长数据长数据长数据".((string)($i+1))."xxxxx路".((string)($i+1))."xxxxx号");
-                array_push($row_content,$one_row);
-                //row_content.push(one_row);
-            }
-            $body=array(
-                'ColumnName'=> $column_name,
-                'TableData'=>$row_content
-            );
-            $retval=array(
-                'status'=>'true',
-                'ret'=>$body,
-                'msg'=>'success',
-                'auth'=>'true'
-            );
-            $jsonencode = _encode($retval);
-            echo $jsonencode; break;
-case "AssembleHistory":
-    /*
+			//one_row.push("地址"+(i+1)+"xxxxx路"+(i+1)+"xxxxx号");
+			array_push($one_row,"地址".((string)($i+1))."xxxxx路".((string)($i+1))."xxxxx号");
+			//one_row.push("测试");
+			array_push($one_row,"测试");
+			//one_row.push("名称");
+			array_push($one_row,"名称");
+			//one_row.push("长数据长数据长数据"+(i+1)+"xxxxx路"+(i+1)+"xxxxx号");
+			array_push($one_row,"长数据长数据长数据".((string)($i+1))."xxxxx路".((string)($i+1))."xxxxx号");
+			array_push($row_content,$one_row);
+			//row_content.push(one_row);
+		}
+		$body=array(
+			'ColumnName'=> $column_name,
+			'TableData'=>$row_content
+		);
+		$retval=array(
+			'status'=>'true',
+			'ret'=>$body,
+			'msg'=>'success',
+			'auth'=>'true'
+		);
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
+	case "AssembleHistory":
+		/*
     REQUEST:
         var condition = {
             ProjCode:Query_project,
@@ -4375,46 +4381,46 @@ case "AssembleHistory":
             'auth'=>'true'
         );
     */
-            $usr = $_GET["user"];
-            $condition = $_GET["body"];
-        $column = 16;
-        $row = 40;
-        $column_name = array();
-        $row_content = array();
-        for( $i=0;$i<$column;$i++){
-            array_push($column_name,"第".(string)($i+1)."列");
-        }
-        for($i=0;$i<$row;$i++){
-            $one_row = array();
-            array_push($one_row,(string)($i+1));
-            array_push($one_row,"备注".(string)($i+1));
-            for($j=0;$j<($column-6);$j++) array_push($one_row,rand(10,110));
+		$usr = $_GET["user"];
+		$condition = $_GET["body"];
+		$column = 16;
+		$row = 40;
+		$column_name = array();
+		$row_content = array();
+		for( $i=0;$i<$column;$i++){
+			array_push($column_name,"第".(string)($i+1)."列");
+		}
+		for($i=0;$i<$row;$i++){
+			$one_row = array();
+			array_push($one_row,(string)($i+1));
+			array_push($one_row,"备注".(string)($i+1));
+			for($j=0;$j<($column-6);$j++) array_push($one_row,rand(10,110));
 
-            //one_row.push("地址"+(i+1)+"xxxxx路"+(i+1)+"xxxxx号");
-            array_push($one_row,"地址".((string)($i+1))."xxxxx路".((string)($i+1))."xxxxx号");
-            //one_row.push("测试");
-            array_push($one_row,"测试");
-            //one_row.push("名称");
-            array_push($one_row,"名称");
-            //one_row.push("长数据长数据长数据"+(i+1)+"xxxxx路"+(i+1)+"xxxxx号");
-            array_push($one_row,"长数据长数据长数据".((string)($i+1))."xxxxx路".((string)($i+1))."xxxxx号");
-            array_push($row_content,$one_row);
-            //row_content.push(one_row);
-        }
-        $body=array(
-            'ColumnName'=> $column_name,
-            'TableData'=>$row_content
-        );
-        $retval=array(
-            'status'=>'true',
-            'ret'=>$body,
-            'msg'=>'success',
-            'auth'=>'true'
-        );
-        $jsonencode = _encode($retval);
-        echo $jsonencode; break;
-case "AssembleAudit":
-    /*
+			//one_row.push("地址"+(i+1)+"xxxxx路"+(i+1)+"xxxxx号");
+			array_push($one_row,"地址".((string)($i+1))."xxxxx路".((string)($i+1))."xxxxx号");
+			//one_row.push("测试");
+			array_push($one_row,"测试");
+			//one_row.push("名称");
+			array_push($one_row,"名称");
+			//one_row.push("长数据长数据长数据"+(i+1)+"xxxxx路"+(i+1)+"xxxxx号");
+			array_push($one_row,"长数据长数据长数据".((string)($i+1))."xxxxx路".((string)($i+1))."xxxxx号");
+			array_push($row_content,$one_row);
+			//row_content.push(one_row);
+		}
+		$body=array(
+			'ColumnName'=> $column_name,
+			'TableData'=>$row_content
+		);
+		$retval=array(
+			'status'=>'true',
+			'ret'=>$body,
+			'msg'=>'success',
+			'auth'=>'true'
+		);
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
+	case "AssembleAudit":
+		/*
     REQUEST:
         var condition = {
             ProjCode:Query_project,
@@ -4438,46 +4444,46 @@ case "AssembleAudit":
             'auth'=>'true'
         );
     */
-            $usr = $_GET["user"];
-            $condition = $_GET["body"];
-        $column = 16;
-        $row = 40;
-        $column_name = array();
-        $row_content = array();
-        for( $i=0;$i<$column;$i++){
-            array_push($column_name,"第".(string)($i+1)."列");
-        }
-        for($i=0;$i<$row;$i++){
-            $one_row = array();
-            array_push($one_row,(string)($i+1));
-            array_push($one_row,"备注".(string)($i+1));
-            for($j=0;$j<($column-6);$j++) array_push($one_row,rand(10,110));
+		$usr = $_GET["user"];
+		$condition = $_GET["body"];
+		$column = 16;
+		$row = 40;
+		$column_name = array();
+		$row_content = array();
+		for( $i=0;$i<$column;$i++){
+			array_push($column_name,"第".(string)($i+1)."列");
+		}
+		for($i=0;$i<$row;$i++){
+			$one_row = array();
+			array_push($one_row,(string)($i+1));
+			array_push($one_row,"备注".(string)($i+1));
+			for($j=0;$j<($column-6);$j++) array_push($one_row,rand(10,110));
 
-            //one_row.push("地址"+(i+1)+"xxxxx路"+(i+1)+"xxxxx号");
-            array_push($one_row,"地址".((string)($i+1))."xxxxx路".((string)($i+1))."xxxxx号");
-            //one_row.push("测试");
-            array_push($one_row,"测试");
-            //one_row.push("名称");
-            array_push($one_row,"名称");
-            //one_row.push("长数据长数据长数据"+(i+1)+"xxxxx路"+(i+1)+"xxxxx号");
-            array_push($one_row,"长数据长数据长数据".((string)($i+1))."xxxxx路".((string)($i+1))."xxxxx号");
-            array_push($row_content,$one_row);
-            //row_content.push(one_row);
-        }
-        $body=array(
-            'ColumnName'=> $column_name,
-            'TableData'=>$row_content
-        );
-        $retval=array(
-            'status'=>'true',
-            'ret'=>$body,
-            'msg'=>'success',
-            'auth'=>'true'
-        );
-        $jsonencode = _encode($retval);
-        echo $jsonencode; break;
-case "AttendanceAudit":
-    /*
+			//one_row.push("地址"+(i+1)+"xxxxx路"+(i+1)+"xxxxx号");
+			array_push($one_row,"地址".((string)($i+1))."xxxxx路".((string)($i+1))."xxxxx号");
+			//one_row.push("测试");
+			array_push($one_row,"测试");
+			//one_row.push("名称");
+			array_push($one_row,"名称");
+			//one_row.push("长数据长数据长数据"+(i+1)+"xxxxx路"+(i+1)+"xxxxx号");
+			array_push($one_row,"长数据长数据长数据".((string)($i+1))."xxxxx路".((string)($i+1))."xxxxx号");
+			array_push($row_content,$one_row);
+			//row_content.push(one_row);
+		}
+		$body=array(
+			'ColumnName'=> $column_name,
+			'TableData'=>$row_content
+		);
+		$retval=array(
+			'status'=>'true',
+			'ret'=>$body,
+			'msg'=>'success',
+			'auth'=>'true'
+		);
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
+	case "AttendanceAudit":
+		/*
     REQUEST:
         var condition = {
             ProjCode:Query_project,
@@ -4501,46 +4507,46 @@ case "AttendanceAudit":
             'auth'=>'true'
         );
     */
-            $usr = $_GET["user"];
-            $condition = $_GET["body"];
-        $column = 16;
-        $row = 40;
-        $column_name = array();
-        $row_content = array();
-        for( $i=0;$i<$column;$i++){
-            array_push($column_name,"第".(string)($i+1)."列");
-        }
-        for($i=0;$i<$row;$i++){
-            $one_row = array();
-            array_push($one_row,(string)($i+1));
-            array_push($one_row,"备注".(string)($i+1));
-            for($j=0;$j<($column-6);$j++) array_push($one_row,rand(10,110));
+		$usr = $_GET["user"];
+		$condition = $_GET["body"];
+		$column = 16;
+		$row = 40;
+		$column_name = array();
+		$row_content = array();
+		for( $i=0;$i<$column;$i++){
+			array_push($column_name,"第".(string)($i+1)."列");
+		}
+		for($i=0;$i<$row;$i++){
+			$one_row = array();
+			array_push($one_row,(string)($i+1));
+			array_push($one_row,"备注".(string)($i+1));
+			for($j=0;$j<($column-6);$j++) array_push($one_row,rand(10,110));
 
-            //one_row.push("地址"+(i+1)+"xxxxx路"+(i+1)+"xxxxx号");
-            array_push($one_row,"地址".((string)($i+1))."xxxxx路".((string)($i+1))."xxxxx号");
-            //one_row.push("测试");
-            array_push($one_row,"测试");
-            //one_row.push("名称");
-            array_push($one_row,"名称");
-            //one_row.push("长数据长数据长数据"+(i+1)+"xxxxx路"+(i+1)+"xxxxx号");
-            array_push($one_row,"长数据长数据长数据".((string)($i+1))."xxxxx路".((string)($i+1))."xxxxx号");
-            array_push($row_content,$one_row);
-            //row_content.push(one_row);
-        }
-        $body=array(
-            'ColumnName'=> $column_name,
-            'TableData'=>$row_content
-        );
-        $retval=array(
-            'status'=>'true',
-            'ret'=>$body,
-            'msg'=>'success',
-            'auth'=>'true'
-        );
-        $jsonencode = _encode($retval);
-        echo $jsonencode; break;
-case "KPIAudit":
-    /*
+			//one_row.push("地址"+(i+1)+"xxxxx路"+(i+1)+"xxxxx号");
+			array_push($one_row,"地址".((string)($i+1))."xxxxx路".((string)($i+1))."xxxxx号");
+			//one_row.push("测试");
+			array_push($one_row,"测试");
+			//one_row.push("名称");
+			array_push($one_row,"名称");
+			//one_row.push("长数据长数据长数据"+(i+1)+"xxxxx路"+(i+1)+"xxxxx号");
+			array_push($one_row,"长数据长数据长数据".((string)($i+1))."xxxxx路".((string)($i+1))."xxxxx号");
+			array_push($row_content,$one_row);
+			//row_content.push(one_row);
+		}
+		$body=array(
+			'ColumnName'=> $column_name,
+			'TableData'=>$row_content
+		);
+		$retval=array(
+			'status'=>'true',
+			'ret'=>$body,
+			'msg'=>'success',
+			'auth'=>'true'
+		);
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
+	case "KPIAudit":
+		/*
     REQUEST:
         var condition = {
             ProjCode:Query_project,
@@ -4564,46 +4570,46 @@ case "KPIAudit":
             'auth'=>'true'
         );
     */
-            $usr = $_GET["user"];
-            $condition = $_GET["body"];
-        $column = 16;
-        $row = 40;
-        $column_name = array();
-        $row_content = array();
-        for( $i=0;$i<$column;$i++){
-            array_push($column_name,"第".(string)($i+1)."列");
-        }
-        for($i=0;$i<$row;$i++){
-            $one_row = array();
-            array_push($one_row,(string)($i+1));
-            array_push($one_row,"备注".(string)($i+1));
-            for($j=0;$j<($column-6);$j++) array_push($one_row,rand(10,110));
+		$usr = $_GET["user"];
+		$condition = $_GET["body"];
+		$column = 16;
+		$row = 40;
+		$column_name = array();
+		$row_content = array();
+		for( $i=0;$i<$column;$i++){
+			array_push($column_name,"第".(string)($i+1)."列");
+		}
+		for($i=0;$i<$row;$i++){
+			$one_row = array();
+			array_push($one_row,(string)($i+1));
+			array_push($one_row,"备注".(string)($i+1));
+			for($j=0;$j<($column-6);$j++) array_push($one_row,rand(10,110));
 
-            //one_row.push("地址"+(i+1)+"xxxxx路"+(i+1)+"xxxxx号");
-            array_push($one_row,"地址".((string)($i+1))."xxxxx路".((string)($i+1))."xxxxx号");
-            //one_row.push("测试");
-            array_push($one_row,"测试");
-            //one_row.push("名称");
-            array_push($one_row,"名称");
-            //one_row.push("长数据长数据长数据"+(i+1)+"xxxxx路"+(i+1)+"xxxxx号");
-            array_push($one_row,"长数据长数据长数据".((string)($i+1))."xxxxx路".((string)($i+1))."xxxxx号");
-            array_push($row_content,$one_row);
-            //row_content.push(one_row);
-        }
-        $body=array(
-            'ColumnName'=> $column_name,
-            'TableData'=>$row_content
-        );
-        $retval=array(
-            'status'=>'true',
-            'ret'=>$body,
-            'msg'=>'success',
-            'auth'=>'true'
-        );
-        $jsonencode = _encode($retval);
-        echo $jsonencode; break;
-case "AttendanceHistory":
-    /*
+			//one_row.push("地址"+(i+1)+"xxxxx路"+(i+1)+"xxxxx号");
+			array_push($one_row,"地址".((string)($i+1))."xxxxx路".((string)($i+1))."xxxxx号");
+			//one_row.push("测试");
+			array_push($one_row,"测试");
+			//one_row.push("名称");
+			array_push($one_row,"名称");
+			//one_row.push("长数据长数据长数据"+(i+1)+"xxxxx路"+(i+1)+"xxxxx号");
+			array_push($one_row,"长数据长数据长数据".((string)($i+1))."xxxxx路".((string)($i+1))."xxxxx号");
+			array_push($row_content,$one_row);
+			//row_content.push(one_row);
+		}
+		$body=array(
+			'ColumnName'=> $column_name,
+			'TableData'=>$row_content
+		);
+		$retval=array(
+			'status'=>'true',
+			'ret'=>$body,
+			'msg'=>'success',
+			'auth'=>'true'
+		);
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
+	case "AttendanceHistory":
+		/*
     REQUEST:
         var condition = {
             ProjCode:Query_project,
@@ -4627,46 +4633,46 @@ case "AttendanceHistory":
             'auth'=>'true'
         );
     */
-            $usr = $_GET["user"];
-            $condition = $_GET["body"];
-        $column = 16;
-        $row = 40;
-        $column_name = array();
-        $row_content = array();
-        for( $i=0;$i<$column;$i++){
-            array_push($column_name,"第".(string)($i+1)."列");
-        }
-        for($i=0;$i<$row;$i++){
-            $one_row = array();
-            array_push($one_row,(string)($i+1));
-            array_push($one_row,"备注".(string)($i+1));
-            for($j=0;$j<($column-6);$j++) array_push($one_row,rand(10,110));
+		$usr = $_GET["user"];
+		$condition = $_GET["body"];
+		$column = 16;
+		$row = 40;
+		$column_name = array();
+		$row_content = array();
+		for( $i=0;$i<$column;$i++){
+			array_push($column_name,"第".(string)($i+1)."列");
+		}
+		for($i=0;$i<$row;$i++){
+			$one_row = array();
+			array_push($one_row,(string)($i+1));
+			array_push($one_row,"备注".(string)($i+1));
+			for($j=0;$j<($column-6);$j++) array_push($one_row,rand(10,110));
 
-            //one_row.push("地址"+(i+1)+"xxxxx路"+(i+1)+"xxxxx号");
-            array_push($one_row,"地址".((string)($i+1))."xxxxx路".((string)($i+1))."xxxxx号");
-            //one_row.push("测试");
-            array_push($one_row,"测试");
-            //one_row.push("名称");
-            array_push($one_row,"名称");
-            //one_row.push("长数据长数据长数据"+(i+1)+"xxxxx路"+(i+1)+"xxxxx号");
-            array_push($one_row,"长数据长数据长数据".((string)($i+1))."xxxxx路".((string)($i+1))."xxxxx号");
-            array_push($row_content,$one_row);
-            //row_content.push(one_row);
-        }
-        $body=array(
-            'ColumnName'=> $column_name,
-            'TableData'=>$row_content
-        );
-        $retval=array(
-            'status'=>'true',
-            'ret'=>$body,
-            'msg'=>'success',
-            'auth'=>'true'
-        );
-        $jsonencode = _encode($retval);
-        echo $jsonencode; break;
-case "AttendanceBatchNew":
-/*
+			//one_row.push("地址"+(i+1)+"xxxxx路"+(i+1)+"xxxxx号");
+			array_push($one_row,"地址".((string)($i+1))."xxxxx路".((string)($i+1))."xxxxx号");
+			//one_row.push("测试");
+			array_push($one_row,"测试");
+			//one_row.push("名称");
+			array_push($one_row,"名称");
+			//one_row.push("长数据长数据长数据"+(i+1)+"xxxxx路"+(i+1)+"xxxxx号");
+			array_push($one_row,"长数据长数据长数据".((string)($i+1))."xxxxx路".((string)($i+1))."xxxxx号");
+			array_push($row_content,$one_row);
+			//row_content.push(one_row);
+		}
+		$body=array(
+			'ColumnName'=> $column_name,
+			'TableData'=>$row_content
+		);
+		$retval=array(
+			'status'=>'true',
+			'ret'=>$body,
+			'msg'=>'success',
+			'auth'=>'true'
+		);
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
+	case "AttendanceBatchNew":
+		/*
 REQUEST:
 
     var map={
@@ -4681,15 +4687,15 @@ $retval=array(
     'auth'=>'true'
 );
 */
-    $retval=array(
-        'status'=>'true',
-        'msg'=>'success',
-        'auth'=>'true'
-    );
-    $jsonencode = _encode($retval);
-    echo $jsonencode; break;
-case "AttendanceNew":
-/*
+		$retval=array(
+			'status'=>'true',
+			'msg'=>'success',
+			'auth'=>'true'
+		);
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
+	case "AttendanceNew":
+		/*
 REQUEST:
 var body = {
         PJcode: attendance.PJcode,
@@ -4712,18 +4718,18 @@ $retval=array(
 	'auth'=>'true'
 );
 */
-	$body= $_GET['body'];
-	$auth = array() ;
-    if(isset($_GET['auth'])) $auth= $body['auth'];
-	$retval=array(
-		'status'=>'true',
-		'msg'=>'success',
-		'auth'=>'true'
-	);
-    $jsonencode = _encode($retval);
-	echo $jsonencode; break;
-case "AttendanceMod":
-/*
+		$body= $_GET['body'];
+		$auth = array() ;
+		if(isset($_GET['auth'])) $auth= $body['auth'];
+		$retval=array(
+			'status'=>'true',
+			'msg'=>'success',
+			'auth'=>'true'
+		);
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
+	case "AttendanceMod":
+		/*
 REQUEST:
 var body = {
         AttendanceID:id
@@ -4747,19 +4753,19 @@ $retval=array(
 	'auth'=>'true'
 );
 */
-	$body= $_GET['body'];
-	$auth = array() ;
-    if(isset($_GET['auth'])) $auth= $body['auth'];
-	$retval=array(
-		'status'=>'true',
-		'msg'=>'success',
-		'auth'=>'true'
-	);
-    $jsonencode = _encode($retval);
-	echo $jsonencode; break;
+		$body= $_GET['body'];
+		$auth = array() ;
+		if(isset($_GET['auth'])) $auth= $body['auth'];
+		$retval=array(
+			'status'=>'true',
+			'msg'=>'success',
+			'auth'=>'true'
+		);
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
 
-case "AttendanceDel":
-/*
+	case "AttendanceDel":
+		/*
 REQUEST:
 var body = {
         attendanceid: id
@@ -4777,15 +4783,15 @@ $retval=array(
 	'auth'=>'true'
 );
 */
-	$retval=array(
-		'status'=>'true',
-		'msg'=>'success',
-		'auth'=>'true'
-	);
-    $jsonencode = _encode($retval);
-	echo $jsonencode; break;
-case "GetAttendance":
-/*
+		$retval=array(
+			'status'=>'true',
+			'msg'=>'success',
+			'auth'=>'true'
+		);
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
+	case "GetAttendance":
+		/*
 REQUEST:
 var body = {
         AttendanceID:id
@@ -4804,29 +4810,29 @@ $retval=array(
 	'auth'=>'true'
 );
 */
-	$body= $_GET['body'];
-	$auth = array() ;
-    if(isset($_GET['auth'])) $auth= $body['auth'];
+		$body= $_GET['body'];
+		$auth = array() ;
+		if(isset($_GET['auth'])) $auth= $body['auth'];
 
-    $ret = array(
-    'attendanceID'=>"1234",
-            'PJcode'=> "1234",
-            'name'=> "name1234",
-            'arrivetime'=> "12:34:56",
-            'leavetime'=> "02:04:06",
-            'date'=> "2017-12-13",
-            'leavehour'=>0
-    );
-	$retval=array(
-		'status'=>'true',
-		'ret'=>$ret,
-		'msg'=>'success',
-		'auth'=>'true'
-	);
-    $jsonencode = _encode($retval);
-	echo $jsonencode; break;
-case "ExportTable":
-/*
+		$ret = array(
+			'attendanceID'=>"1234",
+			'PJcode'=> "1234",
+			'name'=> "name1234",
+			'arrivetime'=> "12:34:56",
+			'leavetime'=> "02:04:06",
+			'date'=> "2017-12-13",
+			'leavehour'=>0
+		);
+		$retval=array(
+			'status'=>'true',
+			'ret'=>$ret,
+			'msg'=>'success',
+			'auth'=>'true'
+		);
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
+	case "ExportTable":
+		/*
 REQUEST:
     var condition = {
             TableName:Query_table_name,
@@ -4850,46 +4856,46 @@ RESPONSE:
 		'auth'=>'true'
     );
 */
-        $usr = $_GET["user"];
-        $condition = $_GET["body"];
-    $column = 16;
-    $row = 40;
-    $column_name = array();
-    $row_content = array();
-    for( $i=0;$i<$column;$i++){
-        array_push($column_name,"第".(string)($i+1)."列");
-    }
-    for($i=0;$i<$row;$i++){
-        $one_row = array();
-        array_push($one_row,(string)($i+1));
-        array_push($one_row,"备注".(string)($i+1));
-        for($j=0;$j<($column-6);$j++) array_push($one_row,rand(10,110));
+		$usr = $_GET["user"];
+		$condition = $_GET["body"];
+		$column = 16;
+		$row = 40;
+		$column_name = array();
+		$row_content = array();
+		for( $i=0;$i<$column;$i++){
+			array_push($column_name,"第".(string)($i+1)."列");
+		}
+		for($i=0;$i<$row;$i++){
+			$one_row = array();
+			array_push($one_row,(string)($i+1));
+			array_push($one_row,"备注".(string)($i+1));
+			for($j=0;$j<($column-6);$j++) array_push($one_row,rand(10,110));
 
-        //one_row.push("地址"+(i+1)+"xxxxx路"+(i+1)+"xxxxx号");
-        array_push($one_row,"地址".((string)($i+1))."xxxxx路".((string)($i+1))."xxxxx号");
-        //one_row.push("测试");
-        array_push($one_row,"测试");
-        //one_row.push("名称");
-        array_push($one_row,"名称");
-        //one_row.push("长数据长数据长数据"+(i+1)+"xxxxx路"+(i+1)+"xxxxx号");
-        array_push($one_row,"长数据长数据长数据".((string)($i+1))."xxxxx路".((string)($i+1))."xxxxx号");
-        array_push($row_content,$one_row);
-        //row_content.push(one_row);
-    }
-	$body=array(
-        'ColumnName'=> $column_name,
-        'TableData'=>$row_content
-	);
-    $retval=array(
-        'status'=>'true',
-		'ret'=>$body,
-		'msg'=>'success',
-		'auth'=>'true'
-    );
-    $jsonencode = _encode($retval);
-	echo $jsonencode; break;
+			//one_row.push("地址"+(i+1)+"xxxxx路"+(i+1)+"xxxxx号");
+			array_push($one_row,"地址".((string)($i+1))."xxxxx路".((string)($i+1))."xxxxx号");
+			//one_row.push("测试");
+			array_push($one_row,"测试");
+			//one_row.push("名称");
+			array_push($one_row,"名称");
+			//one_row.push("长数据长数据长数据"+(i+1)+"xxxxx路"+(i+1)+"xxxxx号");
+			array_push($one_row,"长数据长数据长数据".((string)($i+1))."xxxxx路".((string)($i+1))."xxxxx号");
+			array_push($row_content,$one_row);
+			//row_content.push(one_row);
+		}
+		$body=array(
+			'ColumnName'=> $column_name,
+			'TableData'=>$row_content
+		);
+		$retval=array(
+			'status'=>'true',
+			'ret'=>$body,
+			'msg'=>'success',
+			'auth'=>'true'
+		);
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
 	case "VersionInformation":
-/*
+		/*
 REQUEST:
     var map={
         action:"VersionInformation",
@@ -4980,7 +4986,7 @@ RESPONSE:
 		$body=array(
 			'ColumnName'=> $column_name,
 			'TableData'=>$row_content
-			);
+		);
 		$retval=array(
 			'status'=>'true',
 			'ret'=>$body,
@@ -4991,7 +4997,7 @@ RESPONSE:
 		$jsonencode = _encode($retval);
 		echo $jsonencode; break;
 	case "ProjVersionStrategyChange":
-/*
+		/*
 REQUEST:
 	var body={
 		ProjCode:ProjCode,
@@ -5019,7 +5025,7 @@ RESPONSE:
 		echo $jsonencode; break;
 
 	case "PointUpdateStrategyChange":
-	/*
+		/*
     REQUEST:
     	var body={
     		StatCode:StatCode,
@@ -5046,7 +5052,7 @@ RESPONSE:
 		$jsonencode = _encode($retval);
 		echo $jsonencode; break;
 	case "ProjUpdateStrategyChange":
-	/*
+		/*
     REQUEST:
     	var body={
     		ProjCode:ProjCode,
@@ -5073,7 +5079,7 @@ RESPONSE:
 		$jsonencode = _encode($retval);
 		echo $jsonencode; break;
 	case "GetProjUpdateStrategy":
-	/*
+		/*
 	REQUEST:
 		var body={
 			ProjCode:ProjCode
@@ -5107,7 +5113,7 @@ RESPONSE:
 		$jsonencode = _encode($retval);
 		echo $jsonencode; break;
 	case "MonitorAlarmList":
-    /*
+		/*
     REQUEST:
         var map={
             action:"MonitorAlarmList",
@@ -5140,359 +5146,359 @@ RESPONSE:
     		'auth'=>'true'
     	);
     */
-    	$userid = $_GET["user"];
-    	$stat_list = array();
-    	$map1=array(
-    		'StatCode'=>"120101001",
-    		'StatName'=>"浦东环球金融中心工程",
-    		'ChargeMan'=>"张三",
-    		'Telephone'=>"13912345678",
-    		'Department'=>"",
-    		'Address'=>"世纪大道100号",
-    		'Country'=>"浦东新区",
-    		'Street'=>"",
-    		'Square'=>"40000",
-    		'Flag_la'=>"N",
-    		'Latitude'=>"31.240246",
-    		'Flag_lo'=>"E",
-    		'Longitude'=>"121.514168",
-    		'ProStartTime'=>"2015-01-01",
-    		'Stage'=>""
-    	);
-    	array_push($stat_list,$map1);
-    	$map2=array(
+		$userid = $_GET["user"];
+		$stat_list = array();
+		$map1=array(
+			'StatCode'=>"120101001",
+			'StatName'=>"浦东环球金融中心工程",
+			'ChargeMan'=>"张三",
+			'Telephone'=>"13912345678",
+			'Department'=>"",
+			'Address'=>"世纪大道100号",
+			'Country'=>"浦东新区",
+			'Street'=>"",
+			'Square'=>"40000",
+			'Flag_la'=>"N",
+			'Latitude'=>"31.240246",
+			'Flag_lo'=>"E",
+			'Longitude'=>"121.514168",
+			'ProStartTime'=>"2015-01-01",
+			'Stage'=>""
+		);
+		array_push($stat_list,$map1);
+		$map2=array(
 
-    		'StatCode'=>"120101002",
-    		'StatName'=>"港运大厦",
-    		'ChargeMan'=>"张三",
-    		'Telephone'=>"13912345678",
-    		'Department'=>"",
-    		'Address'=>"杨树浦路1963弄24号",
-    		'Country'=>"虹口区",
-    		'Street'=>"",
-    		'Square'=>"0",
-    		'Flag_la'=>"N",
-    		'Latitude'=>"31.255719",
-    		'Flag_lo'=>"E",
-    		'Longitude'=>"121.517700",
-    		'ProStartTime'=>"2016-04-01",
-    		'Stage'=>""
-    	);
-    	array_push($stat_list,$map1);
-    	$map3= array(
+			'StatCode'=>"120101002",
+			'StatName'=>"港运大厦",
+			'ChargeMan'=>"张三",
+			'Telephone'=>"13912345678",
+			'Department'=>"",
+			'Address'=>"杨树浦路1963弄24号",
+			'Country'=>"虹口区",
+			'Street'=>"",
+			'Square'=>"0",
+			'Flag_la'=>"N",
+			'Latitude'=>"31.255719",
+			'Flag_lo'=>"E",
+			'Longitude'=>"121.517700",
+			'ProStartTime'=>"2016-04-01",
+			'Stage'=>""
+		);
+		array_push($stat_list,$map1);
+		$map3= array(
 
-    		'StatCode'=>"120101003",
-    		'StatName'=>"万宝国际广场",
-    		'ChargeMan'=>"张三",
-    		'Telephone'=>"13912345678",
-    		'Department'=>"",
-    		'Address'=>"延安西路500号",
-    		'Country'=>"长宁区",
-    		'Street'=>"",
-    		'Square'=>"0",
-    		'Flag_la'=>"N",
-    		'Latitude'=>"31.223441",
-    		'Flag_lo'=>"E",
-    		'Longitude'=>"121.442703",
-    		'ProStartTime'=>"2016-04-01",
-    		'Stage'=>""
-    	);
-    	array_push($stat_list,$map3);
-    	$map4= array(
+			'StatCode'=>"120101003",
+			'StatName'=>"万宝国际广场",
+			'ChargeMan'=>"张三",
+			'Telephone'=>"13912345678",
+			'Department'=>"",
+			'Address'=>"延安西路500号",
+			'Country'=>"长宁区",
+			'Street'=>"",
+			'Square'=>"0",
+			'Flag_la'=>"N",
+			'Latitude'=>"31.223441",
+			'Flag_lo'=>"E",
+			'Longitude'=>"121.442703",
+			'ProStartTime'=>"2016-04-01",
+			'Stage'=>""
+		);
+		array_push($stat_list,$map3);
+		$map4= array(
 
-    		'StatCode'=>"120101004",
-    		'StatName'=>"金桥创科园",
-    		'ChargeMan'=>"李四",
-    		'Telephone'=>"13912345678",
-    		'Department'=>"",
-    		'Address'=>"桂桥路255号",
-    		'Country'=>"浦东新区",
-    		'Street'=>"",
-    		'Square'=>"0",
-    		'Flag_la'=>"N",
-    		'Latitude'=>"31.248271",
-    		'Flag_lo'=>"E",
-    		'Longitude'=>"121.615476",
-    		'ProStartTime'=>"2016-04-01",
-    		'Stage'=>""
-    	);
-    	array_push($stat_list,$map4);
-    	$map5= array(
+			'StatCode'=>"120101004",
+			'StatName'=>"金桥创科园",
+			'ChargeMan'=>"李四",
+			'Telephone'=>"13912345678",
+			'Department'=>"",
+			'Address'=>"桂桥路255号",
+			'Country'=>"浦东新区",
+			'Street'=>"",
+			'Square'=>"0",
+			'Flag_la'=>"N",
+			'Latitude'=>"31.248271",
+			'Flag_lo'=>"E",
+			'Longitude'=>"121.615476",
+			'ProStartTime'=>"2016-04-01",
+			'Stage'=>""
+		);
+		array_push($stat_list,$map4);
+		$map5= array(
 
-    		'StatCode'=>"120101006",
-    		'StatName'=>"江湾体育场",
-    		'ChargeMan'=>"李四",
-    		'Telephone'=>"13912345678",
-    		'Department'=>"",
-    		'Address'=>"国和路346号",
-    		'Country'=>"杨浦区",
-    		'Street'=>"",
-    		'Square'=>"0",
-    		'Flag_la'=>"N",
-    		'Latitude'=>"31.313004",
-    		'Flag_lo'=>"E",
-    		'Longitude'=>"121.525701",
-    		'ProStartTime'=>"2016-04-13",
-    		'Stage'=>""
-    	);
-    	array_push($stat_list,$map5);
-    	$map6= array(
+			'StatCode'=>"120101006",
+			'StatName'=>"江湾体育场",
+			'ChargeMan'=>"李四",
+			'Telephone'=>"13912345678",
+			'Department'=>"",
+			'Address'=>"国和路346号",
+			'Country'=>"杨浦区",
+			'Street'=>"",
+			'Square'=>"0",
+			'Flag_la'=>"N",
+			'Latitude'=>"31.313004",
+			'Flag_lo'=>"E",
+			'Longitude'=>"121.525701",
+			'ProStartTime'=>"2016-04-13",
+			'Stage'=>""
+		);
+		array_push($stat_list,$map5);
+		$map6= array(
 
-    		'StatCode'=>"120101007",
-    		'StatName'=>"滨海新村",
-    		'ChargeMan'=>"李四",
-    		'Telephone'=>"13912345678",
-    		'Department'=>"",
-    		'Address'=>"同泰北路100号",
-    		'Country'=>"宝山区",
-    		'Street'=>"",
-    		'Square'=>"0",
-    		'Flag_la'=>"N",
-    		'Latitude'=>"31.382624",
-    		'Flag_lo'=>"E",
-    		'Longitude'=>"121.501387",
-    		'ProStartTime'=>"2016-02-01",
-    		'Stage'=>""
+			'StatCode'=>"120101007",
+			'StatName'=>"滨海新村",
+			'ChargeMan'=>"李四",
+			'Telephone'=>"13912345678",
+			'Department'=>"",
+			'Address'=>"同泰北路100号",
+			'Country'=>"宝山区",
+			'Street'=>"",
+			'Square'=>"0",
+			'Flag_la'=>"N",
+			'Latitude'=>"31.382624",
+			'Flag_lo'=>"E",
+			'Longitude'=>"121.501387",
+			'ProStartTime'=>"2016-02-01",
+			'Stage'=>""
 
-    	);
-    	array_push($stat_list,$map6);
-    	$map7= array(
-    		'StatCode'=>"120101008",
-    		'StatName'=>"银都苑",
-    		'ChargeMan'=>"李四",
-    		'Telephone'=>"13912345678",
-    		'Department'=>"",
-    		'Address'=>"银都路3118弄",
-    		'Country'=>"闵行区",
-    		'Street'=>"",
-    		'Square'=>"0",
-    		'Flag_la'=>"N",
-    		'Latitude'=>"31.101605",
-    		'Flag_lo'=>"E",
-    		'Longitude'=>"121.404873",
-    		'ProStartTime'=>"2016-02-01",
-    		'Stage'=>""
+		);
+		array_push($stat_list,$map6);
+		$map7= array(
+			'StatCode'=>"120101008",
+			'StatName'=>"银都苑",
+			'ChargeMan'=>"李四",
+			'Telephone'=>"13912345678",
+			'Department'=>"",
+			'Address'=>"银都路3118弄",
+			'Country'=>"闵行区",
+			'Street'=>"",
+			'Square'=>"0",
+			'Flag_la'=>"N",
+			'Latitude'=>"31.101605",
+			'Flag_lo'=>"E",
+			'Longitude'=>"121.404873",
+			'ProStartTime'=>"2016-02-01",
+			'Stage'=>""
 
-    	);
-    	array_push($stat_list,$map7);
-    	$map8= array(
-    		'StatCode'=>"120101009",
-    		'StatName'=>"万科花园小城",
-    		'ChargeMan'=>"王五",
-    		'Telephone'=>"13912345678",
-    		'Department'=>"",
-    		'Address'=>"龙吴路5710号",
-    		'Country'=>"闵行区",
-    		'Street'=>"",
-    		'Square'=>"0",
-    		'Flag_la'=>"N",
-    		'Latitude'=>"31.043827",
-    		'Flag_lo'=>"E",
-    		'Longitude'=>"121.476450",
-    		'ProStartTime'=>"2016-02-18",
-    		'Stage'=>""
+		);
+		array_push($stat_list,$map7);
+		$map8= array(
+			'StatCode'=>"120101009",
+			'StatName'=>"万科花园小城",
+			'ChargeMan'=>"王五",
+			'Telephone'=>"13912345678",
+			'Department'=>"",
+			'Address'=>"龙吴路5710号",
+			'Country'=>"闵行区",
+			'Street'=>"",
+			'Square'=>"0",
+			'Flag_la'=>"N",
+			'Latitude'=>"31.043827",
+			'Flag_lo'=>"E",
+			'Longitude'=>"121.476450",
+			'ProStartTime'=>"2016-02-18",
+			'Stage'=>""
 
-    	);
-    	array_push($stat_list,$map8);
-    	$map9= array(
-    		'StatCode'=>"120101010",
-    		'StatName'=>"合生国际花园",
-    		'ChargeMan'=>"王五",
-    		'Telephone'=>"13912345678",
-    		'Department'=>"",
-    		'Address'=>"长兴东路1290",
-    		'Country'=>"松江区",
-    		'Street'=>"",
-    		'Square'=>"0",
-    		'Flag_la'=>"N",
-    		'Latitude'=>"31.088973",
-    		'Flag_lo'=>"E",
-    		'Longitude'=>"121.295459",
-    		'ProStartTime'=>"2016-02-18",
-    		'Stage'=>""
+		);
+		array_push($stat_list,$map8);
+		$map9= array(
+			'StatCode'=>"120101010",
+			'StatName'=>"合生国际花园",
+			'ChargeMan'=>"王五",
+			'Telephone'=>"13912345678",
+			'Department'=>"",
+			'Address'=>"长兴东路1290",
+			'Country'=>"松江区",
+			'Street'=>"",
+			'Square'=>"0",
+			'Flag_la'=>"N",
+			'Latitude'=>"31.088973",
+			'Flag_lo'=>"E",
+			'Longitude'=>"121.295459",
+			'ProStartTime'=>"2016-02-18",
+			'Stage'=>""
 
-    	);
-    	array_push($stat_list,$map9);
-    	$map10= array(
-    		'StatCode'=>"120101011",
-    		'StatName'=>"江南国际会议中心",
-    		'ChargeMan'=>"王五",
-    		'Telephone'=>"13912345678",
-    		'Department'=>"",
-    		'Address'=>"青浦区Y095(阁游路)",
-    		'Country'=>"青浦区",
-    		'Street'=>"",
-    		'Square'=>"0",
-    		'Flag_la'=>"N",
-    		'Latitude'=>"31.127234",
-    		'Flag_lo'=>"E",
-    		'Longitude'=>"121.062241",
-    		'ProStartTime'=>"2016-02-18",
-    		'Stage'=>""
-    	);
-    	array_push($stat_list,$map10);
-    	$map11= array(
+		);
+		array_push($stat_list,$map9);
+		$map10= array(
+			'StatCode'=>"120101011",
+			'StatName'=>"江南国际会议中心",
+			'ChargeMan'=>"王五",
+			'Telephone'=>"13912345678",
+			'Department'=>"",
+			'Address'=>"青浦区Y095(阁游路)",
+			'Country'=>"青浦区",
+			'Street'=>"",
+			'Square'=>"0",
+			'Flag_la'=>"N",
+			'Latitude'=>"31.127234",
+			'Flag_lo'=>"E",
+			'Longitude'=>"121.062241",
+			'ProStartTime'=>"2016-02-18",
+			'Stage'=>""
+		);
+		array_push($stat_list,$map10);
+		$map11= array(
 
-    		'StatCode'=>"120101012",
-    		'StatName'=>"佳邸别墅",
-    		'ChargeMan'=>"王五",
-    		'Telephone'=>"13912345678",
-    		'Department'=>"",
-    		'Address'=>"盈港路1555弄",
-    		'Country'=>"青浦区",
-    		'Street'=>"",
-    		'Square'=>"0",
-    		'Flag_la'=>"N",
-    		'Latitude'=>"31.164430",
-    		'Flag_lo'=>"E",
-    		'Longitude'=>"121.102934",
-    		'ProStartTime'=>"2016-02-18",
-    		'Stage'=>""
-    	);
-    	array_push($stat_list,$map11);
-    	$map12= array(
+			'StatCode'=>"120101012",
+			'StatName'=>"佳邸别墅",
+			'ChargeMan'=>"王五",
+			'Telephone'=>"13912345678",
+			'Department'=>"",
+			'Address'=>"盈港路1555弄",
+			'Country'=>"青浦区",
+			'Street'=>"",
+			'Square'=>"0",
+			'Flag_la'=>"N",
+			'Latitude'=>"31.164430",
+			'Flag_lo'=>"E",
+			'Longitude'=>"121.102934",
+			'ProStartTime'=>"2016-02-18",
+			'Stage'=>""
+		);
+		array_push($stat_list,$map11);
+		$map12= array(
 
-    		'StatCode'=>"120101013",
-    		'StatName'=>"西郊河畔家园",
-    		'ChargeMan'=>"王五",
-    		'Telephone'=>"13912345678",
-    		'Department'=>"",
-    		'Address'=>"繁兴路469弄",
-    		'Country'=>"闵行区",
-    		'Street'=>"华漕镇",
-    		'Square'=>"0",
-    		'Flag_la'=>"N",
-    		'Latitude'=>"31.218057",
-    		'Flag_lo'=>"E",
-    		'Longitude'=>"121.297076",
-    		'ProStartTime'=>"2016-02-18",
-    		'Stage'=>""
-    	);
-    	array_push($stat_list,$map12);
-    	$map13= array(
+			'StatCode'=>"120101013",
+			'StatName'=>"西郊河畔家园",
+			'ChargeMan'=>"王五",
+			'Telephone'=>"13912345678",
+			'Department'=>"",
+			'Address'=>"繁兴路469弄",
+			'Country'=>"闵行区",
+			'Street'=>"华漕镇",
+			'Square'=>"0",
+			'Flag_la'=>"N",
+			'Latitude'=>"31.218057",
+			'Flag_lo'=>"E",
+			'Longitude'=>"121.297076",
+			'ProStartTime'=>"2016-02-18",
+			'Stage'=>""
+		);
+		array_push($stat_list,$map12);
+		$map13= array(
 
-    		'StatCode'=>"120101014",
-    		'StatName'=>"东视大厦",
-    		'ChargeMan'=>"赵六",
-    		'Telephone'=>"13912345678",
-    		'Department'=>"",
-    		'Address'=>"东方路2000号",
-    		'Country'=>"浦东新区",
-    		'Street'=>"南码头",
-    		'Square'=>"0",
-    		'Flag_la'=>"N",
-    		'Latitude'=>"31.203650",
-    		'Flag_lo'=>"E",
-    		'Longitude'=>"121.526288",
-    		'ProStartTime'=>"2016-02-18",
-    		'Stage'=>""
+			'StatCode'=>"120101014",
+			'StatName'=>"东视大厦",
+			'ChargeMan'=>"赵六",
+			'Telephone'=>"13912345678",
+			'Department'=>"",
+			'Address'=>"东方路2000号",
+			'Country'=>"浦东新区",
+			'Street'=>"南码头",
+			'Square'=>"0",
+			'Flag_la'=>"N",
+			'Latitude'=>"31.203650",
+			'Flag_lo'=>"E",
+			'Longitude'=>"121.526288",
+			'ProStartTime'=>"2016-02-18",
+			'Stage'=>""
 
-    	);
-    	array_push($stat_list,$map13);
-    	$map14= array(
-    		'StatCode'=>"120101015",
-    		'StatName'=>"曙光大厦",
-    		'ChargeMan'=>"赵六",
-    		'Telephone'=>"13912345678",
-    		'Department'=>"",
-    		'Address'=>"普安路189号",
-    		'Country'=>"黄埔区",
-    		'Street'=>"淮海中路街道",
-    		'Square'=>"0",
-    		'Flag_la'=>"N",
-    		'Latitude'=>"31.228283",
-    		'Flag_lo'=>"E",
-    		'Longitude'=>"121.485388",
-    		'ProStartTime'=>"2016-02-29",
-    		'Stage'=>""
+		);
+		array_push($stat_list,$map13);
+		$map14= array(
+			'StatCode'=>"120101015",
+			'StatName'=>"曙光大厦",
+			'ChargeMan'=>"赵六",
+			'Telephone'=>"13912345678",
+			'Department'=>"",
+			'Address'=>"普安路189号",
+			'Country'=>"黄埔区",
+			'Street'=>"淮海中路街道",
+			'Square'=>"0",
+			'Flag_la'=>"N",
+			'Latitude'=>"31.228283",
+			'Flag_lo'=>"E",
+			'Longitude'=>"121.485388",
+			'ProStartTime'=>"2016-02-29",
+			'Stage'=>""
 
-    	);
-    	array_push($stat_list,$map14);
-    	$map15= array(
-    		'StatCode'=>"120101017",
-    		'StatName'=>"上海贝尔",
-    		'ChargeMan'=>"赵六",
-    		'Telephone'=>"13912345678",
-    		'Department'=>"",
-    		'Address'=>"西藏北路525号",
-    		'Country'=>"闸北区",
-    		'Street'=>"芷江西路街道",
-    		'Square'=>"0",
-    		'Flag_la'=>"N",
-    		'Latitude'=>"31.256691",
-    		'Flag_lo'=>"E",
-    		'Longitude'=>"121.475583",
-    		'ProStartTime'=>"2016-03-15",
-    		'Stage'=>""
+		);
+		array_push($stat_list,$map14);
+		$map15= array(
+			'StatCode'=>"120101017",
+			'StatName'=>"上海贝尔",
+			'ChargeMan'=>"赵六",
+			'Telephone'=>"13912345678",
+			'Department'=>"",
+			'Address'=>"西藏北路525号",
+			'Country'=>"闸北区",
+			'Street'=>"芷江西路街道",
+			'Square'=>"0",
+			'Flag_la'=>"N",
+			'Latitude'=>"31.256691",
+			'Flag_lo'=>"E",
+			'Longitude'=>"121.475583",
+			'ProStartTime'=>"2016-03-15",
+			'Stage'=>""
 
-    	);
-    	array_push($stat_list,$map15);
-    	$map16= array(
-    		'StatCode'=>"120101018",
-    		'StatName'=>"嘉宝大厦",
-    		'ChargeMan'=>"赵六",
-    		'Telephone'=>"13912345678",
-    		'Department'=>"",
-    		'Address'=>"洪德路1009号",
-    		'Country'=>"嘉定区",
-    		'Street'=>"马陆镇",
-    		'Square'=>"0",
-    		'Flag_la'=>"N",
-    		'Latitude'=>"31.357885",
-    		'Flag_lo'=>"E",
-    		'Longitude'=>"121.256060",
-    		'ProStartTime'=>"2015-03-19",
-    		'Stage'=>""
+		);
+		array_push($stat_list,$map15);
+		$map16= array(
+			'StatCode'=>"120101018",
+			'StatName'=>"嘉宝大厦",
+			'ChargeMan'=>"赵六",
+			'Telephone'=>"13912345678",
+			'Department'=>"",
+			'Address'=>"洪德路1009号",
+			'Country'=>"嘉定区",
+			'Street'=>"马陆镇",
+			'Square'=>"0",
+			'Flag_la'=>"N",
+			'Latitude'=>"31.357885",
+			'Flag_lo'=>"E",
+			'Longitude'=>"121.256060",
+			'ProStartTime'=>"2015-03-19",
+			'Stage'=>""
 
-    	);
-    	array_push($stat_list,$map16);
-    	$map17= array(
-    		'StatCode'=>"120101019",
-    		'StatName'=>"金山豪庭",
-    		'ChargeMan'=>"赵六",
-    		'Telephone'=>"13912345678",
-    		'Department'=>"",
-    		'Address'=>"卫清东路2988",
-    		'Country'=>"金山区",
-    		'Street'=>"",
-    		'Square'=>"0",
-    		'Flag_la'=>"N",
-    		'Latitude'=>"30.739094",
-    		'Flag_lo'=>"E",
-    		'Longitude'=>"121.360693",
-    		'ProStartTime'=>"2015-08-25",
-    		'Stage'=>""
+		);
+		array_push($stat_list,$map16);
+		$map17= array(
+			'StatCode'=>"120101019",
+			'StatName'=>"金山豪庭",
+			'ChargeMan'=>"赵六",
+			'Telephone'=>"13912345678",
+			'Department'=>"",
+			'Address'=>"卫清东路2988",
+			'Country'=>"金山区",
+			'Street'=>"",
+			'Square'=>"0",
+			'Flag_la'=>"N",
+			'Latitude'=>"30.739094",
+			'Flag_lo'=>"E",
+			'Longitude'=>"121.360693",
+			'ProStartTime'=>"2015-08-25",
+			'Stage'=>""
 
-    	);
-    	array_push($stat_list,$map17);
-    	$map18= array(
-    		'StatCode'=>"120101020",
-    		'StatName'=>"临港城投大厦",
-    		'ChargeMan'=>"赵六",
-    		'Telephone'=>"13912345678",
-    		'Department'=>"",
-    		'Address'=>"环湖西一路333号",
-    		'Country'=>"浦东新区",
-    		'Street'=>"",
-    		'Square'=>"0",
-    		'Flag_la'=>"N",
-    		'Latitude'=>"30.900796",
-    		'Flag_lo'=>"E",
-    		'Longitude'=>"121.933166",
-    		'ProStartTime'=>"2015-11-30",
-    		'Stage'=>""
-    	);
-    	array_push($stat_list,$map18);
-    	$retval=array(
-    		'status'=>'true',
-    		'ret'=> $stat_list,
-    		'msg'=>'success',
-    		'auth'=>'true'
-    	);
-        $jsonencode = _encode($retval);
-    	echo $jsonencode; break;
+		);
+		array_push($stat_list,$map17);
+		$map18= array(
+			'StatCode'=>"120101020",
+			'StatName'=>"临港城投大厦",
+			'ChargeMan'=>"赵六",
+			'Telephone'=>"13912345678",
+			'Department'=>"",
+			'Address'=>"环湖西一路333号",
+			'Country'=>"浦东新区",
+			'Street'=>"",
+			'Square'=>"0",
+			'Flag_la'=>"N",
+			'Latitude'=>"30.900796",
+			'Flag_lo'=>"E",
+			'Longitude'=>"121.933166",
+			'ProStartTime'=>"2015-11-30",
+			'Stage'=>""
+		);
+		array_push($stat_list,$map18);
+		$retval=array(
+			'status'=>'true',
+			'ret'=> $stat_list,
+			'msg'=>'success',
+			'auth'=>'true'
+		);
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
 	case "GetWarningHandleListTable":
-			/*
+		/*
 			REQUEST:
 				var map={
 					action:"GetWarningHandleListTable",
@@ -5511,50 +5517,50 @@ RESPONSE:
 					'auth'=>'true'
 				);
 			*/
-			$column = 16;
-			$row = 40;
-			$column_name = array();
-			$row_content = array();
-			for( $i=0;$i<$column;$i++){
-				array_push($column_name,"第".(string)($i+1)."列");
+		$column = 16;
+		$row = 40;
+		$column_name = array();
+		$row_content = array();
+		for( $i=0;$i<$column;$i++){
+			array_push($column_name,"第".(string)($i+1)."列");
+		}
+		for($i=0;$i<$row;$i++){
+			$one_row = array();
+			array_push($one_row,(string)($i+1));
+			$flag = rand(0,1);
+			if($flag == 0){
+				array_push($one_row,"Y");
+			}else{
+				array_push($one_row,"N");
 			}
-			for($i=0;$i<$row;$i++){
-				$one_row = array();
-				array_push($one_row,(string)($i+1));
-				$flag = rand(0,1);
-				if($flag == 0){
-					array_push($one_row,"Y");
-				}else{
-					array_push($one_row,"N");
-				}
-				for($j=0;$j<($column-6);$j++) array_push($one_row,rand(10,110));
+			for($j=0;$j<($column-6);$j++) array_push($one_row,rand(10,110));
 
-				//one_row.push("地址"+(i+1)+"xxxxx路"+(i+1)+"xxxxx号");
-				array_push($one_row,"地址".((string)($i+1))."xxxxx路".((string)($i+1))."xxxxx号");
-				//one_row.push("测试");
-				array_push($one_row,"测试");
-				//one_row.push("名称");
-				array_push($one_row,"名称");
-				//one_row.push("长数据长数据长数据"+(i+1)+"xxxxx路"+(i+1)+"xxxxx号");
-				array_push($one_row,"长数据长数据长数据".((string)($i+1))."xxxxx路".((string)($i+1))."xxxxx号");
-				array_push($row_content,$one_row);
-				//row_content.push(one_row);
-			}
-			$body=array(
-				'ColumnName'=> $column_name,
-				'TableData'=>$row_content
-				);
-			$retval=array(
-				'status'=>'true',
-				'ret'=>$body,
-				'msg'=>'success',
-				'auth'=>'true'
+			//one_row.push("地址"+(i+1)+"xxxxx路"+(i+1)+"xxxxx号");
+			array_push($one_row,"地址".((string)($i+1))."xxxxx路".((string)($i+1))."xxxxx号");
+			//one_row.push("测试");
+			array_push($one_row,"测试");
+			//one_row.push("名称");
+			array_push($one_row,"名称");
+			//one_row.push("长数据长数据长数据"+(i+1)+"xxxxx路"+(i+1)+"xxxxx号");
+			array_push($one_row,"长数据长数据长数据".((string)($i+1))."xxxxx路".((string)($i+1))."xxxxx号");
+			array_push($row_content,$one_row);
+			//row_content.push(one_row);
+		}
+		$body=array(
+			'ColumnName'=> $column_name,
+			'TableData'=>$row_content
+		);
+		$retval=array(
+			'status'=>'true',
+			'ret'=>$body,
+			'msg'=>'success',
+			'auth'=>'true'
 
-			);
-			$jsonencode = _encode($retval);
-			echo $jsonencode; break;
+		);
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
 	case "AlarmHandle":
-    	/*
+		/*
         REQUEST:
         	var body={
         		StatCode:StatCode,
@@ -5574,13 +5580,13 @@ RESPONSE:
         		'auth'=>'true'
         	);
         */
-    		$retval=array(
-    			'status'=>'true',
-    			'msg'=>'success',
-    			'auth'=>'true'
-    		);
-    		$jsonencode = _encode($retval);
-    		echo $jsonencode; break;
+		$retval=array(
+			'status'=>'true',
+			'msg'=>'success',
+			'auth'=>'true'
+		);
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
 	case "AlarmClose":
 		/*
 		REQUEST:
@@ -5659,7 +5665,7 @@ RESPONSE:
 		$body=array(
 			'ColumnName'=> $column_name,
 			'TableData'=>$row_content
-			);
+		);
 		$retval=array(
 			'status'=>'true',
 			'ret'=>$body,
@@ -5721,7 +5727,7 @@ RESPONSE:
 		$body=array(
 			'ColumnName'=> $column_name,
 			'TableData'=>$row_content
-			);
+		);
 		$retval=array(
 			'status'=>'true',
 			'ret'=>$body,
@@ -5750,13 +5756,13 @@ RESPONSE:
 				'auth'=>'true'
 			);
 		*/
-			$retval=array(
-				'status'=>'true',
-				'msg'=>'success',
-				'auth'=>'true'
-			);
-			$jsonencode = _encode($retval);
-			echo $jsonencode; break;
+		$retval=array(
+			'status'=>'true',
+			'msg'=>'success',
+			'auth'=>'true'
+		);
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
 	case "Favourite_list":
 		/*
 		REQUEST:
@@ -5924,10 +5930,10 @@ RESPONSE:
 			'admin'=> 'true'
 		);
 		$retval=array(
-		'status'=>'true',
-		'auth'=>'true',
-		'ret'=>$body,
-		'msg'=>'login successfully'
+			'status'=>'true',
+			'auth'=>'true',
+			'ret'=>$body,
+			'msg'=>'login successfully'
 		);
 		$jsonencode = _encode($retval);
 		echo $jsonencode; break;
@@ -5970,15 +5976,15 @@ RESPONSE:
 			);
 		}
 		$retval=array(
-		'status'=>'true',
-		'auth'=>'true',
-		'ret'=>$body,
-		'msg'=>''
+			'status'=>'true',
+			'auth'=>'true',
+			'ret'=>$body,
+			'msg'=>''
 		);
 		$jsonencode = _encode($retval);
 		echo $jsonencode; break;
 	case "GetStationActiveInfo":
-	/*
+		/*
         REQUEST:
             var body={
                 StatCode:id
@@ -6001,25 +6007,25 @@ RESPONSE:
                 'msg'=>''
             );
     		*/
-        $body_in = $_GET['body'];
-        $StatCode = ($body_in['StatCode']);
-        $x = rand(1,100);
-        $actived = "true";
-        if($x>50) $actived = "false";
-        $body = array(
-            'actived'=>$actived
-        );
-        $retval=array(
-            'status'=>'true',
-            'auth'=>'true',
-            'ret'=>$body,
-            'msg'=>''
-        );
-        $jsonencode = _encode($retval);
-        echo $jsonencode; break;
+		$body_in = $_GET['body'];
+		$StatCode = ($body_in['StatCode']);
+		$x = rand(1,100);
+		$actived = "true";
+		if($x>50) $actived = "false";
+		$body = array(
+			'actived'=>$actived
+		);
+		$retval=array(
+			'status'=>'true',
+			'auth'=>'true',
+			'ret'=>$body,
+			'msg'=>''
+		);
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
 	case "StationActive":
 
-    /*
+		/*
         REQUEST:
             var body={
                 StatCode:id
@@ -6037,114 +6043,114 @@ RESPONSE:
                 'msg'=>''
             );
             */
-        $body_in = $_GET['body'];
-        $StatCode = ($body_in['StatCode']);
-        $retval=array(
-            'status'=>'true',
-            'auth'=>'true',
-            'msg'=>''
-        );
-        $jsonencode = _encode($retval);
-        echo $jsonencode; break;
-    case "GetGeoList":
-        $retarray = getfiledetail("./json/geography.json");
-        $obj=json_decode($retarray,true);
-        $retval=array(
-            'status'=>'true',
-            'ret'=>$obj['shandong'],
-            'auth'=>'true',
-            'msg'=>''
-        );
-        $jsonencode = _encode($retval);
-        echo $jsonencode; break;
-    case "ConsumablesTable":
-        $column = 10;
-        	$row = 8;
-        	$column_name = array();
-        	$row_content = array();
-        	for( $i=0;$i<$column;$i++){
-        		array_push($column_name,"第".(string)($i+1)."列");
-        	}
-        	for($i=0;$i<$row;$i++){
-        		$one_row = array();
-        		array_push($one_row,(string)($i+1));
-        		array_push($one_row,"备注".(string)($i+1));
-        		for($j=0;$j<($column-6);$j++) array_push($one_row,rand(10,110));
+		$body_in = $_GET['body'];
+		$StatCode = ($body_in['StatCode']);
+		$retval=array(
+			'status'=>'true',
+			'auth'=>'true',
+			'msg'=>''
+		);
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
+	case "GetGeoList":
+		$retarray = getfiledetail("./json/geography.json");
+		$obj=json_decode($retarray,true);
+		$retval=array(
+			'status'=>'true',
+			'ret'=>$obj['shandong'],
+			'auth'=>'true',
+			'msg'=>''
+		);
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
+	case "ConsumablesTable":
+		$column = 10;
+		$row = 8;
+		$column_name = array();
+		$row_content = array();
+		for( $i=0;$i<$column;$i++){
+			array_push($column_name,"第".(string)($i+1)."列");
+		}
+		for($i=0;$i<$row;$i++){
+			$one_row = array();
+			array_push($one_row,(string)($i+1));
+			array_push($one_row,"备注".(string)($i+1));
+			for($j=0;$j<($column-6);$j++) array_push($one_row,rand(10,110));
 
-        		//one_row.push("地址"+(i+1)+"xxxxx路"+(i+1)+"xxxxx号");
-        		array_push($one_row,"地址".((string)($i+1))."xxxxx路".((string)($i+1))."xxxxx号");
-        		//one_row.push("测试");
-        		array_push($one_row,"测试");
-        		//one_row.push("名称");
-        		array_push($one_row,"名称");
-        		//one_row.push("长数据长数据长数据"+(i+1)+"xxxxx路"+(i+1)+"xxxxx号");
-        		array_push($one_row,"长数据长数据长数据".((string)($i+1))."xxxxx路".((string)($i+1))."xxxxx号");
-        		array_push($row_content,$one_row);
-        		//row_content.push(one_row);
-        	}
-        	$body=array(
-        		'ColumnName'=> $column_name,
-        		'TableData'=>$row_content
-        		);
-        	$retval=array(
-        		'status'=>'true',
-        		'ret'=>$body,
-        		'msg'=>'success',
-        		'auth'=>'true'
-        	);
-            $jsonencode = _encode($retval);
-        	echo $jsonencode; break;
-    case "ConsumablesHistory":
-        $body_in = $_GET['body'];
-        	$TableItem = $body_in["Item"];
-        	$Condition = $body_in["Period"];
-        	$KeyWord = $body_in["KeyWord"];
-        	//$Filter = $_GET["Filter"];
+			//one_row.push("地址"+(i+1)+"xxxxx路"+(i+1)+"xxxxx号");
+			array_push($one_row,"地址".((string)($i+1))."xxxxx路".((string)($i+1))."xxxxx号");
+			//one_row.push("测试");
+			array_push($one_row,"测试");
+			//one_row.push("名称");
+			array_push($one_row,"名称");
+			//one_row.push("长数据长数据长数据"+(i+1)+"xxxxx路"+(i+1)+"xxxxx号");
+			array_push($one_row,"长数据长数据长数据".((string)($i+1))."xxxxx路".((string)($i+1))."xxxxx号");
+			array_push($row_content,$one_row);
+			//row_content.push(one_row);
+		}
+		$body=array(
+			'ColumnName'=> $column_name,
+			'TableData'=>$row_content
+		);
+		$retval=array(
+			'status'=>'true',
+			'ret'=>$body,
+			'msg'=>'success',
+			'auth'=>'true'
+		);
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
+	case "ConsumablesHistory":
+		$body_in = $_GET['body'];
+		$TableItem = $body_in["Item"];
+		$Condition = $body_in["Period"];
+		$KeyWord = $body_in["KeyWord"];
+		//$Filter = $_GET["Filter"];
 
-        	$column = 8;
-        	$row = rand(40,100);
-        	$column_name = array();
-        	$row_content = array();
-        	for( $i=0;$i<($column-1);$i++){
-        		array_push($column_name,"第".(string)($i+1)."列");
-        	}
-        	for($i=0;$i<$row;$i++){
-        		$one_row = array();
-        		$first_number = rand(0,1);
-        		if($first_number == 0){
-        		    array_push($one_row,"");
-        		}else{
-        		    array_push($one_row,(string)($i+1));
-        		}
-        		array_push($one_row,"备注".(string)($i+1));
-        		for($j=0;$j<($column-6);$j++) array_push($one_row,rand(10,110));
+		$column = 8;
+		$row = rand(40,100);
+		$column_name = array();
+		$row_content = array();
+		for( $i=0;$i<($column-1);$i++){
+			array_push($column_name,"第".(string)($i+1)."列");
+		}
+		for($i=0;$i<$row;$i++){
+			$one_row = array();
+			$first_number = rand(0,1);
+			if($first_number == 0){
+				array_push($one_row,"");
+			}else{
+				array_push($one_row,(string)($i+1));
+			}
+			array_push($one_row,"备注".(string)($i+1));
+			for($j=0;$j<($column-6);$j++) array_push($one_row,rand(10,110));
 
-        		//one_row.push("地址"+(i+1)+"xxxxx路"+(i+1)+"xxxxx号");
-        		array_push($one_row,"地址".((string)($i+1))."xxxxx路".((string)($i+1))."xxxxx号");
-        		//one_row.push("测试");
-        		array_push($one_row,"测试");
-        		//one_row.push("名称");
-        		array_push($one_row,"名称");
-        		//one_row.push("长数据长数据长数据"+(i+1)+"xxxxx路"+(i+1)+"xxxxx号");
-        		array_push($one_row,"长数据长数据长数据".((string)($i+1))."xxxxx路".((string)($i+1))."xxxxx号");
-        		array_push($row_content,$one_row);
-        		//row_content.push(one_row);
-        	}
-        	$body=array(
-        		'ColumnName'=> $column_name,
-        		'TableData'=>$row_content
-        		);
-        	$retval=array(
-        		'status'=>'true',
-        		'ret'=>$body,
-        		'msg'=>'success',
-        		'auth'=>'true'
+			//one_row.push("地址"+(i+1)+"xxxxx路"+(i+1)+"xxxxx号");
+			array_push($one_row,"地址".((string)($i+1))."xxxxx路".((string)($i+1))."xxxxx号");
+			//one_row.push("测试");
+			array_push($one_row,"测试");
+			//one_row.push("名称");
+			array_push($one_row,"名称");
+			//one_row.push("长数据长数据长数据"+(i+1)+"xxxxx路"+(i+1)+"xxxxx号");
+			array_push($one_row,"长数据长数据长数据".((string)($i+1))."xxxxx路".((string)($i+1))."xxxxx号");
+			array_push($row_content,$one_row);
+			//row_content.push(one_row);
+		}
+		$body=array(
+			'ColumnName'=> $column_name,
+			'TableData'=>$row_content
+		);
+		$retval=array(
+			'status'=>'true',
+			'ret'=>$body,
+			'msg'=>'success',
+			'auth'=>'true'
 
-        	);
-            $jsonencode = _encode($retval);
-        	echo $jsonencode; break;
-    case "ConsumablesPurchaseDel":
-        /*
+		);
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
+	case "ConsumablesPurchaseDel":
+		/*
         REQUEST:
         var body = {
                 consumablespurchaseID:consumablespurchaseid,
@@ -6157,16 +6163,16 @@ RESPONSE:
             };
 
         */
-        $body= $_GET['body'];
-        $retval=array(
-            'status'=>'true',
-            'msg'=>'success',
-            'auth'=>'true'
-        );
-        $jsonencode = _encode($retval);
-        echo $jsonencode; break;
-    case "GetConsumablesPurchase":
-        /*
+		$body= $_GET['body'];
+		$retval=array(
+			'status'=>'true',
+			'msg'=>'success',
+			'auth'=>'true'
+		);
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
+	case "GetConsumablesPurchase":
+		/*
         REQUEST:
         var body = {
             consumablespurchaseID:consumablespurchaseid,
@@ -6179,28 +6185,28 @@ RESPONSE:
             user:usr.id
         };
         */
-        	$body= $_GET['body'];
-        	$auth = array() ;
+		$body= $_GET['body'];
+		$auth = array() ;
 
-            $ret = array(
-                    'consumablespurchaseID'=>"1234",
-                    'item'=> rand(1,7),
-                    'number'=> "10",
-                    'unit'=> "22.00",
-                    'total'=> "0220.00",
-                    'vendor'=> "小慧智能",
-                    'type'=>"v01.1"
-            );
-        	$retval=array(
-        		'status'=>'true',
-        		'ret'=>$ret,
-        		'msg'=>'success',
-        		'auth'=>'true'
-        	);
-            $jsonencode = _encode($retval);
-        	echo $jsonencode; break;
-    case "ConsumablesPurchaseMod":
-    /*
+		$ret = array(
+			'consumablespurchaseID'=>"1234",
+			'item'=> rand(1,7),
+			'number'=> "10",
+			'unit'=> "22.00",
+			'total'=> "0220.00",
+			'vendor'=> "小慧智能",
+			'type'=>"v01.1"
+		);
+		$retval=array(
+			'status'=>'true',
+			'ret'=>$ret,
+			'msg'=>'success',
+			'auth'=>'true'
+		);
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
+	case "ConsumablesPurchaseMod":
+		/*
         REQUEST:
         var body = {
             consumablespurchaseID:select_consumablespurchase_ID,
@@ -6225,16 +6231,16 @@ RESPONSE:
         	'auth'=>'true'
         );
         */
-        $body= $_GET['body'];
-        $retval=array(
-            'status'=>'true',
-            'msg'=>'success',
-            'auth'=>'true'
-        );
-        $jsonencode = _encode($retval);
-        echo $jsonencode; break;
-    case "ConsumablesPurchaseNew":
-    /*
+		$body= $_GET['body'];
+		$retval=array(
+			'status'=>'true',
+			'msg'=>'success',
+			'auth'=>'true'
+		);
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
+	case "ConsumablesPurchaseNew":
+		/*
         REQUEST:
         var body = {
                 item: purchase.item,
@@ -6258,491 +6264,670 @@ RESPONSE:
         	'auth'=>'true'
         );
         */
-        $body= $_GET['body'];
-        $retval=array(
-            'status'=>'true',
-            'msg'=>'success',
-            'auth'=>'true'
-        );
-        $jsonencode = _encode($retval);
-        echo $jsonencode; break;
-    case "ProductStockNew":
-        $body= $_GET['body'];
-        $retval=array(
-            'status'=>'true',
-            'msg'=>'success',
-            'auth'=>'true'
-        );
-        $jsonencode = _encode($retval);
-        echo $jsonencode; break;
-    case "ProductStockDel":
-        $body= $_GET['body'];
-        $retval=array(
-            'status'=>'true',
-            'msg'=>'success',
-            'auth'=>'true'
-        );
-        $jsonencode = _encode($retval);
-        echo $jsonencode; break;
-    case "GetProductStockList":
-        $retlist = array();
-        for($i=0;$i<10;$i++){
-            $cargo = array(
-            'id'=>$i,
-            'name'=>'仓库'.$i,
-            'address'=>'地址'.$i
-            );
-            array_push($retlist, $cargo);
-        }
-        $retval=array(
-            'status'=>'true',
-            'ret'=>$retlist,
-            'msg'=>'success',
-            'auth'=>'true'
-        );
-        $jsonencode = _encode($retval);
-        echo $jsonencode; break;
-    case "GetProductEmptyStock":
-        $retlist = array();
-        for($i=0;$i<5;$i++){
-            $cargo = array(
-            'id'=>($i*2),
-            'name'=>'仓库'.($i*2),
-            'address'=>'地址'.($i*2)
-            );
-            array_push($retlist, $cargo);
-        }
-        $retval=array(
-         'status'=>'true',
-         'ret'=>$retlist,
-         'msg'=>'success',
-         'auth'=>'true'
-        );
-        $jsonencode = _encode($retval);
-        echo $jsonencode; break;
-    case "GetProductWeightAndSize":
-        $weightlist=array('5kg','10kg','20kg','50kg','100kg');
-        $sizelist=array('一级','二级','三级','特级','垃圾');
-        $retlist = array(
-            'weight'=>$weightlist,
-            'size'=>$sizelist
-        );
-        $retval=array(
-            'status'=>'true',
-            'ret'=>$retlist,
-            'msg'=>'success',
-            'auth'=>'true'
-        );
-        $jsonencode = _encode($retval);
-        echo $jsonencode; break;
-    case "ProductStockRemovalNew":
-        $body= $_GET['body'];
-        $retval=array(
-            'status'=>'true',
-            'msg'=>'success',
-            'auth'=>'true'
-        );
-        $jsonencode = _encode($retval);
-        echo $jsonencode; break;
-    case "ProductStockRemovalMod":
-        $body= $_GET['body'];
-        $retval=array(
-            'status'=>'true',
-            'msg'=>'success',
-            'auth'=>'true'
-        );
-        $jsonencode = _encode($retval);
-        echo $jsonencode; break;
-    case "ProductStockRemovalDel":
-        $body= $_GET['body'];
-        $retval=array(
-            'status'=>'true',
-            'msg'=>'success',
-            'auth'=>'true'
-        );
-        $jsonencode = _encode($retval);
-        echo $jsonencode; break;
-    case "ProductStockTransfer":
-        $body= $_GET['body'];
-        $retval=array(
-            'status'=>'true',
-            'msg'=>'success',
-            'auth'=>'true'
-        );
-        $jsonencode = _encode($retval);
-        echo $jsonencode; break;
-    case "ProductStockTable":
-        $body= $_GET['body'];
-        $column = 10;
-        $row = 8;
-        $column_name = array();
-        $row_content = array();
-        for( $i=0;$i<$column-1;$i++){
-            array_push($column_name,"第".(string)($i+1)."列");
-        }
-        for($i=0;$i<$row;$i++){
-            $one_row = array();
-            array_push($one_row,(string)($i+1));
-            array_push($one_row,"备注".(string)($i+1));
-            for($j=0;$j<($column-6);$j++) array_push($one_row,rand(10,110));
+		$body= $_GET['body'];
+		$retstr=array(
+			'consumablespurchaseID' => "1234"
+		);
+		$retval=array(
+			'status'=>'true',
+			'ret'=>$retstr,
+			'msg'=>'success',
+			'auth'=>'true'
+		);
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
+	case "ProductStockNew":
+		$body= $_GET['body'];
+		$retval=array(
+			'status'=>'true',
+			'msg'=>'success',
+			'auth'=>'true'
+		);
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
+	case "ProductStockDel":
+		$body= $_GET['body'];
+		$retval=array(
+			'status'=>'true',
+			'msg'=>'success',
+			'auth'=>'true'
+		);
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
+	case "GetProductStockList":
+		$retlist = array();
+		for($i=0;$i<10;$i++){
+			$cargo = array(
+				'id'=>$i,
+				'name'=>'仓库'.$i,
+				'address'=>'地址'.$i
+			);
+			array_push($retlist, $cargo);
+		}
+		$retval=array(
+			'status'=>'true',
+			'ret'=>$retlist,
+			'msg'=>'success',
+			'auth'=>'true'
+		);
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
+	case "GetProductEmptyStock":
+		$retlist = array();
+		for($i=0;$i<5;$i++){
+			$cargo = array(
+				'id'=>($i*2),
+				'name'=>'仓库'.($i*2),
+				'address'=>'地址'.($i*2)
+			);
+			array_push($retlist, $cargo);
+		}
+		$retval=array(
+			'status'=>'true',
+			'ret'=>$retlist,
+			'msg'=>'success',
+			'auth'=>'true'
+		);
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
+	case "GetProductWeightAndSize":
+		$weightlist=array('5kg','10kg','20kg','50kg','100kg');
+		$sizelist=array('一级','二级','三级','特级','垃圾');
+		$retlist = array(
+			'weight'=>$weightlist,
+			'size'=>$sizelist
+		);
+		$retval=array(
+			'status'=>'true',
+			'ret'=>$retlist,
+			'msg'=>'success',
+			'auth'=>'true'
+		);
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
+	case "ProductStockRemovalNew":
+		$body= $_GET['body'];
+		$retval=array(
+			'status'=>'true',
+			'msg'=>'success',
+			'auth'=>'true'
+		);
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
+	case "ProductStockRemovalMod":
+		$body= $_GET['body'];
+		$retval=array(
+			'status'=>'true',
+			'msg'=>'success',
+			'auth'=>'true'
+		);
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
+	case "ProductStockRemovalDel":
+		$body= $_GET['body'];
+		$retval=array(
+			'status'=>'true',
+			'msg'=>'success',
+			'auth'=>'true'
+		);
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
+	case "ProductStockTransfer":
+		$body= $_GET['body'];
+		$retval=array(
+			'status'=>'true',
+			'msg'=>'success',
+			'auth'=>'true'
+		);
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
+	case "ProductStockTable":
+		$body= $_GET['body'];
+		$column = 10;
+		$row = 8;
+		$column_name = array();
+		$row_content = array();
+		for( $i=0;$i<$column-1;$i++){
+			array_push($column_name,"第".(string)($i+1)."列");
+		}
+		for($i=0;$i<$row;$i++){
+			$one_row = array();
+			array_push($one_row,(string)($i+1));
+			array_push($one_row,"备注".(string)($i+1));
+			for($j=0;$j<($column-6);$j++) array_push($one_row,rand(10,110));
 
-            //one_row.push("地址"+(i+1)+"xxxxx路"+(i+1)+"xxxxx号");
-            array_push($one_row,"地址".((string)($i+1))."xxxxx路".((string)($i+1))."xxxxx号");
-            //one_row.push("测试");
-            array_push($one_row,"测试");
-            //one_row.push("名称");
-            array_push($one_row,"名称");
-            //one_row.push("长数据长数据长数据"+(i+1)+"xxxxx路"+(i+1)+"xxxxx号");
-            array_push($one_row,"长数据长数据长数据".((string)($i+1))."xxxxx路".((string)($i+1))."xxxxx号");
-            array_push($row_content,$one_row);
-            //row_content.push(one_row);
-        }
-        $body=array(
-            'ColumnName'=> $column_name,
-            'TableData'=>$row_content
+			//one_row.push("地址"+(i+1)+"xxxxx路"+(i+1)+"xxxxx号");
+			array_push($one_row,"地址".((string)($i+1))."xxxxx路".((string)($i+1))."xxxxx号");
+			//one_row.push("测试");
+			array_push($one_row,"测试");
+			//one_row.push("名称");
+			array_push($one_row,"名称");
+			//one_row.push("长数据长数据长数据"+(i+1)+"xxxxx路"+(i+1)+"xxxxx号");
+			array_push($one_row,"长数据长数据长数据".((string)($i+1))."xxxxx路".((string)($i+1))."xxxxx号");
+			array_push($row_content,$one_row);
+			//row_content.push(one_row);
+		}
+		$body=array(
+			'ColumnName'=> $column_name,
+			'TableData'=>$row_content
+		);
+		$retval=array(
+			'status'=>'true',
+			'ret'=>$body,
+			'msg'=>'success',
+			'auth'=>'true'
+		);
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
+	case "GetProductStockDetail":
+		$body= $_GET['body'];
+		$StockDetail = array(
+			'storageID'=> '1',
+			'weight'=> '5kg',
+			'size'=> '三级',
+			'maxStorage'=> '100',
+		);
+		$retval=array(
+			'status'=>'true',
+			'ret'=>$StockDetail,
+			'msg'=>'success',
+			'auth'=>'true'
+		);
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
+	case "ProductStockHistory":
+		$body_in = $_GET['body'];
+		//$Filter = $_GET["Filter"];
+
+		$column = 8;
+		$row = rand(40,100);
+		$column_name = array();
+		$row_content = array();
+		for( $i=0;$i<($column-1);$i++){
+			array_push($column_name,"第".(string)($i+1)."列");
+		}
+		for($i=0;$i<$row;$i++){
+			$one_row = array();
+			$first_number = rand(0,1);
+			if($first_number == 0){
+				array_push($one_row,"");
+			}else{
+				array_push($one_row,(string)($i+1));
+			}
+			array_push($one_row,"备注".(string)($i+1));
+			for($j=0;$j<($column-6);$j++) array_push($one_row,rand(10,110));
+
+			//one_row.push("地址"+(i+1)+"xxxxx路"+(i+1)+"xxxxx号");
+			array_push($one_row,"地址".((string)($i+1))."xxxxx路".((string)($i+1))."xxxxx号");
+			//one_row.push("测试");
+			array_push($one_row,"测试");
+			//one_row.push("名称");
+			array_push($one_row,"名称");
+			//one_row.push("长数据长数据长数据"+(i+1)+"xxxxx路"+(i+1)+"xxxxx号");
+			array_push($one_row,"长数据长数据长数据".((string)($i+1))."xxxxx路".((string)($i+1))."xxxxx号");
+			array_push($row_content,$one_row);
+			//row_content.push(one_row);
+		}
+		$body=array(
+			'ColumnName'=> $column_name,
+			'TableData'=>$row_content
+		);
+		$retval=array(
+			'status'=>'true',
+			'ret'=>$body,
+			'msg'=>'success',
+			'auth'=>'true'
+
+		);
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
+	case "GetProductStockHistoryDetail":
+		$body= $_GET['body'];
+		$StockDetail = array(
+			'storageID'=> '1',
+			'weight'=> '5kg',
+			'size'=> '三级',
+			'number'=> '10',
+			'container'=>'1234567',
+			'trunk'=>'浙B22222',
+			'driver'=>'司机b',
+			'mobile'=>'13913131313',
+			'target'=>'富士康',
+			'logistics'=>'顺丰快递'
+		);
+		$retval=array(
+			'status'=>'true',
+			'ret'=>$StockDetail,
+			'msg'=>'success',
+			'auth'=>'true'
+		);
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
+	//Material part
+	case "MaterialStockNew":
+		$body= $_GET['body'];
+		$retval=array(
+			'status'=>'true',
+			'msg'=>'success',
+			'auth'=>'true'
+		);
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
+	case "MaterialStockDel":
+		$body= $_GET['body'];
+		$retval=array(
+			'status'=>'true',
+			'msg'=>'success',
+			'auth'=>'true'
+		);
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
+	case "GetMaterialStockList":
+		$retlist = array();
+		for($i=0;$i<10;$i++){
+			$cargo = array(
+				'id'=>$i,
+				'name'=>'仓库'.$i,
+				'address'=>'地址'.$i
+			);
+			array_push($retlist, $cargo);
+		}
+		$retval=array(
+			'status'=>'true',
+			'ret'=>$retlist,
+			'msg'=>'success',
+			'auth'=>'true'
+		);
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
+	case "GetMaterialEmptyStock":
+		$retlist = array();
+		for($i=0;$i<5;$i++){
+			$cargo = array(
+				'id'=>($i*2),
+				'name'=>'仓库'.($i*2),
+				'address'=>'地址'.($i*2)
+			);
+			array_push($retlist, $cargo);
+		}
+		$retval=array(
+			'status'=>'true',
+			'ret'=>$retlist,
+			'msg'=>'success',
+			'auth'=>'true'
+		);
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
+	case "MaterialStockRemovalNew":
+		$body= $_GET['body'];
+		$retval=array(
+			'status'=>'true',
+			'msg'=>'success',
+			'auth'=>'true'
+		);
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
+	case "MaterialStockRemovalMod":
+		$body= $_GET['body'];
+		$retval=array(
+			'status'=>'true',
+			'msg'=>'success',
+			'auth'=>'true'
+		);
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
+	case "MaterialStockRemovalDel":
+		$body= $_GET['body'];
+		$retval=array(
+			'status'=>'true',
+			'msg'=>'success',
+			'auth'=>'true'
+		);
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
+	case "MaterialStockIncomeNew":
+		$body= $_GET['body'];
+		$retval=array(
+			'status'=>'true',
+			'msg'=>'success',
+			'auth'=>'true'
+		);
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
+	case "MaterialStockIncomeMod":
+		$body= $_GET['body'];
+		$retval=array(
+			'status'=>'true',
+			'msg'=>'success',
+			'auth'=>'true'
+		);
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
+	case "MaterialStockIncomeDel":
+		$body= $_GET['body'];
+		$retval=array(
+			'status'=>'true',
+			'msg'=>'success',
+			'auth'=>'true'
+		);
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
+	case "MaterialStockTable":
+		$body= $_GET['body'];
+		$column = 10;
+		$row = 8;
+		$column_name = array();
+		$row_content = array();
+		for( $i=0;$i<$column-1;$i++){
+			array_push($column_name,"第".(string)($i+1)."列");
+		}
+		for($i=0;$i<$row;$i++){
+			$one_row = array();
+			array_push($one_row,(string)($i+1));
+			array_push($one_row,"备注".(string)($i+1));
+			for($j=0;$j<($column-6);$j++) array_push($one_row,rand(10,110));
+
+			//one_row.push("地址"+(i+1)+"xxxxx路"+(i+1)+"xxxxx号");
+			array_push($one_row,"地址".((string)($i+1))."xxxxx路".((string)($i+1))."xxxxx号");
+			//one_row.push("测试");
+			array_push($one_row,"测试");
+			//one_row.push("名称");
+			array_push($one_row,"名称");
+			//one_row.push("长数据长数据长数据"+(i+1)+"xxxxx路"+(i+1)+"xxxxx号");
+			array_push($one_row,"长数据长数据长数据".((string)($i+1))."xxxxx路".((string)($i+1))."xxxxx号");
+			array_push($row_content,$one_row);
+			//row_content.push(one_row);
+		}
+		$body=array(
+			'ColumnName'=> $column_name,
+			'TableData'=>$row_content
+		);
+		$retval=array(
+			'status'=>'true',
+			'ret'=>$body,
+			'msg'=>'success',
+			'auth'=>'true'
+		);
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
+	case "GetMaterialStockDetail":
+		$body= $_GET['body'];
+		$StockDetail = array(
+			'storageID'=> '1',
+			'mode'=> (string)rand(0,1),//0 自有 1 第三方
+			'localStorage'=> '50',
+			'maxStorage'=> '100',
+		);
+		$retval=array(
+			'status'=>'true',
+			'ret'=>$StockDetail,
+			'msg'=>'success',
+			'auth'=>'true'
+		);
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
+	case "MaterialStockHistory":
+		$body_in = $_GET['body'];
+		//$Filter = $_GET["Filter"];
+
+		$column = 8;
+		$row = rand(40,100);
+		$column_name = array();
+		$row_content = array();
+		for( $i=0;$i<($column-1);$i++){
+			array_push($column_name,"第".(string)($i+1)."列");
+		}
+		for($i=0;$i<$row;$i++){
+			$one_row = array();
+			$first_number = rand(0,1);
+			if($first_number == 0){
+				array_push($one_row,"");
+			}else{
+				array_push($one_row,(string)($i+1));
+			}
+			array_push($one_row,"备注".(string)($i+1));
+			for($j=0;$j<($column-6);$j++) array_push($one_row,rand(10,110));
+
+			//one_row.push("地址"+(i+1)+"xxxxx路"+(i+1)+"xxxxx号");
+			array_push($one_row,"地址".((string)($i+1))."xxxxx路".((string)($i+1))."xxxxx号");
+			//one_row.push("测试");
+			array_push($one_row,"测试");
+			//one_row.push("名称");
+			array_push($one_row,"名称");
+			//one_row.push("长数据长数据长数据"+(i+1)+"xxxxx路"+(i+1)+"xxxxx号");
+			array_push($one_row,"长数据长数据长数据".((string)($i+1))."xxxxx路".((string)($i+1))."xxxxx号");
+			array_push($row_content,$one_row);
+			//row_content.push(one_row);
+		}
+		$body=array(
+			'ColumnName'=> $column_name,
+			'TableData'=>$row_content
+		);
+		$retval=array(
+			'status'=>'true',
+			'ret'=>$body,
+			'msg'=>'success',
+			'auth'=>'true'
+
+		);
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
+	case "GetMaterialStockHistoryDetail":
+		$body= $_GET['body'];
+		$type = (string)(rand(0,1));//0 入库1出库
+		$StockDetail;
+		if($type == '1'){
+			$StockDetail = array(
+				'type'=> '1', //
+				'storageID'=> '1',
+				'materialMode'=> (string)(rand(0,1)),
+				'bucket'=> '20',
+				'price'=> '100',
+				'trunk'=>'浙B22222',
+				'driver'=>'司机b',
+				'mobile'=>'13913131313',
+				'target'=>'富士康',
+				'logistics'=>'顺丰快递'
+			);
+		}else{
+			$StockDetail = array(
+				'type'=> '0',//
+				'storageID'=> '1',
+				'materialMode'=> (string)(rand(0,1)),
+				'bucket'=> '20',
+				'price'=> '100',
+				'buyer'=>'采购员',
+				'vendor'=>'供应商A',
+				'mobile'=>'13913131313'
+			);
+		}
+		$retval=array(
+			'status'=>'true',
+			'ret'=>$StockDetail,
+			'msg'=>'success',
+			'auth'=>'true'
+		);
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
+	case "GetPrint":
+		$body= $_GET['body'];
+		$keynumber = rand(5,15);
+		$PrintDetail = array();
+		for($i=0;$i<$keynumber;$i++){
+			$PrintItem = array(
+				'name'=>'item'.(string)($i),
+				'value'=>'xxxxxxxxxxxxxxxxxxxx'.(string)($i)
+			);
+			array_push($PrintDetail,$PrintItem);
+		}
+		$retval=array(
+			'status'=>'true',
+			'ret'=>$PrintDetail,
+			'msg'=>'success',
+			'auth'=>'true'
+		);
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
+	case "GetConsumablesVendorList":
+
+		$retlist = array();
+		for($i=0;$i<10;$i++){
+			array_push($retlist, '供应商'.$i);
+		}
+		$retval=array(
+			'status'=>'true',
+			'ret'=>$retlist,
+			'msg'=>'success',
+			'auth'=>'true'
+		);
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
+	case "GetConsumablesTypeList":
+		$type = array("全部","纸箱","保鲜袋","胶带","标签","托盘","垫片","网套");
+		$retlist = array();
+		for($i=1;$i<sizeof($type);$i++){
+			$cargo = array();
+			for($j=0;$j<10;$j++){
+				array_push( $cargo, $type[$i].(string)($j));
+			}
+			array_push($retlist, $cargo);
+		}
+		$retval=array(
+			'status'=>'true',
+			'ret'=>$retlist,
+			'msg'=>'success',
+			'auth'=>'true'
+		);
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
+	case "SeafoodInfo":
+		/*
+        REQUEST:
+            var condition = {
+                ProjCode:Query_project,
+                Time:Query_time,
+                KeyWord:Query_word
+            };
+            var map={
+                action:"KeyHistory",
+                body:condition,
+                user:usr.id
+            };
+        RESPONSE:
+            $body=array(
+                'ColumnName'=> $column_name,
+                'TableData'=>$row_content
             );
-        $retval=array(
-            'status'=>'true',
-            'ret'=>$body,
-            'msg'=>'success',
-            'auth'=>'true'
-        );
-        $jsonencode = _encode($retval);
-        echo $jsonencode; break;
-    case "GetProductStockDetail":
-        $body= $_GET['body'];
-        $StockDetail = array(
-            'storageID'=> '1',
-            'weight'=> '5kg',
-            'size'=> '三级',
-            'maxStorage'=> '100',
-        );
-        $retval=array(
-            'status'=>'true',
-            'ret'=>$StockDetail,
-            'msg'=>'success',
-            'auth'=>'true'
-        );
-        $jsonencode = _encode($retval);
-        echo $jsonencode; break;
-    case "ProductStockHistory":
-        $body_in = $_GET['body'];
-        //$Filter = $_GET["Filter"];
-
-        $column = 8;
-        $row = rand(40,100);
-        $column_name = array();
-        $row_content = array();
-        for( $i=0;$i<($column-1);$i++){
-            array_push($column_name,"第".(string)($i+1)."列");
-        }
-        for($i=0;$i<$row;$i++){
-            $one_row = array();
-            $first_number = rand(0,1);
-            if($first_number == 0){
-                array_push($one_row,"");
-            }else{
-                array_push($one_row,(string)($i+1));
-            }
-            array_push($one_row,"备注".(string)($i+1));
-            for($j=0;$j<($column-6);$j++) array_push($one_row,rand(10,110));
-
-            //one_row.push("地址"+(i+1)+"xxxxx路"+(i+1)+"xxxxx号");
-            array_push($one_row,"地址".((string)($i+1))."xxxxx路".((string)($i+1))."xxxxx号");
-            //one_row.push("测试");
-            array_push($one_row,"测试");
-            //one_row.push("名称");
-            array_push($one_row,"名称");
-            //one_row.push("长数据长数据长数据"+(i+1)+"xxxxx路"+(i+1)+"xxxxx号");
-            array_push($one_row,"长数据长数据长数据".((string)($i+1))."xxxxx路".((string)($i+1))."xxxxx号");
-            array_push($row_content,$one_row);
-            //row_content.push(one_row);
-        }
-        $body=array(
-            'ColumnName'=> $column_name,
-            'TableData'=>$row_content
+            $retval=array(
+                'status'=>'true',
+                'ret'=>$body,
+                'msg'=>'success',
+                'auth'=>'true'
             );
-        $retval=array(
-            'status'=>'true',
-            'ret'=>$body,
-            'msg'=>'success',
-            'auth'=>'true'
+        */
+		$usr = $_GET["user"];
+		$condition = $_GET["body"];
+		$column = 16;
+		$row = 40;
+		$column_name = array();
+		$row_content = array();
+		for( $i=0;$i<$column;$i++){
+			array_push($column_name,"第".(string)($i+1)."列");
+		}
+		for($i=0;$i<$row;$i++){
+			$one_row = array();
+			array_push($one_row,(string)($i+1));
+			array_push($one_row,"备注".(string)($i+1));
+			for($j=0;$j<($column-6);$j++) array_push($one_row,rand(10,110));
 
-        );
-        $jsonencode = _encode($retval);
-        echo $jsonencode; break;
-    case "GetProductStockHistoryDetail":
-        $body= $_GET['body'];
-        $StockDetail = array(
-            'storageID'=> '1',
-            'weight'=> '5kg',
-            'size'=> '三级',
-            'number'=> '10',
-            'container'=>'1234567',
-            'trunk'=>'浙B22222',
-            'driver'=>'司机b',
-            'mobile'=>'13913131313',
-            'target'=>'富士康',
-            'logistics'=>'顺丰快递'
-        );
-        $retval=array(
-            'status'=>'true',
-            'ret'=>$StockDetail,
-            'msg'=>'success',
-            'auth'=>'true'
-        );
-        $jsonencode = _encode($retval);
-        echo $jsonencode; break;
-    //Material part
-    case "MaterialStockNew":
-        $body= $_GET['body'];
-        $retval=array(
-            'status'=>'true',
-            'msg'=>'success',
-            'auth'=>'true'
-        );
-        $jsonencode = _encode($retval);
-        echo $jsonencode; break;
-    case "MaterialStockDel":
-        $body= $_GET['body'];
-        $retval=array(
-            'status'=>'true',
-            'msg'=>'success',
-            'auth'=>'true'
-        );
-        $jsonencode = _encode($retval);
-        echo $jsonencode; break;
-    case "GetMaterialStockList":
-        $retlist = array();
-        for($i=0;$i<10;$i++){
-            $cargo = array(
-            'id'=>$i,
-            'name'=>'仓库'.$i,
-            'address'=>'地址'.$i
+			//one_row.push("地址"+(i+1)+"xxxxx路"+(i+1)+"xxxxx号");
+			array_push($one_row,"地址".((string)($i+1))."xxxxx路".((string)($i+1))."xxxxx号");
+			//one_row.push("测试");
+			array_push($one_row,"测试");
+			//one_row.push("名称");
+			array_push($one_row,"名称");
+			//one_row.push("长数据长数据长数据"+(i+1)+"xxxxx路"+(i+1)+"xxxxx号");
+			array_push($one_row,"长数据长数据长数据".((string)($i+1))."xxxxx路".((string)($i+1))."xxxxx号");
+			array_push($row_content,$one_row);
+			//row_content.push(one_row);
+		}
+		$body=array(
+			'ColumnName'=> $column_name,
+			'TableData'=>$row_content
+		);
+		$retval=array(
+			'status'=>'true',
+			'ret'=>$body,
+			'msg'=>'success',
+			'auth'=>'true'
+		);
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
+	case "SeafoodAudit":
+		/*
+        REQUEST:
+            var condition = {
+                ProjCode:Query_project,
+                Time:Query_time,
+                KeyWord:Query_word
+            };
+            var map={
+                action:"KeyHistory",
+                body:condition,
+                user:usr.id
+            };
+        RESPONSE:
+            $body=array(
+                'ColumnName'=> $column_name,
+                'TableData'=>$row_content
             );
-            array_push($retlist, $cargo);
-        }
-        $retval=array(
-            'status'=>'true',
-            'ret'=>$retlist,
-            'msg'=>'success',
-            'auth'=>'true'
-        );
-        $jsonencode = _encode($retval);
-        echo $jsonencode; break;
-    case "GetMaterialEmptyStock":
-        $retlist = array();
-        for($i=0;$i<5;$i++){
-            $cargo = array(
-            'id'=>($i*2),
-            'name'=>'仓库'.($i*2),
-            'address'=>'地址'.($i*2)
+            $retval=array(
+                'status'=>'true',
+                'ret'=>$body,
+                'msg'=>'success',
+                'auth'=>'true'
             );
-            array_push($retlist, $cargo);
-        }
-        $retval=array(
-         'status'=>'true',
-         'ret'=>$retlist,
-         'msg'=>'success',
-         'auth'=>'true'
-        );
-        $jsonencode = _encode($retval);
-        echo $jsonencode; break;
-    case "MaterialStockRemovalNew":
-        $body= $_GET['body'];
-        $retval=array(
-            'status'=>'true',
-            'msg'=>'success',
-            'auth'=>'true'
-        );
-        $jsonencode = _encode($retval);
-        echo $jsonencode; break;
-    case "MaterialStockRemovalMod":
-        $body= $_GET['body'];
-        $retval=array(
-            'status'=>'true',
-            'msg'=>'success',
-            'auth'=>'true'
-        );
-        $jsonencode = _encode($retval);
-        echo $jsonencode; break;
-    case "MaterialStockRemovalDel":
-        $body= $_GET['body'];
-        $retval=array(
-            'status'=>'true',
-            'msg'=>'success',
-            'auth'=>'true'
-        );
-        $jsonencode = _encode($retval);
-        echo $jsonencode; break;
-    case "MaterialStockIncomeNew":
-        $body= $_GET['body'];
-        $retval=array(
-            'status'=>'true',
-            'msg'=>'success',
-            'auth'=>'true'
-        );
-        $jsonencode = _encode($retval);
-        echo $jsonencode; break;
-    case "MaterialStockIncomeMod":
-        $body= $_GET['body'];
-        $retval=array(
-            'status'=>'true',
-            'msg'=>'success',
-            'auth'=>'true'
-        );
-        $jsonencode = _encode($retval);
-        echo $jsonencode; break;
-    case "MaterialStockIncomeDel":
-        $body= $_GET['body'];
-        $retval=array(
-            'status'=>'true',
-            'msg'=>'success',
-            'auth'=>'true'
-        );
-        $jsonencode = _encode($retval);
-        echo $jsonencode; break;
-    case "MaterialStockTable":
-        $body= $_GET['body'];
-        $column = 10;
-        $row = 8;
-        $column_name = array();
-        $row_content = array();
-        for( $i=0;$i<$column-1;$i++){
-            array_push($column_name,"第".(string)($i+1)."列");
-        }
-        for($i=0;$i<$row;$i++){
-            $one_row = array();
-            array_push($one_row,(string)($i+1));
-            array_push($one_row,"备注".(string)($i+1));
-            for($j=0;$j<($column-6);$j++) array_push($one_row,rand(10,110));
+        */
+		$usr = $_GET["user"];
+		$condition = $_GET["body"];
+		$column = 16;
+		$row = 40;
+		$column_name = array();
+		$row_content = array();
+		for( $i=0;$i<$column;$i++){
+			array_push($column_name,"第".(string)($i+1)."列");
+		}
+		for($i=0;$i<$row;$i++){
+			$one_row = array();
+			array_push($one_row,(string)($i+1));
+			array_push($one_row,"备注".(string)($i+1));
+			for($j=0;$j<($column-6);$j++) array_push($one_row,rand(10,110));
 
-            //one_row.push("地址"+(i+1)+"xxxxx路"+(i+1)+"xxxxx号");
-            array_push($one_row,"地址".((string)($i+1))."xxxxx路".((string)($i+1))."xxxxx号");
-            //one_row.push("测试");
-            array_push($one_row,"测试");
-            //one_row.push("名称");
-            array_push($one_row,"名称");
-            //one_row.push("长数据长数据长数据"+(i+1)+"xxxxx路"+(i+1)+"xxxxx号");
-            array_push($one_row,"长数据长数据长数据".((string)($i+1))."xxxxx路".((string)($i+1))."xxxxx号");
-            array_push($row_content,$one_row);
-            //row_content.push(one_row);
-        }
-        $body=array(
-            'ColumnName'=> $column_name,
-            'TableData'=>$row_content
-            );
-        $retval=array(
-            'status'=>'true',
-            'ret'=>$body,
-            'msg'=>'success',
-            'auth'=>'true'
-        );
-        $jsonencode = _encode($retval);
-        echo $jsonencode; break;
-    case "GetMaterialStockDetail":
-        $body= $_GET['body'];
-        $StockDetail = array(
-            'storageID'=> '1',
-            'mode'=> (string)rand(0,1),//0 自有 1 第三方
-            'localStorage'=> '50',
-            'maxStorage'=> '100',
-        );
-        $retval=array(
-            'status'=>'true',
-            'ret'=>$StockDetail,
-            'msg'=>'success',
-            'auth'=>'true'
-        );
-        $jsonencode = _encode($retval);
-        echo $jsonencode; break;
-    case "MaterialStockHistory":
-        $body_in = $_GET['body'];
-        //$Filter = $_GET["Filter"];
-
-        $column = 8;
-        $row = rand(40,100);
-        $column_name = array();
-        $row_content = array();
-        for( $i=0;$i<($column-1);$i++){
-            array_push($column_name,"第".(string)($i+1)."列");
-        }
-        for($i=0;$i<$row;$i++){
-            $one_row = array();
-            $first_number = rand(0,1);
-            if($first_number == 0){
-                array_push($one_row,"");
-            }else{
-                array_push($one_row,(string)($i+1));
-            }
-            array_push($one_row,"备注".(string)($i+1));
-            for($j=0;$j<($column-6);$j++) array_push($one_row,rand(10,110));
-
-            //one_row.push("地址"+(i+1)+"xxxxx路"+(i+1)+"xxxxx号");
-            array_push($one_row,"地址".((string)($i+1))."xxxxx路".((string)($i+1))."xxxxx号");
-            //one_row.push("测试");
-            array_push($one_row,"测试");
-            //one_row.push("名称");
-            array_push($one_row,"名称");
-            //one_row.push("长数据长数据长数据"+(i+1)+"xxxxx路"+(i+1)+"xxxxx号");
-            array_push($one_row,"长数据长数据长数据".((string)($i+1))."xxxxx路".((string)($i+1))."xxxxx号");
-            array_push($row_content,$one_row);
-            //row_content.push(one_row);
-        }
-        $body=array(
-            'ColumnName'=> $column_name,
-            'TableData'=>$row_content
-            );
-        $retval=array(
-            'status'=>'true',
-            'ret'=>$body,
-            'msg'=>'success',
-            'auth'=>'true'
-
-        );
-        $jsonencode = _encode($retval);
-        echo $jsonencode; break;
-    case "GetMaterialStockHistoryDetail":
-        $body= $_GET['body'];
-        $type = (string)(rand(0,1));//0 入库1出库
-        $StockDetail;
-        if($type == '1'){
-            $StockDetail = array(
-                'type'=> '1', //
-                'storageID'=> '1',
-                'materialMode'=> (string)(rand(0,1)),
-                'bucket'=> '20',
-                'price'=> '100',
-                'trunk'=>'浙B22222',
-                'driver'=>'司机b',
-                'mobile'=>'13913131313',
-                'target'=>'富士康',
-                'logistics'=>'顺丰快递'
-            );
-        }else{
-            $StockDetail = array(
-                'type'=> '0',//
-                'storageID'=> '1',
-                'materialMode'=> (string)(rand(0,1)),
-                'bucket'=> '20',
-                'price'=> '100',
-                'buyer'=>'采购员',
-                'vendor'=>'供应商A',
-                'mobile'=>'13913131313'
-            );
-        }
-        $retval=array(
-            'status'=>'true',
-            'ret'=>$StockDetail,
-            'msg'=>'success',
-            'auth'=>'true'
-        );
-        $jsonencode = _encode($retval);
-        echo $jsonencode; break;
-
-
+			//one_row.push("地址"+(i+1)+"xxxxx路"+(i+1)+"xxxxx号");
+			array_push($one_row,"地址".((string)($i+1))."xxxxx路".((string)($i+1))."xxxxx号");
+			//one_row.push("测试");
+			array_push($one_row,"测试");
+			//one_row.push("名称");
+			array_push($one_row,"名称");
+			//one_row.push("长数据长数据长数据"+(i+1)+"xxxxx路"+(i+1)+"xxxxx号");
+			array_push($one_row,"长数据长数据长数据".((string)($i+1))."xxxxx路".((string)($i+1))."xxxxx号");
+			array_push($row_content,$one_row);
+			//row_content.push(one_row);
+		}
+		$body=array(
+			'ColumnName'=> $column_name,
+			'TableData'=>$row_content
+		);
+		$retval=array(
+			'status'=>'true',
+			'ret'=>$body,
+			'msg'=>'success',
+			'auth'=>'true'
+		);
+		$jsonencode = _encode($retval);
+		echo $jsonencode; break;
 	default:
-	break;
+		break;
 }
 
 

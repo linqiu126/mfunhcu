@@ -121,6 +121,7 @@ if (MFUN_CURRENT_WORKING_PROGRAM_NAME_UNIQUE == MFUN_WORKING_PROGRAM_NAME_UNIQUE
     define ("MFUN_HCU_USER_NAME_GRADE_2", "一级用户");
     define ("MFUN_HCU_USER_NAME_GRADE_3", "二级用户");
     define ("MFUN_HCU_USER_NAME_GRADE_4", "三级用户");
+    define ("MFUN_HCU_USER_NAME_GRADE_5", "四级用户");
     define ("MFUN_HCU_USER_NAME_GRADE_N", "用户等级未知");
 }
 
@@ -130,6 +131,7 @@ define ("MFUN_USER_GRADE_LEVEL_1", 1);
 define ("MFUN_USER_GRADE_LEVEL_2", 2);
 define ("MFUN_USER_GRADE_LEVEL_3", 3);
 define ("MFUN_USER_GRADE_LEVEL_4", 4);
+define ("MFUN_USER_GRADE_LEVEL_5", 5);
 
 //BFSC常量，临时定义在这里，后面根据需要移除
 define ("MFUN_HCU_BFSC_STATUS_OK", "Y");  //设备正常，运行中
@@ -194,6 +196,16 @@ class classConstL1vmUserWebRight
                 'ProductDeliveryManage'=>'true',
                 'MaterialStorageManage'=>'true',
                 'MaterialDeliveryManage'=>'true',
+
+
+                //水产管理
+                'SeafoodInfo'=>'false',
+                'SeafoodAudit'=>'false',
+
+
+
+
+
                 //仪器操作
                 'InstConf' => 'true',
                 'InstRead' => 'true',
@@ -275,6 +287,11 @@ class classConstL1vmUserWebRight
                 'ProductStockRemovalDel' => 'true',
                 'ProductStockRemovalNew' => 'true',
                 'TableQuery' => 'true',
+
+                //水产管理
+
+                'SeafoodInfo'=>'false',
+                'SeafoodAudit'=>'false',
             ),
             'query' => 'true',
             'mod' => 'true'),
@@ -320,262 +337,10 @@ class classConstL1vmUserWebRight
                 'ProductDeliveryManage'=>'false',
                 'MaterialStorageManage'=>'false',
                 'MaterialDeliveryManage'=>'false',
-                //仪器操作
-                'InstConf' => 'false',
-                'InstRead' => 'false',
-                'InstDesign' => 'false',
-                'InstControl' => 'false',
-                'InstSnapshot' => 'false',
-                'InstVideo' => 'false',
-                //地理环境管理
-                'GeoInfoQuery' => 'false',
-                'GeoTrendAnalysis' => 'false',
-                'GeoDisaterForecast' => 'false',
-                'GeoEmergencyDirect' => 'false',
-                'GeoDiffusionAnalysis' => 'false',
-                //广告和门户
-                'ADConf' => 'false',
-                'WEBConf' => 'false',
-                //钥匙管理  ->只适用于FHYS
-                'KeyManage' => 'false',
-                'KeyAuth' => 'false',
-                'KeyHistory' => 'false',
-                //纤芯管理
-                'RTUManage' => 'false',
-                'OTDRManage' => 'false'),
-            'actionauth'=>array(
-                'UserNew' => 'false',
-                'UserMod' => 'false',
-                'UserDel' => 'false',
-                'PGNew' => 'false',
-                'PGMod' => 'false',
-                'PGDel' => 'false',
-                'ProjNew' => 'false',
-                'ProjMod' => 'false',
-                'ProjDel' => 'false',
-                'PointNew' => 'false',
-                'PointMod' => 'false',
-                'PointDel' => 'false',
-                'DevNew' => 'false',
-                'DevMod' => 'false',
-                'DevDel' => 'false',
-                'KeyNew' => 'false',
-                'KeyMod' => 'false',
-                'KeyDel' => 'false',
-                'OpenLock' => 'false',
-                'KeyAuthNew' => 'false',
-                'KeyGrant' => 'false',
-                'FactoryDel' => 'false',
-                'FactoryNew' => 'false',
-                'AttendanceAudit' => 'false',
-                'KPIAudit' => 'false',
-                'StaffDel' => 'false',
-                'ConsumablesPurchaseNew' => 'false',
-                'ConsumablesTable' => 'false',
-                'ConsumablesHistory' => 'false',
-                'GetConsumablesPurchase' => 'false',
-                'ConsumablesPurchaseMod' => 'false',
-                'ConsumablesPurchaseDel' => 'false',
-                'ProductStockNew' => 'false',
-                'GetProductWeightAndSize' => 'false',
-                'GetProductStockList' => 'false',
-                'GetProductEmptyStock' => 'false',
-                'ProductStockTable' => 'false',
-                'ProductStockDel' => 'false',
-                'GetProductStockDetail' => 'false',
-                'ProductStockTransfer' => 'false',
-                'ProductStockHistory' => 'false',
-                'MaterialStockNew' => 'false',
-                'GetMaterialStockList' => 'false',
-                'GetMaterialEmptyStock' => 'false',
-                'MaterialStockDel' => 'false',
-                'MaterialStockTable' => 'false',
-                'GetMaterialStockDetail' => 'false',
-                'MaterialStockIncomeNew' => 'false',
-                'MaterialStockRemovalNew' => 'false',
-                'MaterialStockHistory' => 'false',
-                'GetMaterialStockHistoryDetail' => 'false',
-                'MaterialStockIncomeMod' => 'false',
-                'MaterialStockRemovalMod' => 'false',
-                'MaterialStockRemovalDel' => 'false',
-                'GetProductStockHistoryDetail' => 'false',
-                'ProductStockRemovalMod' => 'false',
-                'ProductStockRemovalDel' => 'false',
-                'ProductStockRemovalNew' => 'false',
-                'TableQuery' => 'false',
-            ),
-            'query' => 'false',
-            'mod' => 'false'),
-        MFUN_USER_GRADE_LEVEL_2 => array(
-            'webauth'=>array(
-                //登录屏保
-                'menu_user_profile' => 'false',
-                //系统管理
-                'UserManage' => 'false',
-                'ParaManage' => 'false',
-                'ExportTableManage' => 'false',
-                'SoftwareLoadManage' =>'false',
-                //项目管理
-                'PGManage' => 'false',
-                'ProjManage' => 'false',
-                'MPManage' => 'false',
-                'DevManage' => 'false',
-                //测量管理
-                'MPMonitor' => 'false',
-                'MPStaticMonitorTable' => 'false',
-                'MPMonitorCard' => 'false',
-                //告警管理
-                'WarningCheck' => 'false',
-                'WarningHandle' => 'false',
-                //性能管理
-                'AuditTarget' => 'false',
-                'AuditStability' => 'false',
-                'AuditAvailability' => 'false',
-                'AuditError' => 'false',
-                'AuditQuality' => 'false',
-                //工厂管理
-                'StaffManage' => 'false',
-                'AttendanceManage' => 'false',
-                'FactoryManage' => 'false',
-                'SpecificationManage' => 'false',
-                'AssembleManage' => 'false',
-                'AssembleAudit' => 'false',
-                'AttendanceAudit' => 'false',
-                'KPIAudit' => 'false',
-                'ConsumablesManage'=>'false',
-                'ConsumablesHistory'=>'false',
-                'ProductStorageManage'=>'false',
-                'ProductDeliveryManage'=>'false',
-                'MaterialStorageManage'=>'false',
-                'MaterialDeliveryManage'=>'false',
-                //仪器操作
-                'InstConf' => 'false',
-                'InstRead' => 'false',
-                'InstDesign' => 'false',
-                'InstControl' => 'false',
-                'InstSnapshot' => 'false',
-                'InstVideo' => 'false',
-                //地理环境管理
-                'GeoInfoQuery' => 'false',
-                'GeoTrendAnalysis' => 'false',
-                'GeoDisaterForecast' => 'false',
-                'GeoEmergencyDirect' => 'false',
-                'GeoDiffusionAnalysis' => 'false',
-                //广告和门户
-                'ADConf' => 'false',
-                'WEBConf' => 'false',
-                //钥匙管理  ->只适用于FHYS
-                'KeyManage' => 'false',
-                'KeyAuth' => 'false',
-                'KeyHistory' => 'false',
-                //纤芯管理
-                'RTUManage' => 'false',
-                'OTDRManage' => 'false'),
-            'actionauth'=>array(
-                'UserNew' => 'false',
-                'UserMod' => 'false',
-                'UserDel' => 'false',
-                'PGNew' => 'false',
-                'PGMod' => 'false',
-                'PGDel' => 'false',
-                'ProjNew' => 'false',
-                'ProjMod' => 'false',
-                'ProjDel' => 'false',
-                'PointNew' => 'false',
-                'PointMod' => 'false',
-                'PointDel' => 'false',
-                'DevNew' => 'false',
-                'DevMod' => 'false',
-                'DevDel' => 'false',
-                'KeyNew' => 'false',
-                'KeyMod' => 'false',
-                'KeyDel' => 'false',
-                'OpenLock' => 'false',
-                'KeyAuthNew' => 'false',
-                'KeyGrant' => 'false',
-                'FactoryDel' => 'false',
-                'FactoryNew' => 'false',
-                'AttendanceAudit' => 'false',
-                'KPIAudit' => 'false',
-                'StaffDel' => 'false',
-                'ConsumablesPurchaseNew' => 'false',
-                'ConsumablesTable' => 'false',
-                'ConsumablesHistory' => 'false',
-                'GetConsumablesPurchase' => 'false',
-                'ConsumablesPurchaseMod' => 'false',
-                'ConsumablesPurchaseDel' => 'false',
-                'ProductStockNew' => 'false',
-                'GetProductWeightAndSize' => 'false',
-                'GetProductStockList' => 'false',
-                'GetProductEmptyStock' => 'false',
-                'ProductStockTable' => 'false',
-                'ProductStockDel' => 'false',
-                'GetProductStockDetail' => 'false',
-                'ProductStockTransfer' => 'false',
-                'ProductStockHistory' => 'false',
-                'MaterialStockNew' => 'false',
-                'GetMaterialStockList' => 'false',
-                'GetMaterialEmptyStock' => 'false',
-                'MaterialStockDel' => 'false',
-                'MaterialStockTable' => 'false',
-                'GetMaterialStockDetail' => 'false',
-                'MaterialStockIncomeNew' => 'false',
-                'MaterialStockRemovalNew' => 'false',
-                'MaterialStockHistory' => 'false',
-                'GetMaterialStockHistoryDetail' => 'false',
-                'MaterialStockIncomeMod' => 'false',
-                'MaterialStockRemovalMod' => 'false',
-                'MaterialStockRemovalDel' => 'false',
-                'GetProductStockHistoryDetail' => 'false',
-                'ProductStockRemovalMod' => 'false',
-                'ProductStockRemovalDel' => 'false',
-                'ProductStockRemovalNew' => 'false',
-                'TableQuery' => 'false',
-            ),
-            'query' => 'false',
-            'mod' => 'false'),
-        MFUN_USER_GRADE_LEVEL_3 => array(
-            'webauth'=>array(
-                //登录屏保
-                'menu_user_profile' => 'false',
-                //系统管理
-                'UserManage' => 'false',
-                'ParaManage' => 'false',
-                'ExportTableManage' => 'false',
-                'SoftwareLoadManage' =>'false',
-                //项目管理
-                'PGManage' => 'false',
-                'ProjManage' => 'false',
-                'MPManage' => 'false',
-                'DevManage' => 'false',
-                //测量管理
-                'MPMonitor' => 'false',
-                'MPStaticMonitorTable' => 'false',
-                'MPMonitorCard' => 'false',
-                //告警管理
-                'WarningCheck' => 'false',
-                'WarningHandle' => 'false',
-                //性能管理
-                'AuditTarget' => 'false',
-                'AuditStability' => 'false',
-                'AuditAvailability' => 'false',
-                'AuditError' => 'false',
-                'AuditQuality' => 'false',
-                //工厂管理
-                'StaffManage' => 'false',
-                'AttendanceManage' => 'false',
-                'FactoryManage' => 'false',
-                'SpecificationManage' => 'false',
-                'AssembleManage' => 'false',
-                'AssembleAudit' => 'false',
-                'AttendanceAudit' => 'false',
-                'KPIAudit' => 'false',
-                'ConsumablesManage'=>'false',
-                'ConsumablesHistory'=>'false',
-                'ProductStorageManage'=>'false',
-                'ProductDeliveryManage'=>'false',
-                'MaterialStorageManage'=>'false',
-                'MaterialDeliveryManage'=>'false',
+                //水产管理
+                'SeafoodInfo'=>'false',
+                'SeafoodAudit'=>'false',
+
                 //仪器操作
                 'InstConf' => 'false',
                 'InstRead' => 'false',
@@ -660,10 +425,13 @@ class classConstL1vmUserWebRight
                 'ProductStockRemovalNew' => 'false',
                 'TableQuery' => 'false',
 
+                //水产管理
+                'SeafoodInfo'=>'false',
+                'SeafoodAudit'=>'false',
             ),
             'query' => 'false',
             'mod' => 'false'),
-        MFUN_USER_GRADE_LEVEL_4 => array(
+        MFUN_USER_GRADE_LEVEL_2 => array(
             'webauth'=>array(
                 //登录屏保
                 'menu_user_profile' => 'false',
@@ -705,6 +473,11 @@ class classConstL1vmUserWebRight
                 'ProductDeliveryManage'=>'false',
                 'MaterialStorageManage'=>'false',
                 'MaterialDeliveryManage'=>'false',
+
+                //水产管理
+                'SeafoodInfo'=>'false',
+                'SeafoodAudit'=>'false',
+
                 //仪器操作
                 'InstConf' => 'false',
                 'InstRead' => 'false',
@@ -788,10 +561,430 @@ class classConstL1vmUserWebRight
                 'ProductStockRemovalDel' => 'false',
                 'ProductStockRemovalNew' => 'false',
                 'TableQuery' => 'false',
+
+
+                //水产管理
+                'SeafoodInfo'=>'false',
+                'SeafoodAudit'=>'false',
             ),
             'query' => 'false',
             'mod' => 'false'),
+        MFUN_USER_GRADE_LEVEL_3 => array(
+            'webauth'=>array(
+                //登录屏保
+                'menu_user_profile' => 'false',
+                //系统管理
+                'UserManage' => 'false',
+                'ParaManage' => 'false',
+                'ExportTableManage' => 'false',
+                'SoftwareLoadManage' =>'false',
+                //项目管理
+                'PGManage' => 'false',
+                'ProjManage' => 'false',
+                'MPManage' => 'false',
+                'DevManage' => 'false',
+                //测量管理
+                'MPMonitor' => 'false',
+                'MPStaticMonitorTable' => 'false',
+                'MPMonitorCard' => 'false',
+                //告警管理
+                'WarningCheck' => 'false',
+                'WarningHandle' => 'false',
+                //性能管理
+                'AuditTarget' => 'false',
+                'AuditStability' => 'false',
+                'AuditAvailability' => 'false',
+                'AuditError' => 'false',
+                'AuditQuality' => 'false',
+                //工厂管理
+                'StaffManage' => 'false',
+                'AttendanceManage' => 'false',
+                'FactoryManage' => 'false',
+                'SpecificationManage' => 'false',
+                'AssembleManage' => 'false',
+                'AssembleAudit' => 'false',
+                'AttendanceAudit' => 'false',
+                'KPIAudit' => 'false',
+                'ConsumablesManage'=>'false',
+                'ConsumablesHistory'=>'false',
+                'ProductStorageManage'=>'false',
+                'ProductDeliveryManage'=>'false',
+                'MaterialStorageManage'=>'false',
+                'MaterialDeliveryManage'=>'false',
+
+                //水产管理
+                'SeafoodInfo'=>'false',
+                'SeafoodAudit'=>'false',
+
+                //仪器操作
+                'InstConf' => 'false',
+                'InstRead' => 'false',
+                'InstDesign' => 'false',
+                'InstControl' => 'false',
+                'InstSnapshot' => 'false',
+                'InstVideo' => 'false',
+                //地理环境管理
+                'GeoInfoQuery' => 'false',
+                'GeoTrendAnalysis' => 'false',
+                'GeoDisaterForecast' => 'false',
+                'GeoEmergencyDirect' => 'false',
+                'GeoDiffusionAnalysis' => 'false',
+                //广告和门户
+                'ADConf' => 'false',
+                'WEBConf' => 'false',
+                //钥匙管理  ->只适用于FHYS
+                'KeyManage' => 'false',
+                'KeyAuth' => 'false',
+                'KeyHistory' => 'false',
+                //纤芯管理
+                'RTUManage' => 'false',
+                'OTDRManage' => 'false'),
+            'actionauth'=>array(
+                'UserNew' => 'false',
+                'UserMod' => 'false',
+                'UserDel' => 'false',
+                'PGNew' => 'false',
+                'PGMod' => 'false',
+                'PGDel' => 'false',
+                'ProjNew' => 'false',
+                'ProjMod' => 'false',
+                'ProjDel' => 'false',
+                'PointNew' => 'false',
+                'PointMod' => 'false',
+                'PointDel' => 'false',
+                'DevNew' => 'false',
+                'DevMod' => 'false',
+                'DevDel' => 'false',
+                'KeyNew' => 'false',
+                'KeyMod' => 'false',
+                'KeyDel' => 'false',
+                'OpenLock' => 'false',
+                'KeyAuthNew' => 'false',
+                'KeyGrant' => 'false',
+                'FactoryDel' => 'false',
+                'FactoryNew' => 'false',
+                'AttendanceAudit' => 'false',
+                'KPIAudit' => 'false',
+                'StaffDel' => 'false',
+                'ConsumablesPurchaseNew' => 'false',
+                'ConsumablesTable' => 'false',
+                'ConsumablesHistory' => 'false',
+                'GetConsumablesPurchase' => 'false',
+                'ConsumablesPurchaseMod' => 'false',
+                'ConsumablesPurchaseDel' => 'false',
+                'ProductStockNew' => 'false',
+                'GetProductWeightAndSize' => 'false',
+                'GetProductStockList' => 'false',
+                'GetProductEmptyStock' => 'false',
+                'ProductStockTable' => 'false',
+                'ProductStockDel' => 'false',
+                'GetProductStockDetail' => 'false',
+                'ProductStockTransfer' => 'false',
+                'ProductStockHistory' => 'false',
+                'MaterialStockNew' => 'false',
+                'GetMaterialStockList' => 'false',
+                'GetMaterialEmptyStock' => 'false',
+                'MaterialStockDel' => 'false',
+                'MaterialStockTable' => 'false',
+                'GetMaterialStockDetail' => 'false',
+                'MaterialStockIncomeNew' => 'false',
+                'MaterialStockRemovalNew' => 'false',
+                'MaterialStockHistory' => 'false',
+                'GetMaterialStockHistoryDetail' => 'false',
+                'MaterialStockIncomeMod' => 'false',
+                'MaterialStockRemovalMod' => 'false',
+                'MaterialStockRemovalDel' => 'false',
+                'GetProductStockHistoryDetail' => 'false',
+                'ProductStockRemovalMod' => 'false',
+                'ProductStockRemovalDel' => 'false',
+                'ProductStockRemovalNew' => 'false',
+                'TableQuery' => 'false',
+
+
+                //水产管理
+                'SeafoodInfo'=>'false',
+                'SeafoodAudit'=>'false',
+
+            ),
+            'query' => 'false',
+            'mod' => 'false'),
+        MFUN_USER_GRADE_LEVEL_4 => array(
+            'webauth'=>array(
+                //登录屏保
+                'menu_user_profile' => 'false',
+                //系统管理
+                'UserManage' => 'false',
+                'ParaManage' => 'false',
+                'ExportTableManage' => 'false',
+                'SoftwareLoadManage' =>'false',
+                //项目管理
+                'PGManage' => 'false',
+                'ProjManage' => 'false',
+                'MPManage' => 'false',
+                'DevManage' => 'false',
+                //测量管理
+                'MPMonitor' => 'false',
+                'MPStaticMonitorTable' => 'false',
+                'MPMonitorCard' => 'false',
+                //告警管理
+                'WarningCheck' => 'false',
+                'WarningHandle' => 'false',
+                //性能管理
+                'AuditTarget' => 'false',
+                'AuditStability' => 'false',
+                'AuditAvailability' => 'false',
+                'AuditError' => 'false',
+                'AuditQuality' => 'false',
+                //工厂管理
+                'StaffManage' => 'false',
+                'AttendanceManage' => 'false',
+                'FactoryManage' => 'false',
+                'SpecificationManage' => 'false',
+                'AssembleManage' => 'false',
+                'AssembleAudit' => 'false',
+                'AttendanceAudit' => 'false',
+                'KPIAudit' => 'false',
+                'ConsumablesManage'=>'false',
+                'ConsumablesHistory'=>'false',
+                'ProductStorageManage'=>'false',
+                'ProductDeliveryManage'=>'false',
+                'MaterialStorageManage'=>'false',
+                'MaterialDeliveryManage'=>'false',
+
+                //水产管理
+                'SeafoodInfo'=>'false',
+                'SeafoodAudit'=>'false',
+
+                //仪器操作
+                'InstConf' => 'false',
+                'InstRead' => 'false',
+                'InstDesign' => 'false',
+                'InstControl' => 'false',
+                'InstSnapshot' => 'false',
+                'InstVideo' => 'false',
+                //地理环境管理
+                'GeoInfoQuery' => 'false',
+                'GeoTrendAnalysis' => 'false',
+                'GeoDisaterForecast' => 'false',
+                'GeoEmergencyDirect' => 'false',
+                'GeoDiffusionAnalysis' => 'false',
+                //广告和门户
+                'ADConf' => 'false',
+                'WEBConf' => 'false',
+                //钥匙管理  ->只适用于FHYS
+                'KeyManage' => 'false',
+                'KeyAuth' => 'false',
+                'KeyHistory' => 'false',
+                //纤芯管理
+                'RTUManage' => 'false',
+                'OTDRManage' => 'false'),
+            'actionauth'=>array(
+                'UserNew' => 'false',
+                'UserMod' => 'false',
+                'UserDel' => 'false',
+                'PGNew' => 'false',
+                'PGMod' => 'false',
+                'PGDel' => 'false',
+                'ProjNew' => 'false',
+                'ProjMod' => 'false',
+                'ProjDel' => 'false',
+                'PointNew' => 'false',
+                'PointMod' => 'false',
+                'PointDel' => 'false',
+                'DevNew' => 'false',
+                'DevMod' => 'false',
+                'DevDel' => 'false',
+                'KeyNew' => 'false',
+                'KeyMod' => 'false',
+                'KeyDel' => 'false',
+                'OpenLock' => 'false',
+                'KeyAuthNew' => 'false',
+                'KeyGrant' => 'false',
+                'FactoryDel' => 'false',
+                'FactoryNew' => 'false',
+                'AttendanceAudit' => 'false',
+                'KPIAudit' => 'false',
+                'StaffDel' => 'false',
+                'ConsumablesPurchaseNew' => 'false',
+                'ConsumablesTable' => 'false',
+                'ConsumablesHistory' => 'false',
+                'GetConsumablesPurchase' => 'false',
+                'ConsumablesPurchaseMod' => 'false',
+                'ConsumablesPurchaseDel' => 'false',
+                'ProductStockNew' => 'false',
+                'GetProductWeightAndSize' => 'false',
+                'GetProductStockList' => 'false',
+                'GetProductEmptyStock' => 'false',
+                'ProductStockTable' => 'false',
+                'ProductStockDel' => 'false',
+                'GetProductStockDetail' => 'false',
+                'ProductStockTransfer' => 'false',
+                'ProductStockHistory' => 'false',
+                'MaterialStockNew' => 'false',
+                'GetMaterialStockList' => 'false',
+                'GetMaterialEmptyStock' => 'false',
+                'MaterialStockDel' => 'false',
+                'MaterialStockTable' => 'false',
+                'GetMaterialStockDetail' => 'false',
+                'MaterialStockIncomeNew' => 'false',
+                'MaterialStockRemovalNew' => 'false',
+                'MaterialStockHistory' => 'false',
+                'GetMaterialStockHistoryDetail' => 'false',
+                'MaterialStockIncomeMod' => 'false',
+                'MaterialStockRemovalMod' => 'false',
+                'MaterialStockRemovalDel' => 'false',
+                'GetProductStockHistoryDetail' => 'false',
+                'ProductStockRemovalMod' => 'false',
+                'ProductStockRemovalDel' => 'false',
+                'ProductStockRemovalNew' => 'false',
+                'TableQuery' => 'false',
+
+
+                //水产管理
+                'SeafoodInfo'=>'false',
+                'SeafoodAudit'=>'false',
+            ),
+            'query' => 'false',
+            'mod' => 'false'),
+        MFUN_USER_GRADE_LEVEL_5 => array(
+            'webauth'=>array(
+                //登录屏保
+                'menu_user_profile' => 'false',
+                //系统管理
+                'UserManage' => 'false',
+                'ParaManage' => 'false',
+                'ExportTableManage' => 'false',
+                'SoftwareLoadManage' =>'false',
+                //项目管理
+                'PGManage' => 'false',
+                'ProjManage' => 'false',
+                'MPManage' => 'false',
+                'DevManage' => 'false',
+                //测量管理
+                'MPMonitor' => 'false',
+                'MPStaticMonitorTable' => 'false',
+                'MPMonitorCard' => 'false',
+                //告警管理
+                'WarningCheck' => 'false',
+                'WarningHandle' => 'false',
+                //性能管理
+                'AuditTarget' => 'false',
+                'AuditStability' => 'false',
+                'AuditAvailability' => 'false',
+                'AuditError' => 'false',
+                'AuditQuality' => 'false',
+                //工厂管理
+                'StaffManage' => 'false',
+                'AttendanceManage' => 'false',
+                'FactoryManage' => 'false',
+                'SpecificationManage' => 'false',
+                'AssembleManage' => 'false',
+                'AssembleAudit' => 'false',
+                'AttendanceAudit' => 'false',
+                'KPIAudit' => 'false',
+                'ConsumablesManage'=>'false',
+                'ConsumablesHistory'=>'false',
+                'ProductStorageManage'=>'false',
+                'ProductDeliveryManage'=>'false',
+                'MaterialStorageManage'=>'false',
+                'MaterialDeliveryManage'=>'false',
+
+                //水产管理
+                'SeafoodInfo'=>'false',
+                'SeafoodAudit'=>'false',
+
+                //仪器操作
+                'InstConf' => 'false',
+                'InstRead' => 'false',
+                'InstDesign' => 'false',
+                'InstControl' => 'false',
+                'InstSnapshot' => 'false',
+                'InstVideo' => 'false',
+                //地理环境管理
+                'GeoInfoQuery' => 'false',
+                'GeoTrendAnalysis' => 'false',
+                'GeoDisaterForecast' => 'false',
+                'GeoEmergencyDirect' => 'false',
+                'GeoDiffusionAnalysis' => 'false',
+                //广告和门户
+                'ADConf' => 'false',
+                'WEBConf' => 'false',
+                //钥匙管理  ->只适用于FHYS
+                'KeyManage' => 'false',
+                'KeyAuth' => 'false',
+                'KeyHistory' => 'false',
+                //纤芯管理
+                'RTUManage' => 'false',
+                'OTDRManage' => 'false'),
+            'actionauth'=>array(
+                'UserNew' => 'false',
+                'UserMod' => 'false',
+                'UserDel' => 'false',
+                'PGNew' => 'false',
+                'PGMod' => 'false',
+                'PGDel' => 'false',
+                'ProjNew' => 'false',
+                'ProjMod' => 'false',
+                'ProjDel' => 'false',
+                'PointNew' => 'false',
+                'PointMod' => 'false',
+                'PointDel' => 'false',
+                'DevNew' => 'false',
+                'DevMod' => 'false',
+                'DevDel' => 'false',
+                'KeyNew' => 'false',
+                'KeyMod' => 'false',
+                'KeyDel' => 'false',
+                'OpenLock' => 'false',
+                'KeyAuthNew' => 'false',
+                'KeyGrant' => 'false',
+                'FactoryDel' => 'false',
+                'FactoryNew' => 'false',
+                'AttendanceAudit' => 'false',
+                'KPIAudit' => 'false',
+                'StaffDel' => 'false',
+                'ConsumablesPurchaseNew' => 'false',
+                'ConsumablesTable' => 'false',
+                'ConsumablesHistory' => 'false',
+                'GetConsumablesPurchase' => 'false',
+                'ConsumablesPurchaseMod' => 'false',
+                'ConsumablesPurchaseDel' => 'false',
+                'ProductStockNew' => 'false',
+                'GetProductWeightAndSize' => 'false',
+                'GetProductStockList' => 'false',
+                'GetProductEmptyStock' => 'false',
+                'ProductStockTable' => 'false',
+                'ProductStockDel' => 'false',
+                'GetProductStockDetail' => 'false',
+                'ProductStockTransfer' => 'false',
+                'ProductStockHistory' => 'false',
+                'MaterialStockNew' => 'false',
+                'GetMaterialStockList' => 'false',
+                'GetMaterialEmptyStock' => 'false',
+                'MaterialStockDel' => 'false',
+                'MaterialStockTable' => 'false',
+                'GetMaterialStockDetail' => 'false',
+                'MaterialStockIncomeNew' => 'false',
+                'MaterialStockRemovalNew' => 'false',
+                'MaterialStockHistory' => 'false',
+                'GetMaterialStockHistoryDetail' => 'false',
+                'MaterialStockIncomeMod' => 'false',
+                'MaterialStockRemovalMod' => 'false',
+                'MaterialStockRemovalDel' => 'false',
+                'GetProductStockHistoryDetail' => 'false',
+                'ProductStockRemovalMod' => 'false',
+                'ProductStockRemovalDel' => 'false',
+                'ProductStockRemovalNew' => 'false',
+                'TableQuery' => 'false',
+
+                //水产管理
+                'SeafoodInfo'=>'false',
+                'SeafoodAudit'=>'false',
+            ),
+            'query' => 'true',
+            'mod' => 'true'),
     );
+
     //构造函数，根据不同项目初始化权限配置.默认都为false，不同项目根据需要修改为true
     public function __construct()
     {
@@ -940,6 +1133,17 @@ class classConstL1vmUserWebRight
             self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_4]['webauth']['AssembleManage'] = 'true';
             self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_4]['query'] = 'true';
             self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_4]['mod'] = 'false';
+
+            //水产管理
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_5]['webauth']['SeafoodInfo']='true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_5]['webauth']['SeafoodAudit']='true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_5]['actionauth']['SeafoodInfo']='true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_5]['actionauth']['SeafoodAudit']='true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_5]['actionauth']['GetProductWeightAndSize']='true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_5]['actionauth']['GetProductStockList']='true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_5]['actionauth']['GetMaterialStockList']='true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_5]['query'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_5]['mod'] = 'true';
         }
         elseif (MFUN_CURRENT_WORKING_PROGRAM_NAME_UNIQUE == MFUN_WORKING_PROGRAM_NAME_UNIQUE_AQYC)
         {
@@ -1047,6 +1251,17 @@ class classConstL1vmUserWebRight
             self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_4]['webauth']['AssembleManage'] = 'true';
             self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_4]['query'] = 'true';
             self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_4]['mod'] = 'false';
+
+            //水产管理
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_5]['webauth']['SeafoodInfo']='true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_5]['webauth']['SeafoodAudit']='true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_5]['actionauth']['SeafoodInfo']='true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_5]['actionauth']['SeafoodAudit']='true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_5]['actionauth']['GetProductWeightAndSize']='true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_5]['actionauth']['GetProductStockList']='true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_5]['actionauth']['GetMaterialStockList']='true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_5]['query'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_5]['mod'] = 'true';
         }
         elseif (MFUN_CURRENT_WORKING_PROGRAM_NAME_UNIQUE == MFUN_WORKING_PROGRAM_NAME_UNIQUE_FHYS)
         {
@@ -1253,7 +1468,7 @@ class classConstL1vmUserWebRight
     //通过授权级别获取详细授权菜单信息
     public static function mfun_vm_getUserGrade($gradeIndex)
     {
-        if ($gradeIndex >= 0 AND $gradeIndex <=4) {
+        if ($gradeIndex >= 0 AND $gradeIndex <=5) {
             return self::$mfunUserGradeArrayConst[$gradeIndex];
         }else {
             return false;

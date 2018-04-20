@@ -42,6 +42,7 @@ class classTaskL2snrWeight
     //FAAM物联网秤重量报告处理
     private function func_weight_product_insert($devCode,$content){
         $classDbiL2snrWeight = new classDbiL2snrWeight();
+        //$content=json_encode($content);
         $content = json_decode($content);
         if (isset($content->rfidUser)) $rfidUser = $content->rfidUser; else $rfidUser = "";
         if (isset($content->spsValue)) $spsValue = $content->spsValue; else $spsValue = "";
@@ -104,7 +105,6 @@ class classTaskL2snrWeight
             $loggerObj->mylog($project,$devCode,"MFUN_TASK_ID_L2SDK_IOT_JSON","MFUN_TASK_ID_L2SNR_WEIGHT",$msgName,$log_content);
             echo $resp; //Http response echo返回
         }
-
         //返回
         return true;
     }

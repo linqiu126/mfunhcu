@@ -411,7 +411,6 @@ class classDbiL3wxOprFaam
         $mysqli->close();
         return $respMsgContent;
     }
-
 }
 
 ?>

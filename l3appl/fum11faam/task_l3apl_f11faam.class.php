@@ -1182,19 +1182,116 @@ class classTaskL3aplF11faam
         return $retval;
     }
     //获取打印报表
-    function func_faam_table_query($action,$user,$body){
+    function func_faam_table_query($action,$user,$body)
+    {
+        $uiFlsymDbObj = new classDbiL3apF1sym();
+        $usercheck = $uiFlsymDbObj->dbi_user_authcheck($action, $user);
+
+        if ($usercheck["status"] == "true" AND $usercheck["auth"] == "true") {
+            $uid = $usercheck["uid"];
+            $uiF11faamDbObj = new classDbiL3apF11faam();
+            $resp = $uiF11faamDbObj->dbi_faam_table_query($uid);
+            if (!empty($resp["TableData"])) {
+                $retval = array('status' => 'true', 'ret' => $resp, 'msg' => '获取打印报表成功', 'auth' => $usercheck['auth']);
+            } else {
+                $retval = array('status' => false, 'ret' => "", 'msg' => '获取打印报表失败', 'auth' => $usercheck['auth']);
+            }
+        } else
+            $retval = array('status' => $usercheck['status'], 'auth' => $usercheck['auth'], 'msg' => $usercheck['msg']);
+        return $retval;
+    }
+
+    //打印
+    function func_faam_get_print($action,$user,$body){
         $uiFlsymDbObj=new classDbiL3apF1sym();
         $usercheck=$uiFlsymDbObj->dbi_user_authcheck($action,$user);
 
         if($usercheck["status"]=="true" AND $usercheck["auth"]=="true") {
             $uid = $usercheck["uid"];
             $uiF11faamDbObj = new classDbiL3apF11faam();
-            $resp=$uiF11faamDbObj->dbi_faam_table_query($uid);
-            if($resp){
-                $retval=array('status'=>$usercheck['status'],'ret'=>$resp,'msg'=>'success','auth'=>$usercheck['auth']);
+            $resp = $uiF11faamDbObj->dbi_faam_get_print($body);
+        }
+    }
+    function func_faam_get_consumables_vendor_list($action,$user,$body){
+        $uiFlsymDbObj=new classDbiL3apF1sym();
+        $usercheck=$uiFlsymDbObj->dbi_user_authcheck($action,$user);
+
+        if($usercheck["status"]=="true" AND $usercheck["auth"]=="true") {
+            $uid = $usercheck["uid"];
+            $uiF11faamDbObj = new classDbiL3apF11faam();
+            $resp = $uiF11faamDbObj->dbi_faam_get_consumables_vendor_list();
+            if(!empty($resp)){
+                $retval=array('status'=>'true','ret'=>$resp,'msg'=>'获取供应商列表成功','auth'=>$usercheck['auth']);
             }
             else{
-                $retval=array('status'=>$usercheck['status'],'ret'=>"",'msg'=>'failed','auth'=>$usercheck['auth']);
+                $retval=array('status'=>false,'ret'=>"",'msg'=>'获取供应商列表失败','auth'=>$usercheck['auth']);
+            }
+        }
+        else
+            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>$usercheck['msg']);
+        return $retval;
+    }
+    function func_faam_get_consumables_type_list($action,$user,$body){
+        $uiFlsymDbObj=new classDbiL3apF1sym();
+        $usercheck=$uiFlsymDbObj->dbi_user_authcheck($action,$user);
+
+        if($usercheck["status"]=="true" AND $usercheck["auth"]=="true") {
+            $uid = $usercheck["uid"];
+            $uiF11faamDbObj = new classDbiL3apF11faam();
+            $resp = $uiF11faamDbObj->dbi_faam_get_consumables_type_list();
+            if(!empty($resp)){
+                $retval=array('status'=>'true','ret'=>$resp,'msg'=>'获取耗材规格列表成功','auth'=>$usercheck['auth']);
+            }
+            else{
+                $retval=array('status'=>false,'ret'=>"",'msg'=>'获取耗材规格列表失败','auth'=>$usercheck['auth']);
+            }
+        }
+        else
+            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>$usercheck['msg']);
+        return $retval;
+    }
+
+    //水产管理
+    function  func_faam_seafood_info($action,$user,$body){
+        $uiFlsymDbObj=new classDbiL3apF1sym();
+        $usercheck=$uiFlsymDbObj->dbi_user_authcheck($action,$user);
+
+        if($usercheck["status"]=="true" AND $usercheck["auth"]=="true") {
+            $uid = $usercheck["uid"];
+            $uiF11faamDbObj = new classDbiL3apF11faam();
+            $resp=$uiF11faamDbObj->dbi_faam_seafood_info($body,$uid);
+            if(!empty($resp["TableData"])){
+                $retval=array('status'=>'true','ret'=>$resp,'msg'=>'获取水产信息成功','auth'=>$usercheck['auth']);
+            }
+            else{
+                $table=array();
+                array_push($table,"获取水产信息失败");
+                array_push($resp["TableData"],$table);
+                $retval=array('status'=>false,'ret'=>$resp,'msg'=>'获取水产信息失败','auth'=>$usercheck['auth']);
+            }
+        }
+        else
+            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>$usercheck['msg']);
+        return $retval;
+    }
+
+    //水产管理
+    function func_faam_seafood_audit($action,$user,$body){
+        $uiFlsymDbObj=new classDbiL3apF1sym();
+        $usercheck=$uiFlsymDbObj->dbi_user_authcheck($action,$user);
+
+        if($usercheck["status"]=="true" AND $usercheck["auth"]=="true") {
+            $uid = $usercheck["uid"];
+            $uiF11faamDbObj = new classDbiL3apF11faam();
+            $resp=$uiF11faamDbObj->dbi_faam_seafood_audit($body,$uid);
+            if(!empty($resp["TableData"])){
+                $retval=array('status'=>'true','ret'=>$resp,'msg'=>'获取水产信息成功','auth'=>$usercheck['auth']);
+            }
+            else{
+                $table=array();
+                array_push($table,"获取水产信息失败");
+                array_push($resp["TableData"],$table);
+                $retval=array('status'=>false,'ret'=>$resp,'msg'=>'获取水产信息失败','auth'=>$usercheck['auth']);
             }
         }
         else
@@ -1424,9 +1521,26 @@ class classTaskL3aplF11faam
             case MSG_ID_L4FAAMUI_TO_L3F11_TABLEQUERY:
                 $resp=$this->func_faam_table_query($action,$user,$body);
                 break;
+            case MSG_ID_L4FAAMUI_TO_L3F11_GETPRINT:
+                $resp=$this->func_faam_get_print($action,$user,$body);
+                break;
+            case MSG_ID_L4FAAMUI_TO_L3F11_GETCONSUMABLESVENDORLIST:
+                $resp=$this->func_faam_get_consumables_vendor_list($action,$user,$body);
+                break;
+            case MSG_ID_L4FAAMUI_TO_L3F11_GETCONSUMABLESTYPELIST:
+                $resp=$this->func_faam_get_consumables_type_list($action,$user,$body);
+                break;
+            //水产管理
+            case MSG_ID_L4FAAMUI_TO_L3F11_SEAFOODINFO:
+                $resp=$this->func_faam_seafood_info($action,$user,$body);
+                break;
+            case MSG_ID_L4FAAMUI_TO_L3F11_SEAFOODAUDIT:
+                $resp=$this->func_faam_seafood_audit($action,$user,$body);
+                break;
 //            case MSG_ID_L4FAAMUI_TO_L3F11_MATERIALSTOCKINCOMEDEL:
 //                $resp=$this->func_faam_material_stock_income_del($action,$user,$body);
 //                break;
+
             /*****************************自己更改终止处*******************************************/
             default:
                 break;
