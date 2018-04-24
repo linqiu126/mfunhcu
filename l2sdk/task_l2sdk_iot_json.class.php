@@ -50,6 +50,10 @@ class classTaskL2sdkIotJson
         $ieContent = json_encode($jsonData->IeCnt);
         $funcFlag = trim($jsonData->FnFlg);
 
+        //对接收内容进行log记录
+        //$log_content = "R:" . trim($data);
+        //$loggerObj->mylog($project,$fromUser,"MFUN_TASK_VID_L1VM_SWOOLE","MFUN_TASK_ID_L2SDK_IOT_JSON",$msgName,$log_content);
+
         //取DB中的硬件信息，判断FromUser合法性
         $dbiL2sdkIotcomObj = new classDbiL2sdkIotcom();
         $statCode = $dbiL2sdkIotcomObj->dbi_hcuDevice_valid_device($fromUser); //FromUserName对应每个HCU硬件的设备编号

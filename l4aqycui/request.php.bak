@@ -1,16 +1,16 @@
 <?php
 header("Content-type:text/html;charset=utf-8");
 #require '/php/req.php';
-$install_path="/dist";
+$install_path="_INSTALL_PATH_";
 function _encode($arr)
 {
   $na = array();
-  foreach ( $arr as $k => $value ) {   
-    $na[_urlencode($k)] = _urlencode ($value);   
+  foreach ( $arr as $k => $value ) {
+    $na[_urlencode($k)] = _urlencode ($value);
   }
   return addcslashes(urldecode(json_encode($na)),"\r\n");
 }
- 
+
 function _urlencode($elem)
 {
   if(is_array($elem)&&(!(empty($elem)))){
@@ -72,7 +72,7 @@ RESPONSE:
 		'auth'=>'true',
         'ret'=>$body,
         'msg'=>'login successfully'
-        
+
 		);
     }else if($usr=="黄"){
 		$body = array(
@@ -84,7 +84,7 @@ RESPONSE:
 			 'auth'=>'true',
 			 'ret'=>$body,
              'msg'=>'login successfully',
-             
+
      		);
     }
     else{
@@ -97,13 +97,13 @@ RESPONSE:
 		'auth'=>'true',
 	    'ret'=>$body,
         'msg'=>'no this user or password faile',
-        
+
 		);
     }
     $jsonencode = json_encode($usrinfo);
 	echo $jsonencode; break;
 
-		
+
 case "UserInfo":
 /*
 REQUEST:
@@ -294,7 +294,7 @@ $retval=array(
 		'ret'=>($user)
 	);
     $jsonencode = (_encode($retval));
-	echo $jsonencode; 
+	echo $jsonencode;
 	break;
 case "ProjectPGList":
 /*
@@ -569,7 +569,7 @@ RESPONSE:
 		'msg'=>'success',
 		'auth'=>'true'
 	);
-*/							 
+*/
 	$userproj = array();
 	for($i=0;$i<4;$i++){
 		$temp = array(
@@ -611,7 +611,7 @@ RESPONSE:
 		'Stage'=>"备注".(string)($start+$i)
 	);
 	array_push($pgtable,$temp);
-	
+
 	$body=array(
 		'start'=> (string)$start,
 		'total'=> (string)$total,
@@ -768,7 +768,7 @@ RESPONSE:
 		'name'=> "项目".(string)$i
 	);
 	array_push($PGProj,$temp);
-	
+
 	$retval=array(
 		'status'=>'true',
 		'ret'=> $PGProj,
@@ -817,7 +817,7 @@ RESPONSE:
 		'Stage'=>"备注".(string)($start+$i)
 	);
 	array_push($projtable,$temp);
-	
+
 	$body=array(
 		'start'=> (string)$start,
 		'total'=> (string)$total,
@@ -972,7 +972,7 @@ RESPONSE:
 		'ProjCode'=> $projcode
 	);
 	array_push($ProjPoint,$temp);
-	
+
 	$retval=array(
 		'status'=>'true',
 		'ret'=> $ProjPoint,
@@ -1018,7 +1018,7 @@ RESPONSE:
 		'ProjCode'=> $projcode
 	);
 	array_push($ProjPoint,$temp);
-	
+
 	$retval=array(
 		'status'=>'true',
 		'ret'=> $ProjPoint,
@@ -1077,7 +1077,7 @@ RESPONSE:
 		'Stage'=>"备注".(string)($start+$i)
 	);
 	array_push($pointtable,$temp);
-	
+
 	$body = array(
 		'start'=> (string)$start,
 		'total'=> (string)$total,
@@ -1098,7 +1098,7 @@ RESPONSE:
     if($query_length> $total-$start){$query_length = $total-$start;}
     $pointtable = array();
 	for($i=0;$i<$query_length;$i++){
-		
+
 	$projcode = ($start+$i)%14;
 		$temp = array(
 			'StatCode'=> (string)($start+($i+1)),
@@ -1350,7 +1350,7 @@ RESPONSE:
 		'IP'=>"127.0.0.1"
 	);
 	array_push($devtable,$temp);
-	
+
 	$body=array(
 		'start'=> (string)$start,
 		'total'=> (string)$total,
@@ -1398,7 +1398,7 @@ RESPONSE:
 		'ret'=> $body,
 		'msg'=>'success',
 		'auth'=>'true'
-		
+
 	);
 	$jsonencode = _encode($retval);
 	echo $jsonencode; break;
@@ -1517,7 +1517,7 @@ RESPONSE:
 	   'vcraddress'=> "127.0.0.1/"
 	);
 	array_push($vcr_list,$map);
-    
+
 	$body=array(
 		'StatCode'=>$StatCode,
 		'alarmlist'=> $alarmlist,
@@ -2087,6 +2087,82 @@ RESPONSE:
 	);
 	$jsonencode = json_encode($retval,JSON_UNESCAPED_UNICODE);
 	echo $jsonencode; break;
+case "AlarmQueryRealtime":
+/*
+REQUEST:
+    var body={
+		StatCode: alarm_selected.StatCode,
+        date: date,
+        type:type
+    };
+    var map={
+        action:"AlarmQueryRealtime",
+		body:body,
+		type:"query",
+		user:usr.id
+    };
+RESPONSE:
+	$body=array(
+		'StatCode'=> $StatCode,
+		'date'=> $query_date,
+		'AlarmName'=> $AlarmName,
+		'AlarmUnit'=> $AlarmUnit,
+		'WarningTarget'=>$WarningTarget,
+		'minute_head'=>$minute_head,
+		'day_head'=>$day_head,
+		'hour_head'=>$hour_head,
+		'minute_alarm'=> $minute_alarm,
+		'hour_alarm'=> $hour_alarm,
+		'day_alarm'=> $day_alarm
+		);
+	$retval= array(
+		'status'=>"true",
+		'ret'=> $body,
+		'msg'=>'success',
+		'auth'=>'true'
+	);
+*/
+	$user = $_GET["user"];
+	$body_in = $_GET['body'];
+	$StatCode = $body_in["StatCode"];
+	$query_date = "";
+	$query_type = $body_in["type"];
+	$AlarmName= "噪声";
+	$AlarmUnit="DB";
+	$WarningTarget='65';
+	$minute_alarm = array();
+	$minute_head = array();
+	for($i=0;$i<(60);$i++){
+		array_push($minute_alarm,rand(10,110));
+		array_push($minute_head,(string)$i);
+	}
+	$hour_alarm = array();
+	$hour_head = array();
+	for($i=0;$i<(24);$i++){
+		array_push($hour_alarm,rand(10,110));
+		array_push($hour_head,(string)$i);
+	}
+	$body=array(
+		'StatCode'=> $StatCode,
+		'date'=> $query_date,
+		'AlarmName'=> $AlarmName,
+		'AlarmUnit'=> $AlarmUnit,
+		'WarningTarget'=>$WarningTarget,
+		'minute_head'=>$minute_head,
+		'hour_head'=>$hour_head,
+		'minute_alarm'=> $minute_alarm,
+		'hour_alarm'=> $hour_alarm,
+		'Alarm_min'=>"50",
+		'Alarm_max'=>"100"
+		);
+	$retval= array(
+		'status'=>"true",
+		'ret'=> $body,
+		'msg'=>'success',
+		'auth'=>'true'
+	);
+	$jsonencode = json_encode($retval,JSON_UNESCAPED_UNICODE);
+	echo $jsonencode; break;
 case "AlarmType":
 /*
 REQUEST:
@@ -2176,7 +2252,7 @@ RESPONSE:
 		'ret'=>$body,
 		'msg'=>'success',
 		'auth'=>'true'
-		
+
 	);
 */
 	$body_in = $_GET['body'];
@@ -2195,7 +2271,7 @@ RESPONSE:
 		array_push($one_row,(string)($i+1));
 		array_push($one_row,"备注".(string)($i+1));
 		for($j=0;$j<($column-6);$j++) array_push($one_row,rand(10,110));
-		
+
 		//one_row.push("地址"+(i+1)+"xxxxx路"+(i+1)+"xxxxx号");
 		array_push($one_row,"地址".((string)($i+1))."xxxxx路".((string)($i+1))."xxxxx号");
 		//one_row.push("测试");
@@ -2216,7 +2292,7 @@ RESPONSE:
 		'ret'=>$body,
 		'msg'=>'success',
 		'auth'=>'true'
-		
+
 	);
     $jsonencode = _encode($retval);
 	echo $jsonencode; break;
@@ -2364,7 +2440,7 @@ RESPONSE:
 		'ret'=>$ret,
 		'msg'=>'success',
 		'auth'=>'true'
-	);	
+	);
 */
 		$body_in = $_GET['body'];
 		$DevCode = $body_in["DevCode"];
@@ -2425,7 +2501,7 @@ RESPONSE:
 		'status'=>'true',
 		'msg'=>'success',
 		'auth'=>'true'
-	);	
+	);
 */
 		$body_in = $_GET['body'];
         $DevCode = $body_in["DevCode"];
@@ -2494,7 +2570,7 @@ RESPONSE:
 		'ret'=>$body,
 		'msg'=>'success',
 		'auth'=>'true'
-	);	
+	);
 */
 		$body_in = $_GET['body'];
         $usr = $body_in["id"];
@@ -2566,7 +2642,7 @@ RESPONSE:
 		'ret'=>$ImgList,
 		'msg'=>'success',
 		'auth'=>'true'
-	);	
+	);
 */
 	$body_in = $_GET['body'];
         $usr = $body_in["id"];
@@ -2646,7 +2722,7 @@ RESPONSE:
     				'Latitude'=>"31.313004",
     				'Flag_lo'=>"E",
     				'Longitude'=>"121.525701",
-*/	
+*/
     $usr = $_GET["user"];
     $column = 16;
     $row = 40;
@@ -2781,7 +2857,7 @@ RESPONSE:
 		'attr'=>"Video_" .$StatCode . "_"  .$date ."_" .$hour ."_" .(string)$j."视频属性"
 	);
 	array_push($VideoList,$map);
-    
+
     $retval=array(
         'status'=>'true',
         'ret'=> $VideoList,
@@ -2870,7 +2946,7 @@ RESPONSE:
         'ret'=> $verlist,
 		'msg'=>'success',
 		'auth'=>'true'
-    );	
+    );
 */
     $verlist = array();
     for ($i=0;$i<10;$i++){
@@ -2903,7 +2979,7 @@ RESPONSE:
 		'ret'=> $projdev,
 		'msg'=>'success',
 		'auth'=>'true'
-	);	
+	);
 */
 	$body_in = $_GET['body'];
         $ProjCode = $body_in["ProjCode"];
@@ -2938,14 +3014,14 @@ REQUEST:
         action:"UpdateDevVersion",
         type:"mod",
         body: body,
-        user:usr.id   
+        user:usr.id
     };
 RESPONSE:
 	$retval=array(
         'status'=>'true',
 		'msg'=>'success',
 		'auth'=>'true'
-    );	
+    );
 */
     $usr = $_GET["user"];
 		$body_in = $_GET['body'];
@@ -2985,7 +3061,7 @@ RESPONSE:
 	);
 */
 	$usr = $_GET["user"];
-	
+
 		$body_in = $_GET['body'];
 	$StatCode = $body_in["StatCode"];
 	$videocode = rand(1,5);
@@ -3103,7 +3179,7 @@ REQUEST:
             body:body,
 	    type:"mod",
 	    user:usr.id
-            
+
         };
     }else{
         map = {
@@ -3197,7 +3273,7 @@ RESPONSE:
 		'status'=>'true',
 		'auth'=>$auth,
 		'msg'=>"1231231"
-	);	
+	);
 */
 	$body_in = $_GET['body'];
         $usr = $_GET["user"];
@@ -3230,7 +3306,7 @@ RESPONSE:
 		'ret'=> $proj_keylist,
 		'auth'=>'true',
 		'msg'=>''
-	);	
+	);
 */
 $body_in = $_GET['body'];
         $usr = $body_in ["userid"];
@@ -3376,7 +3452,7 @@ RESPONSE:
 		'ProjCode'=> $projcode
 	);
 	array_push($proj_userlist,$temp);
-	
+
 	$retval=array(
 		'status'=>'true',
 		'ret'=> $proj_userlist,
@@ -3422,7 +3498,7 @@ RESPONSE:
 		'start'=> (string)$start,
 		'total'=> (string)$total,
 		'length'=>(string)$query_length,
-		'keytable'=> $keytable	
+		'keytable'=> $keytable
 	);
 	$retval=array(
 		'status'=>'true',
@@ -3432,7 +3508,7 @@ RESPONSE:
 	);
 */
         $total = 94;
-		
+
 		$body_in = $_GET['body'];
         $query_length = (int)($body_in['length']);
         $start = (int)($body_in['startseq']);
@@ -3460,7 +3536,7 @@ RESPONSE:
 			'start'=> (string)$start,
     		'total'=> (string)$total,
     		'length'=>(string)$query_length,
-    		'keytable'=> $keytable	
+    		'keytable'=> $keytable
 		);
     	$retval=array(
     		'status'=>'true',
@@ -3492,7 +3568,7 @@ RESPONSE:
 		'status'=>'true',
 		'msg'=>'success',
 		'auth'=>'true'
-	);	
+	);
 */
     	$retval=array(
     		'status'=>'true',
@@ -3582,7 +3658,7 @@ RESPONSE:
 		'AuthWay'=>"sssssss"
 	);
 	array_push($authlist,$temp);
-	
+
 	$retval=array(
 		'status'=>'true',
 		'ret'=>$authlist,
@@ -3636,7 +3712,7 @@ RESPONSE:
 		'AuthWay'=>"sssssss"
 	);
 	array_push($authlist,$temp);
-	
+
 	$retval=array(
 		'status'=>'true',
 		'ret'=>$authlist,
@@ -3714,7 +3790,7 @@ RESPONSE:
 		'status'=>'true',
 		'msg'=>'success',
 		'auth'=>'true'
-	);	
+	);
 */
         $retval=array(
             'status'=>'true',
@@ -3738,7 +3814,7 @@ RESPONSE;
 		'status'=>'true',
 		'msg'=>'success',
 		'auth'=>'true'
-	);	
+	);
 */
         $retval=array(
             'status'=>'true',
@@ -3770,7 +3846,7 @@ RESPONSE:
 		'ret'=>$body,
 		'msg'=>'success',
 		'auth'=>'true'
-    );	
+    );
 */
         $usr = $_GET["user"];
         $condition = $_GET["body"];
@@ -4474,7 +4550,7 @@ RESPONSE:
 			);
 		*/
 		$column = 16;
-		$row = 40;
+		$row = 39;
 		$column_name = array();
 		$row_content = array();
 		for( $i=0;$i<$column;$i++){
@@ -4489,7 +4565,8 @@ RESPONSE:
 			}else{
 				array_push($one_row,"N");
 			}
-			for($j=0;$j<($column-6);$j++) array_push($one_row,rand(10,110));
+			array_push($one_row,(string)($i+2));
+			for($j=0;$j<($column-7);$j++) array_push($one_row,rand(10,110));
 
 			//one_row.push("地址"+(i+1)+"xxxxx路"+(i+1)+"xxxxx号");
 			array_push($one_row,"地址".((string)($i+1))."xxxxx路".((string)($i+1))."xxxxx号");
@@ -4714,6 +4791,161 @@ RESPONSE:
 		);
 		$jsonencode = _encode($retval);
 		echo $jsonencode; break;
+	case "AlarmHandle":
+        	/*
+            REQUEST:
+            	var body={
+            		StatCode:StatCode,
+            		Mobile:Mobile,
+            		Action:Action
+            	}
+                var map={
+                    action:"AlarmHandle",
+                    body:body,
+                    type:"mod",
+                    user:usr.id
+                };
+            RESPONSE:
+            	$retval=array(
+            		'status'=>'true',
+            		'msg'=>'success',
+            		'auth'=>'true'
+            	);
+            */
+        		$retval=array(
+        			'status'=>'true',
+        			'msg'=>'success',
+        			'auth'=>'true'
+        		);
+        		$jsonencode = _encode($retval);
+        		echo $jsonencode; break;
+    	case "AlarmClose":
+    		/*
+    		REQUEST:
+    			var body={
+    				StatCode:StatCode
+    			}
+    			var map={
+    				action:"AlarmClose",
+    				body:body,
+    				type:"mod",
+    				user:usr.id
+    			};
+    		RESPONSE:
+    			$retval=array(
+    				'status'=>'true',
+    				'msg'=>'success',
+    				'auth'=>'true'
+    			);
+    		*/
+    		$retval=array(
+    			'status'=>'true',
+    			'msg'=>'success',
+    			'auth'=>'true'
+    		);
+    		$jsonencode = _encode($retval);
+    		echo $jsonencode; break;
+    case "GetWarningImg":
+    		/*
+    		REQUEST:
+    			var body={
+    				openid:id
+    			}
+    			var map={
+    				action:"GetOpenImg",
+    				body:body,
+    				type:"query",
+    				user:user
+    			};
+    		RESPONSE:
+
+    			$body = array(
+    						'ifpicture'=>'true',
+                			'picture'=> $install_path."/screensaver/assets/img/test".(string)$i.".jpg"
+                		);
+    			$retval=array(
+    				'status'=>'true',
+    				'auth'=>'true',
+    				'ret'=>$body,
+    				'msg'=>'login successfully'
+    			);
+    		*/
+    		$temp = rand(0,1);
+    		if($temp ==0){
+
+    			$body = array(
+    				'ifpicture'=>'true',
+    				'picture'=> $install_path."/screensaver/assets/img/test1.jpg"
+    			);
+    		}else{
+    			$body = array(
+    				'ifpicture'=>'false',
+    				'picture'=> $install_path."/screensaver/assets/img/test1.jpg"
+    			);
+    		}
+    		$retval=array(
+    		'status'=>'true',
+    		'auth'=>'true',
+    		'ret'=>$body,
+    		'msg'=>''
+    		);
+    		$jsonencode = _encode($retval);
+    		echo $jsonencode; break;
+    case "GetHistoryRTSP":
+        /*
+        REQUEST:
+            var body={
+                alarmcode:code
+            }
+            var map={
+                action:"GetHistoryRTSP",
+                body:body,
+                type:"query",
+                user:user
+            };
+        RESPONSE:
+
+            $body = array(
+                        'StateCode'=>'true',
+                        'picture'=> $install_path."/screensaver/assets/img/test".(string)$i.".jpg"
+                    );
+            $retval=array(
+                'status'=>'true',
+                'auth'=>'true',
+                'ret'=>$body,
+                'msg'=>'login successfully'
+            );
+        */
+        $body = array(
+                'StatCode'=>'123456',
+                'StatName'=>'测试站点',
+                'AlarmReason'=>'噪音',
+                'rtspurl'=> "http://www.baidu.com",
+                'AlarmDate'=>"11/12/13 11:12:13"
+        );
+        $retval=array(
+        'status'=>'true',
+        'auth'=>'true',
+        'ret'=>$body,
+        'msg'=>''
+        );
+        $jsonencode = _encode($retval);
+        echo $jsonencode; break;
+    case "GetShowAction":
+    /*
+        $component = array(
+        ""
+        );
+        $length = count($component);
+        $key = rand(0,$length);*/
+        $retval=array(
+            'status'=>'true',
+            'auth'=>'true',
+            'ret'=>'true',
+            'msg'=>''
+        );
+        $jsonencode = _encode($retval);
+        echo $jsonencode; break;
 	default:
 	break;
 }
