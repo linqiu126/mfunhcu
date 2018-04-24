@@ -147,16 +147,16 @@ class classDbiL3apF5fm
         $result = $mysqli->query("SELECT * FROM `t_l3f3dm_aqyc_currentreport` WHERE `statcode` = '$statCode'");
         if ($result->num_rows>0){
             $row = $result->fetch_array();
-            $pm25 = $row['pm25'];
+            $tsp = $row['pm01'];
             $noise = $row['noise'];
         }
         else{
-            $pm25 = 0;
+            $tsp = 0;
             $noise = 0;
         }
 
         //PM2.5或噪声任意一个超标，则显示该站点告警
-        if(($pm25>MFUN_L3APL_F3DM_TH_ALARM_PM25) OR ($noise>MFUN_L3APL_F3DM_TH_ALARM_NOISE))
+        if(($tsp>MFUN_L3APL_F3DM_TH_ALARM_PM25) OR ($noise>MFUN_L3APL_F3DM_TH_ALARM_NOISE))
             $resp = true;
         else
             $resp = false;
@@ -554,7 +554,7 @@ class classDbiL3apF5fm
                 }
 
                 for($i=0; $i<count($buffer); $i++) {
-                    $value = (float)$buffer[$i]['pm25'];
+                    $value = (float)$buffer[$i]['pm01']; //取TSP值
                     $reportDate = $buffer[$i]['reportdate'];
                     $hourminindex = $buffer[$i]['hourminindex'];
                     $dateInt = strtotime($reportDate);
@@ -940,7 +940,7 @@ class classDbiL3apF5fm
 
                 $j = 0;
                 for($i=0; $i<count($buffer); $i++) {
-                    $value = (float)$buffer[$i]['pm25'];
+                    $value = (float)$buffer[$i]['pm01'];
                     $hourminindex = $buffer[$i]['hourminindex'];
                     $hour_index = floor(($hourminindex * MFUN_HCU_AQYC_TIME_GRID_SIZE) / 60);
                     //提取指定日期当天的分钟图表值

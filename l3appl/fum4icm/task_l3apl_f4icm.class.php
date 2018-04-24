@@ -54,10 +54,10 @@ class classTaskL3aplF4icm
             if(!empty($resp))
                 $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$resp,'msg'=>"获取视频摄像头WEB地址成功");
             else
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>"获取视频摄像头WEB地址失败");
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>array(),'msg'=>"获取视频摄像头WEB地址失败");
         }
         else
-            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
+            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>array(),'msg'=>$usercheck['msg']);
 
         return $retval;
     }
@@ -73,10 +73,10 @@ class classTaskL3aplF4icm
             if(!empty($resp))
                 $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$resp,'msg'=>"更新传感器信息成功");
             else
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>"更新传感器信息失败");
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>array(),'msg'=>"更新传感器信息失败");
         }
         else
-            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
+            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>array(),'msg'=>$usercheck['msg']);
 
         return $retval;
     }
@@ -96,10 +96,10 @@ class classTaskL3aplF4icm
             if(!empty($resp))
                 $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$resp,'msg'=>"获取指定时间图片/视频列表成功");
             else
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>"获取指定时间图片/视频列表失败");
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>array(),'msg'=>"获取指定时间图片/视频列表失败");
         }
         else
-            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
+            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>array(),'msg'=>$usercheck['msg']);
 
         return $retval;
     }
@@ -117,11 +117,11 @@ class classTaskL3aplF4icm
             if(!empty($resp))
                 $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$url_index,'msg'=>"播放指定照片/视频成功");
             else
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>"播放指定照片/视频失败");
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>array(),'msg'=>"播放指定照片/视频失败");
 
         }
         else
-            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
+            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>array(),'msg'=>$usercheck['msg']);
 
         return $retval;
     }
@@ -139,10 +139,10 @@ class classTaskL3aplF4icm
             if(!empty($ret))
                 $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$ret,'msg'=>"摄像头状态更新成功");
             else
-                $retval=array('status'=>$usercheck['status'],'auth'=>'false','ret'=>$ret,'msg'=>"摄像头状态更新失败");
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>array(),'msg'=>"摄像头状态更新失败");
         }
         else
-            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
+            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>array(),'msg'=>$usercheck['msg']);
 
         return $retval;
     }
@@ -158,7 +158,65 @@ class classTaskL3aplF4icm
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$adj_unit,'msg'=>"success");
         }
         else
-            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
+            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>array(),'msg'=>$usercheck['msg']);
+
+        return $retval;
+    }
+
+    function func_adjust_camera_vertical_process($action, $user, $body)
+    {
+        if (isset($body["StatCode"])) $statCode = $body["StatCode"]; else  $statCode = "";
+        if (isset($body["adj"])) $adj = $body["adj"]; else  $adj = "";
+
+        $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
+        $usercheck = $uiF1symDbObj->dbi_user_authcheck($action, $user);
+        if($usercheck['status']=="true" AND $usercheck['auth']=="true"){
+            $uiF4icmDbObj = new classDbiL3apF4icm();
+            $camStatus = $uiF4icmDbObj->dbi_adjust_camera_vertical($statCode, $adj);
+            if($camStatus != false)
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$camStatus,'msg'=>'摄像头垂直调整成功');
+            else
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>array(),'msg'=>'摄像头垂直调整失败');
+        }
+        else
+            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>array(),'msg'=>$usercheck['msg']);
+
+        return $retval;
+    }
+
+    function func_adjust_camera_horizon_process($action, $user, $body)
+    {
+        if (isset($body["StatCode"])) $statCode = $body["StatCode"]; else  $statCode = "";
+        if (isset($body["adj"])) $adj = $body["adj"]; else  $adj = "";
+
+        $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
+        $usercheck = $uiF1symDbObj->dbi_user_authcheck($action, $user);
+        if($usercheck['status']=="true" AND $usercheck['auth']=="true"){
+            $uiF4icmDbObj = new classDbiL3apF4icm();
+            $camStatus = $uiF4icmDbObj->dbi_adjust_camera_horizon($statCode, $adj);
+            if($camStatus != false)
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$camStatus,'msg'=>'摄像头水平调整成功');
+            else
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>array(),'msg'=>'摄像头水平调整失败');
+        }
+        else
+            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>array(),'msg'=>$usercheck['msg']);
+
+        return $retval;
+    }
+
+    function func_adjust_camera_zoom_process($action, $user, $body)
+    {
+        if (isset($body["StatCode"])) $StatCode = $body["StatCode"]; else  $StatCode = "";
+        if (isset($body["adj"])) $adj = $body["adj"]; else  $adj = "";
+
+        $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
+        $usercheck = $uiF1symDbObj->dbi_user_authcheck($action, $user);
+        if($usercheck['status']=="true" AND $usercheck['auth']=="true"){
+            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>array(),'msg'=>'摄像头操作鉴权成功');
+        }
+        else
+            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>array(),'msg'=>$usercheck['msg']);
 
         return $retval;
     }
@@ -253,6 +311,18 @@ class classTaskL3aplF4icm
 
             case MSG_ID_L4COMUI_TO_L3F4_GETCAMERAUNIT:
                 $resp = $this->func_get_camera_unit_process($action, $user, $body);
+                break;
+            //摄像头垂直方向调节
+            case MSG_ID_L4COMUI_TO_L3F4_CAMERAVADJ:
+                $resp = $this->func_adjust_camera_vertical_process($action, $user, $body);
+                break;
+            //摄像头水平方向调节
+            case MSG_ID_L4COMUI_TO_L3F4_CAMERAHADJ:
+                $resp = $this->func_adjust_camera_horizon_process($action, $user, $body);
+                break;
+            //摄像头Zoom调节
+            case MSG_ID_L4COMUI_TO_L3F4_CAMERAZADJ:
+                $resp = $this->func_adjust_camera_zoom_process($action, $user, $body);
                 break;
 
             /*********************************智能云锁新增处理 Start*********************************************/

@@ -475,7 +475,7 @@ class classDbiL3apF3dm
             $winddir = $row['winddirection'];
             $humidity = $row['humidity'];
             $temperature = $row['temperature'];
-            $pm25 = $row['pm25'];
+            $tsp = $row['pm01'];
             $windspeed = $row['windspeed'];
 
             //更新设备运行状态
@@ -500,15 +500,15 @@ class classDbiL3apF3dm
             //将设备运行状态注销，只显示其他6种环境参量
             //array_push($currentvalue,$temp);
 
-            if ($pm25 !== NULL){
-                if ($pm25 > MFUN_L3APL_F3DM_TH_ALARM_PM25)
+            if ($tsp !== NULL){
+                if ($tsp > MFUN_L3APL_F3DM_TH_ALARM_PM25)
                     $alarm = "true";
                 else
                     $alarm = "false";
                 $temp = array(
                     'AlarmName'=>"颗粒物 ",
                     'AlarmEName'=> "AQYC_pm2.5",
-                    'AlarmValue'=>(string)$pm25,
+                    'AlarmValue'=>(string)$tsp,
                     'AlarmUnit'=>" μg/m3",
                     'WarningTarget'=>$alarm
                 );
@@ -712,7 +712,7 @@ class classDbiL3apF3dm
             $query_str = "SELECT * FROM `t_l3f3dm_aqyc_currentreport` WHERE `statcode` = '$statCode'";
             $result = $mysqli->query($query_str);
             //初始化返回值，确保数据库没有测试报告的情况下界面返回数据长度不报错
-            $pm25 = 0;
+            $tsp = 0;
             $temperature = 0;
             $humidity = 0;
             $noise = 0;
@@ -723,7 +723,7 @@ class classDbiL3apF3dm
             if (($result->num_rows) > 0)
             {
                 $row = $result->fetch_array();
-                $pm25 =  $row["pm25"];
+                $tsp =  $row["pm01"];
                 $temperature = $row["temperature"];
                 $humidity = $row["humidity"];
                 $noise = $row["noise"];
@@ -740,7 +740,7 @@ class classDbiL3apF3dm
             }
             array_push($one_row, $reportTime);
             array_push($one_row, $status);
-            array_push($one_row, $pm25);
+            array_push($one_row, $tsp);
             array_push($one_row, $temperature);
             array_push($one_row, $humidity);
             array_push($one_row, $noise);

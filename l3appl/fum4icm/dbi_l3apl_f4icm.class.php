@@ -379,6 +379,220 @@ class classDbiL3apF4icm
         return $resp;
     }
 
+    public function dbi_adjust_camera_vertical($statCode, $adj)
+    {
+        //建立连接
+        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli) {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $mysqli->query("SET NAMES utf8");
+
+        //根据StatCode查找特定HCU
+        $query_str = "SELECT * FROM `t_l2sdk_iothcu_inventory` WHERE `statcode` = '$statCode' ";
+        $result = $mysqli->query($query_str);
+        if (($result != false) && ($result->num_rows)>0) {
+            $row = $result->fetch_array();  //statcode和devcode一一对应
+            $port = $row['video_port'];
+            $pic_url = $row['camctrl'];
+        }
+        else{
+            $mysqli->close();
+            return false;
+        }
+
+        $ctrl_url = "http://ngrok.hkrob.com:".$port."/ISAPI/PTZCtrl/channels/1/continuous";
+        $username = MFUN_HCU_AQYC_CAM_USERNAME;
+        $password = MFUN_HCU_AQYC_CAM_PASSWORD;
+        if($adj == "1"){
+            $start_xml_string = "<PTZData version=\"2.0\" xmlns=\"http://www.hikvision.com/ver20/XMLSchema\">
+                                 <pan>0</pan>
+                                 <tilt>-60</tilt>
+                                 </PTZData>";
+        }
+        elseif($adj == "-1"){
+            $start_xml_string = "<PTZData version=\"2.0\" xmlns=\"http://www.hikvision.com/ver20/XMLSchema\">
+                                 <pan>0</pan>
+                                 <tilt>60</tilt>
+                                 </PTZData>";
+        }
+        else{
+            $mysqli->close();
+            return false;
+        }
+
+        //开始
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_URL, $ctrl_url);
+        curl_setopt($curl, CURLOPT_HEADER, 0);
+        curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "PUT");
+        curl_setopt($curl, CURLOPT_POSTFIELDS, $start_xml_string);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_ANY);
+        curl_setopt($curl, CURLOPT_USERPWD, "$username:$password");
+        curl_setopt($curl, CURLOPT_TIMEOUT, 30);
+        curl_exec($curl);
+        //停止
+        $stop_xml_string = "<PTZData version=\"2.0\" xmlns=\"http://www.hikvision.com/ver20/XMLSchema\">
+                             <pan>0</pan>
+                             <tilt>0</tilt>
+                             </PTZData>";
+        curl_setopt($curl, CURLOPT_POSTFIELDS, $stop_xml_string);
+        curl_exec($curl);
+        curl_close($curl);
+
+        //调取一张调整后的照片
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_URL, $pic_url);
+        curl_setopt($curl, CURLOPT_HEADER, 0);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_ANY);
+        curl_setopt($curl, CURLOPT_USERPWD, "$username:$password");
+        curl_setopt($curl, CURLOPT_TIMEOUT, 30); //timeout after 30 seconds
+        $picdata = curl_exec($curl);
+        $filesize = curl_getinfo($curl, CURLINFO_SIZE_DOWNLOAD);
+        curl_close($curl);
+
+        if ($filesize != 0){
+            if(!file_exists(MFUN_HCU_SITE_PIC_BASE_DIR.$statCode))
+                $result = mkdir(MFUN_HCU_SITE_PIC_BASE_DIR.$statCode,0777,true);
+            $timestamp = time();
+            $filename = $statCode . "_" . $timestamp; //生成jpg文件名
+            $picname = $filename . MFUN_HCU_SITE_PIC_FILE_TYPE;
+
+            $filelink = MFUN_HCU_SITE_PIC_BASE_DIR.$statCode.'/'.$picname;
+            $newfile = fopen($filelink, "wb+") or die("Unable to open file!");
+            fwrite($newfile, $picdata);
+            fclose($newfile);
+
+            //保存照片信息
+            $date = date("Y-m-d", $timestamp);
+            $stamp = getdate($timestamp);
+            $hourminindex = floor(($stamp["hours"] * 60 + $stamp["minutes"])/MFUN_HCU_AQYC_TIME_GRID_SIZE);
+            $filesize = (int)$filesize;
+            $description = "站点".$statCode."上传的照片";
+            $dataflag = "Y";
+            $query_str = "INSERT INTO `t_l2snr_picturedata` (statcode,filename,filesize,filedescription,reportdate,hourminindex,dataflag) VALUES ('$statCode','$picname','$filesize','$description','$date','$hourminindex','$dataflag')";
+            $result=$mysqli->query($query_str);
+            $picUrl = MFUN_HCU_SITE_PIC_BASE_DIR.$statCode.'/'.$picname;
+            $resp = array("v"=>$adj,"h"=>"0","zoom"=>"0","url"=>$picUrl);
+        }
+        else{
+            $mysqli->close();
+            return false;
+        }
+
+        $mysqli->close();
+        return $resp;
+    }
+
+    public function dbi_adjust_camera_horizon($statCode, $adj)
+    {
+        //建立连接
+        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli) {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $mysqli->query("SET NAMES utf8");
+
+        //根据StatCode查找特定HCU
+        $query_str = "SELECT * FROM `t_l2sdk_iothcu_inventory` WHERE `statcode` = '$statCode' ";
+        $result = $mysqli->query($query_str);
+        if (($result != false) && ($result->num_rows)>0) {
+            $row = $result->fetch_array();  //statcode和devcode一一对应
+            $port = $row['video_port'];
+            $pic_url = $row['camctrl'];
+        }
+        else{
+            $mysqli->close();
+            return false;
+        }
+
+        $ctrl_url = "http://ngrok.hkrob.com:".$port."/ISAPI/PTZCtrl/channels/1/continuous";
+        $username = MFUN_HCU_AQYC_CAM_USERNAME;
+        $password = MFUN_HCU_AQYC_CAM_PASSWORD;
+        if($adj == "1"){
+            $start_xml_string = "<PTZData version=\"2.0\" xmlns=\"http://www.hikvision.com/ver20/XMLSchema\">
+                                 <pan>-60</pan>
+                                 <tilt>0</tilt>
+                                 </PTZData>";
+        }
+        elseif($adj == "-1"){
+            $start_xml_string = "<PTZData version=\"2.0\" xmlns=\"http://www.hikvision.com/ver20/XMLSchema\">
+                                 <pan>60</pan>
+                                 <tilt>0</tilt>
+                                 </PTZData>";
+        }
+        else{
+            $mysqli->close();
+            return false;
+        }
+
+        //开始
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_URL, $ctrl_url);
+        curl_setopt($curl, CURLOPT_HEADER, 0);
+        curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "PUT");
+        curl_setopt($curl, CURLOPT_POSTFIELDS, $start_xml_string);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_ANY);
+        curl_setopt($curl, CURLOPT_USERPWD, "$username:$password");
+        curl_setopt($curl, CURLOPT_TIMEOUT, 30);
+        curl_exec($curl);
+        //停止
+        $stop_xml_string = "<PTZData version=\"2.0\" xmlns=\"http://www.hikvision.com/ver20/XMLSchema\">
+                             <pan>0</pan>
+                             <tilt>0</tilt>
+                             </PTZData>";
+        curl_setopt($curl, CURLOPT_POSTFIELDS, $stop_xml_string);
+        curl_exec($curl);
+        curl_close($curl);
+
+        //调取一张调整后的照片
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_URL, $pic_url);
+        curl_setopt($curl, CURLOPT_HEADER, 0);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_ANY);
+        curl_setopt($curl, CURLOPT_USERPWD, "$username:$password");
+        curl_setopt($curl, CURLOPT_TIMEOUT, 30); //timeout after 30 seconds
+        $picdata = curl_exec($curl);
+        $filesize = curl_getinfo($curl, CURLINFO_SIZE_DOWNLOAD);
+        curl_close($curl);
+
+        if ($filesize != 0){
+            if(!file_exists(MFUN_HCU_SITE_PIC_BASE_DIR.$statCode))
+                $result = mkdir(MFUN_HCU_SITE_PIC_BASE_DIR.$statCode,0777,true);
+            $timestamp = time();
+            $filename = $statCode . "_" . $timestamp; //生成jpg文件名
+            $picname = $filename . MFUN_HCU_SITE_PIC_FILE_TYPE;
+
+            $filelink = MFUN_HCU_SITE_PIC_BASE_DIR.$statCode.'/'.$picname;
+            $newfile = fopen($filelink, "wb+") or die("Unable to open file!");
+            fwrite($newfile, $picdata);
+            fclose($newfile);
+
+            //保存照片信息
+            $date = date("Y-m-d", $timestamp);
+            $stamp = getdate($timestamp);
+            $hourminindex = floor(($stamp["hours"] * 60 + $stamp["minutes"])/MFUN_HCU_AQYC_TIME_GRID_SIZE);
+            $filesize = (int)$filesize;
+            $description = "站点".$statCode."上传的照片";
+            $dataflag = "Y";
+            $query_str = "INSERT INTO `t_l2snr_picturedata` (statcode,filename,filesize,filedescription,reportdate,hourminindex,dataflag) VALUES ('$statCode','$picname','$filesize','$description','$date','$hourminindex','$dataflag')";
+            $result=$mysqli->query($query_str);
+            $picUrl = MFUN_HCU_SITE_PIC_BASE_DIR.$statCode.'/'.$picname;
+            $resp = array("v"=>$adj,"h"=>"0","zoom"=>"0","url"=>$picUrl);
+        }
+        else{
+            $mysqli->close();
+            return false;
+        }
+
+        $mysqli->close();
+        return $resp;
+    }
+
     /*********************************TBSWR新增处理 Start*********************************************/
     //TBSWR gettempstatus
     public function dbi_tbswr_gettempstatus($uid, $statCode)

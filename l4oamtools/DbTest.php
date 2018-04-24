@@ -17,18 +17,18 @@ include_once "../l1comvm/vmlayer.php";
 //$path3 = $_SERVER['DOCUMENT_ROOT'];
 
 define ("TC_EMCWX", false);
-define ("TC_SOCKET", true);
+define ("TC_SOCKET", false);
 define ("TC_CRON", false);
 define ("TC_IOT_STDXML", false);
-define ("TC_L4AQYC_UI", false);
-define ("TC_L4FHYS_UI", true);
+define ("TC_L4AQYC_UI", true);
+define ("TC_L4FHYS_UI", false);
 define ("TC_L4FHYS_WECHAT", false);
 define ("TC_L4BFSC_UI", false);
 define ("TC_L4FAAM_UI", false);
 define ("TC_NBIOT_CJ188_UL", false);
 define ("TC_NBIOT_CJ188_DL", false);
 define ("TC_NBIOT_QG376", false);
-define ("TC_EARTH_QUAKE_JSON",true);
+define ("TC_EARTH_QUAKE_JSON",false);
 define ("TC_GTJY_SPECIAL_JSON",false);
 
 require("testcase_wxemc.php");

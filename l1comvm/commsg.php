@@ -194,6 +194,9 @@ define("MSG_ID_L4COMUI_TO_L3F4_HSMMPLIST", $index++);  //查询某HCU设备指�
 define("MSG_ID_L4COMUI_TO_L3F4_HSMMPPLAY", $index++);  //请求播放某指定视频/图片文件
 define("MSG_ID_L4COMUI_TO_L3F4_GETCAMERASTATUS", $index++);  //查询垂直和水平角度，同时报告传一个照片给后台
 define("MSG_ID_L4COMUI_TO_L3F4_GETCAMERAUNIT", $index++);
+define("MSG_ID_L4COMUI_TO_L3F4_CAMERAVADJ", $index++);
+define("MSG_ID_L4COMUI_TO_L3F4_CAMERAHADJ", $index++);
+define("MSG_ID_L4COMUI_TO_L3F4_CAMERAZADJ", $index++);
 define("MSG_ID_L4COMUI_TO_L3F4_SENSORUPDATE", $index++);
 define("MSG_ID_L4COMUI_TO_L3F6_PERFORMANCETABLE", $index++);
 define("MSG_ID_L4COMUI_TO_L3F7_SETUSERMSG", $index++);
