@@ -874,7 +874,7 @@ class classDbiL3apF5fm
             array_push($resp["day_head"], $date_index);
         }
 
-        $resp["value_min"] = min($resp["day_alarm"]);
+        $resp["value_min"] = 0;
         $resp["value_max"] = max($resp["day_alarm"]);
 
         $mysqli->close();
@@ -1129,7 +1129,7 @@ class classDbiL3apF5fm
         }
 
         //highchart坐标轴的最大和最小值改成动态调整，根据查询值的范围设定
-        $resp["value_min"] = min($resp["minute_alarm"]);
+        $resp["value_min"] = 0;
         $resp["value_max"] = max($resp["minute_alarm"]);
 
         $mysqli->close();

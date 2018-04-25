@@ -513,13 +513,13 @@ class classDbiL3apF4icm
         $password = MFUN_HCU_AQYC_CAM_PASSWORD;
         if($adj == "1"){
             $start_xml_string = "<PTZData version=\"2.0\" xmlns=\"http://www.hikvision.com/ver20/XMLSchema\">
-                                 <pan>-60</pan>
+                                 <pan>60</pan>
                                  <tilt>0</tilt>
                                  </PTZData>";
         }
         elseif($adj == "-1"){
             $start_xml_string = "<PTZData version=\"2.0\" xmlns=\"http://www.hikvision.com/ver20/XMLSchema\">
-                                 <pan>60</pan>
+                                 <pan>-60</pan>
                                  <tilt>0</tilt>
                                  </PTZData>";
         }
