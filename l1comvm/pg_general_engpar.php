@@ -203,9 +203,6 @@ class classConstL1vmUserWebRight
                 'SeafoodAudit'=>'false',
 
 
-
-
-
                 //仪器操作
                 'InstConf' => 'true',
                 'InstRead' => 'true',

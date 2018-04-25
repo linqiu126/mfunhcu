@@ -558,10 +558,10 @@ class classTaskL3aplF11faam
             $uid = $usercheck['uid'];
             $uiF11faamDbObj = new classDbiL3apF11faam();
             $result = $uiF11faamDbObj->dbi_faam_consumables_buy($uid,$body,$reason);
-            if($result == true)
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"入库成功");
+            if(!empty($result))
+                $retval=array('status'=>$usercheck['status'],'ret'=>$result,'auth'=>$usercheck['auth'],'msg'=>"入库成功");
             else
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>"入库失败");
+                $retval=array('status'=>false,'ret'=>$result,'auth'=>$usercheck['auth'],'msg'=>"入库失败");
         }
         else
             $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>$usercheck['msg']);
@@ -1041,7 +1041,7 @@ class classTaskL3aplF11faam
                 $retval=array('status'=>$usercheck['status'],'ret'=>$resp,'auth'=>$usercheck['auth']);
             }
             else{
-                $retval=array('status'=>$usercheck['status'],'ret'=>$resp,'auth'=>$usercheck['auth']);
+                $retval=array('status'=>false,'ret'=>$resp,'msg'=>"错误信息输入",'auth'=>$usercheck['auth']);
             }
         }
         else
@@ -1203,16 +1203,13 @@ class classTaskL3aplF11faam
 
     //打印
     function func_faam_get_print($action,$user,$body){
-        $uiFlsymDbObj=new classDbiL3apF1sym();
-        $usercheck=$uiFlsymDbObj->dbi_user_authcheck($action,$user);
-
-        if($usercheck["status"]=="true" AND $usercheck["auth"]=="true") {
-            $uid = $usercheck["uid"];
-            $uiF11faamDbObj = new classDbiL3apF11faam();
-//            $resp = $uiF11faamDbObj->dbi_faam_get_print($body);
-        }
-        $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'msg'=>' 该功能尚未开通');
-        return  $retval;
+        $uiF11faamDbObj = new classDbiL3apF11faam();
+        $resp = $uiF11faamDbObj->dbi_faam_get_print($body);
+        if(!empty($resp))
+            $retval=array('status'=>"true", 'ret'=>$resp, 'msg'=>'打印列表获取成功', 'auth'=>'true');
+        else
+            $retval=array('status'=>false, 'ret'=>$resp, 'msg'=>'打印列表获取失败', 'auth'=>'true');
+        return $retval;
     }
     function func_faam_get_consumables_vendor_list($action,$user,$body){
         $uiFlsymDbObj=new classDbiL3apF1sym();
