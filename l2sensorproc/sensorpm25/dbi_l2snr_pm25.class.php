@@ -337,83 +337,98 @@ class classDbiL2snrPm25
 
         $dataFlag = MFUN_HCU_DATA_FLAG_VALID;
 
+        /*为了改善后台处理速度，对上报数据进行直接插入，不在判断是否重复*/
+
         //温度
-        $query_str = "SELECT * FROM `t_l2snr_tempdata` WHERE (`deviceid` = '$devCode' AND `reportdate` = '$reportdate' AND `hourminindex` = '$hourminindex')";
-        $result = $mysqli->query($query_str);
-        if (($result != false) && ($row = $result->fetch_array())>0){   //重复，则覆盖
-            $sid = $row['sid'];
-            $query_str = "UPDATE `t_l2snr_tempdata` SET `temperature` = '$tempValue' WHERE (`sid` = '$sid')";
-            $result1 = $mysqli->query($query_str);
-        }
-        else {  //不存在，新增
-            $query_str = "INSERT INTO `t_l2snr_tempdata` (deviceid,temperature,dataflag,reportdate,hourminindex) VALUES ('$devCode','$tempValue','$dataFlag','$reportdate','$hourminindex')";
-            $result1 = $mysqli->query($query_str);
-        }
+//        $query_str = "SELECT * FROM `t_l2snr_tempdata` WHERE (`deviceid` = '$devCode' AND `reportdate` = '$reportdate' AND `hourminindex` = '$hourminindex')";
+//        $result = $mysqli->query($query_str);
+//        if (($result != false) && ($row = $result->fetch_array())>0){   //重复，则覆盖
+//            $sid = $row['sid'];
+//            $query_str = "UPDATE `t_l2snr_tempdata` SET `temperature` = '$tempValue' WHERE (`sid` = '$sid')";
+//            $result1 = $mysqli->query($query_str);
+//        }
+//        else {  //不存在，新增
+//            $query_str = "INSERT INTO `t_l2snr_tempdata` (deviceid,temperature,dataflag,reportdate,hourminindex) VALUES ('$devCode','$tempValue','$dataFlag','$reportdate','$hourminindex')";
+//            $result1 = $mysqli->query($query_str);
+//        }
+
+        $query_str = "INSERT INTO `t_l2snr_tempdata` (deviceid,temperature,dataflag,reportdate,hourminindex) VALUES ('$devCode','$tempValue','$dataFlag','$reportdate','$hourminindex')";
+        $result1 = $mysqli->query($query_str);
 
         //湿度
-        $query_str = "SELECT * FROM `t_l2snr_humiddata` WHERE (`deviceid` = '$devCode' AND `reportdate` = '$reportdate' AND `hourminindex` = '$hourminindex')";
-        $result = $mysqli->query($query_str);
-        if (($result != false) && ($row = $result->fetch_array())>0) {  //重复，则覆盖
-            $sid = $row['sid'];
-            $query_str = "UPDATE `t_l2snr_humiddata` SET `humidity` = '$humidValue' WHERE (`sid` = '$sid')";
-            $result2 = $mysqli->query($query_str);
-        }
-        else {  //不存在，新增
-            $query_str = "INSERT INTO `t_l2snr_humiddata` (deviceid,humidity,dataflag,reportdate,hourminindex) VALUES ('$devCode','$humidValue','$dataFlag','$reportdate','$hourminindex')";
-            $result2 = $mysqli->query($query_str);
-        }
+//        $query_str = "SELECT * FROM `t_l2snr_humiddata` WHERE (`deviceid` = '$devCode' AND `reportdate` = '$reportdate' AND `hourminindex` = '$hourminindex')";
+//        $result = $mysqli->query($query_str);
+//        if (($result != false) && ($row = $result->fetch_array())>0) {  //重复，则覆盖
+//            $sid = $row['sid'];
+//            $query_str = "UPDATE `t_l2snr_humiddata` SET `humidity` = '$humidValue' WHERE (`sid` = '$sid')";
+//            $result2 = $mysqli->query($query_str);
+//        }
+//        else {  //不存在，新增
+//            $query_str = "INSERT INTO `t_l2snr_humiddata` (deviceid,humidity,dataflag,reportdate,hourminindex) VALUES ('$devCode','$humidValue','$dataFlag','$reportdate','$hourminindex')";
+//            $result2 = $mysqli->query($query_str);
+//        }
+        $query_str = "INSERT INTO `t_l2snr_humiddata` (deviceid,humidity,dataflag,reportdate,hourminindex) VALUES ('$devCode','$humidValue','$dataFlag','$reportdate','$hourminindex')";
+        $result2 = $mysqli->query($query_str);
 
         //风向
-        $query_str = "SELECT * FROM `t_l2snr_winddir` WHERE (`deviceid` = '$devCode' AND `reportdate` = '$reportdate' AND `hourminindex` = '$hourminindex')";
-        $result = $mysqli->query($query_str);
-        if (($result != false) && ($row = $result->fetch_array())>0) {  //重复，则覆盖
-            $sid = $row['sid'];
-            $query_str = "UPDATE `t_l2snr_winddir` SET `winddirection` = '$winddirValue' WHERE (`sid` = '$sid')";
-            $result3 = $mysqli->query($query_str);
-        }
-        else {  //不存在，新增
-            $query_str = "INSERT INTO `t_l2snr_winddir` (deviceid,winddirection,dataflag,reportdate,hourminindex) VALUES ('$devCode','$winddirValue','$dataFlag','$reportdate','$hourminindex')";
-            $result3 = $mysqli->query($query_str);
-        }
+//        $query_str = "SELECT * FROM `t_l2snr_winddir` WHERE (`deviceid` = '$devCode' AND `reportdate` = '$reportdate' AND `hourminindex` = '$hourminindex')";
+//        $result = $mysqli->query($query_str);
+//        if (($result != false) && ($row = $result->fetch_array())>0) {  //重复，则覆盖
+//            $sid = $row['sid'];
+//            $query_str = "UPDATE `t_l2snr_winddir` SET `winddirection` = '$winddirValue' WHERE (`sid` = '$sid')";
+//            $result3 = $mysqli->query($query_str);
+//        }
+//        else {  //不存在，新增
+//            $query_str = "INSERT INTO `t_l2snr_winddir` (deviceid,winddirection,dataflag,reportdate,hourminindex) VALUES ('$devCode','$winddirValue','$dataFlag','$reportdate','$hourminindex')";
+//            $result3 = $mysqli->query($query_str);
+//        }
+        $query_str = "INSERT INTO `t_l2snr_winddir` (deviceid,winddirection,dataflag,reportdate,hourminindex) VALUES ('$devCode','$winddirValue','$dataFlag','$reportdate','$hourminindex')";
+        $result3 = $mysqli->query($query_str);
 
         //风速
-        $query_str = "SELECT * FROM `t_l2snr_windspd` WHERE (`deviceid` = '$devCode' AND `reportdate` = '$reportdate' AND `hourminindex` = '$hourminindex')";
-        $result = $mysqli->query($query_str);
-        if (($result != false) && ($row = $result->fetch_array())>0) {  //重复，则覆盖
-            $sid = $row['sid'];
-            $query_str = "UPDATE `t_l2snr_windspd` SET `windspeed` = '$windspdValue' WHERE (`sid` = '$sid')";
-            $result4 = $mysqli->query($query_str);
-        }
-        else {  //不存在，新增
-            $query_str = "INSERT INTO `t_l2snr_windspd` (deviceid,windspeed,dataflag,reportdate,hourminindex) VALUES ('$devCode','$windspdValue','$dataFlag','$reportdate','$hourminindex')";
-            $result4 = $mysqli->query($query_str);
-        }
+//        $query_str = "SELECT * FROM `t_l2snr_windspd` WHERE (`deviceid` = '$devCode' AND `reportdate` = '$reportdate' AND `hourminindex` = '$hourminindex')";
+//        $result = $mysqli->query($query_str);
+//        if (($result != false) && ($row = $result->fetch_array())>0) {  //重复，则覆盖
+//            $sid = $row['sid'];
+//            $query_str = "UPDATE `t_l2snr_windspd` SET `windspeed` = '$windspdValue' WHERE (`sid` = '$sid')";
+//            $result4 = $mysqli->query($query_str);
+//        }
+//        else {  //不存在，新增
+//            $query_str = "INSERT INTO `t_l2snr_windspd` (deviceid,windspeed,dataflag,reportdate,hourminindex) VALUES ('$devCode','$windspdValue','$dataFlag','$reportdate','$hourminindex')";
+//            $result4 = $mysqli->query($query_str);
+//        }
+        $query_str = "INSERT INTO `t_l2snr_windspd` (deviceid,windspeed,dataflag,reportdate,hourminindex) VALUES ('$devCode','$windspdValue','$dataFlag','$reportdate','$hourminindex')";
+        $result4 = $mysqli->query($query_str);
 
         //噪声
-        $query_str = "SELECT * FROM `t_l2snr_noisedata` WHERE (`deviceid` = '$devCode' AND `reportdate` = '$reportdate' AND `hourminindex` = '$hourminindex')";
-        $result = $mysqli->query($query_str);
-        if (($result != false) && ($row = $result->fetch_array())>0) {  //重复，则覆盖
-            $sid = $row['sid'];
-            $query_str = "UPDATE `t_l2snr_noisedata` SET `noise` = '$noiseValue' WHERE (`sid` = '$sid')";
-            $result5 = $mysqli->query($query_str);
-        }
-        else {  //不存在，新增
-            $query_str = "INSERT INTO `t_l2snr_noisedata` (deviceid,noise,dataflag,reportdate,hourminindex) VALUES ('$devCode','$noiseValue','$dataFlag','$reportdate','$hourminindex')";
-            $result5 = $mysqli->query($query_str);
-        }
+//        $query_str = "SELECT * FROM `t_l2snr_noisedata` WHERE (`deviceid` = '$devCode' AND `reportdate` = '$reportdate' AND `hourminindex` = '$hourminindex')";
+//        $result = $mysqli->query($query_str);
+//        if (($result != false) && ($row = $result->fetch_array())>0) {  //重复，则覆盖
+//            $sid = $row['sid'];
+//            $query_str = "UPDATE `t_l2snr_noisedata` SET `noise` = '$noiseValue' WHERE (`sid` = '$sid')";
+//            $result5 = $mysqli->query($query_str);
+//        }
+//        else {  //不存在，新增
+//            $query_str = "INSERT INTO `t_l2snr_noisedata` (deviceid,noise,dataflag,reportdate,hourminindex) VALUES ('$devCode','$noiseValue','$dataFlag','$reportdate','$hourminindex')";
+//            $result5 = $mysqli->query($query_str);
+//        }
+        $query_str = "INSERT INTO `t_l2snr_noisedata` (deviceid,noise,dataflag,reportdate,hourminindex) VALUES ('$devCode','$noiseValue','$dataFlag','$reportdate','$hourminindex')";
+        $result5 = $mysqli->query($query_str);
 
         //颗粒物
-        $query_str = "SELECT * FROM `t_l2snr_pm25data` WHERE (`deviceid` = '$devCode' AND `reportdate` = '$reportdate' AND `hourminindex` = '$hourminindex')";
-        $result = $mysqli->query($query_str);
-        if (($result != false) && ($row = $result->fetch_array())>0) {  //重复，则覆盖
-            $sid = $row['sid'];
-            $query_str = "UPDATE `t_l2snr_pm25data` SET `pm01` = '$tspValue',`pm25` = '$pm25Value',`pm10` = '$pm10Value',`dataflag` = '$dataFlag' WHERE (`sid` = '$sid')";
-            $result6 = $mysqli->query($query_str);
-        }
-        else {  //不存在，新增
-            $query_str = "INSERT INTO `t_l2snr_pm25data` (deviceid,pm01,pm25,pm10,dataflag,reportdate,hourminindex) VALUES ('$devCode','$tspValue','$pm25Value','$pm10Value','$dataFlag','$reportdate','$hourminindex')";
-            $result6 = $mysqli->query($query_str);
-        }
+//        $query_str = "SELECT * FROM `t_l2snr_pm25data` WHERE (`deviceid` = '$devCode' AND `reportdate` = '$reportdate' AND `hourminindex` = '$hourminindex')";
+//        $result = $mysqli->query($query_str);
+//        if (($result != false) && ($row = $result->fetch_array())>0) {  //重复，则覆盖
+//            $sid = $row['sid'];
+//            $query_str = "UPDATE `t_l2snr_pm25data` SET `pm01` = '$tspValue',`pm25` = '$pm25Value',`pm10` = '$pm10Value',`dataflag` = '$dataFlag' WHERE (`sid` = '$sid')";
+//            $result6 = $mysqli->query($query_str);
+//        }
+//        else {  //不存在，新增
+//            $query_str = "INSERT INTO `t_l2snr_pm25data` (deviceid,pm01,pm25,pm10,dataflag,reportdate,hourminindex) VALUES ('$devCode','$tspValue','$pm25Value','$pm10Value','$dataFlag','$reportdate','$hourminindex')";
+//            $result6 = $mysqli->query($query_str);
+//        }
+        $query_str = "INSERT INTO `t_l2snr_pm25data` (deviceid,pm01,pm25,pm10,dataflag,reportdate,hourminindex) VALUES ('$devCode','$tspValue','$pm25Value','$pm10Value','$dataFlag','$reportdate','$hourminindex')";
+        $result6 = $mysqli->query($query_str);
 
         return $result1 AND $result2 AND $result3 AND $result4 AND $result5 AND $result6;
     }
@@ -435,6 +450,7 @@ class classDbiL2snrPm25
         $hourminindex = floor(($stamp["hours"] * 60 + $stamp["minutes"])/MFUN_HCU_AQYC_TIME_GRID_SIZE);
 
         //更新数据前先判断上次记录到现在是否有缺失，如果有则补充缺失记录
+        /*
         $query_str = "SELECT * FROM `t_l2snr_aqyc_minreport` WHERE `sid` = (SELECT MAX(`sid`) FROM `t_l2snr_aqyc_minreport` WHERE (`devcode` = '$devCode' AND `statcode` = '$statCode'))";
         $resp = $mysqli->query($query_str);
         if (($resp != false) && (($row = $resp->fetch_array()) > 0)) {
@@ -474,21 +490,25 @@ class classDbiL2snrPm25
                 $result=$mysqli->query($query_str);
             }
         }
+        */
 
         $dataFlag = MFUN_HCU_DATA_FLAG_VALID;
         //存储新记录，如果发现是已经存在的数据，则覆盖，否则新增
-        $query_str = "SELECT * FROM `t_l2snr_aqyc_minreport` WHERE (`devcode` = '$devCode' AND `statcode` = '$statCode' AND `reportdate` = '$reportdate' AND `hourminindex` = '$hourminindex')";
-        $result = $mysqli->query($query_str);
-        if (($result != false) && ($row = $result->fetch_array())>0){  //重复，则覆盖
-            $sid = $row['sid'];
-            $query_str = "UPDATE `t_l2snr_aqyc_minreport` SET `pm01` = '$tspValue',`pm25` = '$pm25Value',`pm10` = '$pm10Value',`noise` = '$noiseValue',`windspeed` = '$windspdValue',`winddirection` = '$winddirValue',`temperature` = '$tempValue',`humidity` = '$humidValue',`dataflag` = '$dataFlag' WHERE (`sid` = '$sid')";
-            $result=$mysqli->query($query_str);
-        }
-        else {  //不存在，新增
-            $query_str = "INSERT INTO `t_l2snr_aqyc_minreport` (devcode,statcode,pm01,pm25,pm10,noise,windspeed,winddirection,temperature,humidity,reportdate,hourminindex,dataflag)
+//        $query_str = "SELECT * FROM `t_l2snr_aqyc_minreport` WHERE (`devcode` = '$devCode' AND `statcode` = '$statCode' AND `reportdate` = '$reportdate' AND `hourminindex` = '$hourminindex')";
+//        $result = $mysqli->query($query_str);
+//        if (($result != false) && ($row = $result->fetch_array())>0){  //重复，则覆盖
+//            $sid = $row['sid'];
+//            $query_str = "UPDATE `t_l2snr_aqyc_minreport` SET `pm01` = '$tspValue',`pm25` = '$pm25Value',`pm10` = '$pm10Value',`noise` = '$noiseValue',`windspeed` = '$windspdValue',`winddirection` = '$winddirValue',`temperature` = '$tempValue',`humidity` = '$humidValue',`dataflag` = '$dataFlag' WHERE (`sid` = '$sid')";
+//            $result=$mysqli->query($query_str);
+//        }
+//        else {  //不存在，新增
+//            $query_str = "INSERT INTO `t_l2snr_aqyc_minreport` (devcode,statcode,pm01,pm25,pm10,noise,windspeed,winddirection,temperature,humidity,reportdate,hourminindex,dataflag)
+//                          VALUES ('$devCode', '$statCode', '$tspValue','$pm25Value','$pm10Value','$noiseValue','$windspdValue','$winddirValue','$tempValue','$humidValue','$reportdate','$hourminindex','$dataFlag')";
+//            $result=$mysqli->query($query_str);
+//        }
+        $query_str = "INSERT INTO `t_l2snr_aqyc_minreport` (devcode,statcode,pm01,pm25,pm10,noise,windspeed,winddirection,temperature,humidity,reportdate,hourminindex,dataflag)
                           VALUES ('$devCode', '$statCode', '$tspValue','$pm25Value','$pm10Value','$noiseValue','$windspdValue','$winddirValue','$tempValue','$humidValue','$reportdate','$hourminindex','$dataFlag')";
-            $result=$mysqli->query($query_str);
-        }
+        $result=$mysqli->query($query_str);
         return $result;
     }
 

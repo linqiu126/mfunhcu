@@ -47,10 +47,10 @@ class classTaskL3aplF5fm
             if(!empty($alarmlist))
                 $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$alarmlist,'msg'=>"获取该站点下当前设备测量信息成功");
             else
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>"获取该站点下当前设备测量信息失败");
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>array(),'msg'=>"获取该站点下当前设备测量信息失败");
         }
         else
-            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
+            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>array(),'msg'=>$usercheck['msg']);
 
         return $retval;
     }
@@ -85,10 +85,46 @@ class classTaskL3aplF5fm
                 $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$ret,'msg'=>"查询历史告警数据成功");
             }
             else
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>"查询历史告警数据失败");
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>array(),'msg'=>"查询历史告警数据失败");
         }
         else
-            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
+            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>array(),'msg'=>$usercheck['msg']);
+
+        return $retval;
+    }
+
+    private function func_aqyc_alarm_query_realtime_process($action, $user, $body)
+    {
+        if (isset($body["StatCode"])) $statCode = $body["StatCode"]; else  $statCode = "";
+        if (isset($body["date"])) $date = $body["date"]; else  $date = "";
+        if (isset($body["type"])) $alarmtype = $body["type"]; else  $alarmtype = "";
+
+        $uiF1symDbObj = new classDbiL3apF1sym(); //初始化一个UI DB对象
+        $usercheck = $uiF1symDbObj->dbi_user_authcheck($action, $user);
+        if($usercheck['status']=="true" AND $usercheck['auth']=="true") { //用户session没有超时且有权限做此操作
+            $uiF5fmDbObj = new classDbiL3apF5fm(); //初始化一个UI DB对象
+            $table = $uiF5fmDbObj->dbi_aqyc_dev_alarmhistory_realtime_req($statCode, $alarmtype);
+
+            if(!empty($table)){
+                $ret = array('StatCode'=> $statCode,
+                    'date'=> $date,
+                    'AlarmName'=> $table["alarm_name"],
+                    'AlarmUnit'=> $table["alarm_unit"],
+                    'WarningTarget'=>$table["warning"],
+                    'minute_head'=>$table["minute_head"],
+                    'minute_alarm'=> $table["minute_alarm"],
+                    'hour_head'=>$table["hour_head"],
+                    'hour_alarm'=> $table["hour_alarm"],
+                    'Alarm_min'=> $table["value_min"],
+                    'Alarm_max'=> $table["value_max"]
+                );
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$ret,'msg'=>"查询历史告警数据实时显示成功");
+            }
+            else
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>array(),'msg'=>"查询历史告警数据实时显示失败");
+        }
+        else
+            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>array(),'msg'=>$usercheck['msg']);
 
         return $retval;
     }
@@ -104,10 +140,10 @@ class classTaskL3aplF5fm
             if(!empty($alarm_type))
                 $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$alarm_type,'msg'=>"获取告警类型列表成功");
             else
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>"获取告警类型列表失败");
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>array(),'msg'=>"获取告警类型列表失败");
         }
         else
-            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
+            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>array(),'msg'=>$usercheck['msg']);
 
         return $retval;
     }
@@ -123,10 +159,10 @@ class classTaskL3aplF5fm
             if(!empty($stat_list))
                 $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$stat_list,'msg'=>"获取地图告警监测列表成功");
             else
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>"获取地图告警监测列表失败");
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>array(),'msg'=>"获取地图告警监测列表失败");
         }
         else
-            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
+            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>array(),'msg'=>$usercheck['msg']);
 
         return $retval;
     }
@@ -148,10 +184,10 @@ class classTaskL3aplF5fm
                 $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$ret,'msg'=>"获取历史告警表成功");
             }
             else
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>"获取历史告警表失败");
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>array(),'msg'=>"获取历史告警表失败");
         }
         else
-            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
+            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>array(),'msg'=>$usercheck['msg']);
 
         return $retval;
     }
@@ -170,10 +206,10 @@ class classTaskL3aplF5fm
                 $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$resp,'msg'=>"获取告警照片成功");
             }
             else
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>"获取告警照片失败");
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>array(),'msg'=>"获取告警照片失败");
         }
         else
-            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
+            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>array(),'msg'=>$usercheck['msg']);
 
         return $retval;
     }
@@ -192,10 +228,10 @@ class classTaskL3aplF5fm
                 $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$resp,'msg'=>"获取告警视频RTSP成功");
             }
             else
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>"获取告警视频RTSP失败");
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>array(),'msg'=>"获取告警视频RTSP失败");
         }
         else
-            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
+            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>array(),'msg'=>$usercheck['msg']);
 
         return $retval;
     }
@@ -258,10 +294,10 @@ class classTaskL3aplF5fm
             if(!empty($alarm_type))
                 $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$alarm_type,'msg'=>"获取告警类型列表成功");
             else
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>"获取告警类型列表失败");
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>array(),'msg'=>"获取告警类型列表失败");
         }
         else
-            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
+            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>array(),'msg'=>$usercheck['msg']);
 
         return $retval;
     }
@@ -279,10 +315,10 @@ class classTaskL3aplF5fm
                 $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$resp,'msg'=>"获取该站点下当前设备测量信息成功");
             }
             else
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>"获取该站点下当前设备测量信息失败");
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>array(),'msg'=>"获取该站点下当前设备测量信息失败");
         }
         else
-            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
+            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>array(),'msg'=>$usercheck['msg']);
 
         return $retval;
     }
@@ -300,10 +336,10 @@ class classTaskL3aplF5fm
                 $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>$ret,'msg'=>"获取历史告警表成功");
             }
             else
-                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>"获取历史告警表失败");
+                $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>array(),'msg'=>"获取历史告警表失败");
         }
         else
-            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>"",'msg'=>$usercheck['msg']);
+            $retval=array('status'=>$usercheck['status'],'auth'=>$usercheck['auth'],'ret'=>array(),'msg'=>$usercheck['msg']);
 
         return $retval;
     }
@@ -383,6 +419,10 @@ class classTaskL3aplF5fm
             //功能Alarm Query
             case MSG_ID_L4AQYCUI_TO_L3F5_ALARMQUERY:
                 $resp = $this->func_aqyc_alarm_query_process($action, $user, $body);
+                break;
+
+            case MSG_ID_L4AQYCUI_TO_L3F5_ALARMQUERYREALTIME:
+                $resp = $this->func_aqyc_alarm_query_realtime_process($action, $user, $body);
                 break;
 
             //功能Dev Alarm

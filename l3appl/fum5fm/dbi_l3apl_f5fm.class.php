@@ -147,16 +147,16 @@ class classDbiL3apF5fm
         $result = $mysqli->query("SELECT * FROM `t_l3f3dm_aqyc_currentreport` WHERE `statcode` = '$statCode'");
         if ($result->num_rows>0){
             $row = $result->fetch_array();
-            $pm25 = $row['pm25'];
+            $tsp = $row['pm01'];
             $noise = $row['noise'];
         }
         else{
-            $pm25 = 0;
+            $tsp = 0;
             $noise = 0;
         }
 
         //PM2.5或噪声任意一个超标，则显示该站点告警
-        if(($pm25>MFUN_L3APL_F3DM_TH_ALARM_PM25) OR ($noise>MFUN_L3APL_F3DM_TH_ALARM_NOISE))
+        if(($tsp>MFUN_L3APL_F3DM_TH_ALARM_PM25) OR ($noise>MFUN_L3APL_F3DM_TH_ALARM_NOISE))
             $resp = true;
         else
             $resp = false;
@@ -495,12 +495,13 @@ class classDbiL3apF5fm
 
         $resp = array(); //初始化
         //查询highchart坐标轴的最大和最小值
-        $query_str = "SELECT * FROM `t_l2snr_sensortype` WHERE `typeid` = '$alarm_type'";
-        $result = $mysqli->query($query_str);
-        if (($result != false) && (($row = $result->fetch_array()) > 0)) {
-            $resp["value_min"] = $row['value_min'];
-            $resp["value_max"] = $row['value_max'];
-        }
+        //highchart坐标轴的最大和最小值改成动态调整，根据查询值的范围设定
+//        $query_str = "SELECT * FROM `t_l2snr_sensortype` WHERE `typeid` = '$alarm_type'";
+//        $result = $mysqli->query($query_str);
+//        if (($result != false) && (($row = $result->fetch_array()) > 0)) {
+//            $resp["value_min"] = $row['value_min'];
+//            $resp["value_max"] = $row['value_max'];
+//        }
 
         $monthStart = date("Y-m-d", strtotime("-1 months", strtotime($inputDate))+24*60*60); //倒推一个月的起始日期
         $weekStart = date("Y-m-d", strtotime("-1 weeks", strtotime($inputDate))+24*60*60);   //倒推一周的起始日期
@@ -553,7 +554,7 @@ class classDbiL3apF5fm
                 }
 
                 for($i=0; $i<count($buffer); $i++) {
-                    $value = (float)$buffer[$i]['pm25'];
+                    $value = (float)$buffer[$i]['pm01']; //取TSP值
                     $reportDate = $buffer[$i]['reportdate'];
                     $hourminindex = $buffer[$i]['hourminindex'];
                     $dateInt = strtotime($reportDate);
@@ -872,6 +873,264 @@ class classDbiL3apF5fm
             array_push($resp["day_alarm"], $average);
             array_push($resp["day_head"], $date_index);
         }
+
+        $resp["value_min"] = 0;
+        $resp["value_max"] = max($resp["day_alarm"]);
+
+        $mysqli->close();
+        return $resp;
+    }
+
+    public function dbi_aqyc_dev_alarmhistory_realtime_req($statCode, $alarm_type)
+    {
+        //建立连接
+        $mysqli = new mysqli(MFUN_CLOUD_DBHOST, MFUN_CLOUD_DBUSER, MFUN_CLOUD_DBPSW, MFUN_CLOUD_DBNAME_L1L2L3, MFUN_CLOUD_DBPORT);
+        if (!$mysqli) {
+            die('Could not connect: ' . mysqli_error($mysqli));
+        }
+        $mysqli->query("SET NAMES utf8");
+
+        //根据监测点号查找对应的设备号
+        $query_str = "SELECT * FROM `t_l2sdk_iothcu_inventory` WHERE `statcode` = '$statCode'";
+        $result = $mysqli->query($query_str);
+        if (($result != false) && (($row = $result->fetch_array()) > 0))
+            $devCode = $row['devcode'];
+        else
+            $devCode = "";
+
+        $resp = array(); //初始化
+        $resp["minute_alarm"] = array();
+        $resp["minute_head"] = array();
+        $resp["hour_alarm"] = array();
+        $resp["hour_head"] = array();
+        $max_query = 1440; //默认最大一次查询24(小时)x60(分钟)个点
+
+        //将一天的数值，按统计网格归组,先按分钟清零
+        $grideValue = array();
+        for($gride_index=0; $gride_index<60; $gride_index++){
+            $grideValue[$gride_index]["value"] = 0;
+        }
+
+        //将一天内的数值，按小时归组，先按小时清零，24小时最多跨2天
+        $hourValue = array();
+        for($index=0;$index<=24;$index++){
+            for ($hour_index=0;$hour_index<=24;$hour_index++) {
+                $hourValue[$index][$hour_index]["sum"]=0;
+                $hourValue[$index][$hour_index]["counter"]=0;
+                $hourValue[$index][$hour_index]["average"]=0;
+            }
+        }
+
+
+        switch($alarm_type)
+        {
+            case MFUN_L3APL_F3DM_AQYC_STYPE_PM:
+                $resp["alarm_name"] = "细颗粒物";
+                $resp["alarm_unit"] = "微克/立方米";
+                $resp["warning"] = MFUN_L3APL_F3DM_TH_ALARM_PM25;
+
+                //为了优化数据库查询时间，一次查询指定日期过往24小时的数据，放在内存buffer里，然后对数据进行处理，避免分钟报表，小时报表的三次查询
+                $buffer = array();
+                $query_str = "SELECT * FROM `t_l2snr_pm25data` WHERE `deviceid` = '$devCode' order by `sid` desc LIMIT $max_query";
+                $result = $mysqli->query($query_str);
+                if (($result != false) && ($result->num_rows) > 0) {
+                    while (($row = $result->fetch_array()) > 0)
+                        array_push($buffer, $row);
+                }
+
+                $j = 0;
+                for($i=0; $i<count($buffer); $i++) {
+                    $value = (float)$buffer[$i]['pm01'];
+                    $hourminindex = $buffer[$i]['hourminindex'];
+                    $hour_index = floor(($hourminindex * MFUN_HCU_AQYC_TIME_GRID_SIZE) / 60);
+                    //提取指定日期当天的分钟图表值
+                    if ($i < 60) {
+                        $grideValue[$i]["value"] = $value;
+                    }
+                    //提取指定日期过往一天的小时平均图表值
+                    if (isset($hourValue[$j][$hour_index]["sum"])){
+                        $hourValue[$j][$hour_index]["sum"] += $value;
+                        $hourValue[$j][$hour_index]["counter"]++;
+                    }
+                    else{
+                        $j++;
+                        $hourValue[$j][$hour_index]["sum"] = $value;
+                        $hourValue[$j][$hour_index]["counter"] = 1;
+                    }
+                }
+                break;
+
+            case MFUN_L3APL_F3DM_AQYC_STYPE_NOISE:
+                $resp["alarm_name"] = "噪声";
+                $resp["alarm_unit"] = "分贝";
+                $resp["warning"] = MFUN_L3APL_F3DM_TH_ALARM_NOISE;
+
+                //为了优化数据库查询时间，一次查询指定日期过往30天的数据，放在内存buffer里，然后对数据进行处理，避免小时报表、周报表和月报表的三次查询
+                $buffer = array();
+                $query_str = "SELECT * FROM `t_l2snr_noisedata` WHERE  `deviceid` = '$devCode' order by `sid` desc LIMIT $max_query";
+                $result = $mysqli->query($query_str);
+                if (($result != false) && ($result->num_rows) > 0) {
+                    while (($row = $result->fetch_array()) > 0)
+                        array_push($buffer, $row);
+                }
+
+                $j = 0;
+                for($i=0; $i<count($buffer); $i++) {
+                    $value = $buffer[$i]['noise'];
+                    $hourminindex = $buffer[$i]['hourminindex'];
+                    $hour_index = floor(($hourminindex * MFUN_HCU_AQYC_TIME_GRID_SIZE) / 60);
+                    //提取指定日期当天的分钟图表值
+                    if ($i < 60) {
+                        $grideValue[$i]["value"] = $value;
+                    }
+                    //提取指定日期过往一天的小时平均图表值
+                    if (isset($hourValue[$j][$hour_index]["sum"])){
+                        $hourValue[$j][$hour_index]["sum"] += $value;
+                        $hourValue[$j][$hour_index]["counter"]++;
+                    }
+                    else{
+                        $j++;
+                        $hourValue[$j][$hour_index]["sum"] = $value;
+                        $hourValue[$j][$hour_index]["counter"] = 1;
+                    }
+                }
+                break;
+
+            case MFUN_L3APL_F3DM_AQYC_STYPE_TEMP:
+                $resp["alarm_name"] = "温度";
+                $resp["alarm_unit"] = "摄氏度";
+                $resp["warning"] = MFUN_L3APL_F3DM_TH_ALARM_TEMP;
+
+                //为了优化数据库查询时间，一次查询指定日期过往30天的数据，放在内存buffer里，然后对数据进行处理，避免小时报表、周报表和月报表的三次查询
+                $buffer = array();
+                $query_str = "SELECT * FROM `t_l2snr_tempdata` WHERE  `deviceid` = '$devCode' order by `sid` desc LIMIT $max_query";
+                $result = $mysqli->query($query_str);
+                if (($result != false) && ($result->num_rows) > 0) {
+                    while (($row = $result->fetch_array()) > 0)
+                        array_push($buffer, $row);
+                }
+                $j = 0;
+                for($i=0; $i<count($buffer); $i++) {
+                    $value = $buffer[$i]['temperature'];
+                    $hourminindex = $buffer[$i]['hourminindex'];
+                    $hour_index = floor(($hourminindex * MFUN_HCU_AQYC_TIME_GRID_SIZE) / 60);
+                    //提取指定日期当天的分钟图表值
+                    if ($i < 60) {
+                        $grideValue[$i]["value"] = $value;
+                    }
+                    //提取指定日期过往一天的小时平均图表值
+                    if (isset($hourValue[$j][$hour_index]["sum"])){
+                        $hourValue[$j][$hour_index]["sum"] += $value;
+                        $hourValue[$j][$hour_index]["counter"]++;
+                    }
+                    else{
+                        $j++;
+                        $hourValue[$j][$hour_index]["sum"] = $value;
+                        $hourValue[$j][$hour_index]["counter"] = 1;
+                    }
+
+                }
+                break;
+
+            case MFUN_L3APL_F3DM_AQYC_STYPE_WINDSPD:
+                $resp["alarm_name"] = "风速";
+                $resp["alarm_unit"] = "米/秒";
+                $resp["warning"] = MFUN_L3APL_F3DM_TH_ALARM_WINDSPD;
+
+                //为了优化数据库查询时间，一次查询指定日期过往30天的数据，放在内存buffer里，然后对数据进行处理，避免小时报表、周报表和月报表的三次查询
+                $buffer = array();
+                $query_str = "SELECT * FROM `t_l2snr_windspd` WHERE  `deviceid` = '$devCode' order by `sid` desc LIMIT $max_query";
+                $result = $mysqli->query($query_str);
+                if (($result != false) && ($result->num_rows) > 0) {
+                    while (($row = $result->fetch_array()) > 0)
+                        array_push($buffer, $row);
+                }
+
+                $j = 0;
+                for($i=0; $i<count($buffer); $i++) {
+                    $value = $buffer[$i]['windspeed'];
+                    $hourminindex = $buffer[$i]['hourminindex'];
+                    $hour_index = floor(($hourminindex * MFUN_HCU_AQYC_TIME_GRID_SIZE) / 60);
+                    //提取指定日期当天的分钟图表值
+                    if ($i < 60) {
+                        $grideValue[$i]["value"] = $value;
+                    }
+                    //提取指定日期过往一天的小时平均图表值
+                    if (isset($hourValue[$j][$hour_index]["sum"])){
+                        $hourValue[$j][$hour_index]["sum"] += $value;
+                        $hourValue[$j][$hour_index]["counter"]++;
+                    }
+                    else{
+                        $j++;
+                        $hourValue[$j][$hour_index]["sum"] = $value;
+                        $hourValue[$j][$hour_index]["counter"] = 1;
+                    }
+
+                }
+                break;
+
+            case MFUN_L3APL_F3DM_AQYC_STYPE_HUMID:
+                $resp["alarm_name"] = "湿度";
+                $resp["alarm_unit"] = "%";
+                $resp["warning"] = MFUN_L3APL_F3DM_TH_ALARM_HUMID;
+
+                //为了优化数据库查询时间，一次查询指定日期过往30天的数据，放在内存buffer里，然后对数据进行处理，避免小时报表、周报表和月报表的三次查询
+                $buffer = array();
+                $query_str = "SELECT * FROM `t_l2snr_humiddata` WHERE  `deviceid` = '$devCode' order by `sid` desc LIMIT $max_query";
+                $result = $mysqli->query($query_str);
+                if (($result != false) && ($result->num_rows) > 0) {
+                    while (($row = $result->fetch_array()) > 0)
+                        array_push($buffer, $row);
+                }
+
+                $j = 0;
+                for($i=0; $i<count($buffer); $i++) {
+                    $value = $buffer[$i]['humidity'];
+                    $hourminindex = $buffer[$i]['hourminindex'];
+                    $hour_index = floor(($hourminindex * MFUN_HCU_AQYC_TIME_GRID_SIZE) / 60);
+                    //提取指定日期当天的分钟图表值
+                    if ($i < 60) {
+                        $grideValue[$i]["value"] = $value;
+                    }
+                    //提取指定日期过往一天的小时平均图表值
+                    if (isset($hourValue[$j][$hour_index]["sum"])){
+                        $hourValue[$j][$hour_index]["sum"] += $value;
+                        $hourValue[$j][$hour_index]["counter"]++;
+                    }
+                    else{
+                        $j++;
+                        $hourValue[$j][$hour_index]["sum"] = $value;
+                        $hourValue[$j][$hour_index]["counter"] = 1;
+                    }
+                }
+                break;
+        }
+
+        //将一天里的分钟网格值填入
+        $total = count($grideValue);
+        for($min_index=0; $min_index<$total; $min_index++){
+            array_push($resp["minute_alarm"], $grideValue[$min_index]["value"]);
+            array_push($resp["minute_head"], $min_index);
+        }
+
+        //将一天内的数值，按小时求算术平均值
+         for ($i=0; $i<24;$i++)
+        {
+            for ($hour_index=0; $hour_index<24;$hour_index++){
+                if ($hourValue[$i][$hour_index]["counter"]!=0){
+                    $hourValue[$i][$hour_index]["average"]=$hourValue[$i][$hour_index]["sum"]/$hourValue[$i][$hour_index]["counter"];
+                    $average = round($hourValue[$i][$hour_index]["average"],1);
+                    array_push($resp["hour_alarm"], $average);
+                    array_push($resp["hour_head"], $hour_index);
+                }
+                else
+                    $hourValue[$i][$hour_index]["average"]=0; //或者跳过这个值？
+            }
+        }
+
+        //highchart坐标轴的最大和最小值改成动态调整，根据查询值的范围设定
+        $resp["value_min"] = 0;
+        $resp["value_max"] = max($resp["minute_alarm"]);
 
         $mysqli->close();
         return $resp;

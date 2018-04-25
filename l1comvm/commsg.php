@@ -194,6 +194,9 @@ define("MSG_ID_L4COMUI_TO_L3F4_HSMMPLIST", $index++);  //查询某HCU设备指�
 define("MSG_ID_L4COMUI_TO_L3F4_HSMMPPLAY", $index++);  //请求播放某指定视频/图片文件
 define("MSG_ID_L4COMUI_TO_L3F4_GETCAMERASTATUS", $index++);  //查询垂直和水平角度，同时报告传一个照片给后台
 define("MSG_ID_L4COMUI_TO_L3F4_GETCAMERAUNIT", $index++);
+define("MSG_ID_L4COMUI_TO_L3F4_CAMERAVADJ", $index++);
+define("MSG_ID_L4COMUI_TO_L3F4_CAMERAHADJ", $index++);
+define("MSG_ID_L4COMUI_TO_L3F4_CAMERAZADJ", $index++);
 define("MSG_ID_L4COMUI_TO_L3F4_SENSORUPDATE", $index++);
 define("MSG_ID_L4COMUI_TO_L3F6_PERFORMANCETABLE", $index++);
 define("MSG_ID_L4COMUI_TO_L3F7_SETUSERMSG", $index++);
@@ -201,7 +204,6 @@ define("MSG_ID_L4COMUI_TO_L3F7_GETUSERMSG", $index++);
 define("MSG_ID_L4COMUI_TO_L3F7_SHOWUSERMSG", $index++);
 define("MSG_ID_L4COMUI_TO_L3F7_GETUSERIMG", $index++);
 define("MSG_ID_L4COMUI_TO_L3F7_CLEARUSERIMG", $index++);
-define("MSG_ID_L4COMUI_TO_L3F7_GETSHOWACTIONE", $index++);
 
 //L4AQYCUI部分
 define("MSG_ID_L4AQYCUI_CLICK_INCOMING", $index++);
@@ -219,7 +221,9 @@ define("MSG_ID_L4AQYCUI_TO_L3F5_ALARMIMGGET", $index++);
 define("MSG_ID_L4AQYCUI_TO_L3F5_ALARMHANDLE", $index++);
 define("MSG_ID_L4AQYCUI_TO_L3F5_ALARMCLOSE", $index++);
 define("MSG_ID_L4AQYCUI_TO_L3F5_ALARMQUERY", $index++);
+define("MSG_ID_L4AQYCUI_TO_L3F5_ALARMQUERYREALTIME", $index++);
 define("MSG_ID_L4AQYCUI_TO_L3F5_ALARMRTSP", $index++);
+define("MSG_ID_L4AQYCUI_TO_L3F7_GETSHOWACTIONE", $index++); //用于扬尘动画演示
 
 //L4FHYS部分
 define("MSG_ID_L4FHYSUI_CLICK_INCOMING", $index++);
