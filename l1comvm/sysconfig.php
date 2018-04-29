@@ -447,7 +447,7 @@ if (isset($_SERVER['SERVER_NAME']))
             define("MFUN_HOME_DBHOST", "121.40.118.33");    //小慧云HOME服务器地址
             define("MFUN_CLOUD_DBHOST", "localhost");    //连接的服务器地址
             define("MFUN_CLOUD_DBUSER", "root");     //连接数据库的用户名
-            define("MFUN_CLOUD_DBPSW", "bxxhbxxh");        //连接数据库的密码
+            define("MFUN_CLOUD_DBPSW", "123456");        //连接数据库的密码
             define("MFUN_CLOUD_DBNAME_L1L2L3", "bxxhl1l2l3");         //连接的数据库名称
             define("MFUN_CLOUD_DBNAME_DEBUG", "bxxhl1vmlog");         //连接的log数据库名称
             define("MFUN_CLOUD_DBNAME_L4EMCWX", "bxxhl4emcwx");         //连接的数据库名称
@@ -512,43 +512,6 @@ if (isset($_SERVER['SERVER_NAME']))
             break;
     }
 
-}else   //本地配置数据库信息,需要根据个人配置修改
-{
-    //云后台定义
-    define("MFUN_CLOUD_HCU", "XHZN_HCU"); //HCU后台云应用
-    define("MFUN_CLOUD_WX", "PC_WX"); //微信后台云应用
-    //主数据库定义
-    define("MFUN_HOME_DBHOST", "121.40.118.33");    //小慧云HOME服务器地址
-    define("MFUN_CLOUD_DBHOST", "localhost");    //连接的服务器地址
-    define("MFUN_CLOUD_DBUSER", "root");     //连接数据库的用户名
-    define("MFUN_CLOUD_DBPSW", "bxxhbxxh");        //连接数据库的密码
-    define("MFUN_CLOUD_DBNAME_L1L2L3", "bxxhl1l2l3");         //连接的数据库名称
-    define("MFUN_CLOUD_DBNAME_DEBUG", "bxxhl1vmlog");         //连接的log数据库名称
-    define("MFUN_CLOUD_DBNAME_L4EMCWX", "bxxhl4emcwx");         //连接的数据库名称
-    define("MFUN_CLOUD_DBNAME_L4AQYC", "bxxhl4aqyc");         //连接的数据库名称
-    define("MFUN_CLOUD_DBNAME_L4TBSWR", "bxxhl4tbswr");         //连接的数据库名称
-    define("MFUN_CLOUD_DBNAME_L5BI", "bxxhl5bi");         //连接的数据库名称
-    define("MFUN_CLOUD_DBPORT", 3306);           //缺省设置
-    define("MFUN_CLOUD_DBHOST_S", "");          //无效
-    //EMCWX应用定义
-    define("MFUN_WX_APPID", "wxf2150c4d2941b2ab");  //小慧智能服务号AppID
-    define("MFUN_WX_APPSECRET", "ab95997f454e04b77911c18d09807831");  //填写高级调用功能的app id, 请在微信开发模式后台查询
-    define("MFUN_WX_ENCODINGAESKEY", "1NxQnLdUUOr4s1r0rnxfuhoRdF14C5NO79o6AknsIYE");   //填写加密用的EncodingAESKey，如接口为明文模式可忽略
-
-    //测试公号的后台运行配置参数
-    define("MFUN_WX_TOOL_SERVICENUM", "gh_4667dc241921");
-    define("MFUN_WX_TOOL_APPID", "wxf2150c4d2941b2ab");
-    define("MFUN_WX_TOOL_APPSECRET", "ab95997f454e04b77911c18d09807831");
-    define("MFUN_WX_TOOL_BLEMAC", "D03972A5EF27");
-    //RabbitMQ消息队列定义
-    define("MFUN_MQ_RABBIT_HOST", "127.0.0.1");
-    define("MFUN_MQ_RABBIT_PORT", "5672");
-    define("MFUN_MQ_RABBIT_LOGIN", "guest");
-    define("MFUN_MQ_RABBIT_PSWD", "guest");
-    define("MFUN_MQ_RABBIT_VHOST", "/");
-    define("MFUN_MQ_RABBIT_EXCHANGE", "e_linvo");
-    define("MFUN_MQ_RABBIT_QUEUE", "q_linvo");
-    define("MFUN_MQ_RABBIT_ROUTE_KEY", "key_1");
 }
 
 //TRACE开关，缺省打开

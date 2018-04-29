@@ -395,6 +395,7 @@ class classDbiL3apF4icm
             $row = $result->fetch_array();  //statcode和devcode一一对应
             $port = $row['video_port'];
             $pic_url = $row['camctrl'];
+            $vcrurl = $row['vcrurl'];
         }
         else{
             $mysqli->close();
@@ -502,6 +503,7 @@ class classDbiL3apF4icm
             $row = $result->fetch_array();  //statcode和devcode一一对应
             $port = $row['video_port'];
             $pic_url = $row['camctrl'];
+            $vcrurl = $row['vcrurl'];
         }
         else{
             $mysqli->close();
