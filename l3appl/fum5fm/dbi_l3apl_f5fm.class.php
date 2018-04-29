@@ -494,35 +494,9 @@ class classDbiL3apF5fm
             $devCode = "";
 
         $resp = array(); //初始化
-        //查询highchart坐标轴的最大和最小值
-        //highchart坐标轴的最大和最小值改成动态调整，根据查询值的范围设定
-//        $query_str = "SELECT * FROM `t_l2snr_sensortype` WHERE `typeid` = '$alarm_type'";
-//        $result = $mysqli->query($query_str);
-//        if (($result != false) && (($row = $result->fetch_array()) > 0)) {
-//            $resp["value_min"] = $row['value_min'];
-//            $resp["value_max"] = $row['value_max'];
-//        }
-
         $monthStart = date("Y-m-d", strtotime("-1 months", strtotime($inputDate))+24*60*60); //倒推一个月的起始日期
-        $weekStart = date("Y-m-d", strtotime("-1 weeks", strtotime($inputDate))+24*60*60);   //倒推一周的起始日期
         $monthStartInt = strtotime($monthStart);
-        $weekStartInt = strtotime($weekStart);
 
-        //将一天的数值，按统计网格归组,先按分钟清零
-        $grideValue = array();
-        for($gride_index=0;$gride_index<=floor(24*60/MFUN_HCU_AQYC_TIME_GRID_SIZE);$gride_index++){
-            $grideValue[$gride_index]["value"] = 0;
-        }
-
-        //将一周内的数值，按小时归组，先按小时清零
-        $hourValue = array();
-        for ($day_index=0;$day_index<7;$day_index++) {
-            for ($hour_index=0;$hour_index<24;$hour_index++) {
-                $hourValue[$day_index][$hour_index]["sum"]=0;
-                $hourValue[$day_index][$hour_index]["counter"]=0;
-                $hourValue[$day_index][$hour_index]["average"]=0;
-            }
-        }
         //将30天内的数值，按天归组，先按天清零
         $dayValue = array();
         for ($day_index=0;$day_index<=30;$day_index++){
@@ -537,12 +511,7 @@ class classDbiL3apF5fm
                 $resp["alarm_name"] = "细颗粒物";
                 $resp["alarm_unit"] = "微克/立方米";
                 $resp["warning"] = MFUN_L3APL_F3DM_TH_ALARM_PM25;
-                $resp["minute_alarm"] = array();
-                $resp["minute_head"] = array();
-                $resp["hour_alarm"] = array();
-                $resp["hour_head"] = array();
-                $resp["day_alarm"] = array();
-                $resp["day_head"] = array();
+                $line_name = "TSP";
 
                 //为了优化数据库查询时间，一次查询指定日期过往30天的数据，放在内存buffer里，然后对数据进行处理，避免小时报表、周报表和月报表的三次查询
                 $buffer = array();
@@ -556,26 +525,8 @@ class classDbiL3apF5fm
                 for($i=0; $i<count($buffer); $i++) {
                     $value = (float)$buffer[$i]['pm01']; //取TSP值
                     $reportDate = $buffer[$i]['reportdate'];
-                    $hourminindex = $buffer[$i]['hourminindex'];
                     $dateInt = strtotime($reportDate);
-                    $hour_index = floor(($hourminindex * MFUN_HCU_AQYC_TIME_GRID_SIZE) / 60);
-                    //提取指定日期当天的分钟图表值
-                    if ($reportDate == $inputDate) {
-                        $grideValue[$hourminindex]["value"] = $value;
-                    }
-                    //提取指定日期过往一周的小时平均图表值
-                    if ($dateInt >= $weekStartInt) {
-                        //取值这一周内的第几天
-                        $day_index = intval(date("d", $dateInt - $weekStartInt)) - 1;
-                        if (isset($hourValue[$day_index][$hour_index]["sum"])){
-                            $hourValue[$day_index][$hour_index]["sum"] += $value;
-                            $hourValue[$day_index][$hour_index]["counter"]++;
-                        }
-                        else{
-                            $hourValue[$day_index][$hour_index]["sum"] = $value;
-                            $hourValue[$day_index][$hour_index]["counter"] = 1;
-                        }
-                    }
+
                     //提取指定日期过往一周的日平均图表值
                     if ($dateInt >= $monthStartInt) {
                         //取值这30天内的第几天
@@ -597,12 +548,7 @@ class classDbiL3apF5fm
                 $resp["alarm_name"] = "风速";
                 $resp["alarm_unit"] = "米/秒";
                 $resp["warning"] = MFUN_L3APL_F3DM_TH_ALARM_WINDSPD;
-                $resp["minute_alarm"] = array();
-                $resp["minute_head"] = array();
-                $resp["hour_alarm"] = array();
-                $resp["hour_head"] = array();
-                $resp["day_alarm"] = array();
-                $resp["day_head"] = array();
+                $line_name = "风速";
 
                 //为了优化数据库查询时间，一次查询指定日期过往30天的数据，放在内存buffer里，然后对数据进行处理，避免小时报表、周报表和月报表的三次查询
                 $buffer = array();
@@ -616,26 +562,7 @@ class classDbiL3apF5fm
                 for($i=0; $i<count($buffer); $i++) {
                     $value = $buffer[$i]['windspeed'];
                     $reportDate = $buffer[$i]['reportdate'];
-                    $hourminindex = $buffer[$i]['hourminindex'];
                     $dateInt = strtotime($reportDate);
-                    $hour_index = floor(($hourminindex * MFUN_HCU_AQYC_TIME_GRID_SIZE) / 60);
-                    //提取指定日期当天的分钟图表值
-                    if ($reportDate == $inputDate) {
-                        $grideValue[$hourminindex]["value"] = $value;
-                    }
-                    //提取指定日期过往一周的小时平均图表值
-                    if ($dateInt >= $weekStartInt) {
-                        //取值这一周内的第几天
-                        $day_index = intval(date("d", $dateInt - $weekStartInt));
-                        if (isset($hourValue[$day_index][$hour_index]["sum"])){
-                            $hourValue[$day_index][$hour_index]["sum"] += $value;
-                            $hourValue[$day_index][$hour_index]["counter"]++;
-                        }
-                        else{
-                            $hourValue[$day_index][$hour_index]["sum"] = $value;
-                            $hourValue[$day_index][$hour_index]["counter"] = 1;
-                        }
-                    }
                     //提取指定日期过往一周的日平均图表值
                     if ($dateInt >= $monthStartInt) {
                         //取值这30天内的第几天
@@ -656,12 +583,7 @@ class classDbiL3apF5fm
                 $resp["alarm_name"] = "温度";
                 $resp["alarm_unit"] = "摄氏度";
                 $resp["warning"] = MFUN_L3APL_F3DM_TH_ALARM_TEMP;
-                $resp["minute_alarm"] = array();
-                $resp["minute_head"] = array();
-                $resp["hour_alarm"] = array();
-                $resp["hour_head"] = array();
-                $resp["day_alarm"] = array();
-                $resp["day_head"] = array();
+                $line_name = "温度";
 
                 //为了优化数据库查询时间，一次查询指定日期过往30天的数据，放在内存buffer里，然后对数据进行处理，避免小时报表、周报表和月报表的三次查询
                 $buffer = array();
@@ -675,26 +597,8 @@ class classDbiL3apF5fm
                 for($i=0; $i<count($buffer); $i++) {
                     $value = $buffer[$i]['temperature'];
                     $reportDate = $buffer[$i]['reportdate'];
-                    $hourminindex = $buffer[$i]['hourminindex'];
                     $dateInt = strtotime($reportDate);
-                    $hour_index = floor(($hourminindex * MFUN_HCU_AQYC_TIME_GRID_SIZE) / 60);
-                    //提取指定日期当天的分钟图表值
-                    if ($reportDate == $inputDate) {
-                        $grideValue[$hourminindex]["value"] = $value;
-                    }
-                    //提取指定日期过往一周的小时平均图表值
-                    if ($dateInt >= $weekStartInt) {
-                        //取值这一周内的第几天
-                        $day_index = intval(date("d", $dateInt - $weekStartInt));
-                        if (isset($hourValue[$day_index][$hour_index]["sum"])){
-                            $hourValue[$day_index][$hour_index]["sum"] += $value;
-                            $hourValue[$day_index][$hour_index]["counter"]++;
-                        }
-                        else{
-                            $hourValue[$day_index][$hour_index]["sum"] = $value;
-                            $hourValue[$day_index][$hour_index]["counter"] = 1;
-                        }
-                    }
+
                     //提取指定日期过往一周的日平均图表值
                     if ($dateInt >= $monthStartInt) {
                         //取值这30天内的第几天
@@ -716,12 +620,7 @@ class classDbiL3apF5fm
                 $resp["alarm_name"] = "湿度";
                 $resp["alarm_unit"] = "%";
                 $resp["warning"] = MFUN_L3APL_F3DM_TH_ALARM_HUMID;
-                $resp["minute_alarm"] = array();
-                $resp["minute_head"] = array();
-                $resp["hour_alarm"] = array();
-                $resp["hour_head"] = array();
-                $resp["day_alarm"] = array();
-                $resp["day_head"] = array();
+                $line_name = "湿度";
 
                 //为了优化数据库查询时间，一次查询指定日期过往30天的数据，放在内存buffer里，然后对数据进行处理，避免小时报表、周报表和月报表的三次查询
                 $buffer = array();
@@ -735,26 +634,8 @@ class classDbiL3apF5fm
                 for($i=0; $i<count($buffer); $i++) {
                     $value = $buffer[$i]['humidity'];
                     $reportDate = $buffer[$i]['reportdate'];
-                    $hourminindex = $buffer[$i]['hourminindex'];
                     $dateInt = strtotime($reportDate);
-                    $hour_index = floor(($hourminindex * MFUN_HCU_AQYC_TIME_GRID_SIZE) / 60);
-                    //提取指定日期当天的分钟图表值
-                    if ($reportDate == $inputDate) {
-                        $grideValue[$hourminindex]["value"] = $value;
-                    }
-                    //提取指定日期过往一周的小时平均图表值
-                    if ($dateInt >= $weekStartInt) {
-                        //取值这一周内的第几天
-                        $day_index = intval(date("d", $dateInt - $weekStartInt));
-                        if (isset($hourValue[$day_index][$hour_index]["sum"])){
-                            $hourValue[$day_index][$hour_index]["sum"] += $value;
-                            $hourValue[$day_index][$hour_index]["counter"]++;
-                        }
-                        else{
-                            $hourValue[$day_index][$hour_index]["sum"] = $value;
-                            $hourValue[$day_index][$hour_index]["counter"] = 1;
-                        }
-                    }
+
                     //提取指定日期过往一周的日平均图表值
                     if ($dateInt >= $monthStartInt) {
                         //取值这30天内的第几天
@@ -776,12 +657,7 @@ class classDbiL3apF5fm
                 $resp["alarm_name"] = "噪声";
                 $resp["alarm_unit"] = "分贝";
                 $resp["warning"] = MFUN_L3APL_F3DM_TH_ALARM_NOISE;
-                $resp["minute_alarm"] = array();
-                $resp["minute_head"] = array();
-                $resp["hour_alarm"] = array();
-                $resp["hour_head"] = array();
-                $resp["day_alarm"] = array();
-                $resp["day_head"] = array();
+                $line_name = "噪声";
 
                 //为了优化数据库查询时间，一次查询指定日期过往30天的数据，放在内存buffer里，然后对数据进行处理，避免小时报表、周报表和月报表的三次查询
                 $buffer = array();
@@ -795,26 +671,8 @@ class classDbiL3apF5fm
                 for($i=0; $i<count($buffer); $i++) {
                     $value = $buffer[$i]['noise'];
                     $reportDate = $buffer[$i]['reportdate'];
-                    $hourminindex = $buffer[$i]['hourminindex'];
                     $dateInt = strtotime($reportDate);
-                    $hour_index = floor(($hourminindex * MFUN_HCU_AQYC_TIME_GRID_SIZE) / 60);
-                    //提取指定日期当天的分钟图表值
-                    if ($reportDate == $inputDate) {
-                        $grideValue[$hourminindex]["value"] = $value;
-                    }
-                    //提取指定日期过往一周的小时平均图表值
-                    if ($dateInt >= $weekStartInt) {
-                        //取值这一周内的第几天
-                        $day_index = intval(date("d", $dateInt - $weekStartInt));
-                        if (isset($hourValue[$day_index][$hour_index]["sum"])){
-                            $hourValue[$day_index][$hour_index]["sum"] += $value;
-                            $hourValue[$day_index][$hour_index]["counter"]++;
-                        }
-                        else{
-                            $hourValue[$day_index][$hour_index]["sum"] = $value;
-                            $hourValue[$day_index][$hour_index]["counter"] = 1;
-                        }
-                    }
+
                     //提取指定日期过往一周的日平均图表值
                     if ($dateInt >= $monthStartInt) {
                         //取值这30天内的第几天
@@ -833,34 +691,10 @@ class classDbiL3apF5fm
                 break;
         }
 
-        //将一天里的分钟网格值填入
-        for($gride_index=0;$gride_index<=floor(24*60/MFUN_HCU_AQYC_TIME_GRID_SIZE);$gride_index++){
-            $hour_index = floor(($gride_index * MFUN_HCU_AQYC_TIME_GRID_SIZE) / 60);
-            $min_index = $gride_index * MFUN_HCU_AQYC_TIME_GRID_SIZE - $hour_index * 60;
-            $min_head = $hour_index . ":" . $min_index;
-            array_push($resp["minute_alarm"], $grideValue[$gride_index]["value"]);
-            array_push($resp["minute_head"], $min_head);
-        }
-
-        //将一周内的数值，按小时求算术平均值
-        for ($day_index=0;$day_index<7;$day_index++)
-        {
-            for ($hour_index=0;$hour_index<24;$hour_index++)
-            {
-                if ($hourValue[$day_index][$hour_index]["counter"]!=0)
-                    $hourValue[$day_index][$hour_index]["average"]=$hourValue[$day_index][$hour_index]["sum"]/$hourValue[$day_index][$hour_index]["counter"];
-                else
-                    $hourValue[$day_index][$hour_index]["average"]=0; //或者跳过这个值？
-
-                $date_index = date("Y-m-d",$weekStartInt + $day_index*24*60*60);
-                $hour_head = $date_index." ".$hour_index.":00";
-                $average = round($hourValue[$day_index][$hour_index]["average"],1);
-                array_push($resp["hour_alarm"], $average);
-                array_push($resp["hour_head"], $hour_head);
-            }
-        }
-
+        $resp["day_alarm"] = array();
+        $resp["day_head"] = array();
         //将30天内的数值，按天求算术平均值
+        $day_value = array();
         for ($day_index=0;$day_index<=30;$day_index++)
         {
             if ($dayValue[$day_index]["counter"]!=0)
@@ -870,12 +704,15 @@ class classDbiL3apF5fm
 
             $date_index = date("Y-m-d",$monthStartInt + $day_index*24*60*60);
             $average = round($dayValue[$day_index]["average"],1);
-            array_push($resp["day_alarm"], $average);
+            array_push($day_value, $average);
             array_push($resp["day_head"], $date_index);
         }
 
+        $day_alarm = array('name'=>$line_name, 'color'=> "", 'items'=>$day_value);
+        array_push($resp["day_alarm"], $day_alarm);
+
         $resp["value_min"] = 0;
-        $resp["value_max"] = max($resp["day_alarm"]);
+        $resp["value_max"] = max($day_value);
 
         $mysqli->close();
         return $resp;
@@ -928,6 +765,7 @@ class classDbiL3apF5fm
                 $resp["alarm_name"] = "细颗粒物";
                 $resp["alarm_unit"] = "微克/立方米";
                 $resp["warning"] = MFUN_L3APL_F3DM_TH_ALARM_PM25;
+                $line_name = "TSP";
 
                 //为了优化数据库查询时间，一次查询指定日期过往24小时的数据，放在内存buffer里，然后对数据进行处理，避免分钟报表，小时报表的三次查询
                 $buffer = array();
@@ -964,6 +802,7 @@ class classDbiL3apF5fm
                 $resp["alarm_name"] = "噪声";
                 $resp["alarm_unit"] = "分贝";
                 $resp["warning"] = MFUN_L3APL_F3DM_TH_ALARM_NOISE;
+                $line_name = "噪声";
 
                 //为了优化数据库查询时间，一次查询指定日期过往30天的数据，放在内存buffer里，然后对数据进行处理，避免小时报表、周报表和月报表的三次查询
                 $buffer = array();
@@ -1000,6 +839,7 @@ class classDbiL3apF5fm
                 $resp["alarm_name"] = "温度";
                 $resp["alarm_unit"] = "摄氏度";
                 $resp["warning"] = MFUN_L3APL_F3DM_TH_ALARM_TEMP;
+                $line_name = "温度";
 
                 //为了优化数据库查询时间，一次查询指定日期过往30天的数据，放在内存buffer里，然后对数据进行处理，避免小时报表、周报表和月报表的三次查询
                 $buffer = array();
@@ -1036,6 +876,7 @@ class classDbiL3apF5fm
                 $resp["alarm_name"] = "风速";
                 $resp["alarm_unit"] = "米/秒";
                 $resp["warning"] = MFUN_L3APL_F3DM_TH_ALARM_WINDSPD;
+                $line_name = "风速";
 
                 //为了优化数据库查询时间，一次查询指定日期过往30天的数据，放在内存buffer里，然后对数据进行处理，避免小时报表、周报表和月报表的三次查询
                 $buffer = array();
@@ -1073,6 +914,7 @@ class classDbiL3apF5fm
                 $resp["alarm_name"] = "湿度";
                 $resp["alarm_unit"] = "%";
                 $resp["warning"] = MFUN_L3APL_F3DM_TH_ALARM_HUMID;
+                $line_name = "湿度";
 
                 //为了优化数据库查询时间，一次查询指定日期过往30天的数据，放在内存buffer里，然后对数据进行处理，避免小时报表、周报表和月报表的三次查询
                 $buffer = array();
@@ -1107,30 +949,37 @@ class classDbiL3apF5fm
         }
 
         //将一天里的分钟网格值填入
+        $minute_value = array();
         $total = count($grideValue);
         for($min_index=0; $min_index<$total; $min_index++){
-            array_push($resp["minute_alarm"], $grideValue[$min_index]["value"]);
-            array_push($resp["minute_head"], $min_index);
+            array_push($minute_value, $grideValue[$min_index]["value"]);
+            array_push($resp["minute_head"], (string)$min_index);
         }
+        $minute_alarm = array('name'=>$line_name, 'color'=> "", 'items'=>$minute_value);
+        array_push($resp["minute_alarm"],$minute_alarm);
 
         //将一天内的数值，按小时求算术平均值
+        $hour_value = array();
          for ($i=0; $i<24;$i++)
         {
             for ($hour_index=0; $hour_index<24;$hour_index++){
                 if ($hourValue[$i][$hour_index]["counter"]!=0){
                     $hourValue[$i][$hour_index]["average"]=$hourValue[$i][$hour_index]["sum"]/$hourValue[$i][$hour_index]["counter"];
                     $average = round($hourValue[$i][$hour_index]["average"],1);
-                    array_push($resp["hour_alarm"], $average);
-                    array_push($resp["hour_head"], $hour_index);
+                    array_push($hour_value, $average);
+                    array_push($resp["hour_head"], (string)$hour_index);
                 }
                 else
                     $hourValue[$i][$hour_index]["average"]=0; //或者跳过这个值？
             }
         }
+        $hour_alarm = array('name'=>$line_name, 'color'=> "", 'items'=>$hour_value);
+        array_push($resp["hour_alarm"], $hour_alarm);
 
         //highchart坐标轴的最大和最小值改成动态调整，根据查询值的范围设定
+
         $resp["value_min"] = 0;
-        $resp["value_max"] = max($resp["minute_alarm"]);
+        $resp["value_max"] = max([max($minute_value),max($hour_value)]);
 
         $mysqli->close();
         return $resp;

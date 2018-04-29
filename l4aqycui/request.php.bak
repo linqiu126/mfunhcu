@@ -1653,6 +1653,7 @@ RESPONSE:
 	);
 */
 	$userid = $_GET["user"];
+	$status = array('normal','alarm','warning','disable');
 	$stat_list = array();
 	$map1=array(
 		'StatCode'=>"120101001",
@@ -1669,7 +1670,8 @@ RESPONSE:
 		'Flag_lo'=>"E",
 		'Longitude'=>"121.514168",
 		'ProStartTime'=>"2015-01-01",
-		'Stage'=>""
+		'Stage'=>"",
+		'Status'=> $status[rand(0,3)]
 	);
 	array_push($stat_list,$map1);
 	$map2=array(
@@ -1688,7 +1690,8 @@ RESPONSE:
 		'Flag_lo'=>"E",
 		'Longitude'=>"121.517700",
 		'ProStartTime'=>"2016-04-01",
-		'Stage'=>""
+		'Stage'=>"",
+                   		'Status'=> $status[rand(0,3)]
 	);
 	array_push($stat_list,$map1);
 	$map3= array(
@@ -1707,7 +1710,8 @@ RESPONSE:
 		'Flag_lo'=>"E",
 		'Longitude'=>"121.442703",
 		'ProStartTime'=>"2016-04-01",
-		'Stage'=>""
+		'Stage'=>"",
+                   		'Status'=> $status[rand(0,3)]
 	);
 	array_push($stat_list,$map3);
 	$map4= array(
@@ -1726,7 +1730,8 @@ RESPONSE:
 		'Flag_lo'=>"E",
 		'Longitude'=>"121.615476",
 		'ProStartTime'=>"2016-04-01",
-		'Stage'=>""
+		'Stage'=>"",
+                   		'Status'=> $status[rand(0,3)]
 	);
 	array_push($stat_list,$map4);
 	$map5= array(
@@ -1745,7 +1750,8 @@ RESPONSE:
 		'Flag_lo'=>"E",
 		'Longitude'=>"121.525701",
 		'ProStartTime'=>"2016-04-13",
-		'Stage'=>""
+		'Stage'=>"",
+                   		'Status'=> $status[rand(0,3)]
 	);
 	array_push($stat_list,$map5);
 	$map6= array(
@@ -1764,7 +1770,8 @@ RESPONSE:
 		'Flag_lo'=>"E",
 		'Longitude'=>"121.501387",
 		'ProStartTime'=>"2016-02-01",
-		'Stage'=>""
+		'Stage'=>"",
+                   		'Status'=> $status[rand(0,3)]
 
 	);
 	array_push($stat_list,$map6);
@@ -1783,7 +1790,8 @@ RESPONSE:
 		'Flag_lo'=>"E",
 		'Longitude'=>"121.404873",
 		'ProStartTime'=>"2016-02-01",
-		'Stage'=>""
+		'Stage'=>"",
+                   		'Status'=> $status[rand(0,3)]
 
 	);
 	array_push($stat_list,$map7);
@@ -1802,7 +1810,8 @@ RESPONSE:
 		'Flag_lo'=>"E",
 		'Longitude'=>"121.476450",
 		'ProStartTime'=>"2016-02-18",
-		'Stage'=>""
+		'Stage'=>"",
+                   		'Status'=> $status[rand(0,3)]
 
 	);
 	array_push($stat_list,$map8);
@@ -1821,7 +1830,8 @@ RESPONSE:
 		'Flag_lo'=>"E",
 		'Longitude'=>"121.295459",
 		'ProStartTime'=>"2016-02-18",
-		'Stage'=>""
+		'Stage'=>"",
+                   		'Status'=> $status[rand(0,3)]
 
 	);
 	array_push($stat_list,$map9);
@@ -1840,7 +1850,8 @@ RESPONSE:
 		'Flag_lo'=>"E",
 		'Longitude'=>"121.062241",
 		'ProStartTime'=>"2016-02-18",
-		'Stage'=>""
+		'Stage'=>"",
+                   		'Status'=> $status[rand(0,3)]
 	);
 	array_push($stat_list,$map10);
 	$map11= array(
@@ -1859,7 +1870,8 @@ RESPONSE:
 		'Flag_lo'=>"E",
 		'Longitude'=>"121.102934",
 		'ProStartTime'=>"2016-02-18",
-		'Stage'=>""
+		'Stage'=>"",
+                   		'Status'=> $status[rand(0,3)]
 	);
 	array_push($stat_list,$map11);
 	$map12= array(
@@ -1878,7 +1890,8 @@ RESPONSE:
 		'Flag_lo'=>"E",
 		'Longitude'=>"121.297076",
 		'ProStartTime'=>"2016-02-18",
-		'Stage'=>""
+		'Stage'=>"",
+                   		'Status'=> $status[rand(0,3)]
 	);
 	array_push($stat_list,$map12);
 	$map13= array(
@@ -1897,7 +1910,8 @@ RESPONSE:
 		'Flag_lo'=>"E",
 		'Longitude'=>"121.526288",
 		'ProStartTime'=>"2016-02-18",
-		'Stage'=>""
+		'Stage'=>"",
+                   		'Status'=> $status[rand(0,3)]
 
 	);
 	array_push($stat_list,$map13);
@@ -1916,7 +1930,8 @@ RESPONSE:
 		'Flag_lo'=>"E",
 		'Longitude'=>"121.485388",
 		'ProStartTime'=>"2016-02-29",
-		'Stage'=>""
+		'Stage'=>"",
+                   		'Status'=> $status[rand(0,3)]
 
 	);
 	array_push($stat_list,$map14);
@@ -1935,7 +1950,8 @@ RESPONSE:
 		'Flag_lo'=>"E",
 		'Longitude'=>"121.475583",
 		'ProStartTime'=>"2016-03-15",
-		'Stage'=>""
+		'Stage'=>"",
+                   		'Status'=> $status[rand(0,3)]
 
 	);
 	array_push($stat_list,$map15);
@@ -1954,7 +1970,8 @@ RESPONSE:
 		'Flag_lo'=>"E",
 		'Longitude'=>"121.256060",
 		'ProStartTime'=>"2015-03-19",
-		'Stage'=>""
+		'Stage'=>"",
+                   		'Status'=> $status[rand(0,3)]
 
 	);
 	array_push($stat_list,$map16);
@@ -1973,7 +1990,8 @@ RESPONSE:
 		'Flag_lo'=>"E",
 		'Longitude'=>"121.360693",
 		'ProStartTime'=>"2015-08-25",
-		'Stage'=>""
+		'Stage'=>"",
+                   		'Status'=> $status[rand(0,3)]
 
 	);
 	array_push($stat_list,$map17);
@@ -1992,7 +2010,8 @@ RESPONSE:
 		'Flag_lo'=>"E",
 		'Longitude'=>"121.933166",
 		'ProStartTime'=>"2015-11-30",
-		'Stage'=>""
+		'Stage'=>"",
+                   		'Status'=> $status[rand(0,3)]
 	);
 	array_push($stat_list,$map18);
 	$retval=array(
@@ -2046,22 +2065,49 @@ RESPONSE:
 	$AlarmName= "噪声";
 	$AlarmUnit="DB";
 	$WarningTarget='65';
+	$LineNumber=rand(1,3);
 	$minute_alarm = array();
 	$minute_head = array();
-	for($i=0;$i<(60*24);$i++){
-		array_push($minute_alarm,rand(10,110));
-		array_push($minute_head,(string)$i);
-	}
 	$hour_alarm = array();
 	$hour_head = array();
-	for($i=0;$i<(7*24);$i++){
-		array_push($hour_alarm,rand(10,110));
-		array_push($hour_head,(string)$i);
-	}
 	$day_alarm = array();
 	$day_head = array();
+	for($i=0;$i<$LineNumber;$i++){
+	    $minute_item_array = array(
+            'name'=>"minute_".(string)($i+1),
+            'color'=> "",
+            'items'=>array()
+        );
+        $hour_item_array = array(
+            'name'=>"hour_".(string)($i+1),
+            'color'=> "",
+            'items'=>array()
+        );
+        $day_item_array = array(
+            'name'=>"day_".(string)($i+1),
+            'color'=> "",
+            'items'=>array()
+        );
+	    array_push($minute_alarm,$minute_item_array);
+	    array_push($hour_alarm,$hour_item_array);
+	    array_push($day_alarm,$day_item_array);
+	}
+	for($i=0;$i<(60*24);$i++){
+	    for($j=0;$j<$LineNumber;$j++){
+		    array_push($minute_alarm[$j]['items'],rand(10,110));
+	    }
+		array_push($minute_head,(string)$i);
+	}
+	for($i=0;$i<(7*24);$i++){
+		for($j=0;$j<$LineNumber;$j++){
+            array_push($hour_alarm[$j]['items'],rand(10,110));
+        }
+		array_push($hour_head,(string)$i);
+	}
 	for($i=0;$i<30;$i++){
-		array_push($day_alarm,rand(10,110));
+		for($j=0;$j<$LineNumber;$j++){
+            array_push($day_alarm[$j]['items'],rand(10,110));
+        }
 		array_push($day_head,(string)$i);
 	}
 	$body=array(
@@ -2073,8 +2119,8 @@ RESPONSE:
 		'minute_head'=>$minute_head,
 		'day_head'=>$day_head,
 		'hour_head'=>$hour_head,
-		'minute_alarm'=> $minute_alarm,
-		'hour_alarm'=> $hour_alarm,
+		'minute_alarm'=> "",//$minute_alarm,
+		'hour_alarm'=> "",//$hour_alarm,
 		'day_alarm'=> $day_alarm,
 		'Alarm_min'=>"0",
 		'Alarm_max'=>"150"
@@ -2112,8 +2158,7 @@ RESPONSE:
 		'day_head'=>$day_head,
 		'hour_head'=>$hour_head,
 		'minute_alarm'=> $minute_alarm,
-		'hour_alarm'=> $hour_alarm,
-		'day_alarm'=> $day_alarm
+		'hour_alarm'=> $hour_alarm
 		);
 	$retval= array(
 		'status'=>"true",
@@ -2130,16 +2175,35 @@ RESPONSE:
 	$AlarmName= "噪声";
 	$AlarmUnit="DB";
 	$WarningTarget='65';
+	$LineNumber=rand(1,3);
 	$minute_alarm = array();
 	$minute_head = array();
-	for($i=0;$i<(60);$i++){
-		array_push($minute_alarm,rand(10,110));
-		array_push($minute_head,(string)$i);
-	}
 	$hour_alarm = array();
 	$hour_head = array();
+	for($i=0;$i<$LineNumber;$i++){
+        $minute_item_array = array(
+            'name'=>"minute_".(string)($i+1),
+            'color'=> "",
+            'items'=>array()
+        );
+        $hour_item_array = array(
+            'name'=>"hour_".(string)($i+1),
+            'color'=> "",
+            'items'=>array()
+        );
+        array_push($minute_alarm,$minute_item_array);
+        array_push($hour_alarm,$hour_item_array);
+    }
+	for($i=0;$i<(60);$i++){
+		for($j=0;$j<$LineNumber;$j++){
+            array_push($minute_alarm[$j]['items'],rand(10,110));
+        }
+		array_push($minute_head,(string)$i);
+	}
 	for($i=0;$i<(24);$i++){
-		array_push($hour_alarm,rand(10,110));
+        for($j=0;$j<$LineNumber;$j++){
+            array_push($hour_alarm[$j]['items'],rand(10,110));
+        }
 		array_push($hour_head,(string)$i);
 	}
 	$body=array(
@@ -2152,8 +2216,8 @@ RESPONSE:
 		'hour_head'=>$hour_head,
 		'minute_alarm'=> $minute_alarm,
 		'hour_alarm'=> $hour_alarm,
-		'Alarm_min'=>"50",
-		'Alarm_max'=>"100"
+		'Alarm_min'=>"0",
+		'Alarm_max'=>"200"
 		);
 	$retval= array(
 		'status'=>"true",
@@ -3068,7 +3132,7 @@ RESPONSE:
 	$camerastatus=array(
 	   'v'=>"120~",
 	   'h'=>"120~",
-	   'zoom'=>'5',
+	   'zoom'=>'0',
 	   'url'=>$install_path."/video/screenshot/".(string)$videocode.".png"
 	);
 	$retval=array(
@@ -3133,7 +3197,7 @@ RESPONSE:
 	$camerastatus=array(
 		'v'=>"120~",
 		'h'=>"120~",
-		'z'=>"4",
+		'z'=>"0",
 		'url'=>$install_path."/video/screenshot/".(string)$videocode.".png"
 	);
 	$retval=array(
@@ -3152,7 +3216,7 @@ RESPONSE:
 	$camerastatus=array(
 	   'v'=>"120~",
 	   'h'=>"120~",
-	   'z'=>"4",
+	   'z'=>"0",
 	   'url'=>$install_path."/video/screenshot/".(string)$videocode.".png"
 	);
 	$retval=array(
@@ -3213,6 +3277,7 @@ RESPONSE:
 	$camerastatus=array(
 	   'v'=>"120~",
 	   'h'=>"120~",
+            'z'=>"0",
 	   'url'=>$install_path."/video/screenshot/".(string)$videocode.".png"
 	);
 	$retval=array(
@@ -3248,6 +3313,7 @@ case "CameraHAdj":
 	$camerastatus=array(
 		'v'=>"120~",
 		'h'=>"120~",
+            'z'=>"0",
 		'url'=>$install_path."/video/screenshot/".(string)$videocode.".png"
 	);
 	$retval=array(
@@ -3258,6 +3324,26 @@ case "CameraHAdj":
 	);
 	$jsonencode = _encode($retval);
 	echo $jsonencode; break;
+    case "CameraReset":
+        $usr = $_GET["user"];
+        $body_in = $_GET['body'];
+        $StatCode = $body_in["StatCode"];
+        //$adj = $body_in["adj"];
+        $videocode = rand(1,5);
+        $camerastatus=array(
+            'v'=>"0~",
+            'h'=>"0~",
+            'z'=>"0",
+            'url'=>$install_path."/video/screenshot/".(string)$videocode.".png"
+        );
+        $retval=array(
+            'status'=>'true',
+            'ret'=>$camerastatus,
+            'msg'=>'success',
+            'auth'=>'true'
+        );
+        $jsonencode = _encode($retval);
+        echo $jsonencode; break;
     case "OpenLock":
 /*
 REQUEST:

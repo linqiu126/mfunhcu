@@ -25,7 +25,7 @@ define("MFUN_L2SDK_IOTHCU_ZHB_NOM_FRAME","ZHB_NOM");  //中环保协议帧格式
 //HCU设备状态
 define ("MFUN_HCU_AQYC_STATUS_ON", "Y");
 define ("MFUN_HCU_AQYC_STATUS_OFF", "N");
-define("MFUN_HCU_AQYC_SLEEP_DURATION", 3600); //如果最后一次测量报告距离现在已经超过60x60秒
+define("MFUN_HCU_AQYC_SLEEP_DURATION", 3600); //如果最后一次测量报告距离现在已经超过30x60秒
 define("MFUN_HCU_AQYC_TIME_GRID_SIZE", 1); //定义用于数据存储的时间网格为。单位为分钟
 
 //扬尘摄像头访问常量

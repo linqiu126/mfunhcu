@@ -254,6 +254,31 @@ class classDbiL3apF3dm
         for($i=0; $i<count($auth_list); $i++)
         {
             $statCode = $auth_list[$i]['stat_code'];
+            //查询当前告警状态
+            $result = $mysqli->query("SELECT * FROM `t_l3f3dm_aqyc_currentreport` WHERE `statcode` = '$statCode'");
+            if ($result->num_rows>0){
+                $row = $result->fetch_array();
+                $last_report = $row["createtime"];
+                $tsp = $row['pm01'];
+                $noise = $row['noise'];
+
+                if($tsp>MFUN_L3APL_F3DM_TH_ALARM_PM25)//TSP超标，则显示该站点红色
+                    $alarmStatus = 'alarm';
+                elseif($noise>MFUN_L3APL_F3DM_TH_ALARM_NOISE) //噪声超标，则显示该站点橙色
+                    $alarmStatus = 'warning';
+                else //正常显示绿色
+                    $alarmStatus = 'normal';
+
+                $timestamp = strtotime($last_report);
+                $currenttime = time();
+                if ($currenttime > ($timestamp + MFUN_HCU_AQYC_SLEEP_DURATION)) { //如果最后一次测量报告距离现在已经超过休眠间隔门限，则显示为离线灰色
+                    $alarmStatus = 'disable';
+                }
+            }
+            else{ //查不到信息显示灰色
+                $alarmStatus = 'disable';
+            }
+
             $query_str = "SELECT * FROM `t_l3f3dm_siteinfo` WHERE (`statcode` = '$statCode' AND `status` != '$siteStatus')";      //查询监测点对应的项目号
             $resp = $mysqli->query($query_str);
             if (($resp->num_rows)>0) {
@@ -277,6 +302,7 @@ class classDbiL3apF3dm
                     'Longitude' => $longitude,
                     'ProStartTime' => $info['starttime'],
                     'Stage' => $info['memo'],
+                    'Status'=> $alarmStatus
                 );
                 array_push($sitelist, $temp);
             }
