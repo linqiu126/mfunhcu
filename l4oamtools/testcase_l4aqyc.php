@@ -12,10 +12,19 @@ include_once "../l1comvm/vmlayer.php";
  *                             L4AQYC-UI TEST CASES                                   *
  *************************************************************************************/
 if (TC_L4AQYC_UI == true) {
-    $sessionid = "UHruM8LPwb";
+    $sessionid = "dG4YSBfyWE";
     $uerid = "UID000001";
-    $statcode = "120101022";
+    $statcode = "S_19297588";
     $projcode = "P_0002";
+
+    echo " [TC L4AQYC: AlarmQueryRealtime START]\n";
+    $_GET["action"] = "AlarmQueryRealtime";
+    $_GET["type"] = "mod";
+    $body = array('StatCode' => $statcode,'type'=>"YC_007");
+    $_GET["body"] = $body;
+    $_GET["user"] = $sessionid;
+    require("../l4aqycui/request.php");
+    echo " [TC L4AQYC: AlarmQueryRealtime END]\n";
 
     echo " [TC L4AQYC: CameraVAdj START]\n";
     $_GET["action"] = "CameraVAdj";
@@ -23,7 +32,7 @@ if (TC_L4AQYC_UI == true) {
     $body = array('StatCode' => $statcode,'adj'=>"-1");
     $_GET["body"] = $body;
     $_GET["user"] = $sessionid;
-    require("../l4aqycui/request.php");
+    //require("../l4aqycui/request.php");
     echo " [TC L4AQYC: CameraVAdj END]\n";
 
     echo " [TC L4AQYC: AlarmHandle START]\n";
