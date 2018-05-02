@@ -476,7 +476,7 @@ class classDbiL3apF4icm
             $query_str = "INSERT INTO `t_l2snr_picturedata` (statcode,filename,filesize,filedescription,reportdate,hourminindex,dataflag) VALUES ('$statCode','$picname','$filesize','$description','$date','$hourminindex','$dataflag')";
             $result=$mysqli->query($query_str);
             $picUrl = MFUN_HCU_SITE_PIC_BASE_DIR.$statCode.'/'.$picname;
-            $resp = array("v"=>$adj,"h"=>"0","zoom"=>"0","url"=>$picUrl);
+            $resp = array("v"=>"0","h"=>(string)$adj,"zoom"=>"0","url"=>$picUrl);
         }
         else{
             $mysqli->close();
@@ -584,7 +584,7 @@ class classDbiL3apF4icm
             $query_str = "INSERT INTO `t_l2snr_picturedata` (statcode,filename,filesize,filedescription,reportdate,hourminindex,dataflag) VALUES ('$statCode','$picname','$filesize','$description','$date','$hourminindex','$dataflag')";
             $result=$mysqli->query($query_str);
             $picUrl = MFUN_HCU_SITE_PIC_BASE_DIR.$statCode.'/'.$picname;
-            $resp = array("v"=>$adj,"h"=>"0","zoom"=>"0","url"=>$picUrl);
+            $resp = array("v"=>(string)$adj,"h"=>"0","zoom"=>"0","url"=>$picUrl);
         }
         else{
             $mysqli->close();
@@ -595,7 +595,7 @@ class classDbiL3apF4icm
         return $resp;
     }
 
-    //调整指定角度，TBD
+    //调整指定角度
     public function dbi_adjust_camera_zoom($statCode, $adj)
     {
         //建立连接
@@ -619,21 +619,47 @@ class classDbiL3apF4icm
             return false;
         }
 
-        $ctrl_url = "http://ngrok.hkrob.com:".$port."/ISAPI/PTZCtrl/channels/1/homeposition/goto";
+        $ctrl_url = "http://ngrok.hkrob.com:".$port."/ISAPI/PTZCtrl/channels/1/absolute";
         $username = MFUN_HCU_AQYC_CAM_USERNAME;
         $password = MFUN_HCU_AQYC_CAM_PASSWORD;
 
-        //回归Home位置
+        $adj = intval($adj);
+        if($adj >= 0){
+            $position = (360 - $adj)*10;
+            $input_xml_string = "<PTZData version=\"2.0\" xmlns=\"http://www.hikvision.com/ver20/XMLSchema\">
+                                <AbsoluteHigh>
+                                <elevation>000</elevation>
+                                <azimuth>$position</azimuth>
+                                <absoluteZoom>1</absoluteZoom>
+                                </AbsoluteHigh>
+                                </PTZData>";
+        }
+        else{
+            $position = abs($adj)*10;
+            $input_xml_string = "<PTZData version=\"2.0\" xmlns=\"http://www.hikvision.com/ver20/XMLSchema\">
+                                <AbsoluteHigh>
+                                <elevation>000</elevation>
+                                <azimuth>$position</azimuth>
+                                <absoluteZoom>1</absoluteZoom>
+                                </AbsoluteHigh>
+                                </PTZData>";
+        }
+
+        //转动到指定角度
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_URL, $ctrl_url);
         curl_setopt($curl, CURLOPT_HEADER, 0);
         curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "PUT");
+        curl_setopt($curl, CURLOPT_POSTFIELDS, $input_xml_string);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_ANY);
         curl_setopt($curl, CURLOPT_USERPWD, "$username:$password");
         curl_setopt($curl, CURLOPT_TIMEOUT, 30);
         curl_exec($curl);
         curl_close($curl);
+
+        //根据摄像头选择角度不同，设置延迟抓拍照片的时间
+        sleep(8);
 
         //调取一张调整后的照片
         $curl = curl_init();
@@ -669,7 +695,7 @@ class classDbiL3apF4icm
             $query_str = "INSERT INTO `t_l2snr_picturedata` (statcode,filename,filesize,filedescription,reportdate,hourminindex,dataflag) VALUES ('$statCode','$picname','$filesize','$description','$date','$hourminindex','$dataflag')";
             $result=$mysqli->query($query_str);
             $picUrl = MFUN_HCU_SITE_PIC_BASE_DIR.$statCode.'/'.$picname;
-            $resp = array("v"=>"0","h"=>$adj,"zoom"=>"0","url"=>$picUrl);
+            $resp = array("v"=>"0","h"=>(string)$adj,"zoom"=>"0","url"=>$picUrl);
         }
         else{
             $mysqli->close();
@@ -719,6 +745,7 @@ class classDbiL3apF4icm
         curl_exec($curl);
         curl_close($curl);
 
+        sleep(8);
         //调取一张调整后的照片
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_URL, $pic_url);
