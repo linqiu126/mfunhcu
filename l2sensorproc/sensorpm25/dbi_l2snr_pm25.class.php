@@ -540,6 +540,61 @@ class classDbiL2snrPm25
         return $result;
     }
 
+    private function dbi_l2snr_ycjk_data_cu_platform_report($devCode,$prjCode,$timeStamp,$report)
+    {
+        $client = new SoapClient("http://112.64.17.60:9080/services/pushResource?wsdl");
+        $datetime = $timeStamp * 1000;
+        $tempValue = $report['tempValue'];
+        $humidValue = $report['humidValue'];
+        $winddirValue = $report['winddirValue'];
+        $windspdValue = $report['windspdValue'];
+        $noiseValue = $report['noiseValue'];
+        $pm01Value = $report['pm01Value'];  //暂时没用，和TSP一样
+        $pm25Value = $report['pm25Value'];
+        $pm10Value = $report['pm10Value'];
+        $tspValue = $report['tspValue'];
+
+        $emsDataList =
+            array(
+                'devCode' => $devCode,
+                'prjCode' => $prjCode,
+                'prjType' => 1,
+                'dust' => $tspValue,
+                'maxDust' => 200,
+                'minDust' => 50,
+                'temperature' => $tempValue,
+                'maxTemperature' => 35,
+                'minTemperature' => 10,
+                'humidity' => $humidValue,
+                'maxHumidity' => 80,
+                'minHumidity' => 30,
+                'noise' => $noiseValue,
+                'maxNoise' => 100,
+                'minNoise' => 35,
+                'pressure' => 0,
+                'maxPressure' => 0,
+                'minPressure' => 0,
+                'rainfall' => 0,
+                'maxRainfall' => 0,
+                'minRainfall' => 0,
+                'windSpeed' => 2,
+                'windDirection' => $winddirValue,
+                'dateTime' => $datetime,
+                'dustFlag' => 'N',
+                'noiseFlag' => 'N',
+                'humiFlag' => 'N'
+            );
+
+        try {
+
+            $result = $client->__soapCall('pushRealTimeData', [array('vendorCode' => "SH021081", 'emsDataList' => [$emsDataList])]);
+            $strout = iconv("utf-8", "gbk", json_encode($result, JSON_UNESCAPED_UNICODE));
+            echo "pushRealTimeData result :" . $strout . PHP_EOL . PHP_EOL;
+        }catch(SoapFault $e){
+            echo "Sorry an error was caught executing your request: {$e->getMessage()}";
+        }
+    }
+
     public function dbi_huitp_msg_uni_pm25_data_report($devCode, $statCode, $content)
     {
         //$data[0] = HUITP_IEID_uni_com_report，暂时没有使用
@@ -642,6 +697,10 @@ class classDbiL2snrPm25
         //更新瞬时测量值聚合表
         $result3 = $this->dbi_l2snr_ycjk_data_currentreport_update($mysqli,$devCode,$statCode,$timeStamp,$report);
         $result = $result1 AND $result2 AND $result3;
+
+        //增加往联通平台上报功能,暂时选取奉贤西渡站点
+        if ($devCode == "HCU_G201_AQYC_SH059")
+            $this->dbi_l2snr_ycjk_data_cu_platform_report("SHENHUAN_PRJ-SH021081-02","SHENHUAN_PRJ",$timeStamp,$report);
 
         //生成 HUITP_MSGID_uni_ycjk_data_confirm 消息的内容
         $respMsgContent = array();

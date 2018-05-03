@@ -959,7 +959,7 @@ class classDbiL3apF5fm
 
         //将一天里的分钟网格值填入
         $minute_value = array();
-        for($i=0; $i<=60; $i++){
+        for($i=0; $i<60; $i++){
             if ($minute_base+$i < 60)
                 $minute_head = ($hour_base-1).":".($minute_base+$i);
             else
