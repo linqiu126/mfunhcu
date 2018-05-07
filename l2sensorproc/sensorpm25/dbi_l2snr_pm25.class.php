@@ -699,8 +699,8 @@ class classDbiL2snrPm25
         $result = $result1 AND $result2 AND $result3;
 
         //增加往联通平台上报功能,暂时选取奉贤西渡站点
-        if ($devCode == "HCU_G201_AQYC_SH059")
-            $this->dbi_l2snr_ycjk_data_cu_platform_report("SHENHUAN_PRJ-SH021081-02","SHENHUAN_PRJ",$timeStamp,$report);
+        //if ($devCode == "HCU_G201_AQYC_SH059")
+        //    $this->dbi_l2snr_ycjk_data_cu_platform_report("SHENHUAN_PRJ-SH021081-02","SHENHUAN_PRJ",$timeStamp,$report);
 
         //生成 HUITP_MSGID_uni_ycjk_data_confirm 消息的内容
         $respMsgContent = array();

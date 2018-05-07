@@ -6,16 +6,12 @@
  * Time: 12:23
  */
 //include_once "../../l1comvm/vmlayer.php";
+header("Content-type:text/html;charset=utf-8");
 include_once "dbi_l2snr_pm25.class.php";
 
 
 class classTaskL2snrPm25
 {
-    //构造函数
-    public function __construct()
-    {
-
-    }
 
     /**************************************************************************************
      *                             任务入口函数                                           *
