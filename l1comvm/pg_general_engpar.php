@@ -249,6 +249,7 @@ class classConstL1vmUserWebRight
                 'KeyAuthNew' => 'true',
                 'KeyGrant' => 'true',
                 'AttendanceAudit' => 'true',
+                'AttendanceMod' => 'true',
                 'KPIAudit' => 'true',
                 'StaffDel' => 'true',
                 'ConsumablesPurchaseNew' => 'true',
@@ -386,6 +387,7 @@ class classConstL1vmUserWebRight
                 'FactoryDel' => 'false',
                 'FactoryNew' => 'false',
                 'AttendanceAudit' => 'false',
+                'AttendanceMod' => 'false',
                 'KPIAudit' => 'false',
                 'StaffDel' => 'false',
                 'ConsumablesPurchaseNew' => 'false',
@@ -523,6 +525,7 @@ class classConstL1vmUserWebRight
                 'FactoryDel' => 'false',
                 'FactoryNew' => 'false',
                 'AttendanceAudit' => 'false',
+                'AttendanceMod' => 'false',
                 'KPIAudit' => 'false',
                 'StaffDel' => 'false',
                 'ConsumablesPurchaseNew' => 'false',
@@ -661,6 +664,7 @@ class classConstL1vmUserWebRight
                 'FactoryDel' => 'false',
                 'FactoryNew' => 'false',
                 'AttendanceAudit' => 'false',
+                'AttendanceMod' => 'false',
                 'KPIAudit' => 'false',
                 'StaffDel' => 'false',
                 'ConsumablesPurchaseNew' => 'false',
@@ -800,6 +804,7 @@ class classConstL1vmUserWebRight
                 'FactoryDel' => 'false',
                 'FactoryNew' => 'false',
                 'AttendanceAudit' => 'false',
+                'AttendanceMod' => 'false',
                 'KPIAudit' => 'false',
                 'StaffDel' => 'false',
                 'ConsumablesPurchaseNew' => 'false',
@@ -938,6 +943,7 @@ class classConstL1vmUserWebRight
                 'FactoryDel' => 'false',
                 'FactoryNew' => 'false',
                 'AttendanceAudit' => 'false',
+                'AttendanceMod' => 'false',
                 'KPIAudit' => 'false',
                 'StaffDel' => 'false',
                 'ConsumablesPurchaseNew' => 'false',
@@ -1033,6 +1039,7 @@ class classConstL1vmUserWebRight
             self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['actionauth']['KeyGrant'] = 'true';
             self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['actionauth']['AttendanceAudit'] = 'true';
             self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['actionauth']['KPIAudit'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['actionauth']['AttendanceMod'] = 'true';
             self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['actionauth']['GetMaterialStockList']='true';
             self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['actionauth']['GetProductStockList']='true';
             self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['actionauth']['GetProductWeightAndSize']='true';
@@ -1074,6 +1081,9 @@ class classConstL1vmUserWebRight
             self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['actionauth']['OpenLock'] = 'true';
             self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['actionauth']['KeyAuthNew'] = 'true';
             self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['actionauth']['KeyGrant'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['actionauth']['GetMaterialStockList']='true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['actionauth']['GetProductStockList']='true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['actionauth']['GetProductWeightAndSize']='true';
             self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['query'] = 'true';
             self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['mod'] = 'true';
 
@@ -1180,6 +1190,10 @@ class classConstL1vmUserWebRight
             self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['actionauth']['AttendanceAudit'] = 'true';
             self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['actionauth']['KPIAudit'] = 'true';
             self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['actionauth']['StaffDel'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['actionauth']['AttendanceMod'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['actionauth']['GetMaterialStockList']='true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['actionauth']['GetProductStockList']='true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['actionauth']['GetProductWeightAndSize']='true';
             self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['query'] = 'true';
             self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_1]['mod'] = 'true';
 
@@ -1208,6 +1222,9 @@ class classConstL1vmUserWebRight
             self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['actionauth']['PointMod'] = 'true';
             self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['actionauth']['DevNew'] = 'true';
             self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['actionauth']['DevMod'] = 'true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['actionauth']['GetMaterialStockList']='true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['actionauth']['GetProductStockList']='true';
+            self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['actionauth']['GetProductWeightAndSize']='true';
             self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['query'] = 'true';
             self::$mfunUserGradeArrayConst[MFUN_USER_GRADE_LEVEL_2]['mod'] = 'true';
 
